@@ -29,6 +29,40 @@ f.submit();
 }
 
 </script>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+ String lib_id = (String)session.getAttribute("library_id");
+  String sublib_id = (String)session.getAttribute("memsublib");
+        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+    %>
+
+<%
+String SubMemberId=resource.getString("systemsetup.submember2action.submemid");
+pageContext.setAttribute("SubMemberId", SubMemberId);
+String SubMemberName=resource.getString("systemsetup.submem_view_update.submemname");
+pageContext.setAttribute("SubMemberName", SubMemberName);
+String MaxnoOfIssueableBook=resource.getString("systemsetup.submem_view_update.maxnoofissuebook");
+pageContext.setAttribute("MaxnoOfIssueableBook", MaxnoOfIssueableBook);
+
+%>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
 </head>
@@ -41,12 +75,12 @@ f.submit();
       visibility: show;">
 
 <body>
- <table  class="table" width="600px" align="center">
+ <table dir="<%=rtl%>"  class="table" width="600px" align="center">
 
 
 
-       <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">View All SubMember</td></tr>
-                <tr><td valign="top" align="center"> <br/>
+       <tr><td dir="<%=rtl%>"  align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.submem_viewall.viewallsubmem")%></td></tr>
+                <tr><td dir="<%=rtl%>"  valign="top" align="center"> <br/>
 
 
 <%
@@ -81,7 +115,7 @@ f.submit();
 %>
 <%if(tcount==0)
 {%>
-<p class="err" style="font-size:12px">No Record Found</p>
+<p class="err" style="font-size:12px"><%=resource.getString("circulation.cir_viewall_mem_detail.norecfond")%></p>
 <%}
 else
 {%>
@@ -95,18 +129,18 @@ else
 
 
     <column width="200">
-      <header value="SubMember Id" hAlign="left" styleClass="admingridheader"  />
+      <header value="${SubMemberId}" hAlign="left" styleClass="admingridheader"  />
       <item   value="${doc.id.subEmptypeId}"   hAlign="left"   styleClass="item"/>
 
     </column>
 
     <column width="200">
-      <header value="SubMember Name" hAlign="left" styleClass="admingridheader"/>
+      <header value="${SubMemberName}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.subEmptypeFullName}" hAlign="left"  styleClass="item"/>
     </column>
      
     <column width="200">
-      <header value="No. Of Issueable Book" hAlign="left" styleClass="admingridheader"/>
+      <header value="${MaxnoOfIssueableBook}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.noOfIssueableBook}" hAlign="left"  styleClass="item"/>
     </column>
      
@@ -124,10 +158,10 @@ else
 <tr>
 <td align="left">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.previos")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-<a href="<c:out value="${next}"/>">Next</a>
+<a href="<c:out value="${next}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.next")%></a>
 </c:if>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

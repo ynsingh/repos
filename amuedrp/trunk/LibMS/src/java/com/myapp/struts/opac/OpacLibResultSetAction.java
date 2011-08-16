@@ -11,8 +11,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import java.util.List;
-import com.myapp.struts.hbm.SubLibrary;
-import  com.myapp.struts.AdminDAO.*;
 import com.myapp.struts.opacDAO.OpacSearchDAO;
 import com.myapp.struts.systemsetupDAO.*;
 import java.sql.Connection;
@@ -25,7 +23,7 @@ public class OpacLibResultSetAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-   // Connection con1;
+    Connection con1;
     
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -39,7 +37,7 @@ public class OpacLibResultSetAction extends org.apache.struts.action.Action {
         String formname="";
         String lib_id = (String)session.getAttribute("library_id");
 
-
+ 
 
 
         formname = request.getParameter("name");
@@ -48,7 +46,7 @@ public class OpacLibResultSetAction extends org.apache.struts.action.Action {
         rs =(List)opacDao.LibrarySearch(lib_id);
 
         session.setAttribute("libRs", rs);
-        List rs1 = (List)opacDao.subLibrarySearch(lib_id);
+       List rs1 = (List)opacDao.subLibrarySearch(lib_id);
         session.setAttribute("sublib", rs1);
 
 

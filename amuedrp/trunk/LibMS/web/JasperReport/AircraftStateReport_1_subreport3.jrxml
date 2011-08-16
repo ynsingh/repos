@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AircraftStateReport_1_subreport3" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="shipContactName" class="java.lang.String"/>
+	<field name="shipCompanyName" class="java.lang.String"/>
+	<field name="shipAddress" class="java.lang.String"/>
+	<field name="shipPin" class="java.lang.String"/>
+	<field name="shipFax" class="java.lang.String"/>
+	<field name="shipEmail" class="java.lang.String"/>
+	<field name="shippingTerms" class="java.lang.String"/>
+	<field name="shippingMethod" class="java.lang.String"/>
+	<field name="dueDate" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="23" y="0" width="76" height="18"/>
+				<textElement>
+					<font  size="12"/>
+				</textElement>
+				<text><![CDATA[Ship To]]></text>
+			</staticText>
+			<line>
+				<reportElement x="20" y="0" width="205" height="1"/>
+			</line>
+			<line>
+				<reportElement x="20" y="19" width="205" height="1"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="2" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="109" splitType="Stretch">
+			<staticText>
+				<reportElement x="23" y="0" width="100" height="12"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="12" width="100" height="12"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Company Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="24" width="100" height="12"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Address]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="36" width="100" height="12"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Pin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="48" width="100" height="12"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Fax]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="61" width="100" height="12"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Email]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="123" y="0" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{shipContactName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="12" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{shipCompanyName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="24" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{shipAddress}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="36" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{shipPin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="49" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{shipFax}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="61" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{shipEmail}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="23" y="73" width="100" height="12"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Shipping Terms]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="85" width="100" height="12"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Shipping Method]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="97" width="100" height="12"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Due Date]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="123" y="73" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{shippingTerms}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="85" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{shippingMethod}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="97" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dueDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

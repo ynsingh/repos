@@ -5,7 +5,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@page import="java.sql.ResultSet"%>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head>
 <title>Browsing.... </title>
@@ -119,7 +118,7 @@ function search() {
                 newOpt.value = "all";
                 newOpt.text = "All";
 
-                fun1();
+              
 
 		return false;
 
@@ -155,7 +154,9 @@ var em1 = depts.getElementsByTagName("sublibrary_name");
 
         var newOpt =document.getElementById('SubLibary').appendChild(document.createElement('option'));
         document.getElementById('SubLibary').options.length = 0;
-
+   newOpt = document.getElementById('SubLibary').appendChild(document.createElement('option'));
+                newOpt.value = "all";
+                newOpt.text = "All";
 for (var i = 0; i < em.length ; i++)
 {
 var ndValue = em[i].firstChild.nodeValue;
@@ -163,36 +164,148 @@ var ndValue1=em1[i].firstChild.nodeValue;
 newOpt = document.getElementById('SubLibary').appendChild(document.createElement('option'));
 newOpt.value = ndValue;
 newOpt.text = ndValue1;
-
-
 }
-
+fun();
 }
-
 </script>
 <script language="javascript">
 function fun()
 {
-search();
+
 document.getElementById("Form1").action="browse.do";
 document.getElementById("Form1").method="post";
 document.getElementById("Form1").target="f1";
 document.getElementById("Form1").submit();
 }
-function fun1()
-{
-    document.getElementById("Form1").action="browse.do";
-document.getElementById("Form1").method="post";
-document.getElementById("Form1").target="f1";
-document.getElementById("Form1").submit();
-}
+
 
 </script>
-</head>
-<body onload="fun1()">
+<script type="text/javascript">
+   function DisBox()
+{
+if(document.getElementById('checkboxId').checked)
+{
+document.getElementById("checkbox").value="Checked";
+}
+else{
+    document.getElementById("checkbox").value="Unchecked";
+}
+}
+</script>
+<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAApEiKekYWqFpDa_PStAFTMBRxcC-Fn9tK14QS9YKtPPoXy5_dfhQr8n6mPjQbdLIjMkUpUDQ7khVrfQ">
+        </script>
+        <script type="text/javascript">
+      // Load the Google Transliterate API
+      google.load("elements", "1", {
+            packages: "transliteration"
+          });
+
+      var transliterationControl;
+      function onLoad() {
+        var options = {
+            sourceLanguage: 'en',
+            destinationLanguage: ['ar','hi','kn','ml','ta','te'],
+            transliterationEnabled: true,
+            shortcutKey: 'ctrl+g'
+        };
+        // Create an instance on TransliterationControl with the required
+        // options.
+        transliterationControl =
+          new google.elements.transliteration.TransliterationControl(options);
+
+        // Enable transliteration in the textfields with the given ids.
+        var ids = ["TXTTITLE"];
+        transliterationControl.makeTransliteratable(ids);
+
+        // Add the STATE_CHANGED event handler to correcly maintain the state
+        // of the checkbox.
+        transliterationControl.addEventListener(
+            google.elements.transliteration.TransliterationControl.EventType.STATE_CHANGED,
+            transliterateStateChangeHandler);
+
+        // Add the SERVER_UNREACHABLE event handler to display an error message
+        // if unable to reach the server.
+        transliterationControl.addEventListener(
+            google.elements.transliteration.TransliterationControl.EventType.SERVER_UNREACHABLE,
+            serverUnreachableHandler);
+
+        // Add the SERVER_REACHABLE event handler to remove the error message
+        // once the server becomes reachable.
+        transliterationControl.addEventListener(
+            google.elements.transliteration.TransliterationControl.EventType.SERVER_REACHABLE,
+            serverReachableHandler);
+
+        // Set the checkbox to the correct state.
+        document.getElementById('checkboxId').checked =
+          transliterationControl.isTransliterationEnabled();
+
+        // Populate the language dropdown
+        var destinationLanguage =
+          transliterationControl.getLanguagePair().destinationLanguage;
+        var languageSelect = document.getElementById('languageDropDown');
+        var supportedDestinationLanguages =
+          google.elements.transliteration.getDestinationLanguages(
+            google.elements.transliteration.LanguageCode.ENGLISH);
+        for (var lang in supportedDestinationLanguages) {
+          var opt = document.createElement('option');
+          opt.text = lang;
+          opt.value = supportedDestinationLanguages[lang];
+          if (destinationLanguage == opt.value) {
+            opt.selected = true;
+          }
+          try {
+            languageSelect.add(opt, null);
+          } catch (ex) {
+            languageSelect.add(opt);
+          }
+        }
+      }
+
+      // Handler for STATE_CHANGED event which makes sure checkbox status
+      // reflects the transliteration enabled or disabled status.
+      function transliterateStateChangeHandler(e) {
+        document.getElementById('checkboxId').checked = e.transliterationEnabled;
+      }
+
+      // Handler for checkbox's click event.  Calls toggleTransliteration to toggle
+      // the transliteration state.
+      function checkboxClickHandler() {
+        transliterationControl.toggleTransliteration();
+      }
+
+      // Handler for dropdown option change event.  Calls setLanguagePair to
+       // set the new language.
+      function languageChangeHandler() {
+                  var keyValue = document.getElementById('languageDropDown').options[document.getElementById('languageDropDown').selectedIndex].value;
+              document.getElementById("language").value=keyValue;
+        var dropdown = document.getElementById('languageDropDown');
+        transliterationControl.setLanguagePair(
+            google.elements.transliteration.LanguageCode.ENGLISH,
+            dropdown.options[dropdown.selectedIndex].value);
+      }
+
+
+      // SERVER_UNREACHABLE event handler which displays the error message.
+      function serverUnreachableHandler(e) {
+        document.getElementById("errorDiv").innerHTML =
+            "Transliteration Server unreachable";
+      }
+
+      // SERVER_UNREACHABLE event handler which clears the error message.
+      function serverReachableHandler(e) {
+        document.getElementById("errorDiv").innerHTML = "";
+      }
+      google.setOnLoadCallback(onLoad);
+
+    </script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard.js" charset="UTF-8"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
+    </head>
+<body onload="checkboxClickHandler();search();">
     
-    <html:form action="/OPAC/browse"  styleId="Form1" target="f1">
-   <table  align="<%=align%>" dir="<%=rtl%>" width="1200x" class="datagrid" style="border:solid 1px #e0e8f5;">
+    <html:form action="/OPAC/browse"  styleId="Form1" target="f1" acceptCharset="utf-8">
+   <table  align="<%=align%>" dir="<%=rtl%>" width="100%" class="datagrid" style="border:solid 1px #e0e8f5;">
 
 
 
@@ -205,9 +318,17 @@ document.getElementById("Form1").submit();
 
 
         </td></tr>
+    <tr dir="<%=rtl%>"><td>
+    <div id='translControl'>
+      <input type="checkbox" id="checkboxId" onclick="javascript:checkboxClickHandler();javascript:DisBox();javascript:languageChangeHandler();javascript:fun1()">
+      <html:hidden property="checkbox" styleId="checkbox" name="browseSearchActionForm"/>
+      <%=resource.getString("cataloguing.catbiblioentry.selectlang")%><select id="languageDropDown" onchange="javascript:languageChangeHandler()"></select>
+    <html:hidden property="language" styleId="language" name="browseSearchActionForm"/>
+    </div>
+      </td></tr>
   <tr style="background-color:#e0e8f5;"><td width="800px" dir="<%=rtl%>" >
           <table>
-              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.enterstartingkeyword")%></td><td><input  name="TXTTITLE" type="text" dir="<%=rtl%>" onkeyup="fun()"></td></tr>
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.enterstartingkeyword")%></td><td><input  name="TXTTITLE" id="TXTTITLE" class="keyboardInput" type="text" dir="<%=rtl%>" onkeyup="fun()"></td></tr>
              
 
           </table>
@@ -218,10 +339,10 @@ document.getElementById("Form1").submit();
 
 
 <select dir="<%=rtl%>" name="CMBFIELD" onChange="fun()" size="1">
-<option value="any field" selected dir="<%=rtl%>">ANY FIELD</option>
-<option value="authorName" dir="<%=rtl%>">AUTHOR</option>
-<option value="title" dir="<%=rtl%>">TITLE</option>
-<option value="publisherName" dir="<%=rtl%>">PUBLISHER</option>
+<option value="any field" selected dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%></option>
+<option value="mainEntry" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
+<option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
+<option value="publisherName" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.pub")%></option>
 
 </select>
      </td>
@@ -241,14 +362,14 @@ document.getElementById("Form1").submit();
 </select>
                   </td><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%></td>
                   <td>
-                      <html:select property="CMBLib" dir="<%=rtl%>"  tabindex="3" value="<%=library_id%>"  styleId="CMBLib" onchange="fun()">
+                      <html:select property="CMBLib" dir="<%=rtl%>"  tabindex="3" value="<%=library_id%>"  styleId="CMBLib" onchange="search();fun()">
                            <html:option value="all">All</html:option>
                             <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
                       </html:select>
                   </td>
                   <td align="left" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%><html:select property="CMBSUBLib" dir="<%=rtl%>" value="<%=sublibrary_id%>" styleId="SubLibary" onchange="fun1()">
-                          <html:option value="all">All</html:option>
-                          <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
+                          <%--<html:option value="all">All</html:option>--%>
+                          <%--<html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />--%>
                        </html:select>
 
 
@@ -268,7 +389,7 @@ document.getElementById("Form1").submit();
            <table>
                            <tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.title")%></td><td dir="<%=rtl%>"> <select name="CMBSORT" dir="<%=rtl%>" size="1" onChange="fun()" id="CMBSORT">
 <option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
-<option  value="authorName" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.field1")%></option>
+<option  value="mainEntry" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.field1")%></option>
 <option value="isbn10" dir="<%=rtl%>">ISBN</option>
 <option value="publisherName" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.pub")%></option>
 </select>
@@ -306,120 +427,6 @@ document.getElementById("Form1").submit();
  </html:form>
 
 
- <%--<%}else{%>
- <html:form action="/OPAC/browse"  styleId="Form1">
-
-        <table  align="left" width="1200x" class="datagrid" style="border:solid 1px #e0e8f5;">
-
-
-
-  <tr class="header"><td  width="1000px"   align="center" colspan="2">
-
-
-		Browse Search
-
-
-
-
-        </td></tr>
-  <tr style="background-color:#e0e8f5;">
-      <td    align="left" width="200px" valign="top">
-          <table width="200px">
-              <tr><td>in Field </td><td rowspan="2" valign="top">
-<select name="CMBFIELD" onChange="fun()" size="1">
-<option value="any field" selected>ANY FIELD</option>
-<option value="authorName">AUTHOR</option>
-<option value="title">TITLE</option>
-<option value="publisherName">PUBLISHER</option>
-
-</select>
-        
-     </td>
-
-              </tr></table></td>
-  <td align="right">
-          <table>
-              <tr><td >Keyword</td><td><input  name="TXTTITLE" type="text" onkeyup="fun()"></td></tr>
-             
-
-          </table>
-      </td>
-  </tr>
-  <tr class="header"><td align="right">Sort By</td><td width="1000px"   align="right" >&nbsp;Restricted By</td></tr>
-    <tr style="background-color:#e0e8f5;">
-
-      <td align="left">
-           <table>
-                           <tr><td>Field</td><td> <select name="CMBSORT" size="1" id="CMBSORT">
-<option  value="authorName">AUTHOR</option>
-<option value="title">TITLE</option>
-<option value="isbn10">ISBN</option>
-<option value="publisherName">PUBLISHER</option>
-</select></td>
-                           </tr></table>
-
-
-      </td>
-  
-                <td align="500px" align="right">
-          <table>
-              <tr><td ><%=resource.getString("opac.simplesearch.database")%></td><td>
-                      <select name="CMBDB" size="1" id="CMBDB">
-<option value="combined" selected>COMBINED</option>
-    <option value="book">BOOKS</option>
-    <option value="cd">CDs</option>
-
-</select>
-                  </td><td ><%=resource.getString("opac.simplesearch.library")%></td><td>
-                  <html:select property="CMBLib"  tabindex="3"  styleId="CMBLib" onchange="search()">
-     <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
- </html:select>
-
-</td>
-
-<td align="left">SubLib <select  name="CMBSUBLib"size="1" id="SUBLIB" onChange="fun()">
-                        <option selected value="all">All</option>
-                       <option value="amu">Main Library</option>
-                       <option  value="csl">Computer Science Libray</option>
-                       <option  value="phl">Physics Seminar Libray</option>
-                       <option  value="chl">Chemistry Seminar Library</option>
-                       </select>
-    </td>          
-</tr>
-                   
-          </table>
-                   </td>
-               </tr></table>
-     
-
-  <tr><td colspan="2" align="right">
-
-
-
-<input type="reset" id="Button2" class="btn" name="" value="CLEAR">
-<input type="submit" id="Button1" class="btn" name="" value="FIND">
-
-      </td>
-
- 
-  
-<tr><td  height="400px" valign="top" colspan="2" >
-
-             <IFRAME  name="f1"  src="#" frameborder=0 height="400px" width="1200px" scrolling="no"  id="f1"></IFRAME>
-
-
-      </td></tr>
-
-       
-
-
-
-
-
-
-
- </html:form>
- <%}%>--%>
  
 </body>
 </html>

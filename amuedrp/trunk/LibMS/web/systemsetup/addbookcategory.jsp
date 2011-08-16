@@ -5,7 +5,7 @@ Modified On  : 17-Feb 2011
 This Page is to Enter Staff ID
 -->
 
-<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.List"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*"%>
 
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -25,6 +25,29 @@ String book_typefullname=(String)request.getAttribute("book_typefullname");
 
 
 %>
+
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -39,7 +62,7 @@ function check1()
     
      if(document.getElementById('permitday').value=="")
     {
-        alert("Enter Issue Days Limit");
+        alert("<%=resource.getString("systemsetup.addbookcategory.enterissuedaylmt")%>");
 
 
         document.getElementById('permitday').focus();
@@ -48,7 +71,7 @@ function check1()
     }
      if(document.getElementById('fineperdayRs').value=="")
     {
-        alert("Enter Fine in Rupee or 0 for None");
+        alert("<%=resource.getString("systemsetup.addbookcategory.enterfineinrupee")%>");
 
         document.getElementById('fineperdayRs').focus();
 
@@ -56,7 +79,7 @@ function check1()
     }
      if(document.getElementById('fineperdayPs').value=="")
     {
-        alert("Enter Fine in Paise or 0 for None");
+        alert("<%=resource.getString("systemsetup.addbookcategory.enterfineinpaisae")%>");
 
         document.getElementById('fineperdayPs').focus();
 
@@ -100,26 +123,26 @@ function isNumberKey(evt)
 
       visibility: show;">
 
-    <table class="table" width="400px" height="200px" align="center">
+    <table dir="<%=rtl%>" class="table" width="400px" height="200px" align="center">
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Configure Fine Detail</td></tr>
-                <tr><td valign="top" align="center"> <br/>
-                        <table cellspacing="10px" width="80%">
-                            <tr><td  colspan="2">Member Type </td>
-                                <td align="center"> <html:hidden  styleId="emptype" property="emptype_id" value="<%=emptype_id%>"/>
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.manage_book.configfinedetail")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
+                        <table dir="<%=rtl%>" cellspacing="10px" width="80%">
+                            <tr><td dir="<%=rtl%>"  colspan="2"><%=resource.getString("opac.newmemberentry.typemem")%> </td>
+                                <td dir="<%=rtl%>" align="center"> <html:hidden  styleId="emptype" property="emptype_id" value="<%=emptype_id%>"/>
                                     <html:text  styleId="emptype" readonly="true" property="emptype_id" value="<%=emptype_name%>"/>
                                 </td>
                             </tr>
-                            <tr><td colspan="2">SubMember Type </td><td width="150px" align="center"><html:hidden property="sub_emptype_id" name="BookCategoryDecideActionForm" styleId="subemptype" value="<%=subemptype_id%>" />
+                            <tr><td dir="<%=rtl%>" colspan="2"><%=resource.getString("opac.newmemberentry.memsubcat")%> </td><td width="150px" align="center"><html:hidden property="sub_emptype_id" name="BookCategoryDecideActionForm" styleId="subemptype" value="<%=subemptype_id%>" />
                                 <html:text property="sub_emptype_id" name="BookCategoryDecideActionForm" styleId="subemptype_name" value="<%=subemptype_name%>"  readonly="true" />
 
                                 </td>
                            
-                            <tr><td   colspan="2">Document Category
+                            <tr><td dir="<%=rtl%>"  colspan="2"><%=resource.getString("systemsetup.addbookcategory.doccategory")%>
 
                         </td>
-                        <td align="left"> <html:hidden styleId="book_type" property="book_type" value="<%=book_type%>"/>
+                        <td dir="<%=rtl%>" align="<%=align%>"> <html:hidden styleId="book_type" property="book_type" value="<%=book_type%>"/>
                         <html:text styleId="book_type" property="book_type" value="<%=book_typefullname%>"  readonly="true"/>
 
                         </td>
@@ -129,25 +152,25 @@ function isNumberKey(evt)
                       
                        <html:hidden styleId="fullname" name="BookCategoryDecideActionForm"  property="full_name"/>
                     
-                    <tr><td   colspan="2">Number of Days Permitted<br><br>
+                    <tr><td dir="<%=rtl%>"  colspan="2"><%=resource.getString("systemsetup.addbookcategory.noofdaypermited")%><br><br>
 
                         </td>
-                        <td align="left"><html:text styleId="permitday" value="" onkeypress="return isNumberKey(event)" property="permitday"/><br>
-                            <font size="-2" color="blue">(Only numberic value permitted)</font></td>
+                        <td dir="<%=rtl%>" align="<%=align%>"><html:text styleId="permitday" value="" onkeypress="return isNumberKey(event)" property="permitday"/><br>
+                            <font size="-2" color="blue">(<%=resource.getString("systemsetup.addbookcategory.onlynumericval")%>)</font></td>
                     </tr>
-                    <tr><td   colspan="3" height="5px"> </td>
+                    <tr><td dir="<%=rtl%>"  colspan="3" height="5px"> </td>
                     </tr>
 
-                  <tr><td   colspan="2">Fine Per Day
+                  <tr><td dir="<%=rtl%>"  colspan="2"><%=resource.getString("systemsetup.addbookcategory.fineperday")%>
 
                         </td>
-                        <td align="left"><font size="-1"> Rs:<html:text styleId="fineperdayRs"  onkeypress="return isNumberKey(event)" property="fineRs" value="" size="2"/>Paise:<input type="text" id="fineperdayPs" onkeypress="return isNumberKey(event)" name="finePs" size="2" value=""/>
+                        <td dir="<%=rtl%>" align="<%=align%>"><font size="-1"><%=resource.getString("systemsetup.addbookcategory.rs")%> <html:text styleId="fineperdayRs"  onkeypress="return isNumberKey(event)" property="fineRs" value="" size="2"/><%=resource.getString("systemsetup.addbookcategory.paise")%> <input type="text" id="fineperdayPs" onkeypress="return isNumberKey(event)" name="finePs" size="2" value=""/>
                             </font>  </td>
                     </tr>
 
-                     <tr><td  class="txt2" colspan="3" align="center"><br/>
-                             <html:submit  value="Submit"/>
-                             <input type="button" onClick="quit()"  value="Back"/><br/>
+                     <tr><td dir="<%=rtl%>" class="txt2" colspan="3" align="center"><br/>
+                             <input type="submit"  value="<%=resource.getString("circulation.cir_newmember.submit")%>"/>
+                             <input type="button" onClick="quit()"  value="<%=resource.getString("circulation.cir_member_reg.back")%>"/><br/>
                         </td>
 
                     </tr>

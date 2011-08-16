@@ -144,6 +144,7 @@ public Integer getAdminRequestCount(String status){
          //   session.close();
         }
 }
+
 public List getAdminDetailsByStatus(String status){
   Session session =null;
     Transaction tx = null;
@@ -359,7 +360,7 @@ public static  AdminRegistration searchInstituteAdmin(String staff_id,String lib
         }
         finally
         {
-        //    session.close();
+         //   session.close();
         }
         return (AdminRegistration) query.uniqueResult();
 

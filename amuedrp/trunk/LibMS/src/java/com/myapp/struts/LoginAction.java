@@ -9,9 +9,16 @@ import com.myapp.struts.systemsetupDAO.MemberCategoryDAO;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+
+
 import java.util.*;
 import javax.servlet.http.*;
 import  com.myapp.struts.utility.PasswordEncruptionUtility;
+import  com.myapp.struts.utility.UserLog;
+import  com.myapp.struts.utility.DateCalculation;
+import java.util.ResourceBundle;
+import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
 
 /**
  * Developed By : Kedar Kumar
@@ -20,12 +27,12 @@ import  com.myapp.struts.utility.PasswordEncruptionUtility;
  */
 public class LoginAction extends org.apache.struts.action.Action {
 
-
+private static Logger systemlog = Logger.getLogger(LoginAction.class);
     String login_id;
     String username;
     String password;
    
-  
+  UserLog logobj1;
 
     List ls1,ls2,ls3,ls4;
    
@@ -37,10 +44,14 @@ public class LoginAction extends org.apache.struts.action.Action {
     String main_library;
 List list1,list2;
     private List list;
+ Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
 
-
-
-
+  String date="";
+  String time="";
+ 
 
 
     @Override
@@ -49,9 +60,28 @@ List list1,list2;
             throws Exception
     {
 
+        DOMConfigurator.configure("log4j.xml");
 
+String logs1=servlet.getServletContext().getRealPath("/logs");
+logobj1=new UserLog();
+date=DateCalculation.now();
+time=String.valueOf(System.currentTimeMillis());
 
         HttpSession session=request.getSession();
+  try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
 
 
@@ -76,7 +106,7 @@ List list1,list2;
             password=PasswordEncruptionUtility.password_encrupt(password);
 
 
-        
+       
 
 
 
@@ -145,8 +175,8 @@ String sublib_id=tempobj.getSublibraryId();
                               
                             session.setAttribute("user_id",login_id);
 
-
-
+                            systemlog.info(login_id+","+library_id+","+sublibrary_id);
+                             logobj1.writelog(logs1, login_id, date, time, this.getClass().getName(),request.getContextPath(),"SuperAdmin Login", "Successfully Login", library_id, sublibrary_id);
 
                                 return mapping.findForward("superadmin");
                          }//SuperAdmin Close if-else
@@ -163,7 +193,12 @@ String sublib_id=tempobj.getSublibraryId();
 
               Library libobj=(Library)LibraryDAO.searchBlockLibrary(library_id);
               if(libobj!=null)
-              {    request.setAttribute("msg1","Library is Blocked, Contact Admin.");
+              {
+                  systemlog.info(login_id+","+library_id+","+sublibrary_id);
+                   logobj1.writelog(logs1, login_id, date, time, this.getClass().getName(),request.getContextPath(),"User Login", "Library is Blocked,Login Failure", library_id, sublibrary_id);
+                  //  request.setAttribute("msg1","Library is Blocked, Contact Admin.");
+                    request.setAttribute("msg1",resource.getString("admin.LoginAction.error1"));
+
                    return mapping.findForward("failure");
                }
             else
@@ -202,7 +237,8 @@ String sublib_id=tempobj.getSublibraryId();
                             SerPrivilege ser_priv=SerPrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("ser_privilege_resultset", ser_priv);
                             System.out.println(".......................");
-
+systemlog.info(login_id+","+library_id+","+sublibrary_id);
+                             logobj1.writelog(logs1, login_id, date, time, this.getClass().getName(),request.getContextPath(),"User Login", "Successfully First Time Login", library_id, sublibrary_id);
                               return mapping.findForward("firstlogin");
 
                             }
@@ -232,11 +268,14 @@ String sublib_id=tempobj.getSublibraryId();
                             session.setAttribute("ser_privilege_resultset", ser_priv);
 
                             if(tempobj.getRole().contains("admin") || tempobj.getRole().contains("Admin"))
-                            {
+                            {systemlog.info(login_id+","+library_id+","+sublibrary_id);
+                                 logobj1.writelog(logs1, login_id, date, time, this.getClass().getName(),request.getContextPath(),"Admin Login", "Successfully Login", library_id, sublibrary_id);
                             return mapping.findForward("success");
                             }
                             else
-                                return mapping.findForward("success1");
+                            { systemlog.info(login_id+","+library_id+","+sublibrary_id);
+                                logobj1.writelog(logs1, login_id, date, time, this.getClass().getName(),request.getContextPath(),"User Login", "Successfully Login", library_id, sublibrary_id);
+                                return mapping.findForward("success1");}
 
               }/*End of Non-Block Library IF-ELSE*/
 
@@ -250,7 +289,10 @@ String sublib_id=tempobj.getSublibraryId();
         }/*End of User Library IF-ELSE*/
         else
         {
-                request.setAttribute("msg1","Invalid user Name or Password");
+                 systemlog.info(login_id+","+library_id+","+sublibrary_id);
+                  logobj1.writelog(logs1, login_id, date, time, this.getClass().getName(),request.getContextPath(),"User Login", "Invalid UserName or password", library_id, sublibrary_id);
+                //request.setAttribute("msg1","Invalid user Name or Password");
+                 request.setAttribute("msg1",resource.getString("admin.LoginAction.error2"));
                 return mapping.findForward("failure");
         }
 
@@ -264,7 +306,8 @@ String sublib_id=tempobj.getSublibraryId();
             {
 
             /* Check Weather the Question is Assigned for the User or Not */
-              
+               // stmt=con.prepareStatement("select * from login where login_id=? and question is not null");
+               /// stmt.setString(1, login_id);
                Login obj=LoginDAO.searchForgetPassword(login_id);
                 if(obj!=null)
                 {
@@ -275,14 +318,16 @@ String sublib_id=tempobj.getSublibraryId();
                 session.setAttribute("username", obj.getUserName());
                 session.setAttribute("question",obj.getQuestion());
                 session.setAttribute("staff_id",obj.getId().getStaffId());
-
-
+systemlog.info(login_id+","+library_id+","+sublibrary_id);
+ logobj1.writelog(logs1, login_id, date, time, this.getClass().getName(),request.getContextPath(),"User Login,Forget Password", "Successfully Login", library_id, sublibrary_id);
                 return mapping.findForward("forgetpassword");
                 }
                 else
                 {
-
-                    request.setAttribute("msg","Security question not assigned");
+                   systemlog.info(login_id+","+library_id+","+sublibrary_id);
+ logobj1.writelog(logs1, login_id, date, time, this.getClass().getName(),request.getContextPath(),"User Login,Forget Password", "Security question not set", library_id, sublibrary_id);
+                   // request.setAttribute("msg","Security question not assigned");
+                    request.setAttribute("msg",resource.getString("admin.LoginAction.error3"));
                     return mapping.findForward("failure");
                 }
 

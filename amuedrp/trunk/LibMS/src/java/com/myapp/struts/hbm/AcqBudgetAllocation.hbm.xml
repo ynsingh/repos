@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 19, 2011 12:40:57 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.AcqBudgetAllocation" table="acq_budget_allocation" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.AcqBudgetAllocationId">
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+            <key-property name="transactionId" type="int">
+                <column name="transaction_id" />
+            </key-property>
+        </composite-id>
+        <property name="budgetheadId" type="string">
+            <column name="budgethead_id" length="10" not-null="true" unique="true" />
+        </property>
+        <property name="openingBalance" type="string">
+            <column name="opening_balance" length="50" />
+        </property>
+        <property name="recievedAmount" type="string">
+            <column name="recieved_amount" length="50" />
+        </property>
+        <property name="totalAmount" type="string">
+            <column name="total_amount" length="20" />
+        </property>
+        <property name="financialYr1" type="string">
+            <column name="financial_yr1" length="20" />
+        </property>
+        <property name="financialYr2" type="string">
+            <column name="financial_yr2" length="20" />
+        </property>
+        <property name="remarks" type="string">
+            <column name="remarks" length="20" />
+        </property>
+        <property name="reqdate" type="string">
+            <column name="reqdate" length="10" />
+        </property>
+    </class>
+</hibernate-mapping>

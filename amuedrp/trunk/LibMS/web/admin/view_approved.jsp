@@ -1,9 +1,3 @@
-<%--
-    Document   : Simple.jsp
-    Created on : Jun 18, 2010, 7:46:24 AM
-    Author     : faraz
-<jsp:include page="adminheader.jsp" flush="true" />
---%>
  
     <%@page import="com.myapp.struts.admin.RequestDoc,com.myapp.struts.hbm.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -39,35 +33,6 @@ else{
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
-<script language="javascript" >
-function b1click()
-{
-location.href="login.jsp";
-}
-function b2click()
-{
-f.action="login.html";
-f.method="post";
-f.target="_self";
-f.submit();
-}
-function getQuery(id)
-{
-    var query = "/EMS-Struts/admin/view.do?id="+id;
-    return query;
-}
-</script>
- <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: white; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: 7697BC; color: #FFFFFF;font-weight: bold }
-
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
 </head>
 
 <body>
@@ -85,6 +50,7 @@ function getQuery(id)
    ArrayList requestList;
    AdminRegistration adminReg;
    int fromIndex=0, toIndex;
+
 %>
  <%
 
@@ -96,9 +62,9 @@ if(rs!=null){
    int tcount =0;
    int perpage=4;
    int tpage=0;
- /*Create a connection by using getConnection() method
-   that takes parameters of string type connection url,
-   user name and password to connect to database.*/
+ 
+if(request.getParameter("pageSize")!=null)
+    perpage = Integer.parseInt((String)request.getParameter("pageSize"));
 
   while (it.hasNext()) {
 	
@@ -119,10 +85,22 @@ it.next();
 System.out.println("tcount="+tcount);
 
 %>
+<script>
+    function changerec(){
+        var x=document.getElementById('rec').value;
+    var loc = window.location;
+    loc = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/admin/view_approved.jsp";
+    
+   // alert(loc);
+        loc = loc + "?pageSize="+x;
+    window.location = loc;
+
+    }
+    </script>
        
 <%
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex+4) >= requestList.size ())
+   if ((toIndex = fromIndex + perpage) >= requestList.size ())
    toIndex = requestList.size();
    request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
@@ -168,6 +146,7 @@ locale1=(String)session.getAttribute("locale");
   pageContext.setAttribute("InstituteName", InstituteName);
   String AdminEmail=resource.getString("admin.viewpending.adminemail");
   pageContext.setAttribute("AdminEmail", AdminEmail);
+pageContext.setAttribute("rec",perpage);
 
 
 %>
@@ -176,22 +155,19 @@ locale1=(String)session.getAttribute("locale");
     
   <columns>
       
-    <column width="5%">
-      <header value="" hAlign="left" styleClass="header"/>
-    </column>
-
-    <column width="10%">
+   
+    <column width="100">
       <header value="${RegistrationID}" hAlign="left" styleClass="header"/>
       <item   value="${doc.registration_id}" hyperLink="index.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
-    <column width="20%">
+    <column width="250">
       <header value="${InstituteName}" hAlign="left" styleClass="header"/>
       <item   value="${doc.institute_name}" hAlign="left" hyperLink="index.jsp?id=${doc.registration_id}"  styleClass="item"/>
     </column>
 
        
-    <column width="15%">
+    <column width="200">
       <header value="${AdminEmail}" hAlign="left" styleClass="header"/>
       <item   value="${doc.admin_email}" hyperLink="index.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
@@ -203,13 +179,13 @@ locale1=(String)session.getAttribute("locale");
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
   <alternateRows styleClass="alternaterows"/>
 
-  <paging size="4" count="${tCount}" custom="true" nextUrlVar="next"
+  <paging size="${rec}" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
-  <order imgAsc="up.gif" imgDesc="down.gif"/>
+ 
 </ui:dataGrid>
-<table width="60%" style="font-family: arial; font-size: 10pt" border=0>
+  <table width="581" style="font-family: arial; font-size: 10pt" >
 <tr>
-<td align="left" width="10%">
+<td align="left" width="100px">
 <c:if test="${previous != null}">
 <a href="<c:out value="${previous}"/>">Previous</a>
 </c:if>&nbsp;
@@ -217,7 +193,7 @@ locale1=(String)session.getAttribute("locale");
 <a href="<c:out value="${next}"/>">Next</a>
 </c:if>
 
-</td><td align="center" width="50%">
+</td><td width="250px" align="center" id="reccount" class="txtStyle">
 
 <c:forEach items="${pages}" var="page">
 <c:choose>
@@ -229,10 +205,15 @@ locale1=(String)session.getAttribute("locale");
   </c:otherwise>
 </c:choose>
 </c:forEach>
+   View Next<input type="textbox" id="rec" onblur="changerec()" style="width:50px"/></td><td align="center">
+     Import :<img src="<%=request.getContextPath()%>/images/excel.jpeg" border="1" height="25" width="25">
+    <img src="<%=request.getContextPath()%>/images/xml.jpeg" height="25" border="1" width="25">
+    <img src="<%=request.getContextPath()%>/images/pdf.jpeg" height="25"border="1" width="25">
 </td>
 
 </tr>
-</table>
+  </table>
+
 <%}}else{
 request.setAttribute("msg", "Your Session Expired: Please Login Again");
     %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%

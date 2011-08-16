@@ -9,6 +9,8 @@ import com.myapp.struts.opacDAO.*;
 import com.myapp.struts.hbm.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.servlet.http.*;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
@@ -60,6 +62,10 @@ public class OpacNewMemberAction extends org.apache.struts.action.Action {
     private String TXTDESG1;
     private String TXTOFFICE;
     private String date;
+     Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
 
     
     /**
@@ -75,6 +81,20 @@ public class OpacNewMemberAction extends org.apache.struts.action.Action {
 
          OpacNewMemberActionForm cmdf =(OpacNewMemberActionForm)form;
         HttpSession session1 =request.getSession();
+         try{
+
+        locale1=(String)session1.getAttribute("locale");
+    if(session1.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session1.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
          FormFile v=(FormFile)session1.getAttribute("filename");
 
        byte[] iii=null;
@@ -98,7 +118,8 @@ public class OpacNewMemberAction extends org.apache.struts.action.Action {
          
          if(test!=null)
          {
-            request.setAttribute("msg", "Request with Member Id : "+cmdf.getTXTMEMID()+" already submitted");
+            //  request.setAttribute("msg", "Request with Member Id : "+cmdf.getTXTMEMID()+" already submitted");
+             request.setAttribute("msg", resource.getString("circulation.opacnewmem.reqwithmemid")+cmdf.getTXTMEMID()+ resource.getString("circulation.opacnewmem.alredysubmit"));
             return mapping.findForward("failure");
          }
 
@@ -107,7 +128,8 @@ public class OpacNewMemberAction extends org.apache.struts.action.Action {
 
          if(test1!=null)
          {
-            request.setAttribute("msg", "Request with Member Id : "+cmdf.getTXTMEMID()+" already submitted");
+              // request.setAttribute("msg", "Request with Member Id : "+cmdf.getTXTMEMID()+" already submitted");
+             request.setAttribute("msg", resource.getString("circulation.opacnewmem.reqwithmemid")+cmdf.getTXTMEMID()+ resource.getString("circulation.opacnewmem.alredysubmit"));
             return mapping.findForward("failure");
          }
 
@@ -159,7 +181,8 @@ public class OpacNewMemberAction extends org.apache.struts.action.Action {
             else cro.setImage(null);
             session.save(cro);
             tx.commit();
-            String msg="Request for Member Registration sent successfully to Circulation Division";
+           //String msg="Request for Member Registration sent successfully to Circulation Division";
+            String msg=resource.getString("circulation.opacnewmem.reqsendtocirdiv");
             request.setAttribute("msg",msg);
             session1.removeAttribute("image");
             return mapping.findForward("Submit");

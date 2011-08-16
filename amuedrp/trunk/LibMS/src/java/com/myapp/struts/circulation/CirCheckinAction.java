@@ -15,11 +15,17 @@ import com.myapp.struts.hbm.*;
 import com.myapp.struts.CirculationDAO.CirculationDAO;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class CirCheckinAction extends org.apache.struts.action.Action {
     
     public static final String DATE_FORMAT_NOW = "yyyy-MM-dd";
     private static final String SUCCESS = "success";
+     Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
     CirculationDAO cirdao= new CirculationDAO();
     
     @Override
@@ -28,6 +34,21 @@ public class CirCheckinAction extends org.apache.struts.action.Action {
             throws Exception {
      CirCheckinActionForm ccaf =(CirCheckinActionForm)form;
      HttpSession session=request.getSession();
+      try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
      String  button= ccaf.getButton();
      String accessionno=ccaf.getTXTACCESSION();
         String library_id = (String) session.getAttribute("library_id");
@@ -146,19 +167,24 @@ else{
        }
        else
        {
-       request.setAttribute("msg", accessionno +" not Found");
+        // request.setAttribute("msg", accessionno +" not Found");
+       request.setAttribute("msg", accessionno +resource.getString("circulation.circhkinAction.notfound"));
        return mapping.findForward("notfound");
        }
        }
        else
        {
-       request.setAttribute("msg",accessionno +" not Found");
+      // request.setAttribute("msg",accessionno +" not Found");
+             
+       request.setAttribute("msg",accessionno +resource.getString("circulation.circhkinAction.notfound"));
        return mapping.findForward("notfound");
        }
          }
        else
        {
-       request.setAttribute("msg", "Please enter Accession No.");
+       
+       // request.setAttribute("msg", "Please enter Accession No.");    
+       request.setAttribute("msg", resource.getString("circulation.circhkinAction.plzenteraccessno"));
        return mapping.findForward("notfound");
        }
      }

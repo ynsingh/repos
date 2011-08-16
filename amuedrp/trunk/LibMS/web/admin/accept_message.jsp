@@ -59,9 +59,17 @@ String msg3=(String)request.getAttribute("accept_msg3");
                     <p   align="<%=align%>" ><%=resource.getString("admin.searchadmingrid.InstituteId")%>   :<b><%=msg1%></b></p>
                   <!-- <p align="left"> Library Name  :<b><%=msg2%></b></p>   -->
                     <p   align="<%=align%>" ><%=resource.getString("admin.viewpending.institutename")%> :<b><%=msg3%></b></p>
-                    <p   align="<%=align%>"><%=resource.getString("admin.acceptmesg.text")%></p>
+                    <p   align="<%=align%>">
+                     <%if(msg!=null){%>
+                        <%=msg%>
+                        <%}%>   
+                        
+                        
+                    
 
+                    </p>
 
+ <p   align="<%=align%>" >The Confirmation Mail Send Successfully. </p>
 
 
              </td>

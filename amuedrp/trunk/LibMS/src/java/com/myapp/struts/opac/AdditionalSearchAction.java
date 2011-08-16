@@ -4,6 +4,10 @@
  */
 
 package com.myapp.struts.opac;
+import com.myapp.struts.hbm.BibliographicDetails;
+import com.myapp.struts.hbm.BibliographicDetailsLang;
+import com.myapp.struts.hbm.DocumentDetails;
+import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
 import com.myapp.struts.opacDAO.OpacSearchDAO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +15,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 /**
@@ -23,6 +28,7 @@ public class AdditionalSearchAction extends org.apache.struts.action.Action {
     private static final String SUCCESS = "success";
     String authors[],titles[],subjects[],other_fields[]; /* array of fields*/
     OpacSearchDAO opacSearchDAO=new OpacSearchDAO();
+    BibliopgraphicEntryDAO bibdao=new BibliopgraphicEntryDAO();
     Integer yr1,yr2;
     /**
      * This is the action called from the Struts framework.
@@ -42,6 +48,7 @@ public class AdditionalSearchAction extends org.apache.struts.action.Action {
          String phrase;
          String doc_type,callno,publ,loc,place,sort,field;         
          ResultSet rs=null;
+          request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         session.removeAttribute("Result");
         AdditionalSearchActionForm myForm = (AdditionalSearchActionForm)form;
@@ -160,11 +167,46 @@ public class AdditionalSearchAction extends org.apache.struts.action.Action {
          String sortby,Integer year1,Integer year2)
  */ //                        all,all,null,or,Head First,or,null,or,null,or,combined,authorName,-1,9999
 //         System.out.println(lib_id+ sub_lib+ authors+cnf1+ titles[0]+ cnf2+subjects+cnf3+other_fields+cnf4+doc_type+sort+yr1+yr2);
-  List additional_search_list=opacSearchDAO.additionalSearch(lib_id, sub_lib, authors, cnf1, titles, cnf2,
+ List<BibliographicDetailsLang> additional_search_list=new ArrayList();
+ List<BibliographicDetails> additional_search_list1=new ArrayList();
+   ArrayList<BibliographicDetailsLang> bib=new ArrayList<BibliographicDetailsLang>();
+ ArrayList<BibliographicDetails> bib1=new ArrayList<BibliographicDetails>();
+ System.out.println("Check Box"+myForm.getCheckbox());
+ if(myForm.getCheckbox().equals("Checked")){
+ System.out.println("Languagebbb");
+ additional_search_list=opacSearchDAO.additionalSearchLang(lib_id, sub_lib, authors, cnf1, titles, cnf2,
+                subjects,cnf3,other_fields,cnf4,doc_type,sort,yr1,yr2,myForm.getLanguage());
+if(!additional_search_list.isEmpty())
+{
+    for(int f=0;f<additional_search_list.size();f++)
+    {
+    int bibiid=additional_search_list.get(f).getId().getBiblioId();
+    List<DocumentDetails> ddd=bibdao.searchDoc2(bibiid, lib_id, sub_lib);
+    if(!ddd.isEmpty()){
+        bib.add(additional_search_list.get(f));
+    }
+    }  
+}
+     session.setAttribute("additional_search_list", bib);
+ }
+ else{
+      System.out.println("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNLanguagebbb");
+ additional_search_list1=opacSearchDAO.additionalSearch(lib_id, sub_lib, authors, cnf1, titles, cnf2,
                 subjects,cnf3,other_fields,cnf4,doc_type,sort,yr1,yr2);
-
-session.setAttribute("additional_search_list", additional_search_list);
-        return mapping.findForward(SUCCESS);
+if(!additional_search_list1.isEmpty())
+{
+    for(int f=0;f<additional_search_list1.size();f++)
+    {
+    int bibiid=additional_search_list1.get(f).getId().getBiblioId();
+    List<DocumentDetails> ddd=bibdao.searchDoc1(bibiid, lib_id, sub_lib);
+    if(!ddd.isEmpty()){
+        bib1.add(additional_search_list1.get(f));
+    } 
+    }
+}
+   session.setAttribute("additional_search_list", bib1);
+ }
+ return mapping.findForward(SUCCESS);
     }
 }
 

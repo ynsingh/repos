@@ -30,8 +30,7 @@ public class ImageUploadAction extends org.apache.struts.action.Action {
       Modified on 2011-02-02
       This Action Class is meant for uploading image from File to jsp page During Member registration process.
      */
-    @Override
-    public ActionForward execute(ActionMapping mapping, ActionForm form,
+   public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         HttpSession session = request.getSession();
@@ -70,12 +69,15 @@ public class ImageUploadAction extends org.apache.struts.action.Action {
 
        // byte[] img;
         FormFile filename = form1.getImg();
+        if(form1.getImg()!=null)
+        {
      byte[]   img = form1.getImg().getFileData();
         if (img!=null)
         System.out.println("ImageUploadAction:"+img.length);
         session.setAttribute("image", img);
         session.setAttribute("filename", filename);
         request.setAttribute("imagechange", 1);
+        }
         request.setAttribute("lname", ln);
         request.setAttribute("fname", fn);
         request.setAttribute("mname", mname);

@@ -14,7 +14,8 @@ import com.myapp.struts.hbm.*;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
-
+import java.util.Locale;
+import java.util.ResourceBundle;
 /**
  *
  * @author <a href="mailto:asif633@gmail.com">Asif Iqubal</a>
@@ -31,15 +32,31 @@ public class AccessionSingleUpdate extends org.apache.struts.action.Action {
     AccessionRegister ac = new AccessionRegister();
     AccessionRegister ac1 = new AccessionRegister();
     AccessionRegisterId aid = new AccessionRegisterId();
-
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        BibliographicDetailEntryActionForm1 bform = (BibliographicDetailEntryActionForm1) form;
+        BibliographicDetailEntryActionForm bform = (BibliographicDetailEntryActionForm) form;
         HttpSession session = request.getSession();
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
+                   try{
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+    }catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         String acc_no = (String) bform.getAccession_no();
         int record_no = bform.getRecord_no();
         int biblio_id = bform.getBiblio_id();
@@ -48,12 +65,12 @@ public class AccessionSingleUpdate extends org.apache.struts.action.Action {
         String button = (String) bform.getButton();
         if (button.equals("Update")) {
             if (StringUtils.isEmpty(acc_no)) {
-                String msg1 = "Accession no field can not be left blank";
+             String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblank");//Accession no field can not be left blank
                 request.setAttribute("msg2", msg1);
             } else {
                     AccessionRegister hh = dao.searchaccupdate(record_no,library_id, sub_library_id, acc_no);
                     if (hh != null) {
-                        String msg1 = "This accession no already exists enter different";
+                       String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessduplicate");//This accession no already exists enter different
                         request.setAttribute("msg2", msg1);
                         return mapping.findForward(SUCCESS);
                     } else {
@@ -67,7 +84,7 @@ public class AccessionSingleUpdate extends org.apache.struts.action.Action {
                     doc.setBibliographicDetails(bib);
                                        if(!doc1.getStatus().equals("available"))
                     {
-                        String msg1 = "This item is either checked out or reserved can not update details";
+                        String msg1= resource.getString("cataloguing.ownaccessionentryaction.reserveditem");//This item is either checked out or reserved, can not update details
                         request.setAttribute("msg2", msg1);
                         return mapping.findForward(SUCCESS);
                     }
@@ -106,6 +123,9 @@ public class AccessionSingleUpdate extends org.apache.struts.action.Action {
                     doc.setBindType(bform.getBind_type());
                     doc.setSeries(bform.getSer_note());
                     doc.setBiblioId(bform.getBiblio_id());
+                    doc.setTypeOfDisc(bform.getType_of_disc());
+                    doc.setPhysicalForm(bform.getPhysical_form());
+                    doc.setColour(bform.getColour());
                     aid.setLibraryId(library_id);
                     aid.setSublibraryId(sub_library_id);
                     aid.setRecordNo(record_no);
@@ -120,6 +140,9 @@ public class AccessionSingleUpdate extends org.apache.struts.action.Action {
                     ac.setNoOfPages(bform.getNo_of_pages());
                     ac.setPhysicalWidth(bform.getPhysical_width());
                     ac.setBindType(bform.getBind_type());
+                    ac.setPhysicalDescription(bform.getPhysical_desc());
+                    ac.setPhysicalForm(bform.getPhysical_form());
+                    ac.setColour(bform.getColour());
                     bid.setBiblioId(bform.getBiblio_id());
                     bid.setLibraryId(library_id);
                     bid.setSublibraryId(sub_library_id);
@@ -149,12 +172,13 @@ public class AccessionSingleUpdate extends org.apache.struts.action.Action {
                     bib.setAbstract_(bform.getThesis_abstract());
                     bib.setNoOfCopies(bform.getNo_of_copies());
                     bib.setNotes(bform.getNotes());
+                    bib.setTypeOfDisc(bform.getType_of_disc());
                     dao.update1(doc);
                     dao.update2(ac);
                     dao.update(bib);
                     List items = dao.getItems(library_id, sub_library_id, biblio_id);
                     session.setAttribute("opacList", items);
-                    String msg2 = "Item detail is updated successfully";
+                     String msg2= resource.getString("cataloguing.accessionsingleupdate.itemupdate");//Item detail is updated successfully
                     request.setAttribute("msg1", msg2);
                     return mapping.findForward(SUCCESS);
                 }

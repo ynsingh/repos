@@ -15,16 +15,11 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 //import com.myapp.struts.hbm.CirRequestfromOpac;
-import com.myapp.struts.hbm.HibernateUtil;
 import com.myapp.struts.opacDAO.CheckoutDeocumentDetails;
 import com.myapp.struts.opacDAO.CirRequestfromOpacDAO;
-import com.sun.net.httpserver.Authenticator.Success;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 //import java.util.ArrayList;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 /**
  *

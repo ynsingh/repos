@@ -11,6 +11,8 @@ import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.*;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.systemsetupDAO.BookCategoryDAO;
+import java.util.Locale;
+import java.util.ResourceBundle;
 /**
  *
  * @author edrp01
@@ -21,7 +23,10 @@ public class BookCategoryAddAction extends org.apache.struts.action.Action {
     String library_id,button,book_type,emptype_id,subemptype_id,no_of_issue,full_name;
     Boolean result;
     Float fine;
-
+   Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -29,6 +34,20 @@ public class BookCategoryAddAction extends org.apache.struts.action.Action {
             throws Exception {
      BookCategoryDecideActionForm bcda  =(BookCategoryDecideActionForm)form;
      HttpSession session=request.getSession();
+      try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         
         book_type=bcda.getBook_type();
         emptype_id=bcda.getEmptype_id();
@@ -69,11 +88,14 @@ book.setFine(fine);
 result=BookCategoryDAO.insert(book);
 if(result==true)
 {
-request.setAttribute("msg","Record Successfully Added");
+  //request.setAttribute("msg","Record Successfully Added");
+    request.setAttribute("msg",resource.getString("circulation.circulationnewmemberregAction.recinsesucc"));
 return mapping.findForward("success");
 }
 else{
-request.setAttribute("msg","Error In Insertion");
+
+    // request.setAttribute("msg","Error In Insertion");
+    request.setAttribute("msg",resource.getString("circulation.circulationnewmemberregAction.recnotinsesucc"));
 return mapping.findForward("failure");
 }
 

@@ -25,8 +25,39 @@ function fun()
     document.getElementById("form1").target="f4";
     document.getElementById("form1").submit();
 }
+function print()
+{
 
+    document.getElementById("form1").action ="<%=request.getContextPath()%>/checkoutReportPrint.do"
+    document.getElementById("form1").method="post";
+    document.getElementById("form1").target="";
+    document.getElementById("form1").submit();
+}
 </script>
+     <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+ String lib_id = (String)session.getAttribute("library_id");
+  String sublib_id = (String)session.getAttribute("memsublib");
+        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+    %>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/cupertino/jquery.ui.all.css" type="text/css"/>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.4.2.min.js"></script>
@@ -196,24 +227,26 @@ $(document).ready(function()
       visibility: show;">
 
        <html:form  method="post" action="/checkoutReport" target="f4" styleId="form1">
-        <table  class="table" width="600px"  align="center">
+           <table  dir="<%=rtl%>" class="table" width="600px"  align="center">
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">CheckOut Report</td></tr>
-                <tr><td valign="top" align="center"> 
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("circulation.cir_checkout_report.chekoutreport")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center">
                         <table>
                  <tr>
-                     <td align="left" >Member Id</td><td colspan="3"><html:text property="memid" styleId="memid"  value=""  onchange="fun()" /> </td>
+                     <td dir="<%=rtl%>" align="<%=align%>" ><%=resource.getString("circulation.cir_newmember.memberid")%>:</td><td dir="<%=rtl%>" colspan="3"><html:text property="memid" styleId="memid"  value=""  onchange="fun()" /> </td>
         </tr>
 
         <tr>
-         <td align="left">Starting Date
+         <td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("circulation.cir_checkin_report.startdate")%>
              </td><td><html:text property="starting_date" styleId="starting_date"  value=""  onchange="fun()"/>
          </td><td>
-        End Date</td><td>
+        <%=resource.getString("circulation.cir_checkin_report.enddate")%></td><td dir="<%=rtl%>" >
         <html:text property="end_date" styleId="end_date"  value=""  onchange="fun()"/> 
-            <html:submit value="Find"  onclick="fun()"/>
-         <input type="button" value="Clear"  onclick="clear()"/>
+             <input type="submit" value="<%=resource.getString("opac.simplesearch.find")%>"  onclick="fun()"/>
+             <input type="reset" value="<%=resource.getString("opac.simplesearch.clear")%>"  onclick="clear()"/>
+             <input type="reset" value="Print Report"  onclick="print()"/>
+
          </td>
 
 

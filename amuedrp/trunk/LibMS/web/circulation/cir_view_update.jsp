@@ -68,276 +68,9 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 }
 }
-function search() {
 
-    var keyValue = document.getElementById('emptype_id').options[document.getElementById('emptype_id').selectedIndex].value;
-
-    if (keyValue=="Select")
-    {
-
-
-               document.getElementById('emptype_id').focus();
-               document.getElementById('subemptype_id').options.length = 0;
-
-
-
-		return false;
-	}
-else
-    {
-    keyValue = keyValue.replace(/^\s*|\s*$/g,"");
-if (keyValue.length >= 1)
-{
-
-var req = newXMLHttpRequest();
-
-req.onreadystatechange = getReadyStateHandler(req, update1);
-
-req.open("POST","<%=request.getContextPath()%>/searchsubemp.do", true);
-
-req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-req.send("getEmpType_Id="+keyValue);
-
-
-}
-return true;
-}
-}
-
-function update1(cartXML)
-{
-
-var depts = cartXML.getElementsByTagName("emp_ids")[0];
-var em = depts.getElementsByTagName("emp_id");
-var em1 = depts.getElementsByTagName("emp_name");
-
-        var newOpt =document.getElementById('subemptype_id').appendChild(document.createElement('option'));
-        document.getElementById('subemptype_id').options.length = 0;
-
-for (var i = 0; i < em.length ; i++)
-{
-var ndValue = em[i].firstChild.nodeValue;
-var ndValue1=em1[i].firstChild.nodeValue;
-newOpt = document.getElementById('subemptype_id').appendChild(document.createElement('option'));
-newOpt.value = ndValue;
-newOpt.text = ndValue1;
-
-
-}
-
-}
-
-function search1() {
-
-    var keyValue = document.getElementById('TXTFACULTY').options[document.getElementById('TXTFACULTY').selectedIndex].value;
-
-if (keyValue=="Select")
-    {
-
-
-               document.getElementById('TXTFACULTY').focus();
-               document.getElementById('TXTDEPT').options.length = 0;
-                document.getElementById('TXTCOURSE').options.length = 0;
-
-
-		return false;
-	}
-else
-    {
-    keyValue = keyValue.replace(/^\s*|\s*$/g,"");
-if (keyValue.length >= 1)
-{
-
-var req = newXMLHttpRequest();
-
-req.onreadystatechange = getReadyStateHandler(req, update);
-
-req.open("POST","<%=request.getContextPath()%>/dept.do", true);
-
-req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-req.send("getFaculty_Id="+keyValue);
-
-
-}
-return true;
-}
-}
-
-function search_dept() {
-
-    var keyValue = document.getElementById('TXTDEPT').options[document.getElementById('TXTDEPT').selectedIndex].value;
-var keyValue1 = document.getElementById('TXTFACULTY').options[document.getElementById('TXTFACULTY').selectedIndex].value;
-
-
-if (keyValue=="Select")
-    {
-
-
-               document.getElementById('TXTDEPT').focus();
-               document.getElementById('TXTCOURSE').options.length = 0;
-		return false;
-	}
-else
-    {
-    keyValue = keyValue.replace(/^\s*|\s*$/g,"");
-if (keyValue.length >= 1)
-{
-
-var req = newXMLHttpRequest();
-
-req.onreadystatechange = getReadyStateHandler(req, update_course);
-
-req.open("POST","<%=request.getContextPath()%>/course.do", true);
-
-req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-req.send("getDept_Id="+keyValue+"&getFacultyID="+keyValue1);
-
-
-
-
-}
-return true;
-}
-}
-function update_course(cartXML)
-{
-var courses = cartXML.getElementsByTagName("course_ids")[0];
-var em = courses.getElementsByTagName("course_id");
-var em1 = courses.getElementsByTagName("course_name");
-        var newOpt =document.getElementById('TXTCOURSE').appendChild(document.createElement('option'));
-        document.getElementById('TXTCOURSE').options.length = 0;
-
-//alert(em.length);
-
-for (var i = 0; i < em.length ; i++)
-{
-var ndValue = em[i].firstChild.nodeValue;
-var ndValue1=em1[i].firstChild.nodeValue;
-newOpt = document.getElementById('TXTCOURSE').appendChild(document.createElement('option'));
-newOpt.value = ndValue;
-newOpt.text = ndValue1;
-}
-
-}
-
-
-
-function update(cartXML)
-{
-var depts = cartXML.getElementsByTagName("dept_ids")[0];
-var em = depts.getElementsByTagName("dept_id");
-var em1 = depts.getElementsByTagName("dept_name");
-
-        var newOpt =document.getElementById('TXTDEPT').appendChild(document.createElement('option'));
-        document.getElementById('TXTDEPT').options.length = 0;
-
-for (var i = 0; i < em.length ; i++)
-{
-var ndValue = em[i].firstChild.nodeValue;
-var ndValue1=em1[i].firstChild.nodeValue;
-newOpt = document.getElementById('TXTDEPT').appendChild(document.createElement('option'));
-newOpt.value = ndValue;
-newOpt.text = ndValue1;
-
-
-}
- search_dept();
-}
-
-function dcheck() {
-
-availableSelectList1 = document.getElementById("searchResult1");
-
-    if (isValidDate(TXTREG_DATE.value)==false)
-    {
-
-        availableSelectList1.innerHTML=str1;
-		TXTREG_DATE.value="";
-
-                TXTREG_DATE.focus();
-		return false;
-	}
-        else
-            {
-              availableSelectList1.innerHTML="";
-            }
-}
-function dcheck_releaving() {
-
-availableSelectList2 = document.getElementById("searchResult2");
-
-    if (isValidDate(TXTEXP_DATE.value)==false)
-    {
-         availableSelectList2.innerHTML=str1;
-		TXTEXP_DATE.value="";
-
-                TXTEXP_DATE.focus();
-		return false;
-	}
-        else
-    {
-    availableSelectList2.innerHTML="";
-    }
-}
-function dcheck_dob() {
-
-availableSelectList3 = document.getElementById("searchResult3");
-
-    if (isValidDate(date_of_birth.value)==false)
-    {
-        availableSelectList3.innerHTML=str1;
-		date_of_birth.value="";
-
-                date_of_birth.focus();
-		return false;
-	}else{
-          availableSelectList3.innerHTML="";
-        }
-}
-function isValidDate(dateStr) {
-// Checks for the following valid date formats:
-// YYYY-mm-dd
-// Also separates date into month, day, and year variables
-
-var datePat = /^(\d{4})(\-)(\d{1,2})\2(\d{1,2})$/;
-
-// To require a 4 digit year entry, use this line instead:
-// var datePat = /^(\d{4})(\-)(\d{1,2})\2(\d{1,2})$/;
-
-var matchArray = dateStr.match(datePat); // is the format ok?
-if (matchArray == null) {
-str1="Date is not in a valid format.";
-return false;
-}
-month = matchArray[3]; // parse date into variables
-day = matchArray[4];
-year = matchArray[1];
-if (month < 1 || month > 12) { // check month range
-str1="Month must be between 1 and 12.";
-return false;
-}
-if (day < 1 || day > 31) {
-str1="Day must be between 1 and 31.";
-
-return false;
-}
-if ((month==4 || month==6 || month==9 || month==11) && day==31) {
-str1="Month "+month+" doesn't have 31 days!";
-
-return false
-}
-if (month == 2) { // check for february 29th
-var isleap = (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
-if (day>29 || (day==29 && !isleap)) {
-str1="February " + year + " doesn't have " + day + " days!";
-
-return false;
-   }
-}
-return true;  // date is valid
-}
 function copy(){
-   alert("HH"+j);
+
   var i=document.getElementById("lname1");
   var j=document.getElementById("lname2");
   i.value=j.value;
@@ -383,158 +116,148 @@ function copy(){
    var fax1=document.getElementById("fax1");
   var fax2=document.getElementById("fax2");
   fax1.value=fax2.value;
-   var emptype_id1=document.getElementById("emptype_id1");
-  var emptype_id=document.getElementById("emptype_id");
-  emptype_id1.value=emptype_id.value;
-   var subemptype_id1=document.getElementById("subemptype_id1");
-  var subemptype_id=document.getElementById("subemptype_id");
-  subemptype_id1.value=subemptype_id.value;
-   var desg1=document.getElementById("desg1");
-  var desg2=document.getElementById("desg2");
-  desg1.value=desg2.value;
-   var office1=document.getElementById("office1");
-  var office2=document.getElementById("office2");
-  office1.value=office2.value;
-   var TXTFACULTY1=document.getElementById("TXTFACULTY1");
-  var TXTFACULTY=document.getElementById("TXTFACULTY");
-  TXTFACULTY1.value=TXTFACULTY.value;
-  var TXTDEPT1=document.getElementById("TXTDEPT1");
-  var TXTDEPT=document.getElementById("TXTDEPT");
-  TXTDEPT1.value=TXTDEPT.value;
-  var TXTCOURSE1=document.getElementById("TXTCOURSE1");
-  var TXTCOURSE=document.getElementById("TXTCOURSE");
-  TXTCOURSE1.value=TXTCOURSE.value;
-  var TXTREG_DATE1=document.getElementById("TXTREG_DATE1");
-  var TXTREG_DATE=document.getElementById("TXTREG_DATE");
-  TXTREG_DATE1.value=TXTREG_DATE.value;
-   var TXTEXP_DATE1=document.getElementById("TXTEXP_DATE1");
-  var TXTEXP_DATE=document.getElementById("TXTEXP_DATE");
-  TXTEXP_DATE1.value=TXTEXP_DATE.value;
-   var sem1=document.getElementById("sem1");
-  var sem2=document.getElementById("sem2");
-  sem1.value=sem2.value;
-   var mem_id1=document.getElementById("mem_id1");
+  var mem_id1=document.getElementById("mem_id1");
    var mem_id2=document.getElementById("mem_id2");
    mem_id1.value=mem_id2.value;
-   // document.getElementById("1").value=document.getElementById("2").value;
-  // document.CirculationMemberActionForm.getElementById("1").value=j;
-  //form f = document.getElementsByName("CirculationMemberActionForm");
-
-  // document.forms.getElementsByName("CirculationMemberActionForm").getElementsByName("TXTLNAME").value=j;
-
-   // var j=form2.getElementById("2");
-   // j.valueOf()=i.valueOf();
+   
 }
+ function showdiv(){
+
+        var ele = document.getElementById("image1");
+
+
+	if(ele.style.display == "block") {
+    		ele.style.display = "none";
+
+  	}
+	else {
+		ele.style.display = "block";
+
+	}
+
+
+    }
     </script>
-<link rel="stylesheet" href="<%=request.getContextPath()%>/cupertino/jquery.ui.all.css" type="text/css">
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.core.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.widget.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.datepicker.min.js"></script>
-<style type="text/css">
-.ui-datepicker
-{
-   font-family: Arial;
-   font-size: 13px;
-}
-</style>
-<script type="text/javascript">
-$(document).ready(function()
-{
-   var jQueryDatePicker1Opts =
-   {
-      dateFormat: 'yy-mm-dd',
-      changeMonth: false,
-      changeYear: false,
-      showButtonPanel: false,
-      showAnim: 'show'
-   };
-   $("#TXTREG_DATE").datepicker(jQueryDatePicker1Opts);
-   $("#TXTEXP_DATE").datepicker(jQueryDatePicker1Opts);
-    $("#date_of_birth").datepicker(jQueryDatePicker1Opts);
 
-
-
-});
-
-function loadfaculty(){
-    search();
-   search1();
-}
-
-</script>
-
-
- <%
-/*
-String memid=(String)session.getAttribute("memid");
-List<SubLibrary> lst = (List<SubLibrary>)session.getAttribute("list");
-String size = String.valueOf(lst.size());
-String lname=(String)request.getAttribute("lname");
-String fname=(String)request.getAttribute("fname");
-String mname=(String)request.getAttribute("mname");
-String memcat=(String)request.getAttribute("memcat");
-String submemcat=(String)request.getAttribute("submemcat");
-String add1=(String)request.getAttribute("add1");
-String add2=(String)request.getAttribute("add2");
-String city1=(String)request.getAttribute("city1");
-String city2=(String)request.getAttribute("city2");
-String state1=(String)request.getAttribute("state1");
-String state2=(String)request.getAttribute("state2");
-String country1=(String)request.getAttribute("country1");
-String country2=(String)request.getAttribute("country2");
-String pin1=(String)request.getAttribute("pin1");
-String pin2=(String)request.getAttribute("pin2");
-String ph1=(String)request.getAttribute("ph1");
-String ph2=(String)request.getAttribute("ph2");
-String course1=(String)request.getAttribute("course");
-String dept=(String)request.getAttribute("dept");
-String mail_id=(String)request.getAttribute("mail_id");
-String faculty=(String)request.getAttribute("faculty");
-String desg=(String)request.getAttribute("desg");
-String exp_date=(String)request.getAttribute("exp_date");
-String fax=(String)request.getAttribute("fax");
-String office=(String)request.getAttribute("office");
-String reg_date=(String)request.getAttribute("reg_date");
-String sem=(String)request.getAttribute("sem");
-String mem_id=(String)request.getAttribute("mem_id");
-String file=(String) request.getAttribute("filename");*/
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+    String button1;
 %>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
 
  <%
 
-     CirMemberDetail     cirmemdetail  =(CirMemberDetail)request.getAttribute("cirmemdetail");
+     CirMemberDetail     cirmemdetail  =(CirMemberDetail)session.getAttribute("cirmemdetail");
   
 
-  
+  String lname=(String)request.getAttribute("lname");
+if(lname==null)
+    lname=cirmemdetail.getLname();
+String fname=(String)request.getAttribute("fname");
+if(fname==null)
+    fname=cirmemdetail.getFname();
+String mname=(String)request.getAttribute("mname");
+if(mname==null)
+    mname=cirmemdetail.getMname();
+String add1=(String)request.getAttribute("add1");
+if(add1==null)
+    add1=cirmemdetail.getAddress1();
+String add2=(String)request.getAttribute("add2");
+if(add2==null)
+    add2=cirmemdetail.getAddress2();
+String city1=(String)request.getAttribute("city1");
+if(city1==null)
+    city1=cirmemdetail.getCity1();
+String city2=(String)request.getAttribute("city2");
+if(city2==null)
+    city2=cirmemdetail.getCity2();
+String state1=(String)request.getAttribute("state1");
+if(state1==null)
+    state1=cirmemdetail.getState1();
+String state2=(String)request.getAttribute("state2");
+if(state2==null)
+    state2=cirmemdetail.getState2();
+String country1=(String)request.getAttribute("country1");
+if(country1==null)
+    country1=cirmemdetail.getCountry1();
+String country2=(String)request.getAttribute("country2");
+if(country2==null)
+    country2=cirmemdetail.getCountry2();
+String pin1=(String)request.getAttribute("pin1");
+if(pin1==null)
+    pin1=cirmemdetail.getPin1();
+String pin2=(String)request.getAttribute("pin2");
+if(pin2==null)
+    pin2= cirmemdetail.getPin2();
+String ph1=(String)request.getAttribute("ph1");
+if(ph1==null)
+    ph1=cirmemdetail.getPhone1();
+String ph2=(String)request.getAttribute("ph2");
+if(ph2==null)
+    ph2=cirmemdetail.getPhone2();
+
+String mail_id=(String)request.getAttribute("mail_id");
+if(mail_id==null)
+    mail_id=cirmemdetail.getEmail();
+
+
+String fax=(String)request.getAttribute("fax");
+if(fax==null)
+    fax=cirmemdetail.getFax();
+
+
+String mem_id=(String)request.getAttribute("mem_id");
+if(mem_id==null)
+    mem_id=cirmemdetail.getId().getMemId();
 
 
 
-    // session.setAttribute("cirmemdetail", cirmemdetail);
-    // ResultSet rst = (ResultSet)session.getAttribute("faculty_resultset");
+
+    
 
         String button=(String)request.getAttribute("button");
         if (button==null) button=(String)session.getAttribute("page");
         session.setAttribute("page", button);
         boolean read=true;
          boolean button_visibility=true;
-      // if(rst!=null) rst.beforeFirst();
+     
 
     %>
 
     <%
  if(button.equals("View"))
  {
+     button1=resource.getString("circulation.cir_member_reg.view");
    read=true;
    button_visibility=false;
  }
  if(button.equals("Update"))
  {
+     button1=resource.getString("circulation.cir_member_reg.update");
    read=false;
    button_visibility=true;
  }
  if(button.equals("Delete"))
  {
+     button1=resource.getString("circulation.cir_member_reg.delete");
    read=true;
    button_visibility=true;
  }
@@ -581,45 +304,92 @@ a:active
 
 
 </head>
-<body onload="return loadfaculty();">
+<body>
+
+
+   <div id="image1"
+   style="  top:130px;background: red;
+   left:30%;
+   overflow: hidden;
+      position: absolute;
+      display: none;"
+
+      >
+
+
+   <html:form action="/cirimageupload1" method="post" styleId="form1" enctype="multipart/form-data">
+
+
+    <table class="table" style="border:5px solid blue;" align="center" height="100px" width="400px">
+           <tr><td>Select Image:
+       <html:file  property="img" name="CirculationMemberActionForm" styleId="img" onchange="submit()"   onclick="copy()" />
+      <input type="hidden" name="filename" tabindex="16" id="filename" />
+         <input type="button" value="Cancel" onclick="showdiv();"/>      </td></tr></table>
+      
+
+           <html:hidden property="TXTLNAME" name="CirculationMemberActionForm" styleId="lname1"/>
+          <html:hidden property="TXTFNAME" name="CirculationMemberActionForm" styleId="fname1"/>
+          <html:hidden property="TXTMNAME" name="CirculationMemberActionForm" styleId="mname1"/>
+          <html:hidden property="TXTADD1" name="CirculationMemberActionForm" styleId="add1"/>
+          <html:hidden property="TXTADD2" name="CirculationMemberActionForm" styleId="add2"/>
+          <html:hidden property="TXTCITY1" name="CirculationMemberActionForm" styleId="city1"/>
+          <html:hidden property="TXTCITY2" name="CirculationMemberActionForm" styleId="city2"/>
+          <html:hidden property="TXTSTATE1" name="CirculationMemberActionForm" styleId="state1"/>
+          <html:hidden property="TXTSTATE2" name="CirculationMemberActionForm" styleId="state2"/>
+          <html:hidden property="TXTCOUNTRY1" name="CirculationMemberActionForm" styleId="country1"/>
+          <html:hidden property="TXTCOUNTRY2" name="CirculationMemberActionForm" styleId="country2"/>
+          <html:hidden property="TXTPH1" name="CirculationMemberActionForm" styleId="ph1"/>
+          <html:hidden property="TXTPH2" name="CirculationMemberActionForm" styleId="ph2"/>
+          <html:hidden property="TXTEMAILID" name="CirculationMemberActionForm" styleId="mail1"/>
+          <html:hidden property="TXTFAX" name="CirculationMemberActionForm" styleId="fax1"/>
+         <html:hidden property="TXTMEMID" name="CirculationMemberActionForm" styleId="mem_id1"/>
+
+    </html:form>
+
+    </div>
+
 
 
     <html:form action="/cirviewmember1" method="post" onsubmit="return validation();">
 
+ 
 
-   <table  align="center" width="400px"  class="table">
+   <table dir="<%=rtl%>" align="center" width="50%"  class="table">
 
 
 
   <tr><td    class="headerStyle"  align="center">
 
 
-		 Member Registration
+		 <%=resource.getString("circulation.cir_view_update.memberregistration")%>
 
 
 
         </td></tr>
 
-  <tr><td valign="top" align="center"  >
+  <tr><td valign="top" align="center" widt="50%" >
 
        <br/>
-            <table width="500px" >
+            <table dir="<%=rtl%>" width="80%" >
 
 
 
-                <tr><td class="txtStyle" width="150px">Member ID</td><td class="table_textbox">
-                        <html:text    property="TXTMEMID" readonly="true" value="<%=cirmemdetail.getId().getMemId() %>" name="CirculationMemberActionForm" style="width:160px" /></td>
-                   <td rowspan="4" width="200px" class="table_textbox" valign="bottom">
+                <tr><td dir="<%=rtl%>" class="txtStyle" width="25%"><%=resource.getString("circulation.cir_newmember.memberid")%></td><td dir="<%=rtl%>" width="25%" class="table_textbox">
+                        <html:text    property="TXTMEMID" readonly="true" value="<%=mem_id %>" styleId="mem_id2" name="CirculationMemberActionForm" style="width:160px" /></td>
+                   <td dir="<%=rtl%>" width="25%" rowspan="4" width="200px" class="table_textbox" valign="bottom">
 
                         <%if (request.getAttribute("imagechange")!=null){%>
                         <html:img src="./circulation/upload.jsp"  alt="no Image Selected" width="120" height="120"/>
                         <%}else{%>
                         <html:img src="./circulation/viewimage.jsp" width="128" height="120" />
+                        <%}%><br/> <%if(button.equals("Update")==true)
+                        {%>
+                        <a href="#" onclick="javascript:showdiv();"> <%=resource.getString("circulation.cir_newmember.imageupload")%></a>
                         <%}%>
-                        <%--       <html:file property="uploadedFile"  styleId="uploadedFile" styleClass="table_text" value="<%=s%>"  name="CirculationMemberActionForm"/></td> --%>
 
+                     
                     </td>   </tr>
-                   <tr><td class="txtStyle">First Name*</td><td class="table_textbox"><html:text  readonly="<%=read%>"  property="TXTFNAME" styleId="fname2" value="<%=cirmemdetail.getFname()%>" name="CirculationMemberActionForm" style="width:160px" /><br/>
+                   <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.fname")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  readonly="<%=read%>"  property="TXTFNAME" styleId="fname2" value="<%=fname %>" name="CirculationMemberActionForm" style="width:160px" /><br/>
                  <html:messages id="err_name" property="TXTFNAME">
 				<bean:write name="err_name" />
 
@@ -628,8 +398,8 @@ a:active
                 </td>
 
                 </tr>
-            <tr><td class="txtStyle">Middle Name</td><td class="table_textbox"><html:text  property="TXTMNAME" readonly="<%=read%>"  value="<%=cirmemdetail.getMname()%>" name="CirculationMemberActionForm" style="width:160px" /></td></tr>
-            <tr><td class="txtStyle">Last Name*</td><td class="table_textbox"><html:text  readonly="<%=read%>" property="TXTLNAME" styleId="lname2"  value="<%=cirmemdetail.getLname()%>" name="CirculationMemberActionForm" style="width:160px" />
+            <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.mname")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTMNAME" readonly="<%=read%>" styleId="mname2"  value="<%=mname%>" name="CirculationMemberActionForm" style="width:160px" /></td></tr>
+            <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.lname")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  readonly="<%=read%>" property="TXTLNAME" styleId="lname2"  value="<%=lname%>" name="CirculationMemberActionForm" style="width:160px" />
                 <br/>
                  <html:messages id="err_name" property="TXTLNAME">
 				<bean:write name="err_name" />
@@ -640,8 +410,8 @@ a:active
 
 
                 </tr>
-            <tr>  <td class="txtStyle">Email ID*</td><td class="table_textbox"><html:text  readonly="<%=read%>" property="TXTEMAILID"  styleId="mail2" value="<%=cirmemdetail.getEmail()%>" name="CirculationMemberActionForm" style="width:160px" />
-                <br/>
+            <tr>  <td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.email")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  readonly="<%=read%>" property="TXTEMAILID" onblur="return echeck(mail2.value)" styleId="mail2" value="<%=mail_id%>" name="CirculationMemberActionForm" style="width:160px" />
+                <br/><div align="left" class="err" id="searchResult" style="border:#000000; "></div>
                  <html:messages id="err_name" property="TXTEMAILID">
 				<bean:write name="err_name" />
 
@@ -650,7 +420,7 @@ a:active
                  
 
             </tr>
-             <tr><td class="txtStyle">Local Address*</td><td class="table_textbox"> <html:text property="TXTADD1" styleId="add11" style="width:160px" value="<%=cirmemdetail.getAddress1()%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px" />
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.localadd")%>*</td><td dir="<%=rtl%>" class="table_textbox"> <html:text property="TXTADD1" styleId="add11" style="width:160px" value="<%=add1%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px" />
                  <br/>
                  <html:messages id="err_name" property="TXTADD1">
 		<bean:write name="err_name" />
@@ -660,63 +430,63 @@ a:active
                  </td>
               
              </tr>
-             <tr><td class="txtStyle">City*</td><td class="table_textbox"><html:text  property="TXTCITY1" value="<%=cirmemdetail.getCity1()%>" styleId="city11" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.city")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTCITY1" value="<%=city1%>" styleId="city11" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/>
              </tr>
 
 
                  
-             <tr><td class="txtStyle">State*</td><td class="table_textbox"><html:text  property="TXTSTATE1" styleId="state11" value="<%=cirmemdetail.getState1()%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.state")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTSTATE1" styleId="state11" value="<%=state1%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/>
 
 
 
                  </td></tr>
-             <tr><td class="txtStyle">Country*</td><td class="table_textbox"><html:text  property="TXTCOUNTRY1" styleId="country11" value="<%=cirmemdetail.getCountry1()%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.country")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTCOUNTRY1" styleId="country11" value="<%=country1 %>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/>
                  <br/>
 
 
                  </td>
                  </tr>
-             <tr><td class="txtStyle">Mobile*</td><td class="table_textbox"><html:text  property="TXTPH1" styleId="ph11" value="<%=cirmemdetail.getPhone1()%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.mobile")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTPH1" styleId="ph11" value="<%=ph1%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/>
                  <br/>
 
 
                  </td> </tr>
-             <tr><td class="txtStyle">Land Line No.</td><td class="table_textbox"><html:text  property="TXTPH2" value="<%=cirmemdetail.getPhone2()%>" readonly="<%=read%>"  name="CirculationMemberActionForm" style="width:160px" /></td>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.landlineno")%>.</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTPH2"  styleId="ph22" value="<%=ph2%>"  readonly="<%=read%>"  name="CirculationMemberActionForm" style="width:160px" /></td>
                  
                  </tr>
-             <tr><td class="txtStyle">Fax</td><td class="table_textbox"><html:text  property="TXTFAX" value="<%=cirmemdetail.getFax()%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/></td>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.fax")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTFAX" styleId="fax2" value="<%=fax%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/></td>
 
 
 
          </tr>
 
-            <tr><td class="txtStyle">Permanent Address</td><td class="table_textbox"><html:text property="TXTADD2" style="width:160px" value="<%=cirmemdetail.getAddress2()%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/></td>
+            <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.permadd")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text property="TXTADD2" style="width:160px" styleId="add22" value="<%=add2%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/></td>
                 <%--   <td> Request Date
             </td><td class="table_textbox"><html:text  property="TXTREQ_DATE"   value="" styleClass="textBoxWidth" value="<%=cirmemdetail.getRequestdate()%>" disabled="true"   style="width:160px" /> --%>
             </tr>
-             <tr><td class="txtStyle">City</td><td class="table_textbox"><html:text  property="TXTCITY2" value="<%=cirmemdetail.getCity2()%>" style="width:160px" readonly="<%=read%>"/></td>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.city")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTCITY2" styleId="city22" value="<%=city2%>" style="width:160px" readonly="<%=read%>"/></td>
 
                  </tr>
-             <tr><td class="txtStyle">State</td><td class="table_textbox"><html:text  property="TXTSTATE2" value="<%=cirmemdetail.getState2()%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/></td>
+             <tr><td dir="<%=rtl%>"  class="txtStyle"><%=resource.getString("circulation.cir_newmember.state")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTSTATE2" styleId="state22" value="<%=state2%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/></td>
 
                  </tr>
-             <tr><td class="txtStyle">Country</td><td class="table_textbox"><html:text  property="TXTCOUNTRY2" value="<%=cirmemdetail.getCountry2()%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/></td></tr>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.country")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTCOUNTRY2" styleId="country22" value="<%=country2%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/></td></tr>
 
 
              <tr><td></td><td>
          <%if(button_visibility){%>
-         <html:submit value="<%=button%>" styleId="button" onclick="return del()" property="button"  ></html:submit>
+         <input type="submit" value="<%=button1%>"  onclick="return del()" /> 
          <%}%>
          &nbsp;&nbsp;
 
-         <html:button value="Back" property="button" onclick="return quit()"></html:button>
+         <input type="button" value="<%=resource.getString("circulation.cir_newmember.back")%>" property="button" onclick="return quit()"/>
          <br/>
 
                  </td></tr>
      </table>
       </td></tr>
 
-
+ <input type="hidden" id="btn" name="button" value="" />
 
    </table>
 
@@ -735,10 +505,10 @@ a:active
 
     function del()
     {
-
-    var option=document.getElementById('button').value;
+      document.getElementById('btn').value="<%=button%>" ;
+    var option=document.getElementById('btn').value;
     if(option=="Delete"){
-        var a=confirm("Do You Want To Delete Record ");
+        var a=confirm("<%=resource.getString("circulation.cir_newmember.douwanttodelrec")%>");
        // alert(a);
         if(a!=true)
             {
@@ -754,23 +524,76 @@ a:active
 </script>
  <script language="javascript" type="text/javascript">
 
+function echeck(str) {
+
+
+availableSelectList = document.getElementById("searchResult");
+availableSelectList.innerHTML="";
+		var at="@"
+		var dot="."
+		var lat=str.indexOf(at)
+		var lstr=str.length
+		var ldot=str.indexOf(dot)
+		if (str.indexOf(at)==-1){
+		   availableSelectList.innerHTML="Invalid E-mail ID";
+                   document.getElementById('mail2').value="";
+		   return false
+		}
+
+		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
+		    availableSelectList.innerHTML="Invalid E-mail ID";
+                    document.getElementById('mail2').value="";
+		   return false
+		}
+
+		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
+		     availableSelectList.innerHTML="Invalid E-mail ID";
+                     document.getElementById('mail2').value="";
+		    return false
+		}
+
+		 if (str.indexOf(at,(lat+1))!=-1){
+		     availableSelectList.innerHTML="Invalid E-mail ID";
+                     document.getElementById('mail2').value="";
+		    return false
+		 }
+
+		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
+		     availableSelectList.innerHTML="Invalid E-mail ID";
+                     document.getElementById('mail2').value="";
+		    return false
+		 }
+
+		 if (str.indexOf(dot,(lat+2))==-1){
+		     availableSelectList.innerHTML="Invalid E-mail ID";
+                     document.getElementById('mail2').value="";
+		    return false
+		 }
+
+		 if (str.indexOf(" ")!=-1){
+		     availableSelectList.innerHTML="Invalid E-mail ID";
+                     document.getElementById('mail2').value="";
+		    return false
+		 }
+
+ 		 return true
+	}
 
 
 
 
 
-
-    function validation()
+     function validation()
     {
-
-    var email_id=document.getElementById('mail2');
+     
+    
+   var email_id=document.getElementById('mail2');
     var first_name=document.getElementById('fname2');
 
     var last_name=document.getElementById('lname2');
     var local=document.getElementById('add11');
     var phone=document.getElementById('ph11');
-     var emptype_id = document.getElementById('emptype_id').options[document.getElementById('emptype_id').selectedIndex].value;
-
+   
 
     var city1=document.getElementById('city11');
     var state1=document.getElementById('state11');
@@ -779,12 +602,12 @@ a:active
 
 
 
-var str="Enter Following Values:-";
+var str= "<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-";
 
 
    if(email_id.value=="")
         {
-            str+="\n Enter Email ID";
+            str+="\n <%=resource.getString("circulation.cir_newmember.enteremailid")%> ";
             alert(str);
             document.getElementById('mail2').focus();
             return false;
@@ -794,14 +617,14 @@ var str="Enter Following Values:-";
 
    if(first_name.value=="")
         {
-            str+="\n Enter First Name";
+            str+="\n <%=resource.getString("circulation.cir_newmember.enterfname")%>";
             alert(str);
             document.getElementById('fname2').focus();
             return false;
         }
 if(last_name.value=="")
         {
-            str+="\n Enter Last Name";
+            str+="\n <%=resource.getString("circulation.cir_newmember.enterlname")%>";
             alert(str);
             document.getElementById('lname2').focus();
             return false;
@@ -809,7 +632,7 @@ if(last_name.value=="")
 
   if(local.value=="")
         {
-            str+="\n Enter Local Address";
+            str+="\n <%=resource.getString("circulation.cir_newmember.enterlocaladd")%>";
             alert(str);
             document.getElementById('add11').focus();
             return false;
@@ -817,32 +640,23 @@ if(last_name.value=="")
 
  if(phone.value=="")
         {
-            str+="\n Enter PhoneNo ";
+            str+="\n <%=resource.getString("circulation.cir_newmember.enterphno")%> ";
             alert(str);
             document.getElementById('ph11').focus();
             return false;
         }
 
-if(emptype_id=="Select")
-        {
-            str+="\n Enter Member Category ";
-            alert(str);
-            document.getElementById('emptype_id').focus();
-            return false;
-        }
-
-
 
   if(city1.value=="")
         {
-            str+="\n Enter city ";
+            str+="\n <%=resource.getString("circulation.cir_newmember.entercity")%> ";
             alert(str);
             document.getElementById('city11').focus();
             return false;
         }
 if(state1.value=="")
         {
-            str+="\n Enter state ";
+            str+="\n <%=resource.getString("circulation.cir_newmember.enterstate")%> ";
             alert(str);
             document.getElementById('state11').focus();
             return false;
@@ -850,50 +664,43 @@ if(state1.value=="")
 
         if(country1.value=="")
         {
-            str+="\n Enter country ";
+            str+="\n <%=resource.getString("circulation.cir_newmember.entercountry")%> ";
             alert(str);
             document.getElementById('country11').focus();
             return false;
         }
 
-    var TXTREG_DATE=document.getElementById('TXTREG_DATE');
-    var TXTEXP_DATE=document.getElementById('TXTEXP_DATE');
+   
 
 
 
 
-
-var str="Enter Following Values:-";
-
+var str="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-";
 
 
 
-    if(TXTREG_DATE.value=="")
-       { str+="\n Enter Date of Registration";
+
+   
+    if(echeck(email_id.value)==false){
+
+     str+="\n Invalid E-mail ID ";
             alert(str);
-            document.getElementById('TXTREG_DATE').focus();
+              document.getElementById('mail2').value="";
+            document.getElementById('mail2').focus();
             return false;
 
-       }
+ }
+ if(isNaN(phone.value)){
 
-    if(TXTEXP_DATE.value=="")
-      {  str+="\n Enter Expiry date";
-           alert(str);
-           document.getElementById('TXTEXP_DATE').focus();
+ str+="\n Invalid Mobile No ";
+            alert(str);
+            document.getElementById('ph11').focus();
             return false;
 
-      }
+ }
 
-if(IsDateGreater(TXTREG_DATE.value,TXTEXP_DATE.value)==true)
-    {
 
-       str+="\nDate of Expiry Should be greater than Date of Registration";
-       alert(str);
-         document.getElementById('TXTEXP_DATE').focus();
-         return false;
-    }
-
-if(str=="Enter Following Values:-")
+if(str=="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-")
    {
        return true;
 
@@ -902,7 +709,7 @@ else
     {
 
         alert(str);
-        document.getElementById('email_id').focus();
+        document.getElementById('mail2').focus();
         return false;
     }
 
@@ -912,46 +719,7 @@ else
     }
 
 
-function IsDateGreater(DateValue1, DateValue2)
-{
 
-var DaysDiff;
-Date1 = new Date(DateValue1);
-Date2 = new Date(DateValue2);
-DaysDiff = Math.floor((Date1.getTime() - Date2.getTime())/(1000*60*60*24));
-if(DaysDiff > 0)
-{
-
-  return true;
-}
-else
-{
-
-return false;
-}
-}
-
-
-
-
-function IsDateGreater(DateValue1, DateValue2)
-{
-
-var DaysDiff;
-Date1 = new Date(DateValue1);
-Date2 = new Date(DateValue2);
-DaysDiff = Math.floor((Date1.getTime() - Date2.getTime())/(1000*60*60*24));
-if(DaysDiff > 0)
-{
-
-  return true;
-}
-else
-{
-
-return false;
-}
-}
 
 </script>
 

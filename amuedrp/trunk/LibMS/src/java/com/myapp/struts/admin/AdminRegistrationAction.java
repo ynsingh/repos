@@ -15,9 +15,12 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import javax.servlet.http.HttpSession;
-import com.myapp.struts.utility.*;
 import java.sql.Connection;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import com.myapp.struts.utility.*;
+import com.myapp.struts.utility.Email;
 
 
 
@@ -32,14 +35,15 @@ import java.util.*;
 public class AdminRegistrationAction extends org.apache.struts.action.Action {
 
 
+ private final ExecutorService executor=Executors.newFixedThreadPool(1);
+  Email obj;
 
 
-private String admin_password;
 private String login_id;
 boolean result;
 AdminRegistration adminobj;
- private byte[] imagefile;
-Connection con1;
+ 
+
  Locale locale=null;
    String locale1="en";
    String rtl="ltr";
@@ -76,14 +80,11 @@ Connection con1;
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
 
- //ImageUploadActionForm form1 = (ImageUploadActionForm)session1.getAttribute("ImageUploadActionForm");
 
         AdminRegistrationActionForm adminRegistrationActionForm=(AdminRegistrationActionForm)form;
         
         login_id=adminRegistrationActionForm.getLogin_id();
-       // admin_password=adminRegistrationActionForm.getAdmin_password();
-      // System.out.println(admin_password);
-        //admin_password=PasswordEncruptionUtility.password_encrupt(admin_password);
+      
         HttpSession session=request.getSession();
 
 
@@ -135,7 +136,7 @@ Connection con1;
                 adminobj.setAdminLname(adminRegistrationActionForm.getAdmin_lname());
                 adminobj.setAdminDesignation(adminRegistrationActionForm.getAdmin_designation());
                 adminobj.setAdminEmail(adminRegistrationActionForm.getAdmin_email());
-             //   adminobj.setAdminPassword(admin_password);
+            
                 adminobj.setLibraryName(adminRegistrationActionForm.getLibrary_name());
                 adminobj.setCourtesy(adminRegistrationActionForm.getCourtesy());
                 adminobj.setRegistrationId(AdminRegistrationDAO.maxRegistrationID());
@@ -143,9 +144,7 @@ Connection con1;
                 adminobj.setLoginId(adminRegistrationActionForm.getLogin_id());
                 adminobj.setWorkingStatus("OK");
                 adminobj.setStatus("NotRegistered");
-           //  if (form1!=null)
-           //      adminobj.setInstiLogo(form1.getImg().getFileData());
-
+         
 
                  result=AdminRegistrationDAO.insert1(adminobj);
                 if(result==false)
@@ -157,8 +156,34 @@ Connection con1;
                     return mapping.findForward("failure");
                 }
 
-                String msg="Request for Library Registration accepted successfully" ;
 
+
+//       String    path = servlet.getServletContext().getRealPath("/");
+//path=path.substring(0,path.lastIndexOf("/"));
+//path=path.substring(0,path.lastIndexOf("/"));
+//path=path.substring(0,path.lastIndexOf("/"));
+//System.out.println(path+"................");
+//             obj=new Email(path,"amuedrp@gmail.com","","New Request of Library Registration from "+adminRegistrationActionForm.getLibrary_name(),"You Have a Fresh Request for Library Registration Received from \n Library Name :"+adminRegistrationActionForm.getLibrary_name()+" with"+"\n"+"User ID :"+adminRegistrationActionForm.getLogin_id()+"\n Please Check It.","Dear WebAdmin, ","Thanks");
+//            executor.submit(new Runnable() {
+//
+//                public void run() {
+//                    obj.send();
+//                }
+//            });
+
+
+
+                String msg="Request for Library Registration accepted successfully" ;
+  
+ String path = servlet.getServletContext().getRealPath("/");
+ 
+             obj=new Email(path,adminRegistrationActionForm.getAdmin_email(),"",msg,"Your request for Library registration has been accepted Successfully.\nShortly you will get another mail regrading approval of your request.\n","\n\nDear "+adminRegistrationActionForm.getAdmin_fname()+" "+adminRegistrationActionForm.getAdmin_lname()+",\n","Thanks\nWebAdmin\nLibMS");
+            executor.submit(new Runnable() {
+
+                public void run() {
+                    obj.send();
+                }
+            });
               
                 //request.setAttribute("registration_msg", msg);
                  request.setAttribute("registration_msg",resource.getString("admin.adminregistrationaction.error3"));

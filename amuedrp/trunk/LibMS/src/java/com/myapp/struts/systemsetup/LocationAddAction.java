@@ -5,9 +5,13 @@
 
 package com.myapp.struts.systemsetup;
 
+import com.myapp.struts.hbm.DocumentDetails;
 import com.myapp.struts.hbm.Location;
 import com.myapp.struts.hbm.LocationId;
 import com.myapp.struts.systemsetupDAO.LocationDAO;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,14 +27,33 @@ public class LocationAddAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
+     Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
     
   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+         HttpSession session = request.getSession();
+         try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         LocationActionForm lf=(LocationActionForm)form;
-        HttpSession session = request.getSession();
+       
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
        // request.setAttribute("back", request.getAttribute("back"));
@@ -54,11 +77,13 @@ public class LocationAddAction extends org.apache.struts.action.Action {
         li.setLocationId(lf.getLocation_id());
         l.setId(li);
         LocationDAO.insert(l);
-        request.setAttribute("msg", "Data is saved successfully");
+        //request.setAttribute("msg", "Data is saved successfully");
+        request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recinsesucc"));
         session.removeAttribute("backlocation");
         }else
         {
-               request.setAttribute("msg1", "Duplicate Location Name");
+                // request.setAttribute("msg1", "Duplicate Location Name");
+               request.setAttribute("msg1", resource.getString("systemsetup.locationaddaction.duplicatelocname"));
         }
         return mapping.findForward(SUCCESS);
         }
@@ -67,7 +92,8 @@ public class LocationAddAction extends org.apache.struts.action.Action {
         if(lcheck!=null)
             if(!lcheck.getId().getLocationId().equals(location_id))
             {
-                request.setAttribute("msg1", "Duplicate Location Name");
+                //request.setAttribute("msg1", "Duplicate Location Name");
+                request.setAttribute("msg1", resource.getString("systemsetup.locationaddaction.duplicatelocname"));
                 return mapping.findForward(SUCCESS);
             }
         l.setLocationDesc(lf.getLocation_description());
@@ -77,7 +103,9 @@ public class LocationAddAction extends org.apache.struts.action.Action {
         li.setLocationId(lf.getLocation_id());
         l.setId(li);
         LocationDAO.update(l);
-        request.setAttribute("msg", "Data is updated successfully");
+
+        //request.setAttribute("msg", "Data is updated successfully");
+        request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recupdatesucc"));
         return mapping.findForward(SUCCESS);
         }
         if(button.equals("Delete")){
@@ -87,8 +115,23 @@ public class LocationAddAction extends org.apache.struts.action.Action {
         li.setSublibraryId(sub_library_id);
         li.setLocationId(lf.getLocation_id());
         l.setId(li);
+
+       List <DocumentDetails> doc=LocationDAO.Search(library_id,lf.getLocation_id());
+      // System.out.println(doc);
+
+       if(!doc.isEmpty()){
+       //request.setAttribute("msg1", "Location used in Accessioning cannot deleted");
+                request.setAttribute("msg1",resource.getString("systemsetup.locationAddAction.locusedcannotbedel"));
+                return mapping.findForward(SUCCESS);
+
+       }
+
+
+
+
         LocationDAO.delete(library_id, sub_library_id, location_id);
-        request.setAttribute("msg", "Data is deleted successfully");
+        // request.setAttribute("msg", "Data is deleted successfully");
+        request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recdelsucc"));
         return mapping.findForward(SUCCESS);
         }
         return mapping.findForward(SUCCESS);

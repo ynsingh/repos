@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 6, 2011 2:49:56 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.Logsetting" table="logsetting" catalog="libms">
+        <id name="sno" type="java.lang.Integer">
+            <column name="sno" />
+            <generator class="identity" />
+        </id>
+        <property name="p1" type="string">
+            <column name="p1" length="100" />
+        </property>
+        <property name="p2" type="string">
+            <column name="p2" length="100" />
+        </property>
+        <property name="p3" type="string">
+            <column name="p3" length="100" />
+        </property>
+        <property name="p4" type="string">
+            <column name="p4" length="100" />
+        </property>
+        <property name="p5" type="string">
+            <column name="p5" length="100" />
+        </property>
+        <property name="p6" type="string">
+            <column name="p6" length="100" />
+        </property>
+        <property name="p7" type="string">
+            <column name="p7" length="100" />
+        </property>
+        <property name="p8" type="string">
+            <column name="p8" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>

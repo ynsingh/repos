@@ -5,7 +5,7 @@ Modified On  : 17-Feb 2011
 This Page is to Enter Staff ID 
 -->
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*"%>
 
  <jsp:include page="/admin/header.jsp" flush="true" />
 
@@ -20,6 +20,32 @@ String msg=(String)request.getAttribute("msg");
 String msg1=(String)request.getAttribute("msg1");
 
 %>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
+
+
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -147,11 +173,37 @@ newOpt.text = ndValue1;
  <script language="javascript" type="text/javascript">
 
 
+function Add()
+{
+    var buttonvalue="Add";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+
+function View()
+{
+    var buttonvalue="View";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+function Update()
+{
+    var buttonvalue="Update";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+function Delete()
+{
+    var buttonvalue="Delete";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+
 function check1()
 {
      if(document.getElementById('TXTFACULTY').value=="Select")
     {
-        alert("Select Faculty");
+        alert("<%=resource.getString("systemsetup.manage_course.selectcourse")%>");
 
         document.getElementById('TXTFACULTY').focus();
 
@@ -160,7 +212,7 @@ function check1()
 
      if(document.getElementById('TXTDEPT').value=="Select")
     {
-        alert("Select Dept");
+        alert("<%=resource.getString("systemsetup.manage_course.selectdept")%>");
 
         document.getElementById('TXTDEPT').focus();
 
@@ -168,7 +220,7 @@ function check1()
     }
     if(document.getElementById('course_id').value=="")
     {
-        alert("Enter Course Id...");
+        alert("<%=resource.getString("systemsetup.manage_course.entercourseid")%>");
 
         document.getElementById('course_id').focus();
 
@@ -204,14 +256,14 @@ function check1()
 
       visibility: show;">
 
-    <table border="1" class="table" width="400px" height="200px" align="center">
+    <table dir="<%=rtl%>" border="1" class="table" width="400px" height="200px" align="center">
 
   
-        <tr><td align="center" colspan="3" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Course</td></tr>
+        <tr><td dir="<%=rtl%>" align="center" colspan="3" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.manage_faculty.managecourse")%></td></tr>
         <tr><td>
-                <table>
+                <table dir="<%=rtl%>">
 
-               <tr><td align="left">&nbsp;Faculty Name </td><td align="left">
+               <tr><td dir="<%=rtl%>" align="<%=align%>">&nbsp;<%=resource.getString("systemsetup.add_faculty.facultyname")%> </td><td align="<%=align%>">
                        <html:select   property="faculty_id" styleId="TXTFACULTY" value="Select" onchange="search1()">
                           <html:option value="Select">Select</html:option>
                           <html:options collection="faculty" property="id.facultyId" labelProperty="facultyName"></html:options>
@@ -221,7 +273,7 @@ function check1()
 
                </td></tr>
                  
-<tr><td align="center" width="150px">Department Name </td><td align="left">
+<tr><td dir="<%=rtl%>" align="center" width="150px"><%=resource.getString("systemsetup.add_dept.deptname")%></td><td align="<%=align%>">
         <html:select   property="dept_id" styleId="TXTDEPT" value="Select">
             
                           <html:option value="Select">Select</html:option>
@@ -231,18 +283,18 @@ function check1()
 
 
                </td></tr>
-<tr><td class="txt2">Enter Course ID</td><td>
+<tr><td dir="<%=rtl%>" class="txt2"><%=resource.getString("systemsetup.manage_course.entercourseid")%></td><td>
                         <input type="text" id="course_id" name="course_id" value=""/>
                         </td>
 </tr></table>
             </td><td>
-                <table cellspacing="10px">
+                <table dir="<%=rtl%>" cellspacing="10px">
 
-                    <tr><td width="150px" align="center"> <input type="submit" class="btn" id="Button1" name="button" value="Register" /></td></tr>
-                    <tr><td width="150px" align="center"><input type="submit" id="Button2" class="btn" name="button" value="Update"  /></td></tr>
-                    <tr><td width="150px" align="center"><input type="submit" id="Button3" name="button" value="View" class="btn"  /></td></tr>
-                    <tr><td width="150px" align="center"><input type="submit" id="Button4" name="button" value="Delete" class="btn" /></td></tr>
-                         <tr><td width="150px" align="center"><input type="button" id="Button5" name="button" value="Back" class="btn" onclick="return quit()"/></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn" id="Button1"  value="<%=resource.getString("systemsetup.manage_notice.add")%>" onclick="return Add();" /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button2" class="btn"  value="<%=resource.getString("circulation.cir_member_reg.update")%>" onclick="return Update();"  /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button3" value="<%=resource.getString("circulation.cir_member_reg.view")%>" onclick="return View();" class="btn"  /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button4"  value="<%=resource.getString("circulation.cir_member_reg.delete")%>" onclick="return Delete();" class="btn" /></td></tr>
+                         <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="button" id="Button5"  value="<%=resource.getString("circulation.cir_member_reg.back")%>" class="btn" onclick="return quit()"/></td></tr>
  
 
                 </table>
@@ -250,7 +302,7 @@ function check1()
 
     <input type="hidden" name="library_id" value="<%=library_id%>">
    
-
+  <input type="hidden" id="button" name="button" />
 
 
 
@@ -266,7 +318,7 @@ function check1()
         %>
 
 
-        <p class="mess">  <%=msg%></p>
+        <p class="mess" dir="<%=rtl%>" align="<%=align%>">  <%=msg%></p>
 
         <%
         }
@@ -276,7 +328,7 @@ function check1()
         %>
 
 
-        <p class="err">  <%=msg1%></p>
+        <p class="err" dir="<%=rtl%>" align="<%=align%>">  <%=msg1%></p>
 
         <%
         }
@@ -284,7 +336,7 @@ function check1()
 
 
             </td></tr>
-        <tr><td align="justify" colspan="2"><font color="blue" size="-1"><b>Example:</b> mca for MCA, mba for MBA & so on, if Course exists.</font></td></tr>
+        <tr><td align="justify" colspan="2"><font color="blue" size="-1"><b><%=resource.getString("systemsetup.manage_notice.example")%>:</b> mca <%=resource.getString("systemsetup.manage_course.formca")%>, mba <%=resource.getString("systemsetup.manage_course.formba")%>, <%=resource.getString("systemsetup.manage_course.ifcourseexist")%>.</font></td></tr>
     </table>
         </div>
   

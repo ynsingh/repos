@@ -4,7 +4,7 @@ Devleoped By : Kedar Kumar
 Modified On  : 17-Feb 2011
 This Page is to Enter Library Details
 -->
-
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -14,6 +14,29 @@ This Page is to Enter Library Details
 String new_emptype_id=(String)request.getAttribute("new_emptype_id");
 
 %>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
 
 <html>
 <head>
@@ -35,27 +58,27 @@ String new_emptype_id=(String)request.getAttribute("new_emptype_id");
       visibility: show;">
     
      <html:form action="/add_member" method="post" >
- <table border="1" class="table" width="400px" height="100px" align="center">
+ <table dir="<%=rtl%>" border="1" class="table" width="400px" height="100px" align="center">
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage MemberType</td></tr>
-                <tr><td valign="top" align="center"> <br/>
-                <table cellspacing="10px">
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.manage_member.managememtype")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
+                <table dir="<%=rtl%>" cellspacing="10px">
 
 
    <tr>
 
-    <td align="right"><strong>MemberType Id<a class="star"></a></strong></td>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_member.memtypeid")%><a class="star"></a></strong></td>
     <html:hidden property="emptype_id" styleId="faculty_id"   value="<%=new_emptype_id%>" styleClass="textBoxWidth" />
-    <td><html:text property="emptype_id" styleId="faculty_id" disabled="true"  value="<%=new_emptype_id%>" styleClass="textBoxWidth" />
+    <td dir="<%=rtl%>"><html:text property="emptype_id" styleId="faculty_id" disabled="true"  value="<%=new_emptype_id%>" styleClass="textBoxWidth" />
 
     </td>
   </tr>
   
   <tr>
     
-    <td align="right"><strong>Member Name<a class="star">*</a> </strong></td>
-    <td><html:text property="emptype_full_name" styleId="emptype_full_name"  value="" styleClass="textBoxWidth"/>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("circulation.cirmembermessage.membername")%><a class="star">*</a> </strong></td>
+    <td dir="<%=rtl%>"><html:text property="emptype_full_name" styleId="emptype_full_name"  value="" styleClass="textBoxWidth"/>
        
     </td>
   </tr>
@@ -67,9 +90,9 @@ String new_emptype_id=(String)request.getAttribute("new_emptype_id");
   
  
 <tr>
-    <td colspan="4" align="center"><br/><br/><input type="submit"  value="Submit"  onClick="return validation();"/>
+    <td dir="<%=rtl%>" colspan="4" align="center"><br/><br/><input type="submit"  value="<%=resource.getString("circulation.cir_newmember.submit")%>"  onClick="return validation();"/>
         
-        <input type="button"  value="Back" onclick="return quit();" />
+        <input type="button"  value="<%=resource.getString("circulation.cir_newmember.back")%>" onclick="return quit();" />
  </td>
 </tr>
 </table>
@@ -114,12 +137,13 @@ String new_emptype_id=(String)request.getAttribute("new_emptype_id");
 
 
 
-var str="Enter Following Values:-";
+var str="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-";
 
 
+   //alert(sublib_name.value);
    
     if(sublib_name.value=="")
-        {str+="\n Enter Member Name ";
+        {str+="\n <%=resource.getString("systemsetup.add_member.entermemname")%> ";
              alert(str);
              document.getElementById('emptype_full_name').focus();
             return false;
@@ -132,7 +156,7 @@ var str="Enter Following Values:-";
 
   
 
-if(str=="Enter Following Values:-")
+if(str=="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-")
    {
        return true;
 
@@ -141,7 +165,7 @@ else
     {
 
         alert(str);
-        document.getElementById('emptype_id').focus();
+        document.getElementById('emptype_full_name').focus();
         return false;
     }
 

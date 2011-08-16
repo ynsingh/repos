@@ -8,6 +8,8 @@ package com.myapp.struts.systemsetup;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.systemsetupDAO.*;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -37,18 +39,39 @@ public class AddCourseAction extends org.apache.struts.action.Action {
     CoursesId cid=new CoursesId();
     Department d=new Department();
     DepartmentId did=new DepartmentId();
+     Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+
+
+         HttpSession session=request.getSession();
+          try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         AddCourseActionForm acaf=(AddCourseActionForm)form;
         course_id=acaf.getCourse_id();
         course_name=acaf.getCourse_name();
         faculty_id=acaf.getFaculty_id();
         dept_id=acaf.getDept_id();
         
-        HttpSession session=request.getSession();
+       
         library_id=(String)session.getAttribute("library_id");
 
         
@@ -57,7 +80,8 @@ public class AddCourseAction extends org.apache.struts.action.Action {
         System.out.println("courses"+course);
          if(course!=null)
          {
-            request.setAttribute("msg1", "Course Name : "+course_name+" already exists");
+            //request.setAttribute("msg1", "Course Name : "+course_name+" already exists");
+             request.setAttribute("msg1", resource.getString("systemsetup.manage_course.coursename")+course_name+resource.getString("systemsetup.manage_notice.alreadyexists"));
             return mapping.findForward("success");
          }
          else
@@ -85,13 +109,17 @@ public class AddCourseAction extends org.apache.struts.action.Action {
         result=CourseDAO.insert(c);
         if(result==true)
         {
-            request.setAttribute("msg", "Record Inserted Successfully");
+
+            // request.setAttribute("msg", "Record Inserted Successfully");
+            request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recinsesucc"));
             return mapping.findForward("success");
 
         }
         else
         {
-            request.setAttribute("msg", "Record Not Inserted");
+
+            // request.setAttribute("msg", "Record Not Inserted");
+            request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recnotinsesucc"));
             return mapping.findForward("success");
         }
 

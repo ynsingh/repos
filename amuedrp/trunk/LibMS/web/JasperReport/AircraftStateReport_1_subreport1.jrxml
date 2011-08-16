@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AircraftStateReport_1_subreport1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="id.vendorId" class="java.lang.String"/>
+	<field name="country" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="phone" class="java.lang.String"/>
+	<field name="address" class="java.lang.String"/>
+	<field name="vendor" class="java.lang.String"/>
+	<field name="vendorCurrency" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20"/>
+				<textElement>
+					<font  size="12"/>
+				</textElement>
+				<text><![CDATA[Vendor Details]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="20" width="133" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="133" height="1"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="151" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="39" width="72" height="20"/>
+				<textElement>
+					<font  size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Address]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="72" y="39" width="100" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="72" height="20"/>
+				<textElement>
+					<font  size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Vendor Code]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="59" width="72" height="20"/>
+				<textElement>
+					<font  size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Phone no]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="79" width="72" height="19"/>
+				<textElement>
+					<font  size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[email]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="72" y="59" width="100" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{phone}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="72" y="79" width="100" height="19"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="72" height="20"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Vendor Name]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="72" y="20" width="100" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vendor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="72" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{id.vendorId}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="98" width="72" height="16"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Currency]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="72" y="98" width="100" height="16"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vendorCurrency}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="5" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="4" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

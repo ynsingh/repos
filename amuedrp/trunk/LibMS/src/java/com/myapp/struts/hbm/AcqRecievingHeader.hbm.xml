@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 Aug, 2011 11:27:36 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.AcqRecievingHeader" table="acq_recieving_header" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.AcqRecievingHeaderId">
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+            <key-property name="subLibraryId" type="string">
+                <column name="sub_library_id" length="20" />
+            </key-property>
+            <key-property name="recievingNo" type="string">
+                <column name="recieving_no" length="20" />
+            </key-property>
+        </composite-id>
+        <property name="vendorId" type="string">
+            <column name="vendor_id" length="20" />
+        </property>
+        <property name="orderNo" type="string">
+            <column name="order_no" length="20" />
+        </property>
+        <property name="recievedDate" type="string">
+            <column name="recieved_date" length="20" />
+        </property>
+        <property name="recievedBy" type="string">
+            <column name="recieved_by" length="20" />
+        </property>
+    </class>
+</hibernate-mapping>

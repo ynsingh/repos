@@ -16,35 +16,7 @@
 
     <title>LibMS : Manage SuperAdmin</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
-<script language="javascript" >
-function b1click()
-{
-location.href="login.jsp";
-}
-function b2click()
-{
-f.action="login.html";
-f.method="post";
-f.target="_self";
-f.submit();
-}
-function getQuery(id)
-{
-    var query = "<%=request.getContextPath()%>/admin/index.jsp?id="+id;
-    return query;
-}
-</script>
- <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold }
 
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
 </head>
 
 <body>

@@ -18,6 +18,31 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.io.*"%>
 
+ <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+ String lib_id = (String)session.getAttribute("library_id");
+  String sublib_id = (String)session.getAttribute("memsublib");
+        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+    %>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -160,24 +185,43 @@ String path= request.getContextPath();
 String login_role=(String)session.getAttribute("login_role");
 %>
 
+ <%
+String LibraryId=resource.getString("opac.browse.table.Libraryid");
+pageContext.setAttribute("LibraryId", LibraryId);
+String MemberId=resource.getString("circulation.cir_newmember.memberid");
+pageContext.setAttribute("MemberId", MemberId);
+String FirstName=resource.getString("circulation.cir_newmember.fname");
+pageContext.setAttribute("FirstName",FirstName);
+String LastName=resource.getString("circulation.cir_newmember.lname");
+pageContext.setAttribute("LastName",LastName);
+String EmailId=resource.getString("circulation.cir_newmember.email");
+pageContext.setAttribute("EmailId",EmailId);
+String Address=resource.getString("circulation.cir_newmember.permadd");
+pageContext.setAttribute("Address",Address);
+String Status=resource.getString("circulation.cirviewall.status");
+pageContext.setAttribute("Status",Status);
+String RequestDate=resource.getString("circulation.cirviewall.reqdate");
+pageContext.setAttribute("RequestDate",RequestDate);
+%>
+
 <%
 System.out.println(login_role);
 if(login_role.equalsIgnoreCase("insti-admin")){
 
 %>
 
+ 
+<table width="750" dir="<%=rtl%>" align="<%=align%>" style="font-family: arial; font-size: 10pt" border=0>
+ 
 
-
-
-
-
+    <tr><td dir="<%=rtl %>">
 
 
 <%}
 if(tcount==0)
 {
 %>
-<p class="err">No Request From Opac</p>
+<p class="err"><%=resource.getString("circulation.cir_reqfromopacgrid.noreqfromopac")%></p>
 <%}
 else
 {%>
@@ -193,38 +237,38 @@ else
 
 
 
-    <column width="100">
-      <header value="LibraryId" hAlign="left" styleClass="admingridheader"  />
+    <column width="1800">
+      <header value="${LibraryId}" hAlign="left" styleClass="admingridheader"  />
       <item   value="${doc.libraryId}"     hAlign="left"   styleClass="item"  hyperLinkTarget="_parent" hyperLink="${path}/circulation/cir_opac_viewmem.jsp?memid=${doc.memId}"/>
 
     </column>
 
-    <column width="100">
-      <header value="MemberId" hAlign="left" styleClass="admingridheader"/>
+    <column width="600">
+      <header value="${MemberId}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.memId}"   hAlign="left"  styleClass="item" hyperLinkTarget="_parent" hyperLink="${path}/circulation/cir_opac_viewmem.jsp?memid=${doc.memId}"/>
     </column>
-     <column width="100">
-      <header value="FirstName" hAlign="left" styleClass="admingridheader"/>
+     <column width="600">
+      <header value="${FirstName}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.fname}"  hAlign="left"  styleClass="item" hyperLinkTarget="_parent" hyperLink="${path}/circulation/cir_opac_viewmem.jsp?memid=${doc.memId}"/>
     </column>
-      <column width="100">
-      <header value="LastName" hAlign="left" styleClass="admingridheader"/>
+      <column width="600">
+      <header value="${LastName}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.lname}"  hAlign="left"  styleClass="item" hyperLinkTarget="_parent" hyperLink="${path}/circulation/cir_opac_viewmem.jsp?memid=${doc.memId}"/>
     </column>
-     <column width="200">
-      <header value="EmailId" hAlign="left" styleClass="admingridheader"/>
+     <column width="600">
+      <header value="${EmailId}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.email}"  hAlign="left"  styleClass="item" hyperLinkTarget="_parent" hyperLink="${path}/circulation/cir_opac_viewmem.jsp?memid=${doc.memId}"/>
     </column>
-     <column width="100">
-      <header value="Address" hAlign="left" styleClass="admingridheader"/>
+     <column width="600">
+      <header value="${Address}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.address1}"  hAlign="left"  styleClass="item" hyperLinkTarget="_parent" hyperLink="${path}/circulation/cir_opac_viewmem.jsp?memid=${doc.memId}"/>
     </column>
-     <column width="100">
-      <header value="Status" hAlign="left" styleClass="admingridheader"/>
+     <column width="600">
+      <header value="${Status}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.status}"  hAlign="left"  styleClass="item" hyperLinkTarget="_parent" hyperLink="${path}/circulation/cir_opac_viewmem.jsp?memid=${doc.memId}"/>
     </column>
-      <column width="200">
-      <header value="Request Date" hAlign="left" styleClass="admingridheader"/>
+      <column width="1800">
+      <header value="${RequestDate}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.requestdate}"  hAlign="left"  styleClass="item" hyperLinkTarget="_parent"  hyperLink="${path}/circulation/cir_opac_viewmem.jsp?memid=${doc.memId}"/>
     </column>
 
@@ -237,14 +281,14 @@ else
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>
 
-<table width="750" style="font-family: arial; font-size: 10pt" border=0>
+  <%--  <table width="750" dir="<%=rtl%>" style="font-family: arial; font-size: 10pt" border=0> --%>
 <tr>
 <td align="left">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.previos")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-<a href="<c:out value="${next}"/>">Next</a>
+<a href="<c:out value="${next}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.next")%></a>
 </c:if>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -262,16 +306,16 @@ else
 </td>
 
 </tr>
-</table>
+
   <%}%>
- 
-
+ </form>
+ </td>
          
-   
+  </tr>
   
   
-</form>
 
+</table>
 
 
     </body>

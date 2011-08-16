@@ -12,6 +12,8 @@ import javax.servlet.http.*;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.systemsetupDAO.BookCategoryDAO;
 import com.myapp.struts.systemsetupDAO.DocumentCategoryDAO;
+import java.util.Locale;
+import java.util.ResourceBundle;
 /**
  *
  * @author edrp01
@@ -21,14 +23,34 @@ public class BookCategoryDecideAction extends org.apache.struts.action.Action {
     
     String library_id,button,book_type,emptype_id,subemptype_id,emptype_fullname,subemptype_name;
     private String sublibrary_id;
-
+    Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+
+         HttpSession session=request.getSession();
+
+        try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
      BookCategoryDecideActionForm bcda  =(BookCategoryDecideActionForm)form;
-     HttpSession session=request.getSession();
+    
         button=bcda.getButton();
         book_type=bcda.getBook_type();
         emptype_id=bcda.getEmptype_id();
@@ -80,7 +102,9 @@ System.out.println(emptype_fullname+"   "+subemptype_name+ "  "+doc.getDocumentC
            return mapping.findForward("success");
            }
            else{
-               request.setAttribute("msg1",book_type + "Already Exists");
+
+               //request.setAttribute("msg1",book_type + "Already Exists");
+               request.setAttribute("msg1",book_type + resource.getString("systemsetup.manage_notice.alreadyexists"));
            return mapping.findForward("failure");
 
            }
@@ -117,7 +141,9 @@ System.out.println(emptype_id+"In Update");
            return mapping.findForward("update/view/delete");
            }
            else{
-               request.setAttribute("msg1",book_type + "not Found");
+
+               // request.setAttribute("msg1",book_type + "not Found");
+               request.setAttribute("msg1",book_type + resource.getString("systemsetup.bookcategorydecideaction.notfond"));
            return mapping.findForward("failure");
 
            }

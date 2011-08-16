@@ -214,7 +214,8 @@ if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrar
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+            obj=new Email(path,staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Your Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\n","Dear "+user_name+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
                System.out.println("Mailing");
             executor.submit(new Runnable() {
 
@@ -284,7 +285,8 @@ if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrar
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+             obj=new Email(path,staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Your Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\n","Dear "+user_name+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
                System.out.println("Mailing");
             executor.submit(new Runnable() {
 
@@ -388,7 +390,8 @@ if(user_role.equals("admin") && role.equals("staff"))
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+            obj=new Email(path,staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Your Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\n","Dear "+user_name+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
                System.out.println("Mailing");
             executor.submit(new Runnable() {
 
@@ -700,7 +703,8 @@ if(user_role.equals("admin") && role.equals("dept-staff"))
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+             obj=new Email(path,staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Your Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\n","Dear "+user_name+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
                System.out.println("Mailing");
             executor.submit(new Runnable() {
 
@@ -1006,7 +1010,8 @@ if(user_role.equals("admin") && role.equals("dept-admin"))
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+           obj=new Email(path,staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Your Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\n","Dear "+user_name+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
                System.out.println("Mailing");
             executor.submit(new Runnable() {
 
@@ -1079,7 +1084,8 @@ if(user_role.equals("dept-admin") && role.equals("admin"))
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+            obj=new Email(path,staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Your Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\n","Dear "+user_name+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
                System.out.println("Mailing");
             executor.submit(new Runnable() {
 
@@ -1382,7 +1388,8 @@ if(user_role.equals("dept-admin") && role.equals("staff"))
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+          obj=new Email(path,staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Your Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\n","Dear "+user_name+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
                System.out.println("Mailing");
             executor.submit(new Runnable() {
 
@@ -1690,7 +1697,8 @@ if(user_role.equals("dept-admin") && role.equals("dept-staff"))
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+            obj=new Email(path,staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Your Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\n","Dear "+user_name+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
                System.out.println("Mailing");
             executor.submit(new Runnable() {
 
@@ -1761,7 +1769,8 @@ if(user_role.equals("staff") && role.equals("admin"))
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+            obj=new Email(path,staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Your Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\n","Dear "+user_name+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
                System.out.println("Mailing");
             executor.submit(new Runnable() {
 
@@ -2066,7 +2075,8 @@ if(user_role.equals("staff") && role.equals("dept-admin"))
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+           obj=new Email(path,staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Your Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\n","Dear "+user_name+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
                System.out.println("Mailing");
             executor.submit(new Runnable() {
 
@@ -2371,7 +2381,8 @@ if(user_role.equals("staff") && role.equals("dept-staff"))
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+             obj=new Email(path,staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Your Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\n","Dear "+user_name+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
                System.out.println("Mailing");
             executor.submit(new Runnable() {
 
@@ -2442,7 +2453,8 @@ if(user_role.equals("dept-staff") && role.equals("admin"))
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+             obj=new Email(path,staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Your Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\n","Dear "+user_name+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
                System.out.println("Mailing");
             executor.submit(new Runnable() {
 
@@ -2762,7 +2774,8 @@ logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+          obj=new Email(path,staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Your Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\n","Dear "+user_name+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
                System.out.println("Mailing");
             executor.submit(new Runnable() {
 
@@ -3065,7 +3078,8 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+       obj=new Email(path,staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Your Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\n","Dear "+user_name+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
                System.out.println("Mailing");
             executor.submit(new Runnable() {
 
@@ -3179,7 +3193,9 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
             /*mail to user for deletion of account message*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,staffobj.getEmailId(),password,"Delete Account Successfully from LibMS","Your Account of  LibMS is Deleted ");
+             obj=new Email(path,staffobj.getEmailId(),"","Your LibMS Account is Deleted","Sorry, Your LibMS Account is Deleted"+".\n","Dear "+user_name+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
+                 
             executor.submit(new Runnable() {
 
                 public void run() {

@@ -15,7 +15,28 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
+ <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
+    %>
 
 
  <%
@@ -72,52 +93,52 @@ a:active
 
    
 
-   <table  align="center" width="500px" height="200px"  class="table">
+    <table  dir="<%=rtl%>" align="center" width="500px" height="200px"  class="table">
 
 
 
-  <tr><td    class="headerStyle"  align="center">
+  <tr><td dir="<%=rtl%>"   class="headerStyle"  align="center">
 
 
-		View Member CheckOut Detail
+		<%=resource.getString("circulation.cir_viewmem_chkoutreport.memberaccdetail")%>
 
 
 
         </td></tr>
 
-  <tr><td valign="middle" align="center" >
+  <tr><td dir="<%=rtl%>" valign="middle" align="center" >
 
   
-            <table>
+            <table dir="<%=rtl%>">
 
 
 
-                <tr><td width="150px">&nbsp;Member ID</td><td class="table_textbox"><input type="text"   name="TXTMEMID" value="<%=checkoutdetail.getMemid()%>" readonly="true" style="width:160px" /></td>
+                <tr><td dir="<%=rtl%>" width="150px">&nbsp;<%=resource.getString("circulation.cir_newmember.memberid")%></td><td dir="<%=rtl%>" class="table_textbox"><input type="text"   name="TXTMEMID" value="<%=checkoutdetail.getMemid()%>" readonly="true" style="width:160px" /></td>
                     <td></td>
 
                    </tr>
 
-                   <tr><td >Checkout Id</td><td class="table_textbox"><input type="text"   name="TXTCHKOUTID" value="<%=String.valueOf(checkoutdetail.getId().getCheckoutId())%>" readonly="true" style="width:160px" /><br/>
+                   <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_checkout_report.chkoutid")%></td><td dir="<%=rtl%>" class="table_textbox"><input type="text"   name="TXTCHKOUTID" value="<%=String.valueOf(checkoutdetail.getId().getCheckoutId())%>" readonly="true" style="width:160px" /><br/>
 
                 </td>
 
                 </tr>
-                <tr><td>&nbsp;DocumentId</td><td class="table_textbox"><input type="text"  name="TXTDOCID" value="<%=checkoutdetail.getDocumentId()%>" readonly="true" style="width:160px" /></td></tr>
-                <tr><td>&nbsp;Issue Date</td><td class="table_textbox"><input type="text"  name="TXTISSUEDATE" value="<%=checkoutdetail.getIssueDate()%>" readonly="true" style="width:160px" />
+                <tr><td dir="<%=rtl%>" >&nbsp;<%=resource.getString("circulation.cir_viewmem_chkoutreport.docid")%></td><td dir="<%=rtl%>" class="table_textbox"><input type="text"  name="TXTDOCID" value="<%=checkoutdetail.getDocumentId()%>" readonly="true" style="width:160px" /></td></tr>
+                <tr><td dir="<%=rtl%>" >&nbsp;<%=resource.getString("circulation.cir_view_book.issuedate")%></td><td dir="<%=rtl%>" class="table_textbox"><input type="text"  name="TXTISSUEDATE" value="<%=checkoutdetail.getIssueDate()%>" readonly="true" style="width:160px" />
 
                 </td>
 
 
 
                 </tr>
-                <tr>  <td>&nbsp;Due Date</td><td class="table_textbox"><input type="text"  name="TXTDUEDATE" value="<%=checkoutdetail.getDueDate() %>" readonly="true" style="width:160px" />
+                <tr>  <td dir="<%=rtl%>" >&nbsp;<%=resource.getString("circulation.cir_view_book.duedate")%></td><td class="table_textbox"><input type="text"  name="TXTDUEDATE" value="<%=checkoutdetail.getDueDate() %>" readonly="true" style="width:160px" />
 
                 </td>
 
 
 
             </tr>
-            <tr><td> Status</td><td class="table_textbox"> <input type="text" name="TXTSTATUS" value="<%=checkoutdetail.getStatus()%>" readonly="true" style="width:160px" />
+            <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.memberaccviewall.Status")%></td><td class="table_textbox"> <input type="text" name="TXTSTATUS" value="<%=checkoutdetail.getStatus()%>" readonly="true" style="width:160px" />
 
                  </td>
 
@@ -130,7 +151,7 @@ a:active
 
      </table>
       </td></tr>
-  <tr><td colspan="4" align="center" class="txt2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Back" onclick="return back();">
+  <tr><td colspan="4" align="center" class="txt2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="<%=resource.getString("circulation.cir_newmember.back")%>" onclick="return back();">
                       </td>
 
           </tr>

@@ -36,7 +36,7 @@ locale1=(String)session.getAttribute("locale");
 
 
 <html><head>
-<title>Browsing.....</title>
+
 
 
 <%
@@ -55,13 +55,7 @@ else{
 
 %>
 
-<style type="text/css">
-body
-{
-   background-color: #FFFFFF;
-   color: #000000;
-}
-</style>
+
 <script language="javascript">
 function fun()
 {
@@ -74,25 +68,29 @@ document.Form1.submit();
 </script>
 </head>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
-<body onload="fun()" class="datagrid">
+<body onload="fun();">
    
 
 <form name="Form1" action="search_institute.do"  >
-      <table  align="left" width="100%" class="datagrid"  style="border:solid 1px #e0e8f5;" dir="<%=rtl%>" align="<%=align%>">
 
 
 
-          <tr bgcolor="#7697BC" ><td  width="100%"   align="center" colspan="2" dir="<%=rtl%>">
+
+    <table  align="left" class="datagrid" border="0px"  bgcolor="#7697BC" dir="<%=rtl%>" align="<%=align%>">
 
 
-                  <font color="white"> <b><%=resource.getString("login.searchinstitute.institutesearch")%></b></font>
+
+          <tr><td  width="80%" height="25px" colspan="2"   align="center" class="txtStyle1" dir="<%=rtl%>">
+
+
+               <%=resource.getString("login.searchinstitute.institutesearch")%>
 
 
 
 
         </td></tr>
-  <tr style="background-color:#e0e8f5;"><td width="800px"  >
-          <table dir="<%=rtl%>" align="<%=align%>">
+  <tr style="background-color:#e0e8f5;"><td width="80%">
+          <table dir="<%=rtl%>" border="0px" align="<%=align%>">
               <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("enterstartingkeyword")%></td><td><input  name="search_keyword" type="text" id="search_keyword" onkeyup="fun()"></td>
               <td>
 
@@ -106,7 +104,7 @@ document.Form1.submit();
           </table>
       </td>
       <td    align="left" valign="top">
-          <table >
+          <table border="0px" >
               <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.infield")%> </td><td rowspan="2" valign="top">
                       <select name="search_by" onChange="fun()" id="search_by" size="1">
 <option value="institute_name"><%=resource.getString("institutename")%></option>
@@ -136,7 +134,7 @@ document.Form1.submit();
       </td>
 
   </tr>
-  <tr><td><IFRAME  name="f1" src="#" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
+  <tr bgcolor="white"><td colspan="2"><IFRAME  name="f1" src="#" frameborder="1"  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
      
 
        </table>
@@ -150,7 +148,7 @@ document.Form1.submit();
 
 
 
- 
+
 
 </form>
 

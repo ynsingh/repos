@@ -217,6 +217,7 @@ if(result==true){
           adminReg.setPin(pin);
           adminReg.setLandLineNo(land_line_no);
           adminReg.setMobileNo(mobile_no);
+          adminReg.setStaffId(staff_id);
           
           adminReg.setTypeOfInstitute(type_of_institute);
           adminReg.setWebsite(institute_website);

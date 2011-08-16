@@ -16,7 +16,12 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.hbm.*;
+import java.io.File;
+import java.io.FileReader;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import javax.imageio.ImageReader;
 import org.apache.struts.upload.FormFile;
 
 
@@ -29,7 +34,7 @@ public class CirculationNewMemberRegAction extends org.apache.struts.action.Acti
 
 
     private boolean result;
-    private static String SUCCESS = "success";
+  
 
     private CirMemberDetail cmd = new CirMemberDetail();
     private CirMemberDetailId cmdi = new CirMemberDetailId();
@@ -37,43 +42,15 @@ public class CirculationNewMemberRegAction extends org.apache.struts.action.Acti
     private CirMemberAccount cma = new CirMemberAccount();
     private CirMemberAccountId cmai = new CirMemberAccountId();
 
-    private String TXTMEMID;
-    private String TXTFNAME;
-    private String TXTLNAME;
-    private String TXTMNAME;
-    private String TXTEMAILID;
-    private String TXTPASS;
-    private String TXTADD1;
-    private String TXTCITY1;
-    private String TXTSTATE1;
-    private String TXTCOUNTRY1;
-    private String TXTPH1;
-    private String TXTPH2;
-    private String TXTFAX;
-    private String TXTADD2;
-    private String TXTCITY2;
-    private String TXTPIN1;
-    private String TXTPIN2;
-    private String TXTSTATE2;
-    private String TXTCOUNTRY2;
-    private String MEMCAT;
-    private String MEMSUBCAT;
-    private String TXTFACULTY;
-    private String TXTDEPT;
-    private String TXTCOURSE;
-    private String TXTREG_DATE;
-    private String TXTEXP_DATE;
-    private String TXTSEM;
-    private byte[] imagefile;
-    private String button;
-    private String TXTDESG1;
-    private String TXTOFFICE;
-private String mem_id;
-private String faculty_id;
     private String no_of_issueable;
     String library_id;
     String sublibrary_id;
     private String lib;
+    Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
+
 
 
 
@@ -87,10 +64,23 @@ private String faculty_id;
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+         HttpSession session1 =request.getSession();
+         try{
 
+        locale1=(String)session1.getAttribute("locale");
+    if(session1.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session1.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         CirculationMemberActionForm cmdf =(CirculationMemberActionForm)form;
-        HttpSession session1 =request.getSession();
-      // ImageUploadActionForm form1 = (ImageUploadActionForm)session1.getAttribute("CirImageUploadActionForm");
+       
       String  member_id = cmdf.getTXTMEMID();
       String last_name=cmdf.getTXTLNAME();
       String mail_id=cmdf.getTXTEMAILID();
@@ -101,9 +91,7 @@ private String faculty_id;
        if(v!=null)iii=v.getFileData();
 
 
-    // byte[] g=(byte[])session1.getAttribute("image");
- //    System.out.println("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"+iii.length);
-       library_id=(String)session1.getAttribute("library_id");
+      library_id=(String)session1.getAttribute("library_id");
        sublibrary_id=null;
 
 
@@ -145,6 +133,7 @@ private String faculty_id;
             cmd.setImage(cmdf.getImg().getFileData());
          else
                if(iii!=null){cmd.setImage(iii);}
+               else{cmd.setImage(null);}
 
 
             CirculationDAO.insert(cmd);
@@ -220,7 +209,9 @@ private String faculty_id;
             }
             if(result==true)
             {
-            String msg="Record Inserted successfully";
+
+           // String msg="Record Inserted successfully";
+             String msg=resource.getString("circulation.circulationnewmemberregAction.recinsesucc");
             request.setAttribute("msg",msg);
             request.setAttribute("mem_id",member_id);
              request.setAttribute("mem_name",mem_name);
@@ -230,6 +221,10 @@ private String faculty_id;
              session1.removeAttribute("image");
             return mapping.findForward("Submit");
             }
+            session1.removeAttribute("filename");
+            session1.removeAttribute("image");
+
+        request.removeAttribute("imagechange");
             return mapping.findForward("failure");
           }
 
@@ -242,17 +237,7 @@ private String faculty_id;
 
 
 
-                    faculty_id = cmdf.getTXTFACULTY();
-
-
-
-
-
-                        mem_id =cmdf.getMEMCAT();
-
-
-
-                    CirMemberDetail cmd1=(CirMemberDetail)CirculationDAO.searchCirMemDetails(library_id,  member_id);
+            CirMemberDetail cmd1=(CirMemberDetail)CirculationDAO.searchCirMemDetails(library_id,  member_id);
 
             cmd1.setFname(cmdf.getTXTFNAME());
             cmd1.setMname(cmdf.getTXTMNAME());
@@ -271,10 +256,14 @@ private String faculty_id;
             cmd1.setPin1(cmdf.getTXTPIN1());
             cmd1.setPin2(cmdf.getTXTPIN2());
             cmd1.setFax(cmdf.getTXTFAX());
-           /* if (cmdf.getImg()!=null)
+
+
+            if (cmdf.getImg()!=null)
             cmd1.setImage(cmdf.getImg().getFileData());
              else
-                cmd.setImage(cmdf.getUploadedFile());*/
+             { if(iii!=null){cmd1.setImage(iii);}}
+
+            
             result=CirculationDAO.update(cmd1);
 
 
@@ -287,7 +276,6 @@ if(cma!=null)
 {
 
 
-//if(cmdf.getMEMCAT()!=null || cmdf.getMEMSUBCAT()!=null || cmdf.getTXTDESG1()!=null || cmdf.getTXTOFFICE()!=null ||cmdf.getTXTFACULTY()!=null || cmdf.getTXTCOURSE()!=null || cmdf.getTXTDEPT()!=null ||cmdf.getTXTREG_DATE()!=null || cmdf.getTXTEXP_DATE()!=null)
 
             cma.setMemType(cmdf.getMEMCAT());
             cma.setSubMemberType(cmdf.getMEMSUBCAT());
@@ -307,8 +295,6 @@ if(cma!=null)
     no_of_issueable=String.valueOf(book.getNoOfIssueableBook());
 
     }
-
-System.out.println(no_of_issueable+"...................");
 
 
 
@@ -337,7 +323,9 @@ System.out.println(no_of_issueable+"...................");
             if(result==true)
 
             {
-                String msg1="Record updated successfully";
+
+               // String msg1="Record updated successfully";
+                 String msg1=resource.getString("circulation.circulationnewmemberregAction.recupdatesucc");
                 request.setAttribute("msg1",msg1);
                 request.setAttribute("mem_id",member_id);
                 request.setAttribute("mem_name",mem_name);
@@ -347,7 +335,8 @@ System.out.println(no_of_issueable+"...................");
             }
             else
             {
-                String msg1="Record updated Not successfully";
+                //String msg1="Record updated Not successfully";
+                String msg1=resource.getString("circulation.circulationnewmemberregAction.recupdatenotsecc");
                 request.setAttribute("err",msg1);
                 request.setAttribute("mem_id",member_id);
                 request.setAttribute("mem_name",mem_name);
@@ -376,7 +365,8 @@ System.out.println(no_of_issueable+"...................");
         }
         if(cirmemobj.isEmpty())
         {
-                String msg1="Member Account is not Existing your Library ";
+              // String msg1="Member Account is not Existing your SubLibrary ";
+              String msg1=resource.getString("circulation.circulationnewmemberregAction.memaccnotexistsublib");
               request.setAttribute("err",msg1);
               request.setAttribute("lib",lib);
               request.setAttribute("mem_id",member_id);
@@ -391,7 +381,8 @@ System.out.println(library_id+sublibrary_id+member_id+"........................"
 
         if(chkobj!=null && !chkobj.isEmpty())
         {
-            String msg1="Member Checkout are there ,So Cannot Be Deleted";
+             // String msg1="Member Checkout are there ,So Cannot Be Deleted";
+              String msg1=resource.getString("circulation.circulationnewmemberregAction.memchkcannotdel");
               request.setAttribute("err",msg1);
               request.setAttribute("mem_id",member_id);
               request.setAttribute("mem_name",mem_name);
@@ -409,7 +400,8 @@ System.out.println(library_id+sublibrary_id+member_id+"........................"
             if(result==true)
 
             {
-              String msg1="Member Record Deleted Successfully from This SubLibrary ";
+              //String msg1="Member Record Deleted Successfully from This SubLibrary ";
+              String msg1=resource.getString("circulation.circulationnewmemberregAction.memrecdelsuccfromsublib");
               request.setAttribute("msg1",msg1);
               request.setAttribute("lib",lib);
               request.setAttribute("mem_id",member_id);
@@ -418,7 +410,8 @@ System.out.println(library_id+sublibrary_id+member_id+"........................"
               return mapping.findForward("Delete");
             }else{
 
-              String msg2="Record Not Deleted Successfully";
+             // String msg2="Record Not Deleted Successfully";
+              String msg2=resource.getString("circulation.circulationnewmemberregAction.memnotdelsucc");
               request.setAttribute("err",msg2);
               request.setAttribute("mem_id",member_id);
               request.setAttribute("mem_name",mem_name);

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <%@page contentType="text/html" pageEncoding="UTF-8" import="com.myapp.struts.hbm.*"%>
+    <%@page contentType="text/html" pageEncoding="UTF-8" import="com.myapp.struts.hbm.*,java.util.*"%>
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -12,6 +12,30 @@ String button=(String)request.getAttribute("button");
   boolean read=true;
   boolean button_visibility=true;
 %>
+
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
 <%
  if(button.equals("View"))
  {
@@ -26,6 +50,25 @@ String button=(String)request.getAttribute("button");
  if(button.equals("Delete"))
  {
    read=true;
+   button_visibility=true;
+ }
+%>
+<%! String button1;%>
+
+<%
+
+ if(button.equals("Update"))
+ {
+   button1=resource.getString("circulation.cir_member_reg.update");
+     read=false;
+
+   button_visibility=true;
+ }
+ if(button.equals("Delete"))
+ {
+   button1=resource.getString("circulation.cir_member_reg.delete");
+   read=true;
+
    button_visibility=true;
  }
 %>
@@ -47,22 +90,22 @@ String button=(String)request.getAttribute("button");
 
     <html:form action="/update2_view_delete" method="post">
 
-  <table width="40%" class="table"  border="1" align="center">
+  <table dir="<%=rtl%>" width="40%" class="table"  border="1" align="center">
 
-         <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage MemberType</td></tr>
-                <tr><td valign="top" align="right" style=" padding-left: 5px;">
+         <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.manage_member.managememtype")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="<%=align%>" style=" padding-left: 5px;">
 
 
 
-            <table align="center">
+            <table dir="<%=rtl%>" align="center">
      <tr>
-    <td align="left"><strong>Member ShortName :</strong></td>
-    <td><html:text property="emptype_id" styleClass="textBoxWidth" value="<%=employeetype.getId().getEmptypeId() %>" readonly="true"/></td>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.member_view_update.memshotname")%> :</strong></td>
+    <td dir="<%=rtl%>"><html:text property="emptype_id" styleClass="textBoxWidth" value="<%=employeetype.getId().getEmptypeId() %>" readonly="true"/></td>
   </tr>
     
    <tr>
-    <td width="150" align="left"><strong>Member Name </strong> </td>
-    <td width="200">
+    <td dir="<%=rtl%>" width="150" align="<%=align%>"><strong><%=resource.getString("systemsetup.member_view_update.memname")%> </strong> </td>
+    <td dir="<%=rtl%>"  width="200">
 
 
         <html:text  property="emptype_full_name" styleId="emptype_full_name" styleClass="textBoxWidth" readonly="<%=read%>" value="<%=employeetype.getEmptypeFullName() %>" /></td>
@@ -70,32 +113,32 @@ String button=(String)request.getAttribute("button");
 
   </tr>
    
-    <tr><td height="5px" colspan="4" ></td></tr>
+    <tr><td dir="<%=rtl%>" height="5px" colspan="4" ></td></tr>
   
   
   
     
-    <tr><td height="5px" colspan="4" ></td></tr>
+    <tr><td dir="<%=rtl%>" height="5px" colspan="4" ></td></tr>
  
      
  
-  <tr><td height="5px" colspan="4" ></td></tr>
+  <tr><td dir="<%=rtl%>" height="5px" colspan="4" ></td></tr>
   
   
  
 <tr>
-    <td colspan="4" align="center">
+    <td dir="<%=rtl%>" colspan="4" align="center">
     <%if(button_visibility){
     if(button.equals("Delete")){%>
-    <html:submit property="button" styleId="button" value="<%=button%>" onclick="return confirm1();" styleClass="btn" style="left:80px"  />
+    <input type="submit" styleId="button" value="<%=button1%>" onclick="return confirm1();" styleClass="btn" style="left:80px"  />
     <%}
     else{%>
-    <html:submit property="button" value="<%=button%>" styleClass="btn" onclick="return validation();" style="left:80px"  />
+    <input type="submit" value="<%=button1%>" styleClass="btn" onclick="return validation();" style="left:80px"  />
      <%}%><%}%>
-    <input type="button" onclick="return quit();" class="btn" style="left:150px" value="Back"/></td>
+    <input type="button" onclick="return quit();" class="btn" style="left:150px" value="<%=resource.getString("circulation.cir_member_reg.back")%>"/></td>
 </tr>
             </table></td></tr></table>
-
+   <input type="hidden" id="button" name="button" />
     
   </html:form>
         </div>
@@ -115,7 +158,8 @@ String button=(String)request.getAttribute("button");
     {
 
 
-
+            var buttonvalue="Update";
+    document.getElementById("button").setAttribute("value", buttonvalue);
 
 
     var sublib_name=document.getElementById('emptype_full_name');
@@ -126,15 +170,15 @@ String button=(String)request.getAttribute("button");
 
 
 
+ 
+
+
+var str="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-";
 
 
 
-var str="Enter Following Values:-";
-
-
-
-    if(sublib_name.value=="")
-        {str+="\n Enter Member Name ";
+   if(sublib_name.value=="")
+        {str+="\n <%=resource.getString("systemsetup.add_member.entermemname")%> ";
              alert(str);
              document.getElementById('emptype_full_name').focus();
             return false;
@@ -147,8 +191,8 @@ var str="Enter Following Values:-";
 
 
 
-if(str=="Enter Following Values:-")
-   {
+if(str=="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-")
+  {
        return true;
 
    }
@@ -156,7 +200,7 @@ else
     {
 
         alert(str);
-        document.getElementById('emptype_id').focus();
+        document.getElementById('emptype_full_name').focus();
         return false;
     }
 
@@ -169,11 +213,19 @@ else
 
  function confirm1()
 {
-var answer = confirm ("Do you want to delete record?")
-if (answer!=true)
-    {
-        document.getElementById('button').focus();
-        return false;
+ document.getElementById('button').value="<%=button%>" ;
+    var option=document.getElementById('button').value;
+    if(option=="Delete"){
+        var a=confirm("<%=resource.getString("circulation.cir_newmember.douwanttodelrec")%>");
+       // alert(a);
+        if(a!=true)
+            {
+                document.getElementById('button').focus();
+               return false;
+
+        }
+        else
+            return true;
     }
 }
 

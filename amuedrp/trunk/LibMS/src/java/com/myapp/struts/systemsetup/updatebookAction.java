@@ -11,6 +11,8 @@ import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.*;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.systemsetupDAO.BookCategoryDAO;
+import java.util.Locale;
+import java.util.ResourceBundle;
 /**
  *
  * @author edrp01
@@ -19,7 +21,11 @@ public class updatebookAction extends org.apache.struts.action.Action {
     
     
     String library_id,button,book_type,emptype_id,subemptype_id,full_name,issue_days,fine;
-boolean result;
+   boolean result;
+   Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -27,6 +33,21 @@ boolean result;
             throws Exception {
      BookCategoryDecideActionForm1 bcda  =(BookCategoryDecideActionForm1)form;
      HttpSession session=request.getSession();
+
+         try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         button=bcda.getButton();
         book_type=bcda.getBook_type();
         emptype_id=bcda.getEmptype_id();
@@ -64,7 +85,8 @@ System.out.println(button+"....................Emp Type.........."+emptype_id+".
            book.setDetail(full_name);
            result=BookCategoryDAO.update(book);
            if(result==true){
-               request.setAttribute("msg", "Record Successfully Updated");
+              //request.setAttribute("msg", "Record Successfully Updated");
+               request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recupdatesucc"));
 
             return mapping.findForward("success");
            }
@@ -83,13 +105,16 @@ System.out.println(button+"....................Emp Type.........."+emptype_id+".
             result=BookCategoryDAO.DeleteBook(library_id,emptype_id,subemptype_id,book_type);
             if(result==true)
             {
-                  request.setAttribute("msg", "Record Successfully Deleted");
+                //  request.setAttribute("msg", "Record Successfully Deleted");
+                request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recdelsucc"));
            
                 return mapping.findForward("success");
             }
            }
            else{
-               request.setAttribute("msg",book_type + "not Found");
+
+               // request.setAttribute("msg",book_type + "not Found");
+               request.setAttribute("msg",book_type + resource.getString("systemsetup.bookcategorydecideaction.notfond"));
            return mapping.findForward("failure");
 
            }

@@ -95,6 +95,7 @@ public class UpdateStaffAction extends org.apache.struts.action.Action {
 
 
         staff_id=staff.getEmployee_id();
+
         first_name=staff.getFirst_name();
         last_name=staff.getLast_name();
         contact_no=staff.getContact_no();
@@ -315,11 +316,14 @@ System.out.println(sublibrary_id+"/////////////////////////////////"+staff_id);
             }
       
                 //admin table updated if staff is admin.library_id
-                if(staff_id.equals("admin."+library_id))
-                {
+            //    if(staff_id.equals("admin."+library_id))
+              //  {
        /* Use to Update AdminRegistration Table */
-System.out.println("Admin...........");
+
             AdminRegistration adminobj=AdminRegistrationDAO.searchInstituteAdmin(staff_id,library_id);
+System.out.println("Admin..........."+adminobj);
+if(adminobj!=null)
+{
             if(city1!=null)
             adminobj.setCity(city1);
             if(state1!=null)
@@ -355,12 +359,21 @@ System.out.println("Admin...........");
                     request.setAttribute("msg", resource.getString("admin.UpdateStaffAction.error3"));
 
                  return mapping.findForward("success");
+                }else{
+                request.setAttribute("staff_id",staff_id );
+                  request.setAttribute("staff_name",first_name+" "+last_name );
+                 //   request.setAttribute("msg", "Record Suceessfully Updated For ");
+                  request.setAttribute("msg", resource.getString("admin.UpdateStaffAction.error10"));
+
+                 return mapping.findForward("success");
+
+
                 }
 
-              
+}
             
       
-         }
+         
                 request.setAttribute("staff_id",staff_id );
                   request.setAttribute("staff_name",first_name+" "+last_name );
                  //   request.setAttribute("msg", "Record Suceessfully Updated For ");

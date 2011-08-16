@@ -40,6 +40,15 @@ private String courtesy;
 private String gender;
 private String login_id;
 
+    public String getButton() {
+        return button;
+    }
+
+    public void setButton(String button) {
+        this.button = button;
+    }
+private String button;
+
 
  @Override
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {

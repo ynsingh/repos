@@ -4,7 +4,10 @@
  */
 
 package com.myapp.struts.opac;
-import  com.myapp.struts.*;
+import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.hbm.BibliographicDetails;
+import com.myapp.struts.hbm.BibliographicDetailsLang;
+import com.myapp.struts.hbm.DocumentDetails;
 import  com.myapp.struts.opacDAO.OpacSearchDAO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +16,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 /**
  *
@@ -23,6 +27,7 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     String searchtext1[],searchtext2[],searchtext3[]; /* array of fields*/
+    BibliopgraphicEntryDAO bibdao=new BibliopgraphicEntryDAO();
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -44,6 +49,7 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
                 String lib_id= myForm.getCMBLib();
                 String sub_lib = myForm.getCMBSUBLib();
                 HttpSession session = request.getSession();
+                 request.setCharacterEncoding("UTF-8");
                 session.removeAttribute("ResultSet");
                 //variables for phrases
                  p1=myForm.getTXTPHRASE1();
@@ -192,8 +198,49 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
   Integer year1 = (yr1==null?0:Integer.parseInt(yr1));
   Integer year2 = (yr2==null?0:Integer.parseInt(yr2));
   System.out.println("year1="+year1+" year2="+year2);
-                 List advance_search_list=(List)opac.advanceSearch(lib_id, sub_lib, searchtext1, c1, searchtext2, c2,searchtext3,c3,cnf1,cnf2,cnf3,cf1,cf2,cf3,db,sort,year1,year2);
-     /* query="select * from document_details";
+            //     List advance_search_list=(List)opac.advanceSearch(lib_id, sub_lib, searchtext1, c1, searchtext2, c2,searchtext3,c3,cnf1,cnf2,cnf3,cf1,cf2,cf3,db,sort,year1,year2);
+
+
+ List<BibliographicDetailsLang> advance_search_list=new ArrayList();
+ List<BibliographicDetails> advance_search_list1=new ArrayList();
+ ArrayList<BibliographicDetailsLang> bib=new ArrayList<BibliographicDetailsLang>();
+ ArrayList<BibliographicDetails> bib1=new ArrayList<BibliographicDetails>();
+ System.out.println("Check Box"+myForm.getCheckbox());
+ if(myForm.getCheckbox().equals("Checked")){
+ System.out.println("Languagebbb");
+ advance_search_list=opac.advanceLangSearch(lib_id, sub_lib, searchtext1, c1, searchtext2, c2,searchtext3,c3,cnf1,cnf2,cnf3,cf1,cf2,cf3,db,sort,year1,year2,myForm.getLanguage());
+if(!advance_search_list.isEmpty())
+{
+    for(int f=0;f<advance_search_list.size();f++)
+    {
+    int bibiid=advance_search_list.get(f).getId().getBiblioId();
+    List<DocumentDetails> ddd=bibdao.searchDoc2(bibiid, lib_id, sub_lib);
+    if(!ddd.isEmpty()){
+        bib.add(advance_search_list.get(f));
+    }     
+    }
+}
+   session.setAttribute("ResultSet", bib);
+ }
+ else{
+     
+ advance_search_list1=opac.advanceSearch(lib_id, sub_lib, searchtext1, c1, searchtext2, c2,searchtext3,c3,cnf1,cnf2,cnf3,cf1,cf2,cf3,db,sort,year1,year2);
+     
+ if(!advance_search_list1.isEmpty())
+{
+    for(int f=0;f<advance_search_list1.size();f++)
+    {
+    int bibiid=advance_search_list1.get(f).getId().getBiblioId();
+    List<DocumentDetails> ddd=bibdao.searchDoc2(bibiid, lib_id, sub_lib);
+    if(!ddd.isEmpty()){
+        bib1.add(advance_search_list1.get(f));
+    } 
+    }
+}
+    session.setAttribute("ResultSet", bib1);
+ }
+
+                 /* query="select * from document_details";
           int flag=0;
           if(db.equals("combined")){query="select * from document_details "; flag=0;}
         else                     {query=query+" where document_type='"+db+"' ";flag=1;}
@@ -384,7 +431,7 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
          // System.out.println("Advance Query="+query);
        //  rs = MyQueryResult.getMyExecuteQuery(query);
          //if(rs.next())
-         session.setAttribute("ResultSet", advance_search_list);
+   //      session.setAttribute("ResultSet", advance_search_list);
 
         return mapping.findForward(SUCCESS);
     }

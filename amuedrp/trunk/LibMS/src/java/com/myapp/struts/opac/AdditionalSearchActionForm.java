@@ -6,7 +6,7 @@
 package com.myapp.struts.opac;
 
 import javax.servlet.http.HttpServletRequest;
-
+import java.io.UnsupportedEncodingException;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 
@@ -31,6 +31,24 @@ public class AdditionalSearchActionForm extends org.apache.struts.action.ActionF
     private String CMBLib;
     private String CMBSUBLib;
     private String CMBSORT;
+    private String checkbox;
+    private String language;
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getCheckbox() {
+        return checkbox;
+    }
+
+    public void setCheckbox(String checkbox) {
+        this.checkbox = checkbox;
+    }
 
     public String getCMBSORT() {
         return CMBSORT;
@@ -252,5 +270,14 @@ public class AdditionalSearchActionForm extends org.apache.struts.action.ActionF
      */
     public void setCMBSUBLib(String CMBSUBLib) {
         this.CMBSUBLib = CMBSUBLib;
+    }
+
+    @Override
+     public void reset(ActionMapping mapping, HttpServletRequest request) {
+        try {
+      request.setCharacterEncoding("UTF-8");
+    }
+    catch (UnsupportedEncodingException ex) {
+    }
     }
 }

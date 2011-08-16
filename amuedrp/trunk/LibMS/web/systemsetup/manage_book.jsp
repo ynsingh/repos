@@ -5,7 +5,7 @@ Modified On  : 17-Feb 2011
 This Page is to Enter Staff ID
 -->
 
-<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.List"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*"%>
 
 <jsp:include page="../admin/header.jsp" flush="true" />
 
@@ -21,6 +21,29 @@ String msg1=(String)request.getAttribute("msg1");
 List list1=(List)session.getAttribute("list1");
 List list2=(List)session.getAttribute("list2");
 %>
+
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
 <script language="javascript" type="text/javascript">
 /*
 * Returns an new XMLHttpRequest object, or false if the browser
@@ -143,7 +166,31 @@ newOpt.text = ndValue1;
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
  <script language="javascript" type="text/javascript">
+ function Add()
+{
+    var buttonvalue="Add";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
 
+function View()
+{
+    var buttonvalue="View";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+function Update()
+{
+    var buttonvalue="Update";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+function Delete()
+{
+    var buttonvalue="Delete";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
 
 function check1()
 {
@@ -155,7 +202,7 @@ var book_type = document.getElementById('book_type').options[document.getElement
 
     if(emptype=="Select")
     {
-        alert("Select Emp Type");
+        alert("<%=resource.getString("systemsetup.manage_book.selectemptype")%>");
 
         document.getElementById('emptype_id').focus();
 
@@ -164,7 +211,7 @@ var book_type = document.getElementById('book_type').options[document.getElement
 
     if(subemp=="Select")
     {
-        alert("Select SubEmp Type");
+        alert("<%=resource.getString("systemsetup.manage_book.selectsubemptype")%>");
 
         document.getElementById('subemptype_id').focus();
 
@@ -173,7 +220,7 @@ var book_type = document.getElementById('book_type').options[document.getElement
 
   if(book_type=="Select")
     {
-        alert("Select Document Category Type");
+        alert("<%=resource.getString("systemsetup.manage_book.selectdoccattype")%>");
 
         document.getElementById('book_type').focus();
 
@@ -210,17 +257,17 @@ return true;
 
       visibility: show;">
 
-    <table border="1" class="table" width="400px" height="200px" align="center">
+    <table dir="<%=rtl%>" border="1" class="table" width="400px" height="200px" align="center">
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Configure Fine Detail</td></tr>
-                <tr><td valign="top" align="center"> <br/>
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.manage_book.configfinedetail")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
                         <table >
-                            <tr><td width="150px" align="center" colspan="2">Select MemberType </td>
-                                <td width="150px" align="center"> <input type="submit" class="btn" id="Button1" name="button" value="Add" />
+                            <tr><td dir="<%=rtl%>" width="150px" align="center" colspan="2"><%=resource.getString("systemsetup.manage_book.selectemptype")%> </td>
+                                <td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn" id="Button1"  value="<%=resource.getString("systemsetup.manage_notice.add")%>" onclick="return Add();" />
                                 </td>
                             </tr>
-                            <tr><td align="center" colspan="2" >
+                            <tr><td dir="<%=rtl%>" align="center" colspan="2" >
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <html:select  property="emptype_id" style="width:160px" styleId="emptype_id" tabindex="3"  onchange="return search1();">
                           <html:option value="Select">Select</html:option>
@@ -228,10 +275,10 @@ return true;
                      </html:select>
 
 
-               </td><td width="150px" align="center"><input type="submit" id="Button2" class="btn" name="button" value="Update"  /></td> </tr>
-                            <tr><td width="150px" align="center" colspan="2">
+               </td><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button2" class="btn"  value="<%=resource.getString("circulation.cir_member_reg.update")%>" onclick="return Update();" /></td> </tr>
+                            <tr><td dir="<%=rtl%>" width="150px" align="center" colspan="2">
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    Select SubMember Type </td><td width="150px" align="center"><input type="submit" id="Button4" name="button" value="Delete" class="btn" /></td><tr><td align="center" colspan="2">
+                                    <%=resource.getString("systemsetup.manage_book.selectsubemptype")%> </td><td width="150px" align="center"><input type="submit" id="Button4"  value="<%=resource.getString("circulation.cir_member_reg.delete")%>" onclick="return Delete();" class="btn" /></td><tr><td align="center" colspan="2">
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                                                                         <html:select  property="sub_emptype_id" styleId="subemptype_id" style="width:160px"  tabindex="3">
@@ -239,10 +286,10 @@ return true;
                      </html:select>
 
 
-                                </td> <td width="150px" align="center"><input type="submit" id="Button3" name="button" value="View" class="btn"  onclick="return check1();" /></td> </tr>
-                            <tr><td  class="txt2" align="center" colspan="2">
+                                </td> <td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button3"  value="<%=resource.getString("circulation.cir_member_reg.view")%>" class="btn"  onclick="return View();" /></td> </tr>
+                            <tr><td dir="<%=rtl%>"  class="txt2" align="center" colspan="2">
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    Select Document Category
+                                  <%=resource.getString("systemsetup.manage_book.selectdoccattype")%>
                     <br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                      <html:select  property="book_type" style="width:160px" styleId="book_type" tabindex="3"  >
@@ -250,7 +297,7 @@ return true;
                           <html:options  collection="list3" property="id.documentCategoryId" labelProperty="documentCategoryName"></html:options>
                      </html:select>
                         </td>
-                        <td align="center"><input type="button" id="Button5" name="button" value="Back" class="btn" onclick="return quit()"/></td>
+                        <td dir="<%=rtl%>" align="center"><input type="button" id="Button5"  value="<%=resource.getString("circulation.cir_member_reg.back")%>" class="btn" onclick="return quit()"/></td>
                     </tr>
                    
                    
@@ -260,7 +307,7 @@ return true;
 
 
     <input type="hidden" name="library_id" value="<%=library_id%>">
-
+      <input type="hidden" id="button" name="button" />
 
 </td></tr>
                 <tr><td>
@@ -272,7 +319,7 @@ return true;
         %>
 
 
-        <p class="mess">  <%=msg%></p>
+        <p class="mess" dir="<%=rtl%>" align="<%=align%>">  <%=msg%></p>
 
         <%
         }
@@ -282,7 +329,7 @@ return true;
         %>
 
 
-        <p class="err">  <%=msg1%></p>
+        <p class="err" dir="<%=rtl%>" align="<%=align%>">  <%=msg1%></p>
 
         <%
         }

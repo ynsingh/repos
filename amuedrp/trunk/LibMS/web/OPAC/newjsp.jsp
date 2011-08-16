@@ -1,7 +1,11 @@
 <%@ page import="com.myapp.struts.hbm.*,java.util.*,com.myapp.struts.systemsetupDAO.DocumentCategoryDAO;" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+    <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+    <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
  <style>
 
     th a:link      { text-decoration: none; color: black }
@@ -20,38 +24,35 @@
 <script language="javaScript" src="fulldetail.js"></script>
 </head>
 <body>
-
-
-
-
-
 <%! String title,author,publ_pl,pub_name,pub_yr,pages,index,callno,phy_width,loc,pubyr,copy,vol,ed,publ,place,isbn,accno,subtitle,subject,id,lib_id,status,location,booktype;
-   DocumentDetails dd;
+int no_of_copy=0;
+List<BibliographicDetails> dd=new ArrayList<BibliographicDetails>();
     
 %>
 <%
-
-dd = (DocumentDetails)request.getAttribute("documentDetail");
+if(session.getAttribute("documentDetail")!=null)  {
+    List<DocumentDetails> list=(List<DocumentDetails>)session.getAttribute("documentDetail");
+no_of_copy=list.size();
+}
+dd = (List<BibliographicDetails>)session.getAttribute("documentDetail1");
         if(dd!=null){
             
-           booktype=dd.getBookType();
-            title=dd.getTitle();
-            subtitle=dd.getSubtitle();
-            author=dd.getMainEntry();
-            publ_pl=dd.getPublicationPlace();
-            pub_name=dd.getPublisherName();
-            pub_yr=dd.getPublishingYear();
-            pages=dd.getNoOfPages();
-            index=dd.getIndexNo();
-            callno=dd.getCallNo();
-            isbn=dd.getIsbn10();
-            ed=dd.getEdition();
-            location=dd.getLocation();
-            lib_id = dd.getId().getLibraryId();
-            phy_width=dd.getPhysicalWidth();
-            status = dd.getStatus();
-            accno = dd.getAccessionNo();
-            String sublib_id = (String)dd.getId().getSublibraryId();
+           booktype=dd.get(0).getBookType();
+            title=dd.get(0).getTitle();
+            subtitle=dd.get(0).getSubtitle();
+            author=dd.get(0).getMainEntry();
+            publ_pl=dd.get(0).getPublicationPlace();
+            pub_name=dd.get(0).getPublisherName();
+            pub_yr=dd.get(0).getPublishingYear();
+            
+            callno=dd.get(0).getCallNo();
+            isbn=dd.get(0).getIsbn10();
+            ed=dd.get(0).getEdition();
+           // location=dd.getLocation();
+            lib_id = dd.get(0).getId().getLibraryId();
+          //  phy_width=dd.getPhysicalWidth();
+         //   status = dd.getStatus();
+            String sublib_id = (String)dd.get(0).getId().getSublibraryId();
             if(title==null)title="";
             if(subtitle==null)subtitle="";
             if(author==null)author="";
@@ -71,77 +72,88 @@ dd = (DocumentDetails)request.getAttribute("documentDetail");
             String issuetype ="";
             if(docc!=null)
                 issuetype=docc.getIssueCheck();
- %>             
+ %>
 
+<%!
+    Locale locale;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
 
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
 <button  onmousedown="fontResize('-5')">Font Size -&nbsp;-</button><button  onmousedown="fontResize('+5')">Font Size ++</button>
 <br>
-<TABLE  border='0' class="datagrid" cellspacing='0' cellpadding='0' valign="top" width="200px">
+<TABLE align="<%=align%>" dir="<%=rtl%>"  border='0' class="datagrid" cellspacing='0' cellpadding='0' valign="top" width="200px">
    
    
-    <TR>
-        <TD NOWRAP valign='top'  width=10%>Title:</TD>
-        <TD valign='top' >&nbsp; </TD>
-        <TD  colspan=2><%=title%></TD>
+    <TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>"  width=10%><%=resource.getString("opac.newjsp.title")%></TD>
+        <TD valign='top' dir="<%=rtl%>" >&nbsp; </TD>
+        <TD  colspan=2 dir="<%=rtl%>"><%=title%></TD>
+    </TR>
+
+    <TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>"  width="10%"><%=resource.getString("opac.newjsp.mainauthor")%></TD>
+        <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
+        <TD  colspan=2 dir="<%=rtl%>"><%=author%></TD>
+    </TR>
+      
+    <TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>" width=10%><%=resource.getString("opac.newjsp.pubplace")%>  </TD>
+        <TD valign='top' dir="<%=rtl%>" >&nbsp; </TD>
+        <TD  colspan=2 dir="<%=rtl%>"><%=publ_pl%></TD>
+    </TR>
+    <TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>" width=10%><%=resource.getString("opac.newjsp.pubname")%>  </TD>
+        <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
+        <TD colspan=2 dir="<%=rtl%>"><%=pub_name%></TD>
+    </TR>
+    <TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>" width=10%><%=resource.getString("opac.newjsp.pubyear")%>  </TD>
+        <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
+        <TD  colspan=2 dir="<%=rtl%>"><%=pub_yr%></TD>
+    </TR>
+   
+    <TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>" width=10%><%=resource.getString("opac.newjsp.callno")%> </TD>
+        <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
+        <TD  colspan=2 dir="<%=rtl%>"><%=callno%></TD>
+    </TR>
+    
+    <TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>"  width=10%><%=resource.getString("opac.newjsp.isbn")%></TD>
+        <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
+        <TD  colspan=2 dir="<%=rtl%>"><%=isbn%></TD>
     </TR>
 
     <TR>
-        <TD NOWRAP valign='top'  width="10%">Main Author:</TD>
-        <TD valign='top' >&nbsp; </TD>
-        <TD  colspan=2 ><%=author%></TD>
+        <TD NOWRAP valign='top' dir="<%=rtl%>" width=10%><%=resource.getString("opac.newjsp.issuetype")%></TD>
+        <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
+        <TD  colspan=2 dir="<%=rtl%>"><%=issuetype%></TD>
     </TR>
-      
-    <TR>
-        <TD NOWRAP valign='top'  width=10%>Publication Place:  </TD>
-        <TD valign='top' >&nbsp; </TD>
-        <TD  colspan=2><%=publ_pl%></TD>
+ <TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>"  width=10%>No of Copies</TD>
+        <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
+        <TD  colspan=2 dir="<%=rtl%>"><%=no_of_copy %></TD>
     </TR>
-    <TR>
-        <TD NOWRAP valign='top'  width=10%>Publisher Name:  </TD>
-        <TD valign='top' >&nbsp; </TD>
-        <TD colspan=2><%=pub_name%></TD>
-    </TR>
-    <TR>
-        <TD NOWRAP valign='top'  width=10%>Publishing Year:  </TD>
-        <TD valign='top' >&nbsp; </TD>
-        <TD  colspan=2><%=pub_yr%></TD>
-    </TR>
-    <TR>
-        <TD NOWRAP valign='top'  width=10%>Pages:</TD>
-        <TD valign='top' >&nbsp; </TD>
-        <TD  colspan=2><%=index%>,<%=pages%></TD>
-    </TR>
-    <TR>
-        <TD NOWRAP valign='top'  width=10%>Call No: </TD>
-        <TD valign='top' >&nbsp; </TD>
-        <TD  colspan=2><%=callno%></TD>
-    </TR>
-    <TR>
-        <TD NOWRAP valign='top'  width=10%>Accession No: </TD>
-        <TD valign='top' >&nbsp; </TD>
-        <TD  colspan=2><%=accno%></TD>
-    </TR>
-    <TR>
-        <TD NOWRAP valign='top'  width=10%>ISBN:</TD>
-        <TD valign='top' >&nbsp; </TD>
-        <TD  colspan=2><%=isbn%></TD>
-    </TR>
-    <TR>
-        <TD NOWRAP valign='top'  width=10%>Status:</TD>
-        <TD valign='top' >&nbsp; </TD>
-        <TD  colspan=2><%=status%></TD>
-    </TR>
-    <TR>
-        <TD NOWRAP valign='top'  width=10%>Issue Type:</TD>
-        <TD valign='top' >&nbsp; </TD>
-        <TD  colspan=2><%=issuetype%></TD>
-    </TR>
-    <TR><TD NOWRAP valign='top'  width="10%">Location:</TD>
-        <TD valign='top' >&nbsp; </TD>
-        <TD  colspan=2><%=location%><br></TD>
-    </TR>
-    <tr><td colspan="2"><a href="#">View Detail</a></td>
-        <%if(status.equalsIgnoreCase("available")&& issuetype.equals("Issuable")){%><td colspan="2"><a href="<%=request.getContextPath()%>/OPAC/checkoutRequest.do?docId=<%=dd.getId().getDocumentId()%>&libId=<%=dd.getId().getLibraryId()%>&sublibId=<%=dd.getId().getSublibraryId()%>">Request for Check Out</a></td><%}%></tr>
+
+<tr><td colspan="2"><a href="<%= request.getContextPath()%>/OPAC/record.jsp" target="mainframe">View Detail</a></td></tr>
 </TABLE><br><br>
 <%       }
 %>

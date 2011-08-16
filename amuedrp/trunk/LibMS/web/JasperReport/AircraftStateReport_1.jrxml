@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AircraftStateReport_1" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SIMPLE_DATA" class="java.util.HashMap"/>
+	<parameter name="summ" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		
+	</parameter>
+	<field name="id" class="java.lang.String"/>
+	<field name="id2" class="java.lang.String"/>
+	<field name="id3" class="java.lang.String"/>
+	<field name="id5" class="java.lang.String"/>
+	<field name="id7" class="java.lang.String"/>
+	<field name="id8" class="java.lang.String"/>
+	<field name="id9" class="java.lang.String"/>
+	<field name="id10" class="java.lang.String"/>
+	<field name="id11" class="java.lang.String"/>
+	<field name="id12" class="java.lang.String"/>
+	<field name="sum" class="java.lang.String"/>
+	<variable name="ss" class="java.lang.Integer" calculation="Sum"/>
+	<variable name="sum1" class="java.lang.Integer" calculation="Sum"/>
+	<title>
+		<band height="35" splitType="Stretch">
+			<image>
+				<reportElement x="479" y="0" width="60" height="18"/>
+				<imageExpression class="java.lang.String"></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="197" y="15" width="150" height="20"/>
+				<textElement>
+					<font  size="14"/>
+				</textElement>
+				<text><![CDATA[PURCHASE REPORT]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="253" splitType="Stretch">
+			<subreport>
+				<reportElement positionType="Float" x="312" y="23" width="102" height="29"/>
+				<subreportParameter name="id3">
+					<subreportParameterExpression><![CDATA[$P{SIMPLE_DATA}.get($F{id3})]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[$P{SIMPLE_DATA}.get($F{id3})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["AircraftStateReport_1_subreport3.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="52" width="102" height="10"/>
+				<subreportParameter name="id2">
+					<subreportParameterExpression><![CDATA[$P{SIMPLE_DATA}.get($F{id2})]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[$P{SIMPLE_DATA}.get($F{id2})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["AircraftStateReport_1_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="86" width="479" height="24"/>
+				<subreportParameter name="sumreport">
+					<subreportParameterExpression><![CDATA[$P{SIMPLE_DATA}.get($F{sum})]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="sum1">
+					<subreportParameterExpression><![CDATA[$V{sum1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="id7">
+					<subreportParameterExpression><![CDATA[$P{SIMPLE_DATA}.get($F{id7})]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[$P{SIMPLE_DATA}.get($F{id7})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["AircraftStateReport_1_subreport6.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="331" y="4" width="200" height="19"/>
+				<subreportParameter name="id9">
+					<subreportParameterExpression><![CDATA[$P{SIMPLE_DATA}.get($F{id9})]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[$P{SIMPLE_DATA}.get($F{id9})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["AircraftStateReport_1_subreport8.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="62" width="531" height="22"/>
+				<subreportParameter name="id12">
+					<subreportParameterExpression><![CDATA[$P{SIMPLE_DATA}.get($F{id12})]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[$P{SIMPLE_DATA}.get($F{id12})]]></dataSourceExpression>
+				<returnValue subreportVariable="sum1" toVariable="sum1"/>
+				<subreportExpression class="java.lang.String"><![CDATA["purchaseordersubreport.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement x="247" y="10" width="32" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="21">
+			<textField>
+				<reportElement x="247" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

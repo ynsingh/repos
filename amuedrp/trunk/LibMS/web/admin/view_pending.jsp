@@ -39,35 +39,7 @@ else{
 
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
-<script language="javascript" >
-function b1click()
-{
-location.href="login.jsp";
-}
-function b2click()
-{
-f.action="login.jsp";
-f.method="post";
-f.target="_self";
-f.submit();
-}
-function getQuery(id)
-{
-    var query = "<%=request.getContextPath()%>/admin/index1.jsp?id="+id;
-    return query;
-}
-</script>
- <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: #7697BC; color: #FFFFFF;font-weight: bold }
 
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
 </head>
 
 <body>
@@ -182,25 +154,25 @@ locale1=(String)session.getAttribute("locale");
     
   <columns>
       
-    <column width="10%">
+    <column width="100">
       <header value="${Registration_ID}" hAlign="left" styleClass="header"/>
       <item   value="${doc.registration_id}" hyperLink="view1.do?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
-    <column width="15%">
+    <column width="250">
       <header value="${InstituteName}" hAlign="left" styleClass="header"/>
       <item   value="${doc.institute_name}" hAlign="left" hyperLink="view1.do?id=${doc.registration_id}"  styleClass="item"/>
     </column>
-    <column width="10%">
+    <column width="100">
       <header value="${UserId}" hAlign="left" styleClass="header"/>
       <item   value="${doc.userId}" hAlign="left" hyperLink="view1.do?id=${doc.registration_id}"  styleClass="item"/>
     </column>
        
-    <column width="10%">
+    <column width="150">
       <header value="${Admin_Email}" hAlign="left" styleClass="header"/>
       <item   value="${doc.admin_email}" hyperLink="view1.do?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
-       <column width="5%">
+       <column width="50">
       <header value="${Action}" hAlign="left" styleClass="header"/>
       <item   value="Accept" hyperLink="view1.do?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
@@ -213,17 +185,17 @@ locale1=(String)session.getAttribute("locale");
        previousUrlVar="previous" pagesVar="pages"/>
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>
-<table width="60%" style="font-family: arial; font-size: 10pt" border=0>
+ <table width="700" style="font-family: arial; font-size: 10pt" >
 <tr>
 <td align="left" width="100px">
-<c:if test="${previous} != null">
+<c:if test="${previous != null}">
 <a href="<c:out value="${previous}"/>">Previous</a>
 </c:if>&nbsp;
-<c:if test="${next} != null">
+<c:if test="${next != null}">
 <a href="<c:out value="${next}"/>">Next</a>
 </c:if>
 
-</td><td width="50%" align="center">
+</td><td width="400px" align="center">
 
 <c:forEach items="${pages}" var="page">
 <c:choose>
@@ -235,10 +207,14 @@ locale1=(String)session.getAttribute("locale");
   </c:otherwise>
 </c:choose>
 </c:forEach>
+</td><td align="center">
+     Import :<img src="<%=request.getContextPath()%>/images/excel.jpeg" border="1" height="25" width="25">
+    <img src="<%=request.getContextPath()%>/images/xml.jpeg" height="25" border="1" width="25">
+    <img src="<%=request.getContextPath()%>/images/pdf.jpeg" height="25"border="1" width="25">
 </td>
 
 </tr>
-</table>
+  </table>
 <%}}else{
 request.setAttribute("msg", "Your Session Expired: Please Login Again");
     %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%

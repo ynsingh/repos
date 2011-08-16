@@ -5,7 +5,7 @@ Modified On  : 17-Feb 2011
 This Page is to Enter Staff ID 
 -->
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*"%>
 <%@page  import="java.util.List" %>
  <jsp:include page="/admin/header.jsp" flush="true" />
 
@@ -23,6 +23,30 @@ String msg2=(String)request.getAttribute("msg1");
 
 System.out.println(msg2+"...........");
 %>
+
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -31,12 +55,37 @@ System.out.println(msg2+"...........");
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
  <script language="javascript" type="text/javascript">
 
+ function Add()
+{
+    var buttonvalue="Add";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+
+function View()
+{
+    var buttonvalue="View";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+function Update()
+{
+    var buttonvalue="Update";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+function Delete()
+{
+    var buttonvalue="Delete";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
 
 function check1()
 {
      if(document.getElementById('emptype_id').value=="Select")
     {
-        alert("Select Member Type");
+        alert("<%=resource.getString("systemsetup.managesubmember.selectmemtype")%>");
 
         document.getElementById('emptype_id').focus();
 
@@ -45,7 +94,7 @@ function check1()
 
     if(document.getElementById('sub_emptype_id').value=="")
     {
-        alert("Enter SubMember Id...");
+        alert("<%=resource.getString("systemsetup.managesubmember.entersubmemid")%>...");
 
         document.getElementById('sub_emptype_id').focus();
 
@@ -85,14 +134,14 @@ function check1()
 
       visibility: show;">
 
-    <table border="1"  class="table" width="500px" height="200px" align="center">
+    <table border="1" dir="<%=rtl%>"  class="table" width="500px" height="200px" align="center">
 
   
-        <tr><td align="center" colspan="2" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage SubMemberType</td></tr>
-                <tr><td valign="middle" align="center"> <br/>
-                <table cellspacing="10px">
+        <tr><td dir="<%=rtl%>" align="center" colspan="2" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.manage_submember.managesubmemtype")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="middle" align="center"> <br/>
+                <table dir="<%=rtl%>" cellspacing="10px">
 
-                    <tr><td align="left" width="150px">&nbsp;Member Name </td><td align="left">
+                    <tr><td dir="<%=rtl%>" align="<%=align%>" width="150px">&nbsp;<%=resource.getString("systemsetup.member_view_update.memname")%> </td><td dir="<%=rtl%>" align="<%=align%>">
 
                             <html:select   property="emptype_id" styleId="emptype_id" value="Select" >
                           <html:option value="Select">Select</html:option>
@@ -102,27 +151,27 @@ function check1()
 
 
                </td></tr>
-                    <tr><td class="txt2">SubMemberType ID</td><td>
+                    <tr><td dir="<%=rtl%>" class="txt2"><%=resource.getString("systemsetup.manage_submember.submemtypeid")%></td><td>
                         <input type="text" id="sub_emptype_id" name="sub_emptype_id" value=""/></td>
                     </tr>
 
                 </table>
                     </td><td>
-                        <table>
+                        <table dir="<%=rtl%>">
 
                     
-                            <tr><td width="150px" align="center"> <input type="submit" class="btn" id="Button1" name="button" value="Register" /></td></tr>
-                    <tr><td width="150px" align="center"><input type="submit" id="Button2" class="btn" name="button" value="Update"  /></td></tr>
-                    <tr><td width="150px" align="center"><input type="submit" id="Button3" name="button" value="View" class="btn"  /></td></tr>
-                    <tr><td width="150px" align="center"><input type="submit" id="Button4" name="button" value="Delete" class="btn" /></td></tr>
-                         <tr><td width="150px" align="center"><input type="button" id="Button5" name="button" value="Back" class="btn" onclick="return quit()"/></td></tr>
+                            <tr><td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn" id="Button1" name="button1" value="<%=resource.getString("systemsetup.manage_notice.add")%>" onclick="return Add();"  /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button2" class="btn" name="button1" value="<%=resource.getString("circulation.cir_member_reg.update")%>" onclick="return Update();"  /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button3" name="button1" value="<%=resource.getString("circulation.cir_member_reg.view")%>" onclick="return View();"  class="btn"  /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button4" name="button1" value="<%=resource.getString("circulation.cir_member_reg.delete")%>" onclick="return Delete();" class="btn" /></td></tr>
+                         <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="button" id="Button5" name="button1" value="<%=resource.getString("circulation.cir_member_reg.back")%>" class="btn" onclick="return quit()"/></td></tr>
  
 
                 </table>
        
 
     
-   
+   <input type="hidden" id="button" name="button" />
 
 
 
@@ -140,9 +189,9 @@ function check1()
               
         %>
 
-        <p class="mess">  <%=msg%></p>
+        <p class="mess" dir="<%=rtl%>" align="<%=align%>">  <%=msg%></p>
         <script>
-            var check = confirm("Do You Want To Add More SubMember Type..");
+            var check = confirm("<%=resource.getString("systemsetup.manage_member.doyouwanttoaddmoresubmem")%>");
             if(check==false){
                 <%if(session.getAttribute("location")==null&& session.getAttribute("document")==null&& session.getAttribute("member")==null)
                         {session.removeAttribute("submember");%>window.location="<%=request.getContextPath()%>/admin/main.jsp";<%}else{session.removeAttribute("submember");%>
@@ -164,14 +213,14 @@ function check1()
         %>
 
 
-        <p class="err">  <%=msg2%></p>
+        <p class="err" dir="<%=rtl%>" align="<%=align%>">  <%=msg2%></p>
 
         <%
         }
         %>
 
                     </td></tr>
-                <tr><td align="justify" colspan="2"><font color="blue" size="-1"><b>Example:</b> ug for Under-Graduate Student, pg for Post-Graduate Student, prof for Professor, c for Clerk & so on, if SubMemberType exists.</font></td></tr>
+                <tr><td align="justify" colspan="2"><font color="blue" size="-1"><b><%=resource.getString("systemsetup.manage_notice.example")%>:</b> ug <%=resource.getString("systemsetup.manage_sumember.forug")%>, pg <%=resource.getString("systemsetup.manage_sumember.forpg")%>, prof <%=resource.getString("systemsetup.manage_sumember.forprofesor")%>, c <%=resource.getString("systemsetup.manage_sumember.forclerk")%>, <%=resource.getString("systemsetup.manage_sumember.ifsubmemtypeexist")%>.</font></td></tr>
 
     </table>
         </div>

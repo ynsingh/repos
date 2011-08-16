@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html"%>
-<%@page pageEncoding="UTF-8"%>
+<%@page pageEncoding="UTF-8" import="java.util.*;"%>
  <jsp:include page="/admin/header.jsp" flush="true" /> 
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -20,7 +20,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Check in process</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+  <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
+    %>
 </head>
 <body>
 
@@ -34,13 +55,13 @@
 
       visibility: show;">
 
-   <table width="400px" valign="top" align="center" class="table">
+   <table dir="<%=rtl%>" width="400px" valign="top" align="center" class="table">
 
-  <tr><td  class="headerStyle" bgcolor="#E0E8F5" height="25px;" align="center">
+  <tr><td dir="<%=rtl%>"  class="headerStyle" bgcolor="#E0E8F5" height="25px;" align="center">
 
 
 
-          <b>Book Return Checkin Process</b>
+          <b><%=resource.getString("circulation.cir_checkin.bookreturn")%></b>
 
 
 
@@ -49,20 +70,20 @@
         </td></tr>
    <tr><td></td></tr>
 
-        <tr><td   width="400px" valign="top" style="" align="center">
+        <tr><td dir="<%=rtl%>"  width="400px" valign="top" style="" align="center">
                 <br><br>
-                <table cellspacing="10px">
+                <table dir="<%=rtl%>" cellspacing="10px">
 
-                    <tr><td rowspan="5" class="txt2">Enter Accession No.<br><br>
+                    <tr><td dir="<%=rtl%>" rowspan="5" class="txt2"><%=resource.getString("circulation.cir_checkin.enteraccessno")%><br><br>
                             <input type="text"  name="TXTACCESSION"/><br/>
                           <html:messages id="err_name" property="TXTACCESSION">
 				<bean:write name="err_name" />
 
 			</html:messages>
 
- </td><td width="150px" align="center"> <input type="submit" class="btn" id="Button1" name="button" value="Submit" /></td></tr>
+                        </td><td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn"  onclick="return Submit();"  value="<%=resource.getString("circulation.cir_newmember.submit")%>" /></td></tr>
 
- <tr><td width="150px" align="center"><input type="button" id="Button5" name="button" value="Back" class="btn" onclick="return quit()"/></td></tr>
+ <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="button" id="Button5"  value="<%=resource.getString("circulation.cir_newmember.back")%>" class="btn" onclick="return quit()"/></td></tr>
 
 
 
@@ -70,7 +91,7 @@
 
 
 
-
+ <input type="hidden" id="button" name="button" />
 
 
 
@@ -109,6 +130,12 @@ else if(msg1!=null)
 </body>
 <script language="javascript" type="text/javascript">
 
+  function Submit()
+{
+    var buttonvalue="Submit";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
   function quit()
   {
 

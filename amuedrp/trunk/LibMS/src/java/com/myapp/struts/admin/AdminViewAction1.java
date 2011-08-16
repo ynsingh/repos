@@ -7,7 +7,6 @@ package com.myapp.struts.admin;
 
 import  com.myapp.struts.hbm.Privilege;
 import  com.myapp.struts.hbm.PrivilegeId;
-import  com.myapp.struts.hbm.Library;
 import  com.myapp.struts.hbm.SerPrivilege;
 import  com.myapp.struts.hbm.CirPrivilegeId;
 import  com.myapp.struts.hbm.CirPrivilege;
@@ -32,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import  com.myapp.struts.utility.*;
 import javax.servlet.http.HttpSession;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -60,27 +58,15 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
     
     private int registration_request_id;
     private  String institute_name;
-    private String abbreviated_name;
-    private  String institute_address;
-    private String city;
-    private String state;
-    private String country;
-    private String pin;
-    private String land_line_no;
-    private String mobile_no;
+  
     
     private String login_id;
-    private String type_of_institute;
-    private String website;
-    private String admin_fname;
-    private String admin_lname;
-    private String admin_designation;
-    private String admin_email;
+    
     private String admin_password;
     private  String library_id;
     private  String library_name;
-    private String courtesy;
-    private String gender;
+  
+    private String button;
 
     Locale locale=null;
     String locale1="en";
@@ -120,29 +106,14 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
 
         registration_request_id=admin.getRegistration_request_id();
         institute_name=admin.getInstitute_name();
-        abbreviated_name=admin.getAbbreviated_name();
-        institute_address = admin.getInstitute_address();
-        city=admin.getCity();
-        state=admin.getState();
-        country=admin.getCountry();
-        pin=admin.getPin();
-        land_line_no=admin.getLand_line_no();
-        mobile_no=admin.getMobile_no();
         
         login_id=admin.getLogin_id();
-        type_of_institute=admin.getType_of_institute();
-        website=admin.getInstitute_website();
-        admin_fname=admin.getAdmin_fname();
-        admin_lname=admin.getAdmin_lname();
-        admin_designation=admin.getAdmin_designation();
-        admin_email=admin.getAdmin_email();
         admin_password=admin.getAdmin_password();
         library_id=admin.getLibrary_id();
         library_name=admin.getLibrary_name();
-        courtesy=admin.getCourtesy();
-        gender=admin.getGender();
+        button=admin.getButton();
         staff_id="admin."+library_id;
-        System.out.println(admin.getLogin_id()+".........................");
+       
         
         user_name =admin.getAdmin_fname()+" "+admin.getAdmin_lname();
         
@@ -153,7 +124,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
         sublibrary_name="Main Library";
         
     
-       
+     if(button.equalsIgnoreCase("accept"))  {
 
 /*Use to Check whether the Entered Library Exist or not */
         Library tempobj=(Library)LibraryDAO.searchLibraryID(library_id);
@@ -759,32 +730,10 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
     /* Use to Update AdminRegistration Table if status is approved */
 
             AdminRegistration adminobj=(AdminRegistration)AdminRegistrationDAO.searchInstituteAdmin(login_id);
-           // adminobj.setRegistrationId(registration_request_id);
-           // adminobj.setInstituteName(institute_name);
-          //  adminobj.setAbbreviatedName(abbreviated_name);
-         //   adminobj.setInstituteAddress(institute_address);
-          //  adminobj.setCity(city);
-         //   adminobj.setState(state);
-          //  adminobj.setCountry(country);
-          //  adminobj.setPin(pin);
-         //   adminobj.setLandLineNo(land_line_no);
-         //   adminobj.setMobileNo(mobile_no);
-            
-         //   adminobj.setLoginId(login_id);
-        //    adminobj.setTypeOfInstitute(type_of_institute);
-         //   adminobj.setWebsite(website);
-         //   adminobj.setAdminFname(admin_fname);
-         //   adminobj.setAdminLname(admin_lname);
-        //    adminobj.setAdminDesignation(admin_designation);
-        //    adminobj.setAdminEmail(admin_email);
-        //    adminobj.setAdminPassword(admin_password);
             adminobj.setStatus("Registered");
             adminobj.setLibraryId(library_id);
-       //     adminobj.setLibraryName(library_name);
-       //     adminobj.setCourtesy(courtesy);
-       //     adminobj.setGender(gender);
            adminobj.setStaffId(staff_id);
-       //     System.out.println(admin_email);
+       
 
              result= AdminRegistrationDAO.update1(adminobj);
 
@@ -802,14 +751,15 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
                         request.setAttribute("accept_msg2",library_name );
                         request.setAttribute("accept_msg3",institute_name );
                         if(locale.equals("en")||locale.equals("ar")||locale.equals("ur"))
-                           request.setAttribute("msg",resource.getString("admin.acceptmesg.msg1")+library_id);
+                           request.setAttribute("msg",resource.getString("admin.acceptmesg.msg1")+" "+library_id);
                         else
-                          request.setAttribute("msg",library_id+" "+resource.getString("admin.acceptmesg.msg1"));
+                          request.setAttribute("msg",resource.getString("admin.acceptmesg.msg1")+" "+library_id);
                         
 
                         
                   String path = servlet.getServletContext().getRealPath("/");
-             obj=new Email(path,staffobj.getEmailId(),password,"Create Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+"Inst-Admin");
+              obj=new Email(path,staffobj.getEmailId(),password,"Approval of request for library Registration","Your request for Library registration has been Successfully Approved .\n User ID :"+login_id+"\n Password :"+password+"\n","\n\nDear "+logobj.getUserName()+",\n","With Regards\nWebAdmin\nLibMS");
+ 
             executor.submit(new Runnable() {
 
                 public void run() {
@@ -820,12 +770,64 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
                        
                        
                        
-                        return mapping.findForward("success");
+             
+            }
+              return mapping.findForward("success");
+
+     }
+
+       if(button.equalsIgnoreCase("Reject"))
+       {
+                     /* Use to Update AdminRegistration Table if status is rejected */
+
+            AdminRegistration      adminobj=(AdminRegistration)AdminRegistrationDAO.searchInstituteAdmin(login_id);
+
+            adminobj.setStatus("rejected");
+
+
+
+
+
+             result= AdminRegistrationDAO.update1(adminobj);
+
+            if(result==false)
+                {
+                    String msg=resource.getString("admin.acceptmesg.msg2");
+                    request.setAttribute("msg", msg);
+                    return mapping.findForward("failure");
+
+                }
+            else{
+
+
+                        request.setAttribute("accept_msg1", "");
+                        request.setAttribute("accept_msg2","" );
+                        request.setAttribute("accept_msg3","");
+                       
+                           request.setAttribute("msg","Request for Library Registration is rejected");
+                     
+
+
+
+   String     path = servlet.getServletContext().getRealPath("/");
+      obj=new Email(path,adminobj.getAdminEmail(),"","Approval of request for library Registration","Sorry, Your request for Library registration had not been Approved .\n" ,"\n\nDear "+adminobj.getAdminFname()+" "+adminobj.getAdminLname()+",\n","With Regards\nWebAdmin\nLibMS");
+
+ 
+            executor.submit(new Runnable() {
+
+                public void run() {
+                    obj.send();
+                }
+            });
+
+
+
 
                         }
-              
-      
-      
+                return mapping.findForward("success1");
+            
+       }
+         return null;
     }
 
 }

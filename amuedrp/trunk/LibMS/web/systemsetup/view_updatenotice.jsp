@@ -6,12 +6,12 @@ This Page is to Enter Staff ID
 -->
 
 
- <%@page contentType="text/html" pageEncoding="UTF-8" import="com.myapp.struts.hbm.*"%>
+ <%@page contentType="text/html" pageEncoding="UTF-8" import="com.myapp.struts.hbm.*,java.util.*"%>
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
- <jsp:include page="/admin/header.jsp" flush="true" />
+ <jsp:include page="/admin/header.jsp" flush="true" /> 
 
 <%
   Notices notice=(Notices)request.getAttribute("notice");
@@ -21,6 +21,30 @@ This Page is to Enter Staff ID
   boolean button_visibility=true;
 
 %>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
+<%! String button1;%>
 <%
  if(button.equals("View"))
  {
@@ -35,6 +59,23 @@ This Page is to Enter Staff ID
  if(button.equals("Delete"))
  {
    read=true;
+   button_visibility=true;
+ }
+%>
+ <%
+
+ if(button.equals("Update"))
+ {
+   button1=resource.getString("circulation.cir_member_reg.update");
+     read=false;
+
+   button_visibility=true;
+ }
+ if(button.equals("Delete"))
+ {
+   button1=resource.getString("circulation.cir_member_reg.delete");
+   read=true;
+
    button_visibility=true;
  }
 %>
@@ -80,12 +121,29 @@ $(document).ready(function()
     </script>
  <script language="javascript" type="text/javascript">
 
+function Update()
+{
+    var buttonvalue="Update";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+function Delete()
+{
+    var buttonvalue="Delete";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
 
 function check1()
 {
+        var buttonvalue="Update";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+   
+
+
     if(document.getElementById('subject').value=="")
     {
-        alert("Enter Subject");
+        alert("<%=resource.getString("systemsetup.manage_notice.entersub")%>");
 
         document.getElementById('subject').focus();
 
@@ -93,7 +151,7 @@ function check1()
     }
      if(document.getElementById('detail').value=="")
     {
-        alert("Enter Detail");
+        alert("<%=resource.getString("systemsetup.manage_notice.enterdetail")%>");
 
 
         document.getElementById('detail').focus();
@@ -115,16 +173,22 @@ function isNumberKey(evt)
 
 
 function del()
-{
-   var answer = confirm ("Do you want to Delete Record?")
-if (answer!=true)
     {
-        document.getElementById('button').focus();
-        return false;
-    }
-  
+      document.getElementById('button').value="<%=button%>" ;
+    var option=document.getElementById('button').value;
+    if(option=="Delete"){
+        var a=confirm("<%=resource.getString("circulation.cir_newmember.douwanttodelrec")%>");
+       // alert(a);
+        if(a!=true)
+            {
+                document.getElementById('button').focus();
+               return false;
 
-}
+        }
+        else
+            return true;
+    }
+    }
 
 
 
@@ -151,46 +215,46 @@ if (answer!=true)
 
       visibility: show;">
 
-    <table border="1" class="table" width="400px" height="200px" align="center">
+    <table dir="<%=rtl%>" border="1" class="table" width="400px" height="200px" align="center">
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Add Notices</td></tr>
-                <tr><td valign="top" align="center"> <br/>
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.manage_notice.addnotices")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
                         <table cellspacing="10px">
-                            <tr><td  colspan="2">Date
+                            <tr><td dir="<%=rtl%>" colspan="2"><%=resource.getString("circulation.cir_checkout_report.date")%>
 
                         </td>
-                        <td align="left"><html:text   property="date"  styleId="date" value="<%=notice.getDate()%>" readonly="true"/><br>
+                        <td dir="<%=rtl%>" align="<%=align%>"><html:text   property="date"  styleId="date" value="<%=notice.getDate()%>" readonly="true"/><br>
                        </td>
                     </tr>
-                            <tr><td width="150px"  colspan="2">Notice Id </td>
-                                <td width="150px" align="left"> <html:text   property="notice_id" value="<%= String.valueOf(notice.getId().getNoticeId())%>" readonly="true"/>
+                            <tr><td dir="<%=rtl%>" width="150px"  colspan="2"><%=resource.getString("systemsetup.manage_notice.noticesid")%></td>
+                                <td dir="<%=rtl%>" width="150px" align="<%=align%>"> <html:text   property="notice_id" value="<%= String.valueOf(notice.getId().getNoticeId())%>" readonly="true"/>
                                 </td>
                             </tr>
                           
                            
-                            <tr><td   colspan="2">Enter Subject<span class="star">*</span>
+                            <tr><td dir="<%=rtl%>"  colspan="2"><%=resource.getString("systemsetup.manage_notice.entersub")%><span class="star">*</span>
 
                         </td>
-                        <td align="left"> <html:text  property="subject" styleId="subject" value="<%=notice. getSubject()%>" readonly="<%=read%>" /></td>
+                        <td dir="<%=rtl%>" align="<%=align%>"> <html:text  property="subject" styleId="subject" value="<%=notice. getSubject()%>" readonly="<%=read%>" /></td>
                     </tr>
-                       <tr><td   colspan="2">Enter Detail<span class="star">*</span>
+                       <tr><td dir="<%=rtl%>"  colspan="2"><%=resource.getString("systemsetup.manage_notice.enterdetail")%><span class="star">*</span>
 
                         </td>
-                        <td align="left"> <html:textarea    property="detail" styleId="detail" value="<%=notice.getDetail()%>" readonly="<%=read%>"/></td>
+                        <td dir="<%=rtl%>" align="<%=align%>"> <html:textarea    property="detail" styleId="detail" value="<%=notice.getDetail()%>" readonly="<%=read%>"/></td>
                     </tr>
                     
                  
 
-                    <tr><td   colspan="3" align="center"><br/>
+                    <tr><td dir="<%=rtl%>"  colspan="3" align="center"><br/>
     <%if(button_visibility){
     if(button.equals("Delete")){%>
-    <html:submit property="button" styleId="button" value="<%=button%>" onclick="return del();" styleClass="btn" style="left:80px"  />
+    <input type="submit"  value="<%=button1%>" onclick="return del();" styleClass="btn" style="left:80px"  />
     <%}
     else{%>
-    <html:submit property="button" value="<%=button%>" styleClass="btn" onclick="return check1()" style="left:80px"  />
+    <input type="submit" value="<%=button1%>" styleClass="btn" onclick="return check1()" style="left:80px"  />
      <%}%><%}%>
-                             <input type="button" onClick="quit()"  value="Back"/>
+                             <input type="button" onClick="quit()"  value="<%=resource.getString("circulation.cir_member_reg.back")%>"/>
                         </td>
 
                     </tr>
@@ -201,7 +265,7 @@ if (answer!=true)
 
     
 
-
+   <input type="hidden" id="button" name="button" />
 
 
 

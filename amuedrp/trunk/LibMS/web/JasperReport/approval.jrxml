@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="approval" language="groovy" pageWidth="595" pageHeight="421" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="approval_no" class="java.lang.String"/>
+	<field name="vendor_id" class="java.lang.String"/>
+	<field name="approval_item_id" class="java.lang.Integer"/>
+	<field name="control_no" class="java.lang.Integer"/>
+	<group name="approval_no">
+		<groupExpression><![CDATA[$F{approval_no}]]></groupExpression>
+		<groupHeader>
+			<band height="26" splitType="Stretch">
+				<staticText>
+					<reportElement x="17" y="0" width="75" height="20"/>
+					<textElement>
+						<font  isBold="true"/>
+					</textElement>
+					<text><![CDATA[Approval No]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="92" y="0" width="84" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{approval_no}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="205" y="0" width="176" height="22"/>
+				<textElement>
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<text><![CDATA[APPROVAL REPORT]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="157" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Vendor Id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Approval Item Id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="392" y="2" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Control No]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="176" y="0" width="81" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vendor_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="281" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{approval_item_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="405" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{control_no}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="257" y="2" width="46" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="23" splitType="Stretch"/>
+	</summary>
+</jasperReport>

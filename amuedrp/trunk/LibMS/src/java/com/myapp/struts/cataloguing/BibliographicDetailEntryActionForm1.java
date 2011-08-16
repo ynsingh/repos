@@ -1,9 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.myapp.struts.cataloguing;
 
+import java.io.UnsupportedEncodingException;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.struts.action.ActionMapping;
 /**
  * This Bean Form is used to get and set the bibliographic details of documents irrespective of the type of document.
  * All the document type fields are defined here.
@@ -87,7 +86,216 @@ public class BibliographicDetailEntryActionForm1 extends org.apache.struts.actio
     private String physical_desc;
 //  Digital File Type
     private String file_type;// pdf,doc,rtf
+    //Language Change
+//  Common Entry
+    private String title1;
+    private String subtitle1;
+    private String alt_title1;
+    private String statement_responsibility1;
+    private String main_entry1;
+    private String added_entryl;
+    private String added_entry01;
+    private String added_entry11;
+    private String added_entry21;
+    private String publisher_name1;
+    private String publication_place1;
+    private String publishing_year1;
+    private String call_no1;
+    private String subject1;
+//  Book
+    private String isbn101;
+    private String isbn131;
+    private String LCC_no1;
+    private String edition1;
+   private String ser_note1;
+   private String notes1;
+   private String checkbox;
 
+    public String getCheckbox() {
+        return checkbox;
+    }
+
+    public void setCheckbox(String checkbox) {
+        this.checkbox = checkbox;
+    }
+
+    public String getNotes1() {
+        return notes1;
+    }
+
+    public void setNotes1(String notes1) {
+        this.notes1 = notes1;
+    }
+      private String thesis_abstract1;
+
+    public String getThesis_abstract1() {
+        return thesis_abstract1;
+    }
+
+    public void setThesis_abstract1(String thesis_abstract1) {
+        this.thesis_abstract1 = thesis_abstract1;
+    }
+
+    public String getLCC_no1() {
+        return LCC_no1;
+    }
+
+    public void setLCC_no1(String LCC_no1) {
+        this.LCC_no1 = LCC_no1;
+    }
+
+    public String getAdded_entry01() {
+        return added_entry01;
+    }
+
+    public void setAdded_entry01(String added_entry01) {
+        this.added_entry01 = added_entry01;
+    }
+
+    public String getAdded_entry11() {
+        return added_entry11;
+    }
+
+    public void setAdded_entry11(String added_entry11) {
+        this.added_entry11 = added_entry11;
+    }
+
+    public String getAdded_entry21() {
+        return added_entry21;
+    }
+
+    public void setAdded_entry21(String added_entry21) {
+        this.added_entry21 = added_entry21;
+    }
+
+    public String getAdded_entryl() {
+        return added_entryl;
+    }
+
+    public void setAdded_entryl(String added_entryl) {
+        this.added_entryl = added_entryl;
+    }
+
+    public String getAlt_title1() {
+        return alt_title1;
+    }
+
+    public void setAlt_title1(String alt_title1) {
+        this.alt_title1 = alt_title1;
+    }
+
+    public String getCall_no1() {
+        return call_no1;
+    }
+
+    public void setCall_no1(String call_no1) {
+        this.call_no1 = call_no1;
+    }
+
+    public String getEdition1() {
+        return edition1;
+    }
+
+    public void setEdition1(String edition1) {
+        this.edition1 = edition1;
+    }
+
+    public String getIsbn101() {
+        return isbn101;
+    }
+
+    public void setIsbn101(String isbn101) {
+        this.isbn101 = isbn101;
+    }
+
+    public String getIsbn131() {
+        return isbn131;
+    }
+
+    public void setIsbn131(String isbn131) {
+        this.isbn131 = isbn131;
+    }
+
+    public String getMain_entry1() {
+        return main_entry1;
+    }
+
+    public void setMain_entry1(String main_entry1) {
+        this.main_entry1 = main_entry1;
+    }
+
+    public String getPublication_place1() {
+        return publication_place1;
+    }
+
+    public void setPublication_place1(String publication_place1) {
+        this.publication_place1 = publication_place1;
+    }
+
+    public String getPublisher_name1() {
+        return publisher_name1;
+    }
+
+    public void setPublisher_name1(String publisher_name1) {
+        this.publisher_name1 = publisher_name1;
+    }
+
+    public String getPublishing_year1() {
+        return publishing_year1;
+    }
+
+    public void setPublishing_year1(String publishing_year1) {
+        this.publishing_year1 = publishing_year1;
+    }
+
+    public String getSer_note1() {
+        return ser_note1;
+    }
+
+    public void setSer_note1(String ser_note1) {
+        this.ser_note1 = ser_note1;
+    }
+
+    public String getStatement_responsibility1() {
+        return statement_responsibility1;
+    }
+
+    public void setStatement_responsibility1(String statement_responsibility1) {
+        this.statement_responsibility1 = statement_responsibility1;
+    }
+
+    public String getSubject1() {
+        return subject1;
+    }
+
+    public void setSubject1(String subject1) {
+        this.subject1 = subject1;
+    }
+
+    public String getSubtitle1() {
+        return subtitle1;
+    }
+
+    public void setSubtitle1(String subtitle1) {
+        this.subtitle1 = subtitle1;
+    }
+
+    public String getTitle1() {
+        return title1;
+    }
+
+    public void setTitle1(String title1) {
+        this.title1 = title1;
+    }
+
+    @Override
+     public void reset(ActionMapping mapping, HttpServletRequest request) {
+        try {
+      request.setCharacterEncoding("UTF-8");
+    }
+    catch (UnsupportedEncodingException ex) {
+    }
+    }
     /**
      *
      * @return LCC_no

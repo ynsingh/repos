@@ -7,6 +7,8 @@ package com.myapp.struts.systemsetup;
 
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.systemsetupDAO.MemberDAO;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,7 +27,10 @@ public class Member2Action extends org.apache.struts.action.Action {
     String emptype_id;
     String button;
     String library_id;
-
+   Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -39,24 +44,41 @@ public class Member2Action extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+         HttpSession session=request.getSession();
 
+         try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         Member2ActionForm maf=(Member2ActionForm)form;
         emptype_id=maf.getEmptype_id();
         button=maf.getButton();
-        HttpSession session=request.getSession();
+        
         library_id=(String)session.getAttribute("library_id");
 
-        if(button.equals("Register"))
+        if(button.equals("Add"))
         {
          EmployeeType employeetype=MemberDAO.getEployeeName(library_id, emptype_id);
          if(employeetype!=null)
          {
-            request.setAttribute("msg1", "Member Id : "+emptype_id+" already exists");
+            // request.setAttribute("msg1", "Member Id : "+emptype_id+" already exists");
+             request.setAttribute("msg1", resource.getString("circulation.cir_newmember.memberid") +emptype_id+resource.getString("systemsetup.manage_notice.alreadyexists"));
             return mapping.findForward("duplicate");
          }
          else
          {
 
+            
              request.setAttribute("new_emptype_id",emptype_id);
              return mapping.findForward("success");
 
@@ -75,7 +97,8 @@ EmployeeType employeetype;
                         if(employeetype==null)
                         {
 
-                        request.setAttribute("msg1", "Member Id: "+emptype_id+" doesn't exists");
+                           // request.setAttribute("msg1", "Member Id: "+emptype_id+" doesn't exists");
+                            request.setAttribute("msg1", resource.getString("circulation.cir_newmember.memberid")+emptype_id+resource.getString("systemsetup.manage_notice.doesnotexist"));
 
                         return mapping.findForward("duplicate");
                         }

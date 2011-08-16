@@ -1,7 +1,7 @@
-<?xml version='1.0' encoding='iso-8859-1'?>
+<?xml version='1.0' encoding='utf-8'?>
 <tree id="0">
  <!-- ========================= Acquisition Start ===============================-->
-        <item text="Acquisition" id="100" open="1" im0="tombs_mag.gif" im1="books_open.gif" im2="tombs.gif" call="1" select="1">
+        <item text="Acquisiton" id="100" open="1" im0="tombs_mag.gif" im1="books_open.gif" im2="tombs.gif" call="1" select="1">
 		<item text="Generate Title" id="101" im0="tombs_mag.gif" im1="magazines_open.gif" im2="tombs_mag.gif">
 			<item text="Refer From Demand/Request" id="102" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
 			<item text="Refer From Catalogue" id="103" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
@@ -100,12 +100,13 @@
                 </item>
                 <item text="Budget Management" id="177" im0="tombs_mag.gif" im1="magazines_open.gif" im2="tombs_mag.gif">
                     <item text="Budget Heads" id="178" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                    <item text="Currencies" id="179" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                    <item text="Exchange Rates" id="180" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                    <item text="Income Budget Heads" id="179" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                    <item text="Exchange Rate" id="180" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                    <item text="Set Base Currency" id="181" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
                 </item>
-                <item text=" System Setup" id="181" im0="tombs_mag.gif" im1="magazines_open.gif" im2="tombs_mag.gif">
-                     <item text="System Setup" id="182" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                     <item text="System Option" id="183" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                <item text=" System Setup" id="182" im0="tombs_mag.gif" im1="magazines_open.gif" im2="tombs_mag.gif">
+                     <item text="System Setup" id="183" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                     <item text="System Option" id="184" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
 
                 </item>
 	</item>
@@ -133,38 +134,43 @@
                             <item text="Change Accession No" id="212" im0="magazines_close.gif" im1="book_titel.gif" im2="book_titel.gif"/>
                             <item text="Assign Accession No" id="213" im0="magazines_close.gif" im1="book_titel.gif" im2="book_titel.gif"/>
                         </item>
-                        <item text="Non Marc Bibliography Management" id="214" im0="book_titel.gif" im1="books_open.gif" im2="book_titel.gif">
-                            <item text="Manage Bibliography" id="215" im0="magazines_close.gif" im1="books_open.gif" im2="book.gif"/>
-                            <item text="View All" id="216" im0="magazines_close.gif" im1="books_open.gif" im2="book.gif"/>
+                        <item text="Cataloguing of New Titles" id="214" im0="book_titel.gif" im1="books_open.gif" im2="book_titel.gif">
+                            <item text="Entry using Simple Template" id="215" im0="magazines_close.gif" im1="books_open.gif" im2="book.gif"/>
+                            <item text="Entry using MARC21 Template" id="216" im0="magazines_close.gif" im1="books_open.gif" im2="book.gif"/>
+                            <item text="Entry using Customized Template" id="217" im0="magazines_close.gif" im1="books_open.gif" im2="book.gif"/>
                         </item>
 
 
 
-                        <item text="Multimedia Management" id="217" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                        <item text="Multimedia Management" id="218" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
 	</item>
 
-        <item text="Latest Cognizance" id="218" im0="tombs.gif" im1="magazines_open.gif" im2="tombs_mag.gif">
-			<item text="Generate Latest Addition List" id="219" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-			<item text="Update Latest Addition List" id="220" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-			<item text="View Latest Addition List" id="221" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                        <item text="Develop Bibliography" id="222" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+        <item text="Latest Cognizance" id="219" im0="tombs.gif" im1="magazines_open.gif" im2="tombs_mag.gif">
+			<item text="Generate Latest Addition List" id="220" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+			<item text="Update Latest Addition List" id="221" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+			<item text="View Latest Addition List" id="222" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                        <item text="Develop Bibliography" id="223" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
         </item>
-	<item text="Print Catalogue Cards" id="223" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
-        <item text="Catalogue System Setup" id="224" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
-        <item text="Data Import/Export" id="225" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
-        <item text="Catalogue Reports" id="226" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif">
+	<item text="Print Catalogue Cards" id="224" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
+        <item text="Catalogue System Setup" id="225" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
+        <item text="Data Import/Export" id="226" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif">
+            	<item text="Data Import" id="227" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                <item text="Data Export" id="228" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
 
-                        <item text="Document Slip" id="227" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-			<item text=" List Titles " id="228" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-			<item text="Titles Check List" id="229" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                        <item text="Arrival Notice" id="230" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                        <item text="Classified Subject" id="231" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                        <item text="Highly Priced Titles" id="232" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                        <item text="Withdrawn Register" id="233" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+            </item>
+        <item text="Catalogue Reports" id="229" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif">
+
+                        <item text="Document Slip" id="230" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+			<item text="List Titles " id="231" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+			<item text="Subjects/Keywords " id="232" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                        <item text="Arrival Notice" id="233" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                        <item text="Classified Subject" id="234" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                        <item text="Highly Priced Titles" id="235" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                        <item text="Withdrawn Register" id="236" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
         </item>
-        <item text="Annual Stock" id="234" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
-        <item text="Database Backup" id="235" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
-        <item text="Online Search" id="236" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
+        <item text="Annual Stock" id="237" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
+        <item text="Database Backup" id="238" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
+        <item text="Online Search" id="239" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
 </item>
 <!-- ========================= Cataloguing End ================================= -->
 
@@ -228,10 +234,10 @@
         </item>
         <item text="Collection Management" id="339" im0="tombs_mag.gif" im1="magazines_open.gif" im2="tombs_mag.gif">
                             <item text="Titles on Showcase/Display" id="340" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                            <item text="Missing Documents" id="341" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                            <item text="Damaged Documents" id="342" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                            <item text="Withdrawn Documents" id="343" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                            <item text="Written off Documents" id="344" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                            <item text="Missing Document" id="341" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                            <item text="Damaged Document" id="342" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                            <item text="Withdrawn Document" id="343" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                            <item text="Written off Document" id="344" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
         </item>
         <item text="Binding Management" id="345" im0="tombs_mag.gif" im1="magazines_open.gif" im2="tombs_mag.gif">
                            <item text="Prepare List for Binding" id="346" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
@@ -252,9 +258,9 @@
                           <item text="Serials Based" id="359" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
                           <item text="Statistics" id="360" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
         </item>
-        <item text="Circulation Reports" id="361" im0="tombs_mag.gif" im1="magazines_open.gif" im2="tombs_mag.gif">
-                          <item text="On Member" id="362" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                          <item text="On Fine" id="363" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+        <item text="Circulation Report" id="361" im0="tombs_mag.gif" im1="magazines_open.gif" im2="tombs_mag.gif">
+                          <item text="CheckOut Report" id="362" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                          <item text="CheckIn Report" id="363" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
                           <item text="Reminder" id="364" im0="book_titel.gif" im1="books_open.gif" im2="book_titel.gif">
                               <item text="Overdue Reminder" id="365" im0="magazines_close.gif" im1="magazines_close.gif" im2="magazines_close.gif"/>
                               <item text="Collect Notice" id="366" im0="magazines_close.gif" im1="magazines_close.gif" im2="magazines_close.gif"/>
@@ -326,7 +332,7 @@
                           <item text="Approved Request" id="412" im0="magazines_close.gif" im1="magazines_close.gif" im2="magazines_close.gif"/>
                      </item>
                      <item text="Status Update" id="413" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif">
-                          <item text="Vendor Requestt" id="414" im0="magazines_close.gif" im1="magazines_close.gif" im2="magazines_close.gif"/>
+                          <item text="Vendor Request" id="414" im0="magazines_close.gif" im1="magazines_close.gif" im2="magazines_close.gif"/>
                           <item text="Approval Status" id="415" im0="magazines_close.gif" im1="magazines_close.gif" im2="magazines_close.gif"/>
                      </item>
                      <item text="List Of Serials" id="416" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
@@ -376,9 +382,9 @@
                              <item text="Modify" id="452" im0="magazines_close.gif" im1="magazines_close.gif" im2="magazines_close.gif"/>
                              <item text="Remove" id="453" im0="magazines_close.gif" im1="magazines_close.gif" im2="magazines_close.gif"/>
                     </item>
-                   <item text="Artical Detail" id="454" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                   <item text="Artical List" id="455" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                   <item text="Artical Retrieval" id="456" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif">
+                   <item text="Article Detail" id="454" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                   <item text="Article List" id="455" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                   <item text="Article Retrieval" id="456" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif">
                              <item text="Web Search" id="457" im0="magazines_close.gif" im1="magazines_close.gif" im2="magazines_close.gif"/>
                              <item text="Article Document" id="458" im0="magazines_close.gif" im1="magazines_close.gif" im2="magazines_close.gif"/>
                              <item text="Article Bibliography" id="459" im0="magazines_close.gif" im1="magazines_close.gif" im2="magazines_close.gif"/>

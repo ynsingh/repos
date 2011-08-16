@@ -7,8 +7,10 @@ package com.myapp.struts.cataloguingDAO;
 import com.myapp.struts.hbm.AccessionRegister;
 import com.myapp.struts.hbm.BibliographicDetails;
 import com.myapp.struts.hbm.AcqFinalDemandList;
+import com.myapp.struts.hbm.BibliographicDetailsLang;
 import com.myapp.struts.hbm.DocumentDetails;
 import com.myapp.struts.hbm.HibernateUtil;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -27,12 +29,95 @@ import org.hibernate.criterion.Restrictions;
 public class BibliopgraphicEntryDAO {
 // All inserts
 
+        public void deleteBib(ArrayList<Integer> biblio_id, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        //Object acqdocentry = null;
+
+        try {
+            tx = session.beginTransaction();
+            if(!biblio_id.isEmpty()){
+            for(int i=0;i<biblio_id.size();i++)
+            {Query query = session.createQuery("DELETE FROM BibliographicDetails  WHERE  id.biblioId = :biblioId and id.libraryId = :libraryId and id.sublibraryId = :subLibraryId");
+
+            query.setInteger("biblioId", biblio_id.get(i));
+            query.setString("libraryId", library_id);
+            query.setString("subLibraryId", sub_library_id);
+            query.executeUpdate();
+            tx.commit();
+            }
+            }
+          
+        } finally {
+              session.close();
+        }
+    }
+
+
+    public BibliographicDetails searchisbn10(String library_id, String sub_library_id, String isbn10) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(BibliographicDetails.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+
+                    .add(Restrictions.eq("isbn10", isbn10)));
+            //session.close();
+            return (BibliographicDetails) criteria.uniqueResult();
+        } finally {
+            session.close();
+        }
+    }
+
+         public List<BibliographicDetails> searchTitle(String library_id, String sub_library_id, String title) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(BibliographicDetails.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+
+                    .add(Restrictions.eq("title", title)));
+            //session.close();
+            return (List<BibliographicDetails>) criteria.list();
+        } finally {
+            session.close();
+        }
+    }
+
+
+
+
+           public DocumentDetails searchAccession(String library_id, String sub_library_id, String accession_no) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(DocumentDetails.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+
+                    .add(Restrictions.eq("accessionNo",accession_no)));
+            //session.close();
+            return (DocumentDetails) criteria.uniqueResult();
+        } finally {
+            session.close();
+        }
+    }
+
+
+
     /**
      * This method is used to insert data into table.
      * @param bibDetails
      */
+
     public void insert(BibliographicDetails bibDetails) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+
+       Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -46,7 +131,22 @@ public class BibliopgraphicEntryDAO {
             session.close();
         }
     }
+   public void insertBiblang(BibliographicDetailsLang bibDetails) {
 
+       Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(bibDetails);
+            tx.commit();
+        } catch (RuntimeException e) {
+            //if(bibDetails != null)
+            tx.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
     /**
      * This method is used to insert data into table.
      * @param docDetails
@@ -108,7 +208,22 @@ public class BibliopgraphicEntryDAO {
             session.close();
         }
     }
+    public void updateBiblioLang(BibliographicDetailsLang bibDetails) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
 
+        try {
+            tx = session.beginTransaction();
+            session.update(bibDetails);
+            tx.commit();
+        } catch (RuntimeException e) {
+            //  if(bibDetails != null)
+            tx.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
     public void update2(AccessionRegister bibDetails) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -262,7 +377,27 @@ public class BibliopgraphicEntryDAO {
             tx.commit();
             //return (BibliographicDetails) query.uniqueResult();
         } finally {
-            // session.close();
+             session.close();
+        }
+    }
+       public void deleteBiblioLang(int biblio_id, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        //Object acqdocentry = null;
+
+        try {
+            tx = session.beginTransaction();
+            //acqdocentry = session.load(BibliographicDetails.class, id);
+            Query query = session.createQuery("DELETE FROM BibliographicDetailsLang  WHERE id.biblioId = :biblioId and id.libraryId = :libraryId and id.sublibraryId = :subLibraryId");
+
+            query.setInteger("biblioId", biblio_id);
+            query.setString("libraryId", library_id);
+            query.setString("subLibraryId", sub_library_id);
+            query.executeUpdate();
+            tx.commit();
+            //return (BibliographicDetails) query.uniqueResult();
+        } finally {
+             session.close();
         }
     }
     //Return Max
@@ -380,7 +515,7 @@ public class BibliopgraphicEntryDAO {
 // All objects
   /**
    * This method is used while updating accession register detail.
-   * It searches all the accessioned items and checks duplicate entry.   
+   * It searches all the accessioned items and checks duplicate entry.
    * @param record_no
    * @param library_id
    * @param sub_library_id
@@ -397,7 +532,6 @@ public class BibliopgraphicEntryDAO {
                     .add(Restrictions.eq("id.sublibraryId", sub_library_id))
                     .add(Restrictions.eq("accessionNo", acc_no))
                     .add(Restrictions.ne("id.recordNo", record_no)));
-            //session.close();
             return (AccessionRegister) criteria.uniqueResult();
         } finally {
             session.close();
@@ -415,16 +549,34 @@ public class BibliopgraphicEntryDAO {
       public BibliographicDetails searchCallNOByBiblio(String callno, int biblio_id, String library_id, String sub_library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        Criteria criteria = session.createCriteria(BibliographicDetails.class)
+    try{    Criteria criteria = session.createCriteria(BibliographicDetails.class)
+            .add(Restrictions.conjunction()
+                .add(Restrictions.eq("id.libraryId", library_id))
+                .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                .add(Restrictions.ne("id.biblioId", biblio_id))
+                .add(Restrictions.eq("callNo", callno)));
+        return (BibliographicDetails) criteria.uniqueResult();
+    }
+    finally{
+    session.close();
+    }
+    }
+      public BibliographicDetailsLang searchCallNoLangByBiblio(String callno, int biblio_id, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+    try{    Criteria criteria = session.createCriteria(BibliographicDetailsLang.class)
                 .add(Restrictions.conjunction()
                 .add(Restrictions.eq("id.libraryId", library_id))
                 .add(Restrictions.eq("id.sublibraryId", sub_library_id))
                 .add(Restrictions.ne("id.biblioId", biblio_id))
                 .add(Restrictions.eq("callNo", callno)));
-        //session.close();
-        return (BibliographicDetails) criteria.uniqueResult();
+        return (BibliographicDetailsLang) criteria.uniqueResult();
     }
- /**
+    finally{
+    session.close();
+    }
+    }
+      /**
  * This method is used while updating bibliographic detail.
  * It searches all the titles and checks duplicate entry of isbn-10.
   * @param isbn
@@ -433,19 +585,39 @@ public class BibliopgraphicEntryDAO {
   * @param sub_library_id
   * @return BibliographicDetails
   */
-      public BibliographicDetails searchIsbn10ByBiblio(String isbn10, int biblio_id, String library_id, String sub_library_id) {
+      public BibliographicDetails searchIsbn10ByBiblio(String callno,String isbn10, int biblio_id, String library_id, String sub_library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        Criteria criteria = session.createCriteria(BibliographicDetails.class)
+      try{  Criteria criteria = session.createCriteria(BibliographicDetails.class)
                 .add(Restrictions.conjunction()
                 .add(Restrictions.eq("id.libraryId", library_id))
                 .add(Restrictions.eq("id.sublibraryId", sub_library_id))
                 .add(Restrictions.ne("id.biblioId", biblio_id))
+                .add(Restrictions.eq("callNo", callno))
                 .add(Restrictions.eq("isbn10", isbn10)));
-        //session.close();
         return (BibliographicDetails) criteria.uniqueResult();
-    }
-    /**
+      }
+      finally{
+      session.close();
+      }
+      }
+         public BibliographicDetailsLang searchIsbn10LangByBiblio(String callno,String isbn10, int biblio_id, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+      try{  Criteria criteria = session.createCriteria(BibliographicDetailsLang.class)
+                .add(Restrictions.conjunction()
+                .add(Restrictions.eq("id.libraryId", library_id))
+                .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                .add(Restrictions.ne("id.biblioId", biblio_id))
+                .add(Restrictions.eq("callNo", callno))
+                .add(Restrictions.eq("isbn10", isbn10)));
+        return (BibliographicDetailsLang) criteria.uniqueResult();
+      }
+      finally{
+      session.close();
+      }
+      }
+      /**
      * This method returns specific document used in OPAC.
      * @param biblio_id
      * @param library_id
@@ -495,11 +667,24 @@ public class BibliopgraphicEntryDAO {
     public BibliographicDetails search1Isbn10(String isbn10, String library_id, String sub_library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("isbn10", isbn10)));
-        //session.close();
+       try{ Criteria criteria = session.createCriteria(BibliographicDetails.class)
+               .add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("isbn10", isbn10)));
         return (BibliographicDetails) criteria.uniqueResult();
-    }
-
+       }
+       finally{
+       session.close();
+       }
+       }
+    public BibliographicDetailsLang search1LangIsbn10(String isbn10, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+     try{   Criteria criteria = session.createCriteria(BibliographicDetailsLang.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("isbn10", isbn10)));
+        return (BibliographicDetailsLang) criteria.uniqueResult();
+     }
+     finally{
+     session.close();
+     }
+     }
     /**
      *
      * @param title
@@ -511,11 +696,32 @@ public class BibliopgraphicEntryDAO {
     public BibliographicDetails search2Isbn10(String title, String isbn10, String library_id, String sub_library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("isbn10", isbn10)).add(Restrictions.eq("title", title)));
-        //session.close();
+      try{  Criteria criteria = session.createCriteria(BibliographicDetails.class)
+                .add(Restrictions.conjunction()
+                .add(Restrictions.eq("id.libraryId", library_id))
+                .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                .add(Restrictions.eq("isbn10", isbn10))
+                .add(Restrictions.eq("title", title)));
         return (BibliographicDetails) criteria.uniqueResult();
-    }
-
+      }
+      finally{
+      session.close();
+      }
+      }
+    public BibliographicDetailsLang searchlangbyBiblioid(int biblio_id,String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+      try{  Criteria criteria = session.createCriteria(BibliographicDetailsLang.class)
+                .add(Restrictions.conjunction()
+                .add(Restrictions.eq("id.libraryId", library_id))
+                .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                .add(Restrictions.eq("id.biblioId", biblio_id)));
+        return (BibliographicDetailsLang) criteria.uniqueResult();
+      }
+      finally{
+      session.close();
+      }
+      }
     /**
      *
      * @param library_id
@@ -527,7 +733,11 @@ public class BibliopgraphicEntryDAO {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
-            Criteria criteria = session.createCriteria(AccessionRegister.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("accessionNo", acc_no)));
+            Criteria criteria = session.createCriteria(AccessionRegister.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                    .add(Restrictions.eq("accessionNo", acc_no)));
 
             //session.close();
             return (AccessionRegister) criteria.uniqueResult();
@@ -593,7 +803,16 @@ public class BibliopgraphicEntryDAO {
             session.close();
         }
     }
-
+    public BibliographicDetailsLang searchLangcall(String call_no, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(BibliographicDetailsLang.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("callNo", call_no)));
+            return (BibliographicDetailsLang) criteria.uniqueResult();
+        } finally {
+            session.close();
+        }
+    }
     /**
      *
      * @param isbn10
@@ -701,17 +920,47 @@ public class BibliopgraphicEntryDAO {
      * @param sub_library_id
      * @return List
      */
-    public List searchDoc1(int biblio_id, String library_id, String sub_library_id) {
+    public List<DocumentDetails> searchDoc2(int biblio_id, String library_id, String sub_library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
-            Criteria criteria = session.createCriteria(DocumentDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("biblioId", biblio_id)));
-            return criteria.list();
+            Criteria criteria = session.createCriteria(DocumentDetails.class);
+                    criteria.add(Restrictions.conjunction());
+                  /*  .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                   *
+                   */
+                if(!library_id.equalsIgnoreCase("all"))
+                    criteria.add(Restrictions.eq("id.libraryId",library_id));
+                if(!sub_library_id.equalsIgnoreCase("all"))
+                    criteria.add(Restrictions.eq("id.sublibraryId",sub_library_id));
+
+
+                    criteria.add(Restrictions.eq("biblioId", biblio_id));
+            return (List<DocumentDetails>)criteria.list();
         } finally {
             session.close();
         }
     }
 
+       public List<DocumentDetails> searchDoc1(int biblio_id, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(DocumentDetails.class)
+                    .add(Restrictions.conjunction());
+              if(library_id.equalsIgnoreCase("all")==false)
+                   criteria.add(Restrictions.eq("id.libraryId", library_id));
+             if(sub_library_id.equalsIgnoreCase("all")==false)
+                   criteria.add(Restrictions.eq("id.sublibraryId", sub_library_id));
+
+
+                    criteria.add(Restrictions.eq("biblioId", biblio_id));
+            return (List<DocumentDetails>)criteria.list();
+        } finally {
+            session.close();
+        }
+    }
     /**
      *
      * @param title
@@ -724,7 +973,12 @@ public class BibliopgraphicEntryDAO {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
-            Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("title", title)).add(Restrictions.eq("documentType", doc_type)));
+            Criteria criteria = session.createCriteria(BibliographicDetails.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                    .add(Restrictions.eq("title", title))
+                    .add(Restrictions.eq("documentType", doc_type)));
             return (List) criteria.list();
         } finally {
             session.close();
@@ -742,7 +996,11 @@ public class BibliopgraphicEntryDAO {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
-            Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("title", title)).add(Restrictions.eq("documentType", doc_type)));
+            Criteria criteria = session.createCriteria(BibliographicDetails.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("title", title))
+                    .add(Restrictions.eq("documentType", doc_type)));
             return (List) criteria.list();
         } finally {
             session.close();
@@ -759,7 +1017,7 @@ public class BibliopgraphicEntryDAO {
    public List getBiblio(String library_id,String sublibrary_id,String search_by, String search_keyword, String sort_by) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        try { 
+        try {
             Criteria criteria = session.createCriteria(BibliographicDetails.class)
                     //.add(Restrictions.conjunction())
                     .add(Restrictions.eq("id.libraryId", library_id))
@@ -796,7 +1054,11 @@ public class BibliopgraphicEntryDAO {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
-            Criteria criteria = session.createCriteria(AccessionRegister.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("biblioId", biblio_id)));
+            Criteria criteria = session.createCriteria(AccessionRegister.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                    .add(Restrictions.eq("biblioId", biblio_id)));
             return (List) criteria.list();
         } finally {
             session.close();
@@ -814,7 +1076,11 @@ public class BibliopgraphicEntryDAO {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
-            Criteria criteria = session.createCriteria(AcqFinalDemandList.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("title", title)));
+            Criteria criteria = session.createCriteria(AcqFinalDemandList.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                    .add(Restrictions.eq("title", title)));
             return (List) criteria.list();
         } finally {
             session.close();
@@ -832,7 +1098,10 @@ public class BibliopgraphicEntryDAO {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
-            Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)));
+            Criteria criteria = session.createCriteria(BibliographicDetails.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sub_library_id)));
             return (List) criteria.list();
         } finally {
             session.close();

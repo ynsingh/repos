@@ -29,6 +29,45 @@ f.submit();
 }
 
 </script>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+ String lib_id = (String)session.getAttribute("library_id");
+  String sublib_id = (String)session.getAttribute("memsublib");
+        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+    %>
+
+   <%
+String SublibraryId=resource.getString("systemsetup.add_sublibrary.sublibraryid");
+pageContext.setAttribute("SublibraryId", SublibraryId);
+String SublibraryName=resource.getString("systemsetup.sublib_viewall.sublibname");
+pageContext.setAttribute("SublibraryName", SublibraryName);
+String Faculty=resource.getString("systemsetup.add_sublib.faculty");
+pageContext.setAttribute("Faculty",Faculty);
+String DepartmentAddress=resource.getString("systemsetup.add_sublib.deptadd");
+pageContext.setAttribute("DepartmentAddress",DepartmentAddress);
+
+%>
+
+
+
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
 </head>
@@ -41,12 +80,12 @@ f.submit();
       visibility: show;">
 
 <body>
- <table  class="table" width="700px" align="center">
+ <table dir="<%=rtl%>" class="table" width="700px" align="center">
 
 
 
-       <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">View All Libraries</td></tr>
-                <tr><td valign="top" align="center"> <br/>
+       <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.sublibviewall.viewall")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
 
 
 <%
@@ -81,7 +120,7 @@ f.submit();
 %>
 <%if(tcount==0)
 {%>
-<p class="err" style="font-size:12px">No Record Found</p>
+<p class="err" style="font-size:12px"><%=resource.getString("circulation.cir_viewall_mem_detail.norecfond")%></p>
 <%}
 else
 {%>
@@ -95,22 +134,22 @@ else
 
 
     <column width="200">
-      <header value="Sublibrary Id" hAlign="left" styleClass="admingridheader"  />
+      <header value="${SublibraryId}" hAlign="left" styleClass="admingridheader"  />
       <item   value="${doc.id.sublibraryId}"   hAlign="left"   styleClass="item"/>
 
     </column>
 
     <column width="200">
-      <header value="Sublibrary Name" hAlign="left" styleClass="admingridheader"/>
+      <header value="${SublibraryName}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.sublibName}"  hAlign="left"  styleClass="item"/>
     </column>
      <column width="150">
-      <header value="Faculty" hAlign="left" styleClass="admingridheader"/>
+      <header value="${Faculty}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.facultyName}"  hAlign="left"  styleClass="item"/>
     </column>
 
      <column width="150">
-      <header value="Department Address" hAlign="left" styleClass="admingridheader"/>
+      <header value="${DepartmentAddress}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.deptAddress}"  hAlign="left"  styleClass="item"/>
     </column>
 
@@ -127,10 +166,10 @@ else
 <tr>
 <td align="left">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.previos")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-<a href="<c:out value="${next}"/>">Next</a>
+<a href="<c:out value="${next}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.next")%></a>
 </c:if>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

@@ -41,20 +41,33 @@ f.submit();
       visibility: show;">
 
 <body>
- <table border="1" class="table" width="700px" align="center">
-
-
-
-       <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">View All Member Account</td></tr>
-                <tr><td valign="top" align="center"> <br/>
-
-
-<%
-
-
+     <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+    boolean page=true;
 %>
+<%
+ String lib_id = (String)session.getAttribute("library_id");
+  String sublib_id = (String)session.getAttribute("memsublib");
+        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";page=true;}
+    else{ rtl="RTL";align="right";page=false;}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+    %>
 
-<%!
+    <%!
 
    ResultSet rs=null;
    ArrayList opacList;
@@ -87,12 +100,41 @@ String path= request.getContextPath();
    pageContext.setAttribute("tCount", tcount);
    }
 %>
+         <%
+
+String MemberId=resource.getString("circulation.cir_newmember.memberid");
+pageContext.setAttribute("MemberId", MemberId);
+String Status=resource.getString("circulation.memberaccviewall.Status");
+pageContext.setAttribute("Status",Status);
+String cardId=resource.getString("circulation.cir_newmember.cardid");
+pageContext.setAttribute("cardId", cardId);
+String Semester=resource.getString("circulation.memberaccviewall.Semester");
+pageContext.setAttribute("Semester",Semester);
+
+
+%>
+
+
+<table border="1" class="table" width="700px" align="center" dir="<%=rtl%>">
+
+
+
+       <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("circulation.memberaccviewall.viewallmemacc")%></td></tr>
+                <tr><td valign="top" align="center"> <br/>
+
+
+<%
+
+
+%>
+
+
 <%
 
 %>
 <%if(tcount==0)
 {%>
-<p class="err" style="font-size:12px">No Record Found</p>
+<p class="err" style="font-size:12px"><%=resource.getString("circulation.cir_viewall_mem_detail.norecfond")%></p>
 <%}
 else
 {%>
@@ -106,23 +148,23 @@ else
 
 
     <column width="200">
-      <header value="Member Id" hAlign="left" styleClass="admingridheader"  />
+      <header value="${MemberId}" hAlign="left" styleClass="admingridheader"  />
       <item   value="${doc.id.memid}" hyperLink="${path}/circulation/showAccount.do?id=${doc.id.memid}"   hAlign="left"   styleClass="item"/>
 
     </column>
 
     <column width="200">
-      <header value="Status" hAlign="left" styleClass="admingridheader"/>
+      <header value="${Status}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.status}" hyperLink="${path}/circulation/showAccount.do?id=${doc.id.memid}"  hAlign="left"  styleClass="item"/>
     </column>
 
     <column width="200">
-      <header value="Card Id" hAlign="left" styleClass="admingridheader"/>
+      <header value="${cardId}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.cardId}" hyperLink="${path}/circulation/showAccount.do?id=${doc.id.memid}"  hAlign="left"  styleClass="item"/>
     </column>
 
     <column width="200">
-      <header value="Semester" hAlign="left" styleClass="admingridheader"/>
+      <header value="${Semester}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.semester}" hyperLink="${path}/circulation/showAccount.do?id=${doc.id.memid}"  hAlign="left"  styleClass="item"/>
     </column>
      
@@ -140,10 +182,10 @@ else
 <tr>
 <td align="left">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.previos")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-<a href="<c:out value="${next}"/>">Next</a>
+<a href="<c:out value="${next}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.next")%></a>
 </c:if>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -172,7 +214,6 @@ else
 </form>
 
       </td></tr></table>
-
 
     </body>
 </div>

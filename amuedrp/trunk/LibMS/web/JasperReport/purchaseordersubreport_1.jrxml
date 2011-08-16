@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="purchaseordersubreport_1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="sum1" class="java.lang.Integer" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$F{no_of_copies}*$F{unit_price}]]></defaultValueExpression>
+	</parameter>
+	<field name="isbn" class="java.lang.String"/>
+	<field name="title" class="java.lang.String"/>
+	<field name="no_of_copies" class="java.lang.Integer"/>
+	<field name="unit_price" class="java.lang.Integer"/>
+	<field name="conversion_rate" class="java.lang.Integer"/>
+	<variable name="sum1" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{no_of_copies}*$F{unit_price}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="1" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="60" y="3" width="46" height="16"/>
+				<textElement/>
+				<text><![CDATA[ISBN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="254" y="3" width="80" height="16"/>
+				<textElement/>
+				<text><![CDATA[NO OF COPIES]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="537" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="20" width="537" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="7" y="3" width="35" height="16"/>
+				<textElement/>
+				<text><![CDATA[S.NO.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="39" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="106" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="254" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="328" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="409" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="537" y="1" width="1" height="19"/>
+			</line>
+			<staticText>
+				<reportElement x="425" y="3" width="98" height="18"/>
+				<textElement/>
+				<text><![CDATA[AMOUNT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="132" y="3" width="101" height="16"/>
+				<textElement/>
+				<text><![CDATA[BOOK TITLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="346" y="3" width="64" height="17"/>
+				<textElement/>
+				<text><![CDATA[UNIT PRICE]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement x="43" y="0" width="66" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{isbn}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="0" width="147" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="257" y="0" width="66" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_of_copies}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="334" y="0" width="76" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{unit_price}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="425" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_of_copies}*$F{unit_price}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="106" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="39" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="254" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="328" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="409" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="537" y="0" width="1" height="26"/>
+			</line>
+			<textField>
+				<reportElement x="7" y="1" width="20" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="6" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="537" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="21">
+			<rectangle>
+				<reportElement x="410" y="0" width="128" height="20"/>
+			</rectangle>
+			<textField>
+				<reportElement x="425" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{sum1}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="329" y="0" width="82" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="329" y="0" width="81" height="20"/>
+				<textElement/>
+				<text><![CDATA[Total Amount]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="328" height="1"/>
+			</line>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

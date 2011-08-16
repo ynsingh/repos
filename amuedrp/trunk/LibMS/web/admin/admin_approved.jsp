@@ -76,7 +76,7 @@ if (rst!=null && rst.get(0).getClass().equals(AdminRegistration.class))
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Untitled Page</title>
-<link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="/LibMS/css/page.css"/>
 <style type="text/css">
 body
 {
@@ -87,11 +87,11 @@ body
 </head>
 <body>
     <html:form  method="post" action="/confirm">
-        <table align="center" dir="<%=rtl%>"  class="txt" width="80%" style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
+        <table align="center" dir="<%=rtl%>"  class="table" bgcolor="#7697BC" width="60%" >
 
 
-            <tr><td  align="<%=align%>" colspan="2" ><br><br> <span class="txt">
-</span>
+            <tr><td  align="center" class="txtStyle1" height="20px">Institute Details
+
 
          </td></tr>
             <%if(rst!=null){%>
@@ -170,30 +170,14 @@ body
      if(user_id==null)
          user_id="";
      %>
+            <tr><td>
+            <table class="txtStyle" bgcolor="white" >
             <tr><td width="15%" dir="<%=rtl%>"><%=resource.getString("institutename")%></td><td width="15%"><input type="text" id="Editbox1"   name="institute_name" value="<%=institute_name%>" tabindex="1" title="Enter Instutute Name" readonly></td><td width="15%"><%=resource.getString("registrationid")%></td><td width="15%"><input type="text" id="Editbox18"  name="registration_request_id" value="<%=registration_id%>" tabindex="18" readonly></td></tr>
 
             <tr><td dir="<%=rtl%>"><%=resource.getString("instituteabbrevation")%></td><td><input type="text" id="Editbox2" dir="<%=rtl%>"   name="abbreviated_name" value="<%=abbreviated_name%>" tabindex="2" readonly title="Abbrivated name e.g. AMU(aligarh muslim University)"></td><td dir="<%=rtl%>"><%=resource.getString("courtesy")%></td><td>
                     <input type="text" id="courtesy" readonly name="courtesy" value="<%=courtesy%>"/>
 
-                    <%--<select name="courtesy"  dir="<%=rtl%>" disabled size="1" id="courtesy"   tabindex="11" title="courtesy" style="width:148px">
-    <%if(courtesy.equals("mr")){%>
-<option selected value="mr">Mr</option>
-<option value="mrs">Mrs</option>
-<option value="ms">Ms.</option>
-
-            <%}%>
-            <%if(courtesy.equals("mrs")){%>
-<option  value="mr">Mr</option>
-<option selected value="mrs">Mrs</option>
-<option value="ms">Ms.</option>
-            <%}%>
-            <%if(courtesy.equals("ms")){%>
-<option value="mr">Mr</option>
-<option value="mrs">Mrs</option>
-<option  selected value="ms">Ms.</option>
-            <%}%>
-
-</select>--%>
+                   
 </td></tr>
 
      <tr><td dir="<%=rtl%>"><%=resource.getString("instituteAddress")%></td><td><input type="text" id="Editbox3" dir="<%=rtl%>"   name="institute_address" value="<%=institute_address%>" tabindex="3" readonly title="Enter Address of Institute"></td><td dir="<%=rtl%>"><%=resource.getString("firstname")%></td><td><input type="text" id="Editbox13"  name="admin_fname" value="<%=admin_fname%>" tabindex="13" title="Enter first Name" readonly></td></tr>
@@ -284,9 +268,15 @@ body
               
               </tr>
 <tr><td dir="<%=rtl%>" colspan="4" align="center"><br>
-        <input type="button" dir="<%=rtl%>" class="txt2"   name="cancel" value="<%=resource.getString("back")%>" onclick="quit();">
+
+      
+
+
+        <input type="button" dir="<%=rtl%>" class="btn1"  name="cancel" value="<%=resource.getString("back")%>" onclick="quit();">
 </td></tr
 <%}%>
+            </table>
+                </td></tr>
         </table>
         
     </html:form>

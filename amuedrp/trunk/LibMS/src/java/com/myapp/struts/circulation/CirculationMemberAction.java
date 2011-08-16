@@ -9,11 +9,12 @@
 package com.myapp.struts.circulation;
 import com.myapp.struts.AdminDAO.SubLibraryDAO;
 import com.myapp.struts.systemsetupDAO.*;
-
+import java.util.ResourceBundle;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.systemsetupDAO.MemberCategoryDAO;
 import com.myapp.struts.CirculationDAO.CirculationDAO;
 import java.util.List;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -36,8 +37,10 @@ public class CirculationMemberAction extends org.apache.struts.action.Action {
    List list1;
    List list2;
    List list;
-  // List list4;
-//   List list5;
+   Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
 
     /**
       Design by Iqubal Ahmad
@@ -51,6 +54,21 @@ public class CirculationMemberAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        HttpSession session=request.getSession();
+        try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         CirculationMemberRegActionForm acqRegisterActionForm =(CirculationMemberRegActionForm)form;
         
         mem_id=acqRegisterActionForm.getTXTMEMID();
@@ -58,7 +76,7 @@ public class CirculationMemberAction extends org.apache.struts.action.Action {
 
         button=acqRegisterActionForm.getButton();
     
-        HttpSession session=request.getSession();
+        
         session.setAttribute("page1", button);
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
@@ -82,7 +100,8 @@ public class CirculationMemberAction extends org.apache.struts.action.Action {
 
             if(list.isEmpty()|| list1.isEmpty())
             {
-             request.setAttribute("msg1","You Need to Set Member and SubMember Type");
+            // request.setAttribute("msg1","You Need to Set Member and SubMember Type");
+             request.setAttribute("msg1",resource.getString("circulation.circulationmemberaction.errmess2"));
             return mapping.findForward("failure");
 
             }
@@ -92,19 +111,16 @@ public class CirculationMemberAction extends org.apache.struts.action.Action {
         if(button.equals("Register"))
         {
          CirMemberDetail memobj=(CirMemberDetail)CirculationDAO.searchCirMemDetails(library_id, mem_id);
-        // System.out.println("Check1"+memobj);
+        
          if(memobj!=null)
          {
-            request.setAttribute("msg1", "member Id : "+mem_id+" already Registered");
+             //request.setAttribute("msg1",member Id +mem_id+ " "+ Already Registered )
+            request.setAttribute("msg1", resource.getString("circulation.circulationmemberaction.memid")+mem_id+ " "+ resource.getString("circulation.circulationmemberaction.errmess"));
             return mapping.findForward("failure");
          }
          else
          {
-            session.removeAttribute("cirmemaccountdetail");
-session.removeAttribute("cirmemdetail");
-//session.removeAttribute("CirculationMemberRegActionForm");
-session.removeAttribute("button");
-session.removeAttribute("filename");
+
              session.setAttribute("memid", mem_id);
              return mapping.findForward("success");
          }
@@ -112,19 +128,15 @@ session.removeAttribute("filename");
         if(button.equals("Update")||button.equals("View")||button.equals("Delete"))
         {
 
-            session.removeAttribute("cirmemaccountdetail");
-            session.removeAttribute("cirmemdetail");
-            //session.removeAttribute("CirculationMemberRegActionForm");
-          //  session.removeAttribute("CirculationMemberActionForm");
-           // session.removeAttribute("button");
-           // session.removeAttribute("filename");
-
+           
+           
 
              CirMemberDetail memobj=CirculationDAO.searchCirMemDetails(library_id, mem_id);
       
                 if(memobj==null)
                 {
-                    request.setAttribute("msg1", "member Id : "+mem_id+" Does Not Exists");
+                   // request.setAttribute("msg1", "member Id : "+mem_id+" Does Not Exists");
+                    request.setAttribute("msg1", resource.getString("circulation.circulationmemberaction.memid")+mem_id+" "+resource.getString("circulation.circulationmemberaction.errmess1"));
                     return mapping.findForward("failure");
                 }
                 else
@@ -146,18 +158,20 @@ CirMemberDetail cirmemobj=(CirMemberDetail)CirculationDAO.searchCirMemDetails(li
 
 
 System.out.println(cirmemobj+" " +cirmem+ ".........."+button);
+session.setAttribute("cirmemaccountdetail", cirmem);
+session.setAttribute("cirmemdetail", cirmemobj);
+ 
 if(cirmemobj!=null)
 {
     if(cirmem!=null){
-request.setAttribute("cirmemaccountdetail", cirmem);
-request.setAttribute("cirmemdetail", cirmemobj);
-//session.setAttribute("cirmemaccountdetail", cirmem);
-//session.setAttribute("cirmemdetail", cirmemobj);
+session.setAttribute("cirmemaccountdetail", cirmem);
+session.setAttribute("cirmemdetail", cirmemobj);
+
     }
     else
     {
-        request.setAttribute("cirmemdetail", cirmemobj);
-        //session.setAttribute("cirmemdetail", cirmemobj);
+      //  request.setAttribute("cirmemdetail", cirmemobj);
+        session.setAttribute("cirmemdetail", cirmemobj);
         List<Department> dep=(List<Department>)DeptDAO.getDeptLibrary("library_id");
                 List<Faculty> fac =(List<Faculty>)FacultyDAO.searchFaculty(library_id);
                 List<Courses> course =(List<Courses>)CourseDAO.getCourse(library_id);
@@ -170,15 +184,41 @@ request.setAttribute("cirmemdetail", cirmemobj);
     }
     request.setAttribute("button", button);
 
+            CirculationMemberActionForm cmdf=new CirculationMemberActionForm();
+            cmdf.setTXTMEMID(cirmemobj.getId().getMemId());
+            cmdf.setTXTFNAME(cirmemobj.getFname());
+            cmdf.setTXTMNAME(cirmemobj.getMname());
+            cmdf.setTXTLNAME(cirmemobj.getLname());
+            cmdf.setTXTEMAILID(cirmemobj.getEmail());
+            cmdf.setTXTADD1(cirmemobj.getAddress1());
+            cmdf.setTXTADD2(cirmemobj.getAddress2());
+            cmdf.setTXTCITY1(cirmemobj.getCity1());
+            cmdf.setTXTSTATE1(cirmemobj.getState1());
+            cmdf.setTXTCOUNTRY1(cirmemobj.getCountry1());
+            cmdf.setTXTCITY2(cirmemobj.getCity2());
+            cmdf.setTXTSTATE2(cirmemobj.getState2());
+            cmdf.setTXTCOUNTRY2(cirmemobj.getCountry2());
+            cmdf.setTXTPH1(cirmemobj.getPhone1());
+            cmdf.setTXTPH2(cirmemobj.getPhone2());
+            cmdf.setTXTPIN1(cirmemobj.getPin1());
+            cmdf.setTXTPIN2(cirmemobj.getPin2());
+            cmdf.setTXTFAX(cirmemobj.getFax());
+            cmdf.setMEMCAT(cirmem.getMemType());
+            cmdf.setMEMSUBCAT(cirmem.getSubMemberType());
+            cmdf.setTXTOFFICE(cirmem.getOffice());
+            cmdf.setTXTDESG1(cirmem.getDesg());
+            cmdf.setTXTFACULTY(cirmem.getFacultyId());
+            cmdf.setTXTDEPT(cirmem.getDeptId());
+            cmdf.setTXTCOURSE(cirmem.getCourseId());
+            cmdf.setTXTSEM(cirmem.getSemester());
+            cmdf.setTXTREG_DATE(cirmem.getReqDate());
+            cmdf.setTXTEXP_DATE(cirmem.getExpiryDate());
 
-                        
-
-                          
-                
                              return mapping.findForward("view/update/delete");
 }else
 {
-    request.setAttribute("msg1", "member Id : "+mem_id+" Does Not Exists");
+    //request.setAttribute("msg1", "member Id : "+mem_id+" Does Not Exists");
+    request.setAttribute("msg1", resource.getString("circulation.circulationmemberaction.memid")+mem_id+" "+resource.getString("circulation.circulationmemberaction.errmess1") );
                     return mapping.findForward("failure");
 }
             

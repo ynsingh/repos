@@ -4,14 +4,16 @@
  */
 
 package com.myapp.struts.opac;
-import  com.myapp.struts.*;
-import java.sql.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
+import com.myapp.struts.hbm.BibliographicDetails;
+import com.myapp.struts.hbm.BibliographicDetailsLang;
+import com.myapp.struts.hbm.DocumentDetails;
+import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import java.util.ArrayList;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import java.sql.*;
 import com.myapp.struts.opacDAO.OpacSearchDAO;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -24,23 +26,17 @@ public class browseSearchAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     OpacSearchDAO opacSearchDAO=new OpacSearchDAO();
+     BibliopgraphicEntryDAO bibdao=new BibliopgraphicEntryDAO();
     String phrase,title,author,accno;
     String doc_type,id,callno,publ,loc,place,sort,field,sublib_id,lib_id;
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-    
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         HttpSession session=request.getSession();
         session.removeAttribute("Result");
+          request.setCharacterEncoding("UTF-8");
         browseSearchActionForm myform = (browseSearchActionForm)form;
         lib_id= myform.getCMBLib();
         sublib_id=myform.getCMBSUBLib();
@@ -51,8 +47,55 @@ public class browseSearchAction extends org.apache.struts.action.Action {
         int flag=0;
         System.out.println("lib_id="+lib_id+"sublib_id="+sublib_id+"phrase="+phrase+"doc_type="+doc_type+"sort="+sort+"field="+field+"...................");
         //public List browseSearch(String library_id,String sub_lib,String searching_word,String doc_type,String sortby,String searching_field)
-    List browse_search_list=opacSearchDAO.browseSearch(lib_id, sublib_id,phrase, doc_type, sort, field);
-    session.setAttribute("browse_search_list",browse_search_list);
+
+        List<BibliographicDetailsLang> browse_search_list=new ArrayList();
+ List<BibliographicDetails> browse_search_list1=new ArrayList();
+  ArrayList<BibliographicDetailsLang> bib=new ArrayList<BibliographicDetailsLang>();
+ ArrayList<BibliographicDetails> bib1=new ArrayList<BibliographicDetails>();
+ System.out.println("Check Box"+myform.getCheckbox());
+ if(myform.getCheckbox().equals("Checked"))
+ {
+ System.out.println("Languagebbb");
+ browse_search_list=opacSearchDAO.browseLangSearch(lib_id, sublib_id,phrase, doc_type, sort, field,myform.getLanguage());
+if(!browse_search_list.isEmpty())
+{
+    for(int f=0;f<browse_search_list.size();f++)
+    {
+    int bibiid=browse_search_list.get(f).getId().getBiblioId();
+    List<DocumentDetails> ddd=bibdao.searchDoc2(bibiid, lib_id, sublib_id);
+    if(!ddd.isEmpty()){
+        bib.add(browse_search_list.get(f));
+    }     
+    }
+
+}
+  session.setAttribute("browse_search_list", bib);
+ }
+ else{
+     System.out.println("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNLanguagebbb"+lib_id+sublib_id+phrase+doc_type+sort+field);
+ browse_search_list1=opacSearchDAO.browseSearch(lib_id, sublib_id,phrase, doc_type, sort, field);
+ System.out.println(browse_search_list1+".............");
+if(!browse_search_list1.isEmpty())
+{
+    for(int f=0;f<browse_search_list1.size();f++)
+    {
+    int bibiid=browse_search_list1.get(f).getId().getBiblioId();
+    List<DocumentDetails> ddd=bibdao.searchDoc1(bibiid, lib_id, sublib_id);
+    System.out.println(ddd.size()+"   "+bibiid+lib_id+sublib_id);
+    if(!ddd.isEmpty()){
+        bib1.add(browse_search_list1.get(f));
+    }      
+    }
+
+}
+ System.out.println(bib1.size());
+session.setAttribute("browse_search_list", bib1);
+ }
+      //  List browse_search_list=opacSearchDAO.browseSearch(lib_id, sublib_id,phrase, doc_type, sort, field);
+
+
+
+ //   session.setAttribute("browse_search_list",browse_search_list);
 
 
 

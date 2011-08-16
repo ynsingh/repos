@@ -24,26 +24,23 @@ public class DocumentDetailAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 HttpSession session = request.getSession();
+ session.removeAttribute("documentDetail");
+       session.removeAttribute("documentDetail1");
+
         int document_id = Integer.parseInt(request.getParameter("doc_id"));
         String library_id = (String)request.getParameter("library_id");
         String sublibrary_id = (String)request.getParameter("sublibrary_id");
         OpacSearchDAO opacDao = new OpacSearchDAO();
-        DocumentDetails doc = (DocumentDetails)opacDao.DocumentSearchById(document_id, library_id, sublibrary_id);
-        request.setAttribute("documentDetail", doc);
+        List<DocumentDetails> doc = (List<DocumentDetails>)opacDao.DocumentSearchById(document_id, library_id, sublibrary_id);
+        List<BibliographicDetails> doc1 = (List<BibliographicDetails>)opacDao.DocumentSearch1(document_id, library_id, sublibrary_id);
+       session.setAttribute("documentDetail", doc);
+       session.setAttribute("documentDetail1", doc1);
         return mapping.findForward(SUCCESS);
     }
 }

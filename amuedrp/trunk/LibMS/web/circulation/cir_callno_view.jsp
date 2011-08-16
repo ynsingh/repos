@@ -4,11 +4,11 @@ Devleoped By : Kedar Kumar
 Modified On  : 17-Feb 2011
 This Page is to Enter Library Details
 -->
-<%@page  import="java.util.List" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
- <jsp:include page="/admin/header.jsp" flush="true" />
+<%-- <jsp:include page="/admin/header.jsp" flush="true" />--%>
 
 <html>
 <head>
@@ -20,43 +20,60 @@ This Page is to Enter Library Details
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/acquisition/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css" media="screen"/>
 <script type="text/javascript" src="<%=request.getContextPath()%>/acquisition/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js"></script>
 </head>
-<body>
- <div
-   style="  top:120px;
-   left:5px;
-   right:5px;
-      position: absolute;
+  <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
-      visibility: show;">
+    %>
+
+<body>
+
 
      <html:form action="/cir_callno" method="post">
- <table border="1" class="table" width="400px" align="center">
+        <%-- <table dir="<%=rtl%>"  class="table" width="400px" align="center" valign="top">
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Checkout</td></tr>
-                <tr><td valign="top" align="center"> <br/>
-                <table cellspacing="10px">
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("circulation.cir_checkout.managechkout")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
+        --%>        <table dir="<%=rtl%>" align="center">
 
                    
-  <tr><td height="5px" colspan="4" ></td></tr>
+  
 
   <tr>
 
-    <td align="right"><strong>Call No.<a class="star">*</a> :</strong></td>
-    <td><html:text property="call_no" styleId="call_no"  value="" styleClass="textBoxWidth"/>
+      <td dir="<%=rtl%>"  align="<%=align%>"><p class="txt2"><%=resource.getString("circulation.showcirreqopac.callno")%><a class="star">*</a> :</p></td>
+    <td dir="<%=rtl%>"><html:text property="call_no" styleId="call_no"  value="" styleClass="textBoxWidth"/>
 
     </td>
   </tr>
-  <tr><td height="5px" colspan="4" ></td></tr>
+ 
  
   <tr>
-    <td colspan="4" align="center"><input type="submit"  value="Submit"  onClick="return validation();"/>
+    <td dir="<%=rtl%>" colspan="2" align="center"><input type="button"  value="<%=resource.getString("circulation.cir_newmember.submit")%>"  onClick="return validation();"/>
 
-        <input type="button"  value="Back" onclick="return quit();" />
+     <%--   <input type="button"  value="<%=resource.getString("circulation.cir_newmember.back")%>" onclick="return quit();" />--%>
  </td>
 </tr>
-   <tr><td height="20px" colspan="4" ></td></tr>
-  <tr><td colspan="2">
+  
+  <tr><td dir="<%=rtl%>" colspan="2">
               <%
  String msg=(String)request.getAttribute("msg");
  String msg1=(String)request.getAttribute("msg1");
@@ -68,16 +85,17 @@ This Page is to Enter Library Details
   <span style="font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>
   <%}
 %>
-
+<div id="err" class="err">
+</div>
 
         </td></tr>
                 </table>
-                    </td></tr>
+               <%--     </td></tr>
 
- </table>
+ </table>--%>
 </html:form>
 
-</div>
+
 </body>
 
  <script language="javascript" type="text/javascript">
@@ -105,12 +123,12 @@ This Page is to Enter Library Details
 
 
 
-var str="Enter Following Values:-";
+var str="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-";
 
 
 
     if(sublib_name.value=="")
-        {str+="\n Enter Call No. ";
+        {str+="\n <%=resource.getString("opac.callno.entercallno")%> ";
              alert(str);
              document.getElementById('call_no').focus();
             return false;
@@ -118,7 +136,7 @@ var str="Enter Following Values:-";
         }
 
 
-
+    search();
 
 
 
@@ -129,8 +147,103 @@ var str="Enter Following Values:-";
 
 
     }
+    function newXMLHttpRequest() {
+var xmlreq = false;
+// Create XMLHttpRequest object in non-Microsoft browsers
+if (window.XMLHttpRequest) {
+xmlreq = new XMLHttpRequest();
+} else if (window.ActiveXObject) {
+try {
+// Try to create XMLHttpRequest in later versions
+// of Internet Explorer
+xmlreq = new ActiveXObject("Msxml2.XMLHTTP");
+} catch (e1) {
+// Failed to create required ActiveXObject
+try {
+// Try version supported by older versions
+// of Internet Explorer
+xmlreq = new ActiveXObject("Microsoft.XMLHTTP");
+} catch (e2) {
+// Unable to create an XMLHttpRequest by any means
+xmlreq = false;
+}
+}
+}
+return xmlreq;
+}
+/*
+* Returns a function that waits for the specified XMLHttpRequest
+* to complete, then passes it XML response to the given handler function.
+* req - The XMLHttpRequest whose state is changing
+* responseXmlHandler - Function to pass the XML response to
+*/
+function getReadyStateHandler(req, responseXmlHandler) {
+// Return an anonymous function that listens to the XMLHttpRequest instance
+return function () {
+// If the request's status is "complete"
+if (req.readyState == 4) {
+// Check that we received a successful response from the server
+if (req.status == 200) {
+// Pass the XML payload of the response to the handler function.
+responseXmlHandler(req.responseXML);
+} else {
+// An HTTP problem has occurred
+alert("HTTP error "+req.status+": "+req.statusText);
+}
+}
+}
+}
+function search() {
+
+    var keyValue = document.getElementById('call_no').value;
+
+//alert("caa");
+
+
+
+if (keyValue.length >= 1)
+{
+
+var req = newXMLHttpRequest();
+
+req.onreadystatechange = getReadyStateHandler(req, update1);
+
+req.open("POST","<%=request.getContextPath()%>/searchcallno.do", true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send("getCallNo="+keyValue);
+
+
+}
+return true;
+
+}
+function update1(cartXML)
+{
+
+var depts = cartXML.getElementsByTagName("course_ids")[0];
+//alert(depts);
+
+
+if(depts==undefined)
+{
+    document.getElementById('err').innerHTML="No Books are available for Checkout";
+    
+    return  false;
+
+}
+else{
+var em = depts.getElementsByTagName("course_id");
+document.getElementById('err').innerHTML="";
+var keyValue = document.getElementById('call_no').value;
+var framevalue = "<iframe align=center name=section1 id=section1 height=300px width=500px scrolling=no src=<%=request.getContextPath()%>/cir_callno.do?callno="+ keyValue +" frameborder=0 />";
+top.document.getElementById("section1").innerHTML = framevalue;
+
+}
+}
  </script>
 
 
 </html>
+
 

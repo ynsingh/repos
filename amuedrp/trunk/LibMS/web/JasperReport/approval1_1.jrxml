@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="approval1_1" language="groovy" pageWidth="595" pageHeight="841" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="library_id" class="java.lang.String"/>
+	<field name="sub_library_id" class="java.lang.String"/>
+	<field name="title" class="java.lang.String"/>
+	<field name="author" class="java.lang.String"/>
+	<field name="control_no" class="java.lang.Integer"/>
+	<field name="no_of_copies" class="java.lang.Integer"/>
+	<field name="unit_price" class="java.lang.Integer"/>
+	<field name="budgethead_name" class="java.lang.String"/>
+	<field name="currency" class="java.lang.String"/>
+	<field name="vendor" class="java.lang.String"/>
+	<group name="vendor">
+		<groupExpression><![CDATA[$F{vendor}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<staticText>
+					<reportElement x="51" y="30" width="58" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Control No]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="115" y="29" width="21" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Title]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="142" y="29" width="80" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Author]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="231" y="29" width="73" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[No of Copies]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="304" y="30" width="53" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Unit Price]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="368" y="31" width="74" height="19"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Currency Code]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="455" y="31" width="89" height="18"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Budget Source]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="39" y="0" width="51" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Vendor Id]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="90" y="0" width="46" height="20"/>
+					<textElement>
+						<font isItalic="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{vendor}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="51" y="49" width="490" height="1"/>
+				</line>
+				<staticText>
+					<reportElement x="136" y="29" width="6" height="20"/>
+					<textElement/>
+					<text><![CDATA[/]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20" splitType="Stretch">
+				<staticText>
+					<reportElement x="415" y="0" width="75" height="20"/>
+					<textElement/>
+					<text><![CDATA[Vendor total]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="490" y="0" width="51" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{vendor_COUNT}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="51" y="0" width="490" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="205" y="0" width="176" height="22"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Firm Order Report]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="18" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement x="64" y="0" width="36" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{control_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="1" width="48" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="245" y="0" width="36" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_of_copies}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="0" width="41" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{unit_price}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="381" y="1" width="61" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{currency}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="456" y="1" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{budgethead_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="157" y="1" width="8" height="20"/>
+				<textElement/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="165" y="0" width="80" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{author}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="2" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="415" y="1" width="27" height="20"/>
+				<textElement/>
+				<text><![CDATA[Page]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="1" width="9" height="20"/>
+				<textElement/>
+				<text><![CDATA[of]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="462" y="1" width="5" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="1" width="5" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="473" y="0" width="64" height="20"/>
+				<textElement/>
+				<text><![CDATA[Report]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="1" width="37" height="20"/>
+				<textElement/>
+				<text><![CDATA[Library]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="1" width="57" height="20"/>
+				<textElement/>
+				<text><![CDATA[SubLibrary]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="76" y="1" width="24" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{library_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="1" width="21" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sub_library_id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="469" y="1" width="8" height="20"/>
+				<textElement/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="1" width="5" height="20"/>
+				<textElement/>
+				<text><![CDATA[(]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="163" y="1" width="13" height="20"/>
+				<textElement/>
+				<text><![CDATA[)]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="418" y="41" width="75" height="20"/>
+				<textElement/>
+				<text><![CDATA[Grand Total]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="493" y="41" width="48" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

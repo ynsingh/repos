@@ -59,7 +59,23 @@ locale1=(String)session.getAttribute("locale");
 
     %>
 
+  <%
+String Status=resource.getString("circulation.cirviewall.status");
+pageContext.setAttribute("Status", Status);
+String DocumentId=resource.getString("circulation.cir_viewmem_chkoutreport.docid");
+pageContext.setAttribute("DocumentId", DocumentId);
+String Author=resource.getString("opac.simplesearch.auth");
+pageContext.setAttribute("Author",Author);
+String CallNo=resource.getString("opac.myaccount.reservationrequest.callno");
+pageContext.setAttribute("CallNo",CallNo);
+String IssueDate=resource.getString("circulation.cir_view_book.issuedate");
+pageContext.setAttribute("IssueDate",IssueDate);
+String DueDate=resource.getString("circulation.cir_view_book.duedate");
+pageContext.setAttribute("DueDate",DueDate);
+String Edition=resource.getString("opac.myaccount.newdemand.edition");
+pageContext.setAttribute("Edition",Edition);
 
+%>
 
 
 
@@ -97,14 +113,14 @@ locale1=(String)session.getAttribute("locale");
     {
 
 %>
-<table class="table" width="400px" style="height: 200px">
-    <tr><td class="headerStyle" valign="top" align="center" height="25px">Member CheckOut Details</td></tr>
-  <tr><td  valign="top"><br>
+<table dir="<%=rtl%>" class="table" width="400px" style="height: 200px">
+    <tr><td dir="<%=rtl%>" class="headerStyle" valign="top" align="center" height="25px"><%=resource.getString("circulation.viewformember.memberchkoutdetail")%></td></tr>
+  <tr><td dir="<%=rtl%>" valign="top"><br>
 
 
 <%if(tcount==0)
 {%>
-<p class="err" style="font-size:12px">No Record Found</p>
+<p class="err" style="font-size:12px"><%=resource.getString("circulation.cir_viewall_mem_detail.norecfond")%></p>
 <%}
 else
 {%>
@@ -117,35 +133,35 @@ else
     </column>
 
     <column width="100">
-      <header value="Document Id" hAlign="left" styleClass="admingridheader"/>
+      <header value="${DocumentId}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.documentDetails.id.documentId}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="200">
-      <header value="Author" hAlign="left" styleClass="admingridheader"/>
+      <header value="${Author}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.documentDetails.mainEntry}" hAlign="left"   styleClass="item"/>
     </column>
 
     <column width="200">
-      <header value="CallNo" hAlign="left" styleClass="admingridheader"/>
+      <header value="${CallNo}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.documentDetails.callNo}"   hAlign="left" styleClass="item"/>
     </column>
    
       <column width="100">
-      <header value="Issue Date" hAlign="left" styleClass="admingridheader"/>
+      <header value="${IssueDate}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.cirCheckout.issueDate}" hAlign="left" styleClass="item"/>
     </column>
 
     <column width="100">
-      <header value="Due Date" hAlign="left" styleClass="admingridheader"/>
+      <header value="${DueDate}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.cirCheckout.dueDate}" hAlign="left" styleClass="item"/>
     </column>
        <column width="100">
-      <header value="Edition" hAlign="left" styleClass="admingridheader"/>
+      <header value="${Edition}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.documentDetails.edition}"   hAlign="left" styleClass="item"/>
     </column>
         <column width="100">
-      <header value="Status" hAlign="left" styleClass="admingridheader"/>
+      <header value="${Status}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.cirCheckout.status}"   hAlign="left" styleClass="item"/>
     </column>
  </columns>

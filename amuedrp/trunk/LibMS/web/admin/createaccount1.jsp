@@ -15,7 +15,7 @@ StaffDetail  rst=(StaffDetail)session.getAttribute("account_resultset");
 
 List<SubLibrary> sublibrary=(List<SubLibrary>)session.getAttribute("sublib");
 
-String mainlib=(String)session.getAttribute("mainsublibrary");
+String mainlib=(String)session.getAttribute("library_id");
 String sublibrary_name="";
 
 
@@ -293,7 +293,7 @@ else{
                                     if(login_role.equals("dept-admin"))
                                     {%>
                                   
-                                    <option value="dept-staff"><%=resource.getString("admin.acq_register.deptstaff") %></option>
+                                    <option value="dept-staff"><%=resource.getString("admin.createaccount1.deptstaff") %></option>
                                   
                                     <%}%>
 

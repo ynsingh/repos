@@ -1,5 +1,5 @@
  <%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*"%>
-    <jsp:include page="/admin/header.jsp" flush="true" />
+  <%--  <jsp:include page="/admin/header.jsp" flush="true" />--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
@@ -32,22 +32,55 @@ f.submit();
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
 </head>
-<div
-   style="  top:150px;
-   left:5px;
-   right:5px;
-      position: absolute;
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+ String lib_id = (String)session.getAttribute("library_id");
+  String sublib_id = (String)session.getAttribute("memsublib");
+        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+    %>
 
-      visibility: show;">
+
 
 <body>
- <table border="1" class="table" width="700px" align="center">
+    
+    <table dir="<%=rtl%>" class="table"  align="center" >
 
 
 
-       <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">View All Department</td></tr>
+       <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("circulation.cir_viewallcallno.viewallavailable")%></td></tr>
                 <tr><td valign="top" align="center"> <br/>
 
+
+
+      <%
+String Title=resource.getString("opac.myaccount.reservationrequest.title");
+pageContext.setAttribute("Title", Title);
+String CallNo=resource.getString("circulation.showcirreqopac.callno");
+pageContext.setAttribute("CallNo", CallNo);
+String AccessionNo=resource.getString("circulation.showcirreqopac.accessno");
+pageContext.setAttribute("AccessionNo",AccessionNo);
+String Status=resource.getString("circulation.memberaccviewall.Status");
+pageContext.setAttribute("Status",Status);
+
+%>
 
 <%
 String path= request.getContextPath();
@@ -80,7 +113,7 @@ String path= request.getContextPath();
 %>
 <%if(tcount==0)
 {%>
-<p class="err" style="font-size:12px">No Record Found</p>
+<p class="err" style="font-size:12px"><%=resource.getString("circulation.cir_viewall_mem_detail.norecfond")%></p>
 <%}
 else
 {%>
@@ -93,24 +126,24 @@ else
 
 
     <column width="200">
-      <header value="Title" hAlign="left" styleClass="admingridheader"  />
-      <item   value="${doc.title}" hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left"   styleClass="item"/>
+      <header value="${Title}" hAlign="left" styleClass="admingridheader"  />
+      <item   value="${doc.title}" hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left" hyperLinkTarget="section2"   styleClass="item"/>
 
     </column>
 
-    <column width="200">
-      <header value="Call No" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.callNo}" hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left"  styleClass="item"/>
+    <column width="50">
+      <header value="${CallNo}" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.callNo}"  hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left"  hyperLinkTarget="section2" styleClass="item"/>
     </column>
 
-    <column width="200">
-      <header value="Accession No" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.accessionNo}" hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left"  styleClass="item"/>
+    <column width="50">
+      <header value="${AccessionNo}" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.accessionNo}" hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left" hyperLinkTarget="section2" styleClass="item"/>
     </column>
 
-    <column width="200">
-      <header value="Status" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.status}" hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left"  styleClass="item"/>
+    <column width="100">
+      <header value="${Status}" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.status}" hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left" hyperLinkTarget="section2" styleClass="item"/>
     </column>
 
 
@@ -123,14 +156,14 @@ else
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>
 
-<table width="700" style="font-family: arial; font-size: 10pt" border=0>
+<table  style="font-family: arial; font-size: 10pt" border=0>
 <tr>
 <td align="left">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.previos")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-<a href="<c:out value="${next}"/>">Next</a>
+<a href="<c:out value="${next}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.next")%></a>
 </c:if>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -155,7 +188,7 @@ else
   <tr><td align="center" width="400px">
 <form name="f">
 
-    <input type="button" name="b1" value="Back" onclick="b1click()" class="txt2">
+    <%--<input type="button" name="b1" value="<%=resource.getString("circulation.cir_newmember.back")%>" onclick="b1click()" class="txt2">--%>
    
 </form>
 
@@ -163,7 +196,8 @@ else
 
 
     </body>
-</div>
+
+   
 
 </html>
 

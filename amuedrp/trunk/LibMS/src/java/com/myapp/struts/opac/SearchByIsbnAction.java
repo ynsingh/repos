@@ -4,7 +4,7 @@
  */
 
 package com.myapp.struts.opac;
-import  com.myapp.struts.*;
+import com.myapp.struts.hbm.BibliographicDetails;
 import com.myapp.struts.hbm.DocumentDetails;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +13,8 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.HttpSession;
 import com.myapp.struts.opacDAO.*;
+import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import java.util.ArrayList;
 import java.util.List;
 /**
  *
@@ -23,6 +25,7 @@ public class SearchByIsbnAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     OpacSearchDAO osdao= new OpacSearchDAO();
+    BibliopgraphicEntryDAO bibdao=new BibliopgraphicEntryDAO();
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -43,14 +46,26 @@ public class SearchByIsbnAction extends org.apache.struts.action.Action {
         String   isbn = myForm.getTXTKEY();
         String sublib=myForm.getCMBSUBLib();
         if (session.getAttribute("Result")!=null) session.removeAttribute("Result");
-      List documentdetail  =(List)osdao.isbnSearch(isbn, lib_id, sublib);
+      List<BibliographicDetails> documentdetail  =(List)osdao.isbnSearch(isbn, lib_id, sublib);
+       ArrayList<BibliographicDetails> bib1=new ArrayList<BibliographicDetails>();
       //  query = "select * from document_details where isbn10='" + isbn + "'";
       //  if(!lib_id.equals("all"))
         //     query +=" and library_id='" + lib_id + "'";
 
        // rst = MyQueryResult.getMyExecuteQuery(query);
         //session.setAttribute("Result", rst);
-        session.setAttribute("documentdetail", documentdetail);
+ if(!documentdetail.isEmpty())
+{
+    for(int f=0;f<documentdetail.size();f++)
+    {
+    int bibiid=documentdetail.get(f).getId().getBiblioId();
+    List<DocumentDetails> ddd=bibdao.searchDoc2(bibiid, lib_id, sublib);
+    if(!ddd.isEmpty()){
+        bib1.add(documentdetail.get(f));
+    } 
+    }
+}
+      session.setAttribute("documentdetail", bib1);
         return mapping.findForward(SUCCESS);
     }
 }

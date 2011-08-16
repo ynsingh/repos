@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <%@page contentType="text/html" pageEncoding="UTF-8" import="com.myapp.struts.hbm.*,com.myapp.struts.systemsetupDAO.*,com.myapp.struts.AdminDAO.*"%>
+    <%@page contentType="text/html" pageEncoding="UTF-8" import="com.myapp.struts.hbm.*,com.myapp.struts.systemsetupDAO.*,com.myapp.struts.AdminDAO.*,java.util.*"%>
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -25,6 +25,49 @@ System.out.println(sublibrary.getSublibName());
   boolean read1=true;
   boolean button_visibility=true;
 %>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
+      <%! String button1;%>
+
+    <%
+
+ if(button.equals("Update"))
+ {
+   button1=resource.getString("circulation.cir_member_reg.update");
+     read=false;
+
+   button_visibility=true;
+ }
+ if(button.equals("Delete"))
+ {
+   button1=resource.getString("circulation.cir_member_reg.delete");
+   read=true;
+
+   button_visibility=true;
+ }
+%>
+
 <script language="javascript" type="text/javascript">
 
 function newXMLHttpRequest() {
@@ -112,6 +155,7 @@ return true;
 }
 function update(cartXML)
 {
+  
 var depts = cartXML.getElementsByTagName("dept_ids")[0];
 var em = depts.getElementsByTagName("dept_id");
 var em1 = depts.getElementsByTagName("dept_name");
@@ -130,12 +174,15 @@ newOpt.text = ndValue1;
 
 
 }
-
+   
+ document.getElementById('TXTDEPT').value="<%=sublib_name%>";
+hideTextbox();
 }
   function validation()
     {
 
-
+              var buttonvalue="Update";
+    document.getElementById("button").setAttribute("value", buttonvalue);
 
 
 var keyValue = document.getElementById('TXTDEPT').options[document.getElementById('TXTDEPT').selectedIndex].value;
@@ -153,14 +200,14 @@ var keyValue = document.getElementById('TXTDEPT').options[document.getElementByI
 
 
 
-var str="Enter Following Values:-";
+var str="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-";
 
 
 
     if(sublib_name.value=="")
         {
             if(keyValue=="Select")
-            {str+="\n Enter Department Name ";
+            {str+="\n <%=resource.getString("systemsetup.add_sublib.enterdeptname")%> ";
              alert(str);
              document.getElementById('sublib_name').focus();
             return false;
@@ -173,7 +220,7 @@ var str="Enter Following Values:-";
 
   if(department_address.value=="")
       {
-             str+="\n Enter Address";
+             str+="\n <%=resource.getString("systemsetup.add_sublib.enteradd")%>";
            alert(str);
            document.getElementById('department_address').focus();
             return false;
@@ -182,7 +229,7 @@ var str="Enter Following Values:-";
      }
 
 
-if(str=="Enter Following Values:-")
+if(str=="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-")
    {
        return true;
 
@@ -250,20 +297,20 @@ else
 
         <html:form action="/update_view_delete" method="post" onsubmit="return validation();">
 
-  <table class="table"   align="center">
+  <table dir="<%=rtl%>" class="table"   align="center">
 
-         <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage SubLibrary</td></tr>
-                <tr><td valign="top" align="right" style=" padding-left: 5px;">
+         <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.manage_library.managesublib")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="<%=align%>" style=" padding-left: 5px;">
 
 
 
-            <table align="center" height="200px">
+            <table dir="<%=rtl%>" align="center" height="200px">
      <tr>
-    <td align="left"><strong>SubLibrary Id</strong></td>
-    <td><html:text property="sublibrary_id" styleClass="textBoxWidth"   value="<%=sublibrary.getId().getSublibraryId() %>" readonly="true"/></td>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_sublibrary.sublibraryid")%></strong></td>
+    <td dir="<%=rtl%>"><html:text property="sublibrary_id" styleClass="textBoxWidth"   value="<%=sublibrary.getId().getSublibraryId() %>" readonly="true"/></td>
   </tr>
    <tr>
-    <td width="150" align="left"><strong>Faculty</strong> </td><td>
+    <td dir="<%=rtl%>" width="150" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_sublib.faculty")%></strong> </td><td>
         <%if(fac==null){%>
         <html:select  property="faculty" styleId="TXTFACULTY" style="width:160px"  disabled="<%=read%>"  value="Select" onchange="return search1()" tabindex="3">
              <html:option    value="Select">Select</html:option>
@@ -287,7 +334,7 @@ else
   
   <tr>
     
-     <td align="left"><strong>Department Name</strong></td>
+     <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_dept.deptname")%><a class="star">*</a></strong></td>
       <td>
 
 
@@ -303,7 +350,7 @@ else
     
     
   </tr>
-                     <tr><td align="right">OR &nbsp;&nbsp;</td><td>
+                     <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("systemsetup.add_dept.or")%> &nbsp;&nbsp;</td><td>
 
 
 
@@ -322,9 +369,9 @@ else
   
   <tr>
     
-    <td align="left"><strong>Department Address</strong></td>
-    <td width="280px">
-        <html:text property="department_address" styleClass="textBoxWidth" style="left:40px" value="<%=sublibrary.getDeptAddress()  %>" readonly="<%=read%>"/>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_sublib.deptadd")%><a class="star">*</a></strong></td>
+    <td dir="<%=rtl%>" width="280px">
+        <html:text property="department_address" styleClass="textBoxWidth" style="left:40px" value="<%=sublibrary.getDeptAddress()%>" readonly="<%=read%>"/>
         
 
 
@@ -336,19 +383,20 @@ else
   
  
 <tr>
-    <td colspan="4" align="center">
+    <td dir="<%=rtl%>" colspan="4" align="center">
     <%if(button_visibility){
     if(button.equals("Delete")){%>
-    <html:submit property="button" styleId="button" value="<%=button%>" onclick="return confirm1();" styleClass="btn" style="left:80px"  />
+    <input type="submit"  styleId="button" value="<%=button1%>" onclick="return confirm1();" styleClass="btn" style="left:80px"  />
     <%}
     else{%>
-    <html:submit property="button" value="<%=button%>" styleClass="btn" style="left:80px" onclick="return validation();"  />
+    <input type="submit"  value="<%=button1%>" styleClass="btn" style="left:80px" onclick="return validation();"  />
      <%}%><%}%>
-    <input type="button" onclick="return quit();" class="btn" style="left:150px" value="Back"/></td>
+    <input type="button" onclick="return quit();" class="btn" style="left:150px" value="<%=resource.getString("circulation.cir_member_reg.back")%>"/></td>
 </tr>
             </table>
                     </td></tr></table>
 
+              <input type="hidden" id="button" name="button" />
     
   </html:form>
         </div>
@@ -375,11 +423,19 @@ else
 
  function confirm1()
 {
-var answer = confirm ("Do you want to delete record?")
-if (answer!=true)
-    {
-        document.getElementById('button').focus();
-        return false;
+document.getElementById('button').value="<%=button%>" ;
+    var option=document.getElementById('button').value;
+    if(option=="Delete"){
+        var a=confirm("<%=resource.getString("circulation.cir_newmember.douwanttodelrec")%>");
+       // alert(a);
+        if(a!=true)
+            {
+                document.getElementById('button').focus();
+               return false;
+
+        }
+        else
+            return true;
     }
 }
 

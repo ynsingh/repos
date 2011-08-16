@@ -29,19 +29,55 @@ f.submit();
 }
 
 </script>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
 </head>
 
 
 <body style="margin:0px 0px 0px 0px">
- <table  width="100%" align="center">
+    <table  dir="<%=rtl%>" width="100%" align="center">
 
 
 
-       <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">View All CheckIn Report</td></tr>
-                <tr><td valign="top" align="center"> <br/>
+       <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("circulation.cir_chekin_report_grid.viewallchekinreport")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
 
+
+  <%
+String LibraryId=resource.getString("opac.browse.table.Libraryid");
+pageContext.setAttribute("LibraryId", LibraryId);
+String MemberId=resource.getString("circulation.cir_newmember.memberid");
+pageContext.setAttribute("MemberId", MemberId);
+String SubLibraryId=resource.getString("circulation.cir_chekin_report_grid.sublib");
+pageContext.setAttribute("SubLibraryId",SubLibraryId);
+String ReturningDate=resource.getString("circulation.cir_checkinbookdetail.returndate");
+pageContext.setAttribute("ReturningDate",ReturningDate);
+
+
+%>
 
 <%
 String path= request.getContextPath();
@@ -78,7 +114,7 @@ String path= request.getContextPath();
 %>
 <%if(tcount==0)
 {%>
-<p class="err" style="font-size:12px">No Record Found</p>
+<p class="err" style="font-size:12px"><%=resource.getString("circulation.cir_viewall_mem_detail.norecfond")%></p>
 <%}
 else
 {%>
@@ -92,22 +128,22 @@ else
 
 
     <column width="200">
-      <header value="Library Id" hAlign="left" styleClass="admingridheader"  />
+      <header value="${LibraryId}" hAlign="left" styleClass="admingridheader"  />
       <item   value="${doc.id.libraryId}" hyperLinkTarget="_parent" hyperLink="${path}/circulation/showMemberReport.do?id=${doc.memberId}&amp;checkIn=${doc.id.checkinId}"   hAlign="left"   styleClass="item"/>
 
     </column>
 
     <column width="200">
-      <header value="SUBLibrary Id" hAlign="left" styleClass="admingridheader"/>
+      <header value="${SubLibraryId}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.id.sublibraryId}" hyperLinkTarget="_parent" hyperLink="${path}/circulation/showMemberReport.do?id=${doc.memberId}&amp;checkIn=${doc.id.checkinId}"  hAlign="left"  styleClass="item"/>
     </column>
 
  <column width="200">
-      <header value="MemberId" hAlign="left" styleClass="admingridheader"/>
+      <header value="${MemberId}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.memberId}" hyperLinkTarget="_parent" hyperLink="${path}/circulation/showMemberReport.do?id=${doc.memberId}&amp;checkIn=${doc.id.checkinId}" hAlign="left"  styleClass="item"/>
     </column>
    <column width="200">
-      <header value="ReturningDate" hAlign="left" styleClass="admingridheader"/>
+      <header value="${ReturningDate}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.returningDate}" hyperLinkTarget="_parent" hyperLink="${path}/circulation/showMemberReport.do?id=${doc.memberId}&amp;checkIn=${doc.id.checkinId}"  hAlign="left"  styleClass="item"/>
     </column>
 
@@ -129,10 +165,10 @@ else
 <tr>
 <td align="left">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.previos")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-<a href="<c:out value="${next}"/>">Next</a>
+<a href="<c:out value="${next}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.next")%></a>
 </c:if>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

@@ -78,6 +78,48 @@ f.submit();
    
 %>
 
+ <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+ String lib_id = (String)session.getAttribute("library_id");
+  String sublib_id = (String)session.getAttribute("memsublib");
+        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+    %>
+             <%
+String LibraryId=resource.getString("opac.browse.table.Libraryid");
+pageContext.setAttribute("LibraryId", LibraryId);
+String MemberId=resource.getString("circulation.cir_newmember.memberid");
+pageContext.setAttribute("MemberId", MemberId);
+String FirstName=resource.getString("circulation.cir_newmember.fname");
+pageContext.setAttribute("FirstName",FirstName);
+String LastName=resource.getString("circulation.cir_newmember.lname");
+pageContext.setAttribute("LastName",LastName);
+String EmailId=resource.getString("circulation.cir_newmember.email");
+pageContext.setAttribute("EmailId",EmailId);
+String Address=resource.getString("circulation.cir_newmember.permadd");
+pageContext.setAttribute("Address",Address);
+String Status=resource.getString("circulation.cirviewall.status");
+pageContext.setAttribute("Status",Status);
+String RequestDate=resource.getString("circulation.cirviewall.reqdate");
+pageContext.setAttribute("RequestDate",RequestDate);
+%>
 <div
    style="  top:200px;
    left:200px;
@@ -93,7 +135,7 @@ f.submit();
 if(tcount==0)
 {
 %>
-<p class="err">No Record To Display</p>
+<p class="err"><%=resource.getString("circulation.cirviewall.norectodis")%></p>
 <%}
 else
 {%>
@@ -110,37 +152,37 @@ else
 
 
     <column width="100">
-      <header value="LibraryId" hAlign="left" styleClass="header"  />
+      <header value="${LibraryId}" hAlign="left" styleClass="header"  />
       <item   value="${doc.libraryId}"     hAlign="left"   styleClass="item"  hyperLink="./circulation/cir_viewallaftergrid.jsp?memid=${doc.memId}"/>
 
     </column>
 
     <column width="100">
-      <header value="MemberId" hAlign="left" styleClass="header"/>
+      <header value="${MemberId}" hAlign="left" styleClass="header"/>
       <item   value="${doc.memId}"   hAlign="left"  styleClass="item"  hyperLink="./circulation/cir_viewallaftergrid.jsp?memid=${doc.memId}"/>
     </column>
      <column width="100">
-      <header value="FirstName" hAlign="left" styleClass="header"/>
+      <header value="${FirstName}" hAlign="left" styleClass="header"/>
       <item   value="${doc.fname}"  hAlign="left"  styleClass="item"  hyperLink="./circulation/cir_viewallaftergrid.jsp?memid=${doc.memId}"/>
     </column>
       <column width="100">
-      <header value="LastName" hAlign="left" styleClass="header"/>
+      <header value="${LastName}" hAlign="left" styleClass="header"/>
       <item   value="${doc.lname}"  hAlign="left"  styleClass="item"  hyperLink="./circulation/cir_viewallaftergrid.jsp?memid=${doc.memId}"/>
     </column>
      <column width="100">
-      <header value="EmailId" hAlign="left" styleClass="header"/>
+      <header value="${EmailId}" hAlign="left" styleClass="header"/>
       <item   value="${doc.email}"  hAlign="left"  styleClass="item"  hyperLink="./circulation/cir_viewallaftergrid.jsp?memid=${doc.memId}"/>
     </column>
      <column width="100">
-      <header value="Address" hAlign="left" styleClass="header"/>
+      <header value="${Address}" hAlign="left" styleClass="header"/>
       <item   value="${doc.address1}"  hAlign="left"  styleClass="item"  hyperLink="./circulation/cir_viewallaftergrid.jsp?memid=${doc.memId}"/>
     </column>
      <column width="100">
-      <header value="Status" hAlign="left" styleClass="header"/>
+      <header value="${Status}" hAlign="left" styleClass="header"/>
       <item   value="${doc.status}"  hAlign="left"  styleClass="item"  hyperLink="./circulation/cir_viewallaftergrid.jsp?memid=${doc.memId}"/>
     </column>
       <column width="100">
-      <header value="Request Date" hAlign="left" styleClass="header"/>
+      <header value="${RequestDate}" hAlign="left" styleClass="header"/>
       <item   value="${doc.requestdate}"  hAlign="left"  styleClass="item"  hyperLink="./circulation/cir_viewallaftergrid.jsp?memid=${doc.memId}"/>
     </column>
 
@@ -157,10 +199,10 @@ else
 <tr>
 <td align="left">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.previos")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-<a href="<c:out value="${next}"/>">Next</a>
+<a href="<c:out value="${next}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.next")%></a>
 </c:if>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -181,7 +223,53 @@ else
 </table>
   <%}%>
   <br><br><br>
-  <script language="javascript">
+ 
+  <tr><td align="center" width="400px">
+
+          <div align="left">
+      <%-- <input type="hidden" name="list" value="" >
+    <input type="submit" name="button" value="Approved" >
+    <input type="submit" name="button" value="Cancel Approval" >--%>
+    <input type="button" name="button" value="Back" onclick="return b2click(); ">
+  </div>
+</form>
+  </div>
+
+    </body>
+ <%
+        //message from ciropacApprovedAction
+String msg=(String)request.getAttribute("msg");
+
+
+//String title=(String)request.getAttribute("title");
+           if (msg!=null){
+%>
+ <script language="javascript">
+ window.location="<%=request.getContextPath()%>/circulation/cir_requestfrom_opacgrid.jsp";
+ alert("<%=msg%>");
+ </script>
+ <%
+}
+
+%>
+
+<%
+        //message from ciropacApprovedAction
+
+String msg1=(String)request.getAttribute("msg1");
+
+//String title=(String)request.getAttribute("title");
+           if (msg1!=null){
+%>
+ <script language="javascript">
+ window.location="<%=request.getContextPath()%>/circulation/cir_requestfrom_opacgrid.jsp";
+ alert("<%=msg1%>");
+ </script>
+ <%
+}
+
+%>
+ <script language="javascript">
       var start=0;
        var myArray=new Array();
       function checkedItemCount(myCheckbox )
@@ -234,52 +322,6 @@ function passvalue(memid)
 
 
   </script>
-  <tr><td align="center" width="400px">
-
-          <div align="left">
-      <%-- <input type="hidden" name="list" value="" >
-    <input type="submit" name="button" value="Approved" >
-    <input type="submit" name="button" value="Cancel Approval" >--%>
-    <input type="button" name="button" value="Back" onclick="return b2click(); ">
-  </div>
-</form>
-  </div>
-
-    </body>
- <%
-        //message from ciropacApprovedAction
-String msg=(String)request.getAttribute("msg");
-
-
-//String title=(String)request.getAttribute("title");
-           if (msg!=null){
-%>
- <script language="javascript">
- window.location="<%=request.getContextPath()%>/circulation/cir_requestfrom_opacgrid.jsp";
- alert("<%=msg%>");
- </script>
- <%
-}
-
-%>
-
-<%
-        //message from ciropacApprovedAction
-
-String msg1=(String)request.getAttribute("msg1");
-
-//String title=(String)request.getAttribute("title");
-           if (msg1!=null){
-%>
- <script language="javascript">
- window.location="<%=request.getContextPath()%>/circulation/cir_requestfrom_opacgrid.jsp";
- alert("<%=msg1%>");
- </script>
- <%
-}
-
-%>
-
 
 </html>
 

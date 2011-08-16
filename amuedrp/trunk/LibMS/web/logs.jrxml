@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="logs" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="library_id" class="java.lang.String"/>
+	<field name="count1" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="204" y="0" width="100" height="20"/>
+				<textElement>
+					<font  size="14"/>
+				</textElement>
+				<text><![CDATA[Logs Report]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="299" splitType="Stretch">
+			<elementGroup>
+				<bar3DChart>
+					<chart>
+						<reportElement x="22" y="0" width="107" height="158"/>
+						<chartTitle/>
+						<chartSubtitle/>
+						<chartLegend/>
+					</chart>
+					<categoryDataset>
+						<categorySeries>
+							<seriesExpression><![CDATA[$F{library_id}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{library_id}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{count1}]]></valueExpression>
+							<labelExpression><![CDATA[$F{library_id}]]></labelExpression>
+						</categorySeries>
+					</categoryDataset>
+					<bar3DPlot>
+						<plot/>
+						<itemLabel color="#008000" backgroundColor="#FFFFFF"/>
+						<categoryAxisFormat>
+							<axisFormat>
+								<labelFont/>
+								<tickLabelFont/>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat>
+								<labelFont/>
+								<tickLabelFont/>
+							</axisFormat>
+						</valueAxisFormat>
+					</bar3DPlot>
+				</bar3DChart>
+			</elementGroup>
+		</band>
+	</summary>
+</jasperReport>

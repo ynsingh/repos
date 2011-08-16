@@ -15,7 +15,13 @@ import com.myapp.struts.CirculationDAO.CirculationDAO;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.systemsetupDAO.SubMemberDAO;
 import java.util.List;
-import com.myapp.struts.utility.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import com.myapp.struts.utility.Email;
+import com.myapp.struts.utility.PasswordEncruptionUtility;
+import com.myapp.struts.utility.RandomPassword;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  *
@@ -25,7 +31,7 @@ public class CirViewUpdateAccountAction extends org.apache.struts.action.Action 
 
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-
+private final ExecutorService executor=Executors.newFixedThreadPool(1);
     String mem_id,password,card_id,library_id,sublibrary_id,button;
      private String MEMCAT;
     private String MEMSUBCAT;
@@ -41,18 +47,41 @@ public class CirViewUpdateAccountAction extends org.apache.struts.action.Action 
 
     boolean result;
     private String no_of_issueable;
-
+    private String password1;
+    Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
+    Email obj;
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+         HttpSession session=request.getSession();
+         try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         CirViewUpdateAccountActionForm cvuaf=(CirViewUpdateAccountActionForm)form;
         mem_id=cvuaf.getMem_id();
         password=cvuaf.getPassword();
-        password=PasswordEncruptionUtility.password_encrupt(password);
+       /*Password Generate and Reset It*/
+                 password= RandomPassword.getRandomString(10);
+                 System.out.println(password);
+                  password1=PasswordEncruptionUtility.password_encrupt(password);
         card_id=cvuaf.getCard_id();
         button=cvuaf.getButton();
-        HttpSession session=request.getSession();
+       
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
 
@@ -76,7 +105,7 @@ public class CirViewUpdateAccountAction extends org.apache.struts.action.Action 
 
         if(button.equals("Update"))
         {
-          cirmemberaccount.setPassword(password);
+          cirmemberaccount.setPassword(password1);
           cirmemberaccount.setCardId(card_id);
 
           cirmemberaccount.setSemester(TXTSEM);
@@ -119,17 +148,32 @@ System.out.println(no_of_issueable+"...................");
 
 
 
+ CirMemberDetail cirobj=CirculationDAO.searchCirMemDetails(library_id, mem_id);
+    //"Update Circulation Member Account :Password Reset Successfully from LibMS","User Id="+mem_id+" Your Password for LibMS OPAC Login is="+password
+    String path = servlet.getServletContext().getRealPath("/");
+ obj=new Email(path,cirobj.getEmail(),password,"Update Circulation Member Account as Library Member","Your Account is Updated for Library member for Library Name "+session.getAttribute("library_name").toString()+"\nYour Member Account as Follows \nUser Id:"+mem_id+"\nPassword:"+password+".\n","Dear "+cirobj.getFname()+" "+cirobj.getMname()+" "+cirobj.getLname()+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+  
+            executor.submit(new Runnable() {
 
+                public void run() {
+                    obj.send();
+                }
+            });
 
           result=CirculationDAO.updateAccount(cirmemberaccount);
           if(result==true)
           {
-            request.setAttribute("msg","Record Updated Successfully");
+             
+
+
+            //  Record Updated Successfully
+            request.setAttribute("msg",resource.getString("circulation.circulationnewmemberregAction.recupdatesucc"));
             return mapping.findForward("success");
           }
           else
           {
-            request.setAttribute("msg1","Record Not Updated");
+            //Record Not Updated
+              request.setAttribute("msg1",resource.getString("circulation.circulationnewmemberregAction.recupdatenotsecc"));
             return mapping.findForward("fail");
 
           }
@@ -138,29 +182,44 @@ System.out.println(no_of_issueable+"...................");
 
         if(button.equals("Delete"))
         {
-
+System.out.println("hggggggggggggggg");
          List<CirCheckout> chkobj=(List<CirCheckout>)CirculationDAO.searchCheckoutMemDetails(library_id,sublibrary_id, mem_id);
 
-        System.out.println(chkobj+"........................");
+       
 
         if(!chkobj.isEmpty())
         {
-            String msg1="Member Checkout are there ,So Cannot Be Deleted";
+            //Member Checkout are there ,So Cannot Be Deleted
+            String msg1=resource.getString("circulation.circulationnewmemberregAction.memchkcannotdel");
              request.setAttribute("msg1",msg1);
             return mapping.findForward("fail");
 
         }
 
-
+            CirMemberDetail cirobj=CirculationDAO.searchCirMemDetails(library_id, mem_id);
+            //Delete Circulation Member Account Successfully from LibMS","Your Account is Successfully deleted from LibMS OPAC Login"
+           
            result=CirculationDAO.deleteAccount(library_id, sublibrary_id, mem_id);
+
            if(result==true)
            {
-            request.setAttribute("msg","Record Deleted Successfully");
+                  String path = servlet.getServletContext().getRealPath("/");
+        
+          obj=new Email(path,cirobj.getEmail(),"","Update LibMS Member Account","Sorry Your Member Account is Deleted for Library Name "+session.getAttribute("library_name").toString()+"\n","Dear "+cirobj.getFname()+" "+cirobj.getMname()+" "+cirobj.getLname()+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+            executor.submit(new Runnable() {
+
+                public void run() {
+                    obj.send();
+                }
+            });
+            //Record Deleted Successfully
+               request.setAttribute("msg",resource.getString("circulation.circulationnewmemberregAction.recdelsucc"));
             return mapping.findForward("success");
            }
            else
            {
-            request.setAttribute("msg1","Record Not Deleted");
+            //Record Not Deleted
+               request.setAttribute("msg1",resource.getString("circulation.circulationnewmemberregAction.memnotdelsucc"));
             return mapping.findForward("fail");
 
            }

@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 12, 2011 11:35:03 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.AcqOrderHeader" table="acq_order_header" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.AcqOrderHeaderId">
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+            <key-property name="subLibraryId" type="string">
+                <column name="sub_library_id" length="20" />
+            </key-property>
+            <key-property name="orderNo" type="string">
+                <column name="order_no" length="20" />
+            </key-property>
+        </composite-id>
+        <property name="vendorId" type="string">
+            <column name="vendor_id" length="50" />
+        </property>
+        <property name="discount" type="string">
+            <column name="discount" length="20" />
+        </property>
+        <property name="orderDate" type="string">
+            <column name="order_date" length="20" />
+        </property>
+        <property name="dueDate" type="string">
+            <column name="due_date" length="20" />
+        </property>
+        <property name="orderStatus" type="string">
+            <column name="order_status" length="10" />
+        </property>
+        <property name="cancelReason" type="string">
+            <column name="cancel_reason" length="20" />
+        </property>
+        <property name="delivieryDate" type="string">
+            <column name="deliviery_date" length="10" />
+        </property>
+        <property name="shipContactName" type="string">
+            <column name="ship_contact_name" length="100" />
+        </property>
+        <property name="shipCompanyName" type="string">
+            <column name="ship_company_name" length="500" />
+        </property>
+        <property name="shipAddress" type="string">
+            <column name="ship_address" length="500" />
+        </property>
+        <property name="shipPin" type="string">
+            <column name="ship_pin" length="8" />
+        </property>
+        <property name="shipFax" type="string">
+            <column name="ship_fax" length="16" />
+        </property>
+        <property name="shipEmail" type="string">
+            <column name="ship_email" length="100" />
+        </property>
+        <property name="shipCost" type="string">
+            <column name="ship_cost" length="10" />
+        </property>
+        <property name="otherCost" type="string">
+            <column name="other_cost" length="10" />
+        </property>
+        <property name="taxRate" type="string">
+            <column name="tax_rate" length="10" />
+        </property>
+        <property name="taxAmount" type="string">
+            <column name="tax_amount" length="10" />
+        </property>
+        <property name="grandTotal" type="string">
+            <column name="grand_total" length="15" />
+        </property>
+        <property name="shippingMethod" type="string">
+            <column name="shipping_method" length="100" />
+        </property>
+        <property name="shippingTerms" type="string">
+            <column name="shipping_terms" length="500" />
+        </property>
+        <property name="comments" type="string">
+            <column name="comments" length="500" />
+        </property>
+        <set name="acqOrder1s" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+                <column name="sub_library_id" length="20" not-null="true" />
+                <column name="order_no" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.AcqOrder1" />
+        </set>
+    </class>
+</hibernate-mapping>

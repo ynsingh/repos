@@ -5,6 +5,7 @@
 
 package com.myapp.struts.systemsetupDAO;
 
+import com.myapp.struts.hbm.DocumentDetails;
 import com.myapp.struts.hbm.HibernateUtil;
 import com.myapp.struts.hbm.Location;
 import java.util.List;
@@ -36,6 +37,22 @@ public class LocationDAO {
 
 }
 
+      public static List<DocumentDetails> Search(String library_id,String loc) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            session.beginTransaction();
+            Query query1 = session.createQuery("FROM  DocumentDetails  WHERE id.libraryId =:library_id and location = :loc ");
+            query1.setString("library_id", library_id);
+            query1.setString("loc", loc);
+
+            return (List<DocumentDetails>)  query1.list();
+        }
+        finally {
+            session.close();
+        }
+
+}
 
 public static Location getLocationByName(String library_id,String sublibrary_id,String locName) {
         Session session = HibernateUtil.getSessionFactory().openSession();

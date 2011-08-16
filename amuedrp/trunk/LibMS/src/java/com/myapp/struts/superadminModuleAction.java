@@ -38,11 +38,11 @@ public class superadminModuleAction extends org.apache.struts.action.Action {
                     session.setAttribute("resultset", rst);
                       int count = admindao.getAdminRequestCount("NotRegistered");
 
-                /*
-                 get List of Rejected Library
-                 rst = admindao.getAdminDetailsByStatus("Rejected");
+                
+//                 get List of Rejected Library
+                 rst = admindao.getAdminDetailsByStatus("rejected");
                       session.setAttribute("rejected", rst);
-*/
+
 
 
 

@@ -4,7 +4,7 @@ Devleoped By : Kedar Kumar
 Modified On  : 17-Feb 2011
 This Page is to Enter Library Details
 -->
-<%@page  import="java.util.List" %>
+<%@page  pageEncoding="UTF-8" import="java.util.*"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -24,27 +24,59 @@ This Page is to Enter Library Details
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/acquisition/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css" media="screen"/>
 <script type="text/javascript" src="<%=request.getContextPath()%>/acquisition/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js"></script>
  <script language="javascript" type="text/javascript">
-  function back()
+   function Submit()
+{
+    var buttonvalue="Submit";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+
+ function back()
   {
 
-      window.location="<%=request.getContextPath()%>/admin/main.jsp";
+       window.location="<%=request.getContextPath()%>/admin/main.jsp";
 
    }
-   function validation()
-    {
-    var sublib_name=document.getElementById('memid');
-var str="Enter Following Values:-";
-    if(sublib_name.value=="")
-        {str+="\n Enter Member Id ";
-             alert(str);
-             document.getElementById('memid').focus();
-            return false;
-        }else{
-            return true;
+  // function validation()
+  //  {
 
-        }
-    }
+      // var buttonvalue="Register";
+   // document.getElementById("button").setAttribute("value", buttonvalue);
+  //  var sublib_name=document.getElementById('memid');
+//var str="Enter Following Values:-";
+ //   if(sublib_name.value=="")
+       // {str+="\n Enter Member Id ";
+       //      alert(str);
+          //   document.getElementById('memid').focus();
+          //  return false;
+      //  }else{
+          //  return true;
+
+      //  }
+   // }
  </script>
+      <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
 </head>
 <body>
  <div
@@ -56,32 +88,32 @@ var str="Enter Following Values:-";
       visibility: show;">
 
      <html:form  action="/cir_chk" method="post">
- <table border="1" class="table" width="400px" height="200px" align="center">
+ <table dir="<%=rtl%>" border="1" class="table" width="400px" height="200px" align="center">
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Checkout</td></tr>
-                <tr><td valign="top" align="center"> <br/>
-                <table cellspacing="10px">
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("circulation.cir_checkout.managechkout")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
+                <table dir="<%=rtl%>" cellspacing="10px">
 
                    
-  <tr><td height="5px" colspan="4" ></td></tr>
+  <tr><td dir="<%=rtl%>" height="5px" colspan="4" ></td></tr>
 
   <tr>
 
-    <td align="right"><strong>Member Id<a class="star">*</a></strong></td>
-    <td><html:text property="memid" styleId="memid"  value="" styleClass="textBoxWidth"/>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("circulation.cir_newmember.memberid")%><a class="star">*</a></strong></td>
+    <td dir="<%=rtl%>"><html:text property="memid" styleId="memid"  value="" styleClass="textBoxWidth"/>
 
     </td>
   </tr>
-  <tr><td height="5px" colspan="4" ></td></tr>
+  <tr><td dir="<%=rtl%>" height="5px" colspan="4" ></td></tr>
  
   <tr>
-    <td colspan="4" align="center"><input type="submit"  value="Submit"  onClick="return validation();"/>
+    <td dir="<%=rtl%>" colspan="4" align="center"><input type="submit"  value="<%=resource.getString("circulation.cir_newmember.submit")%>"  onClick="return Submit();"/>
 
-        <input type="button"  value="Back" onclick="back();" />
+        <input type="button"  value="<%=resource.getString("circulation.cir_newmember.back")%>" onclick="back();" />
  </td>
 </tr>
-  <tr><td height="15px" colspan="4" ></td></tr>
+  <tr><td dir="<%=rtl%>" height="15px" colspan="4" ></td></tr>
 </table>
                     </td></tr>
      <tr><td>
@@ -105,8 +137,8 @@ if(msg1!=null){
  <%
 }
 %>                               </td></tr>
- <tr border="1" class="table"  align="center"><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Checkout Request from OPAC</td></tr>
-                <tr><td valign="top" align="center"> <br/>
+ <tr border="1" class="table" dir="<%=rtl%>"  align="center"><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("circulation.cir_checkout.managechkoutreqfromopac")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
                 <table cellspacing="10px">
                     <tr><td>
                             <iframe align="center" height="300px" width="600px" src="<%=request.getContextPath()%>/showcir_request_opac.do" frameborder="0"/>
@@ -114,6 +146,7 @@ if(msg1!=null){
             </table>
                     </td></tr>
  </table>
+           <input type="hidden" id="button" name="button" value=""/>
 </html:form>
 </div>
 </body>

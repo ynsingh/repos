@@ -33,9 +33,8 @@ private String working_status;
 
         AdminRegistration adminreg= new AdminRegistration();
         working_status=adminreg.getWorkingStatus();
-String t=request.getParameter("id");
-System.out.println(t);
-        i=Integer.parseInt(t);
+
+        i=Integer.parseInt(request.getParameter("id"));
         HttpSession session=request.getSession();
 
 

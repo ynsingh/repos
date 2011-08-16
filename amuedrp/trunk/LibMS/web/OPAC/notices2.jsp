@@ -80,7 +80,7 @@ locale1=(String)session.getAttribute("locale");
     <body>
      <table style="width:500px" align="center" dir="<%=rtl%>" >
 <%if(size==0){%>
-<p class="err">no record found</p>
+<p class="err"> <%=resource.getString("global.norecordfound")%></p>
 <%}else{%>
 
      <% for(;fromIndex<=toIndex;fromIndex++){%>

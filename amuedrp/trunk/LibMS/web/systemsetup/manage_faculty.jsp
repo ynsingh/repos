@@ -5,7 +5,7 @@ Modified On  : 17-Feb 2011
 This Page is to Enter Staff ID 
 -->
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*"%>
 
  <jsp:include page="../admin/header.jsp" flush="true" />
 
@@ -25,14 +25,61 @@ String msg1=(String)request.getAttribute("msg1");
 <title>LibMS : Manage Faculty </title>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
+ <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
  <script language="javascript" type="text/javascript">
 
+ function Add()
+{
+    var buttonvalue="Add";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+
+function View()
+{
+    var buttonvalue="View";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+function Update()
+{
+    var buttonvalue="Update";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+function Delete()
+{
+    var buttonvalue="Delete";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
 
 function check1()
 {
     if(document.getElementById('faculty_id').value=="")
     {
-        alert("Enter Faculty Id...");
+        alert("<%=resource.getString("systemsetup.manage_faculty.enterfacultyid")%>...");
 
         document.getElementById('faculty_id').focus();
 
@@ -68,20 +115,20 @@ function check1()
 
       visibility: show;">
 
-    <table border="1"  class="table" width="400px" height="200px" align="center">
+    <table border="1" dir="<%=rtl%>" class="table" width="400px" height="200px" align="center">
 
   
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Faculty</td></tr>
-                <tr><td valign="top" align="center"> <br/>
-                <table cellspacing="10px">
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.manage_faculty.managefaulty")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
+                <table dir="<%=rtl%>" cellspacing="10px">
 
-                    <tr><td rowspan="5" class="txt2">Enter Faculty ID<br><br>
+                    <tr><td dir="<%=rtl%>" rowspan="5" class="txt2"><%=resource.getString("systemsetup.manage_faculty.enterfacultyid")%><br><br>
                         <input type="text" id="faculty_id" name="faculty_id" value=""/>
-                        </td><td width="150px" align="center"> <input type="submit" class="btn" id="Button1" name="button" value="Register" /></td></tr>
-                    <tr><td width="150px" align="center"><input type="submit" id="Button2" class="btn" name="button" value="Update"  /></td></tr>
-                    <tr><td width="150px" align="center"><input type="submit" id="Button3" name="button" value="View" class="btn"  /></td></tr>
-                    <tr><td width="150px" align="center"><input type="submit" id="Button4" name="button" value="Delete" class="btn" /></td></tr>
-                         <tr><td width="150px" align="center"><input type="button" id="Button5" name="button" value="Back" class="btn" onclick="return quit()"/></td></tr>
+                        </td><td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn" id="Button1"  value="<%=resource.getString("systemsetup.manage_notice.add")%>" onclick="return Add();" /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button2" class="btn"  value="<%=resource.getString("circulation.cir_member_reg.update")%>" onclick="return Update();"  /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button3"  value="<%=resource.getString("circulation.cir_member_reg.view")%>" onclick="return View();" class="btn"  /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button4"  value="<%=resource.getString("circulation.cir_member_reg.delete")%>" onclick="return Delete();" class="btn" /></td></tr>
+                         <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="button" id="Button5"  value="<%=resource.getString("circulation.cir_member_reg.back")%>" class="btn" onclick="return quit()"/></td></tr>
                        
  
 
@@ -91,7 +138,7 @@ function check1()
     <input type="hidden" name="library_id" value="<%=library_id%>">
    
 
-
+    <input type="hidden" id="button" name="button" />
 
 
 
@@ -106,7 +153,7 @@ function check1()
         %>
 
 
-        <p class="mess">  <%=msg%></p>
+        <p class="mess" dir="<%=rtl%>" align="<%=align%>">  <%=msg%></p>
 
         <%
         }
@@ -116,14 +163,14 @@ function check1()
         %>
 
 
-        <p class="err">  <%=msg1%></p>
+        <p class="err" dir="<%=rtl%>" align="<%=align%>">  <%=msg1%></p>
 
         <%
         }
         %>
                              </td></tr
 
-       <tr><td align="justify"><font color="blue" size="-1"><b>Example:</b> sc for Science, art for Arts & so on, if Faculty exists.</font></td></tr>
+       <tr><td align="justify"><font color="blue" size="-1"><b><%=resource.getString("systemsetup.manage_notice.example")%>:</b> sc <%=resource.getString("systemsetup.manage_faculty.forsc")%>, art <%=resource.getString("systemsetup.manage_faculty.forart")%>, <%=resource.getString("systemsetup.manage_faculty.iffacexists")%>.</font></td></tr>
     </table>
         </div>
   

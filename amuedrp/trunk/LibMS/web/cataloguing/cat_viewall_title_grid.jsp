@@ -1,161 +1,337 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
     <%@page contentType="text/html" pageEncoding="UTF-8"%>
-    <%@ page import="java.util.*"%>
-    <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
-    <%@ page import="java.sql.*"%>
-    <%@ page import="java.io.*"   %>
-    <%@ taglib uri="http://jakarta.apache.org/taglibs/datagrid-1.0" prefix="ui" %>
-    <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
-    <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
-    <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
-    <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-    <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-  <jsp:include page="/admin/header.jsp"/>
+    <%@page import="java.util.*"%>
+    <%@page import="com.myapp.struts.hbm.*,java.util.*"%>
+    <%@page import="java.util.ResourceBundle"%>
+    <%@page import="java.util.Locale"%>
+    <%@taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+    <%@taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+    <%@taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+    <jsp:include page="/admin/header.jsp"/>
 <html>
     <head>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+    boolean page=true;
+    String newbutton;
+    String newbutton1;
+    String newbutton2;
+%>
+<%
+ String lib_id = (String)session.getAttribute("library_id");
+  String sublib_id = (String)session.getAttribute("memsublib");
+        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";page=true;}
+    else{ rtl="RTL";align="right";page=false;}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+    %>
              <%
 String library_id=(String)session.getAttribute("library_id");
 String sub_library_id=(String)session.getAttribute("sublibrary_id");
 String title=(String)session.getAttribute("title");
 String doc_type=(String)session.getAttribute("doc_type");
 String isbn10=(String)session.getAttribute("isbn10");
-String path= request.getContextPath();
- pageContext.setAttribute("path", path);
-%>
+String button=(String)session.getAttribute("button");
+ if(button.equals("Update"))
+ {
+   newbutton=resource.getString("cataloguing.cattitleeditgrid1.edit");
+   newbutton2=resource.getString("cataloguing.catoldtitle.back");
+}
+ if(button.equals("View"))
+ {
+   newbutton=resource.getString("cataloguing.catoldtitle.view");
+   newbutton2=resource.getString("cataloguing.catoldtitle.back");
+}
+ if(button.equals("New"))
+ {
+   newbutton=resource.getString("cataloguing.catoldtitle.view");
+   newbutton1=resource.getString("cataloguing.cattitleimport.importdata");
+   newbutton2=resource.getString("cataloguing.catoldtitle.back");
+}
+if(button.equals("Delete"))
+ {
+   newbutton=resource.getString("cataloguing.catoldtitle.delete");
+   newbutton2=resource.getString("cataloguing.catoldtitle.back");
+}
+           %>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Asif Iqubal" content="MCA,AMU">
+      <title></title>
+       <link href="<%=request.getContextPath()%>/css/newformat.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/css/page.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
-
 function send()
 {
     window.location="<%=request.getContextPath()%>/cataloguing/cat_old_title.jsp";
     return false;
 }
 </script>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="Faraz Hasan" content="MCA,AMU">
-      <title></title>
-         <link href="<%=request.getContextPath()%>/css/newformat.css" rel="stylesheet" type="text/css" />
-<link href="<%=request.getContextPath()%>/css/page.css" rel="stylesheet" type="text/css" />
- <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold }
-
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-
-</style>
+<script type="text/javascript" language="javascript">
+    function submitNew()
+{
+    <% if(button.equalsIgnoreCase("New")){%>
+    ViewSubmit();
+    <%}%>
+    <% if(button.equalsIgnoreCase("View")){%>
+    var buttonvalue="View";
+     <% session.setAttribute("edit3", "View");%>
+    <%}%>
+    <% if(button.equalsIgnoreCase("Update")){%>
+    var buttonvalue="Edit";
+     <% session.setAttribute("edit3", "Edit");%>
+    <%}%>
+    <% if(button.equalsIgnoreCase("Delete")){%>
+    var buttonvalue="Delete";
+     <% session.setAttribute("edit3", "Delete");%>
+    <%}%>
+    document.getElementById("button1").setAttribute("value", buttonvalue);
+    return true;
+}
+    function submitImport()
+{
+    <% if(button.equalsIgnoreCase("New")){%>
+    var buttonvalue="Import Data";
+    <%}%>
+    document.getElementById("button1").setAttribute("value", buttonvalue);
+    return true;
+}
+function NewTitle()
+{
+    var buttonvalue="New";
+    document.getElementById("button11").setAttribute("value", buttonvalue);
+    return true;
+}
+function ViewSubmit()
+{
+    var buttonvalue="View";
+    document.getElementById("button12").setAttribute("value", buttonvalue);
+    return true;
+}
+             </script>
 </head>
 <body bgcolor="#FFFFFF">
-<%!  ArrayList opacList;
-   int fromIndex, toIndex;
+<%!
+int fromIndex,toIndex;
+int pagesize=2,size;
+int pageIndex;
+int noofpages;
+int modvalue;
+String index;
+List obj1;
 %>
 <%
-opacList = new ArrayList();
-int tcount =0;
-   int perpage=4;
-   int tpage=0;
-
- opacList=(ArrayList)session.getAttribute("opacList");
-System.out.println("opacList="+opacList.size());
-tcount = opacList.size();
-   fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex+4) >= opacList.size())
-   toIndex = opacList.size();
-   request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
-   pageContext.setAttribute("tCount", tcount);
+int i=0;
+ int j=0;
+List<BibliographicDetails> l11=(List<BibliographicDetails>)session.getAttribute("opacLista");
+List<BibliographicDetails> l12=(List<BibliographicDetails>)session.getAttribute("opacListb");
+List<AcqFinalDemandList> l13=(List<AcqFinalDemandList>)session.getAttribute("opacListc");
+List<BibliographicDetails> l14=(List<BibliographicDetails>)session.getAttribute("opacListd");
+ index = request.getParameter("pageIndex");
+ if(index!=null){
+     pageIndex = Integer.parseInt(index);
+  }
+ else{
+     pageIndex = 1;
+     }
+ if(l11!=null)
+        size = l11.size();
+ else if(l12!=null)
+        size = l12.size();
+ else if(l13!=null)
+        size = l13.size();
+ else if(l14!=null)
+        size = l14.size();
+ else
+        size = 0;
+ //for calculating no of pages required
+ modvalue = size%pagesize;
+ if(modvalue>0)
+    noofpages = size/pagesize+1;
+ else
+     noofpages = size/pagesize;
+ //to calculate the starting item and ending item index for the desired page
+fromIndex = (pageIndex-1)*pagesize;
+toIndex = fromIndex + pagesize;
+if(toIndex>size)toIndex=size;
+//fromIndex++;
 %>
-<table style="position:absolute; left: 10%; top: 25%;">
-<div>
-<%
-if(tcount==0)
-{
-%>
-<p class="err">No record Found</p>
-<%}
-else
-{%>
-<tr><td align="center"><span class="headerStyle">All Library Bibliographic Detail</span><br><br></td></tr>
-<tr><td>
-<ui:dataGrid items="${opacList}" var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid" >
-
-  <columns>
-         <column width="70">
-      <header value="Biblio Id" hAlign="left" styleClass="header"/>
-      <item   value="${doc.id.biblioId}"  hAlign="left"
-	      styleClass="item"/>
-       </column>
-             <column width="70">
-      <header value="Library Id" hAlign="left" styleClass="header"/>
-      <item   value="${doc.id.libraryId}"  hAlign="left"
-	      styleClass="item"/>
-       </column>
-      <column width="70">
-      <header value="Sub Library Id" hAlign="left" styleClass="header"/>
-      <item   value="${doc.id.sublibraryId}"  hAlign="left"
-	      styleClass="item"/>
-       </column>
-      <column width="70">
-      <header value="Document Type" hAlign="left" styleClass="header"/>
-      <item   value="${doc.documentType}"  hAlign="left"
-	      styleClass="item"/>
-    </column>
-      <column width="100">
-      <header value="Title" hAlign="left" styleClass="header"/>
-      <item   value="${doc.title}"  hAlign="left"
-	      styleClass="item"/>
-    </column>
-    <column width="100">
-      <header value="Main Entry" hAlign="left" styleClass="header"/>
-      <item   value="${doc.mainEntry}"  hAlign="left"
-	      styleClass="item"/>
-    </column>
-    <column width="100">
-      <header value="Action" hAlign="left" styleClass="header"/>
-      <item   value="View"  hAlign="left"   hyperLink="${path}/cataloguing/viewAll.do?id=${doc.id.biblioId}&amp;id1=${doc.id.libraryId}&amp;id2=${doc.id.sublibraryId}"
-	      styleClass="item"/>
-    </column>
-  </columns>
-<rows styleClass="rows" hiliteStyleClass="hiliterows"/>
-<alternateRows styleClass="alternaterows"/>
-<paging size="4" count="${tCount}" custom="true" nextUrlVar="next"
-       previousUrlVar="previous" pagesVar="pages"/>
-  <order imgAsc="up.gif" imgDesc="down.gif"/>
-</ui:dataGrid>
-</td></tr>
-<tr><td>
-<table width="750" style="font-family: arial; font-size: 10pt" border=0>
-<tr>
-<td align="left" width="33%">
-<c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
-</c:if>&nbsp;
-</td>
-<td align="center" width="33%">
-<c:forEach items="${pages}" var="page">
-<c:choose>
-  <c:when test="${page.current}">
-    <b><a href="<c:out value="${page.url}"/>"><c:out value="${page.index}"/></a></b>
-  </c:when>
-  <c:otherwise>
-    <a href="<c:out value="${page.url}"/>"><c:out value="${page.index}"/></a>
-  </c:otherwise>
-</c:choose>
-</c:forEach>
-</td>
-<td align="middle" width="33%">&nbsp;
-<c:if test="${next != null}">
-<a href="<c:out value="${next}"/>">Next</a>
-</c:if>
-</td>
-</tr>
-</table>
+            <%if(!l11.isEmpty()){%>
+        <table style="position:absolute; left: 5%; top: 30%;" dir="<%=rtl %>">
+            <tr bgcolor="#E0E888"><td colspan="8" align="center"><b><%= resource.getString("cataloguing.cataccessionentry.bibliodetail")%></b></td></tr>
+            <tr bgcolor="#E0E8F5"><td width="100"><%= resource.getString("cataloguing.catviewownbibliogrid.biblioid")%></td><td width="200"><%= resource.getString("cataloguing.catoldtitle.documenttype")%></td><td width="200"><%= resource.getString("cataloguing.catoldtitleentry1.title")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.mainentry")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.publishername")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.edition")%></td><td width="100"><%= resource.getString("cataloguing.catviewownbibliogrid.action")%></td></tr>
+        <logic:iterate id="BibliographicDetails" name="opacLista" offset="<%=String.valueOf(fromIndex)%>" length="15">
+             <html:form action="/cataloguing/viewOwn1">
+                <html:hidden property="accession_type" name="BibliographicDetailEntryActionForm" value="Old"/>
+                <input type="hidden" name="main_entry" value="<bean:write name="BibliographicDetails" property="mainEntry"/>"/>
+                <input type="hidden" name="statement_responsibility" value="<bean:write name="BibliographicDetails" property="statementResponsibility"/>"/>
+                <input type="hidden" name="call_no" value="<bean:write name="BibliographicDetails" property="callNo"/>"/>
+                <input  type="hidden" name="book_type" value="<bean:write name="BibliographicDetails" property="bookType"/>"/>
+                <html:hidden property="document_type" name="BibliographicDetailEntryActionForm" value="<%=doc_type%>"/>
+                <html:hidden property="title" name="BibliographicDetailEntryActionForm" value="<%=title%>"/>
+                <html:hidden property="isbn10" name="BibliographicDetailEntryActionForm" value="<%=isbn10%>"/>
+                <html:hidden property="no_of_copies" name="BibliographicDetailEntryActionForm"/>
+            <tr bgcolor="#98AFC7">
+        <input type="hidden" name="library_id" name="BibliographicDetailEntryActionForm" value="<bean:write name="BibliographicDetails" property="id.libraryId"/>"/>
+        <input type="hidden" name="sublibrary_id" name="BibliographicDetailEntryActionForm" value="<bean:write name="BibliographicDetails" property="id.sublibraryId"/>" />
+        <input type="hidden" name="biblio_id" value='<bean:write name="BibliographicDetails" property="id.biblioId"/>'/>
+            <td><bean:write name="BibliographicDetails" property="id.biblioId"/></td>
+            <td><bean:write name="BibliographicDetails" property="documentType"/></td>
+            <td><bean:write name="BibliographicDetails" property="title"/></td>
+            <td><bean:write name="BibliographicDetails" property="mainEntry"/></td>
+            <td><bean:write name="BibliographicDetails" property="publisherName"/></td>
+            <td><bean:write name="BibliographicDetails" property="edition"/></td>
+            <td><a><input type="submit" name="button1" value="<%=newbutton%>" onclick="return submitNew()" style="border: hidden; cursor: pointer;"/></a></td>
+        </tr>
+           <%if(button.equalsIgnoreCase("New")){%>
+        <input type="hidden" id="button12" name="button"/>
+         <%}else{%>
+           <input type="hidden" id="button1" name="button"/>
 <%}%>
-</td></tr>
-           </div>
-<tr><td height="30px;"></td></tr>
-<tr><td align="center"><input name="button" type="button" onclick="return send()" value="Back" class="txt1"/></td></tr></table> </body>
+        </html:form>
+        </logic:iterate>
+ <%if(button.equals("Update")||button.equals("Delete")||button.equals("View")){%>
+ <tr><td colspan="7" align="center" height="20px;"></td></tr>
+        <tr><td colspan="7" align="center"><input type="button" onclick="return send()"  value="<%=newbutton2%>" /></td></tr>
+        <%}%>
+
+        <%if(button.equals("New")){%>
+        <html:form action="/cataloguing/viewOwn1" method="post">
+          <html:hidden property="library_id" name="BibliographicDetailEntryActionForm" value="<%=library_id%>"/>
+                <html:hidden property="accession_type" name="BibliographicDetailEntryActionForm" value="Old"/>
+                <input type="hidden" name="main_entry" value="<bean:write name="BibliographicDetails" property="mainEntry"/>"/>
+                <input type="hidden" name="statement_responsibility" value="<bean:write name="BibliographicDetails" property="statementResponsibility"/>"/>
+                <input type="hidden" name="call_no" value="<bean:write name="BibliographicDetails" property="callNo"/>"/>
+                <input  type="hidden" name="book_type" value="<bean:write name="BibliographicDetails" property="bookType"/>"/>  <html:hidden property="document_type" name="BibliographicDetailEntryActionForm" value="<%=doc_type%>"/>
+                <html:hidden property="title" name="BibliographicDetailEntryActionForm" value="<%=title%>"/>
+                <html:hidden property="isbn10" name="BibliographicDetailEntryActionForm" value="<%=isbn10%>"/>
+                <html:hidden property="no_of_copies" name="BibliographicDetailEntryActionForm"/>
+                     <tr><td height="30px;"></td></tr>
+                     <tr>
+                         <td colspan="2"></td>
+                         <td align="right"> <input type="submit" name="button1" value="<%=resource.getString("cataloguing.catviewownbibliogrid.new")%>" onclick="return NewTitle()" /></td>
+                         <td><input type="button" onclick="return send()" name="button1" value="<%=resource.getString("cataloguing.catoldtitleentry1.cancel")%>"/>
+                    <input type="hidden" id="button11" name="button"/>
+                         </td>
+                     </tr>
+                     </html:form>
+                 
+                     <%}%>
+                     </table>
+
+                     <%}%>
+ <%if(!l12.isEmpty()){%>
+        <table style="position:absolute; left: 5%; top: 30%;" dir="<%=rtl %>">
+        <tr bgcolor="#E0E888"><td colspan="7" align="center"><b><%= resource.getString("cataloguing.cataccessionentry.bibliodetail")%></b></td></tr>
+        <tr bgcolor="#E0E8F5"><td width="200"><%= resource.getString("cataloguing.catoldtitle.documenttype")%></td><td width="200"><%= resource.getString("cataloguing.catoldtitleentry1.title")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.mainentry")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.publishername")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.edition")%></td><td width="100" align="right"><%= resource.getString("cataloguing.catviewownbibliogrid.action")%></td><td width="50"></tr>
+        <logic:iterate id="BibliographicDetails" name="opacListb" offset="<%=String.valueOf(fromIndex)%>" length="15">
+        <html:form action="/cataloguing/viewOwn1">
+                <html:hidden property="accession_type" name="BibliographicDetailEntryActionForm" value="Old"/>
+                <input type="hidden" name="main_entry" value="<bean:write name="BibliographicDetails" property="mainEntry"/>"/>
+                <input type="hidden" name="statement_responsibility" value="<bean:write name="BibliographicDetails" property="statementResponsibility"/>"/>
+                <input type="hidden" name="call_no" value="<bean:write name="BibliographicDetails" property="callNo"/>"/>
+                <input  type="hidden" name="book_type" value="<bean:write name="BibliographicDetails" property="bookType"/>"/><html:hidden property="document_type" name="BibliographicDetailEntryActionForm" value="<%=doc_type%>"/>
+                <html:hidden property="title" name="BibliographicDetailEntryActionForm" value="<%=title%>"/>
+                <html:hidden property="isbn10" name="BibliographicDetailEntryActionForm" value="<%=isbn10%>"/>
+                <html:hidden property="no_of_copies" name="BibliographicDetailEntryActionForm"/>
+            <tr bgcolor="#98AFC7">
+        <input type="hidden" name="library_id" name="BibliographicDetailEntryActionForm" value="<bean:write name="BibliographicDetails" property="id.libraryId"/>"/>
+        <input type="hidden" name="sublibrary_id" name="BibliographicDetailEntryActionForm" value="<bean:write name="BibliographicDetails" property="id.sublibraryId"/>" />
+        <input type="hidden" name="biblio_id" value='<bean:write name="BibliographicDetails" property="id.biblioId"/>'/>
+            <td><bean:write name="BibliographicDetails" property="documentType"/></td>
+            <td><bean:write name="BibliographicDetails" property="title"/></td>
+            <td><bean:write name="BibliographicDetails" property="mainEntry"/></td>
+            <td><bean:write name="BibliographicDetails" property="publisherName"/></td>
+            <td><bean:write name="BibliographicDetails" property="edition"/></td>
+            <td><a><input type="submit" name="button1"  value="<%=newbutton%>" onclick="return submitNew()" style="border: hidden;cursor: pointer;"/></a></td>
+            <td><a><input type="submit" name="button1"  value="<%=newbutton1%>" onclick="return submitImport()" style="border: hidden;cursor: pointer;"/></a></td>
+        </tr>
+         <input type="hidden" id="button1" name="button"/>
+        </html:form>
+        </logic:iterate>
+        <tr><td colspan="7" align="center" height="20px;"></td></tr>
+        <tr><td colspan="7" align="center"><input type="button" onclick="return send()"  value="<%=newbutton2%>"/></td></tr>
+</table>
+                     <%}%>
+                     <%if(!l14.isEmpty()){%>
+        <table style="position:absolute; left: 5%; top: 30%;" dir="<%=rtl %>">
+        <tr bgcolor="#E0E888"><td colspan="7" align="center"><b><%= resource.getString("cataloguing.cataccessionentry.bibliodetail")%></b></td></tr>
+        <tr bgcolor="#E0E8F5"><td width="200"><%= resource.getString("cataloguing.catoldtitle.documenttype")%></td><td width="200"><%= resource.getString("cataloguing.catoldtitleentry1.title")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.mainentry")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.publishername")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.edition")%></td><td width="100" align="right"><%= resource.getString("cataloguing.catviewownbibliogrid.action")%></td><td width="50"></td></tr>
+        <logic:iterate id="BibliographicDetails" name="opacListd" offset="<%=String.valueOf(fromIndex)%>" length="15">
+            <html:form action="/cataloguing/viewOwn1">
+                <html:hidden property="accession_type" name="BibliographicDetailEntryActionForm" value="Old"/>
+                <input type="hidden" name="main_entry" value="<bean:write name="BibliographicDetails" property="mainEntry"/>"/>
+                <input type="hidden" name="statement_responsibility" value="<bean:write name="BibliographicDetails" property="statementResponsibility"/>"/>
+                <input type="hidden" name="call_no" value="<bean:write name="BibliographicDetails" property="callNo"/>"/>
+                <input  type="hidden" name="book_type" value="<bean:write name="BibliographicDetails" property="bookType"/>"/>      <html:hidden property="document_type" name="BibliographicDetailEntryActionForm" value="<%=doc_type%>"/>
+                <html:hidden property="title" name="BibliographicDetailEntryActionForm" value="<%=title%>"/>
+                <html:hidden property="isbn10" name="BibliographicDetailEntryActionForm" value="<%=isbn10%>"/>
+                <html:hidden property="no_of_copies" name="BibliographicDetailEntryActionForm"/>
+            <tr bgcolor="#98AFC7">
+        <input type="hidden" name="library_id" name="BibliographicDetailEntryActionForm" value="<bean:write name="BibliographicDetails" property="id.libraryId"/>"/>
+        <input type="hidden" name="sublibrary_id" name="BibliographicDetailEntryActionForm" value="<bean:write name="BibliographicDetails" property="id.sublibraryId"/>" />
+        <input type="hidden" name="biblio_id" value='<bean:write name="BibliographicDetails" property="id.biblioId"/>'/>
+            <td><bean:write name="BibliographicDetails" property="documentType"/></td>
+            <td><bean:write name="BibliographicDetails" property="title"/></td>
+            <td><bean:write name="BibliographicDetails" property="mainEntry"/></td>
+            <td><bean:write name="BibliographicDetails" property="publisherName"/></td>
+            <td><bean:write name="BibliographicDetails" property="edition"/></td>
+            <td><a><input type="submit" name="button1" value="<%=newbutton%>" onclick="return submitNew()" style="border: hidden;cursor: pointer;"/></a></td>
+            <td><a><input type="submit" name="button1" value="<%=newbutton1%>" onclick="return submitImport()" style="border: hidden;cursor: pointer;"/></a></td>
+        </tr>
+         <input type="hidden" id="button1" name="button"/>
+        </html:form>
+        </logic:iterate>
+        <tr><td colspan="7" align="center" height="20px;"></td></tr>
+        <tr><td colspan="7" align="center"><input type="button" onclick="return send()" value="<%=newbutton2%>" /></td></tr>
+</table>
+                     <%}%>
+                     <%if(!l13.isEmpty()){%>
+        <table style="position:absolute; left: 5%; top: 30%;" dir="<%=rtl %>">
+        <tr bgcolor="#E0E888"><td colspan="7" align="center"><b><%= resource.getString("cataloguing.cataccessionentry.bibliodetail")%></b></td></tr>
+        <tr bgcolor="#E0E8F5"><td width="100"><%= resource.getString("cataloguing.catviewownbibliogrid.biblioid")%></td><td width="200"><%= resource.getString("cataloguing.catoldtitle.documenttype")%></td><td width="200"><%= resource.getString("cataloguing.catoldtitleentry1.title")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.mainentry")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.publishername")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.edition")%></td><td width="100" align="right"><%= resource.getString("cataloguing.catviewownbibliogrid.action")%></td><td width="50"></td></tr>
+        <tr bgcolor="#E0E8F5" ><td width="100" >Control No</td><td width="200"><%= resource.getString("cataloguing.catoldtitleentry1.title")%></td><td width="200"><%= resource.getString("cataloguing.catviewacq.author")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.publishername")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.edition")%></td><td width="100"><%= resource.getString("cataloguing.catviewownbibliogrid.action")%></td></tr>
+        <logic:iterate id="AcqFinalDemandList" name="opacListc" offset="<%=String.valueOf(fromIndex)%>" length="15">
+            <html:form action="/cataloguing/viewOwn1">
+                <html:hidden property="accession_type" name="BibliographicDetailEntryActionForm" value="Old"/>
+                <input type="hidden" name="main_entry" value="<bean:write name="BibliographicDetails" property="mainEntry"/>"/>
+                <input type="hidden" name="statement_responsibility" value="<bean:write name="BibliographicDetails" property="statementResponsibility"/>"/>
+                <input type="hidden" name="call_no" value="<bean:write name="BibliographicDetails" property="callNo"/>"/>
+                <input  type="hidden" name="book_type" value="<bean:write name="BibliographicDetails" property="bookType"/>"/><html:hidden property="document_type" name="BibliographicDetailEntryActionForm" value="<%=doc_type%>"/>
+                <html:hidden property="title" name="BibliographicDetailEntryActionForm" value="<%=title%>"/>
+                <html:hidden property="isbn10" name="BibliographicDetailEntryActionForm" value="<%=isbn10%>"/>
+                <html:hidden property="no_of_copies" name="BibliographicDetailEntryActionForm"/>
+            <tr bgcolor="#98AFC7">
+        <input type="hidden" name="library_id" name="BibliographicDetailEntryActionForm" value="<bean:write name="BibliographicDetails" property="id.libraryId"/>"/>
+        <input type="hidden" name="sublibrary_id" name="BibliographicDetailEntryActionForm" value="<bean:write name="BibliographicDetails" property="id.sublibraryId"/>"/>
+            <input type="hidden" name="biblio_id" value='<bean:write name="AcqFinalDemandList" property="id.controlNo"/>'/>
+            <td><bean:write name="AcqFinalDemandList" property="id.controlNo"/></td>
+            <td><bean:write name="AcqFinalDemandList" property="title"/></td>
+            <td><bean:write name="AcqFinalDemandList" property="author"/></td>
+            <td><bean:write name="AcqFinalDemandList" property="publisherId"/></td>
+            <td><bean:write name="AcqFinalDemandList" property="edition"/></td>
+            <td><a><input type="submit" name="button1" value="<%=newbutton%>" onclick="return submitNew()"/></a></td>
+            <td><a><input type="submit" name="button1" value="<%=newbutton1%>" onclick="return submitImport()" style="border: hidden;cursor: pointer;"/></a></td>
+        </tr>
+         <input type="hidden" id="button1" name="button"/>
+        </html:form>
+        </logic:iterate>
+        <tr><td colspan="7" align="center" height="20px;"></td></tr>
+        <tr><td colspan="7" align="center"><input type="button" onclick="return send()" value="<%=newbutton2%>"/></td></tr>
+</table>
+                     <%}%>
+ </body>
 </html>

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 18, 2011 7:00:14 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.AcqBibliographyDetails" table="acq_bibliography_details" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.AcqBibliographyDetailsId">
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+            <key-property name="subLibraryId" type="string">
+                <column name="sub_library_id" length="20" />
+            </key-property>
+            <key-property name="controlNo" type="int">
+                <column name="control_no" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="acqBibliography" class="com.myapp.struts.hbm.AcqBibliography" update="false" insert="false" fetch="select">
+            <column name="library_id" length="20" not-null="true" />
+            <column name="sub_library_id" length="20" not-null="true" />
+            <column name="title_id" />
+        </many-to-one>
+        <property name="noOfCopies" type="java.lang.Integer">
+            <column name="no_of_copies" />
+        </property>
+        <property name="titleId" type="int">
+            <column name="title_id"/>
+        </property>
+        <property name="volume" type="string">
+            <column name="volume" length="50" />
+        </property>
+      <property name="noOfVolume" type="string">
+            <column name="no_of_volume" length="50" />
+        </property>
+        <property name="subject" type="string">
+            <column name="subject" length="50" />
+        </property>
+        <property name="unitPrice" type="string">
+            <column name="unit_price" length="10" />
+        </property>
+        <property name="currency" type="string">
+            <column name="currency" length="20" />
+        </property>
+        <property name="primaryBudget" type="string">
+            <column name="primary_budget" length="50" />
+        </property>
+        <property name="requestedBy" type="string">
+            <column name="requested_by" length="50" />
+        </property>
+        <property name="requestedDate" type="string">
+            <column name="requested_date" length="20" />
+        </property>
+        <property name="acqMode" type="string">
+            <column name="acq_mode" length="20" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="50" />
+        </property>
+         <property name="vendor" type="string">
+            <column name="vendor" length="100" />
+        </property>
+         <property name="author" type="string">
+            <column name="author" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -27,7 +27,28 @@
 
 %>
 
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
+    %>
 
 
 <html>
@@ -414,23 +435,23 @@ a:active
 
     <html:form   action="/CirNewMemberAgain" method="post" onsubmit="return validation();" >
    
-   <table  align="center" width="800px"   class="table">
+        <table  dir="<%=rtl%>" align="center" width="800px"   class="table">
 
 
 
-  <tr><td   class="headerStyle"  align="center">
+  <tr><td dir="<%=rtl%>"  class="headerStyle"  align="center">
 
 
-		New Member Account 
+          <%=resource.getString("circulation.cir_newmember.newmemacc")%>
 
 
 
         </td></tr>
 
-  <tr><td valign="center" align="left">
+  <tr><td dir="<%=rtl%>" valign="center" align="<%=align%>">
 
       
-            <table  class="table_text" width="880px" >
+            <table  dir="<%=rtl%>" class="table_text" width="880px" >
 
 
 
@@ -439,7 +460,7 @@ a:active
             
             
             <tr> 
-                 <td> Type of Member*</td><td class="table_textbox">
+                 <td dir="<%=rtl%>" > <%=resource.getString("circulation.cir_newmember.typeofmem")%>*</td><td class="table_textbox">
                  
                    <html:select  property="MEMCAT" style="width:160px" styleId="emptype_id" onchange="return search();">
                        <html:options  collection="list1" property="id.emptypeId" labelProperty="emptypeFullName"></html:options>
@@ -452,7 +473,7 @@ a:active
 
             </tr>
              <tr>
-              <td>Designation/Student Category*
+              <td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.desg")%>*
                   </td><td class="table_textbox">
                       <html:select  property="MEMSUBCAT" styleId="subemptype_id" style="width:160px"  tabindex="3">
                    <%--  <html:options  collection="list2" property="subEmptypeFullName"></html:options>--%>
@@ -462,16 +483,16 @@ a:active
                       </td>
 
              </tr>
-             <tr><td>Employee Designation</td><td class="table_textbox"><html:text  property="TXTDESG1" style="width:160px"/></td></tr>
-             <tr><td>Office Name</td><td class="table_textbox"><html:text  property="TXTOFFICE" style="width:160px"/></td></tr>
-             <tr><td> Faculty of
+             <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.empdegn")%></td><td class="table_textbox"><html:text  property="TXTDESG1" style="width:160px"/></td></tr>
+             <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.officename")%></td><td class="table_textbox"><html:text  property="TXTOFFICE" style="width:160px"/></td></tr>
+             <tr><td dir="<%=rtl%>" > <%=resource.getString("circulation.cir_newmember.facof")%>
                  </td><td class="table_textbox">
               <html:select  property="TXTFACULTY" styleId="TXTFACULTY" style="width:160px"  onchange="return search1()" tabindex="3">
                   <html:options  collection="list2"  labelProperty="facultyName" property="id.facultyId"></html:options>
                      </html:select>
                     
                       </td></tr>
-             <tr> <td> Department  </td><td class="table_textbox">
+             <tr> <td dir="<%=rtl%>" > <%=resource.getString("circulation.cir_newmember.dept")%>  </td><td class="table_textbox">
 
                   <html:select  property="TXTDEPT" styleId="TXTDEPT" style="width:160px"  onchange="return search_dept();" tabindex="3">
                   <%--   <html:options  collection="list4" property="deptName"></html:options>--%>
@@ -480,7 +501,7 @@ a:active
                   
 
                  </td></tr>
-             <tr> <td> Course
+             <tr> <td dir="<%=rtl%>" > <%=resource.getString("circulation.cir_newmember.course")%>
                   </td><td class="table_textbox">
                   <html:select  property="TXTCOURSE" styleId="TXTCOURSE" style="width:160px"   tabindex="3">
                   <%--   <html:options  collection="list5" property="courseName"></html:options>--%>
@@ -493,7 +514,7 @@ a:active
 
 
 </td></tr>
-             <tr><td> Semester/Year
+             <tr><td dir="<%=rtl%>" > <%=resource.getString("circulation.cir_newmember.sem")%>
                   </td><td class="table_textbox"><html:text  property="TXTSEM"   value="" styleClass="textBoxWidth" style="width:160px"  />
 
                   </td></tr>
@@ -506,24 +527,24 @@ a:active
                 </td>
 
             </tr>--%>
-             <tr><td> Registration Date*<br>(YYYY-MM-DD)
+             <tr><td dir="<%=rtl%>" > <%=resource.getString("circulation.cir_newmember.reg")%>*<br>(YYYY-MM-DD)
                  </td><td class="table_textbox"><html:text  property="TXTREG_DATE" styleId="TXTREG_DATE"  style="width:160px"  value="" styleClass="textBoxWidth"  />
-                     <div align="left" id="searchResult1" style="border:#000000; "></div>
+                     <div align="<%=align%>" id="searchResult1" style="border:#000000; "></div>
 
                   </td></tr>
              <tr>
-                 <td valign="top">Expire Date*<br>(YYYY-MM-DD)
+                 <td dir="<%=rtl%>" valign="top"><%=resource.getString("circulation.cir_newmember.exp")%>*<br>(YYYY-MM-DD)
                   </td>
-                  <td class="table_textbox" valign="top"><html:text  property="TXTEXP_DATE" styleId="TXTEXP_DATE" style="width:160px"/>
-                   <div align="left" id="searchResult2" style="border:#000000;"></div>
+                  <td dir="<%=rtl%>" class="table_textbox" valign="top"><html:text  property="TXTEXP_DATE" styleId="TXTEXP_DATE" style="width:160px"/>
+                   <div align="<%=align%>" id="searchResult2" style="border:#000000;"></div>
                        </td></tr>
              
-            <tr><td> Card Id
+            <tr><td dir="<%=rtl%>" ><%=resource.getString("opac.myaccount.reservationrequest.cardid")%>
                   </td><td class="table_textbox"><html:text  property="card_id"   value="" styleClass="textBoxWidth" style="width:160px"  />
 
                   </td></tr>
 
-            <tr><td>Password
+            <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.pass")%>
                   </td><td class="table_textbox"><input type="password"   name="password"  id="password"  value=""/>
 
                   </td> </tr>
@@ -532,13 +553,13 @@ a:active
          
      </table>
       </td></tr>
-  <tr><td colspan="4" align="center" class="txt2">&nbsp;&nbsp;&nbsp;&nbsp; <html:submit property="button" value="Submit">Submit</html:submit>&nbsp;&nbsp;<html:reset>Reset</html:reset>&nbsp;&nbsp;<html:button property="Back" onclick="return back();">Back</html:button>
+  <tr><td colspan="4" align="center" class="txt2">&nbsp;&nbsp;&nbsp;&nbsp; <input type="submit"  value="<%=resource.getString("circulation.cir_newmember.submit")%> " onclick="return Submit();"/>&nbsp;&nbsp;<input type="reset" value="<%=resource.getString("circulation.cir_newmember.reset")%>"/>&nbsp;&nbsp;<input type="button"  value="<%=resource.getString("circulation.cir_newmember.back")%>" onclick="return back();"/>
                       </td>
 
           </tr>
      </table>
 
-      
+     <input type="hidden" id="button" name="button" value=""/>
  </html:form>
 
 
@@ -547,6 +568,12 @@ a:active
 
 </div>
   <script language="javascript" type="text/javascript">
+    function Submit()
+{
+    var buttonvalue="Submit";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
 
    function back()
     {
@@ -571,13 +598,13 @@ a:active
 
 
 
-var str="Enter Following Values:-";
+var str="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-";
 
 
   
 
     if(TXTREG_DATE.value=="")
-       { str+="\n Enter Date of Registration";
+       { str+="\n <%=resource.getString("circulation.cir_newmember.enterdateofreg")%>";
             alert(str);
             document.getElementById('TXTREG_DATE').focus();
             return false;
@@ -585,7 +612,7 @@ var str="Enter Following Values:-";
        }
      
     if(TXTEXP_DATE.value=="")
-      {  str+="\n Enter Expiry date";
+      {  str+="\n <%=resource.getString("circulation.cir_newmember.enterdateofexp")%>";
            alert(str);
            document.getElementById('TXTEXP_DATE').focus();
             return false;
@@ -595,7 +622,7 @@ var str="Enter Following Values:-";
 if(IsDateGreater(TXTREG_DATE.value,TXTEXP_DATE.value)==true)
     {
        
-       str+="\nDate of Expiry Should be greater than Date of Registration";
+       str+="\n <%=resource.getString("circulation.cir_newmember.dateofexpgreater")%>";
        alert(str);
          document.getElementById('TXTEXP_DATE').focus();
          return false;

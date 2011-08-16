@@ -38,7 +38,28 @@
 }
 %>
 
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
+    %>
 
 
 <html>
@@ -96,29 +117,29 @@ a:active
 
     <html:form action="/cir_account_updateview">
    
-   <table  align="center" width="500px" class="table">
+        <table  dir="<%=rtl%>" align="center" width="500px" class="table">
 
 
 
-  <tr><td     class="headerStyle"  align="center">
+  <tr><td   dir="<%=rtl%>"   class="headerStyle"  align="center">
 
 
-		Member Account Details
+		 <%=resource.getString("circulation.cir_newmember_reg_1.memberaccdetail")%>
 
 
 
         </td></tr>
 
-  <tr><td valign="center" align="left" >
+  <tr><td  dir="<%=rtl%>" valign="center" align="<%=align%>" >
 
           <br>
-          <table   align="left" class="table_text" >
+          <table  dir="<%=rtl%>"  align="<%=align%>" class="table_text" >
 
 
 
                
              <tr>
-                 <td>Member Id</td><td class="table_textbox">
+                 <td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.memberid")%></td><td class="table_textbox">
 
                      <html:text  property="memid" style="width:160px" value="<%=cmaccount.getId().getMemid()%>" styleId="emptype_id"/>
 
@@ -129,7 +150,7 @@ a:active
 
             </tr>
              <tr>
-                 <td>Member Name</td><td class="table_textbox">
+                 <td  dir="<%=rtl%>" > <%=resource.getString("circulation.cir_createaccount1.memname")%></td><td class="table_textbox">
 
                      <html:text  property="member_name" style="width:160px" value="<%=fname%>" styleId="emptype_id"/>
 
@@ -142,7 +163,7 @@ a:active
             
             
             <tr> 
-                 <td> Type of Member</td><td class="table_textbox">
+                 <td  dir="<%=rtl%>" > <%=resource.getString("circulation.cir_newmember.typeofmem")%></td><td class="table_textbox">
                  
                      <html:text  property="MEMCAT" style="width:160px" value="<%=empobj.getEmptypeFullName() %>" styleId="emptype_id"/>
                        
@@ -153,24 +174,24 @@ a:active
 
             </tr>
              <tr>
-              <td>Designation/Student Category*
-                  </td><td class="table_textbox">
+              <td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.desg")%>*
+                  </td><td  dir="<%=rtl%>" class="table_textbox">
                       <html:text  property="MEMSUBCAT" styleId="subemptype_id" style="width:160px" value="<%=subempobj.getSubEmptypeFullName()%>"  tabindex="3"/>
                    
                       </td>
 
              </tr>
-             <tr><td>Employee Designation</td><td class="table_textbox"><html:text  property="TXTDESG1" style="width:160px" value="<%=cmaccount.getDesg()%>"/></td></tr>
-             <tr><td>Office Name</td><td class="table_textbox"><html:text  property="TXTOFFICE" style="width:160px" value="<%=cmaccount.getOffice()%>"/></td></tr>
-             <tr><td> Faculty of
-                 </td><td class="table_textbox">
+             <tr><td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.empdegn")%></td><td class="table_textbox"><html:text  property="TXTDESG1" style="width:160px" value="<%=cmaccount.getDesg()%>"/></td></tr>
+             <tr><td  dir="<%=rtl%>"  ><%=resource.getString("circulation.cir_newmember.officename")%></td><td class="table_textbox"><html:text  property="TXTOFFICE" style="width:160px" value="<%=cmaccount.getOffice()%>"/></td></tr>
+             <tr><td  dir="<%=rtl%>" > <%=resource.getString("circulation.cir_newmember.facof")%>
+                 </td><td  dir="<%=rtl%>" class="table_textbox">
                      <%if(faculty!=null){%>
                      <html:text  property="TXTFACULTY" styleId="TXTFACULTY" style="width:160px" value="<%=faculty.getFacultyName() %>"  tabindex="3"/>
                      <%}else{%>
                      <html:text  property="TXTFACULTY" styleId="TXTFACULTY" style="width:160px" value=""  tabindex="3"/>
                   <%}%>
                   </td></tr>
-             <tr> <td> Department  </td><td class="table_textbox">
+             <tr> <td  dir="<%=rtl%>" > <%=resource.getString("circulation.cir_newmember.dept")%> </td><td  dir="<%=rtl%>" class="table_textbox">
 <% if(dept!=null){%>
                      <html:text  property="TXTDEPT" styleId="TXTDEPT" style="width:160px" value="<%=dept.getDeptName() %>" tabindex="3"/>
                <%}else{%>
@@ -180,8 +201,8 @@ a:active
 
 
                  </td></tr>
-             <tr> <td> Course
-                  </td><td class="table_textbox">
+             <tr> <td  dir="<%=rtl%>" > <%=resource.getString("circulation.cir_newmember.course")%>
+                  </td><td  dir="<%=rtl%>" class="table_textbox">
                        <% if(course!=null){%>
                       <html:text  property="TXTCOURSE" styleId="TXTCOURSE" style="width:160px" value="<%=course.getCourseName() %>"   tabindex="3"/>
                       <%}else{%>
@@ -196,31 +217,31 @@ a:active
 
 
 </td></tr>
-             <tr><td> Semester/Year
-                 </td><td class="table_textbox"><html:text  property="TXTSEM"   value="<%=cmaccount.getSemester()%>" styleClass="textBoxWidth" style="width:160px"  />
+             <tr><td  dir="<%=rtl%>" > <%=resource.getString("circulation.cir_newmember.sem")%>
+                 </td><td  dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTSEM"   value="<%=cmaccount.getSemester()%>" styleClass="textBoxWidth" style="width:160px"  />
 
                   </td></tr>
 
           
-             <tr><td> Registration Date
-                 </td><td class="table_textbox"><html:text  property="TXTREG_DATE" styleId="TXTREG_DATE"  style="width:160px"  value="<%=cmaccount.getReqDate()%>" styleClass="textBoxWidth"  />
+             <tr><td  dir="<%=rtl%>" > <%=resource.getString("circulation.cir_newmember.reg")%>
+                 </td><td  dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTREG_DATE" styleId="TXTREG_DATE"  style="width:160px"  value="<%=cmaccount.getReqDate()%>" styleClass="textBoxWidth"  />
                      
 
                   </td></tr>
              <tr>
-                 <td valign="top">Expire Date
+                 <td  dir="<%=rtl%>" valign="top"><%=resource.getString("circulation.cir_newmember.exp")%>
                   </td>
-                  <td class="table_textbox" valign="top"><html:text  property="TXTEXP_DATE" styleId="TXTEXP_DATE" value="<%=cmaccount.getExpiryDate()%>" style="width:160px"/>
+                  <td  dir="<%=rtl%>" class="table_textbox" valign="top"><html:text  property="TXTEXP_DATE" styleId="TXTEXP_DATE" value="<%=cmaccount.getExpiryDate()%>" style="width:160px"/>
                    
                        </td></tr>
              
-            <tr><td> Card Id
-                </td><td class="table_textbox"><html:text  property="card_id"   value="<%=cmaccount.getCardId()%>" styleClass="textBoxWidth" style="width:160px"  />
+            <tr><td  dir="<%=rtl%>" > <%=resource.getString("opac.myaccount.reservationrequest.cardid")%>
+                </td><td  dir="<%=rtl%>" class="table_textbox"><html:text  property="card_id"   value="<%=cmaccount.getCardId()%>" styleClass="textBoxWidth" style="width:160px"  />
 
                   </td></tr>
 
-            <tr><td>Password
-                  </td><td class="table_textbox"><input type="password"   name="password" style="width:160px" id="password"  value="<%=cmaccount.getPassword()%>"/>
+            <tr><td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.pass")%>
+                  </td><td  dir="<%=rtl%>" class="table_textbox"><input type="password"   name="password" style="width:160px" id="password"  value="<%=cmaccount.getPassword()%>"/>
 
                   </td> </tr>
 
@@ -228,7 +249,7 @@ a:active
          
      </table>
       </td></tr>
-  <tr><td align="center" class="txt2">&nbsp;&nbsp;&nbsp;&nbsp;<html:button property="Back" onclick="return back();">Back</html:button>
+  <tr><td align="center" class="txt2">&nbsp;&nbsp;&nbsp;&nbsp;<input type="button"  value="<%=resource.getString("circulation.cir_newmember.back")%>" onclick="return back();"/>
                       </td>
 
           </tr>
@@ -242,6 +263,7 @@ a:active
 
 </div>
   <script language="javascript" type="text/javascript">
+
 
    function back()
     {

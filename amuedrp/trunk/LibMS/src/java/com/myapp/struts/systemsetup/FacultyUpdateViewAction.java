@@ -15,6 +15,8 @@ import com.myapp.struts.hbm.*;
 import com.myapp.struts.systemsetupDAO.DeptDAO;
 import com.myapp.struts.systemsetupDAO.FacultyDAO;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 /**
  *
  * @author edrp02
@@ -28,6 +30,10 @@ public class FacultyUpdateViewAction extends org.apache.struts.action.Action {
     String button;
     String library_id;
     boolean result;
+    Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -41,11 +47,26 @@ public class FacultyUpdateViewAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+         HttpSession session = request.getSession();
+         try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         FacultyUpdateViewActionForm fuvaf=(FacultyUpdateViewActionForm)form;
         faculty_id=fuvaf.getFaculty_id();
         faculty_name=fuvaf.getFaculty_name();
         button=fuvaf.getButton();
-        HttpSession session=request.getSession();
+       
         library_id=(String)session.getAttribute("library_id");
        // Faculty fac=(Faculty)session.getAttribute("faculty");
        
@@ -57,12 +78,14 @@ public class FacultyUpdateViewAction extends org.apache.struts.action.Action {
              result=FacultyDAO.update(faculty,library_id);
              if(result==true)
              {
-              request.setAttribute("msg", "Record Update Successfully");
+               // request.setAttribute("msg", "Record Update Successfully");
+                 request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recupdatesucc"));
               return mapping.findForward("success");
              }
              else
              {
-              request.setAttribute("msg", "Record Not Update");
+               // request.setAttribute("msg", "Record Not Update");
+                 request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recupdatenotsecc"));
               return mapping.findForward("success");
              }
 
@@ -73,7 +96,9 @@ public class FacultyUpdateViewAction extends org.apache.struts.action.Action {
                List<Department> dept=(List<Department>)DeptDAO.getDept(library_id, faculty_id);
                if(!dept.isEmpty())
                {
-                request.setAttribute("msg1", "Dept Already there This faculty,Cannot Deleted");
+
+                   // request.setAttribute("msg1", "Dept Already there This faculty,Cannot Deleted");
+                   request.setAttribute("msg1",  resource.getString("systemsetup.facultyupdateviewAction.deptalredythere"));
               return mapping.findForward("success");
                }
 
@@ -83,19 +108,24 @@ public class FacultyUpdateViewAction extends org.apache.struts.action.Action {
 
             List<CirMemberAccount> cir=   (List<CirMemberAccount>)FacultyDAO.searchAccount(library_id,faculty_id);
            if(!cir.isEmpty()){
-            request.setAttribute("msg1", "Account Created With This faculty,Cannot Deleted");
+
+             //   request.setAttribute("msg1", "Account Created With This faculty,Cannot Deleted");
+            request.setAttribute("msg1", resource.getString("systemsetup.facultyupdateviewAction.acccanotdel"));
               return mapping.findForward("success");
            }
 
             result=FacultyDAO.Delete(faculty);
              if(result==true)
              {
-              request.setAttribute("msg", "Record Deleted Successfully");
+                //request.setAttribute("msg", "Record Deleted Successfully");
+              request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recdelsucc"));
               return mapping.findForward("success");
              }
              else
              {
-              request.setAttribute("msg", "Record Not Deleted");
+
+                // request.setAttribute("msg", "Record Not Deleted");
+              request.setAttribute("msg",  resource.getString("circulation.circulationnewmemberregAction.memnotdelsucc"));
               return mapping.findForward("success");
              }
 

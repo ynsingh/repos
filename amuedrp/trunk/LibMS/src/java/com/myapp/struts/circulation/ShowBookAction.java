@@ -14,9 +14,11 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.myapp.struts.circulationDAO.cirDAO;
+
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 
 
@@ -37,6 +39,10 @@ public class ShowBookAction extends org.apache.struts.action.Action {
     String date;
     String sub_memtype;
     String book_type;
+     Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
     
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -47,6 +53,20 @@ SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 
 date=sdf.format(cal.getTime());
          HttpSession session=request.getSession();
+          try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
          library_id=(String)session.getAttribute("library_id");
          sublibrary_id=(String)session.getAttribute("sublibrary_id");
          memid=request.getParameter("memId");
@@ -65,10 +85,10 @@ date=sdf.format(cal.getTime());
              accession_no=request.getParameter("id1");
 
 System.out.println(memid+"   "+accession_no);
-         DocumentDetails docdetail=cirDAO.getBook(library_id,sublibrary_id, accession_no);
+         DocumentDetails docdetail=CirculationDAO.getBook(library_id,sublibrary_id, accession_no);
          if(docdetail!=null)
          {
-         DocumentDetails docdetail1=cirDAO.getBookStatus(library_id,sublibrary_id, accession_no);
+         DocumentDetails docdetail1=CirculationDAO.getBookStatus(library_id,sublibrary_id, accession_no);
 
                  if(docdetail1!=null){
                     CirOpacRequest opacReq = (CirOpacRequest)CirculationDAO.searchCirOpacRequestByMemId(library_id, sublibrary_id, memid, accession_no);
@@ -77,14 +97,16 @@ System.out.println(memid+"   "+accession_no);
                     opacReq.setStatus("Rejected");
                    boolean result= CirculationDAO.updateCheckOut(opacReq);
                 }
-                 request.setAttribute("msg1","Item already checked out, Request for Checkout is rejected.");
+                 
+                // request.setAttribute("msg1","Item already checked out, Request for Checkout is rejected.");   
+                request.setAttribute("msg1",resource.getString("circulation.showbook.itemalreckhout"));
                return  mapping.findForward("failure");
                  }
 
 
              book_type=docdetail.getBookType();
 
-             CirMemberAccount cmd=(CirMemberAccount)cirDAO.getAccount(library_id,sublibrary_id, memid);
+             CirMemberAccount cmd=(CirMemberAccount)CirculationDAO.getAccount(library_id,sublibrary_id, memid);
 
              if(cmd!=null)
              {
@@ -100,7 +122,8 @@ System.out.println(memid+"   "+accession_no);
              if(membook!=null){
              limit=membook.getIssueDaysLimit();}
              else{
-                 request.setAttribute("msg1","You Have to configure Fine Details for this service.");
+                  //request.setAttribute("msg1","You Have to configure Fine Details for this service.");
+                 request.setAttribute("msg1",resource.getString("circulation.showbook.youhavetoconfig"));
                return  mapping.findForward("failure");
              }
 
@@ -111,7 +134,7 @@ System.out.println(memid+"   "+accession_no);
                request.setAttribute("docdetail", docdetail);
                
                System.out.println(limit+"      ..........."+sdf.format(cal.getTime()));
-request.setAttribute("limit",sdf.format(cal.getTime()));
+             request.setAttribute("limit",sdf.format(cal.getTime()));
                return  mapping.findForward("success");
              }
          }else{
@@ -122,7 +145,8 @@ request.setAttribute("limit",sdf.format(cal.getTime()));
                    boolean result= CirculationDAO.updateCheckOut(opacReq);
                 }
 
-                 request.setAttribute("msg1","Request for checkout is cancelled due to unavailabilty of document.");
+               // request.setAttribute("msg1","Request for checkout is cancelled due to unavailabilty of document.");
+                request.setAttribute("msg1",resource.getString("circulation.showbook.reqforchkoutiscancel"));
                return  mapping.findForward("failure");
          }
 

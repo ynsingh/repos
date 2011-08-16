@@ -5,7 +5,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="/LibMS/css/page.css"/>
 <%@page import="java.util.*,java.io.*,java.net.*"%>
 
 <%!
@@ -63,7 +63,7 @@ if (!rst.isEmpty()){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Untitled Page</title>
+
 <style type="text/css">
 body
 {
@@ -73,13 +73,13 @@ body
 </style>
 </head>
 <body>
-    <html:form  action="/confirm" method="post"  onsubmit="return validation();">
-             <table align="center"  class="txt" width="800px" style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
+    <html:form  action="/confirm" method="post"  >
+                  <table align="center" dir="<%=rtl%>"  class="table" bgcolor="#7697BC" width="60%" >
 
 
-     <tr><td  align="left" colspan="2" ><br><br> <span class="txt"><img src="<%=request.getContextPath()%>/images/Institutereg.png">
-</span><br>
-             <br>
+
+
+     <tr><td  align="center" class="txtStyle1" height="20px">Institute Details
 
 
          </td></tr>
@@ -104,7 +104,7 @@ body
      String admin_lname=adminReg.getAdminLname();
      String admin_designation=adminReg.getAdminDesignation();
      String admin_email=adminReg.getAdminEmail();
-    // String admin_password=adminReg.getAdminPassword();
+     String admin_password=adminReg.getAdminPassword();
      String status=adminReg.getStatus();
      String courtesy=adminReg.getCourtesy();
      String gender=adminReg.getGender();
@@ -143,8 +143,8 @@ body
          admin_designation="";
      if(admin_email==null)
          admin_email="";
-   //  if(admin_password==null)
-   //      admin_password="";
+     if(admin_password==null)
+         admin_password="";
      if(status==null)
          status="";
      if(courtesy==null)
@@ -156,30 +156,15 @@ body
          library_name="";
 
      %>
-               <tr><td width="15%" dir="<%=rtl%>" width="150px"><%=resource.getString("institutename")%></td><td><input type="text" id="Editbox1"   name="institute_name" value="<%=institute_name%>" tabindex="1" title="Enter Instutute Name" readonly></td><td width="15%" dir="<%=rtl%>"><%=resource.getString("registrationid")%></td><td><input type="text" id="Editbox18"  name="registration_request_id" value="<%=registration_request_id%>" tabindex="18" readonly></td></tr>
+      <tr><td>
+            <table class="txtStyle" bgcolor="white" >
+
+     <tr><td width="15%" dir="<%=rtl%>" width="150px"><%=resource.getString("institutename")%></td><td><input type="text" id="Editbox1"   name="institute_name" value="<%=institute_name%>" tabindex="1" title="Enter Instutute Name" readonly></td><td width="15%" dir="<%=rtl%>"><%=resource.getString("registrationid")%></td><td><input type="text" id="Editbox18"  name="registration_request_id" value="<%=registration_request_id%>" tabindex="18" readonly></td></tr>
 
              <tr><td dir="<%=rtl%>"><%=resource.getString("instituteabbrevation")%></td><td><input type="text" id="Editbox2"   name="abbreviated_name" value="<%=abbreviated_name%>" tabindex="2" readonly title="Abbrivated name e.g. AMU(aligarh muslim University)"></td><td dir="<%=rtl%>"><%=resource.getString("courtesy")%></td><td>
                      <input type="text" id="courtesy" readonly name="courtesy" value="<%=courtesy%>"/>
 
-<%--                     <select name="courtesy"  disabled size="1" id="courtesy"   tabindex="11" title="courtesy" style="width:148px">
-    <%if(courtesy.equals("mr")){%>
-<option selected value="mr">Mr</option>
-<option value="mrs">Mrs</option>
-<option value="ms">Ms.</option>
 
-            <%}%>
-            <%if(courtesy.equals("mrs")){%>
-<option  value="mr">Mr</option>
-<option selected value="mrs">Mrs</option>
-<option value="ms">Ms.</option>
-            <%}%>
-            <%if(courtesy.equals("ms")){%>
-<option value="mr">Mr</option>
-<option value="mrs">Mrs</option>
-<option  selected value="ms">Ms.</option>
-            <%}%>
-
-</select>--%>
                      <input type="hidden" id="courtesy" name="courtesy" value="<%=courtesy%>"/>
                       
 </td></tr>
@@ -224,7 +209,7 @@ body
 
 
              <tr><td dir="<%=rtl%>"><%=resource.getString("landlineno")%></td><td><input type="text" id="Editbox8"   name="land_line_no" value="<%=land_line_no%>" tabindex="8" title="Enter Land Line No" readonly></td>
-       <%--   <td><%=resource.getString("password")%></td><td><input type="password" id="Editbox11" readonly  name="admin_password" value="<%=admin_password%>" tabindex="17" title="Enter Password" readonly></td>--%>
+             <td><%=resource.getString("password")%></td><td><input type="password" id="Editbox11" readonly  name="admin_password" value="<%=admin_password%>" tabindex="17" title="Enter Password" readonly></td>
              </tr>
              <input type="hidden" name="type_of_institute" value="<%=type_of_institute%>"/>
              <tr><td dir="<%=rtl%>"><%=resource.getString("typeofinstitute")%></td><td><select name="type_of_institute" disabled id="type_of_institute" style="width:148px" >
@@ -272,9 +257,12 @@ body
 
               </tr>
 <tr><td dir="<%=rtl%>" colspan="4" align="center"><br><br>
-        <input type="submit" class="txt2"  id="submit" name="submit" value="<%=resource.getString("accept")%>"><input type="button" class="txt2"    name="cancel" value="<%=resource.getString("back")%>"  onclick="quit();">
+        <input type="submit"  class="btn1"  id="submit" name="button" onclick="return validation();" value="Accept">
+        <input type="submit"  class="btn1"  id="submit" name="button" value="Reject">
+        <input type="button" class="btn1"    name="cancel" value="<%=resource.getString("back")%>"  onclick="quit();">
 </td></tr>
-
+            </table>
+          </td></tr>
         </table>
 
 <%}%>

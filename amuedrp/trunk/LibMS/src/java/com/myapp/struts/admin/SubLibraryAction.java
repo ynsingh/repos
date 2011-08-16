@@ -32,31 +32,51 @@ public class SubLibraryAction extends org.apache.struts.action.Action {
     Connection con;
     PreparedStatement stmt;
     String sql;
+     Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
 
     
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+
+         HttpSession session=request.getSession();
+          try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         AddSubLibraryActionForm sublibActionForm =(AddSubLibraryActionForm)form;
         sublibrary_id=sublibActionForm.getSublibrary_id();
         button=sublibActionForm.getButton();
        
-        HttpSession session=request.getSession();
+       
         library_id=(String)session.getAttribute("library_id");
             List   list2=(List)FacultyDAO.searchFaculty(library_id);
             session.setAttribute("list2", list2);
             List   list3=(List)DeptDAO.searchDept(library_id);
             session.setAttribute("list3", list3);
        
-        if(button.equals("Register"))
+        if(button.equals("Add"))
         {
          
          SubLibrary sublibobj=(SubLibrary)SubLibraryDAO.getLibName(library_id, sublibrary_id);
             
          if(sublibobj!=null)
          {
-            request.setAttribute("msg1", "SubLibrary Id : "+sublibrary_id+" already exists");
+            request.setAttribute("msg1", resource.getString("systemsetup.add_sublibrary.sublibraryid")+sublibrary_id+resource.getString("systemsetup.manage_notice.alreadyexists"));
             return mapping.findForward("duplicate");
          }
          else
@@ -94,7 +114,7 @@ SubLibrary sublibobj;
                         if(sublibobj==null)
                         {
 
-                        request.setAttribute("msg1", "Sublibrary Id: "+sublibrary_id+" doesn't exists");
+                        request.setAttribute("msg1", resource.getString("systemsetup.add_sublibrary.sublibraryid")+sublibrary_id+resource.getString("systemsetup.manage_notice.doesnotexist"));
 
                         return mapping.findForward("duplicate");
                         }

@@ -13,6 +13,8 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.systemsetupDAO.SubMemberDAO;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -29,7 +31,10 @@ public class CirculationNewMemberRegAgainAction extends org.apache.struts.action
     boolean result;
     CirMemberAccount cirmemberac=new CirMemberAccount();
     CirMemberAccountId cirmemberacid=new CirMemberAccountId();
-
+     Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
 
 
     @Override
@@ -54,6 +59,20 @@ public class CirculationNewMemberRegAgainAction extends org.apache.struts.action
         System.out.println("MemberId"+mem_id+"LibraryId"+library_id+"SublibraryId"+sublibrary_id);
 
         HttpSession session=request.getSession();
+         try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
 
@@ -93,13 +112,16 @@ public class CirculationNewMemberRegAgainAction extends org.apache.struts.action
               result=CirculationDAO.insert(cirmemberac);
               if(result==true)
               {
-                String msg="Record Inserted successfully";
+                 // String msg="Record Inserted successfully";
+                  String msg=resource.getString("circulation.circulationnewmemberregAction.recinsesucc");
                 request.setAttribute("msg",msg);
                 return mapping.findForward("success");
               }
               else
               {
-                String msg="Record not Inserted successfully";
+                
+                 // String msg="Record not Inserted successfully"; 
+                  String msg=resource.getString("circulation.circulationnewmemberregAction.recnotinsesucc");
                 request.setAttribute("msg",msg);
                 return mapping.findForward("fail");
 

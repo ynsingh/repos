@@ -4,7 +4,7 @@ Devleoped By : Kedar Kumar
 Modified On  : 17-Feb 2011
 This Page is to Enter Library Details
 -->
-
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -14,6 +14,29 @@ This Page is to Enter Library Details
 String sublib_id=(String)request.getAttribute("new_sublib_id");
 boolean button=false;
 %>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
 
 <html>
 <head>
@@ -116,6 +139,7 @@ return true;
 }
 function update(cartXML)
 {
+    
 var depts = cartXML.getElementsByTagName("dept_ids")[0];
 var em = depts.getElementsByTagName("dept_id");
 var em1 = depts.getElementsByTagName("dept_name");
@@ -134,6 +158,7 @@ newOpt.text = ndValue1;
 
 
 }
+ 
 
 }
 
@@ -163,24 +188,24 @@ function hideTextbox(){
       visibility: show;">
     
      <html:form action="/add_sub_lib" method="post" >
- <table class="table" width="400px" height="200px" align="center">
+ <table dir="<%=rtl%>" class="table" width="400px" height="200px" align="center">
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage SubLibrary</td></tr>
-                <tr><td valign="top" align="center"> <br/>
-                <table >
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.manage_library.managesublib")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
+                <table dir="<%=rtl%>" >
 
  <tr>
 
-    <td align="left"><strong>SubLibrary Id</strong></td>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_sublibrary.sublibraryid")%></strong></td>
     <html:hidden property="sublibrary_id" styleId="sublibrary_id"  name="AddSubLibraryActionForm" value="<%=sublib_id%>" styleClass="textBoxWidth" />
-    <td><html:text property="sublibrary_id" styleId="sublibrary_id" disabled="true" name="AddSubLibraryActionForm" value="<%=sublib_id%>" styleClass="textBoxWidth" />
+    <td dir="<%=rtl%>"><html:text property="sublibrary_id" styleId="sublibrary_id" disabled="true" name="AddSubLibraryActionForm" value="<%=sublib_id%>" styleClass="textBoxWidth" />
 
     </td>
   </tr>
    <tr>
-    <td width="150" align="left"><strong>Faculty</strong> </td>
-    <td><html:select  property="faculty1" styleId="TXTFACULTY" style="width:160px" value="Select" onchange="return search1()">
+    <td dir="<%=rtl%>" width="150" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_sublib.faculty")%></strong> </td>
+    <td dir="<%=rtl%>"><html:select  property="faculty1" styleId="TXTFACULTY" style="width:160px" value="Select" onchange="return search1()">
              <html:option    value="Select">Select</html:option>
             <html:options  collection="list2"  labelProperty="facultyName" property="id.facultyId"></html:options>
                  
@@ -193,7 +218,7 @@ function hideTextbox(){
  
   <tr>
     
-    <td align="left"><strong>Department Name<a class="star">*</a></strong></td>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_dept.deptname")%><a class="star">*</a></strong></td>
     <td>
         <html:select  property="sublib_name1" styleId="TXTDEPT" style="width:160px"   value="Select" tabindex="3" onchange="hideTextbox()">
                 <html:option    value="Select">Select</html:option>
@@ -203,7 +228,7 @@ function hideTextbox(){
     </td>
     
   </tr>
-  <tr><td align="right" > OR&nbsp;</td><td>
+  <tr><td dir="<%=rtl%>" align="<%=align%>" > <%=resource.getString("systemsetup.add_dept.or")%>&nbsp;</td><td>
 
 
           
@@ -217,19 +242,19 @@ function hideTextbox(){
  
   <tr>
    
-    <td align="left"><strong>Department Address<a class="star">*</a></strong></td>
-    <td><html:text property="department_address" styleId="department_address" name="AddSubLibraryActionForm" styleClass="textBoxWidth"/>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_sublib.deptadd")%><a class="star">*</a></strong></td>
+    <td dir="<%=rtl%>"><html:text property="department_address" styleId="department_address" name="AddSubLibraryActionForm" styleClass="textBoxWidth"/>
         
      </td>
     
   </tr>
  
 <tr>
-    <td colspan="4" align="center">
+    <td dir="<%=rtl%>" colspan="4" align="center">
         <br/>
-        <input type="submit"  value="Submit"  onClick="return validation();"/>
+        <input type="submit"  value="<%=resource.getString("circulation.cir_newmember.submit")%>"  onClick="return validation();"/>
 
-        <input type="button"  value="Back" onclick="return quit();" />
+        <input type="button"  value="<%=resource.getString("circulation.cir_member_reg.back")%>" onclick="return quit();" />
  </td>
 </tr>
 </table>
@@ -277,14 +302,14 @@ var keyValue = document.getElementById('TXTDEPT').options[document.getElementByI
 
 
 
-var str="Enter Following Values:-";
+var str="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-";
 
 
    
     if(sublib_name.value=="")
         {
             if(keyValue=="Select")
-            {str+="\n Enter Department Name ";
+            {str+="\n <%=resource.getString("systemsetup.add_sublib.enterdeptname")%> ";
              alert(str);
              document.getElementById('sublib_name').focus();
             return false;
@@ -297,7 +322,7 @@ var str="Enter Following Values:-";
 
   if(department_address.value=="")
       {
-             str+="\n Enter Address";
+             str+="\n <%=resource.getString("systemsetup.add_sublib.enteradd")%>";
            alert(str);
            document.getElementById('department_address').focus();
             return false;
@@ -306,7 +331,7 @@ var str="Enter Following Values:-";
      }
 
 
-if(str=="Enter Following Values:-")
+if(str=="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-")
    {
        return true;
 

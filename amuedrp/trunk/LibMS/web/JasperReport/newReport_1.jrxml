@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="newReport_1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="member_id" class="java.lang.String"/>
+	<field name="returning_date" class="java.lang.String"/>
+	<field name="fname" class="java.lang.String"/>
+	<field name="mname" class="java.lang.String"/>
+	<field name="lname" class="java.lang.String"/>
+	<field name="main_entry" class="java.lang.String"/>
+	<field name="fine_amt" class="java.lang.Float"/>
+	<field name="title" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="215" y="0" width="115" height="19" forecolor="#CC0000"/>
+				<textElement>
+					<font  size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Checkin Report]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-21" y="0" width="596" height="27" backcolor="#E4E5E6"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="330" y="7" width="100" height="20" forecolor="#0000FF"/>
+				<textElement>
+					<font  size="12"/>
+				</textElement>
+				<text><![CDATA[Returning Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="7" width="65" height="20"/>
+				<textElement>
+					<font  size="12"/>
+				</textElement>
+				<text><![CDATA[Member Id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="94" y="7" width="100" height="20"/>
+				<textElement>
+					<font  size="12"/>
+				</textElement>
+				<text><![CDATA[Menmber Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="194" y="7" width="42" height="20"/>
+				<textElement>
+					<font  size="12"/>
+				</textElement>
+				<text><![CDATA[Title]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="253" y="7" width="77" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Author]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="445" y="8" width="100" height="20"/>
+				<textElement>
+					<font  size="12"/>
+				</textElement>
+				<text><![CDATA[Fine]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="6" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="41" y="0" width="29" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{member_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="1" width="29" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{fname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="108" y="1" width="29" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{mname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="137" y="1" width="29" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="177" y="0" width="76" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="253" y="0" width="77" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{main_entry}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="343" y="1" width="87" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{returning_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="445" y="0" width="50" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Float"><![CDATA[$F{fine_amt}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="266" y="18" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="485" y="18" width="58" height="20"/>
+				<imageExpression class="java.lang.String"><![CDATA["C:\\LibMS20110512\\web\\images\\opac_lib.PNG"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="7" y="0" width="101" height="18"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CHECK IN REPORT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="18" width="51" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Library]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

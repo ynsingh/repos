@@ -1,8 +1,4 @@
-<%--
-    Document   : Simple.jsp
-    Created on : Jun 18, 2010, 7:46:24 AM
-    Author     : Mayank Saxena
---%>
+
     <%@page import="com.myapp.struts.opac.OpacDoc"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
@@ -16,28 +12,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="Mayank Saxena" content="MCA,AMU">
+
 
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
-<script language="javascript" >
-function b1click()
-{
-location.href="<%=request.getContextPath()%>/OPAC/browse1.jsp";
-}
-function b2click()
-{
-f.action="<%=request.getContextPath()%>/OPAC/opachome.jsp";
-f.method="post";
-f.target="_self";
-f.submit();
-}
-function getQuery(id)
-{
-    var query = "MyResultSet.do?id=(select * from document_details where call_no='"+id+"')";
-    return query;
-}
-</script>
  <style>
 
     th a:link      { text-decoration: none; color: black }
@@ -106,7 +84,16 @@ locale1=(String)session.getAttribute("locale");
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-   
+
+<%
+  String Title=resource.getString("opac.simplesearch.title");
+  pageContext.setAttribute("Title", Title);
+  String MainEntry=resource.getString("opac.simplesearch.mainentry");
+  pageContext.setAttribute("MainEntry", MainEntry);
+  String LibraryID=resource.getString("opac.browse.table.Libraryid");
+  pageContext.setAttribute("LibraryID",LibraryID);
+
+%>
 
     <table align="<%=align%>" dir="<%=rtl%>" width="1200x" height="400px" class="datagrid" style="border:solid 1px #e0e8f5;">
 
@@ -143,7 +130,7 @@ locale1=(String)session.getAttribute("locale");
 if(tcount==0)
 {
 %>
-<p class="err">No record Found</p>
+<p class="err"><%=resource.getString("global.norecordfound")%></p>
 <%}
 else
 {%>
@@ -155,17 +142,17 @@ else
 
 
     <column width="450">
-      <header value="Title" hAlign="left" styleClass="header" />
-      <item  styleClass="item"  value="${doc.title}" hyperLink="./viewDetails.do?doc_id=${doc.id.documentId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2"   hAlign="left"/>
+      <header value="${Title}" hAlign="left" styleClass="header" />
+      <item  styleClass="item"  value="${doc.title}" hyperLink="./viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2"   hAlign="left"/>
     </column>
 
     <column width="200">
-      <header value="Main Entry" hAlign="left" styleClass="header" />
-      <item  styleClass="item"  value="${doc.mainEntry}" hAlign="left"  hyperLink="./viewDetails.do?doc_id=${doc.id.documentId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2"  />
+      <header value="${MainEntry}" hAlign="left" styleClass="header" />
+      <item  styleClass="item"  value="${doc.mainEntry}" hAlign="left"  hyperLink="./viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2"  />
     </column>
       <column width="150">
-      <header value="Library ID" hAlign="left" styleClass="header" />
-      <item  styleClass="item"  value="${doc.id.libraryId}" hyperLink="./viewDetails.do?doc_id=${doc.id.documentId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  hyperLinkTarget="fr2" hAlign="left" />
+      <header value="${LibraryID}" hAlign="left" styleClass="header" />
+      <item  styleClass="item"  value="${doc.id.libraryId}" hyperLink="./viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  hyperLinkTarget="fr2" hAlign="left" />
     </column>
  </columns>
 
@@ -182,7 +169,7 @@ else
     <tr >
 <td align="left" width="10%" class="datagrid" dir="<%=rtl%>">
 <c:if test="${previous != null}">
-    <a style="color:white;" href="<c:out value="${previous}"/>">Previous</a>
+    <a style="color:white;" href="<c:out value="${previous}"/>"><%=resource.getString("global.previous")%></a>
 </c:if>&nbsp;
 </td>
 
@@ -200,7 +187,7 @@ else
 </td>
 <td align="right"  dir="<%=rtl%>" width="10%" class="datagrid">&nbsp;
 <c:if test="${next != null}">
-<a style="color:white;" href="<c:out value="${next}"/>">Next</a>
+<a style="color:white;" href="<c:out value="${next}"/>"><%=resource.getString("global.next")%></a>
 </c:if>
 </td>
 </tr>

@@ -7,6 +7,8 @@ package com.myapp.struts.circulation;
 
 import com.myapp.struts.CirculationDAO.CirculationDAO;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,15 +26,20 @@ public class CirCheckOutViewAllAction extends org.apache.struts.action.Action {
     private static final String SUCCESS = "success";
     String library_id,sublibrary_id,starting_date,end_date,memid;
     
+    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+            HttpSession session=request.getSession();
+
+
+
         CirCheckOutViewAllActionForm ccvaaf=(CirCheckOutViewAllActionForm)form;
         starting_date=ccvaaf.getStarting_date();
         end_date=ccvaaf.getEnd_date();
         memid=ccvaaf.getMemid();
-        HttpSession session=request.getSession();
+        
         session.removeAttribute("cir_checkout_report");
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");

@@ -4,7 +4,11 @@
  */
 
 package com.myapp.struts.opac;
-import  com.myapp.struts.*;
+import com.myapp.struts.hbm.BibliographicDetails;
+import com.myapp.struts.hbm.BibliographicDetailsLang;
+import com.myapp.struts.hbm.DocumentDetails;
+import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import java.util.ArrayList;
 import com.myapp.struts.opacDAO.OpacSearchDAO;
 import java.sql.*;
 import java.util.List;
@@ -31,15 +35,20 @@ public class SimpleSearchAction extends org.apache.struts.action.Action {
      PreparedStatement stmt;
      ResultSet rs;
      OpacSearchDAO simpleSearchDAO=new OpacSearchDAO();
-     List simple_search_list;
+     BibliopgraphicEntryDAO bibdao=new BibliopgraphicEntryDAO();
+     
     
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+       
         SimpleSearchActionForm simpleform = (SimpleSearchActionForm)form;
         HttpSession session =request.getSession();
-        lib_id= simpleform.getCMBLib();
+         request.setCharacterEncoding("UTF-8");
+         session.removeAttribute("simple_search_list");
+        session.removeAttribute("simple_search_list1");
+         lib_id= simpleform.getCMBLib();
         sub_lib=simpleform.getCMBSUBLib();
         p = simpleform.getTXTPHRASE();
         cmbyr = simpleform.getCMBYR();
@@ -52,38 +61,64 @@ public class SimpleSearchAction extends org.apache.struts.action.Action {
         cnf = simpleform.getCMBCONN();
         sort= simpleform.getCMBSORT();
         int flag=0;
-        //System.out.println("*************************"+p+".....");
-        //String library_id,String searching_word,String sortby
-   //System.out.println(yr1+"............."+yr2+".............");
-   /* if(cmbyr.equalsIgnoreCase("all"))
-    {
-        yr1=-1;
-        yr2=9999;
-    }
-    else if (cmbyr.equalsIgnoreCase("after"))
-    {
+        
 
-        yr2=9999;
-    }
-    else if(cmbyr.equalsIgnoreCase("upto"))
-    {
-    yr2=yr1+1;
-    yr1=0;
-    }*/
-/*
- * Seperate words that are entered to search in String Array named phrase
- */
-    //if(p.equals(""))
-    //phrase[0]="";
-    //else
     phrase=p.split(" ");
     System.out.println("*************************"+phrase.length+phrase[0]+".....");
  /*
  * Execute query by passing parameters and set resulting List in session
  */
-    simple_search_list =simpleSearchDAO.simpleSearch(lib_id,sub_lib,phrase,cnf,db,sort,cf,yr1,yr2);
+ List<BibliographicDetailsLang> simple_search_list=new ArrayList();
+ List<BibliographicDetails> simple_search_list1=new ArrayList();
+ ArrayList<BibliographicDetailsLang> bib=new ArrayList<BibliographicDetailsLang>();
+ ArrayList<BibliographicDetails> bib1=new ArrayList<BibliographicDetails>();
+ System.out.println("Check Box"+simpleform.getCheckbox());
+ if(simpleform.getCheckbox().equals("Checked")){
+ System.out.println("Languagebbb");
+ simple_search_list=simpleSearchDAO.simpleLangSearch(lib_id,sub_lib,phrase,cnf,db,sort,cf,yr1,yr2,simpleform.getLanguage());
+if(!simple_search_list.isEmpty())
+{
+    for(int f=0;f<simple_search_list.size();f++)
+    {
+    int bibiid=simple_search_list.get(f).getId().getBiblioId();
+    List<DocumentDetails> ddd=bibdao.searchDoc2(bibiid, lib_id, sub_lib);
+    if(!ddd.isEmpty()){
+        bib.add(simple_search_list.get(f));
+    }
+    } 
+ }
+  session.setAttribute("simple_search_list1", bib);
+ }
+ else{
+      System.out.println("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNLanguagebbb");
+ simple_search_list1=simpleSearchDAO.simpleSearch(lib_id,sub_lib,phrase,cnf,db,sort,cf,yr1,yr2);
+ System.out.println(simple_search_list1.size()+"..........");
+if(!simple_search_list1.isEmpty())
+{
+    for(int f=0;f<simple_search_list1.size();f++)
+    {
+    int bibiid=simple_search_list1.get(f).getId().getBiblioId();
+    System.out.println("Bibliid"+bibiid);
+    List<DocumentDetails> ddd=(List<DocumentDetails>)bibdao.searchDoc2(bibiid, lib_id, sub_lib);
+    System.out.print("Accession"+ddd.size());
+    if(!ddd.isEmpty()){
+        bib1.add(simple_search_list1.get(f));
+    } 
+    }  
+}
+  session.setAttribute("simple_search_list", bib1);
+ }
+    return mapping.findForward(SUCCESS);
+    }
+}
+
+
+
+
+
+ //   simple_search_list =simpleSearchDAO.simpleSearch(lib_id,sub_lib,phrase,cnf,db,sort,cf,yr1,yr2);
     
-    session.setAttribute("simple_search_list",simple_search_list);
+
 
 
 
@@ -185,6 +220,5 @@ public class SimpleSearchAction extends org.apache.struts.action.Action {
    request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
    */
-        return mapping.findForward(SUCCESS);
-    }
-}
+
+

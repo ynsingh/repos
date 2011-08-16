@@ -15,7 +15,8 @@ import com.myapp.struts.systemsetupDAO.DocumentCategoryDAO;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
-
+import java.util.Locale;
+import java.util.ResourceBundle;
 /**
  *
  * @author <a href="mailto:asif633@gmail.com">Asif Iqubal</a>
@@ -30,7 +31,10 @@ public class AccessionEntryAction extends org.apache.struts.action.Action {
     DocumentDetailsId did = new DocumentDetailsId();
     AccessionRegister ac = new AccessionRegister();
     AccessionRegisterId aid = new AccessionRegisterId();
-
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -39,16 +43,29 @@ public class AccessionEntryAction extends org.apache.struts.action.Action {
         HttpSession session = request.getSession();
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
+              try{
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+    }catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         String acc_no = (String) bform.getAccession_no();
         String button = (String) bform.getButton();
         if (button.equals("Add Item")) {
             if (StringUtils.isEmpty(acc_no)) {
-                String msg1 = "Accession no field can not be left blank";
+String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblank");//Accession no field can not be left blank
                 request.setAttribute("msg2", msg1);
             } else {
                 AccessionRegister hh = dao.searchacc(library_id, sub_library_id, acc_no);
                 if (hh != null) {
-                    String msg1 = "This accession no already exists enter different";
+                    String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessduplicate");//This accession no already exists enter different
                     request.setAttribute("msg2", msg1);
                 } else {
                     BibliographicDetailsId dd = new BibliographicDetailsId(bform.getBiblio_id(), library_id, sub_library_id);
@@ -98,6 +115,9 @@ public class AccessionEntryAction extends org.apache.struts.action.Action {
                     doc.setNotes(bform.getSer_note());
                     doc.setBiblioId(bform.getBiblio_id());
                     doc.setSeries(bform.getSer_note());
+                    doc.setPhysicalForm(bform.getPhysical_form());
+                    doc.setTypeOfDisc(bform.getType_of_disc());
+                    doc.setColour(bform.getColour());
                     aid.setLibraryId(library_id);
                     aid.setSublibraryId(sub_library_id);
                     aid.setRecordNo(maxrecord);
@@ -112,6 +132,9 @@ public class AccessionEntryAction extends org.apache.struts.action.Action {
                     ac.setNoOfPages(bform.getNo_of_pages());
                     ac.setPhysicalWidth(bform.getPhysical_width());
                     ac.setBindType(bform.getBind_type());
+                    ac.setPhysicalDescription(bform.getPhysical_desc());
+                    ac.setPhysicalForm(bform.getPhysical_form());
+                    ac.setColour(bform.getColour());
                     dao.insert2(ac);
                     bid.setBiblioId(bform.getBiblio_id());
                     bid.setLibraryId(library_id);
@@ -144,7 +167,8 @@ public class AccessionEntryAction extends org.apache.struts.action.Action {
                     bib.setSubject(bform.getSubject());
                     bib.setAbstract_(bform.getThesis_abstract());
                     bib.setSeries(bform.getSer_note());
-                    bib.setNotes(bform.getNotes());                  
+                    bib.setNotes(bform.getNotes());
+                    bib.setTypeOfDisc(bform.getType_of_disc());
                     List a = dao.getItems(library_id, sub_library_id, bform.getBiblio_id());
                     int b = a.size();
                     bform.setNo_of_copies(b);
@@ -152,7 +176,7 @@ public class AccessionEntryAction extends org.apache.struts.action.Action {
                     bib.setNoOfCopies(b);
                     dao.update(bib);
                     dao.insert1(doc);
-                    String msg2 = "Item is saved successfully with record no:" + maxrecord;
+                     String msg2 = resource.getString("cataloguing.ownaccessionentryaction.accessdatasave")+maxrecord;//Item is saved successfully with record no:
                     request.setAttribute("msg1", msg2);
                     return mapping.findForward(SUCCESS);
                 }

@@ -106,7 +106,7 @@ locale1=(String)session.getAttribute("locale");
 %>
 <%if( tcount==0)
 {%>
-<p class="err" style="font-size:12px">No Record Found</p>
+<p class="err" style="font-size:12px"> <%=resource.getString("global.norecordfound")%></p>
 <%}
 else
 {%>

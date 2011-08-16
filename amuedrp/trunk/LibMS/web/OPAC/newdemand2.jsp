@@ -228,7 +228,7 @@ String sublibrary_id=(String)session.getAttribute("sublibrary_id");
 
 
           </b>
-                  </td><td align="<%=align%>" dir="<%=rtl%>" style="color:white;font-family:Tahoma;font-size:12px"><%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%>&nbsp;<b>|</b>&nbsp;<a href="home.do" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a></td></tr></table>
+                  </td><td align="<%=align%>" dir="<%=rtl%>" style="color:white;font-family:Tahoma;font-size:12px"><%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%>&nbsp;<b>|</b>&nbsp;<a href="/member.jsp" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a></td></tr></table>
         </td></tr>
 
     

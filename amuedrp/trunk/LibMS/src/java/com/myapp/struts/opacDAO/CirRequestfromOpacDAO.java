@@ -7,7 +7,7 @@ package com.myapp.struts.opacDAO;
 
 
 import com.myapp.struts.CirculationDAO.CirculationDAO;
-import com.myapp.struts.circulationDAO.cirDAO;
+
 import com.myapp.struts.hbm.*;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -171,7 +171,7 @@ public static boolean SendCheckOutRequest(String memId,String libId, String subl
                 //getting next value for request Id corresponding to library Id and SubLibrary Id
                 Integer rId = CirRequestfromOpacDAO.returnMaxRequestId(libId, sublibId);
                 CirMemberDetail memDetail = (CirMemberDetail)CirculationDAO.searchCirMemDetails(libId, memId);
-                DocumentDetails dd = (DocumentDetails)cirDAO.getDocument(libId, sublibId, Integer.parseInt(docId));
+                DocumentDetails dd = (DocumentDetails)CirculationDAO.getDocument(libId, sublibId, Integer.parseInt(docId));
                 ciropacReqId.setRid(rId);
                 ciropacReqId.setLibraryId(libId);
                 ciropacReqId.setSublibraryId(sublibId);

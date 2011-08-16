@@ -29,6 +29,42 @@ f.submit();
 }
 
 </script>
+ <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+ String lib_id = (String)session.getAttribute("library_id");
+  String sublib_id = (String)session.getAttribute("memsublib");
+        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+    %>
+    <%
+String LibraryId=resource.getString("opac.browse.table.Libraryid");
+pageContext.setAttribute("LibraryId", LibraryId);
+String NoticeId=resource.getString("systemsetup.manage_notice.noticesid");
+pageContext.setAttribute("NoticeId", NoticeId);
+String Subject=resource.getString("systemsetup.notice_viewall.subject");
+pageContext.setAttribute("Subject",Subject);
+String Date=resource.getString("circulation.cir_checkout_report.date");
+pageContext.setAttribute("Date",Date);
+
+%>
+
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
 </head>
@@ -38,15 +74,16 @@ f.submit();
    right:5px;
       position: absolute;
 
-      visibility: show;">
+      visibility: show;"
+ >
 
 <body>
- <table border="1" class="table" width="700px" align="center">
+    <table dir="<%=rtl%>" border="1" class="table" width="700px" align="center">
 
 
 
-       <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">View All Notices</td></tr>
-                <tr><td valign="top" align="center"> <br/>
+       <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.notice_viewall.viewallnotice")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
 
 
 <%
@@ -81,7 +118,7 @@ f.submit();
 %>
 <%if(tcount==0)
 {%>
-<p class="err" style="font-size:12px">No Record Found</p>
+<p class="err" style="font-size:12px"><%=resource.getString("circulation.cir_viewall_mem_detail.norecfond")%></p>
 <%}
 else
 {%>
@@ -95,22 +132,22 @@ else
 
 
     <column width="200">
-      <header value="Library Id" hAlign="left" styleClass="admingridheader"  />
-      <item   value="${doc.id.libraryId}"  hyperLink="/LibMS-Struts/systemsetup/viewgridnotice.do?notice_id=${doc.id.noticeId}"   hAlign="left"   styleClass="item"/>
+      <header value="${LibraryId}" hAlign="left" styleClass="admingridheader"  />
+      <item   value="${doc.id.libraryId}"     hAlign="left"   styleClass="item"/>
 
     </column>
 
     <column width="200">
-      <header value="Notice_Id" hAlign="left" styleClass="admingridheader"/>
+      <header value="${NoticeId}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.id.noticeId}"  hAlign="left"  styleClass="item"/>
     </column>
      
  <column width="200">
-      <header value="Subject" hAlign="left" styleClass="admingridheader"/>
+      <header value="${Subject}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.subject}" hAlign="left"  styleClass="item"/>
     </column>
    <column width="200">
-      <header value="Date" hAlign="left" styleClass="admingridheader"/>
+      <header value="${Date}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.date}"  hAlign="left"  styleClass="item"/>
     </column>
 
@@ -125,12 +162,12 @@ else
 
 <table width="700" style="font-family: arial; font-size: 10pt" border=0>
 <tr>
-<td align="left">
+<td dir="<%=rtl%>" align="<%=align%>">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.previos")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-<a href="<c:out value="${next}"/>">Next</a>
+<a href="<c:out value="${next}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.next")%></a>
 </c:if>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

@@ -25,6 +25,7 @@
     this.opener.close();
 </script>
 <link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <script language="javascript" type="text/javascript">
 /*
 * Returns an new XMLHttpRequest object, or false if the browser
@@ -79,6 +80,7 @@ responseXmlHandler(req.responseXML);
 }
 
 function search() {
+    window.status="Press f1 for help";
  availableSelectList = document.getElementById("searchResult");
  // availableSelectList.innerHTML = "";
     var keyValue = document.getElementById("username").value;
@@ -108,7 +110,7 @@ return true;
 }
 
 function search1() {
-
+ window.status="Press f1 for help";
  availableSelectList = document.getElementById("searchResult1");
   //availableSelectList.innerHTML = "";
     var keyValue = document.getElementById("password").value;
@@ -152,7 +154,7 @@ var ndValue = em[i].firstChild.nodeValue;
 availableSelectList.innerHTML += ndValue+"\n";
 }
 }
-
+window.status = "Press f1 for help";
 
 </script>
 </head>
@@ -343,12 +345,12 @@ if(str!=null)
                     <td  align="center">
                         <table dir="<%=rtl%>" cellpadding="0" Class="">
                             <tr> <td><%=resource.getString("login.message.signin.username")%></td>
-                                <td align="left"><input name="username" type="text" id="username" onblur="return search();" style="width:160px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;"/>
+                                <td align="left"><input name="username"  type="text" id="username" onfocus="statwords('Please Enter User ID');"  onblur="return search();" style="width:160px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;"/>
                     <br/> <div align="left" id="searchResult" class="err" style="border:#000000; "></div></td>
                     </tr>
                            <tr>
                     <td  height="20px"><%=resource.getString("login.message.signin.password")%></td>
-                    <td align="left"><input name="password" class="err" type="password" id="password" value="" onblur="return search1();" style="width:160px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;">
+                    <td align="left"><input name="password" class="err" type="password" id="password" value="" onfocus="statwords('Please Enter Password');" onblur="return search1();" style="width:160px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;">
                      <div align="left" id="searchResult1" class="err" style="border:#000000; "></div>
                     </td>
                     </tr>
@@ -374,7 +376,7 @@ if(str!=null)
                     </table>
                     <br>
 
-                    <span style="font-family: Tahoma;font-size:14px"><b><%=resource.getString("login.message.newlib")%></b></span><br><br>
+                    <span style="font-family: Tahoma;font-size:14px"><b><a style="text-decoration: none" class="txt2" href="<%=request.getContextPath()%>/help/help2.jsp"><%=resource.getString("login.message.newlib")%></a></b></span><br><br>
                   <b><a href="<%=request.getContextPath()%>/admin/admin_registration.jsp" style="text-decoration: none;color:brown;font-family: Tahoma;font-size:13px;font-weight: bold;"><%= resource.getString("login.href.institute.registration") %></a></b>
 
 

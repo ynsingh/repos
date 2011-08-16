@@ -74,6 +74,7 @@ function showcount()
     String locale1="en";
     String rtl="ltr";
     boolean page=true;
+    String align="left";
 %>
 
 <%
@@ -111,13 +112,25 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;}
-    else{ rtl="RTL";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
+<%
+  String Title=resource.getString("opac.simplesearch.title");
+  pageContext.setAttribute("Title", Title);
+  String MainEntry=resource.getString("opac.simplesearch.mainentry");
+  pageContext.setAttribute("MainEntry", MainEntry);
+  String CallNo=resource.getString("opac.simplesearch.callno.");
+  pageContext.setAttribute("CallNo",CallNo);
+  String LibraryID=resource.getString("opac.browse.table.Libraryid");
+  pageContext.setAttribute("LibraryID",LibraryID);
+
+%>
+
  <%-- <%if(page.equals(true)){%>--%>
-<table align="left" width="1200x" height="400px" class="datagrid" style="border:solid 1px #e0e8f5;">
+<table align="<%=align%>" dir="<%=rtl%>" width="1200x" height="400px" class="datagrid" style="border:solid 1px #e0e8f5;">
 
 
 
@@ -152,11 +165,11 @@ locale1=(String)session.getAttribute("locale");
 if(tcount==0)
 {
 %>
-<p class="err">No record Found</p>
+<p class="err"><%=resource.getString("global.norecordfound")%></p>
 <%}
 else
 {%>
-<table height="300px" ><tr><td valign="top">
+<table height="300px" dir="<%=rtl%>"><tr><td valign="top" dir="<%=rtl%>">
 <ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
 
   <columns>
@@ -164,23 +177,23 @@ else
 
 
     <column width="450">
-      <header value="Title" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.title}" hyperLink="./viewDetails.do?doc_id=${doc.id.documentId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left"/>
+      <header value="${Title}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.title}" hyperLink="./viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left"/>
     </column>
 
     <column width="200">
-      <header value="Main Entry" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.mainEntry}" hyperLink="./viewDetails.do?doc_id=${doc.id.documentId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left"   />
+      <header value="${MainEntry}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.mainEntry}" hyperLink="./viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left"   />
     </column>
 
     <column width="100">
-      <header value="Call No." hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.callNo}" hyperLink="./viewDetails.do?doc_id=${doc.id.documentId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2"  hAlign="left" />
+      <header value="${CallNo}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.callNo}" hyperLink="./viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2"  hAlign="left" />
     </column>
 
       <column width="150">
-      <header value="Library ID" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.id.libraryId}" hyperLink="./viewDetails.do?doc_id=${doc.id.documentId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left" />
+      <header value="${LibraryID}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.id.libraryId}" hyperLink="./viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left" />
     </column>
  </columns>
 
@@ -197,7 +210,7 @@ else
     <tr >
 <td align="left" width="10%" class="datagrid">
 <c:if test="${previous != null}">
-    <a style="color:white;" href="<c:out value="${previous}"/>">Previous</a>
+    <a style="color:white;" href="<c:out value="${previous}"/>"><%=resource.getString("global.previous")%></a>
 </c:if>&nbsp;
 </td>
 
@@ -215,7 +228,7 @@ else
 </td>
 <td align="right" width="10%" class="datagrid">&nbsp;
 <c:if test="${next != null}">
-<a style="color:white;" href="<c:out value="${next}"/>">Next</a>
+<a style="color:white;" href="<c:out value="${next}"/>"><%=resource.getString("global.next")%></a>
 </c:if>
 </td>
 </tr>

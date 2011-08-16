@@ -125,7 +125,9 @@ var em1 = depts.getElementsByTagName("sublibrary_name");
 
         var newOpt =document.getElementById('SubLibrary').appendChild(document.createElement('option'));
         document.getElementById('SubLibrary').options.length = 0;
-
+   newOpt = document.getElementById('SubLibrary').appendChild(document.createElement('option'));
+                newOpt.value = "all";
+                newOpt.text = "All";
 for (var i = 0; i < em.length ; i++)
 {
 var ndValue = em[i].firstChild.nodeValue;
@@ -136,22 +138,17 @@ newOpt.text = ndValue1;
 
 
 }
-
+funcSearch();
 }
 
 </script>
 <script language="javascript">
-function fun()
-{
-/*document.Form1.action="number.jsp";
-document.Form1.method="post";
-document.Form1.target="f1";
-document.Form1.submit();*/
-}
+
 function funcSearch()
 {
-    document.getElementById("FORM1").action="SearchByIsbn.do";
+    document.getElementById("FORM1").action="/OPAC/SearchByIsbn.do";
     document.getElementById("Form1").method="post";
+    
     document.getElementById("Form1").submit();
 }
 </script>
@@ -185,7 +182,7 @@ locale1=(String)session.getAttribute("locale");
     %>
 
 
-</head><body>
+    </head><body onload="search();funcSearch();">
    <%-- <%if(page.equals(true)){%>--%>
     <html:form method="post" action="/OPAC/SearchByIsbn" target="f1" styleId="Form1">
         <table align="<%=align%>" dir="<%=rtl%>" width="1200x" height="400px" class="datagrid"  style="border:solid 1px #e0e8f5;">
@@ -234,9 +231,9 @@ locale1=(String)session.getAttribute("locale");
  </html:select>
 
      </td></tr><tr><td  dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <html:select property="CMBSUBLib" value="<%=sublib_id%>" styleId="SubLibrary" >
-                              <html:option value="all">All</html:option>
-                              <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
+                      <html:select property="CMBSUBLib" value="<%=sublib_id%>" styleId="SubLibrary" onchange="funcSearch();">
+                          <%--    <html:option value="all">All</html:option>
+                              <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />--%>
                        </html:select></td>
               </tr></table></td>
 

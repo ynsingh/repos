@@ -4,7 +4,7 @@ Devleoped By : Kedar Kumar
 Modified On  : 17-Feb 2011
 This Page is to Enter Library Details
 -->
-<%@page  import="java.util.List" %>
+<%@page pageEncoding="UTF-8"  import="java.util.*" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -16,6 +16,28 @@ String emptype_full_name=(String)request.getAttribute("emptype_full_name");
 String emptype_id=(String)request.getAttribute("emptype_id");
 
 %>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
 
 <html>
 <head>
@@ -37,22 +59,22 @@ String emptype_id=(String)request.getAttribute("emptype_id");
       visibility: show;">
     
      <html:form action="/add_submember" method="post" >
- <table border="1" class="table" width="400px" height="200px" align="center" >
+ <table dir="<%=rtl%>" border="1" class="table" width="400px" height="200px" align="center" >
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage SubMember Type</td></tr>
-                <tr><td valign="top" align="center"> <br/>
-                <table cellspacing="10px">
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.manage_submember.managesubmemtype")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
+                <table dir="<%=rtl%>" cellspacing="10px">
 <tr>
 
-    <td align="left"><strong>SubMemberType Id<a class="star"></a></strong></td>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.manage_submember.submemtypeid")%><a class="star"></a></strong></td>
     <html:hidden property="sub_emptype_id" styleId="faculty_id"   value="<%=new_sub_emptype_id%>" styleClass="textBoxWidth" />
-    <td><html:text property="sub_emptype_id" styleId="faculty_id" readonly="true" value="<%=new_sub_emptype_id%>" styleClass="textBoxWidth" />
+    <td dir="<%=rtl%>"><html:text property="sub_emptype_id" styleId="faculty_id" readonly="true" value="<%=new_sub_emptype_id%>" styleClass="textBoxWidth" />
 
     </td>
   </tr>
-<tr><td height="5px" colspan="4" ></td></tr>
-    <tr><td align="left" width="150px">Member Name </td><td align="left">
+<tr><td dir="<%=rtl%>" height="5px" colspan="4" ></td></tr>
+    <tr><td dir="<%=rtl%>" align="<%=align%>" width="150px"><%=resource.getString("systemsetup.member_view_update.memname")%> </td><td align="<%=align%>">
 
             <html:hidden property="emptype_full_name"  value="<%=emptype_full_name%>" styleClass="textBoxWidth" />
             <html:hidden property="emptype_id"  value="<%=emptype_id%>" styleClass="textBoxWidth" />
@@ -68,19 +90,19 @@ String emptype_id=(String)request.getAttribute("emptype_id");
   
   
   <tr>
-    <tr><td height="5px" colspan="4" ></td></tr>
-    <td align="left"><strong>SubMemberType Name<a class="star">*</a> </strong></td>
-    <td><html:text property="sub_emptype_full_name"  styleId="sub_emptype_full_name" value="" styleClass="textBoxWidth"/>
+    <tr><td dir="<%=rtl%>" height="5px" colspan="4" ></td></tr>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_submember.submemtypename")%><a class="star">*</a> </strong></td>
+    <td dir="<%=rtl%>"><html:text property="sub_emptype_full_name"  styleId="sub_emptype_full_name" value="" styleClass="textBoxWidth"/>
        
     </td>
   </tr>
-  <tr><td height="5px" colspan="4" ></td></tr>
+  <tr><td dir="<%=rtl%>" height="5px" colspan="4" ></td></tr>
   
  <tr>
 
-    <td align="left"><strong>Max No. of IssuableBook<a class="star">*</a></strong></td>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_submember.maxissuebook")%><a class="star">*</a></strong></td>
 
-    <td><html:text property="no_of_issueable_book" styleId="limit"   value="" styleClass="textBoxWidth" />
+    <td dir="<%=rtl%>"><html:text property="no_of_issueable_book" styleId="limit"   value="" styleClass="textBoxWidth" />
 
     </td>
   </tr>
@@ -89,9 +111,9 @@ String emptype_id=(String)request.getAttribute("emptype_id");
   
  
 <tr>
-    <td colspan="4" align="center"><br/><br/><input type="submit"  value="Submit"  onClick="return validation();"/>
+    <td dir="<%=rtl%>" colspan="4" align="center"><br/><br/><input type="submit"  value="<%=resource.getString("circulation.cir_newmember.submit")%>"  onClick="return validation();"/>
 
-        <input type="button"  value="Back" onclick="return quit();" />
+        <input type="button"  value="<%=resource.getString("circulation.cir_newmember.back")%>" onclick="return quit();" />
  </td>
 </tr>
 </table>
@@ -127,19 +149,19 @@ var limit=document.getElementById('limit');
 
 
 
-var str="Enter Following Values:-";
+var str="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-";
 
 
    
     if(sublib_name.value=="")
-        {str+="\n Enter SubMember Name ";
+        {str+="\n <%=resource.getString("systemsetup.add_submember.entersubmemtype")%> ";
              alert(str);
              document.getElementById('sub_emptype_full_name').focus();
             return false;
 
         }
     if(limit.value=="")
-        {str+="\n Enter No of Issuable Book ";
+        {str+="\n <%=resource.getString("systemsetup.add_submember.enternoofisuablebook")%> ";
              alert(str);
              document.getElementById('limit').focus();
             return false;
@@ -152,7 +174,7 @@ var str="Enter Following Values:-";
 
   
 
-if(str=="Enter Following Values:-")
+if(str=="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-")
    {
        return true;
 

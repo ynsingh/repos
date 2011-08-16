@@ -14,7 +14,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.HttpSession;
-
+import java.util.*;
+import java.util.ResourceBundle;
 /**
  *
  * @author System Administrator
@@ -27,7 +28,10 @@ public class ForgetAction extends org.apache.struts.action.Action {
     String user_id;
     String question;
     String ans;
-
+ Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -35,6 +39,20 @@ public class ForgetAction extends org.apache.struts.action.Action {
         SecurityActionForm login=(SecurityActionForm)form;
 
             HttpSession session=request.getSession(true);
+            try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
             library_id=(String)session.getAttribute("library_id");
 
            staff_id=login.getStaff_id();
@@ -61,7 +79,9 @@ Login logobj=LoginDAO.searchAns(staff_id,library_id,ans);
       {
           
           
-            request.setAttribute("error","Answer not correct");
+            //request.setAttribute("error","Answer not correct");
+            request.setAttribute("error", resource.getString("admin.forgetpassword.errror"));
+
             return mapping.findForward("failure");
       }
           

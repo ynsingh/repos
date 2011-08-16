@@ -23,6 +23,30 @@ String msg1=(String)request.getAttribute("msg1");
 
 
 %>
+ <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -31,12 +55,37 @@ String msg1=(String)request.getAttribute("msg1");
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
  <script language="javascript" type="text/javascript">
 
+  function Add()
+{
+    var buttonvalue="Add";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+
+function View()
+{
+    var buttonvalue="View";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+function Update()
+{
+    var buttonvalue="Update";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+function Delete()
+{
+    var buttonvalue="Delete";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
 
 function check1()
 {
      if(document.getElementById('faculty_id').value=="Select")
     {
-        alert("Select Faculty");
+        alert("<%=resource.getString("systemsetup.manage_dept.selectfac")%>");
 
         document.getElementById('faculty_id').focus();
 
@@ -46,7 +95,7 @@ function check1()
 
     if(document.getElementById('dept_id').value=="")
     {
-        alert("Enter Department Id...");
+        alert("<%=resource.getString("systemsetup.manage_dept.enterdeptid")%>");
 
         document.getElementById('dept_id').focus();
 
@@ -82,13 +131,13 @@ function check1()
 
       visibility: show;">
 
-    <table border="1" class="table" width="400px" height="200px" align="center">
+    <table border="1" dir="<%=rtl%>" class="table" width="400px" height="200px" align="center">
 
   
-        <tr><td align="center" colspan="2" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Department</td></tr>
-                <tr><td valign="middle" align="center"> 
-                <table valign="">
- <tr><td align="left">Faculty Name </td><td align="left">
+        <tr><td dir="<%=rtl%>" align="center" colspan="2" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.manage_dept.managedept")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="middle" align="center">
+                <table dir="<%=rtl%>" valign="">
+ <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("systemsetup.add_faculty.facultyname")%> </td><td align="<%=align%>">
 
          <html:select   property="faculty_name"  styleId="faculty_id" value="Select" >
                           <html:option value="Select">Select</html:option>
@@ -101,17 +150,17 @@ function check1()
                     
                     <tr>
                      
-                        <td  >Enter Department ID</td><td>
+                        <td dir="<%=rtl%>" ><%=resource.getString("systemsetup.manage_dept.enterdeptid")%></td><td>
                         <input type="text" id="dept_id" name="dept_id" value=""/></td>
                     </tr>
                 </table>
                     </td><td>
-                        <table>
-                    <tr><td> <input type="submit" class="btn" id="Button1" name="button" value="Register" /></td> </tr>
-                    <tr><td><input type="submit" id="Button2" class="btn" name="button" value="Update"  /></td></tr>
-                    <tr><td><input type="submit" id="Button3" name="button" value="View" class="btn"  /></td></tr>
-                    <tr><td><input type="submit" id="Button4" name="button" value="Delete" class="btn" /></td></tr>
-                         <tr><td align="center"><input type="button" id="Button5" name="button" value="Back" class="btn" onclick="return quit()"/></td></tr>
+                        <table dir="<%=rtl%>">
+                    <tr><td dir="<%=rtl%>"> <input type="submit" class="btn" id="Button1"  value="<%=resource.getString("systemsetup.manage_notice.add")%>" onclick="return Add();" /></td> </tr>
+                    <tr><td dir="<%=rtl%>"><input type="submit" id="Button2" class="btn"  value="<%=resource.getString("circulation.cir_member_reg.update")%>" onclick="return Update();"  /></td></tr>
+                    <tr><td dir="<%=rtl%>"><input type="submit" id="Button3"  value="<%=resource.getString("circulation.cir_member_reg.view")%>" onclick="return View();" class="btn"  /></td></tr>
+                    <tr><td dir="<%=rtl%>"><input type="submit" id="Button4"  value="<%=resource.getString("circulation.cir_member_reg.delete")%>" onclick="return Delete();" class="btn" /></td></tr>
+                         <tr><td dir="<%=rtl%>" align="center"><input type="button" id="Button5"  value="<%=resource.getString("circulation.cir_member_reg.back")%>" class="btn" onclick="return quit()"/></td></tr>
  
 
                 </table>
@@ -119,7 +168,7 @@ function check1()
 
     <input type="hidden" name="library_id" value="<%=library_id%>">
    
-
+    <input type="hidden" id="button" name="button" />
 
 
 
@@ -128,14 +177,14 @@ function check1()
 
 
 </td></tr>
-         <tr><td align="left" colspan="2" height="25px;" class="mess">
+         <tr><td align="<%=align%>" colspan="2" height="25px;" class="mess">
                              <%
           if (msg!=null)
           {
         %>
 
 
-        <p class="mess">  <%=msg%></p>
+        <p class="mess" dir="<%=rtl%>" align="<%=align%>">  <%=msg%></p>
 
         <%
         }
@@ -145,14 +194,14 @@ function check1()
         %>
 
 
-        <p class="err">  <%=msg1%></p>
+        <p class="err" dir="<%=rtl%>" align="<%=align%>">  <%=msg1%></p>
 
         <%
         }
         %>
 
                  </td></tr>
-              <tr><td align="justify" colspan="2"><font color="blue" size="-1"><b>Example:</b> cs for Computer Science, phy for Physics & so on, if Department exists.</font></td></tr>
+              <tr><td align="justify" colspan="2"><font color="blue" size="-1"><b><%=resource.getString("systemsetup.manage_notice.example")%>:</b> cs <%=resource.getString("systemsetup.manage_dept.forcs")%>, phy <%=resource.getString("systemsetup.manage_dept.forphy")%>, <%=resource.getString("systemsetup.manage_dept.ifdeptexist")%>.</font></td></tr>
 
 
     </table>

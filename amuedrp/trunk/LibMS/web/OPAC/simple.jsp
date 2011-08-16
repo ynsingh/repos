@@ -8,7 +8,7 @@
 <html>
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="Mayank Saxena" content="MCA,AMU">
+
 <title>Simple Search...</title>
 <%
         List libRs = (List)session.getAttribute("libRs");
@@ -63,7 +63,7 @@ locale1=(String)session.getAttribute("locale");
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="/LibMS/css/page.css"/>
 <script language="javascript" type="text/javascript">
 /*
 * Returns an new XMLHttpRequest object, or false if the browser
@@ -165,7 +165,10 @@ var em1 = depts.getElementsByTagName("sublibrary_name");
 
         var newOpt =document.getElementById('SubLibary').appendChild(document.createElement('option'));
         document.getElementById('SubLibary').options.length = 0;
-
+document.getElementById('SubLibary').options.length = 0;
+               newOpt = document.getElementById('SubLibary').appendChild(document.createElement('option'));
+                newOpt.value = "all";
+                newOpt.text = "All";
 for (var i = 0; i < em.length ; i++)
 {
 var ndValue = em[i].firstChild.nodeValue;
@@ -230,52 +233,165 @@ newOpt.text = ndValue1;
                return true;
     }
 </SCRIPT>
+<script type="text/javascript">
+   function DisBox()
+{
+if(document.getElementById('checkboxId').checked)
+{
+document.getElementById("checkbox").value="Checked";
+}
+else{
+    document.getElementById("checkbox").value="Unchecked";
+}
+}
+</script>
+<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAApEiKekYWqFpDa_PStAFTMBRxcC-Fn9tK14QS9YKtPPoXy5_dfhQr8n6mPjQbdLIjMkUpUDQ7khVrfQ">
+        </script>
+        <script type="text/javascript">
+      // Load the Google Transliterate API
+      google.load("elements", "1", {
+            packages: "transliteration"
+          });
+
+      var transliterationControl;
+      function onLoad() {
+        var options = {
+            sourceLanguage: 'en',
+            destinationLanguage: ['ar','hi','kn','ml','ta','te'],
+            transliterationEnabled: true,
+            shortcutKey: 'ctrl+g'
+        };
+        // Create an instance on TransliterationControl with the required
+        // options.
+        transliterationControl =
+          new google.elements.transliteration.TransliterationControl(options);
+
+        // Enable transliteration in the textfields with the given ids.
+        var ids = [ "TXTPHRASE","TXTYR1","TXTYR2"];
+        transliterationControl.makeTransliteratable(ids);
+
+        // Add the STATE_CHANGED event handler to correcly maintain the state
+        // of the checkbox.
+        transliterationControl.addEventListener(
+            google.elements.transliteration.TransliterationControl.EventType.STATE_CHANGED,
+            transliterateStateChangeHandler);
+
+        // Add the SERVER_UNREACHABLE event handler to display an error message
+        // if unable to reach the server.
+        transliterationControl.addEventListener(
+            google.elements.transliteration.TransliterationControl.EventType.SERVER_UNREACHABLE,
+            serverUnreachableHandler);
+
+        // Add the SERVER_REACHABLE event handler to remove the error message
+        // once the server becomes reachable.
+        transliterationControl.addEventListener(
+            google.elements.transliteration.TransliterationControl.EventType.SERVER_REACHABLE,
+            serverReachableHandler);
+
+        // Set the checkbox to the correct state.
+        document.getElementById('checkboxId').checked =
+          transliterationControl.isTransliterationEnabled();
+
+        // Populate the language dropdown
+        var destinationLanguage =
+          transliterationControl.getLanguagePair().destinationLanguage;
+        var languageSelect = document.getElementById('languageDropDown');
+        var supportedDestinationLanguages =
+          google.elements.transliteration.getDestinationLanguages(
+            google.elements.transliteration.LanguageCode.ENGLISH);
+        for (var lang in supportedDestinationLanguages) {
+          var opt = document.createElement('option');
+          opt.text = lang;
+          opt.value = supportedDestinationLanguages[lang];
+          if (destinationLanguage == opt.value) {
+            opt.selected = true;
+          }
+          try {
+            languageSelect.add(opt, null);
+          } catch (ex) {
+            languageSelect.add(opt);
+          }
+        }
+      }
+
+      // Handler for STATE_CHANGED event which makes sure checkbox status
+      // reflects the transliteration enabled or disabled status.
+      function transliterateStateChangeHandler(e) {
+        document.getElementById('checkboxId').checked = e.transliterationEnabled;
+      }
+
+      // Handler for checkbox's click event.  Calls toggleTransliteration to toggle
+      // the transliteration state.
+      function checkboxClickHandler() {
+        transliterationControl.toggleTransliteration();
+      }
+
+           // Handler for dropdown option change event.  Calls setLanguagePair to
+      // set the new language.
+      function languageChangeHandler() {
+                  var keyValue = document.getElementById('languageDropDown').options[document.getElementById('languageDropDown').selectedIndex].value;
+              document.getElementById("language").value=keyValue;
+        var dropdown = document.getElementById('languageDropDown');
+        transliterationControl.setLanguagePair(
+            google.elements.transliteration.LanguageCode.ENGLISH,
+            dropdown.options[dropdown.selectedIndex].value);
+      }
+
+      // SERVER_UNREACHABLE event handler which displays the error message.
+      function serverUnreachableHandler(e) {
+        document.getElementById("errorDiv").innerHTML =
+            "Transliteration Server unreachable";
+      }
+
+      // SERVER_UNREACHABLE event handler which clears the error message.
+      function serverReachableHandler(e) {
+        document.getElementById("errorDiv").innerHTML = "";
+      }
+      google.setOnLoadCallback(onLoad);
+
+    </script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard.js" charset="UTF-8"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
 </head>
-<body >
-
-    
+<body onload="checkboxClickHandler();search();">
     <html:form  method="post" action="/simple_search"  onsubmit="return validate();">
-    
-        <table  align="<%=align%>" dir="<%=rtl%>" width="1200x" class="datagrid"  style="border:solid 1px #e0e8f5;">
-
-
-
-  <tr class="header"><td  width="1000px" dir="<%=rtl%>"  align="center" colspan="2">
-          
-
+        <table  align="<%=align%>" dir="<%=rtl%>" width="100%" class="datagrid"  style="border:solid 1px #e0e8f5;">
+  <tr class="header"><td  width="90%" dir="<%=rtl%>"  align="center" colspan="2">
 		<%=resource.getString("opac.simplesearch.smpsearch")%>
 </td></tr>
-  <tr style="background-color:#e0e8f5;"><td width="800px" dir="<%=rtl%>" >
+    <tr dir="<%=rtl%>"><td>
+   <div id='translControl'>
+      <input type="checkbox" id="checkboxId" onclick="javascript:checkboxClickHandler();javascript:DisBox();javascript:languageChangeHandler()">
+      <html:hidden property="checkbox" styleId="checkbox" name="SimpleSearchActionForm"/>
+      <%=resource.getString("cataloguing.catbiblioentry.selectlang")%><select id="languageDropDown" onchange="javascript:languageChangeHandler()"></select>
+      <html:hidden property="language" styleId="language" name="SimpleSearchActionForm"/>
+    </div>
+      </td></tr>
+  <tr style="background-color:#e0e8f5;"><td  dir="<%=rtl%>" >
           <table dir="<%=rtl%>">
-              <tr><td dir="<%=rtl%>" ><%=resource.getString("opac.simplesearch.enterwordorphrase")%></td><td><input type="text" dir="<%=rtl%>" id="TXTPHRASE" name="TXTPHRASE"></td></tr>
+              <tr><td dir="<%=rtl%>" ><%=resource.getString("opac.simplesearch.enterwordorphrase")%></td><td><input type="text" dir="<%=rtl%>" id="TXTPHRASE" name="TXTPHRASE" class="keyboardInput"></td></tr>
               <tr>   <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.connectwordas")%></td><td><select name="CMBCONN" dir="<%=rtl%>" size="1" id="CMBCONN">
 <option selected dir="<%=rtl%>" value="or"><%=resource.getString("opac.simplesearch.or")%></option>
 <option dir="<%=rtl%>" value="and"><%=resource.getString("opac.simplesearch.and")%></option>
 </select></td>
-
       </tr>
-
           </table>
       </td>
       <td    align="<%=align%>" dir="<%=rtl%>" valign="top">
           <table >
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.field")%> </td><td rowspan="2" dir="<%=rtl%>" valign="top">
-
           <select name="CMBFIELD" size="1" id="CMBFIELD" dir="<%=rtl%>">
 <option value="any field" selected dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%></option>
-<option  value="authorName" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
+<option  value="mainEntry" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
 <option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
 <option value="publisherName" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.pub")%></option>
-
-
-
 </select>
      </td>
-     
               </tr></table></td></tr>
   <tr class="header"><td width="1000px" dir="<%=rtl%>"  align="<%=align%>" >&nbsp;<%=resource.getString("opac.simplesearch.restrictedby")%></td><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
-   <tr style="background-color:#e0e8f5;"><td width="800px"  dir="<%=rtl%>" align="<%=align%>">
-           <table  width="800px" ><tr><td dir="<%=rtl%>" align="<%=align%>">
+   <tr style="background-color:#e0e8f5;"><td   dir="<%=rtl%>" align="<%=align%>">
+           <table   ><tr><td dir="<%=rtl%>" align="<%=align%>">
           <table>
              
               <tr>   <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%></td><td>
@@ -294,14 +410,11 @@ newOpt.text = ndValue1;
 
 </select>
                   </td></tr>
-
-
           </table>
-
                    </td><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                        <html:select property="CMBSUBLib" dir="<%=rtl%>"  styleId="SubLibary" value="<%=sublib_id%>">
-                            <html:option value="all">All</html:option>
-                           <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
+                         
+                         <%--  <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />--%>
                        </html:select>
                        <table>
                            <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.pubyear")%></td><td rowspan="4" dir="<%=rtl%>"></td>
@@ -324,44 +437,28 @@ newOpt.text = ndValue1;
       <td align="<%=align%>" dir="<%=rtl%>">
            <table>
                            <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.field1")%></td><td> <select name="CMBSORT" size="1" dir="<%=rtl%>" id="CMBSORT">
-<option  value="authorName" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
+<option  value="mainEntry" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
 <option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
 <option value="isbn10" dir="<%=rtl%>">ISBN</option>
 <option value="publisher_name" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.pub")%></option>
 </select></td>
                            </tr></table>
-
-
-      </td>
-     
+      </td>     
   </tr>
   <tr><td>
-
-
           <input type="submit" dir="<%=rtl%>" id="Button1" class="btn" name="" value="<%=resource.getString("opac.simplesearch.find")%>" >
 <input type="reset" dir="<%=rtl%>" id="Button2" class="btn" name="" value="<%=resource.getString("opac.browse.clear")%>">
-
-
       </td></tr>
        <tr class="header" dir="<%=rtl%>">
                                <td colspan="2" dir="<%=rtl%>">
-                 
-
                             <a dir="<%=rtl%>" name="tips">&nbsp;<%=resource.getString("opac.simplesearch.searchtip")%></a>
-                          
-
-
-
                             <table class="datagrid" dir="<%=rtl%>" style="background-color:#e0e8f5;color:black" halign="right" border="0" cellpadding="2" cellspacing="0" width="100%" frame="hspaces" height="38" rules="rows">
     <colgroup width="15%"></colgroup><colgroup width="1%"></colgroup><colgroup width="90%"></colgroup>
     <tbody><tr>
     <th colspan="3" class="tipstext" dir="<%=rtl%>">
-        <%=resource.getString("opac.simplesearch.t1")%>
-    	
+        <%=resource.getString("opac.simplesearch.t1")%>    	
     </th>
-
     </tr>
-
     <tr>
         <td class="txt2" dir="<%=rtl%>">
     		 <%=resource.getString("opac.simplesearch.t2")%>
@@ -370,9 +467,7 @@ newOpt.text = ndValue1;
     <td class="tipstext" dir="<%=rtl%>">
     	<%=resource.getString("opac.simplesearch.t3")%>	 
     </td>
-
     </tr>
-
     <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" dir="<%=rtl%>">
     		<%=resource.getString("opac.simplesearch.t4")%>
@@ -381,11 +476,8 @@ newOpt.text = ndValue1;
    	<td class="tipstext" dir="<%=rtl%>">
           <%=resource.getString("opac.simplesearch.t5")%>
     	</td>
-
     </tr>
-
     <tr valign="top" dir="<%=rtl%>">
-
     	<td class="txt2" dir="<%=rtl%>">
     	  <%=resource.getString("opac.simplesearch.t6")%>
     	</td>
@@ -393,9 +485,7 @@ newOpt.text = ndValue1;
     	<td class="tipstext" dir="<%=rtl%>">
     	 <%=resource.getString("opac.simplesearch.t7")%>	
     	</td>
-
     </tr>
-
     <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" dir="<%=rtl%>">
     	 <%=resource.getString("opac.simplesearch.t8")%>
@@ -404,7 +494,6 @@ newOpt.text = ndValue1;
     	<td class="tipstext" dir="<%=rtl%>">
     	 <%=resource.getString("opac.simplesearch.t9")%>	
     	</td>
-
     </tr>
      <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" nowrap1="" dir="<%=rtl%>">
@@ -414,7 +503,6 @@ newOpt.text = ndValue1;
     	<td class="tipstext" dir="<%=rtl%>">
     	 <%=resource.getString("opac.simplesearch.t11")%> 
     	</td>
-
     </tr>
     <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" nowrap1="" dir="<%=rtl%>">
@@ -424,7 +512,6 @@ newOpt.text = ndValue1;
     	<td class="tipstext" dir="<%=rtl%>">
     	 <%=resource.getString("opac.simplesearch.t13")%>
     	</td>
-
     </tr>
     <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" nowrap1="" dir="<%=rtl%>">
@@ -434,9 +521,7 @@ newOpt.text = ndValue1;
     	<td class="tipstext" dir="<%=rtl%>">
     	  <%=resource.getString("opac.simplesearch.t15")%>
     	</td>
-
     </tr>
-
    <tr valign="top" dir="<%=rtl%>">
    	<td class="txt2" align="right" dir="<%=rtl%>">
    	  <%=resource.getString("opac.simplesearch.t16")%>
@@ -444,22 +529,9 @@ newOpt.text = ndValue1;
     	<td colspan="2" class="txt2" dir="<%=rtl%>">
     	  <%=resource.getString("opac.simplesearch.t17")%> 	
     	</td>
-
    </tr></tbody></table>
-
-
-
                                </td></tr>
-
-       </table>
- 
-  
-
-      
+       </table>    
     </html:form>
-
-   
-
-
 </body>
 </html>

@@ -4,13 +4,39 @@
     Author     : Client
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <jsp:include page="/admin/header.jsp"/>
+
+
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+    // boolean read=true;
+  boolean button_visibility=true;
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
 <%! boolean read=false;%>
 <%
 String library_id=(String)session.getAttribute("library_id");
@@ -25,13 +51,50 @@ else
     read=false;
 String msg1=(String) request.getAttribute("msg1");
 %>
+<%! String button1;%>
+<%
+
+ if(button.equals("Update"))
+ {
+   button1=resource.getString("circulation.cir_member_reg.update");
+     read=false;
+
+   button_visibility=true;
+ }
+ if(button.equals("Delete"))
+ {
+   button1=resource.getString("circulation.cir_member_reg.delete");
+   read=true;
+
+   button_visibility=true;
+ }
+%>
 <script type="text/javascript">
+
+function Update()
+{
+    var buttonvalue="Update";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+function Delete()
+{
+    var buttonvalue="Delete";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+function Submit()
+{
+    var buttonvalue="Submit";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
 
 function check1()
 {
     if(document.getElementById('location_name').value=="")
     {
-        alert("Enter Location Name");
+        alert("<%=resource.getString("systemsetup.location_entry.enterlocname")%>");
 
         document.getElementById('location_name').focus();
 
@@ -41,13 +104,20 @@ function check1()
   }
   function confirm1()
 {
-var answer = confirm ("Do you want to delete record?")
-if (answer!=true)
-    {
-        document.getElementById('button1').focus();
-        return false;
+document.getElementById('button').value="<%=button%>" ;
+    var option=document.getElementById('button').value;
+    if(option=="Delete"){
+        var a=confirm("<%=resource.getString("circulation.cir_newmember.douwanttodelrec")%>");
+       // alert(a);
+        if(a!=true)
+            {
+                document.getElementById('button').focus();
+               return false;
+
+        }
+        else
+            return true;
     }
-   else{ return true;}
 }
 function send()
 {
@@ -74,34 +144,34 @@ function send()
 
       visibility: show;">
    <html:form method="post" action="/add_location"  onsubmit="return check1()" >
-       <table border="1" class="table" align="center">
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;" ><b>Location Detail Entry</b></td></tr>
-                <tr><td>
-                        <table width="400px" border="0" cellspacing="4" cellpadding="1" align="left">
+       <table dir="<%=rtl%>" border="1" class="table" align="center">
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;" ><b><%=resource.getString("systemsetup.location_entry.locdetailentry")%></b></td></tr>
+                <tr><td dir="<%=rtl%>">
+                        <table dir="<%=rtl%>" width="400px" border="0" cellspacing="4" cellpadding="1" align="<%=align%>">
                         <tr>
                         <html:hidden property="library_id" name="AcqBiblioActionForm" value="<%=library_id%>" />
                         <html:hidden property="sub_library_id" name="AcqBiblioActionForm" value="<%=sub_library_id%>" /><td></td>
                         </tr>
-<tr><td colspan="5" height="10px"></td>
+<tr><td dir="<%=rtl%>" colspan="5" height="10px"></td>
 </tr>
-<tr><td colspan="5" height="10px"></td>
-</tr>
-<tr>
-    <td align="left" class="txtStyle"><strong>Location Id</strong></td>
-    <td><html:text readonly="true" property="location_id" name="LocationActionForm" styleClass="textBoxWidth" /></td>
-</tr>
-  <tr><td colspan="5" height="5px"></td>
+<tr><td dir="<%=rtl%>" colspan="5" height="10px"></td>
 </tr>
 <tr>
-    <td width="150" align="left" class="txtStyle"><strong>Location Name<a class="star">*</a></strong> </td>
-    <td><html:text readonly="<%=read%>"  property="location_name" name="LocationActionForm" styleClass="textBoxWidth" styleId="location_name" />
+    <td dir="<%=rtl%>" align="<%=align%>" class="txtStyle"><strong><%=resource.getString("systemsetup.manage_notice.locationid")%></strong></td>
+    <td dir="<%=rtl%>"><html:text readonly="true" property="location_id" name="LocationActionForm" styleClass="textBoxWidth" /></td>
+</tr>
+  <tr><td dir="<%=rtl%>" colspan="5" height="5px"></td>
+</tr>
+<tr>
+    <td dir="<%=rtl%>" width="150" align="<%=align%>" class="txtStyle"><strong><%=resource.getString("systemsetup.location_entry.locname")%><a class="star">*</a></strong> </td>
+    <td dir="<%=rtl%>"><html:text readonly="<%=read%>"  property="location_name" name="LocationActionForm" styleClass="textBoxWidth" styleId="location_name" />
     </td>
   </tr>
-  <tr><td colspan="5" height="5px"></td>
+  <tr><td dir="<%=rtl%>" colspan="5" height="5px"></td>
 </tr>
   <tr>
-    <td align="left" class="txtStyle"><strong>Location Description</strong></td>
-  <td><html:textarea readonly="<%=read%>" property="location_description" name="LocationActionForm" styleClass="textBoxWidth" />
+    <td dir="<%=rtl%>" align="<%=align%>" class="txtStyle"><strong><%=resource.getString("systemsetup.location_entry.locdesc")%></strong></td>
+  <td dir="<%=rtl%>"><html:textarea readonly="<%=read%>" property="location_description" name="LocationActionForm" styleClass="textBoxWidth" />
   </td>
   </tr>
 <tr><td colspan="5" height="5px"></td>
@@ -115,23 +185,24 @@ function send()
 <tr><td colspan="5" height="10px"></td>
 </tr>
 <tr>
-<td align="center" colspan="5">
+<td dir="<%=rtl%>" align="center" colspan="5">
     <%if(button.equals("Update")){%>
-    <input id="button1"  name="button" type="submit" value="<%=button%>"/>
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Back" onclick="return send()" />
+    <input id="button1"  name="button1" type="submit" onclick="return Update();" value="<%=button1%>"/>
+    &nbsp;&nbsp;&nbsp;<input name="button1" type="submit" value="<%=resource.getString("circulation.cir_member_reg.back")%>" onclick="return send()" />
     <%}else if(button.equals("Delete")){%>
-    <input id="button1"  name="button" type="submit" onClick="return confirm1()" value="<%=button%>"  />
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" onclick="return send()"  value="Back" />
+    <input id="button1"  name="button1" type="submit" onClick="return confirm1()" value="<%=button1%>"  />
+    &nbsp;&nbsp;&nbsp;<input name="button1" type="submit" onclick="return send()"  value="<%=resource.getString("circulation.cir_member_reg.back")%>" />
    <%}else if(button.equals("Add")){%>
-    <input id="button1"  name="button" type="submit" value="Submit" />
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Back" onclick="return send()" />
+    <input id="button1"  name="button1" type="submit" value="<%=resource.getString("circulation.cir_newmember.submit")%>" onclick="return Submit();" />
+    &nbsp;&nbsp;&nbsp;<input name="button1" type="submit" value="<%=resource.getString("circulation.cir_member_reg.back")%>" onclick="return send()" />
     <%}else{%>
-    <input  name="button" type="submit" value="Back"  /><%}%>
+    <input  name="button1" type="submit" value="<%=resource.getString("circulation.cir_newmember.submit")%>" onclick="return Submit();"  /><%}%>
 	</td>
 </tr><tr><td colspan="5" height="5px"></td>
 </tr>
 </table>
 </td></tr> </table>
+         <input type="hidden" id="button" name="button" />
 
   </html:form>
        </div>

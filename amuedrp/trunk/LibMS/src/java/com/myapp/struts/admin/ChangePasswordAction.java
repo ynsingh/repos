@@ -55,7 +55,7 @@ public class ChangePasswordAction extends org.apache.struts.action.Action {
         StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
         Login  log=LoginDAO.searchRole(staff_id, library_id);
  String path = servlet.getServletContext().getRealPath("/");
-        obj=new Email(path,staffobj.getEmailId(),password,"Password Changed Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password);
+        obj=new Email(path,staffobj.getEmailId(),password,"Password Changed Successfully from LibMS Account","Your Password for LibMS Account is changed Successfully.\nYour New Password for libMS Account is:\nUser Id :"+login_id+"\nNew Password :"+password+"\n","Dear "+staffobj.getFirstName()+" "+staffobj.getLastName()+",\n","Thanks,\nWebAdmin\nLibMS");
          executor.submit(new Runnable() {
 
                 public void run() {

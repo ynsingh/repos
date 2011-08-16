@@ -1,0 +1,627 @@
+@font-face {
+  font-family:Prototype;
+  src:url(/img/font/prototype.ttf);
+}
+
+html {
+  margin:0px;
+  padding:0px 10px 10px 10px;
+  background:#bbbbbb url(/img/site/html.bkg.png) repeat-x fixed left bottom;
+  font:normal 10pt Arial,sans-serif;
+  overflow:auto;
+}
+body {
+  margin:0px auto;
+  padding:125px 0px 0px 0px;
+  min-width:800px;
+  max-width:1024px;
+  position:relative;
+  background-color:#ffffff;
+  border-right:1px solid #444444;
+  border-bottom:1px solid #444444;
+  border-left:1px solid #444444;
+  box-shadow:0px 0px 15px 0px #111111;
+  overflow-x:hidden;
+}
+a {
+  color:#6a5acd;
+  text-decoration:none;
+}
+a:visited {
+  color:#800080;
+}
+a:hover {
+  color:#0000ff;
+}
+img {
+  border-width:0px;
+}
+
+.left {
+  float:left;
+  margin-right:5px;
+}
+.right {
+  float:right;
+  margin-left:5px;
+}
+.warning {
+  color:#bb0000;
+}
+
+body > h1 {
+  height:125px;
+  background:#bbbbbb url(/img/site/h1.jpg) no-repeat scroll center top;
+  border-bottom:1px solid #444444;
+  position:relative;
+  z-index:2;
+  margin:0px;
+  padding:0px;
+  text-align:right;
+  box-shadow:0px -20px 40px 20px #000000;
+
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  clip:rect(auto, auto, 300px, auto);
+}
+body > h1 a,
+body > h1 span {
+  color:#000000;
+  font:normal 48pt Prototype,Arial,sans-serif;
+  opacity:0.1;
+  padding-right:10px;
+}
+body > h1 a:visited,
+body > h1 a:hover {
+  color:#000000;
+}
+body > h1 img {
+  position:absolute;
+  top:0px;
+  left:0px;
+  z-index:3;
+}
+
+body > ul {
+  margin:0px;
+  padding:0px;
+  list-style-type:none;
+  height:20px;
+  position:absolute;
+  top:105px;
+  right:3px;
+  z-index:5;
+  font:normal 10pt Prototype,Arial,sans-serif;
+  width:50%;
+  text-align:right;
+}
+body > ul li {
+  display:inline-block;
+  line-height:20px;
+  padding:0px 10px;
+  cursor:default;
+  opacity:0.5;
+}
+body > ul > li {
+  position:relative;
+  background-color:#f6f6f6;
+  border-radius:5px 5px 0px 0px;
+}
+body > ul li a,
+body > ul li a:visited,
+body > ul li a:hover {
+  color:#000000;
+}
+body > ul li:hover {
+  opacity:1.0;
+}
+body > ul > li > ul {
+  margin:0px;
+  padding:0px;
+  list-style-type:none;
+  position:absolute;
+  top:20px;
+  right:0px;
+  white-space:nowrap;
+  display:none;
+}
+body > ul > li:hover > ul {
+  display:block;
+}
+body > ul > li > ul > li {
+  padding-top:5px;
+}
+
+body > div {
+  display:table;
+  width:100%;
+  border-spacing:0px;
+  min-height:300px;
+}
+body > div > div {
+  display:table-cell;
+  vertical-align:top;
+  padding:20px 10px 10px 10px;
+}
+body > div > div > h2 {
+  margin:10px 0px;
+  padding:0px;
+  font:normal 14pt Prototype,Arial,sans-serif;
+  text-shadow:rgba(0,0,0,0.3) 0.15em 0.2em 0.2em;
+}
+body > div > div > h2 > img {
+  vertical-align:top;
+}
+body > div > div > dl > dt {
+  font-weight:bold;
+}
+body > div > div > dl > dd {
+  margin:3px 0px 10px 15px;
+}
+body > div > div > fieldset > legend {
+  font:normal 12pt Prototype,Arial,sans-serif;
+}
+body > div > div > fieldset > legend > code {
+  font-weight:bold;
+}
+body > div > div > fieldset textarea {
+  width:99%;
+}
+
+body > div > div:first-child > h2 {
+  text-align:right;
+  margin-left:215px;
+}
+body > div > div:first-child > h2:first-child {
+  margin:0px 0px 0px 215px;
+  padding:0px;
+  font:normal 24pt Prototype,Arial,sans-serif;
+  text-align:right;
+}
+body > div > div:first-child > h2 > code {
+  font-weight:bold;
+}
+body > div > div:first-child > pre {
+  border:1px dashed #aaaaaa;
+  background-color:#f6f6f6;
+  margin:1em;
+  padding:5px;
+  overflow-x:auto;
+}
+body > div > div:first-child > code {
+  background-color:#f6f6f6;
+}
+
+body > div > div:first-child + div {
+  width:25%;
+  background:#dddddd url(/img/site/column.bkg.jpg) repeat-y scroll center top;
+}
+body > div > div:first-child + div ol,
+body > div > div:first-child + div ul,
+body > div > div:first-child + div dl,
+body > div > div:first-child + div > .group {
+  margin:5px 0px;
+  padding:0px 0px 0px 15px;
+}
+body > div > div:first-child + div > ol,
+body > div > div:first-child + div > ul,
+body > div > div:first-child + div > dl,
+body > div > div:first-child + div > .group {
+  padding:10px;
+  list-style-type:none;
+  background-color:rgba(255, 255, 255, 0.75);
+  border-radius:10px;
+  box-shadow:0px 2px 7px 0px rgba(0,0,0,0.45);
+}
+body > div > div:first-child + div > .group > *:first-child {
+  margin-top:0px;
+}
+body > div > div:first-child + div > .group > *:last-child {
+  margin-bottom:0px;
+}
+body > div > div:first-child + div *.wrapped {
+  font-size:11px;
+}
+body > div > div:first-child + div * li {
+  margin-bottom:5px;
+  position:relative;
+}
+body > div > div:first-child + div *.wrapped li {
+  display:inline;
+  margin:0px;
+  white-space:nowrap;
+}
+body > div > div:first-child + div *.wrapped li a {
+  padding:0px 3px;
+}
+body > div > div:first-child + div * li:last-child,
+body > div > div:first-child + div * dd:last-child {
+  margin-bottom:0px;
+}
+body > div > div:first-child + div * li > img:last-child {
+  max-width:180px;
+  max-height:60px;
+  position:absolute;
+  top:0px;
+  right:110%;
+  display:none;
+}
+body > div > div:first-child + div * li:hover > img:last-child {
+  display:block;
+}
+
+body > div > div:first-child + div > div#hotscripts {
+  text-align:center;
+  margin:20px 10px;
+}
+
+body > address {
+  margin:0px;
+  padding:10px;
+  background-color:#eeeeee;
+  font-size:8pt;
+  min-height:31px;
+  line-height:15px;
+}
+body > address span:first-child {
+  float:right;
+}
+body > address img[src$="valid-xhtml10.png"] {
+  float:left;
+  margin-right:5px;
+}
+
+
+/* ***** Generic programs template ********************************* */
+#programs > ul {
+  margin:0px;
+  padding:0px;
+  list-style-type:none;
+}
+#programs > ul > li {
+  position:relative;
+  clear:both;
+}
+#programs > ul > li > h3 {
+  font:normal 14pt Prototype,Arial,sans-serif;
+  border-bottom:1px solid #000000;
+  margin-bottom:0px;
+}
+#programs > ul > li > h3 + img {
+  float:right;
+  vertical-align:top;
+  margin:0px 0px 5px 10px;
+}
+#programs > ul > li > h4 + a {
+  position:absolute;
+  top:0px;
+  right:0px;
+}
+#programs > ul > li > h5 {
+  margin-bottom:5px;
+}
+#programs > ul > li > ul.screenshots {
+  margin:0px;
+  padding:0px;
+  list-style-type:none;
+  text-align:center;
+}
+#programs > ul > li > ul.screenshots > li {
+  display:inline-block;
+  margin-bottom:5px;
+}
+#programs > ul > li > ul.screenshots > li img {
+  vertical-align:top;
+}
+
+
+/* ***** code/javascript/index.php ********************************* */
+#scrPics {
+  float:right;
+  margin:1em 0px 0px 10px;
+}
+#scrMain {
+  margin:0px auto;
+}
+#scrPics div,
+#scrMain div {
+  visibility:hidden;
+  text-align:center;
+}
+#scrPics, #scrPics div.default {
+  width:200px;
+  height:80px;
+  overflow:hidden;
+  visibility:visible;
+}
+#scrMain, #scrMain div.default {
+  width:180px;
+  height:120px;
+  overflow:hidden;
+  visibility:visible;
+}
+#scrPics table tr td,
+#scrMain table tr td {
+  vertical-align:middle;
+  text-align:center;
+  padding:5px;
+}
+#scrPics table tr td div,
+#scrMain table tr td div {
+  visibility:visible;
+}
+
+#fade > table {
+  table-layout:fixed;
+  font-size:90%;
+  float:right;
+  margin:1em 0px 0px 10px;
+  text-align:left;
+  background-color:#dddddd;
+}
+#fade > table tr td {
+  width:46px;
+  height:46px;
+  border:1px outset #999999;
+  text-align:center;
+  cursor:pointer;
+}
+#fade > table tr td#fade0 {
+  width:100px;
+  height:100px;
+  text-align:left;
+  padding:5px 25px 5px 10px;
+}
+#fade > table tr td#fade1 {
+  width:100px;
+  height:100px;
+  text-align:right;
+  padding:5px 10px 5px 25px;
+}
+
+#calendar > fieldset,
+#keyboard > fieldset {
+  width:250px;
+  float:right;
+  margin:1em 0px 0px 10px;
+  text-align:center;
+}
+
+
+/* ***** code/php/index.php **************************************** */
+#autotrim {
+  background:transparent url(/code/php/auto-trim?text=Auto-trim&tcol=dddddd&size=36&angle=10) no-repeat scroll 150px 0px;
+}
+
+
+/* ***** code/opera/bugs/index.php ********************************* */
+#operabugs em {
+  color:#ff0000;
+  font-weight:bold;
+  font-style:normal;
+}
+#operabugs li del {
+  opacity:0.4;
+}
+
+
+/* ***** code/js/fade.php ****************************************** */
+#fadeproj table {
+  margin:20px auto;
+  text-align:left;
+  border:3px outset #ccffdd;
+  background:transparent url(/code/js/stream.jpg) no-repeat scroll center center;
+  font-size:10pt;
+}
+#fadeproj table tr td {
+  width:81px;
+  height:46px;
+  border:2px outset #ccffdd;
+  text-align:center;
+  cursor:pointer;
+}
+#fadeproj #fade0 {
+  width:130px;
+  height:190px;
+  text-align:left;
+  padding:5px 20px 5px 10px;
+  border:0px none transparent;
+}
+#fadeproj #fade1 {
+  width:130px;
+  height:190px;
+  text-align:right;
+  padding:5px 10px 5px 20px;
+  border:0px none transparent;
+}
+#fadeproj #fade2 {
+  margin:20px auto;
+  width:490px;
+  height:30px;
+  line-height:30px;
+  border:3px outset #ccffdd;
+  background:transparent url(/code/js/stream.jpg) no-repeat scroll center center;
+  text-align:center;
+}
+
+
+/* ***** code/js/keyboard.php ************************************** */
+#virtualkeyboard #divfixed {
+  border:2px solid #808088;
+  background-color:#dddddf;
+  position:fixed;
+  z-index:10;
+  bottom:250px;
+  left:450px;
+  padding:5px;
+  box-shadow:20px 30px 25px 0px rgba(0,0,0,0.3);
+}
+#virtualkeyboard #languages li {
+  display:inline-block;
+  width:33%;
+}
+
+
+/* ***** code/php/htmlwrap.php ************************************* */
+#htmlwrap pre small {
+  font-size:70%;
+  font-family:sans-serif;
+  color:#ff0000;
+}
+#htmlwrap pre em {
+  font-style:normal;
+  font-size:70%;
+  font-family:sans-serif;
+  color:#0000ff;
+}
+
+
+/* ***** code/php/phf-demo.php ************************************* */
+#phfdemo form fieldset {
+  padding:5px;
+}
+#phfdemo form fieldset ul {
+  margin:0px;
+  padding:0px;
+  list-style-type:none;
+}
+#phfdemo form fieldset ul li {
+  margin:5px;
+}
+#phfdemo form fieldset ul li h3 {
+  margin:0px;
+}
+#phfdemo form fieldset ul li ul {
+  margin-left:1.5em;
+}
+#phfdemo form fieldset ul li ul li {
+  margin:2px;
+}
+#phfdemo form fieldset ul li ul li small {
+  font-style:italic;
+}
+
+
+/* ***** img/opera/index.php *************************************** */
+#puffins > ul {
+  margin:10px 0px;
+  padding:0px;
+  list-style-type:none;
+}
+#puffins > ul > li {
+  display:inline-block;
+  vertical-align:top;
+  padding:3px;
+}
+#puffins > ul > li > img {
+  display:block;
+  margin:0px auto;
+}
+#puffins > ul > li > ul {
+  margin:0px 0px 0px 1.5em;
+  padding:0px;
+}
+#puffins > h3 {
+  border-top:1px solid #000000;
+}
+
+
+/* ***** about.php ************************************************* */
+#about #contact {
+  width:450px;
+  margin:0px auto;
+}
+#about #contact fieldset {
+  text-align:center;
+}
+#about #contact fieldset p {
+  color:#ff0000;
+  font:normal 12pt Prototype,Arial,sans-serif;
+  border:2px solid #ff0000;
+  background-color:#ffeeee;
+  margin:0px;
+  padding:10px;
+  text-align:center;
+}
+#about #contact fieldset input,
+#about #contact fieldset textarea {
+  margin:3px 0px 0px 0px;
+}
+#about #contact fieldset input[name=name],
+#about #contact fieldset input[name=email] {
+  width:200px;
+}
+#about #contact fieldset input[name=subject],
+#about #contact fieldset textarea {
+  width:410px;
+}
+#about #contact fieldset input[name=verify] {
+  width:50px;
+}
+#about #contact fieldset del {
+  display:inline-block;
+  width:0px;
+  overflow:hidden;
+}
+
+
+/* ***** thumbnail.php ********************************************* */
+#thumbnail h2 + img {
+  float:right;
+  margin:0px 0px 5px 5px;
+  border:2px inset #dddddd;
+}
+#thumbnail fieldset {
+  text-align:right;
+  clear:both;
+  border-radius:10px;
+}
+#thumbnail fieldset label {
+  display:block;
+  margin:0px 0px 5px 0px;
+}
+#thumbnail fieldset div#fullbox {
+  margin:0px auto;
+  position:relative;
+  overflow:hidden;
+  max-width:600px;
+  max-height:600px;
+}
+#thumbnail fieldset div#fullbox > img {
+  display:block;
+  margin:0px auto;
+  opacity:0.4;
+}
+#thumbnail fieldset div#fullbox > div {
+  border:1px dashed rgba(255,0,0,0.5);
+  position:absolute;
+  visibility:hidden;
+  background:transparent url(/img/pics/birds01.jpg) no-repeat scroll 0px 0px;
+  background-origin:border-box;
+}
+
+#thumbnail + div fieldset {
+  font-size:11px;
+}
+#thumbnail + div fieldset img#thumb {
+  display:block;
+  margin:0px auto;
+  max-width:160px;
+  border:1px solid rgba(0,0,0,0.6);
+}
+#thumbnail + div fieldset label {
+  text-align:center;
+  display:block;
+  margin:5px 0px 0px 0px;
+}
+#thumbnail + div fieldset label input {
+  font-size:inherit;
+}
+#thumbnail + div fieldset label input.default {
+  color:#888888;
+}
+#thumbnail + div fieldset label input[type=text] {
+  width:5ex;
+}

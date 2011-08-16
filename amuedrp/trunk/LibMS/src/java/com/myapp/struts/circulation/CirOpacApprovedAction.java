@@ -124,22 +124,16 @@ public class CirOpacApprovedAction extends org.apache.struts.action.Action {
             cmd.setPin1(cmdf.getTXTPIN1());
             cmd.setPin2(cmdf.getTXTPIN2());
             cmd.setFax(cmdf.getTXTFAX());
-            //if (form1!=null)
-            //cmd.setImage(form1.getImg().getFileData());
-
+           
             if (form1!=null)
             cmd.setImage(form1.getImage());
              else cmd.setImage(cmdf.getUploadedFile());
 
             CirculationDAO.insert(cmd);
-           // String[] sublib = cmdf.getLibrary();
-          //  System.out.println(sublib.length);
-         //   for(int i=0;i<sublib.length;i++)
-          //  {
               CirMemberAccountId  cmai = new CirMemberAccountId();
               CirMemberAccount cma = new CirMemberAccount();
             cmai.setLibraryId(library_id);
-          //  System.out.println("sublibrary_id = "+sublib[i]);
+          
             cmai.setSublibraryId(sublibrary_id);
             cmai.setMemid(member_id);
 

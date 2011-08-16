@@ -15,9 +15,9 @@
     <script language="javascript" type="text/javascript">
     function submit()
     {
-        alert(document.getElementById("img").value);
+       
         document.getElementsById("filename").value=document.getElementById("img").value;
-        alert(document.getElementsById("filename").value);
+      
 }
     function display()
     {
@@ -27,7 +27,8 @@
 </script>
   </head>
   <body onload="display()">
-      <%request.setAttribute("imagechange", 1);
+      <%
+      request.setAttribute("imagechange", 1);
       
       %>
       <html:form action="/cirimageupload" method="post" styleId="form1" enctype="multipart/form-data">

@@ -13,6 +13,8 @@ import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.HttpSession;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.AdminDAO.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  *
@@ -34,12 +36,33 @@ public class AddSubLibraryAction extends org.apache.struts.action.Action {
     String library_id;
     SubLibrary sl=new SubLibrary();
     SubLibraryId slid=new SubLibraryId();
+      Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
 
    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+
+         HttpSession session=request.getSession();
+         try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
         AddSubLibraryActionForm aslaf=(AddSubLibraryActionForm)form;
         sublibrary_id=aslaf.getSublibrary_id();
         sublib_name=aslaf.getSublib_name();
@@ -52,7 +75,7 @@ public class AddSubLibraryAction extends org.apache.struts.action.Action {
 
 
 
-        HttpSession session=request.getSession();
+       
         library_id=(String)session.getAttribute("library_id");
 
 
@@ -108,12 +131,13 @@ public class AddSubLibraryAction extends org.apache.struts.action.Action {
 
         if(result==true)
         {
-            request.setAttribute("msg", "Record Inserted Successfully");
+            request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recinsesucc"));
             return mapping.findForward("success");
 
         }
         }else{
-                request.setAttribute("msg1", "Duplicate SubLibrary Name");
+               // request.setAttribute("msg1", "Duplicate SubLibrary Name");
+               request.setAttribute("msg1", resource.getString("admin.addsublibAction.duplisublibname"));
             return mapping.findForward("success");
             }
 

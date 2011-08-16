@@ -4,7 +4,7 @@ Devleoped By : Kedar Kumar
 Modified On  : 17-Feb 2011
 This Page is to Enter Library Details
 -->
-
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -14,6 +14,28 @@ This Page is to Enter Library Details
 String sublib_id=(String)request.getAttribute("new_faculty_id");
 
 %>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
 
 <html>
 <head>
@@ -35,31 +57,31 @@ String sublib_id=(String)request.getAttribute("new_faculty_id");
       visibility: show;">
     
      <html:form action="/add_faculty" method="post" >
- <table border="1" class="table" width="400px" height="200px" align="center">
+ <table dir="<%=rtl%>" border="1" class="table" width="400px" height="200px" align="center">
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Faculty</td></tr>
-                <tr><td valign="top" align="center"> <br/>
-                <table cellspacing="10px">
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.manage_faculty.managefaulty")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
+                <table dir="<%=rtl%>" cellspacing="10px">
 
 
   <tr>
 
-    <td align="right"><strong>Faculty Id<a class="star">*</a> :</strong></td>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_faculty.facultyid")%><a class="star">*</a> :</strong></td>
     <html:hidden property="faculty_id" styleId="faculty_id"   value="<%=sublib_id%>" styleClass="textBoxWidth" />
-    <td><html:text property="faculty_id" styleId="faculty_id" disabled="true"  value="<%=sublib_id%>" styleClass="textBoxWidth" />
+    <td dir="<%=rtl%>"><html:text property="faculty_id" styleId="faculty_id" disabled="true"  value="<%=sublib_id%>" styleClass="textBoxWidth" />
 
     </td>
   </tr>
   
   <tr>
     
-    <td align="right"><strong>Faculty Name<a class="star">*</a> :</strong></td>
-    <td><html:text property="faculty_name" styleId="faculty_name"  value="" styleClass="textBoxWidth"/>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_faculty.facultyname")%><a class="star">*</a> :</strong></td>
+    <td dir="<%=rtl%>"><html:text property="faculty_name" styleId="faculty_name"  value="" styleClass="textBoxWidth"/>
        
     </td>
   </tr>
-  <tr><td height="5px" colspan="4" ></td></tr>
+  <tr><td dir="<%=rtl%>" height="5px" colspan="4" ></td></tr>
   
   
  
@@ -67,9 +89,9 @@ String sublib_id=(String)request.getAttribute("new_faculty_id");
   
  
 <tr>
-    <td colspan="4" align="center"><br/><input type="submit"  value="Submit"  onClick="return validation();"/>
+    <td dir="<%=rtl%>" colspan="4" align="center"><br/><input type="submit"   value="<%=resource.getString("circulation.cir_newmember.submit")%>"  onClick="return validation();"/>
 
-        <input type="button"  value="Back" onclick="return quit();" />
+        <input type="button"  value="<%=resource.getString("circulation.cir_member_reg.back")%>" onclick="return quit();" />
  </td>
 </tr>
 </table>
@@ -90,7 +112,8 @@ String sublib_id=(String)request.getAttribute("new_faculty_id");
     {
 
 
-
+        // var buttonvalue="Submit";
+   // document.getElementById("button").setAttribute("value", buttonvalue);
 
  
     var sublib_name=document.getElementById('faculty_name');
@@ -104,12 +127,12 @@ String sublib_id=(String)request.getAttribute("new_faculty_id");
 
 
 
-var str="Enter Following Values:-";
+var str="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-";
 
 
    
     if(sublib_name.value=="")
-        {str+="\n Enter Faculty Name ";
+        {str+="\n<%=resource.getString("systemsetup.add_faculty.enterfacname")%>  ";
              alert(str);
              document.getElementById('faculty_name').focus();
             return false;
@@ -122,7 +145,7 @@ var str="Enter Following Values:-";
 
   
 
-if(str=="Enter Following Values:-")
+if(str=="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-")
    {
        return true;
 

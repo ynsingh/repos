@@ -1,5 +1,5 @@
 
-    <%@page import="com.myapp.struts.circulation.OpacCheckOutDoc,com.myapp.struts.hbm.*"%>
+<%@page import="com.myapp.struts.circulation.OpacCheckOutDoc,com.myapp.struts.hbm.*"%>
     
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
@@ -36,12 +36,7 @@ f.submit();
 </head>
 
 <body style="margin:0px 0px 0px 0px">
- <table width="100%" align="center" style="margin:0px 0px 0px 0px">
 
-
-
-   
-                <tr><td valign="top" align="center">
 
 
 <%
@@ -49,6 +44,45 @@ String path= request.getContextPath();
  pageContext.setAttribute("path", path);
 ArrayList staffList=new ArrayList();
 %>
+
+ <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+%>
+
+<%
+
+String MemberId=resource.getString("circulation.cir_newmember.memberid");
+pageContext.setAttribute("MemberId", MemberId);
+String MemberName=resource.getString("circulation.cir_createaccount1.memname");
+pageContext.setAttribute("MemberName",MemberName);
+String AccessionNo=resource.getString("circulation.showcirreqopac.accessno");
+pageContext.setAttribute("AccessionNo", AccessionNo);
+String CallNo=resource.getString("circulation.showcirreqopac.callno");
+pageContext.setAttribute("CallNo",CallNo);
+
+%>
+
+
+
 
 <%!
 
@@ -64,7 +98,7 @@ List<CirOpacRequest> staffList1=null;
  if(status!=null)
  {
    %>
-   <%=status%>
+   <p class="err">  <%=status%></p>
    <%
  }
  else{
@@ -86,9 +120,9 @@ List<CirOpacRequest> staffList1=null;
         obj.setMemname(staffList1.get(tcount).getMemname());
         obj.setAccession_no(staffList1.get(tcount).getAccessionNo());
         obj.setCall_no(staffList1.get(tcount).getCallNo());
-     staffList.add(obj);
-     it.next();
-     tcount++;
+        staffList.add(obj);
+        it.next();
+        tcount++;
      }
 System.out.println("staffList="+staffList.size());
 tcount = staffList.size();
@@ -105,9 +139,19 @@ tcount = staffList.size();
 <%
 
 %>
+
+
+
+    <table dir="<%=rtl%>" width="100%" align="center" style="margin:0px 0px 0px 0px">
+
+
+
+
+    <tr><td dir="<%=rtl%>"  valign="top" align="center">
+
 <%if(tcount==0)
 {%>
-<p class="err" style="font-size:12px">No Record Found</p>
+<p class="err" style="font-size:12px"><%=resource.getString("circulation.cir_viewall_mem_detail.norecfond")%></p>
 <%}
 else
 {%>
@@ -118,25 +162,25 @@ else
   <columns>
 
      <column width="100">
-      <header value="Member ID" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.memid}" hyperLink="${path}/showbook.do?id=${doc.accession_no}&amp;memId=${doc.memid}"  hAlign="left"    styleClass="item" hyperLinkTarget="_parent"/>
+      <header value="${MemberId}" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.memid}" hyperLink="${path}/showbook1.do?id=${doc.accession_no}&amp;memId=${doc.memid}"  hAlign="left"    styleClass="item" hyperLinkTarget="_parent"/>
     </column>
        <column width="100">
-      <header value="Member Name" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.memname}" hyperLink="${path}/showbook.do?id=${doc.accession_no}&amp;memId=${doc.memid}"  hAlign="left"    styleClass="item" hyperLinkTarget="_parent"/>
+      <header value="${MemberName}" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.memname}" hyperLink="${path}/showbook1.do?id=${doc.accession_no}&amp;memId=${doc.memid}"  hAlign="left"    styleClass="item" hyperLinkTarget="_parent"/>
     </column>
 
 
     <column width="150">
-      <header value="Accession No" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.accession_no}" hAlign="left" hyperLink="${path}/showbook.do?id=${doc.accession_no}&amp;memId=${doc.memid}" hyperLinkTarget="_parent"  styleClass="item"/>
+      <header value="${AccessionNo}" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.accession_no}" hAlign="left" hyperLink="${path}/showbook1.do?id=${doc.accession_no}&amp;memId=${doc.memid}" hyperLinkTarget="_parent"  styleClass="item"/>
     </column>
 
     
 
        <column width="200">
-      <header value="Call No" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.call_no}" hyperLink="${path}/showbook.do?id=${doc.accession_no}&amp;memId=${doc.memid}" hyperLinkTarget="_parent"  hAlign="left" styleClass="item"/>
+      <header value="${CallNo}" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.call_no}" hyperLink="${path}/showbook1.do?id=${doc.accession_no}&amp;memId=${doc.memid}" hyperLinkTarget="_parent"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
 
@@ -151,10 +195,10 @@ else
 <tr>
 <td align="left">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.previos")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-<a href="<c:out value="${next}"/>">Next</a>
+<a href="<c:out value="${next}"/>"><%=resource.getString("circulation.cir_viewall_mem_detail.next")%></a>
 </c:if>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -180,6 +224,7 @@ else
 
 
       </td></tr></table>
+
 
 
     </body>

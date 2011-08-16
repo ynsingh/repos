@@ -9,6 +9,29 @@
 <%@page import="com.myapp.struts.hbm.*,java.util.*" %> 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
 <%
 String sublibrary_id=(String)session.getAttribute("sublibrary_id");
 %>
@@ -27,7 +50,7 @@ String sublibrary_id=(String)session.getAttribute("sublibrary_id");
  function set(){
 
  keyValue = document.getElementById('sublibary_id').options[document.getElementById('sublibary_id').selectedIndex].value;
- document.getElementById('data').innerHTML="Search Result for "+ keyValue;}
+ document.getElementById('data').innerHTML="<%=resource.getString("circulation.cir_reqfromopac.searchresultfor")%> "+ keyValue;}
     </script>
 
 <html>
@@ -46,10 +69,10 @@ String sublibrary_id=(String)session.getAttribute("sublibrary_id");
 
         <body onload="set()">
        <form method="post" action="/requestfromopac"  id="Form1">
-        <table class="table" width="800px">
-               <tr><td class="headerStyle" align="center">MemberShip Request From OPAC<br/></td></tr>
+           <table dir="<%=rtl%>" class="table" width="800px">
+               <tr><td dir="<%=rtl%>" class="headerStyle" align="center"><%=resource.getString("circulation.cir_reqfromopac.memreqfromopac")%><br/></td></tr>
              <tr>
-                 <td width="10%">      Library&nbsp;
+                 <td width="10%" dir="<%=rtl%>" >      <%=resource.getString("opac.simplesearch.library")%>&nbsp;
                 
 
 <select  name="cmdSubLib" id="sublibary_id" tabindex="3" value="Select" onblur="funcSearch(); ">
@@ -72,7 +95,7 @@ while(it.hasNext()){
                </td>
             </tr>
             <tr>
-                <td colspan="4">
+                <td dir="<%=rtl%>" colspan="4">
                     <iframe name="f1"  src="<%=request.getContextPath()%>/circulation/cir_requestfrom_opacgrid.jsp"  height="300px" width="800px" scrolling="no"  id="f1"/>
 </td></tr>
         </table>

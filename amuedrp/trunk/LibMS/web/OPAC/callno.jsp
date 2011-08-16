@@ -125,7 +125,9 @@ var em1 = depts.getElementsByTagName("sublibrary_name");
 
         var newOpt =document.getElementById('SubLibrary').appendChild(document.createElement('option'));
         document.getElementById('SubLibrary').options.length = 0;
-
+ newOpt = document.getElementById('SubLibrary').appendChild(document.createElement('option'));
+                newOpt.value = "all";
+                newOpt.text = "All";
 for (var i = 0; i < em.length ; i++)
 {
 var ndValue = em[i].firstChild.nodeValue;
@@ -143,16 +145,10 @@ newOpt.text = ndValue1;
 <script language="javascript">
 function fun()
 {
-document.Form1.action="number.jsp";
+document.Form1.action="/OPAC/SearchByCallNo.do";
 document.Form1.method="post";
 document.Form1.target="f1";
 document.Form1.submit();
-}
-function funcSearch()
-{
-    document.Form1.action="SearchByCallNo.do";
-   document.Form1.method="post";
-    document.Form1.submit();
 }
 
 </script>
@@ -183,7 +179,7 @@ locale1=(String)session.getAttribute("locale");
     %>
 
 
-    </head><body>
+    </head><body onload="search();fun();">
     <%--<%if(page.equals(true)){%>--%>
 
 <html:form method="post" action="/OPAC/SearchByCallNo" target="f1" styleId="Form1">
@@ -229,9 +225,9 @@ locale1=(String)session.getAttribute("locale");
 
      </td></tr><tr><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <html:select property="CMBSUBLib"  styleId="SubLibrary" value="<%=sublib_id%>">
-                           <html:option value="all">All</html:option>
+                         <%--  <html:option value="all">All</html:option>
                               <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
-                       </html:select></td>
+              --%>         </html:select></td>
 
 
 

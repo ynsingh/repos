@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="log1" language="groovy" pageWidth="695" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="sno" class="java.lang.Integer"/>
+	<field name="userId" class="java.lang.String"/>
+	<field name="date" class="java.lang.String"/>
+	<field name="time" class="java.lang.String"/>
+	<field name="classname" class="java.lang.String"/>
+	<field name="url" class="java.lang.String"/>
+	<field name="actionMessage" class="java.lang.String"/>
+	<field name="actionResult" class="java.lang.String"/>
+	<field name="libraryId" class="java.lang.String"/>
+	<group name="libraryId">
+		<groupExpression><![CDATA[$F{libraryId}]]></groupExpression>
+		<groupHeader>
+			<band height="58" splitType="Stretch">
+				<staticText>
+					<reportElement x="0" y="38" width="74" height="20"/>
+					<textElement/>
+					<text><![CDATA[Log Sno]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="74" y="38" width="83" height="20"/>
+					<textElement/>
+					<text><![CDATA[Log User Id]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="157" y="38" width="87" height="20"/>
+					<textElement/>
+					<text><![CDATA[Log Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="244" y="38" width="82" height="20"/>
+					<textElement/>
+					<text><![CDATA[Log Time]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="326" y="38" width="86" height="20"/>
+					<textElement/>
+					<text><![CDATA[Log Class Name]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="412" y="38" width="79" height="20"/>
+					<textElement/>
+					<text><![CDATA[Message]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="491" y="38" width="64" height="20"/>
+					<textElement/>
+					<text><![CDATA[ActionResult]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="555" y="38" width="100" height="20"/>
+					<textElement/>
+					<text><![CDATA[Url]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="18" width="51" height="20"/>
+					<textElement/>
+					<text><![CDATA[Library Id]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="57" y="18" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{libraryId}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="21" splitType="Stretch">
+				<staticText>
+					<reportElement x="0" y="1" width="100" height="20"/>
+					<textElement/>
+					<text><![CDATA[Library Id Count]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="555" y="0" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{libraryId_COUNT}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="1" width="655" height="1"/>
+				</line>
+				<line>
+					<reportElement x="0" y="19" width="655" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="226" y="0" width="100" height="20"/>
+				<textElement>
+					<font  size="14"/>
+				</textElement>
+				<text><![CDATA[Log Report]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="2" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="74" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{sno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="74" y="0" width="83" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{userId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="157" y="0" width="87" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="244" y="0" width="82" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{time}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="326" y="0" width="86" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{classname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="412" y="0" width="79" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{actionMessage}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="491" y="0" width="64" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{actionResult}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="555" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{url}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="41" splitType="Stretch">
+			<textField>
+				<reportElement x="312" y="21" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="284" y="21" width="28" height="20"/>
+				<textElement/>
+				<text><![CDATA[Page]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

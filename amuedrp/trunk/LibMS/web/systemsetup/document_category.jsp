@@ -5,7 +5,7 @@ Modified On  : 17-Feb 2011
 This Page is to Enter Staff ID
 -->
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*"%>
 
  <jsp:include page="/admin/header.jsp" flush="true" />
 
@@ -27,14 +27,63 @@ String back=(String)session.getAttribute("page");
 <title>LibMS : Document Category </title>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
+ <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
  <script language="javascript" type="text/javascript">
 
+
+ function Add()
+{
+    var buttonvalue="Add";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+
+function View()
+{
+    var buttonvalue="View";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+function Update()
+{
+    var buttonvalue="Update";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
+function Delete()
+{
+    var buttonvalue="Delete";
+    document.getElementById("button").setAttribute("value", buttonvalue);
+    return true;
+}
 
 function check1()
 {
     if(document.getElementById('location_id').value=="")
     {
-        alert("Enter Location Id...");
+        alert("<%=resource.getString("systemsetup.doc_category.enterdoccategoryid")%>");
 
         document.getElementById('location_id').focus();
 
@@ -58,6 +107,9 @@ function check1()
 
 
     </script>
+
+ 
+
 </head>
 <body>
 
@@ -71,20 +123,20 @@ function check1()
 
       visibility: show;">
 
-    <table border="1" class="table" width="400px" height="200px" align="center">
+    <table dir="<%=rtl%>" border="1" class="table" width="400px" height="200px" align="center">
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Document Category</td></tr>
-                <tr><td valign="top" align="center"> <br/>
-                <table cellspacing="10px">
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.doc_category.managedoccategory")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
+                <table dir="<%=rtl%>" cellspacing="10px">
 
-                    <tr><td rowspan="5" class="txt2">Enter Document Category ID<br><br>
+                    <tr><td dir="<%=rtl%>" rowspan="5" class="txt2"><%=resource.getString("systemsetup.doc_category.enterdoccategoryid")%><br><br>
                         <input type="text" id="location_id" name="document_category_id" value=""/>
-                        </td><td width="150px" align="center"> <input type="submit" class="btn" id="Button1" name="button" value="Add" /></td></tr>
-                    <tr><td width="150px" align="center"><input type="submit" id="Button2" class="btn" name="button" value="Update"  /></td></tr>
-                    <tr><td width="150px" align="center"><input type="submit" id="Button3" name="button" value="View" class="btn"  /></td></tr>
-                    <tr><td width="150px" align="center"><input type="submit" id="Button4" name="button" value="Delete" class="btn" /></td></tr>
-                         <tr><td width="150px" align="center"><input type="button" id="Button5" name="button" value="Back" class="btn" onclick="return quit()"/></td></tr>
+                        </td><td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn" id="Button1" name="button1" value="<%=resource.getString("systemsetup.manage_notice.add")%>" onclick="return Add();" /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button2" class="btn" name="button1" value="<%=resource.getString("circulation.cir_member_reg.update")%>" onclick="return Update();"  /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button3" name="button1" value="<%=resource.getString("circulation.cir_member_reg.view")%>" class="btn" onclick="return View();"  /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button4" name="button1" value="<%=resource.getString("circulation.cir_member_reg.delete")%>" class="btn" onclick="return Delete();" /></td></tr>
+                         <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="button" id="Button5" name="button1" value="<%=resource.getString("circulation.cir_member_reg.back")%>" class="btn" onclick="return quit()"/></td></tr>
 
 
                 </table>
@@ -93,7 +145,7 @@ function check1()
     <input type="hidden" name="library_id" value="<%=library_id%>">
 
 
-
+  <input type="hidden" id="button" name="button" />
 
 
 
@@ -109,10 +161,10 @@ function check1()
               
         %>
 
-        <p class="mess">  <%=msg2%></p>
+        <p class="mess" dir="<%=rtl%>" align="<%=align%>">  <%=msg2%></p>
         <script>
           
-          var check = confirm("Do You Want To Add More Document Category..");
+          var check = confirm("<%=resource.getString("systemsetup.doc_category.doyouwanttoaddmore")%>");
             if(check==false){
                 <%if(session.getAttribute("location")==null&& session.getAttribute("member")==null&& session.getAttribute("submember")==null)
                         {session.removeAttribute("document");%>window.location="<%=request.getContextPath()%>/admin/main.jsp";<%}else{session.removeAttribute("document");%>
@@ -125,7 +177,7 @@ function check1()
           {
         %>
 
-        <p class="mess">  <%=msg2%></p>
+        <p class="mess" dir="<%=rtl%>" align="<%=align%>">  <%=msg2%></p>
 
 
         <%
@@ -144,7 +196,7 @@ function check1()
 
 
                     </td></tr>
-                 <tr><td align="justify"><font color="blue" size="-1"><b>Example:</b> txt for Text-Book, ref for Reference-Book, gen for General-Reading & so on, if DocumentCategory exists.</font></td></tr>
+                 <tr><td dir="<%=rtl%>" align="justify"><font color="blue" size="-1"><b><%=resource.getString("systemsetup.manage_notice.example")%>:</b> txt <%=resource.getString("systemsetup.doc_category.fortextbook")%>, ref <%=resource.getString("systemsetup.doc_category.forrefbook")%>, gen <%=resource.getString("systemsetup.doc_category.forgenbook")%>, <%=resource.getString("systemsetup.doc_category.ifdoccategoryexists")%>.</font></td></tr>
 
     </table>
         </div>

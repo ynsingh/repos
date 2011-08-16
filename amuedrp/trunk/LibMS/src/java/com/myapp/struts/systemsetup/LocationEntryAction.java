@@ -7,6 +7,8 @@ package com.myapp.struts.systemsetup;
 
 import com.myapp.struts.hbm.Location;
 import com.myapp.struts.systemsetupDAO.LocationDAO;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,7 +24,10 @@ public class LocationEntryAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
+   Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -36,8 +41,24 @@ public class LocationEntryAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+         HttpSession session = request.getSession();
+          try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
         LocationActionForm lf=(LocationActionForm)form;
-        HttpSession session = request.getSession();
+       
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
         String button=lf.getButton();
@@ -48,7 +69,9 @@ public class LocationEntryAction extends org.apache.struts.action.Action {
         if(button.equals("Add"))
         {
             if(l!=null){
-            request.setAttribute("msg1", "Location Id : "+location_id+" already exists");
+
+             //   request.setAttribute("msg1", "Location Id : "+location_id+" already exists");
+            request.setAttribute("msg1", resource.getString("systemsetup.manage_notice.locationid")+location_id+resource.getString("systemsetup.manage_notice.alreadyexists"));
             return mapping.findForward("duplicate");
                        }
             else{
@@ -61,7 +84,9 @@ public class LocationEntryAction extends org.apache.struts.action.Action {
         }
         if(button.equals("Update")){
         if(l==null){
-            request.setAttribute("msg1", "Location id does not exists");
+
+            // request.setAttribute("msg1", "Location id does not exists");
+            request.setAttribute("msg1", resource.getString("systemsetup.manage_notice.locationiddesnotexist"));
             return mapping.findForward("duplicate");
         }
  else{
@@ -74,7 +99,9 @@ public class LocationEntryAction extends org.apache.struts.action.Action {
         }
         if(button.equals("View")){
          if(l==null){
-            request.setAttribute("msg1", "Location id does not exists");
+
+             //request.setAttribute("msg1", "Location id does not exists");
+            request.setAttribute("msg1", resource.getString("systemsetup.manage_notice.locationiddesnotexist"));
             return mapping.findForward("duplicate");
         }
  else{
@@ -88,7 +115,9 @@ public class LocationEntryAction extends org.apache.struts.action.Action {
         }
         if(button.equals("Delete")){
                 if(l==null){
-            request.setAttribute("msg1", "Location id does not exists");
+
+             // request.setAttribute("msg1", "Location id does not exists");
+            request.setAttribute("msg1", resource.getString("systemsetup.manage_notice.locationiddesnotexist"));
             return mapping.findForward("duplicate");
         }
  else{

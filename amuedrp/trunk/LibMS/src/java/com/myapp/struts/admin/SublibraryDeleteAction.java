@@ -16,6 +16,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import com.myapp.struts.hbm.HibernateUtil;
 import com.myapp.struts.hbm.SubLibrary;
+import java.util.Locale;
+import java.util.ResourceBundle;
 /**
  *
  * @author edrp02
@@ -27,6 +29,11 @@ public class SublibraryDeleteAction extends org.apache.struts.action.Action {
     String sublibrary_id;
     String button;
     String library_id;
+     Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
+
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -40,11 +47,28 @@ public class SublibraryDeleteAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+
+              HttpSession session=request.getSession();
+          try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
             SublibraryDeleteActionForm slvaf=(SublibraryDeleteActionForm)form;
             sublibrary_id=slvaf.getSublibrary_id();
             System.out.println("############################################3"+sublibrary_id);
             button=slvaf.getButton();
-            HttpSession session=request.getSession();
+           
             library_id=(String)session.getAttribute("library_id");
             Session hsession=HibernateUtil.getSessionFactory().getCurrentSession();
             Transaction tx=null;
@@ -59,7 +83,8 @@ public class SublibraryDeleteAction extends org.apache.struts.action.Action {
 
               if (sublibrary==null)
               {
-                  request.setAttribute("msg", "Sublibrary not exist");
+                 // request.setAttribute("msg", "Sublibrary not exist");
+                  request.setAttribute("msg", resource.getString("admin.sulibdeleteaction.sublibnotexist"));
                   return mapping.findForward("success");
               }
               else

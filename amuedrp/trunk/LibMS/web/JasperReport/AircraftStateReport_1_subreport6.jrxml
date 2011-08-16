@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AircraftStateReport_1_subreport6" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="sumreport" class="java.lang.String"/>
+	<parameter name="sum1" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[$P{sum1}]]></defaultValueExpression>
+	</parameter>
+	<field name="discount" class="java.lang.String"/>
+	<field name="shipCost" class="java.lang.String"/>
+	<field name="otherCost" class="java.lang.String"/>
+	<field name="taxRate" class="java.lang.String"/>
+	<field name="taxAmount" class="java.lang.String"/>
+	<field name="grandTotal" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="135" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="538" height="135"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="343" y="14" width="69" height="15"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Ship Cost]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="343" y="29" width="69" height="15"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Other Cost]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="343" y="44" width="69" height="15"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Tax Rate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="343" y="80" width="69" height="15"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Grand Total]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="426" y="0" width="100" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{discount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="426" y="14" width="100" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{shipCost}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="426" y="29" width="100" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{otherCost}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="426" y="44" width="100" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{taxRate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="426" y="80" width="100" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{grandTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="343" y="60" width="69" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tax Amount]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="426" y="59" width="100" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{taxAmount}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="2" y="21" width="317" height="55"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="231" y="115" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Customer Approval]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="115" width="29" height="20"/>
+				<textElement/>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="357" y="115" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Authorized Signature]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="343" y="1" width="69" height="13"/>
+				<textElement>
+					<font  size="8"/>
+				</textElement>
+				<text><![CDATA[Discount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="7" width="100" height="13"/>
+				<textElement/>
+				<text><![CDATA[Notes and instruction]]></text>
+			</staticText>
+			<line>
+				<reportElement x="322" y="0" width="1" height="135"/>
+			</line>
+			<line>
+				<reportElement x="322" y="12" width="215" height="1"/>
+			</line>
+			<line>
+				<reportElement x="322" y="29" width="215" height="1"/>
+			</line>
+			<line>
+				<reportElement x="322" y="44" width="215" height="1"/>
+			</line>
+			<line>
+				<reportElement x="322" y="59" width="215" height="1"/>
+			</line>
+			<line>
+				<reportElement x="322" y="76" width="215" height="1"/>
+			</line>
+			<line>
+				<reportElement x="322" y="95" width="215" height="1"/>
+			</line>
+			<line>
+				<reportElement x="409" y="0" width="1" height="94"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="3" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="22" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

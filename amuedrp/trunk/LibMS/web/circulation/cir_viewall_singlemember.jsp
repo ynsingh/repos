@@ -27,6 +27,28 @@
 
 %>
 
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
 
 
 
@@ -72,89 +94,89 @@ a:active
 
     <form>
    
-   <table  align="center"  height="400px"  class="table">
+        <table  dir="<%=rtl%>" align="center"  height="400px"  class="table">
 
 
 
-  <tr><td   class="headerStyle"  align="center">
+  <tr><td  dir="<%=rtl%>"  class="headerStyle"  align="center">
 
 
-		View All Member
+		<%=resource.getString("circulation.cir_viewall_singlemem.viewall")%>
 
 
 
         </td></tr>
 
-  <tr><td valign="center" align="center" width="400px" >
+  <tr><td  dir="<%=rtl%>" valign="center" align="center" width="400px" >
 
           <br>
-            <table  width="300px" >
+            <table   dir="<%=rtl%>" width="300px" >
 
 
 
-                <tr><td >&nbsp;Member ID</td><td class="table_textbox"><input type="text"   name="TXTMEMID" value="<%=cmemdetail.getId().getMemId()%>" readonly="true" style="width:160px" /></td>
+                <tr><td  dir="<%=rtl%>">&nbsp;<%=resource.getString("circulation.cir_newmember.memberid")%></td><td  dir="<%=rtl%>" class="table_textbox"><input type="text"   name="TXTMEMID" value="<%=cmemdetail.getId().getMemId()%>" readonly="true" style="width:160px" /></td>
                     <td></td>    
 
                    </tr>
                    
-                   <tr><td >First Name</td><td class="table_textbox"><input type="text"   name="TXTFNAME" value="<%=cmemdetail.getFname()%>" readonly="true" style="width:160px" /><br/>
+                   <tr><td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.fname")%></td><td  dir="<%=rtl%>" class="table_textbox"><input type="text"   name="TXTFNAME" value="<%=cmemdetail.getFname()%>" readonly="true" style="width:160px" /><br/>
                  
                 </td>
 
                 </tr>
-                <tr><td>&nbsp;Middle Name</td><td class="table_textbox"><input type="text"  name="TXTMNAME" value="<%=cmemdetail.getMname()%>" readonly="true" style="width:160px" /></td></tr>
-                <tr><td>&nbsp;Last Name</td><td class="table_textbox"><input type="text"  name="TXTLNAME" value="<%=cmemdetail.getLname()%>" readonly="true" style="width:160px" />
+                <tr><td  dir="<%=rtl%>">&nbsp;<%=resource.getString("circulation.cir_newmember.mname")%></td><td  dir="<%=rtl%>" class="table_textbox"><input type="text"  name="TXTMNAME" value="<%=cmemdetail.getMname()%>" readonly="true" style="width:160px" /></td></tr>
+                <tr><td  dir="<%=rtl%>">&nbsp;<%=resource.getString("circulation.cir_newmember.lname")%></td><td  dir="<%=rtl%>" class="table_textbox"><input type="text"  name="TXTLNAME" value="<%=cmemdetail.getLname()%>" readonly="true" style="width:160px" />
                 
                 </td>
                 
 
 
                 </tr>
-                <tr>  <td>&nbsp;Email ID</td><td class="table_textbox"><input type="text"  name="TXTEMAILID" value="<%=cmemdetail.getEmail()%>" readonly="true" style="width:160px" />
+                <tr>  <td  dir="<%=rtl%>" >&nbsp;<%=resource.getString("circulation.cir_newmember.email")%></td><td  dir="<%=rtl%>" class="table_textbox"><input type="text"  name="TXTEMAILID" value="<%=cmemdetail.getEmail()%>" readonly="true" style="width:160px" />
                 
                 </td>
                 
 
 
             </tr>
-            <tr><td>Local Address</td><td class="table_textbox"> <input type="text" name="TXTADD1" value="<%=cmemdetail.getAddress1()%>" readonly="true" style="width:160px" />
+            <tr><td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.localadd")%></td><td  dir="<%=rtl%>" class="table_textbox"> <input type="text" name="TXTADD1" value="<%=cmemdetail.getAddress1()%>" readonly="true" style="width:160px" />
                  
                  </td>
              
 
              </tr>
-             <tr><td>City</td><td class="table_textbox"><input type="text"  name="TXTCITY1" value="<%=cmemdetail.getCity1()%>" readonly="true" style="width:160px"/>
+             <tr><td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.city")%></td><td  dir="<%=rtl%>" class="table_textbox"><input type="text"  name="TXTCITY1" value="<%=cmemdetail.getCity1()%>" readonly="true" style="width:160px"/>
                 
 
                  </td></tr>
-             <tr><td >State*</td><td class="table_textbox"><input type="text"  name="TXTSTATE1" value="<%=cmemdetail.getState1()%>" readonly="true" style="width:160px"/>
+             <tr><td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.state")%></td><td  dir="<%=rtl%>" class="table_textbox"><input type="text"  name="TXTSTATE1" value="<%=cmemdetail.getState1()%>" readonly="true" style="width:160px"/>
                  
 
                  </td></tr>
-             <tr><td>Country</td><td class="table_textbox"><input type="text"  name="TXTCOUNTRY1" value="<%=cmemdetail.getCountry1()%>" readonly="true" style="width:160px"/>
+             <tr><td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.country")%></td><td  dir="<%=rtl%>" class="table_textbox"><input type="text"  name="TXTCOUNTRY1" value="<%=cmemdetail.getCountry1()%>" readonly="true" style="width:160px"/>
                  
                  </td></tr>
-             <tr><td>Mobile</td><td class="table_textbox"><input type="text"  name="TXTPH1" value="<%=cmemdetail.getPhone1()%>" readonly="true" style="width:160px"/>
+             <tr><td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.mobile")%></td><td  dir="<%=rtl%>" class="table_textbox"><input type="text"  name="TXTPH1" value="<%=cmemdetail.getPhone1()%>" readonly="true" style="width:160px"/>
                  
 
                  </td></tr>
-             <tr><td>Land Line No.</td><td class="table_textbox"><input type="text"  name="TXTPH2" value="<%=cmemdetail.getPhone2()%>" readonly="true" style="width:160px"/></td> </tr>
-             <tr><td>Fax</td><td class="table_textbox"><input type="text"  name="TXTFAX" value="<%=cmemdetail.getFax()%>" readonly="true" style="width:160px"/></td></tr>
+             <tr><td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.landlineno")%>.</td><td  dir="<%=rtl%>" class="table_textbox"><input type="text"  name="TXTPH2" value="<%=cmemdetail.getPhone2()%>" readonly="true" style="width:160px"/></td> </tr>
+             <tr><td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.fax")%></td><td  dir="<%=rtl%>" class="table_textbox"><input type="text"  name="TXTFAX" value="<%=cmemdetail.getFax()%>" readonly="true" style="width:160px"/></td></tr>
 
-             <tr><td>Permanent Address</td><td class="table_textbox"><input type="text" name="TXTADD2" value="<%=cmemdetail.getAddress1()%>" readonly="true" style="width:160px"/></td>
+             <tr><td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.permadd")%></td><td  dir="<%=rtl%>" class="table_textbox"><input type="text" name="TXTADD2" value="<%=cmemdetail.getAddress1()%>" readonly="true" style="width:160px"/></td>
                 
 
             </tr>
-            <tr><td >City</td><td class="table_textbox"><input type="text"  name="TXTCITY2" value="<%=cmemdetail.getCity2()%>" readonly="true" style="width:160px"/></td></tr>
-            <tr><td >State</td><td class="table_textbox"><input type="text"  name="TXTSTATE2"  readonly="true" style="width:160px"/></td>
+            <tr><td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.city")%></td><td  dir="<%=rtl%>" class="table_textbox"><input type="text"  name="TXTCITY2" value="<%=cmemdetail.getCity2()%>" readonly="true" style="width:160px"/></td></tr>
+            <tr><td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.state")%></td><td  dir="<%=rtl%>" class="table_textbox"><input type="text"  name="TXTSTATE2"  readonly="true" style="width:160px"/></td>
                  </tr>
-            <tr><td >Country</td><td class="table_textbox"><input type="text"  name="TXTCOUNTRY2" value="<%=cmemdetail.getCountry2()%>"  readonly="true" style="width:160px"/></td></tr>
+            <tr><td  dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.country")%></td><td  dir="<%=rtl%>" class="table_textbox"><input type="text"  name="TXTCOUNTRY2" value="<%=cmemdetail.getCountry2()%>"  readonly="true" style="width:160px"/></td></tr>
 
 
          
      </table>
       </td></tr>
-  <tr><td colspan="4" align="center" class="txt2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Back" onclick="return back();">
+  <tr><td colspan="4" align="center" class="txt2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="<%=resource.getString("circulation.cir_newmember.back")%>" onclick="return back();">
                       </td>
 
           </tr>

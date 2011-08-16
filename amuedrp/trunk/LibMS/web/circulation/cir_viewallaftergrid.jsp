@@ -52,6 +52,28 @@
 
     %>
 
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
 
 
 
@@ -389,33 +411,33 @@ a:active
 
     <html:form action="/CirOpacViewNewMember" method="post" enctype="multipart/form-data" onsubmit="return validation();">
 
-   <table  align="center" width="800px" height="400px"  class="table_design">
+        <table  dir="<%=rtl%>" align="center" width="800px" height="400px"  class="table_design">
 
 
 
-  <tr><td  width="900px"   class="table_bar"  align="center">
+  <tr><td dir="<%=rtl%>" width="900px"   class="table_bar"  align="center">
 
 
-		New Member Registration
+		<%=resource.getString("circulation.cir_newmember.newmemberregistration")%>
 
 
 
         </td></tr>
 
-  <tr><td valign="center" align="left" height="400px" >
+  <tr><td dir="<%=rtl%>"  valign="center" align="<%=align%>" height="400px" >
 
           <br>
-          <table  class="table_text" width="880px" height="400px" border="0" >
+          <table dir="<%=rtl%>"  class="table_text" width="880px" height="400px" border="0" >
 
 
 
-                <tr><td width="150px">&nbsp;Member ID</td><td class="table_textbox"><html:text    property="TXTMEMID" value="<%=opac.getMemId()%>" readonly="true" style="width:160px" /></td>
-                    <td></td>  <td rowspan="3" class="table_textbox" valign="bottom">
+                <tr><td dir="<%=rtl%>" width="150px">&nbsp;<%=resource.getString("circulation.cir_newmember.memberid")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text    property="TXTMEMID" value="<%=opac.getMemId()%>" readonly="true" style="width:160px" /></td>
+                    <td></td>  <td dir="<%=rtl%>" rowspan="3" class="table_textbox" valign="bottom">
                         <html:img src="./viewImagefromOpac.jsp" width="128" height="120" />
                     </td>
 
                    </tr>
-                   <tr><td >First Name*</td><td class="table_textbox"><html:text    property="TXTFNAME" value="<%=opac.getFname()%>" style="width:160px" /><br/>
+                   <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.fname")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text    property="TXTFNAME" value="<%=opac.getFname()%>" style="width:160px" /><br/>
                  <html:messages id="err_name" property="TXTFNAME">
 				<bean:write name="err_name" />
 
@@ -424,15 +446,15 @@ a:active
                 </td>
 
                 </tr>
-                <tr><td>&nbsp;Middle Name</td><td class="table_textbox"><html:text  property="TXTMNAME" value="<%=opac.getMname()%>" style="width:160px" /></td></tr>
-                <tr><td>&nbsp;Last Name*</td><td class="table_textbox"><html:text  property="TXTLNAME" value="<%=opac.getLname()%>" style="width:160px" />
+                <tr><td dir="<%=rtl%>">&nbsp;<%=resource.getString("circulation.cir_newmember.mname")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTMNAME" value="<%=opac.getMname()%>" style="width:160px" /></td></tr>
+                <tr><td dir="<%=rtl%>" >&nbsp;<%=resource.getString("circulation.cir_newmember.lname")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTLNAME" value="<%=opac.getLname()%>" style="width:160px" />
                 <br/>
                  <html:messages id="err_name" property="TXTLNAME">
 				<bean:write name="err_name" />
 
 			</html:messages>
                 </td>
-                <td class="table_textbox" valign="bottom">
+                <td dir="<%=rtl%>" class="table_textbox" valign="bottom">
 
 
 
@@ -440,14 +462,14 @@ a:active
 
 
                 </tr>
-                <tr>  <td>&nbsp;Email ID*</td><td class="table_textbox"><html:text  property="TXTEMAILID" value="<%=opac.getEmail()%>" style="width:160px" />
+                <tr>  <td dir="<%=rtl%>" >&nbsp;<%=resource.getString("circulation.cir_newmember.email")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTEMAILID" value="<%=opac.getEmail()%>" style="width:160px" />
                 <br/>
                  <html:messages id="err_name" property="TXTEMAILID">
 				<bean:write name="err_name" />
 
 			</html:messages>
                 </td>
-                 <td> Type of Member*</td><td class="table_textbox">
+                 <td dir="<%=rtl%>" > <%=resource.getString("circulation.cir_newmember.typeofmem")%>*</td><td dir="<%=rtl%>" class="table_textbox">
                      <html:select   property="MEMCAT" value="<%=opac.getMemType()%>" style="width:132px" >
 
       <html:option value="">Select Any</html:option>
@@ -468,7 +490,7 @@ a:active
 
 
             </tr>
-            <tr><td>Local Address*</td><td class="table_textbox"> <html:text property="TXTADD1" value="<%=opac.getAddress1()%>" style="width:160px" />
+            <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.localadd")%>*</td><td dir="<%=rtl%>" class="table_textbox"> <html:text property="TXTADD1" value="<%=opac.getAddress1()%>" style="width:160px" />
                  <br/>
                  <html:messages id="err_name" property="TXTADD1">
 				<bean:write name="err_name" />
@@ -476,8 +498,8 @@ a:active
 			</html:messages>
 
                  </td>
-              <td>Designation/Student Category*
-              </td><td class="table_textbox"><html:select  property="MEMSUBCAT" value="<%=opac.getSubMemberType()%>"  style="width:132px">
+              <td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.desg")%>*
+              </td><td dir="<%=rtl%>" class="table_textbox"><html:select  property="MEMSUBCAT" value="<%=opac.getSubMemberType()%>"  style="width:132px">
 
       <html:option value="">Select Any</html:option>
        <html:option value="UG">UnderGraduate</html:option>
@@ -498,44 +520,44 @@ a:active
                       </td>
 
              </tr>
-             <tr><td>City*</td><td class="table_textbox"><html:text  property="TXTCITY1" value="<%=opac.getCity1()%>" style="width:160px"/>
+             <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.city")%>*</td><td class="table_textbox"><html:text  property="TXTCITY1" value="<%=opac.getCity1()%>" style="width:160px"/>
                  <br/>
                  <html:messages id="err_name" property="TXTCITY1">
 				<bean:write name="err_name" />
 
 			</html:messages>
 
-                 </td><td>Employee Designation</td><td class="table_textbox"><html:text  property="TXTDESG1" value="<%=opac.getDesg()%>" style="width:160px"/></td></tr>
-             <tr><td >State*</td><td class="table_textbox"><html:text  property="TXTSTATE1" value="<%=opac.getState1()%>" style="width:160px"/>
+                 </td><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.empdegn")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTDESG1" value="<%=opac.getDesg()%>" style="width:160px"/></td></tr>
+             <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.state")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTSTATE1" value="<%=opac.getState1()%>" style="width:160px"/>
                  <br/>
                  <html:messages id="err_name" property="TXTSTATE1">
 				<bean:write name="err_name" />
 
 			</html:messages>
 
-                 </td><td>Office Name</td><td class="table_textbox"><html:text  property="TXTOFFICE" value="<%=opac.getOffice()%>" style="width:160px"/></td></tr>
-             <tr><td>Country*</td><td class="table_textbox"><html:text  property="TXTCOUNTRY1" value="<%=opac.getCountry1()%>" style="width:160px"/>
+                 </td><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.officename")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTOFFICE" value="<%=opac.getOffice()%>" style="width:160px"/></td></tr>
+             <tr><td><%=resource.getString("circulation.cir_newmember.country")%>*</td><td class="table_textbox"><html:text  property="TXTCOUNTRY1" value="<%=opac.getCountry1()%>" style="width:160px"/>
                  <br/>
                  <html:messages id="err_name" property="TXTCOUNTRY1">
 				<bean:write name="err_name" />
 
 			</html:messages>
 
-                 </td><td> Faculty of
-                 </td><td class="table_textbox">
+                 </td><td dir="<%=rtl%>" > <%=resource.getString("circulation.cir_newmember.facof")%>
+                 </td><td dir="<%=rtl%>" class="table_textbox">
                      <html:select  styleId="TXTFACULTY" property="TXTFACULTY" onchange="return search1()">
       <html:option value="Select">Select Any</html:option><%if (rst!=null)while (rst.next()){%>
     <html:option value="<%=rst.getString(1)%>"><%=rst.getString(2).toUpperCase()%></html:option><% } %>
  </html:select>
                       </td></tr>
-             <tr><td>Mobile*</td><td class="table_textbox"><html:text  property="TXTPH1" value="<%=opac.getPhone1()%>" style="width:160px"/>
+             <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.mobile")%>*</td><td class="table_textbox"><html:text  property="TXTPH1" value="<%=opac.getPhone1()%>" style="width:160px"/>
                  <br/>
                  <html:messages id="err_name" property="TXTPH1">
 				<bean:write name="err_name" />
 
 			</html:messages>
 
-                 </td> <td> Department  </td><td class="table_textbox">
+                 </td> <td dir="<%=rtl%>" > <%=resource.getString("circulation.cir_newmember.dept")%>   </td><td dir="<%=rtl%>" class="table_textbox">
                      <select  id="TXTDEPT" name="TXTDEPT" style="width:148px" onChange="return search_dept();">
                            <option value="Select">Select Any</option>
 
@@ -545,8 +567,8 @@ a:active
                     </select>
 
                  </td></tr>
-             <tr><td>Land Line No.</td><td class="table_textbox"><html:text  property="TXTPH2" value="<%=opac.getPhone2()%>" style="width:160px"/></td> <td> Course
-                  </td><td class="table_textbox"><select id="TXTCOURSE" name="TXTCOURSE" style="width:148px" >
+             <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.landlineno")%>.</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTPH2" value="<%=opac.getPhone2()%>" style="width:160px"/></td> <td> <%=resource.getString("circulation.cir_newmember.course")%>
+                  </td><td dir="<%=rtl%>" class="table_textbox"><select id="TXTCOURSE" name="TXTCOURSE" style="width:148px" >
                              <option value="Select">Select Any</option>
 
                       </select>
@@ -557,41 +579,41 @@ a:active
 
 
 </td></tr>
-             <tr><td>Fax</td><td class="table_textbox"><html:text  property="TXTFAX" value="<%=opac.getFax()%>" style="width:160px"/></td><td> Semester/Year
+             <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.fax")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTFAX" value="<%=opac.getFax()%>" style="width:160px"/></td><td> <%=resource.getString("circulation.cir_newmember.sem")%>
                   </td><td class="table_textbox"><html:text  property="TXTSEM"   value="<%=opac.getSemester()%>" styleClass="textBoxWidth" style="width:160px"  />
 
                   </td></tr>
 
-             <tr><td>Permanent Address</td><td class="table_textbox"><html:text property="TXTADD2" value="<%=opac.getAddress2()%>" style="width:160px"/></td>
-             <td> Request Date<br>(YYYY-MM-DD)
-                  </td><td class="table_textbox"><html:text  property="TXTREQ_DATE"  style="width:160px"  value="<%= opac.getRequestdate()%>" styleClass="textBoxWidth"  />
+             <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.permadd")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text property="TXTADD2" value="<%=opac.getAddress2()%>" style="width:160px"/></td>
+             <td dir="<%=rtl%>" > <%=resource.getString("circulation.cirviewall.reqdate")%><br>(YYYY-MM-DD)
+                  </td><td dir="<%=rtl%>"  class="table_textbox"><html:text  property="TXTREQ_DATE"  style="width:160px"  value="<%= opac.getRequestdate()%>" styleClass="textBoxWidth"  />
              </tr>
-             <tr><td >City</td><td class="table_textbox"><html:text  property="TXTCITY2" value="<%=opac.getCity2()%>" style="width:160px"/></td><td> Registration Date*<br>(YYYY-MM-DD)
-                  </td><td class="table_textbox"><html:text  property="TXTREG_DATE"  style="width:160px"  value="<%= opac.getRegDate() %>" styleClass="textBoxWidth"  />
+             <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.city")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTCITY2" value="<%=opac.getCity2()%>" style="width:160px"/></td><td> <%=resource.getString("circulation.cir_newmember.reg")%>*<br>(YYYY-MM-DD)
+                  </td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTREG_DATE"  style="width:160px"  value="<%= opac.getRegDate() %>" styleClass="textBoxWidth"  />
                     <html:messages id="err_name" property="TXTREG_DATE">
 				<bean:write name="err_name" />
 
 			</html:messages>
-                     <br/> <div align="left" id="searchResult1" style="border:#000000; "></div>
+                     <br/> <div align="<%=align%>" id="searchResult1" style="border:#000000; "></div>
 
                   </td></tr>
-             <tr><td >State</td><td class="table_textbox"><html:text  property="TXTSTATE2" value="<%=opac.getState2()%>" style="width:160px"/></td>
-                 <td valign="top">Expire Date*<br>(YYYY-MM-DD)
+             <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.state")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTSTATE2" value="<%=opac.getState2()%>" style="width:160px"/></td>
+                 <td dir="<%=rtl%>" valign="top"><%=resource.getString("circulation.cir_newmember.exp")%>*<br>(YYYY-MM-DD)
                   </td>
-                 <td class="table_textbox" valign="top"><html:text  property="TXTEXP_DATE" value="<%= opac.getExpDate()%>" style="width:160px"/>
+                 <td dir="<%=rtl%>" class="table_textbox" valign="top"><html:text  property="TXTEXP_DATE" value="<%= opac.getExpDate()%>" style="width:160px"/>
                   <html:messages id="err_name" property="TXTEXP_DATE">
 				<bean:write name="err_name" />
 
 			</html:messages>
-                   <br/> <div align="left" id="searchResult2" style="border:#000000;"></div>
+                   <br/> <div align="<%=align%>" id="searchResult2" style="border:#000000;"></div>
                        </td></tr>
-             <tr><td >Country</td><td class="table_textbox"><html:text  property="TXTCOUNTRY2" value="<%=opac.getCountry2()%>" style="width:160px"/></td></tr>
+             <tr><td dir="<%=rtl%>" ><%=resource.getString("circulation.cir_newmember.country")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTCOUNTRY2" value="<%=opac.getCountry2()%>" style="width:160px"/></td></tr>
 
 
 
      </table>
       </td></tr>
-  <tr><td colspan="4" align="center" class="txt2">&nbsp;&nbsp;<html:button property="button" onclick="return quit();">Back</html:button>
+  <tr><td colspan="4" align="center" class="txt2">&nbsp;&nbsp;<input type="button" value="<%=resource.getString("circulation.cir_newmember.back")%>" onclick="return quit();"/>
                       </td>
 
           </tr>
@@ -634,13 +656,13 @@ a:active
 
 
 
-var str="Enter Following Values:-";
+var str="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-";
 
 
 
 
     if(TXTREG_DATE.value=="")
-       { str+="\n Enter Date of Registration";
+       { str+="\n <%=resource.getString("circulation.cir_newmember.enterdateofreg")%>";
             alert(str);
             document.getElementById('TXTREG_DATE').focus();
             return false;
@@ -648,7 +670,7 @@ var str="Enter Following Values:-";
        }
 
     if(TXTEXP_DATE.value=="")
-      {  str+="\n Enter Expiry date";
+      {  str+="\n <%=resource.getString("circulation.cir_newmember.enterdateofexp")%>";
            alert(str);
            document.getElementById('TXTEXP_DATE').focus();
             return false;
@@ -658,7 +680,7 @@ var str="Enter Following Values:-";
 if(IsDateGreater(TXTREG_DATE.value,TXTEXP_DATE.value)==true)
     {
 
-       str+="\nDate of Expiry Should be greater than Date of Registration";
+       str+="\n<%=resource.getString("circulation.cir_newmember.dateofexpgreater")%>";
        alert(str);
          document.getElementById('TXTEXP_DATE').focus();
          return false;

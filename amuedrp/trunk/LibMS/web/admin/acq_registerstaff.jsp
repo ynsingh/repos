@@ -23,7 +23,7 @@ String message2=request.getParameter("msg2");
 String msg3=request.getParameter("email_id");
 String sublibrary_id=(String)session.getAttribute("sublibrary_id");
 String sublibrary_name=(String)session.getAttribute("sublibrary_name");
-String mainlib=(String)session.getAttribute("mainsublibrary");
+String mainlib=(String)session.getAttribute("library_id");
 
 %>
 <%!
@@ -162,6 +162,7 @@ return true;  // date is valid
 
 function echeck(str) {
 availableSelectList = document.getElementById("searchResult");
+ availableSelectList.innerHTML="";
 		var at="@"
 		var dot="."
 		var lat=str.indexOf(at)
@@ -475,6 +476,8 @@ $(document).ready(function()
                 <td width="10%"  dir="<%=rtl%>"  >  <%=resource.getString("admin.acq_registerstaff.library")%></td >
                 <td width="15%"  dir="<%=rtl%>" >
 
+                  
+                    
                     <%if(sublibrary_id.equalsIgnoreCase(mainlib)){%>
                     <html:select  property="sublibrary_id" tabindex="3">
                         <html:options name="SubLibrary" collection="sublib" property="id.sublibraryId" labelProperty="sublibName"></html:options>
@@ -578,10 +581,14 @@ $(document).ready(function()
                 <tr>    <td><%=resource.getString("admin.acq_registerstaff.state")%></td><td><input type="text" id="state2"  name="state2" tabindex="20" value=""></td></tr>
                 <tr><td  dir="<%=rtl%>"  ><%=resource.getString("admin.acq_registerstaff.country")%></td><td  dir="<%=rtl%>"  ><input type="text" id="country2"  name="country2" tabindex="21" value=""></td></tr>
                 <tr> <td  dir="<%=rtl%>" ><%=resource.getString("admin.acq_registerstaff.zip")%></td><td  dir="<%=rtl%>"><input type="text" tabindex="22" id="zip2"  name="zip2" value=""></td><td colspan="2"  dir="<%=rtl%>" >
-                            <input type="submit" id="Button1" name="" value="<%=resource.getString("admin.acq_register.register")%>" >
+                           </td></tr>
+                <tr><td colspan="4" align="center">
+                         <input type="submit" id="Button1" name="" value="<%=resource.getString("admin.acq_register.register")%>" >
                             <input type="reset" id="Button2" name="submit" value="<%=resource.getString("admin.acq_registerstaff.reset")%>" >
                             <input type="button" id="Button3" name="" value="<%=resource.getString("admin.acq_register.back")%>" onclick="return send()">
-</td></tr>
+
+
+                    </td></tr>
 
                     </table>
                           

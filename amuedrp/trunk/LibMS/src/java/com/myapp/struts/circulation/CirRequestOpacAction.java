@@ -17,6 +17,8 @@ import org.apache.struts.action.ActionMapping;
 //import com.myapp.struts.hbm.CirRequestfromOpac;
 import com.myapp.struts.hbm.HibernateUtil;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.servlet.http.HttpSession;
 //import java.util.ArrayList;
 import org.hibernate.Query;
@@ -34,7 +36,10 @@ public class CirRequestOpacAction extends org.apache.struts.action.Action {
     String sublibrary_id;
 
    String login_role;
-   
+    Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -46,6 +51,20 @@ public class CirRequestOpacAction extends org.apache.struts.action.Action {
 
 
          HttpSession session=request.getSession();
+          try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         library_id=(String)session.getAttribute("library_id");
         
         sublibrary_id = (String)request.getParameter("sublibrary_id");
@@ -81,7 +100,8 @@ public class CirRequestOpacAction extends org.apache.struts.action.Action {
                 }
                 else
                 {
-                 request.setAttribute("msg", "Record not exist");
+                   // request.setAttribute("msg", "Record not exist");
+                    request.setAttribute("msg", resource.getString("circulation.cirreqopac.recnotexist"));
                
                 }
              }catch(Exception e)

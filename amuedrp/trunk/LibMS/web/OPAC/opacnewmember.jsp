@@ -7,7 +7,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<link type="text/css" rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+<link type="text/css" rel="stylesheet" href="/LibMS/css/page.css"/>
 
 
 
@@ -17,11 +17,9 @@
         List libRs = (List)session.getAttribute("libRs");
         List sublib = (List)session.getAttribute("sublib");
 
-        List list3=(List)session.getAttribute("list3");
-        List list4=(List)session.getAttribute("list4");
-        List list5=(List)session.getAttribute("list5");
 
 
+         List list1=(List)session.getAttribute("list1");
       
       
      
@@ -167,6 +165,8 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 function search_sub() {
 
+        
+
     var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
     document.getElementById('SubLibrary').options.length = 0;
     document.getElementById('TXTFACULTY').options.length = 0;
@@ -181,9 +181,21 @@ if (keyValue=="Select")
 
                document.getElementById('CMBLib').focus();
                document.getElementById('SubLibrary').options.length = 0;
+               document.getElementById('emptype_id').options.length = 0;
+               document.getElementById('TXTFACULTY').options.length = 0;
 newOpt = document.getElementById('SubLibrary').appendChild(document.createElement('option'));
 newOpt.value = "Select";
 newOpt.text = "Select";
+newOpt = document.getElementById('emptype_id').appendChild(document.createElement('option'));
+newOpt.value = "Select";
+newOpt.text = "Select";
+newOpt = document.getElementById('TXTFACULTY').appendChild(document.createElement('option'));
+newOpt.value = "Select";
+newOpt.text = "Select";
+search1();
+search();
+
+
 
 
 		return false;
@@ -205,6 +217,9 @@ req.send("getSubLibrary_Id="+keyValue);
 
 
 }
+search_faculty();
+        search_member();
+        search1();search();
 return true;
 }
 }
@@ -220,7 +235,9 @@ if (keyValue=="Select")
                document.getElementById('CMBLib').focus();
                document.getElementById('TXTFACULTY').options.length = 0;
 
-
+newOpt = document.getElementById('TXTFACULTY').appendChild(document.createElement('option'));
+newOpt.value = "Select";
+newOpt.text = "Select";
 
 		return false;
 	}
@@ -254,6 +271,9 @@ var em1 = depts.getElementsByTagName("faculty_name");
 
         var newOpt =document.getElementById('TXTFACULTY').appendChild(document.createElement('option'));
         document.getElementById('TXTFACULTY').options.length = 0;
+newOpt = document.getElementById('TXTFACULTY').appendChild(document.createElement('option'));
+newOpt.value = "Select";
+newOpt.text = "Select";
 
 for (var i = 0; i < em.length ; i++)
 {
@@ -265,6 +285,8 @@ newOpt.text = ndValue1;
 
 
 }
+
+
 search1();
 }
 
@@ -279,7 +301,9 @@ if (keyValue=="Select")
 
                document.getElementById('CMBLib').focus();
                document.getElementById('emptype_id').options.length = 0;
-
+newOpt = document.getElementById('emptype_id').appendChild(document.createElement('option'));
+newOpt.value = "Select";
+newOpt.text = "Select";
 
 
 		return false;
@@ -301,6 +325,8 @@ req.send("getLibrary_Id="+keyValue);
 
 
 }
+
+
 return true;
 }
 }
@@ -312,7 +338,9 @@ var em1 = depts.getElementsByTagName("emp_name");
 
         var newOpt =document.getElementById('emptype_id').appendChild(document.createElement('option'));
         document.getElementById('emptype_id').options.length = 0;
-
+newOpt = document.getElementById('emptype_id').appendChild(document.createElement('option'));
+newOpt.value = "Select";
+newOpt.text = "Select";
 for (var i = 0; i < em.length ; i++)
 {
 var ndValue = em[i].firstChild.nodeValue;
@@ -323,7 +351,8 @@ newOpt.text = ndValue1;
 
 
 }
-search();
+
+//search();
 }
 
 function update_sub(cartXML)
@@ -334,6 +363,17 @@ var em1 = depts.getElementsByTagName("sublibrary_name");
 
         var newOpt =document.getElementById('SubLibrary').appendChild(document.createElement('option'));
         document.getElementById('SubLibrary').options.length = 0;
+        newOpt = document.getElementById('SubLibrary').appendChild(document.createElement('option'));
+        newOpt.value = "Select";
+        newOpt.text = "Select";
+
+        
+      //  newOpt = document.getElementById('emptype_id').appendChild(document.createElement('option'));
+       // newOpt.value = "Select";
+      //  newOpt.text = "Select";
+     //   newOpt = document.getElementById('TXTFACULTY').appendChild(document.createElement('option'));
+      //  newOpt.value = "Select";
+      //  newOpt.text = "Select";
 
 for (var i = 0; i < em.length ; i++)
 {
@@ -348,10 +388,9 @@ if(ndValue=="<%=sublib_id%>")
 }
 
 }
-search_faculty();
-search_member();
 
-
+search();
+search1();
 }
 
 function search() {
@@ -365,7 +404,9 @@ function search() {
 
                document.getElementById('emptype_id').focus();
                document.getElementById('subemptype_id').options.length = 0;
-
+                newOpt = document.getElementById('subemptype_id').appendChild(document.createElement('option'));
+                newOpt.value = "Select";
+                newOpt.text = "Select";
 
 
 		return false;
@@ -411,6 +452,14 @@ newOpt.text = ndValue1;
 
 
 }
+newOpt = document.getElementById('subemptype_id').appendChild(document.createElement('option'));
+newOpt.value = "Select";
+newOpt.text = "Select";
+<%
+if(submemcat!=null)
+if(submemcat.equalsIgnoreCase("Select")){%>
+        document.getElementById('subemptype_id').value="Select";
+        <%}%>
 
 }
 
@@ -427,7 +476,13 @@ if (keyValue=="Select")
                document.getElementById('TXTFACULTY').focus();
                document.getElementById('TXTDEPT').options.length = 0;
                 document.getElementById('TXTCOURSE').options.length = 0;
+                 newOpt = document.getElementById('TXTDEPT').appendChild(document.createElement('option'));
 
+  newOpt.value = "Select";
+newOpt.text = "Select";
+newOpt = document.getElementById('TXTCOURSE').appendChild(document.createElement('option'));
+newOpt.value = "Select";
+newOpt.text = "Select";
 
 		return false;
 	}
@@ -452,6 +507,8 @@ return true;
 }
 }
 
+
+
 function search_dept() {
 
     var keyValue = document.getElementById('TXTDEPT').options[document.getElementById('TXTDEPT').selectedIndex].value;
@@ -465,6 +522,10 @@ if (keyValue=="Select")
 
                document.getElementById('TXTDEPT').focus();
                document.getElementById('TXTCOURSE').options.length = 0;
+
+           newOpt = document.getElementById('TXTCOURSE').appendChild(document.createElement('option'));
+newOpt.value = "Select";
+newOpt.text = "Select";
 		return false;
 	}
 else
@@ -508,6 +569,11 @@ newOpt.value = ndValue;
 newOpt.text = ndValue1;
 }
 
+newOpt = document.getElementById('TXTCOURSE').appendChild(document.createElement('option'));
+newOpt.value = "Select";
+newOpt.text = "Select";
+
+
 }
 
 
@@ -531,6 +597,10 @@ newOpt.text = ndValue1;
 
 
 }
+
+newOpt = document.getElementById('TXTDEPT').appendChild(document.createElement('option'));
+newOpt.value = "Select";
+newOpt.text = "Select";
  search_dept();
 }
 
@@ -634,7 +704,7 @@ function check1()
    
    if(keyValue=="Select")
     {
-        alert("Select Library");
+        alert("<%=resource.getString("circulation.cir_newmember.selectlib")%>");
 
         document.getElementById('CMBLib').focus();
 
@@ -642,7 +712,7 @@ function check1()
     }
    if(keyValue1=="Select")
     {
-        alert("Enter SubLibrary");
+        alert("<%=resource.getString("circulation.cir_newmember.entersublib")%>");
 
         document.getElementById('SubLibrary').focus();
 
@@ -650,7 +720,7 @@ function check1()
     }
     if(document.getElementById('fname2').value=="")
     {
-        alert("Enter firstName");
+        alert("<%=resource.getString("circulation.cir_newmember.enterfname")%>");
 
         document.getElementById('fname2').focus();
 
@@ -658,7 +728,7 @@ function check1()
     }
      if(document.getElementById('lname2').value=="")
     {
-        alert("Enter LastName");
+        alert("<%=resource.getString("circulation.cir_newmember.enterlname")%>");
 
 
         document.getElementById('lname2').focus();
@@ -667,7 +737,7 @@ function check1()
     }
      if(document.getElementById('mail2').value=="")
     {
-        alert("Enter MailID");
+        alert("<%=resource.getString("circulation.cir_newmember.enteremailid")%>");
 
         document.getElementById('mail2').focus();
 
@@ -675,7 +745,7 @@ function check1()
     }
      if(document.getElementById('add11').value=="")
     {
-        alert("Enter Address");
+        alert("<%=resource.getString("circulation.cir_newmember.enterlocaladd")%>");
 
         document.getElementById('add11').focus();
 
@@ -683,7 +753,7 @@ function check1()
     }
      if(document.getElementById('city11').value=="")
     {
-        alert("Enter City");
+        alert("<%=resource.getString("circulation.cir_newmember.entercity")%>");
 
         document.getElementById('city11').focus();
 
@@ -691,7 +761,7 @@ function check1()
     }
      if(document.getElementById('state11').value=="")
     {
-        alert("Enter State");
+        alert("<%=resource.getString("circulation.cir_newmember.enterstate")%>");
 
         document.getElementById('state11').focus();
 
@@ -699,7 +769,7 @@ function check1()
     }
      if(document.getElementById('country11').value=="")
     {
-        alert("Enter country");
+        alert("<%=resource.getString("circulation.cir_newmember.entercountry")%>");
 
         document.getElementById('country11').focus();
 
@@ -707,7 +777,7 @@ function check1()
     }
      if(document.getElementById('ph11').value=="")
     {
-        alert("Enter PhoneNo.");
+        alert("<%=resource.getString("circulation.cir_newmember.enterphno")%>");
 
         document.getElementById('ph11').focus();
 
@@ -715,7 +785,7 @@ function check1()
     }
      if(document.getElementById('emptype_id').value=="")
     {
-        alert("Enter MemberType");
+        alert("<%=resource.getString("circulation.cir_newmember.entermemcategory")%>");
 
         document.getElementById('emptype_id').focus();
 
@@ -723,7 +793,7 @@ function check1()
     }
      if(document.getElementById('subemptype_id').value=="")
     {
-        alert("Enter SubMemberType");
+        alert("<%=resource.getString("circulation.cir_newmember.entersubmemcategory")%>");
 
         document.getElementById('subemptype_id').focus();
 
@@ -731,6 +801,24 @@ function check1()
     }
 return true;
   }
+
+
+   function showdiv(){
+
+        var ele = document.getElementById("image1");
+
+
+	if(ele.style.display == "block") {
+    		ele.style.display = "none";
+
+  	}
+	else {
+		ele.style.display = "block";
+
+	}
+
+
+    }
 
 </script>
 
@@ -755,17 +843,31 @@ a:active
 
 
 </head>
-<body onload="search_sub();" style="margin: 0px 0px 0px 0px;">
+<body  onload="search_sub();search_faculty();search1();search();"style="margin: 0px 0px 0px 0px;">
+
+     <div id="image1"
+   style="  top:130px;background: red; 
+   left:30%;
+   overflow: hidden;
+      position: absolute;
+      display: none;"
+
+      >
     <%
     if(msg!=null){%><script>
     alert("<%=msg%>");</script>
     <%}%>
 
 
-     <div style="position: absolute; top: 42%; left: 38%">
+     <%--<div style="position: absolute; top: 42%; left: 38%">--%>
     <html:form action="/imageupload1" method="post" styleId="form1" enctype="multipart/form-data">
+        <table class="table" style="border:5px solid blue;" align="center" height="100px" width="400px">
+            <tr><td>
         <%=resource.getString("opac.simplesearch.imageupload")%> <html:file  property="img" name="OpacNewMemberActionForm" styleId="img" onchange="submit()"  onclick="copy()" />
           <input type="hidden" name="filename" id="filename" />
+          <input type="button" onclick="showdiv();" value="Cancel" />
+</td></tr></table>
+          
            <html:hidden property="TXTLNAME" name="OpacNewMemberActionForm" styleId="lname1"/>
           <html:hidden property="TXTFNAME" name="OpacNewMemberActionForm" styleId="fname1"/>
           <html:hidden property="TXTMNAME" name="OpacNewMemberActionForm" styleId="mname1"/>
@@ -799,7 +901,7 @@ a:active
 
     <html:form action="/OpacNewMember" method="post" onsubmit="return check1();">
 
-        <table  align="center" class="table" width="90%" height="100%" >
+        <table dir="<%=rtl%>" align="center" class="table" width="90%" height="100%" >
 
 
 
@@ -812,23 +914,55 @@ a:active
 
         </td></tr>
 
-  <tr><td valign="center" align="left" >
+  <tr><td valign="center" align="<%=align%>" >
 
 
-          <table  class="table_text"  border="0" >
-              <tr><td dir="<%=rtl%>"  align="right"><%=resource.getString("opac.simplesearch.library")%>*</td><td width="200px" align="left">
-           <html:select property="CMBLib"  tabindex="3"  styleId="CMBLib" onchange="search_sub()" value="<%=lib_id%>">
+          <table dir="<%=rtl%>" class="table_text"  border="0" >
+              <tr><td dir="<%=rtl%>"   align="<%=align%>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=resource.getString("opac.simplesearch.library")%>*</td><td width="200px" align="<%=align%>">
+           
+                      <% if(lib_id!=null){%>
+                      <html:select property="CMBLib" disabled="true"  tabindex="3"  styleId="CMBLib" onchange="search_sub()" value="<%=lib_id%>">
                <html:option value="Select">Select</html:option>
                <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
  </html:select>
+               <html:hidden property="CMBLib"    styleId="CMBLib" onchange="search_sub()" value="<%=lib_id%>"></html:hidden>
+                     
+
+               <%}else{
+%>
+                    <html:select property="CMBLib"  tabindex="3"  styleId="CMBLib" onchange="search_sub()" value="<%=lib_id%>">
+               <html:option value="Select">Select</html:option>
+               <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
+                  </html:select>
+
+
+<%}%>
 
 
 </tr>
-<tr><td dir="<%=rtl%>" align="right"><%=resource.getString("opac.simplesearch.library")%>*</td><td width="200px" align="left">
-        <html:select property="cmdSubLibrary"  styleId="SubLibrary" value="<%=sublib_id%>" >
+<tr><td dir="<%=rtl%>" align="<%=align%>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=resource.getString("opac.simplesearch.sublibrary")%>*</td><td width="200px" align="<%=align%>">
+
+           <% if(sublib_id!=null){%>
+           <html:select property="cmdSubLibrary" disabled="true" styleId="SubLibrary" value="<%=sublib_id%>" >
              <html:option value="Select">Select</html:option>
-            <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
+
+             <%--<%!--<html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />--%>--%>
+            </html:select>
+           <html:hidden property="cmdSubLibrary"  styleId="SubLibrary" value="<%=sublib_id%>" ></html:hidden>
+             
+
+
+               <%}else{%>
+
+                <html:select property="cmdSubLibrary"  styleId="SubLibrary" value="<%=sublib_id%>" >
+             <html:option value="Select">Select</html:option>
+
+             <%--<%!--<html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />--%>--%>
                        </html:select>
+
+
+               <%}%>
+
 
 </tr>
 
@@ -850,7 +984,7 @@ a:active
                         <html:img src="<%=image_path%>"  alt="" width="120" height="120"/>
                            <%}%>
 
-                    
+                    <a href="#" onclick="javascript:showdiv();"><%=resource.getString("circulation.cir_newmember.imageupload")%></a>
                    </tr>
             <tr><td ><%=resource.getString("opac.newmemberentry.firstname")%>*</td><td class="table_textbox"><html:text    property="TXTFNAME" styleId="fname2" style="width:160px" value="<%=fname%>" /><br/>
                  <html:messages id="err_name" property="TXTFNAME">
@@ -886,9 +1020,11 @@ a:active
 			</html:messages>
                 </td>
                  <td><%=resource.getString("opac.newmemberentry.typemem")%> *</td><td class="table_textbox">
-                 <html:select  property="MEMCAT" style="width:160px" styleId="emptype_id" tabindex="3" value="<%=memcat%>" onchange="return search();">
-                  <%--   <html:options  collection="list1" labelProperty="emptypeFullName" property="id.emptypeId"></html:options>--%>
-                     </html:select>
+                 <html:select  property="MEMCAT" style="width:160px"  styleId="emptype_id" tabindex="3" value="Select" onchange="return search();">
+                 
+                 
+                         <html:option value="Select" >Select</html:option>
+                 </html:select>
                      <br/>
                 
 
@@ -940,8 +1076,11 @@ a:active
 
                  </td><td> <%=resource.getString("opac.newmemberentry.facultyof")%>
                  </td><td class="table_textbox">
-                      <html:select  property="TXTFACULTY" styleId="TXTFACULTY" style="width:160px" value="<%=faculty%>" onchange="return search1()" tabindex="3">
-                       <%--   <html:options  collection="list3" property="id.facultyId" labelProperty="facultyName"></html:options>--%>
+                      <html:select  property="TXTFACULTY" styleId="TXTFACULTY" style="width:160px" value="Select" onchange="return search1()" tabindex="3">
+                         
+                           <%--<html:options  collection="list3"  labelProperty="facultyName" property="id.facultyId"></html:options>--%>
+                            
+                         
                      </html:select>
                       </td></tr>
              <tr><td><%=resource.getString("opac.newmemberentry.mobile")%>*</td><td class="table_textbox"><html:text  property="TXTPH1" value="<%=ph1%>" styleId="ph11" style="width:160px"/>

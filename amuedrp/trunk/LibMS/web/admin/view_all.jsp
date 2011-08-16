@@ -13,7 +13,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+ <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
     <title>View Request</title>
     <%
 try{
@@ -33,35 +33,6 @@ else{
 %>
 
 
-<script language="javascript" >
-function b1click()
-{
-location.href="login.jsp";
-}
-function b2click()
-{
-f.action="login.jsp";
-f.method="post";
-f.target="_self";
-f.submit();
-}
-function getQuery(id)
-{
-    var query = "<%=request.getContextPath()%>/admin/index3.jsp?id="+id;
-    return query;
-}
-</script>
- <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: white; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: #7697BC; color: #FFFFFF;font-weight: bold }
-
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
 </head>
 
 <body>
@@ -89,9 +60,7 @@ function getQuery(id)
    int tcount =0;
    int perpage=4;
    int tpage=0;
- /*Create a connection by using getConnection() method
-   that takes parameters of string type connection url,
-   user name and password to connect to database.*/
+
 if(rs!=null){
 Iterator it = rs.iterator();
 
@@ -166,33 +135,35 @@ locale1=(String)session.getAttribute("locale");
   pageContext.setAttribute("Status",Status);
 
 %>
-<ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="2" cellSpacing="0" styleClass="datagrid">
+<ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
     
   <columns>
       
-    <column width="10">
+    <column width="50">
       <header value="" hAlign="left" styleClass="header"/>
     </column>
 
     <column width="100">
-      <header value="${RegistrationID}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.registration_id}" hyperLink="index3.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
+      <header value="Registration_ID" hAlign="left" styleClass="header"/>
+      <item   value="${doc.registration_id}" hyperLink="${pagecontext}/admin/index3.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="200">
-      <header value="${InstituteName}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.institute_name}" hAlign="left" hyperLink="index3.jsp?id=${doc.registration_id}"  styleClass="item"/>
+      <header value="Institute Name" hAlign="left" styleClass="header"/>
+      <item   value="${doc.institute_name}" hAlign="left" hyperLink="${pagecontext}/admin/index3.jsp?id=${doc.registration_id}"  styleClass="item"/>
     </column>
 
        
-    <column width="150">
-      <header value="${AdminEmail}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.admin_email}" hyperLink="index3.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    <column width="100">
+      <header value="Admin_Email" hAlign="left" styleClass="header"/>
+      <item   value="${doc.admin_email}" hyperLink="${pagecontext}/admin/index3.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
-       <column width="100">
-      <header value="${Status}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.status}" hyperLink="index3.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+
+   <column width="100">
+   <header value="Status" hAlign="left" styleClass="header"/>
+ <item  value="${doc.status}" hyperLink="${pagecontext}/admin/index3.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
+       
  </columns>
 
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
@@ -211,7 +182,7 @@ locale1=(String)session.getAttribute("locale");
 <c:if test="${next != null}">
 <a href="<c:out value="${next}"/>">Next</a>
 </c:if>
-</td><td align="center" >
+</td><td align="center" width="350px">
 
 
 <c:forEach items="${pages}" var="page">
@@ -224,6 +195,10 @@ locale1=(String)session.getAttribute("locale");
   </c:otherwise>
 </c:choose>
 </c:forEach>
+</td><td align="center">
+     Import :<img src="<%=request.getContextPath()%>/images/excel.jpeg" border="1" height="25" width="25">
+    <img src="<%=request.getContextPath()%>/images/xml.jpeg" height="25" border="1" width="25">
+    <img src="<%=request.getContextPath()%>/images/pdf.jpeg" height="25"border="1" width="25">
 </td>
 
 </tr>

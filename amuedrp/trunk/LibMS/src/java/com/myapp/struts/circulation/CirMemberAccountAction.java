@@ -12,11 +12,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.myapp.struts.circulationDAO.cirDAO;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.systemsetupDAO.FacultyDAO;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  *
@@ -27,14 +28,33 @@ public class CirMemberAccountAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     String mem_id,button,library_id,sublibrary_id;
+     Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
     
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+         HttpSession session=request.getSession();
+        try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         CirMemberAccountActionForm cmaaf=(CirMemberAccountActionForm)form;
         mem_id=cmaaf.getMem_id();
         button=cmaaf.getButton();
-        HttpSession session=request.getSession();
+       
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
 
@@ -48,7 +68,7 @@ public class CirMemberAccountAction extends org.apache.struts.action.Action {
 
         if(button.equals("Create"))
         {
-           CirMemberDetail cirmemberdetail=cirDAO.getMemberDetail(library_id, mem_id);
+           CirMemberDetail cirmemberdetail=CirculationDAO.getMemberDetail(library_id, mem_id);
            if(cirmemberdetail!=null)
            {
 
@@ -74,7 +94,8 @@ public class CirMemberAccountAction extends org.apache.struts.action.Action {
                   }
                   else
                   {
-                      request.setAttribute("msg1","Member Account Already Active");
+                     // request.setAttribute("msg1","Member Account Already Active");
+                      request.setAttribute("msg1",resource.getString("circulation.cirmemberaccountaction.memalreadyact"));
                        return mapping.findForward("fail");
                   }
               
@@ -83,7 +104,8 @@ public class CirMemberAccountAction extends org.apache.struts.action.Action {
            }
            else
            {
-             request.setAttribute("msg1","Member Not Registered");
+             //request.setAttribute("msg1","Member Not Registered");
+             request.setAttribute("msg1",resource.getString("circulation.cirmemberaccountaction.membernotreg"));
              return mapping.findForward("fail");
 
            }
@@ -97,11 +119,11 @@ public class CirMemberAccountAction extends org.apache.struts.action.Action {
                   session.removeAttribute("list1");
                   session.removeAttribute("list2");
                   session.removeAttribute("list");
-             CirMemberDetail cirmemberdetail=cirDAO.getMemberDetail(library_id, mem_id);
+             CirMemberDetail cirmemberdetail=CirculationDAO.getMemberDetail(library_id, mem_id);
              if(cirmemberdetail!=null)
              {
 
-                   CirMemberAccount cirmemberaccount=cirDAO.getAccount2(library_id, sublibrary_id, mem_id);
+                   CirMemberAccount cirmemberaccount=CirculationDAO.getAccount2(library_id, sublibrary_id, mem_id);
                    if(cirmemberaccount!=null)
                    {
 
@@ -132,7 +154,8 @@ public class CirMemberAccountAction extends org.apache.struts.action.Action {
                        }
                        else
                        {
-                         request.setAttribute("msg1","Member Not Active");
+                         //request.setAttribute("msg1","Member Not Active");
+                         request.setAttribute("msg1",resource.getString("circulation.cirmemberaccountaction.membernotact"));
                          return mapping.findForward("fail");
 
                        }
@@ -141,7 +164,8 @@ public class CirMemberAccountAction extends org.apache.struts.action.Action {
                    else
                    {
 
-                      request.setAttribute("msg1","Member is Not Active");
+                     // request.setAttribute("msg1","Member is Not Active");
+                      request.setAttribute("msg1",resource.getString("circulation.cirmemberaccountaction.membernotact"));
                       return mapping.findForward("fail");
 
                    }
@@ -153,7 +177,8 @@ public class CirMemberAccountAction extends org.apache.struts.action.Action {
              }
              else
              {
-               request.setAttribute("msg1","Member Not Registered");
+              // request.setAttribute("msg1","Member Not Registered");
+               request.setAttribute("msg1",resource.getString("circulation.cirmemberaccountaction.membernotreg"));
                return mapping.findForward("fail");
 
              }

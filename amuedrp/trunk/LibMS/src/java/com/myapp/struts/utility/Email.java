@@ -7,19 +7,21 @@ package com.myapp.struts.utility;
 
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Properties;
-import javax.mail.MessagingException;
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.Message.RecipientType;
+import javax.mail.Multipart;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-
+import javax.mail.internet.MimeMultipart;
 
 public class Email {
 private String to;
@@ -29,11 +31,12 @@ private String text;
 String userid;
 String host;
 String path;
+String saluation,closing;
 StringBuffer buffer;
 //
 
 
-public Email(String path,String to,String password,String subject,String body){this.to = to; this.password = password;this.subject=subject;this.text=body;this.path=path;}
+public Email(String path,String to,String password,String subject,String body,String saluation,String closing){this.to = to; this.password = password;this.subject=subject;this.text=body;this.path=path;this.saluation=saluation;this.closing=closing;}
 
 public void send(){
  host = "smtp.gmail.com";
@@ -42,13 +45,9 @@ public void send(){
 
 
 
-
 try
 {
 System.out.println(path);
-
-
-
 
   // Open the file that is the first
   // command line parameter
@@ -92,7 +91,61 @@ e.printStackTrace();
 message.setFrom(fromAddress);
 message.setRecipient(RecipientType.TO, toAddress);
 message.setSubject(subject);
-message.setText(text);
+
+
+
+if(subject.startsWith("accept"))
+{
+message.setSubject("Create Account Successfully from LibMS");
+ // create and fill the first message part
+      MimeBodyPart mbp1 = new MimeBodyPart();
+      mbp1.setText("Instant User Manual As Attachment "+text);
+
+      // create the second message part
+      MimeBodyPart mbp2 = new MimeBodyPart();
+
+            // attach the file to the message
+         FileDataSource fds = new FileDataSource(path+"/help/help.doc");
+      mbp2.setDataHandler(new DataHandler(fds));
+      mbp2.setFileName(fds.getName());
+
+      // create the Multipart and add its parts to it
+      Multipart mp = new MimeMultipart();
+      mp.addBodyPart(mbp1);
+      mp.addBodyPart(mbp2);
+
+      // add the Multipart to the message
+      message.setContent(mp);
+
+      // set the Date: header
+   //   message.setSentDate(new Date());
+
+
+}
+
+
+ // create and fill the first message part
+      MimeBodyPart mbp1 = new MimeBodyPart();
+      mbp1.setText(saluation);
+
+      // create the second message part
+      MimeBodyPart mbp2 = new MimeBodyPart();
+      mbp2.setText(text);
+
+      MimeBodyPart mbp3 = new MimeBodyPart();
+      mbp3.setText(closing);
+
+
+      // create the Multipart and add its parts to it
+      Multipart mp = new MimeMultipart();
+      mp.addBodyPart(mbp1);
+      mp.addBodyPart(mbp2);
+       mp.addBodyPart(mbp3);
+
+      // add the Multipart to the message
+      message.setContent(mp);
+
+
 
 //SMTPSSLTransport transport =(SMTPSSLTransport)session.getTransport("smtp");
 String pass=buffer.toString();

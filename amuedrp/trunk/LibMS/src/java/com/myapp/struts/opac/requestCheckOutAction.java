@@ -6,7 +6,6 @@
 package com.myapp.struts.opac;
 
 import com.myapp.struts.CirculationDAO.CirculationDAO;
-import com.myapp.struts.circulationDAO.cirDAO;
 import com.myapp.struts.hbm.CirMemberAccount;
 import com.myapp.struts.hbm.CirMemberDetail;
 import com.myapp.struts.hbm.CirOpacRequest;

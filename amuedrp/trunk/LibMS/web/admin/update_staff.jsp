@@ -15,10 +15,10 @@ String login_staff_id=(String)session.getAttribute("staff_id");
 String message1=null;
 String message2=null;
 String msg3=null;
- String change=(String)request.getParameter("id");
- if(change==null)
-{  change=(String)request.getAttribute("change");}   
-  System.out.println(change+".........................");
+ //String change=(String)request.getParameter("id");
+ //if(change==null)
+//{  change=(String)request.getAttribute("change");}
+  //System.out.println(change+".........................");
 String staff_id=rst.getId().getStaffId();
 String title="";
 if(rst.getTitle()!=null)
@@ -326,16 +326,7 @@ function copy()
     }
 }
 function send(){
-<%
-if(change.equals("admin"))
-{%>
-       location.href="<%=request.getContextPath()%>/admin/main.jsp";
-     <%}else if(change.equals("1")){%>
-          location.href="<%=request.getContextPath()%>/admin/acq_register.jsp";
-         
-<%}else{%>
-      location.href="<%=request.getContextPath()%>/admin/viewstaff.jsp";
-    <%}%>
+
 }
 </script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/cupertino/jquery.ui.all.css" type="text/css">
@@ -370,6 +361,7 @@ $(document).ready(function()
 });
 function echeck(str) {
 availableSelectList = document.getElementById("searchResult");
+availableSelectList.innerHTML="";
 		var at="@"
 		var dot="."
 		var lat=str.indexOf(at)
@@ -729,7 +721,8 @@ else
                      </html:select>
                    
                     
-                    <%}else{%>
+                    <%}else{  %>
+                   
                     <html:hidden property="sublibrary_id" value="<%=user_sublibrary%>"/>
                     <html:select  property="sublibrary_id" tabindex="3" disabled="true" value="<%=user_sublibrary%>">
                      <html:options name="SubLibrary" collection="sublib" property="id.sublibraryId" labelProperty="sublibName"></html:options>
@@ -1000,9 +993,14 @@ else
                 <tr> <td><%=resource.getString("admin.acq_registerstaff.zip")%></td><td><input type="text" tabindex="22" id="zip2" disabled  name="zip2" value="<%=zip2%>"></td><td colspan="2">
                             
                           
-                          <input type="submit"  value="<%=resource.getString("admin.acq_registerstaff.confirm")%>" class="txt2" onclick="return del()"/>
-                              <input type="button"  value="<%=resource.getString("admin.acq_register.back")%>" onclick="return send()" class="txt2" />                             
-</td></tr>
+                          </td></tr>
+                 <tr><td colspan="4" align="center">
+                         <input type="submit"  value="<%=resource.getString("admin.acq_registerstaff.confirm")%>" class="txt2" onclick="return del()"/>
+                              <input type="button"  value="<%=resource.getString("admin.acq_register.back")%>" onclick="return send()" class="txt2" />
+
+
+                    </td></tr>
+
                     </table>
                     </td></tr>   </table>                             
                               <%}%>

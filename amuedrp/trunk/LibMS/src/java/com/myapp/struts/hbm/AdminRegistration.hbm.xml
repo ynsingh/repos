@@ -72,7 +72,7 @@
             <column name="library_name" length="500" />
         </property>
         <property name="courtesy" type="string">
-            <column name="courtesy" length="10" />
+            <column name="courtesy" length="30" />
         </property>
         <property name="gender" type="string">
             <column name="gender" length="10" />

@@ -45,7 +45,7 @@ locale1=(String)session.getAttribute("locale");
 
 
 
-<link rel="stylesheet" href="LibMS/css/page.css"/>
+<link rel="stylesheet" href="/css/page.css"/>
 <%
 System.out.println("Session Id"+ session.getId());
 
@@ -62,9 +62,8 @@ else{
     %>sessionout();<%
     }
 
-//String id1=request.getParameter("id");
-//System.out.println (id1);
-//int id2=Integer.parseInt(id1);
+String id1=request.getParameter("id");
+int id2=Integer.parseInt(id1);
 List rst;
 rst=(List)session.getAttribute("blocked_resultset");
 AdminReg_Institute adminReg = new AdminReg_Institute();
@@ -75,26 +74,21 @@ adminReg =(AdminReg_Institute) rst.get(0);}
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Untitled Page</title>
-<style type="text/css">
-body
-{
-   background-color: #FFFFFF;
-   color: #000000;
-}
-</style>
+<link rel="stylesheet" href="/LibMS/css/page.css"/>
+
 </head>
 <body>
-    <html:form  action="/changeWorkingStatus" method="post"  onsubmit="return validation();">
-         <table align="center"  class="txt" width="800px" style="font-family: arial;font-weight: bold;color:brown;font-size:13px" dir="<%=rtl%>" align="<%=align%>">
+    <html:form  action="/changeWorkingStatus" method="post" >
+       <table align="center" dir="<%=rtl%>"  class="table" bgcolor="#7697BC" width="60%" >
 
 
-     <tr><td  align="left" colspan="2" ><br><br> <span class="txt"><img src="/images/Institutereg.png">
-</span><br>
-             <br>
+
+
+     <tr><td  align="center" class="txtStyle1" height="20px">Institute Details
 
 
          </td></tr>
+
 
             <%if(rst!=null){%>
      <%
@@ -171,32 +165,16 @@ body
      if(gender==null)
          gender="";
      %>
-              <tr><td width="150px" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("institutename")%></td><td><input type="text" id="Editbox1"   name="institute_name" value="<%=institute_name%>" tabindex="1" title="Enter Instutute Name" readonly></td><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("registrationid")%></td><td><input type="text" id="Editbox18"  name="registration_request_id" value="<%=registration_request_id%>" tabindex="18" readonly></td></tr>
+     <tr bgcolor="white"><td>
+            <table class="txtStyle" bgcolor="white" >
+     <tr><td width="150px" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("institutename")%></td><td><input type="text" id="Editbox1"   name="institute_name" value="<%=institute_name%>" tabindex="1" title="Enter Instutute Name" readonly></td><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("registrationid")%></td><td><input type="text" id="Editbox18"  name="registration_request_id" value="<%=registration_request_id%>" tabindex="18" readonly></td></tr>
 
              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("instituteabbrevation")%></td><td><input type="text" id="Editbox2"   name="abbreviated_name" value="<%=abbreviated_name%>" tabindex="2" readonly title="Abbrivated name e.g. AMU(aligarh muslim University)"></td><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("courtesy")%></td><td>
 
                      <input type="text" id="courtesy"  readonly name="courtesy" value="<%=courtesy%>"/>
 
-                     <%--<select name="courtesy"  disabled size="1" id="courtesy"   tabindex="11" title="courtesy" style="width:148px">
-     <%if(courtesy.equals("mr")){%>
-<option selected value="mr"><%=resource.getString("Mr")%></option>
-<option value="mrs"><%=resource.getString("Mrs")%></option>
-<option value="ms"><%=resource.getString("Ms")%></option>
-
-            <%}%>
-            <%if(courtesy.equals("mrs")){%>
-<option  value="mr"><%=resource.getString("Mr")%></option>
-<option selected value="mrs"><%=resource.getString("Mrs")%></option>
-<option value="ms"><%=resource.getString("Ms")%></option>
-            <%}%>
-            <%if(courtesy.equals("ms")){%>
-<option value="mr"><%=resource.getString("Mr")%></option>
-<option value="mrs"><%=resource.getString("Mrs")%></option>
-<option  selected value="ms"><%=resource.getString("Ms")%></option>
-            <%}%>
-
-</select>--%>
-                     <input type="hidden" id="courtesy" name="courtesy" value="<%=courtesy%>"/>
+                    
+                    <%-- <input type="hidden" id="courtesy" name="courtesy" value="<%=courtesy%>"/>--%>
 </td></tr>
 
              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("instituteAddress")%></td><td><input type="text" id="Editbox3"   name="institute_address" value="<%=institute_address%>" tabindex="3" readonly title="Enter Address of Institute"></td><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("firstname")%></td><td><input type="text" id="Editbox13"  name="admin_fname" value="<%=admin_fname%>" tabindex="13" title="Enter first Name" readonly></td></tr>
@@ -239,7 +217,7 @@ body
 
 
              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("landlineno")%></td><td><input type="text" id="Editbox8"   name="land_line_no" value="<%=land_line_no%>" tabindex="8" title="Enter Land Line No" readonly></td>
-             <td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("password")%></td><td><input type="password" id="Editbox11" readonly  name="admin_password" value="<%=admin_password%>" tabindex="17" title="Enter Password" readonly></td>
+             <input type="hidden" id="Editbox11" readonly  name="admin_password" value="<%=admin_password%>" tabindex="17" title="Enter Password" readonly>
              </tr>
 
              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("typeofinstitute")%></td><td><select name="type_of_institute" disabled id="type_of_institute" style="width:148px" >
@@ -310,9 +288,11 @@ body
 
               </tr>
 <tr><td colspan="4" align="center"><br><br>
-        <input type="submit" class="txt2"  id="submit" name="submit" value="<%=resource.getString("accept")%>"><input type="button" class="txt2"    name="cancel" value="<%=resource.getString("back")%>" onclick="quit();">
+        <input type="submit" class="btn1"  id="submit" name="submit" value="<%=resource.getString("accept")%>"><input type="button" class="btn1"    name="cancel" value="<%=resource.getString("back")%>" onclick="quit();">
 </td></tr>
+            </table>
 <%}%>
+            </td><tr>
         </table>
 
 
@@ -339,7 +319,7 @@ function validation()
          }
 function quit()
 {
-    parent.location="<%=request.getContextPath()%>"+"/admin/admin_home.jsp";
+    parent.location="<%=request.getContextPath()%>"+"/superadmin.do";
 }
 function sessionout()
 {

@@ -4,7 +4,7 @@ Devleoped By : Kedar Kumar
 Modified On  : 17-Feb 2011
 This Page is to Enter Library Details
 -->
-<%@page  import="java.util.List" %>
+<%@page  pageEncoding="UTF-8" import="java.util.*;" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -13,6 +13,32 @@ This Page is to Enter Library Details
 <%
 
 %>
+ <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+    boolean page=true;
+%>
+
+<%
+ String lib_id = (String)session.getAttribute("library_id");
+  String sublib_id = (String)session.getAttribute("memsublib");
+        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";page=true;}
+    else{ rtl="RTL";align="right";page=false;}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+    %>
 
 <html>
 <head>
@@ -180,6 +206,16 @@ function fun()
     document.getElementById("form1").submit();
 }
 
+function print()
+{
+
+    document.getElementById("form1").action = "<%=request.getContextPath()%>/cir_chkinreportPrint.do"
+    document.getElementById("form1").method="post";
+    document.getElementById("form1").target="";
+    document.getElementById("form1").submit();
+}
+
+
 </script>
 </head>
     <body onload="fun()">
@@ -192,34 +228,37 @@ function fun()
       visibility: show;">
 
      <html:form  action="/cir_chkinreport" method="post" target="f1" styleId="form1" >
- <table class="table" width="800px" height="300px" align="center">
+         <table dir="<%=rtl%>" class="table" width="800px" height="300px" align="center">
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">CheckIn Report</td></tr>
-                <tr><td valign="top" align="center"> 
-                        <table cellspacing="10px" width="100%">
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("circulation.cir_checkin_report.chekinreport")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center">
+                        <table dir="<%=rtl%>" cellspacing="10px" width="100%">
 
 
   
 
   <tr>
 
-    <td align="right"><strong>Member Id :</strong></td>
-    <td><html:text property="memid" styleId="memid"  onblur="fun()"  styleClass="textBoxWidth"/>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("circulation.cir_newmember.memberid")%> :</strong></td>
+    <td dir="<%=rtl%>" ><html:text property="memid" styleId="memid"  onblur="fun()"  styleClass="textBoxWidth"/>
 
     </td>
   </tr>
     <tr>
-     <td align="right"><strong>Starting Date<a class="star">*</a> :</strong></td>
-     <td><html:text property="starting_date" styleId="start_date"   onblur="fun()"  styleClass="textBoxWidth"/>
-         <div class="err" align="left" id="searchResult1" ></div>
+     <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("circulation.cir_checkin_report.startdate")%><a class="star">*</a> :</strong></td>
+     <td dir="<%=rtl%>" ><html:text property="starting_date" styleId="start_date"   onblur="fun()"  styleClass="textBoxWidth"/>
+         <div class="err" align="<%=align%>" id="searchResult1" ></div>
          </td>
 
-         <td align="right"><strong>End Date<a class="star">*</a> :</strong></td>
-         <td><html:text property="end_date" styleId="end_date"   onblur="fun()" styleClass="textBoxWidth"/>&nbsp;&nbsp;<input type="submit"  value="Find"  onClick="return validation();"/>
+         <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("circulation.cir_checkin_report.enddate")%><a class="star">*</a> :</strong></td>
+         <td dir="<%=rtl%>" ><html:text property="end_date" styleId="end_date"   onblur="fun()" styleClass="textBoxWidth"/>&nbsp;&nbsp;
+             <input type="submit"  value="<%=resource.getString("opac.simplesearch.find")%>"  onClick="return validation();"/>
 
-         <input type="button"  value="Clear" onclick="return Clear();" />
-         <div class="err" align="left" id="searchResult2" ></div>
+
+             <input type="reset"  value="<%=resource.getString("opac.simplesearch.clear")%>" onclick="return Clear();" />
+             <input type="submit"  value="PrintReport"  onClick="return print();"/>
+         <div class="err" align="<%=align%>" id="searchResult2" ></div>
          </td>
     </tr>
   
@@ -229,7 +268,7 @@ function fun()
     
 
  
-                <tr><td valign="top" align="center">
+                <tr><td dir="<%=rtl%>" valign="top" align="center">
                 
                     
                             <iframe align="center" id="f1" name="f1" height="300px" width="800px" src="" frameborder="0"/>

@@ -7,6 +7,8 @@ package com.myapp.struts.circulation;
 
 import com.myapp.struts.CirculationDAO.CirculationDAO;
 import com.myapp.struts.hbm.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,6 +25,10 @@ public class CirCheckinbookdetailAction extends org.apache.struts.action.Action 
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     private String checkout_id;
+     Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
     
     
     @Override
@@ -32,6 +38,21 @@ public class CirCheckinbookdetailAction extends org.apache.struts.action.Action 
 
         CirCheckinActionForm myform = (CirCheckinActionForm)form;
         HttpSession session = request.getSession();
+          try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
         String document_id = "";
         String accno = myform.getTXTACCESSION();
         String memid = myform.getTXTMEMID();
@@ -89,7 +110,8 @@ public class CirCheckinbookdetailAction extends org.apache.struts.action.Action 
 boolean check = CirculationDAO.updateCheckin(circheckin, circheckout, cirmemAccount, doc, cirHistory);
 if (check==true)
 {
-    request.setAttribute("msg", "CheckIn Process Succesfully Completed");
+   // request.setAttribute("msg", "CheckIn Process Succesfully Completed");
+    request.setAttribute("msg", resource.getString("circulation.circhkinbookdetailAction.chkinsuccfullycomplt"));
     return mapping.findForward(SUCCESS);
 }
 else

@@ -6,9 +6,11 @@
 package com.myapp.struts.circulation;
 
 import com.myapp.struts.CirculationDAO.CirculationDAO;
-import com.myapp.struts.circulationDAO.cirDAO;
+
 import com.myapp.struts.hbm.*;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -41,6 +43,10 @@ public class CirCheckoutAllAction extends org.apache.struts.action.Action {
     int checkout_id;
     int transaction_id;
     boolean result;
+    Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
    
     CirCheckout cc=new CirCheckout();
     CirCheckoutId ccid=new CirCheckoutId();
@@ -60,18 +66,33 @@ public class CirCheckoutAllAction extends org.apache.struts.action.Action {
         due_date=ccaaf.getDue_date();
         System.out.println(issue_date+"   "+due_date);
 
+        if(ccaaf.getDocument_id()!=null)
         document_id= Integer.parseInt(ccaaf.getDocument_id());
 
         System.out.println(document_id);
 
         HttpSession session=request.getSession();
+         try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
         memid=ccaaf.getMemid();
         CirCheckout circheck = (CirCheckout)CirculationDAO.searchCheckOutDetails1(library_id, sublibrary_id, String.valueOf(document_id),"issued");
         if(circheck==null)
         {
-        control_list=cirDAO.getMaxChkoutId(library_id,sublibrary_id);
+        control_list=CirculationDAO.getMaxChkoutId(library_id,sublibrary_id);
                if(control_list.get(0)!=null)
                {
                 max_id=(Integer) control_list.get(0) ;
@@ -83,7 +104,7 @@ public class CirCheckoutAllAction extends org.apache.struts.action.Action {
                }
         checkout_id=max_id;
 
-        control_list1=cirDAO.getMaxTransId(library_id);
+        control_list1=CirculationDAO.getMaxTransId(library_id);
                if(control_list1.get(0)!=null)
                {
                 max_id1=(Integer) control_list1.get(0) ;
@@ -117,16 +138,20 @@ System.out.println(checkout_id+"..............................");
         cth.setStatus(status);
         cth.setCheckoutId(checkout_id);
         cth.setCheckoutDate(issue_date);
+        
+        result=CirculationDAO.insertCirCheckout(cc);
+            boolean result1 = CirculationDAO.insertCirTransHistory(cth);
+            if(result==true && result1==true)
+            {
+        DocumentDetails docdetail=CirculationDAO.getDocument(library_id, sublibrary_id, document_id);
+        if(docdetail!=null)
+            docdetail.setStatus(status);
 
 
-        DocumentDetails docdetail=cirDAO.getDocument(library_id, sublibrary_id, document_id);
-        docdetail.setStatus(status);
+        CirMemberAccount cirmemac=CirculationDAO.getCirMem(library_id, sublibrary_id, memid);
 
-
-        CirMemberAccount cirmemac=cirDAO.getCirMem(library_id, sublibrary_id, memid);
-
-
-
+        result=false;
+        if(cirmemac!=null){
         total_issued_book=Integer.parseInt(cirmemac.getTotalIssuedBook())+1;
         current_issued_book=Integer.parseInt(cirmemac.getCurrentIssuedBook())+1;
 
@@ -136,7 +161,11 @@ System.out.println(checkout_id+"..............................");
         cirmemac.setCurrentIssuedBook(String.valueOf(current_issued_book));
         cirmemac.setLastchkoutdate(issue_date);
 
-        result=cirDAO.update(cc, cth, cirmemac, docdetail) ;
+
+
+
+        result=CirculationDAO.update(cirmemac, docdetail) ;
+        }
         if(result==true)
         {
 
@@ -149,13 +178,16 @@ System.out.println(checkout_id+"..............................");
                if(result==true)
                {
                    
-              request.setAttribute("msg", "Item is checked out successfully.");
+            // request.setAttribute("msg", "Item is checked out successfully.");
+              request.setAttribute("msg", resource.getString("circulation.circhkoutall.itemischeckoutsucc"));
               request.setAttribute("memid", memid);
               return mapping.findForward("success");
                }
                 else
                   {
-              request.setAttribute("msg1", "Item not checked out due to some reason.");
+              
+               //  request.setAttribute("msg1", "Item not checked out due to some reason.");  
+              request.setAttribute("msg1", resource.getString("circulation.circhkoutall.itemisnotcheckoutsucc"));
               request.setAttribute("memid", memid);
              return mapping.findForward("success");
                      }
@@ -172,7 +204,9 @@ System.out.println(checkout_id+"..............................");
 
 
            }
-             request.setAttribute("msg", "Item is checked out successfully");
+
+           // request.setAttribute("msg", "Item is checked out successfully");
+           request.setAttribute("msg", resource.getString("circulation.circhkoutall.itemischeckoutsucc"));
               request.setAttribute("memid", memid);
               return mapping.findForward("success");
 
@@ -181,7 +215,16 @@ System.out.println(checkout_id+"..............................");
         }
         else
         {
-              request.setAttribute("msg1", "Item not checked out due to some reason.");
+            // request.setAttribute("msg1", "Item not checked out due to some reason.");
+            request.setAttribute("msg1", resource.getString("circulation.circhkoutall.itemisnotcheckoutsucc"));
+              request.setAttribute("memid", memid);
+             return mapping.findForward("success");
+        }
+            }
+             else
+        {
+            // request.setAttribute("msg1", "Item not checked out due to some reason.");
+            request.setAttribute("msg1", resource.getString("circulation.circhkoutall.itemisnotcheckoutsucc"));
               request.setAttribute("memid", memid);
              return mapping.findForward("success");
         }
@@ -194,7 +237,9 @@ System.out.println("CirOpac="+ciropac+" Lib="+library_id+" sublib="+sublibrary_i
                ciropac.setStatus("Rejected");
                result=CirculationDAO.updateCheckOut(ciropac);
            }
-            request.setAttribute("msg1", "Item already checked out.");
+            
+             //  request.setAttribute("msg1", "Item already checked out.");
+               request.setAttribute("msg1", resource.getString("circulation.circhkoutall.itemalreadychkout"));
               request.setAttribute("memid", memid);
              return mapping.findForward("success");
         }

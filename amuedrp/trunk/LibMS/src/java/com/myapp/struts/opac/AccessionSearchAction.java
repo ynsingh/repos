@@ -24,15 +24,7 @@ public class AccessionSearchAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
      OpacSearchDAO osdao= new OpacSearchDAO();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-    
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -43,12 +35,7 @@ public class AccessionSearchAction extends org.apache.struts.action.Action {
         String lib_id=myform.getCMBLib();
         String accessionno = myform.getTXTKEY();
           String sublib=myform.getCMBSUBLib();
-        //if (session.getAttribute("Result")!=null) session.removeAttribute("Result");
-       // String query = "select * from document where accessionno='"+ accessionno +"'";
-       // if(!lib_id.equals("all"))
-            // query +=" and library_id='" + lib_id + "'";
-       // rs = MyQueryResult.getMyExecuteQuery(query);
-       //session.setAttribute("Result", rs);//resultset
+       session.removeAttribute("documentdetail");
         List documentdetail  =(List)osdao.accessionNoSearch(accessionno, lib_id, sublib);
         session.setAttribute("documentdetail", documentdetail);
         return mapping.findForward(SUCCESS);

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 Aug, 2011 11:27:36 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.AcqRecievingDetails" table="acq_recieving_details" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.AcqRecievingDetailsId">
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+            <key-property name="subLibraryId" type="string">
+                <column name="sub_library_id" length="20" />
+            </key-property>
+            <key-property name="recievingNo" type="string">
+                <column name="recieving_no" length="20" />
+            </key-property>
+            <key-property name="recievingItemId" type="int">
+                <column name="recieving_item_id" />
+            </key-property>
+        </composite-id>
+        <property name="titleId" type="java.lang.Integer">
+            <column name="title_id" />
+        </property>
+        <property name="unitPrice" type="string">
+            <column name="unit_price" length="10" />
+        </property>
+        <property name="recievedCopies" type="java.lang.Integer">
+            <column name="recieved_copies" />
+        </property>
+        <property name="pendingCopies" type="java.lang.Integer">
+            <column name="pending_copies" />
+        </property>
+        <property name="approvalType" type="string">
+            <column name="approval_type" length="20" />
+        </property>
+        <property name="controlNo" type="java.lang.Integer">
+            <column name="control_no" />
+        </property>
+    </class>
+</hibernate-mapping>

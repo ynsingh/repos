@@ -39,7 +39,7 @@ rst = (List)admindao.getAdminInstituteDetailsById(id2);
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Untitled Page</title>
+
 
 <%!
     Locale locale=null;
@@ -67,43 +67,15 @@ locale1=(String)session.getAttribute("locale");
 
     %>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
-<style type="text/css">
-body
-{
-   background-color: #FFFFFF;
-   color: #000000;
-}
- .btn
-    {
-font-family:Tahoma;
-    font-size:13px;
-    letter-spacing:1px;
-     padding-left:10px;
-     color:brown;
-     text-align:center;
-     width:100px;
 
-
-     font-weight:bold;
-    }
-.txt
-{
-font-family: Arial,Helvetica,sans-serif;
-font-size:15px;
-letter-spacing:1px;
-color:brown;
-font-weight:bold;
-}
-</style>
 </head>
 <body>
     <html:form  method="post" action="/adminupdate" onsubmit="return validation();" >
-        <table align="center" dir="<%=rtl%>"  class="txt" width="80%" style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
+        <table align="center" dir="<%=rtl%>"  class="table" bgcolor="#7697BC" width="60%" >
 
 
-     <tr><td  align="<%=align%>" dir="<%=rtl%>" colspan="2" ><br><br> <span class="txt">
-</span><br>
-             <br>
+
+    <tr><td  align="center" class="txtStyle1" height="20px">Institute Details
 
 
          </td></tr>
@@ -198,45 +170,15 @@ font-weight:bold;
          gender="";
      if(user_id==null)
          user_id="";
-     System.out.println("................"+user_id);
+  
      %>
+           <tr><td>
+            <table class="txtStyle" bgcolor="white" >
                <tr><td width="15%" dir="<%=rtl%>"><%=resource.getString("institutename")%></td><td width="15%" ><input type="text" id="institute_name"      name="institute_name" value="<%=institute_name%>" tabindex="1" title="Enter Instutute Name" dir="<%=rtl%>" ></td><td dir="<%=rtl%>" width="15%" ><%=resource.getString("registrationid")%></td><td dir="<%=rtl%>" width="15%" ><input type="text" dir="<%=rtl%>" id="registration_request_id"  name="registration_request_id" value="<%=registration_id%>"  readonly></td></tr>
 
              <tr><td dir="<%=rtl%>"><%=resource.getString("instituteabbrevation")%></td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="abbreviated_name"   name="abbreviated_name" value="<%=abbreviated_name%>" tabindex="2"  title="Abbrivated name e.g. AMU(aligarh muslim University)"></td><td dir="<%=rtl%>"><%=resource.getString("courtesy")%></td><td>
                      <input type="text" id="courtesy"  name="courtesy" value="<%=courtesy%>"/>
-                     <%--<select name="courtesy"  dir="<%=rtl%>"  size="1" id="courtesy"   tabindex="13" title="courtesy" style="width:148px">
-    <%if(courtesy.equals("mr")){%>
-<option selected value="mr"><%=resource.getString("Mr")%></option>
-<option value="mrs"><%=resource.getString("Mrs")%></option>
-<option value="ms"><%=resource.getString("Ms")%></option>
- <option  value="Select"><%=resource.getString("select")%></option>
-
-            <%}else if(courtesy.equals("mrs")){%>
-<option  value="mr"><%=resource.getString("Mr")%></option>
-<option selected value="mrs"><%=resource.getString("Mrs")%></option>
-<option value="ms"><%=resource.getString("Ms")%></option>
-<option  value="Select"><%=resource.getString("select")%></option>
-            <%}
-    else if(courtesy.equals("ms")){%>
-<option value="mr"><%=resource.getString("Mr")%></option>
-<option value="mrs"><%=resource.getString("Mrs")%></option>
-<option  selected value="ms"><%=resource.getString("Ms")%></option>
- <option  value="Select"><%=resource.getString("select")%></option>
-            <%}
-else
-    {
-        %>
-<option  selected value="">Select</option>
-<option value="mr"><%=resource.getString("Mr")%></option>
-<option value="mrs"><%=resource.getString("Mrs")%></option>
-<option  selected value="ms"><%=resource.getString("Ms")%></option>
- <option  value="Select"><%=resource.getString("select")%></option>
-<%
-}
-%>
-
-</select>--%>
-                    <%-- <input type="hidden" id="courtesy" name="courtesy" value="<%=courtesy%>"/>--%>
+                     
 </td></tr>
 
              <tr><td dir="<%=rtl%>"><%=resource.getString("instituteAddress")%></td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="institute_address"   name="institute_address" value="<%=institute_address%>" tabindex="3"  title="Enter Address of Institute"></td><td dir="<%=rtl%>"><%=resource.getString("firstname")%></td><td dir="<%=rtl%>"><input type="text" id="admin_fname"  name="admin_fname" value="<%=admin_fname%>" tabindex="14" title="Enter first Name" ></td></tr>
@@ -354,8 +296,10 @@ else
 <tr><td colspan="4" align="center" dir="<%=rtl%>" class="txt2"><br><br>
          
                           
-        <input type="submit" class="txt2" dir="<%=rtl%>" id="Button1" name="submit" value="<%=resource.getString("update")%>">&nbsp;&nbsp;<input type="button" dir="<%=rtl%>"  name="cancel" class="txt2" value="<%=resource.getString("cancel")%>" onclick="quit();"></td></tr>
+        <input type="submit" class="btn1" dir="<%=rtl%>" id="Button1" name="submit" value="<%=resource.getString("update")%>">&nbsp;&nbsp;<input type="button" dir="<%=rtl%>"  name="cancel" class="btn1" value="<%=resource.getString("cancel")%>" onclick="quit();"></td></tr>
+
         </table>
+               </td></tr></table>
 
 
 

@@ -25,6 +25,29 @@ String library_id=(String)session.getAttribute("library_id");
 String notice_id=(String)request.getAttribute("notice_id");
 
 %>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -36,6 +59,8 @@ String notice_id=(String)request.getAttribute("notice_id");
 
 function check1()
 {
+    
+    
     if(document.getElementById('subject_type').value=="")
     {
         alert("Enter Subject");
@@ -93,40 +118,40 @@ function isNumberKey(evt)
 
       visibility: show;">
 
-    <table border="1" class="table" width="400px" height="200px" align="center">
+    <table dir="<%=rtl%>" border="1" class="table" width="400px" height="200px" align="center">
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Add Notices</td></tr>
-                <tr><td valign="top" align="center"> <br/>
-                        <table cellspacing="10px">
-                             <tr><td  class="txt2" colspan="2">Date
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.manage_notice.addnotices")%></td></tr>
+                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
+                        <table dir="<%=rtl%>" cellspacing="10px">
+                             <tr><td dir="<%=rtl%>"  class="txt2" colspan="2"><%=resource.getString("circulation.cir_checkout_report.date")%>
 
                         </td>
-                        <td align="left"><html:text   styleId="date_type" property="date" readonly="true" value="<%=date%>"/><br>
+                        <td dir="<%=rtl%>" align="<%=align%>"><html:text   styleId="date_type" property="date" readonly="true" value="<%=date%>"/><br>
                        </td>
                     </tr>
                  
-                            <tr><td width="150px" class="txt2" colspan="2">Notice Id </td>
-                                <td width="150px" align="left"> <html:text  styleId="noticetype" property="notice_id" value="<%=notice_id%>" readonly="true"/>
+                            <tr><td dir="<%=rtl%>" width="150px" class="txt2" colspan="2"><%=resource.getString("systemsetup.manage_notice.noticesid")%> </td>
+                                <td dir="<%=rtl%>" width="150px" align="<%=align%>"> <html:text  styleId="noticetype" property="notice_id" value="<%=notice_id%>" readonly="true"/>
                                 </td>
                             </tr>
                           
                            
-                            <tr><td  class="txt2" colspan="2">Enter Subject<span class="star">*</span>
+                            <tr><td dir="<%=rtl%>"  class="txt2" colspan="2"><%=resource.getString("systemsetup.manage_notice.entersub")%><span class="star">*</span>
 
                         </td>
-                        <td align="left"> <html:text styleId="subject_type" property="subject" value=""  /></td>
+                        <td dir="<%=rtl%>" align="<%=align%>"> <html:text styleId="subject_type" property="subject" value=""  /></td>
                     </tr>
-                       <tr><td  class="txt2" colspan="2">Enter Detail<span class="star">*</span>
+                       <tr><td dir="<%=rtl%>"  class="txt2" colspan="2"><%=resource.getString("systemsetup.manage_notice.enterdetail")%><span class="star">*</span>
 
                         </td>
-                        <td align="left"> <html:textarea  styleId="detail_type"  property="detail"/></td>
+                        <td dir="<%=rtl%>" align="<%=align%>"> <html:textarea  styleId="detail_type"  property="detail"/></td>
                     </tr>
                    
 
-                    <tr><td  class="txt2" colspan="3" align="center">
-                          <br/>   <html:submit  value="Submit"/>
-                             <input type="button" onClick="quit()"  value="Back"/><br/><br/>
+                    <tr><td dir="<%=rtl%>"  class="txt2" colspan="3" align="center">
+                            <br/>   <input type="submit"  value="<%=resource.getString("circulation.cir_newmember.submit")%>"/>
+                             <input type="button" onClick="quit()"  value="<%=resource.getString("circulation.cir_member_reg.back")%>"/><br/><br/>
                         </td>
 
                     </tr>
