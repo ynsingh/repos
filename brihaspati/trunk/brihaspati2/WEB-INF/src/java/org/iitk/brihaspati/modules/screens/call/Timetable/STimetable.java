@@ -432,12 +432,25 @@ public class STimetable implements Constants {
 		System.out.println("Unassigned Events : ");
 		for (Integer tmp : unassignedEvents) {
 			Event event = allEvents.get(tmp);
-			System.out.print("{ " + CLASS_CODES[event.getType()] 
+			String errorMsg = "{ " + CLASS_CODES[event.getType()] 
 			                                    + event.getCourse().getCourseCode() + " "  
 			                                    + event.getProfessor().getName()
-			                                    + " }, ");
+			                                    + " }, ";
+			System.out.print(errorMsg);
 			System.out.println();
 		}
+	}
+
+	public ArrayList<String> getUnassignedEventsErrorMsg() {
+		ArrayList<String> ret = new ArrayList<String>();
+		for (Integer tmp : unassignedEvents) {
+			Event event = allEvents.get(tmp);
+			ret.add("{ " + CLASS_CODES[event.getType()] 
+			                                    + event.getCourse().getCourseCode() + " "  
+			                                    + event.getProfessor().getName()
+			                                    + " }");
+		}
+		return ret;
 	}
 
 	public void setEventData() throws TimetableException {

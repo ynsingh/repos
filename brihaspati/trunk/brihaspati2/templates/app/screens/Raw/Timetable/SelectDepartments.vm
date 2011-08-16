@@ -8,7 +8,7 @@ $page.setTitle("Select Department")
 Manage Departments : select those which you want to be present.
 <br/>
 <br/>
-<form action="$link.setPage("call,Timetable,Index.vm").addPathInfo("mode","update").setActionEvent("TimetableAction","doManagedepartment")" method="post">
+<form action="$link.setPage("call,Timetable,Index.vm").addPathInfo("count", "3").addPathInfo("mode","update")" method="post">
 
 	<input type="checkbox" name="department" value="Computer Science~CSE" /> Computer Science <br/>
 	<input type="checkbox" name="department" value="Electrical Engineering~EE" /> Electrical Engineering <br/>
@@ -29,7 +29,7 @@ Manage Departments : select those which you want to be present.
 	<input type="checkbox" name="department" value="Water Resources Development~WRD" /> Water Resources Development<br/>
 	<input type="checkbox" name="department" value="Paper Technology~PP" /> Paper Technology <br/>
 
-	<input type="submit" value=Update /> <a href=$link.setPage("call,Timetable,Index.vm") > Back</a>
+	<input type="submit" value=Update /> <a href=$link.setPage("call,Timetable,Index.vm").addPathInfo("count", "1") > Back</a>
 
 
 </form>

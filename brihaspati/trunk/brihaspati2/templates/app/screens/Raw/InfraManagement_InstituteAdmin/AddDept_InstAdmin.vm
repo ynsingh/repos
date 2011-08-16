@@ -6,7 +6,7 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor"><td colspan=$tdcolspan>
      	<a href=$link.setPage("Index.vm") style=text-decoration:none>Admin's Home</a> | 
 	<a href=$link.setPage("call,InfraManagement_InstituteAdmin,AddDept_InstAdmin.vm").addPathInfo("count","1") style=text-decoration:none>Infrastructure Management</a> | 
-	#if($tdcolor=="1" || $tdcolor=="")
+	#if($count=="1" || $count=="")
 		Add Department/Building
 	#elseif($count=="2")
 		 Add Room		

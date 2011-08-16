@@ -6,7 +6,7 @@ $page.setTitle("Generate Timetable")
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($department = $data.getSession().getAttribute("department"))
 #set($path = $data.getSession().getAttribute("path"))
-
+<a href=$link.setPage("call,Timetable,Index.vm").addPathInfo("count", "1") > Back</a>
 <a href="$content.getURI("/reports/$path/pdf/batch")"> Batches </a> <br />
 <a href="$content.getURI("/reports/$path/pdf/faculty")"> Faculty </a> <br />
 <a href="$content.getURI("/reports/$path/pdf/room")"> Rooms </a> <br />

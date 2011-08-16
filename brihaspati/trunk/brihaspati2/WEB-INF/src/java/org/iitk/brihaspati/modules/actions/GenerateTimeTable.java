@@ -93,6 +93,7 @@ public class GenerateTimeTable extends VelocityAction {
 	
 	public void doGenerate(RunData data, Context context) throws Exception {
 		System.out.println("------------------------- Entering Generate------------------------------");
+		Utils.clearErrorMsg();
 		String msg = "There was an error in generating Timetables.<br/>";
 		boolean error = false;
 		String xmlFile = (String)data.getParameters().getString("xmlFile", "");
@@ -154,9 +155,11 @@ public class GenerateTimeTable extends VelocityAction {
 		/*
 		 * Here the path of the file in which Timetable is stored is to be given.
 		 */
+		ArrayList<String> unassignedEventsErrorMsg = new ArrayList<String>();
 		try {
 			tableId = best.savePath(username, department, path);
 			best.saveTable(tableId, username, department, path, Data.getInstance().getEventList());
+			unassignedEventsErrorMsg = best.getUnassignedEventsErrorMsg();
 			System.out.println("TableId saved is: " + tableId);
 		} catch (Exception e) {
 			System.out.println("ErrorId2: "+e);
@@ -183,6 +186,7 @@ public class GenerateTimeTable extends VelocityAction {
 			e.printStackTrace();
 		}
 		context.put("msg", msg);
+		if(unassignedEventsErrorMsg != null && unassignedEventsErrorMsg.size() > 0) context.put("unassignedEvents", unassignedEventsErrorMsg);
 		System.out.println("------------------------- Leaving Generate------------------------------");
 	}
 

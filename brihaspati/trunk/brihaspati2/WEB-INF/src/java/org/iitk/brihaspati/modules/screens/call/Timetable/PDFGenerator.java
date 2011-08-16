@@ -65,6 +65,7 @@ public class PDFGenerator implements Constants {
 		batchList = Data.getInstance().getBatchList();
 		facultyList = Data.getInstance().getFacultyList();
 		System.out.println("-------------Path Constructor-----------------------");
+		System.out.println("path: " + path + ", tableId: " + tableId + ", department: " + department);
 		System.out.println("events: " + eventList.size());
 		System.out.println("faculty: " + facultyList.size());
 		System.out.println("batch: " + batchList.size());
@@ -328,9 +329,12 @@ public class PDFGenerator implements Constants {
 									}
 									if(!batches.equals(""))
 										batches = batches.substring(0, batches.length()-2);
+									Room r = event.getRoom();
+									String room = "null";
+									if(r!=null) room = r.getCode();
 									cellText = CLASS_CODES[event.getType()] 
 									                       + event.getCourse().getCourseCode() + "\n" 
-									                       + event.getRoom().getCode() + "\n"
+									                       + room + "\n"
 									                       + batches;
 									break;
 								}
@@ -457,9 +461,12 @@ public class PDFGenerator implements Constants {
 							}
 							for (Batch bth : event.getBatchList()){
 								if (bth.getId().equals(batchCode)) {
+									Room r = event.getRoom();
+									String room = "null";
+									if(r!=null) room = r.getCode();
 									cellText = CLASS_CODES[event.getType()] 
 									                       + event.getCourse().getCourseCode() + "\n" 
-									                       + event.getRoom().getCode() + "\n"
+									                       + room + "\n"
 									                       + event.getProfessor().getId();
 									break;
 	
@@ -583,6 +590,7 @@ public class PDFGenerator implements Constants {
 							if(event.hasFixedSchedule()) {
 								continue;
 							}
+							if (event.getRoom() == null) continue;
 							if (event.getRoom().getCode().equals(roomCode)) {
 								String batches = "";
 								for (Batch bth : event.getBatchList()){
@@ -707,11 +715,14 @@ public class PDFGenerator implements Constants {
 									if(!batches.equals("")) {
 										batches=batches.substring(0, batches.length()-2);
 									}
+									Room r = event.getRoom();
+									String room = "null";
+									if(r!=null) room = r.getCode();
 									cellText = "<div id=\"eventId=" + event.getId()   
 											+ "&type=" + event.getRequiredSlots() + "\" class=\"drag green\">"
 											+ CLASS_CODES[event.getType()] 
 											+ event.getCourse().getCourseCode() + "<br/>" 
-					                        + event.getRoom().getCode() + "<br/>"
+					                        + room + "<br/>"
 					                        + batches
 					                        + "</div>";
 									break;
@@ -721,11 +732,14 @@ public class PDFGenerator implements Constants {
 						else if(tableFor == "batch") {
 							for (Batch bth : event.getBatchList()) {
 								if (bth.getId().equals(code)) {
+									Room r = event.getRoom();
+									String room = "null";
+									if(r!=null) room = r.getCode();
 									cellText = "<div id=\"eventId=" + event.getId()  
 											+ "&type=" + event.getRequiredSlots() + "\" class=\"drag green\">"
 										    + CLASS_CODES[event.getType()] 
 					                        + event.getCourse().getCourseCode() + "<br/>" 
-					                        + event.getRoom().getCode() + "<br/>"
+					                        + room + "<br/>"
 					                        + event.getProfessor().getId()
 					                        + "</div>";
 									break;
@@ -733,6 +747,7 @@ public class PDFGenerator implements Constants {
 							}
 						}
 						else if(tableFor == "room") {
+							if (event.getRoom() == null) continue;
 							if (event.getRoom().getCode().equals(code)) {
 								String batches = "";
 								String faculty = event.getFaculty().getId();
