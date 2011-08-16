@@ -263,6 +263,8 @@ public class OnlineRegistration extends VelocitySecureAction
 						MsgForExpireTime = "forUser "; 
 						indexList = sendMail_MoreThanSevenDays(userlist, MsgForExpireTime, uname, server_name, srvrPort, LangFile);
 						xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineUser(path,"/OnlineUser.xml",indexList);
+						if(program.equals("Select Program"))
+                                                        program="";
 				                TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program);
         				        xmlWriter.writeXmlFile();
 						if(gname.equals("author"))
@@ -277,6 +279,8 @@ public class OnlineRegistration extends VelocitySecureAction
 				{
 					indexList.add(-1);
 	                		xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineUser(path,"/OnlineUser.xml",indexList);
+					if(program.equals("Select Program"))
+                                                        program="";
 		        	        TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program);
         		        	xmlWriter.writeXmlFile();
 					sendMailToApproval(gname,LangFile,uname,"",(Integer.parseInt(instituteid)));

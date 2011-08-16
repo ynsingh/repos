@@ -83,7 +83,7 @@ import org.iitk.brihaspati.om.CoursesPeer;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date: 08-07-2010, 20-10-2010, 26-12-2010, 27-07-2011
+ * @modified date: 08-07-2010, 20-10-2010, 26-12-2010, 27-07-2011, 05-08-2011
  */
 
 public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
@@ -161,22 +161,32 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
      	  */
 	public void doUpdate(RunData data, Context context)
 	{
+		String msg="";
 		LangFile=(String)data.getUser().getTemp("LangFile");	
 	 	ParameterParser pp=data.getParameters();
                 String uname=pp.getString("username");
+		/* Counter tells in how many institute the user is registered*/
+		int count=Integer.parseInt(pp.getString("counter",""));
 		if(StringUtil.checkString(uname) != -1)
-                       {
-                               data.addMessage(MultilingualUtil.ConvertedString("usr_prof1",LangFile));
-                               return;
-                       }
+                {
+                	data.addMessage(MultilingualUtil.ConvertedString("usr_prof1",LangFile));
+                        return;
+                }
 		String fname=StringUtil.replaceXmlSpecialCharacters(pp.getString("firstname"));
 	 	String lname=StringUtil.replaceXmlSpecialCharacters(pp.getString("lastname"));
          	String email=StringUtil.replaceXmlSpecialCharacters(pp.getString("email"));
-         	String rollno=StringUtil.replaceXmlSpecialCharacters(pp.getString("rollno",""));
-		//ErrorDumpUtil.ErrorLog("value of roll no in user action institute admin\n"+rollno);
-		String program=StringUtil.replaceXmlSpecialCharacters(pp.getString("prg",""));
-                //ErrorDumpUtil.ErrorLog("value of program in user action Institute Admin\n"+program);
-		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program);
+                String Instid = pp.getString("Instituteid","");
+		/**
+ 		 * Loop for getting values of program and institute to update.
+ 		 * Serial id to update perticular student of that id. 	
+ 		 */ 	
+		for(int k=1;k<=count;k++)
+                {
+                       String PrgCode = pp.getString("prg"+k,"");
+                       String rollno = pp.getString("rollno"+k,"");
+                       String Studsrid = pp.getString("Srid"+k,"");
+                       msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,PrgCode,Instid,Studsrid);
+                }
 		data.setMessage(msg);
 	}
     	/**
@@ -479,13 +489,19 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
 			doDelete(data,context);
 		else if(action.equals("eventSubmit_doExpire"))
 			doExpire(data,context);
+		else if(action.equals("eventSubmit_doUpdate"))
+			doUpdate(data,context);
 		else if(action.equals("eventSubmit_doUploadadmin"))
 			doUploadMultiUser(data,context);
 		else if(action.equals("eventSubmit_doUploadphoto"))
 			doUploadMultiUserPhoto(data,context);
-			
 		else if(action.equals("eventSubmit_doUploadLogo"))
 			doUploadLogo(data,context);
+		/* This check is put for action "search" becoz at time of search it shows the msg.
+ 		 * for removing msg, if action is "Search" then set screen.
+ 		 */ 	
+		else if(action.equals("Search"))
+			setTemplate(data,"call,ListMgmt_InstituteAdmin,InstAdminviewall.vm");
 		else
 		{
 			 /**

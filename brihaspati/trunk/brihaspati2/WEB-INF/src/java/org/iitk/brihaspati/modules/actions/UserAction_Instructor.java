@@ -54,6 +54,7 @@ import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.RegisterMultiUser;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
@@ -81,7 +82,7 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
- * @modified date: 26-02-2011, 27-07-2011
+ * @modified date: 26-02-2011, 27-07-2011, 05-08-2011
  */
 public class UserAction_Instructor extends SecureAction_Instructor
 {
@@ -116,9 +117,16 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
                         int instid=Integer.parseInt(instituteId);
                         String Instname = InstituteIdUtil.getIstName(instid);
-
 			String rollno = pp.getString("rollno","");
 			String program = pp.getString("prg","");
+			/**
+ 			 * Check value of program, if it is RWP ie RegistrationWithoutProgram 
+ 			 * then generate random rollno for that user. 
+ 			 */ 	
+			if(program.equals("RWP"))
+                       	{
+                               rollno = InstituteIdUtil.generateRollno(instid);
+                       	}
 			String email=pp.getString("EMAIL");
 			String passwd=pp.getString("PASSWD");
 			/**
@@ -394,10 +402,13 @@ public class UserAction_Instructor extends SecureAction_Instructor
                  * getting the values of first,last names and
                  * configuration parameter.
                  */
-		try{ 
+		try{
+		String msg=""; 
                 LangFile=(String)data.getUser().getTemp("LangFile"); 
                 ParameterParser pp=data.getParameters();
                 String uname=pp.getString("username");
+		/* Counter tells in how many institute the user is registered*/
+		int count=Integer.parseInt(pp.getString("counter",""));                                                                                                                      
 		if(StringUtil.checkString(uname) != -1)
 		{
                 	data.addMessage(MultilingualUtil.ConvertedString("usr_prof1",LangFile));
@@ -407,10 +418,19 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 String fname=StringUtil.replaceXmlSpecialCharacters(pp.getString("firstname"));
                 String lname=StringUtil.replaceXmlSpecialCharacters(pp.getString("lastname"));
                 String email=StringUtil.replaceXmlSpecialCharacters(pp.getString("email"));
-                String rollno=StringUtil.replaceXmlSpecialCharacters(pp.getString("rollno",""));
-		String program=StringUtil.replaceXmlSpecialCharacters(pp.getString("prg",""));
-               //ErrorDumpUtil.ErrorLog("value of program in user action instructor\n"+program);
-                String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program);
+		/**
+ 		 * loop fro getting more than one institute, program and rollno
+		 * Serial id to update perticular student record.
+ 		 */ 
+		for(int k=1;k<=count;k++)
+                {
+                	String Instid = pp.getString("instName"+k,"");
+                        String PrgCode = pp.getString("prg"+k,"");
+                        String rollno = pp.getString("rollno"+k,"");
+                        String Studsrid = pp.getString("Srid"+k,"");
+                	msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,PrgCode,Instid,Studsrid);
+               }
+
                 data.setMessage(msg);
 		}
 		catch(Exception ex){
@@ -704,6 +724,8 @@ public class UserAction_Instructor extends SecureAction_Instructor
                         doUploadImage(data,context);
 		else if(action.equals("eventSubmit_doGradecard"))
                         doGradecard(data,context);
+		else if(action.equals("eventSubmit_doUpdate"))
+                        doUpdate(data,context);
 		else if(action.equals("eventSubmit_doUpdatePass"))
                         doUpdatePass(data,context);
 		else if(action.equals("eventSubmit_doExpDisb"))

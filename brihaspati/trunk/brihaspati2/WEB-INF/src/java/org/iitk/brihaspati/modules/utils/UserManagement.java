@@ -100,7 +100,7 @@ import babylon.babylonPasswordEncryptor;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 08-07-2010, 20-10-2010, 3-11-2010, 26-12-2010
- * @modified date: 27-07-2011
+ * @modified date: 27-07-2011, 05-08-2011(Richa)
  */
 
 public class UserManagement
@@ -949,21 +949,26 @@ public class UserManagement
 			for(int i=0;i<ulist.size();i++)
 			{
 				CourseUserDetail element=(CourseUserDetail)ulist.get(i);
-				String email = element.getEmail();
+				String email = element.getLoginName();
 				rollrecord = getUserRollNo(email);
+				//ErrorDumpUtil.ErrorLog("Rollrecord in get list of rollno inside utils----------->"+rollrecord);
 				/**
 				 * If Rollrecord is zero it shows user have not rollno
 				 */
 				if(rollrecord.size()!=0)
 				{
-					StudentRollno element1 = (StudentRollno)rollrecord.get(0);
-					String Rollno = element1.getRollNo();
-					String progm = element1.getProgram();
-					CourseUserDetail cDetails=new CourseUserDetail();
-	                                cDetails.setEmail(email);
-	                                cDetails.setRollNo(Rollno);
-	                                cDetails.setProgm(progm);
-	                                urlist.add(cDetails);
+					for(int j=0;j<rollrecord.size();j++)
+					{
+						StudentRollno element1 = (StudentRollno)rollrecord.get(j);
+						String Rollno = element1.getRollNo();
+						String progm = element1.getProgram();
+						String prgname = InstituteIdUtil.getPrgName(progm);
+						CourseUserDetail cDetails=new CourseUserDetail();
+		                                cDetails.setEmail(email);
+		                                cDetails.setRollNo(Rollno);
+		                                cDetails.setPrgName(prgname);
+		                                urlist.add(cDetails);
+					}
 				}
 			}
 		}
@@ -1058,21 +1063,25 @@ public class UserManagement
         }
 
 	/**
-	 * In this method,Update the user profile 
+	 * In this method,Update the user profile.
+	 * Get all details of user to be updated then check serial id
+	 * if(serial id is not null) {
+	 * 	then update information}
+	 * else{insert new entry of student}
 	 * 
 	 * @param userName String The loginName of the user
 	 * @param fName String The FirstName of the user 
 	 * @param lName String The LastName of the user 
 	 * @param eMail String The Email of the user 
+	 * @param file String language file 
 	 * @param RollNo String The Rollno of the user 
 	 * @param Program String The Program of the user 
-	 * @param Expdays String The Expiry Days of the user 
-	 * @param Expdate Date The Expiry Date of the user 
-	 * @param Gname String The Group name of the user 
+	 * @param Instid String The institute id of the user 
+	 * @param StudSrid String The serial id of the user 
 	 *
 	 * @return String
 	 */
-	public static String updateUserDetails(String userName,String fName,String lName,String eMail,String file,String RollNo,String Program)
+	public static String updateUserDetails(String userName,String fName,String lName,String eMail,String file,String RollNo,String Program, String Instid, String StudSrid)
 	{
 		String msg=new String();
 		try
@@ -1091,41 +1100,27 @@ public class UserManagement
 
                 	TurbineSecurity.saveUser(user);
 			int uid=UserUtil.getUID(userName);
-			Vector instid = InstituteIdUtil.getAllInstId(uid);
-			for(int i=0;i<instid.size();i++)
-				{
-					Object insId=instid.get(i);				
-					String insid = insId.toString();
-			if(!RollNo.equals(""))
-			{	
-				List Rollno = new Vector();
-				Rollno = getUserRollNo(userName);
-				//ErrorDumpUtil.ErrorLog("program in updateuserdetail util --------->"+Program);
-				//Rollno = getUserPrgRollNo(userName,Program,insid);
-				//ErrorDumpUtil.ErrorLog("rollno record in updateuserdetail util --------->"+Rollno);
-				/**
-				 * If list of rollno is greater than zero it shows list have value
-				 * Then update rollno of student 
-				 */
-				if(Rollno.size()>0)
-				{
-					StudentRollno element = (StudentRollno)Rollno.get(0);
-		                        int id = element.getId();
-					Criteria crit=new Criteria();
-		                        crit.add(StudentRollnoPeer.ID,id);
-		                        crit.add(StudentRollnoPeer.ROLL_NO,RollNo);
-					//crit.add(StudentRollnoPeer.PROGRAM,Program);
-					StudentRollnoPeer.doUpdate(crit);
-				}
-				/**
-				 * else insert value in table
-				 */
-				else
-				{
-                                        rollmsg=InsertPrgRollNo(userName,RollNo,Program,insid,file);
-                                }
+	
+			/** 
+ 			 * if student serial id is not zero it shows student have information in StudentRollNo table
+ 			 * then update information
+ 			 */ 
+			if(!RollNo.equals("")&& (!StudSrid.equals("")))
+			{
+				Criteria crit=new Criteria();
+				crit.add(StudentRollnoPeer.ID,StudSrid);
+	                        crit.add(StudentRollnoPeer.ROLL_NO,RollNo);
+				crit.add(StudentRollnoPeer.PROGRAM,Program);
+				crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
+				StudentRollnoPeer.doUpdate(crit);
 			}
-			}
+			/**
+			 * else insert value in table
+			 */
+			else if(!RollNo.equals(""))
+			{
+                                rollmsg=InsertPrgRollNo(userName,RollNo,Program,Instid,file);
+                        }
                 	String profileOf=MultilingualUtil.ConvertedString("profileOf",file);
                         String update_msg=MultilingualUtil.ConvertedString("update_msg",file);
 			if(file.endsWith("hi.properties"))
@@ -1236,7 +1231,6 @@ public class UserManagement
                                       		TurbineSecurity.removeUser(user);
                                                	tool.deleteUser(userName);
 				//		ErrorDumpUtil.ErrorLog("testing after tooldeletion=======");	
-
 						/**
                                                  * Remove the user rollno and Program from database  
                                                  */

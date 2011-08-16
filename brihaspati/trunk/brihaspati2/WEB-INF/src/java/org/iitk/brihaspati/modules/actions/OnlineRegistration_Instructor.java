@@ -53,6 +53,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
@@ -172,12 +173,13 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 		}
                
 	}
-
+	/**
+ 	 * This method Accept User for online registration request.
+ 	 * get detail of user request from xml file to create profile of user.
+ 	 */ 	
       	public void AcceptUser(RunData data, Context context)
 	{
-
 		try{
-			
 			Vector userlist=new Vector();
 			Vector indexList=new Vector();
 			String splitedInstId [];
@@ -212,13 +214,23 @@ public class  OnlineRegistration_Instructor extends SecureAction{
                                   				
 					for(int i=0;i<userlist.size();i++)
                                 	{
-						
 						//String email=((CourseUserDetail) userlist.elementAt(i)).getEmail();
 						uname=((CourseUserDetail) userlist.elementAt(i)).getLoginName();
                                                	gname=((CourseUserDetail) userlist.elementAt(i)).getGroupName();
 						email=((CourseUserDetail) userlist.elementAt(i)).getEmail();
 						rollno=((CourseUserDetail) userlist.elementAt(i)).getRollNo();
 						program=((CourseUserDetail) userlist.elementAt(i)).getPrgCode();
+						/**
+ 						 * Getting Institute id from temp
+ 						 * check program value, if it is RWP ie RegistrationWithoutProgram 
+ 						 * then generate random rollno
+ 						 */ 		
+						String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+                 				int instid=Integer.parseInt(instituteId);
+				                if(program.equals("RWP"))
+				                {
+				                        rollno = InstituteIdUtil.generateRollno(instid);
+				                }
                                         	//if(email.equals(mailid))
 						if(uname.equals(userName) && gname.equals(groupName) && email.equals(mailId))
 						{

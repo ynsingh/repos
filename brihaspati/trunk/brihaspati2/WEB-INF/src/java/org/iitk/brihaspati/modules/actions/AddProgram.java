@@ -43,6 +43,7 @@ import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.om.Program;
 import org.iitk.brihaspati.om.InstituteProgramPeer;
 import org.iitk.brihaspati.om.InstituteProgram;
+
 /**
 *@author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
 *@modified date:11-01-2011
@@ -209,10 +210,9 @@ public class AddProgram extends SecureAction_Institute_Admin
 				crit= new Criteria();
 				crit.add(ProgramPeer.PROGRAM_CODE,prgcode);
 				ProgramPeer.doDelete(crit);		
-				String Prgmsg = MultilingualUtil.ConvertedString("brih_program",LangFile);
-				String Dlmsg = MultilingualUtil.ConvertedString("brih_delete",LangFile);
-				String msg = MultilingualUtil.ConvertedString("brih_successfully",LangFile);
-				data.setMessage(Prgmsg+" "+Dlmsg+" "+msg);
+				String Dlmsg = MultilingualUtil.ConvertedString("brih_instdel",LangFile);
+				String msg = MultilingualUtil.ConvertedString("brih_instremove",LangFile);
+				data.setMessage(Dlmsg+" "+msg);
 				setTemplate(data,"call,Program,ProgramList.vm");
 			}
 		}

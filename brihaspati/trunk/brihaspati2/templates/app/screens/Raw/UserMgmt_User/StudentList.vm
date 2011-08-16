@@ -9,7 +9,7 @@
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 07-04-2010
  * @modified date: 20-10-2010,3-11-2010
- * @modified date: 22-11-2010 (Shaista)
+ * @modified date: 22-11-2010 (Shaista), 30-05-2011
  *     
  *#
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -100,9 +100,9 @@ $!data.getMessage()
 </tr>
 ##</table>
 #if($lang == "hindi")
-	#set($headings = ["$brih_usr $brih_Of1 $brih_name","$brih_name", "$brih_email $brih_ID","$brih_rollno","$brih_availableAction"] )
+	#set($headings = ["$brih_usr $brih_Of1 $brih_name","$brih_name", "$brih_email $brih_ID","$brih_rollno ($brih_program)"," ","$brih_availableAction"] )
 #else
-	#set($headings = ["$brih_usr $brih_name","$brih_name", "$brih_email $brih_ID","$brih_rollno","$brih_availableAction"] )
+	#set($headings = ["$brih_usr $brih_name","$brih_name", "$brih_email $brih_ID","$brih_rollno ($brih_program)"," ","$brih_availableAction"] )
 #end
 
 #*if($status=="notempty")
@@ -156,34 +156,38 @@ $!data.getMessage()
                                 <tr bgcolor="$ui.menuColor">
                        #end                    
                 	## Get one record from the list
-	                ## get login name  of user
+	                ## get login name of user
                         <td>$!urecord.getLoginName()</td>
         	        ## get name of User
                         <td>$!urecord.getUserName()</td>
                 	## get Email of User
 		      	<td><a href=mailto:$!urecord.getEmail()>$!urecord.getEmail()</a></td>
 	                ## get the list of student RollNO of that course 
-			#set($flag=true)
-        		#foreach ($urecord1 in $rollnolist)
-	        	        ## get Email id form this list
-                		## Compare Email id of both list
-			 		#if($!urecord.getLoginName()== $!urecord1.getEmail())
-        			        ## if email exist then get the roll no of that student 
-					<td>$!urecord1.getRollNo()</td>
-					#set($flag=false)
-					#end
+	                #set ($i=2)
+	                #foreach ($urecord1 in $rollnolist)
+	                	## get Email id form this list
+	                	## Compare Email id of both list
+	                	#if($!urecord.getLoginName()== $!urecord1.getEmail())
+	                		## if email exist then get the roll no and program of that student
+	                		<td> $!urecord1.getRollNo() ($!urecord1.getPrgName())</td>
+					#set ($i = $i - 1)
+				#end
 			#end
-				#if($flag==true)
-					<td></td>
-                                #end
-	
+			## if no rollno exist
+			#if($i==2)
+				<td></td><td></td>
+			#end
+			## if one rollno exist
+			#if($i==1)
+				<td></td>
+			#end
 			        	<td>
 					<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor).addPathInfo("mode", "All").setAction("UserAction_Instructor").addPathInfo("actionName","eventSubmit_doUpdatePass") style=text-decoration:none>$brih_changePassword</a> &nbsp;
 ##			                <a href=$link.setPage("call,UserMgmt_User,UpdatePass_Ins.vm").addPathInfo("status","update").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_changePassword</a> &nbsp;
 			                <a href=$link.setPage("call,UserMgmt_User,UserForm_Instructor.vm").addPathInfo("status","update").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_update</a> &nbsp;
 		        	        <a href=$link.setPage("call,UserMgmt_User,UserForm_Instructor.vm").addPathInfo("status","remove").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_remove</a> &nbsp;
 		                	<a href=$link.setPage("call,UserMgmt_User,Usertime_display.vm").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_usageDetail</a> &nbsp
-			##                <a href=javascript:popupWin("$link.setScreen("call,ViewPhoto").addPathInfo("username",$urecord.getLoginName())","newWin");>$brih_view $brih_photo </a>
+			##              <a href=javascript:popupWin("$link.setScreen("call,ViewPhoto").addPathInfo("username",$urecord.getLoginName())","newWin");>$brih_view $brih_photo </a>
 					#foreach ($explst in $sexplst)
 						#if($explst.getUid() == $urecord.getLoginName())
 							#if ($explst.getExpiryDate())

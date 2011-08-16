@@ -74,6 +74,7 @@ public class CourseUserDetail
 	private String Prgcode;
 	private String Prgnm;
 	private int onlineconf;
+	private int studsrlid;
 	private String instAdminName;
 	/**
 	 * Course details
@@ -214,6 +215,14 @@ public class CourseUserDetail
 	public String getProgm()
 	{
 		return userProgm;
+	}
+	public void setStudsrid(int srid)
+	{
+		this.studsrlid=srid;
+	}
+	public int getStudsrid()
+	{
+		return studsrlid;
 	}
 	// Massages for Removal Case
 	public void setErr_User(String Err_User)

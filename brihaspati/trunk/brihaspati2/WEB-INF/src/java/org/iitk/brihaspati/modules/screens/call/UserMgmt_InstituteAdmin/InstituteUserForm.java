@@ -36,13 +36,20 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
  * 
  */
 import java.util.List;
+import java.util.Vector;
+import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
+import org.iitk.brihaspati.om.StudentRollno;
+import org.iitk.brihaspati.om.InstituteProgramPeer;
+import org.iitk.brihaspati.om.InstituteProgram;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 /**
   * This class contains code for edit user profile according specific username
   * Grab all the records in a table using a Peer, and
@@ -52,7 +59,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
   * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>
   * @author  <a href="sharad23nov@yahoo.com">Sharad Singh</a>
   * @author  <a href="richa.tandon1@gmail.com">Richa Tandon</a>
-  * @modified date:20-10-2010
+  * @modified date:20-10-2010, 05-08-2011
   */
 public class InstituteUserForm extends SecureScreen_Institute_Admin{
 	 /**
@@ -69,17 +76,72 @@ public class InstituteUserForm extends SecureScreen_Institute_Admin{
 			String mode=pp.getString("mode");
 			String stat=pp.getString("status");
 			String counter=pp.getString("count","");
+			String type=pp.getString("type","");
 			context.put("tdcolor",counter);
 			int uid=UserUtil.getUID(userName);
 			List userList=UserManagement.getUserDetail(Integer.toString(uid));
+			/**
+ 			 * Get detail of user rollno   
+ 			 */ 		
 			List userRollNo=UserManagement.getUserRollNo(userName);
+			int rlsize = userRollNo.size();
+			Vector UsDetail = new Vector();
+			/**
+ 			 * Loop for getting all detail of user  
+ 			 * then context put to display in vm 
+ 			 */ 		
+			for(int j=0;j<userRollNo.size();j++)
+                	{
+				StudentRollno element = (StudentRollno)userRollNo.get(j);
+	                        int rlinstid = Integer.parseInt(element.getInstituteId());
+	                        String RlIname=InstituteIdUtil.getIstName(rlinstid);
+	                        String rlprgcode = element.getProgram();
+				int sturlid = element.getId();
+        	                String pName =InstituteIdUtil.getPrgName(rlprgcode);
+	                        String rlrollno = element.getRollNo();
+				String email = element.getEmailId();
+	                        CourseUserDetail cDetails=new CourseUserDetail();
+				cDetails.setStudsrid(sturlid);
+	                        cDetails.setInstName(RlIname);
+	                        cDetails.setEmail(email);
+	                        cDetails.setInstId(rlinstid);
+	                        cDetails.setPrgCode(rlprgcode);
+	                        cDetails.setPrgName(pName);
+	                        cDetails.setRollNo(rlrollno);
+	                        UsDetail.add(cDetails);
+        	                context.put("UDetail",UsDetail);
+	                 }
+				context.put("counter",rlsize);
+	                if(rlsize==0)
+        	                context.put("sizecount",rlsize);
+			/**
+ 			 * getting institute id from temp & list of program for that institute 
+ 			 */ 
+			int InstId = Integer.parseInt((String)data.getUser().getTemp("Institute_id"));
+			Criteria crit=new Criteria();
+	                crit.add(InstituteProgramPeer.INSTITUTE_ID,InstId);
+	                List Instplist= InstituteProgramPeer.doSelect(crit);
+	                Vector PrgDetail = new Vector();
+	                for(int i=0;i<Instplist.size();i++)
+	                {
+		                InstituteProgram element = (InstituteProgram)Instplist.get(i);
+	                        String PrgCode = element.getProgramCode();
+	                        String prgName = InstituteIdUtil.getPrgName(PrgCode);
+	                        CourseUserDetail cDetails=new CourseUserDetail();
+	                        cDetails.setPrgName(prgName);
+	                        cDetails.setPrgCode(PrgCode);
+				PrgDetail.add(cDetails);
+	                        context.put("PrgDetail",PrgDetail);
+			}
 			context.put("udetail",userList);
 			context.put("urollno",userRollNo);
 			context.put("Process",modetype);
 			context.put("mode",mode);
 			context.put("status",stat);
+			context.put("InstId",InstId);
 			String from=pp.getString("from","");
 			context.put("from",from);
+			context.put("type",type);
 		}
 		catch (Exception e){
 			data.setMessage("The error in user id :- "+e);

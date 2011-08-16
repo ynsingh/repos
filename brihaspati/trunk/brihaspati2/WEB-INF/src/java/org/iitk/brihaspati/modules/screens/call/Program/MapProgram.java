@@ -64,7 +64,7 @@ public class MapProgram extends SecureScreen
 		{
 			Criteria crit=new Criteria();
 	                ParameterParser pp = data.getParameters();
-	                String tdcolor=pp.getString("count","");
+	                String tdcolor=pp.getString("count","1");
 	                context.put("tdcolor",tdcolor);
 			/**
  			 * Getting list of Program according to institute 

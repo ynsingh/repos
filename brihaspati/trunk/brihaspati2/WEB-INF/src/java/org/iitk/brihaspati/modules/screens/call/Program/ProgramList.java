@@ -47,6 +47,7 @@ import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.om.ProgramPeer;
+import org.iitk.brihaspati.om.InstituteProgramPeer;
 
 public class ProgramList extends SecureScreen
 {
@@ -61,7 +62,7 @@ public class ProgramList extends SecureScreen
 		try
 		{
 	                ParameterParser pp = data.getParameters();
-	                String tdcolor=pp.getString("count","2");
+	                String tdcolor=pp.getString("count","3");
 	                context.put("tdcolor",tdcolor);
 			/**
  			 * Getting entries from database into list
@@ -71,6 +72,12 @@ public class ProgramList extends SecureScreen
 			crit.addGroupByColumn(ProgramPeer.ID);
 			List plist=ProgramPeer.doSelect(crit);
 			context.put("prglist",plist);
+
+			int InstId =Integer.parseInt((String)data.getUser().getTemp("Institute_id"));
+                        crit=new Criteria();
+                        crit.add(InstituteProgramPeer.INSTITUTE_ID,InstId);
+                        List Instplist= InstituteProgramPeer.doSelect(crit);
+                        context.put("InstprgList",Instplist);
 		}
 		catch(Exception e)
 		{

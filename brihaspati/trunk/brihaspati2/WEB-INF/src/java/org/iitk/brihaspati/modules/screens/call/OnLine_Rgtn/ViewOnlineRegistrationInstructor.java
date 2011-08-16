@@ -74,6 +74,7 @@ public class ViewOnlineRegistrationInstructor extends SecureScreen_Instructor {
 		String course=(String)user.getTemp("course_name");
 		context.put("course",course);
 	 	String status=pp.getString("status","");
+		String prgname="";
  		String path=TurbineServlet.getRealPath("/OnlineUsers");
                 Vector entry=new Vector();
 		context.put("tdcolor",pp.getString("count",""));
@@ -104,9 +105,10 @@ public class ViewOnlineRegistrationInstructor extends SecureScreen_Instructor {
                                	               	String roleName=((CourseUserDetail) list.elementAt(i)).getRoleName();
                                	               	String rollno=((CourseUserDetail) list.elementAt(i)).getRollNo();
                                	               	String program=((CourseUserDetail) list.elementAt(i)).getPrgCode();
-						String prgname = InstituteIdUtil.getPrgName(program);	
-						//ErrorDumpUtil.ErrorLog("in view online registration------>"+rollno);
-						//ErrorDumpUtil.ErrorLog("program in view online registration------>"+program);
+						if(!program.equals(""))
+                                                        prgname = InstituteIdUtil.getPrgName(program);
+                                                else
+                                                        prgname="";
                                	        	DbDetail dbDetail= new DbDetail();
                                	        	dbDetail.setSender(uname);
                                	        	dbDetail.setPDate(passwd);

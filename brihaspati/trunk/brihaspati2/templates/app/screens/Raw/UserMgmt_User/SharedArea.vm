@@ -80,7 +80,7 @@ $!data.getMessage()
 	                #foreach($file in $dirContent)
         		        <tr>
 			                <td>$file.getName()</td>
-					<td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("area","shared").addPathInfo("contents",$uname).addPathInfo("type","UserArea").addPathInfo("filename",$!file.getName())","newWin") style=text-decoration:none>$brih_view</a></td>
+					<td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("area","shared").addPathInfo("contents",$name).addPathInfo("type","UserArea").addPathInfo("filename",$!file.getName())","newWin") style=text-decoration:none>$brih_view</a></td>
 					#if($uname == $name)
 					<td><a href=$link.setPage("call,UserMgmt_User,SharedArea.vm").addPathInfo("filename",$!file.getName()).addPathInfo("name",$name).addPathInfo("mode","Shared").addPathInfo("mode1","move").addPathInfo("seq",$count) style=text-decoration:none>$brih_move</a></td>
 					

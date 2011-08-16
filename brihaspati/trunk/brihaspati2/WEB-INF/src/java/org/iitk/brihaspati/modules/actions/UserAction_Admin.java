@@ -176,8 +176,10 @@ public class UserAction_Admin extends SecureAction_Admin{
 		String rollno=StringUtil.replaceXmlSpecialCharacters(pp.getString("rollno",""));
                 //ErrorDumpUtil.ErrorLog("value of rollno in user action admin\n"+rollno);
 		String program=StringUtil.replaceXmlSpecialCharacters(pp.getString("prg",""));
+		String insid=pp.getString("InstName","");
+		String Studsrid=pp.getString("Studsrid","");
                 //ErrorDumpUtil.ErrorLog("value of program in user action admin\n"+program);
-		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program);
+		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program,insid,Studsrid);
 	 	data.setMessage(msg);
 	}
     	/**

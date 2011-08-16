@@ -52,6 +52,8 @@ import org.iitk.brihaspati.om.UsageDetails;
 import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.om.Program;
+import org.iitk.brihaspati.om.StudentRollnoPeer;
+import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
@@ -60,7 +62,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
- * @modify date:23-12-2010,10-02-2011
+ * @modify date:23-12-2010,10-02-2011,05-08-2011(Richa)
  */
 public class InstituteIdUtil
 {
@@ -266,6 +268,86 @@ public class InstituteIdUtil
                         }
                 } catch(Exception ex){}
                 return uidvct;
+        }
+
+	/**
+         * Generate Rollno for RegistrationWithoutProgram
+         * concatenate institute id with static "RWP" and then
+         * numbers according to generate rollno for student 
+         */
+	public static String generateRollno(int Inst_id)
+        {
+                String Rnd_rollno=null;
+                try
+                {
+                        String InstRollno = "RWP"+Inst_id;
+                        String table="STUDENT_ROLLNO";
+                        String str = "ROLL_NO";
+                        Criteria crit = new Criteria();
+                        crit.add(table,str,(Object)("%"+InstRollno+"%"),crit.LIKE);
+                        crit.addAscendingOrderByColumn(StudentRollnoPeer.ROLL_NO);
+                        List v = StudentRollnoPeer.doSelect(crit);
+                        int lstsize = v.size()-1;
+                        StudentRollno element=(StudentRollno)v.get(lstsize);
+                        String Rollno=element.getRollNo();
+                        String strg1 = Rollno.substring(0,7);
+                        int strg2 = Integer.parseInt(Rollno.substring(7));
+                        if((v.size())==0)
+                        {
+                                int id = v.size()+1;
+                                Rnd_rollno=InstRollno+"000"+id;
+                        }
+                        else
+                        {
+                                int id = strg2+1;
+                                if(id<=9)
+                                {
+                                        Rnd_rollno=InstRollno+"000"+id;
+                                }
+                                else if((id>9) && (id<=99))
+                                {
+                                        Rnd_rollno=InstRollno+"00"+id;
+                                }
+                                else if((id>99) && (id<=999))
+                                {
+                                        Rnd_rollno=InstRollno+"0"+id;
+                                }
+                        }
+
+                }
+                catch(Exception ex)
+                {
+                        ErrorDumpUtil.ErrorLog("The error in generate Rollno -[InstituteIdUtil class] !!"+ex);
+                }
+        return Rnd_rollno;
+        }
+
+	/**
+         * Get list of registered institute for perticular instructor
+         * first get list of all registered instructor then get their group id.
+         * From group id, get group name that shows in which group instructor is registered
+         * from group name, get institute id of that instructor.
+         */
+	public static Vector getInstructorInstId(int uid)
+        {
+                Vector instidlist=new Vector();
+                Criteria crit=new Criteria();
+                try{
+                        crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
+                        crit.and(TurbineUserGroupRolePeer.ROLE_ID,2);
+                        List v=TurbineUserGroupRolePeer.doSelect(crit);
+                        for(int k=0;k<v.size();k++)
+                        {
+                                TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(k);
+                                int s=(element.getGroupId());
+                                String gname=GroupUtil.getGroupName(s);
+                                String actgname[]=gname.split("_");
+                                String InsId=actgname[1];
+                                if(!instidlist.contains(InsId))
+                                        instidlist.add(InsId);
+                        }
+                }catch(Exception ex){ErrorDumpUtil.ErrorLog("Exception in getInstructorInstId() method --[InstituteIdUtil]"+ex);}
+        return instidlist;
         }
 }
 

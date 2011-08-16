@@ -80,6 +80,7 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
 		String counter=pp.getString("count","");
 		context.put("tdcolor",counter);
 		String instituteid=data.getUser().getTemp("Institute_id").toString();
+		String prgname="";
                 if(status.equals("UserResitration"))
                 {
                 	context.put("status","UserResitration");
@@ -106,9 +107,10 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
                                        	        String roleName=((CourseUserDetail) list.elementAt(i)).getRoleName();
                                        	        String rollno=((CourseUserDetail) list.elementAt(i)).getRollNo();
                                        	        String program=((CourseUserDetail) list.elementAt(i)).getPrgCode();
-						//ErrorDumpUtil.ErrorLog("Roll No in screen file------>"+rollno);
-						//ErrorDumpUtil.ErrorLog("Program in Onlinereg_admin screen file------>"+program);
-						String prgname = InstituteIdUtil.getPrgName(program);
+						if(!program.equals(""))
+							prgname = InstituteIdUtil.getPrgName(program);
+						else
+							prgname="";
 						if(gname.endsWith(instituteid)){
                                        	        DbDetail dbDetail= new DbDetail();
                                        	        dbDetail.setSender(uname);

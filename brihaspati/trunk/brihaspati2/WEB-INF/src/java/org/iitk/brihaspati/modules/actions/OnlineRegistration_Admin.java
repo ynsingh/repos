@@ -65,7 +65,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla</a>
- * @modify 20-03-09, 08-07-2010, 20-10-2010, 23-12-2010
+ * @modify 20-03-09, 08-07-2010, 20-10-2010, 23-12-2010, 05-08-2011
  */
 
 /**
@@ -158,12 +158,14 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 		}
                
 	}
+	/**
+         * This method Accept User for online registration request.
+         * get detail of user request from xml file to create profile of user.
+         */
 
       	public void AcceptUser(RunData data, Context context)
 	{
 	
-                   
-                   
 		try{
 			Vector userlist=new Vector();
 			Vector indexList=new Vector();	
@@ -198,6 +200,17 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 	        	                        gname=((CourseUserDetail) userlist.elementAt(i)).getGroupName();
 	        	                        rollno=((CourseUserDetail) userlist.elementAt(i)).getRollNo();
 	        	                        program=((CourseUserDetail) userlist.elementAt(i)).getPrgCode();
+						/**
+                                                 * Getting Institute id from temp
+                                                 * check program value, if it is RWP ie RegistrationWithoutProgram 
+                                                 * then generate random rollno
+                                                 */
+						String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+						int instid=Integer.parseInt(instituteId);
+				                if(program.equals("RWP"))
+				                {
+				                        rollno = InstituteIdUtil.generateRollno(instid);
+				                }
 						//ErrorDumpUtil.ErrorLog("rollno in online registration admin action\n"+rollno);
                                                 if(email.equals(mailid) && gname.equals(gName) && uname.equals(uName))
 						{

@@ -53,15 +53,15 @@ import org.apache.turbine.om.security.User;
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla</a>
- * @modified date:20-10-2010,23-12-2010,26-02-2011
+ * @modified date:20-10-2010,23-12-2010,26-02-2011,05-08-2011(Richa)
  */
 
 public class AddUser_Institute extends SecureAction_Institute_Admin 
 {
 /**
- *
  * Method for registered a user as Secondary Instructor,Student
  * and Content Author
+ * Get all details entered by user then register profile.
  * @param data RunData instance
  * @param context Context instance
  *
@@ -115,8 +115,8 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 		email=UserManagement.ChkMailId(email);
 
 		/**
-		*if password field is null,set the password.
-		*break email using "@" and set the password as the value of email at 0th position.
+		* if password field is null,set the password.
+		* break email using "@" and set the password as the value of email at 0th position.
 		*/
                 if(passwd.equals(""))
 		{
@@ -127,8 +127,9 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 		}
 		
 		/**
-                 * Passing the value of file from temporary variable
-                 * According to selection of Language.
+                 * Get institute id from temp and institute name from that id 
+                 * check value of program, if it is RWP ie RegistrationWithoutProgram then
+                 * generate random rollno.
 		 * Adds the new user in the database.
 		 * @see UserManagement in utils
 		 */
@@ -136,7 +137,11 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 		 String instituteId=(data.getUser().getTemp("Institute_id")).toString();
                  int instid=Integer.parseInt(instituteId);
                  String instName=InstituteIdUtil.getIstName(instid);
-		 String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program);
+		if(program.equals("RWP"))
+		{
+			rollno = InstituteIdUtil.generateRollno(instid);
+		}
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program);
 		data.setMessage(msg);
 		}
 		catch(Exception ex){

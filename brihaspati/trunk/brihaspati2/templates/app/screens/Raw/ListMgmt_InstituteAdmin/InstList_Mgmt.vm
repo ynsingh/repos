@@ -54,9 +54,9 @@ $!data.getMessage()
 <table width=100% align=left bgcolor="$ui.tableColor">
 <tr>
 #if($tdcolor != "1")
-<td width=15%> 
+<td width=50%> 
 #elseif($tdcolor == "1")
-<td width=15% bgcolor="#AFDCEC">
+<td width=50% bgcolor="#AFDCEC">
 #end 
 <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>
 #if($lang == "hindi")
@@ -66,9 +66,9 @@ $!data.getMessage()
 #end
 </a></td>
 #if($tdcolor != "2")
-<td align=center> 
+<td width=50%> 
 #elseif($tdcolor == "2")
-<td align=center bgcolor="#AFDCEC">
+<td width=50% bgcolor="#AFDCEC">
 #end 
 <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","2") style=text-decoration:none>$brih_view_all1</a></td>
         ##</td>  

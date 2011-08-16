@@ -6,7 +6,7 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date:09-04-2010 , 20-10-2010,3-11-2010,23-12-2010, 11-01-2011
+ * @modified date:09-04-2010 , 20-10-2010,3-11-2010,23-12-2010, 11-01-2011, 30-05-2011
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -95,7 +95,7 @@ $!data.getMessage()
 	<td colspan=3></td>*#	
 	<tr>
 	        <td>$brih_program</td>
-         	<td colspan=3><select name="prg" size=1 onChange="checkOption1(document.frm,this);"/>
+         	<td colspan=3><select name="prg" size=1 onChange="ChkPrg(document.frm,this);"/>
 			<option value="Select Program"> #if($lang=="hindi") $brih_program $brih_select #else $brih_select $brih_program #end</option>
 			#foreach($progname in $PrgDetail)
 				<option value="$progname.getPrgCode()">$progname.getPrgName() </option>
@@ -119,7 +119,7 @@ $!data.getMessage()
                 {
                         if(frm.rollno.value=="")
                         {
-                                if(frm.prg.value=="Select Program")
+                                if((frm.prg.value=="Select Program")||(frm.prg.value=="RWP"))
                                 {
                                         frm.actionName.value=field.name;
                                         frm.submit();
@@ -148,6 +148,19 @@ $!data.getMessage()
                         alert("Please fill the Mandatory(*) Fields !!");
                 }
         }
+	function ChkPrg(frm,field)
+        {
+                if(frm.prg.value=="RWP")
+		{
+			frm.rollno.value="";
+                        frm.rollno.disabled=true;
+		}
+                else
+		{
+                        frm.rollno.disabled=false;
+		}
+        }
+
 
 </SCRIPT>
 

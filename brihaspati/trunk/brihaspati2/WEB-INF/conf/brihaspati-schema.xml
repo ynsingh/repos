@@ -424,7 +424,8 @@
 
 </table> 
 
-<table name="INSTITUTE_PROGRAM">
+<table name="INSTITUTE_PROGRAM" idMethod="idbroker">
+	<column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
 	<column name="PROGRAM_CODE" required="true" type="VARCHAR" size="255"/>
 	<column name="INSTITUTE_ID" required="true" type="INTEGER"/>
 	<unique>
