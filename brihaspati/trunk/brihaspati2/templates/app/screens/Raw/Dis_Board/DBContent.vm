@@ -21,9 +21,9 @@ $!data.getMessage()
 ##($stats == "fromIndex") Use for general discussion group ## sk
 ##($mode2 == "instituteWise") Use for insititue wise discussion group ## sk
 		#if ($stats == "fromIndex")
-     			<a href=$link.setPage("call,IndexHome.vm")>Home</a> |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4").addPathInfo("stats","fromIndex")>$brih_general $DiscussionBoard</a>|
+     			<a href=$link.setPage("Index.vm")>Home</a> |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4").addPathInfo("stats","fromIndex")>$brih_general $DiscussionBoard</a>|
 		#elseif ($mode2 == "instituteWise")
-		        <a href=$link.setPage("call,IndexHome.vm")>Home</a> |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","8").addPathInfo("mode2","instituteWise")>$RemoteInstitute $brih_wise $DiscussionBoard</a>|
+		        <a href=$link.setPage("Index.vm")>Home</a> |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","8").addPathInfo("mode2","instituteWise")>$RemoteInstitute $brih_wise $DiscussionBoard</a>|
 		#else
 			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a>|
 			<a href =$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | 

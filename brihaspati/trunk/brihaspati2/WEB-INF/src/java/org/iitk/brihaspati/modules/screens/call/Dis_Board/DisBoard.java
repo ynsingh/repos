@@ -90,7 +90,7 @@ public class DisBoard extends SecureScreen
 			context.put("mode",mode);
 			String mode2=data.getParameters().getString("mode2","");
 			context.put("mode2",mode2);
-			ErrorDumpUtil.ErrorLog("DisBoard java=========>"+mode2);
+			//ErrorDumpUtil.ErrorLog("DisBoard java=========>"+mode2);
 			String checkNull=data.getParameters().getString("check","noCheck");
 			context.put("check",checkNull);
 			//this is use for general and institute wise discussion group	
@@ -117,7 +117,7 @@ public class DisBoard extends SecureScreen
 			else if(mode2.equals("instituteWise"))
 				dir="instituteWise";
 			String filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/DisBoard";
-			ErrorDumpUtil.ErrorLog("instituteWise/general/courese=======filePath===>"+filePath);
+			//ErrorDumpUtil.ErrorLog("instituteWise/general/courese=======filePath===>"+filePath);
 			
 			File dirHandle=new File(filePath);
 			String file[]=dirHandle.list();
