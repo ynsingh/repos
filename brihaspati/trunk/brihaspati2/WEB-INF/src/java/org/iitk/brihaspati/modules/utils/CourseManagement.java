@@ -101,7 +101,6 @@ public class CourseManagement
 			 */
 			if(S.checkString(groupalias)==-1 && S.checkString(uname)==-1 && S.checkString(fname)==-1 && S.checkString(lname)==-1)
 			{
-				ErrorDumpUtil.ErrorLog("test at line 95");
 			/**
 		   	  * Concatenate CourseId and UserName
 		   	  */
@@ -146,8 +145,14 @@ public class CourseManagement
 					* Get the course default quota which is set by administrator
 					*/
 					String pathq=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+Integer.toString(institute_id)+"Admin.properties";
-                                        String SpacefPrp=AdminProperties.getValue(pathq,"brihaspati.admin.quota.value");
-                                        long cquota=new Long(SpacefPrp).longValue();
+					/** Making File Object of the given path
+					  * Cheking File existence if it is nt exist show prper message 
+					  * else proceed furter for Registraion of a course with instrutor 
+					*/
+					File fPath= new File(pathq);
+					if(fPath.exists()){
+	                                        String SpacefPrp=AdminProperties.getValue(pathq,"brihaspati.admin.quota.value");
+                	                        long cquota=new Long(SpacefPrp).longValue();
 	
 			 			/**
 			  	  		* Insert course details in COURSES table
@@ -195,6 +200,10 @@ public class CourseManagement
                                 		}
 						/******************************/
 						message=message1+message2;
+					}
+					else
+						message = MultilingualUtil.ConvertedString("profile_msg",file);
+						//"Please set the Institute Profile and user quota first.";
 					}
 					catch(Exception e)
 					{
@@ -295,7 +304,6 @@ public class CourseManagement
 				String act=Byte.toString(active);
 				Date CDate=((Courses)v.get(i)).getCreationdate();
 				String CrDate=CDate.toString();
-				ErrorDumpUtil.ErrorLog("GName==="+GName+"courseName===="+courseName);
 				CourseUserDetail cuDetail=new CourseUserDetail();
 				
 				if(!groupName.equals("All"))
@@ -312,7 +320,6 @@ public class CourseManagement
                                                         InstId=mdloginName.nextToken();
                                                 }
 					int UId=UserUtil.getUID(oldloginName);
-					//ErrorDumpUtil.ErrorLog("uid at line 291===="+UID);
 					////////////////////////////////////
 					//int UId=UserUtil.getUID(loginName); //comment by jaivir8apr10
 					String uID=Integer.toString(UId);

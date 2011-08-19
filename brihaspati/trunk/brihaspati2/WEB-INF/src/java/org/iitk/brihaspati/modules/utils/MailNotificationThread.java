@@ -41,8 +41,9 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 
 /**
- *  @author <a href="mailto:meha1490@gmail.com">Meha Singh</a>Created on march-2011
+ * @author <a href="mailto:meha1490@gmail.com">Meha Singh</a>Created on march-2011
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @modified Date: 18-08-2011 (Shaista)
  */
 
 public class MailNotificationThread implements Runnable {
@@ -145,9 +146,20 @@ public class MailNotificationThread implements Runnable {
 							String searchMsgUserInfo =mail_data1.get(8).toString().trim();
 		               				String searchLangFile =mail_data1.get(5).toString();
 							if(!msgUserInfo.equals(searchMsgUserInfo))
-               							message_text =message_text+searchMsgUserInfo+"<br><br>"+mail_data1.get(3).toString()+"<br>";
-							else
-               							message_text =message_text+mail_data1.get(3).toString()+"<br>";
+							{
+								/* If One User in Same institute have same message then it would go in "else" part 
+								 * Other wise it will go in "if" part.
+								*/
+								if(!message_text.equals(mail_data1.get(3).toString()))
+	               							message_text =message_text+searchMsgUserInfo+"<br><br>"+mail_data1.get(3).toString()+"<br>";
+								else
+	               							message_text =message_text+searchMsgUserInfo+"<br>";
+								
+							}
+							else{
+								if(!message_text.equals(mail_data1.get(3).toString()))
+               								message_text =message_text+"<br><br>"+mail_data1.get(3).toString()+"<br>";
+							}
 							if(!LangFile.equals(searchLangFile))
 								LangFile = searchLangFile;
 						}

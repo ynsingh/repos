@@ -2,12 +2,14 @@
  * @(#) RegisterationManagement.vm
  * Copyright (c) 2005-2008,2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
+ * @author <a href="mailto:shaistashekh@hotmail.com"> Shaista</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modified date: 19-08-2011
 *#
 
-$page.setTitle("Admin Home | Registeration Management")
+$page.setTitle("Admin Home | Registration Management")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
@@ -116,6 +118,7 @@ $!data.getMessage()
                 <font face="$ui.sansSerifFonts"><textarea name="DESCRIPTION" rows=5 cols=60></textarea></font>
                 </td>
           </tr>
+#*
           <tr bgcolor="$ui.menuColor">
                    ## #formCell ("$brih_usr $brih_name <font color=Red>*</font>" "UNAME" "")
 		  <td> #if($lang =="hindi") $brih_usr $brih_Of1 $brih_name #else $brih_usr $brih_name #end <font color=red>*</font> </td>
@@ -125,6 +128,7 @@ $!data.getMessage()
           <tr>
                   #formPasswordCell ("$brih_pwd" "PASSWD" "")
           </tr>
+*#
           <tr bgcolor="$ui.menuColor">
                   #formCell ("$brih_first $brih_name" "FNAME" "")
            </tr>
@@ -132,8 +136,26 @@ $!data.getMessage()
                    #formCell("$brih_last $brih_name" "LNAME" "")
             </tr>
             <tr bgcolor="$ui.menuColor">
-	  	#formCell("$brih_email $brih_ID" "EMAIL" "")
+	  	#formCell("$brih_email $brih_ID <font color=Red>*</font>" "EMAIL" "")
             </tr>
+          <tr>
+                  #formPasswordCell ("$brih_pwd" "PASSWD" "")
+          </tr>
+		#*
+		 * User Name is not required any more so it is comented
+		 * Institute name is required in regitration in Super Admin case so it is added.
+		 * @ modified by shaista
+		*#
+            <tr bgcolor="$ui.menuColor">
+		<td> #if($lang =="hindi") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font></td>
+                <td>
+                <select name="instName" size=1 />
+                          #foreach($name in $instList)
+                                  <option value="$name.getInstituteName()">$name.getInstituteName() </option>
+                          #end
+                </select>
+        <tr>
+
           <tr>
           <td align=left colspan=2>
     <input type="hidden" name="actionName" >
@@ -374,14 +396,18 @@ face="$ui.sansSerifFonts">$type</font>
 <SCRIPT LANGUAGE="javascript">
         function checkCourseName(frm,field)
         {
-                if((frm.COURSEID.value!="") && (frm.UNAME.value!="")  && (frm.CNAME.value!=""))
+                //if((frm.COURSEID.value!="") && (frm.UNAME.value!="")  && (frm.CNAME.value!=""))
+                if((frm.COURSEID.value!="") && (frm.CNAME.value!="") && (frm.EMAIL.value!="") && (frm.instName.value!=""))
                 {
                                 frm.actionName.value=field.name;
                                 frm.submit();
                 }
                 else
                 {
-                        alert("Please Fill All The Mandatory(*) Fields");
+			if(frm.instName.value=="")
+                        	alert("No Institute is register till now");
+			else
+				alert("Please Fill All The Mandatory(*) Fields");
                 }
         }
         function checkClear(frm,field)

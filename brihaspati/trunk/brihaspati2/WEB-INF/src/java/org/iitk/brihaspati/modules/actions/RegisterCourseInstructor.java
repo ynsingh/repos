@@ -36,6 +36,7 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 /**
  *
  * This Action class for Registering a particular course with Instructor(Primary) 
@@ -45,6 +46,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
  * @author <a href="mailto:shaistashekh@gmail.com">shaista</a>
  * @author <a href="mailto:satyapalsingh@gmail.com">Satyapal Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @modified date: 04-08-2011 (Shaista)
  */
 public class RegisterCourseInstructor extends SecureAction_Admin
 {
@@ -71,27 +73,43 @@ public class RegisterCourseInstructor extends SecureAction_Admin
 				ParameterParser pp=data.getParameters();
 		 		/**
 		  		* Gather details from the page where user has entered them
+				*  Added By shaista
+				* @param instName: Getting instName as a String from Parameter Parser 
+				* @param instId: Getting instId as an int 
+				* @see InstituteIdUtil
 		  		*/
+				String instName=pp.getString("instName","");
+				int instId = InstituteIdUtil.getIst_Id(instName);
+				String path = "";
+                                path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"instName"+"Admin.properties";
 		 		String gname=pp.getString("COURSEID").toUpperCase();
 		 		String cname=pp.getString("CNAME");
 		 		String dept=pp.getString("DEPARTMENT","");
 		 		String description=pp.getString("DESCRIPTION","");
-		 		String uname=pp.getString("UNAME");
+		 		//String uname=pp.getString("UNAME");
 		 		String passwd=pp.getString("PASSWD","");
-		 		if(passwd.equals(""))
-			 	passwd=uname;
+		 		//if(passwd.equals(""))
+			 	//passwd=uname;
 		 		String fname=pp.getString("FNAME","");
 		 		String lname=pp.getString("LNAME","");
 		 		String email=pp.getString("EMAIL","");
+				if(passwd.equals("")){
+                                	passwd=email;
+	                                String []starr=passwd.split("@");
+        	                        passwd =starr[0];
+                                }
+
 		 		String serverName=data.getServerName();
                  		int srvrPort=data.getServerPort();
                  		String serverPort=Integer.toString(srvrPort);
 		 		/**
 		  		* Register a new course with instructor
 				* Here we give 100MB quota for course, once he is login in the system and immediate his quota is updated
+				* instId and instName is passes by shaista
 		  		* @see CourseManagement Utils
-		  		*/ 
-		 		String msg=CourseManagement.CreateCourse(gname,cname,dept,description,uname,passwd,fname,lname,email,serverName,serverPort,LangFile,0,""); //modified by Shikha
+		  		*/
+		 		//String msg=CourseManagement.CreateCourse(gname,cname,dept,description,uname,passwd,fname,lname,email,serverName,serverPort,LangFile,0,""); //modified by Shikha
+		 		String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName); //modified by Shaista passing institute id and institute name.
 		 		data.setMessage(msg);
 		}
 		catch(Exception e)
