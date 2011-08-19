@@ -12,5 +12,5 @@ CREATE TABLE INSTRUCTOR_PERMISSIONS
                 	PRIMARY KEY(ID)
 );
 
-insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (151, 'INSTRUCTOR_PERMISSIONS', 100, 1);
+insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (150, 'INSTRUCTOR_PERMISSIONS', 100, 1);
 

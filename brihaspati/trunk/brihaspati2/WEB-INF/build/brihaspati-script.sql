@@ -2,6 +2,8 @@ use brihaspati;
 
 insert into TURBINE_GROUP (GROUP_ID,GROUP_NAME) values (2,'author');
 insert into TURBINE_GROUP (GROUP_ID,GROUP_NAME) values (3,'institute_admin');
+INSERT INTO TURBINE_GROUP (GROUP_ID,GROUP_NAME) VALUES (4,'general');
+INSERT INTO TURBINE_GROUP (GROUP_ID,GROUP_NAME) VALUES (5,'instituteWise');
 
 
 insert into TURBINE_ROLE (ROLE_ID,ROLE_NAME) values (2,'instructor');
