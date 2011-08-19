@@ -938,6 +938,8 @@ public class UserManagement
 	{
 		Vector ulist = new Vector();
 		Vector urlist = new Vector();
+		String progm="";
+		String prgname="";
 		try
 		{
 			/**
@@ -961,8 +963,16 @@ public class UserManagement
 					{
 						StudentRollno element1 = (StudentRollno)rollrecord.get(j);
 						String Rollno = element1.getRollNo();
-						String progm = element1.getProgram();
-						String prgname = InstituteIdUtil.getPrgName(progm);
+						progm = element1.getProgram();
+						if(progm.equals("NULL")||progm.equals("")||progm.equals(null))
+						{
+							progm="";
+							prgname="";
+						}
+						else
+						{
+							prgname = InstituteIdUtil.getPrgName(progm);
+						}
 						CourseUserDetail cDetails=new CourseUserDetail();
 		                                cDetails.setEmail(email);
 		                                cDetails.setRollNo(Rollno);
@@ -1065,7 +1075,7 @@ public class UserManagement
 	/**
 	 * In this method,Update the user profile.
 	 * Get all details of user to be updated then check serial id
-	 * if(serial id is not null) {
+	 * if(serial id is not null and other information along with rollno) {
 	 * 	then update information}
 	 * else{insert new entry of student}
 	 * 
@@ -1102,10 +1112,10 @@ public class UserManagement
 			int uid=UserUtil.getUID(userName);
 	
 			/** 
- 			 * if student serial id is not zero it shows student have information in StudentRollNo table
+ 			 * if student serial id is not null it shows student have information in StudentRollNo table
  			 * then update information
  			 */ 
-			if(!RollNo.equals("")&& (!StudSrid.equals("")))
+			if(!RollNo.equals("")&&!StudSrid.equals("")&&!Program.equals("")&&!Instid.equals("0"))
 			{
 				Criteria crit=new Criteria();
 				crit.add(StudentRollnoPeer.ID,StudSrid);
@@ -1117,10 +1127,29 @@ public class UserManagement
 			/**
 			 * else insert value in table
 			 */
-			else if(!RollNo.equals(""))
+			else if(!RollNo.equals("")&&!Program.equals("")&&!Instid.equals("0"))
 			{
                                 rollmsg=InsertPrgRollNo(userName,RollNo,Program,Instid,file);
                         }
+			/**
+ 			 * this below check is put, if any how any value is null. 
+ 			 */ 	
+			else if(!RollNo.equals(""))
+			{
+				if(!Program.equals(""))
+				{
+					if(!Instid.equals("0"))
+					{
+						msg="";
+					}
+					else
+						msg="Except Institute.";
+				}
+				else
+					msg="Except Program.";
+			}
+			else
+				msg="Except Rollno.";
                 	String profileOf=MultilingualUtil.ConvertedString("profileOf",file);
                         String update_msg=MultilingualUtil.ConvertedString("update_msg",file);
 			if(file.endsWith("hi.properties"))
@@ -1136,7 +1165,7 @@ public class UserManagement
 		}
 		catch(Exception ex)
 		{
-			msg="Error in "+userName+" profile updatation"+ex;
+			msg="Error in "+userName+" profile updation"+ex;
 		}
 		return(msg);
         }

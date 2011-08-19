@@ -47,7 +47,6 @@ import org.iitk.brihaspati.om.InstituteProgram;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 /**
@@ -86,6 +85,7 @@ public class InstituteUserForm extends SecureScreen_Institute_Admin{
 			List userRollNo=UserManagement.getUserRollNo(userName);
 			int rlsize = userRollNo.size();
 			Vector UsDetail = new Vector();
+                	String rlprgcode="",pName="";
 			/**
  			 * Loop for getting all detail of user  
  			 * then context put to display in vm 
@@ -93,18 +93,23 @@ public class InstituteUserForm extends SecureScreen_Institute_Admin{
 			for(int j=0;j<userRollNo.size();j++)
                 	{
 				StudentRollno element = (StudentRollno)userRollNo.get(j);
-	                        int rlinstid = Integer.parseInt(element.getInstituteId());
-	                        String RlIname=InstituteIdUtil.getIstName(rlinstid);
-	                        String rlprgcode = element.getProgram();
+				rlprgcode = element.getProgram();
+				/*if program code value is null then it shows error to get program name
+	                         *to remove this, put prgcode and prgname is null.
+                                 */
+				if(rlprgcode.equals("NULL")||rlprgcode.equals("")){
+					rlprgcode="";
+                                	pName="";
+                        	}
+	                        else{
+        		                pName =InstituteIdUtil.getPrgName(rlprgcode);
+                	        }
 				int sturlid = element.getId();
-        	                String pName =InstituteIdUtil.getPrgName(rlprgcode);
-	                        String rlrollno = element.getRollNo();
 				String email = element.getEmailId();
+				String rlrollno = element.getRollNo();
 	                        CourseUserDetail cDetails=new CourseUserDetail();
 				cDetails.setStudsrid(sturlid);
-	                        cDetails.setInstName(RlIname);
 	                        cDetails.setEmail(email);
-	                        cDetails.setInstId(rlinstid);
 	                        cDetails.setPrgCode(rlprgcode);
 	                        cDetails.setPrgName(pName);
 	                        cDetails.setRollNo(rlrollno);

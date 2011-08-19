@@ -152,14 +152,26 @@ public class UserForm_Instructor extends SecureScreen_Instructor{
                 List rlrecord=UserManagement.getUserRollNo(username);
                 int rlsize = rlrecord.size();
                 Vector UsDetail = new Vector();
+		int rlinstid=0;
+		String RlIname="",rlprgcode="",pName="";
                 for(int k=0;k<rlrecord.size();k++)
                 {
                         StudentRollno element = (StudentRollno)rlrecord.get(k);
-                        int rlinstid = Integer.parseInt(element.getInstituteId());
-                        String RlIname=InstituteIdUtil.getIstName(rlinstid);
-                        String rlprgcode = element.getProgram();
+			String Instid = element.getInstituteId();
+                        rlprgcode = element.getProgram();
+			/*if instituteid or program code value is null then it shows error to get institute name or program name
+ 			 *to remove this, put prgcode and prgname is null.
+		      	 */
+			if(Instid.equals("NULL")||Instid.equals("")||rlprgcode.equals("NULL")||rlprgcode.equals("")){
+				rlprgcode="";
+				pName="";
+			}
+			else{
+                        rlinstid = Integer.parseInt(Instid);
+                        RlIname=InstituteIdUtil.getIstName(rlinstid);
+                        pName =InstituteIdUtil.getPrgName(rlprgcode);
+			}
                         int sturlid = element.getId();
-                        String pName =InstituteIdUtil.getPrgName(rlprgcode);
                         String rlrollno = element.getRollNo();
                         cDetails=new CourseUserDetail();
                         cDetails.setStudsrid(sturlid);

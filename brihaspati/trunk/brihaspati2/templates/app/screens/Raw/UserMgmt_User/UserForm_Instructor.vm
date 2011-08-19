@@ -262,50 +262,88 @@ function checkField(frm,field)
                                	{
 					if(($UDetail.size()==1)&&(document.frm.type.value!="more"))
 					{
-                                        	frm.actionName.value=field.name;
-	                                        frm.submit();
+						if(document.frm.prg1.value!="" && document.frm.instName1.value!="0")
+                                                {
+	                                        	frm.actionName.value=field.name;
+		                                        frm.submit();
+						}
+                                                else
+                                                        alert("Please select program and institute");
 					}
 	                        }
                                 else
                                 {
-                                        var x = confirm("Do you want to change rollno.");
+					if(document.frm.rollno1.value!="")
                                         {
-                                                if(x)
+	                                        var x = confirm("Do you want to change rollno.");
+        	                                {
+                	                                if(x)
+                        	                        {
+								if($UDetail.size()==1)
+								{
+									if(document.frm.prg1.value!="" && document.frm.instName1.value!="0")
+                                                                        {
+		                                                        	frm.actionName.value=field.name;
+			                                                        frm.submit();
+									}
+									else
+										alert("Please select program and institute");
+								}
+                        	                        }
+                                	        }
+					}
+					else
+					{
+						var x = confirm("Do you want to change profile without rollno.");
                                                 {
-							if($UDetail.size()==1)
-							{
-                                                        	frm.actionName.value=field.name;
-	                                                        frm.submit();
-							}
+                                                        if(x)
+                                                        {
+                                                                if($UDetail.size()==1)
+                                                                {
+                                                                                frm.actionName.value=field.name;
+                                                                                frm.submit();
+
+                                                                }
+                                                        }
                                                 }
                                         }
                                 }
                         }
 	                else
 			{
-	                	var x = confirm("Do you want to change program with same rollno.");
-	                        {
-	                          	if(x)
-	                                {
-						if($UDetail.size()==1)
-						{
-		                                       	frm.actionName.value=field.name;
-		                                        frm.submit();
-						}
-	                                }
-	                         }
+				if(document.frm.instName1.value=="0")
+                                        alert("Please select Institute name");
+                                else
+				{
+		                	var x = confirm("Do you want to change program ");
+		                        {
+		                          	if(x)
+		                                {
+							if($UDetail.size()==1)
+							{
+			                                       	frm.actionName.value=field.name;
+			                                        frm.submit();
+							}
+		                                }
+		                         }
+				}
                         }
                 }
                 else
                 {
-                        var x = confirm("Do you want to change institute with same program & rollno.");
+			if(document.frm.prg1.value=="")
+                                alert("Please select program name");
+                        else
                         {
-                        	if(x)
-                                {
-                                	frm.actionName.value=field.name;
-                                        frm.submit();
-                                }
-                        }
+	                        var x = confirm("Do you want to change institute ");
+	                        {
+	                        	if(x)
+	                                {
+	                                	frm.actionName.value=field.name;
+	                                        frm.submit();
+	                                }
+	                        }
+			}
                 }
 	}	
 	if($flag)
@@ -333,7 +371,7 @@ function checkField(frm,field)
 	                }
 	                else
 	                {
-	                	var x = confirm("Do you want to change second program with same rollno.");
+	                	var x = confirm("Do you want to change second program ");
         	                {
 	                        	if(x)
 	                        	{
@@ -345,7 +383,7 @@ function checkField(frm,field)
 		}
 	        else
 		{
-	        	var x = confirm("Do you want to change second institute with same program & rollno.");
+	        	var x = confirm("Do you want to change second institute ");
 	                {
 	                	if(x)
 	                        {
@@ -365,8 +403,13 @@ function checkField(frm,field)
                         {
                                 if(document.frm.rollno2.value=="")
                                 {
-                                        frm.actionName.value=field.name;
-                                        frm.submit();
+					if(document.frm.prg1.value!="" && document.frm.instName1.value!="0")
+					{
+	                                        frm.actionName.value=field.name;
+	                                        frm.submit();
+					}
+					else
+                                                alert("Please select first institute & program.");
                                 }
                                 else
                                 {
@@ -397,8 +440,13 @@ function checkField(frm,field)
                 }
                 else
                 {
-                        frm.actionName.value=field.name;
-                        frm.submit();
+			if(document.frm.prg1.value!="" && document.frm.instName1.value!="0")
+			{
+	                        frm.actionName.value=field.name;
+	                        frm.submit();
+			}
+			else
+                                alert("Please select first program and institute");
                 }
         }
        else if($sizecount==0)
