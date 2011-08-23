@@ -125,11 +125,12 @@ public class InstUserRegistrationManagement extends SecureScreen_Institute_Admin
 			/**
 			 *get Institute Quota and Used Quota
 			 */  	
-			long instquota=QuotaUtil.getInstituteQuota(instituteId);
+			/*long instquota=QuotaUtil.getInstituteQuota(instituteId);
                         context.put("allotedquota",instquota);
 			long qtingb=QuotaUtil.getInstituteUsedQuota(instituteId);
+			ErrorDumpUtil.ErrorLog("institute quota===="+instquota+"\ninstitute used quota===="+qtingb);
                         long remquota =(instquota - qtingb);
-                        context.put("rquota",remquota);
+                        context.put("rquota",remquota);*/
 			/**
 			* Set InstitutedId and domain name in temp variable
 			*/

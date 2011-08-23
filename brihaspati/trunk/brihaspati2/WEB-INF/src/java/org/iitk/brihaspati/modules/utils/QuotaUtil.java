@@ -305,18 +305,19 @@ public class QuotaUtil {
         	 }
 	return instusedquota;
      }
+	/**
+ 	*These method return the boolean value 
+	*return true if institute have sufficient quota at course registration time.
+ 	*/ 
 	public static boolean CompareAllotedQuota(String instituteId){
 		boolean flag=false;
 		try{
 		long iquota=getInstituteQuota(instituteId);
 		long iqtinmb=iquota*1024;
-		long iusedquota=getInstituteUsedQuota(instituteId);
-		iusedquota=iusedquota*1024;
                 String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instituteId+"Admin.properties";
                 String Coursequotasize =AdminProperties.getValue(path,"brihaspati.admin.quota.value");
                 long CQuota=new Long(Coursequotasize).longValue();
-		long remquota=iqtinmb-iusedquota;
-		if(remquota > CQuota){
+		if(iqtinmb > CQuota){
 			flag=true;
 		}
 		}catch(Exception ex){}

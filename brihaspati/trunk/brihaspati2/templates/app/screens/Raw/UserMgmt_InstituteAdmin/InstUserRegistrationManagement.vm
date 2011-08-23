@@ -21,7 +21,8 @@ $!data.getMessage()
      	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home </a> |
 	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1") style=text-decoration:none>$brih_reg $brih_mgmt</a> |
 	#if($mode=="")
-	$brih_course #if($lang == "hindi") $brih_Of1 $brih_reg1 #else $brih_reg #end &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$brih_rem $brih_quota $!rquota $brih_qsizegb
+	##$brih_course #if($lang == "hindi") $brih_Of1 $brih_reg1 #else $brih_reg #end &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$brih_rem $brih_quota $!rquota $brih_qsizegb
+	$brih_course #if($lang == "hindi") $brih_Of1 $brih_reg1 #else $brih_reg #end &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	#elseif($mode=="MCRegister")
 	$brih_multi_usr2
 	#else		
