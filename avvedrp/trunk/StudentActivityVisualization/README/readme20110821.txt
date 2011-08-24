@@ -1,0 +1,4 @@
+1. copy the image\timeUtilization.jpg to web-app\images\links
+
+
+2. copy the charts\*.swf file to web-app\charts

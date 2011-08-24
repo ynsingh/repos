@@ -111,7 +111,14 @@ def sql=new Sql(dataSource);
             
 			
 	
-	def transform={  					
+	def transform={  		
+	
+							def source_host=""						
+							def source_port=""
+							def source_dbname=""
+							def source_username=""
+							def source_password=""
+						
 					
 								
 					
@@ -129,11 +136,11 @@ def sql=new Sql(dataSource);
 						//Source db details
 						def sql=new Sql(dataSource);
 						def lmsset=sql.firstRow("select * from lms_settings where lms_id='"+lms_id1+"'");
-						def source_host=lmsset.lms_hostname;						
-						def source_port=lmsset.lms_port;
-						def source_dbname=lmsset.lms_dbname;
-						def source_username=lmsset.lms_username;
-						def source_password=lmsset.lms_password;
+						source_host=lmsset.lms_hostname;						
+						source_port=lmsset.lms_port;
+						source_dbname=lmsset.lms_dbname;
+						source_username=lmsset.lms_username;
+						source_password=lmsset.lms_password;
 						
 						
 						//Destination db details 

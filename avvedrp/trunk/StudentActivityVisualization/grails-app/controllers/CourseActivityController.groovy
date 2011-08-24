@@ -36,14 +36,27 @@ class CourseActivityController {
       }
 
 
-
+    /*
     def redirectpage ={       
 			 GrailsHttpSession gh=getSession()
 			 gh.putValue("sel_institute",params.institute)
 			 gh.putValue("sel_year",params.year)
 			 redirect action: 'listAdminOptions', controller:'courseActivity'
     }
-
+	*/
+	
+    /* Re-Written for Flex Select Year Popup */
+	def redirectpage ={      
+	           
+				 def inst_id=params.inst_id;
+				 def sel_year=params.sel_year;				
+				 GrailsHttpSession gh=getSession()
+				 gh.putValue("sel_institute",inst_id)
+				 gh.putValue("sel_year",sel_year)				 
+				 def xml_cont="";
+				 xml_cont+='<redirect><institute><url>success</url></institute></redirect>';
+                 render(text:xml_cont,contentType:"text/xml",encoding:"UTF-8");			
+		}
 
 
      def listAdminOptions = {

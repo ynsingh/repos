@@ -40,4 +40,12 @@ class PersonService {
 	def userInstance = Person.find("from Person P where P.id='"+userid+"'")
         return userInstance
     }
+	
+	public Integer getUserByUserName(String userName){
+		Integer userId = null;
+		def person  = Person.find("from Person U where U.username='"+userName+"'");
+		if(person)
+			userId = person.id
+		return userId
+	}
 }

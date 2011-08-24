@@ -1,8 +1,12 @@
-<meta name="layout" content="main" />
+<head>	
+	<title>New Registration</title>
 <g:javascript src="jquery.js"/>
 <link rel="stylesheet" href="${createLinkTo(dir:'css',file:'register/jquery-ui-1.8.10.custom.css')}" />
+<link rel="stylesheet" href="${createLinkTo(dir:'css',file:'general.css')}" />
 
 <style>
+
+
   /*Style for error*/
   .errors{ font-weight: bold;
            font-family:Arial, Helvetica, sans-serif;
@@ -22,8 +26,8 @@
 	font-weight: bold;	
 	width: 94px;
 	color: white;
-	background: transparent url(../images/links/bt_register.png) no-repeat 0 0;
-	background:url(../images/links/bt_register.png) repeat-x left top;
+	background: transparent url(../images/bt_register.png) no-repeat 0 0;
+	background:url(../bt_register.png) repeat-x left top;
 	}	   
   
 </style>
@@ -311,37 +315,41 @@
  </script>
 
 <!-- ##################################  Layout body starts here  ###########################################-->
+	</head>
+
+<body>
 	<div id="wrapper">
 		<div id="head">
-			<div class="innnerBanner">
-			<g:isLoggedIn>
-			<div class="loginLink">
-			<span>
-			<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>			
-			<b>${session.UserId}</b> (<a href="${resource(dir:'/logout')}" class="logout">Logout</a>)
-			</span>
-			</div>
-			</g:isLoggedIn>
-			</div>		    
-		</div>
-		<br /><h2>REGISTER</h2><br />
-	<div id="content"> 
-	
-	<!-- Middle area starts here -->	
-	
-	 <div id="tabs">
+			<div id="logo_user_details">&nbsp;</div>    
+					<div id="menus_wrapper">
+
+					<div id="sec_menu" style="height:40px;">					
+					<li style="padding:10px 0px 0px 400px;" align="center">
+					<font color="#FFFFFF" size="3" family="Verdana,Arial,sans-serif"><strong>REGISTER NOW!</strong></font></li>
+					</ul>					
+					</div>
+					</div>
+	    	</div>
+	<div id="content"> <!-- Start of content div -->                     
+                        
+          
+		  
+<div align="center" style="padding:1px 0px 0px 275px;width:400px;">
+<g:if test="${flash.message}">
+	<div class="errors" id="errors"  align="center">${flash.message}</div>
+</g:if>
+<div id="tabs">
 	<ul>
 		<li><a href="#tabs-1"  id="univ"><strong>UNIVERSITY</strong></a></li>
 		<li><a href="#tabs-2"  id="inst"><strong>INSTITUTE</strong></a></li>
 		<li><a href="#tabs-3"  id="staff"><strong>STAFF / STUDENT</strong></a></li>
 	</ul>
 	<br />
-	<g:if test="${flash.message}">
-	<div class="errors" id="errors"  align="center">${flash.message}</div>
-	</g:if>
-	<div id="tabs-1" style="padding-left:250px;">
+
+	
+	<div id="tabs-1">	
 			<g:form action="registerUniversity" name="univ_register">
-			<table width="359" height="201">
+				<table width="359" height="201">
 			<tbody>
 			
 			<tr>
@@ -395,18 +403,20 @@
 			
 			<tr>
 			<td valign='top' class='name'>
-		<a href="${createLink(action:'index',controller:'login')}" title="Back to Login Page"><strong>Back to Login</strong></a></td>
+		<a href="${createLink(action:'index',controller:'login')}" title="Back to Login Page"><strong>&lt;&lt;&nbsp;Back</strong></a></td>
 			<td valign='top' class='name'>
-			<input type='button' value='Register'  class="formbutton"  onclick="return validateUniversity(document.univ_register)"/>
+			<input type='button' value='Register' onclick="return validateUniversity(document.univ_register)"/>
 			</td>
 			</tr>
 			</tbody>
 			</table>
-			</g:form>
+			</form>
 
 	</div> <!-- END OF TAB 1 -->
-	<div id="tabs-2"  style="padding-left:250px;">
-			<g:form action="registerInstitute" name="inst_register">
+	
+	
+	<div id="tabs-2">
+			<form action="/StudentActivityVisualization/register/registerInstitute" method="post" name="inst_register" id="inst_register" >
 				<table width="360" height="201">
 				<tbody>
 				
@@ -480,19 +490,20 @@
 				
 				<tr>
 				<td valign='top' class='name'>
-		<a href="${createLink(action:'index',controller:'login')}" title="Back to Login Page"><strong>Back to Login</strong></a></td>
+		<a href="${createLink(action:'index',controller:'login')}" title="Back to Login Page"><strong>&lt;&lt;&nbsp;Back</strong></a></td>
 				<td valign='top' class='name'>
-				<input type='button' value='Register' class="formbutton"  onclick="return validateInstitute(document.inst_register)"/>
+				<input type='button' value='Register'  onclick="return validateInstitute(document.inst_register)"/>
 				</td>
 				</tr>
 				</tbody>
+
 				</table>
-				</g:form>
+				</form>
 	</div><!-- END OF TAB 2 -->
 	
 	
-	<div id="tabs-3"  style="padding-left:250px;">
-				<g:form action="registerUser" name="usr_register">
+	<div id="tabs-3">
+				<form action="/StudentActivityVisualization/register/registerUser" method="post" name="usr_register" id="usr_register" >
 		<table width="397" height="201">
 		<tbody>
 		
@@ -563,10 +574,10 @@
 		
 		<tr>
 		<td valign='top' class='name'>
-		<a href="${createLink(action:'index',controller:'login')}" title="Back to Login Page"><strong>Back to Login</strong></a></td>
+		<a href="${createLink(action:'index',controller:'login')}" title="Back to Login Page"><strong>&lt;&lt;&nbsp;Back</strong></a></td>
 		<td valign='top' class='name'>
 		<input type='hidden' name="usernames" id="usernames"/>
-		<input type='button' value='Register' id="wp-submit" class="formbutton"  onclick="return validateUser(document.usr_register)"/>						</td>
+		<input type='button' value='Register'  onclick="return validateUser(document.usr_register)"/>						</td>
 		</tr>
 		</tbody>
 		</table>
@@ -574,9 +585,16 @@
 
 	</div><!-- END OF TAB 3 -->
 </div>
-	<br /><br />
-<!-- Middle area ends here -->		
-  </div> <!-- End of content div -->
+
 </div>
-<g:footer/>
-<!-- ##################################  Layout body ends here  ###########################################-->
+
+
+                          
+ </div> <!-- End of content div -->
+ <br /> <br />
+</div>
+	 <div id="footer">
+          <div style="padding:8px 30px 20px 0px" align="right"><h4><font color="white">Developed by Amrita University under ERP, NME ICT, MHRD</font></h4></div>
+</div>
+
+</body>

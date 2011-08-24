@@ -151,7 +151,7 @@ background-color: #d5e5ed;
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
    <g:if test='${flash.message}'>
    <tr>
-      <th width="49%" height="40" scope="col" colspan="2">	 
+      <th width="49%" scope="col" colspan="2">	 
 		<div class='errors'  align="center">${flash.message}</div>	 
 	</th>
       </tr> 
@@ -163,112 +163,62 @@ background-color: #d5e5ed;
 	             <option id="1" value="" selected ><g:message code="default.lang.English.label"/></option>
 	 			 <option id="2" value="ml" ><g:message code="default.lang.Malayalam.label"/></option>
 	 			 <option id="3" value="hi" ><g:message code="default.lang.Hindi.label"/></option>
-	 			 <option id="4" value="tl" ><g:message code="default.lang.Tamil.label"/></option>
-	 			 <option id="5" value="it" ><g:message code="default.lang.Italian.label"/></option>
-	 			 <option id="6" value="es" ><g:message code="default.lang.Spanish.label"/></option>
-	 			 <option id="7" value="fr" ><g:message code="default.lang.French.label"/></option>
-	 			 <option id="8" value="ru" ><g:message code="default.lang.Russian.label"/></option>
-	 			 <option id="9" value="zh" ><g:message code="default.lang.Chinese.label"/></option>
+	 			
            </g:if>
 	       <g:if test="${session.lang == 'en'}">
 	             <option id="1" value="en"  selected><g:message code="default.lang.English.label"/></option>
 	 			 <option id="2" value="ml" ><g:message code="default.lang.Malayalam.label"/></option>
 	 			 <option id="3" value="hi"><g:message code="default.lang.Hindi.label"/></option>
-	 			 <option id="4" value="tl" ><g:message code="default.lang.Tamil.label"/></option>
-	 			 <option id="5" value="it" ><g:message code="default.lang.Italian.label"/></option>
-	 			 <option id="6" value="es" ><g:message code="default.lang.Spanish.label"/></option>
-	 			 <option id="7" value="fr" ><g:message code="default.lang.French.label"/></option>
-	 			 <option id="8" value="ru" ><g:message code="default.lang.Russian.label"/></option>
-	 			 <option id="9" value="zh" ><g:message code="default.lang.Chinese.label"/></option>
+	 			 
            </g:if>
 	  			  <g:if test="${session.lang == 'ml'}">
 	             <option id="1" value="en"  ><g:message code="default.lang.English.label"/></option>
 	 			 <option id="2" value="ml" selected ><g:message code="default.lang.Malayalam.label"/></option>
 	 			 <option id="3" value="hi"><g:message code="default.lang.Hindi.label"/></option>
-	 			 <option id="4" value="tl" ><g:message code="default.lang.Tamil.label"/></option>
-	 			 <option id="5" value="it" ><g:message code="default.lang.Italian.label"/></option>
-	 			 <option id="6" value="es" ><g:message code="default.lang.Spanish.label"/></option>
-	 			 <option id="7" value="fr" ><g:message code="default.lang.French.label"/></option>
-	 			 <option id="8" value="ru" ><g:message code="default.lang.Russian.label"/></option>
-	 			 <option id="9" value="zh" ><g:message code="default.lang.Chinese.label"/></option>
+	 			
            </g:if>
              <g:if test="${session.lang == 'hi'}">
 	             <option id="1" value="en"  ><g:message code="default.lang.English.label"/></option>
 	 			 <option id="2" value="ml" ><g:message code="default.lang.Malayalam.label"/></option>
 	 			 <option id="3" value="hi" selected><g:message code="default.lang.Hindi.label"/></option>
-	 			 <option id="4" value="tl" ><g:message code="default.lang.Tamil.label"/></option>
-	 			 <option id="5" value="it" ><g:message code="default.lang.Italian.label"/></option>
-	 			 <option id="6" value="es" ><g:message code="default.lang.Spanish.label"/></option>
-	 			 <option id="7" value="fr" ><g:message code="default.lang.French.label"/></option>
-	 			 <option id="8" value="ru" ><g:message code="default.lang.Russian.label"/></option>
-	 			 <option id="9" value="zh" ><g:message code="default.lang.Chinese.label"/></option>
+	 			 
            </g:if>
            <g:if test="${session.lang == 'tl'}">
 	             <option id="1" value="en"  ><g:message code="default.lang.English.label"/></option>
 	 			 <option id="2" value="ml" ><g:message code="default.lang.Malayalam.label"/></option>
 	 			 <option id="3" value="hi" ><g:message code="default.lang.Hindi.label"/></option>
-	 			 <option id="4" value="tl" selected><g:message code="default.lang.Tamil.label"/></option>
-	 			 <option id="5" value="it" ><g:message code="default.lang.Italian.label"/></option>
-	 			 <option id="6" value="es" ><g:message code="default.lang.Spanish.label"/></option>
-	 			 <option id="7" value="fr" ><g:message code="default.lang.French.label"/></option>
-	 			 <option id="8" value="ru" ><g:message code="default.lang.Russian.label"/></option>
-	 			 <option id="9" value="zh" ><g:message code="default.lang.Chinese.label"/></option>           
+	 			       
 	 		</g:if>
            <g:if test="${session.lang == 'it'}">
 	             <option id="1" value="en"  ><g:message code="default.lang.English.label"/></option>
 	 			 <option id="2" value="ml" ><g:message code="default.lang.Malayalam.label"/></option>
 	 			 <option id="3" value="hi" ><g:message code="default.lang.Hindi.label"/></option>
-	 			 <option id="4" value="tl" ><g:message code="default.lang.Tamil.label"/></option>
-	 			 <option id="5" value="it" selected><g:message code="default.lang.Italian.label"/></option>
-	 			 <option id="6" value="es" ><g:message code="default.lang.Spanish.label"/></option>
-	 			 <option id="7" value="fr" ><g:message code="default.lang.French.label"/></option>
-	 			 <option id="8" value="ru" ><g:message code="default.lang.Russian.label"/></option>
-	 			 <option id="9" value="zh" ><g:message code="default.lang.Chinese.label"/></option>	 			 
+	 						 
            </g:if>
            
            <g:if test="${session.lang == 'es'}">
 	             <option id="1" value="en"  ><g:message code="default.lang.English.label"/></option>
 	 			 <option id="2" value="ml" ><g:message code="default.lang.Malayalam.label"/></option>
 	 			 <option id="3" value="hi" ><g:message code="default.lang.Hindi.label"/></option>
-	 			 <option id="4" value="tl" ><g:message code="default.lang.Tamil.label"/></option>
-	 			 <option id="5" value="it" ><g:message code="default.lang.Italian.label"/></option>
-	 			 <option id="6" value="es" selected><g:message code="default.lang.Spanish.label"/></option>
-	 			 <option id="7" value="fr" ><g:message code="default.lang.French.label"/></option>
-	 			 <option id="8" value="ru" ><g:message code="default.lang.Russian.label"/></option>
-	 			 <option id="9" value="zh" ><g:message code="default.lang.Chinese.label"/></option>	 			 
+	 			 
            </g:if>
            <g:if test="${session.lang == 'fr'}">
 	             <option id="1" value="en"  ><g:message code="default.lang.English.label"/></option>
 	 			 <option id="2" value="ml" ><g:message code="default.lang.Malayalam.label"/></option>
 	 			 <option id="3" value="hi" ><g:message code="default.lang.Hindi.label"/></option>
-	 			 <option id="4" value="tl" ><g:message code="default.lang.Tamil.label"/></option>
-	 			 <option id="5" value="it" ><g:message code="default.lang.Italian.label"/></option>
-	 			 <option id="6" value="es" ><g:message code="default.lang.Spanish.label"/></option>
-	 			 <option id="7" value="fr" selected><g:message code="default.lang.French.label"/></option>
-	 			 <option id="8" value="ru" ><g:message code="default.lang.Russian.label"/></option>
-	 			 <option id="9" value="zh" ><g:message code="default.lang.Chinese.label"/></option>	 			 
+	 			 			 
            </g:if>
            <g:if test="${session.lang == 'ru'}">
 	             <option id="1" value="en"  ><g:message code="default.lang.English.label"/></option>
 	 			 <option id="2" value="ml" ><g:message code="default.lang.Malayalam.label"/></option>
 	 			 <option id="3" value="hi" ><g:message code="default.lang.Hindi.label"/></option>
-	 			 <option id="4" value="tl" ><g:message code="default.lang.Tamil.label"/></option>
-	 			 <option id="5" value="it" ><g:message code="default.lang.Italian.label"/></option>
-	 			 <option id="6" value="es" ><g:message code="default.lang.Spanish.label"/></option>
-	 			 <option id="7" value="fr" ><g:message code="default.lang.French.label"/></option>
-	 			 <option id="8" value="ru" selected><g:message code="default.lang.Russian.label"/></option>
-	 			 <option id="9" value="zh" ><g:message code="default.lang.Chinese.label"/></option>	 			 
+	 			 			 
            </g:if>
            <g:if test="${session.lang == 'zh'}">
 	             <option id="1" value="en"  ><g:message code="default.lang.English.label"/></option>
 	 			 <option id="2" value="ml" ><g:message code="default.lang.Malayalam.label"/></option>
 	 			 <option id="3" value="hi" ><g:message code="default.lang.Hindi.label"/></option>
-	 			 <option id="4" value="tl" ><g:message code="default.lang.Tamil.label"/></option>
-	 			 <option id="5" value="it" ><g:message code="default.lang.Italian.label"/></option>
-	 			 <option id="6" value="es" ><g:message code="default.lang.Spanish.label"/></option>
-	 			 <option id="7" value="fr" ><g:message code="default.lang.French.label"/></option>
-	 			 <option id="8" value="ru" ><g:message code="default.lang.Russian.label"/></option>
-	 			 <option id="9" value="zh" selected><g:message code="default.lang.Chinese.label"/></option>	 			 
+	 			 	 			 
            </g:if>
 			</select>
      </th>
@@ -291,9 +241,12 @@ background-color: #d5e5ed;
       <td><input type='button' value='<g:message code="default.login.label"/>' id="wp-submit" class="formbutton" onclick="return validateForm(document.loginform)" /></td>
       </tr>
     <tr>
-   	 	<td>&nbsp;</td>
-      <td>
-  	 	<br /><a href="${createLink(action:'index',controller:'register')}" id="wp-submit"  class="button-primary"><g:message code="default.register.label"/></a>
+   	 	<td>
+		<br />&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="${createLink(action:'index',controller:'register')}" id="wp-submit"  class="button-primary"><g:message code="default.register.label"/>!</td>
+      <td>  
+	  <br />&nbsp;	 	
+		<a href="${createLink(action:'index',controller:'forgotPassword')}" id="wp-submit"  class="button-primary"><g:message code="default.forgot.label"/></a>
       </td>
       
       </tr>

@@ -36,96 +36,92 @@
 	<link rel="stylesheet" type="text/css" href="wcf/form/xform.css">
 	<link rel="stylesheet" type="text/css" href="wcf/table/xtable.css">
 	<link rel="stylesheet" type="text/css" href="wcf/tree/xtree.css">
-
-
 </head>
 
 <body>
-
 <div id="wrapper">
 		<div id="head">
-			<div class="innnerBanner">
-			<g:isLoggedIn>
-			<div class="loginLink">
-			<span>
-			<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>			
-		
-			</span>
-			</div>
-			</g:isLoggedIn>
-			</div>		    
-		</div>
-		<br /><br />
-	<div id="content"> 
- 	<div style="float: left; width: 200px; margin-right: 5px;">
-			 <div class="urbangreymenu" style="padding-left:10px;">
-				<h3 class="headerbar">MENU OPTIONS</h3>
-				<ul class="submenu">
-                                   <ul>
-                                        <%
-                                        String URL=session.getAttribute("ROLE").toString();
-                                        %>
-                                        <%
-                                        if(URL.equals("ROLE_SUPERADMIN") || URL.equals("ROLE_UNIVERSITY"))
-                                        {
-                                        %>
-                                           <li><a  class="house" href='<c:out value="courseActivity/listAdminOptions"/>'>Home</a></li>
-                                        <%
-                                        }
-                                        %>
-                                         <%
-                                        if(URL.equals("ROLE_STAFF"))
-                                        {
-                                        %>
-                                             <li><a  class="house" href='<c:out value="courseActivity/listStaffCourses"/>'>Home</a></li>
-                                        <%
-                                        }
-                                        %>
-                                         <%
-                                        if(URL.equals("ROLE_STUDENT"))
-                                        {
-                                        %>
-                                             <li><a  class="house" href='<c:out value="courseActivity/studActivity"/>'>Home</a></li>
-                                        <%
-                                        }
-                                        %>
+		<div id="logo_user_details">&nbsp;</div>
+		<!-- Menu Starts here -->
+<div id="menus_wrapper">
+    <div id="sec_menu">
+				<ul>
+				<%
+				String URL=session.getAttribute("ROLE").toString();
+				String user=session.getAttribute("UserId").toString();
+				%>				
+				<%
+				if(URL.equals("ROLE_STAFF"))
+				{
+				%>
+				<li><a  class="house" href='<c:out value="courseActivity/listStaffCourses"/>'>Home</a></li>
+				<%
+				}
+				%>
+				<%
+				if(URL.equals("ROLE_STUDENT"))
+				{
+				%>
+				<li><a  class="house" href=''>Home</a></li>
+				<%
+				}
+				%>
+				
+				<%
+				if(URL.equals("ROLE_INSTITUTE"))
+				{
+				%>
+				<li><a  class="house" href='<c:out value="settings/lmsSettings"/>'>Home</a></li>
+				<%
+				}
+				%>				
+				<%
+				if(URL.equals("ROLE_SUPERADMIN") || URL.equals("ROLE_ADMIN") || URL.equals("ROLE_UNIVERSITY"))
+				{
+				%>
+				<li><a  class="dashboard" href='<c:out value="dashboard/admindashboard"/>'>Dashboard</a></li>
+				<%
+				}
+				%>	
+				<%
+				if(URL.equals("ROLE_INSTITUTE"))
+				{
+				%>
+				<li><a  class="dashboard" href='<c:out value="dashboard/institutedashboard"/>'>Dashboard</a></li>
+				<%
+				}
+				%>
+				<%
+				if(URL.equals("ROLE_STAFF"))
+				{
+				%>
+				<li><a  class="dashboard" href='<c:out value="dashboard/staffdashboard"/>'>Dashboard</a></li>
+				<%
+				}
+				%>
+				<%
+				if(URL.equals("ROLE_SUPERADMIN"))
+				{
+				%>
+				<li><a href='<c:out value="authority/list"/>'  class="manage_page">Roles Privileges</a></li>
+				<li><a href='<c:out value="person/list"/>'  class="useradd">Users</a></li>
+				<%
+				}
+				%>
+				<li><a  class="house" href='<c:out value="helpdoc/divehelp.html"/>' class="help" target="_blank">Technical-Documentation</a></li>
+				<li><a  class="house" href='<c:out value="logout"/>' class="logout">Logout</a></li>
+				</ul>
+						
+						<div  align="right"  style="padding:10px 10px 0px 0px; font-size:12px; font-family:Arial">
+						<font color="#FFFFFF">Logged in as <strong> <%=user%></strong></font></div>
+		   </div>
+    </div>
+		<!-- Menu Ends here -->    
+</div>
 
-
-                                         <%
-                                        if(URL.equals("ROLE_SUPERADMIN") || URL.equals("ROLE_UNIVERSITY"))
-                                        {
-                                        %>
-                                           <li><a  class="dashboard" href='<c:out value="dashboard/admindashboard"/>'>Dashboard</a></li>
-                                        <%
-                                        }
-                                        %>
-                                         <%
-                                        if(URL.equals("ROLE_STAFF"))
-                                        {
-                                        %>
-                                             <li><a  class="dashboard" href='<c:out value="dashboard/staffdashboard"/>'>Dashboard</a></li>
-                                        <%
-                                        }
-                                        %>
-
-
-
-                                        <%
-                                        if(URL.equals("ROLE_SUPERADMIN"))
-                                        {
-                                        %>
-                                        <li><a href='<c:out value="authority/list"/>'  class="manage_page">Roles Privileges</a></li>
-                                        <li><a href='<c:out value="person/list"/>'  class="useradd">Users</a></li>
-                                        <%
-                                        }
-                                        %>
-                                        <li><a  class="house" href='<c:out value="siteHelp/help"/>' class="help">Help</a></li>
-                                        <li><a  class="house" href='<c:out value="logout"/>' class="logout">Logout</a></li>
-                                 </ul>
-			</div>
-		 </div>
-<div style="float: left; width: 790px; margin-right: 5px;">
-			<div style="width:750px; height:500px;padding-left:50px;overflow: scroll;white-space: nowrap">
+<div id="content"> <!-- Start of content div -->
+ <div>
+			<div style="height:500px;padding-left:5px;overflow: scroll;white-space: nowrap">
 							   	<form action="analytics.jsp" method="post">
 								<c:url var="url" value='/'></c:url>
 
@@ -223,14 +219,13 @@
 
 							</form>
           <div style="clear: both;">&nbsp;</div>
-		<br />
-<!-- Middle area ends here -->		
+		<br />	
+        </div>
+       </div>
+	   <!-- Middle area ends here -->	
   </div> <!-- End of content div -->
-</div>
- <div style="clear: both;">&nbsp;</div>
- <br /> <br /> <br /> <br />
+  	   <br /> <br />
+	</div>
 <div id="footer">
-          <div style="padding:8px 0px 10px 0px;background-color: #9DC6D9;" align="center">
-		  <font color="#104d6b" size="-3"><strong>Developed by Amrita University under ERP, NME ICT, MHRD</strong></font>
-		  </div>
+          <div style="padding:8px 30px 20px 0px" align="right"><h4><font color="white">Developed by Amrita University under ERP, NME ICT, MHRD</font></h4></div>
 </div>

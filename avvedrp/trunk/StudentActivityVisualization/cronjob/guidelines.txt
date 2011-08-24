@@ -1,0 +1,11 @@
+If you are running the DIVE as a standalone mode you can use this cron job setting to import data from your moodle database to Dive database
+
+1. Download Kettle-3.0.2 to your linux machine
+2. Set the KETTLE_HOME directory
+3. copy the kettle.properties file to your KETTLE_HOME and edit the value of property variables with your yourown. insti_id, lms_id will get from Dive database 
+4. copy the ktr/*.ktr files and mdl (excecutable file) to the Kettle-3.0.2 directory
+5. add following line /etc/crontab with the 
+
+* * * * * root /root/Kettle-3.0.2/mdl >>/root/dive/txform4.log 2>&1
+
+if you need, you can change the value with your own. you can change cron excecusion interval also.

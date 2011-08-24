@@ -1,44 +1,52 @@
-<div style="float: left; width: 180px; margin: 30px 6px; 0px 0px">
-<div id="menu12">
-<ul>
-<li><div class="bt1"><span class="ht11">&nbsp;&nbsp;</span>
-<span class="hw12">Menu</span></div></li>
-<g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_UNIVERSITY'}"  >
-							<li><a href="${createLink(action:'listInstitutes',controller:'courseActivity')}"><g:message code="default.menuopt1.label"/></a></li>
-							</g:if>
-							
-							<g:if test="${session.ROLE == 'ROLE_STAFF'}"  >
-							<li><a  href="${createLink(action:'listStaffCourses',controller:'courseActivity')}">Home</a></li>
-							</g:if>
-							
-							<g:if test="${session.ROLE == 'ROLE_STUDENT'}"  >
-							<li><a  href="${resource(dir:'')}">Home</a></li>
-							</g:if>
-							
-							<g:if test="${session.ROLE == 'ROLE_INSTITUTE'}"  >
-							<li><a href="${createLink(action:'edit',controller:'lmsSettings')}" class="settings">LMS Settings</a></li>
-							</g:if>
-							
-							<g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_ADMIN' || session.ROLE == 'ROLE_UNIVERSITY'}"  >
-							<li><a  href="${createLink(action:'admindashboard',controller:'dashboard')}">Dashboard</a></li>
-							</g:if>
-							
-							<g:if test="${session.ROLE == 'ROLE_INSTITUTE'}"  >
-							<li><a  href="${createLink(action:'institutedashboard',controller:'dashboard')}">Dashboard</a></li>
-							</g:if>
-							
-							<g:if test="${session.ROLE == 'ROLE_STAFF'}"  >
-							<li><a  href="${createLink(action:'staffdashboard',controller:'dashboard')}">Dashboard</a></li>
-							</g:if>
-							
-							<g:if test="${session.ROLE == 'ROLE_SUPERADMIN'}"  >
-							<li><a href="${createLink(action:'list',controller:'authority')}" class="manage_page">Roles / Privileges</a></li>
-							<li><a href="${createLink(action:'list',controller:'person')}" class="useradd">Users</a></li>
-							</g:if>
-							
-							<li><a href="${createLink(action:'help',controller:'siteHelp')}" class="help">Technical-Documentation</a></li>
-							
-							<li><a href="${resource(dir:'/logout')}" class="logout"><g:message code="default.menuopt6.label"/></a></li>
-</ul>
+<div id="menus_wrapper">
+    <div id="sec_menu">
+  
+	  <ul>
+				<!--
+				<g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_UNIVERSITY'}"  >
+				<li><a class="house" href="${createLink(action:'listInstitutes',controller:'courseActivity')}">
+				<g:message code="default.menuopt1.label"/></a></li>
+				</g:if>
+				-->
+				
+				<g:if test="${session.ROLE == 'ROLE_STAFF'}"  >
+				<li><a  class="house" href="${createLink(action:'listStaffCourses',controller:'courseActivity')}"><g:message code="default.menuopt1.label"/></a></li>
+				</g:if>
+				
+				<g:if test="${session.ROLE == 'ROLE_STUDENT'}"  >
+				<li><a class="house" href="${resource(dir:'')}"><g:message code="default.menuopt1.label"/></a></li>
+				</g:if>
+				
+				
+				<g:if test="${session.ROLE == 'ROLE_INSTITUTE'}"  >
+				<li><a href="${createLink(action:'edit',controller:'lmsSettings')}" class="settings"><g:message code="default.menuopt7.label"/></a></li>
+				</g:if>
+				
+				<g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_ADMIN' || session.ROLE == 'ROLE_UNIVERSITY'}"  >
+				<li><a  class="dashboard" href="${createLink(action:'admindashboard',controller:'dashboard')}"><g:message code="default.menuopt2.label"/></a></li>
+				</g:if>
+				
+				<g:if test="${session.ROLE == 'ROLE_INSTITUTE'}"  >
+				<li><a class="dashboard"  href="${createLink(action:'institutedashboard',controller:'dashboard')}"><g:message code="default.menuopt2.label"/></a></li>
+				</g:if>
+				
+				<g:if test="${session.ROLE == 'ROLE_STAFF'}"  >
+				<li><a  class="dashboard" href="${createLink(action:'staffdashboard',controller:'dashboard')}"><g:message code="default.menuopt2.label"/></a></li>
+				</g:if>
+				
+				<g:if test="${session.ROLE == 'ROLE_SUPERADMIN'}"  >
+				<li><a href="${createLink(action:'list',controller:'authority')}" class="manage_page"><g:message code="default.menuopt3.label"/></a></li>
+				<li><a href="${createLink(action:'list',controller:'person')}" class="useradd"><g:message code="default.menuopt4.label"/></a></li>
+				</g:if>
+				
+				<li><a href="../helpdoc/divehelp.html" class="help" target="_blank"><g:message code="default.menuopt8.label"/></a></li>
+				
+				<li><a href="${resource(dir:'/logout')}" class="logout"><g:message code="default.menuopt6.label"/></a></li>
+				</ul>
+				
+				<g:isLoggedIn>
+				<div  align="right"  style="padding:10px 10px 0px 0px; font-size:12px; font-family:Arial"><font color="#FFFFFF">Logged in as       <strong>${session.UserId}</strong></font></div>
+				</g:isLoggedIn>
+    </div>
 </div>
-</div>
+

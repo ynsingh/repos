@@ -1,0 +1,4 @@
+export KETTLE_HOME=/root/Kettle-3.0.2
+sh /root/Kettle-3.0.2/pan.sh /file:"/root/Kettle-3.0.2/ktr/mdl_course.ktr"  /level:Basic
+
+sh /root/Kettle-3.0.2/pan.sh /file:"/root/Kettle-3.0.2/ktr/mdl_log.ktr"  /level:Basic

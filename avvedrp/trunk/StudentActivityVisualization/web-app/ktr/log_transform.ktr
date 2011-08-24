@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transformation>
+  <info>
+    <name>log_transform</name>
+    <description/>
+    <extended_description/>
+    <trans_version/>
+    <directory>&#47;</directory>
+    <parameters>
+    </parameters>
+    <log>
+      <read/>
+      <write/>
+      <input/>
+      <output/>
+      <update/>
+      <rejected/>
+      <connection/>
+      <table/>
+      <step_performance_table/>
+      <use_batchid>Y</use_batchid>
+      <use_logfield>N</use_logfield>
+      <size_limit_lines/>
+    </log>
+    <maxdate>
+      <connection/>
+      <table/>
+      <field/>
+      <offset>0.0</offset>
+      <maxdiff>0.0</maxdiff>
+    </maxdate>
+    <size_rowset>10000</size_rowset>
+    <sleep_time_empty>50</sleep_time_empty>
+    <sleep_time_full>50</sleep_time_full>
+    <unique_connections>N</unique_connections>
+    <feedback_shown>Y</feedback_shown>
+    <feedback_size>50000</feedback_size>
+    <using_thread_priorities>Y</using_thread_priorities>
+    <shared_objects_file/>
+    <capture_step_performance>N</capture_step_performance>
+    <step_performance_capturing_delay>1000</step_performance_capturing_delay>
+    <dependencies>
+    </dependencies>
+    <partitionschemas>
+    </partitionschemas>
+    <slaveservers>
+    </slaveservers>
+    <clusterschemas>
+    </clusterschemas>
+  <modified_user>-</modified_user>
+  <modified_date>2011&#47;03&#47;18 15:14:35.984</modified_date>
+  </info>
+  <notepads>
+  </notepads>
+  <connection>
+    <name>input_connection</name>
+    <server>${SOURCEDB_HOST}</server>
+    <type>MYSQL</type>
+    <access>Native</access>
+    <database>${SOURCEDB_DBNAME}</database>
+    <port>${SOURCEDB_PORT}</port>
+    <username>${SOURCEDB_USERNAME}</username>
+    <password>${SOURCEDB_PASSWORD}</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute><code>EXTRA_OPTION_MYSQL.defaultFetchSize</code><attribute>500</attribute></attribute>
+      <attribute><code>EXTRA_OPTION_MYSQL.useCursorFetch</code><attribute>true</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+      <attribute><code>PORT_NUMBER</code><attribute>${SOURCEDB_PORT}</attribute></attribute>
+      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+      <attribute><code>STREAM_RESULTS</code><attribute>Y</attribute></attribute>
+      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>N</attribute></attribute>
+      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+    </attributes>
+  </connection>
+  <connection>
+    <name>output_connection</name>
+    <server>${TARGETDB_HOST}</server>
+    <type>MYSQL</type>
+    <access>Native</access>
+    <database>${TARGETDB_DBNAME}</database>
+    <port>${TARGETDB_PORT}</port>
+    <username>${TARGETDB_USERNAME}</username>
+    <password>${TARGETDB_PASSWORD}</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute><code>EXTRA_OPTION_MYSQL.defaultFetchSize</code><attribute>500</attribute></attribute>
+      <attribute><code>EXTRA_OPTION_MYSQL.useCursorFetch</code><attribute>true</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+      <attribute><code>PORT_NUMBER</code><attribute>${TARGETDB_PORT}</attribute></attribute>
+      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+      <attribute><code>STREAM_RESULTS</code><attribute>Y</attribute></attribute>
+      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>N</attribute></attribute>
+      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+    </attributes>
+  </connection>
+  <connection>
+    <name>output_connection1</name>
+    <server>${TARGETDB_HOST}</server>
+    <type>MYSQL</type>
+    <access>Native</access>
+    <database>${TARGETDB_DBNAME}</database>
+    <port>${TARGETDB_PORT}</port>
+    <username>${TARGETDB_USERNAME}</username>
+    <password>${TARGETDB_PASSWORD}</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute><code>EXTRA_OPTION_MYSQL.defaultFetchSize</code><attribute>500</attribute></attribute>
+      <attribute><code>EXTRA_OPTION_MYSQL.useCursorFetch</code><attribute>true</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+      <attribute><code>PORT_NUMBER</code><attribute>${TARGETDB_PORT}</attribute></attribute>
+      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+      <attribute><code>STREAM_RESULTS</code><attribute>Y</attribute></attribute>
+      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>N</attribute></attribute>
+      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+    </attributes>
+  </connection>
+  <order>
+  <hop> <from>courseid_lookup</from><to>master_output</to><enabled>Y</enabled> </hop>  <hop> <from>master_input</from><to>courseid_lookup</to><enabled>Y</enabled> </hop>  </order>
+  <step>
+    <name>component_input</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection/>
+    <sql>SELECT
+	${LMS_CODE} as lms_id
+  , ${INST_CODE} as inst_id 
+  , mdl_quiz_grades.quiz as comp_id
+  , u.username as user_name
+  , q1.name as comp_name
+  , mdl_quiz_grades.grade as grade
+  , c.fullname as course_name
+  , &quot;quiz&quot; as module
+  , from_unixtime(mdl_quiz_grades.timemodified) as date
+FROM mdl_quiz_grades,mdl_quiz q1,mdl_course c,mdl_user u where mdl_quiz_grades.userid=u.id and q1.id=mdl_quiz_grades.quiz  and q1.course=c.id and mdl_quiz_grades.quiz=q1.id
+</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>Y</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>188</xloc>
+      <yloc>319</yloc>
+      <draw>N</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>courseid_lookup</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>output_connection</connection>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema/>
+      <table>course_master</table>
+      <orderby/>
+      <fail_on_multiple>N</fail_on_multiple>
+      <eat_row_on_failure>Y</eat_row_on_failure>
+      <key>
+        <name>course_name</name>
+        <field>course_name</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>id</name>
+        <rename>retrieved_id</rename>
+        <default/>
+        <type>Integer</type>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>237</xloc>
+      <yloc>107</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>master_input</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>input_connection</connection>
+    <sql>select 
+${LMS_ID} as lms_id,
+${INST_ID} as inst_id,
+t1.module  as module_name,
+from_unixtime(t1.time) as date,
+t2.username as user_name,
+t3.fullname as course_name,
+(select group_concat(distinct(lower(b.name))) from mdl_role_assignments a INNER JOIN mdl_role b where a.userid=t1.userid and a.roleid=b.id) as user_type,
+t1.action as action
+from mdl_log t1 
+INNER JOIN mdl_user t2
+INNER JOIN mdl_course t3
+where t1.userid=t2.id  and t1.course=t3.id </sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>Y</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>154</xloc>
+      <yloc>65</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>master_output</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>output_connection1</connection>
+    <commit>100</commit>
+    <update_bypassed>Y</update_bypassed>
+    <lookup>
+      <schema/>
+      <table>master</table>
+      <key>
+        <name>lms_id</name>
+        <field>lms_id</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>inst_id</name>
+        <field>inst_id</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>module_name</name>
+        <field>module_name</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>date</name>
+        <field>date</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>user_name</name>
+        <field>user_name</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>user_type</name>
+        <field>user_type</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>action</name>
+        <field>action</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>retrieved_id</name>
+        <field>course_id</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>lms_id</name>
+        <rename>lms_id</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>inst_id</name>
+        <rename>inst_id</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>module_name</name>
+        <rename>module_name</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>date</name>
+        <rename>date</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>user_name</name>
+        <rename>user_name</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>user_type</name>
+        <rename>user_type</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>action</name>
+        <rename>action</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>course_id</name>
+        <rename>retrieved_id</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>309</xloc>
+      <yloc>63</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step_error_handling>
+  </step_error_handling>
+   <slave-step-copy-partition-distribution>
+</slave-step-copy-partition-distribution>
+   <slave_transformation>N</slave_transformation>
+</transformation>
+<?xml version="1.0" encoding="UTF-8"?>
+<transformation>
+  <info>
+    <name>log_transform</name>
+    <description/>
+    <extended_description/>
+    <trans_version/>
+    <directory>&#47;</directory>
+    <parameters>
+    </parameters>
+    <log>
+      <read/>
+      <write/>
+      <input/>
+      <output/>
+      <update/>
+      <rejected/>
+      <connection/>
+      <table/>
+      <step_performance_table/>
+      <use_batchid>Y</use_batchid>
+      <use_logfield>N</use_logfield>
+      <size_limit_lines/>
+    </log>
+    <maxdate>
+      <connection/>
+      <table/>
+      <field/>
+      <offset>0.0</offset>
+      <maxdiff>0.0</maxdiff>
+    </maxdate>
+    <size_rowset>10000</size_rowset>
+    <sleep_time_empty>50</sleep_time_empty>
+    <sleep_time_full>50</sleep_time_full>
+    <unique_connections>N</unique_connections>
+    <feedback_shown>Y</feedback_shown>
+    <feedback_size>50000</feedback_size>
+    <using_thread_priorities>Y</using_thread_priorities>
+    <shared_objects_file/>
+    <capture_step_performance>N</capture_step_performance>
+    <step_performance_capturing_delay>1000</step_performance_capturing_delay>
+    <dependencies>
+    </dependencies>
+    <partitionschemas>
+    </partitionschemas>
+    <slaveservers>
+    </slaveservers>
+    <clusterschemas>
+    </clusterschemas>
+  <modified_user>-</modified_user>
+  <modified_date>2011&#47;03&#47;18 15:14:35.984</modified_date>
+  </info>
+  <notepads>
+  </notepads>
+  <connection>
+    <name>input_connection</name>
+    <server>${SOURCEDB_HOST}</server>
+    <type>MYSQL</type>
+    <access>Native</access>
+    <database>${SOURCEDB_DBNAME}</database>
+    <port>${SOURCEDB_PORT}</port>
+    <username>${SOURCEDB_USERNAME}</username>
+    <password>${SOURCEDB_PASSWORD}</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute><code>EXTRA_OPTION_MYSQL.defaultFetchSize</code><attribute>500</attribute></attribute>
+      <attribute><code>EXTRA_OPTION_MYSQL.useCursorFetch</code><attribute>true</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+      <attribute><code>PORT_NUMBER</code><attribute>${SOURCEDB_PORT}</attribute></attribute>
+      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+      <attribute><code>STREAM_RESULTS</code><attribute>Y</attribute></attribute>
+      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>N</attribute></attribute>
+      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+    </attributes>
+  </connection>
+  <connection>
+    <name>output_connection</name>
+    <server>${TARGETDB_HOST}</server>
+    <type>MYSQL</type>
+    <access>Native</access>
+    <database>${TARGETDB_DBNAME}</database>
+    <port>${TARGETDB_PORT}</port>
+    <username>${TARGETDB_USERNAME}</username>
+    <password>${TARGETDB_PASSWORD}</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute><code>EXTRA_OPTION_MYSQL.defaultFetchSize</code><attribute>500</attribute></attribute>
+      <attribute><code>EXTRA_OPTION_MYSQL.useCursorFetch</code><attribute>true</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+      <attribute><code>PORT_NUMBER</code><attribute>${TARGETDB_PORT}</attribute></attribute>
+      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+      <attribute><code>STREAM_RESULTS</code><attribute>Y</attribute></attribute>
+      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>N</attribute></attribute>
+      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+    </attributes>
+  </connection>
+  <connection>
+    <name>output_connection1</name>
+    <server>${TARGETDB_HOST}</server>
+    <type>MYSQL</type>
+    <access>Native</access>
+    <database>${TARGETDB_DBNAME}</database>
+    <port>${TARGETDB_PORT}</port>
+    <username>${TARGETDB_USERNAME}</username>
+    <password>${TARGETDB_PASSWORD}</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute><code>EXTRA_OPTION_MYSQL.defaultFetchSize</code><attribute>500</attribute></attribute>
+      <attribute><code>EXTRA_OPTION_MYSQL.useCursorFetch</code><attribute>true</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+      <attribute><code>PORT_NUMBER</code><attribute>${TARGETDB_PORT}</attribute></attribute>
+      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+      <attribute><code>STREAM_RESULTS</code><attribute>Y</attribute></attribute>
+      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>N</attribute></attribute>
+      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+    </attributes>
+  </connection>
+  <order>
+  <hop> <from>courseid_lookup</from><to>master_output</to><enabled>Y</enabled> </hop>  <hop> <from>master_input</from><to>courseid_lookup</to><enabled>Y</enabled> </hop>  </order>
+  <step>
+    <name>component_input</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection/>
+    <sql>SELECT
+	${LMS_CODE} as lms_id
+  , ${INST_CODE} as inst_id 
+  , mdl_quiz_grades.quiz as comp_id
+  , u.username as user_name
+  , q1.name as comp_name
+  , mdl_quiz_grades.grade as grade
+  , c.fullname as course_name
+  , &quot;quiz&quot; as module
+  , from_unixtime(mdl_quiz_grades.timemodified) as date
+FROM mdl_quiz_grades,mdl_quiz q1,mdl_course c,mdl_user u where mdl_quiz_grades.userid=u.id and q1.id=mdl_quiz_grades.quiz  and q1.course=c.id and mdl_quiz_grades.quiz=q1.id
+</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>Y</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>188</xloc>
+      <yloc>319</yloc>
+      <draw>N</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>courseid_lookup</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>output_connection</connection>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema/>
+      <table>course_master</table>
+      <orderby/>
+      <fail_on_multiple>N</fail_on_multiple>
+      <eat_row_on_failure>Y</eat_row_on_failure>
+      <key>
+        <name>course_name</name>
+        <field>course_name</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>id</name>
+        <rename>retrieved_id</rename>
+        <default/>
+        <type>Integer</type>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>237</xloc>
+      <yloc>107</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>master_input</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>input_connection</connection>
+    <sql>select 
+${LMS_ID} as lms_id,
+${INST_ID} as inst_id,
+t1.module  as module_name,
+from_unixtime(t1.time) as date,
+t2.username as user_name,
+t3.fullname as course_name,
+(select group_concat(distinct(lower(b.name))) from mdl_role_assignments a INNER JOIN mdl_role b where a.userid=t1.userid and a.roleid=b.id) as user_type,
+t1.action as action
+from mdl_log t1 
+INNER JOIN mdl_user t2
+INNER JOIN mdl_course t3
+where t1.userid=t2.id  and t1.course=t3.id </sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>Y</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>154</xloc>
+      <yloc>65</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>master_output</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>output_connection1</connection>
+    <commit>100</commit>
+    <update_bypassed>Y</update_bypassed>
+    <lookup>
+      <schema/>
+      <table>master</table>
+      <key>
+        <name>lms_id</name>
+        <field>lms_id</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>inst_id</name>
+        <field>inst_id</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>module_name</name>
+        <field>module_name</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>date</name>
+        <field>date</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>user_name</name>
+        <field>user_name</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>user_type</name>
+        <field>user_type</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>action</name>
+        <field>action</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>retrieved_id</name>
+        <field>course_id</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>lms_id</name>
+        <rename>lms_id</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>inst_id</name>
+        <rename>inst_id</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>module_name</name>
+        <rename>module_name</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>date</name>
+        <rename>date</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>user_name</name>
+        <rename>user_name</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>user_type</name>
+        <rename>user_type</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>action</name>
+        <rename>action</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>course_id</name>
+        <rename>retrieved_id</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>309</xloc>
+      <yloc>63</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step_error_handling>
+  </step_error_handling>
+   <slave-step-copy-partition-distribution>
+</slave-step-copy-partition-distribution>
+   <slave_transformation>N</slave_transformation>
+</transformation>

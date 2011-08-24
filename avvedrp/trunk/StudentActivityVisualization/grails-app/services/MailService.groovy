@@ -9,7 +9,9 @@ class MailService {
 
             }
 
-
+            
+			
+			
             public boolean sendMessage(def emailId,def mailMessage)
             {
                 def mailServerStatus = true
@@ -31,6 +33,8 @@ class MailService {
                 Session session = Session.getDefaultInstance(props, null);
                 MimeMessage message = new MimeMessage(session);
                 message.setFrom(new InternetAddress(from));
+                
+				println("To ID ->"+emailId);
 
                 InternetAddress to_address = new InternetAddress(emailId);
                 message.addRecipient(Message.RecipientType.TO, to_address);
@@ -46,7 +50,7 @@ class MailService {
                 Transport transport = session.getTransport("smtp");
                 try
                 {
-                        println "transport connect"
+                         println "transport connected now"
                 transport.connect(host, username, password);
                 }
                 catch(Exception e)

@@ -48,8 +48,8 @@ class DashboardController {
           }
           [instituteList:instituteList]
 		  */
+		
     }
-
 
 
    def institutes={
@@ -122,15 +122,12 @@ class DashboardController {
 		
 	     def from_val=params.from;
 	     def to_val=params.to;	
-	     
-	     println from_val;
-	     println to_val;
         def sql=new Sql(dataSource);		
 		/*
 		SELECT count(a.action) as LMS_USAGE,DATE_FORMAT(a.date, '%Y') as date,b.lms_name as LMS,c.inst_name as INSTITUTE from master a INNER JOIN lms b INNER JOIN institute c where  a.lms_id=b.id and a.inst_id=c.id and (DATE_FORMAT(a.date, '%Y')>='2001' and DATE_FORMAT(a.date, '%Y')<='2010' )group by c.inst_name
 		*/
 
-        def query="SELECT count(a.action) as LMS_USAGE,b.lms_name as LMS,c.inst_name as INSTITUTE from master a INNER JOIN lms b   INNER JOIN institute c where  a.lms_id=b.id and a.inst_id=c.id and date_format(a.date,'%Y')>='"+from_val+"' and  date_format(a.date,'%Y')<='"+to_val+"' group by c.inst_name";	
+        def query="SELECT count(a.action) as LMS_USAGE,b.lms_name as LMS,c.id as INSTITUTE_ID,c.inst_name as INSTITUTE from master a INNER JOIN lms b   INNER JOIN institute c where  a.lms_id=b.id and a.inst_id=c.id and date_format(a.date,'%Y')>='"+from_val+"' and  date_format(a.date,'%Y')<='"+to_val+"' group by c.inst_name";	
 		
         def list=sql.rows(query)
           render(contentType:"text/xml")
@@ -142,6 +139,7 @@ class DashboardController {
                     institute()
                     {
                       lmsname(a.LMS)
+                      insid(a.INSTITUTE_ID)
                       insname(a.INSTITUTE)
                       usage(a.LMS_USAGE)
                     }
@@ -165,11 +163,12 @@ class DashboardController {
             xml_cont+='<institute>'+a.Institute+'</institute>';
             for(b in list2)
               {
-
                     xml_cont+='<'+b.usertype+'>';
                     sql.rows("select count(action) as totcnt from master where  LOWER(user_type) ='"+b.usertype+"' and inst_id='"+a.Insti_id+"' and date_format(date,'%Y')>='"+from_val+"' and  date_format(date,'%Y')<='"+to_val+"'").each { row ->
                     xml_cont+=row.totcnt;
                     xml_cont+='</'+b.usertype+'>';
+					
+					
                 }
               }
              xml_cont+='</institutes>';
@@ -209,7 +208,6 @@ class DashboardController {
 
      def yearwiseUsage={
     String sel_year=params.year
-    println "YEAR IS"+sel_year;
      def sql=new Sql(dataSource);
             def query="select count(a.action) LMS_USAGE,b.inst_name as INSTITUTE from master a INNER JOIN institute b where year(a.date)='"+sel_year+"' and a.inst_id=b.id group by a.inst_id order by b.inst_name asc"
             def list=sql.rows(query)
@@ -274,7 +272,7 @@ class DashboardController {
  /*----------------------  DASH BOARD FUNCTIONS FOR INSTITUTE USER ENDS HERE  -------------------------------------------- */
   def institutedashboard= { }
   
-  /*def staffstudInstUsage={	
+  def staffstudInstUsage={	
     
   def from_val=params.from;
   def to_val=params.to;	
@@ -318,6 +316,7 @@ class DashboardController {
             for(a in list)
 			 {
                     xml_cont+='<institute>';
+					xml_cont+='<courseid>'+a.COURSE_ID+'</courseid>';
 				    xml_cont+='<course>'+a.COURSE+'</course>';
                     sql.rows("select count(action) as totcnt from master where inst_id='"+instid+"' and course_id='"+a.COURSE_ID+"' and date_format(date,'%Y')>='"+from_val+"' and  date_format(date,'%Y')<='"+to_val+"'").each { row ->
                     xml_cont+='<usage>'+row.totcnt+'</usage>';                   
@@ -327,110 +326,51 @@ class DashboardController {
         xml_cont+='</university>';
         render(text:xml_cont,contentType:"text/xml",encoding:"UTF-8");
 		
-    }*/
+    }
 	
- def insti_courseusage={
-	 
-	def from_val=params.from;
+	
+	 def modulewiseInstUsage={	  
+	
+	    def from_val=params.from;
         def to_val=params.to;	
         GrailsHttpSession gh=getSession();
-  	def userid=gh.getValue("currUserId");
-  	def sql=new Sql(dataSource);
-        def insval = sql.firstRow("select id as INSTITUTE_ID from institute where user_id='"+userid+"'");
-  	def instid=insval.INSTITUTE_ID;  
-        
-	def query="select count(a.action) as LMS_USAGE,a.course_id as COURSE_ID,b.course_name as COURSE from master a INNER JOIN course_master b where  a.course_id=b.id and inst_id='"+instid+"' and date_format(a.date,'%Y')>='"+from_val+"' and  date_format(a.date,'%Y')<='"+to_val+"' group by b.course_name order by b.course_name asc"
+        def userid=gh.getValue("currUserId");
+        def course_id=params.course_id;	
 		
-		println(query);
+		println("FROM "+from_val);
+		println("TO "+to_val);
+		println("USER ID "+userid);
+		println("COURSE ID "+course_id);
+		/*
+		 def from_val=2008;
+        def to_val=2012;	
+       
+        def userid=3;
+        def course_id=4;	
+		*/
 		
-        def list=sql.rows(query);
-        def  xml_cont='<student>';
-              for(a in list)
-               {
-                    xml_cont+='<courses>';
-                    xml_cont+='<coursename>'+a.COURSE+'</coursename>';
-				    xml_cont+='<courseid>'+a.COURSE_ID+'</courseid>';
-                    xml_cont+='<usage>'+a.LMS_USAGE+'</usage>';
-                    xml_cont+='</courses>';
-                }
-              xml_cont+='</student>';
+		
+		
+		def sql=new Sql(dataSource);	
+		  def insval = sql.firstRow("select id as INSTITUTE_ID from institute where user_id='"+userid+"'");
+         def instid=insval.INSTITUTE_ID;  	
+        def list=sql.rows("select distinct(module_name) as MODULE from master where course_id='"+course_id+"' and inst_id='"+instid+"' order by module_name asc")
+        String xml_cont='<courses>';
+            for(mdl in list)
+              {
+                   xml_cont+='<modules>';
+                   xml_cont+='<modulename>'+mdl.MODULE+'</modulename>';
+                    xml_cont+='<usage>';
+                    sql.rows("select count(action) as totcnt  from master where course_id='"+course_id+"' and module_name='"+mdl.MODULE+"' and inst_id='"+instid+"' and date_format(date,'%Y')>='"+from_val+"' and  date_format(date,'%Y')<='"+to_val+"' group by module_name order by module_name").each
+                    { row -> xml_cont+=row.totcnt  }
+                     xml_cont+='</usage>';
+                  xml_cont+='</modules>';
+              }
+             xml_cont+='</courses>';
        render(text:xml_cont,contentType:"text/xml",encoding:"UTF-8")
-      }
-	 def insti_moduleusage={	  
-	 	   def from_val=params.from;
-	         def to_val=params.to;	
-	         GrailsHttpSession gh=getSession()
-	         def userid=gh.getValue("currUserId");
-	         def course_id=params.course_id;	 
-	         def sql=new Sql(dataSource);
-	         def insval = sql.firstRow("select id as INSTITUTE_ID from institute where user_id='"+userid+"'");
-  		def instid=insval.INSTITUTE_ID;
-	         def list=sql.rows("select distinct(module_name) as MODULE from master where course_id='"+course_id+"' and inst_id='"+instid+"' order by module_name asc")
-	         String xml_cont='<courses>';
-	             for(mdl in list)
-	               {
-	                    xml_cont+='<modules>';
-	                    xml_cont+='<modulename>'+mdl.MODULE+'</modulename>';
-	                     xml_cont+='<usage>';
-	                     sql.rows("select count(action) as totcnt  from master where course_id='"+course_id+"' and module_name='"+mdl.MODULE+"' and date_format(date,'%Y')>='"+from_val+"' and  date_format(date,'%Y')<='"+to_val+"' and inst_id='"+instid+"' group by module_name order by module_name").each
-	                     { row -> xml_cont+=row.totcnt  }
-	                      xml_cont+='</usage>';
-	                   xml_cont+='</modules>';
-	               }
-	              xml_cont+='</courses>';
-	        render(text:xml_cont,contentType:"text/xml",encoding:"UTF-8")
-	        }
-	 
-	 
-	      def insti_componentusage={	
-	         GrailsHttpSession gh=getSession()
-	         def userid=gh.getValue("currUserId");
-	         def course_id=params.course_id;	 
-	         def sql=new Sql(dataSource);
-	         def insval = sql.firstRow("select id as INSTITUTE_ID from institute where user_id='"+userid+"'");
-  		 def instid=insval.INSTITUTE_ID;
-	         def list=sql.rows("SELECT distinct(module_name) as MODULE from component where course_id='"+course_id+"'and inst_id='"+instid+"'")
-	         String xml_cont='<components>';
-	             for(mdl in list)
-	               {
-	                    xml_cont+='<component>';
-	                    xml_cont+='<cmpname>'+mdl.MODULE+'</cmpname>';
-	                     xml_cont+='<grade>';
-	                     sql.rows("SELECT avg(grade) as GRADE from component where course_id='"+course_id+"' and module_name='"+mdl.MODULE+"' and inst_id='"+instid+"'").each
-	                     { row -> xml_cont+=row.GRADE  }
-	                      xml_cont+='</grade>';
-	                   xml_cont+='</component>';
-	               }
-	              xml_cont+='</components>';
-	        render(text:xml_cont,contentType:"text/xml",encoding:"UTF-8")
-	       }
-	 
-	 
-	 
-	     def  courseusage_grid1={
-	         GrailsHttpSession gh=getSession()
-	         def userid=gh.getValue("currUserId");
-	         def sql=new Sql(dataSource);
-	         def insval = sql.firstRow("select id as INSTITUTE_ID from institute where user_id='"+userid+"'");
-  		 def instid=insval.INSTITUTE_ID;
-	         def query="SELECT a.course_id as COURSE_ID,b.course_name AS COURSE,a.module_name AS MODULE,count(a.action) AS USAGE_COUNT FROM master a INNER JOIN course_master b where  a.course_id=b.id and a.inst_id='"+instid+"' GROUP BY b.course_name,a.module_name"
-	         def list=sql.rows(query)
-	         render(contentType:"text/xml")
-	               {
-	                  components
-	                    {
-	                       for(a in list)
-	                       {
-	                         component()
-	                         {
-	                           course(a.COURSE)
-	                           module(a.MODULE)
-	                           count(a.USAGE_COUNT)
-	                        }
-	                      }
-	                    }
-	               }
-         }
+       }
+
+	
 	
   /*----------------------  DASH BOARD FUNCTIONS FOR INSTITUTE USER ENDS HERE  -------------------------------------------- */
   
@@ -497,16 +437,18 @@ class DashboardController {
 		def crs = sql.firstRow("select course_name as course from course_master where id='"+course_id+"'")
         def list2=sql.rows("select distinct(LOWER(user_type)) as usertype from master   where ( LOWER(user_type) = 'teacher' OR LOWER(user_type) = 'student' ) order by user_type asc")
         String xml_cont='<institute>';
-            xml_cont+='<courses>'
-            xml_cont+='<course>'+crs.course+'</course>'
+            xml_cont+='<courses>';
+            xml_cont+='<course>'+crs.course+'</course>';
+			xml_cont+='<dialect>Faculty</dialect>';
             for(b in list2)
               {
                     xml_cont+='<'+b.usertype+'>'
                     sql.rows("select count(action) as totcnt from master where course_id='"+course_id+"'and user_type='"+b.usertype+"' and date_format(date,'%Y')>='"+from_val+"' and  date_format(date,'%Y')<='"+to_val+"' group by user_type").each { row ->
-                    xml_cont+=row.totcnt
-                    xml_cont+='</'+b.usertype+'>'
+                    xml_cont+=row.totcnt;                   
                 }
+				   xml_cont+='</'+b.usertype+'>'
               }
+			  
              xml_cont+='</courses></institute>'
         //render xml_cont
         render(text:xml_cont,contentType:"text/xml",encoding:"UTF-8")
@@ -538,6 +480,32 @@ class DashboardController {
   }
 
 
+
+ def action_count={       
+        def course_id=params.course_id;		  
+	    def from_val=params.from;
+	    def to_val=params.to;
+        GrailsHttpSession gh=getSession()
+    	def staff_id=gh.getValue("currUsername");       
+        def sql=new Sql(dataSource);       
+        def list2=sql.rows("select distinct(action) as ACTION from master where user_name='"+staff_id+"'")
+        String xml_cont='<staff>';
+            for(b in list2)
+              {  
+                   xml_cont+='<actions>'
+                   xml_cont+='<action>'+b.ACTION+'</action>'
+                   xml_cont+='<count>'   
+                    sql.rows("select count(action) as totcnt from master where LOWER(user_name)='"+staff_id+"' and action='"+b.ACTION+"' and course_id='"+course_id+"' and date_format(date,'%Y')>='"+from_val+"' and  date_format(date,'%Y')<='"+to_val+"'").each
+                    { row -> xml_cont+=row.totcnt  }
+                     xml_cont+='</count>'
+                   xml_cont+='</actions>'
+              }
+             xml_cont+='</staff>' 
+        render(text:xml_cont,contentType:"text/xml",encoding:"UTF-8");
+     }
+	 
+	 
+	 
      /* ############################## For Second Tab in dashboard ############# */
          def staff_courses={
         GrailsHttpSession gh=getSession()
@@ -649,35 +617,16 @@ class DashboardController {
   /* ############################## Code For Second Tab in dashboard ends here ############# */
 
 
+   def staff_synonym={
+        String xml_cont='<institute><staff><synonym>faculty</synonym></staff></institute>';                   
+        render(text:xml_cont,contentType:"text/xml",encoding:"UTF-8")
+       }
 
     def filedownload= {        
           response.setContentType("image/png");
           response.setHeader("Content-disposition", "attachment;fileName=chart.png")
           response.outputStream << request.inputStream
     }
-    
-    
-     def courseYearwiseUsage={
-        String sel_year=params.year
-        println "YEAR IS"+sel_year;
-         def sql=new Sql(dataSource);
-                def query="select count(a.action) LMS_USAGE,a.user_type as INSTITUTE from master a where year(a.date)='"+sel_year+"' group by INSTITUTE"
-                def list=sql.rows(query)
-                  render(contentType:"text/xml")
-                  {
-                     university
-                       {
-                          for(a in list)
-                          {
-                            institute()
-                            {
-                              insname(a.INSTITUTE)
-                              usage(a.LMS_USAGE)
-                           }
-                         }
-                       }
-                  }
-        }
 
  /*---------------------------  DASH BOARD FUNCTIONS FOR STAFF USER ENDS HERE  -------------------------------------------- */
 
@@ -813,6 +762,137 @@ class DashboardController {
  /*---------------------------  DASH BOARD FUNCTIONS FOR STUDENT USER ENDS HERE  -------------------------------------------- */
  
  
+ 
+  def  sessionInfo={
+  /*
+  def xml_cont="""<session>
+  <data>  
+    <user>User1</user>
+    <usage>50, 60, 100, 150 , 160, 200, 300, 400</usage>
+  </data>
+  <data>  
+    <user>User2</user>
+    <usage>70, 80, 120, 170 , 350, 450</usage>
+  </data>
+  <data>   
+    <user>User3</user>
+    <usage>10, 100, 200, 250 , 450, 460, 480, 500</usage>
+  </data>
+  </session>""";
+  render(text:xml_cont,contentType:"text/xml",encoding:"UTF-8");
+  
+  */
+    def sql=new Sql(dataSource);
+     def arr=[]
+   
+	  def usrlist=sql.rows("select distinct(user_name) as USER from mdl_log order by user_name asc limit 0,1");
+	  def xml_cont='';
+	  xml_cont+='<session>';
+	   for(a in usrlist)
+              {                
+				   xml_cont+='<data>';
+				   xml_cont+='<user>'+a.USER+'</user>';
+				 def query="select time,action from mdl_log where user_name='"+a.USER+"' and course=1 and ( action='login' or action='logout' ) order by time asc";
+				  
+				     def list=sql.rows(query) 
+					 def str='';
+					 def sep='';   	
+						for(b in list)
+						  {
+							  str+= sep + (b.time);				                
+							  sep = ',';
+						  }
+				  xml_cont+='<usage>'+str+'</usage>';		
+				  xml_cont+='</data>';				 
+              }
+	      xml_cont+='</session>';
+		render(text:xml_cont,contentType:"text/xml",encoding:"UTF-8");		
+  }
+ 
+ 
+ 
+ 
+    def showSessionInfo={}
+	
+	
+	 def studList={
+        def sql=new Sql(dataSource);
+        def query="SELECT distinct user_name AS USERNAME FROM master where  LOWER(user_type)='student'  ORDER BY user_name asc";
+        def list=sql.rows(query);
+        render(contentType:"text/xml")
+              {
+                 institute
+                   {
+                      for(a in list)
+                      {
+                        user()
+                        {
+                          label(a.USERNAME)
+                          data(a.USERNAME)
+                       }
+                     }
+                   }
+              }
+        }
+ 
+ def sessionVisualize={
+        def sel_date=params.seldate;
+		def sel_user=params.seluser;
+		def sql=new Sql(dataSource);
+		def login_arr=[];
+		def logout_arr=[];		
+		
+		def login_list=sql.rows("select id,date ,action from master where user_name='"+sel_user+"' and ( action='login' )  and date_format(date,'%Y-%m-%d')='"+sel_date+"' order by date,id");		
+		for(a in login_list)
+		{  
+		    login_arr.add(a.date);
+		}  
+		
+		def logout_list=sql.rows("select id,date ,action from master where user_name='"+sel_user+"' and ( action='logout' )  and date_format(date,'%Y-%m-%d')='"+sel_date+"' order by date,id");		
+		for(b in logout_list)
+		{  
+		   logout_arr.add(b.date);
+		} 
+	 
+
+	  def len=login_arr.size()-1;
+	  def fromtime='';
+	  def totime='';
+	  
+	  def xml_cont='';
+	  xml_cont+='<institute>';
+	 for ( i in 0..len ) {  
+	 	 
+			 xml_cont+='<student>';  
+			   
+			 fromtime=login_arr[i];
+			 totime=logout_arr[i];		 
+				 
+			 def loginval = sql.firstRow("SELECT DATE_FORMAT('"+fromtime+"','%h.%i %p') as LOGIN_TIME");      
+			 xml_cont+='<login>'+loginval.LOGIN_TIME+'</login>';  		 
+			 
+			 def logout = sql.firstRow("SELECT DATE_FORMAT('"+totime+"','%h.%i %p') as LOGOUT_TIME");    
+			 xml_cont+='<logout>'+logout.LOGOUT_TIME+'</logout>'; 
+			 
+			 def timespend = sql.firstRow("SELECT TIME_FORMAT(TIMEDIFF('"+totime+"','"+fromtime+"'),'%H hrs %i min') as TMEDIFF");
+			 xml_cont+='<spend>'+timespend.TMEDIFF+'</spend>'; 
+			 
+			 def timediff = sql.firstRow("SELECT TIME_FORMAT(TIMEDIFF('"+totime+"','"+fromtime+"'),'%H.%i') as TMEDIFF");
+			 xml_cont+='<timespan>'+timediff.TMEDIFF+'</timespan>'; 
+					
+			 fromtime=''; totime='';	
+				 
+			 xml_cont+='</student>';  
+		 
+       }//end of for loop
+	   
+	 xml_cont+='</institute>';	 
+	 render(text:xml_cont,contentType:"text/xml",encoding:"UTF-8");	 
+ }
+ 
+ 
+ 
+ 
  /*--------------------------------- AUTHENTICATION FUNCTION STARTS HERE---------------------------------------------------*/
  
  private void authenticate()
@@ -874,9 +954,9 @@ class DashboardController {
 					}
 					println("success");					
 					
-					
-					String sqlFilePath = ApplicationHolder.application.parentContext.servletContext.getRealPath("/data/test.sql")
-					println("File path -->"+sqlFilePath);*/
+					*/
+					String sqlFilePath = ApplicationHolder.application.parentContext.servletContext.getRealPath("/ktr/log_transform.ktr")
+					println("File path -->"+sqlFilePath);
       }
  
 } //end of main class

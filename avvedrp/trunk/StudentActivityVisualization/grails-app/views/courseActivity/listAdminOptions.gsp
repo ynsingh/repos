@@ -1,6 +1,6 @@
-<meta name="layout" content="main" />
+<meta name="layout" content="main" />	
+<!-- ##################################  Layout body starts here  ###########################################-->
 <g:javascript src="jquery.js"/>
-<g:javascript src="ddaccordion.js"/>
 <script>
    function Redirect1(thisform)
         {
@@ -53,31 +53,23 @@
 </script>
 
 <!-- ##################################  Layout body starts here  ###########################################-->
+       </head>
+<body>
 	<div id="wrapper">
 		<div id="head">
-			<div class="innnerBanner">
-			<g:isLoggedIn>
-			<div class="loginLink">
-			<span>
-			<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>			
-			<b>${session.UserId}</b> (<a href="${resource(dir:'/logout')}" class="logout">Logout</a>)
-			</span>
-			</div>
-			</g:isLoggedIn>
-			</div>		    
-		</div>
-				<br /><h3>${institute} - ${year}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LMS - ${lms_used}</h3><br />
-	<div id="content"> 	
-	
-<!-- Middle area starts here -->	
-		<g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_UNIVERSITY'}">
+			<div id="logo_user_details">&nbsp;</div>
+		     <g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_UNIVERSITY'}">
 		<g:menu/>
 		</g:if >
-		
-		<div style="float: left; width: 790px;margin-right: 5px;">
+		</div>
 
+	<div id="content"> <!-- Start of content div -->
+<!-- Middle area starts here -->	
 
-<table width="738" style="padding-left:20px;">
+ <div align="center"><h3>${institute} - ${year}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LMS - ${lms_used}</h3></div>
+ <br />   <br />
+<div class="inner" >
+<table width="738" style="padding-left:150px;">
   <tr>
     <td width="260"><img src="${resource(dir:'images/links',file:'courseAnalyiticTitle.gif')}" width="260" height="102" /></td>
     <td width="37">&nbsp;</td>
@@ -89,7 +81,7 @@
     <td height="62" colspan="5" style="padding:50px 0px 0px 300px">	<h2>Course Wise Analysis </h2></td>
   </tr>
   <tr>
-    <td height="38" colspan="5" style="padding:20px 0px 0px 250px">
+    <td height="38" colspan="5" style="padding:20px 0px 0px 350px">
 	<label><strong>Course:&nbsp;&nbsp;&nbsp;&nbsp; </strong></label>					
 	<g:select keys="${courseList.crsId}"  from="${courseList.crsName}" name="course"  id="course" noSelection="['':'Select']"/>	</td>
   </tr>
@@ -112,14 +104,11 @@
 	</g:form>	</td>
   </tr>
 </table>
-
-
-		</div>
-		
-		<div style="clear: both;">&nbsp;</div>
-		<br />
-<!-- Middle area ends here -->		
-  </div> <!-- End of content div -->
 </div>
+
+<br />   <br />
+ </div> <!-- End of content div -->
+
+	</div>
 <g:footer/>
 <!-- ##################################  Layout body ends here  ###########################################-->

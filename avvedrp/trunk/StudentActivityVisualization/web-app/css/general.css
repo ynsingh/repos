@@ -5,6 +5,7 @@ html, body {
 }
 
 body {
+    width:100%; /* newly Added */
 	font-family: Arial;
 	font-size: 12px;
 	color: #3a3a3a;
@@ -35,8 +36,9 @@ p {
 
 /* start head */
 #head {
-	background: #455560 url(images/logo.jpg) repeat-x;
-	width: 100%;
+	/* background: #455560 url(images/logo.jpg) repeat-x; */
+	background: #455560 url(images/logo.jpg);
+	min-width: 1000px;
 	min-height: 1px;
 	position: relative;
 	top: 0;
@@ -916,8 +918,9 @@ p {
 #footer {
 	min-width: 1000px;
 	height: 75px;
-	/*background: #3e4d57;*/
-		background: #319ecf url(images/sec_menu_bg.gif) repeat-x;
+	/*background: #3e4d57;
+		background: #319ecf url(images/sec_menu_bg.gif) repeat-x;*/
+		background: #64B6DB url(images/sec_menu_bg.gif) repeat-x;
 	border: solid #5d7282;
 	/*border-width: 3px 0 0;*/
 	border-width: 1px 0 0;

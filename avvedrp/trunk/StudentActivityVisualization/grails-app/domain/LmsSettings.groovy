@@ -1,5 +1,3 @@
-
-
 class LmsSettings {
 
         Integer lms_id

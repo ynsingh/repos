@@ -1,13 +1,14 @@
-<meta name="layout" content="main" />
+<meta name="layout" content="main" />	
+<!-- ##################################  Layout body starts here  ###########################################-->
 <g:javascript src="jquery.js"/>
-<g:javascript src="ddaccordion.js"/>
+
 	<style>
 		.myform{
 		margin:0 auto;
 		width:375px;
-		float:left;
-		margin:20px;
-		padding-left:10px;
+		float:middle;
+		margin:100px;
+		padding-left:0px;
 		}
 		
 		/* ----------- stylized ----------- */
@@ -19,10 +20,10 @@
 		#stylized label{
 		display:block;
 		font-weight:bold;
-		text-align:right;
-		padding-top:4px;
-		width:140px;
-		float:left;
+		text-align:left;
+		padding-top:1px;
+		width:60px;
+		float:middle;
 		}			
 </style>
 <script type="text/javascript">
@@ -43,31 +44,16 @@
   }
 
 </script>
-		
 
-<!-- ##################################  Layout body starts here  ###########################################-->
 	<div id="wrapper">
 		<div id="head">
-			<div class="innnerBanner">
-			<g:isLoggedIn>
-			<div class="loginLink">
-			<span>
-			<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>			
-			<b>${session.UserId}</b> (<a href="${resource(dir:'/logout')}" class="logout">Logout</a>)
-			</span>
-			</div>
-			</g:isLoggedIn>
-			</div>		    
-		</div>
-		
-		<br /><br />
-	<div id="content"> 	
-<!-- Middle area starts here -->	
-		<g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_UNIVERSITY'}">
-		<g:menu/>
-		</g:if >
-		<div style="padding-left:300px;">						
-			<g:form action="redirectpage" name="institutes">
+			<div id="logo_user_details">&nbsp;</div>
+		             <g:menu/>
+        		</div>
+
+	<div id="content" align="center"> <!-- Start of content div -->
+	<div align="center ">
+       <g:form action="redirectpage" name="institutes">
                 <div id="stylized" class="myform">	
 					<br >
 						<table>					  
@@ -87,12 +73,8 @@
 					<br >
 				   </div>	 
               </g:form> 
-		</div>
-		
-		<div style="clear: both;">&nbsp;</div>
-		<br />
-<!-- Middle area ends here -->		
-  </div> <!-- End of content div -->
-</div>
+		</div>	  
+        </div> <!-- End of content div -->
+	</div>
 <g:footer/>
 <!-- ##################################  Layout body ends here  ###########################################-->

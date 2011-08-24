@@ -1,29 +1,19 @@
-<meta name="layout" content="main" />
-<g:javascript src="jquery.js"/>
-<g:javascript src="ddaccordion.js"/>
-
+<meta name="layout" content="main" />	
 <!-- ##################################  Layout body starts here  ###########################################-->
 	<div id="wrapper">
 		<div id="head">
-			<div class="innnerBanner">
-			<g:isLoggedIn>
-			<div class="loginLink">
-			<span>
-			<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>			
-			<b>${session.UserId}</b> (<a href="${resource(dir:'/logout')}" class="logout">Logout</a>)
-			</span>
-			</div>
-			</g:isLoggedIn>
-			</div>		    
-		</div>
-		
-		<br /><h4>Authority Details</h4><br />
-	<div id="content"> 	
-<!-- Middle area starts here -->	
-		<g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_ADMIN'}">
+			<div id="logo_user_details">&nbsp;</div>
+		     <g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_ADMIN'}">
 		<g:menu/>
 		</g:if >	
-		<div style="padding-left:400px;">						
+		</div>
+
+	<div id="content"> <!-- Start of content div -->
+<!-- Middle area starts here -->	
+	<br />
+       <div align="center"><h3>Authority Details</h3></div>
+		<br />	<br />
+		<div align="center">						
 				    <table align="center">
 					<tbody>
 
@@ -62,7 +52,7 @@
 		<div style="clear: both;">&nbsp;</div>
 		<br />
 <!-- Middle area ends here -->		
-  </div> <!-- End of content div -->
-</div>
+     </div> <!-- End of content div -->
+	</div>
 <g:footer/>
 <!-- ##################################  Layout body ends here  ###########################################-->

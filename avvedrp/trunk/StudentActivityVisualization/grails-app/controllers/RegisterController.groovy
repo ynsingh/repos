@@ -11,8 +11,8 @@ class RegisterController {
 
 	def authenticateService
 	def daoAuthenticationProvider
-	def emailerService
-        def dataSource
+    def emailerService
+    def dataSource
        // def personService
 
 	static Map allowedMethods = [save: 'POST', update: 'POST']
@@ -216,7 +216,7 @@ class RegisterController {
                                      def mailService =new MailService()
                                      String emailMessage = """
                                     Hi,
-                                    A member from your institute has been registered with our site:-
+                                    A member from your institute has been registered in our site:-
                                     ${request.scheme}://${request.serverName}:${request.serverPort}${request.contextPath}
 
                                     Here are the Account details of the New Member:
@@ -325,22 +325,30 @@ class RegisterController {
                           {
                                        Authority.findByAuthority('ROLE_USER').addToPeople(person)								   
 								
-    //Sending Mail starts here
-    if(params.univ_username!='') {
-    def mailService =new MailService()
-    String emailMessage = """
-    Hi,
-    Thanks for Registering with our site:-
-    ${request.scheme}://${request.serverName}:${request.serverPort}${request.contextPath}
-
-    Your Account Details:
-    ---------------------
-    Username: ${params.univ_username}
-    Password : ${params.univ_paswd}
-    """
-    def mailstatus = mailService.sendMessage(params.univ_username,emailMessage)
-    }
-    //Sending Mail ends here
+	//Sending Mail starts here
+	if(params.univ_username!='') {
+	// def mailService =new MailService()
+	String emailMessage = """
+	Hi,
+	Thanks for Registering in our site:-
+	${request.scheme}://${request.serverName}:${request.serverPort}${request.contextPath}
+	
+	Your Account Details:
+	---------------------
+	Username: ${params.univ_username}
+	Password : ${params.univ_paswd}
+	"""
+	// def mailstatus = mailService.sendMessage(params.univ_username,emailMessage)
+					   
+						  def email = [
+										to: [params.univ_username],	
+										subject: "New Registration at DIVE",
+										text: emailMessage // 'text' is the email body
+									]
+									emailerService.sendEmails([email])
+						   
+						}
+						//Sending Mail ends here
 
 										
 									   person.save(flush: true)
@@ -462,10 +470,10 @@ class RegisterController {
  //Sending Mail starts here
     def univ = sql.firstRow("select univ_email as email from university where id='"+params.inst_univ_id+"'")
     if(univ.email!='') {
-    def mailService =new MailService()
+    //def mailService =new MailService()
     String emailMessage = """
     Hi,
-    An Institute under your university has been registered with our site:-
+    An Institute under your university has been registered in our site:-
     ${request.scheme}://${request.serverName}:${request.serverPort}${request.contextPath}
 
     Here are the Account details of the New Institute Member:
@@ -475,7 +483,13 @@ class RegisterController {
     Email-ID : ${params.inst_username}
     Address : ${params.inst_address}
     """   
-    def mailstatus = mailService.sendMessage(univ.email,emailMessage)
+ // def mailstatus = mailService.sendMessage(univ.email,emailMessage)
+                            def email = [
+										to: [univ.email],	
+										subject: "New Institution Registration at DIVE",
+										text: emailMessage // 'text' is the email body
+									]
+							emailerService.sendEmails([email])
     }
 //Sending Mail ends here		
 								 
@@ -612,10 +626,10 @@ def ajaxGetInstitutes={
     def univ = sql.firstRow("select univ_name,univ_email from university where id='"+params.usr_univ_id+"'")
     def inst = sql.firstRow("select inst_name,inst_email from institute where id='"+params.usr_inst_id+"'")
     if(inst.inst_email!='') {
-    def mailService =new MailService()
+   // def mailService =new MailService()
     String emailMessage = """
     Hi,
-    A member of your institute has been registered with our site:-
+    A member of your institute has registered in our site:-
     ${request.scheme}://${request.serverName}:${request.serverPort}${request.contextPath}
 
     Here are the Account details of the New  Member:
@@ -624,7 +638,13 @@ def ajaxGetInstitutes={
     University : ${univ.univ_name}
     Institute : ${inst.inst_name}
     """
-    def mailstatus = mailService.sendMessage(inst.inst_email,emailMessage)
+    //def mailstatus = mailService.sendMessage(inst.inst_email,emailMessage)
+                    	def email = [
+										to: [inst.inst_email],	
+										subject: "New User Registration at DIVE",
+										text: emailMessage // 'text' is the email body
+									]
+							emailerService.sendEmails([email])
     }
 //Sending Mail ends here
 								 

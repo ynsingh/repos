@@ -1,4 +1,3 @@
-
 class Errors {
 
     String erromsg;

@@ -1,22 +1,16 @@
-<head>
-	<meta name="layout" content="main" />
-	<title>LMS List</title>
-       </head>
-
-<body>
-	<div id="wrapper">
+<meta name="layout" content="main" />	
+<!-- ##################################  Layout body starts here  ###########################################-->
+	  <div id="wrapper">
 		<div id="head">
 			<div id="logo_user_details">&nbsp;</div>
 		       <g:menu/>
-		</div>
-
-
-	<div id="content">
-                        <div align="center">
-                          <h3>${institute} - ${year}</h3>
-                          <h2>Student Activity Chart [ Course - ${sel_course} ]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LMS - ${lms_used}</h3>
-                        </div>
-                        <g:javascript src="swfobject.js"/>
+		</div>		
+	<div id="content"> 
+<!-- Middle area starts here -->	
+	  	<br /><h3 align="center">${institute} - ${year}</h3>
+         <h2 align="center">Student Activity Chart [ Course - ${sel_course} ]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LMS - ${lms_used}</h3>		
+		<div>
+		             <g:javascript src="swfobject.js"/>
                         <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="600">
                         <param name="movie" value="${resource(dir:'charts',file:'time_utilization.swf')}" />
                         <param name="quality" value="high" />
@@ -41,8 +35,7 @@
                         </object>
                         <!--<![endif]-->
                         </object>
-       </div> <!-- End of content div -->
-
+	       </div> <!-- End of content div -->
 	</div>
 	 <g:footer/>
-</body>
+<!-- ##################################  Layout body ends here  ###########################################-->

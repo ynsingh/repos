@@ -1,33 +1,25 @@
-<meta name="layout" content="main" />
-<g:javascript src="jquery.js"/>
-<g:javascript src="ddaccordion.js"/>
-
+<meta name="layout" content="main" />	
 <!-- ##################################  Layout body starts here  ###########################################-->
 	<div id="wrapper">
 		<div id="head">
-			<div class="innnerBanner">
-			<g:isLoggedIn>
-			<div class="loginLink">
-			<span>
-			<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>			
-			<b>${session.UserId}</b> (<a href="${resource(dir:'/logout')}" class="logout">Logout</a>)
-			</span>
-			</div>
-			</g:isLoggedIn>
-			</div>		    
-		</div>
-		
-		<br /><h4>Users</h4><br />
-	<div id="content"> 	
-<!-- Middle area starts here -->	
+			<div id="logo_user_details">&nbsp;</div>
 		<g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_ADMIN'}">
 		<g:menu/>
-		</g:if >	
-		<div style="padding-left:100px;">						
+		</g:if >
+		</div>
+
+	<div id="content"> <!-- Start of content div -->
+<!-- Middle area starts here -->
+		<br />
+       <div align="center"><h3>&nbsp;&nbsp;&nbsp;Users List</h3></div>
+		<div align="right" style="padding-right:100px;">
+		<g:link class="create" action="create"><strong>Add New User&nbsp;&gt;&gt;</strong></g:link></div>
+		<br />
+		<div align="center">						
 				             <g:if test="${flash.message}">
 							<div class="message">${flash.message}</div>
 							</g:if>
-							<table width="85%">
+							<table  width="100%">
 							<thead>
 							<tr>
 							<th>SI.No</th>
@@ -56,11 +48,7 @@
 							<tr><td colspan="6">
 							<div class="paginateButtons">
 							<g:paginate total="${Person.count()}" /></div></td>
-							</tr>
-							<tr><td colspan="6">
-							<span class="menuButton">
-							<g:link class="create" action="create"><strong>New User</strong></g:link></span></td>
-                            </tr>
+							</tr>							
 							</tbody>
 							</table>
 		</div>
@@ -68,7 +56,7 @@
 		<div style="clear: both;">&nbsp;</div>
 		<br />
 <!-- Middle area ends here -->		
-  </div> <!-- End of content div -->
-</div>
+         </div> <!-- End of content div -->
+	</div>
 <g:footer/>
 <!-- ##################################  Layout body ends here  ###########################################-->

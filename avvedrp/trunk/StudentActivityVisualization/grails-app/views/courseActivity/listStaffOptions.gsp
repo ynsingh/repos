@@ -1,26 +1,12 @@
-<meta name="layout" content="main" />
+<meta name="layout" content="main" />	
 <!-- ##################################  Layout body starts here  ###########################################-->
-	<div id="wrapper">
+	  <div id="wrapper">
 		<div id="head">
-			<div class="innnerBanner">
-			<g:isLoggedIn>
-			<div class="loginLink">
-			<span>
-			<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>			
-			<b>${session.UserId}</b> (<a href="${resource(dir:'/logout')}" class="logout">Logout</a>)
-			</span>
-			</div>
-			</g:isLoggedIn>
-			</div>		    
-		</div>
-	<div id="content"> 	
-	
-<!-- Middle area starts here -->	
-		<g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_STAFF'}">
-		<g:menu/>
-		</g:if >
-		<br /><br />
-		<div style="float: left; width: 790px;margin-right: 5px;">
+			<div id="logo_user_details">&nbsp;</div>
+		       <g:menu/>
+		</div>		
+	<div id="content"> 
+		<div align="center">
 
 
              	<div align="center"><h3>Course : ${sel_course}</h3></div>
