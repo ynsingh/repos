@@ -1,6 +1,5 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 import java.text.SimpleDateFormat
-
 import java.text.*;
 import java.util.*;
 
@@ -40,19 +39,12 @@ class GrantExpenseController extends GmsController {
 		def grantExpenseService = new GrantExpenseService()
 		def grantExpenseInstance =  grantExpenseService.getGrantExpenseById(new Integer(params.id))
 		def utilizationInstance = Utilization.findAll("from Utilization U where U.projects="+grantExpenseInstance.projects.id)
- 				 
- 			   println"utilizationInstance"+utilizationInstance
- 			   if(utilizationInstance)
+ 			  if(utilizationInstance)
  			   {
- 				   println"utilizationInstance..."
  				   Date temp;
  				   Date attr;
  				   for(int i=0;i<utilizationInstance.size(); i++)
  				   {
- 					   println"grantExpenseInstance.dateOfExpense"+params.dateOfExpense_value
- 					   
- 					   println"utilizationInstance[i].startDate"+utilizationInstance[i].startDate
- 					   println"utilizationInstance[i].endDate"+utilizationInstance[i].endDate
  					   temp = utilizationInstance[i].startDate
  					   for (int j=1;j<utilizationInstance.size();j++ )
  					   {
@@ -65,10 +57,6 @@ class GrantExpenseController extends GmsController {
  				   
  				   for(int j=0;j<utilizationInstance.size(); j++)
  				   {
- 					   println"grantExpenseInstance.dateOfExpense"+params.dateOfExpense_value
- 					   
- 					   println"utilizationInstance[j].startDate"+utilizationInstance[j].startDate
- 					   println"utilizationInstance[j].endDate"+utilizationInstance[j].endDate
  					   attr = utilizationInstance[j].endDate
  					   for (int k=1;k<utilizationInstance.size();k++ )
  					   {
@@ -78,30 +66,16 @@ class GrantExpenseController extends GmsController {
  					   }
  					   }
  				   }
- 					   println"temp"+temp
- 					   println"attr"+attr
  					   SimpleDateFormat sdfDestination = new SimpleDateFormat("dd/MM/yyyy");
  					     
  				          //parse the date into another format
  				          String strDate = sdfDestination.format(temp);
- 				          println"dateOfExpense"+params.dateOfExpense_value
- 				          println"strDate"+strDate
  				          String edDate = sdfDestination.format(attr);
- 				          println"edDate"+edDate
  				          DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
  				          Date strtingDate = df.parse(strDate)
- 				          println"strtingDate"+strtingDate
  				          Date endingDate = df.parse(edDate)
- 				          println"endingDate"+endingDate
  				          Date expenseDate = df.parse(params.dateOfExpense_value)
- 				          println"expenseDate"+expenseDate
- 				          
- 				          
- 				          println"start date diff" + (expenseDate > strtingDate)
- 				           println"end date diff" + (endingDate > expenseDate)
- 				        	  
- 				        
- 				   if(( expenseDate >= strtingDate) && (endingDate >= expenseDate) )
+ 				       if(( expenseDate >= strtingDate) && (endingDate >= expenseDate) )
  				   {
  						  flash.message="${message(code: 'default.expenseDeleteUtilizationCertificate.label')}"
  							 redirect(action:edit,id:params.id)
@@ -146,20 +120,15 @@ class GrantExpenseController extends GmsController {
 		def grantExpenseService = new GrantExpenseService()
 		def grantAllocationService = new GrantAllocationService()
 		def grantAllocationSplitService=new GrantAllocationSplitService()
-	
-        def grantExpenseInstance = grantExpenseService.getGrantExpenseById(new Integer(params.id))
-         def dataSecurityService = new DataSecurityService()
+		def grantExpenseInstance = grantExpenseService.getGrantExpenseById(new Integer(params.id))
+        def dataSecurityService = new DataSecurityService()
 		//checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(grantExpenseInstance.projects.id,new Integer(getUserPartyID()))==0)
 		{
-			
-					
 					 redirect uri:'/invalidAccess.gsp'
-
 		}
 		else
 		{
-        
         /* Get grant allocation details. */
         Integer projectId = grantExpenseInstance.projects.id
         def projectsInstance = Projects.get(projectId)
@@ -171,9 +140,7 @@ class GrantExpenseController extends GmsController {
     	def sdf = new SimpleDateFormat('dd/MM/yyyy') 
         def dateFrom = new Date()
     	def dateTo = new Date()
-       
-    	
-    	if(params.dateFrom_value)
+     	if(params.dateFrom_value)
     		dateFrom = sdf.parse(params.dateFrom_value)
     		
 		if(params.dateTo_value)
@@ -207,17 +174,12 @@ class GrantExpenseController extends GmsController {
     		
 		def grantExpenseService = new GrantExpenseService()
     	def grantAllocationService = new GrantAllocationService()
-		
 		def grantExpenseOrginalInstance = grantExpenseService.getGrantExpenseById(new Integer(params.id))
-    	
-		def grantExpenseInstance = new GrantExpense(params)
-    		def grantExpenseWithOutSave = grantExpenseInstance
-				
-		
+    	def grantExpenseInstance = new GrantExpense(params)
+    	def grantExpenseWithOutSave = grantExpenseInstance
 		GrailsHttpSession gh=getSession()  
     		def allocatedAmount=grantAllocationService.getSumOfAmountAllocatedForProject(gh.getValue("ProjectID"),getUserPartyID())
     		def expenseTotal=GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.projects="+grantExpenseInstance.projects.id)
-    		
     		double balanceAmnt
     		if(expenseTotal[0])
     		{
@@ -227,7 +189,6 @@ class GrantExpenseController extends GmsController {
     		{
     			 balanceAmnt= allocatedAmount
     		}
-    		
     		if(grantExpenseInstance.expenseAmount > balanceAmnt)
     	    {
     	    	flash.message = "${message(code: 'default.ExpenseAmountValidationAgainstAllocatedAmount.label')}"
@@ -240,9 +201,15 @@ class GrantExpenseController extends GmsController {
     		   double headBalance
     		   if (headExpAmnt[0])
     		   {
-    			     headBalance = (headAllcnAmnt[0]+grantExpenseOrginalInstance.expenseAmount)-headExpAmnt[0]
-    		   }
-    		   else
+    			   if(grantExpenseOrginalInstance.grantAllocationSplit.id == (new Integer(params.grantAllocationSplit.id)))
+    			   {
+    				   headBalance = headAllcnAmnt[0]-(headExpAmnt[0] - grantExpenseOrginalInstance.expenseAmount)
+    					   //(headAllcnAmnt[0]+grantExpenseOrginalInstance.expenseAmount)-headExpAmnt[0]
+    			   }
+				   else
+				    headBalance = headAllcnAmnt[0]-headExpAmnt[0]
+			   }
+			  else
     		   {
     			 headBalance = headAllcnAmnt[0] 
     		   }
@@ -264,21 +231,13 @@ class GrantExpenseController extends GmsController {
     		}
     		else
  		   {
- 			   println"params"+params
- 			   def utilizationInstance = Utilization.findAll("from Utilization U where U.projects="+grantExpenseInstance.projects.id)
- 				 
- 			   println"utilizationInstance"+utilizationInstance
- 			   if(utilizationInstance)
+ 			    def utilizationInstance = Utilization.findAll("from Utilization U where U.projects="+grantExpenseInstance.projects.id)
+ 			    if(utilizationInstance)
  			   {
- 				   println"utilizationInstance..."
  				   Date temp;
  				   Date attr;
  				   for(int i=0;i<utilizationInstance.size(); i++)
  				   {
- 					   println"grantExpenseInstance.dateOfExpense"+params.dateOfExpense_value
- 					   
- 					   println"utilizationInstance[i].startDate"+utilizationInstance[i].startDate
- 					   println"utilizationInstance[i].endDate"+utilizationInstance[i].endDate
  					   temp = utilizationInstance[i].startDate
  					   for (int j=1;j<utilizationInstance.size();j++ )
  					   {
@@ -291,10 +250,6 @@ class GrantExpenseController extends GmsController {
  				   
  				   for(int j=0;j<utilizationInstance.size(); j++)
  				   {
- 					   println"grantExpenseInstance.dateOfExpense"+params.dateOfExpense_value
- 					   
- 					   println"utilizationInstance[j].startDate"+utilizationInstance[j].startDate
- 					   println"utilizationInstance[j].endDate"+utilizationInstance[j].endDate
  					   attr = utilizationInstance[j].endDate
  					   for (int k=1;k<utilizationInstance.size();k++ )
  					   {
@@ -304,39 +259,21 @@ class GrantExpenseController extends GmsController {
  					   }
  					   }
  				   }
- 					   println"temp"+temp
- 					   println"attr"+attr
  					   SimpleDateFormat sdfDestination = new SimpleDateFormat("dd/MM/yyyy");
  					     
  				          //parse the date into another format
  				          String strDate = sdfDestination.format(temp);
- 				          println"dateOfExpense"+params.dateOfExpense_value
- 				          println"strDate"+strDate
  				          String edDate = sdfDestination.format(attr);
- 				          println"edDate"+edDate
  				          DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
  				          Date strtingDate = df.parse(strDate)
- 				          println"strtingDate"+strtingDate
  				          Date endingDate = df.parse(edDate)
- 				          println"endingDate"+endingDate
  				          Date expenseDate = df.parse(params.dateOfExpense_value)
- 				          println"expenseDate"+expenseDate
- 				          
- 				          
- 				          println"start date diff" + (expenseDate > strtingDate)
- 				           println"end date diff" + (endingDate > expenseDate)
- 				        	  
- 				        
- 				   if(( expenseDate >= strtingDate) && (endingDate >= expenseDate) )
- 				   {
- 					   
- 					
+ 				         if(( expenseDate >= strtingDate) && (endingDate >= expenseDate) )
+ 				         {
  						  flash.message="${message(code: 'default.expenseUpdateUtilizationCertificate.label')}"
- 							 redirect(action:edit,id:params.id)
- 				   }
- 				          
- 				
-    		else
+ 						  redirect(action:edit,id:params.id)
+ 				         }
+ 			else
     		{
     			grantExpenseInstance = grantExpenseService.updateGrantExpense(params)
     			if(grantExpenseInstance.isSaved)
@@ -385,38 +322,25 @@ class GrantExpenseController extends GmsController {
 		def grantReceiptService = new GrantReceiptService()
         GrailsHttpSession gh=getSession()
         gh.removeValue("Help")
-       		//putting help pages in session
+       	//putting help pages in session
        	gh.putValue("Help","Grant_Expense.htm")
     	/* Get grant allocation details. */
-    	println "*********************************************create params.id "+params.id
     	def projectsInstance
-    	
     	if(params.id){
     		projectsInstance = Projects.get(new Integer(params.id))
-    		
     	//account head listing based on default grant period
-    	 
-    	
     	def accountHeadList=grantAllocationSplitService.getAccountHeadByProject(projectsInstance.id)
-
-    	  def dataSecurityService = new DataSecurityService()
+    	def dataSecurityService = new DataSecurityService()
 		//checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectsInstance.id,new Integer(getUserPartyID()))==0)
 		{
-			
-					
 					 redirect uri:'/invalidAccess.gsp'
-
 		}
 		else
 		{
-    	 
-   	     projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
+    	 projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
    	     double receivedAmount = grantReceiptService.getSumOfAmountReceivedForProject(projectsInstance.id)
-   	     println"receivedAmount"+receivedAmount
-   	  
-   	  
-		def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.id)
+   	  	 def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.id)
     	 
     	/* Get already allocated expenses */
     	def sdf = new SimpleDateFormat('dd/MM/yyyy')
@@ -424,30 +348,21 @@ class GrantExpenseController extends GmsController {
         def dateFrom = new Date()
     	def dateTo = new Date()
    	 
-   	  println"params.dateFrom_value"+params.dateFrom_value
-   	     println"++++++++++++params++++++++++"+params
-    	println "new datefrom "	+params.dateFrom+ "new dateTo" +params.dateTo
-    	if(params.dateFrom_value){
+   		if(params.dateFrom_value){
     		dateFrom = sdf.parse(params.dateFrom_value)
     	}
-    		
-		if(params.dateTo_value)
+    	if(params.dateTo_value)
     		dateTo = sdf.parse(params.dateTo_value)
     		    	
-    	  println "datefrom  "+dateFrom+"  dateTo "+dateTo+"  params.grantExpenseId "+params.grantExpenseId
     	def grantExpenseInstanceList = grantExpenseService.getGrantExpenseByProjectsAndExpenseDateRange(params.grantExpenseId,projectsInstance,dateFrom,dateTo)
     	
     	/* Get summary of expenses */
     	def grantExpenseSummaryList = grantExpenseService.getGrantExpenseTotalForAProject(projectsInstance)
     		
         def grantExpenseInstance = new GrantExpense()
-		println"params^^^^^"+params
-		
-
 		if(params.expenseAmount)
 			
 		{
-			
 			def grantAllocationInstance = GrantAllocation.find("from GrantAllocation GA where GA.id ="+params.grantAllocationId)
 			def grantAllocationSplitInstance = GrantAllocationSplit.find("from GrantAllocationSplit GS where GS.id ="+params.accountHeadId)
 			grantExpenseInstance.expenseAmount=new Double(params.expenseAmount)
@@ -471,14 +386,11 @@ class GrantExpenseController extends GmsController {
         grantExpenseInstance.properties = params
         def fundTransferService = new FundTransferService()
         def fundTransferAmnt = fundTransferService.getFundTransferTotal(grantExpenseInstance)
-        println"fundTransferAmnt;;;;;;;;"+fundTransferAmnt
         def expenseTotal= grantExpenseService.getTotalExpenseAmnt(grantExpenseInstance)
-        println"expenseTotal[0]"+expenseTotal[0]
          if(expenseTotal[0] && fundTransferAmnt[0])
      	  {
         	
         	 grantExpenseInstance.currentBalance = receivedAmount - (expenseTotal[0]+ fundTransferAmnt[0])
-     		  println"currentBalance"+grantExpenseInstance.currentBalance
      	  }
          else if(expenseTotal[0])
          {
@@ -491,10 +403,7 @@ class GrantExpenseController extends GmsController {
          else
          {
         	 grantExpenseInstance.currentBalance = receivedAmount
-        	 println"currentBalance"+grantExpenseInstance.currentBalance
          }
-       
-      
         ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
         NumberFormat formatter = new DecimalFormat("#0.00");
          return ['projectsInstance':projectsInstance,'grantExpenseInstance':grantExpenseInstance,
@@ -517,29 +426,17 @@ class GrantExpenseController extends GmsController {
 		params.createdBy="admin"
 		params.createdDate = new Date()
         def grantExpenseInstance = new GrantExpense(params)
-		  
 		def allocatedAmount=grantAllocationService.getSumOfAmountAllocatedForProject(gh.getValue("ProjectID"),getUserPartyID())
-		println"allocatedAmount"+allocatedAmount
-		println"grantExpenseInstance.expenseAmount"+grantExpenseInstance.expenseAmount
 		def expenseTotal=GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.projects="+grantExpenseInstance.projects.id)
-		//double expenseGrantTotal
-		
-		double balanceAmnt
+	    double balanceAmnt
 		if(expenseTotal[0])
 		{
-		//expenseGrantTotal= expenseTotal[0]+ grantExpenseInstance.expenseAmount
-		balanceAmnt= allocatedAmount- expenseTotal[0]
-		//println"expenseGrantTotal"+expenseGrantTotal
-		println"balanceAmnt"+balanceAmnt
+			balanceAmnt= allocatedAmount- expenseTotal[0]
 		}
 		else
 		{
-			//expenseGrantTotal = grantExpenseInstance.expenseAmount
 			balanceAmnt= allocatedAmount
-			//println"expenseGrantTotal"+expenseGrantTotal
-			println"balanceAmnt"+balanceAmnt
 		}
-		
 		if(grantExpenseInstance.expenseAmount > balanceAmnt)
 	    {
 	    	flash.message = "${message(code: 'default.ExpenseAmountValidationAgainstAllocatedAmount.label')}"
@@ -562,8 +459,6 @@ class GrantExpenseController extends GmsController {
 		   {
 			 headBalance = headAllcnAmnt[0] 
 		   }
-		   println"grantExpenseInstance.dateOfExpense"+grantExpenseInstance.dateOfExpense
-		   
 		   if(grantExpenseInstance.expenseAmount > headBalance)
 		   {
 			   flash.message = "${message(code: 'default.ExpenseAmountValidationAgaistHeadwiseAllcn.label')}"
@@ -587,21 +482,15 @@ class GrantExpenseController extends GmsController {
 		 
 		   else
 		   {
-			   println"params"+params
 			   def utilizationInstance = Utilization.findAll("from Utilization U where U.projects="+grantExpenseInstance.projects.id)
-				 
-			   println"utilizationInstance"+utilizationInstance
 			   if(utilizationInstance)
 			   {
-				   println"utilizationInstance..."
+				   
 				   Date temp;
 				   Date attr;
 				   for(int i=0;i<utilizationInstance.size(); i++)
 				   {
-					   println"grantExpenseInstance.dateOfExpense"+params.dateOfExpense_value
-					   
-					   println"utilizationInstance[i].startDate"+utilizationInstance[i].startDate
-					   println"utilizationInstance[i].endDate"+utilizationInstance[i].endDate
+					  
 					   temp = utilizationInstance[i].startDate
 					   for (int j=1;j<utilizationInstance.size();j++ )
 					   {
@@ -614,10 +503,7 @@ class GrantExpenseController extends GmsController {
 				   
 				   for(int j=0;j<utilizationInstance.size(); j++)
 				   {
-					   println"grantExpenseInstance.dateOfExpense"+params.dateOfExpense_value
 					   
-					   println"utilizationInstance[j].startDate"+utilizationInstance[j].startDate
-					   println"utilizationInstance[j].endDate"+utilizationInstance[j].endDate
 					   attr = utilizationInstance[j].endDate
 					   for (int k=1;k<utilizationInstance.size();k++ )
 					   {
@@ -627,28 +513,21 @@ class GrantExpenseController extends GmsController {
 					   }
 					   }
 				   }
-					   println"temp"+temp
-					   println"attr"+attr
+					   
+					  
 					   SimpleDateFormat sdfDestination = new SimpleDateFormat("dd/MM/yyyy");
 					     
-				          //parse the date into another format
+				          
 				          String strDate = sdfDestination.format(temp);
-				          println"dateOfExpense"+params.dateOfExpense_value
-				          println"strDate"+strDate
+				          
 				          String edDate = sdfDestination.format(attr);
-				          println"edDate"+edDate
+				          
 				          DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				          Date strtingDate = df.parse(strDate)
-				          println"strtingDate"+strtingDate
+				          
 				          Date endingDate = df.parse(edDate)
-				          println"endingDate"+endingDate
+				          
 				          Date expenseDate = df.parse(params.dateOfExpense_value)
-				          println"expenseDate"+expenseDate
-				          
-				          
-				          println"start date diff" + (expenseDate > strtingDate)
-				           println"end date diff" + (endingDate > expenseDate)
-				        	  
 				        
 				   if(( expenseDate >= strtingDate) && (endingDate >= expenseDate) )
 				   {
@@ -700,17 +579,13 @@ class GrantExpenseController extends GmsController {
     		
     	
 		def grantExpenseService = new GrantExpenseService()
-		
 		def grantAllocationService = new GrantAllocationService()
-		
 		GrailsHttpSession gh=getSession()
-    	 gh.putValue("projDashLink", "projectDash/"+params.id);
-		
-        gh.removeValue("Help")
+    	gh.putValue("projDashLink", "projectDash/"+params.id);
+		gh.removeValue("Help")
        		//putting help pages in session
        	gh.putValue("Help","List_Grant_Expense.htm")
-		
-    	def projectId
+		def projectId
     	/* Get grant allocation details. */
     	if(params.id){
     		projectId = params.id}
@@ -718,11 +593,8 @@ class GrantExpenseController extends GmsController {
     		projectId = params.projects.id}
     		else{
     		redirect uri:'/invalidAccess.gsp'}
-    	println"%%%params.id%%%"+params.id
-    		 def projectsInstance = Projects.get(new Integer(projectId))
-    		  
-    		 
-    		  def dataSecurityService = new DataSecurityService()
+    	 def projectsInstance = Projects.get(new Integer(projectId))
+    	 def dataSecurityService = new DataSecurityService()
 		//checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectsInstance.id,new Integer(getUserPartyID()))==0)
 		{
@@ -739,31 +611,19 @@ class GrantExpenseController extends GmsController {
 		def sdf1 = new SimpleDateFormat('yyyy/MM/dd')
         def dateFrom = new Date()
     	def dateTo = new Date()
-   	      
-   	      
-    	if(params.dateOfExpenseFrom)
+   		if(params.dateOfExpenseFrom)
     		dateFrom = sdf.parse(params.dateOfExpenseFrom_value)
     		
 		if(params.dateOfExpenseTo)
     		dateTo = sdf.parse(params.dateOfExpenseTo_value)
-    		println "datefromformat  "+sdf1.format(dateFrom)+"  dateTo "+sdf1.format(dateTo)+"  params.grantExpenseId "+params.grantExpenseId	
-    		println "datefrom  "+dateFrom+"  dateTo "+dateTo+"  params.grantExpenseId "+projectsInstance	
-    	
     	def grantExpenseInstanceList = grantExpenseService.getGrantExpenseByProjectsAndExpenseDateRange(params.grantExpenseId,projectsInstance,dateFrom,dateTo)
-    		println "datefrom"+grantExpenseInstanceList
-    		 def grantExpenseInstance = new GrantExpense()
-   	      println"params********"+params.dateOfExpenseFrom
-    	grantExpenseInstance.projects = projectsInstance
+    	def grantExpenseInstance = new GrantExpense()
+   	  	grantExpenseInstance.projects = projectsInstance
     	grantExpenseInstance.dateFrom=dateFrom
     	grantExpenseInstance.dateTo=dateTo
         grantExpenseInstance.properties = params
-       
- 	        print"grantExpenseInstance.id"+grantExpenseInstance.id
- 	        print"--------test-----"+new Integer(params.id)
         ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
-   	      print"projectsInstance.id"+projectsInstance.id   
-   	   print"params"+params     
-   	return['projectsInstance':projectsInstance,
+   	         return['projectsInstance':projectsInstance,
    	       'grantExpenseInstance':grantExpenseInstance,
    	       'grantExpenseInstanceList':grantExpenseInstanceList,
    	       'currencyFormat':currencyFormatter]
@@ -786,7 +646,6 @@ class GrantExpenseController extends GmsController {
     		projectId = params.projects.id
     	else
     		projectId = gh.getValue("ProjectID")
-    	println "projectId"+projectId
     	def projectsInstance = Projects.get(new Integer(projectId))
     	def dataSecurityService = new DataSecurityService()
 		//checking  whether the user has access to the given projects
@@ -810,12 +669,9 @@ class GrantExpenseController extends GmsController {
     	for(int i=0;i<grantExpenseSummaryList.size();i++ )
     	{
     		def accountHead = AccountHeads.get(grantExpenseSummaryList[i].grantAllocationSplit.accountHead.id) 
-			println "accountHead-->"+accountHead
 			String accName = accountHead.name+ " | " +grantExpenseSummaryList[i].grantAllocationSplit.grantPeriod.name
-			println "accName-->"+accName
 			accHeadOfGSplit[i] = accName
-			println "accHeadOfGSplit-->"+accHeadOfGSplit
-    	}
+		}
       	
         return ['projectsInstance':projectsInstance,
                 'grantExpenseSummaryList':grantExpenseSummaryList,
@@ -831,8 +687,6 @@ class GrantExpenseController extends GmsController {
     		def grantAllocationSplitService=new GrantAllocationSplitService()
 
         	/* Get grant allocation details. */
-        	println "*********************************************create params.id "+params.id
-        	println "*********************************************params"+params
         	def projectsInstance
         	if(params.projects.id){
         		projectsInstance = Projects.get(new Integer(params.projects.id))
@@ -843,15 +697,11 @@ class GrantExpenseController extends GmsController {
     		//checking  whether the user has access to the given projects
     		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectsInstance.id,new Integer(getUserPartyID()))==0)
     		{
-    			
-    					
     					 redirect uri:'/invalidAccess.gsp'
-
     		}
     		else
     		{
-        	 
-       	     projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
+            projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
     		def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.projects.id)
         	 
         	/* Get already allocated expenses */
@@ -859,18 +709,12 @@ class GrantExpenseController extends GmsController {
         	def sdf1 = new SimpleDateFormat('yyyy/MM/dd')
             def dateFrom = new Date()
         	def dateTo = new Date()
-       	 
-    		
-       	     println"++++++++++++params++++++++++"+params
-        	println "new datefrom "	+params.dateFrom+ "new dateTo" +params.dateTo
         	if(params.dateFrom_value){
         		dateFrom = sdf.parse(params.dateFrom_value)
         	}
         		
     		if(params.dateTo_value)
         		dateTo = sdf.parse(params.dateTo_value)
-        		    	
-        	  println "datefrom  "+dateFrom+"  dateTo "+dateTo+"  params.grantExpenseId "+params.grantExpenseId
         	def grantExpenseInstanceList = grantExpenseService.getGrantExpenseByProjectsAndExpenseDateRange(params.grantExpenseId,projectsInstance,dateFrom,dateTo)
         	
         	/* Get summary of expenses */
@@ -899,24 +743,19 @@ class GrantExpenseController extends GmsController {
     def listHeadwiseExpenses = {
     		
     		GrailsHttpSession gh=getSession()
-    		println "GrailsHttpSession -->"+gh
     		def projectId
         	projectId = gh.getValue("ProjectID")
         	def projectsInstance = Projects.get(new Integer(projectId))
     		def grantExpenseService = new GrantExpenseService()
     		def grantAllocationSplitList
-    		println "params.name -->"+params.name
-
     		if((params.name).equals(null) || (params.name).equals(''))
     		{
-    			println "params.name -->"+params.name
     			grantAllocationSplitList = grantExpenseService.getGrantAllocationSplitListByProjectId(projectId)
     		}
     		else
     		{
     			grantAllocationSplitList=grantExpenseService.getGrantAllocationSplitListByAccountHeadAndprojectId(params.name,projectId)
     		}
-    		println "grantAllocationSplitList -->"+grantAllocationSplitList.id
     		def grantExpenseSummaryList = grantExpenseService.getGrantExpenseSummaryListBygrantAllocationSplitList(grantAllocationSplitList)
     		//def grantExpenseSummaryList =[]
     		//def grantExpenseInstanceList = []
@@ -927,13 +766,9 @@ class GrantExpenseController extends GmsController {
     			
     			
     			def accountHead = AccountHeads.get(grantAllocationSplitList[i].accountHead.id) 
-    			println "accountHead-->"+accountHead
     			String accName = accountHead.name+ " | " +grantAllocationSplitList[i].grantPeriod.name
-    			println "accName-->"+accName
     			accHeadOfGSplit[i] = accName
-    			println "accHeadOfGSplit-->"+accHeadOfGSplit
-            }
-    		println "grantExpenseSummaryList out-->"+grantExpenseSummaryList
+    		  }
     		def grantAllocationService = new GrantAllocationService()
     		projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,new Integer(getUserPartyID()))
     		ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
@@ -945,6 +780,13 @@ class GrantExpenseController extends GmsController {
                     ])
     		
     }
-   
+    def updateModeOfPayment=
+    {
+    		if(params.modeOfPayment)
+    		{
+    			render (template:"fieldSelect")
+    		}
+    		
+    }
     
 }

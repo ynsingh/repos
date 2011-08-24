@@ -23,7 +23,8 @@
                         <tbody>
 	                        <tr class="prop">
 	                                <td valign="top" class="name">
-	                                    <label for="scaleTitle"><g:message code="default.evalScale.scaleTitle.label"/></label>
+	                                    <label for="scaleTitle"><g:message code="default.evalScale.scaleTitle.label"/>:</label>
+	                                    <label for="scaleTitle" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: evalScaleInstance, field: 'scaleTitle', 'errors')}">
 	                                    <g:textField name="scaleTitle" value="${evalScaleInstance?.scaleTitle}" />

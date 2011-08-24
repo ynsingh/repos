@@ -160,11 +160,9 @@ class GrantAllocationSplitService{
 		 def subAccountHead=AccountHeads.findAll("from AccountHeads AH where AH.activeYesNo='Y' and AH.parent.id="+params.accountHead)
 		 for(int i=0;i<subAccountHead.size();i++ )
 	        {
-			 println"drtfgretr"
 			 subAccountHead[i].accHeadCode=subAccountHead[i].code+" -"+subAccountHead[i].name
 	        }
-		 println"subAccountHead"+subAccountHead
-	        return subAccountHead
+		    return subAccountHead
 	 }
 public List getAccountHeadOfProject(def projectId)
 {
@@ -199,5 +197,15 @@ println"....accountHeadList..."+accountHeadList
 		def grantAllocationSplitInstanceList=GrantAllocationSplit.findAll("from GrantAllocationSplit GAS where GAS.accountHead = "+accountHeadsParams.id)
 		return grantAllocationSplitInstanceList
 	}
-}
+	public List getAllocatedAmountByProjectId(def projectId)
+	{
+		def allocatedAmount = GrantAllocationSplit.executeQuery("select sum(GS.amount) from GrantAllocationSplit GS where GS.projects ="+projectId)
+		return allocatedAmount
+	}
 	
+	public List getSubAllocatedAmountByProjectId(def projectsInstance)
+	{
+	def subAllocatedAmount = GrantAllocation.executeQuery("select sum(GA.amountAllocated) from GrantAllocation GA where GA.projects.parent.id="+projectsInstance.id)
+	return subAllocatedAmount
+}
+}

@@ -211,4 +211,90 @@ class PartyService{
 		return partyInstanceList
 	}
 
+	/**
+	 * Get All Active menu details 
+	 */
+	public getAllMenu()
+	{
+		def menuInstanceList = Menu.findAll("from Menu M where M.activeYesNo='Y' and M.lockedYN='N'")
+		return menuInstanceList
+	}
+	
+	/**
+	 * Get All Active menu Role Map 
+	 */
+	public getMapByPartyAndRole(def roleId)
+	{
+		def menuRoleMapInstanceList = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id="+roleId+" and MRM.activeYesNo='Y' order by MRM.menu.parentId asc")
+		return menuRoleMapInstanceList
+	}
+	/**
+	 * Get All Menu from menu Role Map 
+	 */
+	public getMenuFromMap(def menuId)
+	{
+		def menuList =Menu.findAll("from Menu M where M.id="+menuId)
+		return menuList
+	}
+	/**
+	 * Get All Active menu Role Map By Menu Order
+	 */
+	public getMapByPartyAndRoleByOrder(def roleId)
+	{
+		def menuRoleMapInstanceList = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id="+roleId+" and MRM.activeYesNo='Y' order by MRM.menu.parentId asc")
+		return menuRoleMapInstanceList
+	}
+	
+	/**
+	 * Get Parent menu Role Map By Menu Order
+	 */
+	public getParentListByMenuOrder(def roleId)
+	{
+		def parentList = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id="+roleId+" and MRM.menu.parentId="+-1+" and MRM.activeYesNo='Y' order by MRM.menu.menuOrder asc")
+		return parentList
+	}
+	/**
+	 * Get Child menu Role Map By Menu Order
+	 */
+	public getChildListByMenuOrder(def roleId,def parentId)
+	{
+		def childList = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id="+roleId+" and MRM.menu.parentId="+parentId+" and MRM.activeYesNo='Y' order by MRM.menu.menuOrder asc")
+		return childList
+	}
+	/**
+	 * Get Child menu Role Map 
+	 */
+	public getChildList(def roleId)
+	{
+		def childList = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id="+roleId+" and MRM.menu.parentId!="+-1+" and MRM.activeYesNo='Y' order by MRM.menu.menuOrder asc")
+		return childList
+	}
+	/**
+	 * Save menu Role Map 
+	 */
+	public saveMapInstance(def parentList,def roleId)
+	{
+		def roleInstance = Authority.get(roleId)
+		for(int i=0;i<parentList.size();i++)
+		{
+			def menuRoleMapInstance = new MenuRoleMap()
+	        menuRoleMapInstance.role=roleInstance
+			menuRoleMapInstance.createdBy="SuperAdmin"
+		    menuRoleMapInstance.createdDate=new Date()
+	        menuRoleMapInstance.modifiedBy="SuperAdmin"
+	        menuRoleMapInstance.modifiedDate=new Date()
+	        menuRoleMapInstance.activeYesNo='Y'
+	        menuRoleMapInstance.menu = parentList[i]
+			menuRoleMapInstance.save()
+		}
+	}
+	
+	/**
+	 * Get Main menu List Group by menu Id
+	 */
+	public getMainMenuGroupById(def roleIds)
+	{
+		def mainmenuList = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+ "and MRM.menu.parentId=-1 and MRM.activeYesNo='Y' group by MRM.menu.id order by MRM.menu.menuOrder asc")
+		return mainmenuList
+	}
 }

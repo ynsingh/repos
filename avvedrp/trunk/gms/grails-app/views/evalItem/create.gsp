@@ -26,14 +26,16 @@
 	                        <tbody>
 	                             <tr class="prop">
 	                                <td valign="top" class="name">
-	                                    <label for="item"><g:message code="default.evalItem.item.label"/></label>
+	                                    <label for="item"><g:message code="default.evalItem.item.label"/>:</label>
+	                                    <label for="item" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: evalItemInstance, field: 'item', 'errors')}">
 	                                    <g:textField name="item" value="${evalItemInstance?.item}" />
 	                                </td>
 	                           
 	                               <td valign="top" class="name">
-	                                    <label for="evalScale"><g:message code="default.evalItem.evalScale.label"/></label>
+	                                    <label for="evalScale"><g:message code="default.evalItem.evalScale.label"/>:</label>
+	                                    <label for="evalScale" style="color:red;font-weight:bold"> * </label>
 	                               </td>
 	                               <td valign="top" class="value ${hasErrors(bean: evalItemInstance, field: 'evalScale', 'errors')}">
 	                                    <g:select optionKey="id" optionValue="scaleTitle" from="${(evalScaleInstanceList)}" name="evalScale.id" value="${fieldValue(bean: evalScaleInstance, field: 'scaleTiltle')}" noSelection="['null':'-Select-']" ></g:select>

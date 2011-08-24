@@ -73,11 +73,7 @@
      					<g:each in="${grantAllocationInstanceList}" status="i" var="grantAllocationInstanceList" >
   						<tr>
     						<td height="39" colspan="3">
-	    						<%
-	           
-	             				def grantAllocationSplitList=GrantAllocationSplit.executeQuery("select   GA.grantPeriod, GA.grantAllocation,GA.accountHead, GA.amount,GA.id  from GrantAllocationSplit GA where GA.grantAllocation ="+grantAllocationInstanceList.id);
-	            
-			   					%>
+	    						<%def grantAllocationSplitList=GrantAllocationSplit.executeQuery("select   GA.grantPeriod, GA.grantAllocation,GA.accountHead, GA.amount,GA.id  from GrantAllocationSplit GA where GA.grantAllocation ="+grantAllocationInstanceList.id); %>
 	    
 	    						<table width="840" border="0" cellspacing="0" cellpadding="0">
 	      							<tr> 
@@ -105,13 +101,23 @@
 							   </td>
   							</tr>
   							<%
-						  	def totalGrantAlloctedAmt=GrantAllocationSplit.executeQuery("select sum(GA.amount)  from GrantAllocationSplit GA where GA.grantAllocation ="+grantAllocationInstanceList.id+" group by GA.grantAllocation");
-	                        def unallocateAmt
-	                        if(totalGrantAlloctedAmt[0]==null)
-	                        	unallocateAmt=grantAllocationInstanceList.amountAllocated
-	                        else
-	                        	unallocateAmt=grantAllocationInstanceList.amountAllocated-totalGrantAlloctedAmt[0]
-                        %>
+							  	def totalGrantAlloctedAmt=GrantAllocationSplit.executeQuery("select sum(GA.amount)  from GrantAllocationSplit GA where GA.grantAllocation ="+grantAllocationInstanceList.id+" group by GA.grantAllocation");
+		                        def unallocateAmt
+		                        if(totalGrantAlloctedAmt[0]==null)
+		                        {
+		                        	if(subAllocatedAmount)
+		                              unallocateAmt=grantAllocationInstanceList.amountAllocated-subAllocatedAmount
+		                            else
+		                        	  unallocateAmt=grantAllocationInstanceList.amountAllocated
+		                        }
+		                        else
+		                        {
+		                           if(subAllocatedAmount)
+		                        	unallocateAmt=grantAllocationInstanceList.amountAllocated-(totalGrantAlloctedAmt[0]+subAllocatedAmount)
+		                           else
+		                        	unallocateAmt=grantAllocationInstanceList.amountAllocated-totalGrantAlloctedAmt[0]
+		                        }
+                           %>
   							<tr>
     							<td width="500" >
     								<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">

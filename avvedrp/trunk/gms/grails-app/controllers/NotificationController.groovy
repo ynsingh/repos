@@ -32,7 +32,6 @@ class NotificationController {
         	
         	//def dataSecurityService = new DataSecurityService()
             def notificationService = new NotificationService()
-        	println"++++++notparams++++++"+params
         	params.offset = (params.offset ? params.int('offset') : 0)
         
         	notificationInstanceList=notificationService.getAllNotifications(subQuery,gh.getValue("Party"))
@@ -52,7 +51,7 @@ class NotificationController {
 	        }
         	
     		
-            [ notificationInstanceList: notificationInstanceList,notificationsEmailsInstanceList:notificationsEmailsInstanceList,'notificationInstanceListTotal': total]
+            [ notificationInstanceList: notificationInstanceList,notificationsEmailsInstanceList:notificationsEmailsInstanceList,'notificationInstanceListTotal': total,offset:params.offset]
         }
     
     def show = {
@@ -96,8 +95,7 @@ class NotificationController {
     }
 
     def update = {
-			println "--------------"+params
-        def notificationInstance = Notification.get( params.id )
+		 def notificationInstance = Notification.get( params.id )
         if(notificationInstance) {
         	
         	notificationInstance.properties = params
@@ -147,22 +145,16 @@ class NotificationController {
     def upload = {
         	
         		 def notificationInstance = Notification.get( params.id )
-        		 print"+++++++++++++++++++id+++++++++++++"
-                return ['notificationInstance':notificationInstance]
+        		   return ['notificationInstance':notificationInstance]
         		
         }
         def savefile = {
         		
-        		print "+++++++++++++++save++++++++++++++++++++"
         		def notificationInstance = new Notification(params)
-        		println "Notification+"+notificationInstance
-        		
         		def downloadedfile = request.getFile('file');
         		//String filename=downloadedfile.getOriginalFilename().toString().substring(0,downloadedfile.getOriginalFilename().toString().lastIndexOf("."))
         		String filename=downloadedfile.getOriginalFilename()
-        		println "File Name--"+filename
-        		
-                 downloadedfile.transferTo(new File('c:/somefolder/'+filename))
+        	     downloadedfile.transferTo(new File('c:/somefolder/'+filename))
                
         		
                    redirect(action:list,id:notificationInstance.id)
@@ -220,8 +212,7 @@ class NotificationController {
        
        //println"notificationInstanceList.notificationCode"+notificationInstanceList.notificationCode
       def chkUniNotCodeInstance = notificationService.getNotificationCode(notificationInstance)
-       println"chkUniNotCodeInstance[0]"+chkUniNotCodeInstance[0]
-       if(chkUniNotCodeInstance)
+        if(chkUniNotCodeInstance)
        {
     	   flash.message = "${message(code: 'default.NotDuplicate.message')}"
     	   redirect(action:create,id:notificationInstance.id)
@@ -278,7 +269,6 @@ class NotificationController {
     		}
     		else
     		{
-        	println "not saved ==============="
             render(view:'create',model:[notificationInstance:notificationInstance,grantAllocationWithprojectsInstanceList:grantAllocationWithprojectsInstanceList])
     		}
        }
@@ -288,9 +278,7 @@ class NotificationController {
     def download = 
        {
     		def notificationInstance = Notification.get( params.id )
-    		println"++++++++++++++id+++++++++++"+params
     		String fileName = notificationInstance.eligibilitydocument
-    		println"++++++++++++++++++filename+++++++++"+fileName
     		def file = new File('c:/somefolder/'+fileName)     
     		response.setContentType("application/octet-stream") 
     		response.setHeader("Content-disposition", "attachment;fileName=${file.getName()}") 
@@ -341,7 +329,6 @@ class NotificationController {
  }
     def publishNotification =
     {
-    		println "publish-=-=-=-=-"+params
     		def notificationsInstance = Notification.get(params.id)
     		def notificationsAttachmentsInstance = NotificationsAttachments.findAll("from NotificationsAttachments NA where NA.notification.id="+params.id)
     		def notificationsEmailsInstance = NotificationsEmails.findAll("from NotificationsEmails NE where NE.notification.id="+params.id)
@@ -351,18 +338,15 @@ class NotificationController {
     		
     }
 	def listReport = {
-    		println "+++++++++++++++++"+params
-        	
+    		
     		return['reportListInstance':params]
     		
     }
 	
 	def granteeReports=
 	{
-			println"params"+params
 			GrailsHttpSession gh=getSession()
 			def partyInstance=Party.get(gh.getValue("Party"))
-			println"partyInstance"+partyInstance
 			return['partyInstance':partyInstance]
 	}
 	def publish = {

@@ -29,4 +29,7 @@ class ExpenseRequestEntry {
 		modifiedBy(nullable: true)
 		modifiedDate(nullable: true)	
     }
+	
+	String paymentStatus;
+	static transients=["paymentStatus"]
 }

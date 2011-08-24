@@ -9,20 +9,10 @@
     <body>
        <div class="wrapper">
         <div class="body">
-        
-        <g:if test="${proposalType=='PreProposal'}">
             <h1><g:message code="default.PreProposalReviewerStatusList.label"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
-         </g:if>
-         <g:else>
-            <h1><g:message code="default.FullProposalReviewerStatusList.label" /></h1>
-            <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-            </g:if>
-         </g:else>
-         
             <div class="list">
                 <table>
                     <thead>

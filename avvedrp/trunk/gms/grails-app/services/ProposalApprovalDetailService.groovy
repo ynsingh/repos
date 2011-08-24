@@ -255,9 +255,9 @@ class ProposalApprovalDetailService {
      /*
       * method to get proposal approval details by user id and proposal type
       */
-      def getProposalApplDetailsByUserAndProposalType(def userId,def params)
+      def getProposalApplDetailsByUserAndProposalType(def userId)
      {
-     	 def proposalApprovalDetailInstance= ProposalApprovalDetail.findAll("from ProposalApprovalDetail PA where PA.proposalApproval.approvalAuthorityDetail.person.id="+userId+"and PA.proposalApproval.proposalApprovalAuthorityMap.proposalType='"+params.ProposalType+"'")
+     	 def proposalApprovalDetailInstance= ProposalApprovalDetail.findAll("from ProposalApprovalDetail PA where PA.proposalApproval.approvalAuthorityDetail.person.id="+userId+"and PA.proposalApproval.proposalApprovalAuthorityMap.proposalType='PreProposal'")
      	 return proposalApprovalDetailInstance
      }
 }

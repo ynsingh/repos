@@ -25,7 +25,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="name"><g:message code="default.Name.label"/>:</label>
+                                    <label for="name"><g:message code="default.FirstName.label"/>:</label>
                                     <label for="name" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 
@@ -33,6 +33,18 @@
                                 	<input type="text" id="name" name="name" value="${fieldValue(bean:investigatorInstance,field:'name')}">                        
                                 </td>
                             </tr> 
+                            
+                               <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="userSurName"><g:message code="default.LastName.label"/>:</label>
+                                    <label for="userSurName" style="color:red;font-weight:bold"> * </label>
+                                </td>
+                                
+                                <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'userSurName','errors')}">
+                                	<input type="text" id="userSurName" name="userSurName" value="${fieldValue(bean:investigatorInstance,field:'userSurName')}">                        
+                                </td>
+                            </tr> 
+                            
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="designation"><g:message code="default.Designation.label"/>:</label>
@@ -99,7 +111,9 @@
                         
                    	        <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}"/>
                         
-                   	        <g:sortableColumn property="name" title="${message(code: 'default.Name.label')}" />
+                   	        <g:sortableColumn property="name" title="${message(code: 'default.FirstName.label')}" />
+                   	        
+                   	        <g:sortableColumn property="userSurName" title="${message(code: 'default.LastName.label')}" />
                    	        
                    	        <g:sortableColumn property="designation" title="${message(code: 'default.Designation.label')}" />
                    	        
@@ -124,6 +138,8 @@
                             <td>${j}</td>
                         
                             <td>${fieldValue(bean:investigatorInstance, field:'name')}</td>
+                            
+                            <td>${fieldValue(bean:investigatorInstance, field:'userSurName')}</td>
                             
                             <td>${fieldValue(bean:investigatorInstance, field:'designation')}</td>
                             

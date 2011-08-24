@@ -78,20 +78,24 @@
                     </table>
                 </div>
                 </div>
+                
                 <div style="text-align:right">
                 <input type="button" id="remaxmin" onClick="changeCssClass('reviewDiv','remaxmin')"  value="${message(code: 'default.Maximize.button')}"/>
                 </div>
+               
+                <g:if test="${proposalInstance.proposalStatus == 'Submitted'}">
                 <div align="left">
                 
                     <g:if test="${evalAnswerInstanceList}">
                     	<span class="button"><g:actionSubmit class="inputbutton" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" onClick="return validateEvalForm(${evalItemInstanceList.size()});" /></span>
                     </g:if> 
                     <g:else>
-                    	<span class="button"><g:actionSubmit class="inputbutton" action="save" value="${message(code: 'default.Save.button')}" onClick="return validateEvalForm(${evalItemInstanceList.size()});" /></span>
+                    	<span class="button"><g:actionSubmit class="inputbutton" action="save" value="${message(code: 'default.Save.button')}" onClick="return validateEvalForm(${evalItemInstanceList.size()});"/></span>
                     </g:else>
                     <span class="button"><g:actionSubmit class="inputbutton" action="submitResult" value="${message(code: 'default.Submit.button')}" onClick="return validateEvalForm(${evalItemInstanceList.size()});"/></span>
+				</div>
+            	</g:if>
             	
-            	</div>
               </g:if> 
                 <g:else>
                <div class="body">

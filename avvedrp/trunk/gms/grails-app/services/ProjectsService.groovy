@@ -1029,4 +1029,10 @@ class ProjectsService{
 		}
 		 return projectsInstance
 	}
+	
+	 public List getNotEndedProjects(def currentDate)
+	 {
+	    def projectInstanceList = Projects.findAll("from Projects P where P.activeYesNo='Y' and DATE_FORMAT(P.projectEndDate, '%Y-%m-%d')>='"+currentDate+"'")
+	    return projectInstanceList
+	 }
 }

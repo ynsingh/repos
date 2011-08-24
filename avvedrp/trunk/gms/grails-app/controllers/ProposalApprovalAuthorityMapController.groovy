@@ -104,7 +104,6 @@ class ProposalApprovalAuthorityMapController {
     }
 
     def edit = {
-		println"----------params-------------"+params
 		GrailsHttpSession gh=getSession()
 		def approvalAuthorityService = new ApprovalAuthorityService()
 		def proposalApplicationList = []
@@ -131,9 +130,7 @@ class ProposalApprovalAuthorityMapController {
 
     def update = {
 	     def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.get(params.id)
-       
-       
-        if (proposalApprovalAuthorityMapInstance) {
+         if (proposalApprovalAuthorityMapInstance) {
             if (params.version) {
                 def version = params.version.toLong()
                 if (proposalApprovalAuthorityMapInstance.version > version) {

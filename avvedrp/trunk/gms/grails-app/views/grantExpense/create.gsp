@@ -17,7 +17,7 @@
 	            <td ><g:message code="default.AmountAllocated.label"/>:</td>
 	            <td ><strong>
 	            		<g:message code="default.Rs.label" />
-	            		${currencyFormat.ConvertToIndainRS(projectsInstance.totAllAmount)}
+	            		${currencyFormat.ConvertToIndainRS(projectsInstance?.totAllAmount)}
             		</strong>
         		</td>
 	        
@@ -110,7 +110,10 @@
                                             <label for="modeOfPayment" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'modeOfPayment','errors')}">
-                                            <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  value="${fieldValue(bean:grantExpenseInstance,field:'modeOfPayment')}" noSelection="['null':'-Select-']"></g:select>
+                                            <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  
+                                            onchange="${remoteFunction(controller:'grantExpense',action:'updateModeOfPayment',update:'fieldSelect',  params:'\'modeOfPayment=\' + this.value' )}"
+                                            onFocus="${remoteFunction(controller:'grantExpense',action:'updateModeOfPayment',update:'fieldSelect',  params:'\'modeOfPayment=\' + this.value' )}"
+                                            value="${fieldValue(bean:grantExpenseInstance,field:'modeOfPayment')}" noSelection="['null':'-Select-']"></g:select>
                                          </td>
                                     </tr>      
                
@@ -120,8 +123,10 @@
                                             <label for="ddNo" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'ddNo','errors')}">
-                                            <input type="text" id="ddNo" name="ddNo" value="${fieldValue(bean:grantExpenseInstance,field:'ddNo')}" style="text-align: right" />
-                                         </td>
+                                            <div id="fieldSelect">
+                         				       <input type="text" id="ddNo" name="ddNo" value="${fieldValue(bean:grantExpenseInstance,field:'ddNo')}" style="text-align: right" />
+										    </div>
+										</td>
                                     </tr> 
                         
                                     <tr class="prop">
@@ -130,8 +135,7 @@
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'ddDate','errors')}">
                                              <calendar:datePicker name="ddDate" defaultValue="${new Date()}" value="${grantExpenseInstance?.ddDate}" dateFormat= "%d/%m/%Y"/>
-                                  
-                                         </td>
+                                 		 </td>
                                     </tr> 
                             
                                     <tr class="prop">

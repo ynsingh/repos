@@ -1,3 +1,11 @@
+import grails.converters.*
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+import org.codehaus.groovy.grails.commons.GrailsApplication
+import grails.util.GrailsUtil
+import org.codehaus.groovy.grails.commons.ControllerArtefactHandler
+import org.springframework.beans.BeanWrapper
+import org.springframework.beans.PropertyAccessorFactory
+
 class AuthorityController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]

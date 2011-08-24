@@ -43,7 +43,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <% int j=0 %>
+                    <% int j=offset %>
                     <g:each in="${grantAllocationWithprojectsInstanceList}" status="i" var="grantAllocationInstance">
                    
                         <g:if test="${fieldValue(bean:grantAllocationInstance, field:'projects.activeYesNo') == 'Y'}">

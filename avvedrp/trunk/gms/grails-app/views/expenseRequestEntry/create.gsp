@@ -141,6 +141,8 @@
 		                        	
 		                        	<g:sortableColumn property="expenseDescription" title="${message(code: 'default.RequestStatus.label')}" />
 		                        	
+		                        	<g:sortableColumn property="expenseDescription" title="${message(code: 'default.PaymentStatus.label')}" />
+		                        	
 		                            <g:sortableColumn property="dateOfExpense" title="${message(code: 'default.ExpenseDate.label')}" />
 		                        
 		                            <g:sortableColumn property="expenseAmount" title="${message(code: 'default.ExpenseAmount(Rs).label')}" />
@@ -165,6 +167,8 @@
 			                        	<td>${fieldValue(bean: expenseRequestEntryInstance, field: "expenseDescription")}</td>
 			                        	
 			                        	<td>${fieldValue(bean: expenseRequestEntryInstance, field: "status")}</td>
+			                        	
+			                        	<td>${fieldValue(bean: expenseRequestEntryInstance, field: "paymentStatus")}</td>
 			                        	
 			                        	<td><g:formatDate format="dd/MM/yyyy" date="${expenseRequestEntryInstance.dateOfExpense}"/></td>
 			                        	

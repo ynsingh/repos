@@ -13,7 +13,7 @@ class RolePrivilegesController {
 
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
-
+    def partyService
     def list = {
     		
         if(!params.max) params.max = 10
@@ -213,16 +213,22 @@ class RolePrivilegesController {
     }
     def newRolePrivileges = 
     {
-    		def authorityInstanceList = userService.getAllRolls()   		
-    		return[authorityInstanceList:authorityInstanceList]
+    		def authorityInstanceList = userService.getAllRolls()
+    		def institutionList = partyService.getAllActiveParties()
+    		def personRoleInstance = userService.getUserRoleByUserId(session.UserId)
+    		return[authorityInstanceList:authorityInstanceList, institutionList:institutionList, personRoleInstance:personRoleInstance[0]]
     }
     def saveNewRolePriviliges = {
-    		println "saveNewRolePriviliges+++++++++++++++"+params.authority
-    		GrailsHttpSession gh = getSession()
+  		  GrailsHttpSession gh = getSession()
     		def rolePrivilegesService = new RolePrivilegesService()
+  		    def userService = new UserService()
     		def webRootDir
-			
-	       	def party = Party.get(gh.getValue("Party"))
+    		def rolePrivilegesInstanceCheck
+    		def partyInstance
+    		def party
+			def userRoleList = userService.getUserRoleByUserId(session.UserId)
+    			
+    			party = Party.get(gh.getValue("Party"))
 	       	def roleInstance = Authority.get(params.authority) 
 	       	def rolePrivilegesInstanceStatus=RolePrivileges.find("from RolePrivileges RP where RP.role="+params.authority+" and RP.party="+gh.getValue("Party"))
 	       	
@@ -237,19 +243,22 @@ class RolePrivilegesController {
 	       				String closureClassName = controller.getPropertyOrStaticPropertyOrFieldValue(pd.name, Closure)?.class?.name
 	       						if (closureClassName) 
 	       							{
-	       							actions << pd.name
-	       							
-	       							def rolePrivilegesInstanceCheck=rolePrivilegesService.getRolePrivileges(controller.logicalPropertyName,pd.name,params.authority,gh.getValue("Party"))
+	       								actions << pd.name
+	       								
+	       									rolePrivilegesInstanceCheck=rolePrivilegesService.getRolePrivileges(controller.logicalPropertyName,pd.name,params.authority,gh.getValue("Party"))
 	    							
-	       							if(!rolePrivilegesInstanceCheck)
-	       							{
-	       								def rolePrivilegesInstance=new RolePrivileges()
-	       								rolePrivilegesInstance.controllerName=controller.logicalPropertyName
-	       								rolePrivilegesInstance.actionName=pd.name
-	       								rolePrivilegesInstance.role=roleInstance
-	       								rolePrivilegesInstance.party=party
-	       								rolePrivilegesInstance.save()
-	       							}
+		       							if(!rolePrivilegesInstanceCheck)
+		       							{
+		       								def rolePrivilegesInstance=new RolePrivileges()
+		       								rolePrivilegesInstance.controllerName=controller.logicalPropertyName
+		       								rolePrivilegesInstance.actionName=pd.name
+		       								rolePrivilegesInstance.role=roleInstance
+		       								
+		       								
+		       									rolePrivilegesInstance.party=party
+		       								
+		       								rolePrivilegesInstance.save()
+		       							}
 	       							}
 	       			}
 	       			controllerInfo.actions = actions.sort()

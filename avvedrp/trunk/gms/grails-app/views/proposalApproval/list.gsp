@@ -11,20 +11,11 @@
       
         <div class="wrapper">
         <div class="body">
-         <g:if test="${params.ProposalType=='PreProposal'}">
             <h1><g:message code="default.PreProposalList.label"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
-         </g:if>
-         <g:else>
-            <h1><g:message code="default.FullProposalList.label"/></h1>
-             <g:if test="${flash.message}">
-             <div class="message">${flash.message}</div>
-             </g:if>
-         </g:else>
-          
-            <div class="list">
+         <div class="list">
                 <table>
                     <thead>
                         <tr>
@@ -35,6 +26,9 @@
                           <th><g:message code="default.Investigator.label"  /></th>
 	                      <th> <g:message code="default.PreProposalStatus.label" /></th>
 	                      <th><g:message code="default.ApprovalAuthority.label"  /></th>
+	                      <g:if test="${proposalType=='FullProposal'}">
+	                       <th><g:message code="default.BudgetDetails.label"/></th>
+	                      </g:if> 
 	                      <th><g:message code="default.Approve/Reject.label" /></th>
                          </tr>
                     </thead>
@@ -47,25 +41,15 @@
                             <td>${proposalInstance.person.username}</td>
                             <td>${proposalInstance.proposalStatus}</td>
                             <td>${proposalApprovalAuthorityMapInstanceList[i].approvalAuthority.name}</td>
-                        <td>
+                            <td>
                         <g:if test="${proposalApprovalAuthorityMapInstanceList[i].viewAll!='Y'}">
-                        	<g:if test="${proposalType=='PreProposal'}">
-                        	<g:link controller="proposalApprovalDetail" action="preProposalReview" params="['id':proposalInstance.id,'proposalApprovalAuthorityMap.id':proposalApprovalAuthorityMapInstanceList[i].id]" id="${proposalInstance.id}"><g:message code="default.Approve/Reject.label" /></g:link>
+                        	<g:link controller="proposalApprovalDetail" action="preProposalReview" id="${proposalInstance.id}" params="['id':proposalInstance.id,'proposalApprovalAuthorityMap.id':proposalApprovalAuthorityMapInstanceList[i].id]" id="${proposalInstance.id}"><g:message code="default.Approve/Reject.label" /></g:link>
                         	</g:if>
                         	<g:else>
-                        	<g:link controller="proposalApprovalDetail" action="fullProposalReview" id="${proposalInstance.id}" params="['id':proposalInstance.id,'proposalApprovalAuthorityMap.id':proposalApprovalAuthorityMapInstanceList[i].id]"><g:message code="default.Approve/Reject.label" /></g:link>
-                        	</g:else>
-                        </g:if>
-                    	<g:else>
-                    	<g:if test="${proposalType=='PreProposal'}">
-                    	<g:link controller="proposal" action="submittedPreProposal" id="${proposalInstance.id}"><g:message code="default.View.label"/></g:link>
-                    	</g:if>
-                    	<g:else>
-                    	<g:link controller="proposal" action="submittedPreProposal" id="${proposalInstance.parent.id}"><g:message code="default.View.label"/></g:link>
-                    	</g:else>
-                    	</g:else>
+                        	<g:link controller="proposal" action="submittedPreProposal" id="${proposalInstance.id}"><g:message code="default.View.label"/></g:link>
+                        </g:else>
                         </td>
-                            
+                     
                         </tr>
                     </g:each>
                     </tbody>

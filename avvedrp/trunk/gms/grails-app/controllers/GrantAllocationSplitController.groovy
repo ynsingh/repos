@@ -43,7 +43,18 @@ class GrantAllocationSplitController extends GmsController  {
     		def grantAllocationSplitList=grantAllocationSplitService.getGrantAllocationSplitDetailsByProject(params.id)
             grantAllocationSplitInstance.properties = params
             grantAllocationSplitInstance.projects=projectsInstance;
-    		grantAllocationSplitInstance.grantAllocation=grantAllocationInstanceList[0]	 
+    		grantAllocationSplitInstance.grantAllocation=grantAllocationInstanceList[0]
+    		def subAllocatedAmount = grantAllocationSplitService.getSubAllocatedAmountByProjectId(projectsInstance)
+    		if(subAllocatedAmount)
+    		{
+    			ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+        		return ['grantAllocationSplitInstance':grantAllocationSplitInstance,
+                        'grantAllocationInstanceList':grantAllocationInstanceList,
+                        'grantAllocationSplitDetailsList':grantAllocationSplitDetailsList,
+                        'currencyFormat':currencyFormatter,'subAllocatedAmount':subAllocatedAmount[0]]
+    		}
+    		else
+    		{
     		ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
     		return ['grantAllocationSplitInstance':grantAllocationSplitInstance,
                     'grantAllocationInstanceList':grantAllocationInstanceList,
@@ -51,7 +62,7 @@ class GrantAllocationSplitController extends GmsController  {
                     'currencyFormat':currencyFormatter]
     		}
     }
-
+    }
     def show = {
 		def grantAllocationSplitService = new GrantAllocationSplitService()
         def grantAllocationSplitInstance = grantAllocationSplitService.getGrantAllocationSplitById(new Integer(params.id))
@@ -101,7 +112,8 @@ class GrantAllocationSplitController extends GmsController  {
     }
 
     def edit = {
-		def grantAllocationSplitService = new GrantAllocationSplitService()		
+		def grantAllocationSplitService = new GrantAllocationSplitService()	
+		def grantAllocationService = new GrantAllocationService()
         def grantAllocationSplitInstance = grantAllocationSplitService.getGrantAllocationSplitById(new Integer(params.id))
         def dataSecurityService = new DataSecurityService()
 		def projectsInstance = Projects.get(grantAllocationSplitInstance.projects.id)
@@ -110,6 +122,10 @@ class GrantAllocationSplitController extends GmsController  {
 		//checking  whether the user has access to the given projects
 		def accountHeadsService =  new AccountHeadsService()
 		def accountHeadList = grantAllocationSplitService.getAccountHeadByNameandCode(projectsInstance.id)
+		def headAllocatedAmount = grantAllocationSplitService.getAllocatedAmountByProjectId(projectsInstance.id)//sum of headwise allocated amount
+
+        def subAllocatedAmount = GrantAllocation.executeQuery("select sum(GA.amountAllocated) from GrantAllocation GA where GA.projects.parent.id="+projectsInstance.id)
+
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(grantAllocationSplitInstance.projects.id,new Integer(getUserPartyID()))==0)
 		{
 			
@@ -119,6 +135,8 @@ class GrantAllocationSplitController extends GmsController  {
 		}
 		else
 		{
+			projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
+			
 	        if(!grantAllocationSplitInstance) 
 	        {
 	            flash.message = "${message(code: 'default.notfond.label')}"
@@ -158,19 +176,40 @@ class GrantAllocationSplitController extends GmsController  {
 			{
 				grantAllocationSplitInstance.unAllocatedAmt = grantAllocationSplitInstance.amount 
 			}
+			def balanceAmount
+			if(headAllocatedAmount[0])
+			{
+				balanceAmount = projectsInstance.totAllAmount - headAllocatedAmount[0]
+					if(subAllocatedAmount[0])
+						balanceAmount = projectsInstance.totAllAmount - (headAllocatedAmount[0]+subAllocatedAmount[0])
+			}
+			else
+			{
+				if(subAllocatedAmount[0])
+					balanceAmount = projectsInstance.totAllAmount - subAllocatedAmount[0]
+				else
+					balanceAmount = projectsInstance.totAllAmount
+			}
+			
+				
+	       
 			NumberFormat formatter = new DecimalFormat("#0.00");
 			render(view:'edit',model:['grantAllocationSplitInstance':grantAllocationSplitInstance,
 			                          'accountHeadInstanceList':accountHeadInstanceList,
 			                          'amount':formatter.format(grantAllocationSplitInstance.amount),
 			                          'unAllocatedAmount':grantAllocationSplitInstance.unAllocatedAmt,
-			                          'accountHeadList':accountHeadList,amount:formatter.format(grantAllocationSplitInstance.amount)])
+			                          'accountHeadList':accountHeadList,amount:formatter.format(grantAllocationSplitInstance.amount),
+			                          'balanceAmount':balanceAmount])
     	}
 
     def update = {
 		def grantAllocationSplitService = new GrantAllocationSplitService()
 	        def grantExpenseService = new GrantExpenseService()
+		double amount= ((params.amount).toDouble()).doubleValue()
+		double balanceAmount= ((params.balance).toDouble()).doubleValue()
 		def grantAllocationSplitInstances = grantAllocationSplitService.getGrantAllocationSplitById(new Integer(params.id))
 		def grantExpenseInstance = grantExpenseService.getExpenseForGrantAllocationSplit(grantAllocationSplitInstances);
+		double exactBalance = (balanceAmount+(grantAllocationSplitInstances.amount).doubleValue())
 		if(grantExpenseInstance)
 		{
 			flash.message ="${message(code: 'default.CannotupdateHeadwiseAllocation.label')}"
@@ -186,7 +225,14 @@ class GrantAllocationSplitController extends GmsController  {
 					if((!params.subAccountHead) && (params.subAccountHead == "null") )
 		        	{
 						params.accountHead = AccountHeads.get(grantAllocationSplitInstances.accountHead.id)
-		        	}	  
+		        	}	
+					if(amount > exactBalance)
+		        	{
+		        		flash.message= "${message(code: 'default.couldnotallocateBalanceAmount.label')}"
+		        			redirect(action:'edit',params:['id':grantAllocationSplitInstances.id,'UnAll':params.unAllocatedAmt,'unAllocatedAmount':grantAllocationSplitInstances.unAllocatedAmt]) 
+		        	}
+		        	else
+		        	{
 			   def grantAllocationSplitInstanceCheck = grantAllocationSplitService.validateGrantAllocationSplit(params,grantAllocationSplitInstances.projects.id)
         if((!grantAllocationSplitInstanceCheck) || 	(grantAllocationSplitInstanceCheck[0].id == Long.parseLong(params.id)))
 		{     
@@ -205,7 +251,7 @@ class GrantAllocationSplitController extends GmsController  {
             redirect(action:'list',id:grantAllocationSplitInstances.projects.id)
 		}
 	}
-	
+			   }
     }
     }
 
@@ -217,7 +263,7 @@ class GrantAllocationSplitController extends GmsController  {
         def grantAllocationInstance = GrantAllocation.get(new Integer(params.grantAllotId))
         def unAllocatedAmount = params.UnAll
         def accountHeadList = grantAllocationSplitService.getAccountHeadByNameandCode(projectsInstance.id)
-        println"accountHeadList....."+accountHeadList
+
         def dataSecurityService = new DataSecurityService()
 		//checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectsInstance.id,new Integer(getUserPartyID()))==0)
@@ -234,10 +280,26 @@ class GrantAllocationSplitController extends GmsController  {
     
         def grantAllocationSplitList=grantAllocationSplitService.getGrantAllocationSplitByProjects(params.id)
         grantAllocationSplitInstance.properties = params
-        grantAllocationSplitInstance.unAllocatedAmt = new Double(params.UnAll)
+        
         grantAllocationSplitInstance.projects=projectsInstance;
         grantAllocationSplitInstance.grantAllocation=grantAllocationInstance;
-       
+        def balanceAmount
+        def headAllocatedAmount = grantAllocationSplitService.getAllocatedAmountByProjectId(params.id)//sum of headwise allocated amount
+        def subAllocatedAmount = grantAllocationSplitService.getSubAllocatedAmountByProjectId(projectsInstance)
+        if(headAllocatedAmount[0])
+			{
+				balanceAmount = projectsInstance.totAllAmount - headAllocatedAmount[0]
+					if(subAllocatedAmount[0])
+						balanceAmount = projectsInstance.totAllAmount - (headAllocatedAmount[0]+subAllocatedAmount[0])
+			}
+			else
+			{
+				if(subAllocatedAmount[0])
+					balanceAmount = projectsInstance.totAllAmount - subAllocatedAmount[0]
+				else
+					balanceAmount = projectsInstance.totAllAmount
+			}
+        grantAllocationSplitInstance.unAllocatedAmt = new Double(balanceAmount)
         ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
         NumberFormat formatter = new DecimalFormat("#0.00");
         return ['grantAllocationSplitInstance':grantAllocationSplitInstance,
@@ -245,14 +307,16 @@ class GrantAllocationSplitController extends GmsController  {
                 'grantAllocationInstanceList':grantAllocationInstanceList,
                 'currencyFormat':currencyFormatter,
 				'unAllocatedAmount':grantAllocationSplitInstance.unAllocatedAmt,'accountHeadList':accountHeadList,
-				'amount':formatter.format(grantAllocationSplitInstance.amount)]
+				'amount':formatter.format(grantAllocationSplitInstance.amount),
+				'balanceAmount':balanceAmount]
 		}
     }
 
     def save = {
-    		
-        def grantAllocationSplitInstance = new GrantAllocationSplit(params)
-        if(!grantAllocationSplitInstance.hasErrors() ) {
+    		def grantAllocationSplitInstance = new GrantAllocationSplit(params)
+    		double amount= ((params.amount).toDouble()).doubleValue()
+    		double balanceAmount= ((params.balance).toDouble()).doubleValue()
+    		if(!grantAllocationSplitInstance.hasErrors() ) {
             def grantAllocationInstance = GrantAllocation.get(new Integer(params.grantAllotId))
         	grantAllocationSplitInstance.createdBy="admin"
         	grantAllocationSplitInstance.modifiedBy="admin"
@@ -269,6 +333,13 @@ class GrantAllocationSplitController extends GmsController  {
         		grantAllocationSplitInstance.accountHead = AccountHeads.get(new Integer(params.subAccountHead))
         		
         	}
+        	if(amount > balanceAmount)
+        	{
+        		flash.message= "${message(code: 'default.couldnotallocateBalanceAmount.label')}"
+        			redirect(action:create,params:[id:params.projectId,grantAllotId:params.grantAllotId,UnAll:params.UnAll])
+        	}
+        	else
+        	{
         	def grantAllocationSplitInstanceCheck =grantAllocationSplitService.validateGrantAllocationSplit(grantAllocationSplitInstance,params.projectId)
         	if(!grantAllocationSplitInstanceCheck)
         	{
@@ -278,6 +349,7 @@ class GrantAllocationSplitController extends GmsController  {
         	{flash.message = "${message(code: 'default.GrantcannotAllocatedHeads.label')}"}
             flash.message = "${message(code: 'default.GrantAllocated.label')}"
             	  redirect(action:list,id:params.projectId)
+        }
         }
         else {
             render(view:'create',model:[grantAllocationSplitInstance:grantAllocationSplitInstance])

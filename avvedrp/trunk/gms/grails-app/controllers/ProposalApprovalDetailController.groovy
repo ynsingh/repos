@@ -76,14 +76,14 @@ class ProposalApprovalDetailController {
     	    				}
     	    			}
     	    			flash.message = "${message(code: 'default.ReviewedSuccessfully.label')}"
-	            		redirect(controller:"proposalApproval",action: "list",params:[ProposalType:"PreProposal"])
+	            		redirect(controller:"proposalApproval",action: "list")
 	    			}
     			
     			}
     			else
     			{
     				flash.message = "${message(code: 'default.Allreadyreviewed.label')}"
-    				redirect(controller:"proposalApproval",action: "list",params:[ProposalType:"PreProposal"])
+    				redirect(controller:"proposalApproval",action: "list")
     			}
     		}
     	
@@ -144,14 +144,14 @@ class ProposalApprovalDetailController {
     	    				}
     	    			}
     	    			flash.message = "${message(code: 'default.ReviewedSuccessfully.label')}"
-	            		redirect(controller:"proposalApproval",action: "list",params:[ProposalType:"FullProposal"])
+	            		redirect(controller:"proposalApproval",action: "fullProposalList")
 	    			}
     			
     			}
     			else
     			{
     				flash.message = "${message(code: 'default.Allreadyreviewed.label')}"
-    				redirect(controller:"proposalApproval",action: "list",params:[ProposalType:"FullProposal"])
+    				redirect(controller:"proposalApproval",action: "fullProposalList")
     			}
     		}
     		

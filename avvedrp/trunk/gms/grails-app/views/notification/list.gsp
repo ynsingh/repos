@@ -32,12 +32,13 @@
                    	        <th><g:message code="default.publicYesNo.label"/></th>
                        		<th><g:message code="default.Publish.label"/></th>
                             <th><g:message code="default.ProposalReceived.label"/></th>
+                            <th><g:message code="default.BudgetDetails.label"/></th>
                    	        <th><g:message code="default.AssignNotificationtoApprovalAuthority.label"/></th>
                    	        <th><g:message code="default.Edit.label"/></th>
                         </tr>
                     </thead>
                     <tbody>
-                      <% int j=0 %>
+                      <% int j=offset %>
                       <g:each in="${notificationInstanceList}" status="i" var="notificationInstance">
                         <%  j++ %>
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
@@ -62,6 +63,8 @@
             					<td>Published</td>
         					</g:else>
                             <td><g:link action="proposalList" controller='proposal' id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.View.label"/></g:link></td>
+                            
+                             <td><g:link action="budgetList" controller='budgetDetails' id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.View.label"/></g:link></td>
                             
                             <td><g:link action="notificationAuthorityMap" controller='notification' id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.AssignNotification.label"/></g:link></td>
                             

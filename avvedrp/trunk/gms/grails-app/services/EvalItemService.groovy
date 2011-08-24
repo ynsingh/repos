@@ -39,7 +39,6 @@ class EvalItemService {
     		if(!remarks)
     			nullRemarksList.add(remarks)
     		remarksList.add(remarks)
-    		println "scaleOptions" + scaleOptions
     	}
     	if(scaleOptionsList.size() != nullScaleList.size() || remarksList.size() != nullRemarksList.size())
     	{
@@ -74,7 +73,6 @@ class EvalItemService {
     	{
     		isSaved = false;
     	}
-    	println " evalAnswerInstanceList" +evalAnswerInstanceList
     	return isSaved;
     }
     public boolean updateEvalAnswer(def params,def evalSaved)
@@ -85,9 +83,7 @@ class EvalItemService {
     	for(int i=0;i<evalItemInstanceList.size();i++)
     	{
     		def evalAnswerId = params."id${i}"
-    		println "evalAnswerId" + evalAnswerId
     		def evalAnswerInstance = EvalAnswer.get(evalAnswerId)
-    		println "evalAnswerInstance" + evalAnswerInstance
     		if(evalAnswerInstance)
     			evalAnswerInstance.properties = params
        		def scaleOptions = params."scaleOptions${i}"
@@ -348,7 +344,15 @@ class EvalItemService {
         	def assignedEvalItemInstance = EvalItemNotificationMap.find("from EvalItemNotificationMap ENM where ENM.activeYesNo='Y' and ENM.evalItem.id="+id)
             return assignedEvalItemInstance
         } 
-      
+       
+        /**
+         * Function to get EvalScore by proposalId
+         */
+       public def getEvalScore(def proposalValInstance)
+       {
+        def evalScoreInstance = EvalScore.find("from EvalScore ES where ES.proposal.id ="+proposalValInstance.id)
+        return evalScoreInstance
+       }
      
     def serviceMethod() {
 

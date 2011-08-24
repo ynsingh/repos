@@ -30,22 +30,48 @@ class ExpenseRequestEntryController {
  */
  def create = {
 	    	def dataSecurityService = new DataSecurityService()
+	    	def grantExpenseService = new GrantExpenseService()
 	    	GrailsHttpSession gh=getSession()
 	    	def projectsList = []
 	    	def userInstance = userService.getUserById(new Integer(gh.getValue("UserId").intValue()))
 	    	def investigatorInstance = investigatorService.getInvestigatorByemail(userInstance.email)
+	    	if(investigatorInstance)
+	    	{
 	    	def expenseRequestEntryInstanceList = expenseRequestService
 					.getExpenseRequestEntryByInvestigator(investigatorInstance.id)//get past requested list of login PI
 	    	def expenseRequestEntryInstance = new ExpenseRequestEntry()
 	        expenseRequestEntryInstance.properties = params
 	        def grantAllocationWithprojectsInstanceList = grantAllocationService
 					.getGrantAllocationGroupByProjects(gh.getValue("Party"))//get the grant allocation of projects have access permission for login PI 
+					
 			for(int i=0;i<grantAllocationWithprojectsInstanceList.size();i++)
 	        {
 				def projectInstance = projectsService
 								.getActiveProjectById(grantAllocationWithprojectsInstanceList[i].projects.id)
 				projectsList.add(projectInstance)
 	        }
+	    	for(int i=0;i<expenseRequestEntryInstanceList.size();i++)
+	    	{
+	    def grantExpenseAmount = grantExpenseService.getGrantExpenseAmountByRequestCode(expenseRequestEntryInstanceList[i].expenseRequestCode)
+	   
+	    if(grantExpenseAmount[0])
+	    {
+	    if(expenseRequestEntryInstanceList[i].expenseAmount == grantExpenseAmount[0])
+	    {
+	    	expenseRequestEntryInstanceList[i].paymentStatus = "Paid in full"
+	    }
+	    	else
+	    	{
+	    		
+	    		if(expenseRequestEntryInstanceList[i].expenseAmount > grantExpenseAmount[0])
+	    			expenseRequestEntryInstanceList[i].paymentStatus = "Partial Payment"
+	    	}
+	    }
+	    else
+	    {
+	    	expenseRequestEntryInstanceList[i].paymentStatus = "On hold"
+	    }
+	    	}
 	    	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS()
 	    	NumberFormat formatter = new DecimalFormat("#0.00")
 	        return [expenseRequestEntryInstance: expenseRequestEntryInstance,
@@ -54,10 +80,16 @@ class ExpenseRequestEntryController {
 	                'amount':formatter.format(expenseRequestEntryInstance.expenseAmount),
 	                'invoiceAmount':formatter.format(expenseRequestEntryInstance.invoiceAmount)]
 	    }
+	    	else
+	    	{
+	    		redirect uri:'/invalidPIAccess.gsp'
+	    	}
+    }
 /*
  * Function to save Expense Request.
  */
     def save = {
+    	println"params----------"+params
     	GrailsHttpSession gh=getSession()
     	def dataSecurityService = new DataSecurityService()
     	def projectsList = dataSecurityService.getProjectsForLoginUser(gh.getValue("PartyID"))
@@ -73,7 +105,7 @@ class ExpenseRequestEntryController {
     		params.invoiceAmount = 0
     	}
 		def expenseRequestEntryInstance = new ExpenseRequestEntry(params)
-    	
+		
     	def cal = Calendar.instance				
     	def year = cal.get(Calendar.YEAR)
     	def month = cal.get(Calendar.MONTH)+ 1
@@ -82,6 +114,7 @@ class ExpenseRequestEntryController {
     	cal.get(Calendar.HOUR_OF_DAY)+cal.get(Calendar.MINUTE)+cal.get(Calendar.SECOND)
     	//cal.time = new Date(time * 1000)
     	expenseRequestEntryInstance.expenseRequestCode = expenseRequestEntryInstance.projects.code + dat + investigatorInstance.id  // generate Expense request code
+    	
     	
     	if (expenseRequestEntryInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.label')}"
@@ -656,20 +689,20 @@ class ExpenseRequestEntryController {
 	        	if(proposalApprovalAuthorityMapDuplicateInstance)
 	        	{
 	        		flash.error = "${message(code: 'default.CannotSend.message')}"
-	        		redirect(action: "financeLogin")
+	        		redirect(action: "expenseApprovalRequest")
 			  	}
 	        	else
 	        	{
 	    		proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
 	    			.saveProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList,approvalAuthorityInstance,userInstance,expenseRequestEntryInstance) //create new approval authority map by selected approval authority.
     			flash.message = "${message(code: 'default.SendSuccessfully.message')}"
-    			redirect(action: "financeLogin")
+    			redirect(action: "expenseApprovalRequest")
 	        	}
 	    	    }
 	    	    else
 	    	    {
 	    	    	flash.error = "${message(code: 'default.RequestPending.message')}"
-		    		redirect(action: "financeLogin")
+		    		redirect(action: "expenseApprovalRequest")
 	    	    }
 	    		
 	    	}
@@ -781,6 +814,7 @@ class ExpenseRequestEntryController {
 		double balanceAmnt
 		def totalpaid = grantExpenseInstance. expenseAmount
 		def expenseRequestEntryInstance = expenseRequestService.getExpenseRequestEntryByRequestCode(params.expenseRequestCode)
+		println"expenseRequestEntryInstance.expenseAmount"+expenseRequestEntryInstance.expenseAmount
 		def grantExpenseInstanceList = grantExpenseService.getGrantExpenseByRequestCode(params.expenseRequestCode)
 		if(grantExpenseInstanceList)
 		{
@@ -789,6 +823,8 @@ class ExpenseRequestEntryController {
 				totalpaid = totalpaid + grantExpenseInstanceList[i].expenseAmount
 			}
 		}
+    	
+    	
 		if(expenseTotal[0])
 		{
 			balanceAmnt= allocatedAmount- expenseTotal[0]

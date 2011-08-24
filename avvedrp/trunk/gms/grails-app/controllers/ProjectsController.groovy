@@ -64,7 +64,7 @@ class ProjectsController extends GmsController
 			
 		}
 		
-		[ 'grantAllocationWithprojectsInstanceList': grantAllocationWithprojectsInstanceList,'pIMapList':pIMapList,'grantAllocationWithprojectsTotal':total ]
+		[ 'grantAllocationWithprojectsInstanceList': grantAllocationWithprojectsInstanceList,'pIMapList':pIMapList,'grantAllocationWithprojectsTotal':total,offset:params.offset]
     }
 	
 	def inactiveProjectsList = 

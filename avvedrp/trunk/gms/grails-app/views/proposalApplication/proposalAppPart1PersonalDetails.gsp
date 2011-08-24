@@ -113,15 +113,30 @@
                                     <input type="text" size="45" id="City" name="City_6" />
                                 </td>
                             </tr>
+                            
                             <tr class="prop">
                                 <td valign="top" class="prname">
                                     <label for="code"><g:message code="default.State.label"/>:</label>
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <input type="text" size="45" id="State" name="State_7" />
+                                    <g:select from= "${['Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chattisgarh','Goa','Gujarat','Haryana','Himachal Pradesh','Jammu & Kashmir',
+                                    'Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Orissa','Punjab','Rajasthan','Sikkim','Tamil Nadu',
+                                    'Tripura','Uttarakhand','Uttar Pradesh','West Bengal','','-UNION  TERRITORIES-','','Andaman & Nicobar','Chandigarh','Dadra and Nagar Haveli',
+                                    'Daman & Diu','Delhi','Lakshadweep','Puducherry']}" id="State" name="State_7" noSelection="['null':'-Select-']" />
                                 </td>
                             </tr>
+                            
+                           <tr class="prop">
+                                <td valign="top" class="prname">
+                                    <label for="code"><g:message code="default.ZipCode.label"/>:</label>
+                                    <label for="name" class="mandatory"> * </label>
+                                </td>
+                                <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'zipCode','errors')}">
+                                    <input type="text" size="35" id="ZipCode" name="ZipCode_15" />
+                                </td>
+                            </tr>
+                            
                             <tr class="prop">
                                 <td valign="top" class="prname">
                                     <label for="code"><g:message code="default.STD.label"/>-<g:message code="default.Phone.label"/>:</label>

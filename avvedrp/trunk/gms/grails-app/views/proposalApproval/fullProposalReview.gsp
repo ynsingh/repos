@@ -27,18 +27,15 @@
                            
                        </thead>
                       <tbody>
-               <g:each in="${ProposalApprovalValueInstance}" status="i" var="proposalApprovalInstance">
+                        <% int j=0 %>
+                    <g:each in="${ProposalApprovalValueInstance}" status="i" var="proposalApprovalInstance">
                       <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                      <td>${i+1}</td>
-                   
-                   
-                        <%def proposalInstance = FullProposal.get(proposalApprovalInstance.proposalApproval.proposalApprovalAuthorityMap.proposalId)%>
-                       <td>${fieldValue(bean: proposalInstance.preProposal, field: "projectTitle")}</td>
-                        <td>${fieldValue(bean: proposalApprovalInstance, field: "proposalStatus")}</td>
-                        <td>${fieldValue(bean: proposalApprovalInstance, field: "remarks")}</td>
-                      
-                      
-                      </tr>
+                       <td>${i+1}</td>
+	                      <td>${proposalApplicationInstanceList[j]?.projectTitle}</td>
+	                      <%  j++ %>
+	                      <td>${fieldValue(bean: proposalApprovalInstance, field: "proposalStatus")}</td>
+	                      <td>${fieldValue(bean: proposalApprovalInstance, field: "remarks")}</td>
+	                   </tr>
                       </g:each>
                 
                       </tbody>

@@ -532,9 +532,14 @@ class GrantAllocationService {
 			 def grantAllocationInstance=GrantAllocation.executeQuery("select SUM(GA.amountAllocated) from GrantAllocation GA where GA.projects.id="+projectId+" group by GA.projects.id");
 			 return grantAllocationInstance
 		}
-	
-	
-	
+	 /*
+	  * method to get all grant allocation of a project
+	  */
+		public List getAllGrantAllocationOfProject(def projectsId)
+		{
+		def grantAllocationInstance = GrantAllocation.findAll("from GrantAllocation GA where GA.projects="+projectsId)
+		return grantAllocationInstance
+		}
 	
 	
 	

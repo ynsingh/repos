@@ -27,15 +27,13 @@
 					 <g:select optionKey="id" optionValue="authority" from="${authorityInstanceList}" name="authority" value="${rolePrivilegesInstance?.role?.id}" noSelection="['null':'-Select-']"></g:select>
 				</td>
 			</tr>
-
-			
+						
 		</tbody>
 		</table>
 		</div>
-
-		<div class="buttons">
-			<span class="button"><input class="save" type="submit" value="${message(code: 'default.Create.button')}" onClick="return validateRolePrivilege()"/></span>
-		</div>
+        	<div class="buttons">
+				<span class="button"><input class="save" type="submit" value="${message(code: 'default.Create.button')}" onClick="return validateRolePrivilege()"/></span>
+			</div>
 		</g:form>
 	</div>
 	</div>

@@ -56,8 +56,11 @@
 					                <g:renderErrors bean="${grantAllocationInstance}" as="list" />
 					            </div>
 				            </g:hasErrors>
+				           
+				           
 				            <g:form action="subGrantSave" method="post" >
 				                <div class="dialog">
+				                 <input type="hidden" id="balance" name="balance" value="${grantAllocationInstance.balanceAmount}"/>
 				                <g:hiddenField name="parentProjectStartDate" 
 	    							value="${fieldValue(bean:projectInstance, field:'parent.projectStartDate')}"/>
 	   						 	<g:hiddenField name="parentProjectEndDate" 

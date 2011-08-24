@@ -7,8 +7,11 @@
     <body>
     <div class="wrapper">
     <g:subMenuList/> 
-        <div class="tablewrapper">
+        <div class="proptable">
         	<div class="body">
+        	<table class="tablewrapper" cellspacing="0" cellpadding="0">
+        	<tr>
+        	<td>
             	<h1><g:message code="default.CreateUtilization.head"/></h1>
             	<g:if test="${flash.message}">
             		<div class="message">${flash.message}</div>
@@ -18,8 +21,9 @@
                 		<g:renderErrors bean="${utilizationInstance}" as="list" />
             		</div>
             	</g:hasErrors>
-             	<g:form action="save" method="post" controller="utilization" 
-             		id="${fieldValue(bean:projectInstance, field:'id')}">
+             	<g:form action="save" method="post" controller="utilization" name="viewStatementOfAccounts"
+             	    id="${fieldValue(bean:projectInstance, field:'id')}">
+             		
               		<div class="dialog">
                     	<table>
                         	<tbody>
@@ -61,25 +65,18 @@
                                     <calendar:datePicker name="endDate" value="${utilizationInstance?.endDate}" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
                                 </td>
                             </tr>
-                        		<div>    
-		                        <tr class="prop">
-	                                <td valign="top" class="name">
-	                                	<label><g:message code="default.Documents.label"/>:</label>
-		                        	</td>
-		                        	<td>
-		                        		<g:link  controller='grantAllocation' action="reportView"  id="${projectInstance.id}">
-		                        			<g:message code="default.View.label"/>
-	                        			</g:link>
-		                        	</td>
-								 </tr>  
-					    	</div>                           
+                        		                      
                         </tbody>
                     </table>
                 </div>
+              
                 <div>
                 	<input type="hidden" name="projects.id" value="${projectInstance.id}" />
-                    <g:actionSubmit class="inputbutton" value="${message(code: 'default.Submit.button')}" action="save"/>
-                </div>
+                	<g:actionSubmit class="inputbutton" action="showReports"  value="${message(code: 'default.StatementOfAccounts.button')}" onclick="return validateReportViewConfirmPrint();"/>
+             	    <g:actionSubmit class="inputbutton" action="utilizationCertificate" value="${message(code: 'default.UtilizationCertificate.button')}" onclick="return validateReportViewConfirmPrint();"/>
+                    <g:actionSubmit class="inputbutton" value="${message(code: 'default.Submit.button')}" action="save" onclick="return validateSubmitReportConfirmPrint();"/>
+               
+              
             </g:form>
            </div>
           
@@ -134,6 +131,9 @@
 	            </g:else>
         	</div>
         </div>
+           </td>
+          </tr> 
+         </table>
        </div>
     </body>
 </html>

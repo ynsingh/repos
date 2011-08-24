@@ -28,7 +28,8 @@
                         <tbody>
                              <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="notification"><g:message code="default.notification.label" default="Notification" /></label>
+                                    <label for="notification"><g:message code="default.notification.label" default="Notification" />:</label>
+                                    <label for="notification" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: evalItemNotificationMapInstance, field: 'notification', 'errors')}">
                                     <g:select name="notification.id" from="${notificationInstance}" optionKey="id" optionValue="notificationTitle" value="${evalItemNotificationMapInstance?.notification?.id}" 
@@ -71,8 +72,8 @@
       		<td width="13%">
       		<table>
       		<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>
-      			<g:submitToRemote class="addbutton" action="save" value="	    	     " update="[success:'evalItemSel',failure:'error']" before="if(!validateEvalItemNotificationMap(document.evalItemNotification['notification.id'],document.evalItemNotification['evalItem.id'],'You did not check a box. Please check a box.')) return false" />
-                <g:submitToRemote class="removebutton" action="delete" value="           " update="[success:'evalItemSel',failure:'error']" before="if(!validateEvalItemNotificationMap(document.evalItemNotification['notification.id'],document.evalItemNotification['evalItemNotificationMap.id'],'You did not check a box. Please check a box.')) return false"/>
+      			<g:submitToRemote class="addbutton" action="save" value="	    	     " update="[success:'evalItemSel',failure:'error']" before="if(!validateEvalItemNotificationMap(document.evalItemNotification['notification.id'],'Please Select a Notification',document.evalItemNotification['evalItem.id'],'You did not check a box. Please check a box.')) return false" />
+                <g:submitToRemote class="removebutton" action="delete" value="           " update="[success:'evalItemSel',failure:'error']" before="if(!validateEvalItemNotificationMap(document.evalItemNotification['notification.id'],'Please Select a Notification',document.evalItemNotification['evalItemNotificationMap.id'],'You did not check a box. Please check a box.')) return false"/>
                </td></tr></table>
                 </td>
                 </td><td width="45%">
@@ -86,8 +87,8 @@
 						</table>
 						<div style="overflow: auto;height: 260px;border-width:5px;border-style:solid;border-width:thin;border-color:#FFFFFF">
   						<table style="width: 100%;" cellpadding="0" cellspacing="0">
-							    <g:each in="${evalItemNotificationMapInstance}" status="i" var="evalItemNotificationMapInstance">
-								  <input type="hidden" name="evalItemNotificationMap.id" id="evalItemNotificationMap.id"/>
+							      <g:each in="${evalItemNotificationMapInstance}" status="i" var="evalItemNotificationMapInstance">
+								    <input type="hidden" name="evalItemNotificationMap.id" id="evalItemNotificationMap.id"/>
 								  </g:each>
 						</table>
 					</div></div>	

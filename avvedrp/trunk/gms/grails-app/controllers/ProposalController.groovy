@@ -2,6 +2,8 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 import grails.converters.JSON
 import java.util.Date
 import grails.util.GrailsUtil
+import java.util.*
+import java.text.*
 import java.text.SimpleDateFormat
 import org.apache.commons.validator.EmailValidator
 import org.codehaus.groovy.grails.commons.GrailsApplication
@@ -28,6 +30,8 @@ class ProposalController {
     def projectsService
     def grantAllocationService 
     def projectTypeService
+    def grantAllocationSplitService
+    
     
     def list = 
     {
@@ -456,6 +460,7 @@ class ProposalController {
 	        {
 	        	proposalInstance.properties = params
 	            proposalInstance.lockedYN='N'
+	            proposalInstance.proposalStatus = "Submitted"
 	            def aprovalAuthorityDetailInstance = approvalAuthorityDetailService.getDefaultApprovalAuthorityDetailsByParty(proposalInstance.notification.party.id)
 	            def proposalInstanceSave =proposalService.updateProposal(proposalInstance)
 	            /*methhod to get all submitted proposal of the notification*/
@@ -721,12 +726,18 @@ class ProposalController {
             def proposalInstance = proposalService.getProposalById(params.id)
             def notificationAward =proposalService.getAwardListByProposalNotificationId(proposalInstance.notification.id)
             def parentId = notificationAward[0]?.projects?.parentId	
+            		def attachmentTypeList = attachmentsService.getattachmentTypesByDocType('Project')
             if(parentId)
             {
             projectsInstance =projectsService.getActiveProjectById(parentId)
 	            grantAllocationInstance = GrantAllocation.executeQuery("select SUM(GA.amountAllocated) from GrantAllocation GA where GA.projects.id="+parentId+" group by GA.projects.id")
 	            subProjectGrantAllocationInstance = GrantAllocation.executeQuery("select SUM(GA.amountAllocated) from GrantAllocation GA where GA.projects.parent.id="+parentId+" group by GA.projects.parent.id")
 	            data = Double.valueOf(grantAllocationInstance[0]) - Double.valueOf(subProjectGrantAllocationInstance[0])
+	            println"data"+data
+	            ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+	        	NumberFormat formatter = new DecimalFormat("#0.00");
+	        	
+	            ['proposalTitle':proposalApplicationExtProjectInstance.value,'proposalApplicationInstance':proposalApplicationInstance,'projectTypeInstance':projectTypeInstance,'attachmentTypeList':attachmentTypeList,'projectInstance':projectsInstance, 'notificationAmount':value,'currencyFormat':currencyFormatter,'balanceAmountValue':formatter.format(data)]
             }	
             else
             {
@@ -734,10 +745,11 @@ class ProposalController {
             	notificationAmountInstance = Notification.executeQuery("select amount from Notification N where N.id = "+proposalForNotificationInstance.notification.id)
             	println"notificationAmountInstance------------------>"+notificationAmountInstance[0]
             	value = notificationAmountInstance[0]
+               ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+        	   NumberFormat formatter = new DecimalFormat("#0.00");
+        	
+            ['proposalTitle':proposalApplicationExtProjectInstance.value,'proposalApplicationInstance':proposalApplicationInstance,'projectTypeInstance':projectTypeInstance,'attachmentTypeList':attachmentTypeList,'projectInstance':projectsInstance, 'notificationAmount':value,'currencyFormat':currencyFormatter]
             }
-            def attachmentTypeList = attachmentsService.getattachmentTypesByDocType('Project')
-    		
-            [proposalTitle:proposalApplicationExtProjectInstance.value,proposalApplicationInstance:proposalApplicationInstance,projectTypeInstance:projectTypeInstance,attachmentTypeList:attachmentTypeList,projectInstance:projectsInstance, notificationAmount:value,balanceAmountValue:data]
     }
     /*
      * method used to save and award a project 
@@ -964,8 +976,8 @@ class ProposalController {
     	    		//send confirmation mail
     	    		def emailId = notificationsEmailsService.sendMessage(personInstance.email,mailMessage,"text/plain")
     	    	}
-    	        flash.message = "${message(code: 'default.created.label')}"
-    	        redirect(action:'proposalList',id:proposalInstance.notification.id)
+    	        
+    	        redirect(action:'projectFundAllocation',id:projectsInstance.id)
      		}
      	    	else
      	    	{
@@ -975,10 +987,110 @@ class ProposalController {
      	    }
      		else
      		{
-     			redirect(action:'proposalList',id:proposalInstance.notification.id)
+     			redirect(action:'proposalList',projectsInstance:projectsInstance)
      		}
     		
 	    	
+    }
+    /*
+     * method to allocate fund for awarded project
+     */
+     def projectFundAllocation={
+    		 println"params------"+params
+    		 double balanceAmount
+    		 def projectsInstance = Projects.get(params.id)
+    		 def grantAllocationInstanceList = grantAllocationService.getAllGrantAllocationOfProject(projectsInstance.id)
+    		 projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,grantAllocationInstanceList[0].party.id)
+    		 def allocatedAmount = grantAllocationSplitService.getAllocatedAmountByProjectId(projectsInstance.id)
+    		 if(allocatedAmount[0])
+    		 {
+    			 println"ddddddddddddddd"
+    			 balanceAmount = projectsInstance.totAllAmount - new Double(allocatedAmount[0])
+    		 }
+    		 else
+    		 {
+    			 println"kkkkkkkkkkkkkk"
+    			balanceAmount = projectsInstance.totAllAmount
+    		 }
+    		 println"balanceAmount"+balanceAmount
+    		 def accountHeadList = grantAllocationSplitService.getAccountHeadByNameandCode(projectsInstance.id)
+    		 def grantAllocationSplitInstance=new GrantAllocationSplit()
+    		 grantAllocationSplitInstance.projects=projectsInstance
+    		 ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+      	   NumberFormat formatter = new DecimalFormat("#0.00");
+    		  [grantAllocationSplitInstance:grantAllocationSplitInstance,
+    		  projectsInstance:projectsInstance,
+    		  grantAllocationInstanceList:grantAllocationInstanceList,
+    		  grantAllocationInstance:grantAllocationInstanceList[0],accountHeadList:accountHeadList,'balanceAmount':balanceAmount,'currencyFormat':currencyFormatter,'amount':formatter.format(grantAllocationSplitInstance.amount)]
+     }
+    /*
+     * method to save fund allocation
+     */
+     def saveProjectFundAllocation=
+     {
+    		 println"params..........."+params
+    		 double balanceAmount
+    		 def grantAllocationSplitInstance = new GrantAllocationSplit(params)
+    		 def grantAllocationInstance = grantAllocationService.getGrantAllocationByProjects(params.projectId)
+    	        if(!grantAllocationSplitInstance.hasErrors() ) {
+    	            grantAllocationSplitInstance.createdBy="admin"
+    	        	grantAllocationSplitInstance.modifiedBy="admin"
+    	        	grantAllocationSplitInstance.modifiedBy="admin"
+    	        	grantAllocationSplitInstance.createdDate=new Date()
+    	            grantAllocationSplitInstance.grantAllocation = grantAllocationInstance
+    	            def projectsInstance = Projects.get(params.projectId)
+    	    		 def grantAllocationInstanceList = grantAllocationService.getAllGrantAllocationOfProject(projectsInstance.id)
+    	    		 projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,grantAllocationInstanceList[0].party.id)
+    	    		 def allocatedAmount = grantAllocationSplitService.getAllocatedAmountByProjectId(projectsInstance.id)
+    	    		 if(allocatedAmount[0])
+    		 {
+    			 balanceAmount = projectsInstance.totAllAmount - new Double(allocatedAmount[0])
+    		 }
+    		 else
+    		 {
+    			 balanceAmount = projectsInstance.totAllAmount
+    		 }
+    	            if(grantAllocationSplitInstance.amount > balanceAmount)
+    	            {
+    	            	flash.message = "${message(code: 'default.allocationAmount.label')}"
+    	        			redirect(action:"projectFundAllocation",id:params.projectId)
+    	            }
+    	            else
+    	            {
+    	            	println"jjjjjjjjjjjjj"
+    	            if((!params.subAccountHead) && (params.subAccountHead == "null") )
+    	        	{
+    	            	 grantAllocationSplitInstance.accountHead = AccountHeads.get(new Integer(params.accountHead.id))
+    	        	}
+    	        	if((params.subAccountHead != "null") && (params.subAccountHead))
+    	        	{
+    	        		grantAllocationSplitInstance.accountHead = AccountHeads.get(new Integer(params.subAccountHead))
+    	        		
+    	        	}
+    	        	def grantAllocationSplitInstanceCheck =grantAllocationSplitService.validateGrantAllocationSplit(grantAllocationSplitInstance,params.projectId)
+    	        	if(grantAllocationSplitInstanceCheck)
+    	        	{
+    	        		flash.message = "${message(code: 'default.GrantcannotAllocatedHeads.label')}"
+    	        			redirect(action:"projectFundAllocation",id:params.projectId)
+    	        	}
+    	        	else
+    	        	{
+    	        		println"dgdfgdf"
+    	        	grantAllocationSplitInstance =grantAllocationSplitService.saveGrantAllocationSplit(grantAllocationSplitInstance,new Integer(params.projectId)) 
+    	        	println"grantAllocationSplitInstance"+grantAllocationSplitInstance
+    	            flash.message = "${message(code: 'default.GrantAllocated.label')}"
+    	            	  redirect(action:"projectFundAllocation",id:params.projectId)
+    	        }
+    	        }
+    	        }
+    	        else {
+    	            render(view:'projectFundAllocation',model:[grantAllocationSplitInstance:grantAllocationSplitInstance])
+    	        }
+    	        
+     }
+    def cancel=
+    {
+    		 redirect(action:"list",controller:"notification")	 
     }
     /*
      * method to view awarded proposal 
@@ -1177,7 +1289,7 @@ class ProposalController {
         	/*method to get proposal Title*/
         	def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(proposalInstance.id)
     		GrailsHttpSession gh=getSession()
-          gh.putValue("ProposalId",proposalInstance.id);
+            gh.putValue("ProposalId",proposalInstance.id);
             if (!proposalInstance) {
                 flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'preProposal.label', default: 'PreProposal'), params.id])}"
                 redirect(action: "preProposalList")
@@ -1210,13 +1322,9 @@ class ProposalController {
      */
     def preProposalUpdate =
     {
-    	
-    	println"params------------->"+params
-    	println"parseLong------------->"+Long.parseLong(params.id)
     	def proposalService = new ProposalService()
     	def proposalInstance = proposalService.getPreProposalById(new Integer( params.id ))
-    	println"proposalInstance------------->"+proposalInstance		      
-    	 if (proposalInstance) 
+    	if (proposalInstance) 
     	  {
    	   if (params.version)
     		 {
@@ -1229,7 +1337,6 @@ class ProposalController {
     			  }
     		}
            	 def chkPreProposalInstance = proposalService.checkDuplicatePreProposal(params)
-	              println"chkPreProposalInstance"+chkPreProposalInstance.proposal.id
 	           if(chkPreProposalInstance&&(chkPreProposalInstance.proposal.id!= Long.parseLong(params.id)))
 	           {
 			        flash.message ="${message(code: 'default.AlreadyExists.label')}"
@@ -1242,10 +1349,9 @@ class ProposalController {
     			 if( proposalInstance.saveMode.equals( "Updated")) 
     			  {
     		   		 def proposalApplicationInstance = proposalService.getProposalApplicationByProposalId(proposalInstance.id)
-    	    		 println"-------proposalApplicationInstance-----"+proposalApplicationInstance
-    				 proposalApplicationInstance.projectTitle=params.projectTitle
+    	    		 proposalApplicationInstance.projectTitle=params.projectTitle
     				 proposalApplicationInstance.save()
-    			    flash.message = "${message(code: 'default.updated.message', args: [message(code: 'preProposal.label', default: 'PreProposal'), proposalInstance.id])}"
+    			     flash.message = "${message(code: 'default.updated.message', args: [message(code: 'preProposal.label', default: 'PreProposal'), proposalInstance.id])}"
     			     redirect(action: "preProposalApplication", id: proposalInstance.id)
     		      }
     			   else 
@@ -1445,11 +1551,8 @@ class ProposalController {
      * Method to Update Full Proposal
      */
     def fullProposalUpdate = {
-        	
-  		   println"params------------->"+params
             def fullProposalInstance = Proposal.get(params.id)
-      	    
-  		    String fileName
+      	    String fileName
  		    def attachmentsName='FullProposalForm'
 			def gmsSettingsService = new GmsSettingsService()
 			def gmsSettingsInstance = gmsSettingsService.getGmsSettings(attachmentsName)
@@ -1601,6 +1704,70 @@ class ProposalController {
 		['fullProposalInstance':fullProposalInstance,'authorityInstance':authorityInstance,'currentApprovalAuthority':currentApprovalAuthority,'proposalDetailInstance':proposalDetailInstance,'proposalApprovalStatus':proposalApprovalStatus,'proposalApprovalDetailInstanceList':proposalApprovalDetailInstanceList,'currentApprovalAuthorityMembers':currentApprovalAuthorityMembers]
 	}
     
-    
+    def preProposalApprovalDetails =
+    {
+    	def preProposalInstance = PreProposal.get(params.id)
+    	def preProposalInstanceList =  PreProposal.list(params)
+    	return['preProposalInstance':preProposalInstance,'preProposalInstanceList':preProposalInstanceList]
+}
+def uploadProposalForm =
+{
+	
+}
+def saveUploadedProposalForm =
+{
+	//def proposalApplicationPath = proposalSettingsService.getProposalSettingsValue("ProposalApplicationPath")
+	//def proposalApplicationForm = proposalSettingsService.getProposalSettings("ProposalForm")
+	 def proposalApplicationForm = gmsSettingsService.getGmsSettings("ProposalForm")
+    def proposalApplicationPath = gmsSettingsService.getGmsSettingsValue("ProposalApplicationPath")
+	def proposalSettingsInstance = new GmsSettings()     	
+     def webRootDir
+     if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
+     {
+     	webRootDir = proposalApplicationPath
+     }
+     if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT)) 
+     {
+     	webRootDir = proposalApplicationPath
+     }
+     	def downloadedfile = request.getFile("attachmentPath");
+     if(!downloadedfile.empty) {
+     	//String fileName=downloadedfile.getOriginalFilename()
+     	String fileName=downloadedfile.getOriginalFilename().toString().substring(0,downloadedfile.getOriginalFilename().toString().indexOf("."))
+     	if((fileName.lastIndexOf(".EXE")==-1)&&(fileName.lastIndexOf(".exe")==-1))
+			{
+     		new File( webRootDir ).mkdirs()
+        	downloadedfile.transferTo( new File( webRootDir + File.separatorChar + fileName+".gsp") )
+     		
+     		proposalSettingsInstance.name="ProposalForm"
+     		proposalSettingsInstance.value=fileName+".gsp"
+     		proposalSettingsInstance.activeYesNo='Y'
+     		if (proposalSettingsInstance.save(flush: true)) {
+     			if(proposalApplicationForm)
+     			{
+     			proposalApplicationForm.activeYesNo='N'
+     			proposalApplicationForm.save()
+     			}
+                 flash.message = "File uploaded successfully"
+                 
+             }
+             else {
+             	println "error ="
+             	//redirect(action: "create", id: attachmentsInstance.domainId)//, model: [attachmentsInstance: attachmentsInstance])
+             }
+			}
+     	else 
+         {
+         	flash.message = "Cannot upload a .exe file"	
+         	
+         }
+     }
+     else {
+         flash.message = "file cannot be empty"
+         
+      }
+     redirect(action: "uploadProposalForm")
+}
+
     
 }

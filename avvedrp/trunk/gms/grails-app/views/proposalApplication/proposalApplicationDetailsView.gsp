@@ -122,6 +122,20 @@
                                     </label>
                                 </td>
                             </tr>
+                            
+                             <tr class="prop">
+                                <td valign="top" style="width:200px;" class="prname">
+                                    <label for="name"><g:message code="default.ZipCode.label"/>:</label>
+                                </td>
+                                <td valign="top" class="prvalue ${hasErrors(proposalApplicationInstance,field:'zipCode','errors')}">
+                                
+                                    <label for="name">
+                                     ${proposalApplicationInstance?.zipCode}
+                                    
+                                    </label>
+                                </td>
+                            </tr>
+                            
                             <tr class="prop">
                                 <td valign="top" style="width:200px;" class="prname">
                                     <label for="name"><g:message code="default.Phone.label"/>:</label>
@@ -172,7 +186,7 @@
                             </tr>
                             <tr class="prop">
                                 <td valign="top" style="width:200px;" class="prname">
-                                    <label for="name"><g:message code="default.ProjectCategory.label"/>:</label>
+                                    <label for="name"><g:message code="default.ProposalCategory.label"/>:</label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(proposalApplicationInstance,field:'proposalCategory.name','errors')}">
                                 

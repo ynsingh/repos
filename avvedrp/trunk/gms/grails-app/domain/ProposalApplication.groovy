@@ -18,6 +18,8 @@ class ProposalApplication {
     String mobile;
     ProposalCategory proposalCategory;
     String projectTitle;
+    
+    String zipCode;
 static constraints={
 	
 					controllerId(nullable:true)
@@ -37,6 +39,8 @@ static constraints={
 					mobile(nullable:true)
 					proposalCategory(nullable:true)
 					projectTitle(nullable:true)
+					
+					zipCode(nullable:true)
  }
 	boolean saveAll
 	char award

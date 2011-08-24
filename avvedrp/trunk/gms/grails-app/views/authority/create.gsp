@@ -4,8 +4,15 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'authority.label', default: 'Authority')}" />
         <title><g:message code="default.Role.CreateRole.head"/></title>
+        <g:javascript library="jquery" />
    </head>
     <body>
+    	<div class="wrapper">
+			<div id="spinner" class="spinner" style="display:none;">
+	            <img src="${createLinkTo(dir:'images',file:'spinner.gif')}" alt="Spinner" />
+	        </div>	
+       <div id="messageBox">
+	   </div>
      <div class="wrapper">
        <table class="tablewrapper"> 
         <tr>
@@ -51,7 +58,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:submitButton name="create" class="save" value="${message(code: 'default.Create.button')}" onClick="return validateAuthority();"/></span>
+                    <span class="button"><g:submitButton name="create" class="save" value="${message(code: 'default.Create.button')}" onClick="return combineAlertAndValidateAuthority();"/></span>
                 </div>
             </g:form>
            </div>
@@ -85,7 +92,7 @@
                             
                             <td>${fieldValue(bean: authorityInstance, field: "description")}</td>
                             
-                            <g:if test="${(authorityInstance.authority != 'ROLE_STAFF') && (authorityInstance.authority != 'ROLE_SITEADMIN') && (authorityInstance.authority != 'ROLE_PI') && (authorityInstance.authority != 'ROLE_PROPOSALADMIN') && (authorityInstance.authority != 'ROLE_REVIEWER') && (authorityInstance.authority != 'ROLE_USER') && (authorityInstance.authority != 'ROLE_FINANCE')}">
+                            <g:if test="${(authorityInstance.authority != 'ROLE_STAFF') && (authorityInstance.authority != 'ROLE_SITEADMIN') && (authorityInstance.authority != 'ROLE_PI') && (authorityInstance.authority != 'ROLE_PROPOSALADMIN') && (authorityInstance.authority != 'ROLE_REVIEWER') && (authorityInstance.authority != 'ROLE_USER') && (authorityInstance.authority != 'ROLE_FINANCE') && (authorityInstance.authority != 'ROLE_SUPERADMIN')}">
                             
                         	<td><g:link action="edit" id="${authorityInstance.id}"><g:message code="default.Edit.label"/></g:link></td>
                         	</g:if>

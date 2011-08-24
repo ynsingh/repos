@@ -34,12 +34,8 @@ class ProposalApprovalAuthorityMapService {
     public def checkDuplicateProposalApprovalAuthorityMap(def proposalApplicationInstance,def params)
    
    {   
-	   println"proposalApplicationInstance++++"+proposalApplicationInstance
-	                                              
-   	 def proposalApprovalAuthorityMapData = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.proposalId="+proposalApplicationInstance.proposal.id+" and PAM.proposalType='"+params.proposalType+"' and PAM.approvalAuthority="+params.approvalAuthority.id)
-	    
-   	 println"proposalApprovalAuthorityMapData---------------"+proposalApprovalAuthorityMapData
-   	 return proposalApprovalAuthorityMapData
+		 def proposalApprovalAuthorityMapData = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.proposalId="+proposalApplicationInstance.proposal.id+" and PAM.proposalType='"+params.proposalType+"' and PAM.approvalAuthority="+params.approvalAuthority.id)
+		 return proposalApprovalAuthorityMapData
    }
    
     /*
@@ -255,9 +251,9 @@ class ProposalApprovalAuthorityMapService {
        /*
         * method to get proposal approval authority map by user id and type
         */
-        public getProposalAppAuthorityMapByReviewer(def userId,def params)
+        public getProposalAppAuthorityMapByReviewer(def userId)
         {
-        	def proposalApprovalAuthorityMapInstanceList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.proposalType = '"+params.ProposalType+"' and PAM.approvalAuthority in (select AD.approvalAuthority from ApprovalAuthorityDetail AD where AD.activeYesNo = 'Y' and AD.person.id="+userId+")")
+        	def proposalApprovalAuthorityMapInstanceList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.proposalType = 'PreProposal' and PAM.approvalAuthority in (select AD.approvalAuthority from ApprovalAuthorityDetail AD where AD.activeYesNo = 'Y' and AD.person.id="+userId+")")
         	return proposalApprovalAuthorityMapInstanceList
         }
    	

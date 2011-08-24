@@ -13,20 +13,20 @@ class ProposalApprovalController {
 
     def list = {
     	GrailsHttpSession gh=getSession()
-      	def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalAppAuthorityMapByReviewer(gh.getValue("UserId"),params)
+    	
+    	def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByReviewer(gh.getValue("UserId"),'PreProposal')
     	//def proposalApprovalInstanceNewList = proposalApprovalService.getProposalApprovalList(proposalApprovalAuthorityMapInstance)
-    	 def preProposalApprovalInstanceList=[]
+    	def preProposalApprovalInstanceList=[]
     	def proposalApprovalAuthorityMapInstanceList=[]
     	def proposalApplicationList=[]
     	def proposalApplicationValue
     	for(proposalApprovalValue in proposalApprovalAuthorityMapInstance)
         {
-        	def preProposalValue=proposalService.getSubmittedPreProposalByIdAndType(proposalApprovalValue.proposalId,params)
+        	def preProposalValue=proposalService.getSubmittedPreProposalById(proposalApprovalValue.proposalId)
         	if(preProposalValue != null)
         	{
-        		 /*Method to get Proposal Application By proposal Id*/
-    		     proposalApplicationValue = proposalService.getProposalApplicationByProposalId(preProposalValue.id)
-    		    }
+        		proposalApplicationValue = proposalService.getProposalApplicationByProposalId(preProposalValue.id)
+        	}
         	def preProposalApprovalLevel
         	if(preProposalValue == null)
         	{
@@ -53,37 +53,39 @@ class ProposalApprovalController {
         		preProposalApprovalInstanceList << preProposalValue
         		proposalApprovalAuthorityMapInstanceList << proposalApprovalValue
         		proposalApplicationList << proposalApplicationValue
+            	
         	}
         	}
         }
     	params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [preProposalInstanceList: preProposalApprovalInstanceList, proposalApprovalInstanceTotal: ProposalApproval.count(),proposalApprovalAuthorityMapInstanceList:proposalApprovalAuthorityMapInstanceList,proposalApplicationList:proposalApplicationList,proposalType:params.ProposalType]
+        [preProposalInstanceList: preProposalApprovalInstanceList, proposalApprovalInstanceTotal: ProposalApproval.count(),proposalApprovalAuthorityMapInstanceList:proposalApprovalAuthorityMapInstanceList,proposalApplicationList:proposalApplicationList]
     }
-   /* def fullProposalList = 
+  def fullProposalList = 
     {
     	GrailsHttpSession gh=getSession()
     	
     	def proposalApplicationInstance 
     	def proposalApplicationInstanceList = []
+    	def proposalApplicationList=[]
+    	def proposalApplicationValue
     	def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByReviewer(gh.getValue("UserId"),'FullProposal')
-    	println"proposalApprovalAuthorityMapInstance------------------>"+proposalApprovalAuthorityMapInstance
-    	for(int i=0;i<proposalApprovalAuthorityMapInstance.size();i++)
-    	{
-    		proposalApplicationInstance = ProposalApplication.find("from ProposalApplication PA where PA.proposal.id = "+proposalApprovalAuthorityMapInstance[i].proposalId)
+    	/*for(int i=0;i<proposalApprovalAuthorityMapInstance.size();i++)
+    	 {
+    		proposalApplicationInstance = proposalService.getProposalApplicationByProposalId(proposalApprovalAuthorityMapInstance[i].proposalId)
     		if(proposalApplicationInstance)
     		proposalApplicationInstanceList.add(proposalApplicationInstance)
-    	}
-    	println"proposalApplicationInstanceList------------------>"+proposalApplicationInstanceList
+    	}*/
     	//def proposalApprovalInstanceNewList = proposalApprovalService.getProposalApprovalList(proposalApprovalAuthorityMapInstance)
     	 def fullProposalApprovalInstanceList=[]
     	def proposalApprovalAuthorityMapInstanceList=[]
     	for(proposalApprovalValue in proposalApprovalAuthorityMapInstance)
         {
-        	
-    		println"proposalApprovalValue.proposalId------------------>"+proposalApprovalValue.proposalId
-    		def fullProposalValue=Proposal.find("from Proposal P where P.proposalStatus='Submitted' and P.id="+proposalApprovalValue.proposalId)
-        	println"fullProposalValue---------------->"+fullProposalValue
-        	def fullProposalApprovalLevel
+    		def fullProposalValue=proposalService.getSubmittedFullProposalById(proposalApprovalValue.proposalId)
+    		if(fullProposalValue != null)
+        	{
+        		proposalApplicationValue = proposalService.getProposalApplicationByProposalId(fullProposalValue.id)
+        		}	
+    		def fullProposalApprovalLevel
         	if(fullProposalValue == null)
         	{
         		fullProposalApprovalLevel = 0
@@ -101,21 +103,22 @@ class ProposalApprovalController {
         		proposalApprovalValue.viewAll='N'
         		fullProposalApprovalInstanceList << fullProposalValue
         		proposalApprovalAuthorityMapInstanceList << proposalApprovalValue
+        		proposalApplicationList << proposalApplicationValue
         	}
         	else if(proposalApprovalValue.approvalAuthority.viewAll=='Y')
         	{
         		proposalApprovalValue.viewAll='Y'
         		fullProposalApprovalInstanceList << fullProposalValue
         		proposalApprovalAuthorityMapInstanceList << proposalApprovalValue
+        		proposalApplicationList << proposalApplicationValue
         	}
         	}
         }
-    	 println"fullProposalApprovalInstanceList---------------->"+fullProposalApprovalInstanceList
     	//def proposalApprovalInstanceNewList = proposalApprovalService.getFullProposalApprovalList(gh.getValue("UserId"))
     	params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [fullProposalApprovalInstanceList: fullProposalApprovalInstanceList, proposalApprovalInstanceTotal: ProposalApproval.count(),proposalApprovalAuthorityMapInstanceList:proposalApprovalAuthorityMapInstanceList,proposalApplicationInstanceList:proposalApplicationInstanceList]
+        [fullProposalApprovalInstanceList: fullProposalApprovalInstanceList, proposalApprovalInstanceTotal: ProposalApproval.count(),proposalApprovalAuthorityMapInstanceList:proposalApprovalAuthorityMapInstanceList,proposalApplicationList:proposalApplicationList]
     
-    } */
+    } 
 
     def create = {
         def proposalApprovalInstance = new ProposalApproval()
@@ -203,25 +206,35 @@ class ProposalApprovalController {
     }
     def reviewerStatus =
     {     
-      	GrailsHttpSession gh=getSession()
-    	def ProposalApprovalValueInstance
-    	def proposalApplicationInstance
-    	def proposalApplicationInstanceList=[]
-    	def proposalApprovalAuthorityMapInstance
     	def proposalApprovalInstance = ProposalApproval.get(params.id)
-    	/*method to get proposal approval authority map by user id and type*/
-        proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalAppAuthorityMapByReviewer(gh.getValue("UserId"),params)
-         /* method to get proposal approval details by user id and proposal type*/
-    	ProposalApprovalValueInstance=proposalApprovalDetailService.getProposalApplDetailsByUserAndProposalType(gh.getValue("UserId"),params)
-    	println"ProposalApprovalValueInstance------------------->"+ProposalApprovalValueInstance
-    	for(int i=0;i<ProposalApprovalValueInstance.size();i++)
-	      {
+    	GrailsHttpSession gh=getSession()
+    	def proposalApplicationInstanceList=[]
+    	def proposalApplicationInstance
+    	def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByReviewer(gh.getValue("UserId"),'PreProposal')
+    	def ProposalApprovalValueInstance=proposalApprovalDetailService.getProposalApprovalDetailsByUserAndProposalType(gh.getValue("UserId"),'PreProposal')
+       	for(int i=0;i<ProposalApprovalValueInstance.size();i++)
+	    {
 		     proposalApplicationInstance = ProposalApplication.find("from ProposalApplication PA where PA.proposal.id="+ProposalApprovalValueInstance[i].proposalApproval.proposalApprovalAuthorityMap.proposalId)
-		       if(proposalApplicationInstance)
-		    	   proposalApplicationInstanceList.add(proposalApplicationInstance)
-	      }
-      	println"proposalApplicationInstanceList"+proposalApplicationInstanceList
-    	[proposalApprovalInstance:proposalApprovalInstance,ProposalApprovalValueInstance:ProposalApprovalValueInstance,proposalApplicationInstanceList:proposalApplicationInstanceList,proposalType:params.ProposalType]
+		     if(proposalApplicationInstance)
+		     proposalApplicationInstanceList.add(proposalApplicationInstance)
+	    }
+    	 [proposalApprovalInstance:proposalApprovalInstance,ProposalApprovalValueInstance:ProposalApprovalValueInstance,proposalApplicationInstanceList:proposalApplicationInstanceList]
+    	 
     }
- 
+    def fullProposalReview = {
+    	def proposalApprovalInstance = ProposalApproval.get(params.id)
+    	GrailsHttpSession gh=getSession()
+    	def proposalApplicationInstanceList=[]
+    	def proposalApplicationInstance
+    	def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByReviewer(gh.getValue("UserId"),'FullProposal')
+    	def ProposalApprovalValueInstance=proposalApprovalDetailService.getProposalApprovalDetailsByUserAndProposalType(gh.getValue("UserId"),'FullProposal')
+    	for(int i=0;i<ProposalApprovalValueInstance.size();i++)
+	    {
+		     proposalApplicationInstance = ProposalApplication.find("from ProposalApplication PA where PA.proposal.id="+ProposalApprovalValueInstance[i].proposalApproval.proposalApprovalAuthorityMap.proposalId)
+		     if(proposalApplicationInstance)
+		     proposalApplicationInstanceList.add(proposalApplicationInstance)
+	    }
+    	 [proposalApprovalInstance:proposalApprovalInstance,ProposalApprovalValueInstance:ProposalApprovalValueInstance,proposalApplicationInstanceList:proposalApplicationInstanceList]
+    	 
+    }
 }

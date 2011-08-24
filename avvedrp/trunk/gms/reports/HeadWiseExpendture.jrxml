@@ -6,9 +6,9 @@
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
-		 pageWidth="595"
+		 pageWidth="708"
 		 pageHeight="842"
-		 columnWidth="535"
+		 columnWidth="648"
 		 columnSpacing="0"
 		 leftMargin="30"
 		 rightMargin="30"
@@ -76,6 +76,12 @@ GROUP BY gs.id]]></queryString>
 	<variable name="TotalExpenditure" class="java.lang.Double" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[new Double($F{FundAmt}.doubleValue()+ $V{ExpAmt}.doubleValue())]]></variableExpression>
 	</variable>
+	<variable name="Balance" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Double(($F{BudjAmt}!=null?$F{BudjAmt}:new Double(0)).doubleValue()-($F{ExpAmt}!=null?$F{ExpAmt}:new Double(0)).doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="TotalBalance" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$V{Balance}]]></variableExpression>
+	</variable>
 
 		<group  name="total" >
 			<groupExpression><![CDATA[null]]></groupExpression>
@@ -112,7 +118,7 @@ GROUP BY gs.id]]></queryString>
 						mode="Opaque"
 						x="295"
 						y="28"
-						width="234"
+						width="350"
 						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -258,7 +264,7 @@ GROUP BY gs.id]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{RcdAmt}!=null?$F{RcdAmt}:new Double(0)]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="426"
@@ -279,6 +285,28 @@ GROUP BY gs.id]]></queryString>
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{ExpAmt}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="544"
+						y="37"
+						width="100"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TotalBalance}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
@@ -472,6 +500,28 @@ GROUP BY gs.id]]></queryString>
 					</textElement>
 				<text><![CDATA[Actual Expenses(Rs)]]></text>
 				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="541"
+						y="5"
+						width="98"
+						height="23"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-9"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Balance]]></text>
+				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
@@ -541,6 +591,28 @@ GROUP BY gs.id]]></queryString>
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{ExpAmt}!=null?$F{ExpAmt}:new Double(0)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="544"
+						y="3"
+						width="100"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{Balance}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

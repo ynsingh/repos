@@ -2,7 +2,9 @@ class SecurityFilters
 {
    def filters = 
    {
-       loginCheck(controller:'*', action:'*')
+      
+		   
+     loginCheck(controller:'*', action:'*')
        {
     	   try
     	   {
@@ -13,7 +15,7 @@ class SecurityFilters
     				   println "Role"+session.Role
     				   println "party"+session.Party
     				   println "controllerName"+controllerName
-    			   
+    			      
     				   if(!session.Party)
     				   {
     					   if(!"login".equals(controllerName)&& !"newUserCreate".equals(actionName)&& !"user".equals(controllerName)&& !"saveNewUser".equals(actionName)&& !"proposal".equals(controllerName)&& !"proposalApplication".equals(controllerName)&& !"attachments".equals(controllerName)&& !"notificationsAttachments".equals(controllerName)&& !"download".equals(actionName))
@@ -27,12 +29,24 @@ class SecurityFilters
     				   {
     				   }
     				   else
-    				   {      		  
-    					   if(session.Role != 'ROLE_SITEADMIN' )
+    				   {    
+    					    def userService = new UserService()
+     					    def userRoleList = userService.getUserRoleByUserId(session.UserId)
+							def roleLst= new ArrayList()
+							for(int i=0;i<userRoleList.size();i++)
+									roleLst << userRoleList[i]
+							
+    					    String roleIds="(";
+							for(int i=0;i<roleLst.size();i++)
+								roleIds=roleIds+roleLst[i].id+","
+								
+								roleIds=roleIds.substring(0,roleIds.length()-1)+")"
+    					   if(userRoleList[0].authority != 'ROLE_SITEADMIN' && userRoleList[0].authority != 'ROLE_SUPERADMIN' )
     					   {
+    						   
     						   if( !"gmsFrame".equals(actionName) && !"menu".equals(actionName)&& !"top".equals(actionName))
     						   {
-    							   def rolePrivilegesInstance = RolePrivileges.findAll("from RolePrivileges RP where RP.role.authority='"+session.Role+"' and RP.party.id="+session.Party+" and RP.controllerName='"+controllerName+"' and RP.actionName ='"+actionName+"'")  
+     							   def rolePrivilegesInstance = RolePrivileges.findAll("from RolePrivileges RP where RP.role.id in "+roleIds+" and RP.party.id="+session.Party+" and RP.controllerName='"+controllerName+"' and RP.actionName ='"+actionName+"'")  
     							   println "rolePrivilegesInstance"+rolePrivilegesInstance
     							   if(!rolePrivilegesInstance)
     							   {
@@ -41,7 +55,8 @@ class SecurityFilters
     								   return false;
     							   }
 						
-    						   }
+		    						   }
+    						  
     					   }
     				   }
 	    	   	}

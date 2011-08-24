@@ -26,7 +26,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="evalScale"><g:message code="default.evalScaleOptions.evalScale.label"/></label>
+                                    <label for="evalScale"><g:message code="default.evalScaleOptions.evalScale.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: evalScaleOptionsInstance, field: 'evalScale', 'errors')}">
                                     ${fieldValue(bean: evalScaleOptionsInstance, field: 'evalScale.scaleTitle')}
@@ -34,7 +34,8 @@
                                 </td>
                                 
                                 <td valign="top" class="name">
-                                    <label for="scaleOption"><g:message code="default.evalScaleOptions.scaleOption.label"/></label>
+                                    <label for="scaleOption"><g:message code="default.evalScaleOptions.scaleOption.label"/>:</label>
+                                    <label for="scaleOption" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: evalScaleOptionsInstance, field: 'scaleOption', 'errors')}">
                                     <g:textField name="scaleOption" value="${evalScaleOptionsInstance?.scaleOption}" />
@@ -43,7 +44,8 @@
                        
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="scaleOptionIndex"><g:message code="default.evalScaleOptions.scaleOptionIndex.label"/></label>
+                                    <label for="scaleOptionIndex"><g:message code="default.evalScaleOptions.scaleOptionIndex.label"/>:</label>
+                                    <label for="scaleOptionIndex" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: evalScaleOptionsInstance, field: 'scaleOptionIndex', 'errors')}">
                                     <g:textField name="scaleOptionIndex" value="${fieldValue(bean: evalScaleOptionsInstance, field: 'scaleOptionIndex')}" />

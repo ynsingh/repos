@@ -23,6 +23,9 @@
 				<div class="dialog">
 					<table>
 					<tbody>
+					 	<td>
+                         <input type="hidden" id="currentRoleId" name="currentRoleId" value="${authorityPersonInstance.id}"> 
+                        </td>    
 	
 						<tr class="prop">
 							<td valign="top" class="name">
@@ -52,20 +55,21 @@
 								<input type="text" id="userSurName" name="userSurName" value="${person.userSurName?.encodeAsHTML()}"/>
 							</td>
 						</tr>
-						<g:if test="${authorityPersonInstance.authority == 'ROLE_PI'}">
-						</g:if>
-						<g:else>
-						<tr class="prop">	
+					<g:if test="${personRoleInstance.authority == 'ROLE_SUPERADMIN'}">
+					    <tr class="prop">	
 							<td valign="top" class="name">
-							<label for="role"><g:message code="default.Role.label"/>:</label>
-							<label for="role" style="color:red;font-weight:bold"> * </label>
+							 <label for="password"><g:message code="default.Password.label"/>:</label>
 							</td>
-							<td> 
-							   <g:select optionKey="id" optionValue="authority" from= "${authorityInstance}" id="authorities" name="authorities" value="${authorityPersonInstance?.id}" ></g:select>
+							<td valign="top" class="value ${hasErrors(bean:person,field:'userSurName','errors')}">
+								<input type="password" id="Passwd" name="Passwd" />
 							</td>
 						</tr>
-						</g:else>	
-													
+					</g:if>
+							
+				<g:if test="${personRoleInstance.authority == 'ROLE_SUPERADMIN'}">	
+					<g:if test="${authorityPersonInstance.authority == 'ROLE_SUPERADMIN'}">
+					</g:if>
+					<g:else>
 						<tr class="prop">
 							<td valign="top" class="name">
 							<label for="enabled"><g:message code="default.Enabled.label"/>:</label>
@@ -74,7 +78,22 @@
 								<g:checkBox name="enabled" value="${person.enabled}"/>
 							</td>
 						</tr>
-	
+				    </g:else>
+				</g:if>	
+				<g:else>
+					<g:if test="${authorityPersonInstance.authority == 'ROLE_SITEADMIN'}">
+					</g:if>
+					<g:else>
+						<tr class="prop">
+							<td valign="top" class="name">
+							<label for="enabled"><g:message code="default.Enabled.label"/>:</label>
+							</td>
+							<td valign="top" class="value ${hasErrors(bean:person,field:'enabled','errors')}">
+								<g:checkBox name="enabled" value="${person.enabled}"/>
+							</td>
+						</tr>
+				    </g:else>
+				</g:else>
 						<tr class="prop">
 							<td valign="top" class="name"><label for="email"><g:message code="default.Email.label"/>:</label>
 							<label for="email" style="color:red;font-weight:bold"> * </label></td></td>

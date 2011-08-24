@@ -658,6 +658,10 @@ background: #fae7cf;
     background: transparent url(../images/skin/database_save.png) 5px 50% no-repeat;
     padding-left: 28px;
 }
+.buttons input.cancel {
+    background: transparent url(../images/skin/database_delete1.png) 5px 50% no-repeat;
+    padding-left: 28px;
+}
 .imgtextkey {
     background: transparent url(../images/themesky/key.gif) 5px 50% no-repeat;
     padding-left: 28px;

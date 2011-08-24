@@ -1,5 +1,7 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import grails.util.GrailsUtil
 import java.text.SimpleDateFormat
 import org.apache.commons.validator.EmailValidator
@@ -217,14 +219,15 @@ class ProposalService {
     		proposalApplicationInstance = new ProposalApplication()
     		Random randomNumber = new Random();
     		proposalApplicationInstance.proposal=proposalInstance
-    		proposalApplicationInstance.controllerId=proposalInstance.code+randomNumber.nextInt()
+    		proposalApplicationInstance.controllerId=generateControlId(params.FirstName_1,params.ProjectCategory_14)
     	}
- 		proposalApplicationInstance.applicationSubmitDate=new Date()
+    	proposalApplicationInstance.applicationSubmitDate=new Date()
  		proposalApplicationInstance.name=params.FirstName_1+" "+params.LastName_2
  		proposalApplicationInstance.designation=params.Designation_3
  		proposalApplicationInstance.organisation=params.Organisation_4
  		proposalApplicationInstance.postalAddress=params.PostalAddress_5
  		proposalApplicationInstance.city=params.City_6
+ 		proposalApplicationInstance.zipCode=params.ZipCode_15
  		proposalApplicationInstance.state=params.State_7
  		proposalApplicationInstance.phone=params.STD_8+"-"+params.Phone_9
  		proposalApplicationInstance.fax=params.FaxSTD_10+"-"+params.FaxPhone_11
@@ -577,7 +580,6 @@ class ProposalService {
 	  	 Set keyList=params.keySet()
  		def saveStatusList = true
  		Iterator itr=keyList.iterator()
- 					println "saved para"+params		
  			while(itr.hasNext())
  			{
  				Object obj=itr.next()
@@ -592,7 +594,6 @@ class ProposalService {
  						{
  							for(proposalPreviousInstance in proposalApplicationExtSavedInstance)
  							{
- 								println"-------------------proposalPreviousInstance----------------------"+proposalPreviousInstance
  								proposalPreviousInstance.activeYesNo="N"
  								proposalPreviousInstance.save()
  							}
@@ -676,11 +677,16 @@ class ProposalService {
           */
          public Proposal getSubmittedPreProposalById(def proposalId)
          {
-        	 def preProposalValue= Proposal.find("from Proposal P where P.proposalStatus='Submitted' and P.id="+proposalId)
+        	 def preProposalValue= Proposal.find("from Proposal P where P.proposalStatus='Submitted' and P.proposalType='PreProposal' and P.id="+proposalId)
         	 return preProposalValue
          }
 
-       
+         public Proposal getSubmittedFullProposalById(def proposalId)
+         {
+        	 def fullProposalValue= Proposal.find("from Proposal P where P.proposalStatus='Submitted' and P.proposalType='FullProposal' and P.id="+proposalId)
+        	 return fullProposalValue
+         }
+
 	
  /*
   * update PreProposal
@@ -748,9 +754,9 @@ class ProposalService {
 	    /*
          * method to get submitted preproposal by id and type
          */
-        public Proposal getSubmittedPreProposalByIdAndType(def proposalId,def params)
+        public Proposal getSubmittedPreProposalByIdAndType(def proposalId)
         {
-       	 def preProposalValue= Proposal.find("from Proposal P where P.proposalType='"+params.ProposalType+"'and P.proposalStatus='Submitted' and P.id="+proposalId)
+       	 def preProposalValue= Proposal.find("from Proposal P where P.proposalType='PreProposal'and P.proposalStatus='Submitted' and P.id="+proposalId)
        	 return preProposalValue
         }
 	    
@@ -773,5 +779,72 @@ class ProposalService {
         	def preProposalList = Proposal.findAll("from Proposal P where P.proposalType='FullProposal' and P.proposalStatus = 'Submitted' and P.party="+party)
         	return preProposalList
          }
+       	 /*
+       	  * method to generate control id of a proposal
+       	  */
+       	 def generateControlId(def firstName,def proposalCategory)
+       	 {	
+       		 def intNewValue
+       		 def dateValue=new Date()
+       		 //get first letter from firstName
+       		 def firstLetter=firstName.substring(0,1)
+       		 //get first two letter from proposalCategory
+       		 def secondLetter
+       		 if(proposalCategory.length()<2)
+       			 secondLetter=proposalCategory.substring(0,proposalCategory.length())
+       	     else
+       	    	secondLetter=proposalCategory.substring(0,2)
+       		 //remove special character from proposal category substring 
+       		 secondLetter=secondLetter.replaceAll("[^a-zA-Z]","")
+       		 //get id (max) of last proposalApplication
+       		 def proposalApplicationMaxValue=getMaxProposalApplicationId('Proposal')
+       		 def proposalApplicationInstance
+       		 //check if proposalApplication null or not
+       		 if(proposalApplicationMaxValue!=null)
+       		 {
+       			 //get proposalApplication by proposalApplication id
+       			 proposalApplicationInstance=getProposalApplicationById(proposalApplicationMaxValue)
+       			 //create a regx to find number from subscriptionNumber
+	       		 Pattern intsOnly = Pattern.compile("\\d+");
+       			 //find number from controllerId
+       			 Matcher makeMatch = intsOnly.matcher(proposalApplicationInstance.controllerId);
+	       		 makeMatch.find();
+	       		 String inputInt = makeMatch.group();
+	       		 if(inputInt.length()<20)
+	       		 {
+	       		 //get last 5 digit from controllerId numbers
+	       		 inputInt=inputInt.substring(6,inputInt.length())
+	       		 }
+	       		 else
+	       		 {
+	       			inputInt=inputInt.substring(6,10)
+	       		 }
+	       		 //convert numeric string to integer
+	       		 intNewValue=(Long.parseLong(inputInt))+1
+	       	 }
+       		 else
+       		 {
+       			intNewValue=1
+       		 }
+       		 //create a sring decimal with 5 digit
+       		 String controllFormat = String.format("%05d", intNewValue);
+       		
+       		 //create a control id   		 
+       		 def controlId=(firstLetter+secondLetter).toUpperCase()+
+       		 				new SimpleDateFormat("dd").format(dateValue)+
+       		 				new SimpleDateFormat("MM").format(dateValue)+
+       		 				new SimpleDateFormat("yy").format(dateValue)+controllFormat
+       		 				
+ 			return controlId
+       		 
+       	 }
+       	 /*
+       	  * method to get max id of a proposal applicatiion
+       	  */
+       	 def getMaxProposalApplicationId(def proposalType)
+       	 {
+       		 def proposalApplicationInstance=ProposalApplication.executeQuery("select MAX(PA.id) from ProposalApplication PA where PA.proposal.proposalType='"+proposalType+"'")
+       		 return proposalApplicationInstance[0]
+       	 }
 
 }

@@ -7,8 +7,31 @@ class UserService{
 		def userMapInstanceList =UserMap.findAll("from UserMap P  ")
 		return userMapInstanceList
 	}
+	/**
+	 * Function to get all user map with active party
+	 */
+	public List getAllUserMapWithActiveParty(){
+		def userMapInstanceList =UserMap.findAll("from UserMap P  where P.party.id in (select PA.id from Party PA where PA.activeYesNo='Y')")
+		return userMapInstanceList
+	}
 	
 	/**
+	 * Function to get all user map based on userId
+	 */
+	public  getAllUserMapByUserId(def userId ){
+		def userMapInstance =UserMap.find("from UserMap P where P.user.id= "+userId)
+		return userMapInstance
+	}
+	/**
+	 * Function to get all users 
+	 */
+	public List getAllUsers(){
+		def userMapInstanceList =Person.findAll("from Person P  ")
+		return userMapInstanceList
+	}
+	
+	
+	/**getAllUsersFromSite
 	 * Function to get user map by id.
 	 */
 	public UserMap getUserMapById(Integer userMapId){
@@ -272,11 +295,14 @@ class UserService{
 	}
 	
 	public void addUserMap(def person,def params) {
-		
+			def party
 		def userMap=new UserMap()
 		userMap.user=person
 			
-		def party=  Party.find("from Party  PA  where PA.id= "+params.get("party.id"))
+			if(params.role == 'ROLE_SUPERADMIN')
+				 party=  Party.find("from Party  PA  where PA.id= "+params.institutions)
+			else
+				 party=  Party.find("from Party  PA  where PA.id= "+params.get("party.id"))
 		userMap.party=party
 		
 		def userMapInstance= UserMap.find("from UserMap  UM  where UM.user = "+person.id)
@@ -352,7 +378,7 @@ class UserService{
 	public List getActiveRoles()
 	{
 		//def roleInstance = new Authority()
-		def roleInstance = Authority.findAll("from Authority R where R.authority NOT IN ('ROLE_SITEADMIN','ROLE_PI') and R.activeYesNo='Y'")
+		def roleInstance = Authority.findAll("from Authority R where R.authority NOT IN ('ROLE_SITEADMIN','ROLE_PI','ROLE_SUPERADMIN') and R.activeYesNo='Y'")
 		return roleInstance
 	}
 	public Party getParty(def person)
@@ -527,6 +553,14 @@ class UserService{
 	 }
 	
 	 /*
+	  * Getting All authorities except Site admin,pi and Super admin
+	  */
+	 public getAuthoritiesExceptSiteAdminPiAndSuperAdmin()
+		 {
+		     def authorityInstance =  Authority.findAll("from Authority R where R.activeYesNo='Y' and  authority NOT IN ('ROLE_SITEADMIN', 'ROLE_SUPERADMIN','ROLE_PI')")
+			 return authorityInstance
+		 }
+	 /*
 	  * Function to get user by party and id.
 	  */
 	  public getUserByIdAndParty(def userId,def partyId)
@@ -579,5 +613,45 @@ class UserService{
 			
 			return person
 	 }
-	
+    
+    /*
+     * Method to get approval authority details by person id
+     */
+     public getPesonInApprovalAuthorityDetail(def params)
+	 {
+		  def approvalAuthorityDetails = ApprovalAuthorityDetail.find("from ApprovalAuthorityDetail AAD where AAD.person.id="+params.id)
+		  return approvalAuthorityDetails
+	 }
+     /*
+	   * Function to get Authority List By Role
+	   */
+	   public getAuthorityListByRole(def userId)
+	  {
+		def authorityList = []	
+    	def userRoleInstanceList  = UserRole.executeQuery("select UR.role from UserRole UR where UR.user.id="+userId)		
+		if(userRoleInstanceList.size()==1){
+				def authorityInstance = getauthority(userRoleInstanceList[0].id)
+				if(authorityInstance.authority == 'ROLE_SITEADMIN'){
+					authorityList = getAuthorityListExRoles()}
+				else if(authorityInstance.authority == 'ROLE_SUPERADMIN'){
+					authorityList = Authority.findAll("from Authority R where R.activeYesNo='Y' and not authority in('ROLE_SUPERADMIN')")
+				}
+				else{
+					authorityList = getAuthorityListExRoles()}
+			}else{
+				authorityList = getAuthorityListExRoles()
+			}
+			
+		return authorityList
+	  }
+     
+	   /*
+		   * Function to get Authority List Excluded ROLE_SITEADMIN &ROLE_SUPERADMIN
+		   */
+		   public getAuthorityListExRoles(def userId)
+		  {
+			   def authorityList = Authority.findAll("from Authority R where R.activeYesNo='Y' and not authority in('ROLE_SITEADMIN','ROLE_SUPERADMIN')")
+			   return authorityList
+		  }
+     
 }

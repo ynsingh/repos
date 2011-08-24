@@ -1,0 +1,155 @@
+<head>
+	<meta name="layout" content="main" />
+	<g:javascript library="jquery" />
+</head>
+<body>
+
+  <div class="body">
+   <div class="wrapper">
+     <g:if test="${flash.message}">
+		<div class="message">${flash.message}</div>
+	 </g:if>
+<div class="dialog">
+<table>
+  <tbody>
+   <h1>Site Admin Login Details</h1>
+    <tr class="prop">
+       <td>
+		<g:hasErrors bean="${person}">
+			<div class="errors">
+				<g:renderErrors bean="${person}" as="list" />
+			</div>
+		</g:hasErrors>
+			<g:form action="saveNewUserBySuperAdmin">
+				
+				<table>
+					<tbody>
+						<tr class="prop">
+							<td valign="top" class="name">
+								<label for="email"><g:message code="default.Email.label"/>:</label>
+								<label for="email" style="color:red;font-weight:bold"> * </label>
+							</td>
+							<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
+								<input type="text" id="email" name="email" value="${person?.user?.email?.encodeAsHTML()}"/>
+							</td>
+						</tr>    
+						<tr class="prop">
+							<td valign="top" class="name">
+								<label for="passwd"><g:message code="default.Password.label"/>:</label>
+								<label for="passwd" style="color:red;font-weight:bold"> * </label>
+							</td>
+							<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
+								<input type="password" id="password" name="password" value="${person?.user?.passwd?.encodeAsHTML()}"/>
+							</td>
+						</tr>
+					
+						<tr class="prop">
+							<td valign="top" class="name">
+								<label for="confirmPasswd"><g:message code="default.ConfirmPassword.label"/>:</label>
+								<label for="confirmPasswd" style="color:red;font-weight:bold"> * </label>
+							</td>
+							<td valign="top" class="value">
+								<input type="password" id="confirmPasswd" name="confirmPasswd" value=""/>
+							</td>
+						</tr>
+						<tr class="prop">
+							<td valign="top" class="name">
+								<label for="userRealName"><g:message code="default.FirstName.label"/>:</label>
+								<label for="userRealName" style="color:red;font-weight:bold"> * </label>
+							</td>
+				           	<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
+								<input type="text" id="userRealName" name="userRealName" value="${person?.user?.userRealName?.encodeAsHTML()}"/>
+							</td>
+						</tr>
+                          
+	                   <tr class="prop">
+						    <td valign="top" class="name">
+								<label for="userSurName"><g:message code="default.LastName.label"/>:</label>
+								<label for="userSurName" style="color:red;font-weight:bold"> * </label>
+							</td>
+							<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
+								<input type="text" id="userSurName" name="userSurName" value="${person?.user?.userSurName?.encodeAsHTML()}"/>
+							</td>
+						</tr>     
+				</tbody>
+				</table></td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr></table>
+			
+  </td>
+  <td>
+	 <h1>Institution Details</h1>
+	   
+		  <table>	
+			 <tbody>  
+				  <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="nameOfTheInstitution"><g:message code="default.Name.label"/>:</label>
+                                    <label for="nameOfTheInstitution" style="color:red;font-weight:bold"> * </label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:partyInstance,field:'nameOfTheInstitution','errors')}">
+                                    <input type="text" size="35" id="nameOfTheInstitution" name="nameOfTheInstitution" value="${fieldValue(bean:partyInstance,field:'nameOfTheInstitution')}"/>
+                                </td>
+                           </tr> 
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="code"><g:message code="default.Code.label"/>:</label>
+                                    <label for="code" style="color:red;font-weight:bold"> * </label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:partyInstance,field:'code','errors')}">
+                                    <input type="text" id="code" name="code" value="${fieldValue(bean:partyInstance,field:'code')}"/>
+                                    <label for="code" style="color:blue;font-weight:bold"> <g:message code="default.institution.code.label"/></label>
+                                </td>
+                            </tr> 
+                        
+                          
+                          
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="address"><g:message code="default.Address.label"/>:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:partyInstance,field:'address','errors')}">
+                                   <g:textArea name="address" value="${fieldValue(bean:partyInstance,field:'address')}" rows="3" cols="30"/>
+                                </td>
+                            </tr> 
+                        
+                        <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="phone"><g:message code="default.Phone.label"/>:</label>
+                                    
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:partyInstance,field:'phone','errors')}">
+                                    <input type="text" id="phone" name="phone" value="${fieldValue(bean:partyInstance,field:'phone')}"/>
+                                </td>
+                           </tr> 
+                            
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="institutionemail"><g:message code="default.Email.label"/>:</label>
+                                    <label for="institutionemail" style="color:red;font-weight:bold"> * </label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:partyInstance,field:'email','errors')}">
+                                    <input type="text" id="institutionemail" name="institutionemail" value="${fieldValue(bean:partyInstance,field:'email')}"/>
+                                </td>
+                            </tr> 
+  		
+             </tbody>
+		  </table>
+			
+	</td>
+			
+</tr>
+</tbody>
+	</table>
+</div>	
+	
+		<div class="buttons">
+			<span class="buttons"><input class="inputbutton" id="submit" type="submit" onClick='return superAdminUservalidation();' disableOnClick="true" value="${message(code: 'default.Create.button')}"/></span>
+		</div>
+	
+</g:form>
+	
+	
+	</div>
+   </div>
+</body>

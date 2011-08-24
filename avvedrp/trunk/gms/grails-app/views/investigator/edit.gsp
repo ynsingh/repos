@@ -47,11 +47,20 @@
                        <tbody>
                          <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="name"><g:message code="default.Name.label"/>:</label>
+                                    <label for="name"><g:message code="default.FirstName.label"/>:</label>
                                     <label for="name" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'name','errors')}">
                                 	<input type="text" id="name" name="name" value="${fieldValue(bean:investigatorInstance,field:'name')}"/>                        
+                                </td>
+                         </tr> 
+                         <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="name"><g:message code="default.LastName.label"/>:</label>
+                                    <label for="name" style="color:red;font-weight:bold"> * </label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'userSurName','errors')}">
+                                	<input type="text" id="userSurName" name="userSurName" value="${fieldValue(bean:investigatorInstance,field:'userSurName')}"/>                        
                                 </td>
                          </tr> 
                          <tr class="prop">

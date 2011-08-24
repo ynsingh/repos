@@ -53,7 +53,6 @@ class GrantExpenseService {
 		if(grantExpenseId == null){
 			String query = "from GrantExpense GE where GE.projects.id = "+projectInstance.id+" and DATE_FORMAT(GE.dateOfExpense,'%Y/%m/%d')  "+
 				"between '"+sdf1.format(dateFrom)+"' and '"+sdf1.format(dateTo)+"'order by GE.dateOfExpense" 
-			println "*****Query "+query
 			grantExpenseInstanceList = GrantExpense.findAll(query)
 		}
 		else{
@@ -73,7 +72,6 @@ class GrantExpenseService {
 		if(!grantExpenseId){
 			String query = "from GrantExpense GE where GE.grantAllocation.id = "+grantAllocationInstance.id+" and GE.dateOfExpense  "+
 				"between '"+sdf1.format(dateFrom)+"' and '"+sdf1.format(dateTo)+"' order by GE.dateOfExpense" 
-			println "*****Query "+query
 			grantExpenseInstanceList = GrantExpense.findAll(query)
 		}
 		else{
@@ -218,7 +216,6 @@ class GrantExpenseService {
 		
 		def grantExpenseInstance=[]
 		grantExpenseInstance = GrantExpense.findAll(" from GrantExpense GE where GE.grantAllocationSplit.id = " + grantAllocationSplitInstance.id)
-		println"*********grantAllocationSplitInstance***********"+grantExpenseInstance
 		
 	    return grantExpenseInstance    
 		
@@ -314,10 +311,26 @@ class GrantExpenseService {
 		 return grantExpenseInstanceList
 	 }
 	 
+	 public List getGrantExpenseAmountByRequestCode(def RequestCode)
+	 {
+		 def grantExpenseAmnt=GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.expenseRequestCode ='"+RequestCode+"'")
+	 	return grantExpenseAmnt
+	 }
+	 
 	 public List getTotalExpenseAmnt(def grantExpenseInstance)
 	 {
-	 def expenseTotal = GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.projects="+grantExpenseInstance.projects.id)
-	 return expenseTotal
+		 def expenseTotal = GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.projects="+grantExpenseInstance.projects.id)
+		 return expenseTotal
+	 }
+	 
+	 /*
+	  * Getting sum of GrantExpenses on account heads by project id
+	  */
+	 
+	 public List accountHeadsExpenseTotalAmnt(def projectsId)
+	 {
+		 def accountHeadsExpenseTotal = GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.projects.id="+projectsId)
+		 return accountHeadsExpenseTotal
 	 }
 }
 

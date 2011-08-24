@@ -19,8 +19,6 @@
 			<div class="dialog">
 				<table>
 				<tbody>
-
-					
 					<tr class="prop">
 						<td valign="top" class="name">
 						<label for="userRealName"><g:message code="default.FirstName.label"/>:</label>
@@ -71,15 +69,27 @@
 						<td valign="top" class="value ${hasErrors(bean:person,field:'email','errors')}">
 							<input type="text" id="email" name="email" value="${person.email?.encodeAsHTML()}"/>
 						</td>
-	               
+	               	</tr>	
 	               		<tr class="prop">
 						<td valign="top" class="name" align="left">
 						<g:message code="default.AssignRoles.label"/>:
 						<label for="AssignRoles" style="color:red;font-weight:bold"> * </label>
 						</td>
-						<td> <g:select optionKey="id" optionValue="authority" from= "${authorityInstance}" id="authorities" name="authorities"  noSelection="['Select':'-Select-']"></g:select>
+						<td> 
+							<g:select optionKey="id" optionValue="authority" from= "${authorityInstance}" id="authorities" name="authorities"  noSelection="['Select':'-Select-']"></g:select>
 						</td>
 					</tr>
+					<g:if test="${personRoleInstance.authority == 'ROLE_SUPERADMIN'}">
+						<tr class="prop">
+							<td valign="top" class="name" align="left">
+								<g:message code="default.Institution.label"/>:
+								<label for="Institution" style="color:red;font-weight:bold"> * </label>
+							</td>
+							<td> 
+								<g:select optionKey="id" optionValue="code" from= "${institutionList}" id="institutions" name="institutions"  noSelection="['Select':'-Select-']"></g:select>
+							</td>
+						</tr>
+					</g:if>
 
 				</tbody>
 				</table>

@@ -17,15 +17,18 @@ class PartyController  extends GmsController {
 		GrailsHttpSession gh=getSession()
 		/*Adding help page into session*/
 		gh.putValue("Help","Institution_List.htm")
-		
+		def userService = new UserService()
+    	def personRoleInstance = userService.getUserRoleByUserId(session.UserId)
 		def partyInstanceList
+		def activepartyInstanceList
 		def dataSecurityService = new DataSecurityService()
 		def partyService = new PartyService()
 		
 		/*Getting party details based on id*/
 		partyInstanceList = partyService.getPartyBasedOnId(getUserPartyID())
 		
-		[ partyInstanceList: partyInstanceList ]
+		activepartyInstanceList = partyService.getAllActiveParties()
+		[ partyInstanceList: partyInstanceList , activepartyInstanceList:activepartyInstanceList , personRoleInstance:personRoleInstance[0] ]
     }
     
     /**

@@ -5,25 +5,22 @@
 </head>
 <body>
 	<div class="wrapper">
-	<div id="spinner" class="spinner" style="display:none;">
+		<div id="spinner" class="spinner" style="display:none;">
             <img src="${createLinkTo(dir:'images',file:'spinner.gif')}" alt="Spinner" />
         </div>	
-        
-    <div class="innnerBanner">
-	<div class="loginLink">
-	<span>
-	
-	
- 
-<img src="${createLinkTo(dir:'images/themesky',file:'help.gif')}" onClick="window.open('../images/HELPDOC/UntitledFrameset-15.html','mywindow','width=800,height=500,left=0,top=100,screenX=0,screenY=100')" title="Help" alt="Help" /> 
-</a> &nbsp;&nbsp;|</a>&nbsp;&nbsp;<a href="#"><img src="${createLinkTo(dir:'images/themesky',file:'aboutUs.jpg')}" onClick="window.open('../images/aboutUs/AboutUs_MGMS_new.html','mywindow','width=600,height=300,left=0,top=100,screenX=0,screenY=100')" title="AboutUs" alt="AboutUs" />&nbsp;&nbsp;</a>
-	
-   	</span>
-   	</div>
-	</div>  
+	    <div class="innnerBanner">
+		 <div class="loginLink">
+<span>
+	<img src="${createLinkTo(dir:'images/themesky',file:'help.gif')}" onClick="window.open('../images/HELPDOC/UntitledFrameset-15.html','mywindow','width=800,height=500,left=0,top=100,screenX=0,screenY=100')" title="Help" alt="Help" /> 
+	</a> &nbsp;&nbsp;|</a>&nbsp;&nbsp;<a href="#"><img src="${createLinkTo(dir:'images/themesky',file:'aboutUs.jpg')}" onClick="window.open('../images/aboutUs/AboutUs_MGMS_new.html','mywindow','width=600,height=300,left=0,top=100,screenX=0,screenY=100')" title="AboutUs" alt="AboutUs" />&nbsp;&nbsp;</a>
+</span>
+   	    </div>
+	  </div>  
+ 	 
 <div id="messageBox">
-		</div>
+</div>
 	<div class="body">
+	  <div class="wrapper">
 		<h1><g:message code="default.CreateSiteAdmin.head"/></h1>
 		<g:if test="${flash.message}">
 		<div class="message">${flash.message}</div>
@@ -91,7 +88,7 @@
 							<input type="text" id="userSurName" name="userSurName" value="${person?.user?.userSurName?.encodeAsHTML()}"/>
 						</td>
 					</tr>     
-	                 <tr class="prop">
+	                <tr class="prop">
 	                        <td valign="top" class="name">
 	                            <label for="party"><g:message code="default.InstitutionCode.label"/>:</label>
 	                            <label for="party" style="color:red;font-weight:bold"> * </label>
@@ -100,7 +97,7 @@
 	                            <input type="text" id="code" name="party.code" value="${person?.party?.code}" >
 	                            <label for="code" style="color:blue;font-weight:bold"> <g:message code="default.register.instituitonCode.label"/></label>
 	                        </td>
-	                    </tr> 
+	                 </tr> 
 
 				</tbody>
 				</table></td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr></table>
@@ -112,6 +109,7 @@
 			</div>
 
 		</g:form>
+	 </div>
 	</div>
-	</div>
+   </div>
 </body>

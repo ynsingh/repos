@@ -151,13 +151,15 @@
                                                     
                                     <tr class="prop">
                                          <td valign="top" class="name">
-                                            <label for="modeOfPayment"><g:message code="default.ModeOfPayment.label"/></label>
-                                            <label for="symbol" style="color:red;font-weight:bold"> * </label>
+                                            <label for="modeOfPayment"><g:message code="default.ModeOfPayment.label"/></label>:
+                                            <label for="modeOfPayment" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'modeOfPayment','errors')}">
-                                            <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  value="${fieldValue(bean:grantExpenseInstance,field:'modeOfPayment')}" noSelection="['null':'-Select-']"></g:select>
+                                            <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  
+                                            onchange="${remoteFunction(controller:'grantExpense',action:'updateModeOfPayment',update:'fieldSelect',  params:'\'modeOfPayment=\' + this.value' )}"
+                                            onFocus="${remoteFunction(controller:'grantExpense',action:'updateModeOfPayment',update:'fieldSelect',  params:'\'modeOfPayment=\' + this.value' )}"
+                                            value="${fieldValue(bean:grantExpenseInstance,field:'modeOfPayment')}" noSelection="['null':'-Select-']"></g:select>
                                          </td>
-                                         
                                          <td valign="top" class="name">
                                              <label for="bankName"><g:message code="default.BankName.label"/></label>
                                              <label for="symbol" style="color:red;font-weight:bold"> * </label>
@@ -168,13 +170,14 @@
                                     </tr>      
                
                                     <tr class="prop">
-                                         <td valign="top" class="name">
-                                            <label for="ddNo"><g:message code="default.DD/ChequeNo.label"/></label>
-                                            <label for="symbol" style="color:red;font-weight:bold"> * </label>
+                                        <td valign="top" class="name">
+                                            <label for="ddNo"><g:message code="default.DD/ChequeNo.label"/></label>:
+                                            <label for="ddNo" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'ddNo','errors')}">
-                                            <input type="text" id="ddNo" name="ddNo" value="${fieldValue(bean:grantExpenseInstance,field:'ddNo')}" style="text-align: right" />
-                                         </td>
+                                            <div id="fieldSelect">
+                         				       <input type="text" id="ddNo" name="ddNo" value="${fieldValue(bean:grantExpenseInstance,field:'ddNo')}" style="text-align: right" />
+										    </div>
                                          
                                          <td valign="top" class="name">
                                              <label for="ddBranch"><g:message code="default.Branch.label"/></label>

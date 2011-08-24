@@ -315,31 +315,67 @@ if((parent.right.frames['editframe'].document.forms[0].scstobc.value =="sc") ||
 		    }
 		    
 		    
-		    if( ( (document.getElementById("State").value) == 'null') || ( (document.getElementById("State").value) == '') )
+		        if( ( (document.getElementById("State").value) == 'null') || ( (document.getElementById("State").value) == '') )
 		    {
 			    alert("Please enter the State");
 			    document.getElementById("State").focus();
 			    return false;
 		    }
-		     var speclChars = "!@#$%^&*()+=-_[]\\\';,./{}|\":<>?0123456789";
-			
-			if(document.getElementById("State").value != "")
-			 {
-		    	for (var i = 5; i < (document.getElementById("State").value.length); i++) 
-		    	{
-		   	 		if (speclChars.indexOf(document.getElementById("State").value.charAt(i)) != -1) 
-		  			{
-		  			alert ("Special characters and numbers are not allowed in State");
-		  			document.getElementById("State").focus();
-		  			return false;
-		  			}
-		    	}
+		 
+		   if( (document.getElementById("State").value) == '-UNION  TERRITORIES-')
+		    {
+			    alert("Please enter the Proper State");
+			    document.getElementById("State").focus();
+			    return false;
 		    }
 		    
 		    
+		     if( ( (document.getElementById("ZipCode").value) == 'null') || ( (document.getElementById("ZipCode").value) == '') )
+		    {
+			    alert("Please enter the Zip Code");
+			    document.getElementById("ZipCode").focus();
+			    return false;
+		    }
+		   var str = document.getElementById('ZipCode').value;
+		    var oneDecimal = false;
+		    var oneChar = 0;
+		    str = str.toString();
+		
+		    for (var i = 0; i < str.length; i++)
+		     {
+		
+		        oneChar = str.charAt(i).charCodeAt(0);
+		       // characters outside of 0 through 9 not OK
+		
+		        if (oneChar < 48 || oneChar > 57)
+		         {
+		
+		            alert("Please enter numeric values for ZipCode (upto 6 digits)");
+		            str.focus;
+		            return false;
+		         }
+		      }   
+		   if(str.length>6)  
+		      {
+		      
+		            alert("Please enter numeric values for Zip Code(upto 6 digits)");
+		            str.focus;
+		            return false;
+		      }
+		    
+		     if(str.length<6)  
+		      {
+		      
+		            alert("Please enter numeric values for Zip Code(upto 6 digits)");
+		            str.focus;
+		            return false;
+		      }
+		    
+		 		
+		    
 		      if( ( (document.getElementById("STD").value) == 'null') || ( (document.getElementById("STD").value) == '') )
 		    {
-			    alert("Please enter numeric values for STD (upto 6 digits) and Phone No (upto 10 digits)");
+			    alert("Please enter numeric values for STD (upto 4 digits) and Phone No (upto 7 digits)");
 			    document.getElementById("STD").focus();
 			    return false;
 		    }
@@ -357,22 +393,30 @@ if((parent.right.frames['editframe'].document.forms[0].scstobc.value =="sc") ||
 		        if (oneChar < 48 || oneChar > 57)
 		         {
 		
-		            alert("Please enter numeric values for STD (upto 6 digits) and Phone No (upto 10 digits)");
+		            alert("Please enter numeric values for STD (upto 4 digits) and Phone No (upto 7 digits)");
 		            str.focus;
 		            return false;
 		         }
 		      }   
-		   if(str.length>6)  
+		   if(str.length>4)  
 		      {
 		      
-		            alert("Please enter numeric values for STD (upto 6 digits)");
+		            alert("Please enter numeric values for STD (upto 4 digits)");
+		            str.focus;
+		            return false;
+		      }
+		      
+		       if(str.length<4)  
+		      {
+		      
+		            alert("Please enter numeric values for STD (upto 4 digits)");
 		            str.focus;
 		            return false;
 		      }
 		    
 		      if( ( (document.getElementById("Phone").value) == 'null') || ( (document.getElementById("Phone").value) == '') )
 		    {
-			    alert("Please enter numeric values for STD (upto 6 digits) and Phone No (upto 10 digits)");
+			    alert("Please enter numeric values for STD (upto 4 digits) and Phone No (upto 7 digits)");
 			    document.getElementById("Phone").focus();
 			    return false;
 		    }
@@ -390,22 +434,30 @@ if((parent.right.frames['editframe'].document.forms[0].scstobc.value =="sc") ||
 		        if (oneChar < 48 || oneChar > 57)
 		         {
 		
-		            alert("Please enter numeric values for STD (upto 6 digits) and Phone No (upto 10 digits)");
+		            alert("Please enter numeric values for STD (upto 4 digits) and Phone No (upto 7 digits)");
 		            document.getElementById('Phone').focus;
 		            return false;
 		         }
 		      }   
-		    if(str.length>10)  
+		    if(str.length>7)  
 		      {
 		      
-		            alert("Please enter numeric values for Phone No  (upto 10 digits)");
+		            alert("Please enter numeric values for Phone No  (upto 7 digits)");
+		            document.getElementById('Phone').focus;
+		            return false;
+		      }
+		      
+		       if(str.length<7)  
+		      {
+		      
+		            alert("Please enter numeric values for Phone No  (upto 7 digits)");
 		            document.getElementById('Phone').focus;
 		            return false;
 		      }
 		    
 		     if( ( (document.getElementById("FaxSTD").value) == 'null') || ( (document.getElementById("FaxSTD").value) == '') )
 		    {
-			    alert("Please enter numeric values for STD (upto 6 digits) and Fax No (upto 10 digits)");
+			    alert("Please enter numeric values for STD (upto 4 digits) and Fax No (upto 7 digits)");
 			    document.getElementById("FaxSTD").focus();
 			    return false;
 		    }
@@ -423,22 +475,31 @@ if((parent.right.frames['editframe'].document.forms[0].scstobc.value =="sc") ||
 		        if (oneChar < 48 || oneChar > 57)
 		         {
 		
-		            alert("Please enter numeric values for Fax STD (upto 6 digits) and Fax No (upto 10 digits)");
+		            alert("Please enter numeric values for Fax STD (upto 4 digits) and Fax No (upto 7 digits)");
 		           document.getElementById('FaxSTD').focus;
 		            return false;
 		         }
 		      }   
-		     if(str.length>6)  
+		     if(str.length>4)  
 		      {
 		      
-		            alert("Please enter numeric values for Fax STD (upto 6 digits)");
+		            alert("Please enter numeric values for Fax STD (upto 4 digits)");
 		            document.getElementById('FaxSTD').focus;
 		            return false;
 		      }
 		      
+		        if(str.length<4)  
+		      {
+		      
+		            alert("Please enter numeric values for Fax STD (upto 4 digits)");
+		            document.getElementById('FaxSTD').focus;
+		            return false;
+		      }
+		      
+		      
 		       if( ( (document.getElementById("FaxPhone").value) == 'null') || ( (document.getElementById("FaxPhone").value) == '') )
 		    {
-			    alert("Please enter numeric values for STD (upto 6 digits) and Fax No (upto 10 digits)");
+			    alert("Please enter numeric values for STD (upto 4 digits) and Fax No (upto 7 digits)");
 			    document.getElementById("FaxPhone").focus();
 			    return false;
 		    }
@@ -456,15 +517,23 @@ if((parent.right.frames['editframe'].document.forms[0].scstobc.value =="sc") ||
 		        if (oneChar < 48 || oneChar > 57)
 		         {
 		
-		            alert("Please enter numeric values for STD (upto 6 digits) and Fax No (upto 10 digits)");
+		            alert("Please enter numeric values for STD (upto 4 digits) and Fax No (upto 7 digits)");
 		            document.getElementById('FaxPhone').focus;
 		            return false;
 		         }
 		      }   
-		      if(str.length>10)  
+		      if(str.length>7)  
 		      {
 		      
-		            alert("Please enter numeric values for Fax No (upto 10 digits)");
+		            alert("Please enter numeric values for Fax No (upto 7 digits)");
+		            document.getElementById('FaxPhone').focus;
+		            return false;
+		      }
+		      
+		       if(str.length<7)  
+		      {
+		      
+		            alert("Please enter numeric values for Fax No (upto 7 digits)");
 		            document.getElementById('FaxPhone').focus;
 		            return false;
 		      }
@@ -520,7 +589,7 @@ if((parent.right.frames['editframe'].document.forms[0].scstobc.value =="sc") ||
 			
 			 if( ( (document.getElementById("Mobile").value) == 'null') || ( (document.getElementById("Mobile").value) == '') )
 		    {
-			    alert("Please enter numeric values for Mobile (10 digits)");
+			    alert("Please enter numeric values for Mobile (11 digits)");
 			    document.getElementById("Mobile").focus();
 			    return false;
 		    }
@@ -538,23 +607,23 @@ if((parent.right.frames['editframe'].document.forms[0].scstobc.value =="sc") ||
 		        if (oneChar < 48 || oneChar > 57)
 		         {
 		
-		            alert("Please enter numeric values for Mobile (upto 10 digits)");
+		            alert("Please enter numeric values for Mobile (upto 11 digits)");
 		           document.getElementById('Mobile').focus;
 		            return false;
 		         }
 		      } 
-		      if(str.length>10)  
+		      if(str.length>11)  
 		      {
 		      
-		            alert("Please enter numeric values for Mobile (upto 10 digits)");
+		            alert("Please enter numeric values for Mobile (upto 11 digits)");
 		            document.getElementById('Mobile').focus;
 		            return false;
 		      }
 		      
-		      if(str.length<10)  
+		      if(str.length<11)  
 		      {
 		      
-		            alert("Please enter numeric values for Mobile (upto 10 digits)");
+		            alert("Please enter numeric values for Mobile (upto 11 digits)");
 		            document.getElementById('Mobile').focus;
 		            return false;
 		      }

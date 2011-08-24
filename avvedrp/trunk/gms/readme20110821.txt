@@ -1,0 +1,9 @@
+ToDo
+====
+
+1)Checkout GMS
+
+2) Apply the patch
+
+3) execute  gms.sql in gms dtabase( the scipts are seed data and upgradation scripts)
+ 

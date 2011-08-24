@@ -128,15 +128,16 @@
                                 </td>
                             </tr>      
                             <tr class="prop">
-                            	<td valign="top" class="name">
-                                    <label for="modeOfPayment">
-                                    	<g:message code="default.ModeOfPayment.label"/>
-                                    </label>:
-                                     <label for="modeOfPayment" style="color:red;font-weight:bold"> * </label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'modeOfPayment','errors')}">
-                                    <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  value="${fieldValue(bean:grantReceiptInstance,field:'modeOfPayment')}" noSelection="['null':'-Select-']"></g:select>
-                                </td>
+                            	 <td valign="top" class="name">
+                                            <label for="modeOfPayment"><g:message code="default.ModeOfPayment.label"/></label>:
+                                            <label for="modeOfPayment" style="color:red;font-weight:bold"> * </label>
+                                         </td>
+                                         <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'modeOfPayment','errors')}">
+                                            <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  
+                                            onchange="${remoteFunction(controller:'grantExpense',action:'updateModeOfPayment',update:'fieldSelect',  params:'\'modeOfPayment=\' + this.value' )}"
+                                            onFocus="${remoteFunction(controller:'grantExpense',action:'updateModeOfPayment',update:'fieldSelect',  params:'\'modeOfPayment=\' + this.value' )}"
+                                            value="${fieldValue(bean:grantReceiptInstance,field:'modeOfPayment')}" noSelection="['null':'-Select-']"></g:select>
+                                         </td>
                                 <td valign="top" class="name">
                                     <label for="ddDate">
                                     	<g:message code="default.DD/ChequeDate.label"/>
@@ -148,16 +149,17 @@
                                 </td>
                             </tr>
                             <tr class="prop">
-	                            <td valign="top" class="name">
-                                    <label for="ddNo">
-                                    	<g:message code="default.DD/ChequeNo.label"/>
-                                    </label>:
-                                    <label for="ddNo" style="color:red;font-weight:bold"> * </label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'ddNo','errors')}">
-                                    <input type="text" id="ddNo" name="ddNo" value="${fieldValue(bean:grantReceiptInstance,field:'ddNo')}" style="text-align: right" />
-                                </td>
-
+                            
+                            <td valign="top" class="name">
+                               <label for="ddNo"><g:message code="default.DD/ChequeNo.label"/></label>:
+                               <label for="ddNo" style="color:red;font-weight:bold"> * </label>
+                             </td>
+                             <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'ddNo','errors')}">
+                                <div id="fieldSelect">
+                         		  <input type="text" id="ddNo" name="ddNo" value="${fieldValue(bean:grantReceiptInstance,field:'ddNo')}" style="text-align: right" />
+								 </div>
+							 </td>
+	                           
                                 <td valign="top" class="name">
                                     <label for="bankName">
                                     	<g:message code="default.BankName.label"/>

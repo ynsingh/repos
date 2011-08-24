@@ -46,7 +46,7 @@ class LoginController {
 	         gh.putValue("Help","Project_List.htm")
 	         gh.putValue("PartyID","('"+ PartyID.toString()+"')");
 	         redirect uri:'/grantAllocation/gmsFrame'
-	         gh.putValue("Role", role);
+	        // gh.putValue("Role", role);
 	        //redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
 		}
 		else {

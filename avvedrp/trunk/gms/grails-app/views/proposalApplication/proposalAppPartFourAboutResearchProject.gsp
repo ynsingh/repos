@@ -111,7 +111,7 @@
                                                  
                              <tr class="prop">
                                 <td valign="top" colspan="2" class="prvalue">
-                                    <label for="code">17.(<g:message code="default.c.label"/>)<g:message code="default.RecurringBudgetOfProposal.label"/></label>
+                                    <label for="code">17.(<g:message code="default.a.label"/>)<g:message code="default.RecurringBudgetOfProposal.label"/></label>
                                 </td>
                                 </tr>
                                                

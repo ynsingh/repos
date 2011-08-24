@@ -13,18 +13,18 @@
 		</g:if>
 		<g:if test="${userMapList}">
 		<div class="list">
-			<table cellpadding="0" cellspacing="0">
+	<table cellpadding="0" cellspacing="0">
 			<thead>
 				<tr>
 					<g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
 					<g:sortableColumn property="user.username" title="${message(code: 'default.LoginName.label')}" />
 					<g:sortableColumn property="user.userRealName" title="${message(code: 'default.FirstName.label')}" />
 					<g:sortableColumn property="user.userSurName" title="${message(code: 'default.LastName.label')}" />
-					<th><g:message code="default.Role.label"/></th>
+					<g:sortableColumn property="user.role" title="${message(code: 'default.RoleNames.label')}" />
+					<g:if test="${personRoleInstance.authority == 'ROLE_SUPERADMIN'}">
+					<th><g:message code="default.Institution.label"/></th>
+					</g:if> 
 				    <th><g:message code="default.Edit.label"/></th>
-				    <g:if test="${session.Role == 'ROLE_ADMIN'}"> 
-						<th><g:message code="default.Edit.label"/></th>
-					</g:if>
 					
 				</tr>
 			</thead>
@@ -32,22 +32,21 @@
 			<g:each in="${userMapList}" status="i" var="userMap">
 				<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 					<td>${i+1}</td>
-					<td>${userMap.user.username?.encodeAsHTML()}</td>
-					<td>${userMap.user.userRealName?.encodeAsHTML()}</td>
-					<td>${userMap.user.userSurName?.encodeAsHTML()}</td>
-				    <td>${authorityList[i].authority}</td>
-			        <g:if test="${session.Role == 'ROLE_SITEADMIN'}"> 
-				         	<g:if test="${authorityList[i].authority == 'ROLE_SITEADMIN'}">
-				         		<td class="actionButtons"><span class="actionButton"></span></td>
-				         	</g:if>
-				         	<g:else>
-									<td class="actionButtons">
-										<span class="actionButton">
-											<g:link action="edit" id="${userMap.user.id}" ><g:message code="default.Edit.label"/></g:link>
-										</span>
-									</td>
-							</g:else>	
-					</g:if>	
+					<td class="actionButtons"><span class="actionButton">${userMap.user.username?.encodeAsHTML()}</span></td>
+					<td class="actionButtons"><span class="actionButton">${userMap.user.userRealName?.encodeAsHTML()}</span></td>
+					<td class="actionButtons"><span class="actionButton">${userMap.user.userSurName?.encodeAsHTML()}</span></td>
+				    <% def authorityInstance = UserRole.executeQuery("select UR.role from UserRole UR where UR.user.id="+userMap.user.id)%>
+					<g:if test="${authorityInstance[0]?.authority == 'ROLE_SITEADMIN'|| authorityInstance[0]?.authority == 'ROLE_SUPERADMIN'}">
+					<td class="actionButtons"><span class="actionButton">${authorityInstance[0]?.authority}</span></td>
+					</g:if>
+				    <g:else>
+				    <td class="actionButtons"><span class="actionButton"><g:link action="create" controller="userRole" id="${userMap.user.id}" ><g:message code="default.AssignRoles.label"/></g:link></span></td>
+				    </g:else>
+				    
+				    <g:if test="${personRoleInstance.authority == 'ROLE_SUPERADMIN'}">
+				    <td class="actionButtons"><span class="actionButton">${userMap.party.code.encodeAsHTML()}</span></td>
+				    </g:if>
+		            <td class="actionButtons"><span class="actionButton"><g:link action="edit" id="${userMap.user.id}" ><g:message code="default.Edit.label"/></g:link></span></td>
 				</tr>
 			</g:each>
 			</tbody>
@@ -58,6 +57,10 @@
             <br>No Records Available</br>
             </g:else>
 	    </div>
+	   
+	
+			
+	    
 	</div>
 </body>
 </html>

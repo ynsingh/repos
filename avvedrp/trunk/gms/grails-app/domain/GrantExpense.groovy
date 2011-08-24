@@ -27,7 +27,7 @@ class GrantExpense {
 		dateOfExpense(nullable:false)
 		modifiedBy(nullable:true)
 		modifiedDate(nullable:true)
-		
+		ddNo(nullable:true)
 		expenseRequestCode(nullable:true)
 		
 	}

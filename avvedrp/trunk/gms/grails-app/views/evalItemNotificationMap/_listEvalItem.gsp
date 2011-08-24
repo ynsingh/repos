@@ -36,8 +36,8 @@
       		<td width="13%">
       		<table>
       		<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>
-      			<g:submitToRemote class="addbutton" action="save" value="	    	     " update="[success:'evalItemSel',failure:'error']" before="if(!validateEvalItemNotificationMap(document.evalItemNotification['notification.id'],document.evalItemNotification['evalItem.id'],'You did not check a box. Please check a box.')) return false" />
-                <g:submitToRemote class="removebutton" action="delete" value="           " update="[success:'evalItemSel',failure:'error']" before="if(!validateEvalItemNotificationMap(document.evalItemNotification['notification.id'],document.evalItemNotification['evalItemNotificationMap.id'],'You did not check a box. Please check a box.')) return false"/>
+      			<g:submitToRemote class="addbutton" action="save" value="	    	     " update="[success:'evalItemSel',failure:'error']" before="if(!validateEvalItemNotificationMap(document.evalItemNotification['notification.id'],'Please Select a Notification',document.evalItemNotification['evalItem.id'],'You did not check a box. Please check a box.')) return false" />
+                <g:submitToRemote class="removebutton" action="delete" value="           " update="[success:'evalItemSel',failure:'error']" before="if(!validateEvalItemNotificationMap(document.evalItemNotification['notification.id'],'Please Select a Notification',document.evalItemNotification['evalItemNotificationMap.id'],'You did not check a box. Please check a box.')) return false"/>
                  </td></tr></table>
                 </td>
                 <td width="45%">

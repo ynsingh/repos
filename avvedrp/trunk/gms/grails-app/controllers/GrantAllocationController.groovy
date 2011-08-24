@@ -31,6 +31,7 @@
 	import org.springframework.security.core.authority.AuthorityUtils
 	import org.springframework.security.core.context.SecurityContextHolder as SCH
 	
+	
     class GrantAllocationController extends GmsController {
 		
 	private static final Permission[] HAS_DELETE = [DELETE, ADMINISTRATION]
@@ -41,7 +42,8 @@
 	def grantAllocationService
 	def projectsService
 	def springSecurityService
-
+    def grantAllocationSplitService
+    def grantExpenseService
     def index = { 
     		
     		redirect(action:list,params:params) 
@@ -332,8 +334,7 @@
     
     def subGrantAllot = 
     {
-    		
-    	GrailsHttpSession gh=getSession()
+  		GrailsHttpSession gh=getSession()
         def grantAllocationInstance = new GrantAllocation()	
     	gh.removeValue("Help")
 	    //putting help pages in session
@@ -365,8 +366,10 @@
 	        def partyInstance=Party.get(gh.getValue("Party"))
 	        grantAllocationInstance.granter=partyInstance;
 	        def grantAllocationInstanceList = grantAllocationService.getSubGrantAllocationsChild(new Integer(params.id),getUserPartyID(),subQuery)
+	        def headAllocatedAmount = grantAllocationSplitService.getAllocatedAmountByProjectId(params.id)//sum of headwise allocated amount
 	        double sumAmountAllocated = 0.00
 	        def projectsPIMapInstanceList=[]
+	        def sum
 	        for(int i=0;i<grantAllocationInstanceList.size();i++)
 	        {
 	        	sumAmountAllocated = sumAmountAllocated + grantAllocationInstanceList[i].amountAllocated
@@ -377,7 +380,13 @@
 	        }
             
 	        grantAllocationInstance.totAllAmount = sumAmountAllocated
-	        grantAllocationInstance.balanceAmount=projectInstance.parent.totAllAmount - grantAllocationInstance.totAllAmount
+	        if(headAllocatedAmount[0])
+	         {
+	           sum = sumAmountAllocated + headAllocatedAmount[0] // sum of grantamount and expenseamount
+	           grantAllocationInstance.balanceAmount=projectInstance.parent.totAllAmount - sum
+	         }
+	        else
+	        	grantAllocationInstance.balanceAmount=projectInstance.parent.totAllAmount - sumAmountAllocated
 	        ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
 	        NumberFormat formatter = new DecimalFormat("#0.00");
 	        return ['grantAllocationInstance':grantAllocationInstance,
@@ -462,6 +471,7 @@
 	 * */
     def subGrantSave = 
     {
+
 		def investigatorService = new InvestigatorService()
 		params.createdDate = new Date();
 		params.modifiedDate = new Date();
@@ -469,6 +479,7 @@
     	double totAllAmount = ((params.totAllAmount).toDouble()).doubleValue()
     	double amountAllocated = ((params.amountAllocated).toDouble()).doubleValue()
     	double newAmount = ((params.amount).toDouble()).doubleValue()
+    	double balanceAmount= ((params.balance).toDouble()).doubleValue()
     	sumAmount = amountAllocated + newAmount
     	def granterInstance
     	def grantAllocationInstance
@@ -496,6 +507,7 @@
 		def grantAllocationInstanceCheck = grantAllocationService.getGrantAllocationsByProjectIdAndPartyId(grantAllocationInstance.projects.id,grantAllocationInstance.party.id)
     	def partyService = new PartyService();
     	def grantAllocationService = new GrantAllocationService()
+    
 		if(Double.compare(totAllAmount,sumAmount) >=0 )
 		{
 			Integer duplicateCheck = grantAllocationService.checkDuplicateFundAllot(grantAllocationInstance);
@@ -504,6 +516,7 @@
 			def grantAllocationInstanceForAccess
 			def accessInstance
 			def GrantAllocationSave
+			
 			if(grantAllocationList)
 			{
 				if(grantAllocationList[0].party.id == grantAllocationInstance.party.id || grantAllocationList==null)
@@ -515,6 +528,13 @@
 					}
 					else
 					{
+						
+						if(amountAllocated > balanceAmount)
+						{
+							flash.message= "${message(code: 'default.couldnotallocateBalanceAmount.label')}"
+						}
+						else
+						{
 						projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
 						if(projectsInstance.saveMode != null)
 						{
@@ -538,6 +558,7 @@
 				    		flash.message = "${message(code: 'default.AlreadyExists.label')}"
 			    	}
 				}
+				}
 				else
 				{
 					flash.message = "${message(code: 'default.ProjectAlreadyAllotted.label')}" + grantAllocationList[0].party.code
@@ -550,6 +571,14 @@
 				{
 					flash.message = "${message(code: 'default.couldnotallocatenotdoneHeadwiseallocation.label')}"
 				}
+				else
+				{
+					if(amountAllocated > balanceAmount)
+					{
+						
+					flash.message="${message(code: 'default.couldnotallocateBalanceAmount.label')}"
+					}
+				
 				else
 				{
 					projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
@@ -578,6 +607,7 @@
 					else
 		    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
 			    }
+			}
 			}
 		}
 		else
@@ -667,6 +697,7 @@
 		GrailsHttpSession gh=getSession()
 		def partyService = new PartyService()
 		def grantAllocationService = new GrantAllocationService()
+		 def dataSecurityService = new DataSecurityService()
 		def grantAllocationInstance = grantAllocationService.getGrantAllocationById(new Integer(params.id))
 		def projectsInstance = Projects.get(grantAllocationInstance.projects.id)
         if(projectsInstance)
@@ -677,22 +708,37 @@
 		}
 		def partyInstance=partyService.getPartyById(gh.getValue("Party"))
 		  def projectInstance 
-		 println "ss "+grantAllocationInstance.projects
+
         if(grantAllocationInstance.projects.parent!=null) 
          projectInstance = Projects.get(grantAllocationInstance.projects.parent.id )
         else
          	projectInstance = Projects.get(grantAllocationInstance.projects.id )
         projectInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectInstance.id,getUserPartyID())
-        def grantAllocationInstanceList = grantAllocationService.getSubGrantAllocations(new Integer((projectInstance.id).intValue()))
-        double sumAmountAllocated = 0.00
-        for(int i=0;i<grantAllocationInstanceList.size();i++)
-        {
-        	sumAmountAllocated = sumAmountAllocated + grantAllocationInstanceList[i].amountAllocated
-        }
-        grantAllocationInstance.totAllAmount = sumAmountAllocated
-        grantAllocationInstance.balanceAmount=projectsInstance.parent.totAllAmount - grantAllocationInstance.totAllAmount
+          def grantAllocationInstanceList = grantAllocationService.getSubGrantAllocations(new Integer((projectInstance.id).intValue()))
+	        def headAllocatedAmount = grantAllocationSplitService.getAllocatedAmountByProjectId(projectInstance.id)//sum of headwise allocated amount
+
+	        double sumAmountAllocated = 0.00
+	        def projectsPIMapInstanceList=[]
+	        def sum
+	        for(int i=0;i<grantAllocationInstanceList.size();i++)
+	        {
+	        	sumAmountAllocated = sumAmountAllocated + grantAllocationInstanceList[i].amountAllocated
+	        	
+	        	//get PI of projects
+	        	def projectsPIMapInstance = dataSecurityService.getProjectsPIMap(grantAllocationInstanceList[i].projects.id);
+    	        projectsPIMapInstanceList.add(projectsPIMapInstance)
+	        }
+            
+	        grantAllocationInstance.totAllAmount = sumAmountAllocated
+	        if(headAllocatedAmount[0])
+	         {
+	           sum = sumAmountAllocated + headAllocatedAmount[0] // sum of grantamount and expenseamount
+	           grantAllocationInstance.balanceAmount=projectInstance.totAllAmount - sum
+	         }
+	        else
+	        	grantAllocationInstance.balanceAmount=projectInstance.totAllAmount - sumAmountAllocated
         
-        def dataSecurityService = new DataSecurityService()
+       
         //checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectInstance.id,new Integer(getUserPartyID()))==0)
 		{
@@ -715,16 +761,19 @@
 	        	         'partyInstance':partyInstance,
 	        	         'currencyFormat':currencyFormatter,
 	        	         'amount':formatter.format(grantAllocationInstance.amountAllocated),
-	        	         'projectsInstance':projectsInstance]
+	        	         'projectsInstance':projectsInstance,]
 	        }
         
 		}
     }
     def updateProAllot = 
     {
+			 println"params....."+params
 		 double sumAmount = 0.0
     	 double projectAmount = 0.0
     	 double amountToBeUpdated = 0.0
+    	 double amountAllocated= ((params.amountAllocated).toDouble()).doubleValue()
+    	 double balanceAmount= ((params.balance).toDouble()).doubleValue()
     	 projectAmount = ((params.totAllAmount).toDouble()).doubleValue()	 
      	 sumAmount = ((params.amountAllocated).toDouble()).doubleValue() + ((params.amount).toDouble()).doubleValue()
     	 GrailsHttpSession gh=getSession()
@@ -732,7 +781,7 @@
 		def investigatorService = new InvestigatorService()
 		 def pastGrantAllocation = grantAllocationService.getGrantAllocationById(new Integer(params.id))
 		 amountToBeUpdated = (sumAmount - (pastGrantAllocation.amountAllocated).doubleValue())
-		 
+		 double exactBalance = (balanceAmount+(pastGrantAllocation.amountAllocated).doubleValue())
 		 
 	        def grantAllocationUpdateInstance = grantAllocationService.getGrantAllocationById(new Integer(params.id))
 	        
@@ -741,7 +790,14 @@
 			def grantExpenseInstance = grantAllocationService.getExpenseForGrantAllocation(grantAllocationUpdateInstance);
 			def grantReceiptInstance = grantAllocationService.getGrantReceiptForGrantAllocation(grantAllocationUpdateInstance);
 			def fundTransferInstance= grantAllocationService.getFundTransferForGrantAllocation(grantAllocationUpdateInstance);
-			println "" + grantAllocationSplitInstance
+
+			if(amountAllocated > exactBalance)
+			{
+				flash.message= "${message(code: 'default.couldnotallocateBalanceAmount.label')}"
+					redirect(action:'editProAllot',id:pastGrantAllocation.id)
+			}
+			else
+			{
 			if(grantAllocationSplitInstance)
 			{
 				
@@ -776,7 +832,7 @@
 		 {
 		 if(Double.compare(projectAmount,amountToBeUpdated) >=0)
 		 {
-			 //def projectsInstance = projectsService.getProjectById(new Long(params.projects.id ))
+
 			
 			/* project save start */
 			def projectsInstance = new Projects()
@@ -854,6 +910,7 @@
 			 flash.message = "GrantAllocation not found with id ${params.id}"
 			 redirect(action:edit,id:params.id)
 		 }*/
+    }
     }
     }
     
@@ -1389,12 +1446,73 @@ def projectDash =
 			
 }
 
-def menu = {}
+def menu = {
+			def userService = new UserService()
+			def partyService = new PartyService()
+			GrailsHttpSession gh=getSession()
+			def parentList = []
+			def menuRoleMapParentList = [] as Set
+			def roleLst= new ArrayList()
+			def allChildList = []
+	    	def sizeList =[]
+	    	int s=0;
+			def userRoleList = userService.getUserRoleByUserId(gh.getValue("UserId"))
+			for(int i=0;i<userRoleList.size();i++)
+			{
+				roleLst << userRoleList[i]
+			}
+			String roleIds="(";
+			for(int i=0;i<roleLst.size();i++)
+			{
+				roleIds=roleIds+roleLst[i].id+","
+			}
+			roleIds=roleIds.substring(0,roleIds.length()-1)+")"
+			menuRoleMapParentList = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+ "and MRM.menu.parentId=-1 and MRM.activeYesNo='Y' group by MRM.menu.id order by MRM.menu.menuOrder asc")
+			for(int k=0;k<menuRoleMapParentList.size();k++){
+				def childList=MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+" and MRM.menu.parentId="+menuRoleMapParentList[k].menu.id+" and MRM.activeYesNo='Y'group by MRM.menu.id order by MRM.menu.menuOrder asc")
+				if (!childList){
+					parentList.add(menuRoleMapParentList[k])
+    			}
+			}
+			menuRoleMapParentList.removeAll(parentList)
+			render(view:'menu',model:[menuRoleMapParentList:menuRoleMapParentList,roleIds:roleIds])
+	}
 def top = {}
 
 def gmsFrame = {
+			def userService = new UserService()
+			def partyService = new PartyService()
 			GrailsHttpSession gh=getSession()
-			def role = gh.getValue("Role")
-			[role:role]
+			def menuRoleMapParentList = [] as Set
+			def userRoleList = userService.getUserRoleByUserId(gh.getValue("UserId"))
+			def roleLst= new ArrayList()
+			String path
+			def menuRoleMapChildInstance = []
+			for(int i=0;i<userRoleList.size();i++)
+			{
+				roleLst << userRoleList[i]
+			}
+			String roleIds="(";
+			for(int i=0;i<roleLst.size();i++)
+			{
+				roleIds=roleIds+roleLst[i].id+","
+			}
+			roleIds=roleIds.substring(0,roleIds.length()-1)+")"
+			menuRoleMapParentList = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+ "and MRM.menu.parentId=-1 and MRM.activeYesNo='Y' group by MRM.menu.id order by MRM.menu.menuOrder asc")
+			for(int j=0;j<menuRoleMapParentList.size();j++)
+			{
+				menuRoleMapChildInstance = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+" and MRM.menu.parentId="+menuRoleMapParentList[j].menu.id+" and MRM.activeYesNo='Y'group by MRM.menu.id order by MRM.menu.menuOrder asc")
+				if(menuRoleMapChildInstance){
+					break;
+				}
+			}
+			if(menuRoleMapChildInstance){
+				path = "../"+menuRoleMapChildInstance[0].menu.menuPath
+			}
+			else{
+				path = "../user/changePassword"
+			}
+				
+			[path:path]
 	}
 }

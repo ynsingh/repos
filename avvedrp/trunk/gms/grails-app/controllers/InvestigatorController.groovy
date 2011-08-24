@@ -15,7 +15,6 @@ class InvestigatorController {
     
         def investigatorInstanceList
         def investigatorService=new InvestigatorService()
-        println"@@@@@params@@@@@@"+params
         String subQuery ="";
        GrailsHttpSession gh=getSession()
         if(params.sort != null && !params.sort.equals(""))
@@ -85,8 +84,6 @@ class InvestigatorController {
     /*==================================== END =======================================*/
     def edit = {
        	
-    	println "------------------params------"+ params
-    	println "------------------params------"+params
     	GrailsHttpSession gh=getSession()
     	def investigatorInstance = Investigator.get( params.id )
     	def partyinstance=Party.get(gh.getValue("Party"))
@@ -103,7 +100,6 @@ class InvestigatorController {
 
     def update = 
        	{
-    		println "iiiiiiiiiiiiiiiiiiiiitest......................."
     		def investigatorInstance = Investigator.get( params.id )
     		def investigatorService = new InvestigatorService()
     		def ctx = AH.application.mainContext
@@ -111,7 +107,6 @@ class InvestigatorController {
     		def investigatorInstanceList
     		GrailsHttpSession gh=getSession()
     		def partyinstance=Party.get(gh.getValue("Party"))
-    		println"---params---"+params.name
     		
     		if(investigatorInstance) 
     		{
@@ -197,7 +192,6 @@ class InvestigatorController {
         def investigatorInstanceList
         def investigatorService=new InvestigatorService()
         def partyDepartmentService=new PartyDepartmentService()
-        println"@@@@@params@@@@@@"+params
         String subQuery ="";
       
         if(params.sort != null && !params.sort.equals(""))
@@ -205,7 +199,6 @@ class InvestigatorController {
         if(params.order != null && !params.order.equals(""))
         	subQuery =subQuery+" "+params.order
         def departmentList=partyDepartmentService.getActiveDepartment(gh.getValue("PartyID"))
-        println"departmentList"+departmentList
         if(gh.getValue("Role")=="ROLE_ADMIN")
         {
         	investigatorInstanceList = investigatorService.getAllInvestigators(subQuery)
@@ -226,7 +219,6 @@ class InvestigatorController {
 		def springSecurityService=ctx.springSecurityService
         def investigatorInstance = new Investigator(params)
 		def investigatorInstanceList
-		println"---params---"+params.name
 		GrailsHttpSession gh=getSession()
 		def investigatorService=new InvestigatorService()
         def partyinstance = Party.get(params.institution)
@@ -235,10 +227,7 @@ class InvestigatorController {
         def chkUniqueEmailInstance = investigatorService.getUniqueEmail(params)
         Integer userId  = userService.getUserByUserName(params.email)
         
-        println "userId"+userId
-        println"..............chkUniqueEmailInstance..........."+chkUniqueEmailInstance
-        println"..............chkUniqueNameInstance..........."+chkUniqueNameInstance
-        /*if(chkUniqueNameInstance || userId != null)
+         /*if(chkUniqueNameInstance || userId != null)
         {
         	println"chkUniqueNameInstance "+chkUniqueNameInstance 
         	flash.message = "${message(code: 'default.investigatorexistswithsamename.label')}"
@@ -249,8 +238,7 @@ class InvestigatorController {
         */
           if(chkUniqueEmailInstance || userId != null)
          {
-        	  println"chkUniqueEmailInstance "+chkUniqueEmailInstance 
-    	   flash.message ="${message(code: 'default.UserNamealreadyexists.label')}"
+          flash.message ="${message(code: 'default.UserNamealreadyexists.label')}"
     	   redirect(action:create,id:investigatorInstance.id)
          }
          else
@@ -264,12 +252,13 @@ class InvestigatorController {
         			flash.message = "${message(code: 'default.InvestigatorCreated.label')}"
         			def userInstance = new Person()
         			userInstance.username = investigatorInstance.email
+        			userInstance.userSurName = investigatorInstance.userSurName
         			def subName = investigatorInstance.email
         			//Extracting username from emailId
         			String userName = subName.substring(0,subName.indexOf('@'))
             
         			userInstance.userRealName = investigatorInstance.name
-            
+        			userInstance.userSurName = investigatorInstance.userSurName
         			userInstance.password = springSecurityService.encodePassword(userName)
         			userInstance.email = investigatorInstance.email
         			userInstance.enabled=false

@@ -19,6 +19,7 @@ class UserController extends GmsController {
     def notificationsEmailsService
     def userService
     def gmsSettingsService
+    def projectsService
 	// the delete, save and update actions only accept POST requests
 	static Map allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
 
@@ -37,43 +38,45 @@ class UserController extends GmsController {
 			params.max = 100
 		}
 		def userMapList
+		def total
 		def userService = new UserService()
+		def personRoleInstance = userService.getUserRoleByUserId(session.UserId)
 		 String subQuery ="";
 		def authorityList = []
-        //GrailsHttpSession gh=getSession()
-        if(params.sort != null && !params.sort.equals(""))
+         if(params.sort != null && !params.sort.equals(""))
         	subQuery=" order by UM."+params.sort
-        if(params.order != null && !params.order.equals(""))
+         if(params.order != null && !params.order.equals(""))
         	subQuery =subQuery+" "+params.order
-        //println"+++++++++params++++++++++"+params
-		 if(getUserRole().equals('ROLE_ADMIN')){
-		  userMapList = userService.getAllUsers(subQuery)
-		 }
+        	if(getUserRole().equals('ROLE_ADMIN'))
+        		userMapList = userService.getAllUsers(subQuery)
+	
 		  else
 		  {
-			  userMapList = userService.getAllUsersFromSite(getUserPartyID(),subQuery)
-		  }
-		if(userMapList)
-		  {
-			 for(int i=0;i<userMapList.size();i++)		 
-			 {				 				 
-				 /*
-				  * 1.get userRoleInstance based on the user id
-				  * 2. get authorityInstsnce based on the role
-				  */
-				 
-				  def userRoleInstance = userService.getuserRole(userMapList[i].user.id)		  
-				  println "ROLE INSTANCE -->" + userRoleInstance.role
-					
-				  if(userRoleInstance.role)
-				  {
-					  def authorityInstsnce = userService.getauthority(userRoleInstance.role.id)
-					  println "AUTHORITY INSTANCE -->" +authorityInstsnce
-					  authorityList.add(authorityInstsnce)
-				  }
-			  }
-		   }
-		[userMapList: userMapList,authorityList:authorityList]	  
+			  //if(getUserRole().equals('ROLE_SUPERADMIN'))
+			 if(personRoleInstance[0].authority == 'ROLE_SUPERADMIN')
+				  userMapList =  userService.getAllUserMapWithActiveParty()
+			  else
+				  userMapList = userService.getAllUsersFromSite(getUserPartyID(),subQuery)
+					if(userMapList)
+					  {
+						for(int i=0;i<userMapList.size();i++)		 
+						  {				 				 
+							 /*
+							  * 1.get userRoleInstance based on the user id
+							  * 2. get authorityInstsnce based on the role
+							  */
+							 
+							  def userRoleInstance = userService.getUserRoleByUserId(userMapList[i].user.id)
+							  
+							  if(userRoleInstance)
+							  {
+								  //def authorityInstsnce = userService.getauthority(userRoleInstance.role.id)
+								  authorityList.add(userRoleInstance[0].authority)
+							  }
+						  }
+					  }
+		  }  
+		[userMapList:userMapList,authorityList:authorityList,personRoleInstance:personRoleInstance[0]]	  
  
 	}
 	
@@ -123,12 +126,12 @@ class UserController extends GmsController {
 	}
 
 	def edit = {
-
 		GrailsHttpSession gh=getSession()
 		def userService = new UserService()
 		def person = userService.getUserById(new Integer(params.id))
 		def party = userService.getParty(person)
 		def grantAllocationInstance = new GrantAllocation();
+    	def personRoleInstance = userService.getUserRoleByUserId(session.UserId)
 		grantAllocationInstance.party=party;
 		if (!person) {
 			flash.message = "${message(code: 'default.notfond.label')}"
@@ -142,10 +145,9 @@ class UserController extends GmsController {
 		def userRoleInstance  = userService.getUserRoleByUserId(params.id)	
 		//get current role of a user
 		def authorityPersonInstance = Authority.find("from Authority AA where AA.id ="+userRoleInstance[0].id)
-		
 		//return buildPersonModel(person)
 		return [person:person, grantAllocationInstance : grantAllocationInstance,
-		        authorityInstance:authorityInstance, authorityPersonInstance:authorityPersonInstance]
+		        authorityInstance:authorityInstance, authorityPersonInstance:authorityPersonInstance ,personRoleInstance:personRoleInstance[0]]
 	}
 
 	/**
@@ -158,62 +160,92 @@ class UserController extends GmsController {
 		if (emailValidator.isValid(params.email))
 		{
 		def userService = new UserService()
+		def personRoleInstance = userService.getUserRoleByUserId(session.UserId)
 		def ctx = AH.application.mainContext
 		def springSecurityService=ctx.springSecurityService
 		Integer userId  = userService.getUserByUserName(params.email)
 		Integer userEmailId = userService.getUserByEmail(params.email)
-         if((userId && userId != new Integer(params.id)) || (userEmailId && userEmailId != new Integer(params.id)))
+        if((userId && userId != new Integer(params.id)) || (userEmailId && userEmailId != new Integer(params.id)))
         {
                	flash.message = "${message(code: 'default.UserNamealreadyexists.label')}"
         		redirect action: edit, id: params.id
         }
         else
         {
-		long version = params.version.toLong()
-		if (person.version > version) {
-			person.errors.rejectValue 'version', "person.optimistic.locking.failure",
-				"Another user has updated this User while you were editing."
-				render view: 'edit', model: buildPersonModel(person)
-			return
-		}
-		
-		//def oldPassword = person.password
-		person.properties = params
-		//if (!params.password.equals(oldPassword)) {
-		//	person.password = springSecurityService.encodePassword(params.password)
-		//}
-		Integer personId = userService.updateUser(person,params)
-		if (!personId) {
-			flash.message ="${message(code: 'default.notfond.label')}"
-			redirect action: edit, id: params.id
-		}
-			else
-			{
-				flash.message = "${message(code: 'default.updated.label')}"
-				redirect action:list,id:params.id
+			long version = params.version.toLong()
+			if (person.version > version) {
+				person.errors.rejectValue 'version', "person.optimistic.locking.failure",
+					"Another user has updated this User while you were editing."
+					render view: 'edit', model: buildPersonModel(person)
+				return
+			}
+			//def oldPassword = person.password
+			person.properties = params
+			if(params.Passwd)
+				person.password = springSecurityService.encodePassword(params.Passwd)
+			//if (!params.password.equals(oldPassword)) {
+			//	person.password = springSecurityService.encodePassword(params.password)
+			//}
+			
+			Integer personId = userService.updateUser(person,params)
+			if (!personId) {
+				flash.message ="${message(code: 'default.notfond.label')}"
+				redirect action: edit, id: params.id
+			}
+				else
+				{
+					if(personRoleInstance.authority == 'ROLE_SUPERADMIN')
+					{
+						if(params.Passwd)
+						{
+							
+							def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
+					    	String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
+					    	//mail content
+					    	String mailMessage="";
+					        mailMessage="Dear "+params.userRealName+" "+params.userSurName+", \n \n Your GMS user account has been updated with following details.";
+					        mailMessage+="\n \n LoginName    : "+params.email;
+					        mailMessage+="\n Password     : "+params.Passwd;
+					        // mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId+" \n";
+					    	def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage,"text/plain")
+						    flash.message = "${message(code: 'default.UpdatedUser.label')}"
+							redirect action:list,id:params.id
+						}
+						else
+						{
+							flash.message = "${message(code: 'default.updated.label')}"
+							redirect action:list,id:params.id
+						}
+					}
+					else
+					{
+						flash.message = "${message(code: 'default.updated.label')}"
+						redirect action:list,id:params.id
+					}
+				}
+			
 			}
 		}
-		}
-		
 		else
 		{
-			flash.message = "${message(code: 'default.EntervalidEmailAddress.label')}"
+			    flash.message = "${message(code: 'default.EntervalidEmailAddress.label')}"
 				def authorityInstance = userService.getActiveRoles() 
 				redirect action: edit, id: person.id
 		}
-		
-		
-	}
+    }
 
 	def create = {
 		def userService = new UserService()
+		def partyService = new PartyService()
 		def authorityList = userService.getRoles()
 		def authorityInstance = userService.getActiveRoles()
-		  GrailsHttpSession gh=getSession()
-			gh.removeValue("Help")
+		def institutionList = partyService.getAllActiveParties()
+    	def personRoleInstance = userService.getUserRoleByUserId(session.UserId)
+		GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
 				//putting help pages in session
 			gh.putValue("Help","New_User.htm")	
-		[person: new Person(params), authorityList: authorityList,authorityInstance:authorityInstance]
+		[person: new Person(params), authorityList: authorityList,authorityInstance:authorityInstance ,institutionList:institutionList,personRoleInstance:personRoleInstance[0]]
 
 	}
 	
@@ -226,12 +258,9 @@ class UserController extends GmsController {
 		if (emailValidator.isValid(params.email))
 		{
 		def userService = new UserService()
-
-		
 		def ctx = AH.application.mainContext
 		def springSecurityService=ctx.springSecurityService
 		Integer userId  = userService.getUserByUserName(params.email)
-		println "+++++++++++++++++++++++++userInst++++++++++++++++++++++++++++"+ userId
 		if(userId)
 		{
 			flash.message = "${message(code: 'default.UserNamealreadyexists.label')}"
@@ -247,7 +276,7 @@ class UserController extends GmsController {
 		person.password = springSecurityService.encodePassword(params.password)
 		person.enabled=false
 		if(params.get("party.id")==null)
-			params.put("party.id",getUserPartyID())
+		params.put("party.id",getUserPartyID())
 	    Integer personId = userService.saveUser(person,params)
 	    if(personId != null){
 	    	def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
@@ -270,8 +299,8 @@ class UserController extends GmsController {
 		else
 		{
 			flash.message = "${message(code: 'default.EntervalidEmailAddress.label')}"
-				def authorityInstance = userService.getActiveRoles() 
-				println"authorityInstance"+authorityInstance
+			def authorityInstance = userService.getActiveRoles() 
+			println"authorityInstance"+authorityInstance
 			render view: 'create', model: [authorityInstance:authorityInstance, person: params]
 		}
 	}
@@ -381,7 +410,7 @@ class UserController extends GmsController {
 			def ctx = AH.application.mainContext
 			def springSecurityService=ctx.springSecurityService
 			def userService = new UserService()
-			
+			def personRoleInstance = userService.getUserRoleByUserId(session.UserId)
 			def person = new UserMap()
 			def user = new Person()
 			def newParty = new Party()
@@ -454,7 +483,13 @@ class UserController extends GmsController {
 			    	mailMessage+=mailFooter
 			        def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage,"text/plain")
 					//redirect uri: '/user/newUserConfirm'
+					if(personRoleInstance.authority!='ROLE_SUPERADMIN')
 						render(view: "newUserConfirm")
+					else
+					{
+						render(view:"newUserCreate")
+						flash.message = "${message(code: 'default.CreatedSiteAdministrator.label')}"
+					}
 				}
 		       		 }
 			}
@@ -627,19 +662,14 @@ class UserController extends GmsController {
 	    	//def projectInstance = dataSecurityService.getAccessPermissionProjects()
 			GrailsHttpSession gh=getSession()
 			def userMapInstance = UserMap.findAll("from UserMap UM where UM.party.id="+gh.getValue("PartyID")+" and UM.user.id != "+gh.UserId)
-			println "gh.getValuePartyID"+gh.getValue("PartyID")
-			println "userMapInstance"+userMapInstance
-			println "grantAllocationInstance"+grantAllocationInstance
 			[grantAllocationInstance:grantAllocationInstance,userMapInstance:userMapInstance]
 	}
 	def getandSaveAccessPermission = {
-			println "saveAccessPermission======"+params
 			//def grantAllocationId = params.projectName
 			//checking more than one value selected
 			if(params.user.id){
 			def grantAllocationId = params.projectName
 			def grantList=params.projectName.toString();
-    		println "emailsList"+grantList
     		def grantSplit=grantList.split(',')
     		if(grantSplit.length==1)
     		{
@@ -647,12 +677,8 @@ class UserController extends GmsController {
     			grantAllot.add(params.projectName)
     			grantAllocationId=grantAllot
     		}
-    		
-			
-			println "dataSource"+dataSource
 			
 			def aclInstance = dataSecurityService.saveAccessPermisionDetails(grantAllocationId,params.user.id)
-			println "aclInstance*(****_)*()_()_()_("+aclInstance
 			redirect(action:getProjectName,params:[user:params.user.id])
 			}
 			else
@@ -663,7 +689,6 @@ class UserController extends GmsController {
 	
 	//for listing project details of each user
 	def getProjectName = {
-			println "getProjectName"+params
 			GrailsHttpSession gh=getSession()
 			if(params.user)
 			{
@@ -686,9 +711,6 @@ class UserController extends GmsController {
 	    	//def projectsInstance = dataSecurityService.getAccessPermissionProjects()
 			
 			def userMapInstance = UserMap.findAll("from UserMap UM where UM.party.id="+gh.getValue("PartyID"))
-			println "userMapInstance"+userMapInstance
-			println "params"+params.user
-			println "grantAllocationInstance"+grantAllocationInstance
 			def projectInstance = dataSecurityService.getAccessPermissionProjects(params.user)
 			def grantAllocationList=[]
 			def grantCollection=[]
@@ -701,7 +723,6 @@ class UserController extends GmsController {
 				for(id in grantCollection)
 				{
 					def projectId = GrantAllocation.find("from GrantAllocation GA where GA.projects.id="+id)
-					println "projectId"+projectId
 					grantAllocationList.add(projectId)
 				}
 			}
@@ -716,7 +737,6 @@ class UserController extends GmsController {
 			}
 			else
 			{
-				println "gjghusd[][]gljdfl;jhkldfjhljdfiphdfukghdfukygukdfhi89898***"
 				render (template:"projectNameSelect", model : ['grantAllocationInstance' : grantAllocationInstance])
 			}
 			}
@@ -726,17 +746,14 @@ class UserController extends GmsController {
 			}
 	}
 	def deleteProjectFromAccespermision = {
-			println "deleteProjectFromAccespermision=="+params
 			def projectInstance = params.projectId
 			def projectList=params.projectId.toString();
-    		println "projectList"+projectList
     		def projectSplit=projectList.split(',')
     		if(projectSplit.length==1)
     		{
     			def projectArray=[]
     			projectArray.add(params.projectId)
     			projectInstance=projectArray
-    			println "projectInstance"+projectInstance
     		}
 			def aclInstance = dataSecurityService.deleteAccessPermission(projectInstance,params.user.id)
 			redirect(action:getProjectName,params:[user:params.user.id])
@@ -746,10 +763,8 @@ class UserController extends GmsController {
 	def changeUserName = {
 			GrailsHttpSession gh=getSession()
 			def userId = gh.getValue("UserId")
-			println"params"+params
 			def dataSecurityService = new DataSecurityService()
 			def person = dataSecurityService.getUserOfLoginUser(userId)
-			println"person"+person
 			if (!person) {
 				flash.message = "${message(code: 'default.notfond.label')}"
 				
@@ -761,16 +776,12 @@ class UserController extends GmsController {
 	
 	def updateUserName=
 	{
-			println "params======"+params
 			def userService = new UserService()
 			// def dataSecurityService = new DataSecurityService()
 			//def ctx = AH.application.mainContext
 			// def springSecurityService=ctx.springSecurityService
 			def personInstance = new Person()
-		    System.out.println("params  "+params.oldUsrName)
 			def person = userService.getUserName(params)
-			System.out.println("person  "+person)
-			
 			if (!person) 
 			{
 				flash.message ="No user with this user name exists"
@@ -778,14 +789,12 @@ class UserController extends GmsController {
 			}
 			else
 			{
-				println"params......"+params
 				// person.properties = params
 				//person.username = chkUserNameForUser[0].username
 				if (!params.newUsrName.equals(params.oldUsrName)) 
 				{
 					person.username = params.newUsrName
 					Integer personId = userService.updateUserName(person)
-					println"personId"+personId
 					if(personId != null)
 					{
 						def accessPermissionInstance = dataSecurityService.changeAccessPermission(personId,params)
@@ -810,6 +819,92 @@ class UserController extends GmsController {
 			
 		}
 	
+	def newUserBySuperAdmin = {}
+	def saveNewUserBySuperAdmin =
+	{
+				def ctx = AH.application.mainContext
+				def springSecurityService=ctx.springSecurityService
+				def userService = new UserService()
+				def person = new UserMap()
+				def user = new Person()
+				def newParty = new Party()
+				def partyInstance = new Party()
+				person.properties = params
+				
+				user.username= params.email
+				
+				user.userRealName = params.userRealName
+				user.userSurName = params.userSurName
+				user.password = params.password
+				user.email = params.email
+				user.password = springSecurityService.encodePassword(params.password)
+				user.enabled=false
+				Integer userId  = userService.getUserByUserName(params.email)
+				
+				if(userId)
+				{
+					flash.message = "${message(code: 'default.UserNameOfSiteadminalreadyexists.label')}"
+					redirect uri: '/user/newUserBySuperAdmin.gsp'
+				}
+				else
+				{
+					
+			        partyInstance.createdBy="admin"
+			        partyInstance.createdDate = new Date();
+			        partyInstance.modifiedBy="admin"
+			        partyInstance.modifiedDate = new Date();
+			        partyInstance.nameOfTheInstitution = params.nameOfTheInstitution
+			        partyInstance.code = params.code
+			        partyInstance.address = params.address
+			        partyInstance.activeYesNo = 'Y'
+			       
+			        partyInstance.email = params.institutionemail
+			        partyInstance.phone = params.phone
+			       
+				    def party = userService.addParty(partyInstance)
+					if((partyInstance.saveMode != null) && (partyInstance.saveMode.equals("Duplicate")))
+			       	{
+						
+		       			flash.message = "${message(code: 'default.InstitutionAlreadyExists.label')}"
+		                redirect uri: '/user/newUserBySuperAdmin.gsp'
+			       	}
+					else	
+					{
+						
+						def userInstance = userService.saveNewUser(user,params)
+						person.user = userInstance
+						person.user.id = userInstance.id;
+						person.party = party
+						person.party.id = party.id
+						Integer personId = userService.saveNewUserMap(person,params)
+					  
+						
+				       	//creating role privileges for each role in the new party ending
+					    if(personId != null)
+					    {
+					    	String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
+					    	def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
+					    	def mailFooter=gmsSettingsService.getGmsSettingsValue("MailFooter")
+					    	//mail content
+					    	String mailMessage="";
+					        mailMessage="Dear "+params.userRealName+params.userSurName+", \n \n "+mailContent+".";
+					        mailMessage+="\n \n LoginName    : "+params.email;
+					        mailMessage+="\n Password     : "+params.password;
+					        mailMessage+="\n \n \n To activate your account,click on the following link   \t: "+urlPath+personId+" \n";
+					        mailMessage=mailMessage+" \n\n" 
+					    	mailMessage+=mailFooter
+					        def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage,"text/plain")
+							//redirect uri: '/user/newUserConfirm'
+								
+									render(view:"newUserBySuperAdmin")
+									flash.message = "${message(code: 'default.CreatedSiteAdministrator.label')}"
+							
+						}
+				     }
+				}
+	}
+			
+
 	
 	def forgotPasswordConfirm = {}
 	def userConfirmation = {}

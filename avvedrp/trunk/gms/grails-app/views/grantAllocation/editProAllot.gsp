@@ -63,6 +63,7 @@
             <g:form method="post" action="updateProAllot" >
             <input type="hidden" name="projects.id" value="${grantAllocationInstance?.projects?.id}" />
                 <input type="hidden" name="id" value="${grantAllocationInstance?.id}" />
+                 <input type="hidden" id="balance" name="balance" value="${grantAllocationInstance.balanceAmount}"/>
                 <div class="dialog">
                   <table>
                     <tbody>

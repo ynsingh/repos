@@ -65,6 +65,7 @@
 	            <g:form method="post" >
 	                <input type="hidden" name="id" value="${grantAllocationSplitInstance?.id}" />
 	                <input type="hidden" id="unAllocatedAmt" name="unAllocatedAmt" value="${grantAllocationSplitInstance.unAllocatedAmt}"/>  
+	                <input type="hidden" id="balance" name="balance" value="${balanceAmount}"/>
 	                <div class="dialog">
 	                    <table>
 	                        <tbody>

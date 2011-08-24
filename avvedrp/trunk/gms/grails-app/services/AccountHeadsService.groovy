@@ -18,8 +18,7 @@ class AccountHeadsService{
 		def accountHeadsInstanceList=AccountHeads.findAll("from AccountHeads P where P.parent.id="+mainAccountHeadId+"and P.activeYesNo='Y'")
 		for(int i=0;i<accountHeadsInstanceList.size();i++ )
         {
-		 println"drtfgretr"
-		 accountHeadsInstanceList[i].accHeadCode=accountHeadsInstanceList[i].code+" -"+accountHeadsInstanceList[i].name
+			accountHeadsInstanceList[i].accHeadCode=accountHeadsInstanceList[i].code+" -"+accountHeadsInstanceList[i].name
         }
 		return accountHeadsInstanceList
 	}
@@ -151,6 +150,10 @@ class AccountHeadsService{
 	{
 		def accountHeadsInstance = AccountHeads.find("from AccountHeads AH where AH.id= "+accHeads.parent.id)
 		return accountHeadsInstance
-	}            
-	
+	}        
+	public List getAllAccountHeads()
+	{
+        def accountHeadList=AccountHeads.findAll("from AccountHeads AH where AH.parent.id is NULL and AH.activeYesNo='Y' order by AH.name")
+        return accountHeadList
+	}
 }

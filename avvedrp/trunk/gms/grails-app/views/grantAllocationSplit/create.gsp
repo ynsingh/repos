@@ -82,7 +82,8 @@
                                  	${currencyFormat.ConvertToIndainRS(grantAllocationSplitInstance.projects.totAllAmount)}
                              	</strong>
                          	</td>
-		                    
+
+		                   
 		                    </tr> 
 		                     <tr>  
 	                         	<td valign="top" >
@@ -103,6 +104,7 @@
 		                             	</strong>
 		                         	</td>
                         </tr> 
+                        
                     </table>
                 </div>
                 
@@ -122,6 +124,9 @@
                 			<div class="dialog">
                     			<table >
                         			<tbody>
+                        			 <td>
+					                    <input type="hidden" id="balance" name="balance" value="${balanceAmount}"/>
+					                  </td>
                           				<tr>
                                 			<td valign="top" class="name">
                                     			<label for="grantPeriod"><g:message code="default.GrantPeriod.label"/>:</label>
@@ -130,6 +135,7 @@
                                      			<input type="hidden" id="grantAllotId" name="grantAllotId" 
                                      				value="${fieldValue(bean:grantAllocationSplitInstance.grantAllocation, field:'id')}"/>
                                      			<input type="hidden" id="UnAll" name="UnAll" value="${params.UnAll}"/>  
+                                     			 
                                 			</td>
                                 			<td valign="top" 
                                 				class="value ${hasErrors(bean:grantAllocationSplitInstance,field:'grantPeriod','errors')}">

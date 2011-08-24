@@ -164,11 +164,20 @@ class AccountHeadsController
 	 
     def delete = 
     {
+			 println"-------------------params--------------"+params
     		def accountHeadsInstance = new AccountHeads()
     		def accountHeadsService = new AccountHeadsService()
             accountHeadsInstance.properties = params
             Integer accountHeadId = null
-            
+            def accountHeadInBudgetDetail =BudgetDetails.find("from BudgetDetails BD where BD.accountHeads.id="+params.id)
+			println"-----------accountHeadInBudgetDetail-------------"+accountHeadInBudgetDetail
+			if(accountHeadInBudgetDetail)
+			{
+				flash.message = "${message(code: 'default.usedinAllocated.label')}"
+					 redirect(action:edit,id:params.id)
+			}
+			else
+			{
             /* Delete the account head details */
     		accountHeadId = accountHeadsService.deleteAccountHeads(params)
 			if (accountHeadId == 0)
@@ -178,7 +187,8 @@ class AccountHeadsController
 				 redirect(action:edit,id:params.id)
 			}
 			else
-			{	
+			{
+				
 				if(accountHeadId != null)
 				{				
 					flash.message = "${message(code: 'default.deleted.label')}"			
@@ -196,6 +206,7 @@ class AccountHeadsController
 		            flash.message = "${message(code: 'default.notbedeletedAccountHead.label')}"
 		            redirect(action:edit,id:params.id)
 		        }
+			}
 			}
     }
     
