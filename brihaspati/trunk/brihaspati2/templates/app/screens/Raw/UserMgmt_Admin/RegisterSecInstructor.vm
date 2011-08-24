@@ -2,9 +2,11 @@
  * @(#) RegisterSecInstructor.vm
  * Copyright (c) 2005,2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
+ * @author <a href="shaistashekh@hotmail.com"> Shaista</a>  
  * @author <a href="awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>  
  * @author <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>  
  * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modified date:24-08-2011 (Shaista)
 *#
 
 
@@ -59,7 +61,11 @@ $!data.getMessage()
 		<td><b>$entry</b></td>
       </tr>
       <tr>
-        #formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
+	#*
+	## User Name is no more required for registration so it is commented (Shaista).
+	*#
+        ###formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
+        #formCell("$brih_email $brih_ID" "EMAIL" "")
       </tr>
       <tr bgcolor="$ui.menuColor" >
         #formPasswordCell ("$brih_pwd" "PASSWD" "")
@@ -70,9 +76,11 @@ $!data.getMessage()
       <tr bgcolor="$ui.menuColor">
         #formCell("$brih_last $brih_name" "LNAME" "")
       </tr>
+#*
       <tr>
         #formCell("$brih_email $brih_ID" "EMAIL" "")
       </tr>
+*#
 	<tr bgcolor="$ui.menuColor">
 	<td colspan=2 align=left>
 	    <input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
@@ -91,7 +99,8 @@ $!data.getMessage()
 <SCRIPT LANGUAGE="javascript">
         function checkField(frm,field)
         {
-                if(frm.UNAME.value!="")
+                //if(frm.UNAME.value!="")
+                if(frm.EMAIL.value!="")
                 {
                                 frm.actionName.value=field.name;
                                 frm.submit();
