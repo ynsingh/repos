@@ -45,7 +45,7 @@ location.href="login.jsp";
 	</div>
 </div>
 
-<form id="usrForm" action="./ForgotPasswordController" method="POST">
+<form id="usrForm" action="./ResetPasswordController" method="POST">
 <div  class="listdiv" style="margin:2px">
 	<h1></h1>
 	<div style= "margin:10px;background-color:#386890;width:98%;height:25px">&nbsp;<br><br><br>		

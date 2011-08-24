@@ -23,7 +23,6 @@ public   class ConnectDB {
 				conn=DriverManager.getConnection("jdbc:mysql:"+dbname+"?characterSetResults=UTF-8&characterEncoding=UTF-8&useUnicode=yes",username,password);
 				
 			}catch(Exception e){
-
 				e.printStackTrace();}
 			return conn;
 		 }

@@ -141,7 +141,11 @@ function addRow(documentId,formname,entitytype,tabledata){
 		//alert("Edit :3");
 	}	
 	else
-	{	//alert("New Row");
+	{	
+		var recordcount=document.getElementById("recordcount_"+formname).value;
+ 	 	document.getElementById("div_recordcount_"+formname).innerHTML=parseInt(recordcount)+1;
+ 	 	document.getElementById("recordcount_"+formname).value=parseInt(recordcount)+1;
+		//alert("New Row");
 		var x=document.getElementById(tabname).insertRow(rowCount);		
 		x.id="TR_"+TabElements[0];		
 		//alert(x.id);
@@ -202,12 +206,15 @@ function ajaxFunction(cn,documentId){
 	ajaxRequest.onreadystatechange = function(){
 		if(ajaxRequest.readyState == 4){
 		     if(cn=="edit"){ 
-		        var str=ajaxRequest.responseText.split('\n');
-			document.getElementById("EDIT"+documentId).value=str[1];
+		        var str=ajaxRequest.responseText;		        
+		        str=str.replace(/\n/g,'');		        
+			document.getElementById("EDIT"+documentId).value=str;
 		     }else if(cn=="delete"){
-		        var str=ajaxRequest.responseText.split('\n');
-		        document.getElementById("DELETE"+documentId).value=str[1];
+		        var str=ajaxRequest.responseText;
+		        str=str.replace(/\n/g,'');
+		        document.getElementById("DELETE"+documentId).value=str;
 		     }
+
 
 			
 		}
@@ -691,3 +698,31 @@ function validatePercentage(field)
     		return true;
 	}
 /*================================ End of added on 21-06-2011 ===================================*/
+
+function ajaxFunctionDelete(documentId,formname){
+	var ajaxRequest; 
+	//alert("documentid :" + documentId + ":"+formname);
+	try{		
+		ajaxRequest = new XMLHttpRequest();
+	} catch (e){		
+		try{
+			ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+		} catch (e) {
+			try{
+				ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (e){			
+				alert("Your browser broke!");
+				return false;
+			}
+		}
+	}
+		ajaxRequest.onreadystatechange = function(){
+		if(ajaxRequest.readyState == 4){
+		  //alert("deleted");   			
+		}
+	}	
+	ajaxRequest.open("POST", "./jsp/ajaxdeleteRecord.jsp", true);	
+	ajaxRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");	
+        ajaxRequest.send("documentId="+documentId+"&tablename="+formname);
+		
+}

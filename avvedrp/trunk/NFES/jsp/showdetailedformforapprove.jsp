@@ -3,6 +3,8 @@
 <%@ page contentType="text/html; charset=iso-8859-1" language="java" import="javax.sql.DataSource,javax.naming.Context,javax.naming.InitialContext,java.sql.*,java.util.*,java.io.FileInputStream" errorPage="" %>
 <%@ taglib prefix="app" uri="http://www.springframework.org/security/tags" %>
 
+<jsp:useBean id="db" class="com.erp.nfes.ConnectDB" scope="session"/> 
+
 <HTML lang=en-US dir=ltr xmlns="http://www.w3.org/11001/xhtml">
 <HEAD profile=http://gmpg.org/xfn/11>
 
@@ -101,23 +103,31 @@ String edit_mode=request.getParameter("edit_mode");
 -->
 <%
 Connection conn=null;
+Connection conn1=null;
 Statement theStatement=null;
 ResultSet theResult=null;
-
+String imageName="";
 try{
-     Properties properties = new Properties();
-     properties.load(new FileInputStream("../conf/db.properties"));
-     String dbname = properties.getProperty("dbname");
-     String username = properties.getProperty("username");
-     String password = properties.getProperty("password");
-     Class.forName("org.gjt.mm.mysql.Driver");
-     conn=DriverManager.getConnection("jdbc:mysql:"+dbname+"?characterSetResults=UTF-8&characterEncoding=UTF-8&useUnicode=yes",username,password);
+
+    /* =================== To display Staff Image 04-07-11 Rajitha ================ */
+    conn1 = db.getMysqlConnection();
+    PreparedStatement pst=conn1.prepareStatement("SELECT upload_photo FROM staff_profile_report_v0_values WHERE idf="+userId);	
+    ResultSet rs=pst.executeQuery();
+    while(rs.next())
+    {
+      imageName=userId+"/photo/"+rs.getString(1);					
+    }	
+    conn1.close();
+     /* ================================ End ======================================= */
+
+     conn = db.getMysqlConnection();
      theStatement=conn.createStatement();
      theResult=theStatement.executeQuery("select * from  staff_profile_masterdetails_v0_values where userid="+ userId);
      while(theResult.next()){    %>     
      <div name="userdetails" id="userdetails"  >
      <table class="thead" width="100%" >
      <tr >
+     <td rowspan="2" width="100" height="100"><img src= "../GetImageServlet?filename=<%=imageName%>" height="100%" width="100%"></td>		
      <td align="center">
      <h2><%=theResult.getString("user_full_name")%>&nbsp;&nbsp;&nbsp;</h2>
      <b><%=theResult.getString("designation")%>&nbsp;&nbsp;&nbsp;
@@ -142,9 +152,9 @@ try{
 catch(Exception e){
      e.printStackTrace();
 }
-
+conn.close();
  
- String str1="../StaffProfileServlet?action=CDOC-OPEN_A_DOCUMENT_FOR_APPROVE&entityId="+userId+"&documentId="+documentId+"&entitytype="+entitytype +"&formName="+formname+"&edit_mode="+edit_mode; 
+String str1="../StaffProfileServlet?action=CDOC-OPEN_A_DOCUMENT_FOR_APPROVE&entityId="+userId+"&documentId="+documentId+"&entitytype="+entitytype +"&formName="+formname+"&edit_mode="+edit_mode; 
 %>
 
 <table class="bodystyle1" width="100%" align="center" ><tr><td>

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-//import javax.swing.JOptionPane;
+
 
 
 
@@ -32,7 +32,7 @@ public class StaffProfileServlet extends HttpServlet {
 		//System.out.println("Language1: "+language);
 		response.setContentType("text/html; charset=UTF-8");
 		Locale locale = new Locale(language, "");
-		RequestParam userRequest = new RequestParam ();
+		RequestVariables userRequest = new RequestVariables ();
 		try {
 			userRequest = getRequestParamenters ( request );
 		} catch ( Exception e ) {
@@ -50,8 +50,8 @@ public class StaffProfileServlet extends HttpServlet {
 			createNewDocument ( request, response, userRequest,language );
 		} else if ( action.trim().equals( "CDOC-SAVE_THE_DOCUMENT" ) ) {
 			request.getSession().setAttribute("clinicalform-actiondesc","Saving Staff Profile");
-			userRequest.setSubmitButton( "" + StaffProfileConstants.CDOC_DOCUMENT_DICTATED );
-			userRequest.setSaveFormat( StaffProfileConstants.CDOC_REGULAR_FORM );
+			userRequest.setSubmitButton( "" + FacultyProfileConstants.CDOC_DOCUMENT_DICTATED );
+			userRequest.setSaveFormat( FacultyProfileConstants.CDOC_REGULAR_FORM );
 			try {
 				saveDocument ( request, response, userRequest );
 			} catch (Exception e) {
@@ -59,12 +59,12 @@ public class StaffProfileServlet extends HttpServlet {
 			}
 		}else if ( action.trim().equals( "CDOC-PRINT_READY_DOCUMENT" ) ) {
 			request.getSession().setAttribute("clinicalform-actiondesc","View in printableformat (pdf)");
-			userRequest.setSubmitButton( StaffProfileConstants.CDOC_DOCUMENT_SHOW_PRINT_READY_REPORT );
+			userRequest.setSubmitButton( FacultyProfileConstants.CDOC_DOCUMENT_SHOW_PRINT_READY_REPORT );
 			showPrintableReport ( request, response, userRequest );
 		}else if ( action.trim().equals( "CDOC-FINAL_APPROVE")||(action.trim().equals( "CDOC-RECORD_APPROVE" )) ) {
 			request.getSession().setAttribute("clinicalform-actiondesc","Approving Staff Profile");
-			userRequest.setSubmitButton( "" + StaffProfileConstants.CDOC_DOCUMENT_SIGNED_OFF );
-			userRequest.setSaveFormat( StaffProfileConstants.CDOC_REGULAR_FORM );
+			userRequest.setSubmitButton( "" + FacultyProfileConstants.CDOC_DOCUMENT_SIGNED_OFF );
+			userRequest.setSaveFormat( FacultyProfileConstants.CDOC_REGULAR_FORM );
 			try {
 				saveDocument ( request, response, userRequest );
 			} catch (Exception e) {
@@ -74,7 +74,7 @@ public class StaffProfileServlet extends HttpServlet {
 
 	}//end of function service.
 
-	private void saveDocument(HttpServletRequest request,HttpServletResponse response, RequestParam userRequest) throws Exception {
+	private void saveDocument(HttpServletRequest request,HttpServletResponse response, RequestVariables userRequest) throws Exception {
 		long documentId = 0;
 		documentId = saveTheDocument(request, response, userRequest);
 		if ( documentId != 0 ) {
@@ -91,8 +91,8 @@ public class StaffProfileServlet extends HttpServlet {
 
 	}
 
-	private void redirectUrlDocument(HttpServletRequest request,HttpServletResponse response, long documentId,RequestParam userRequest,String message) throws Exception {
-		if ( !userRequest.getSubmitButton().trim().equals( StaffProfileConstants.CDOC_DOCUMENT_SHOW_PRINT_READY_REPORT ) ) {
+	private void redirectUrlDocument(HttpServletRequest request,HttpServletResponse response, long documentId,RequestVariables userRequest,String message) throws Exception {
+		if ( !userRequest.getSubmitButton().trim().equals( FacultyProfileConstants.CDOC_DOCUMENT_SHOW_PRINT_READY_REPORT ) ) {
 			String conPath = request.getContextPath();
 			String form_Name=userRequest.getFormName();
 			String action="";
@@ -151,7 +151,7 @@ public class StaffProfileServlet extends HttpServlet {
 	}
 
 
-	private long saveTheDocument(HttpServletRequest request,HttpServletResponse response, RequestParam userRequest) throws Exception {
+	private long saveTheDocument(HttpServletRequest request,HttpServletResponse response, RequestVariables userRequest) throws Exception {
 		HashMap qaMap = userRequest.getQuestionAnswerMap();
 		if(qaMap==null){
 			//System.out.println("Empty Has Map");			
@@ -172,7 +172,7 @@ public class StaffProfileServlet extends HttpServlet {
 	 * @param response
 	 * @param userRequest
 	 */
-	private void createNewDocument(HttpServletRequest request, HttpServletResponse response, RequestParam userRequest,String language) {
+	private void createNewDocument(HttpServletRequest request, HttpServletResponse response, RequestVariables userRequest,String language) {
 		try {
 			createOrOpenNewDocument ( request, response, userRequest,language );
 		} catch (Exception e) {
@@ -187,7 +187,7 @@ public class StaffProfileServlet extends HttpServlet {
 	 */
 	private void createOrOpenNewDocument(HttpServletRequest request,
 									HttpServletResponse response,
-									RequestParam userRequest,String language)
+									RequestVariables userRequest,String language)
 									throws Exception {
 
 
@@ -213,9 +213,9 @@ public class StaffProfileServlet extends HttpServlet {
 	 * @param userRequest
 	 * @throws Exception
 	 */
-	private void createOrOpenStylesheetDocument(HttpServletRequest request, HttpServletResponse response, RequestParam userRequest,String language) throws Exception
+	private void createOrOpenStylesheetDocument(HttpServletRequest request, HttpServletResponse response, RequestVariables userRequest,String language) throws Exception
  {
-
+		Connection connect = null;
 		try {
 
 
@@ -223,7 +223,7 @@ public class StaffProfileServlet extends HttpServlet {
 			ArrayList questionVOsList = new ArrayList();
 			number = userRequest.getNumber();
 			//System.out.println("number==========="+number);
-			Connection connect = null;
+			
 			ConnectDB conObj=new ConnectDB();
 			connect = conObj.getMysqlConnection();			
 			if ( isValid(userRequest.getDocumentId()) && Integer.parseInt(userRequest.getDocumentId())>0 ){
@@ -325,12 +325,18 @@ public class StaffProfileServlet extends HttpServlet {
 
 			response.getWriter().println(str);
 
-			connect.close();
+			//connect.close();
 		} catch (Exception e) {
 
 			e.printStackTrace();
 		}
-
+		finally{
+			try {
+				connect.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	    }	
 	}
 
 
@@ -343,7 +349,7 @@ public class StaffProfileServlet extends HttpServlet {
 /**
  *
  */
-	private String getErrorPage(String msg) {
+	/*private String getErrorPage(String msg) {
 		StringBuffer sbr = new StringBuffer();
 		sbr.append("<html>")
 			.append("<head>")
@@ -367,17 +373,17 @@ public class StaffProfileServlet extends HttpServlet {
 			//.append("<%@include file=\"../Core_Common/Footer.jsp\"%>")
 			.append("</html>");
 		return sbr.toString();
-	}
+	}*/
 //End Merging
 	/**
 	 * @param request
 	 * @return
 	 */
-	public RequestParam getRequestParamenters( HttpServletRequest request ) throws Exception {
+	public RequestVariables getRequestParamenters( HttpServletRequest request ) throws Exception {
 
 
 
-		RequestParam userRequest = new RequestParam ();
+		RequestVariables userRequest = new RequestVariables ();
 		HttpSession session = request.getSession();
 		//System.out.println("formName,entitytype :"+request.getParameter("formName")+request.getParameter("entitytype"));
 		/*
@@ -441,7 +447,7 @@ public class StaffProfileServlet extends HttpServlet {
 		userRequest.setAnchor( request.getParameter("form_anchor") );
 		userRequest.setSpecialityDesc(request.getParameter("specialityDesc"));
 		userRequest.setFormTitle(request.getParameter("docName"));
-		/*=======================21-01-2010==========*/
+		/*=================================*/
 		//System.out.println("========editwithNewDocID:"+request.getParameter("editwithNewDocID"));
 		//userRequest.seteditwithNewDocID(request.getParameter("editwithNewDocID"));
 		/*=================== end ===================*/
@@ -517,7 +523,7 @@ public class StaffProfileServlet extends HttpServlet {
 	 * @param userRequest
 	 * @return
 	 */
-	private String getDocumentStatusMsg(RequestParam userRequest) {
+	private String getDocumentStatusMsg(RequestVariables userRequest) {
 
 		String ammendedDocId = userRequest.getAmmendedDocumentId();
 		String approvedYN = userRequest.getApprovedYesNo();
@@ -525,7 +531,7 @@ public class StaffProfileServlet extends HttpServlet {
 
 		if( ammendedDocId != null && Integer.parseInt(ammendedDocId)>0 ){
 			statusMessage = "Provisional - Interim - DO NOT PRINT";
-		}else if(approvedYN != null && approvedYN.equals("0") && StaffProfileConstants.CDOC_DOCUMENT_FROZEN != userRequest.getStatusId()){
+		}else if(approvedYN != null && approvedYN.equals("0") && FacultyProfileConstants.CDOC_DOCUMENT_FROZEN != userRequest.getStatusId()){
 			statusMessage = "D R A F T - C O P Y";
 		}
 
@@ -550,7 +556,7 @@ public class StaffProfileServlet extends HttpServlet {
 	 * @param response
 	 * @param userRequest
 	 */
-	private void showPrintableReport(HttpServletRequest request, HttpServletResponse response, RequestParam userRequest){
+	private void showPrintableReport(HttpServletRequest request, HttpServletResponse response, RequestVariables userRequest){
 		String documentId = userRequest.getDocumentId();
 		if ( documentId == null || documentId.trim().length() < 1 ) {
 			HtmlTemplateHelper.showErrorMessage( response,"No document available for print..." );
@@ -569,7 +575,7 @@ public class StaffProfileServlet extends HttpServlet {
 	}
 
 
-	public void showHtmlPrintableReport(HttpServletRequest request, HttpServletResponse response, RequestParam userRequest) throws Exception{
+	public void showHtmlPrintableReport(HttpServletRequest request, HttpServletResponse response, RequestVariables userRequest) throws Exception{
 	    ArrayList returnList = new ArrayList();
 		returnList =HtmlTemplateHelper.getXMLString( request,  response,  userRequest);
 		String key = "myQuestions" + userRequest.getFormName();
@@ -610,7 +616,14 @@ public class StaffProfileServlet extends HttpServlet {
 			//System.out.println("Data Array :"+dataArray);
 		}catch (SQLException e) {
 			e.printStackTrace();
-		}
+		}finally{
+			try {
+				//System.out.println("conn.close()");
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	    }
 		return dataArray;
 	}
 

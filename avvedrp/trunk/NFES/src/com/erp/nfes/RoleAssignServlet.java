@@ -1,6 +1,4 @@
-/* Created on Feb 10, 2011
- * @author nfes
-*/
+
 package com.erp.nfes;
 
 import java.io.IOException;
@@ -29,7 +27,7 @@ public class RoleAssignServlet extends HttpServlet{
 			ConnectDB conObj=new ConnectDB(); 
 			conn = conObj.getMysqlConnection();
 						
-			PreparedStatement st = conn.prepareStatement("UPDATE authorities SET authority=(SELECT role_id FROM roles WHERE role_name=?) WHERE username = ?");
+			PreparedStatement st = conn.prepareStatement("UPDATE authorities SET authority=? WHERE username = ?");
 			st.setString( 1, role_name );
 			st.setString( 2, username );						
 			st.executeUpdate();

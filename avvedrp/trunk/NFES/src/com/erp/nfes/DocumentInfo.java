@@ -1,20 +1,10 @@
 package com.erp.nfes;
-/*
- * Created on Feb 11, 2005
- *
- * To change the template for this generated file go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
+
 
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author ahis
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
+
 public class DocumentInfo implements Serializable {
 
 

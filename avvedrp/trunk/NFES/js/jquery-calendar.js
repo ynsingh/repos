@@ -195,7 +195,7 @@ var popUpCal = {
 			}
 			
 			timeSelect += '</select> ' + this.timeSeparators[1] + ' <select id="calendar_minute">';
-			for (var a = 0; a < 59; a++) {
+			for (var a = 0; a < 60; a++) {
 				if (this.selectedMinute == a) timeSelect += '<option value="' + a + '" selected="selected">' +  ((a >= 10) ? a : ('0' + a)) + '</option>';
 				else timeSelect += '<option value="' + a + '">' +  ((a >= 10) ? a : ('0' + a)) + '</option>';
 			}

@@ -60,7 +60,7 @@ public class ProfileCreationServlet extends HttpServlet {
     	String user = "";
     	String pwd = "";
     	String mail = "";
-    	String userFullName="";    	
+    	String userFullName="";
     	String Instid="";
     	String department_id="";
     	String designation_id="";
@@ -101,7 +101,7 @@ public class ProfileCreationServlet extends HttpServlet {
 				return;
 	        }
 	        criteria = "email = \"" + mail + "\"";
-	        if( existsUserRecord( criteria, conn ) ){	        		
+	        if( existsUserRecord( criteria, conn ) ){
 				/*rd = request.getRequestDispatcher("jsp/Account.jsp?emailExists=1");
 				rd.forward( request, response ); commented on 13-05-2011*/
 				response.sendRedirect("jsp/Account.jsp?emailExists=1");
@@ -134,14 +134,14 @@ public class ProfileCreationServlet extends HttpServlet {
 			insertStmt.setInt(5,userid);
 			insertStmt.executeUpdate();
 			insertStmt.close();
-			
+
 			qry = "INSERT INTO staff_master(userid,department_id,designation_id) VALUES ( ?, ?, ?)";
 			insertStmt = conn.prepareStatement( qry );
-			insertStmt.setInt(1,userid);			
+			insertStmt.setInt(1,userid);
 			insertStmt.setString(2,department_id);
 			insertStmt.setString(3,designation_id);
 			insertStmt.executeUpdate();
-			
+
 			/*==================Temporarily Commented the account activation using Mail Sending Procedure*/
 			sendemail( request, mail, user, pwd );
 			response.sendRedirect("jsp/Accountconfirmation.jsp");
@@ -151,20 +151,22 @@ public class ProfileCreationServlet extends HttpServlet {
 			//PreparedStatement st = conn.prepareStatement("UPDATE users SET enabled = 1 WHERE username = ?");
 			//st.setString( 1, user ); code exists in the insertion of users table
 
-			/* Commented on 10-02-2009 , activate only after role_assign
-			assignDefaultPrivileges(conn, user, "ROLE_TELLER" );//For user authentication*/
-			//assignDefaultPrivileges(conn, user, "2" );//For Profile Creation 03-05-2011
+
+			//assignDefaultPrivileges(conn, user, "ROLE_PROFILE_CREATION" );//For Profile Creation 03-05-2011
+
+
 
 			/*================ Creating Folder for storing uploaded files 19-02-2011============*/
-
+			/* Created at the uploading time . So Commented
 			Properties properties = new Properties();
 			properties.load(new FileInputStream("../conf/fileuploadpath.properties"));
 		    String url = properties.getProperty("DESTINATION_DIR_PATH");
 		   	CreateDir createdirobj= new CreateDir();
 			createdirobj.CreateFolder(url,Integer.toString(userid));
 			createdirobj.CreateFolder(url+"/"+Integer.toString(userid), "photo");
-
+			*/
 			/*============================== End of 19-02-2011 =================================*/
+
 
 
 			/*String val = "Your Registration Activated Successfully !";
@@ -315,12 +317,12 @@ public class ProfileCreationServlet extends HttpServlet {
 
 
 /*====================22-12-2010 User Activation==================*/
-private void assignDefaultPrivileges( Connection conn, String userLogin, String privilege ) throws SQLException{
+/*private void assignDefaultPrivileges( Connection conn, String userLogin, String privilege ) throws SQLException{
 	String insertStr = "INSERT INTO authorities ( username, authority ) VALUES ( ?, ? );";
 	PreparedStatement insertRole = conn.prepareStatement( insertStr );
 	insertRole.setString( 1, userLogin );
 	insertRole.setString( 2, privilege );
 	insertRole.executeUpdate();
-}
+}*/
 
 }

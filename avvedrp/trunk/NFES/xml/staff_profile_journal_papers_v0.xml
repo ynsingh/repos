@@ -229,7 +229,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 <!--============================= Upload File =============================-->
 
  <div id="fu1"> 
-  <form method="post" target="upload_target_iframe" action="./fileupload" NAME="myForm01" enctype="multipart/form-data">
+  <form method="post" target="upload_target_iframe" action="./UploadFiles" NAME="myForm01" enctype="multipart/form-data">
   <INPUT TYPE="HIDDEN" NAME="userId"><xsl:attribute name="VALUE"><xsl:value-of select="//entityId"/></xsl:attribute></INPUT>
   <table width="100%" class="tabBG3">
   <tr>

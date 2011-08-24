@@ -1,62 +1,34 @@
 
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="UTF-8" language="java" import="java.lang.*,java.io.*,java.sql.*,java.util.*" errorPage="" %>
+
+<jsp:useBean id="db" class="com.erp.nfes.ConnectDB" scope="session"/> 
+<jsp:useBean id="ml" class="com.erp.nfes.MultiLanguageString" scope="session"/> 
+
+
+
+
 <%
 Connection conn=null;
 Statement theStatement=null;
 ResultSet theResult=null;
-String login="";String u="";String p="";String lp="";String login_msg="";String l=""; String lc="";
-String em1="";String em2="";String em3="";
+String lc="";
 try{
      lc=request.getParameter("language");
      if(lc==null ||lc.equals("")){
           lc=(String) session.getAttribute("language");
           if(lc==null ||lc.equals("")){lc="en";}
      }
-     session.setAttribute("language",lc);
-     Properties properties = new Properties();
-     properties.load(new FileInputStream("../conf/db.properties"));
-     String dbname = properties.getProperty("dbname");
-     String username = properties.getProperty("username");
-     String password = properties.getProperty("password");
-     Class.forName("org.gjt.mm.mysql.Driver");
-     conn=DriverManager.getConnection("jdbc:mysql:"+dbname+"?characterSetResults=UTF-8&characterEncoding=UTF-8&useUnicode=yes",username,password);
-     theStatement=conn.createStatement();
-     theResult=theStatement.executeQuery("select control_name,language_string from language_localisation where active_yes_no=1 and file_code=1 and language_code=\'"+lc+"\'");
-     theResult.last();int len=theResult.getRow();String cn[]=new String[len];String ls[]=new String[len];
-     int i=0;theResult.beforeFirst();
-     while(theResult.next()){
-          cn[i]=theResult.getString("control_name");
-          ls[i]=theResult.getString("language_string");
-          i++;
-     }
+     session.setAttribute("language",lc);    
      
-     for(i=0;i<len;i++){
-     	if(cn[i].equals("login")){
-     		login=ls[i];
-     	}else if(cn[i].equals("username")){
-     		u=ls[i];
-     	}else if(cn[i].equals("password")){
-     		p=ls[i];
-     	}else if(cn[i].equals("lost_password")){
-     		lp=ls[i];
-     	}else if(cn[i].equals("login_msg")){
-     		login_msg=ls[i];
-     	}else if(cn[i].equals("language")){
-     		l=ls[i];
-     	}else if(cn[i].equals("error_msg1")){
-     		em1=ls[i];
-     	}else if(cn[i].equals("error_msg2")){
-     		em2=ls[i];
-     	}else if(cn[i].equals("error_msg3")){
-     		em3=ls[i];
-     	}
-     	
-     }
-     
+     conn = db.getMysqlConnection();
+     theStatement=conn.createStatement();       
      
      request.setCharacterEncoding("UTF-8");
      response.setContentType("text/html; charset=utf-8");
      Locale locale=new Locale(lc,"");
+     
+      ml.init("login.jsp", lc);  
+      
 }catch(Exception e){
      e.printStackTrace();
 }
@@ -208,12 +180,12 @@ background-color: #D5E5ED;
 
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="document.f.j_username.focus();" >
 
-<form name="f" action="<c:url value='j_spring_security_check'/>" method="POST">
+<form name="f" action="<c:url value='j_spring_security_check'/>" method="POST" target="_top">
 <%
 if ((request.getParameter("login_error") != "")&&(request.getParameter("login_error") != null)) {%>
 <div id="validation-summary">	
 	 <div class="loginLink">			
-		<div class='login_message'  align="center"><br><%=em2%></div>
+		<div class='login_message'  align="center"><br><%=ml.getValue("error_msg2")%></div>
 	</div>
 </div>		
 <%} 		 
@@ -232,7 +204,7 @@ if ((request.getParameter("login_error") != "")&&(request.getParameter("login_er
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
 <tr align="left">
-		<th height="40"> <%=l%></th>
+		<th height="40"> <%=ml.getValue("language")%></th>
 		<th align="left">
 		<select name="language" onchange="combo_change();" ><%
 		theResult=theStatement.executeQuery("select name,code from language_master where active_yes_no=1");
@@ -253,27 +225,24 @@ if ((request.getParameter("login_error") != "")&&(request.getParameter("login_er
 </tr>		
 
 <tr align="left">
-      <th width="50%" height="40"><%=u%> </th>
+      <th width="50%" height="40"><%=ml.getValue("username")%> </th>
       <th width="50%" align="left">	      
 	 <input type="text" style="width: 150px;" name='j_username' id='j_username' onkeypress="keypress(this.name,event)" />
      </th>
 </tr>
 <tr align="left">
-      <th width="50%" height="40"><%=p%> </th>
+      <th width="50%" height="40"><%=ml.getValue("password")%> </th>
       <th width="50%" align="left">
        <input type='password' style="width: 150px;" name='j_password' id='j_password' onkeypress="keypress(this.name,event)" />
     </th>
 </tr>
     <tr align="left">
       <th >&nbsp;</th>
-      <th align="left"><input type=button name="button" onclick="doLogin()" value='<%=login%>' ></th>
+      <th align="left"><input type=button name="button" onclick="doLogin()" value='<%=ml.getValue("login")%>' ></th>
       </tr>
 <tr align="left">
-<th ></th>
-<td > 	 
-
-	 <a onmouseout="this.style.textDecoration='none';" onmouseover="this.style.textDecoration ='underline';" style="font-size: 12px; font-weight: normal; text-decoration: none; color: rgb(125, 5, 63);" href="ForgotPassword.jsp"><%=lp%> </a>
-</td>
+<td ><a onmouseout="this.style.textDecoration='none';" onmouseover="this.style.textDecoration ='underline';" style="font-size: 12px; font-weight: normal; text-decoration: none; color: rgb(125, 5, 63);" href="registerUser.jsp?action=REGISTER_UNIVERSITY"><%=ml.getValue("register")%></a></td>
+<td ><a onmouseout="this.style.textDecoration='none';" onmouseover="this.style.textDecoration ='underline';" style="font-size: 12px; font-weight: normal; text-decoration: none; color: rgb(125, 5, 63);" href="ForgotPassword.jsp"><%=ml.getValue("lost_password")%> </a></td>
 </tr>
 <tr align="left">
 <th>&nbsp;</th>

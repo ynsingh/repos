@@ -22,14 +22,8 @@ function getResultFields(opt)
 
 function addtoSearchCondition(search_fld,search_op,search_value,search_value2)
 {
-getResultFields(document.searchForm.listfld);
-//if(document.searchForm.searchConditions.value==""){
-	document.searchForm.searchConditions.value= search_fld + " " + search_op + " " + search_value ;
-/*}
-else{
-	document.searchForm.searchConditions.value= document.searchForm.searchConditions.value + "\n" +search_fld + " " + search_op + " " + search_value ;
-}*/
-
+//getResultFields(document.searchForm.listfld);
+document.searchForm.searchConditions.value= search_fld + " " + search_op + " " + search_value ;
 if(search_value2!=""){
 	document.searchForm.searchConditions.value=document.searchForm.searchConditions.value + " and " + search_value2;
 }
@@ -77,11 +71,12 @@ function search(){
 		alert("Please enter a search condition");
 	}
 	else{		
-		getResultFields(document.searchForm.listfld);
+		//getResultFields(document.searchForm.listfld);
 		document.forms[0].action.value="search";
 		document.forms[0].submit();
 		
 	}
+
 }	
 
 
@@ -104,4 +99,83 @@ var entity_id=UserId;
 var document_Id=documentid;	  	
 formname="staff_profile_"+ entity_type +"_v0.xml";
 window.open("./jsp/showdetailedformforapprove.jsp?entityId="+entity_id+"&documentId="+document_Id+"&formname="+formname+"&entitytype="+entity_type ,"DetailForm","height="+screen.height +", width="+screen.width+", scrollbars=yes,directories=no,location=no,menubar=no,resizable=no,status=yes,toolbar=no,modal=yes");
+}
+
+/*===============Approval ========================*/
+function funcSelect_or_Deselect_All(){	
+   if(document.forms[0].select_all.checked==true){
+            for (var a=0; a < document.forms[0].select_for_approval.length; a++) {
+                 document.forms[0].select_for_approval[a].checked = true;            
+           }
+     }else{
+           for (var a=0; a < document.forms[0].select_for_approval.length; a++){
+                  document.forms[0].select_for_approval[a].checked = false;          
+           }
+     }          
+
+}
+
+function showRecords()
+{
+document.forms[0].action.value="showRecords";
+document.forms[0].submit();
+}
+function approve_without_verification()
+{
+var selected_docIds="-1";
+for (var a=0; a < document.forms[0].select_for_approval.length; a++){
+	  if(document.forms[0].select_for_approval[a].checked){
+	  if(document.forms[0].select_for_approval[a].value!="on"){
+	  selected_docIds=selected_docIds+","+document.forms[0].select_for_approval[a].value;
+	  }}
+   }              
+if (selected_docIds==-1){
+	alert("No selected records for approval!!");
+}else{
+	var approve_records = confirm("Would you like to approve the selected rows with out verification?");
+	if(approve_records==true){
+	document.forms[0].action.value="approve";
+	document.forms[0].selected_document_ids.value=selected_docIds;
+	document.forms[0].submit();	
+	}
+     }
+}
+
+
+/*=================== Update Record Access ===================*/
+
+function update_record_access_type(){
+var public_docIds="-1";
+var private_docIds="-1";
+for (var a=0; a < document.forms[0].chk_public_records.length; a++){
+	  if(document.forms[0].chk_public_records[a].value!="on"){
+	  	if(document.forms[0].chk_public_records[a].checked){	  
+	  	public_docIds=public_docIds+","+document.forms[0].chk_public_records[a].value;
+	  }else{
+	  private_docIds=private_docIds+","+document.forms[0].chk_public_records[a].value;
+	  }
+	  }
+   }              
+
+	var update_records = confirm("Would you like to update the records?");
+	if(update_records==true){
+	document.forms[0].action.value="update_records";
+	document.forms[0].updated_document_ids.value=public_docIds+"."+private_docIds;	
+	document.forms[0].submit();	
+	}
+    
+}
+
+
+function select_deselect_all(){	
+   if(document.forms[0].select_all.checked==true){
+            for (var a=0; a < document.forms[0].chk_public_records.length; a++) {
+                 document.forms[0].chk_public_records[a].checked = true;            
+           }
+     }else{
+           for (var a=0; a < document.forms[0].chk_public_records.length; a++){
+                  document.forms[0].chk_public_records[a].checked = false;          
+           }
+     }          
+
 }

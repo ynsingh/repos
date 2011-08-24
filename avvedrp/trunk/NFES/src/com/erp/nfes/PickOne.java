@@ -1,17 +1,7 @@
-/*
- * Created on Jul 13, 2003
- *
- * To change the template for this generated file go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
+
 package com.erp.nfes;
 
-/**
- * @author ahis
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
+
 public class PickOne {
 	//function to render the html string for pickone action object in the form.
 	public StringBuffer getObjectHtml(String name, String action, String choice, String code, String valueString) {

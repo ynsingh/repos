@@ -2,6 +2,7 @@
 
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="UTF-8" language="java" import="javax.sql.DataSource,javax.naming.Context,javax.naming.InitialContext,java.sql.*,java.util.*,java.io.FileInputStream" errorPage="" %>
 <%@ taglib prefix="app" uri="http://www.springframework.org/security/tags" %>
+<jsp:useBean id="db" class="com.erp.nfes.ConnectDB" scope="session"/>
 <%
 Connection conn=null;
 Statement theStatement=null;
@@ -10,13 +11,7 @@ String welcome="";String logout="";String lc="";String home="";
 try{
 
 	lc=(String) request.getSession().getAttribute("language");	
-	Properties properties = new Properties();
-	properties.load(new FileInputStream("../conf/db.properties"));
-	String dbname = properties.getProperty("dbname");
-	String username = properties.getProperty("username");
-	String password = properties.getProperty("password");
-	Class.forName("org.gjt.mm.mysql.Driver");
-	conn=DriverManager.getConnection("jdbc:mysql:"+dbname+"?characterSetResults=UTF-8&characterEncoding=UTF-8&useUnicode=yes",username,password);
+        conn = db.getMysqlConnection();
 	theStatement=conn.createStatement();
 	theResult=theStatement.executeQuery("select control_name,language_string from language_localisation where active_yes_no=1 and file_code=21 and language_code=\'"+lc+"\'");
 	theResult.last();int len=theResult.getRow();String cn[]=new String[len];String ls[]=new String[len];
@@ -78,15 +73,7 @@ String Roll="";
 try
 {
 	userName = request.getUserPrincipal().getName();
-	
-	Properties properties = new Properties();
-	properties.load(new FileInputStream("../conf/db.properties"));
-	String dbname = properties.getProperty("dbname");
-	String username = properties.getProperty("username");
-	String password = properties.getProperty("password");
-	
-	Class.forName("org.gjt.mm.mysql.Driver");
-	conn1=DriverManager.getConnection("jdbc:mysql:"+dbname,username,password);	
+        conn1 = db.getMysqlConnection();
 	PreparedStatement pst=conn1.prepareStatement("SELECT users.id,email,user_full_name FROM users where username=?");
 	pst.setString(1,userName);
 	ResultSet rs=pst.executeQuery();
@@ -122,4 +109,3 @@ try
 </div>
 </div>
 </BODY></HTML>
-	

@@ -11,8 +11,8 @@ profile=http://gmpg.org/xfn/11><TITLE>NFES: Error Page</TITLE>
    String errmsg=request.getParameter("errmsg");   
    %>        
       <script language="javascript">
-      //window.top.location.href="./error_msg.jsp?errmsg=<%=errmsg%>";
-      window.top.location.href="./login.jsp;
+      window.top.location.href="./error_msg.jsp?errmsg=<%=errmsg%>";
+      //window.top.location.href="./login.jsp";
       </script>
 </BODY>
 

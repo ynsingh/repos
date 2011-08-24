@@ -7,12 +7,7 @@
 package com.erp.nfes;
 import java.io.File;
 
-/**
- * @author ahis
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
+
 public class CreateDir {
 	
 //	function to create directory.

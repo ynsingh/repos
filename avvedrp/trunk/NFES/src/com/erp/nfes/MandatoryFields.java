@@ -6,12 +6,7 @@
  */
 package com.erp.nfes;
 
-/**
- * @author NFES
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
+
 public class MandatoryFields {
 	//function to get the html string to render the except object in the form.
 	public StringBuffer getObjectHtml(String name, String action, String choice, String code, String valueString) {

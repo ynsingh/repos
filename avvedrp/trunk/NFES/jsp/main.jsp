@@ -7,7 +7,7 @@
 <div>
 <frameset  cols="160px,*"  framespacing="0px" FRAMEBORDER=NO>
 	<frame name="menu" src="adminmenu.jsp" noresize="noresize"  >
-	<frame name="content" src="staffList.jsp" name="content" >
+	<frame name="content" src="staffList.jsp?searchby=&searchbyUniversity=&searchbyInstitution=&searchbyDepartment=&search=1" name="content" >
 <noframes>
     Sorry, your browser does not handle frames!
   </noframes>

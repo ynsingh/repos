@@ -1,17 +1,7 @@
-/*
- * Created on Mar 17, 2004
- *
- * To change the template for this generated file go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
+
 package com.erp.nfes;
 
-/**
- * @author ahis
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
+
 public class PickRadio {
 
 	//	function to render the html string for radio button action object in the form.

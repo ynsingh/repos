@@ -1,9 +1,4 @@
-/*
- * Created on Jun 22, 2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
+
 package com.erp.nfes;
 
 
@@ -13,9 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -27,13 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 
-/**
- * @author ahis
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-public class HtmlTemplateHelper implements StaffProfileConstants {
+
+public class HtmlTemplateHelper implements FacultyProfileConstants {
 
 	/**
 	 * @param patientId
@@ -119,7 +107,6 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 							}
 			} catch (SQLException e) {
-
 				e.printStackTrace();
 			}
 
@@ -312,10 +299,9 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 				//Merging : This function has changes merged from 4.0.7 aims branch for PM#2420
 				//static ArrayList getPrintFormElements(Connection hisconn,Connection conn, PersistenceManager pm, int patientId, int visitId, String formName,String parentDocumentId,String userDeptId) throws HisException, SQLException {
 
-				static ArrayList getPrintFormElements(Connection conn, RequestParam userRequest,String language) throws  SQLException {
+				static ArrayList getPrintFormElements(Connection conn, RequestVariables userRequest,String language) throws  SQLException {
 
-					String ptid, name, itemtype, str;
-					Integer o1;
+					String name, itemtype;
 					ArrayList arrMyQuest = null;
 					QuestionsVO myQuestVO = null;
 
@@ -446,7 +432,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 											htmlString = actionObj.getAddendumObject( name, action, choice, code, valuestring,parentDocumentId);
 										}/* ========== File Upload 07-12-2010===========*/
 										else if(action.equalsIgnoreCase("file_upload") ){
-											UploadFile actionObj = new UploadFile();
+											UploadFileControl actionObj = new UploadFileControl();
 											htmlString = actionObj.getObjectHtml( name, action, choice, code, valuestring,entityId);
 										}/* ========== Detail Form 12-01-2011===========*/
 										else if(action.equalsIgnoreCase("detail_form") ){
@@ -498,15 +484,13 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 	//public static ArrayList getEditableFormElements(Connection hisconn,Connection conn, PersistenceManager pm, String patientId, String visitId, String formName, String number,String userDeptId) throws HisException, SQLException {
 	//Commented SN
-	public static ArrayList getEditableFormElements(Connection conn,RequestParam userRequest,String number,String language) throws SQLException {
+	public static ArrayList getEditableFormElements(Connection conn,RequestVariables userRequest,String number,String language) throws SQLException {
 		//System.out.println("========getEditableFormElements");
 		ArrayList queReport = null;
 		QuestionsVO myQuestVO = null;
 		String name, itemtype, nVal = null;
 		StringBuffer actionStr = new StringBuffer (10000);
 		String sql = getAimsDisplayStringSql(userRequest.getFormName(),language);
-		String sqlstr = "";
-
 		try {
 			if (conn !=  null){
 				//create statement
@@ -677,10 +661,10 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 
 
-		public static long saveOrUpdateTheDocumentData(HashMap controlMap,RequestParam requestParam,HttpServletRequest request) throws Exception {
+		public static long saveOrUpdateTheDocumentData(HashMap controlMap,RequestVariables requestParam,HttpServletRequest request) throws Exception {
 			String tableName = requestParam.getFormName() + "_values";
 			String documentId = "";
-			ConnectDB conObj=new ConnectDB();
+			ConnectDB conObj=new ConnectDB();			
 			Connection connect = conObj.getMysqlConnection();
 			//System.out.println("Document ID:"+requestParam.getDocumentId());
 
@@ -700,11 +684,10 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			return Long.parseLong(documentId);
 		}
 
-		private static void edit(String documentId, String tableName, HashMap valueMap,RequestParam requestParam,Connection conn ) throws SQLException {
+		private static void edit(String documentId, String tableName, HashMap valueMap,RequestVariables requestParam,Connection conn ) throws SQLException {
 
 			String priorityCon = "Priority", priorityVal = "2";
 			String userLogin = requestParam.getUserlogin();
-			Connection hisConnection = null;
 			try {
 				DocumentInfo documentInfo = null;
 				documentInfo = getEntityDocumentInfo(documentId,conn);
@@ -773,12 +756,11 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 							answer=answer.substring(file_name_starts_from+1);
 						}
 					}
-					else if (tmpAction.trim().equals("detail_form")){
+					/* Commented on 29-07-2011, delete records permanently using ajax function at the time of clicking save button
+					   else if (tmpAction.trim().equals("detail_form")){
 						int deleted_documentid_starts_from;
 						String deleted_document_ids=null;
-
-						//System.out.println("========Answer :"+answer);
-
+						//System.out.println("========Answer :"+answer);											 
 						deleted_documentid_starts_from =answer.indexOf("Deleted:",1);
 						if (deleted_documentid_starts_from>0){
 							deleted_document_ids=answer.substring(deleted_documentid_starts_from+8);
@@ -786,9 +768,8 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 							answer=answer.substring(0,deleted_documentid_starts_from-1);
 							//System.out.println("========Answer :"+answer);
 							deleteEntities(deleted_document_ids);
-						}
-
-					}
+						}							
+					}*/
 					if (it.hasNext()) {
 						updatesql = updatesql + question + "='" + answer + "', ";
 					} else {
@@ -828,7 +809,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			String entryNumber,
 	//Merging Starts -- Prajeesh
 	//Taken From 407 AIMS branch
-			RequestParam requestParam,
+			RequestVariables requestParam,
 			int documentStatusId)
 	//End Merging
 			throws Exception {
@@ -838,8 +819,9 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 //				String amendedDocId = "",
 //					addendumDocId = "",
 				String 	approvedYesNo = "",
-					setValue = "";
-
+			    setValue = "";
+				String update_approval_dets="";
+				
 //				if (requestParam.getAmmendedYesNo() != null
 //					&& requestParam.getAmmendedYesNo().trim().equals("yes")) {
 //					updateAmmendmentOrAddendum(
@@ -860,11 +842,13 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 //				}
 
 				if (requestParam.getSubmitButton() != null
-					&& requestParam.getSubmitButton().trim().equals("" + StaffProfileConstants.CDOC_DOCUMENT_SIGNED_OFF ))
-					approvedYesNo = StaffProfileConstants.CDOC_DOCUMENT_APPROVED_YES;
+					&& requestParam.getSubmitButton().trim().equals("" + FacultyProfileConstants.CDOC_DOCUMENT_SIGNED_OFF )){
+					approvedYesNo = FacultyProfileConstants.CDOC_DOCUMENT_APPROVED_YES;
+					update_approval_dets=",approved_by='" + requestParam.getUserlogin()+"',approved_date=NOW() ";
+				}
 				else
-					approvedYesNo = StaffProfileConstants.CDOC_DOCUMENT_APPROVED_NO;
-
+					approvedYesNo = FacultyProfileConstants.CDOC_DOCUMENT_APPROVED_NO;				
+				
 				StringBuffer updateQry = new StringBuffer();
 				updateQry.append( "UPDATE " );
 				int currentStatus = 0;
@@ -873,11 +857,12 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 					currentStatus = docInfo.getStatusId();
 				}
 				int statusId = getNextDocumentStatus( requestParam.getSubmitButton(), currentStatus );
-				updateQry.append(StaffProfileConstants.CDOC_ENTINTY_DOCUMENT_MASTER )
+				updateQry.append(FacultyProfileConstants.CDOC_ENTINTY_DOCUMENT_MASTER )
 					.append( " SET status_id = " ).append( statusId ).append( "," )
 					.append( setValue ).append( " approved_yesno = '" ).append( approvedYesNo )
 					.append( "', last_modified_by = '").append( requestParam.getUserlogin() )
 					.append( "', last_modified_date_time = NOW()" )
+					.append(update_approval_dets)
 					.append( " WHERE document_id = ").append(requestParam.getDocumentId())
 					.append( " AND entity_id = " ).append(requestParam.getEntityId());
 
@@ -895,7 +880,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 
 
-		private static void save(String documentId, String tableName, HashMap valueMap, RequestParam requestParam,Connection conn) throws Exception {
+		private static void save(String documentId, String tableName, HashMap valueMap, RequestVariables requestParam,Connection conn) throws Exception {
 			String nextSeqQuery = "select coalesce((max(number) + 1),1) as newnumber from " + tableName + " where idf =" + requestParam.getEntityId();
 			//System.out.println("nextSeqQuery : "+nextSeqQuery);
 			Statement sst = conn.createStatement();
@@ -1006,7 +991,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			long entityDocumentMasterId,
 			String documentId,
 			String entryNumber,
-			RequestParam requestParam)
+			RequestVariables requestParam)
 			throws Exception, SQLException {
 
 			String approvedYesNo = "";
@@ -1021,10 +1006,10 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 						+ requestParam.getEntityType()
 						+ "',";
 
-				if (requestParam.getSubmitButton().trim().equals("" + StaffProfileConstants.CDOC_DOCUMENT_SIGNED_OFF))
-					approvedYesNo = StaffProfileConstants.CDOC_DOCUMENT_APPROVED_YES;
+				if (requestParam.getSubmitButton().trim().equals("" + FacultyProfileConstants.CDOC_DOCUMENT_SIGNED_OFF))
+					approvedYesNo = FacultyProfileConstants.CDOC_DOCUMENT_APPROVED_YES;
 				else
-					approvedYesNo = StaffProfileConstants.CDOC_DOCUMENT_APPROVED_NO;
+					approvedYesNo = FacultyProfileConstants.CDOC_DOCUMENT_APPROVED_NO;
 
 				String form_id = getFormIdFromFormName(conn, requestParam.getFormName());
 
@@ -1039,7 +1024,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 				int statusId = getNextDocumentStatus( requestParam.getSubmitButton(), currentStatus );
 
 				StringBuffer insertQry = new StringBuffer();
-				insertQry.append( "INSERT INTO " ).append( StaffProfileConstants.CDOC_ENTINTY_DOCUMENT_MASTER )
+				insertQry.append( "INSERT INTO " ).append( FacultyProfileConstants.CDOC_ENTINTY_DOCUMENT_MASTER )
 					.append( " ").append( fields )
 					.append( " form_id, document_id, number, amended_yesno, amended_document_id, " )
 					.append( "addendum_yesno, addendum_document_id, approved_yesno, active_yesno, status_id, " )
@@ -1074,7 +1059,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 
 			StringBuffer sqlString = new StringBuffer();
-			sqlString.append("SELECT id FROM " ).append( StaffProfileConstants.CDOC_FORM_MASTER )
+			sqlString.append("SELECT id FROM " ).append( FacultyProfileConstants.CDOC_FORM_MASTER )
 			         .append( " WHERE CONCAT(form_name,\"_\",version)= '" ).append( formName )
 			         .append( "' OR form_name='" ).append( formName ).append( "'" );
 
@@ -1127,9 +1112,9 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			      .append( "rm.addendum_document_id, rm.approved_yesno, rm.last_modified_by, rm.last_modified_date_time, ")
 			      .append( "rm.created_by, rm.created_date_time, fm.form_name, fm.version, fm.description, fm.title, " )
 			      .append( "fm.document_type_id, dm.document_type, fm.form_type, fm.show_draft_copy_yesno, fm.iso_document_number, dm.description AS document_type_description " )
-			      .append( "FROM " ).append( StaffProfileConstants.CDOC_ENTINTY_DOCUMENT_MASTER ).append( " as rm, " )
-			      .append( StaffProfileConstants.CDOC_FORM_MASTER ).append( " as fm, " )
-			      .append( StaffProfileConstants.CDOC_DOCUMENT_TYPE_MASTER ).append( " as dm " )
+			      .append( "FROM " ).append( FacultyProfileConstants.CDOC_ENTINTY_DOCUMENT_MASTER ).append( " as rm, " )
+			      .append( FacultyProfileConstants.CDOC_FORM_MASTER ).append( " as fm, " )
+			      .append( FacultyProfileConstants.CDOC_DOCUMENT_TYPE_MASTER ).append( " as dm " )
 			      .append( "WHERE rm.document_id = " ).append( documentId )
 			      .append( " AND rm.active_yesno = 1 AND fm.id = rm.form_id AND dm.id = fm.document_type_id" );
 
@@ -1208,38 +1193,38 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 		public static int getNextDocumentStatus(String submit, int privStatus) throws Exception{
 			int returnStatus = 0;
 			if ( privStatus == 0 ) {
-				if ( submit.trim().equals( "" + StaffProfileConstants.CDOC_DOCUMENT_DICTATED ) ) {
-					returnStatus = StaffProfileConstants.CDOC_DOCUMENT_DICTATED;
-				} else if ( submit.trim().equals( "" + StaffProfileConstants.CDOC_DOCUMENT_SIGNED_OFF ) ) {
-					returnStatus = StaffProfileConstants.CDOC_DOCUMENT_SIGNED_OFF;
-				} else if ( submit.trim().equals( "" + StaffProfileConstants.CDOC_DOCUMENT_OPEN_FOR_TRANSCRIPTION ) ) {
-					returnStatus = StaffProfileConstants.CDOC_DOCUMENT_OPEN_FOR_TRANSCRIPTION;
-				} else if ( submit.trim().equals( "" + StaffProfileConstants.CDOC_DOCUMENT_OPEN_FOR_APPROVAL ) ) {
-					returnStatus = StaffProfileConstants.CDOC_DOCUMENT_OPEN_FOR_APPROVAL;
+				if ( submit.trim().equals( "" + FacultyProfileConstants.CDOC_DOCUMENT_DICTATED ) ) {
+					returnStatus = FacultyProfileConstants.CDOC_DOCUMENT_DICTATED;
+				} else if ( submit.trim().equals( "" + FacultyProfileConstants.CDOC_DOCUMENT_SIGNED_OFF ) ) {
+					returnStatus = FacultyProfileConstants.CDOC_DOCUMENT_SIGNED_OFF;
+				} else if ( submit.trim().equals( "" + FacultyProfileConstants.CDOC_DOCUMENT_OPEN_FOR_TRANSCRIPTION ) ) {
+					returnStatus = FacultyProfileConstants.CDOC_DOCUMENT_OPEN_FOR_TRANSCRIPTION;
+				} else if ( submit.trim().equals( "" + FacultyProfileConstants.CDOC_DOCUMENT_OPEN_FOR_APPROVAL ) ) {
+					returnStatus = FacultyProfileConstants.CDOC_DOCUMENT_OPEN_FOR_APPROVAL;
 				} else if ( submit.trim().equals( "7" ) ) {
-					returnStatus = StaffProfileConstants.CDOC_DOCUMENT_DICTATED;
-				} else if ( submit.trim().equals( "" + StaffProfileConstants.CDOC_DOCUMENT_PROVISIONAL ) ) {
-					returnStatus = StaffProfileConstants.CDOC_DOCUMENT_PROVISIONAL;
+					returnStatus = FacultyProfileConstants.CDOC_DOCUMENT_DICTATED;
+				} else if ( submit.trim().equals( "" + FacultyProfileConstants.CDOC_DOCUMENT_PROVISIONAL ) ) {
+					returnStatus = FacultyProfileConstants.CDOC_DOCUMENT_PROVISIONAL;
 				}
 			} else {
-				if ( submit.trim().equals( "" + StaffProfileConstants.CDOC_DOCUMENT_DICTATED ) ) {
-					if ( privStatus == StaffProfileConstants.CDOC_DOCUMENT_DICTATED ) {
-						returnStatus = StaffProfileConstants.CDOC_DOCUMENT_DICTATED;
-					} else if ( privStatus == StaffProfileConstants.CDOC_DOCUMENT_OPEN_FOR_TRANSCRIPTION ) {
-						returnStatus = StaffProfileConstants.CDOC_DOCUMENT_OPEN_FOR_TRANSCRIPTION;
-					} else if ( privStatus == StaffProfileConstants.CDOC_DOCUMENT_OPEN_FOR_APPROVAL ) {
-						returnStatus = StaffProfileConstants.CDOC_DOCUMENT_OPEN_FOR_APPROVAL;
+				if ( submit.trim().equals( "" + FacultyProfileConstants.CDOC_DOCUMENT_DICTATED ) ) {
+					if ( privStatus == FacultyProfileConstants.CDOC_DOCUMENT_DICTATED ) {
+						returnStatus = FacultyProfileConstants.CDOC_DOCUMENT_DICTATED;
+					} else if ( privStatus == FacultyProfileConstants.CDOC_DOCUMENT_OPEN_FOR_TRANSCRIPTION ) {
+						returnStatus = FacultyProfileConstants.CDOC_DOCUMENT_OPEN_FOR_TRANSCRIPTION;
+					} else if ( privStatus == FacultyProfileConstants.CDOC_DOCUMENT_OPEN_FOR_APPROVAL ) {
+						returnStatus = FacultyProfileConstants.CDOC_DOCUMENT_OPEN_FOR_APPROVAL;
 					}
 				} else if ( submit.trim().equals( "7" ) ) {
-					returnStatus = StaffProfileConstants.CDOC_DOCUMENT_DICTATED;
-				} else if ( submit.trim().equals( "" + StaffProfileConstants.CDOC_DOCUMENT_SIGNED_OFF ) ) {
-					returnStatus = StaffProfileConstants.CDOC_DOCUMENT_SIGNED_OFF;
-				} else if ( submit.trim().equals( "" + StaffProfileConstants.CDOC_DOCUMENT_OPEN_FOR_TRANSCRIPTION ) ) {
-					returnStatus = StaffProfileConstants.CDOC_DOCUMENT_OPEN_FOR_TRANSCRIPTION;
-				} else if ( submit.trim().equals( "" + StaffProfileConstants.CDOC_DOCUMENT_OPEN_FOR_APPROVAL ) ) {
-					returnStatus = StaffProfileConstants.CDOC_DOCUMENT_OPEN_FOR_APPROVAL;
-				} else if ( submit.trim().equals( "" + StaffProfileConstants.CDOC_DOCUMENT_PROVISIONAL ) ) {
-					returnStatus = StaffProfileConstants.CDOC_DOCUMENT_PROVISIONAL;
+					returnStatus = FacultyProfileConstants.CDOC_DOCUMENT_DICTATED;
+				} else if ( submit.trim().equals( "" + FacultyProfileConstants.CDOC_DOCUMENT_SIGNED_OFF ) ) {
+					returnStatus = FacultyProfileConstants.CDOC_DOCUMENT_SIGNED_OFF;
+				} else if ( submit.trim().equals( "" + FacultyProfileConstants.CDOC_DOCUMENT_OPEN_FOR_TRANSCRIPTION ) ) {
+					returnStatus = FacultyProfileConstants.CDOC_DOCUMENT_OPEN_FOR_TRANSCRIPTION;
+				} else if ( submit.trim().equals( "" + FacultyProfileConstants.CDOC_DOCUMENT_OPEN_FOR_APPROVAL ) ) {
+					returnStatus = FacultyProfileConstants.CDOC_DOCUMENT_OPEN_FOR_APPROVAL;
+				} else if ( submit.trim().equals( "" + FacultyProfileConstants.CDOC_DOCUMENT_PROVISIONAL ) ) {
+					returnStatus = FacultyProfileConstants.CDOC_DOCUMENT_PROVISIONAL;
 				}
 			}
 
@@ -1355,21 +1340,22 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			}catch( SQLException e ){
 				e.printStackTrace() ;
 
-			} finally{
+			} finally{				
 	     		statement.close();
 				rs.close();
 				updateStmt.close();
-
+				con.close();
 			}
 
 				return maxValue;
 			}
 
 
-		public static ArrayList getEditableReportFormForPatients(RequestParam userRequest, String number,String language) throws Exception {
+		public static ArrayList getEditableReportFormForPatients(RequestVariables userRequest, String number,String language) throws Exception {
 			ConnectDB conObj=new ConnectDB();
 			Connection connect = conObj.getMysqlConnection();
 			ArrayList queReport =  getEditableFormElements(connect,userRequest,number,language);
+			connect.close();
 			return queReport;
 		}
 //		=====================PRINT FUNCTION 06-12-2010=========================
@@ -1393,7 +1379,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 		 * @param response
 		 * @param userRequest
 		 */
-	public static ArrayList getXMLString(HttpServletRequest request, HttpServletResponse response, RequestParam userRequest)throws Exception {
+	public static ArrayList getXMLString(HttpServletRequest request, HttpServletResponse response, RequestVariables userRequest)throws Exception {
 		Connection conn = null;
 		if (isEmpty(userRequest.getDocumentId()) && Integer.parseInt(userRequest.getDocumentId()) < 1){
 			showErrorMessage( response,"Invalid document id..." );
@@ -1501,6 +1487,12 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 			}catch (SQLException e) {
 				e.printStackTrace();
+			}finally{
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 

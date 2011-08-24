@@ -2,8 +2,9 @@
 
 <%@ page contentType="text/html; charset=iso-8859-1" language="java" import="javax.sql.DataSource,javax.naming.Context,javax.naming.InitialContext,java.sql.*,java.util.*,java.sql.ResultSetMetaData,java.io.FileInputStream" errorPage="" %>
 
-
 <%@ taglib prefix="app" uri="http://www.springframework.org/security/tags" %>
+
+<jsp:useBean id="db" class="com.erp.nfes.ConnectDB" scope="session"/> 
 
 <HTML lang=en-US dir=ltr xmlns="http://www.w3.org/11001/xhtml">
 
@@ -21,8 +22,9 @@
 <BODY class="bodystyle">
 
 <form name="staffdetails" method="post">
-<div class="\search_links_div\" align=center >
-
+<div  class="listdiv">
+<div style="border: 1px #9dc6d9 solid;"  align="center">
+<br>
 <%
 String str=null;
 String rowclass="1";
@@ -40,16 +42,9 @@ String tabHead="";
 try
 {	
 	userId= Integer.parseInt(user_Id);		
-	Properties properties = new Properties();
-	properties.load(new FileInputStream("../conf/db.properties"));
-	String dbname = properties.getProperty("dbname");		
-	String username = properties.getProperty("username");
-	String password = properties.getProperty("password");				
-	Class.forName("org.gjt.mm.mysql.Driver");
-	conn1=DriverManager.getConnection("jdbc:mysql:"+dbname,username,password);			
+	conn1 = db.getMysqlConnection();
 	
 	/* =================== To display Staff Image 19-02-11 Rajitha ================ */
-		conn1=DriverManager.getConnection("jdbc:mysql:"+dbname,username,password);	
 		PreparedStatement pst=conn1.prepareStatement("SELECT upload_photo FROM staff_profile_report_v0_values WHERE idf=?");
 		pst.setInt(1,userId);
 		ResultSet rs=pst.executeQuery();
@@ -57,7 +52,6 @@ try
 		{	imageName=userId+"/photo/"+rs.getString(1);					
 	
 		}	
-	//	conn1.close();	
 	/* ================================ End ======================================= */
 	 
 	 pst=conn1.prepareStatement("SELECT * from search_result_fields order by sequence");		
@@ -67,7 +61,7 @@ try
 	    //out.println(rs.getString("result_fields"));
 	    tabHead=rs.getString("description");
 	    if(rs.getString("entity").equals("masterdetails")){
-	    	pst=conn1.prepareStatement(rs.getString("result_fields")+" and userid="+userId);		    
+	    	pst=conn1.prepareStatement(rs.getString("result_fields")+" where userid="+userId);		    	    	
 	    }
 	    else
 	    {
@@ -75,7 +69,7 @@ try
 	    }	
 	    ResultSet rs_details=pst.executeQuery();
 	    if (rs.getInt("sequence")==1){   %>
-	    	    		<table width=70%>
+	    	    		<table width=90% >
 	    			<tr>
 	    			<td rowspan="4" width="100" height="100"><img src= "../GetImageServlet?filename=<%=imageName%>" height="100%" width="100%"></td>		
 			<%
@@ -85,13 +79,15 @@ try
 				<tr><td>Institution:</td><td><%=rs_details.getString("Institution")%></td></tr>								
 				<tr><td>Department:</td><td><%=rs_details.getString("department")%></td></tr>								
 				</table><br><%
-				out.println("<table  class=\"searchtab\" width=70% border=\"0\"><tr class=\"search_resul_head\" ><td>"+ tabHead + "</td></tr><tr><td>");  
+				out.println("<table  class=\"searchtab\" width=90% border=\"0\"><tr class=\"search_resul_head\" ><td>"+ tabHead + "</td></tr><tr><td>");  
 	    			ResultSetMetaData rsMetaData = rs_details.getMetaData();
 	    			int numberOfColumns = rsMetaData.getColumnCount(); 
 	    			out.println("<ul>");
 	    			String profile_data="";
-	    			for(int col=12;col<=numberOfColumns;col++){
+	    			for(int col=15;col<=numberOfColumns;col++){
+	    			if(rs_details.getString(rsMetaData.getColumnName(col))!=null){	    			
 	    			  out.println("<li>"+rs_details.getString(rsMetaData.getColumnName(col))+"</li>") ;
+	    			 } 
 	    			  //if (col!=numberOfColumns){profile_data=profile_data+",";}
 	    			} 
 	    			//out.println("<li>"+profile_data);
@@ -102,19 +98,22 @@ try
 	    else{
 	    	    
 	    	    
-	    	    out.println("<table  class=\"searchtab\"  width=70% border=\"0\"><tr class=\"search_resul_head\"><td>"+ tabHead + "</td></tr><tr ><td>");   	    	    
+	    	    out.println("<table  class=\"searchtab\"  width=90% border=\"0\"><tr class=\"search_resul_head\"><td>"+ tabHead + "</td></tr><tr ><td>");   	    	    
 	    	    out.println("<ul>");
 		    while(rs_details.next()){
 		    	String profile_data="";
 			ResultSetMetaData rsMetaData = rs_details.getMetaData();
 			int numberOfColumns = rsMetaData.getColumnCount(); 	   		
-			for(int col=12;col<=numberOfColumns;col++){
+			for(int col=15;col<=numberOfColumns;col++){
 			  //out.println(rs_details.getString(rsMetaData.getColumnName(col)) );
 			  profile_data=profile_data+rs_details.getString(rsMetaData.getColumnName(col)) ;
-			  if (col!=numberOfColumns){//out.println(",");
-			  profile_data=profile_data+",";
+			  if (col!=numberOfColumns){
+			  profile_data=profile_data+", ";
 			  }			  
 			}  
+			if(profile_data.substring(profile_data.length()-2).equals(", ")){
+				profile_data=profile_data.substring(0,profile_data.length()-2);
+			}
 			out.println("<li>"+profile_data+"</li>");	    		
 		  }		
 		  out.println("</ul>");
@@ -124,11 +123,13 @@ try
 	}
 }
 catch(Exception e)	{e.printStackTrace();	}
+conn1.close();
 
 %>
 
 
 
+</div>
 </div>
 </form>
 

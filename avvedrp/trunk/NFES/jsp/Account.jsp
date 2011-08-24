@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="UTF-8" language="java" import="javax.sql.DataSource,javax.naming.Context,javax.naming.InitialContext,java.sql.*,java.util.*,java.io.FileInputStream" errorPage="" %>
+<jsp:useBean id="db" class="com.erp.nfes.ConnectDB" scope="session"/> 
+<jsp:useBean id="getUserDetails" class="com.erp.nfes.GetRecordValue" scope="session"/> 
 
 <%
 Connection conn=null;
@@ -9,15 +11,13 @@ String institution="";String create_account="";String type_password="";String mo
 String department1="";String designation1="";
 try{
      lc=(String) session.getAttribute("language");
-     Properties properties = new Properties();
-     properties.load(new FileInputStream("../conf/db.properties"));
-     String dbname = properties.getProperty("dbname");
-     String username = properties.getProperty("username");
-     String password1 = properties.getProperty("password");
-     Class.forName("org.gjt.mm.mysql.Driver");
-     conn=DriverManager.getConnection("jdbc:mysql:"+dbname+"?characterSetResults=UTF-8&characterEncoding=UTF-8&useUnicode=yes",username,password1);
-     theStatement=conn.createStatement();
-     theResult=theStatement.executeQuery("select control_name,language_string from language_localisation where active_yes_no=1 and file_code=24 and language_code=\'"+lc+"\'");
+     if(lc==null||lc==""){
+       lc="en";
+     }
+
+     conn = db.getMysqlConnection();
+     theStatement = conn.createStatement();
+     theResult = theStatement.executeQuery("select control_name,language_string from language_localisation where active_yes_no=1 and file_code=24 and language_code=\'"+lc+"\'");
      theResult.last();int len=theResult.getRow();String cn[]=new String[len];String ls[]=new String[len];
      int i=0;theResult.beforeFirst();
      while(theResult.next()){
@@ -204,7 +204,7 @@ document.getElementById("userPassword2").value=userPassword2;
 document.getElementById("emailId").value=emailId;  
 document.getElementById("emailId2").value=emailId2;  
 document.getElementById("designation").value=designation;
-
+passwordChanged();
 }
 
 </script>
@@ -214,7 +214,7 @@ document.getElementById("designation").value=designation;
 </HEAD>
 <BODY class="bodystyle">
 
-<form id="userForm" action="../ProfileCreationServlet" method="post"  >
+<form id="userForm" action="../ProfileCreationActivationServlet?action=REGISTER_USER" method="post"  >
 
 <div  class="listdiv">
 
@@ -242,7 +242,7 @@ document.getElementById("designation").value=designation;
 %>
 <br>
 
-<table style="background: none repeat scroll 0 0 #CCE6F3;" align="center" width="98%">  	
+<table class="search_field_div" align="center" width="98%">  	
 	<!--<tr>
 	<td rowspan="7"><img src="../images/StaffReg.gif"></img></td>			
 	</tr>
@@ -261,7 +261,7 @@ document.getElementById("designation").value=designation;
 	<tr> 		                 
 	<td><label class="labeltext"><%=password%>:</label><label class="mandatory">*</label></td>
 	<td><input type="password" id="userPassword"  name="userPassword" class="textmedium" onkeyup="return passwordChanged();" />
-	<span id="strength" class="labeltext"><%=type_password%></span>
+	<span id="strength" class="labeltext"></span>
 	</td>
 	</tr>
 	
@@ -292,14 +292,13 @@ document.getElementById("designation").value=designation;
 	try
 	{	
 			
-		Properties properties = new Properties();
-		properties.load(new FileInputStream("../conf/db.properties"));	
-		String dbname = properties.getProperty("dbname");		
-		String username = properties.getProperty("username");
-		String password2 = properties.getProperty("password");				
-		Class.forName("org.gjt.mm.mysql.Driver");	
-		conn1=DriverManager.getConnection("jdbc:mysql:"+dbname,username,password2);		
-		PreparedStatement pst=conn1.prepareStatement("SELECT id,name FROM institution_master  where active_yes_no=1 ORDER BY name");				
+        conn1 = db.getMysqlConnection();
+        PreparedStatement pst=null;
+        if(getUserDetails.getRole(request.getUserPrincipal().getName()).equals("ROLE_ADMIN_UNIVERSITY")){		
+			pst=conn1.prepareStatement("SELECT id,name FROM institution_master  where active_yes_no=1 and university_id="+ getUserDetails.getUniversityID(request.getUserPrincipal().getName())+" ORDER BY name");
+		}else{
+		 pst=conn1.prepareStatement("SELECT id,name FROM institution_master  where active_yes_no=1 ORDER BY name");				
+		}	
 		ResultSet rs=pst.executeQuery();		
 		while(rs.next())		
 		{		 
@@ -341,7 +340,7 @@ document.getElementById("designation").value=designation;
 	<td><label class="labeltext"><%=department1%>:</label><label class="mandatory">*</label></td>
 	<td><Select name="department" id="department" >
 	<%    		
-			
+			conn1.close();
 			conn1=null;
 			String dept_id="";
 			String dept_name="";	%>
@@ -350,13 +349,7 @@ document.getElementById("designation").value=designation;
 		try
 		{	
 				
-			Properties properties = new Properties();
-			properties.load(new FileInputStream("../conf/db.properties"));	
-			String dbname = properties.getProperty("dbname");		
-			String username = properties.getProperty("username");
-			String password2 = properties.getProperty("password");				
-			Class.forName("org.gjt.mm.mysql.Driver");	
-			conn1=DriverManager.getConnection("jdbc:mysql:"+dbname,username,password2);					
+                        conn1 = db.getMysqlConnection();
 			//PreparedStatement pst=conn1.prepareStatement("SELECT id,fld_value FROM `general_master` WHERE category='Department' AND  active_yes_no=1 AND id IN(SELECT department_id FROM `department_master` WHERE institution_id="+selinstitution + ")  ORDER BY fld_value");				
 			PreparedStatement pst=conn1.prepareStatement("SELECT department_master.id,fld_value,institution_id FROM `general_master` INNER JOIN `department_master` ON  `general_master`.id=department_master.department_id  AND department_master.institution_id="+selinstitution + "  AND  department_master.active_yes_no=1 ORDER BY fld_value");
 			ResultSet rs=pst.executeQuery();		
@@ -380,22 +373,15 @@ document.getElementById("designation").value=designation;
 	<tr>
 		<td><label class="labeltext"><%=designation1%>:</label><label class="mandatory">*</label></td>
 		<td><Select name="designation" id="designation">	
-		<%    				
+		<%    		conn1.close();		
 				conn1=null;
 				String desg_id="";
 				String desg_name="";	%>		
 				<option value="null">-Select-</option>
 		<%				
-			try
-			{	
-					
-				Properties properties = new Properties();
-				properties.load(new FileInputStream("../conf/db.properties"));	
-				String dbname = properties.getProperty("dbname");		
-				String username = properties.getProperty("username");
-				String password2 = properties.getProperty("password");				
-				Class.forName("org.gjt.mm.mysql.Driver");	
-				conn1=DriverManager.getConnection("jdbc:mysql:"+dbname,username,password2);		
+			 try
+			 {	
+			        conn1 = db.getMysqlConnection();
 				PreparedStatement pst=conn1.prepareStatement("SELECT id,fld_value FROM `general_master` WHERE category='Designation' AND  active_yes_no=1  ORDER BY fld_value");				
 				
 				ResultSet rs=pst.executeQuery();		
@@ -408,9 +394,9 @@ document.getElementById("designation").value=designation;
 				<option value=<%=desg_id%>><%=desg_name%></option>	
 				 <%			
 				}
-			 }catch(Exception e)
-			{
-				}
+			 }catch(Exception e){
+			 }
+			 conn1.close();
 				
 		if (request.getParameter("institution")!=null){
 		%>

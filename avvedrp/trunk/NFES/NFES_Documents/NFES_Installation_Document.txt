@@ -1,3 +1,5 @@
+Amrita Vishwa Vidyapeetham
+
 NFES Installation Document
 ===========================
 
@@ -22,11 +24,11 @@ After check out NFES
 
 1. Create nfes.war file. Using the following command
    a. in command prompt move to the directory where you checkout NFES .e.g. D:\NFES>
-   b. Type ant package.  This will create nfes.war in the NFES folder. 
+   b. Type ‘ant package’.  This will create nfes.war in the “NFES” folder. 
 
-2. Move "nfes.war" to "Tomcat\webapps" folder from NFES.
+2. Move "nfes.war" to "Tomcat\webapps" folder from “NFES”.
 
-3. Create a folder named "resources" and  two sub folders named "temp" and nfes_files  under "Tomcat\" folder (temp folder is used for storing temporary files during the file upload, nfes_files folder is used to store uploaded files).
+3. Create a folder named "resources" and  two sub folders named "temp" and “nfes_files”  under "Tomcat\" folder (“temp” folder is used for storing temporary files during the file upload, “nfes_files” folder is used to store uploaded files).
 
 4. Move db.properties, mail.properties and fileuploadpath.properties to "Tomcat\conf" folder from "NFES\properties" folder
 
@@ -37,7 +39,5 @@ After check out NFES
 7. Select the above created database and Execute "nfes.sql"(NFES\database\nfes.sql).
 
 8. Start Tomcat and type url  http://localhost:8080/nfes
-
-9. Login as 'admin' with password 'admin123'.
 
 =================================================================================

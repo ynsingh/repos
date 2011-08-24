@@ -154,7 +154,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 </div>
 
 <input type="hidden" name="action" value="" />
-<input type="HIDDEN" name="mandatory_fields" value="project_status|project_title|principal_investigator|start_date|duration|amount|project_center_department|abstract" />
+<input type="HIDDEN" name="mandatory_fields" value="project_status|project_title|principal_investigator|start_date|duration|project_center_department|abstract" />
 <input type="HIDDEN" name="validation_fields" value="amount-A" />
 </font>
 </form>
@@ -162,7 +162,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 <!--============================= Upload File =============================-->
 
  <div id="fu1">
-  <form method="post" target="upload_target_iframe" action="./fileupload" NAME="myForm01" enctype="multipart/form-data">
+  <form method="post" target="upload_target_iframe" action="./UploadFiles" NAME="myForm01" enctype="multipart/form-data">
   <INPUT TYPE="HIDDEN" NAME="userId"><xsl:attribute name="VALUE"><xsl:value-of select="//entityId"/></xsl:attribute></INPUT>
   <table width="100%" class="tabBG3">
   <tr>

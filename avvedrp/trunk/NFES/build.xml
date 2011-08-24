@@ -33,6 +33,7 @@
       <include name="**/*.class"/>
      </fileset>
     </copy>
+    <copy file="properties/log4j.properties" tofile="nfes/WEB-INF/classes/log4j.properties" overwrite="true" />
     <mkdir dir="nfes/WEB-INF/lib"/>
     <copy todir="nfes/WEB-INF/lib">
      <fileset dir="${lib.dir}">
@@ -60,13 +61,13 @@
     <mkdir dir="nfes/js"/>
     <copy todir="nfes/js">
      <fileset dir="js">
-      <include name="*.js"/>
+      <include name="**/**"/>
      </fileset>
     </copy>
     <mkdir dir="nfes/css"/>
     <copy todir="nfes/css">
      <fileset dir="css">
-      <include name="*.css"/>
+      <include name="**/**"/>
      </fileset>
     </copy>
     <mkdir dir="nfes/images"/>
@@ -80,6 +81,15 @@
           <include name="*.jsp"/>
          </fileset>
     </copy>
+     
+    <mkdir dir="nfes/Reports"/>
+    <copy todir="nfes/Reports">
+     <fileset dir="Reports">
+      <include name="*.jasper"/>
+     </fileset>
+    </copy> 
+    
+
      
     <!-- the ant war task. with all resources in place, create the war file -->
   

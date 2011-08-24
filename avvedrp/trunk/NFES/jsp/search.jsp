@@ -13,7 +13,7 @@
 <script type="text/javascript">
 function load()
 {       
-    document.getElementById("if01").src="../search";	
+    document.getElementById("if01").src="../SearchFaculty";	
 }
 </script>
 

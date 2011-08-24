@@ -1,5 +1,5 @@
 /*
- * Created on Mar 23, 2004
+ * 
  *
  * To change the template for this generated file go to
  * Window>Preferences>Java>Code Generation>Code and Comments
@@ -10,12 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-/**
- * @author ahis
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
+
 public class Calendar {
 	//function to get the html string to render the calendar object in the form.
 	public StringBuffer getObjectHtml(String name, String action, String choice, String code, String valueString) {

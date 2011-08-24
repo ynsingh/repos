@@ -1,20 +1,10 @@
-/*
- * Created on Jul 14, 2003
- *
- * To change the template for this generated file go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
+
 package com.erp.nfes;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
-/**
- * @author ahis
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
+
 public class QuestionsVO implements Serializable{
 
 	private String name;			//Name of the question item.
@@ -34,7 +24,6 @@ public class QuestionsVO implements Serializable{
 	private String choice;
 	private String code;
 	private String value;
-	//Added by Unni.s on 20/6/2004
 	private HashMap codechoicePair;
 	
 

@@ -15,6 +15,11 @@ version="2.5">
            <param-name>contextConfigLocation</param-name>
            <param-value>/WEB-INF/applicationContext-security.xml</param-value>
        </context-param>
+       
+       <context-param>
+            <param-name>log4jConfigLocation</param-name>
+            <param-value>/WEB-INF/classes/log4j.properties</param-value>
+       </context-param>
    
    
        <filter>
@@ -57,31 +62,31 @@ version="2.5">
 </servlet-mapping>
 
 <servlet>
-<servlet-name>fileupload</servlet-name>
-<servlet-class>com.erp.nfes.fileupload</servlet-class>
+<servlet-name>UploadFiles</servlet-name>
+<servlet-class>com.erp.nfes.UploadFiles</servlet-class>
 </servlet>
 <servlet-mapping>
-<servlet-name>fileupload</servlet-name>
-<url-pattern>/fileupload</url-pattern>
+<servlet-name>UploadFiles</servlet-name>
+<url-pattern>/UploadFiles</url-pattern>
 </servlet-mapping>
 
 
 <servlet>
-<servlet-name>filedownload</servlet-name>
-<servlet-class>com.erp.nfes.filedownload</servlet-class>
+<servlet-name>DownloadFile</servlet-name>
+<servlet-class>com.erp.nfes.DownloadFile</servlet-class>
 </servlet>
 <servlet-mapping>
-<servlet-name>filedownload</servlet-name>
-<url-pattern>/filedownload</url-pattern>
+<servlet-name>DownloadFile</servlet-name>
+<url-pattern>/DownloadFile</url-pattern>
 </servlet-mapping>
 
 <servlet>
-<servlet-name>ProfileCreationServlet</servlet-name>
-<servlet-class>com.erp.nfes.ProfileCreationServlet</servlet-class>
+<servlet-name>UserCreationServlet</servlet-name>
+<servlet-class>com.erp.nfes.UserCreationServlet</servlet-class>
 </servlet>
 <servlet-mapping>
-<servlet-name>ProfileCreationServlet</servlet-name>
-<url-pattern>/ProfileCreationServlet</url-pattern>
+<servlet-name>UserCreationServlet</servlet-name>
+<url-pattern>/UserCreationServlet</url-pattern>
 </servlet-mapping>
 
 
@@ -95,12 +100,12 @@ version="2.5">
 </servlet-mapping>
 
 <servlet>
-<servlet-name>ForgotPasswordController</servlet-name>
-<servlet-class>com.erp.nfes.ForgotPasswordController</servlet-class>
+<servlet-name>ResetPasswordController</servlet-name>
+<servlet-class>com.erp.nfes.ResetPasswordController</servlet-class>
 </servlet>
 <servlet-mapping>
-<servlet-name>ForgotPasswordController</servlet-name>
-<url-pattern>/ForgotPasswordController</url-pattern>
+<servlet-name>ResetPasswordController</servlet-name>
+<url-pattern>/ResetPasswordController</url-pattern>
 </servlet-mapping>
 
 
@@ -132,40 +137,40 @@ version="2.5">
 </servlet-mapping>
 
 <servlet>
-<servlet-name>courses_taught</servlet-name>
-<servlet-class>com.erp.nfes.courses_taught</servlet-class>
+<servlet-name>CourseTaught</servlet-name>
+<servlet-class>com.erp.nfes.CourseTaught</servlet-class>
 </servlet>
 <servlet-mapping>
-<servlet-name>courses_taught</servlet-name>
-<url-pattern>/courses_taught</url-pattern>
+<servlet-name>CourseTaught</servlet-name>
+<url-pattern>/CourseTaught</url-pattern>
 </servlet-mapping>
 
 <servlet>
-<servlet-name>master_tables</servlet-name>
-<servlet-class>com.erp.nfes.master_tables</servlet-class>
+<servlet-name>MasterTables</servlet-name>
+<servlet-class>com.erp.nfes.MasterTables</servlet-class>
 </servlet>
 <servlet-mapping>
-<servlet-name>master_tables</servlet-name>
-<url-pattern>/master_tables</url-pattern>
+<servlet-name>MasterTables</servlet-name>
+<url-pattern>/MasterTables</url-pattern>
 </servlet-mapping>
 
 <servlet>
-<servlet-name>search</servlet-name>
-<servlet-class>com.erp.nfes.search</servlet-class>
+<servlet-name>SearchFaculty</servlet-name>
+<servlet-class>com.erp.nfes.SearchFaculty</servlet-class>
 </servlet>
 <servlet-mapping>
-<servlet-name>search</servlet-name>
-<url-pattern>/search</url-pattern>
+<servlet-name>SearchFaculty</servlet-name>
+<url-pattern>/SearchFaculty</url-pattern>
 </servlet-mapping>
 
 
 <servlet>
-<servlet-name>advanceSearch</servlet-name>
-<servlet-class>com.erp.nfes.advanceSearch</servlet-class>
+<servlet-name>FacultyAdvanceSearch</servlet-name>
+<servlet-class>com.erp.nfes.FacultyAdvanceSearch</servlet-class>
 </servlet>
 <servlet-mapping>
-<servlet-name>advanceSearch</servlet-name>
-<url-pattern>/advanceSearch</url-pattern>
+<servlet-name>FacultyAdvanceSearch</servlet-name>
+<url-pattern>/FacultyAdvanceSearch</url-pattern>
 </servlet-mapping>
 
 <servlet>
@@ -175,6 +180,65 @@ version="2.5">
 <servlet-mapping>
 <servlet-name>ApprovalServlet</servlet-name>
 <url-pattern>/ApprovalServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<servlet-name>ReportsServlet</servlet-name>
+<servlet-class>com.erp.nfes.ReportsServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>ReportsServlet</servlet-name>
+<url-pattern>/ReportsServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<description>
+</description>
+<display-name>FrontController</display-name>
+<servlet-name>FrontController</servlet-name>
+<servlet-class>com.erp.nfes.FrontController</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>FrontController</servlet-name>
+<url-pattern>/profile/*</url-pattern>
+</servlet-mapping>
+
+
+
+<servlet>
+<description>
+</description>
+<display-name>ProfileCreationActivationServlet</display-name>
+<servlet-name>ProfileCreationActivationServlet</servlet-name>
+<servlet-class>com.erp.nfes.ProfileCreationActivationServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>ProfileCreationActivationServlet</servlet-name>
+<url-pattern>/ProfileCreationActivationServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<description>
+</description>
+<display-name>RecordTypeSettingServlet</display-name>
+<servlet-name>RecordTypeSettingServlet</servlet-name>
+<servlet-class>com.erp.nfes.RecordTypeSettingServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>RecordTypeSettingServlet</servlet-name>
+<url-pattern>/RecordTypeSettingServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<description>
+</description>
+<display-name>AddEventsServlet</display-name>
+<servlet-name>AddEventsServlet</servlet-name>
+<servlet-class>com.erp.nfes.AddEventsServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>AddEventsServlet</servlet-name>
+<url-pattern>/AddEventsServlet</url-pattern>
 </servlet-mapping>
 
 <welcome-file-list>

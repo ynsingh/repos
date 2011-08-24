@@ -1,24 +1,11 @@
-/*
- * Created on January 24, 2011
- *
- * To change the template for this generated file go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
+
 package com.erp.nfes;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-//import java.util.ArrayList;
 
-
-/**
- * @author NFES
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
 public class PickOneMaster {
 	//function to render the html string for pickone_master action object in the form.
 	public StringBuffer getObjectHtml(String name, String action, String choice, String code, String valueString) {
@@ -151,7 +138,13 @@ public class PickOneMaster {
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
-		}
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	    }
 		return dataArray;
 	}
 

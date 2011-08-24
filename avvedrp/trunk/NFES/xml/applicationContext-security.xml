@@ -16,9 +16,18 @@
     </global-method-security>
 
     <http use-expressions="true">
-    	<intercept-url pattern="/ForgotPasswordController" access="permitAll" />
-	<intercept-url pattern="/profileCreationServlet" access="permitAll" />
-	<intercept-url pattern="/profileActivationServlet" access="permitAll" />
+        <intercept-url pattern="/ProfileCreationActivationServlet" access="permitAll" />
+        <intercept-url pattern="/registerUser.jsp" access="permitAll" />
+    	<intercept-url pattern="/ResetPasswordController" access="permitAll" />
+    	<intercept-url pattern="/jsp/Account.jsp" access="permitAll" />
+        <intercept-url pattern="/jsp/Accountconfirmation.jsp" access="permitAll" />
+    	<intercept-url pattern="/FrontController" access="permitAll" />
+    	<intercept-url pattern="/UserCreationServlet" access="permitAll" />
+    	<intercept-url pattern="/profileActivationServlet" access="permitAll" />
+    	<intercept-url pattern="/profile/**" access="permitAll" />
+    	<intercept-url pattern="/website/**" access="permitAll" />
+    	<intercept-url pattern="/profileIndex.jsp" access="permitAll" />
+        <intercept-url pattern="/staffdetails.jsp" access="permitAll" />
         <intercept-url pattern="/login.jsp" access="permitAll" />
         <intercept-url pattern="/ActivateProfile.jsp" access="permitAll" />
         <intercept-url pattern="/ForgotPassword.jsp" access="permitAll" />
@@ -29,8 +38,7 @@
         <intercept-url pattern="/css/**" access="permitAll" />
         <intercept-url pattern="/js/**" access="permitAll" />        
         <intercept-url pattern="/xml/staff_profile_report_v0.xml" access="permitAll" />
-        <intercept-url pattern="/**" access="isAuthenticated()" /> 
-        
+        <intercept-url pattern="/**" access="isAuthenticated()" />         
         <form-login login-page="/login.jsp" authentication-failure-url="/login.jsp?login_error=1" />
         <logout logout-success-url="/login.jsp"/>
         

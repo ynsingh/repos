@@ -14,14 +14,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-//import javax.sql.DataSource;
+
 
 public class ProfileActivationServlet extends HttpServlet{
 	
 	private static final String ENCRYPTION_KEY = "PortalUserEncryption.KEY";
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();		
+	//	PrintWriter out = response.getWriter();		
 		//System.out.println("------ " + request.getParameter( "userKey") );
 		Context initCtx;
 		Connection conn = null;
@@ -40,13 +40,13 @@ public class ProfileActivationServlet extends HttpServlet{
 			
 			if( isUserActivated( conn, userLogin ) ){
 				val = "Your Registration is already activated !";
-				response.sendRedirect("jsp/ActivateProfile.jsp?successVal=" + val);
+				response.sendRedirect("./ActivateProfile.jsp?successVal=" + val);
 				return;
 			}
-			PreparedStatement selectSt = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
+		/*	PreparedStatement selectSt = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
 			selectSt.setString( 1, userLogin );
 			ResultSet rsUsers = selectSt.executeQuery();
-			
+		*/	
 			/* 21-12-2010
 			  int hasMrd = 0;			  
 			 if( rsUsers.next() ){
@@ -61,15 +61,10 @@ public class ProfileActivationServlet extends HttpServlet{
 			//System.out.println("------ User Login " + userLogin );
 			st.executeUpdate();
 			
-			//assignDefaultPrivileges(conn, userLogin, "ROLE_TELLER" );//For user authentication
-			//if( hasMrd == 0 ){
-				assignDefaultPrivileges(conn, userLogin, "2" );//For staff registration
-			//} else {
-			//	assignDefaultPrivileges(conn, userLogin, "PORTAL_MRD_LINK_REQUEST" );//For existing patient MRD linking request
-			//}
-				String conPath = request.getContextPath();
+			//assignDefaultPrivileges(conn, userLogin, "2" );
+			//assignDefaultPrivileges(conn, userLogin, "ROLE_PROFILE_CREATION" );			
 			val = "Your Registration Activated Successfully !";			
-			response.sendRedirect(conPath + "/ActivateProfile.jsp?successVal=" + val);
+			response.sendRedirect("./ActivateProfile.jsp?successVal=" + val);
 		} catch (NamingException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {			

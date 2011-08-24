@@ -3,16 +3,11 @@
 	
 	
 	
-	<table>
-		<field_caption>Faculty Name</field_caption>
-		<field_name>staff_profile_masterdetails_v0_values.user_full_name</field_name>				
-	</table>	
 	
 	<table>
-		<field_caption>Department</field_caption>
-		<field_name>staff_profile_masterdetails_v0_values.department</field_name>				
+		<field_caption>-Select-</field_caption>
+		<field_name>staff_profile_masterdetails_v0_values.Designation</field_name>				
 	</table>
-	
 	<table>
 		<field_caption>Designation</field_caption>
 		<field_name>staff_profile_masterdetails_v0_values.Designation</field_name>				
@@ -27,11 +22,11 @@
 		<field_name>staff_profile_personal_details_v0_values.focus_area</field_name>
 	</table>		
 	<table>	
-		<field_caption>Awad Name</field_caption>
+		<field_caption>Award Name</field_caption>
 		<field_name>staff_profile_awards_v0_values.award_name</field_name>		
 	</table>		
 	<table>	
-		<field_caption>Awad Date</field_caption>
+		<field_caption>Award Date</field_caption>
 		<field_name>staff_profile_awards_v0_values.receiving_month_year</field_name>		
 	</table>			
 	<table>	

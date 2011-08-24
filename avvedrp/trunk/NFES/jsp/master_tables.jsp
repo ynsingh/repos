@@ -1,6 +1,6 @@
 
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="UTF-8" language="java" import="javax.sql.DataSource,javax.naming.Context,javax.naming.InitialContext,java.sql.*,java.util.*,java.io.FileInputStream" errorPage="" %>
-
+<jsp:useBean id="db" class="com.erp.nfes.ConnectDB" scope="session"/> 
 <%
 Connection conn=null;
 Statement theStatement=null;
@@ -8,13 +8,7 @@ ResultSet theResult=null;
 String gm="";String pim="";String ctm="";String um="";String im="";String lc="";String idm="";
 try{
      lc=(String) session.getAttribute("language");
-     Properties properties = new Properties();
-     properties.load(new FileInputStream("../conf/db.properties"));
-     String dbname = properties.getProperty("dbname");
-     String username = properties.getProperty("username");
-     String password = properties.getProperty("password");
-     Class.forName("org.gjt.mm.mysql.Driver");
-     conn=DriverManager.getConnection("jdbc:mysql:"+dbname+"?characterSetResults=UTF-8&characterEncoding=UTF-8&useUnicode=yes",username,password);
+     conn = db.getMysqlConnection();
      theStatement=conn.createStatement();
      theResult=theStatement.executeQuery("select control_name,language_string from language_localisation where active_yes_no=1 and file_code=26 and language_code=\'"+lc+"\'");
      theResult.last();int len=theResult.getRow();String cn[]=new String[len];String ls[]=new String[len];
@@ -72,40 +66,40 @@ $("#tabs").tabs();
 
 function load()
 {       
-     document.getElementById("if01").src="../master_tables?tab_name=general_master&action=show_general_master&category=";
+     document.getElementById("if01").src="../MasterTables?tab_name=general_master&action=show_general_master&category=";
    
 }
 
 function pim(){
      if(pi=="0"){
-          document.getElementById("if02").src="../master_tables?tab_name=principal_investigator_master&action=show_principal_investigator_master";
+          document.getElementById("if02").src="../MasterTables?tab_name=principal_investigator_master&action=show_principal_investigator_master";
           pi="1";
      }
 }
 
 function ctm(){
      if(ct=="0"){
-     	 document.getElementById("if03").src="../master_tables?tab_name=courses_taught_master&action=show_courses_taught_master&faculty_name=";
+     	 document.getElementById("if03").src="../MasterTables?tab_name=courses_taught_master&action=show_courses_taught_master&faculty_name=";
          ct="1";
      }
 }
 
 function um(){
      if(u=="0"){
-	 document.getElementById("if04").src="../master_tables?tab_name=university_master&action=show_university_master";
+	 document.getElementById("if04").src="../MasterTables?tab_name=university_master&action=show_university_master";
 	 u="1";
      }
 }
 
 function im(){
      if(i=="0"){
-     	 document.getElementById("if05").src="../master_tables?tab_name=institution_master&action=show_institution_master";
+     	 document.getElementById("if05").src="../MasterTables?tab_name=institution_master&action=show_institution_master";
      	 i="1";
      }
 }
 function idm(){
      if(dm=="0"){
-     	 document.getElementById("if06").src="../master_tables?tab_name=institution_department_master&action=show_institution_department_master";
+     	 document.getElementById("if06").src="../MasterTables?tab_name=institution_department_master&action=show_institution_department_master";
      	 dm="1";
      }
 }
