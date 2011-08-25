@@ -31,6 +31,8 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 
 import org.bss.brihaspatisync.gui.Desktop_Sharing;
+import org.bss.brihaspatisync.gui.StatusPanel;
+
 import org.bss.brihaspatisync.util.ClientObject;
 
 import org.bss.brihaspatisync.util.RuntimeDataObject;
@@ -150,9 +152,11 @@ public class PostSharedScreen implements Runnable {
                        		try {
                                		Thread.sleep(100);
                                	}catch(Exception ex){}
+				StatusPanel.getController().setdestopClient("yes");
 			}
 		}catch(Exception e){
 			System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());
+			StatusPanel.getController().setdestopClient("no");
 		}
 	}
 }

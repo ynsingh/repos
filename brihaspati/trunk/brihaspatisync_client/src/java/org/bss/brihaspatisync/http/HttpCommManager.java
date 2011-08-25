@@ -10,7 +10,7 @@ package org.bss.brihaspatisync.http;
 import java.util.Vector;
 import java.net.URLEncoder;
 import java.net.InetAddress;
-import javax.swing.JOptionPane;
+//import javax.swing.JOptionPane;
 import org.bss.brihaspatisync.Client;
 import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
@@ -142,9 +142,8 @@ public class HttpCommManager {
  		} if(instCourseList!=null){
  			instSessionList=httpsUtil.getController().getSessionForCourse(instCourseList,indexServerName);
  		}
-		//System.out.println(studCourseList+"hhh  "+ instCourseList);
 		if((studCourseList.contains("noCourse")) && (instSessionList.contains("noCourse")))
- 		 	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HttpCommManager.MessageDialog1"));
+ 		 	System.out.println(Language.getController().getLangValue("HttpCommManager.MessageDialog1"));
 				
  	}
 				

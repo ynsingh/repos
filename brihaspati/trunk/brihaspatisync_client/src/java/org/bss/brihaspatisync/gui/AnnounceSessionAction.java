@@ -10,7 +10,6 @@ package org.bss.brihaspatisync.gui;
 import java.awt.Cursor;
 import javax.swing.JPanel;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
@@ -83,14 +82,14 @@ public class AnnounceSessionAction extends JPanel implements ActionListener{
 					 		insCSPanel.getmainPanel().add(insCSPanel.showLecture(client_obj.getSessionList(course_Name,client_obj.getIndexServerName())),BorderLayout.CENTER);
 							insCSPanel.getmainPanel().revalidate();
 							value=Language.getController().getLangValue("AnnounceSessionAction.MessageDialog1");
-                              				JOptionPane.showMessageDialog(null,value);
+                              				System.out.println(value);
 							insCSPanel.getinstCourseCombo().setSelectedItem("--Show All--");
 						}else
 						        value=Language.getController().getLangValue("AnnounceSessionAction.MessageDialog2");
-                                                        JOptionPane.showMessageDialog(null,value);
+                                                        System.out.println(value);
 					}else{
 						value=Language.getController().getLangValue("AnnounceSessionAction.MessageDialog3");
-						JOptionPane.showMessageDialog(null,value);
+						System.out.println(value);
 					}//else
 				}//if
         		}catch(Exception ex){

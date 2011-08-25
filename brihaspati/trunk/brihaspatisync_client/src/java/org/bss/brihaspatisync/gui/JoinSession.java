@@ -9,7 +9,7 @@ package org.bss.brihaspatisync.gui;
 
 import java.io.File;
 import java.awt.BorderLayout;
-import javax.swing.JOptionPane;
+//import javax.swing.JOptionPane;
 import java.net.URLEncoder;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -84,7 +84,7 @@ public class JoinSession {
 					// Thread for get userlist and other media data from reflector.
                 			new HTTPClient(ref_ip,Lecture_ID).start();
 				}else{
-					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("JoinSession.MessageDialog1"));
+					//JOptionPane.showMessageDialog(null,Language.getController().getLangValue("JoinSession.MessageDialog1"));
 				}
 
 				//start GUI for this lecture id 

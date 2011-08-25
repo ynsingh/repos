@@ -42,7 +42,7 @@ import javax.swing.BorderFactory;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.network.Log;
-import javax.swing.JOptionPane;
+//import javax.swing.JOptionPane;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
@@ -227,16 +227,15 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                         	if(loginValue==false){
                                 	usernameText.setText("");
                                 	passwordField.setText("");
-					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog1"), "Message", JOptionPane.ERROR_MESSAGE);
+					javax.swing.JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog1"), "Message", javax.swing.JOptionPane.ERROR_MESSAGE);
 				}else {
-                                	System.out.println("Login Successful");
-					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog2"));
 					client_obj.setUserName(usernameText.getText());
 					if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){
 						mainWindow.getMenuItem4().setEnabled(true);
 	                                        mainWindow.getDesktop().add(CourseSessionWindow.getController());
         	                                setVisible(false);
                 	                }
+					StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog2"));
                         	}
                                	KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
                         }
@@ -396,18 +395,15 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 			if(loginValue==false){
                         	usernameText.setText("");
                         	passwordField.setText("");
-				JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog1"), "Message", JOptionPane.ERROR_MESSAGE);
+				javax.swing.JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog1"), "Message", javax.swing.JOptionPane.ERROR_MESSAGE);
 			}else {
-				//System.out.println("Login Successfull");
-				//JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog2"));
-				//System.out.println("Login Successfull");
-				//JOptionPane.showMessageDialog(null,"Login Successfull");
 				client_obj.setUserName(usernameText.getText());
 				if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){
 					mainWindow.getMenuItem4().setEnabled(true);
                                 	mainWindow.getDesktop().add(CourseSessionWindow.getController());
                                 	setVisible(false);
 				}
+				StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog2"));
 			}
 			
                  }

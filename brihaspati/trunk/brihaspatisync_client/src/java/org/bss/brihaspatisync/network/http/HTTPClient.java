@@ -9,14 +9,11 @@ package org.bss.brihaspatisync.network.http;
 
 import java.awt.Frame;
 import java.lang.Long;
-import javax.swing.JOptionPane;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.StringTokenizer;
 
-import java.net.URL;
-import java.net.HttpURLConnection;
+//import java.net.URL;
+//import java.net.HttpURLConnection;
 
 import java.io.DataInputStream;
 import java.io.BufferedInputStream;
@@ -115,20 +112,21 @@ public class HTTPClient extends Thread {
 						}
                         		}
                         		method.releaseConnection();
+					org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("yes");
 					try {
 						this.sleep(500);
 						this.yield();
 					}catch(Exception ww){
 						System.out.println("=================>  "+ww.getMessage());
+						org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
 					}	
 	                  	}catch(Exception ex) { 
-					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HTTPClient.MessageDialog1"),"HTTPClient Message",JOptionPane.ERROR_MESSAGE);
-					//JOptionPane.showMessageDialog(null,"Reflector connection failed !!","HTTPClient Message",JOptionPane.ERROR_MESSAGE);
 					System.out.println(" HTTPClient could not connect  "+ex.getMessage()); 
+					org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
 				}
 			}
          	}catch(Exception e){ 
-			
+			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
 		}
   	}
 }

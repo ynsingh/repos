@@ -21,7 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
-import javax.swing.JOptionPane;
+//import javax.swing.JOptionPane;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import javax.swing.BorderFactory;

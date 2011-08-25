@@ -95,14 +95,16 @@ public class GetPPTScreen implements Runnable {
                                 byte[] bytes1=method.getResponseBody();
                                 BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes1));
                                	method.releaseConnection();
+				org.bss.brihaspatisync.gui.StatusPanel.getController().setpptClient("yes");
 				try {
 					if(image!=null) {
 						org.bss.brihaspatisync.tools.presentation.PresentationViewPanel.getController().runPresentationPanel(image);
                         		}
 					org.bss.brihaspatisync.tools.presentation.PresentationViewPanel.getController().setEnable_Decable(false ,false);
-				}catch(Exception e){ System.out.println("Error in loding image in desktop_sharing panel : "+e.getMessage()); }
+				}catch(Exception e){ System.out.println("Error in loding image in desktop_sharing panel : "+e.getMessage()); org.bss.brihaspatisync.gui.StatusPanel.getController().setpptClient("no");	}
 				try {	Thread.sleep(500); }catch(Exception ep){}
 			} catch(Exception e){ 
+				org.bss.brihaspatisync.gui.StatusPanel.getController().setpptClient("no");
 				System.out.println("Error in GetMethod of GetSharedScreen : "+e.getMessage()); 
 			}
 		}

@@ -28,8 +28,6 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 
-import javax.swing.JOptionPane;
-
 import java.util.Vector;
 import java.util.StringTokenizer;
 import java.util.List;
@@ -43,6 +41,7 @@ import org.bss.brihaspatisync.gui.ProxyAuthenticator;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a> 
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
@@ -126,7 +125,7 @@ public class HttpsUtil{
 			}		
 		});
 		if(connection==null)
-	        	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HttpsUtil.MessageDialog1"))				;
+	        	System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog1"))				;
 		return connection;
 	}
 	
@@ -166,7 +165,6 @@ public class HttpsUtil{
    		String Subject_CN=st_SubjectDN.nextToken();
    		String Subject_OU=st_SubjectDN.nextToken();
    		String Subject_O=st_SubjectDN.nextToken();
-   		//StringTokenize st_Subject_O=new StringTokenizer(Subject_O,"=");
 		StringTokenizer st_Subject_O=new StringTokenizer(Subject_O,"=");
    		String Subject_Org=st_Subject_O.nextToken();
    		String Subject_OrgName=st_Subject_O.nextToken();
@@ -180,7 +178,7 @@ public class HttpsUtil{
 			URL indexurl = new URL(indexServer);
 			connection=createHTTPConnection(indexurl);
 			if(connection==null){
-				JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
+				System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
        	        	}else{
 	                        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         	                String str="";
@@ -210,35 +208,37 @@ public class HttpsUtil{
                         URL indexurl = new URL(indexServer);
                         connection=createHTTPConnection(indexurl);
                         if(connection==null){
-                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HttpsUtil.MessageDialog1"));
+                                System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog1"));
                         }else{
                                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 				String str="";
                                 try{
                                         while((str=in.readLine())!=null){
-						if(str.startsWith("current")){
-							String str1[]=str.split(",");
-							// store current reflector ipAddress
-							ref_ip=str1[0].replaceAll("current/","");
-							// set current reflector ipaddress in clientObject for use in runtime.
-							ClientObject.getController().setReflectorIP(ref_ip);
-							// store parent reflector ipaddress of current reflector 
-							parent_ref_ip="parent"+str1[1].replaceAll("parent/","");
-							// set parent reflector ipaddress of current reflector in ClientObject 
-							// for use in runtime
-							String handraise_port=str1[2].replaceAll("port=","");
-							//RuntimeDataObject.getController().setAudioHandraisePort(handraise_port);
-							// for use in runtime
-							ClientObject.getController().setParentReflectorIP(parent_ref_ip);	
-							String a_status=str1[3].replaceAll("A=","");
-							ClientObject.getController().setAudioStatus(a_status);
-							String v_status=str1[4].replaceAll("V=","");
-							ClientObject.getController().setVideoStatus(v_status);
+						if(str.startsWith("current")) {
+							try {
+								String str1[]=str.split(",");
+								// store current reflector ipAddress
+								ref_ip=str1[0].replaceAll("current","");
+								// set current reflector ipaddress in clientObject for use in runtime.
+								ClientObject.getController().setReflectorIP(ref_ip);
+								// store parent reflector ipaddress of current reflector 
+								parent_ref_ip="parent"+str1[1].replaceAll("parent","");
+								// set parent reflector ipaddress of current reflector in ClientObject 
+								// for use in runtime
+								String handraise_port=str1[2].replaceAll("port=","");
+								//RuntimeDataObject.getController().setAudioHandraisePort(handraise_port);
+								// for use in runtime
+								ClientObject.getController().setParentReflectorIP(parent_ref_ip);	
+								String a_status=str1[3].replaceAll("A=","");
+								ClientObject.getController().setAudioStatus(a_status);
+								String v_status=str1[4].replaceAll("V=","");
+								ClientObject.getController().setVideoStatus(v_status);
+							}catch(Exception e){ System.out.println("Error in HttpsUtil.java "+e.getMessage());}
 						}else if(str.startsWith("date")) {					
 							str=str.replaceAll("date","");
 							return str;
 						}else {
-							JOptionPane.showMessageDialog(null,str);
+							System.out.println(str);
 							return null;
 						}
 					}
@@ -259,7 +259,7 @@ public class HttpsUtil{
                 	URL url = new URL(sendurl);
                         connection=createHTTPConnection(url);
                         if(connection==null){
-                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
+                                System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
                         }else{
                         	BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                                 String str="";
@@ -290,7 +290,7 @@ public class HttpsUtil{
                         	URL indexurl = new URL(indexServer);
 	                        connection=createHTTPConnection(indexurl);	
 				if(connection==null){
-	                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
+	                                System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
         	                }else{
                 	                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                         	        String str="";

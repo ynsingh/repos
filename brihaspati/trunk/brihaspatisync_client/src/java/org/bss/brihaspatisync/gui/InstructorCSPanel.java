@@ -22,7 +22,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
-import javax.swing.JOptionPane;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import javax.swing.BorderFactory;
@@ -350,7 +349,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 			String indexServer=indexServerName+"/ProcessRequest?req=cancleLecture&"+idCourse;
 			if(!(indexServerName.equals(""))) {
 				if(!(HttpsUtil.getController().getIndexingMessage(indexServer))){
-                                	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("InstructorCSPanel.Messageialog1"));
+                                	System.out.println(Language.getController().getLangValue("InstructorCSPanel.Messageialog1"));
 				}
 			}  else
 				log.setLog("Insufficient indexServer name in cancleLecture() in InstructorCSPanel :"+indexServer);

@@ -19,6 +19,7 @@ public class UtilObject {
 
 	private Queue recQueue=null;	
 	private Queue sendQueue=null;
+        private Queue frameQueue=null;
 	private static UtilObject nob=null;
 	
 	public static UtilObject getController(){
@@ -31,8 +32,11 @@ public class UtilObject {
 	public UtilObject(){
 		this.recQueue  =new Queue();
 		this.sendQueue =new Queue();
+                this.frameQueue=new Queue();  
 	}
-	
+        public void setframeQueue(String value){
+               frameQueue.putString(value);
+        }
 	public void setRecQueue(String value){
                 recQueue.putString(value);
         }
@@ -42,7 +46,7 @@ public class UtilObject {
 	public String getRecQueue(){
 		String value="";
 		try {
-                	value =recQueue.getString().toString();
+                 	value =recQueue.getString().toString();
 			recQueue.remove();
 		}catch (Exception e){}
 		return value;

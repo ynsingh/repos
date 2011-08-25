@@ -1,5 +1,4 @@
-package org.bss.brihaspatisync.network.desktop_sharing;
-
+package org.bss.brihaspatisync.network.desktop_sharing; 
 /**
  * GetSharedScreen.java
  *
@@ -100,9 +99,11 @@ public class GetSharedScreen implements Runnable {
 					if(image!=null)
                         			Desktop_Sharing.getController().runDesktopSharing(image);
 				}catch(Exception e){ System.out.println("Error in loding image in desktop_sharing panel : "+e.getMessage()); }
+				org.bss.brihaspatisync.gui.StatusPanel.getController().setdestopClient("yes");
 				try {	Thread.sleep(100); }catch(Exception ep){}
 			} catch(Exception e){ 
 				System.out.println("Error in GetMethod of GetSharedScreen : "+e.getMessage()); 
+				org.bss.brihaspatisync.gui.StatusPanel.getController().setdestopClient("no");
 			}
 		}
 	}

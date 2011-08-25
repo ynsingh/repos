@@ -119,9 +119,16 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
 		right_Pane.setLayout(new BorderLayout());
 		right_Pane.add(jtp,BorderLayout.CENTER);
 		right_Pane.setBackground(Color.WHITE);
-        	splitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left_Pane,right_Pane);
-		splitPane.setBackground(Color.WHITE);
-                splitPane.setDividerLocation(275);
+        	JSplitPane splitPane1=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,left_Pane,right_Pane);
+		splitPane1.setBackground(Color.WHITE);
+                splitPane1.setDividerLocation(275);
+		splitPane=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		splitPane.setTopComponent(splitPane1);
+		splitPane.setBottomComponent(StatusPanel.getController());
+		System.out.println((int)dim.getHeight());
+		splitPane.setDividerLocation(((int)dim.getHeight())-170);
+		
+		
 		return splitPane;
 	}
 

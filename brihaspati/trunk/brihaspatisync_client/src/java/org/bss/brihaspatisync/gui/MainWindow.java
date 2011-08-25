@@ -25,7 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JDesktopPane;
-import javax.swing.JOptionPane;
+//import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 
 /**
@@ -203,7 +203,7 @@ public class MainWindow  extends JFrame implements ActionListener{
 		}else if(e.getActionCommand().equals("Start-Recorder")){
 			// Action code for start recorder.
                 }else{
-			JOptionPane.showMessageDialog(null,Language.getController().getLangValue("MainWindow.MessageDialog1"));
+			StatusPanel.getController().setStatus(Language.getController().getLangValue("MainWindow.MessageDialog1"));
 
 		}
         }

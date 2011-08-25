@@ -9,8 +9,6 @@ package org.bss.brihaspatisync.gui;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JOptionPane;
-
 import java.net.URLEncoder;
 
 import java.util.Vector;

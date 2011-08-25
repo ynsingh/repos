@@ -87,7 +87,7 @@ public class UserListPanel {
 		JPanel labelPane=new JPanel();
                 JLabel welcome=new JLabel(Language.getController().getLangValue("UserListPanel.WelcomeLabel"));
                 welcome.setFont(new Font("Arial", Font.PLAIN, 20));
-                JLabel userLogin=new JLabel(Language.getController().getLangValue("UserListPanel.UserName"));
+                JLabel userLogin=new JLabel(ClientObject.getController().getUserName());//Language.getController().getLangValue("UserListPanel.UserName"));
                 userLogin.setForeground(new Color(24,116,205));
                 userLogin.setFont(new Font("Arial", Font.BOLD, 20));
                 labelPane.add(welcome);
