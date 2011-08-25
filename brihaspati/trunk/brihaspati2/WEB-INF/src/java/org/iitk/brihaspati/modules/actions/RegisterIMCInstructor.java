@@ -94,7 +94,6 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
 			 * Getting instName as a String according to institute id
 			 */
 			String instituteId=(data.getUser().getTemp("Institute_id").toString());
-			ErrorDumpUtil.ErrorLog("iid in action at line 86==="+instituteId);
 			int InstituteId=Integer.parseInt(instituteId);
 			String instName= InstituteIdUtil.getIstName(InstituteId);	
 		 	ParameterParser pp=data.getParameters();
@@ -162,10 +161,8 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
                         		else{//else#6
 					int i=email.indexOf("@");
 					String pass=email.substring(0,i);
-					ErrorDumpUtil.ErrorLog("emailat153="+email+"\npass=="+pass);
 					uname=email;
 					String check=courseid.concat(uname);
-					ErrorDumpUtil.ErrorLog("unameatline 156="+uname);
 					/** Getting the group name from the database
 					* and compare this group name with current group name
 					*/
@@ -180,7 +177,6 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
 					}
 					else{//else#7
 					String passwd=pass;
-					ErrorDumpUtil.ErrorLog("pass==="+passwd);
 					String serverName=data.getServerName();
 					int srvrPort=data.getServerPort();
 					String serverPort=Integer.toString(srvrPort);
@@ -191,7 +187,6 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
 					*/ 
 					//String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,0);
 					boolean checkspace=QuotaUtil.CompareAllotedQuota(instituteId);
-                                	ErrorDumpUtil.ErrorLog("check at line 116 in registration action==========="+checkspace);
                                 	if(checkspace){
 
 					/** 

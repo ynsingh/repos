@@ -32,7 +32,7 @@ $!data.getMessage()
            #formCell("$brih_last $brih_name" "LName" "$!ud.getLastName()")
          </tr>
          <tr>
-	   #formCell("$brih_email" "EMAIL" "$!ud.getEmail()")
+	   #formCell("$brih_alternate $brih_email" "EMAIL" "$!ud.getEmail()")
 	 </tr>
 	   #end
 	 #*<tr>
