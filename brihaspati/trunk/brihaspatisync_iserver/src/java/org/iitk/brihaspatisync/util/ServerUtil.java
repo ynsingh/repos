@@ -70,9 +70,7 @@ public class ServerUtil{
                 return(cdate);
         }
 	/****************  get Corent Date **************/	
-	
-	 /** getting the  day or time difference between the sessionDate and SystemDate. */
-
+	/** getting the  day or time difference between the sessionDate and SystemDate. */
 
 	public int getDifferenceOfDay(Date sessionDate,String sessionTime) {
 
@@ -92,7 +90,6 @@ public class ServerUtil{
                	long MS_PER_DAY = 86400000;
                	if(sessionIntime<systemIntime) {
                 	numDays = Math.abs(systemIntime-sessionIntime) / MS_PER_DAY;
-	      //        System.out.println("No of Days=>"+numDays);
                	}
                 if(numDays>=1)
                 	return 1;

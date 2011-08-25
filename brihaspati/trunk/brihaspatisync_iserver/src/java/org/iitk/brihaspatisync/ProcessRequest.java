@@ -17,7 +17,6 @@ import java.util.Timer;
 import java.util.Vector;
 import java.util.Iterator;
 import java.util.Hashtable;
-//import java.util.Date;
 import java.util.StringTokenizer;
 import java.text.SimpleDateFormat;
 
@@ -62,7 +61,7 @@ public class ProcessRequest extends HttpServlet {
    	private Timer dbTimer=null;
 	private static Hashtable table;
 	private Torque set=null;
-	
+	private ServletContext context=null;
 
 	protected void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException,IOException{
 		doPost(request,response);
@@ -73,26 +72,31 @@ public class ProcessRequest extends HttpServlet {
 		if(set==null){
 			try{
 				set=new Torque();
-				ServletContext context = getServletContext();
+				context = getServletContext();
 				ServerLog.getController().setContext(context);
 				ReflectorManager.getController().setContext(context);
 				PeerManager.getController().setContext(context);
-                                
+                        	ReflectorStatusManager.getController().setContext(context);        
 				String tempFileName =context.getRealPath("Torque.properties");
                                 set.init(tempFileName);
 		      		dbTimer=new Timer(true);
+				ServerLog.getController().Log("database connection ");
                		}catch(Exception dberror){ServerLog.getController().Log("Error in database connection "+dberror.getMessage());}
 		}
+		
+			
 		try{
   			dbTimer.schedule(TimerOfDatabase.getController(), 1000, 60*60*1000);
  		}catch(Exception e){ ServerLog.getController().Log("Error in database Scheduler "+e.getMessage());}
-		
+
+		try {
+			org.iitk.brihaspatisync.util.ReflectorHandler.getController().LectureHandler(context);
+		}catch(Exception e){}
+			
 		String reqType=request.getParameter("req");
-		//ServerLog.getController().Log(reqType);
 		PrintWriter out = response.getWriter();
 		if(reqType.equals("reflector_logout")){
                         String reflectorIP  =InetAddress.getByName(request.getRemoteAddr()).toString();
-			ServerLog.getController().Log("reflector_logout------------->"+reflectorIP);	
                         String msg =ReflectorManager.getController().removePeer(reflectorIP);
                         String message=msg;
                         response.setContentLength(message.length());
@@ -110,8 +114,11 @@ public class ProcessRequest extends HttpServlet {
 
 			String reflectorIP  =InetAddress.getByName(request.getRemoteAddr()).toString();
 			String status=request.getParameter("status");
-			String arvind =ReflectorManager.getController().Register(reflectorIP,status);
-			String message="successfull";
+			String message =ReflectorManager.getController().Register(reflectorIP,status);
+			if(!message.equals("UnSuccessfull")){
+                                message="successfull";
+                        }
+			//ServerLog.getController().Log("reflector_registration------------->"+message);	
 			response.setContentLength(message.length());
                         out.println(message);
                         out.flush();
@@ -187,7 +194,7 @@ public class ProcessRequest extends HttpServlet {
        		                message=message+"\n"+Integer.toString(key);
 				/* send server date to client user for synchrozise clock with this server. */
 				message=message+"\n"+ServerUtil.getController().getCurrentDate("");
-				ServerLog.getController().Log(message);
+				//ServerLog.getController().Log(message);
 				response.setContentLength(message.length());
                                 out.println(message);
                                 out.flush();
@@ -200,13 +207,13 @@ public class ProcessRequest extends HttpServlet {
 			String ipAddress=InetAddress.getByName(request.getRemoteAddr()).toString();
 			String reflector=request.getParameter("reflector");
 			String username=request.getParameter("username");
-			ServerLog.getController().Log("reflector ip for logout==>"+reflector+"\nusername==>"+username);
+			//ServerLog.getController().Log("reflector ip for logout==>"+reflector+"\nusername==>"+username);
 			/** Remove Entry from the peer list from LecturePeer.xml */
 			if(!(reflector.equals(""))){
 				String lectID=request.getParameter("lectID");
-				ServerLog.getController().Log("lectID==>"+lectID);
+				//ServerLog.getController().Log("lectID==>"+lectID);
 				PeerManager.getController().removePeer(lectID,username);
-				ReflectorManager.getController().removeLoad(reflector);
+				ReflectorStatusManager.getController().updateStatusPeer(username);
 			}
 			out.flush();
                         out.close();
@@ -287,25 +294,20 @@ public class ProcessRequest extends HttpServlet {
 				String role=request.getParameter("role");
 				String privateIP=ipaddress.toString();
 				String proxy="NO";	
-				String message=ReflectorManager.getController().getIP(lect_id,role);
-				ServerLog.getController().Log("message---> 1"+message);
-				if((!message.equals("UnSuccessfull")) && (!message.equals("Reflector is not running"))){
+				String message=ReflectorStatusManager.getController().Register(user,lect_id,role);  
+				if((!message.equals("UnSuccessfull")) && (!message.equals("Reflector is not available !!")) && (!message.equals("Reflector have insufficient Load !!")) ){
 					HandRaisePortHandler.getController().handRaisePortHandler(lect_id);
 					String ref_ip=message;
-					ServerLog.getController().Log("ref_ip ---> 2 "+ref_ip);
-					if(ref_ip.startsWith("current/")){
+					if(ref_ip.startsWith("current")){
 						String str1[]=ref_ip.split(",");
-                	                        ref_ip=str1[0].replaceAll("current/","");
-						ServerLog.getController().Log("ref_ip ---> 3 "+ref_ip);
+                	                        ref_ip=str1[0].replaceAll("current","");
 						str1=null;
 						String msg=PeerManager.getController().createPeer(lect_id,publicIP,user,role,status,privateIP,proxy,ref_ip);
 					}
        				}
 				String av_status=ServerUtil.getController().getAVStatus(lect_id);
-				ServerLog.getController().Log("message---> 293================ "+av_status);
 				String port=",port="+HandRaisePortHandler.getController().getPort(lect_id);
 				message	= message + port+av_status;	
-				ServerLog.getController().Log("message---> 4 "+message);
 				response.setContentLength(message.length());
                         	out.println(message);
                         	out.flush();
@@ -318,14 +320,12 @@ public class ProcessRequest extends HttpServlet {
 				String lect_id=request.getParameter("lect_id");
 				/** Get Userlist in Vector for given Lecture Id */
 				Vector result=PeerManager.getController().getPeerList(lect_id);
-				ServerLog.getController().Log("Get Userlist in Vector for given Lecture Id "+result.toString());
 				int resultSize=result.size();
 				String message="";
                         	if(resultSize!=0){
 					for(int i=0;i<resultSize;i++){
                                         	message=message+","+result.elementAt(i).toString();
 					}
-					ServerLog.getController().Log("Get Userlist in Vector for given Lecture Id "+message);
                               		response.setContentLength(message.length());
 					out.println(message);
 		                        out.flush();
@@ -399,7 +399,6 @@ public class ProcessRequest extends HttpServlet {
 				try {	
 					TurbineUser element=(TurbineUser)returnValue.get(0);
         	                        result=Integer.toString(element.getUserId());
-					ServerLog.getController().Log(result);
 				} catch(Exception ex) { ServerLog.getController().Log(ex.getMessage());}	
         		}
 
@@ -459,8 +458,6 @@ public class ProcessRequest extends HttpServlet {
 			}catch(Exception e){ServerLog.getController().Log("Error Log in Lecture =============> "+e.getMessage()); }
 		}else if(lectGetParameter.equals("GetUpdateLectValues")) {
 			try {
-				ServerLog.getController().Log("   lectGetParameter "+lectGetParameter);
-				ServerLog.getController().Log("   lectGetParameter "+lect_id);
 				Date date=Date.valueOf(lectDate);
 				Criteria crit=new Criteria();
         	                crit.add(LecturePeer.LECTUREID,Integer.parseInt(lect_id));

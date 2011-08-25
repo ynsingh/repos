@@ -122,7 +122,7 @@ public class HandRaisePortHandler {
                 return  true;
         }
 	
-	public String getPort(String id){
+	public String getPort(String id) {
                 Element element=null;
                 Node node=null;
                 try{
@@ -147,7 +147,6 @@ public class HandRaisePortHandler {
                 } catch( Exception e ){}
 		return "";
         }
-
 		
 	private String searchPort(){
 			
@@ -209,7 +208,6 @@ public class HandRaisePortHandler {
 					}
            			}
            		}
-           		
 		} catch( Exception e ){}
 	}
 }

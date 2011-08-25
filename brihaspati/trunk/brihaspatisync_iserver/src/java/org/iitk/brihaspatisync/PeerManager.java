@@ -40,6 +40,7 @@ public class PeerManager
 	/**
          * This method returns controller for PeerManager class.
          */
+	
 	public static PeerManager getController(){
 		if(pm==null){
 			pm=new PeerManager();
@@ -58,7 +59,7 @@ public class PeerManager
 		File file=new File(context.getRealPath(lectureID+".xml"));
                 if(file.exists()){
                        	return file;
-		}else{
+		}else {
 			try {
 			      	OutputStream fout= new FileOutputStream(file);
 	        	        OutputStream bout= new BufferedOutputStream(fout);
@@ -79,7 +80,7 @@ public class PeerManager
          * This Method Returns Parent Peer's IPAddress for Peer Connection .and also increase load of this parent peer.
          */
 	protected String createPeer(String lect_id, String publicIP,String user,String role,String status,String privateIP,String proxy,String ref_ip){
-		String parentIP="";
+		String message="";
 		try{
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	               	DocumentBuilder builder = factory.newDocumentBuilder();
@@ -88,23 +89,26 @@ public class PeerManager
 	                peerList = root.getElementsByTagName("Peer");
         	        Element peer = doc.createElement("Peer");
                 	if((publicIP!="")&&(user!=null)&&(role!="")&&(status!="")){
-	                	peer.setAttribute("PublicIP",publicIP);
-        	                peer.setAttribute("User",user);
-                	        peer.setAttribute("Role",role);
-                        	peer.setAttribute("Status",status);
-	                        peer.setAttribute("Reflector",ref_ip);
-        	                peer.setAttribute("PrivateIP",privateIP);
-                	        peer.setAttribute("Proxy",proxy);
-                        	root.appendChild(peer);
-	                        saveXML(doc,getFile(lect_id));
-				return "Write succfully";	
+				if(!searchUserName(lect_id,user)){
+		                	peer.setAttribute("PublicIP",publicIP);
+	        		        peer.setAttribute("User",user);
+        	        	        peer.setAttribute("Role",role);
+                	        	peer.setAttribute("Status",status);
+	                	       	peer.setAttribute("Reflector",ref_ip);
+	        	                peer.setAttribute("PrivateIP",privateIP);
+        	        	       	peer.setAttribute("Proxy",proxy);
+	                	       	root.appendChild(peer);
+		                        saveXML(doc,getFile(lect_id));
+					message="Write succfully";	
+				}else
+					removePeer(lect_id,user);	
       			} else{
               			ServerLog.getController().Log("Error in insert value to xml file by any null value==>");
 			}
 		}catch(Exception e){ 
 			ServerLog.getController().Log("Error create xml line no 127 "+e.getMessage()+"get==>"+e);
 		}
-		return parentIP;
+		return message;
 			
 	}
 				
@@ -114,7 +118,6 @@ public class PeerManager
                 String user="";
 		try {	
 			userName=URLDecoder.decode(userName, "UTF-8");
-                	ServerLog.getController().Log("action-----> "+action+" userName ---->  "+userName+" LectureID "+LectureID);
                 	DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
 	                factory.setValidating(false);
         	        factory.setIgnoringElementContentWhitespace(false);
@@ -131,9 +134,7 @@ public class PeerManager
 					/**
         	                         * update Reflector of Parent Peer
                 	                 */
-					ServerLog.getController().Log("user===========>  "+user+" userName ====  "+userName);
                         	        if(user.equals(userName)){
-						ServerLog.getController().Log("Iner loop  userName @@@@@  "+userName);
 						synchronized (this) {
                         	                       	Attr attrNode = element.getAttributeNode("Status");
                                 	                attrNode.setValue(action);
@@ -148,16 +149,44 @@ public class PeerManager
 		}	
 		return "UnSuccessfull";
 	}
+	
+	protected boolean searchUserName(String lectID,String username) {
+		boolean flag=false;
+                Element element=null;
+                Node node=null;
+                String ip="";
+                try{
+                        DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
+                        factory.setValidating(false);
+                        factory.setIgnoringElementContentWhitespace(false);
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document document = builder.parse(getFile(lectID));
+                        Element root = document.getDocumentElement();
+                        peerList = root.getElementsByTagName("Peer");
+                        for( int i=0; i<peerList.getLength(); i++ ){
+                                node = peerList.item(i );
+                                if( node.getNodeType() == node.ELEMENT_NODE ){
+                                        element = ( Element )node;
+                                        String User=element.getAttribute("User");
+                                        if(User.equals(username)){
+						flag=true;
+                                        }
+                                }
+                        }
+                } catch( Exception e ){
+                        e.printStackTrace();
+                }
+		return flag;
+        }
+
 
 	/**
 	 * This method is set to remove peer from peer list and decrease load of parent peer. 
 	 */
 	protected synchronized void removePeer(String lectID,String username){
-               
 		Element element=null;
                 Node node=null;
                 String ip="";
-
                 try{
                         DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
                         factory.setValidating(false);

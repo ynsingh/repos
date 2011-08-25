@@ -15,6 +15,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Document; 
 import org.w3c.dom.Element; 
 import org.w3c.dom.Attr;
+import org.w3c.dom.Text;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.apache.xerces.dom.DocumentImpl;
@@ -22,7 +23,7 @@ import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import java.util.Vector;
 import org.iitk.brihaspatisync.util.ServerLog;
-
+import javax.xml.parsers.ParserConfigurationException;
 import javax.servlet.ServletContext;
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a>
@@ -33,11 +34,10 @@ public class ReflectorManager
 {
 	
 	private static ReflectorManager rm=null;
-	private NodeList ref_List=null;
+	private Document doc=null;
+        private DocumentBuilder db=null;
 	private final static int maxload = 10;	
-	private final static int maxcource = 2;	
 	private ServletContext context=null;
-	
 	/**
          * This method returns controller for PeerManager class.
          */
@@ -50,385 +50,180 @@ public class ReflectorManager
 
 	public void setContext(ServletContext context1) throws Exception {
                 context=context1;
-                //existingFile=new File(context.getRealPath("logs/ServerLog.txt"));
-                //dos = new DataOutputStream(new FileOutputStream(existingFile,true));
-        }	
-
-	protected String getIP(String courceid , String ins_or_stu){
-		try {
-			if(ins_or_stu.equals("instructor")){
-				String ip=checkLoadFreeReflector(courceid);
-				if(ip.equals("Reflector is not running")){	
-					return "Reflector is not running";
-				}
-				if(!(ip.equals("UnSuccessfull"))){
-					return ip;
-                                }
-				ip=checkloadAndRunningCourse(courceid,"Instructor");
-				if(!(ip.equals("UnSuccessfull"))){
-					return ip;
-				}else {
-					return "Reflector is not running";
-				}
-			} else {
-				String ip=checkInsLogin(courceid);
-				if((ip.equals("UnSuccessfull")) || (ip.equals("Reflector is not running"))){
-					if(ip.equals("UnSuccessfull"))
-						ip="Instructor is not login";
-					if(ip.equals("Reflector is not running"))
-						ip="Reflector is not running";
-                                        return ip;
-                                }
-				ip=insAvilable(courceid);	
-				if(!ip.equals("UnSuccessfull")){
-                                        return ip;
-                                }
-				ip=checkloadAndRunningCourse(courceid,"Student");
-				if(!ip.equals("UnSuccessfull")){
-                                        return ip;
-                                } else{
-					return "Reflector is not running";
-				}
-			}
-		}catch(Exception e){}	
-		return "";
-	}
-	private String checkInsLogin(String courceid){
-		Element element=null;
-                Node node=null;
-                String ip="UnSuccessfull";
-                try {
-                        DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
-                        factory.setValidating(false);
-                        factory.setIgnoringElementContentWhitespace(false);
-                        DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document document = builder.parse(getFile("Reflector.xml"));
-                        Element root = document.getDocumentElement();
-                        ref_List = root.getElementsByTagName("Reflector");
-			if(ref_List.getLength()==0)
-				return "Reflector is not running";
-                        for( int i=0; i<ref_List.getLength(); i++ ){
-                                node = ref_List.item(i);
-                                if( node.getNodeType() == node.ELEMENT_NODE ){
-                                        element = (Element)node;
-                                        String ins=element.getAttribute("Instructor");
-                                        String ins1[]= ins.split(",");
-					if(checkIns(courceid,ins1)!=0){
-						ip="Successfull";
-						return ip;
-					}	
-				}				
-			}
-                }catch(Exception e){}
-                return ip;
-	}
-	
-	private String insAvilable(String courceid){
-		Element element=null;
-                Node node=null;
-                String ip="UnSuccessfull";
-                try {
-                        DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
-                        factory.setValidating(false);
-                        factory.setIgnoringElementContentWhitespace(false);
-                        DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document document = builder.parse(getFile("Reflector.xml"));
-                        Element root = document.getDocumentElement();
-                        ref_List = root.getElementsByTagName("Reflector");
-                        for( int i=0; i<ref_List.getLength(); i++ ){
-                                node = ref_List.item(i);
-                                if( node.getNodeType() == node.ELEMENT_NODE ){
-                                        element = (Element)node;
-					String ins=element.getAttribute("Instructor");
-					String ins1[]= ins.split(",");
-					if(checkRunningIns(courceid,ins1)){
-						int load=Integer.parseInt(element.getAttribute("Load"));
-        	                                if(load<maxload){
-        	                                        ip=element.getAttribute("IP");
-                	                                String newload=Integer.toString(load+1);
-                        	                        Attr attrNode = element.getAttributeNode("Load");
-                                	                attrNode.setValue(newload);
-	                                                saveXML(document,getFile("Reflector.xml"));
-							ip="current"+ip+","+"parent"+"";
-        	                                        return ip;
-						}else {
-							return ip;
-						}
-					}
-                                }
-                        }
-                }catch(Exception e){}
-		return ip;
-	}	
-
-	private String checkloadAndRunningCourse(String courceid,String clientrole){
-		Element element=null;
-                Node node=null;
-                String ip="UnSuccessfull";
-                try {
-                        DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
-                        factory.setValidating(false);
-                        factory.setIgnoringElementContentWhitespace(false);
-                        DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document document = builder.parse(getFile("Reflector.xml"));
-                        Element root = document.getDocumentElement();
-                        ref_List = root.getElementsByTagName("Reflector");
-                        for( int i=0; i<ref_List.getLength(); i++ ){
-                                node = ref_List.item(i);
-                                if( node.getNodeType() == node.ELEMENT_NODE ){
-                                        element = (Element)node;
-                                        int load=Integer.parseInt(element.getAttribute("Load"));
-                                        if(load<maxload){
-						String course = element.getAttribute("Courses");
-						String temp[]= course.split(",");
-                                                int inttemp=checkRunningCource(course.split(","));
-						if(inttemp<=maxcource){
-							boolean flag=false;
-							if(clientrole.equals("Instructor")){
-								if(inttemp==maxcource){
-									ip="current"+ip+","+"parent"+"";
-									return ip;	
-								}
-		                                       		temp[inttemp]=courceid;
-							}else {
-								if(inttemp==1){
-									if(temp[0].equals(courceid)) {
-	                                                                        temp[0]=courceid;
-										flag=true;
-									} else {
-										temp[1]=courceid;
-										flag=true;
-									}
-								} else if(inttemp==2){
-									if(temp[0].equals(courceid)){
-										flag=true;
-                                                                        	temp[0]=courceid;
-									}
-                                                                	if(temp[1].equals(courceid)){
-										flag=true;
-                                                                        	temp[1]=courceid;
-									}
-                                                                }else {
-									flag=true;
-									temp[inttemp]=courceid;
-								}
-							}
-							if(!(clientrole.equals("Instructor"))){
-                                                                if(!flag)
-                                                                        return ip;
-                                                        }
-        	                                        // set existing load +1
-                	                                ip=element.getAttribute("IP");
-                        	                        String newload=Integer.toString(load+1);
-                                	                Attr attrNode = element.getAttributeNode("Load");
-                                        	        attrNode.setValue(newload);
-							if(clientrole.equals("Instructor")){
-								course = element.getAttribute("Instructor");
-		                                                String ins[]= course.split(",");
-
-								int kk=checkIns1(courceid,ins);	
-								attrNode = element.getAttributeNode("Instructor");
-								if(kk==1){
-									ins[0]=courceid+clientrole;
-								}else {
-									ins[1]=courceid+clientrole;
-								}
-        		                                      	attrNode.setValue(ins[0]+","+ins[1]);
-								ip="current"+ip+","+"parent"+"";
-							}else {
-								String ip1=checkparentIP(courceid);
-								if(!ip.equals(ip1)){
-									ip="current"+ip+","+"parent"+ip1;
-								}else {
-									ip="current"+ip+","+"parent"+"";
-								}
-							}
-							attrNode = element.getAttributeNode("Courses");
-                                                        attrNode.setValue(temp[0]+","+temp[1]);
-	                                             	saveXML(document,getFile("Reflector.xml"));
-                        	                        return ip;
-						}
-
-                                        }
-                                }
-                        }
-                }catch(Exception e){}
-                return ip;
-	}
-
-	private String checkLoadFreeReflector(String courceid){
-		Element element=null;
-                Node node=null;
-                String ip="UnSuccessfull";
-                try {
-                        DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
-                        factory.setValidating(false);
-                        factory.setIgnoringElementContentWhitespace(false);
-                        DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document document = builder.parse(getFile("Reflector.xml"));
-                        Element root = document.getDocumentElement();
-                        ref_List = root.getElementsByTagName("Reflector");
-			if(ref_List.getLength()==0)
-                                return "Reflector is not running";
-
-                        for( int i=0; i<ref_List.getLength(); i++ ){
-                                node = ref_List.item(i);
-                                if( node.getNodeType() == node.ELEMENT_NODE ){
-                                        element = (Element)node;
-                                        int load=Integer.parseInt(element.getAttribute("Load"));
-                                        if(load==0){
-                                                ip=element.getAttribute("IP");
-                                                String newload=Integer.toString(load+1);
-                                                Attr attrNode = element.getAttributeNode("Load");
-                                                attrNode.setValue(newload);
-				
-						attrNode = element.getAttributeNode("Instructor");
-                                                attrNode.setValue(courceid+"Instructor"+","+"notInstructor");
-                                                //set value of Cource
-                                                attrNode = element.getAttributeNode("Courses");
-                                                attrNode.setValue(courceid+","+"0");
-                                                saveXML(document,getFile("Reflector.xml"));
-						ip="current"+ip+","+"parent"+"";
-                                                return ip;
-					}
-				}
-			}
-		}catch(Exception e){}
-                return ip;
-	}
-	
-	private String checkparentIP(String courceid){
-		Element element=null;
-                Node node=null;
-                String ip="UnSuccessfull";
-                try {
-                        DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
-                        factory.setValidating(false);
-                        factory.setIgnoringElementContentWhitespace(false);
-                        DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document document = builder.parse(getFile("Reflector.xml"));
-                        Element root = document.getDocumentElement();
-                        ref_List = root.getElementsByTagName("Reflector");
-                        for( int i=0; i<ref_List.getLength(); i++ ){
-                                node = ref_List.item(i);
-                                if( node.getNodeType() == node.ELEMENT_NODE ){
-                                        element = (Element)node;
-                                       	String course = element.getAttribute("Courses");
-                                        String temp[]= course.split(",");
-					boolean flag=false;
-                                        if(temp[0].equals(courceid)){
-						flag=true;	
-					}      
-					if(temp[1].equals(courceid)){
-                                                flag=true;
-                                        }
-					if(flag){
- 						ip=element.getAttribute("IP");
-                                        }
-                                }
-                        }
-                }catch(Exception e){}
-                return ip;
-	
-	}
+		createDocumentObjectModel();
+        }
 		
+	private void createDocumentObjectModel() {
+                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                try {
+                        db = dbf.newDocumentBuilder();
+                        try {
+                                doc = db.parse(getFile());
+                        }catch(Exception e){}
+                }catch(ParserConfigurationException pce) { ServerLog.getController().Log("Error while trying to instantiate DocumentBuilder " + pce); }
+
+        }
+		
+	protected String removePeer(String reflector_ip){
+		try {
+                        reflector_ip=reflector_ip.replaceAll("/","");
+                        NodeList nodeList = doc.getElementsByTagName("IP");
+                        for( int i=0; i<nodeList.getLength(); i++ ){
+                                Node node = nodeList.item(i);
+                                String ip=node.getFirstChild().getNodeValue();
+                                if(ip.equals(reflector_ip)){
+					NodeList removenodeList=doc.getElementsByTagName("Reflector");
+                		        doc.getDocumentElement().removeChild(removenodeList.item(i));
+                                        saveXML();
+					ReflectorStatusManager.getController().removeReflector_IP_Peer(reflector_ip);
+                                }
+                        }
+                }catch(Exception e){
+                        ServerLog.getController().Log("   Error from update Status -------> ");
+                }
+                return "UnSuccessfull";
+	}
+	
+	protected String removeLoad(String reflector_ip ,String courseid){
+		try {
+                        NodeList nodeList = doc.getElementsByTagName("IP");
+                        for( int i=0; i<nodeList.getLength(); i++ ){
+                                Node node = nodeList.item(i);
+                                String ip=node.getFirstChild().getNodeValue();
+                                if(ip.equals(reflector_ip)) {
+					NodeList coursenodeList = doc.getElementsByTagName("Courses");
+					Node course = coursenodeList.item(i);
+                                        String courses=course.getFirstChild().getNodeValue();
+                                        if((courses.indexOf(courseid))> -1){
+						courses=courses.replaceAll(courseid,"");	
+						if((courses.indexOf(","))>-1)
+							courses=courses.replaceAll(",","");	
+					}
+					if(courses.length()<1)
+						courses="0";
+					course.getFirstChild().setNodeValue(courses);
+					saveXML();
+				}
+			}
+			nodeList=null;
+			nodeList = doc.getElementsByTagName("IP");
+                        for( int i=0; i<nodeList.getLength(); i++ ){
+                                Node node = nodeList.item(i);
+                                String ip=node.getFirstChild().getNodeValue();
+				node=null;
+                                if(ip.equals(reflector_ip)) {
+					NodeList loadnodeList = doc.getElementsByTagName("Load");
+                                        node = loadnodeList.item(i);
+					String load=node.getFirstChild().getNodeValue();
+					int load_int=Integer.parseInt(load);
+					load_int=load_int-1;
+                                        node.getFirstChild().setNodeValue(Integer.toString(load_int));
+                                        saveXML();
+                                }
+                        }
+                }catch(Exception e){
+                        ServerLog.getController().Log("   Error from removeLoad load decrease -------> "+e.getMessage());
+                }
+                return "UnSuccessfull";
+        }
+	
+	protected String searchElement(String courseid) {
+		File file=new File(context.getRealPath("Reflector.xml"));
+		String message_for_reflector="UnSuccessfull";
+		if(file.exists()) {	
+			NodeList nodeList = doc.getElementsByTagName("Courses");
+			for( int i=0; i<nodeList.getLength(); i++ ) {
+				NodeList newnodeList = doc.getElementsByTagName("Load");
+	                        Node loadnode = newnodeList.item(i);
+        	                String load=loadnode.getFirstChild().getNodeValue();
+                	        int load_int=Integer.parseInt(load);
+                        	if(load_int<maxload) {
+					Node course = nodeList.item(i);
+					String courses=course.getFirstChild().getNodeValue();
+					if(courses.equals("0")) {
+						courses=courseid;
+						course.getFirstChild().setNodeValue(courses);
+                                	        loadnode.getFirstChild().setNodeValue(Integer.toString(load_int+1));
+                                        	saveXML();
+	                                        newnodeList = doc.getElementsByTagName("IP");
+        	                                loadnode = newnodeList.item(i);
+                	                        return loadnode.getFirstChild().getNodeValue();
+					} else {
+						int k=courses.indexOf(courseid);
+						if(k>-1) {
+							//if session id exists then load will increase only 
+							loadnode.getFirstChild().setNodeValue(Integer.toString(load_int+1));
+                	                                saveXML();
+							newnodeList = doc.getElementsByTagName("IP");
+                                	                loadnode = newnodeList.item(i);
+                                        	        return loadnode.getFirstChild().getNodeValue();
+	                                     	} else {
+							//if session id not exists then now load sessionid and load will increase only 
+							// check single session sessionid or doble 
+							k=courses.indexOf(",");
+                                	        	if(k < 0) {
+                        					courses=courses+","+courseid;	
+								course.getFirstChild().setNodeValue(courses);
+								loadnode.getFirstChild().setNodeValue(Integer.toString(load_int+1));
+        	                                        	saveXML();
+                	                                	newnodeList = doc.getElementsByTagName("IP");
+                        	                        	loadnode = newnodeList.item(i);
+                                	                	return loadnode.getFirstChild().getNodeValue();
+                                        		}
+						}
+					}	
+				}else
+					message_for_reflector="Reflector have insufficient Load !!";	
+			}//for
+		}else
+			message_for_reflector="Reflector is not available !!";		
+		return message_for_reflector;
+	}
 
 	protected String Register(String reflector_ip, String status){
-		String parentIP="";
-		String load="0",cource ="0";
-		try{			
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        		DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document doc = builder.parse(getFile("Reflector.xml"));
+		try{
                         Element root = doc.getDocumentElement();
-                      	ref_List = root.getElementsByTagName("Reflector");
-                        Element peer = doc.createElement("Reflector");
-                        if(status!=""){
-                        	peer.setAttribute("IP",reflector_ip);
-                                peer.setAttribute("Status",status);
-                                peer.setAttribute("Load",load);
-                                peer.setAttribute("Instructor","notInstructor"+","+"notInstructor");
-				peer.setAttribute("Courses","0"+","+"0");
-                                root.appendChild(peer);
-                                saveXML(doc,getFile("Reflector.xml"));
-                    	}else{
-                         	ServerLog.getController().Log("Error in insert value to xml file by any null value==>");
-                   	}
-			/**
-                         * Increase load of parent reflector
-                         */
+                        Element reflector = doc.createElement("Reflector");
+
+                        Element ip = doc.createElement("IP");
+                        Text ipText = doc.createTextNode(reflector_ip.replaceAll("/",""));
+                        ip.appendChild(ipText);
+
+                        Element courses = doc.createElement("Courses");
+                        Text coursesText = doc.createTextNode("0");
+                        courses.appendChild(coursesText);
+
+                        Element load = doc.createElement("Load");
+                        Text loadText = doc.createTextNode("0");
+                        load.appendChild(loadText);
+
+                        Element status_e = doc.createElement("Status");
+                        Text statusText = doc.createTextNode(status);
+                        status_e.appendChild(statusText);
+
+                        reflector.appendChild(ip);
+                        reflector.appendChild(courses);
+                        reflector.appendChild(load);
+                        reflector.appendChild(status_e);
+                        root.appendChild(reflector);
+                        return saveXML();
 		}catch(Exception ex){
-			System.out.println("Error on creating xml file : "+ex.getMessage());
-		}
-		return parentIP;
+			ServerLog.getController().Log("Error on creating xml file : "+ex.getMessage());
+		} return "";
 	}
 		
-	protected String  updateStatus(String reflector_ip,String status){
-		Element element=null;
-                Node node=null;
-              	try {		
-			DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
-	                factory.setValidating(false);
-        	        factory.setIgnoringElementContentWhitespace(false);
-                	DocumentBuilder builder = factory.newDocumentBuilder();
-	                Document document = builder.parse(getFile("Reflector.xml"));
-        	        Element root = document.getDocumentElement();
-                	ref_List = root.getElementsByTagName("Reflector");
-			for( int i=0; i<ref_List.getLength(); i++ ){
-        	        	node = ref_List.item(i);
-                	        if( node.getNodeType() == node.ELEMENT_NODE ){
-                        		element = (Element)node;
-                	               	synchronized (element) {
-						if((status.equals("active")) || (status.equals("inactive"))) {
-                                			String ip=element.getAttribute("IP");
-							if(ip.equals(reflector_ip)){
-                	       	                       		Attr attrNode = element.getAttributeNode("Status");
-								if(!(attrNode.equals("Active")))
-                                	                		attrNode.setValue(status);
-                                        	        	saveXML(document,getFile("Reflector.xml"));
-								return "Successfull";
-        	                     			}
-						} else if((status.equals("getsingleins"))){
-
-							String courceid=reflector_ip;
-                                                        String course = element.getAttribute("Courses");
-                                                        String temp[]= course.split(",");
-							if((temp[1].equals("0"))) {	
-								temp[1]=courceid;
-
-								String ip=element.getAttribute("IP");
-								int load=Integer.parseInt(element.getAttribute("Load"));
-								String newload=Integer.toString(load+1);
-		                                                Attr attrNode = element.getAttributeNode("Load");
-                		                                attrNode.setValue(newload);
-								//
-								attrNode = element.getAttributeNode("Courses");
-                                                		attrNode.setValue(temp[0]+","+temp[1]);
-                                		                //	
-								saveXML(document,getFile("Reflector.xml"));
-								return ip;
-							}
-						} else if(status.equals("getins")){
-							String courceid=reflector_ip;
-							String course = element.getAttribute("Courses");
-							String temp[]= course.split(",");
-							if((temp[0].equals(courceid)) || (temp[1].equals(courceid))) {
-								int load=Integer.parseInt(element.getAttribute("Load"));
-                                                                if(load<3){
-                                                             		String ip=element.getAttribute("IP");
-        	                                                        String newload=Integer.toString(load+1);
-	                                                                Attr attrNode = element.getAttributeNode("Load");
-                	                                                attrNode.setValue(newload);
-									// 
-									attrNode = element.getAttributeNode("Courses");
-                                                			attrNode.setValue(temp[0]+","+temp[1]);
-									// 
-									saveXML(document,getFile("Reflector.xml"));
-                                                                	return ip;
-                                                                }
-							}
-						}
-                                   	}
+	protected String updateStatus(String reflector_ip,String status){
+		try {
+			reflector_ip=reflector_ip.replaceAll("/","");
+                        NodeList nodeList = doc.getElementsByTagName("IP");
+                        for( int i=0; i<nodeList.getLength(); i++ ){	
+	                        Node node = nodeList.item(i);
+        	                String ip=node.getFirstChild().getNodeValue();
+				if(ip.equals(reflector_ip)){
+					NodeList statusnodeList = doc.getElementsByTagName("Status");
+					Node node1 = statusnodeList.item(i);	
+					node1.getFirstChild().setNodeValue(status);
+                	       		return saveXML();
 				}
 			}
 		}catch(Exception e){
@@ -437,172 +232,31 @@ public class ReflectorManager
 		return "UnSuccessfull";
 	}
 	
-	protected synchronized String  removePeer(String reflectorIP){
-		Element element=null;
-                Node node=null;
-                String ip="";
-
-                try{
-			DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
-                        factory.setValidating(false);
-                        factory.setIgnoringElementContentWhitespace(false);
-                        DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document document = builder.parse(getFile("Reflector.xml"));
-                        Element root = document.getDocumentElement();
-                        ref_List = root.getElementsByTagName("Reflector");
-                        for( int i=0; i<ref_List.getLength(); i++ ){
-                                node = ref_List.item(i);
-                                if( node.getNodeType() == node.ELEMENT_NODE ){
-                                        element = ( Element )node;
-                                        ip=element.getAttribute("IP");
-                                        /**
-                                        * Remove Peer from Peer List
-                                        */
-                                        if(ip.equals(reflectorIP)){
-                                                synchronized (this) {
-                                                        root.removeChild(element);
-                                                        saveXML(document,getFile("Reflector.xml"));
-                                                }
-					 return "successfull" ;	
-                                        }
-
-                                }
-                        }
-                } catch( Exception e ){
-			e.printStackTrace();
-			return "notsuccessfull";
-                }
-		return "notsuccessfull";
-        }
-
-
-	
-	/**
-	 * This method is set to remove reflector from reflector list and decrease load of parent reflector. 
-	 */
-
-	protected synchronized void removeLoad(String reflector_ip){
-		
-		Element element=null;
-                Node node=null;
-                String ip="";
-                try{
-                        DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
-                        factory.setValidating(false);
-                        factory.setIgnoringElementContentWhitespace(false);
-                        DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document document = builder.parse(getFile("Reflector.xml"));
-                        Element root = document.getDocumentElement();
-                        ref_List = root.getElementsByTagName("Reflector");
-                        for( int i=0; i<ref_List.getLength(); i++ ){
-				node = ref_List.item(i);
-                                if( node.getNodeType() == node.ELEMENT_NODE ){
-                                	element = ( Element )node;
-					ip=element.getAttribute("IP");
-					/** 
-					* Remove Peer from Peer List
-					*/
-										
-					if(ip.equals("/"+reflector_ip)){
-						int ref_load=Integer.parseInt(element.getAttribute("Load"));
-                                                if(ref_load > 0){
-                                                        String newload=Integer.toString(ref_load-1);
-                                                        synchronized (this) {
-                                                                Attr attrNode = element.getAttributeNode("Load");
-                                                                attrNode.setValue(newload);
-                                                                saveXML(document,getFile("Reflector.xml"));
-                                                        }
-                                                }
-                                        }
-				}
-                     	}
-          	} catch( Exception e ){
-			e.printStackTrace();
-		}
-   	}
-	
-	/**
-	 * This method save reflector's information in XML file.
-	 */
-
-	private void saveXML(Document doc, File fileName){
+	private String saveXML() {
 		try{
-             		OutputFormat format = new OutputFormat(doc);
-             		XMLSerializer output = new XMLSerializer(new FileOutputStream(fileName), format);
-             		output.serialize(doc);
-         	}catch(Exception e){e.printStackTrace();}
-	}
-	
-	private int checkRunningCource(String []temp){
-		int kk=0;
-		if(!temp[0].equals("0")){
-			kk=1;		
-		}
-		if(!temp[1].equals("0")){
-			kk=2;	             	
- 		}
-		return kk;
-	}
-	private int  checkIns1(String courceid,String []temp){
-                int kk=0;
-                if(temp[0].equals("notInstructor")){
-			kk=1;
-                }
-		if(temp[1].equals("notInstructor")){
-                	kk=2;
-		}
-		return kk;
+                        OutputFormat format = new OutputFormat(doc);
+                        format.setIndenting(true);
+                        XMLSerializer output = new XMLSerializer(new FileOutputStream(context.getRealPath("Reflector.xml")), format);
+                        output.serialize(doc);
+			return "Successfull";
+                }catch(Exception e){ServerLog.getController().Log(e.getMessage());}
+		return "UnSuccessfull";
 	}
 
-	private int  checkIns(String courceid,String []temp){
-                int kk=0;
-                if(!(temp[0].equals("notInstructor"))){
-                        kk=1;
-                }
-                if(!(temp[1].equals("notInstructor"))){
-                        kk=2;
-                }
-                return kk;
-        }
-
-	private boolean checkRunningIns(String courceid,String []temp){
-		boolean flag=false;	
-		if(!(temp[0].equals("notInstructor"))){
-			if(temp[0].startsWith(courceid)){
-				flag=true;
-					
-                        }
-                }
-		 if(!(temp[1].equals("notInstructor"))){
-                        if(temp[1].startsWith(courceid)){
-				flag=true;
-		         }
-                }
-		return flag;
-        }
-	
 	/**
          * This method is used to create a xml file if it is not exist.
          */
 
-        private File getFile(String reflector){
-		File file=new File(context.getRealPath(reflector));
-		if(file.exists()){
-                        return file;
-                }else{
-                        try {
-                                OutputStream fout= new FileOutputStream(file);
-                                OutputStream bout= new BufferedOutputStream(fout);
-                                OutputStreamWriter out = new OutputStreamWriter(bout, "8859_1");
-                                out.write("<?xml version=\"1.0\" ");
-                                out.write("encoding=\"ISO-8859-1\"?>\r\n");
-                                out.write("<Reflector_Peers>\r\n");
-                                out.write("\r\n");
-                                out.write("</Reflector_Peers>\r\n");
-                                out.flush();
-                                out.close();
-                        }catch (Exception ex) {ServerLog.getController().Log("Error in creating XML file"+ex.getMessage());}
-                        return file;
-                }
+        private File getFile() {
+		File file=new File(context.getRealPath("Reflector.xml"));
+               	if(!file.exists()){
+               		try {
+                       		doc = db.newDocument();
+	                        Element rootEle = doc.createElement("Reflector_Peers");
+                                doc.appendChild(rootEle);
+               	                saveXML();
+                       	        doc=null;
+	               	}catch (Exception ex) { ServerLog.getController().Log("Error in ex "+ex.getMessage()); }
+               	} return file;
         }
 }//end class
