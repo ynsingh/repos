@@ -139,8 +139,14 @@ public class UserManagement
 		 * getting instid as an integer to use in criteria to get admin's First & Last name
 		 */	
 		if(!Role.equals("turbine_root")) {
-			instituteid=Integer.toString(InstituteIdUtil.getIst_Id(i_name));
-			instIdint=InstituteIdUtil.getIst_Id(i_name);
+			if(i_name.equals("")){
+				instituteid=InstituteDetailsManagement.getInsId(GroupName);
+				instIdint=Integer.parseInt(instituteid);
+			}
+			else{
+				instituteid=Integer.toString(InstituteIdUtil.getIst_Id(i_name));
+				instIdint=InstituteIdUtil.getIst_Id(i_name);
+			}
 		}
 		if(Role.equals("student")){
 			try{
