@@ -63,7 +63,7 @@ if(session.getAttribute("arrivalRs")!=null) session.removeAttribute("arrivalRs")
       cat=myForm.getR();
 
   mm=Integer.parseInt(myForm.getCMBPERIOD());
-
+System.out.println("Period    ::::::::::::::::"+mm);
   if(month <= mm){
        month=month+12;
        year=year-1;

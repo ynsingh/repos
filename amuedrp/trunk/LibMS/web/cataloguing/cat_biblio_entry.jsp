@@ -314,10 +314,16 @@ document.getElementById('subject').blur();
 document.getElementById('subject').disabled=true;
 document.getElementById('notes').blur();
 document.getElementById('notes').disabled=true;
+  document.getElementById("checkbox").value="UnChecked";
+document.getElementById("language").value="";
+alert(  document.getElementById("checkbox").value);
+
 }
 }
 function disablecheck(){
     document.getElementById('checkboxId').checked=false;
+    
+
     DisBox();
 }
     </script>
@@ -339,13 +345,15 @@ function disablecheck(){
                         <html:hidden property="no_of_copies" name="BibliographicDetailEntryActionForm"/>
                         <html:hidden property="biblio_id" name="BibliographicDetailEntryActionForm" />
                           <html:hidden property="language" styleId="language" name="BibliographicDetailEntryActionForm"/>
+                          <html:hidden property="date_acquired1" styleId="language" name="BibliographicDetailEntryActionForm"/>
+                
 <tr>
       <td width="25%">
     </td>
     <td width="30%"></td>
     <td height="20px;">
         <div id='translControl'>
-     <a class="star">*</a> <input type="checkbox" id="checkboxId" onclick="javascript:checkboxClickHandler();javascript:DisBox();javascript:languageChangeHandler()">
+     <a class="star">*</a> <input type="checkbox" id="checkboxId" onclick="javascript:checkboxClickHandler();javascript:languageChangeHandler();javascript:DisBox();">
       <html:hidden property="checkbox" styleId="checkbox" name="BibliographicDetailEntryActionForm"/>
       <%=resource.getString("cataloguing.catoldtitleentry1.typein")%><select id="languageDropDown" onchange="javascript:languageChangeHandler()"></select>
     </div>

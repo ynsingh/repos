@@ -259,6 +259,7 @@ public class AccessionEntry extends org.apache.struts.action.Action {
                         bibform.setIndex_no(bib.getIndexNo());
                         bibform.setPhysical_width(bib.getPhysicalWidth());
                         bibform.setBind_type(bib.getBindType());
+                        bibform.setLanguage(bib.getBibliographicDetails().getEntryLanguage());
                         session.setAttribute("button", button);
                         return mapping.findForward("new");
                     } else {
@@ -325,6 +326,7 @@ public class AccessionEntry extends org.apache.struts.action.Action {
                         bibform.setIndex_no(bib.getIndexNo());
                         bibform.setPhysical_width(bib.getPhysicalWidth());
                         bibform.setBind_type(bib.getBindType());
+                        bibform.setLanguage(bib.getBibliographicDetails().getEntryLanguage());
                         session.setAttribute("button", button);
                         return mapping.findForward("new");
                     } else {
@@ -391,6 +393,7 @@ public class AccessionEntry extends org.apache.struts.action.Action {
                         bibform.setIndex_no(bib.getIndexNo());
                         bibform.setPhysical_width(bib.getPhysicalWidth());
                         bibform.setBind_type(bib.getBindType());
+                         bibform.setLanguage(bib.getBibliographicDetails().getEntryLanguage());
                         session.setAttribute("button", button);
                         return mapping.findForward("new");
                     } else {
@@ -540,6 +543,7 @@ public class AccessionEntry extends org.apache.struts.action.Action {
                         bibform.setType_of_disc(bib.getBibliographicDetails().getTypeOfDisc());
                         bibform.setPhysical_desc(bib.getPhysicalDescription());
                         bibform.setPhysical_form(bib.getPhysicalForm());
+                         bibform.setLanguage(bib.getBibliographicDetails().getEntryLanguage());
                         return mapping.findForward("cdaccession");
                     } else {
                         String msg3 = "Title corresponding to the isbn is not found.";
@@ -600,6 +604,7 @@ public class AccessionEntry extends org.apache.struts.action.Action {
                         bibform.setType_of_disc(bib.getBibliographicDetails().getTypeOfDisc());
                         bibform.setPhysical_desc(bib.getPhysicalDescription());
                         bibform.setPhysical_form(bib.getPhysicalForm());
+                         bibform.setLanguage(bib.getBibliographicDetails().getEntryLanguage());
                         return mapping.findForward("cdaccession");
                     } else {
                         String msg3 = "Title corresponding to the isbn is not found.";
@@ -661,6 +666,7 @@ public class AccessionEntry extends org.apache.struts.action.Action {
                         bibform.setType_of_disc(bib.getBibliographicDetails().getTypeOfDisc());
                         bibform.setPhysical_desc(bib.getPhysicalDescription());
                         bibform.setPhysical_form(bib.getPhysicalForm());
+                         bibform.setLanguage(bib.getBibliographicDetails().getEntryLanguage());
                         return mapping.findForward("cdaccession");
                     } else {
                         String msg3 = "Title corresponding to the isbn is not found.";

@@ -61,6 +61,7 @@ public class BibliographicDetailAction2 extends org.apache.struts.action.Action 
         bibform.setCall_no(bib.getCallNo());
         bibform.setSer_note(bib.getSeries());
         bibform.setAccession_type(bib.getAccessionType());
+        bibform.setLanguage(bib.getEntryLanguage());
         DocumentCategory doc=DocumentCategoryDAO.searchDocumentCategory(library_id, sub_library_id,bib.getBookType());
 
 if(doc!=null){

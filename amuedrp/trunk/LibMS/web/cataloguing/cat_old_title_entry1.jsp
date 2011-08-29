@@ -141,6 +141,7 @@ animatedcollapse.init()
                          <html:hidden property="biblio_id" name="BibliographicDetailEntryActionForm" />
                         <html:hidden property="document_type" name="BibliographicDetailEntryActionForm" value="Book"/>
                          <html:hidden property="no_of_copies" name="BibliographicDetailEntryActionForm"/>
+                         <html:hidden property="date_acquired1" name="BibliographicDetailEntryActionForm"/>
                         </tr>
 <tr><td colspan="5" height="10px"></td>
 </tr>

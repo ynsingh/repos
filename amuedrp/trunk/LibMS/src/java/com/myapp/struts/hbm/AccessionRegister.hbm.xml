@@ -26,6 +26,9 @@
         <property name="accessionNo" type="string">
             <column name="accession_no" length="40" />
         </property>
+                <property name="dateAcquired" type="string">
+            <column name="date_acquired" length="20" />
+        </property>
         <property name="volumeNo" type="string">
             <column name="volume_no" length="5" />
         </property>

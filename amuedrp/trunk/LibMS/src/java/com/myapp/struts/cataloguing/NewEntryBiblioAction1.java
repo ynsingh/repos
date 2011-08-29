@@ -14,6 +14,7 @@ import com.myapp.struts.hbm.DocumentCategory;
 import com.myapp.struts.hbm.DocumentDetails;
 import com.myapp.struts.hbm.DocumentDetailsId;
 import com.myapp.struts.systemsetupDAO.DocumentCategoryDAO;
+import com.myapp.struts.utility.DateCalculation;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -148,7 +149,8 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 bib.setAbstract_(bibform.getThesis_abstract());
                 bib.setNoOfCopies(bibform.getNo_of_copies());
                 bib.setNotes(bibform.getNotes());
-                bib.setEntryLanguage(bibform.getLanguage());
+                bib.setEntryLanguage(bibform.getLanguage().toUpperCase());
+                bib.setDateAcquired(DateCalculation.now());
                 dao.insert(bib);
                 if(bibform.getCheckbox().equals("Checked"))
                 {
@@ -180,7 +182,8 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblang.setAbstract_(bibform.getThesis_abstract1());
                 biblang.setNoOfCopies(bibform.getNo_of_copies());
                 biblang.setNotes(bibform.getNotes());
-                biblang.setEntryLanguage(bibform.getLanguage());
+                biblang.setEntryLanguage(bibform.getLanguage().toUpperCase());
+                biblang.setDateAcquired(DateCalculation.now());
                 dao.insertBiblang(biblang);
                 }
                 bibform.setTitle("");
@@ -246,9 +249,13 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 bib.setAbstract_(bibform.getThesis_abstract());
                 bib.setNotes(bibform.getNotes());
                 bib.setNoOfCopies(bibform.getNo_of_copies());
-                bib.setEntryLanguage(bibform.getLanguage());
+                bib.setDateAcquired(DateCalculation.now());
+                if(bibform.getCheckbox().equals("Checked"))
+                {
+                    bib.setEntryLanguage(bibform.getLanguage().toUpperCase());
+                }
                 dao.insert(bib);
-                 if(bibform.getCheckbox().equals("Checked"))
+                if(bibform.getCheckbox().equals("Checked"))
                 {
                 biblangid.setBiblioId(biblio_id);
                 biblangid.setLibraryId(library_id);
@@ -278,7 +285,8 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblang.setAbstract_(bibform.getThesis_abstract1());
                 biblang.setNoOfCopies(bibform.getNo_of_copies());
                 biblang.setNotes(bibform.getNotes());
-                biblang.setEntryLanguage(bibform.getLanguage());
+                biblang.setEntryLanguage(bibform.getLanguage().toUpperCase());
+                biblang.setDateAcquired(DateCalculation.now());
                 dao.insertBiblang(biblang);
                 }
                 bibform.setBiblio_id(biblio_id);
@@ -290,12 +298,16 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 DocumentCategory doc=(DocumentCategory)DocumentCategoryDAO.searchDocumentCategory(library_id, sub_library_id, bib.getBookType());
                         if(doc!=null)
                             bibform.setBook_type(doc.getDocumentCategoryName());
+                bibform.setLanguage(bibform.getLanguage().toUpperCase());
+                bibform.setDate_acquired1(DateCalculation.now());
                 return mapping.findForward("accession");
            }
         }
-        if(button.equals("Update"))
+
+    if(button.equals("Update"))
       {
         int  biblio_id=bibform.getBiblio_id();
+        BibliographicDetailsLang bblang=dao.searchlangbyBiblioid(biblio_id, library_id, sub_library_id);
         bibid.setBiblioId(biblio_id);
         bibid.setLibraryId(library_id);
         bibid.setSublibraryId(sub_library_id);
@@ -325,7 +337,11 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
         bib.setSeries(bibform.getSer_note());
         bib.setNotes(bibform.getNotes());
         bib.setNoOfCopies(bibform.getNo_of_copies());
-        bib.setEntryLanguage(bibform.getLanguage());
+        bib.setDateAcquired(bibform.getDate_acquired1());
+        if(bblang!=null)
+        {
+            bib.setEntryLanguage(bibform.getLanguage().toUpperCase());
+        }
           if(bibform.getCheckbox().equals("Checked"))
                 {
                 biblangid.setBiblioId(biblio_id);
@@ -356,9 +372,13 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblang.setAbstract_(bibform.getThesis_abstract1());
                 biblang.setNoOfCopies(bibform.getNo_of_copies());
                 biblang.setNotes(bibform.getNotes());
-                biblang.setEntryLanguage(bibform.getLanguage());
-                dao.updateBiblioLang(biblang);
+                biblang.setEntryLanguage(bibform.getLanguage().toUpperCase());
+                biblang.setDateAcquired(bibform.getDate_acquired1());
+                if(bblang!=null)
+                {
+                    dao.updateBiblioLang(biblang);
                 }
+          }
        System.out.println(bibform.getBiblio_id());
         BibliographicDetails biblio = dao.searchIsbn10ByBiblio(bibform.getCall_no(),bibform.getIsbn10(), bibform.getBiblio_id(), library_id, sub_library_id);
        BibliographicDetails uniq_calsearch = dao.searchCallNOByBiblio(bibform.getCall_no(), bibform.getBiblio_id(), library_id, sub_library_id);
@@ -410,8 +430,9 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
         dd.setPublishingYear(bibform.getPublishing_year());
         dd.setSubtitle(bibform.getSubtitle());
         dd.setTitle(bibform.getTitle());
-        dd.setEntryLanguage(bibform.getLanguage());
+        dd.setEntryLanguage(bibform.getLanguage().toUpperCase());
         dd.setBibliographicDetails(bib);
+        dd.setDateAcquired(bibform.getDate_acquired());
         DocumentCategory dc = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategoryByName(library_id, sub_library_id, bibform.getBook_type());
                     if(dc!=null)
                         dd.setBookType(dc.getId().getDocumentCategoryId());

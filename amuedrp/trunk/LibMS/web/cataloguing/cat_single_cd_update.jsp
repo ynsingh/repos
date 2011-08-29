@@ -120,12 +120,13 @@ if(button.equals("Delete"))
             <html:hidden property="LCC_no" name="BibliographicDetailEntryActionForm"/>
             <html:hidden property="isbn13" name="BibliographicDetailEntryActionForm"/>
             <html:hidden property="isbn10" name="BibliographicDetailEntryActionForm"/>
+            <html:hidden property="language" name="BibliographicDetailEntryActionForm"/>
             <table width="100%" border="0" dir="<%= rtl %>">
           <%--  <tr><td colspan="8" bgcolor="#E0E8F5" align="center" height="25px;" class="headerStyle"><%=resource.getString("cataloguing.cataccessionentry.accessionheader")%></td></tr>--%>
              <tr><td height="5px;" colspan="8"></td></tr>
                 <tr><td colspan="8" bgcolor="#E0E8F5" align="center" height="25px;" class="headerStyle"><strong><%=resource.getString("cataloguing.cataccessionentry.accessionheader")%></strong></td></tr>
                 <tr>
-                    <td align="right"><%=resource.getString("cataloguing.cataccessionentry.accessionno")%>:</td><td><html:text property="accession_no" name="BibliographicDetailEntryActionForm"/></td>
+                    <td align="right"><%=resource.getString("cataloguing.cataccessionentry.accessionno")%>:</td><td><bean:write name="BibliographicDetailEntryActionForm" property="language"/><html:text property="accession_no" name="BibliographicDetailEntryActionForm"/></td>
 <td align="right">Physical Form:</td><td><html:text property="physical_form" name="BibliographicDetailEntryActionForm"/></td><td align="right">Colour:</td><td><html:text property="colour" name="BibliographicDetailEntryActionForm"/></td><td align="right">Physical Desc:</td><td><html:text property="physical_desc" name="BibliographicDetailEntryActionForm"/></td></tr>
                 <tr>                    <td align="<%=align %>"><%=resource.getString("cataloguing.cataccessionentry.location")%>:</td><td>
                     <html:select disabled="<%=disable%>" property="location" name="BibliographicDetailEntryActionForm">

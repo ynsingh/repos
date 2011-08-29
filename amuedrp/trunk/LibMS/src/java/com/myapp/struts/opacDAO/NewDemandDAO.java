@@ -89,7 +89,7 @@ public class NewDemandDAO {
         try
         {
          hsession.beginTransaction();
-         Criteria criteria = hsession.createCriteria(DocumentDetails.class);
+         Criteria criteria = hsession.createCriteria(BibliographicDetails.class);
          if(!library_id.equalsIgnoreCase("all"))
          criteria.add(Restrictions.eq("id.libraryId",library_id));
          if(!sub_lib.equalsIgnoreCase("all"))
@@ -102,10 +102,7 @@ System.out.println(year1  +  " <  "+year2);
 
          criteria.add(Restrictions.gt("dateAcquired",year1));
          }
-         if(year2!=null){
 
-         criteria.add(Restrictions.lt("dateAcquired",year2));
-         }
 
          return criteria.list();
 

@@ -103,7 +103,7 @@ public class BiblioDetailsActionLang extends org.apache.struts.action.Action {
         bib.setAltTitle(bibform.getAlt_title());
         bib.setSubject(bibform.getSubject());
         bib.setAbstract_(bibform.getThesis_abstract());
-      
+       bib.setEntryLanguage(bibform.getLanguage());
         bib.setSeries(bibform.getSer_note());
         bib.setNotes(bibform.getNotes());
         bib.setNoOfCopies(bibform.getNo_of_copies());
@@ -137,6 +137,7 @@ public class BiblioDetailsActionLang extends org.apache.struts.action.Action {
         biblang.setAbstract_(bibform.getThesis_abstract1());
         biblang.setSeries(bibform.getSer_note1());
         biblang.setNotes(bibform.getNotes1());
+        biblang.setEntryLanguage(bibform.getLanguage());
      //   biblang.setNoOfCopies(bibform.getNo_of_copies());
         if(button.equals("Update"))
       {
@@ -208,6 +209,7 @@ public class BiblioDetailsActionLang extends org.apache.struts.action.Action {
         dd.setPublishingYear(bibform.getPublishing_year());
         dd.setSubtitle(bibform.getSubtitle());
         dd.setTitle(bibform.getTitle());
+        dd.setEntryLanguage(bibform.getLanguage());
         dd.setBibliographicDetails(bib);
         DocumentCategory dc = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategoryByName(library_id, sub_library_id, bibform.getBook_type());
                     if(dc!=null)

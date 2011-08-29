@@ -63,6 +63,7 @@ public class BibliographicDetailActionLang extends org.apache.struts.action.Acti
         bibform.setBook_type(bib.getBookType());
         bibform.setSer_note(bib.getSeries());
         bibform.setStatement_responsibility(bib.getStatementResponsibility());
+        bibform.setLanguage(bib.getEntryLanguage());
         bibform.setAlt_title(bib.getAltTitle());
                                 if (bib.getNoOfCopies() == null) {
                             i = 0;
@@ -106,7 +107,9 @@ public class BibliographicDetailActionLang extends org.apache.struts.action.Acti
         bibform.setBook_type(bib.getBookType());
         bibform.setSer_note(bib.getSeries());
         bibform.setStatement_responsibility(bib.getStatementResponsibility());
+        bibform.setLanguage(bib.getEntryLanguage());
         bibform.setAlt_title(bib.getAltTitle());
+        bibform.setDate_acquired1(bib.getDateAcquired());
                                 if (bib.getNoOfCopies() == null) {
                             i = 0;
                         } else {

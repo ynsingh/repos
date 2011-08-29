@@ -157,7 +157,7 @@ if(toIndex>size)toIndex=size;
         <table style="position:absolute; left: 5%; top: 30%;" dir="<%=rtl %>">
             <tr bgcolor="#E0E888"><td colspan="8" align="center"><b><%= resource.getString("cataloguing.cataccessionentry.bibliodetail")%></b></td></tr>
             <tr bgcolor="#E0E8F5"><td width="100"><%= resource.getString("cataloguing.catviewownbibliogrid.biblioid")%></td><td width="200"><%= resource.getString("cataloguing.catoldtitle.documenttype")%></td><td width="200"><%= resource.getString("cataloguing.catoldtitleentry1.title")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.mainentry")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.publishername")%></td><td width="100"><%= resource.getString("cataloguing.catoldtitleentry1.edition")%></td><td width="100"><%= resource.getString("cataloguing.catviewownbibliogrid.action")%></td></tr>
-        <logic:iterate id="BibliographicDetails" name="opacList" offset="<%=String.valueOf(fromIndex)%>" length="30">
+            <logic:iterate id="BibliographicDetails" name="opacList" offset="<%= String.valueOf(fromIndex)%>" length="<%= String.valueOf(pagesize) %>">
          <html:form action="/cataloguing/accessiongrid">
                 <html:hidden property="main_entry" name="BibliographicDetailEntryActionForm" value="Old"/>
                 <html:hidden property="statement_responsibility" name="BibliographicDetailEntryActionForm" value="Old"/>

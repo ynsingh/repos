@@ -55,7 +55,16 @@ locale1=(String)session.getAttribute("locale");
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-
+<%
+  String Title=resource.getString("opac.simplesearch.title");
+  pageContext.setAttribute("Title", Title);
+  String MainEntry=resource.getString("opac.simplesearch.mainentry");
+  pageContext.setAttribute("MainEntry", MainEntry);
+  String LibraryID=resource.getString("opac.browse.table.Libraryid");
+  pageContext.setAttribute("LibraryID",LibraryID);
+String pub_name=resource.getString("cataloguing.catoldtitleentry1.publishername");
+  pageContext.setAttribute("pub_name", pub_name);
+%>
 </head>
 
 
@@ -64,7 +73,7 @@ locale1=(String)session.getAttribute("locale");
 
 
 
-       <tr ><td align="center" class="header" height="25px;" align="<%=align%>" dir="<%=rtl%>"> <%=resource.getString("opac.newarrivals.viewnewarrival")%></td></tr>
+     <%--  <tr ><td align="center" class="header" height="25px;" align="<%=align%>" dir="<%=rtl%>"> <%=resource.getString("opac.newarrivals.viewnewarrival")%></td></tr>--%>
                 <tr><td valign="top" align="center"> <br/>
 
 
@@ -112,49 +121,38 @@ else
 {%>
 
 
-<ui:dataGrid items="${opacList}" var="doc" name="datagrid1" cellPadding="0"
-    cellSpacing="0" styleClass="datagrid"  >
+<ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
 
   <columns>
 
 
 
+    <column width="250">
+      <header value="${Title}" hAlign="left" styleClass="header" />
+      <item  styleClass="item"  value="${doc.title}"   hAlign="left"/>
+    </column>
+
     <column width="200">
-      <header value="Title" hAlign="left" styleClass="header"  />
-      <item   value="${doc.title}"   hAlign="left"   styleClass="item"/>
-
+      <header value="${MainEntry}" hAlign="left" styleClass="header" />
+      <item  styleClass="item"  value="${doc.mainEntry}" hAlign="left"  />
     </column>
-      <column width="200">
-      <header value="Author Name" hAlign="left" styleClass="header"  />
-      <item   value="${doc.authorName}"   hAlign="left"   styleClass="item"/>
-
+          <column width="200">
+      <header value="${pub_name}" hAlign="left" styleClass="header" />
+      <item  styleClass="item"  value="${doc.publisherName}" hAlign="left"  />
     </column>
-
-    <column width="150">
-      <header value="Call No." hAlign="left" styleClass="header"/>
-      <item   value="${doc.callNo}"  hAlign="left"  styleClass="item"/>
+      <column width="150">
+      <header value="${LibraryID}" hAlign="left" styleClass="header" />
+      <item  styleClass="item"  value="${doc.id.libraryId}"   hAlign="left" />
     </column>
-
-    <column width="160">
-      <header value="Accession No." hAlign="left" styleClass="header"/>
-      <item   value="${doc.accessionNo}"  hAlign="left"  styleClass="item"/>
-    </column>
-
-    <column width="160">
-      <header value="Status" hAlign="left" styleClass="header"/>
-      <item   value="${doc.status}"  hAlign="left"  styleClass="item"/>
-    </column>
-
-
  </columns>
+
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
   <alternateRows styleClass="alternaterows"/>
 
-  <paging size="4" count="${tCount}" custom="true" nextUrlVar="next"
+  <paging size="10" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
-  <order imgAsc="up.gif" imgDesc="down.gif"/>
-</ui:dataGrid>
 
+</ui:dataGrid>
 <table width="700" style="font-family: arial; font-size: 10pt" border=0>
 <tr>
 <td align="left">

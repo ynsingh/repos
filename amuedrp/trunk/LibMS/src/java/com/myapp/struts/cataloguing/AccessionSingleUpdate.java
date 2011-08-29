@@ -57,7 +57,9 @@ public class AccessionSingleUpdate extends org.apache.struts.action.Action {
     if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
     else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
-        String acc_no = (String) bform.getAccession_no();
+        String acc_no1 = (String) bform.getAccession_no();
+        String lan=(String) bform.getLanguage();
+        String acc_no=lan+acc_no1;
         int record_no = bform.getRecord_no();
         int biblio_id = bform.getBiblio_id();
         doc1 = dao.searchDoc(biblio_id, record_no, library_id, sub_library_id);
@@ -114,7 +116,7 @@ public class AccessionSingleUpdate extends org.apache.struts.action.Action {
                     doc.setIsbn10(bform.getIsbn10());
                     doc.setIsbn13(bform.getIsbn13());
                     doc.setVolumeNo(bform.getVolume_no());
-                    doc.setAccessionNo(bform.getAccession_no());
+                    doc.setAccessionNo(acc_no);
                     doc.setLocation(bform.getLocation());
                     doc.setShelvingLocation(bform.getShelving_location());
                     doc.setIndexNo(bform.getIndex_no());
@@ -126,11 +128,12 @@ public class AccessionSingleUpdate extends org.apache.struts.action.Action {
                     doc.setTypeOfDisc(bform.getType_of_disc());
                     doc.setPhysicalForm(bform.getPhysical_form());
                     doc.setColour(bform.getColour());
+                    doc.setEntryLanguage(bform.getLanguage());
                     aid.setLibraryId(library_id);
                     aid.setSublibraryId(sub_library_id);
                     aid.setRecordNo(record_no);
                     ac.setId(aid);
-                    ac.setAccessionNo(bform.getAccession_no());
+                    ac.setAccessionNo(acc_no);
                     ac.setBiblioId(bform.getBiblio_id());
                     ac.setBibliographicDetails(bib);
                     ac.setVolumeNo(bform.getVolume_no());
@@ -143,6 +146,7 @@ public class AccessionSingleUpdate extends org.apache.struts.action.Action {
                     ac.setPhysicalDescription(bform.getPhysical_desc());
                     ac.setPhysicalForm(bform.getPhysical_form());
                     ac.setColour(bform.getColour());
+                    ac.setDateAcquired(bform.getDate_acquired());
                     bid.setBiblioId(bform.getBiblio_id());
                     bid.setLibraryId(library_id);
                     bid.setSublibraryId(sub_library_id);
@@ -173,6 +177,7 @@ public class AccessionSingleUpdate extends org.apache.struts.action.Action {
                     bib.setNoOfCopies(bform.getNo_of_copies());
                     bib.setNotes(bform.getNotes());
                     bib.setTypeOfDisc(bform.getType_of_disc());
+                    bib.setEntryLanguage(bform.getLanguage());
                     dao.update1(doc);
                     dao.update2(ac);
                     dao.update(bib);

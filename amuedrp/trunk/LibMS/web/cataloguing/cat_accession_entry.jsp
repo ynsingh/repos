@@ -128,7 +128,9 @@ function submitDelete()
             <html:hidden property="library_id" name="BibliographicDetailEntryActionForm" value="<%=library_id%>"/>
             <html:hidden property="sublibrary_id" name="BibliographicDetailEntryActionForm" value="<%=sub_library_id%>" />
             <html:hidden property="biblio_id" name="BibliographicDetailEntryActionForm"/>
-            <html:hidden property="document_type" name="BibliographicDetailEntryActionForm" value="Book"/>
+            <html:hidden property="language" name="BibliographicDetailEntryActionForm"/>
+            <html:hidden property="document_type" name="BibliographicDetailEntryActionForm"/>
+            <html:hidden property="date_acquired1" name="BibliographicDetailEntryActionForm"/>
             <table width="100%" border="0" style="position: absolute; top: 20%" dir="<%=rtl%>">
             <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;" colspan="8"><%=resource.getString("cataloguing.cataccessionentry.bibliodetail")%></td></tr>
             <tr><td colspan="8" height="5px;"></td></tr>
@@ -144,7 +146,7 @@ function submitDelete()
             <tr><td align="<%=align%>"><%=resource.getString("cataloguing.catoldtitleentry1.lcc")%>:</td><td><html:text property="LCC_no" name="BibliographicDetailEntryActionForm" readonly="true"/></td><td align="<%=align %>"><%=resource.getString("cataloguing.catoldtitleentry1.callno")%>:</td><td><html:text property="call_no" name="BibliographicDetailEntryActionForm" readonly="true"/></td><td align="<%=align%>"><%=resource.getString("cataloguing.catoldtitleentry1.isbn10")%>:</td><td><html:text property="isbn10" name="BibliographicDetailEntryActionForm" readonly="true"/></td><td align="<%=align%>"><%=resource.getString("cataloguing.catoldtitleentry1.isbn13")%>:</td><td><html:text property="isbn13" name="BibliographicDetailEntryActionForm" readonly="true"/></td></tr>
             <tr><td height="5px;" colspan="8"></td></tr>
             <tr><td colspan="8" bgcolor="#E0E8F5" align="center" height="25px;" class="headerStyle"><%=resource.getString("cataloguing.cataccessionentry.accessionheader")%></td></tr>
-            <tr><td align="<%=align %>"><%=resource.getString("cataloguing.cataccessionentry.volumeno")%>:</td><td><html:text property="volume_no" name="BibliographicDetailEntryActionForm" readonly="<%=read%>"/></td><td align="<%=align %>"><%=resource.getString("cataloguing.cataccessionentry.accessionno")%><a class="star">*</a>:</td><td><html:text property="accession_no" name="BibliographicDetailEntryActionForm" onkeypress="return isNumberKey(event)" readonly="<%=read%>"/></td>
+            <tr><td align="<%=align %>"><%=resource.getString("cataloguing.cataccessionentry.volumeno")%>:</td><td><html:text property="volume_no" name="BibliographicDetailEntryActionForm" readonly="<%=read%>"/></td><td align="<%=align %>"><%=resource.getString("cataloguing.cataccessionentry.accessionno")%><a class="star">*</a>:</td><td><bean:write name="BibliographicDetailEntryActionForm" property="language"/><html:text property="accession_no" name="BibliographicDetailEntryActionForm" onkeypress="return isNumberKey(event)" readonly="<%=read%>"/></td>
                 <td align="<%=align %>"><%=resource.getString("cataloguing.cataccessionentry.location")%>:</td><td>
                     <html:select disabled="<%=disable%>" property="location" name="BibliographicDetailEntryActionForm">
             <html:options collection="mixlist"  labelProperty="locationName" property="locationId"></html:options>

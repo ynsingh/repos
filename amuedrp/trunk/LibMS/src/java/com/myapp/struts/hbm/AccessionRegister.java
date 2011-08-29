@@ -23,6 +23,15 @@ public class AccessionRegister  implements java.io.Serializable {
      private String physicalDescription;
      private String colour;
      private int biblioId;
+     private String dateAcquired;
+
+    public String getDateAcquired() {
+        return dateAcquired;
+    }
+
+    public void setDateAcquired(String dateAcquired) {
+        this.dateAcquired = dateAcquired;
+    }
 
     public AccessionRegister() {
     }

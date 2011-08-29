@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import com.myapp.struts.utility.DateCalculation;
 /**
  *
  * @author <a href="mailto:asif633@gmail.com">Asif Iqubal</a>
@@ -56,8 +57,12 @@ public class AccessionEntryAction extends org.apache.struts.action.Action {
     if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
     else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
-        String acc_no = (String) bform.getAccession_no();
+        String acc_no1 = (String) bform.getAccession_no();
         String button = (String) bform.getButton();
+        String lan=(String) bform.getLanguage().toUpperCase();
+        System.out.println(lan+"             :::::::::::::");
+        String acc_no=lan+acc_no1;
+        System.out.println("Sambhalke         "+acc_no);
         if (button.equals("Add Item")) {
             if (StringUtils.isEmpty(acc_no)) {
 String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblank");//Accession no field can not be left blank
@@ -87,7 +92,7 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                     if(dc!=null)
                         doc.setBookType(dc.getId().getDocumentCategoryId());
                     else
-                        doc.setBookType(bform.getBook_type());
+                    doc.setBookType(bform.getBook_type());
                     doc.setSubject(bform.getSubject());
                     doc.setAltTitle(bform.getAlt_title());
                     doc.setEdition(bform.getEdition());
@@ -105,7 +110,7 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                     doc.setIsbn10(bform.getIsbn10());
                     doc.setIsbn13(bform.getIsbn13());
                     doc.setVolumeNo(bform.getVolume_no());
-                    doc.setAccessionNo(bform.getAccession_no());
+                    doc.setAccessionNo(acc_no);
                     doc.setLocation(bform.getLocation());
                     doc.setShelvingLocation(bform.getShelving_location());
                     doc.setIndexNo(bform.getIndex_no());
@@ -118,11 +123,13 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                     doc.setPhysicalForm(bform.getPhysical_form());
                     doc.setTypeOfDisc(bform.getType_of_disc());
                     doc.setColour(bform.getColour());
+                    doc.setEntryLanguage(bform.getLanguage());
+                    doc.setDateAcquired(DateCalculation.now());
                     aid.setLibraryId(library_id);
                     aid.setSublibraryId(sub_library_id);
                     aid.setRecordNo(maxrecord);
                     ac.setId(aid);
-                    ac.setAccessionNo(bform.getAccession_no());
+                    ac.setAccessionNo(acc_no);
                     ac.setBiblioId(bform.getBiblio_id());
                     ac.setBibliographicDetails(bib);
                     ac.setVolumeNo(bform.getVolume_no());
@@ -135,6 +142,7 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                     ac.setPhysicalDescription(bform.getPhysical_desc());
                     ac.setPhysicalForm(bform.getPhysical_form());
                     ac.setColour(bform.getColour());
+                    ac.setDateAcquired(DateCalculation.now());
                     dao.insert2(ac);
                     bid.setBiblioId(bform.getBiblio_id());
                     bid.setLibraryId(library_id);
@@ -168,7 +176,9 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                     bib.setAbstract_(bform.getThesis_abstract());
                     bib.setSeries(bform.getSer_note());
                     bib.setNotes(bform.getNotes());
+                    bib.setEntryLanguage(bform.getLanguage());
                     bib.setTypeOfDisc(bform.getType_of_disc());
+                    bib.setDateAcquired(bform.getDate_acquired1());
                     List a = dao.getItems(library_id, sub_library_id, bform.getBiblio_id());
                     int b = a.size();
                     bform.setNo_of_copies(b);

@@ -264,7 +264,7 @@ CREATE TABLE `acq_vendor` (
 -- Alter Table structure for table `admin_registration`
 --
 
-alter TABLE `admin_registration` (  `courtesy` varchar(30) DEFAULT NULL ) ;
+alter TABLE `admin_registration` change `courtesy`  `courtesy` varchar(30) DEFAULT NULL  ;
 
 --
 -- Table structure for table `base_currency`

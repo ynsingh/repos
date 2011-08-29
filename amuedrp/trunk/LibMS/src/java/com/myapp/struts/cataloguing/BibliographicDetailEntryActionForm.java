@@ -17,6 +17,15 @@ public class BibliographicDetailEntryActionForm extends org.apache.struts.valida
     private String document_type;
     private String accession_type;//For retrosepctive document it is 'old' and for new document it is 'new'
     private String date_acquired;
+    private String date_acquired1;
+
+    public String getDate_acquired1() {
+        return date_acquired1;
+    }
+
+    public void setDate_acquired1(String date_acquired1) {
+        this.date_acquired1 = date_acquired1;
+    }
     private int record_no;
     private String button;
     private String search_keyword;

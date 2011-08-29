@@ -39,6 +39,7 @@ List obj1;
 <%
 
 List<AccessionRegister> l1=(List<AccessionRegister>)session.getAttribute("opacList");
+System.out.println("..........."+l1.size());
  index = request.getParameter("pageIndex");
  if(index!=null){
      pageIndex = Integer.parseInt(index);
@@ -120,6 +121,7 @@ String msg1=(String) request.getAttribute("msg1");
             <html:hidden property="library_id" name="BibliographicDetailEntryActionForm" value="<%=library_id%>"/>
             <html:hidden property="sublibrary_id" name="BibliographicDetailEntryActionForm" value="<%=sub_library_id%>" />
             <html:hidden property="biblio_id" name="BibliographicDetailEntryActionForm"/>
+             <html:hidden property="language" name="BibliographicDetailEntryActionForm"/>
             <html:hidden property="document_type" name="BibliographicDetailEntryActionForm" value="Book"/>
             <table width="100%" border="0" style="position: absolute; top: 20%">
             <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;" colspan="8" ><%=resource.getString("cataloguing.cataccessionentry.bibliodetail")%></td></tr>
@@ -137,16 +139,14 @@ String msg1=(String) request.getAttribute("msg1");
             <tr><td colspan="8" height="30px;"></td></tr>
             <tr><td colspan="8" align="left">
                     <iframe name="listdiv" src="<%=request.getContextPath()%>/cataloguing/cat_single_update_grid.jsp" width="100%" height="250px;" scrolling="no" frameborder="0"></iframe>
-                        <br/>    Pages   <%for(int ii=1;ii<=noofpages;ii++){%>
-            <a dir="" target="listdiv" href="<%=request.getContextPath()%>/cataloguing/cat_single_update_grid.jsp?pageIndex=<%=ii%>"><%=ii%></a>&nbsp;&nbsp;
+                        <br/>    Pages   <%
 
+                    System.out.println("............."+noofpages);
+                    for(int ii=1;ii<=noofpages;ii++){%>
+            <a dir="" target="listdiv" href="<%=request.getContextPath()%>/cataloguing/cat_single_update_grid.jsp?pageIndex=<%=ii%>"><%=ii%></a>&nbsp;&nbsp;
         <%}%>
         <br>
-
-                </td></tr>
-
-
-                     
+                </td></tr>                   
             </table>    </html:form>
     </body>
 </html>

@@ -21,6 +21,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.commons.lang.StringUtils;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import com.myapp.struts.utility.DateCalculation;
 /**
  *
  * @author <a href="mailto:asif633@gmail.com">Asif Iqubal</a>
@@ -112,6 +113,7 @@ public class NewEntryBiblioAction extends org.apache.struts.action.Action {
                 bib.setAbstract_(bibform.getThesis_abstract());
                 bib.setNoOfCopies(bibform.getNo_of_copies());
                 bib.setNotes(bibform.getNotes());
+               // bib.setDateAcquired(DateCalculation.now());
                 dao.insert(bib);
                 bibform.setTitle("");
                 bibform.setIsbn10("");
@@ -163,6 +165,7 @@ public class NewEntryBiblioAction extends org.apache.struts.action.Action {
                 bib.setAbstract_(bibform.getThesis_abstract());
                 bib.setNotes(bibform.getNotes());
                 bib.setNoOfCopies(bibform.getNo_of_copies());
+            //    bib.setDateAcquired(DateCalculation.now());
                 dao.insert(bib);
                 bibform.setBiblio_id(biblio_id);
                 session.setAttribute("biblio_id", biblio_id);
@@ -209,6 +212,7 @@ public class NewEntryBiblioAction extends org.apache.struts.action.Action {
         bib.setSeries(bibform.getSer_note());
         bib.setNotes(bibform.getNotes());
         bib.setNoOfCopies(bibform.getNo_of_copies());
+       bib.setDateAcquired(bibform.getDate_acquired1());
        BibliographicDetails biblio = dao.searchIsbn10ByBiblio(bibform.getCall_no(),bibform.getIsbn10(), bibform.getBiblio_id(), library_id, sub_library_id);
        BibliographicDetails uniq_calsearch = dao.searchCallNOByBiblio(bibform.getCall_no(), bibform.getBiblio_id(), library_id, sub_library_id);
        if (biblio != null) {
@@ -255,6 +259,7 @@ public class NewEntryBiblioAction extends org.apache.struts.action.Action {
         dd.setPublishingYear(bibform.getPublishing_year());
         dd.setSubtitle(bibform.getSubtitle());
         dd.setTitle(bibform.getTitle());
+        dd.setDateAcquired(bibform.getDate_acquired1());
         dd.setBibliographicDetails(bib);
         DocumentCategory dc = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategoryByName(library_id, sub_library_id, bibform.getBook_type());
                     if(dc!=null)

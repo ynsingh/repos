@@ -310,6 +310,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
                         bibform.setBook_type(bib.getBookType());
                         bibform.setStatement_responsibility(bib.getStatementResponsibility());
                         bibform.setAlt_title(bib.getAltTitle());
+                        bibform.setDate_acquired1(bib.getDateAcquired());
                         session.setAttribute("button", button);
                         return mapping.findForward("new");
                     } else {
@@ -368,6 +369,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
                         bibform.setStatement_responsibility(bib.getStatementResponsibility());
                         bibform.setSer_note(bib.getSeries());
                         bibform.setAlt_title(bib.getAltTitle());
+                        bibform.setDate_acquired1(bib.getDateAcquired());
                         session.setAttribute("button", button);
                         return mapping.findForward("new");
                     } else {
@@ -426,6 +428,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
                         bibform.setBook_type(bib.getBookType());
                         bibform.setStatement_responsibility(bib.getStatementResponsibility());
                         bibform.setAlt_title(bib.getAltTitle());
+                        bibform.setDate_acquired1(bib.getDateAcquired());
                         session.setAttribute("button", button);
                         return mapping.findForward("new");
                     } else {
@@ -617,6 +620,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
                         bibform.setSource(bib.getSource1());
                         bibform.setSubject(bib.getSubject());
                         bibform.setNotes(bib.getNotes());
+                        bibform.setDate_acquired1(bib.getDateAcquired());
                         return mapping.findForward("cd");
                 } else {
                          String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound");//Title corresponding to the isbn is not found.
@@ -678,6 +682,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
                         bibform.setSource(bib.getSource1());
                         bibform.setSubject(bib.getSubject());
                         bibform.setNotes(bib.getNotes());
+                        bibform.setDate_acquired1(bib.getDateAcquired());
                         // request.setAttribute("buttn_click", "view");
                         request.setAttribute("btnval", "Delete");
                         request.setAttribute("buttn_click", "fron_old_jsp");
@@ -743,7 +748,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
                         bibform.setSource(bib.getSource1());
                         bibform.setSubject(bib.getSubject());
                         bibform.setNotes(bib.getNotes());
-
+                        bibform.setDate_acquired1(bib.getDateAcquired());
                         request.setAttribute("buttn_click", "view");
                         return mapping.findForward("cd");
                     } else {

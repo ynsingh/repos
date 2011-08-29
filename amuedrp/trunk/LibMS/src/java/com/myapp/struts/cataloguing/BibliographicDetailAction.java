@@ -63,6 +63,7 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         bibform.setBook_type(bib.getBookType());
         bibform.setSer_note(bib.getSeries());
         bibform.setStatement_responsibility(bib.getStatementResponsibility());
+        bibform.setLanguage(bib.getEntryLanguage());
         bibform.setAlt_title(bib.getAltTitle());
                         if (bib.getNoOfCopies() == null) {
                             i = 0;
@@ -94,6 +95,7 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         bibform.setNotes1(biblang.getNotes());
         bibform.setStatement_responsibility1(biblang.getStatementResponsibility());
         bibform.setAlt_title1(biblang.getAltTitle());
+        bibform.setLanguage(biblang.getEntryLanguage());
         }
         String msg3 = "";
         request.setAttribute("msg1", msg3);
@@ -126,6 +128,7 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         bibform.setBook_type(bib.getBookType());
         bibform.setSer_note(bib.getSeries());
         bibform.setStatement_responsibility(bib.getStatementResponsibility());
+        bibform.setLanguage(bib.getEntryLanguage());
         bibform.setAlt_title(bib.getAltTitle());
                         if (bib.getNoOfCopies() == null) {
                             i = 0;
@@ -157,6 +160,7 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         bibform.setNotes1(biblang.getNotes());
         bibform.setStatement_responsibility1(biblang.getStatementResponsibility());
         bibform.setAlt_title1(biblang.getAltTitle());
+        bibform.setLanguage(biblang.getEntryLanguage());
         }
         String msg3 = "";
         request.setAttribute("msg1", msg3);

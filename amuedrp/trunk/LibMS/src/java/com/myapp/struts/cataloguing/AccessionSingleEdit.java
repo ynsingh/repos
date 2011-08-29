@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
+import com.myapp.struts.utility.StringRegEx;
 /**
  *
  * @author <a href="mailto:asif633@gmail.com">Asif Iqubal</a>
@@ -36,8 +36,11 @@ public class AccessionSingleEdit extends org.apache.struts.action.Action {
                 if(buttonhand==null || buttonhand.isEmpty())
             buttonhand=(String)session1.getAttribute("edit2");
         System.out.println("MASTIIIIIIIIIIII"+buttonhand+"/");
-
-        session1.removeAttribute("edit2");
+String bb=StringRegEx.sepByRegEx(ii).toString();
+ System.out.println("M     "+bb+" /");
+ String vv=ii.substring(bb.length());
+ System.out.println("M     "+vv+" /");
+ session1.removeAttribute("edit2");
         int i=0;
         if(doc_tpe.equals("Book"))
         {
@@ -49,6 +52,7 @@ public class AccessionSingleEdit extends org.apache.struts.action.Action {
                         } else {
                             i = bib.getBibliographicDetails().getNoOfCopies();
                         }
+                        
                         bibform.setNo_of_copies(i);
                         bibform.setMain_entry(bib.getBibliographicDetails().getMainEntry());
                         bibform.setAdded_entry(bib.getBibliographicDetails().getAddedEntry());
@@ -75,7 +79,7 @@ public class AccessionSingleEdit extends org.apache.struts.action.Action {
                         bibform.setStatement_responsibility(bib.getBibliographicDetails().getStatementResponsibility());
                         bibform.setAlt_title(bib.getBibliographicDetails().getAltTitle());
                         bibform.setRecord_no(bib.getId().getRecordNo());
-                        bibform.setAccession_no(ii);
+                        bibform.setAccession_no(vv);
                         bibform.setVolume_no(bib.getVolumeNo());
                         bibform.setLocation(bib.getLocation());
                         bibform.setShelving_location(bib.getShelvingLocation());
@@ -83,6 +87,10 @@ public class AccessionSingleEdit extends org.apache.struts.action.Action {
                         bibform.setIndex_no(bib.getIndexNo());
                         bibform.setPhysical_width(bib.getPhysicalWidth());
                         bibform.setBind_type(bib.getBindType());
+                        bibform.setLanguage(bib.getBibliographicDetails().getEntryLanguage());
+                        bibform.setDate_acquired(bib.getDateAcquired());
+                        bibform.setDate_acquired1(bib.getBibliographicDetails().getDateAcquired());
+                        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"+bib.getDateAcquired());
                         return mapping.findForward("show");
                     }
     }
@@ -122,7 +130,7 @@ public class AccessionSingleEdit extends org.apache.struts.action.Action {
                         bibform.setStatement_responsibility(bib.getBibliographicDetails().getStatementResponsibility());
                         bibform.setAlt_title(bib.getBibliographicDetails().getAltTitle());
                         bibform.setRecord_no(bib.getId().getRecordNo());
-                        bibform.setAccession_no(ii);
+                        bibform.setAccession_no(vv);
                         bibform.setVolume_no(bib.getVolumeNo());
                         bibform.setLocation(bib.getLocation());
                         bibform.setShelving_location(bib.getShelvingLocation());
@@ -134,6 +142,9 @@ public class AccessionSingleEdit extends org.apache.struts.action.Action {
                         bibform.setPhysical_desc(bib.getPhysicalDescription());
                         bibform.setPhysical_form(bib.getPhysicalForm());
                         bibform.setColour(bib.getColour());
+                        bibform.setLanguage(bib.getBibliographicDetails().getEntryLanguage());
+                        bibform.setDate_acquired(bib.getDateAcquired());
+                        bibform.setDate_acquired1(bib.getBibliographicDetails().getDateAcquired());
                         return mapping.findForward("show");
                     }
     }

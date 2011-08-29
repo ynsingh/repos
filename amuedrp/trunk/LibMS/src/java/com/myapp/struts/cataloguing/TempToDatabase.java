@@ -142,7 +142,6 @@ String library_id,sublibrary_id;
                     bibobj.setDocumentType(temobj.getDocumentType());
                     bibobj.setBookType(temobj.getBookType());
                     bibobj.setAccessionType(temobj.getAccessionType());
-                    bibobj.setDateAcquired(temobj.getDateAcquired());
                     bibobj.setTitle(temobj.getTitle());
                     bibobj.setSubtitle(temobj.getSubtitle());
                     bibobj.setAltTitle(temobj.getAltTitle());

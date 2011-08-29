@@ -76,6 +76,7 @@ public class AccessionEditAction extends org.apache.struts.action.Action {
         bibform.setStatement_responsibility(bib.getStatementResponsibility());
         bibform.setAlt_title(bib.getAltTitle());     
         bibform.setType_of_disc(bib.getTypeOfDisc());
+        bibform.setLanguage(bib.getEntryLanguage());
         DocumentCategory doc1=(DocumentCategory)DocumentCategoryDAO.searchDocumentCategory(library_id, sub_library_id, bib.getBookType());
                         if(doc1!=null)
                             bibform.setBook_type(doc1.getDocumentCategoryName());
@@ -98,7 +99,6 @@ public class AccessionEditAction extends org.apache.struts.action.Action {
         }
          if(buttonhand.equals("View")||buttonhand.equals("Edit")||buttonhand.equals("Delete"))
         {
- 
         int ii=bibform.getBiblio_id();
         BibliographicDetails bib = dao.getBiblio(bibform.getLibrary_id(),bibform.getSublibrary_id(), ii);
         bibform.setType_of_disc(bib.getTypeOfDisc());
@@ -126,6 +126,7 @@ public class AccessionEditAction extends org.apache.struts.action.Action {
         bibform.setStatement_responsibility(bib.getStatementResponsibility());
         bibform.setAlt_title(bib.getAltTitle());
         bibform.setType_of_disc(bib.getTypeOfDisc());
+        bibform.setLanguage(bib.getEntryLanguage());
         DocumentCategory doc1=(DocumentCategory)DocumentCategoryDAO.searchDocumentCategory(library_id, sub_library_id, bib.getBookType());
                         if(doc1!=null)
                             bibform.setBook_type(doc1.getDocumentCategoryName());
