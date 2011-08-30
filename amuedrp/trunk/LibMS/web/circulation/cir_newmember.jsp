@@ -788,7 +788,7 @@ a:active
                  </td>
               <td dir="<%=rtl%>"><%=resource.getString("circulation.cir_newmember.desg")%>*
                   </td><td dir="<%=rtl%>" class="table_textbox">
-                      <html:select  property="MEMSUBCAT" styleId="subemptype_id" tabindex="18" style="width:160px" value="<%=submemcat%>" tabindex="3">
+                      <html:select  property="MEMSUBCAT" styleId="subemptype_id" tabindex="18" style="width:160px" value="<%=submemcat%>" >
                         <html:option value="Select"><%=resource.getString("circulation.cir_newmember.select")%></html:option>
                    
                      </html:select>
