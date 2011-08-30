@@ -60,7 +60,7 @@ import org.iitk.brihaspati.om.DbSendPeer;
 import org.iitk.brihaspati.om.DbSend;
 import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+//import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**
  * This class contains code for display message
  * @author  <a href="aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
@@ -163,7 +163,6 @@ public class DBView extends SecureScreen
 		 	**/		
 			context.put("message",topicDesc);
 			File dirHandle=new File(filePath+"/"+topic+"/"+"Attachment/"+msg_id);
-			ErrorDumpUtil.ErrorLog("Directory location==========sunil========>"+dirHandle);
 			FilenameFilter exclude=new NotInclude("__desc.txt");
 	      		File file[]=dirHandle.listFiles(exclude);
 			String servContext=TurbineServlet.getContextPath();

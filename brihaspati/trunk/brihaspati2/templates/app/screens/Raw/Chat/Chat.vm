@@ -8,7 +8,7 @@
  * @author <a href="mailto:shaistashekh@hotmail.com ">Shaista Bano</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @modified date: 10-aug-2010 (Shaista), 06-oct-2010, 07-dec-2010, 
- * @modified date: 15-Feb-2011, 04-April-2011 (Shaista), 11-Aug-2011 (Sunil Kr)
+ * @modified date: 15-Feb-2011, 04-April-2011 (Shaista), 26-Aug-2011 (Sunil Kr)
 *#
 
 $page.setTitle("Chat")
@@ -108,7 +108,7 @@ $!data.getMessage()
                 #elseif($tdcolor == "2")
                         <td width="50%" bgcolor="#AFDCEC">
                 #end
-			<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode",$mode).AddPathInfo("grpName",$grpName)>$brih_chat</a></td>
+			<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode2","instituteWise")>$brih_chat</a></td>
 #elseif($mode == "general")
 		#if($tdcolor!="2")
         	        <td width="50%">
@@ -177,7 +177,7 @@ $!data.getMessage()
 <tr><td>
 	<blink> <img src="$content.getURI("/images/hand.gif")"> </blink>
 	$brih_chatMsg1
-	<a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("mode",$mode)>$brih_changePassword</a>
+	<a href=$link.setPage("call,UserMgmt_User,changePassword.vm")>$brih_changePassword</a>
 </td></tr>
 <tr><td>
         <blink> <img src="$content.getURI("/images/hand.gif")"> </blink>

@@ -57,7 +57,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  *
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * @modified date: 10-08-2010 (Shaista)
+ * @author <a href="mailto:shaistashekh@hotmail.com">Sunil Kumar</a>
+ * @modified date: 10-08-2010 (Shaista), 26-08-2011(Sunil kr) 
  * @modified date: 10-02-2011, 04-04-2011 (Shaista)
  */
 
@@ -78,8 +79,10 @@ public class Chat extends SecureScreen
 	  	String pword=data.getUser().getPassword();
 		String cid ="";
 		String mode1=data.getParameters().getString("mode","");
+		String mode2=data.getParameters().getString("mode2","");
+	        //context.put("mode2",mode2);
 		String stat=data.getParameters().getString("mode1","");
-		//ErrorDumpUtil.ErrorLog("mode1===="+stat+"\n\n\n grpName="+data.getParameters().getString("val1",""));
+		//ErrorDumpUtil.ErrorLog("mode2===="+stat+"\n\n\n mode222="+mode2);
 		
 		/**
 		 * if { mode is general then room name is General} 
@@ -96,10 +99,11 @@ public class Chat extends SecureScreen
 			cid="General";
                 	context.put("mode",mode1);
 		}
-		else if(mode1.equals("instituteWise"))
+		else if(mode2.equals("instituteWise"))
 		{
 			cid = data.getParameters().getString("grpName","");
-                	context.put("mode",mode1);
+                	//context.put("mode",mode1);
+                	context.put("mode2",mode2);
 			context.put("grpName",cid);
 			
 		}
