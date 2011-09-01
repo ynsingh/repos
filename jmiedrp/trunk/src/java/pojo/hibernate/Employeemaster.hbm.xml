@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2011 11:33:42 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Employeemaster" table="employeemaster">
+        <id name="empId" type="java.lang.Integer">
+            <column name="EMP_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="EMP_DESIGNATION_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="EMP_IM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="EMP_DM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="EMP_SIM_ID" not-null="true" />
+        </many-to-one>
+        <property name="empFname" type="string">
+            <column name="EMP_FName" length="20" not-null="true" />
+        </property>
+        <property name="empMname" type="string">
+            <column name="EMP_MName" length="30" not-null="true" />
+        </property>
+        <property name="empLname" type="string">
+            <column name="EMP_LName" length="30" not-null="true" />
+        </property>
+        <property name="empEmail" type="string">
+            <column name="EMP_EMail" length="50" />
+        </property>
+        <property name="empMobile" type="string">
+            <column name="EMP_Mobile" length="15" />
+        </property>
+        <property name="empLandLine" type="string">
+            <column name="EMP_LandLine" length="15" />
+        </property>
+        <property name="empDob" type="date">
+            <column name="EMP_DOB" length="10" />
+        </property>
+        <property name="empDoj" type="date">
+            <column name="EMP_DOJ" length="10" />
+        </property>
+        <property name="empGender" type="string">
+            <column name="EMP_Gender" length="2" />
+        </property>
+        <set name="institutionmasters" inverse="true">
+            <key>
+                <column name="IM_EMP_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.Institutionmaster" />
+        </set>
+        <set name="departmentmasters" inverse="true">
+            <key>
+                <column name="DM_EMP_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.Departmentmaster" />
+        </set>
+        <set name="subinstitutionmasters" inverse="true">
+            <key>
+                <column name="SIM_EMP_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.Subinstitutionmaster" />
+        </set>
+    </class>
+</hibernate-mapping>

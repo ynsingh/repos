@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/erppico</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">root</property>
+    <property name="hibernate.default_catalog">erppico</property>
+    <mapping resource="pojo/hibernate/Erpmuserprofile.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Institutionuserroles.hbm.xml"/>
+    <mapping resource="pojo/hibernate/ErpmGenMaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Genericuserroles.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Erpmuserrole.hbm.xml"/>
+    <mapping resource="pojo/hibernate/ErpmIndentMaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/ErpmGenCtrl.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Erpmteam.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Guestbook.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Financialyearmaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Countrymaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/SupplierAddress.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Employeemaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/ErpmPoDetails.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Statemaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Suppliermaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Erpmprogram.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Budgettypemaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/ErpmItemRateDetails.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Supplierregistrationauthority.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Institutionroleprivileges.hbm.xml"/>
+    <mapping resource="pojo/hibernate/UserMessage.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Supplierregistrationcategory.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Institutionuserprivileges.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Itemcategory.hbm.xml"/>
+    <mapping resource="pojo/hibernate/ErpmItemMaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Erpmusers.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Orderingoptions.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Storemaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Institutionmaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Itemtype.hbm.xml"/>
+    <mapping resource="pojo/hibernate/ErpmPoTaxes.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Userprivileges.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Genericroleprivileges.hbm.xml"/>
+    <mapping resource="pojo/hibernate/ErpmItemRateTaxes.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Genericuserprivileges.hbm.xml"/>
+    <mapping resource="pojo/hibernate/ErpmGeneralTerms.hbm.xml"/>
+    <mapping resource="pojo/hibernate/ErpmItemRate.hbm.xml"/>
+    <mapping resource="pojo/hibernate/LanguageMaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Storetype.hbm.xml"/>
+    <mapping resource="pojo/hibernate/NewTable.hbm.xml"/>
+    <mapping resource="pojo/hibernate/ErpmCapitalCategory.hbm.xml"/>
+    <mapping resource="pojo/hibernate/ErpmItemCategoryMaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Erpmuserdepartments.hbm.xml"/>
+    <mapping resource="pojo/hibernate/DepartmentalBudgetAllocation.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Subinstitutionmaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/ErpmPoTerms.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Erpmmodule.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Budgetmaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Budgetheadmaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Departmentmaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/ErpmPoMaster.hbm.xml"/>
+    <mapping resource="pojo/hibernate/Messages.hbm.xml"/>
+    <mapping resource="pojo/hibernate/ErpmIndentDetail.hbm.xml"/>
+  </session-factory>
+</hibernate-configuration>

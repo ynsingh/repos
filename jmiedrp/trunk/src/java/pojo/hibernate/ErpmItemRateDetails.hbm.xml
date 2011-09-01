@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2011 11:33:42 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmItemRateDetails" table="erpm_item_rate_details">
+        <id name="irdItemRateDetailsId" type="java.lang.Integer">
+            <column name="IRD_Item_Rate_Details_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmItemRate" class="pojo.hibernate.ErpmItemRate" fetch="select">
+            <column name="IRD_Item_Rate_Id" not-null="true" />
+        </many-to-one>
+        <property name="irdWefDate" type="date">
+            <column name="IRD_WEF_Date" length="10" />
+        </property>
+        <property name="irdWetDate" type="date">
+            <column name="IRD_WET_Date" length="10" />
+        </property>
+        <property name="irdRate" type="big_decimal">
+            <column name="IRD_Rate" precision="10" />
+        </property>
+        <set name="erpmItemRateTaxeses" inverse="true">
+            <key>
+                <column name="IRT_Item_Rate_Details_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmItemRateTaxes" />
+        </set>
+    </class>
+</hibernate-mapping>

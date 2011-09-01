@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2011 11:33:42 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmItemRate" table="erpm_item_rate">
+        <id name="irItemRateId" type="java.lang.Integer">
+            <column name="IR_Item_Rate_Id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="IR_IM_ID" />
+        </many-to-one>
+        <many-to-one name="erpmGenMasterByIrWarrantyStartsFromId" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="IR_Warranty_Starts_From_ID" />
+        </many-to-one>
+        <many-to-one name="erpmGenMasterByIrCurrencyId" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="IR_Currency_ID" />
+        </many-to-one>
+        <many-to-one name="suppliermaster" class="pojo.hibernate.Suppliermaster" fetch="select">
+            <column name="IR_Supplier_ID" />
+        </many-to-one>
+        <many-to-one name="erpmItemMaster" class="pojo.hibernate.ErpmItemMaster" fetch="select">
+            <column name="IR_Item_ID" />
+        </many-to-one>
+        <property name="irWarrantyMonths" type="java.lang.Integer">
+            <column name="IR_Warranty_Months" />
+        </property>
+        <property name="irWarrantyClause" type="string">
+            <column name="IR_Warranty_Clause" length="100" />
+        </property>
+        <set name="erpmItemRateDetailses" inverse="true">
+            <key>
+                <column name="IRD_Item_Rate_Id" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmItemRateDetails" />
+        </set>
+    </class>
+</hibernate-mapping>

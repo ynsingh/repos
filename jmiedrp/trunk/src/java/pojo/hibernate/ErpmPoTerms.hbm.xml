@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2011 11:33:42 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmPoTerms" table="erpm_po_terms">
+        <id name="potPotId" type="java.lang.Integer">
+            <column name="POT_POT_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmPoMaster" class="pojo.hibernate.ErpmPoMaster" fetch="select">
+            <column name="POT_POM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="POT_EGM_ID" not-null="true" />
+        </many-to-one>
+        <property name="potTermsDescription" type="string">
+            <column name="POT_TERMS_DESCRIPTION" length="500" />
+        </property>
+    </class>
+</hibernate-mapping>

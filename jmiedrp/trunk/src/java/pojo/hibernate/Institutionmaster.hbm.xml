@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2011 11:33:42 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Institutionmaster" table="institutionmaster">
+        <id name="imId" type="java.lang.Short">
+            <column name="IM_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="im_type" />
+        </many-to-one>
+        <many-to-one name="countrymaster" class="pojo.hibernate.Countrymaster" fetch="select">
+            <column name="IM_Country_ID" />
+        </many-to-one>
+        <many-to-one name="employeemaster" class="pojo.hibernate.Employeemaster" fetch="select">
+            <column name="IM_EMP_ID" />
+        </many-to-one>
+        <many-to-one name="statemaster" class="pojo.hibernate.Statemaster" fetch="select">
+            <column name="IM_State_ID" />
+        </many-to-one>
+        <property name="imName" type="string">
+            <column name="IM_Name" length="100" not-null="true" unique="true" />
+        </property>
+        <property name="imShortName" type="string">
+            <column name="IM_Short_Name" length="10" unique="true" />
+        </property>
+        <property name="imAddressLine1" type="string">
+            <column name="IM_Address_Line1" length="50" not-null="true" />
+        </property>
+        <property name="imAddressLine2" type="string">
+            <column name="IM_Address_Line2" length="50" />
+        </property>
+        <property name="imDistrict" type="string">
+            <column name="IM_District" length="50" />
+        </property>
+        <property name="imPinNo" type="string">
+            <column name="IM_Pin_No" length="6" />
+        </property>
+        <property name="imEmailId" type="string">
+            <column name="IM_EMail_ID" length="50" />
+        </property>
+        <set name="departmentmasters" inverse="true">
+            <key>
+                <column name="DM_IM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.Departmentmaster" />
+        </set>
+        <set name="erpmPoMasters" inverse="true">
+            <key>
+                <column name="POM_IM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPoMaster" />
+        </set>
+        <set name="employeemasters" inverse="true">
+            <key>
+                <column name="EMP_IM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Employeemaster" />
+        </set>
+        <set name="departmentalBudgetAllocations" inverse="true">
+            <key>
+                <column name="DBA_IM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.DepartmentalBudgetAllocation" />
+        </set>
+        <set name="budgetmasters" inverse="true">
+            <key>
+                <column name="BM_IM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Budgetmaster" />
+        </set>
+        <set name="erpmItemRates" inverse="true">
+            <key>
+                <column name="IR_IM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmItemRate" />
+        </set>
+        <set name="erpmCapitalCategories" inverse="true">
+            <key>
+                <column name="ERPM_IM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmCapitalCategory" />
+        </set>
+        <set name="erpmItemMasters" inverse="true">
+            <key>
+                <column name="ERPMIM_IM_ID">
+                    <comment>This filed stores Institution fotr which Item has been created</comment>
+                </column>
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmItemMaster" />
+        </set>
+        <set name="supplierregistrationauthorities" inverse="true">
+            <key>
+                <column name="SRA_IM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Supplierregistrationauthority" />
+        </set>
+        <set name="institutionroleprivilegeses" inverse="true">
+            <key>
+                <column name="IUP_IM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.Institutionroleprivileges" />
+        </set>
+        <set name="erpmGeneralTermses" inverse="true">
+            <key>
+                <column name="GT_IM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmGeneralTerms" />
+        </set>
+        <set name="suppliermasters" inverse="true">
+            <key>
+                <column name="SM_IM_Id" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Suppliermaster" />
+        </set>
+        <set name="subinstitutionmasters" inverse="true">
+            <key>
+                <column name="SIM_IM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Subinstitutionmaster" />
+        </set>
+        <set name="institutionuserroleses" inverse="true">
+            <key>
+                <column name="IUR_IM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.Institutionuserroles" />
+        </set>
+        <set name="erpmItemCategoryMasters" inverse="true">
+            <key>
+                <column name="ERPMICM_IM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmItemCategoryMaster" />
+        </set>
+        <set name="erpmuserroles" inverse="true">
+            <key>
+                <column name="ERPMUR_IM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.Erpmuserrole" />
+        </set>
+        <set name="itemcategories" inverse="true">
+            <key>
+                <column name="IC_IM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.Itemcategory" />
+        </set>
+        <set name="budgetheadmasters" inverse="true">
+            <key>
+                <column name="BHM_IM_Id" />
+            </key>
+            <one-to-many class="pojo.hibernate.Budgetheadmaster" />
+        </set>
+        <set name="erpmIndentMasters" inverse="true">
+            <key>
+                <column name="Indt_Institution_Id" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIndentMaster" />
+        </set>
+    </class>
+</hibernate-mapping>

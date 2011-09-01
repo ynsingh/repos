@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2011 11:33:42 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Budgetheadmaster" table="budgetheadmaster">
+        <id name="bhmId" type="java.lang.Short">
+            <column name="BHM_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="BHM_IM_Id" />
+        </many-to-one>
+        <property name="bhmName" type="string">
+            <column name="BHM_Name" length="100" />
+        </property>
+        <set name="departmentalBudgetAllocations" inverse="true">
+            <key>
+                <column name="DBA_BHM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.DepartmentalBudgetAllocation" />
+        </set>
+        <set name="erpmIndentMasters" inverse="true">
+            <key>
+                <column name="Indt_BudgetHead_Id" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIndentMaster" />
+        </set>
+    </class>
+</hibernate-mapping>

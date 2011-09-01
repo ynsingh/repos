@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2011 11:33:42 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Erpmprogram" table="erpmprogram">
+        <id name="erpmpId" type="java.lang.Short">
+            <column name="ERPMP_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmmodule" class="pojo.hibernate.Erpmmodule" fetch="select">
+            <column name="ERPMP_ERPMM_ID" not-null="true" />
+        </many-to-one>
+        <property name="erpmpDisplayName" type="string">
+            <column name="ERPMP_Display_Name" length="50" not-null="true" />
+        </property>
+        <property name="erpmpType" type="string">
+            <column name="ERPMP_type" length="2" not-null="true">
+                <comment>T(ransaction), M(aster), R(eport), W(eb Page)</comment>
+            </column>
+        </property>
+        <property name="erpmpViewProgram" type="string">
+            <column name="ERPMP_View_Program" length="100" not-null="true" />
+        </property>
+        <property name="erpmpPurpose" type="string">
+            <column name="erpmp_purpose" length="100" />
+        </property>
+        <set name="genericroleprivilegeses" inverse="true">
+            <key>
+                <column name="GUP_ERPMP_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Genericroleprivileges" />
+        </set>
+        <set name="userprivilegeses" inverse="true">
+            <key>
+                <column name="RP_ERPMP_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Userprivileges" />
+        </set>
+        <set name="institutionroleprivilegeses" inverse="true">
+            <key>
+                <column name="IUP_ERPMP_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Institutionroleprivileges" />
+        </set>
+    </class>
+</hibernate-mapping>

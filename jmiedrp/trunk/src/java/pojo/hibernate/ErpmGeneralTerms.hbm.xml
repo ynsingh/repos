@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2011 11:33:42 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmGeneralTerms" table="erpm_general_terms">
+        <id name="gtGtid" type="java.lang.Integer">
+            <column name="GT_GTID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="GT_EGM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="GT_IM_ID" not-null="true" />
+        </many-to-one>
+        <property name="gtTermsDescription" type="string">
+            <column name="GT_TERMS_DESCRIPTION" />
+        </property>
+    </class>
+</hibernate-mapping>

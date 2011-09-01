@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="ajax" namespace="/ajax" extends="struts-default">
+        <action name="getInstitutions" method="getInstitutions" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+        </action>
+
+        <action name="getSubinstitutionList" method="getSubinstitutionList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+        </action>
+
+        <action name="getDepartmentList" method="getDepartmentList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+        </action>
+
+        <action name="getInstitutionUserRoleList" method="getInstitutionUserRoleList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+        </action>
+
+       <action name="getCapitalCategoryList" method="CapitalCategoryList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+       <action name="getSubCategory1List" method="getSubCategory1List" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+       <action name="getStateList" method="getStateList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+       <action name="getCountryList" method="getCountryList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+       <action name="getSecretQuestion" method="getSecretQuestion" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+       <action name="getGURDescription" method="getGURDescription" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+       <action name="getProgramList" method="getProgramList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+ <action name="getStatus" method="setStatus" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+    <action name="setLanguage" method="setLanguage" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+    <action name="getUOP" method="getUOP" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+        <action name="getAllocatedAmount" method="getAllocatedAmount" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+        <action name="getItemsforInsitute" method="getItemsforInsitute" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+
+ <action name="getsupplierforInsitute" method="getsupplierforInsitute" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+       <action name="getpoterms" method="getpoterms" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+ <action name="getitemList" method="getitemList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+
+   </package>
+</struts>

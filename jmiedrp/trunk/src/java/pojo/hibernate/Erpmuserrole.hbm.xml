@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2011 11:33:42 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Erpmuserrole" table="erpmuserrole">
+        <id name="erpmurId" type="java.lang.Integer">
+            <column name="ERPMUR_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmusers" class="pojo.hibernate.Erpmusers" fetch="select">
+            <column name="ERPMUR_ERPMU_ID" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="ERPMUR_SIM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="ERPMUR_IM_ID" />
+        </many-to-one>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="ERPMUR_DM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="institutionuserroles" class="pojo.hibernate.Institutionuserroles" fetch="select">
+            <column name="ERPMUR_IUR_ID" not-null="true" />
+        </many-to-one>
+        <property name="erpmurDefault" type="java.lang.Character">
+            <column name="ERPMUR_Default" length="1" />
+        </property>
+        <property name="erpmurActive" type="java.lang.Character">
+            <column name="ERPMUR_Active" length="1" />
+        </property>
+    </class>
+</hibernate-mapping>

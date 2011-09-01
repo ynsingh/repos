@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2011 11:33:42 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Institutionuserroles" table="institutionuserroles">
+        <id name="iurId" type="java.lang.Integer">
+            <column name="IUR_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="IUR_IM_ID" />
+        </many-to-one>
+        <property name="iurName" type="string">
+            <column name="IUR_Name" length="50" not-null="true" />
+        </property>
+        <property name="iurRemarks" type="string">
+            <column name="IUR_Remarks" length="100" />
+        </property>
+        <set name="erpmuserroles" inverse="true">
+            <key>
+                <column name="ERPMUR_IUR_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Erpmuserrole" />
+        </set>
+        <set name="institutionroleprivilegeses" inverse="true">
+            <key>
+                <column name="IUP_IUR_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Institutionroleprivileges" />
+        </set>
+    </class>
+</hibernate-mapping>

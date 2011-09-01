@@ -1,0 +1,163 @@
+a {
+	text-decoration: none;
+	color: #660000;
+	font-family: Georgia, serif;
+}
+
+
+.view tr.odd {
+    background-color: #fafbff;
+}
+
+.view tr.even {
+    background-color: #EFEBDE;
+}
+
+a:hover {
+	text-decoration: none;
+	color: #FF0000;
+	font-family: Georgia, serif;
+}
+
+#header {
+	background-image: url('/images/header_bg.gif');
+	background-repeat: repeat-x;
+	height: 65px;
+	text-align: right;
+}
+
+#footer {
+	background-image: url('/images/footer_bg.gif');
+	background-repeat: repeat-x;
+	text-align: right;
+    font: 12px arial, serif;
+}
+
+body {
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    font-family: Arial, sans-serif;
+	font-size: 0.7em;
+	padding: 0px;
+	text-align: center;
+	margin-left: 0px;
+	margin-top: 0px;
+}
+
+INPUT, SELECT {
+	font: 14px/20px Arial, Helvetica, sans-serif;
+	color: #0b0b0b;
+	border: #c3bca4 1px solid;
+	height: 22px;
+	background-color: #efebde;
+}
+
+TEXTAREA {
+	font: 14px/20px Arial, Helvetica, sans-serif;
+	color: #0b0b0b;
+	border: #c3bca4 1px solid;
+	background-color: #efebde;
+}
+
+.textInput, textarea {
+	background-color: #FFFFFF;
+	border: 1px solid #000;
+}
+
+.buttonText {
+	padding-right: 30px;
+	padding-left: 0px;
+	float: right;
+	padding-bottom: 0px;
+	font: 10px/13px Arial, Helvetica, sans-serif;
+	text-transform: uppercase;
+	width: 60px;
+	cursor: pointer;
+	color: #0b0b0b;
+	border-top-style: none;
+	padding-top: 0px;
+	border-right-style: none;
+	border-left-style: none;
+	height: 13px;
+	border-bottom-style: none;
+}
+
+.Arial13BrownB {
+	font-family: "Arial", Times, serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #990000;
+}
+
+.treb13blacknormal {
+	font-weight: normal;
+	font-size: 13px;
+	color: #333333;
+	font-family: "Trebuchet MS";
+	text-decoration: none;
+}
+
+.mandatory {
+	font-weight: bold;
+	font-size: 13px;
+	color: #990000;
+	font-family: "Trebuchet MS";
+}
+
+.tdLabel .required {
+	font-weight: bold;
+	font-size: 13px;
+	color: #990000;
+	font-family: "Trebuchet MS";
+}
+
+.label {
+	font-weight: bold;
+	font-size: 13px;
+	font-family: "Trebuchet MS";
+}
+
+.gridheader {
+    background-color: #EFEBDE;
+    color: #666;
+    text-align: left;
+    padding: 5px;
+    font: 14px verdana, serif;
+    font-weight:bold;
+}
+
+.griddata {
+    text-align: left;
+    padding: 3px;
+    font: 12px Georgia, serif;
+    color: purple;
+}
+
+.spanHeader {
+    font: 24px/30px Georgia, serif;
+    width:228px;
+    color: #786e4e;
+    height:37px;
+}
+
+.pagebanner {
+    text-align: left;
+    font: 12px tahoma, serif;
+    color: purple;
+}
+
+.exportlinks {
+    text-align: right;
+    font: 12px tahoma, serif;
+    color: maroon;
+    font-weight:bolder;
+    padding-top: 5px;
+}
+
+.pagelinks{
+    text-align: left;
+    font: 12px tahoma, serif;
+    color: red;
+    padding: 2px;
+    font-weight:bolder;
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2011 11:33:42 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Userprivileges" table="userprivileges">
+        <id name="rpId" type="java.lang.Short">
+            <column name="RP_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmprogram" class="pojo.hibernate.Erpmprogram" fetch="select">
+            <column name="RP_ERPMP_ID" not-null="true" />
+        </many-to-one>
+        <property name="rpUrId" type="byte">
+            <column name="RP_UR_ID" not-null="true" />
+        </property>
+        <property name="rpCanAdd" type="string">
+            <column name="RP_Can_Add" length="2" not-null="true" />
+        </property>
+        <property name="rpCanDelete" type="string">
+            <column name="RP_Can_Delete" length="2" />
+        </property>
+        <property name="rpCanEdit" type="string">
+            <column name="RP_Can_Edit" length="2" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

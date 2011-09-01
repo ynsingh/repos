@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 19, 2011 11:12:21 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="pojo.hibernate.InstitutiontypeDelete" table="institutiontype">
+    <id name="itTypeId" type="java.lang.Byte">
+      <column name="IT_Type_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="itName" type="string">
+      <column length="100" name="IT_Name" not-null="true"/>
+    </property>
+    <set inverse="true" name="institutionmasters">
+      <key>
+        <column name="IM_Type"/>
+      </key>
+      <one-to-many class="pojo.hibernate.Institutionmaster"/>
+    </set>
+  </class>
+</hibernate-mapping>

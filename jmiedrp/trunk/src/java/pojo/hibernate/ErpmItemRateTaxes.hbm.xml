@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2011 11:33:42 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmItemRateTaxes" table="erpm_item_rate_taxes">
+        <id name="irtItemRateTaxesId" type="java.lang.Integer">
+            <column name="IRT_Item_Rate_Taxes_Id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmItemRateDetails" class="pojo.hibernate.ErpmItemRateDetails" fetch="select">
+            <column name="IRT_Item_Rate_Details_ID" not-null="true" />
+        </many-to-one>
+        <property name="irtTaxName" type="string">
+            <column name="IRT_Tax_Name" length="30" />
+        </property>
+        <property name="irtTaxPercent" type="big_decimal">
+            <column name="IRT_Tax_Percent" precision="4" />
+        </property>
+        <property name="irtTaxOnValuePercent" type="big_decimal">
+            <column name="IRT_Tax_on_Value_Percent" precision="4" />
+        </property>
+        <property name="irtSurchargePercent" type="big_decimal">
+            <column name="IRT_Surcharge_Percent" precision="4" />
+        </property>
+    </class>
+</hibernate-mapping>

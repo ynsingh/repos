@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC '-//OpenSymphony Group//XWork Validator 1.0.2//EN'
+'http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd'>
+
+<validators>
+    <field name="im.ImName">
+        <field-validator type="required">
+            <message>Institution name is required</message>
+        </field-validator>
+    </field>
+
+    <field name="im.ImShortName">
+        <field-validator type="required">
+            <message>Institution short name is required</message>
+        </field-validator>
+    </field>
+
+    <field name="im.ImAddressLine1">
+        <field-validator type="required">
+            <message>Please enter institution address</message>
+        </field-validator>
+    </field>
+
+    <field name="im.statemaster.stateId">
+        <field-validator type="required">
+            <message>Please select state </message>
+        </field-validator>
+    </field>
+
+    <field name="im.ImEmailId">
+        <field-validator type="required">
+            <message>Institution email id is required</message>
+        </field-validator>
+
+        <field-validator type="email">
+            <message>Enter a valid email id</message>
+        </field-validator>
+
+    </field>
+
+</validators>
