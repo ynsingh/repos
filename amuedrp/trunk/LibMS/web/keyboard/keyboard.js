@@ -91,7 +91,7 @@ var VKI_attach, VKI_close;
   /* ***** i18n text strings ************************************* */
   this.VKI_i18n = {
     '00': "Display Number Pad",
-    '01': "Keyboard",
+    '01': "+",
     '02': "Select keyboard layout",
     '03': "Dead keys",
     '04': "On",

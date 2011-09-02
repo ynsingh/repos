@@ -517,7 +517,7 @@ function disableStatus()
                  </td>
                  <td dir="<%=rtl%>">Department</td>
                  <td>
-                     <html:select  property="TXTDEPT" styleId="TXTDEPT" onchange="fun()" style="width:160px"  onchange="return search_dept();" value="" tabindex="22">
+                     <html:select  property="TXTDEPT" styleId="TXTDEPT" onchange="fun();return search_dept();" style="width:160px" value="" tabindex="22">
                   <html:option value="Select"><%=resource.getString("circulation.cir_newmember.select")%></html:option>
                          <html:options  collection="dept" labelProperty="deptName" property="id.deptId"></html:options>
                      </html:select>

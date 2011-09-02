@@ -376,7 +376,7 @@ if(str!=null)
                     </table>
                     <br>
 
-                    <span style="font-family: Tahoma;font-size:14px"><b><a style="text-decoration: none" class="txt2" href="<%=request.getContextPath()%>/help/help2.jsp"><%=resource.getString("login.message.newlib")%></a></b></span><br><br>
+                    <span style="font-family: Tahoma;font-size:14px"><b><a style="text-decoration: none" class="txt2" href="mailto:nesar.ahmad@gmail.com"><%=resource.getString("login.message.newlib")%></a></b></span><br><br>
                   <b><a href="<%=request.getContextPath()%>/admin/admin_registration.jsp" style="text-decoration: none;color:brown;font-family: Tahoma;font-size:13px;font-weight: bold;"><%= resource.getString("login.href.institute.registration") %></a></b>
 
 

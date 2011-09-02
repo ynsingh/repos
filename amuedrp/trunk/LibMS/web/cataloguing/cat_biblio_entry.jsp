@@ -316,8 +316,6 @@ document.getElementById('notes').blur();
 document.getElementById('notes').disabled=true;
   document.getElementById("checkbox").value="UnChecked";
 document.getElementById("language").value="";
-alert(  document.getElementById("checkbox").value);
-
 }
 }
 function disablecheck(){
