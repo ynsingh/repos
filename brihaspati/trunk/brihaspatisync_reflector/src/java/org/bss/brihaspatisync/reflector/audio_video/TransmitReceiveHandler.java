@@ -9,7 +9,7 @@ package org.bss.brihaspatisync.reflector.audio_video;
 
 import javax.media.protocol.DataSource;
 
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
+//import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.audio_video.receiver.AudioReceive;
 import org.bss.brihaspatisync.reflector.audio_video.receiver.StudentAudioReceive;
 import org.bss.brihaspatisync.reflector.audio_video.receiver.PresentationAudioReceive;
@@ -30,7 +30,7 @@ public class TransmitReceiveHandler {
   	private static TransmitReceiveHandler trHandler=null;
 	private Thread stud_audio=null;
 	private Thread pres_audio=null;
-	private MaintainLog log=MaintainLog.getController();
+	//private MaintainLog log=MaintainLog.getController();
 	private StudentAudioTransmit student_audio_tranmit=null;
 	private PresentationAudioTransmit presentation_audio_tranmit=null;
 	private StudentAudioReceive student_audio_receiver=null;
@@ -51,7 +51,7 @@ public class TransmitReceiveHandler {
  	 */
    	public void startReceiveAudio(){
      		if (!AudioReceive.getAudioReceiveController().initialize()) {
-        		log.setString("Failed to initialize the sessions.");
+        		System.out.println("Failed to initialize the sessions.");
        		}
 		
 		(new Thread(){
@@ -154,7 +154,7 @@ public class TransmitReceiveHandler {
          */
    	public void startReceiveVideo(){
      		if (!VideoReceive.getVideoReceiveController().initialize()) {
-               		log.setString("Failed to initialize the sessions.");
+               		System.out.println("Failed to initialize the sessions.");
       		}
 		
                 (new Thread(){
@@ -231,7 +231,7 @@ public class TransmitReceiveHandler {
 	public void addTargetToTransmitter(String ip){
 		AudioTransmit.getAudioTransmitController().createTransmitter(ip.trim());
                 VideoTransmit.getVideoTransmitController().createTransmitter(ip.trim());
-		log.setString(ip+" : is added to transmit audio video");
+		System.out.println(ip+" : is added to transmit audio video");
 	}
 	
 	/**

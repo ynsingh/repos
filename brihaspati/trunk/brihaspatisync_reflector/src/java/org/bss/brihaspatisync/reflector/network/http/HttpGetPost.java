@@ -7,17 +7,14 @@ package org.bss.brihaspatisync.reflector.network.http;
  * Copyright (c) 2011 ETRG, IIT Kanpur.
  */
 
-import java.io.*;
 import java.io.IOException;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;	
 
 import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
 import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 
-import org.bss.brihaspatisync.reflector.network.tcp.TCPClient;
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
+//import org.bss.brihaspatisync.reflector.network.tcp.TCPClient;
 
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
@@ -51,8 +48,6 @@ public class HttpGetPost {
 	
 	private int server_port = RuntimeDataObject.getController().getHttpPort();
 	
-	private MaintainLog log=MaintainLog.getController();
-	
 	public static HttpGetPost getController() throws Exception {
               	if(httpserver==null)
                        	httpserver=new HttpGetPost();
@@ -75,8 +70,9 @@ public class HttpGetPost {
 		try {
 			flag=true;
 			server.start();
+			System.out.println("HttpServer start successfully !! ");
 		} catch( Exception e ) {
-			log.setString("Error in start HttpServer !! "+e.getCause());
+			System.out.println("Error in start HttpServer !! "+e.getCause());
 		}
         }
 
@@ -93,7 +89,7 @@ public class HttpGetPost {
 
 class MyPostGetHandler implements HttpHandler {
 	private String client_ip="";
-	private MaintainLog log=MaintainLog.getController();
+	private HandraiseAction handraiseAction=new HandraiseAction();
         public void handle(HttpExchange exchange) throws IOException {
                 while(true){
                         String requestMethod = exchange.getRequestMethod();
@@ -104,7 +100,7 @@ class MyPostGetHandler implements HttpHandler {
                                 exchange.sendResponseHeaders(200, 0);
                                 OutputStream responseBody = exchange.getResponseBody();
 
-                                BufferedReader rd = new BufferedReader(new InputStreamReader(exchange.getRequestBody()));
+                                java.io.BufferedReader rd = new java.io.BufferedReader(new java.io.InputStreamReader(exchange.getRequestBody()));
 				String req="";
                                 String line;
                                 if ((line = rd.readLine()) != null) {
@@ -119,7 +115,7 @@ class MyPostGetHandler implements HttpHandler {
                                 String data_value[]=req.split("req");
 				if(data_value[1].startsWith("HandRaiseAction")){
                                         data_value[1]=java.net.URLDecoder.decode(data_value[1]).replaceAll("HandRaiseAction","");
-                                        HandraiseAction.getController().setValue(data_value[1]);
+                                        handraiseAction.setValue(data_value[1]);
 					responseBody.close();
                                 }else {
                                         String s=data_value[0];
@@ -139,6 +135,7 @@ class MyPostGetHandler implements HttpHandler {
                                         }
                                         if(data_value[2].startsWith("parent")) {
                                                 data_value[2]=data_value[2].replace("parent","");
+						/*
                                                 if(Util.getController().getStatus(data_value[2])){
                                                         TCPClient.getController().setcourseID(data_value[0]);
 							TCPClient.getController().setparentIp(data_value[2]);
@@ -146,6 +143,7 @@ class MyPostGetHandler implements HttpHandler {
                                                 }else{
                                                         TCPClient.getController().setcourseID(data_value[0]);
                                                 }
+						*/
                                         } 
 					if(!temp_ht.getStatus(data_value[0])) {
 						BufferMgt buffer_mgt= new BufferMgt();

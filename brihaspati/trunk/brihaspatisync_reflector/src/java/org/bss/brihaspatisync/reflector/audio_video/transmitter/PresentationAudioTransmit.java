@@ -29,7 +29,6 @@ import javax.media.control.FormatControl;
 import javax.media.protocol.ContentDescriptor;
 
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.audio_video.receiver.StudentAudioReceive;
 
 /**
@@ -45,17 +44,7 @@ public class PresentationAudioTransmit {
 	private InetAddress ipAddr=null;
 	private Processor processor = null;
 	private DataSource dataOutput = null;
-    	private static PresentationAudioTransmit av=null;    
-	private MaintainLog log=MaintainLog.getController();
 
-	/*	    	
-	public static StudentAudioTransmit getAudioTransmitController() {
-    		if(av==null)
-      			av=new StudentAudioTransmit();
-      		return av;
-    	}
-	*/
-	
     	public PresentationAudioTransmit() { 
 		try {
 			rtpaudio=RTPManager.newInstance();
@@ -152,18 +141,18 @@ public class PresentationAudioTransmit {
 			System.out.println("destination session address========> : "+destAddr);
 			rtpaudio.addTarget(destAddr);
 			destAddr=null;
-       		}catch(Exception e) { log.setString("Error in initialize address to transmit Audio==>"+e); }
+       		}catch(Exception e) { System.out.println("Error in initialize address to transmit Audio==>"+e); }
        		return null;
   	}					 
 
 	/**Start stream sender thread*/
 	public void streamTransmitterStart() {
                 try{
-			log.setString("DataSource==============>"+dataOutput);
+			System.out.println("DataSource==============>"+dataOutput);
                         stream=rtpaudio.createSendStream(dataOutput,0);
                         stream.start();
 			System.out.println("Student Handraise audio transmission is start");
-                } catch(Exception ex) { log.setString("Error in Start send stream for the audio===>"+ex); }
+                } catch(Exception ex) { System.out.println("Error in Start send stream for the audio===>"+ex); }
         }
 
 	/**Stop stream sender thread*/
@@ -172,7 +161,7 @@ public class PresentationAudioTransmit {
                         stream.stop();
                         stream=null;
 			System.out.println("Student Handraise audio transmission is stop");
-                } catch(Exception ex) { log.setString("Error in stop send stream for the audio===>"+ex); }
+                } catch(Exception ex) { System.out.println("Error in stop send stream for the audio===>"+ex); }
         }
 	
 

@@ -16,32 +16,16 @@ import org.bss.brihaspatisync.reflector.RegisterToIndexServer;
 
 public class HandraiseAction {
 
-        private Vector vector=new Vector();
-
         private static HandraiseAction handraiseaction=null;
 
-        /**
-         * Controller for this calss
-         */
-
-        public static HandraiseAction getController() {
-                if(handraiseaction == null)
-                        handraiseaction=new HandraiseAction();
-                return handraiseaction;
-        }
-
-        private void startHandraiseAction() {
+        private void startHandraiseAction(String handraise) {
                 try{
-			if(vector.size()>0) {
-                                RegisterToIndexServer.getController().requestToChangeStatus(vector.get(0).toString());
-                                vector.remove(0);
-                        }
-                }catch(Exception e){  /*JOptionPane.showMessageDialog(null,"Error on HandraiseAction :"+e.getCause()); */ }
+                	RegisterToIndexServer.getController().requestToChangeStatus(handraise);
+                }catch(Exception e){  System.out.println("Error on HandraiseAction :"+e.getCause()); }
         }
 
-        public void setValue(String str){
-                vector.add(str);
-                startHandraiseAction();
+        public synchronized void setValue(String handraise){
+                startHandraiseAction(handraise);
         }
 }
 

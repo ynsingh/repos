@@ -14,7 +14,7 @@ import java.util.TimerTask;
 import java.net.URLEncoder;
 
 import org.bss.brihaspatisync.reflector.RegisterToIndexServer;
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
+//import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 
 /**
@@ -29,12 +29,13 @@ public class UserListTimer extends TimerTask{
         /**
          * Controller for class
          */
+	
         public static UserListTimer getController() {
                 if(request==null);
                         request=new UserListTimer();
                 return request;
         }
-
+	
         private UserListTimer() { }
 
         /**Overrides the run method */
@@ -48,8 +49,9 @@ public class UserListTimer extends TimerTask{
                                 String url=index_url+lect_id;
                                 RegisterToIndexServer.getController().getUserListToMasterServer(url,masterReflector.get(i).toString());
                         }
+			
               	}catch(Exception ex){
-			MaintainLog.getController().setString("Error in UserListTimer class"+ex.getCause());	
+			System.out.println("Error in UserListTimer class"+ex.getCause());	
               	}
          }
 }

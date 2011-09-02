@@ -8,7 +8,6 @@ package org.bss.brihaspatisync.reflector.network.serverdata;
 
 
 import java.util.Vector;
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -21,13 +20,13 @@ public class VectorClass {
 	
 	private Vector backupTreeVector=new Vector(3);
 	
-	private MaintainLog log=MaintainLog.getController();
-		
         public VectorClass() { }
 	
 	protected void addValue(String str){
 		if(!str.equals("noUser"))
                 	userlistvector=str;
+		else
+			userlistvector="";
         }
 	
 	protected String getValue(){
@@ -37,7 +36,7 @@ public class VectorClass {
 	/** set Backup tree Vector
          * [{#GParent_ip},{#Parent_ip},{#Client_ip}]
          */
-	
+		
         public void setBackupTreeValue(String value){
 		try {
 			if(backupTreeVector.size()==0){
@@ -53,12 +52,13 @@ public class VectorClass {
 					backupTreeVector.setElementAt(value,2); 
 				}
 			}
-		}catch(Exception e){log.setString("error in VectorClass.java  "+e.getMessage());}	 
+		}catch(Exception e){System.out.println("error in VectorClass.java  "+e.getMessage());}	 
         }
 	
        	public Vector getBackupTreeValue(){
 		return backupTreeVector;
         }
+	
 }
 
 	

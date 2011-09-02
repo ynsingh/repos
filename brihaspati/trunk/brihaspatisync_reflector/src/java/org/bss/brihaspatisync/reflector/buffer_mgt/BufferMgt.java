@@ -9,7 +9,7 @@ package org.bss.brihaspatisync.reflector.buffer_mgt;
 
 import java.util.Vector;
 import java.util.Enumeration;
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
+//import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 	
 
 /**
@@ -22,7 +22,7 @@ public class  BufferMgt extends Thread {
 	private int curpointer = 0;
 	private Buffer buffer=null;
 	private MyHashTable hashTable=null;
-	private MaintainLog log=MaintainLog.getController();
+	//private MaintainLog log=MaintainLog.getController();
 	
 	public BufferMgt() {}
 		
@@ -39,8 +39,6 @@ public class  BufferMgt extends Thread {
 				if(p1>0) {
 					p1=p1-1;
 	                        	if( (maxpointer-p1) >15) {
-        	        	        	//hashTable.resetPointer(p1);
-						//buffer.removeRange(0,p1);
         	        	        	hashTable.resetPointer(5);
 						buffer.removeRange(0,5);
         	        	      	} else {
@@ -50,7 +48,7 @@ public class  BufferMgt extends Thread {
 				}
                         }
 		}catch(Exception e){
-			log.setString("Error startBuffer() in BufferMng  "+e.getMessage());	
+			System.out.println("Error startBuffer() in BufferMng  "+e.getMessage());	
                 }
         }
 	
@@ -62,7 +60,7 @@ public class  BufferMgt extends Thread {
 				hashTable = new MyHashTable();
 			}
 		}catch(Exception e){
-			log.setString("Error in buffer in BufferMgt");
+			System.out.println("Error in buffer in BufferMgt");
 		}	
 		try {	
 			curpointer = hashTable.getValue(ip);
@@ -90,7 +88,7 @@ public class  BufferMgt extends Thread {
 			return str;
 			
 		}catch(Exception e){
-			log.setString("Error in BufferMng  "+e.getMessage());
+			System.out.println("Error in BufferMng  "+e.getMessage());
 		}	
 		return null;
 	}
@@ -103,7 +101,7 @@ public class  BufferMgt extends Thread {
 				buffer.putString(current_ip+"@$"+data);
 			}
 		}catch(Exception e){ 
-			log.setString("Error in putByte method "+e.getMessage());
+			System.out.println("Error in putByte method "+e.getMessage());
 		}
 	}
 	public String sendData(String newip) {
@@ -117,7 +115,7 @@ public class  BufferMgt extends Thread {
 				}
 			}
                 }catch(Exception s){
-			log.setString(" Error in sendData in  BufferMgt.java"+s.getMessage());
+			System.out.println(" Error in sendData in  BufferMgt.java"+s.getMessage());
                 }
 		return senddata;
         }
@@ -132,7 +130,7 @@ public class  BufferMgt extends Thread {
                 	}
 			hashTable.setPointer(setip,pointer);
 		}catch(Exception e){
-			log.setString("Error in BufferMng  "+e.getMessage());
+			System.out.println("Error in BufferMng  "+e.getMessage());
 		}
         }
 	

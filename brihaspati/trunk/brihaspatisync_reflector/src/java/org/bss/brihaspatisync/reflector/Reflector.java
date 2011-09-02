@@ -68,8 +68,10 @@ public class Reflector {
                 	        frame.setSize(250, 120);
                         	frame.setLocation(400, 500);
 	                        frame.setVisible(true);
+				frame.setDefaultCloseOperation(frame.DO_NOTHING_ON_CLOSE);
+
         	      	}catch(Exception e){
-                		JOptionPane.showMessageDialog(null,"Error on starting reflector :"+e.getCause());
+                		System.out.println("Error on starting reflector :"+e.getCause());
               		}
 		}else if(str.equals("start")){
 			if(!flag) {
@@ -93,19 +95,15 @@ public class Reflector {
 	 */
 	private boolean startReflector() {
 		Vector indexServerList=RegisterToIndexServer.getController().connectToMasterServer();
-		System.out.println(indexServerList.toString());
 		String str1[]=new String[indexServerList.size()];
                 for(int i=0;i<indexServerList.size();i++)
                 	str1[i]=indexServerList.get(i).toString();
 		JComboBox combo = new JComboBox(str1);
                 Object[] message = new Object[] {"Select I_Server ",combo};
                 int r = JOptionPane.showConfirmDialog(null, message, "I_Server", JOptionPane.OK_CANCEL_OPTION);
-		System.out.println("==================>  "+r);
                 if (r == JOptionPane.OK_OPTION) {
-                	System.out.println("  year  is  "+ (String)combo.getSelectedItem()); 
 			RegisterToIndexServer.getController().setIServerIP((String)combo.getSelectedItem());
 		}	
-		System.out.println("==================>  "+indexServerList.toString());
                 if(indexServerList.size()>0){
                 	flag=true;
               	}
@@ -130,7 +128,7 @@ public class Reflector {
 					RegisterToIndexServer.getController().connectToIndexServer();
 					label1.setText("Reflector started successfully.");
                                 }else {
-                                      	JOptionPane.showMessageDialog(null,"Reflector is already running.");
+                                      	System.out.println("Reflector is already running.");
                                 }
                         }else if(response1.startsWith("Stop Reflector")) {
                                 LogoutReflector.getController().stopReflector();

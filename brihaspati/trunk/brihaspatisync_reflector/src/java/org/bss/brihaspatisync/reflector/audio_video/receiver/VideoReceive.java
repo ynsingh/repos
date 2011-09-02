@@ -31,7 +31,6 @@ import javax.media.rtp.event.NewReceiveStreamEvent;
 import javax.media.rtp.event.RemotePayloadChangeEvent;
 
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -55,8 +54,6 @@ public class VideoReceive implements ReceiveStreamListener, SessionListener {
     	private boolean dataReceived = false;
 
     	private Object dataSync = new Object();
-
-	private MaintainLog log=MaintainLog.getController();	
 
     	private int port=RuntimeDataObject.getController().getVedioPort();
 
@@ -105,7 +102,7 @@ public class VideoReceive implements ReceiveStreamListener, SessionListener {
     				mgrs[i].addTarget(destAddr);
 	   		}
        		} catch (Exception e){
-                	log.setString("Cannot create the RTP Session: " + e.getMessage());
+                	System.out.println("Cannot create the RTP Session: " + e.getMessage());
                 	return value;
         	}
 
@@ -114,9 +111,8 @@ public class VideoReceive implements ReceiveStreamListener, SessionListener {
 
 		try{
 	    		synchronized (dataSync) {
+				System.out.println("  - Waiting for RTP data to arrive...");
 				while (!dataReceived) {
-		    			if (!dataReceived)
-						log.setString("  - Waiting for RTP data to arrive...");
 		    			dataSync.wait(1000);
 				}
 	    		}
@@ -124,14 +120,11 @@ public class VideoReceive implements ReceiveStreamListener, SessionListener {
 
 
 		if (!dataReceived) {
- 	    		log.setString("No RTP data was received.");
-            		JOptionPane.showMessageDialog(null,"Sorry You do not get the unicast Video");
-            
+ 	    		System.out.println("No RTP data was received.");
 	     		close();
 	    		return false;
 		}
 		System.out.println("You get Video from instructor");
-       		//JOptionPane.showMessageDialog(null,"You get the unicast Video");
         	return true;
     	}
 
@@ -162,7 +155,7 @@ public class VideoReceive implements ReceiveStreamListener, SessionListener {
     	public synchronized void update(SessionEvent evt) {
 		if (evt instanceof NewParticipantEvent) {
 	    		Participant p = ((NewParticipantEvent)evt).getParticipant();
-	    		log.setString("  - A new participant had just joined: " + p.getCNAME());
+	    		//log.setString("  - A new participant had just joined: " + p.getCNAME());
 		}
    	}
 
@@ -176,8 +169,8 @@ public class VideoReceive implements ReceiveStreamListener, SessionListener {
 		ReceiveStream stream = evt.getReceiveStream();  
 
 		if (evt instanceof RemotePayloadChangeEvent) {
-         		log.setString("  - Received an RTP PayloadChangeEvent.");
-	    		log.setString("Sorry, cannot handle payload change.");
+         		//log.setString("  - Received an RTP PayloadChangeEvent.");
+	    		//log.setString("Sorry, cannot handle payload change.");
 
 		}
     
@@ -190,14 +183,14 @@ public class VideoReceive implements ReceiveStreamListener, SessionListener {
 				/** Find out the formats of Video */
 				RTPControl ctl = (RTPControl)ds.getControl("javax.media.rtp.RTPControl");
 				if (ctl != null){
-		    			log.setString("  - Recevied format of the new RTP stream if first: " + ctl.getFormat());
+		    			//log.setString("  - Recevied format of the new RTP stream if first: " + ctl.getFormat());
 				} else
-		    			log.setString("  - here we do not get a format of stream  and Recevied new RTP stream");
+		    			System.out.println("  - here we do not get a format of stream  and Recevied new RTP stream");
 
 				if (participant == null)
-		    			log.setString("      The sender of this stream had yet to be identified.");
+		    			System.out.println("      The sender of this stream had yet to be identified.");
 				else {
-		    			log.setString("      The stream comes from: " + participant.getCNAME()); 
+		    			System.out.println("      The stream comes from: " + participant.getCNAME()); 
 				}
 
 				synchronized (dataSync) {
@@ -206,7 +199,7 @@ public class VideoReceive implements ReceiveStreamListener, SessionListener {
 				}
 
 	    		} catch (Exception e) {
-				log.setString("NewReceiveStreamEvent exception " + e.getMessage());
+				System.out.println("NewReceiveStreamEvent exception " + e.getMessage());
 				return;
 	    		}
         
@@ -217,15 +210,15 @@ public class VideoReceive implements ReceiveStreamListener, SessionListener {
 
 				/** Find out the formats of Video */
 				RTPControl ctl = (RTPControl)ds.getControl("javax.media.rtp.RTPControl");
-				log.setString("  - The previously unidentified stream ");
+				System.out.println("  - The previously unidentified stream ");
 				if (ctl != null)
-		    			log.setString("Received the format of the stream if 2nd==>" + ctl.getFormat());
-				log.setString("      had now been identified as sent by: " + participant.getCNAME());
+		    			System.out.println("Received the format of the stream if 2nd==>" + ctl.getFormat());
+				System.out.println("      had now been identified as sent by: " + participant.getCNAME());
 	     		}
 
 		}else if (evt instanceof ByeEvent) {
 
-		     	log.setString("  - Got \"bye\" from: " + participant.getCNAME());
+		     	System.out.println("  - Got \"bye\" from: " + participant.getCNAME());
 		}
     	}
 }    

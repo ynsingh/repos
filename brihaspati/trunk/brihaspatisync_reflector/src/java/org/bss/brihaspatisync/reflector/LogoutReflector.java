@@ -23,8 +23,8 @@ import java.io.InputStreamReader;
 import org.bss.brihaspatisync.reflector.util.HttpsUtil;
 import org.bss.brihaspatisync.reflector.network.ppt.PPTGetAndPostServer;
 
-import org.bss.brihaspatisync.reflector.network.tcp.TCPServer;
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
+//import org.bss.brihaspatisync.reflector.network.tcp.TCPServer;
+//import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.network.http.HttpGetPost;
 import org.bss.brihaspatisync.reflector.audio_video.TransmitHandlerThread;
 
@@ -36,7 +36,7 @@ import org.bss.brihaspatisync.reflector.audio_video.TransmitHandlerThread;
 public class LogoutReflector {
 
 	private static LogoutReflector logoutref=null;
-	private MaintainLog log=MaintainLog.getController();
+	//private MaintainLog log=MaintainLog.getController();
     	private RegisterToIndexServer riserver=RegisterToIndexServer.getController();
 	/**
 	 * Controller for this calss
@@ -67,7 +67,7 @@ public class LogoutReflector {
                 				String str=in.readLine();
 						System.out.println("str "+str);
 						if(str.equals("successfull")){
-						  log.setString("xml delete !Logout Reflector Successfully !! ");	
+						  System.out.println("xml delete !Logout Reflector Successfully !! ");	
 						}
                 			}finally {
                        				if(in != null){
@@ -76,14 +76,14 @@ public class LogoutReflector {
 					}
                        		}
                 		HttpGetPost.getController().stop();     /** port 9999  */
-       	        		TCPServer.getController().stop();      /** port 8888  */
+       	        		//TCPServer.getController().stop();      /** port 8888  */
 				PPTGetAndPostServer.getController().stopThread();
-              			log.stop();
+              			//log.stop();
               			TransmitHandlerThread.getControllerofHandler().stop();
 				Timer UL_Timer =riserver.getTimer();
 				if(UL_Timer != null) {
 					UL_Timer.cancel();
-					log.setString("Logout Reflector Successfully !! ");			
+					System.out.println("Logout Reflector Successfully !! ");			
 				}else {	
 					System.out.println("Reflector is not start");
 				}
@@ -91,7 +91,7 @@ public class LogoutReflector {
 				System.out.println("Reflector is not start");
 			}
 		}catch(Exception e){
-			log.setString("Error on Logout Reflector ");
+			System.out.println("Error on Logout Reflector ");
 		}
 	}
 	

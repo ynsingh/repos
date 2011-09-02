@@ -33,7 +33,7 @@ import javax.media.rtp.event.RemotePayloadChangeEvent;
 
 import org.bss.brihaspatisync.reflector.Reflector;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
+//import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 //import org.bss.brihaspatisync.reflector.audio_video.transmitter.AudioTransmit;
 
 /**
@@ -60,7 +60,7 @@ public class PresentationAudioReceive implements ReceiveStreamListener, SessionL
 
 	private int port=RuntimeDataObject.getController().getAudioPresentationPort();  //2006                                            
 	
-	private MaintainLog log=MaintainLog.getController();
+	//private MaintainLog log=MaintainLog.getController();
 
 
 	/** getting the clone datasource for the Audio */  
@@ -87,7 +87,7 @@ public class PresentationAudioReceive implements ReceiveStreamListener, SessionL
     	public boolean initialize() {
     		try {
 
-			log.setString("Presentation audio Receive initialize");
+			System.out.println("Presentation audio Receive initialize");
 	    		InetAddress ipAddr;
             		initialize=1;                                          
 	    		SessionAddress localAddr = new SessionAddress();
@@ -107,7 +107,7 @@ public class PresentationAudioReceive implements ReceiveStreamListener, SessionL
     				mgrs[i].addTarget(destAddr);
 	   		}
        		} catch (Exception e){
-                	log.setString("Cannot create the RTP Session: " + e.getMessage());
+                	System.out.println("Cannot create the RTP Session: " + e.getMessage());
                 	return value;
         	}
 
@@ -118,15 +118,14 @@ public class PresentationAudioReceive implements ReceiveStreamListener, SessionL
    	    		synchronized (dataSync) {
 				while (!dataReceived) {
 		    			if (!dataReceived)
-						log.setString("  - Waiting for RTP data to arrive...");
+						System.out.println("  - Waiting for RTP data to arrive...");
 		       			dataSync.wait(1000);
               			}
 	    		}
 	  	} catch (Exception e) {}
 
 		if (!dataReceived) {
-	    		log.setString("No RTP data was received.");
-            		JOptionPane.showMessageDialog(null,"Sorry You do not get the presentation unicast Audio");
+            		System.out.println("Sorry You do not get the presentation unicast Audio");
             
            		/**If data does not receive then transmitAudio button become disabled */
          
@@ -134,7 +133,6 @@ public class PresentationAudioReceive implements ReceiveStreamListener, SessionL
 	    		return false;
 		}
 		System.out.println("You get presentation Audio from student");
-        	//JOptionPane.showMessageDialog(null,"You get the presentation Audio");
 		return true;
     	}
 

@@ -9,7 +9,7 @@ package org.bss.brihaspatisync.reflector.audio_video;
 
 import java.util.Vector;
 
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
+//import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.audio_video.transmitter.StudentAudioTransmit;	
 import org.bss.brihaspatisync.reflector.audio_video.transmitter.PresentationAudioTransmit;	
@@ -30,7 +30,7 @@ public class TransmitHandlerThread implements Runnable {
 	
   	private static TransmitHandlerThread trHandler=null;
 	
-	private MaintainLog log=MaintainLog.getController();
+	//private MaintainLog log=MaintainLog.getController();
 
 	private int j=0; 
 	private int m=0; 
@@ -54,9 +54,9 @@ public class TransmitHandlerThread implements Runnable {
         	                audio_video = new Thread(this);
                 	        audio_video.start();
                 	}
-			log.setString("Start Audio Video Thread Handeler : ");
+			System.out.println("Start Audio Video Thread Handeler : ");
 		}catch(Exception e){
-			log.setString("Error in Start Audio Video Thread Handeler : ");
+			System.out.println("Error in Start Audio Video Thread Handeler : ");
 		}
         }
 
@@ -66,7 +66,7 @@ public class TransmitHandlerThread implements Runnable {
                         audio_video.stop();
                         audio_video=null;
                 }
-		log.setString("Stop Audio Video Thread Handeler : ");
+		System.out.println("Stop Audio Video Thread Handeler : ");
         }
   	 
 	public void run(){
@@ -175,7 +175,7 @@ public class TransmitHandlerThread implements Runnable {
 				audio_video.yield();
                                 audio_video.sleep(1000);
 			}catch(Exception e) {
-                               log.setString("Error in TransmitHandlerThread.java  "+e.getMessage());
+                               System.out.println("Error in TransmitHandlerThread.java  "+e.getMessage());
                         }
                 }
         }

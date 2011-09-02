@@ -18,17 +18,13 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.net.InetAddress;
 
-import javax.swing.JOptionPane;
-
 import javax.net.ssl.HttpsURLConnection;
 
 import org.bss.brihaspatisync.reflector.util.HttpsUtil;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 
 import org.bss.brihaspatisync.reflector.network.ppt.PPTGetAndPostServer;
-import org.bss.brihaspatisync.reflector.network.tcp.TCPServer;
 
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.network.http.HttpGetPost;
 
 import org.bss.brihaspatisync.reflector.audio_video.TransmitHandlerThread;
@@ -52,7 +48,6 @@ public class RegisterToIndexServer {
 	private HttpsURLConnection connection=null;
 	private Vector indexServerList=null;
 	private Vector reg_result=null;
-	private MaintainLog log=MaintainLog.getController();
 	private Timer UL_Timer=null;
 	private String ServerIP="";
 	private Vector server_ip_vector=new Vector();
@@ -73,27 +68,28 @@ public class RegisterToIndexServer {
 	}
 
 	protected void setIServerIP(String temp){
-                temp=ServerIP=temp;
+                ServerIP=temp;
         }
 		
 	public void getUserListToMasterServer(String m_url,String course_id){
 		try {
                       	URL indexurl = new URL(m_url);
-				
                         connection=HttpsUtil.getController().createHTTPConnection(indexurl);
-                        if(connection==null){
-                        	JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
-			}else{
+                        if(connection==null) {
+                        	System.out.println("Check your Network Connection or try again");
+			} else {
 				BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 				String temp="";
                                 String str="";
-				UserListUtil.getContriller().clearDataForVector(course_id);	
 				try {
 					while((str=in.readLine())!=null){
-						temp=temp+","+str;	
+						if(temp.equals(""))
+							temp=str;	
+						else 
+							temp=temp+","+str;	
 					}
 					UserListUtil.getContriller().addDataForVector(course_id,temp);	
-				}finally {
+				} finally {
 					if(in != null) {
                                         	in.close();
                                         }
@@ -101,7 +97,7 @@ public class RegisterToIndexServer {
 			}
 						
 		} catch(Exception e){
-			JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
+			System.out.println("Check your Network Connection or try again");
               	}
 	}
 
@@ -118,7 +114,7 @@ public class RegisterToIndexServer {
                                         URL indexurl = new URL(m_url);
                                         connection=HttpsUtil.getController().createHTTPConnection(indexurl);
                                         if(connection==null){
-                                                JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
+                                                System.out.println("Check your Network Connection or try again");
                                         }else{
 
                                                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -137,11 +133,11 @@ public class RegisterToIndexServer {
                                                 }
                                         }
                                 } catch(Exception e){
-                                        log.setString("Error on getvectorMessage(connection) HttpsUtil.java "+e.getMessage());
+                                        System.out.println("Error on getvectorMessage(connection) HttpsUtil.java "+e.getMessage());
                                 }
 			}
                 }catch (Exception ioe) {
-                        log.setString("Error at connectToMasterServer()in HttpsConnection"+ioe.getMessage());
+                        System.out.println("Error at connectToMasterServer()in HttpsConnection"+ioe.getMessage());
                 }
                 return server_ip_vector;
 	}
@@ -154,14 +150,12 @@ public class RegisterToIndexServer {
       		if(!ServerIP.equals("")){
                         try{
                                 String indexServer=ServerIP;
-				System.out.println("-------------------------------"+indexServer);
                                 String status= "status="+URLEncoder.encode("inactive", "UTF-8");
                                 String req_url=indexServer+"/ProcessRequest?req=reflector_registration&"+status;
                                 URL indexurl = new URL(req_url);
                                 connection=HttpsUtil.getController().createHTTPConnection(indexurl);
-				System.out.println("-------------------------------"+connection);
                                 if(connection==null){
-                                        JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
+                                        System.out.println("Check your Network Connection or try again");
                                 }else{
                                         if(bufferReader(connection.getInputStream())){
 						if(setStatus(indexServer)){
@@ -171,14 +165,13 @@ public class RegisterToIndexServer {
 						}
                                         } else{
 						System.out.println("There is an error!! please try again");
-                                                JOptionPane.showMessageDialog(null,"There is an error!! please try again");
                                         }
                                 }
                         }catch(Exception e){
-                                log.setString("Error on registeration "+e.getMessage());
+                                System.out.println("Error on registeration "+e.getMessage());
                         }
                 }else {
-                        JOptionPane.showMessageDialog(null,"Reflector could not find iserver pls try again ");
+                        System.out.println("Reflector could not find iserver pls try again ");
                 }
 	}
 	
@@ -190,21 +183,20 @@ public class RegisterToIndexServer {
                                 String user="loginName="+URLEncoder.encode(str[1].trim(),"UTF-8");
                                 String action="userAction="+URLEncoder.encode(str[2].trim(),"UTF-8");
                                 String indexServer =ServerIP+"/ProcessRequest?req=Permissions&"+lectid+"&"+user+"&"+action;
-				//JOptionPane.showMessageDialog(null,indexServer);
                                 URL indexurl = new URL(indexServer);
                                 connection=HttpsUtil.getController().createHTTPConnection(indexurl);
                                 if(connection==null){
-                                        JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
+                                        System.out.println("Check your Network Connection or try again");
                                 }else{
                                         if(!bufferReader(connection.getInputStream())){
-                                                System.out.println("There is an error!! please try again");
+                                                System.out.println("change status ");
                                         }
                                 }
                         }catch(Exception e){
-                                log.setString("Error on registeration "+e.getMessage());
+                                System.out.println("Error on registeration "+e.getMessage());
                         }
                 }else {
-                        JOptionPane.showMessageDialog(null,"Reflector could not find iserver pls try again ");
+                        System.out.println("Reflector could not find iserver pls try again ");
                 }
         }
 	
@@ -233,15 +225,13 @@ public class RegisterToIndexServer {
 
 	private boolean  setStatus(String server){
 		try{
-			 System.out.println("-------------------------------");
-
 			String status= "status="+URLEncoder.encode("active", "UTF-8");
 			String req_url=server+"/ProcessRequest?req=reflector_status&"+status;
         	        URL indexurl = new URL(req_url);
                 	connection=HttpsUtil.getController().createHTTPConnection(indexurl);
 			System.out.println(connection);
                      	if(connection==null){
-                     		JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
+                     		System.out.println("Check your Network Connection or try again");
 	                }else{
 				if(bufferReader(connection.getInputStream())){
 					startThreads();				
@@ -251,28 +241,26 @@ public class RegisterToIndexServer {
 				}
                   	}
 		}catch(Exception ex){
-			log.setString("There is an error to set status on indexing server");
+			System.out.println("There is an error to set status on indexing server");
 		}
 		return false;
 	}
 
 	protected String startThreads(){
 		try {
-			System.out.println("-------------------------------");
 			HttpGetPost.getController().start(); 	/** port 9999  */
-			DesktopGetServer.getController().start();//DesktopSharing.getController().start();
+			DesktopGetServer.getController().start();
 			DesktopPostServer.getController().start();
-			TCPServer.getController().start(); 	/** port 8888  */
-			//log.start();
+			//TCPServer.getController().start(); 	/** port 8888  */
 			TransmitHandlerThread.getControllerofHandler().start();
 			PPTGetAndPostServer.getController().startThread();
 			try{
 				
         	                UL_Timer=new Timer(true);
                 	        UL_Timer.schedule(UserListTimer.getController(),01,60*60*2);
-				log.setString("timer start successfully");
+				System.out.println("timer start successfully");
 	                }catch(Exception e){
-				log.setString("Error in user list timer"+e.getMessage());
+				System.out.println("Error in user list timer"+e.getMessage());
 			}
 			return "start_ok";
 		} catch(Exception e){}

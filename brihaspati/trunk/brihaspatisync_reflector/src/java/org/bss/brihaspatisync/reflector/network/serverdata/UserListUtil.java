@@ -10,7 +10,6 @@ package org.bss.brihaspatisync.reflector.network.serverdata;
 import java.util.Vector;
 import java.util.StringTokenizer;
 import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;	
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 
 /**
@@ -21,16 +20,15 @@ import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 public class UserListUtil {
 
 	private String data="";
-	private static UserListUtil util=null;
-       
-	private MaintainLog log=MaintainLog.getController();
-	private Vector status_vector=new Vector();	
- 	private Vector vector=new Vector();
-	private MyHashTable temp_ht=RuntimeDataObject.getController().getUserListMyHashTable();
-		
-	protected UserListUtil() { }
 	private boolean hrflag=false;
 	private boolean presflag=false;
+ 	private Vector vector=new Vector();
+	private static UserListUtil util=null;
+	private Vector status_vector=new Vector();	
+	private MyHashTable temp_ht=RuntimeDataObject.getController().getUserListMyHashTable();
+	
+		
+	protected UserListUtil() { }
 
         public static UserListUtil getContriller() {
                 if(util == null)
@@ -38,35 +36,41 @@ public class UserListUtil {
                 return util;
         }
 	
-	public void clearDataForVector(String course_id){
-		try {
-			if(!(temp_ht.getStatusCourseId(course_id))){
-                        	temp_ht.setCourseIdUserListVector(course_id,new VectorClass());
-                        }
-			VectorClass vectorclass=temp_ht.getCourseIdUserListVector(course_id);
-		}catch(Exception e){ log.setString("Error in UserListUtil.java line no 42 "+e.getMessage()); }
-	}
-	
-	public void addDataForVector(String course_id,String data) {
+	public void addDataForVector(String course_id,String userlistdata) {
                 try {
+			if(!(temp_ht.getStatusCourseId(course_id))) {
+                                temp_ht.setCourseIdUserListVector(course_id,new VectorClass());
+                        }
+			
 			VectorClass vectorclass=temp_ht.getCourseIdUserListVector(course_id);
-			vectorclass.addValue(data);
+			if(!(vectorclass.getValue().equals(userlistdata)))
+				vectorclass.addValue(userlistdata);
+			if(userlistdata.equals("noUser")){
+	                        RuntimeDataObject.getController().resetMastrerReflecterCourseid(course_id);
+				temp_ht.removeCourseIdUserListVector(course_id);
+				RuntimeDataObject.getController().setHandraiseFlag(false);
+                              	RuntimeDataObject.getController().setHandraiseFlag(false);
+
+			}
 			strat_stop_HandraiseFlag();
-		} catch(Exception e){ log.setString("Error in UserListUtil.java line no 50 "+e.getMessage()); }
+		} catch(Exception e){ System.out.println("Error in UserListUtil.java line no 50 "+e.getMessage()); }
         }
 	
 	public String getDataForVector(String course_id) {
+		String userlistdata="";
                 try {
 			VectorClass vectorclass=temp_ht.getCourseIdUserListVector(course_id);
 			if(vectorclass!=null){
-	                        data=vectorclass.getValue();
+	                        userlistdata=vectorclass.getValue();
+				data=userlistdata;
 			}
 		}catch(Exception e){
-			log.setString("Error in UserListUtil.java line no 62 "+e.getMessage());
+			System.out.println("Error in UserListUtil.java line no 62 "+e.getMessage());
 		}
-		return data;	
+		return userlistdata;	
         }
-	public void strat_stop_HandraiseFlag(){
+	
+	private void strat_stop_HandraiseFlag(){
 		try {
 			String str=data;
                        	str=str.replaceAll(","," ");
@@ -114,6 +118,7 @@ public class UserListUtil {
                         status_vector.clear();
 		}catch(Exception w){}	
 	}
+	
 
 }
 

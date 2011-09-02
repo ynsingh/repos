@@ -180,6 +180,12 @@ public class RuntimeDataObject {
         public Vector getMastrerReflecterCourseid(){
                 return master_ref;
         }
+	
+	public void resetMastrerReflecterCourseid(String course_id){
+                if(master_ref.contains(course_id)) {
+                        master_ref.remove(course_id);
+                }
+        }
 
 	/**
  	 * Set indexing server url 
@@ -211,7 +217,7 @@ public class RuntimeDataObject {
         }
 
         /** set course id */
-        public void setCourseID(String value){
+        public void setCourseID(String value) {
                 if(!courseid.contains(value))
                         courseid.add(value);
         }
@@ -239,14 +245,16 @@ public class RuntimeDataObject {
 
 	/**
          * Set presentation flag to start or stop thread
-         */
+	 */
+         
 	public void setPresentationFlag(boolean value){
                 presentationflag=value;
         }
 
 	/**
          * get presentation flag
-         */
+	 */
+         
 	public boolean getPresentationFlag(){
                 return presentationflag;
         }

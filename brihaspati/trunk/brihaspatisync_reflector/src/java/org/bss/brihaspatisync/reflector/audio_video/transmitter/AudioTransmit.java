@@ -29,7 +29,6 @@ import javax.media.control.FormatControl;
 import javax.media.protocol.ContentDescriptor;
 
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.audio_video.receiver.AudioReceive;
 
 
@@ -47,7 +46,6 @@ public class AudioTransmit {
 	private Processor processor = null;
 	private DataSource dataOutput = null;
     	private static AudioTransmit av=null;    
-	private MaintainLog log=MaintainLog.getController();
 	    	
 	public static AudioTransmit getAudioTransmitController() {
     		if(av==null)
@@ -97,7 +95,7 @@ public class AudioTransmit {
 		
 	
    	private String createProcessor() {
-      		log.setString("we are in createProcessor ");
+      		System.out.println("we are in createProcessor ");
 		DataSource ds;
 		DataSource clone;
         	/**get the clone of the datasource of the audio for the transmission of Audio from the Capture Device*/
@@ -149,17 +147,16 @@ public class AudioTransmit {
 			SessionAddress destAddr =new SessionAddress(ipAddr,port);
 			rtpaudio.addTarget(destAddr);
 			destAddr=null;
-       		}catch(Exception e) { log.setString("Error in initialize address to transmit Audio==>"+e); }
+       		}catch(Exception e) { System.out.println("Error in initialize address to transmit Audio==>"+e); }
        		return null;
   	}
 					 
 	/**Start stream sender thread*/
 	public void streamTransmitterStart() {
                 try{
-			log.setString("DataSource==============>"+dataOutput);
                         stream=rtpaudio.createSendStream(dataOutput,0);
                         stream.start();
-                } catch(Exception ex) { log.setString("Error in Start send stream for the audio===>"+ex); }
+                } catch(Exception ex) { System.out.println("Error in Start send stream for the audio===>"+ex); }
         }
 
 	/** Stop stream sender thread*/
@@ -167,7 +164,7 @@ public class AudioTransmit {
                 try{
                         stream.stop();
                         stream=null;
-                } catch(Exception ex) { log.setString("Error in stop send stream for the audio===>"+ex); }
+                } catch(Exception ex) { System.out.println("Error in stop send stream for the audio===>"+ex); }
         }
 	
 

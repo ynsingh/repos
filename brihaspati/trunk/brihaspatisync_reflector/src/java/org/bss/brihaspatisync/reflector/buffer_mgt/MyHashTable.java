@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
+//import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.network.serverdata.VectorClass;
 
 /**
@@ -30,7 +30,6 @@ public class  MyHashTable {
 	private int pointer=0;
 	private Vector vector=null;
 	private Hashtable ht = new Hashtable();
-	private MaintainLog log=MaintainLog.getController();
 	
 	public MyHashTable(){ }	
 	
@@ -51,7 +50,7 @@ public class  MyHashTable {
 				}
 			}
 		}catch(Exception e){
-			log.setString("Error in reSetPointer(int minpoint) in Hash table "+e.getMessage());
+			System.out.println("Error in reSetPointer(int minpoint) in Hash table "+e.getMessage());
                 }
         }
 		
@@ -73,7 +72,7 @@ public class  MyHashTable {
                  	}
 			
 		}catch(Exception e){
-			log.setString("Error in MyHashTable.java ");
+			System.out.println("Error in MyHashTable.java ");
 		}	
        	}
 	
@@ -115,18 +114,24 @@ public class  MyHashTable {
 			vector=new Vector();
 		return this.vector;		
 	}
-
-	/** get VectorClass object to corresponding Course id */
+	
+	/** get VectorClass object to corresponding Course id for user list */
 	public void setCourseIdUserListVector(String st,VectorClass vc){
                 ht.put(st,vc);
         }
-
+	
         public VectorClass getCourseIdUserListVector(String st){
                 return (VectorClass)ht.get(st);
         }
-	
+		
 	public boolean getStatusCourseId(String req) {
                 return (ht.containsKey(req)) ?  true : false ;
         }
+	
+	public void removeCourseIdUserListVector(String st){
+                ht.remove(st);
+        }
+
+	/** end for Userlist **/
 }
 

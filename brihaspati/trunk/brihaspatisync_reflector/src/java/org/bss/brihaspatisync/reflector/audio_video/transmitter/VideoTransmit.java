@@ -35,7 +35,6 @@ import javax.media.control.QualityControl;
 import javax.media.protocol.ContentDescriptor;
 
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.audio_video.receiver.VideoReceive;
 
 
@@ -51,7 +50,6 @@ public class VideoTransmit {
     	private Processor processor = null;
     	private RTPManager rtpvideo;
     	private DataSource dataOutput = null;
-	private MaintainLog log=MaintainLog.getController();
     	private int port=RuntimeDataObject.getController().getVedioPort();
 		
     	public static VideoTransmit getVideoTransmitController() {
@@ -65,7 +63,7 @@ public class VideoTransmit {
 		rtpvideo=RTPManager.newInstance();
 		SessionAddress localAddr1=new SessionAddress();
                 rtpvideo.initialize(localAddr1);
-		}catch(Exception e){log.setString("Error in dispose of in Transmission of Video==> "+e);}
+		}catch(Exception e){System.out.println("Error in dispose of in Transmission of Video==> "+e);}
 	}
 	
     	private String createProcessor() {
@@ -79,7 +77,7 @@ public class VideoTransmit {
 		try {
 	    		processor = javax.media.Manager.createProcessor(ds);
 		} catch (Exception e) {
-			log.setString("Error in createProcessor in VideoTransmit.java "+e.getMessage());
+			System.out.println("Error in createProcessor in VideoTransmit.java "+e.getMessage());
 		} 
 
 		boolean result = waitForState(processor, Processor.Configured);
@@ -152,7 +150,7 @@ public class VideoTransmit {
 						if (fmts[j].matches(jpegFmt)) {
 			    				qc = (QualityControl)cs[i];
 	    		    				qc.setQuality(val);
-				    			log.setString("- Setting quality to " + val + " on " + qc);
+				    			System.out.println("- Setting quality to " + val + " on " + qc);
 			    				break;
 						}
 			    		}
@@ -233,7 +231,7 @@ public class VideoTransmit {
 			stream=rtpvideo.createSendStream(dataOutput,0);
                         stream.start();
                         destAddr=null;
-                }catch(Exception e) { log.setString("Error createTransmitter in VideoTransmit.java "+e);}
+                }catch(Exception e) { System.out.println("Error createTransmitter in VideoTransmit.java "+e);}
         }
 	
 	/**Strat stream sender thread*/
@@ -241,7 +239,7 @@ public class VideoTransmit {
                 try{
                         stream=rtpvideo.createSendStream(dataOutput,0);
                         stream.start();
-                } catch(Exception ex) { log.setString("Error in transmission Stream for the Video===>"+ex); }
+                } catch(Exception ex) { System.out.println("Error in transmission Stream for the Video===>"+ex); }
         }
 	
 	/**Stop strean sender thread*/
@@ -249,7 +247,7 @@ public class VideoTransmit {
                 try{
                         stream.stop();
                         stream=null;
-                } catch(Exception ex) { log.setString("Error in transmission Stream for the Video===>"+ex); }
+                } catch(Exception ex) { System.out.println("Error in transmission Stream for the Video===>"+ex); }
         }
 	
 	/**Start processor*/
@@ -257,12 +255,12 @@ public class VideoTransmit {
                 String result=null;
                 result = createProcessor();
                 if (result == null)
-                        log.setString("createProcessor  already start");
+                        System.out.println("createProcessor  already start");
                 if (result == null) {
                         processor.start();
-                        log.setString("processor are in start ");
+                        System.out.println("processor are in start ");
                 }else {
-                        log.setString("processor already start ");
+                        System.out.println("processor already start ");
                         result=null;
                 }
                 return null;
@@ -273,7 +271,7 @@ public class VideoTransmit {
          */
         public void stop() {
 		try{
-                	log.setString("we are in stop all thread in VideoTransmit.java ");
+                	System.out.println("we are in stop all thread in VideoTransmit.java ");
                         if (processor != null) {
                         	rtpvideo.removeTargets("Session ended.");
                        	}
@@ -281,7 +279,7 @@ public class VideoTransmit {
                         rtpvideo.dispose();
                         processor.close();
                         processor = null;
-               	}catch(Exception e){log.setString("Error in dispose of in Transmission of Video==> "+e);}
+               	}catch(Exception e){System.out.println("Error in dispose of in Transmission of Video==> "+e);}
         }
 }
 

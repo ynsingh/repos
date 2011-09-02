@@ -33,7 +33,7 @@ import javax.media.rtp.event.RemotePayloadChangeEvent;
 
 import org.bss.brihaspatisync.reflector.Reflector;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
+//import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.audio_video.transmitter.AudioTransmit;
 
 /**
@@ -60,7 +60,7 @@ public class StudentAudioReceive implements ReceiveStreamListener, SessionListen
 
 	private int port=RuntimeDataObject.getController().getAudioHandraisePort();  //2004                                            
 	
-	private MaintainLog log=MaintainLog.getController();
+	//private MaintainLog log=MaintainLog.getController();
 
 
 	/** getting the clone datasource for the Audio */  
@@ -73,21 +73,13 @@ public class StudentAudioReceive implements ReceiveStreamListener, SessionListen
 
 	/** geting the controller of AudioReceive */
 
-	/*
-    	public static StudentAudioReceive getAudioReceiveController() {
-       		if(av==null)
-       			av=new StudentAudioReceive();
-       		return av; 
-     	}
-	*/
-
     	public StudentAudioReceive() { }
 
 	/**Initialise the RTPSession for the Receving of Handraise audio from student */
     	public boolean initialize() {
     		try {
 
-			log.setString("Student audio Receive initialize");
+			System.out.println("Student audio Receive initialize");
 	    		InetAddress ipAddr;
             		initialize=1;                                          
 	    		SessionAddress localAddr = new SessionAddress();
@@ -107,7 +99,7 @@ public class StudentAudioReceive implements ReceiveStreamListener, SessionListen
     				mgrs[i].addTarget(destAddr);
 	   		}
        		} catch (Exception e){
-                	log.setString("Cannot create the RTP Session: " + e.getMessage());
+                	System.out.println("Cannot create the RTP Session: " + e.getMessage());
                 	return value;
         	}
 
@@ -116,17 +108,15 @@ public class StudentAudioReceive implements ReceiveStreamListener, SessionListen
 
 		try{
    	    		synchronized (dataSync) {
+				System.out.println("  - Waiting for RTP data to arrive...");
 				while (!dataReceived) {
-		    			if (!dataReceived)
-						log.setString("  - Waiting for RTP data to arrive...");
 		       			dataSync.wait(1000);
               			}
 	    		}
 	  	} catch (Exception e) {}
 
 		if (!dataReceived) {
-	    		log.setString("No RTP data was received.");
-            		JOptionPane.showMessageDialog(null,"Sorry You do not get the handraise unicast Audio");
+	    		System.out.println("No RTP data was received.");
             
            		/**If data does not receive then transmitAudio button become disabled */
          
