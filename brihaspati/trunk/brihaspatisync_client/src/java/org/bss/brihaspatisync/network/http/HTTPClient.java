@@ -12,9 +12,6 @@ import java.lang.Long;
 
 import java.util.StringTokenizer;
 
-//import java.net.URL;
-//import java.net.HttpURLConnection;
-
 import java.io.DataInputStream;
 import java.io.BufferedInputStream;
 import org.bss.brihaspatisync.util.Language;
@@ -117,15 +114,25 @@ public class HTTPClient extends Thread {
 						this.sleep(500);
 						this.yield();
 					}catch(Exception ww){
-						System.out.println("=================>  "+ww.getMessage());
 						org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
 					}	
 	                  	}catch(Exception ex) { 
-					System.out.println(" HTTPClient could not connect  "+ex.getMessage()); 
+					try {
+                                                this.sleep(500);
+                                                this.yield();
+                                        }catch(Exception ww){
+                                                org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
+                                        }
 					org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
 				}
 			}
          	}catch(Exception e){ 
+			try {
+                                this.sleep(500);
+                        	this.yield();
+                        }catch(Exception ww){
+                        	org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
+                    	}
 			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
 		}
   	}
