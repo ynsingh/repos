@@ -100,8 +100,10 @@ public class PeerManager
 	                	       	root.appendChild(peer);
 		                        saveXML(doc,getFile(lect_id));
 					message="Write succfully";	
-				}else
+				}else{
 					removePeer(lect_id,user);	
+					createPeer(lect_id,publicIP,user,role,status,privateIP,proxy,ref_ip);
+				}
       			} else{
               			ServerLog.getController().Log("Error in insert value to xml file by any null value==>");
 			}
