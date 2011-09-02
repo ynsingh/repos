@@ -74,11 +74,13 @@ public class Quiz_Detail extends SecureScreen{
             String uid=Integer.toString(userid);
             String courseid=(String)user.getTemp("course_id");
             String mode =pp.getString("mode","");
+            String quizMode=pp.getString("quizMode","");
             String checkstatus=pp.getString("checkstatus","");
             
             context.put("tdcolor",pp.getString("count",""));
 			context.put("course",(String)user.getTemp("course_name"));
 			context.put("mode",mode);
+			context.put("quizMode",quizMode);
 			ErrorDumpUtil.ErrorLog("count in java "+pp.getString("count",""));
 			
 			String filePath=data.getServletContext().getRealPath("/Courses"+"/"+courseid+"/Exam/");

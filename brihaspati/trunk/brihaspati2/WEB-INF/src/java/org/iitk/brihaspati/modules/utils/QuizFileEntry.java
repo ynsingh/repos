@@ -84,6 +84,9 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
     private String resDate;
     private String evaluate;
     private String studentLoginName;
+    private String securityID;
+    private String studentID;
+    private String IPAddress;
 
 //-----------------------------OLES
 	
@@ -420,5 +423,22 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
 	public String getStudentName(){
 		return studentLoginName;
 	}
-     
+    public void setSecurityID(String securityID){
+		this.securityID=securityID;
+	}
+	public String getSecurityID(){
+		return securityID;
+	}
+	public void setStudentID(String studentID){
+		this.studentID=studentID;
+	}
+	public String getStudentID(){
+		return studentID;
+	}
+	public void setIP(String ip){
+		this.IPAddress=ip;
+	}
+	public String getIP(){
+		return IPAddress;
+	}
 }

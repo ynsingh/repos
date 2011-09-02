@@ -1,0 +1,194 @@
+#*
+ * @#Random_Quiz.vm
+ * Copyright (c) 2010 MHRD, DEI Agra.
+ * All Rights Reserved.
+ * @author <a href="mailto:dev.singha93@gmail.com">Devendra singhal</a>
+ * Contributors: Members of MHRD, DEI Agra.
+*#
+$page.setTitle("Show Security String")
+$page.setBgColor($ui.bgcolor)
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+#set($cnm = $data.getUser().getTemp("course_name" ).toString())
+## If some message has been set, that is retrieved and displayed.
+<font size="4">
+	$!data.getMessage()
+</font>
+
+<table bgcolor="$ui.menuColor" width=100%>
+        <tr><td><b>
+		<font face="$ui.sansSerifFonts">
+                <a href=$link.setPage("Index.vm")>Home</a> |
+                <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> |
+                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")>OnLine Examination System</a>|
+                #if($flag == "security")
+              	  Security String   
+              	#elseif($flag == "show") 
+              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security")>$brith_security</a>| Show Security String
+              	#elseif($flag == "generate") 
+              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security")>$brith_security</a>| Generate Security String
+              	#else
+              	Security String
+              	#end
+        </b></td> </tr>    
+</table>
+## Creating the links for help regarding FAQ 
+
+<table width="100%">
+	<tr>
+		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a></td>
+	</tr>
+</table>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<form name="frm" method="post"  enctype="multipart/form-data" action=$link.setPage("call,OLES,SecurityString.vm").setAction("OLES_AttemptQuiz")>
+#if($flag == "security")
+<table width="100%" bgcolor="$ui.tableColor">
+	<tr bgcolor="$ui.tableColor">
+		#if($tdcolor != "1")
+		  	<td>
+		 #elseif($tdcolor == "1")
+			<td bgcolor="#AFDCEC">
+		#end
+		<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","1").addPathInfo("flag","generate") style=text-decoration:none>$brith_generateSecurity</I></b></a></td>
+		#if($tdcolor != "2")
+			<td>
+		 #elseif($tdcolor == "2")
+			<td bgcolor="#AFDCEC">
+		#end
+		<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","2").addPathInfo("flag","show") style=text-decoration:none>$brith_showSecurity</I></b></a></td>
+	</tr>
+</table>
+<table bgcolor="$ui.tableColor" width="100%">
+	<tr bgcolor="$ui.menuColor" width="100%">
+		<td align="left" width="100%" colspan="6"><b><i><font size="3">Security String</font><b></i></td>
+	</tr>
+</table>
+#elseif($flag == "show")
+	<table bgcolor="$ui.tableColor" width="100%">
+		<tr bgcolor="$ui.menuColor">
+			<td>
+	        	<b>$brih_usr $brih_name </b>
+      	  </td>
+			<td>
+    			<SELECT name=userList>	
+    			<option value="1" >Select Student</option>
+				#foreach($topic in $userList2)
+					#if($!topic.getLoginName()==$!studentLoginName)
+						<option value="$!topic.getLoginName()">$!topic.getLoginName()</option>
+					#else
+						<option value="$!topic.getLoginName()">$!topic.getLoginName()</option>
+					#end              			
+				#end			
+	       	 </SELECT>
+			</td>
+		</tr>
+		<tr bgcolor="$ui.menuColor">
+			<td>
+				<b> $brih_quiz $brih_name  </b>
+    		</td>
+			<td>
+        		<SELECT name=quizlist>       		
+				<option value="1">Select Quiz</option>			
+					#foreach($topic in $quizList)
+						#if($!topic.getQuizID()==$!quizID)
+							<option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
+						#else
+							<option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
+						#end               		 		
+					#end			
+    			</SELECT>
+			</td>
+		</tr>
+	
+		<tr bgcolor="$ui.menuColor">
+			<td colspan="2">
+				<input type="button" name="eventSubmit_Security" value="Show Security String" onClick="checkField(document.frm,this);"/>		
+			</td>
+		</tr>    
+		<input type="hidden" name="actionName">
+		<input type="hidden" name="quizID">
+		<input type="hidden" name="quizName">
+		<input type="hidden" name="studentLoginName">
+	</table>
+	
+#elseif($flag == "generate")
+
+	<table bgcolor="$ui.tableColor" width="100%">
+		<tr bgcolor="$ui.menuColor">
+			<td>
+				<b> $brih_quiz $brih_name  </b>
+    		</td>
+			<td>
+        		<SELECT name=quizlist>       		
+				<option value="1">Select Quiz</option>			
+					#foreach($topic in $quizList)
+						#if($!topic.getQuizID()==$!quizID)
+							<option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
+						#else
+							<option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
+						#end               		 		
+					#end			
+    			</SELECT>
+			</td>
+		</tr>
+	
+	
+		<tr bgcolor="$ui.menuColor">
+			<td colspan="2">
+				<input type="button" name="eventSubmit_generateSecurity" value="Generate Security String" onClick="checkField1(document.frm,this);"/>		
+			</td>
+		</tr>    
+		<input type="hidden" name="actionName">
+		<input type="hidden" name="quizID">
+		<input type="hidden" name="quizName">
+	</table>
+#end	
+</form>
+</body>
+
+<input type="hidden" name="count" value="$!tdcolor">
+<input type="hidden" name="flag" value="$flag">
+
+<SCRIPT LANGUAGE="javascript">
+	function popupWin(url,popupName){
+                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+        }
+        
+	function checkField(frm,field){
+		quizid = frm.quizlist.options[frm.quizlist.selectedIndex].value;
+		userid = frm.userList.options[frm.userList.selectedIndex].value;	
+			if(userid==1){
+				alert("kindly select the Student Name")		
+				frm.userList.focus();
+				return false;
+			}
+			else{
+				if(quizid ==1){
+					alert("kindly select the quiz")
+					frm.quizlist.focus();
+					return false;
+				}
+				else{
+					frm.quizID.value = frm.quizlist.options[frm.quizlist.selectedIndex].value;
+					frm.quizName.value = frm.quizlist.options[frm.quizlist.selectedIndex].text;
+					frm.studentLoginName.value = frm.userList.options[frm.userList.selectedIndex].value;	
+					frm.actionName.value=field.name;
+	       			frm.submit();
+			}
+		}
+	}	
+	function checkField1(frm,field){
+		quizid = frm.quizlist.options[frm.quizlist.selectedIndex].value;			
+			if(quizid ==1){
+					alert("kindly select the quiz")
+					frm.quizlist.focus();
+					return false;
+			}
+			else{
+					frm.quizID.value = frm.quizlist.options[frm.quizlist.selectedIndex].value;
+					frm.quizName.value = frm.quizlist.options[frm.quizlist.selectedIndex].text;			
+					frm.actionName.value=field.name;
+	       			frm.submit();
+			}
+	}	
+</SCRIPT>

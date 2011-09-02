@@ -116,9 +116,12 @@ $!data.getMessage()
 							<a href=$link.setPage("call,OLES,OneByOne_Quiz.vm").addPathInfo("quizDetail",$quizDetail).addPathInfo("quizSetting",$quizSetting).addPathInfo("quizName",$quizName).addPathInfo("mode","update").addPathInfo("quizMode",$quizMode)>$brih_edit</a>
 						#end
 					</td>
+
 					<td>
-							<a href=$link.setPage("call,OLES,Update_Quiz_Question.vm").setAction("OLES_Quiz").addPathInfo("quizDetail",$quizDetail).addPathInfo("quizName",$quizName).addPathInfo("mode","update").addPathInfo("quizMode",$quizMode).addPathInfo("quizID",$quizID).addPathInfo("ID",$questionSetting.getID()).addPathInfo("topicName",$questionSetting.getTopic()).addPathInfo("questionNumber",$questionSetting.getQuestionNumber()).addPathInfo("questionType",$questionSetting.getQuestionType()).addPathInfo("questionLevel",$questionSetting.getQuestionLevel()).addPathInfo("questionMarks",$questionSetting.getMarksPerQuestion()).addPathInfo("delType","quizDel").addPathInfo("actionName","eventSubmit_doDeleteQuestions") onclick="javascript:return confirm('Do you want to delete this Quiz');"> $brih_delete </a>
+							<a href=$link.setPage("call,OLES,Update_Quiz_Question.vm").addPathInfo("quizDetail",$quizDetail).setAction("OLES_Quiz").addPathInfo("quizName",$quizName).addPathInfo("mode","update").addPathInfo("quizMode",$quizMode).addPathInfo("quizID",$quizID).addPathInfo("ID",$questionSetting.getID()).addPathInfo("topicName",$questionSetting.getTopic()).addPathInfo("questionNumber",$questionSetting.getQuestionNumber()).addPathInfo("questionType",$questionSetting.getQuestionType()).addPathInfo("questionLevel",$questionSetting.getQuestionLevel()).addPathInfo("questionMarks",$questionSetting.getMarksPerQuestion()).addPathInfo("delType","quizDel").addPathInfo("actionName","eventSubmit_doDeleteQuestions") onclick="javascript:return confirm('Do you want to delete this Quiz');"> $brih_delete </a>
 					</td>
+
+
 				</tr>					
 				#end
 			</table>

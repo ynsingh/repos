@@ -49,6 +49,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.utils.QuizUtil;
 import java.util.Vector;
+import java.util.HashMap;
 import java.io.File;
 import java.util.StringTokenizer;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
@@ -122,13 +123,17 @@ public class Student_Quiz extends SecureScreen
 					context.put("isFile","exist");
 					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
 					quizList=quizmetadata.getPracticeQuiz_Detail();
-					ErrorDumpUtil.ErrorLog("inside else "+quizList);
+					ErrorDumpUtil.ErrorLog("inside else "+quizList.size());
 					if(quizList!=null){
+						ErrorDumpUtil.ErrorLog("nside null");
 						if(quizList.size()!=0){
+							ErrorDumpUtil.ErrorLog("inside if001");
 							context.put("quizList",quizList);	              
 						}
-						else
+						else{
+							ErrorDumpUtil.ErrorLog("inside Else001");
 							data.setMessage(MultilingualUtil.ConvertedString("brih_nopracticequiz",LangFile));
+						}
 					}
 					else
 						data.setMessage(MultilingualUtil.ConvertedString("brih_nopracticequiz",LangFile));
@@ -142,9 +147,48 @@ public class Student_Quiz extends SecureScreen
 					context.put("isFile","exist");
 					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
 					quizList=quizmetadata.readyToAttemptQuiz();
+					
+				//-------------------------------------------DEVENDRA-------------------------------------------------------
+				//----------Functionality to get Security String for Login Student of a perticular Quiz from xml files------
+					
+					HashMap securityData=new HashMap(); 
+					String IPAddr=data.getRemoteAddr();
+					context.put("ip",IPAddr);
+					ErrorDumpUtil.ErrorLog("IP Address is: "+IPAddr);
+					
+					if(quizList!=null && quizList.size()!=0){
+						for(int i=0;i<quizList.size();i++){
+							String quizid=((QuizFileEntry) quizList.elementAt(i)).getQuizID();
+							String path=filePath+"/"+quizid;
+							File secFile=new File(path+"/"+quizid+"_Security.xml");
+							Vector collect=new Vector();
+							if(secFile.exists()){
+								QuizMetaDataXmlReader reader=new QuizMetaDataXmlReader(path+"/"+quizid+"_Security.xml");
+								collect=reader.getSecurityDetail();
+								if(collect!=null && collect.size()!=0){
+									for(int j=0;j<collect.size();j++){
+										String student=((QuizFileEntry) collect.elementAt(j)).getStudentID();
+										if(student.equals(loginname)){
+											String securityString=((QuizFileEntry) collect.elementAt(j)).getSecurityID();
+											String ip=((QuizFileEntry) collect.elementAt(j)).getIP();
+											String temp=securityString+":"+ip;
+											securityData.put(quizid, temp);
+										}
+									}
+								}
+							}
+						}
+					}
+					context.put("securityData",securityData);
+					ErrorDumpUtil.ErrorLog("inside Student_Quiz file user is: "+user+" and hash map is"+securityData.size()+" : "+securityData);
+					
+					//----------------------------------------------------END------------------------------------------------------------------
+					
+					
 					futureQuizList = quizmetadata.listFutureQuiz();
 					context.put("futureQuizList",futureQuizList);
 					File scoreFile=new File(filePath+"/"+scorePath);
+					ErrorDumpUtil.ErrorLog("Qiuz List for AttempQuiz"+quizList.size());
 					if(quizList==null || quizList.size()==0){
 						data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattempt",LangFile));
 						return;
@@ -158,7 +202,7 @@ public class Student_Quiz extends SecureScreen
 						attemptedQuizList=quizmetadata.getFinalScore(user_id);
 						String quizid,userid,quizid1;
 						boolean found = false;
-						ErrorDumpUtil.ErrorLog("The value of attempted quiz list is::"+attemptedQuizList.size());
+						ErrorDumpUtil.ErrorLog("The value of attempted quiz list is::"+attemptedQuizList.size()+"Quiz List ::"+quizList.size());
 					if(quizList!=null && quizList.size()!=0){
 						if(attemptedQuizList!=null && attemptedQuizList.size()!=0){
 							for(int i=0;i<quizList.size();i++){
@@ -194,14 +238,16 @@ public class Student_Quiz extends SecureScreen
 							else
 								data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattempt",LangFile));
 						}									
-						else
-							context.put("quizList",quizList);								
+						else{
+							//data.setMessage(MultilingualUtil.ConvertedString("brih_noquizannounced",LangFile));
+							context.put("quizList",quizList);
+						}
 					}
 					else
 						data.setMessage(MultilingualUtil.ConvertedString("brih_noquizannounced",LangFile));
 				}
 				}
-			}            		
+			}           
 		}catch(Exception e)
 		{
 			ErrorDumpUtil.ErrorLog("The exception in student_quiz ::"+e);

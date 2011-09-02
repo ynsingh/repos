@@ -321,11 +321,15 @@ $!data.getMessage()
 				frm.levelName.value=frm.level.value;
 				if(field.value=="Save & Exit"){
 					if(frm.mode.value=="one"){
+						frm.quizMode.value="";
 						frm.count.value="2";
 					}
 					else{
+						frm.mode.value="one";
 						frm.count.value="3";
 					}
+
+
 					frm.page.value="exit";
 				}
 				frm.submit();

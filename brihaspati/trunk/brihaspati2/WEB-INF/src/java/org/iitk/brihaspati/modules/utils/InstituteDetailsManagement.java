@@ -129,7 +129,7 @@ public class InstituteDetailsManagement
                                         TurbineUserGroupRole tugr=(TurbineUserGroupRole) (details.get(r));
                                         int userid=tugr.getUserId();
                                         uidvct.add(userid);
-					ErrorDumpUtil.ErrorLog("all uid from tugr===="+uidvct);
+			//		ErrorDumpUtil.ErrorLog("all uid from tugr===="+uidvct);
                                 }
 
                         }

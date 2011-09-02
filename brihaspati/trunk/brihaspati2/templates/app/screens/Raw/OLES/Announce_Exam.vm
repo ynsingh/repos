@@ -8,7 +8,9 @@
 $page.setTitle("Announce Exam")
 $page.setBgColor("bgcolor")
 ## If some message has been set, that is retrieved and displayed.
+<font size="4">
 $!data.getMessage()
+</font>
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 
@@ -438,19 +440,22 @@ $!data.getMessage()
 		var checkres=frm.checkResultDate.value;
 		
 		if(checkres=="visible"){
-		if(Date.parse(date2)>(Date.parse(date1))){
-		frm.actionName.value=field.name;
-		frm.allow.value=frm.allow.value;
-		frm.submit();		
+			//if(Date.parse(date2) > Date.parse(date1)){
+			frm.actionName.value=field.name;
+			frm.allow.value=frm.allow.value;
+			frm.submit();		
+			//}
+			//else if(Date.parse(date2)==(Date.parse(date1))){
+				//alert("Result Date Can't be Equal to End Date");
+			//}
+			//else if(Date.parse(date2)<(Date.parse(date1))){
+			//alert("Result Date Can't be Less than End Date"+date2+"  endDate  "+ date1);
+			//}
 		}
 		else{
-		alert("Result Date Can't be Less than End Date");
-		}
-		}
-		else{
-		frm.actionName.value=field.name;
-		frm.allow.value=frm.allow.value;
-		frm.submit();	
+			frm.actionName.value=field.name;
+			frm.allow.value=frm.allow.value;
+			frm.submit();	
 		}
 	}
 </script>

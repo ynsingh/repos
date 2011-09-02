@@ -103,6 +103,7 @@ public class Announce_Exam extends SecureScreen{
 						if((type.equals("sat")) ||(type.equals("lat"))){
 					 	   check = "n";
 					 	   flag=true;
+					 	   break;
 						}
 				}
 				if(check.equals("y")){
@@ -190,7 +191,7 @@ public class Announce_Exam extends SecureScreen{
 					context.put("Res_day",temp4[2]);
 				}
         	}
-        	
+        
         	context.put("course",(String)user.getTemp("course_name"));
         	String currentdate=ExpiryUtil.getCurrentDate("-");
         	String[] temp4 = currentdate.split("-");

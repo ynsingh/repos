@@ -64,11 +64,17 @@ $!data.getMessage()
 		#end
 		<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style=text-decoration:none>$brih_result</I></b></a></td>
 		#if($tdcolor != "6")
-			<td>
-        #elseif($tdcolor == "6")
-           	<td bgcolor="#AFDCEC">
-       	#end
-        <b><I><a href=$link.setPage("call,OLES,OLES_ReEvaluation.vm").addPathInfo("count","6") style=text-decoration:none>$brih_reevaluation</I></b></a></td>
+				<td>
+			 #elseif($tdcolor == "6")
+            	<td bgcolor="#AFDCEC>
+            #end
+           	<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security") style=text-decoration:none>$brith_security</I></b></a></td>
+           	#if($tdcolor != "7")
+				<td>
+			 #elseif($tdcolor == "7")
+            	<td bgcolor="#AFDCEC>
+            #end
+           	<b><I><a href=$link.setPage("call,OLES,OLES_ReEvaluation.vm").addPathInfo("count","7") style=text-decoration:none>$brih_reevaluation</I></b></a></td>
 	</tr>
 </table>
 

@@ -52,6 +52,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 /**
 * This class manage all online examination system 
 * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
@@ -61,6 +62,7 @@ public class View_QB extends SecureScreen{
 
 	public void doBuildTemplate(RunData data,Context context) 
 	{
+		String lang=data.getUser().getTemp("LangFile").toString();
 		try{
 
 			User user=data.getUser();
@@ -120,7 +122,7 @@ public class View_QB extends SecureScreen{
 		}//try
 		catch(Exception ex)
 		{
-		data.setMessage("The error in View_QB !! "+ex);
+		data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+ex,lang));
 		}
 	}
 }

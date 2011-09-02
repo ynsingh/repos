@@ -95,7 +95,7 @@ public class OLES_ReEvaluation extends SecureScreen{
 			}
 			else{
 				QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizScorePath+"/"+scoreFilePath);
-				collectScore = quizmetadata.getFinalScore();
+				collectScore = quizmetadata.attemptedQuiz();
 				if(collectScore==null || collectScore.size()==0){
 					data.setMessage(MultilingualUtil.ConvertedString("brih_noreevaluation",langfile));
 					//return;
@@ -105,7 +105,7 @@ public class OLES_ReEvaluation extends SecureScreen{
 					ErrorDumpUtil.ErrorLog("inside OLES_ReEvaluation.java file in else part !!"+collectScore.size());
 					for(int i=0;i<collectScore.size();i++){
 						String evaluate=((QuizFileEntry)collectScore.elementAt(i)).getEvaluate();
-						if(evaluate=="complete"|| evaluate=="partial" || evaluate==null){
+						if(evaluate==null || evaluate.equals("complete") || evaluate.equals("partial")){
 							//flag=false;
 						}
 						else if(evaluate.equals("ReEvaluate")){
@@ -114,9 +114,10 @@ public class OLES_ReEvaluation extends SecureScreen{
 						}
 					}
 					context.put("flag",flag);
-					if(!flag){
-						data.setMessage(MultilingualUtil.ConvertedString("brih_noreevaluation",langfile));
-						//return;
+					if(data.getMessage()==null){
+						if(!flag){
+							data.setMessage(MultilingualUtil.ConvertedString("brih_noreevaluation",langfile));
+						}
 					}
 				}
 			}

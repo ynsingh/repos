@@ -92,7 +92,8 @@ public class Student_Score extends SecureScreen
 			String Role=(String)user.getTemp("role");
 			context.put("user_role",Role);
 
-			String count = pp.getString("count","");			
+			String count = pp.getString("count","");
+			ErrorDumpUtil.ErrorLog("inside Student_Score count is:"+count);
 			if(count.isEmpty()){
 				count=(String)user.getTemp("count");
 			}			
@@ -146,12 +147,14 @@ public class Student_Score extends SecureScreen
 					context.put("isFile","exist");
 					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
 //					quizList=quizmetadata.readyToAttemptQuiz();
-					ErrorDumpUtil.ErrorLog("inside inner else 2");
 					futureQuizList = quizmetadata.listFutureQuiz();
-//					if(futureQuizList!=null && futureQuizList.size()!=0){
-						ErrorDumpUtil.ErrorLog("after future quiz list"+futureQuizList);
-						context.put("futureQuizList",futureQuizList);
+					ErrorDumpUtil.ErrorLog("inside inner else 2::"+futureQuizList.size());
+//					if(futureQuizList==null || futureQuizList.size()==0){
+					ErrorDumpUtil.ErrorLog("after future quiz list"+futureQuizList);
+						context.put("futureQuizList",futureQuizList)
+//						return;
 //					}
+					;
 //					else{
 						
 //					}					
@@ -214,7 +217,7 @@ public class Student_Score extends SecureScreen
 								context.put("quizList",finalQuizList);
 						}
 						else{
-							data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattempt",LangFile));
+							data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattemptyet",LangFile));
 						}
 //									userid = (((QuizFileEntry) attemptedQuizList.elementAt(j)).getUserID());
 //									if(quizid.equalsIgnoreCase(quizid1)){

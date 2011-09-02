@@ -241,6 +241,10 @@ $!data.getMessage()
 					frm.typeName.value=frm.typeList.options[frm.typeList.selectedIndex].value;
 					frm.levelName.value=frm.levelList.options[frm.levelList.selectedIndex].value;
 					if(field.value=="Save & Exit"){
+						if(frm.mode.value=="random"){
+							frm.quizMode.value="";
+							frm.count.value="2";
+						}
 						frm.page.value="exit";
 					}
         				frm.submit();

@@ -1109,4 +1109,45 @@ public class QuizMetaDataXmlWriter
 		}//catch
 	}//method end
 	
+
+	/** This method is responsible for writing Student ID,Secrity Strings and IP Addrss in xml file.
+	 * @author Devendra singhal
+	 */
+	public static void writeSecurityString(XmlWriter xmlWriter,String studentID,String SecurityID,String IPAddress){
+		try{
+			AttributesImpl ats=new AttributesImpl();
+			ats.addAttribute("","StudentID","","",studentID);	
+			ats.addAttribute("","SecurityID","","",SecurityID);
+			ats.addAttribute("","IPAddress","","",IPAddress);
+			
+			ErrorDumpUtil.ErrorLog("inside writeSecurityString");
+			xmlWriter.appendElement("Quiz",null,ats);
+			xmlWriter.writeXmlFile();
+			ErrorDumpUtil.ErrorLog("after append element");
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in quizMetaDataXmlWriter method:writeScore !!"+e);
+		}
+		
+	}
+	
+	/** This method is responsible for changing IP Address in xml file.
+	 * @author Devendra singhal
+	 */
+	public static void updateSecurity(XmlWriter xmlWriter,String studentID,String SecurityID,String IPAddress,int seq){
+		try{
+			ErrorDumpUtil.ErrorLog("inside updateSecurity001");
+			AttributesImpl ats=new AttributesImpl();
+			ats.addAttribute("","StudentID","","",studentID);	
+			ats.addAttribute("","SecurityID","","",SecurityID);
+			ats.addAttribute("","IPAddress","","",IPAddress);
+			
+			ErrorDumpUtil.ErrorLog("inside updateSecurity");
+			xmlWriter.changeAttributes("Quiz",ats,seq);
+			xmlWriter.writeXmlFile();
+			ErrorDumpUtil.ErrorLog("after changing element");
+		}
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in quizMetaDataXmlWriter method:updateSecurity !!"+e);
+		}
+	}
 }

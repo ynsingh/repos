@@ -71,7 +71,7 @@ public class Quiz_Schedule extends SecureScreen_Instructor
 		try{
 			User user=data.getUser();
 			String username=user.getName();
-                        String uid=Integer.toString(UserUtil.getUID(username));
+            String uid=Integer.toString(UserUtil.getUID(username));
 		 	String courseid=(String)user.getTemp("course_id");
 			String currentdate=ExpiryUtil.getCurrentDate("-");
 			
@@ -83,19 +83,19 @@ public class Quiz_Schedule extends SecureScreen_Instructor
 				String qname=pp.getString("qname","");
 				context.put("qid",qname);	
 				Criteria crit=new Criteria();
-	                        crit.add(QuizPeer.QUIZ_ID,qname);
-	                        crit.add(QuizPeer.CID,courseid);
-	                        crit.add(QuizPeer.USER_ID,uid);
-        	                List list=QuizPeer.doSelect(crit);
+                crit.add(QuizPeer.QUIZ_ID,qname);
+                crit.add(QuizPeer.CID,courseid);
+                crit.add(QuizPeer.USER_ID,uid);
+                List list=QuizPeer.doSelect(crit);
 				for(int i=0;i<list.size();i++)
 				{
 					Quiz element=(Quiz)(list.get(i));
-	                                String str1=(element.getPostDate().toString());
-	                                String str2=(element.getQuizTitle().toString());
-	                                int mmarks=(element.getMaxMarks());
+                    String str1=(element.getPostDate().toString());
+                    String str2=(element.getQuizTitle().toString());
+                    int mmarks=(element.getMaxMarks());
 					context.put("title",str2);
 					context.put("marks",mmarks);
-        	                        str1=str1.substring(0,10);
+                    str1=str1.substring(0,10);
 					//Date
 					Vector date=ExpiryUtil.getPostDate(str1);
 					context.put("cyear",date.elementAt(0));
@@ -105,14 +105,14 @@ public class Quiz_Schedule extends SecureScreen_Instructor
 					//TIME	
 					String str3=(element.getStartTime().toString());
 					String str4=(element.getEndTime().toString());
-                	        	str3=str3.replaceAll(":","-");
-                	        	str4=str4.replaceAll(":","-");
+    	        	str3=str3.replaceAll(":","-");
+    	        	str4=str4.replaceAll(":","-");
 					Vector date1=ExpiryUtil.getPostDate(str3);
 					context.put("hr",date1.elementAt(0));
-                                        context.put("m",date1.elementAt(1));
+                    context.put("m",date1.elementAt(1));
 					Vector date2=ExpiryUtil.getPostDate(str4);
 					context.put("hr1",date2.elementAt(0));
-                                        context.put("m1",date2.elementAt(1));	
+                    context.put("m1",date2.elementAt(1));	
 					String strdatetype=currentdate.replaceAll("-","");
 					strdatetype=strdatetype.substring(0,8);
 					try{
@@ -120,127 +120,121 @@ public class Quiz_Schedule extends SecureScreen_Instructor
 					int checkdate=Integer.parseInt(strdatetype);
 					if(strint == checkdate) {	
 						try {
-						Calendar calendar=Calendar.getInstance();
-			                        int curmin=calendar.get(Calendar.HOUR);
-                        			int am_pm=calendar.get(Calendar.AM_PM);
-						if(am_pm == 1)
-                                 			curmin= curmin+12;
-                        			curmin= (curmin*60) +(calendar.get(Calendar.MINUTE));
-						String starttime=str3.substring(0,5);
-                                        	String [] str2array = starttime.split("-");
-                                        	int starthour=0;int endhour=0;
-                                        	for(int j=0;j<2;j++)
-                                        	{
-                                                	if(j==0){
-                                                       	 starthour=Integer.parseInt(str2array[j])*60;
-                                                	}
-                                                	else {
-                                                       	 starthour=starthour+Integer.parseInt(str2array[j]);
-                                                	}
-                                        	}
-						if(( starthour < curmin))
-                                        	{
-							String path=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Quiz"+"/"+qname+"/Student_Quiz");
-                                                        File f=new File(path);
-                                                        if(f.exists()) {
-                                                        String temparr1[]=f.list();
-                                                        if(temparr1.length!=0)
-                                                                context.put("totaltime","BlockUpdate");
-                                                        else
-                                                                context.put("totaltime","notBlockUpdate");
-                                                        }
-                                                        else
-                                                                context.put("totaltime","notBlockUpdate");
-                                        	}
-						else {
+							Calendar calendar=Calendar.getInstance();
+	                        int curmin=calendar.get(Calendar.HOUR);
+                			int am_pm=calendar.get(Calendar.AM_PM);
+                			if(am_pm == 1)
+                     			curmin= curmin+12;
+                    			curmin= (curmin*60) +(calendar.get(Calendar.MINUTE));
+                    			String starttime=str3.substring(0,5);
+                            	String [] str2array = starttime.split("-");
+                            	int starthour=0;int endhour=0;
+                            	for(int j=0;j<2;j++){
+                                	if(j==0){
+                                       	 starthour=Integer.parseInt(str2array[j])*60;
+                                	}
+                                	else {
+                                       	 starthour=starthour+Integer.parseInt(str2array[j]);
+                                	}
+                            	}
+                            	if(( starthour < curmin)){
+                            		String path=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Quiz"+"/"+qname+"/Student_Quiz");
+                                    File f=new File(path);
+                                    if(f.exists()) {
+	                                    String temparr1[]=f.list();
+	                                    if(temparr1.length!=0)
+	                                            context.put("totaltime","BlockUpdate");
+	                                    else
+	                                            context.put("totaltime","notBlockUpdate");
+                                    }
+                                    else
+                                        context.put("totaltime","notBlockUpdate");
+                            	}
+                            	else {
 							
-							/**String path=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Quiz"+"/"+qname+"/Student_Quiz");
-							File f=new File(path);
-							if(f.exists()) {
-							String temparr1[]=f.list();
-							if(temparr1.length!=0)
-								context.put("totaltime","BlockUpdate");
-							else
-								context.put("totaltime","notBlockUpdate");
-							}
-							else
-							*/
-								context.put("totaltime","notBlockUpdate");
+									/**String path=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Quiz"+"/"+qname+"/Student_Quiz");
+									File f=new File(path);
+									if(f.exists()) {
+									String temparr1[]=f.list();
+									if(temparr1.length!=0)
+										context.put("totaltime","BlockUpdate");
+									else
+										context.put("totaltime","notBlockUpdate");
+									}
+									else
+									*/
+										context.put("totaltime","notBlockUpdate");
+								}
+							} catch(Exception e){}	
 						}
-						} catch(Exception e){}	
-					}
-					else if(strint < checkdate){
-						try {
-							String path=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Quiz"+"/"+qname+"/Student_Quiz");
-                                                        File f=new File(path);
-                                                        if(f.exists()) {
-                                                        String temparr1[]=f.list();
-                                                        if(temparr1.length!=0)
-                                                                context.put("totaltime","BlockUpdate");
-                                                        else
-                                                                context.put("totaltime","notBlockUpdate");
-                                                        }
-                                                        else
-                                                                context.put("totaltime","notBlockUpdate");
-						}catch(Exception e){}
-
-					}	
-					else {
-						try {
-						String path=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Quiz"+"/"+qname+"/Student_Quiz");
-						File f=new File(path);
-						if(f.exists()) {
-							String temparr[]=f.list();
-							String temparr1[]=f.list();
-                                                	if(temparr1.length!=0)
-                                                		context.put("totaltime","BlockUpdate");
-							else
-								context.put("totaltime","notBlockUpdate");
-						}
-						else
-							context.put("totaltime","notBlockUpdate");
-						} catch(Exception e){}
-					}	
+						else if(strint < checkdate){
+							try {
+								String path=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Quiz"+"/"+qname+"/Student_Quiz");
+                                File f=new File(path);
+                                if(f.exists()) {
+                                	String temparr1[]=f.list();
+                                	if(temparr1.length!=0)
+                                        context.put("totaltime","BlockUpdate");
+                                	else
+                                        context.put("totaltime","notBlockUpdate");
+                                }
+                                else
+                                    context.put("totaltime","notBlockUpdate");
+							}catch(Exception e){}	
+						}	
+						else {
+							try {
+								String path=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Quiz"+"/"+qname+"/Student_Quiz");
+								File f=new File(path);
+								if(f.exists()) {
+									String temparr[]=f.list();
+									String temparr1[]=f.list();
+	                            	if(temparr1.length!=0)
+	                            		context.put("totaltime","BlockUpdate");
+	                            	else
+	                            		context.put("totaltime","notBlockUpdate");
+								}
+								else
+									context.put("totaltime","notBlockUpdate");
+							} catch(Exception e){}
+						}	
 					}catch(Exception e){ErrorDumpUtil.ErrorLog(e.getMessage());}	
-				}
-				
-				
+				}				
 			}
 			String cmonth=currentdate.substring(5,7);
 			String cday=currentdate.substring(8,10);
 			//context.put("cmonth",cmonth);
 			//context.put("cdays",cday);
 			Vector hour=new Vector();
-        	        for(int i=0;i<=23;i++){
-                		String hr=new String();
-                        	if(i<10){
-                               		hr="0"+i;
-				}
-	                       	else{
-        		              	hr=Integer.toString(i);
-				}
-                        	        hour.addElement(hr);
-                	}
+	        for(int i=0;i<=23;i++){
+        		String hr=new String();
+            	if(i<10){
+               		hr="0"+i;
+            	}
+               	else{
+	              	hr=Integer.toString(i);
+               	}
+    	        hour.addElement(hr);
+        	}
 			String cdate=ExpiryUtil.getCurrentDate("");
-                        int currentdate1=Integer.parseInt(cdate);
+            int currentdate1=Integer.parseInt(cdate);
 			int cyear1=currentdate1/10000;
-                        String cyear=Integer.toString(cyear1);
-                        context.put("year",cyear);
-	                context.put("hour",hour);
+            String cyear=Integer.toString(cyear1);
+            context.put("year",cyear);
+            context.put("hour",hour);
 			Vector year=YearListUtil.getYearList();
 			context.put("year_list",year);
 			if(!mode.equals("QuizDetail")) {
 				context.put("cmonth",cmonth);
 				context.put("totaltime","notBlockUpdate");
-	                        context.put("cdays",cday);
+                context.put("cdays",cday);
 				Criteria crit=new Criteria();
-	                	crit.add(QuizPeer.CID,courseid);
-	                	crit.addAscendingOrderByColumn(QuizPeer.ID);
-        	        	List list=QuizPeer.doSelect(crit);
+            	crit.add(QuizPeer.CID,courseid);
+            	crit.addAscendingOrderByColumn(QuizPeer.ID);
+	        	List list=QuizPeer.doSelect(crit);
 				if(list.size()!=0){
 					String ele="";
-					for(int i=0;i<list.size();i++)
-					{
+					for(int i=0;i<list.size();i++){
 						ele=(((Quiz)(list.get(i))).getQuizId()).toString();
 					}
 					int num=Integer.parseInt(ele.substring(4));

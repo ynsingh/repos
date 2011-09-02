@@ -37,14 +37,19 @@ $page.setBgColor($ui.bgcolor)
         #if($role=="instructor")
          <a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result")>$brih_quiz </a> | 
         #elseif($role=="student")
-         <a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3")>$brih_quiz </a> | 
+        	#if($!type=="practice")
+        		<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2")>$brih_quiz </a> | 
+        	#else
+        	      <a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3")>$brih_quiz </a> | 
+        	#end
+
         #end 
        
         #if($!answerSheetFlag!="yes")
-			$brih_score $brih_card 
-		#else
-			$brih_answer $brih_sheet
-		#end                
+        	 $brih_score $brih_card 
+	#else
+		$brih_answer $brih_sheet
+	#end                
     </td>
 </tr>
 </table>
@@ -210,6 +215,7 @@ $page.setBgColor($ui.bgcolor)
 <input type="hidden" name="quizID" value="$!quizID">
 <input type="hidden" name="maxTime" value="$!maxTime">
 <input type="hidden" name="studentLoginName" value="$!studentLoginName">
+<input type="hidden" name="type" value="$!type">
 </table>
 </form>
 

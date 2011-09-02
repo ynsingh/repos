@@ -73,7 +73,9 @@ public class Quiz_Score extends SecureScreen{
 			String uid = "";
 			String role=(String)user.getTemp("role");
 			context.put("role",role);
-			ErrorDumpUtil.ErrorLog("\n role is :"+role);
+			String type1=pp.getString("type","");
+			context.put("type",type1);
+			ErrorDumpUtil.ErrorLog("\n role is :"+role+" and type is :"+type1);
 			String quizName=pp.getString("quizName","");
 			context.put("quizName",quizName);	
 			String quizID=pp.getString("quizID","");

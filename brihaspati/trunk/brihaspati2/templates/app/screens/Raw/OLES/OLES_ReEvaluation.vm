@@ -10,7 +10,11 @@ $page.setTitle("Quiz ReEvaluation")
 $page.setBgColor($ui.bgcolor)
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
-$!data.getMessage()
+#if($flag)
+<font size="4">
+	$!data.getMessage()
+</font>
+#end
 <table bgcolor="$ui.menuColor" width=100%>
         <tr><td><b>
 		<font face="$ui.sansSerifFonts">
@@ -63,10 +67,16 @@ $!data.getMessage()
 		<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style=text-decoration:none>$brih_result</I></b></a></td>
 		#if($tdcolor != "6")
 			<td>
-        #elseif($tdcolor == "6")
-           	<td bgcolor="#AFDCEC">
-       	#end
-        <b><I><a href=$link.setPage("call,OLES,OLES_ReEvaluation.vm").addPathInfo("count","6") style=text-decoration:none>$brih_reevaluation</I></b></a></td>
+		#elseif($tdcolor == "6")
+           	<td bgcolor="#AFDCEC>
+        #end
+      	<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security") style=text-decoration:none>$brith_security</I></b></a></td>
+      	#if($tdcolor != "7")
+			<td>
+		#elseif($tdcolor == "7")
+           	<td bgcolor="#AFDCEC>
+        #end
+       	<b><I><a href=$link.setPage("call,OLES,OLES_ReEvaluation.vm").addPathInfo("count","7") style=text-decoration:none>$brih_reevaluation</I></b></a></td>
 	</tr>
 </table>
 <table bgcolor="$ui.tableColor" width="100%">
@@ -77,14 +87,21 @@ $!data.getMessage()
 
 <table bgcolor="$ui.tableColor" width="100%">
 	#if($collectScore.size()!=0)
-	#if($flag=="true")
-		<tr bgcolor="$ui.tableColor" width="100%">
+	#if($flag)
+		<tr bgcolor="$ui.tableColor" width="100%" collspan="6">
 			<th>QuizID</th>
 			<th>StudentID(Student Name)</th>
 			<th>Total Score</th>
 		</tr>
+	#else
+		<tr bgcolor="$ui.tableColor" width="100%">
+			<td align="center" collspan="6">
+			<b><font size="4">
+				$!data.getMessage()
+			</font></b>
+			</td>
+		</tr>
 	#end
-	
        	#foreach($scr in $collectScore)
 			#if($velocityCount%2==0)
 				<tr bgcolor="$ui.menuColor">
@@ -117,7 +134,6 @@ $!data.getMessage()
 		</tr>
 	#end
 </table>		
-
 </form>
 </body>
 <SCRIPT LANGUAGE="javascript">

@@ -56,6 +56,9 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 //Brihaspati
 import org.iitk.brihaspati.modules.utils.CourseUtil;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
@@ -75,6 +78,27 @@ public class OLES_AttemptQuiz extends SecureAction{
 	String CoursePath=TurbineServlet.getRealPath("/Courses");
 	private String crsId=new String();
 	private String LangFile=new String();	
+	
+	//--------------------to Generate Uniques 5 Digits Security String-------------------------
+	//---------------------------------Devendra-----------------------------------------------
+	//-------Start
+	private static final char[] symbols = new char[36];
+	  private static final Random random = new Random();
+	  private static final char[] securityString=new char[5];
+	  static {
+	    for (int idx = 0; idx < 10; ++idx)
+	      symbols[idx] = (char) ('0' + idx);
+	    for (int idx = 10; idx < 36; ++idx)
+	      symbols[idx] = (char) ('a' + idx - 10);
+	  }
+	  public static String generateSecurityString()
+	  {
+	    for (int idx = 0; idx < securityString.length; ++idx) 
+	    securityString[idx] = symbols[random.nextInt(symbols.length)];
+	    return new String(securityString);
+	  }
+	  //------End
+	  
 	/**
 	 * This method is invoked when no button corresponding to 
 	 * Action is found
@@ -113,6 +137,10 @@ public class OLES_AttemptQuiz extends SecureAction{
 			evaluateQuestionDone(data,context);
 		else if(action.equals("eventSubmit_answerSheet"))
 			answerSheet(data,context);
+		else if(action.equals("eventSubmit_Security"))
+			securityString(data,context);
+		else if(action.equals("eventSubmit_generateSecurity"))
+			generateSecurity(data,context);
 		else
 			data.setMessage(MultilingualUtil.ConvertedString("action_msg",LangFile));				
 	}
@@ -130,6 +158,9 @@ public class OLES_AttemptQuiz extends SecureAction{
 			String uid=Integer.toString(UserUtil.getUID(uname));
 			String quizID="";
 			String maxTime="";
+			String ip=data.getParameters().getString("ip","");
+			ErrorDumpUtil.ErrorLog("IPAddress is: "+ip+" uname is: "+uname);
+			
 			String quizIDTime = data.getParameters().getString("quizIDTime","");
 			if(!quizIDTime.isEmpty()){
 				String quizIDTimeArray[] = quizIDTime.split(",");				                               	
@@ -150,6 +181,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 			File quizQuestionFile=new File(quizFilePath+"/"+quizQuestionPath);
 			Vector quizQuestionList=new Vector();
 			QuizMetaDataXmlReader quizQuestionMetaData=null;
+			
 			if(questionVector==null || questionVector.size()==0){						
 				if(!quizQuestionFile.exists()){
 					ErrorDumpUtil.ErrorLog("before first message");
@@ -173,7 +205,37 @@ public class OLES_AttemptQuiz extends SecureAction{
 			else{
 				ErrorDumpUtil.ErrorLog("\n vector after refresh "+questionVector);
 				context.put("quizQuestionList",questionVector); 
-			}			
+			}	
+			
+			//----------------To Store the IP Address in Xml File----------------------
+			//------------------------------DEVENDRA-----------------------------------
+			String securityPath=quizID+"_Security.xml";
+			File securityFile=new File(quizFilePath+"/"+securityPath);
+			if(securityFile.exists()){
+				QuizMetaDataXmlReader reader=new QuizMetaDataXmlReader(quizFilePath+"/"+securityPath);
+				QuizMetaDataXmlWriter writer=new QuizMetaDataXmlWriter();
+				XmlWriter xmlwriter=new XmlWriter(quizFilePath+"/"+securityPath);
+				String security="";
+				String student="";
+				int seq=-1;
+				Vector col=reader.getSecurityDetail();
+				if(col!=null && col.size()!=0){
+					for(int i=0;i<col.size();i++){
+						student=((QuizFileEntry) col.elementAt(i)).getStudentID();
+						security=((QuizFileEntry) col.elementAt(i)).getSecurityID();
+						if(student.equals(uname)){
+							seq=i;
+							break;
+						}
+					}
+					ErrorDumpUtil.ErrorLog("inside update security String Student is: "+student+" Security is: "+security+" seq is: "+seq+" ip is: "+ip);
+					writer.updateSecurity(xmlwriter,student,security,ip,seq);
+				}
+			}
+			else{
+				
+			}
+			//----------------------------------END-------------------------------
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:attemptQuiz !! "+e);
 			data.setMessage("See ExceptionLog !!");
@@ -462,6 +524,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 			String quizName=pp.getString("quizName","");
 			context.put("quizName",quizName);	
 			String quizID=pp.getString("quizID","");
+
 			context.put("quizID",quizID);
 			String loginname=user.getName();
 			String userID=Integer.toString(UserUtil.getUID(loginname));
@@ -478,9 +541,9 @@ public class OLES_AttemptQuiz extends SecureAction{
 			Vector scoreCollect=new Vector();
 			Vector quizDetail=new Vector();
 			Vector collect=new Vector();
-			Date dt = new Date();
-			SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd"); 
-			String curDate = sd.format(dt);
+//			Date dt = new Date();
+//			SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd"); 
+//			String curDate = sd.format(dt);
 			String evaluate="",userId="",quizId="";
 			String resDate = "";
 			String type = "";
@@ -542,7 +605,15 @@ public class OLES_AttemptQuiz extends SecureAction{
 					}
 			}		
 			if(check.equals("n")){
-				if(resDate.compareTo(curDate)==0 || resDate.compareTo(curDate)==-1){
+				Calendar current = Calendar.getInstance();
+				Calendar resDate_fin = Calendar.getInstance();
+				String arr_resDate[]=resDate.split("-");
+				resDate_fin.clear();
+				resDate_fin.set(Integer.parseInt(arr_resDate[0]),(Integer.parseInt(arr_resDate[1])-1),Integer.parseInt(arr_resDate[2]));
+				
+				int i=resDate_fin.compareTo(current);
+				ErrorDumpUtil.ErrorLog("inside short/Long Quiz check"+resDate+"::"+current+":"+i);
+				if(resDate_fin.compareTo(current)==0 || resDate_fin.compareTo(current)==-1){
 					if(flag){
 						ErrorDumpUtil.ErrorLog("inside complete");
 						data.setScreenTemplate("call,OLES,Quiz_Score.vm");
@@ -554,6 +625,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 					}
 				}
 				else{
+					ErrorDumpUtil.ErrorLog("inside wait for result date");
 					data.setMessage(MultilingualUtil.ConvertedString("brih_waitforresult",LangFile));
 					data.setScreenTemplate("call,OLES,Student_Score.vm");
 				}
@@ -561,6 +633,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 			else{
 				data.setScreenTemplate("call,OLES,Quiz_Score.vm");
 			}						
+
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:showScoreQuiz !! "+e);
 			data.setMessage("See ExceptionLog !!");
@@ -666,9 +739,12 @@ public class OLES_AttemptQuiz extends SecureAction{
 			ErrorDumpUtil.ErrorLog("\n inside action method");
 			String quizName=pp.getString("quizName","");
 			context.put("quizName",quizName);	
+			String count=pp.getString("count","");
+			context.put("count",count);
 			String quizID=pp.getString("quizID","");
 			context.put("quizID",quizID);	
 			ErrorDumpUtil.ErrorLog("quiz id and quiz name :"+quizName+" : "+quizID);
+
 			String loginname=user.getName();
 			String userID=Integer.toString(UserUtil.getUID(loginname));
 			String cid=(String)user.getTemp("course_id");
@@ -684,9 +760,9 @@ public class OLES_AttemptQuiz extends SecureAction{
 			Vector scoreCollect=new Vector();
 			Vector quizDetail=new Vector();
 			Vector collect=new Vector();
-			Date dt = new Date();
-			SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd"); 
-			String curDate = sd.format(dt);
+//			Date dt = new Date();
+//			SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd"); 
+//			String curDate = sd.format(dt);
 			String evaluate="",userId="",quizId="";
 			String resDate = "";
 			String type = "";
@@ -751,10 +827,15 @@ public class OLES_AttemptQuiz extends SecureAction{
 				}
 			}		
 			if(check.equals("n")){
-				if(resDate.compareTo(curDate)==0 || resDate.compareTo(curDate)==-1){
+				Calendar current = Calendar.getInstance();
+				Calendar resDate_fin = Calendar.getInstance();
+				String arr_resDate[]=resDate.split("-");
+				resDate_fin.clear();
+				resDate_fin.set(Integer.parseInt(arr_resDate[0]),(Integer.parseInt(arr_resDate[1])-1),Integer.parseInt(arr_resDate[2]));
+				if(resDate_fin.compareTo(current)==0 || resDate_fin.compareTo(current)==-1){
 					if(flag){
 						ErrorDumpUtil.ErrorLog("inside complete");
-						data.setScreenTemplate("call,OLES,Quiz_Score.vm");
+						data.setScreenTemplate("call,OLES,Report_Card.vm");
 					}
 					else{
 						ErrorDumpUtil.ErrorLog("inside partial/Re-Evaluate");
@@ -768,7 +849,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 				}
 			}			
 			else{
-				data.setScreenTemplate("call,OLES,Quiz_Score.vm");
+				data.setScreenTemplate("call,OLES,Report_Card.vm");
 			}	
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:showReportCard !! "+e);
@@ -965,6 +1046,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 			data.setMessage("See ExceptionLog !!");
 		}
 	}
+
 	public void evaluateQuestionDone(RunData data,Context context){
 		
 		ParameterParser pp = data.getParameters();
@@ -1021,5 +1103,110 @@ public class OLES_AttemptQuiz extends SecureAction{
 	
 	public void answerSheet(RunData data, Context context){
 		LangFile=(String)data.getUser().getTemp("LangFile");
+		String type=data.getParameters().getString("type","");
+		ErrorDumpUtil.ErrorLog("type inside answerSheet method:"+type);
+		context.put("type",type);
+	}
+	
+	public void securityString(RunData data, Context context){
+		ParameterParser pp = data.getParameters();
+		try{	
+			ErrorDumpUtil.ErrorLog("inside security string");
+			
+			LangFile=(String)data.getUser().getTemp("LangFile");
+			String cid=(String)data.getUser().getTemp("course_id");
+			String quizID=pp.getString("quizID","");
+			String studentLoginName=pp.getString("studentLoginName","");
+			String uid=Integer.toString(UserUtil.getUID(studentLoginName));
+			pp.setString("flag","show");
+			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/"+"/"+quizID);
+			String securityFilePath=quizID+"_Security.xml";
+			Vector collect=new Vector();
+			File file=new File(filePath+"/"+securityFilePath);
+			Vector quizList=new Vector();
+			Vector instructorQuizList=new Vector();
+			QuizMetaDataXmlReader quizmetadata=null;
+			String securityString="";
+			if(file.exists()){
+				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+securityFilePath+"/");
+				collect=quizmetadata.getSecurityDetail();
+				if(collect !=null && collect.size()!=0){
+					for(int i=0;i<collect.size();i++){
+						String studentid=((QuizFileEntry) collect.elementAt(i)).getStudentID();
+						if(studentid.equals(studentLoginName)){
+							securityString=((QuizFileEntry) collect.elementAt(i)).getSecurityID();
+							break;
+						}
+					}
+					data.setMessage(MultilingualUtil.ConvertedString("brih_studentSecurity",LangFile)+" "+studentLoginName+" "+MultilingualUtil.ConvertedString("brih_is",LangFile)+" : "+securityString);
+				}
+				else{
+					data.setMessage(MultilingualUtil.ConvertedString("brih_noSecurity",LangFile));
+				}
+			}
+			else{
+				data.setMessage(MultilingualUtil.ConvertedString("brih_noSecurity",LangFile));
+			}
+			
+			data.setScreenTemplate("call,OLES,SecurityString.vm");
+		}
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:securityString !! "+e);
+			data.setMessage("See ExceptionLog !!");
+		}
+	}
+	
+	public static void generateSecurity(RunData data, Context context){
+		 try{
+			 ErrorDumpUtil.ErrorLog("inside action generateSecurityString");
+			 
+			 String LangFile=(String)data.getUser().getTemp("LangFile");
+			 String courseID=(String)data.getUser().getTemp("course_id");
+			 ParameterParser pp=data.getParameters();
+			 String quizID=pp.getString("quizID",""); 
+			 pp.setString("flag","generate");
+			 
+			 int g_id=GroupUtil.getGID(courseID);
+			 Vector userList=new Vector();
+			 Vector collectSecurity=new Vector();
+			 
+			 userList=UserGroupRoleUtil.getUDetail(g_id,3);
+			 
+				String securityFile=quizID+"_Security.xml";
+				String examFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseID+"/Exam/"+"/"+quizID);
+				File securityFile1=new File(examFilePath+"/"+securityFile);
+				QuizMetaDataXmlWriter createXmlfile=new QuizMetaDataXmlWriter();
+					if(!securityFile1.exists()){
+						createXmlfile.OLESRootOnly(examFilePath+"/"+securityFile);
+					}
+					if(securityFile1.exists()){
+						QuizMetaDataXmlReader readSecurity=new QuizMetaDataXmlReader(examFilePath+"/"+securityFile+"/");
+						XmlWriter xmlwrite=new XmlWriter(examFilePath+"/"+securityFile);
+						collectSecurity=readSecurity.getSecurityDetail();
+						for(int i=0;i<userList.size();i++){
+							String securityID="";
+							String IPAddress="";
+							String student=((CourseUserDetail) userList.elementAt(i)).getLoginName();
+							if(collectSecurity.size()==0){
+								securityID=generateSecurityString();
+							}
+								if(!securityID.equals("")){
+										createXmlfile.writeSecurityString(xmlwrite,student,securityID,IPAddress);
+										data.setMessage(MultilingualUtil.ConvertedString("brih_securitySuccess",LangFile));
+								}
+								else{
+									data.setMessage(MultilingualUtil.ConvertedString("brih_allreadygenerateSecurity",LangFile));
+								}
+						}	
+					}
+					else{
+						data.setMessage(MultilingualUtil.ConvertedString("brih_canNotgenerateSecurity",LangFile));
+					}
+		 }
+		 catch(Exception ex){
+			 ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:generateSecurity !! "+ex);
+				data.setMessage("See ExceptionLog !!");
+		 }
+		
 	}
 }	                           

@@ -169,6 +169,8 @@ public class Evaluate extends  SecureScreen{
 //			}
 //			else
 				context.put("studentLoginName",studentLoginName);
+				
+			
 //			try{	
 //				if(!(Quizid.equals("0"))){
 //					Vector quizid=new Vector();

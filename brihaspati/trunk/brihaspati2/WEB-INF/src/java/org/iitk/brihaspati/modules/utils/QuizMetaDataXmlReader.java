@@ -902,7 +902,10 @@ public class QuizMetaDataXmlReader{
 			if(files!=null){
 				Attributes ats;
 				String quizID, userID,score,usedTime;
-				String evaluate="";
+
+				String evaluate="",studentName="";
+				int uid;
+
 				for(int j=0;j<files.length;j++){
 					QuizFileEntry fileEntry=new QuizFileEntry();
 					ats=files[j].getAttributes();
@@ -910,15 +913,22 @@ public class QuizMetaDataXmlReader{
 					userID = ats.getValue("UserID");
 					score = ats.getValue("TotalScore");
 					usedTime = ats.getValue("UsedTime");
+
 					evaluate = ats.getValue("evaluate");
+					uid=Integer.parseInt(userID);
+					studentName=UserUtil.getLoginName(uid);
+
 					fileEntry.setQuizID(quizID);
 					fileEntry.setUserID(userID);
 					fileEntry.setScore(score);
 					fileEntry.setUsedTime(usedTime);
+
 					fileEntry.setEvaluate(evaluate);
+					fileEntry.setStudentName(studentName);
+
 					vt.add(fileEntry);					   
 				}
-				return vt;
+				return vt;		
 			}
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:attemptedQuiz !! "+e);			
@@ -1054,19 +1064,18 @@ public class QuizMetaDataXmlReader{
 				}				
 				return vt;
 			}
+			else{
+				return vt;
+			}
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getFinalscore !! "+e);
 		}
 		return null;
 	}
+
 	
-	/**
-	 * This method gets all quizID,userID,score,usedTime and evaluate from score.xml file
-	 * @return Vector
-	 * @author Devendra Singhal
-	 */
 	
-	public Vector getFinalScore(){
+	/*public Vector getFinalScore(){
 		Vector collect=new Vector();
 		try{
 			XmlData files[]=xr.getElements("QuizQuestions");
@@ -1099,7 +1108,8 @@ public class QuizMetaDataXmlReader{
 			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getFinalscore !! "+e);
 		}
 		return null;
-	}
+	}*/
+
 	/**
 	 * This method gets all distinct quizID,userID and score from score.xml file
 	 * @return Vector
@@ -1115,7 +1125,7 @@ public class QuizMetaDataXmlReader{
 				Attributes ats;
 				String quizid,userid,score;		
 				String a[] = new String[files.length];
-				Arrays.fill(a, "aa");
+				Arrays.fill(a,"aa");
 				for(int j=0;j<files.length;j++){
 					QuizFileEntry fileEntry=new QuizFileEntry();
 					ats=files[j].getAttributes();
@@ -1143,7 +1153,10 @@ public class QuizMetaDataXmlReader{
 						fileEntry.setScore(score);			
 						vt.add(fileEntry);
 					}								
-				}				
+				}	
+				return vt;
+			}
+			else{
 				return vt;
 			}
 		}catch(Exception e){
@@ -1545,5 +1558,40 @@ public class QuizMetaDataXmlReader{
 			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getQuesBanklist_Detail !! "+e);		
 		}
 		return firstNumber;
+	}
+	
+	/**
+	 * This method gets the Detail of all SecurityStrings
+	 * @return vector
+	 * @exception generic Exception
+	 * @author Devendra Singhal
+	 */
+	public Vector getSecurityDetail(){
+		Vector collect=new Vector();
+		try{
+			XmlData files[]=xr.getElements("Quiz");
+			if(files!=null){
+				Attributes ats;
+				String studentid,securityid,IP;
+				int uid;
+				for(int i=0;i<files.length;i++){
+					QuizFileEntry fileEntry=new QuizFileEntry();
+					ats=files[i].getAttributes();
+					studentid=ats.getValue("StudentID");
+					securityid=ats.getValue("SecurityID");
+					IP=ats.getValue("IPAddress");
+						fileEntry.setStudentID(studentid);
+						fileEntry.setSecurityID(securityid);
+						fileEntry.setIP(IP);
+						collect.add(fileEntry);	
+				}
+				
+			return collect;
+			}
+		}
+		catch(Exception ex){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getSecurityString !! "+ex);	
+		}
+		return collect;
 	}
 }

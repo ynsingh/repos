@@ -186,7 +186,7 @@ public class IndexHome extends SecureScreen{
 			if(Role.equals("instructor"))
 			{
 				Vector course_inst=StudentInstructorMAP.getIMAP(u_id);
-				ErrorDumpUtil.ErrorLog("course_inst"+course_inst);
+	//			ErrorDumpUtil.ErrorLog("course_inst"+course_inst);
                         	context.put("inst",course_inst);
 				// getting Unread Notices
 				unread_inst=NoticeUnreadMsg.getUnreadNotice(u_id,2,"All");
