@@ -42,21 +42,16 @@ import org.apache.turbine.util.RunData;
 import org.iitk.brihaspati.om.Courses;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.apache.velocity.context.Context;
+import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
-import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
-import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.apache.turbine.services.security.torque.om.TurbineUser;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.torque.util.Criteria;
-import org.apache.turbine.services.servlet.TurbineServlet;
-import org.iitk.brihaspati.om.InstituteAdminRegistration;
-import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 
 /**
  * This class contains code for display details of all registered courses 
@@ -132,86 +127,34 @@ public class ViewCourseList extends VelocityScreen
 			else
 			{	
 				Vector Details= new Vector();
-				Vector inamevect= new Vector();
-		 		for(int i=0;i<q.size();i++)
-	         		{
-		 			byte b= ((Courses)(q.get(i))).getActive();
-		 			String groupname=((Courses)(q.get(i))).getGroupName().toString();
-					//String rmid[]=groupname.split("_");
-					String rmid[]=groupname.split("@");
-					//String gn=rmid[0];
-					String Iid=rmid[1];
-					String mainid[]=Iid.split("_");
-					String actId=mainid[1];
-					//vct.add(Iid);
-					vct.add(actId);
-		 			String courseName=((Courses)(q.get(i))).getCname().toString();
-		 			String galias=((Courses)(q.get(i))).getGroupAlias().toString();
-		     			// get Active Course
-					String act=Byte.toString(b);
-					//get group id 
-		   			int GID=GroupUtil.getGID(groupname);
-					/**
-					 *Get Institutename accoding to Institute Id
-					 */
-					List instnamelist=null;
-					for(int n=0;n<vct.size();n++){
-						String iid=vct.get(n).toString();
-						int InstId=Integer.parseInt(iid);
-						try{
-						crit=new Criteria();
-						crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,InstId);
-						instnamelist=InstituteAdminRegistrationPeer.doSelect(crit);
-						}
-						catch (Exception e){ErrorDumpUtil.ErrorLog("The exception is in getting institute name "+e);}
-					}
-		   			//get all userid in specified group as Instructor role
-					Vector uid=UserGroupRoleUtil.getUID(GID,2);
-		   			for(int j=0;j<uid.size();j++)
-					{
-			   			String username=UserUtil.getLoginName(Integer.parseInt(uid.elementAt(j).toString()));
-			   			int userid=Integer.parseInt(uid.elementAt(j).toString());
-			  			/**
-			   			* check for primary Instructor 
-						* because appear only primary Instructor
-						* now group name contains InstituteId, so for checking for primary Instructor,get groupname without Institute Id.  
-			   			*/
-						//String gnme[]=groupname.split("_");
-						String gnme[]=groupname.split("@");
-						String gnameNiid=gnme[0];
-						String gnameid=gnme[1];
-						String dnme[]=gnameid.split("_");
-						String domain=dnme[0];
-						gnameNiid=gnameNiid+"@"+domain;
-			   			boolean check=gnameNiid.endsWith(username);
-		   	   			if(check==true)	
-			   			{
-							List entry=UserManagement.getUserDetail(Integer.toString(userid));
-                        				for(int k=0;k<entry.size();k++)
-                        				{
-                                				TurbineUser element=(TurbineUser)(entry.get(k));
-                                				String firstName=(element.getFirstName()).toString();
-                                				String lastName=(element.getLastName()).toString();
-                                				String email=(element.getEmail()).toString();
-                                				String userName=firstName+" "+lastName;
-								String institutename="";
-								try{
-							 institutename=((InstituteAdminRegistration)instnamelist.get(0)).getInstituteName().toString();
-								}
-								catch (Exception e){ErrorDumpUtil.ErrorLog("I am here else321"+ e);}
-                                				CourseUserDetail cuDetail=new CourseUserDetail();
-                                				//cuDetail.setGroupName(groupname);
-                                				cuDetail.setGroupName(institutename);
-                   						cuDetail.setEmail(email);
-		   						cuDetail.setActive(act);
-                   						cuDetail.setInstructorName(userName);
-                   						cuDetail.setCourseName(courseName);
-                   						cuDetail.setCAlias(galias);
-                                				Details.add(cuDetail);
-                        				}
-			  			}
-		     			}
-		   		}
+				for(int i=0;i<q.size();i++)
+                                {
+                                        // get Active Course
+                                        byte b= ((Courses)(q.get(i))).getActive();
+                                        String act=Byte.toString(b);
+                                        String courseName=((Courses)(q.get(i))).getCname().toString();
+                                        String galias=((Courses)(q.get(i))).getGroupAlias().toString();
+
+                                        String groupname=((Courses)(q.get(i))).getGroupName().toString();
+					String iid=StringUtils.substringAfterLast(groupname,"_");
+                                        String nmeml=StringUtils.substringBeforeLast(groupname,"_");
+                                        //getting institute name
+                                        String iname=InstituteIdUtil.getIstName(Integer.parseInt(iid));
+
+                                        String pieml=StringUtils.substringAfter(nmeml,galias);
+
+                                        String insname=UserUtil.getFullName(UserUtil.getUID(pieml));
+
+                                        CourseUserDetail cuDetail=new CourseUserDetail();
+                                        cuDetail.setGroupName(iname);
+                                        cuDetail.setEmail(pieml);
+                                        cuDetail.setActive(act);
+                                        cuDetail.setInstructorName(insname);
+                                        cuDetail.setCourseName(courseName);
+                                        cuDetail.setCAlias(galias);
+                                        Details.add(cuDetail);
+                                }
+
                         	int startIndex=pp.getInt("startIndex",0);
                         	String status=new String();
                         	int t_size=Details.size();
