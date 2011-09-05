@@ -45,7 +45,7 @@ public class View_ManagersAction extends org.apache.struts.action.Action {
      ElectionManagerDAO electionmanagerdao=new ElectionManagerDAO();
 
      HttpSession session = request.getSession();
-     System.out.println("xcvxcbxcbxc");
+    
 
      String instituteId = (String)session.getAttribute("institute_id");
 
@@ -53,7 +53,11 @@ public class View_ManagersAction extends org.apache.struts.action.Action {
         //con=MyConnection.getMyConnection();
         //PreparedStatement stmt=con.prepareStatement("select * from admin_registration where  status is null");
         //rst=stmt.executeQuery();
-        rst =electionmanagerdao.GetManagers(instituteId);
+      String para1 = request.getParameter("search_by");
+      String para2 = request.getParameter("search_keyword");
+      String status = request.getParameter("status");
+
+        rst =electionmanagerdao.GetManagers(instituteId,para1,para2,status);
             session.setAttribute("resultset", rst);
 System.out.println("resultset"+ rst);
             System.out.println("rst+"+rst.size());

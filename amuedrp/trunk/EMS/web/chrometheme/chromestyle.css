@@ -1,0 +1,292 @@
+.chromestyle{
+width: 99%;
+font-weight: bold;
+font-family:arial;
+    font-size:13px;
+    letter-spacing:1px;
+      color: white;
+
+/*background-color: #7697BC*/
+}
+
+.chromestyle:after{ /*Add margin between menu and rest of content in Firefox*/
+content: "."; 
+display: block; 
+height: 0; 
+clear: both; 
+visibility: hidden;
+}
+
+.chromestyle ul{
+border: 1px solid #BBB;
+width: 100%;
+/*//background-color: ;*/
+background: url(bg.gif) center center repeat-x; /*THEME CHANGE HERE*/
+padding: 4px 0;
+margin: 0;
+  font-family:arial;
+    font-size:13px;
+    letter-spacing:1px;
+    color: white;
+text-align: left; /*set value to "left", "center", or "right"*/
+}
+
+.chromestyle ul li{
+display: inline;
+}
+
+.chromestyle ul li a{
+   color: white;
+padding: 4px 7px;
+margin: 0;
+text-decoration: none;
+border-right: 1px solid #DADADA;
+}
+
+.chromestyle ul li a:hover, .chromestyle ul li a.selected{ /*script dynamically adds a class of "selected" to the current active menu item*/
+background-color: #7697BC;
+        /*  background: url(chromebg-over.gif) center center repeat-x; THEME CHANGE HERE*/
+}
+
+/* ######### Style for Drop Down Menu ######### */
+
+.dropmenudiv{
+position:absolute;
+top: 0;
+border: 1px solid #BBB; /*THEME CHANGE HERE*/
+border-bottom-width: 0;
+font:normal 12px arial;
+line-height:18px;
+/*z-index:100;*/
+background-color: #7697BC;
+
+width: 200px;
+visibility: hidden;
+}
+
+
+.dropmenudiv a{
+width: auto;
+display: block;
+text-indent: 3px;
+border-bottom: 1px solid #BBB; /*THEME CHANGE HERE*/
+padding: 2px 0;
+text-decoration: none;
+font-weight: bold;
+   color: white;
+}
+
+* html .dropmenudiv a{ /*IE only hack*/
+width: 100%;
+}
+
+.dropmenudiv a:hover{ /*THEME CHANGE HERE*/
+background-color: #F0F0F0;
+color:black;
+}
+
+
+.dd-menu {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    margin-left: 0px;
+     display: block;
+    background-image: url("bg.gif"); /*THEME CHANGE HERE*/
+    
+    
+    
+    height: 20px;
+    z-index: 1000;
+    visibility: visible;
+}
+.dd-menu li{
+   display: inline-block;
+   
+   position: relative;
+   list-style: none;
+   margin-left: 25px;
+   width: auto;
+
+
+
+}
+
+.dd-menu li a {
+    color: white;
+    outline: none;
+    position: relative;
+    text-align: center;
+    width: auto;
+    height: 100%;
+    margin: 0 0;
+
+}
+.dd-menu li a:hover, .dd-menu li a.dd-path {
+    background-attachment: scroll;
+    background-clip: border-box;
+    width: 100%;
+    background-color: gray;
+    
+    background-origin: padding-box;
+    overflow: hidden;
+    color:  rgb(241,241,241);
+}
+a:hover, a.dd-path {
+    background-attachment: scroll;
+
+
+    background-color: gray;
+
+    background-origin: padding-box;
+    overflow: visible;
+    color:  rgb(241,241,241);
+}
+.dd-menu li ul li a {
+
+    width: 150px;
+    position: relative;
+    display: block;
+    text-align: left;
+    height: 9px;
+    line-height: 10px;
+    background: url("bg.gif") center center repeat-x; /*THEME CHANGE HERE*/
+    left: inherit;
+    top: -35px;
+    /*z-index: 1000;*/
+    overflow: visible;
+
+}
+
+.dd-menu li ul li a:hover, .dd-menu li ul li a.dd-path {
+    background-color: gray;
+    background-image: none;
+    /*z-index: 1000;*/
+    
+    color:  rgb(0,0,0);
+}
+.dd-menu li ul li ul li a {
+
+    width: 170px;
+    position: relative;
+    display: block;
+    text-align: left;
+    height: 9px;
+    line-height: 10px;
+    background: url("bg.gif") center center repeat-x; /*THEME CHANGE HERE*/
+    left: 155px;
+    /*z-index: 1000;*/
+    overflow: visible;
+
+}
+.dd-menu li ul li ul li a:hover, .dd-menu li ul li ul li a.dd-path {
+    background-color: gray;
+    background-image: none;
+    /*z-index: 1000;*/
+    width: 170px;
+    color:  rgb(0,0,0);
+}
+
+.dd-menu, .dd-menu ul {
+padding: 0px;
+margin: 0px 0px;
+position: relative;
+list-style-type: none;
+list-style-position: inside;
+}
+.dd-menu li { position: relative; float: left; }
+.dd-menu li a { position: relative; display: inline; float: left; text-decoration: none; }
+.dd-menu li ul { width: 133px; position: relative; display: none; /*z-index: 1000;*/ }
+.dd-menu li ul a { }
+/* Links level 1 */
+.dd-menu li { margin-left: 20px; }
+.dd-menu li:first-child { margin-left: 20px;width: 60px; }
+.dd-menu li ul li:first-child {top:0px;left: inherit}
+.dd-menu li ul li ul li:first-child {top:0px;left: inherit;margin-left: -15px;}
+.dd-menu li a { width: 100%; height: 20px; padding: 0px 5px; line-height:20px; }
+/* Links level 2,3,4 */
+.dd-menu ul li { margin-left: 0px; padding: 0px 0px; top:0px; }
+.dd-menu ul a { height: 18px; width: 100%;  padding: 9px 10px; line-height: 18px; }
+/* Submenu level 1 */
+.dd-menu ul { left: -10px; top: 34px; }
+/* Submenu level 2,3,4 */
+.dd-menu ul ul { left: 15px; top: 0; }
+.dd-menu li ul {position: absolute;top: 55px;}
+/* Dropdown mechanism */
+.dd-menu li:hover ul ul,
+.dd-menu li:hover ul ul ul,
+.dd-menu li:hover ul ul ul ul { display:none; }
+.dd-menu li:hover ul,
+.dd-menu li li:hover ul,
+.dd-menu li li li:hover ul,
+.dd-menu li li li li:hover ul { display:block; }
+.dd-menu li ul li:hover ul {top: 0px; display:block;margin-left: 0px; }
+.dd-menu li ul li:first-child:hover ul {top: 0px; display:block;margin-left: -10px; }
+/* Arrows level 1 */
+.dd-menu a.dd-submenu-title { padding-right: 15px; }
+.dd-menu a span.dd-arrow {
+height: 4px;
+width: 7px;
+position: absolute;
+right: 10px;
+top: 15px;
+
+background-position: 0 60px;
+background-repeat: no-repeat;
+}
+.dd-menu a:hover span.dd-arrow, .dd-menu a.dd-path span.dd-arrow {
+
+}
+/* Arrows level 2,3,4 */
+.dd-menu ul a span.dd-arrow {
+height: 7px;
+width: 4px;
+position: absolute;
+right: 0px;
+top: 14px;
+
+background-position: -20px 0;
+background-repeat: no-repeat;
+}
+.dd-menu ul a.dd-path span.dd-arrow, .dd-menu ul a:hover span.dd-arrow {
+background-position: 0 -60px;
+}
+/* Rounded corners */
+.dd-menu ul {  }
+.dd-menu > li.current-menu-item > a, .dd-menu > li > a:hover, .dd-menu > li > a.dd-path {
+
+}
+
+a{
+    text-decoration: none;
+}
+.dd-menu li ul li a:hover, .dd-menu li ul li a.dd-path {
+    width: 150px;
+    color:rgb(241,241,241);
+    background-color: gray;
+
+}
+.dd-menu li a span.dd-arrow {
+    position: relative;
+    display: block;
+    top:-15px;
+    left: 112px;
+    height: 10px;
+    width: 10px;
+    background-image: url("../images/arrow-down.png");
+    
+    background-position: center center;
+}
+.dd-menu ul li a span.dd-arrow {
+    background-image: url("../images/arrow-right.png");
+    position: relative;
+    top:-10px;
+    left: 135px;
+    height: 10px;
+    width: 10px;
+    z-index: 1001;
+    background-position: center center;
+    background-repeat: no-repeat;
+    
+
+}

@@ -184,5 +184,23 @@ public Integer getInstituteRequestCount(){
         }
 }
 
+public List getInstituteNameByStatus(String status){
+  Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM Institute where  working_status = :status");
+            
+            query.setString("status",status );
+
+            return (List)query.list();
+        }
+        finally {
+            session.close();
+        }
+
+}
+
 
 }

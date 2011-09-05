@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 21 Jun, 2011 6:59:44 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="ems" name="com.myapp.struts.hbm.CandidateRegistration" table="candidate_registration">
+    <composite-id class="com.myapp.struts.hbm.CandidateRegistrationId" name="id">
+      <key-property name="enrollment" type="string">
+        <column length="30" name="enrollment"/>
+      </key-property>
+      <key-property name="instituteId" type="string">
+        <column length="30" name="institute_id"/>
+      </key-property>
+      <key-property name="electionId" type="string">
+        <column length="30" name="election_id"/>
+      </key-property>
+    </composite-id>
+    <property name="enrolledIn" type="string">
+      <column length="30" name="enrolled_in"/>
+    </property>
+    <property name="PMarks" type="string">
+      <column length="30" name="p_marks"/>
+    </property>
+    <property name="PAttendence" type="string">
+      <column length="30" name="p_attendence"/>
+    </property>
+    <property name="backlog" type="string">
+      <column length="50" name="backlog"/>
+    </property>
+    <property name="criminal" type="string">
+      <column length="50" name="criminal"/>
+    </property>
+    <property name="indisc" type="string">
+      <column length="50" name="indisc"/>
+    </property>
+    <property name="position" type="string">
+      <column length="50" name="position"/>
+    </property>
+    <property name="status" type="string">
+      <column length="50" name="status1"/>
+    </property>
+  </class>
+</hibernate-mapping>

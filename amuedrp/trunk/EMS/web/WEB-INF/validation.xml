@@ -175,6 +175,17 @@
     </field>
 </form>
 
+
+        <form name="DepActionForm">
+           
+            
+            <field property="electionname" depends="required">
+                <arg key="DepActionForm.electionname">
+                </arg>
+            </field>
+        </form>
+
+
     </formset>
 
    

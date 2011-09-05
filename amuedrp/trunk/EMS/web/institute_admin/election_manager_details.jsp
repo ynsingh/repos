@@ -78,7 +78,7 @@ if (!rst.isEmpty()){
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Election_Manager_Details</title>
     </head>
-    <body>
+    <body onload="funload();">
 
         <html:form action="/manager_registration" method="post">
         <table width="100%" dir="<%=rtl%>">
@@ -211,9 +211,24 @@ if (!rst.isEmpty()){
     </body>
 </html>
 <script>
+    var prevheight;
     function quit()
 {
     //top.location="/EMS-Struts/institute_admin/institute_admin_home.jsp";
+    parent.document.getElementById("pagetab").height = prevheight;
     location.href="<%=request.getContextPath()%>/view_managers.do";
+}
+
+
+
+function funload()
+{
+  // alert("yes its working");
+   var parloc = parent.document.getElementById("pagetab");
+    var pagheight = document.height!=undefined?document.height:(document.body!=undefined?document.body.height:document.scrollHeight);
+   prevheight = parloc.height;
+   pagheight+=30;
+    parloc.height = pagheight!=undefined?pagheight:650;
+    //alert("yes its working");
 }
 </script>

@@ -69,8 +69,31 @@ document.Form1.action="search_institute.do";
 document.Form1.method="post";
 document.Form1.target="f1";
 document.Form1.submit();
+window.setInterval('winresize()', 100);
 }
 
+ function winresize()
+{
+    //alert(document.width);
+    var winwidth = document.width;
+    var IFRAMERef = frames['f1'];
+   // alert(IFRAMERef);
+    var frmwidth = IFRAMERef.document.width;
+    var windiff=200;
+    var frmheight;
+        if(IFRAMERef.document.getElementById("f1")!=undefined)
+        frmheight= IFRAMERef.document.getElementById("f1").height;
+        else
+            if(IFRAMERef.document.getElementById("form3")!=undefined)
+        frmheight= IFRAMERef.document.getElementById("form3").height;
+        else
+            frmheight = 550+"px";
+    //alert("frmheight="+frmheight);
+    if(winwidth!=undefined && frmwidth!=undefined)
+        windiff= winwidth - frmwidth;
+    document.getElementById("ifr3").style.paddingLeft = windiff*0.5+"px";
+    document.getElementById("ifr3").style.height = frmheight;
+}
 </script>
 </head>
 <link rel="stylesheet" href="/EMS/css/page.css"/>
@@ -136,7 +159,7 @@ document.Form1.submit();
       </td>
 
   </tr>
-  <tr><td><IFRAME  name="f1" src="#" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
+  <tr><td id="ifr3"><IFRAME  name="f1" src="#" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
      
 
        </table>

@@ -79,8 +79,8 @@ logindao.update(loginDetails);
                                 return mapping.findForward("success");
 
 if(loginDetails.getRole().equalsIgnoreCase("Election Manager"))
-{ request.setAttribute("msg","Requested Page is being developed");
-                                return mapping.findForward("failure");}
+{               //request.setAttribute("msg","Requested Page is being developed");
+                                return mapping.findForward("electionmanager");}
                              
       
         

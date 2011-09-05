@@ -1,30 +1,27 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 15, 2011 5:46:40 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.ElectionManager" table="election_manager">
-        <composite-id name="id" class="com.myapp.struts.hbm.ElectionManagerId">
-            <key-property name="managerId" type="string">
-                <column name="manager_id" length="100" />
-            </key-property>
-            <key-property name="instituteId" type="string">
-                <column name="institute_id" length="20" />
-            </key-property>
-        </composite-id>
-        <property name="department" type="string">
-            <column name="department" length="50" />
-        </property>
-        <property name="staffId" type="string">
-            <column name="staff_id" length="100" />
-        </property>
-        <property name="userId" type="string">
-            <column name="user_id" length="100" />
-        </property>
-        <property name="status" type="string">
-            <column name="status" length="50" />
-        </property>
-        
-
-    </class>
+  <class catalog="ems" name="com.myapp.struts.hbm.ElectionManager" table="election_manager">
+    <composite-id class="com.myapp.struts.hbm.ElectionManagerId" name="id">
+      <key-property name="managerId" type="string">
+        <column length="100" name="manager_id"/>
+      </key-property>
+      <key-property name="instituteId" type="string">
+        <column length="20" name="institute_id"/>
+      </key-property>
+    </composite-id>
+    <property name="department" type="string">
+      <column length="50" name="department"/>
+    </property>
+    <property name="staffId" type="string">
+      <column length="100" name="staff_id"/>
+    </property>
+    <property name="userId" type="string">
+      <column length="100" name="user_id"/>
+    </property>
+    <property name="status" type="string">
+      <column length="50" name="status"/>
+    </property>
+  </class>
 </hibernate-mapping>

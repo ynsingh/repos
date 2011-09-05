@@ -74,7 +74,7 @@ if (!rst.isEmpty()){
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Election_Manager_Details</title>
     </head>
-    <body>
+    <body onload="funload()">
 
         <html:form action="/change_status" method="post">
         
@@ -236,9 +236,22 @@ if (!rst.isEmpty()){
     </body>
 </html>
 <script>
+    var prevheight;
     function quit()
 {
     //top.location="/EMS-Struts/institute_admin/institute_admin_home.jsp";
+    window.top.document.getElementById("pagetab").height = prevheight;
     location.href="<%=request.getContextPath()%>/block_managers.do";
+}
+
+function funload()
+{
+  // alert("yes its working");
+   var parloc = window.top.document.getElementById("pagetab");
+    var pagheight = document.height!=undefined?document.height:(document.body!=undefined?document.body.height:document.scrollHeight);
+   prevheight = parloc.height;
+   pagheight+=30;
+    parloc.height = pagheight!=undefined?pagheight:650;
+    //alert("yes its working");
 }
 </script>

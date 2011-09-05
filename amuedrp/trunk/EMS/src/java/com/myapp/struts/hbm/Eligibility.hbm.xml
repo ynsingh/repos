@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 13, 2011 4:40:02 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="ems" name="com.myapp.struts.hbm.Eligibility" table="eligibility">
+    <composite-id class="com.myapp.struts.hbm.EligibilityId" name="id">
+      <key-property name="eligibilityId" type="string">
+        <column length="20" name="eligibility_id"/>
+      </key-property>
+      <key-property name="ruleId" type="string">
+        <column length="20" name="rule_id"/>
+      </key-property>
+      <key-property name="electionId" type="string">
+        <column length="20" name="election_id"/>
+      </key-property>
+      <key-property name="instituteId" type="string">
+        <column length="20" name="institute_id"/>
+      </key-property>
+    </composite-id>
+    <property name="eligibility" type="string">
+      <column length="20" name="eligibility"/>
+    </property>
+    <property name="department" type="string">
+      <column length="300" name="department"/>
+    </property>
+    <property name="marks" type="string">
+      <column length="20" name="marks"/>
+    </property>
+    <property name="attendence" type="string">
+      <column length="20" name="attendence"/>
+    </property>
+    <property name="backlog" type="string">
+      <column length="20" name="backlog"/>
+    </property>
+    <property name="criminallog" type="string">
+      <column length="20" name="criminallog"/>
+    </property>
+    <property name="indiscipline" type="string">
+      <column length="20" name="indiscipline"/>
+    </property>
+  </class>
+</hibernate-mapping>

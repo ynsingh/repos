@@ -262,11 +262,13 @@ String msg1=resource.getString("duplicate_user_id");
          electionmanagerdao.insert(electionmanager);
          String msg=resource.getString("record_inserted_successfully");
 request.setAttribute("msg",msg);
-      
-         obj=new Email(email_id,admin_password,"Registration Accepted Successfully from EMS","User Id="+user_id+" Your Password for EMS Login is="+admin_password);
+       String path = servlet.getServletContext().getRealPath("/");
+         obj=new Email(path,email_id,admin_password,"Registration Accepted Successfully from EMS","User Id="+user_id+" Your Password for EMS Login is="+admin_password);
+         System.out.println(email_id+institute_id+admin_password);
          executor.submit(new Runnable() {
 
                 public void run() {
+
                     obj.send();
                 }
             });

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 13, 2011 4:44:18 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="ems" name="com.myapp.struts.hbm.Ballot" table="ballot">
+    <composite-id class="com.myapp.struts.hbm.BallotId" name="id">
+      <key-property name="ballotId" type="string">
+        <column length="100" name="ballot_id"/>
+      </key-property>
+      <key-property name="instituteId" type="string">
+        <column length="100" name="institute_id"/>
+      </key-property>
+      <key-property name="electionId" type="string">
+        <column length="100" name="election_id"/>
+      </key-property>
+    </composite-id>
+    <property name="ballotName" type="string">
+      <column length="300" name="ballot_name"/>
+    </property>
+  </class>
+</hibernate-mapping>

@@ -80,6 +80,36 @@ function getQuery(id)
     var query = "admin/index5.jsp?id="+id;
     return query;
 }
+function changerec(){
+        var x=document.getElementById('rec').value;
+    var loc = window.location;
+    loc = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/admin/update_admin.jsp";
+
+
+            loc = loc + "?pageSize="+x;
+    window.location = loc;
+
+    }
+
+   document.onkeyup = keyHit
+function keyHit(event) {
+
+  if (event.keyCode == 13) {
+  changerec();
+
+    event.stopPropagation()
+    event.preventDefault()
+  }
+}
+
+function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
 </script>
  <style>
     th a:link      { text-decoration: none; color: black }
@@ -94,13 +124,13 @@ function getQuery(id)
 </style>
 </head>
 
-<body>
+<body style="width: 720px">
  <div
    style="  top:0px;
    left:5px;
    right:5px;
       position: absolute;
-
+      width: 710px;
       visibility: show;">
 <%!
    
@@ -122,7 +152,8 @@ if (rs!=null){
  /*Create a connection by using getConnection() method
    that takes parameters of string type connection url,
    user name and password to connect to database.*/
-
+if(request.getParameter("pageSize")!=null)
+    perpage = Integer.parseInt((String)request.getParameter("pageSize"));
 //rs.beforeFirst();
 
 
@@ -158,12 +189,13 @@ String Action=resource.getString("login.ems.action");
 pageContext.setAttribute("Action", Action);
 String Edit=resource.getString("edit");
 pageContext.setAttribute("Edit", Edit);
+pageContext.setAttribute("rec",perpage);
 %>
 
        
 <%
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex+4) >= requestList.size ())
+   if ((toIndex = fromIndex+perpage) >= requestList.size ())
    toIndex = requestList.size();
    request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
@@ -176,7 +208,8 @@ pageContext.setAttribute("Edit", Edit);
 <%}
 else
 {%>
-<table align="<%=align%>" dir="<%=rtl%>" width="100%">
+<table align="<%=align%>" dir="<%=rtl%>" width="700px">
+    <tr><td colspan="2" align="right">View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></td></tr>
     <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
     
@@ -214,11 +247,11 @@ else
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
   <alternateRows styleClass="alternaterows"/>
 
-  <paging size="4" count="${tCount}" custom="true" nextUrlVar="next"
+  <paging size="${rec}" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>
-<table width="600" style="font-family: arial; font-size: 10pt" border=0>
+<table width="700px" style="font-family: arial; font-size: 10pt" border=0>
 <tr>
 <td align="left" width="100px">
 <c:if test="${previous != null}">
@@ -228,7 +261,7 @@ else
 <a href="<c:out value="${next}"/>"><%=resource.getString("next")%></a>
 </c:if>
 
-</td><td width="500px" align="center">
+</td><td width="600px" align="center">
 
 <c:forEach items="${pages}" var="page">
 <c:choose>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 28, 2011 3:23:33 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.myapp.struts.hbm.Electionrule" table="electionrule">
+    <composite-id class="com.myapp.struts.hbm.ElectionruleId" name="id">
+      <key-property name="ruleId" type="string">
+        <column length="20" name="rule_id"/>
+      </key-property>
+      <key-property name="electionId" type="string">
+        <column length="20" name="election_id"/>
+      </key-property>
+      <key-property name="instituteId" type="string">
+        <column length="20" name="institute_id"/>
+      </key-property>
+    </composite-id>
+    <property name="criteria" type="string">
+      <column length="20" name="criteria"/>
+    </property>
+  </class>
+</hibernate-mapping>

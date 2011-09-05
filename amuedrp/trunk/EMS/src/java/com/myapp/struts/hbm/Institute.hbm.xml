@@ -1,27 +1,26 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 10, 2011 10:00:02 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.Institute" table="institute">
-        <id name="instituteId" type="string">
-            <column name="institute_id" length="20" />
-            <generator class="assigned" />
-        </id>
-        <property name="registrationId" type="java.lang.Integer">
-            <column name="registration_id" />
-        </property>
-        <property name="instituteName" type="string">
-            <column name="institute_name" length="50" />
-        </property>
-        <property name="workingStatus" type="string">
-            <column name="working_status" length="50" not-null="true" />
-        </property>
-        <set name="staffDetails" inverse="true">
-            <key>
-                <column name="institute_id" length="20" not-null="true" unique="true" />
-            </key>
-            <one-to-many class="com.myapp.struts.hbm.StaffDetail" />
-        </set>
-    </class>
+  <class catalog="ems" name="com.myapp.struts.hbm.Institute" table="institute">
+    <id name="instituteId" type="string">
+      <column length="20" name="institute_id"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="registrationId" type="java.lang.Integer">
+      <column name="registration_id"/>
+    </property>
+    <property name="instituteName" type="string">
+      <column length="50" name="institute_name"/>
+    </property>
+    <property name="workingStatus" type="string">
+      <column length="50" name="working_status" not-null="true"/>
+    </property>
+    <set inverse="true" name="staffDetails">
+      <key>
+        <column length="20" name="institute_id" not-null="true" unique="true"/>
+      </key>
+      <one-to-many class="com.myapp.struts.hbm.StaffDetail"/>
+    </set>
+  </class>
 </hibernate-mapping>

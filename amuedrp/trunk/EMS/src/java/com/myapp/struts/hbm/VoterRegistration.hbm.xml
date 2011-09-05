@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 27 May, 2011 7:47:14 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="ems" name="com.myapp.struts.hbm.VoterRegistration" table="voter_registration">
+    <composite-id class="com.myapp.struts.hbm.VoterRegistrationId" name="id">
+      <key-property name="enrollment" type="string">
+        <column length="20" name="enrollment"/>
+      </key-property>
+      <key-property name="instituteId" type="string">
+        <column length="50" name="institute_id"/>
+      </key-property>
+    </composite-id>
+    <property name="department" type="string">
+      <column length="50" name="department"/>
+    </property>
+    <property name="course" type="string">
+      <column length="20" name="course"/>
+    </property>
+    <property name="year" type="string">
+      <column name="year"/>
+    </property>
+    <property name="courseDuration" type="string">
+      <column name="course_duration"/>
+    </property>
+    <property name="currentSession" type="string">
+      <column name="current_session"/>
+    </property>
+    <property name="joiningDate" type="string">
+      <column length="10" name="joining_date"/>
+    </property>
+    <property name="voterName" type="string">
+      <column length="50" name="voter_name"/>
+    </property>
+    <property name="gender" type="string">
+      <column length="20" name="gender"/>
+    </property>
+    <property name="birthdate" type="string">
+      <column length="10" name="birthdate"/>
+    </property>
+    <property name="FName" type="string">
+      <column length="30" name="f_name"/>
+    </property>
+    <property name="MName" type="string">
+      <column length="30" name="m_name"/>
+    </property>
+    <property name="mobileNumber" type="string">
+      <column length="50" name="mobile_number"/>
+    </property>
+    <property name="CAddress" type="string">
+      <column length="50" name="c_address"/>
+    </property>
+    <property name="city" type="string">
+      <column length="30" name="city"/>
+    </property>
+    <property name="state" type="string">
+      <column length="20" name="state"/>
+    </property>
+    <property name="zipCode" type="string">
+      <column name="zip_code"/>
+    </property>
+    <property name="country" type="string">
+      <column length="30" name="country"/>
+    </property>
+    <property name="PAddress" type="string">
+      <column length="50" name="p_address"/>
+    </property>
+    <property name="city1" type="string">
+      <column length="20" name="city1"/>
+    </property>
+    <property name="state1" type="string">
+      <column length="20" name="state1"/>
+    </property>
+    <property name="zipCode1" type="string">
+      <column name="zip_code1"/>
+    </property>
+    <property name="country1" type="string">
+      <column length="20" name="country1"/>
+    </property>
+    <property name="email" type="string">
+      <column length="50" name="email"/>
+    </property>
+    <property name="status" type="string">
+      <column length="50" name="status"/>
+    </property>
+    <property name="image" type="binary">
+      <column name="image"/>
+    </property>
+  </class>
+</hibernate-mapping>

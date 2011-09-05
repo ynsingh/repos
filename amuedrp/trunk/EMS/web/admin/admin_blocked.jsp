@@ -338,7 +338,7 @@ function validation()
          }
 function quit()
 {
-    parent.location="<%=request.getContextPath()%>"+"/admin/admin_home.jsp";
+    location.href="<%=request.getContextPath()%>"+"/admin/view_blocked_institute.jsp";
 }
 function sessionout()
 {

@@ -41,6 +41,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
     boolean page=true;
     String align="left";
     
+    
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -169,8 +170,8 @@ if (institute_id!=null)
             request.setAttribute("accept_msg3",adminReg.getInstituteName() );
             String msg=resource.getString("request_accepted_instituteid");
             request.setAttribute("msg", msg +institute_id);
-            
-         obj=new Email(adminReg.getAdminEmail(),admin_password,"Registration Accepted Successfully from EMS","User Id="+adminReg.getUserId()+" Your Password for EMS Login is="+admin_password);
+             String     path = servlet.getServletContext().getRealPath("/");
+      obj=new Email(path,adminReg.getAdminEmail(),admin_password,"Registration Accepted Successfully from EMS","User Id="+adminReg.getUserId()+" Your Password for EMS Login is="+admin_password);
          executor.submit(new Runnable() {
 
                 public void run() {

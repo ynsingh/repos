@@ -64,7 +64,7 @@ locale1=(String)session.getAttribute("locale");
 
          
 
-            <html:form  method="post" action="/registration" onsubmit="return checkPassword();" >
+            <html:form  method="post" action="/instituteregistration" onsubmit="return checkPassword();" >
 
                 <table  width="1000px" align="center">
 

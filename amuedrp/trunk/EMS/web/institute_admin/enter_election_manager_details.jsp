@@ -269,7 +269,7 @@ locale1=(String)session.getAttribute("locale");
 }
 
 function echeck(str) {
-var email_id=document.getElementById('email_id');
+<%--var email_id=document.getElementById('email_id');
 
 //alert(str);
 availableSelectList = document.getElementById("searchResult");
@@ -314,7 +314,7 @@ availableSelectList = document.getElementById("searchResult");
 		    return false
 		 }
 
-
+--%>
  		 return true
 	}
 

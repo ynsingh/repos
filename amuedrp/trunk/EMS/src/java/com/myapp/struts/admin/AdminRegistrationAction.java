@@ -193,15 +193,10 @@ System.out.println("institute_name="+institute_name);
                 adminReg.setWorkingStatus("OK");
                 adminReg.setUserId(user_id);
                 System.out.println("UserId");
-                /*PreparedStatement stmt=con.prepareStatement("insert into admin_registration (institute_name,abbreviated_name,institute_address,city,state,Country,pin,land_line_no,mobile_no,domain,type_of_institute,website,admin_fname,admin_lname,admin_designation,admin_email,admin_password,library_name,courtesy,gender,status) values('"+institute_name+"','"+abbreviated_name+"','"+institute_address+"','"+
-                city+"','"+state+"','"+country+"','" +pin+"','"+land_line_no+"','"+mobile_no+"','"+institute_domain+"','"+type_of_institute+"','"+institute_website+"','"+admin_fname+"','"+
-                admin_lname+"','"+admin_designation+"','"+admin_email+"','"+admin_password+"','"+library_name+"','"+courtesy+"','"+gender+"','NotRegistered')");
-                i=stmt.executeUpdate();
-                stmt=con.prepareStatement("select max(registration_id) from admin_registration");
-                ResultSet rst=stmt.executeQuery();*/
+                
                 registration_id = admindao.insert(adminReg);
                 String msg=resource.getString("requestforregistration_accept_successfuly")+String.valueOf(user_id) ;
-                // System.out.println(msg);
+               
                 request.setAttribute("registration_msg", msg);
                 return mapping.findForward("success");
        }

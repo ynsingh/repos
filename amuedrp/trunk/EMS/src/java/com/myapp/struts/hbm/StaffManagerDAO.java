@@ -59,6 +59,8 @@ public class StaffManagerDAO {
                 tx.rollback();
             throw e;
         }
-
+finally {
+          session.close();
+        }
 }
 }

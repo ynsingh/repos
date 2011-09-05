@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 19 May, 2011 1:05:46 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="ems" name="com.myapp.struts.hbm.Election" table="election">
+    <composite-id class="com.myapp.struts.hbm.ElectionId" name="id">
+      <key-property name="electionId" type="string">
+        <column length="20" name="election_id"/>
+      </key-property>
+      <key-property name="instituteId" type="string">
+        <column length="20" name="institute_id"/>
+      </key-property>
+    </composite-id>
+    <property name="electionName" type="string">
+      <column length="300" name="election_name"/>
+    </property>
+    <property name="description" type="string">
+      <column length="500" name="description"/>
+    </property>
+    <property name="startDate" type="timestamp">
+      <column length="19" name="start_date"/>
+    </property>
+    <property name="endDate" type="timestamp">
+      <column length="19" name="end_date"/>
+    </property>
+    <property name="nstart" type="timestamp">
+      <column length="19" name="nstart"/>
+    </property>
+    <property name="nend" type="timestamp">
+      <column length="19" name="nend"/>
+    </property>
+    <property name="scrutnyDate" type="timestamp">
+      <column length="19" name="scrutnyDate"/>
+    </property>
+    <property name="scrutnyEndDate" type="timestamp">
+      <column length="19" name="scrutnyEndDate"/>
+    </property>
+    <property name="withdrawlDate" type="timestamp">
+      <column length="19" name="withdrawlDate"/>
+    </property>
+    <property name="withdrawlEndDate" type="timestamp">
+      <column length="19" name="withdrawlEndDate"/>
+    </property>
+    <property name="status" type="string">
+      <column length="20" name="status"/>
+    </property>
+    <property name="createdBy" type="string">
+      <column length="20" name="created_by"/>
+    </property>
+  </class>
+</hibernate-mapping>

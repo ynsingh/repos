@@ -81,6 +81,36 @@ function getQuery(id)
     var query = "/EMS/admin/view.do?id="+id;
     return query;
 }
+ function changerec(){
+        var x=document.getElementById('rec').value;
+    var loc = window.location;
+    loc = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/admin/view_approved.jsp";
+
+
+            loc = loc + "?pageSize="+x;
+    window.location = loc;
+
+    }
+
+   document.onkeyup = keyHit
+function keyHit(event) {
+
+  if (event.keyCode == 13) {
+  changerec();
+
+    event.stopPropagation()
+    event.preventDefault()
+  }
+}
+
+function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
 </script>
  <style>
     th a:link      { text-decoration: none; color: black }
@@ -95,13 +125,13 @@ function getQuery(id)
 </style>
 </head>
 
-<body>
+<body style="width: 620px;">
  <div
    style="  top:0px;
    left:5px;
    right:5px;
       position: absolute;
-
+      width: 610px;
       visibility: show;">
 <%!
    
@@ -124,6 +154,8 @@ if(rs!=null){
  /*Create a connection by using getConnection() method
    that takes parameters of string type connection url,
    user name and password to connect to database.*/
+if(request.getParameter("pageSize")!=null)
+    perpage = Integer.parseInt((String)request.getParameter("pageSize"));
 
   while (it.hasNext()) {
 	
@@ -153,12 +185,12 @@ String Institute_Name=resource.getString("institutename");
 pageContext.setAttribute("Institute_Name", Institute_Name);
 String Admin_Email=resource.getString("login.ems.adminemail");
 pageContext.setAttribute("Admin_Email", Admin_Email);
-
+pageContext.setAttribute("rec",perpage);
 %>
        
 <%
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex+4) >= requestList.size ())
+   if ((toIndex = fromIndex+perpage) >= requestList.size ())
    toIndex = requestList.size();
    request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
@@ -171,7 +203,8 @@ pageContext.setAttribute("Admin_Email", Admin_Email);
 else
 {%>
 
-<table align="<%=align%>" dir="<%=rtl%>" width="100%">
+<table align="<%=align%>" dir="<%=rtl%>" width="600px">
+   <tr><td colspan="2" align="right">View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></td></tr>
     <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
 
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
@@ -205,11 +238,11 @@ else
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
   <alternateRows styleClass="alternaterows"/>
 
-  <paging size="4" count="${tCount}" custom="true" nextUrlVar="next"
+  <paging size="${rec}" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>
-<table width="60%" style="font-family: arial; font-size: 10pt" border=0>
+<table width="600px" style="font-family: arial; font-size: 10pt" border=0>
 <tr>
 <td align="left" width="10%">
 <c:if test="${previous != null}">

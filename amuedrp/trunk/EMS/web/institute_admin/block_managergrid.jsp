@@ -82,9 +82,6 @@ locale1=(String)session.getAttribute("locale");
      .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
 	    font-weight: normal }
 </style>
-    </head>
-    <body>
-
         <%!
 
 
@@ -126,8 +123,11 @@ pageContext.setAttribute("Change_Status",Change_Status);
    requestList = new ArrayList();
 //requestList = (ArrayList)session.getAttribute("resultset");
    int tcount =0;
-   int perpage=5;
+   int perpage=4;
    int tpage=0;
+
+   if(request.getParameter("pageSize")!=null && request.getParameter("pageSize")!="")
+    perpage = Integer.parseInt((String)request.getParameter("pageSize"));
  /*Create a connection by using getConnection() method
    that takes parameters of string type connection url,
    user name and password to connect to database.*/
@@ -171,7 +171,7 @@ it.next();
 System.out.println("tcount="+tcount);
 
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex+5) >= requestList.size ())
+   if ((toIndex = fromIndex+perpage) >= requestList.size ())
    toIndex = requestList.size();
    request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
@@ -179,7 +179,61 @@ System.out.println("tcount="+tcount);
 
 String path=request.getContextPath();
 pageContext.setAttribute("path", path);
+pageContext.setAttribute("rec",perpage);
   %>
+<script type="text/javascript" language="javascript">
+            function changerec(){
+        var x=document.getElementById('rec').value;
+    var loc = window.location;
+    loc = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/institute_admin/block_managergrid.jsp";
+
+
+            loc = loc + "?pageSize="+x;
+    window.location = loc;
+
+
+    }
+
+   document.onkeyup = keyHit
+function keyHit(event) {
+
+  if (event.keyCode == 13) {
+  changerec();
+
+    event.stopPropagation()
+    event.preventDefault()
+  }
+}
+
+function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
+      function funload()
+      {
+          window.setTimeout(function(){
+         var IFRAMERef = window.top.document.getElementById('pagetab');
+    var parheight= <%=perpage%>;
+    var tc = <%=tcount%>;
+    parheight = parheight>tc?tc:parheight;
+    var heigh = parheight*10 + 300;
+    //alert(heigh);
+    <%--if(heigh>parheight) parheight=heigh;
+    alert(parheight);--%>
+    if(heigh!=undefined)
+        IFRAMERef.height = heigh;
+    else
+        IFRAMERef.height = 500;
+      },200);}
+        </script>
+    </head>
+    <body onload="funload()">
+
+        
 
 
 <br><br>
@@ -190,9 +244,10 @@ pageContext.setAttribute("path", path);
 <%}
 else
 {%>
-<table align="<%=align%>" dir="<%=rtl%>" width="100%">
+<table align="<%=align%>" dir="<%=rtl%>" width="90%">
+    <tr><td colspan="2" align="right">View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></td></tr>
     <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
-<ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
+            <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" style="margin-left: 30px" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
   <columns>
 
@@ -234,12 +289,12 @@ else
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
   <alternateRows styleClass="alternaterows"/>
 
-  <paging size="5" count="${tCount}" custom="true" nextUrlVar="next"
+  <paging size="${rec}" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>
 
-  <table width="500" style="font-family: arial; font-size: 10pt" border=0>
+  <table width="700" style="font-family: arial; font-size: 10pt;margin-left: 30px" border=0>
 <tr>
 <td align="left" width="100px">
 <c:if test="${previous != null}">

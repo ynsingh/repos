@@ -6,13 +6,18 @@
 package com.myapp.struts.hbm;
 
 
+import com.myapp.struts.election_manager.CandidateReg;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
+
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.impl.SQLQueryImpl;
+
 import org.hibernate.transform.Transformers;
 
 /**
@@ -93,7 +98,7 @@ public List<Election_Manager_StaffDetail> GetManagerDetails(String ElectionManag
         }
 }
 
-public List<Election_Manager_StaffDetail> GetManagers(String institute_id)
+public List<Election_Manager_StaffDetail> GetManagers(String institute_id,String paraField,String paraVal,String status)
     {
     Session session =null;
     Transaction tx = null;
@@ -104,8 +109,24 @@ public List<Election_Manager_StaffDetail> GetManagers(String institute_id)
             String sql="";
 
             sql = "select a.*,b.*,c.* from staff_detail a, election_manager b,login c where a.staff_id=b.staff_id and a.staff_id=c.staff_id and a.institute_id=c.institute_id  and  a.institute_id=b.institute_id and a.institute_id=:institute_id";
-
-
+            if(paraVal!=null && !paraVal.equals(""))
+            {
+                paraVal = paraVal + "%";
+                if(paraField.equals("managerId")){
+            sql+=" and b.manager_id like :managerId";
+            }
+            else if(paraField.equals("firstName")) {
+            sql+=" and a.first_name like :firstName";
+            }else if(paraField.equals("lastName")) {
+            sql+=" and a.last_name like :lastName";
+            }
+            }else if(status!=null && !status.equals(""))
+            {
+                if(status.equalsIgnoreCase("B"))
+                sql+=" and b.status like 'B%'";
+                else if(status.equalsIgnoreCase("A"))
+                    sql+=" and b.status like 'OK%'";
+            }
             System.out.println(sql);
 
           Query query =  session.createSQLQuery(sql)
@@ -114,6 +135,15 @@ public List<Election_Manager_StaffDetail> GetManagers(String institute_id)
                     .addEntity(Login.class)
                     .setResultTransformer(Transformers.aliasToBean(Election_Manager_StaffDetail.class));
           query.setString("institute_id", institute_id);
+          if(paraVal!=null && !paraVal.equals(""))
+            if(paraField.equals("managerId")){
+            query.setString("managerId", paraVal);
+            }
+            else if(paraField.equals("firstName")) {
+            query.setString("firstName", paraVal);
+            }else if(paraField.equals("lastName")) {
+            query.setString("lastName", paraVal);
+            }
             return (List<Election_Manager_StaffDetail>) query.list();
         }
     finally {
@@ -171,5 +201,37 @@ Session session =null;
         }
 }
 
+public List Report(String enrollment)
+    {
+    Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            String sql="";
+            //,e.election_name AS e_election_name,p.position_name AS p_position_name,v.voter_name AS v_voter_name,v.gender AS v_gender,v.birthdate AS v_birthdate,v.mobile_number AS v_mobile_number,v.c_address AS v_c_address,v.city AS v_city,v.state AS v_state,v.email AS v_email
+            sql = "select e.id.electionId AS e_election_id,e.electionName AS e_election_name,p.positionName AS p_position_name,v.voterName AS v_voter_name,v.gender AS v_gender,v.birthdate AS v_birthdate,v.mobileNumber AS v_mobile_number,v.CAddress AS v_c_address,v.city AS v_city,v.state AS v_state,v.email AS v_email,v.image AS v_image,v.course AS v_course,v.department AS v_department,v.id.enrollment AS v_enrollment,v.joiningDate AS v_admisionDate,v.courseDuration AS v_duration,v.year AS v_year,v.currentSession AS v_session,c1.PAttendence AS c1_attendence,c1.PMarks AS c1_marks,c1.backlog AS c1_back,c1.criminal AS c1_criminal,v.FName AS v_father,v.MName AS v_mother,v.country AS v_country,v.PAddress AS v_peradd,v.city1 AS v_city1,v.state1 AS v_state1,v.zipCode1 AS v_zip1,v.country1 AS v_country1,v.zipCode AS v_zip FROM Election e,CandidateRegistration c1,VoterRegistration v,Position1 p WHERE  e.id.instituteId = c1.id.instituteId and v.id.instituteId = c1.id.instituteId and e.id.electionId = p.id.electionId and c1.position = p.id.positionId and v.id.enrollment = c1.id.enrollment and c1.status='Registered' and v.id.enrollment = :enrollment order by e.id.electionId,e.electionName,p.positionName,v.voterName asc";
+            // sql = "select e.election_id AS e_election_id,e.election_name AS e_election_name,p.position_name AS p_position_name,v.voter_name AS v_voter_name,v.gender AS v_gender,v.birthdate AS v_birthdate,v.mobile_number AS v_mobile_number,v.c_address AS v_c_address,v.city AS v_city,v.state AS v_state,v.email AS v_email,v.image AS v_image,v.course AS v_course,v.department AS v_department,v.enrollment AS v_enrollment,v.joining_date AS v_admisionDate,v.course_duration AS v_duration,v.year AS v_year,v.current_session AS v_session,c1.p_attendence AS c1_attendence,c1.p_marks AS c1_marks,c1.backlog AS c1_back,c1.criminal AS c1_criminal,v.f_name AS v_father,v.m_name AS v_mother,v.country AS v_country,v.p_address AS v_peradd,v.city1 AS v_city1,v.state1 AS v_state1,v.zip_code1 AS v_zip1,v.country1 AS v_country1,v.zip_code AS v_zip FROM election e,candidate_registration c1,voter_registration v,position1 p WHERE  e.institute_id = c1.institute_id and v.institute_id = c1.institute_id and e.election_id = p.election_id and c1.position = p.position_id and v.enrollment = c1.enrollment and c1.status1='Registered' and v.enrollment = :enrollment order by e.election_id,e.election_name,p.position_name,v.voter_name asc";
+            //,v.course AS v_course,v.department AS v_department,v.enrollment AS v_enrollment,v.joining_date AS v_admisionDate,v.course_duration AS v_duration,v.year AS v_year,v.current_session AS v_session,c1.p_attendence AS c1_attendence,c1.p_marks AS c1_marks,c1.backlog AS c1_back,c1.criminal AS c1_criminal,v.f_name AS v_father,v.m_name AS v_mother,v.country AS v_country,v.p_address AS v_peradd,v.city1 AS v_city1,v.state1 AS v_state1,v.zip_code1 AS v_zip1,v.country1 AS v_country1,v.zip_code AS v_zip
+
+            System.out.println(sql);
+
+          Query query =  session.createQuery(sql)
+//                  .setEntity("v",VoterRegistration.class)
+//                  .setEntity("e",Election.class)
+//                  .setEntity("p",Position1.class)
+//                  .setEntity("c1",CandidateRegistration.class)
+//                  .addScalar("e_election_id", Hibernate.STRING)
+                  //.addScalar("p_position_name", Hibernate.STRING)
+                  .setResultTransformer(Transformers.aliasToBean(CandidateReg.class));
+
+          query.setString("enrollment", enrollment);
+            return  query.list();
+        }
+    finally {
+            session.close();
+        }
+}
 
 }

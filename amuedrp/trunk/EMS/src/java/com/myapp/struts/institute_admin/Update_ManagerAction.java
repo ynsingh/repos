@@ -151,7 +151,8 @@ locale1=(String)session.getAttribute("locale");
                 
                 //staffmanagerdao.update(staffmanager);
                     staffmanagerdao.update(staffmanager);
-                   String msg=resource.getString("record_updated_successfully");
+
+                    String msg=resource.getString("record_updated_successfully");
                     request.setAttribute("msg",msg);
         }
  catch(Exception e)

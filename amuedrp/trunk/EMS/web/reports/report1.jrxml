@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="electionId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="instituteId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     election.`election_name` AS election_election_name
+FROM
+     `election` election
+WHERE
+     election_id = 1
+ AND institute_id = 'amu']]>
+	</queryString>
+	<field name="election_election_name" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="31" splitType="Stretch">
+			<rectangle>
+				<reportElement x="51" y="2" width="463" height="27"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Transparent" x="55" y="6" width="459" height="21"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[Election Management System-]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="7" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="17" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="166" splitType="Stretch">
+			<rectangle>
+				<reportElement x="51" y="3" width="463" height="121"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Opaque" x="54" y="6" width="76" height="17"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Basic Details]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="255" y="31" width="156" height="20"/>
+				<textElement markup="none">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{election_election_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="56" y="31" width="100" height="20"/>
+				<textElement>
+					<font size="12" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[Election Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="182" y="31" width="9" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

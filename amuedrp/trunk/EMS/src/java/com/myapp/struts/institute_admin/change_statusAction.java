@@ -100,15 +100,15 @@ String instituteId = (String)session.getAttribute("institute_id");
         }
         catch(Exception e){
         }
-
-           obj=new Email(admin_email,admin_email,"Manager Status is Changed from admin of Institute in EMS","Status"+status);
+ String path = servlet.getServletContext().getRealPath("/");
+           obj=new Email(path,admin_email,status,"Manager Status is Changed from admin of Institute in EMS","Status"+status);
          executor.submit(new Runnable() {
 
                 public void run() {
                     obj.send();
                 }
             });
-
+System.out.println();
 
         return mapping.findForward(SUCCESS);
     }

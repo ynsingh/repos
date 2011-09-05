@@ -5,11 +5,13 @@
 
 package com.myapp.struts.hbm;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Edrp-04
  */
-public class Election_Manager_StaffDetail {
+public class Election_Manager_StaffDetail implements Serializable {
     private ElectionManager electionManager;
     private StaffDetail staffDetail;
     private Login login;

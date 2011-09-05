@@ -71,26 +71,28 @@ String user=(String)session.getAttribute("username");
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Institute_Admin</title>
-        <script language="javascript">
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/chrometheme/chromestyle.css" />
+
+<script type="text/javascript" src="<%=request.getContextPath()%>/chromejs/chrome.js"/>
+<script type="text/javascript">
+            
+
+
         //Drop Down Menu Code
 
-var urls1 = new buildArray("",
+<%--var urls1 = new buildArray(
 "<%=request.getContextPath()%>/admin/staffupdate.do",
-"<%=request.getContextPath()%>/admin/changeuserpassword"
-
-
-);
+"<%=request.getContextPath()%>/admin/changeuserpassword");
 
 
 function buildArray()
 {
   var a = buildArray.arguments;
 
-  for ( var i=0; i<a.length; i++ )
+  for( var i=0; i<a.length; i++ )
   {
     this[i] = a[i];
   }
-
   this.length = a.length;
 }
 
@@ -101,7 +103,7 @@ function go ( which, num, win )
 
   if ( n != 0 )
   {
-    var url = eval ( "urls" + num + "[n]" )
+    var url = eval ( "urls" + num + "[n]" );
     if ( win )
     {
       openWindow ( url );
@@ -113,55 +115,43 @@ function go ( which, num, win )
 
     }
   }
-}
+}--%>
 
-function openWindow ( url )
+function openWindow(url)
 {
-  popupWin = window.open ( url, 'remote', 'width=100,height=350,dependent=true' );
+  popupWin = window.open(url,"remote","width=100;height=350;dependent=true;");
 }
 
 
 function additem(linkname,dest){
-  document.write('<a  href="'+dest+'" target="page" onclick="return pageload(3);">'+linkname+'</a><br>')
+  document.write('<a  href="'+dest+'" target="page" onclick="return pageload(3);">'+linkname+'</a><br>');
 }
 
 function toggle_menu(state){
 var theMenu=document.getElementById("ddmenu").style;
 if (state==0) {
-  theMenu.visibility="hidden" }
+  theMenu.visibility="hidden"; }
 else {
   theMenu.visibility = (theMenu.visibility=="hidden") ? "visible" : "hidden";
 }
 }
-
-
-
-
-
-
-        </script>
-<style type="text/Stylesheet">
-    #ddmenu a{ text-decoration:none; }
-#ddmenu a:hover{ background-color:#FFFF95;
-
-    </style>
-
-
-        <script language="javascript" type="text/javascript">
-            function pageload(loc)
+</script>
+<script type="text/javascript" language="javascript">
+function pageload(loc)
             {
               // alert("hey");
-              
+
                document.getElementById("page").innerHTML ="";
                var loc1="";
                if(loc==1) loc1="<%=request.getContextPath()%>/create_manager.do";
-               if(loc==2) loc1="<%=request.getContextPath()%>/institute_admin/block_managers.do";
-               if(loc==3) loc1="<%=request.getContextPath()%>/update_managers.do";
+               if(loc==2) loc1="<%=request.getContextPath()%>/institute_admin/search_block_election_manager.jsp";
+               if(loc==3) loc1="<%=request.getContextPath()%>/institute_admin/search_update_election_manager.jsp";
                if(loc==4) loc1="<%=request.getContextPath()%>/view_managers.do";
                if(loc==5) loc1="<%=request.getContextPath()%>admin_account.do";
-               
-               document.getElementById("page").innerHTML = "<iframe name=\"page\" id=\"pagetab\" height=\"800px\" width=\"100%\" src=\"/"+loc1+"\"/>";
-              
+               if(loc==1)
+               document.getElementById("page").innerHTML = "<iframe name=\"page\" id=\"pagetab\" height=\"590px\" width=\"100%\" src=\"/"+loc1+"\"/>";
+              else
+                  document.getElementById("page").innerHTML = "<iframe name=\"page\" id=\"pagetab\" height=\"230px\" width=\"100%\" src=\"/"+loc1+"\"/>";
                return true;
             }
 function change(){
@@ -170,25 +160,36 @@ if(top.location=="http://<%=request.getHeader("host")%><%=request.getContextPath
     {
         //alert(top.location);
         top.location="http://<%=request.getHeader("host")%><%=request.getContextPath()%>/instituteadmin.do";
-    }}
-        </script>
+    }
+    }
+</script>
+<style type="text/Stylesheet">
+    #ddmenu a{ text-decoration:none; }
+#ddmenu a:hover{ background-color:#FFFF95;
+
+    </style>
+
+
+        
     </head>
 
 
 
-    <body onload="change()"><table dir="<%=rtl%>" width="100%" >
-            <tr>  <table border="0" width="100%" dir="<%=rtl%>" >
+    <body onload="change()">
+            <div>   <table border="0" width="100%" dir="<%=rtl%>" >
                               <tr>
                                   <td  height="50px" style="font-family:Arial;color:brown;font-size:12px;" dir="<%=rtl%>"><h2  dir="<%=rtl%>"><%=resource.getString("electionmanagement")%></h2></td>
                                   <td  width="250px" valign="top" dir="<%=rtl%>" style="font-family: arial;font-size: 12px;"><%=resource.getString("login.hello")%>
-                                                <script>document.write('<span ');
-document.write('height:10px;border:0px solid black;font:bold 10pt Verdana;');
-document.write(' onClick="toggle_menu(1);');
+
+<script type="text/javascript" language="javascript">
+document.write("<span " );
+document.write('style="height:10px;border:0px solid black;font:bold 10pt Verdana;"');
+document.write(' onclick="toggle_menu(1);');
 document.write('event.cancelBubble=1" ><span style="cursor:hand;">');
-document.write('<%=user%> <img width=10 height=10 src="<%=request.getContextPath()%>/images/down.gif"></span>| &nbsp;<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></b>')
+document.write('<%=user%> <img width=10 height=10 src="<%=request.getContextPath()%>/images/down.gif"></span>| &nbsp;<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></b>');
 document.write('<div id="ddmenu" style="');
 document.write('height:45px;border:0px solid black;background-color:white;text-align: left;');
-document.write('overflow-y:scroll;visibility:hidden;">')
+document.write('overflow-y:scroll;visibility:hidden;">');
   additem("<%=resource.getString("view_profile")%>","<%=request.getContextPath()%>/admin_account.do");
   additem("<%=resource.getString("login.managesuperadminaccount.changepassword")%>","<%=request.getContextPath()%>/admin_password.do");
 
@@ -198,17 +199,61 @@ document.onclick= function() {toggle_menu(0); }
 document.write('</div></span>');
 
 
-                        </script>
+</script>
 
 
                      </td>
                               </tr>
                       </table>
-        </tr>
+        </div>
 
 
-        <tr>
-        <table border="0" width="100%" bgcolor="#7697BC" style="font-family: arial;font-weight: bold;font-size:13px" dir="<%=rtl%>">
+        <div>
+        <ul class="dd-menu">
+        <li>
+            <a href="<%=contextPath%>/institute_admin/institute_admin_home.jsp"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
+                <b style="color:white" dir="<%=rtl%>"> &nbsp;&nbsp;<%=resource.getString("login.home")%></b>
+            </a>
+        </li>
+      <li>
+          <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
+              <b>Manage Election Manager</b>
+          </a>
+            <ul>
+                <li>
+                    <a href="<%=request.getContextPath()%>/create_manager.do" target="page" onclick="return pageload(1);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("createelectionmanager")%></a>
+                </li>
+                <li>
+                    <a href="<%=request.getContextPath()%>/institute_admin/search_update_election_manager.jsp"  target="page" onclick="return pageload(3);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("updateelectionmanager")%></a>
+                </li>
+                <%--<li>
+                    <a href="<%=request.getContextPath()%>/delete_managers.do" target="page" onclick="return pageload(2);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Delete Election Manager<%=resource.getString("deleteelectionmanager")%></a>
+                </li>--%>
+                <li>
+                    <a href="<%=request.getContextPath()%>/institute_admin/search_block_election_manager.jsp" target="page" onclick="return pageload(2);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("blockmanager")%></a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><b>View Election Manager</b></a>
+            <ul>
+                <li>
+                    <a href="<%=request.getContextPath()%>/view_managers.do?status=B"  target="page" onclick="return pageload(4);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">View Blocked<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                </li>
+                <li>
+                    <a href="<%=request.getContextPath()%>/view_managers.do?status=A"  target="page" onclick="return pageload(4);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">View Active<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                </li>
+                <li>
+                    <a href="<%=request.getContextPath()%>/view_managers.do"  target="page" onclick="return pageload(4);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">View All<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                </li>
+            </ul>
+            </li>
+            <li>
+                <a href="<%=request.getContextPath()%>/institute_admin/search_election_details.jsp"  target="page" onclick="return pageload(4);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><b style="color:white" dir="<%=rtl%>">View Election Details</b><%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                </li>
+</ul>
+            
+            <%--<table border="0" width="100%" bgcolor="#7697BC" style="font-family: arial;font-weight: bold;font-size:13px" dir="<%=rtl%>">
                  <tr>
                      <td align="left" dir="<%=rtl%>" ><a href="<%=request.getContextPath()%>/create_manager.do" target="page" onclick="return pageload(1);" style="text-decoration:none; color: white;font-size: 13px"><%=resource.getString("createelectionmanager")%></a>
                          &nbsp;<font color="white">|</font>&nbsp;
@@ -221,21 +266,20 @@ document.write('</div></span>');
                      </td>
 
                 </tr>
-        </table></tr>
+        </table>--%></div>
 
-        <tr><td dir="<%=rtl%>">
-
-                <table align="left" border="0" width="80%" dir="<%=rtl%>" ><tr><td dir="<%=rtl%>"><div align="left" class="page" id="page"></div></td></tr></table></td>
-            <td dir="<%=rtl%>"> <table align="right" dir="<%=rtl%>" border="1" width="20%" style="border:#C7C5B2 1px solid;" >
-                <tr>
-                    <td style="background-color: #7697BC; color: white" align="center" dir="<%=rtl%>"> <%=resource.getString("currentelection")%></td>
-                </tr>
-
-                <tr>
-                    <td height="100px" style="border:#C7C5B2 1px solid; font-size: 13px" dir="<%=rtl%>"><marquee direction="up" onmouseover="this.stop()" onmouseout="this.start()" scrollamount="3"><blink>  </blink> </marquee></td>
-                </tr>
-</table></td>
-</tr>
-        </table>
+    <div style="position: absolute;width: 100%" dir="<%=rtl%>">
+        <div width="99%">
+            <div dir="<%=rtl%>" style="width: 79%;position: absolute; float:left">
+            <div align="left" class="page" id="page"></div></div>
+            <div dir="<%=rtl%>" align="right" style="width: 19.5%; float: right; margin-left: 79.3%; position: absolute;">
+                <div>
+                    <div style="background-color: #7697BC; color: white" align="center" dir="<%=rtl%>"> <%=resource.getString("currentelection")%></div>
+                    <div style="border: 2px solid #7697BC;background-color: white; color: black;height: 210px" align="left" dir="<%=rtl%>"><marquee direction="up" onmouseover="this.stop()" onmouseout="this.start()" scrollamount="3"><blink>  </blink> </marquee></div>
+                </div>
+            </div>
+        </div>
+    </div>
+       
     </body>
 </html>

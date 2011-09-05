@@ -105,6 +105,8 @@ String Last_Name=resource.getString("lastname");
 pageContext.setAttribute("Last_Name", Last_Name);
 String Staff_id=resource.getString("staffid");
 pageContext.setAttribute("Staff_id", Staff_id);
+String Status=resource.getString("login.ems.status");
+pageContext.setAttribute("Status", Status);
 String Action=resource.getString("login.ems.action");
 pageContext.setAttribute("Action",Action);
 
@@ -144,7 +146,7 @@ System.out.println("it="+(tcount));
         Ob.setlast_name(staffdetail.getLastName());
         Ob.setStaff_id(electionmanager.getStaffId());
         Ob.setUser_id(electionmanager.getUserId());
-
+        Ob.setStatus(electionmanager.getStatus());
 
 
 
@@ -182,9 +184,9 @@ else
 {%>
 
 <table align="<%=align%>" dir="<%=rtl%>" width="100%">
-    <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
+    <tr dir="<%=rtl%>"><td dir="<%=rtl%>" style="margin-left: 30px">
 
-<ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
+            <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" style="margin-left: 30px" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
   <columns>
 
@@ -206,7 +208,12 @@ else
       <header value="${Staff_id}" hAlign="left" styleClass="header"/>
       <item   value="${doc.staff_id}" hyperLink="${path}/manager_details.do?id=${doc.manager_id}"  hAlign="left" styleClass="item"/>
     </column>
-       
+
+      <column width="10%">
+      <header value="${Status}" hAlign="left" styleClass="header"/>
+      <item   value="${doc.status}" hyperLink="${path}/manager_details.do?id=${doc.manager_id}"  hAlign="left" styleClass="item"/>
+    </column>
+
  </columns>
 
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
@@ -218,7 +225,7 @@ else
 </ui:dataGrid>
 
 
-  <table width="500" style="font-family: arial; font-size: 10pt" border=0>
+  <table width="700" style="font-family: arial; font-size: 10pt;margin-left: 30px" border=0>
 <tr>
 <td align="left" width="100px">
 <c:if test="${previous != null}">

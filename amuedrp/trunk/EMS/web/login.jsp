@@ -94,7 +94,7 @@ req.onreadystatechange = getReadyStateHandler(req, update);
 req.open("POST","<%=request.getContextPath()%>/adminemail.do", true);
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-req.send("getEmail_Id="+keyValue);
+//req.send("getEmail_Id="+keyValue);
 
 
 }
@@ -128,7 +128,7 @@ req.open("POST","<%=request.getContextPath()%>/adminpass.do", true);
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-req.send("getEmail_Id="+keyValue1+"&getPassword="+keyValue);
+//req.send("getEmail_Id="+keyValue1+"&getPassword="+keyValue);
 
 }
 else
@@ -311,8 +311,10 @@ if(str!=null)
                 </td><td  width="80%" colspan="2" valign="top" align="center">
                  
 <input type="hidden" id="button1" name="button1" value=""/>
-                    </td></tr>
+                    </td>
+                    
 
+                    </tr><tr><td width="250px" colspan="2"> <a href="<%=request.getContextPath()%>/newenrollment.do"> Voter Registration</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td></tr>
 
 
                     </table>

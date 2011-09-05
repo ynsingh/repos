@@ -76,7 +76,7 @@ if (!rst.isEmpty()){
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Update_Manager_Details</title>
     </head>
-    <body>
+    <body onload="funload();">
 
         <html:form action="/confirm_update_manager" method="post" onsubmit="return validation();">
         <table width="100%" class="txt"  dir="<%=rtl%>">
@@ -239,13 +239,30 @@ if (!rst.isEmpty()){
 </html>
 
 <script>
-    function quit()
+var prevheight;
+  function quit()
 {
     //top.location="/EMS-Struts/institute_admin/institute_admin_home.jsp";
      //location.href="<%=request.getContextPath()%>/institute_admin/update_election_managergrid_details.jsp";
+
+     window.top.document.getElementById("pagetab").height = prevheight;
      location.href="<%=request.getContextPath()%>/update_managers.do";
+     
 }
 
+
+
+function funload()
+{
+  // alert("yes its working");
+   var parloc = window.top.document.getElementById("pagetab");
+    var pagheight = document.height!=undefined?document.height:(document.body!=undefined?document.body.height:document.scrollHeight);
+   prevheight = parloc.height;
+   alert(pagheight);
+   pagheight+=30;
+    parloc.height = pagheight!=undefined?pagheight:650;
+    //alert("yes its working");
+}
 
 
 
