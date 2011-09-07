@@ -77,7 +77,7 @@ $!data.getMessage()
         #elseif($tdcolor == "4")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none>  #if($lang == "hindi") $brih_student $brih_delete #else $brih_delete $brih_student #end </a></td>
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none>  #if($lang == "hindi") $brih_student $brih_delete / $brih_view #else $brih_view / $brih_delete $brih_student #end </a></td>
         #if($tdcolor != "5")
         <td>
         #elseif($tdcolor == "5")
