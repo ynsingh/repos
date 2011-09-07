@@ -133,16 +133,16 @@ function clearme()
 }
             </script>
     </head>
-    <body>
+    <body style="width: 510px">
         <html:form styleId="form1"  action="/manage_superadmin.do" method="post">
-            <table  align="<%=align%>" dir="<%=rtl%>" width="50%" height="150px" style="background-color: white;border:#C7C5B2 1px solid;margin:0px 0px 0px 0px;">
+            <table  align="<%=align%>" dir="<%=rtl%>" width="500px" height="150px" style="background-color: white;border:#C7C5B2 1px solid;margin:0px 0px 0px 0px;">
                 <tr><td dir="<%=rtl%>" style="background-color: #7697BC;color:white;" colspan="2" class="btn1" height="30px"><b><%=resource.getString("login.managesuperadminaccount.superadminaccount")%></b> </td></tr>
-                <tr><td width="30%" class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.oldloginid")%></td><td><html:text styleId="user_id1" property="user_id1" value="<%=user%>" readonly="true"/></td></tr>
-           <tr><td width="30%" class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.newloginid")%></td><td><html:text styleId="user_id2" property="user_id2" disabled="true"/></td></tr>
-           <tr><td class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.oldpassword")%></td><td><html:password styleId="password1" property="password1"/>
-           <tr><td class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.newpassword")%></td><td><html:password styleId="password2" property="password2"/>
+                <tr><td width="50%" class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.oldloginid")%></td><td><html:text styleId="user_id1" style="width: 200px" property="user_id1" value="<%=user%>" readonly="true"/></td></tr>
+           <tr><td width="50%" class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.newloginid")%></td><td><html:text styleId="user_id2" style="width: 200px" property="user_id2" disabled="true"/></td></tr>
+           <tr><td class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.oldpassword")%></td><td><html:password styleId="password1" style="width: 200px" property="password1"/>
+           <tr><td class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.newpassword")%></td><td><html:password styleId="password2" style="width: 200px" property="password2"/>
                           </td></tr>
-           <tr><td class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.repassword")%></td><td><input type="password" id="password3"/>
+           <tr><td class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.repassword")%></td><td><input style="width: 200px" type="password" id="password3"/>
                 <br>
    <%
    String   message="";
@@ -175,7 +175,7 @@ function clearme()
 
 
             </td></tr>
-           <tr><td></td><td dir="<%=rtl%>" width="300px"><br><html:submit styleClass="btn2"  onclick="return check();"> <%=resource.getString("login.managesuperadminaccount.changepassword")%></html:submit>
+           <tr><td><html:submit styleClass="btn2" style="float: right" onclick="return check();"> <%=resource.getString("login.managesuperadminaccount.changepassword")%></html:submit></td><td dir="<%=rtl%>" width="300px">
                    <input type="button" onclick="return clearme();"   class="btn2" dir="<%=rtl%>" value="<%=resource.getString(clear)%>" />
             </td></tr>
         <tr><td></td><td  align="<%=align%>" width="200px">
