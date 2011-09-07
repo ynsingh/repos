@@ -45,6 +45,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 //Brihaspati
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.QuizFileEntry;
@@ -57,6 +58,10 @@ import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.XmlData;
 
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import java.util.Random;
+
 /**
  * This Action class for Generate quiz  module of online examination system 
  * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a> 
@@ -67,6 +72,7 @@ public class OLES_Quiz extends SecureAction{
 	String CoursePath=TurbineServlet.getRealPath("/Courses");
 	private String crsId=new String();
 	private String LangFile=new String();	
+	
 	/**
 	 * This method is invoked when no button corresponding to 
 	 * Action is found
@@ -407,9 +413,11 @@ public class OLES_Quiz extends SecureAction{
 			ErrorDumpUtil.ErrorLog("\n topic name is:"+topicName);
 			String typeName = data.getParameters().getString("typeName","");
 			String levelName = data.getParameters().getString("levelName","");
+
 			String count=data.getParameters().getString("count","");
-			ErrorDumpUtil.ErrorLog("cont in random Quiz inside OLES_Quiz.java");
+			ErrorDumpUtil.ErrorLog("cont in random Quiz inside OLES_Quiz.java:");
 			context.put("tdcolor",count);
+
 			String status = "ACT";
 			String quizStatus="ACT";
 			ErrorDumpUtil.ErrorLog("\n mode in oles quiz is:"+mode);
@@ -444,6 +452,7 @@ public class OLES_Quiz extends SecureAction{
 				QuizMetaDataXmlReader questionReader = new QuizMetaDataXmlReader(newFilePath+"/"+questionSettingPath);
 				HashMap hm = new HashMap();
 				hm = questionReader.getQuizQuestionNoMarks(questionReader,quizID);
+				ErrorDumpUtil.ErrorLog("hash Map in Random Quiz inside OLESQuiz"+hm.size());
 				int mark =((Integer)hm.get("marks"));
 				int enteredQuestions = ((Integer)hm.get("noQuestion"));
 				if(enteredQuestions < Integer.parseInt(maxnoQuestions) | mark < Integer.parseInt(maxMarks)){
@@ -508,7 +517,6 @@ public class OLES_Quiz extends SecureAction{
 			String option2="";
 			String option3="";
 			String option4="";
-
 			if(mode.equals("one")|quizMode.equals("one")){
 				questionID=data.getParameters().getString("questionID","");
 				question=data.getParameters().getString("question","");
@@ -520,6 +528,7 @@ public class OLES_Quiz extends SecureAction{
 					option4=data.getParameters().getString("option4","");
 				}    			
 			}
+
 			
 			String quizXmlPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
 			String quizXml="Quiz.xml";
@@ -531,6 +540,8 @@ public class OLES_Quiz extends SecureAction{
 			String amt[]=dateNow.split(" ");
 			String currentDate=amt[0];
 			String currentTime=amt[1];
+			
+			ErrorDumpUtil.ErrorLog("inside insertQuestion Rendomly method CurrentDate and time are:"+currentDate+currentTime);
 			Vector dateCollect=new Vector();
 			File file1=new File(quizXmlPath+"/"+quizXml);
 			QuizMetaDataXmlReader topipcmetadata=null;
@@ -546,6 +557,7 @@ public class OLES_Quiz extends SecureAction{
 						}
 					}
 			}
+
 			File ff = new File(questionBankFilePath+"/"+questionBankQuestionsPath);
 			ErrorDumpUtil.ErrorLog("ff file path :"+ff.getPath());
 			if(!ff.exists())
@@ -582,7 +594,7 @@ public class OLES_Quiz extends SecureAction{
 							xmlWriter.writeXmlFile();
 							variable[0]="success";
 						}
-						updateQuizRandomly(quizID, quizStatus, courseid, mode);
+						updateQuizRandomly(quizID, quizStatus, courseid,mode);
 					}
 					else{
 
@@ -675,7 +687,7 @@ public class OLES_Quiz extends SecureAction{
 						data.setScreenTemplate("call,OLES,Oles_Gen.vm");
 					if(quizMode.equalsIgnoreCase("random")|quizMode.equalsIgnoreCase("one"))
 						data.setScreenTemplate("call,OLES,Quiz_Detail.vm");
-					else
+					else 
 						data.setScreenTemplate("call,OLES,Create_Quiz.vm");
 				}
 			}
@@ -795,6 +807,7 @@ public class OLES_Quiz extends SecureAction{
 				if(scoreFile.exists()){
 					quizmetadata=new QuizMetaDataXmlReader(filepath+"/score.xml");
 					scoreVector = quizmetadata.getDistinctIDFromFinalScore();
+					if(scoreVector.size()!=0){
 					for(QuizFileEntry a:scoreVector){
 						quizid = a.getQuizID();
 						if(quizid.equalsIgnoreCase(quizID)){
@@ -802,6 +815,7 @@ public class OLES_Quiz extends SecureAction{
 							data.setMessage(MultilingualUtil.ConvertedString("brih_quizcannotdeleted",LangFile));
 							return;
 						}
+					}
 					}
 				}
 				xmlWriter=new XmlWriter(filepath+"/"+quizPath);
@@ -856,13 +870,15 @@ public class OLES_Quiz extends SecureAction{
 			String courseid=data.getParameters().getString("courseID","");
 			String username=data.getUser().getName();
 			String quizID=data.getParameters().getString("quizID","");
-			String mode=data.getParameters().getString("mode","");
+			String mode=data.getParameters().getString("mode","one");
 			String maxMarks=data.getParameters().getString("maxMarks","");
 			String maxnoQuestions=data.getParameters().getString("noQuestions","");
 			String topicName = data.getParameters().getString("topicName","");
 			String typeName = data.getParameters().getString("typeName","");
 			String levelName = data.getParameters().getString("levelName","");
-			ErrorDumpUtil.ErrorLog("mode inside OLES_Quiz.java at method oneByOneQuiz"+ mode);
+
+			String quizMode=data.getParameters().getString("quizMode","");
+
 			String questionBankFilePath=TurbineServlet.getRealPath("/QuestionBank/"+username+"/"+courseid);
 			String questionBankQuestionsPath=topicName+"_"+levelName+"_"+typeName+".xml";
 
@@ -1569,6 +1585,7 @@ public class OLES_Quiz extends SecureAction{
 			String quizID=pp.getString("quizID","");
 			//maxTime modification since for timer functionality time must be in the format mm:ss
 			int maxTime;
+			String mode=pp.getString("mode","");
 			String maxtime = pp.getString("maxTime","");
 			ErrorDumpUtil.ErrorLog("\n string maxtime is :"+maxtime);
 			if(maxtime.indexOf(":")==-1){
@@ -1616,7 +1633,7 @@ public class OLES_Quiz extends SecureAction{
 			expiryDate.clear();			
 			examDate.set(Integer.parseInt(startYear),(Integer.parseInt(startMonth)-1), Integer.parseInt(startDay),Integer.parseInt(startHour),Integer.parseInt(startMinute));
 			expiryDate.set(Integer.parseInt(endYear),(Integer.parseInt(endMonth)-1), Integer.parseInt(endDay),Integer.parseInt(endHour),Integer.parseInt(endMinute));
-
+			
 			Calendar examDay = Calendar.getInstance();
 			examDay.clear();
 			Calendar expiryDay = Calendar.getInstance();
@@ -1627,7 +1644,7 @@ public class OLES_Quiz extends SecureAction{
 			if(current.compareTo(examDate)==-1 || current.compareTo(examDate)==0){
 				if(examDate.compareTo(expiryDate)!=1){
 					if(examDay.compareTo(expiryDay)==0){
-						if(Integer.parseInt(endHour)*60+Integer.parseInt(endMinute)-Integer.parseInt(startHour)*60+Integer.parseInt(startMinute)>maxTime){
+						if((Integer.parseInt(endHour)*60+Integer.parseInt(endMinute))-(Integer.parseInt(startHour)*60+Integer.parseInt(startMinute))>maxTime){
 							flag = true;
 						}
 						else{
@@ -1635,7 +1652,13 @@ public class OLES_Quiz extends SecureAction{
 						}
 					}
 					else{
-						flag = true;
+						if((Integer.parseInt(endHour)*60+Integer.parseInt(endMinute))-(Integer.parseInt(startHour)*60+Integer.parseInt(startMinute))>maxTime){
+							flag = true;
+						}
+						else{
+							data.setMessage(MultilingualUtil.ConvertedString("brih_announeerror",LangFile)+" ("+maxTime+" "+ MultilingualUtil.ConvertedString("brih_minutes",LangFile)+")");
+						}
+						//flag = true;
 					}						
 				}
 				else{
@@ -1645,6 +1668,15 @@ public class OLES_Quiz extends SecureAction{
 			}
 			else if(current.compareTo(examDate)==1){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_datemsg",LangFile));
+			}
+			
+			if(resDate.compareTo(endDate)==0){
+					data.setMessage(MultilingualUtil.ConvertedString("brih_resdateqlEnd",LangFile));	
+					return;
+			}
+			else if(resDate.compareTo(endDate)==-1){
+				data.setMessage(MultilingualUtil.ConvertedString("brih_resdatlessEnd",LangFile));
+				return;
 			}
 
 			if(flag==true){
@@ -1667,13 +1699,13 @@ public class OLES_Quiz extends SecureAction{
 					xmlWriter=QuizMetaDataXmlWriter.announceQuiz(filePath,quizPath,seq,quizID,startDate,startTime,endDate,endTime,resDate);
 					xmlWriter.writeXmlFile();
 				}
-				String mode=pp.getString("mode","");
 				if(mode.equals("update"))
 					data.setMessage(MultilingualUtil.ConvertedString("c_msg5",LangFile));
 				else
 					data.setMessage(MultilingualUtil.ConvertedString("brih_announced",LangFile));
 					data.setScreenTemplate("call,OLES,AnnounceExam_Manage.vm");
-			}			
+			}	
+			
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:newAnnouncement !! "+e);
 			data.setMessage("See ExceptionLog !!");
@@ -1893,6 +1925,13 @@ public class OLES_Quiz extends SecureAction{
 	    // The directory is now empty so delete it
 	    return dir.delete();
 	}
+
+	/** This method is responsible for Delete Question Setting and Quiz Setting from xml files.
+	 * @param data RunData instance
+	 * @param context Context instance
+	 * @exception Exception, a generic exception
+	 * @author Devendra singhal
+	 */
 	public void deleteQuestions(RunData data,Context context){
 		try{
 			LangFile=(String)data.getUser().getTemp("LangFile");
@@ -1917,6 +1956,7 @@ public class OLES_Quiz extends SecureAction{
 			int seq=-1;
 			int seq1=-1;
 			XmlWriter xmlWriter=null;
+			XmlWriter xmlWriter1=null;
 			Vector collect=new Vector();
 			Vector questionCollect=new Vector();
 			String filePath=TurbineServlet.getRealPath("/Courses/"+crsId+"/Exam/"+quizID);
@@ -1979,14 +2019,14 @@ public class OLES_Quiz extends SecureAction{
 					String file_Name=topicName+"_"+questionLevel+"_"+questionType+".xml";
 					ErrorDumpUtil.ErrorLog("file_Name is "+file_Name+":::"+ questionMarks);
 					quizmetadata=new QuizMetaDataXmlReader(filePath+quizQuestionPath);
-					questionCollect=quizmetadata.getInsertedQuizQuestions(ID);
+					questionCollect=quizmetadata.getInsertedQuizQuestions();
 					if(questionCollect!=null && questionCollect.size()!=0){
 						ErrorDumpUtil.ErrorLog("inside colloec");
 						for(int j=0;j<questionCollect.size();j++){
 							String questionID=((QuizFileEntry) questionCollect.elementAt(j)).getQuestionID();
 							String questionMarks1=((QuizFileEntry) questionCollect.elementAt(j)).getMarksPerQuestion();
 							String fileName=((QuizFileEntry) questionCollect.elementAt(j)).getFileName();
-							ErrorDumpUtil.ErrorLog("file Name is "+fileName);
+							ErrorDumpUtil.ErrorLog("file Name is "+fileName+"::"+questionMarks1);
 							if(fileName.equals(file_Name) && questionMarks1.equals(questionMarks)){
 								ErrorDumpUtil.ErrorLog("file name is "+fileName+":::"+ questionMarks1);
 								seq1=j;
@@ -1999,18 +2039,16 @@ public class OLES_Quiz extends SecureAction{
 			ErrorDumpUtil.ErrorLog("seq is "+seq);
 			ErrorDumpUtil.ErrorLog("seq1 is "+seq1);
 			if(deltype.equals("quizDel")){
-					xmlWriter=new XmlWriter(filePath+quizQuestionSettingPath);
-					ErrorDumpUtil.ErrorLog("Before Remove Question Setting");
-					xmlWriter.removeElement("QuizQuestions",seq);
-					xmlWriter.writeXmlFile();
-					ErrorDumpUtil.ErrorLog("After Remove Question Setting");
 					if(mode.equals("update") && quizMode.equals("random")){
+						if(seq >= 0){
+						xmlWriter=new XmlWriter(filePath+quizQuestionSettingPath);
+						ErrorDumpUtil.ErrorLog("Before Remove Question Setting");
+						xmlWriter.removeElement("QuizQuestions",seq);
+						xmlWriter.writeXmlFile();
 						if(questionFile.exists()){
 							success=questionFile.delete();
-							if(success){
-								ErrorDumpUtil.ErrorLog("insie success");
+						}
 								if(startDate!=null && startTime!=null){
-									ErrorDumpUtil.ErrorLog("insie startDate");
 									if((currentDate.compareTo(startDate)==-1) && (currentTime.compareTo(startTime)==0 ||currentTime.compareTo(startTime)==-1 || currentTime.compareTo(startTime)==1)){
 										data.setMessage(MultilingualUtil.ConvertedString("brih_anuncquestiondelete",LangFile)+""+MultilingualUtil.ConvertedString("brih_savepreview_reannounce",LangFile));
 									}
@@ -2022,28 +2060,39 @@ public class OLES_Quiz extends SecureAction{
 									}
 								}
 								else{
-									ErrorDumpUtil.ErrorLog("insie else 1");
 									data.setMessage(MultilingualUtil.ConvertedString("brih_questiondelete",LangFile));
 								}
-							}
-							else{
-								ErrorDumpUtil.ErrorLog("insie else 2");
-								data.setMessage(MultilingualUtil.ConvertedString("brih_questionNotdelete",LangFile));
-							}
 						}
-						else{
-							data.setMessage(MultilingualUtil.ConvertedString("brih_questionNotdelete",LangFile));
-						}
+					else{
+						data.setMessage(MultilingualUtil.ConvertedString("brih_noQuestionTodelete",LangFile));
+						return;
+					}
 				}
-				else{
+				else if(mode.equals("update") && quizMode.equals("one")){
+					if(seq1 >= 0){
+					xmlWriter1=new XmlWriter(filePath+quizQuestionSettingPath);
+					ErrorDumpUtil.ErrorLog("Before Remove Question Setting");
+					xmlWriter1.removeElement("QuizQuestions",seq);
+					xmlWriter1.writeXmlFile();
+					ErrorDumpUtil.ErrorLog("After Remove Question Setting");
+					
+					
 						ErrorDumpUtil.ErrorLog("Before Remove Question");
 						xmlWriter=new XmlWriter(filePath+quizQuestionPath);
 						xmlWriter.removeElement("QuizQuestions",seq1);
 						xmlWriter.writeXmlFile();
 						ErrorDumpUtil.ErrorLog("After Remove Question");
 						data.setMessage(MultilingualUtil.ConvertedString("brih_questiondelete",LangFile));
+					}
+					else{
+						data.setMessage(MultilingualUtil.ConvertedString("brih_noQuestionTodelete",LangFile));
+						return;
+					}
 				}
-				return;
+				else{
+					data.setMessage(MultilingualUtil.ConvertedString("brih_questionNotdelete",LangFile));
+					return;
+				}	
 			}
 			else{
 				data.setMessage(MultilingualUtil.ConvertedString("brih_questionNotdelete",LangFile));
@@ -2056,4 +2105,5 @@ public class OLES_Quiz extends SecureAction{
 	 }
    }
 }
+
 

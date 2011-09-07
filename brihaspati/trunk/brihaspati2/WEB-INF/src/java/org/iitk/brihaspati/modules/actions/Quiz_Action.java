@@ -197,6 +197,7 @@ public class Quiz_Action extends SecureAction
                                 }
                         }
                         Criteria crit=new Criteria();
+                        
                         crit.add(QuizPeer.CID,cid);
                         List li=QuizPeer.doSelect(crit);
                         for(int i=0;i<li.size();i++)
