@@ -41,6 +41,8 @@
          
          <form-bean name="NominationListActionForm" type="com.myapp.struts.Candidate.NominationListActionForm"/>
          <form-bean name="VoterElectionActionForm" type="com.myapp.struts.Voting.VoterElectionActionForm"/>
+         <form-bean name="CandidateMenifestoActionForm" type="com.myapp.struts.Candidate.CandidateMenifestoActionForm"/>
+
     </form-beans>
 
     <global-exceptions>
@@ -487,9 +489,23 @@
     <forward name="show" path="/Candidate/nominationList.jsp"/>
 </action>
 
+<action  path="/finalnominationList" scope="request" type="com.myapp.struts.Candidate.FinalNominationListAction">
+    <forward name="show" path="/Candidate/nominationList.jsp"/>
+</action>
+
  <action path="/candidateimageupload" input="/Candidate/candidate_registration.jsp" name="CandidateRegActionForm" scope="request" type="com.myapp.struts.Candidate.CandidateImageUploadAction">
     <forward name="success" path="/Candidate/candidate_registration.jsp"/>
         </action>
+
+        <action path="/candidatemenifestoupload" input="/Candidate/upload_menifesto.jsp" name="CandidateMenifestoActionForm" scope="request" type="com.myapp.struts.Candidate.CandidateMenifestoUploadAction">
+    <forward name="success" path="/Candidate/home.jsp"/>
+        </action>
+
+<action path="/withdrawal"  scope="request" type="com.myapp.struts.Candidate.NominationWithdrawalAction">
+    <forward name="success" path="/Candidate/home.jsp"/>
+        </action>
+
+
 
    </action-mappings>
 

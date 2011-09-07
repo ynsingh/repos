@@ -12,13 +12,14 @@ import java.io.Serializable;
  * @author Edrp-04
  */
 public class CandidateRegLoginDetails implements Serializable {
-    private Candidate1 candidate1;
-    private StaffDetail staffDetail;
-    private CandidateRegistration candiReg;
-    private VoterRegistration voter;
     private Login login;
+    private Candidate1 candidate1;
+    //private StaffDetail staffDetail;
+    private CandidateRegistration candidateRegistration;
+    private VoterRegistration voterRegistration;
+    
     private Election election;
-    private Position1 position;
+    private Position1 position1;
 
     public Election getElection() {
         return election;
@@ -28,32 +29,32 @@ public class CandidateRegLoginDetails implements Serializable {
         this.election = election;
     }
 
-    public Position1 getPosition() {
-        return position;
+    public Position1 getPosition1() {
+        return position1;
     }
 
-    public void setPosition(Position1 position) {
-        this.position = position;
+    public void setPosition1(Position1 position) {
+        this.position1 = position;
     }
     
     
 
-    public VoterRegistration getVoter() {
-        return voter;
+    public VoterRegistration getVoterRegistration() {
+        return voterRegistration;
     }
 
-    public void setVoter(VoterRegistration voter) {
-        this.voter = voter;
+    public void setVoterRegistration(VoterRegistration voter) {
+        this.voterRegistration = voter;
     }
 
     
 
-    public CandidateRegistration getCandiReg() {
-        return candiReg;
+    public CandidateRegistration getCandidateRegistration() {
+        return candidateRegistration;
     }
 
-    public void setCandiReg(CandidateRegistration candiReg) {
-        this.candiReg = candiReg;
+    public void setCandidateRegistration(CandidateRegistration candiReg) {
+        this.candidateRegistration = candiReg;
     }
 
     public Candidate1 getCandidate1() {
@@ -71,16 +72,16 @@ public class CandidateRegLoginDetails implements Serializable {
     /**
      * @return the staffDetail
      */
-    public StaffDetail getStaffDetail() {
-        return staffDetail;
-    }
-
-    /**
-     * @param staffDetail the staffDetail to set
-     */
-    public void setStaffDetail(StaffDetail staffDetail) {
-        this.staffDetail = staffDetail;
-    }
+//    public StaffDetail getStaffDetail() {
+//        return staffDetail;
+//    }
+//
+//    /**
+//     * @param staffDetail the staffDetail to set
+//     */
+//    public void setStaffDetail(StaffDetail staffDetail) {
+//        this.staffDetail = staffDetail;
+//    }
 
     /**
      * @return the login

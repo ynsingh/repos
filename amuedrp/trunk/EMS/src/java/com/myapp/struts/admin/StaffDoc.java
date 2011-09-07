@@ -28,6 +28,38 @@ public class StaffDoc {
         private String Wenddate;
         protected String position_id;
         protected String positionName;
+        protected String candidate_id;
+        protected String candidateName;
+        private String index;
+
+    public String getCandidateName() {
+        return candidateName;
+    }
+
+    public void setCandidateName(String candidateName) {
+        this.candidateName = candidateName;
+    }
+
+    public String getCandidate_id() {
+        return candidate_id;
+    }
+
+    public void setCandidate_id(String candidate_id) {
+        this.candidate_id = candidate_id;
+    }
+
+
+        
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
+    }
+
+        
 
     public String getPositionName() {
         return positionName;

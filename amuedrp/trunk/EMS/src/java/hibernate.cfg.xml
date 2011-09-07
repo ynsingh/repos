@@ -5,14 +5,27 @@
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/emsiitk</property>
-    <property name="hibernate.connection.username">xxxxx</property>
-    <property name="hibernate.connection.password">xxxxxx</property>
+    <property name="hibernate.connection.username">xxxxxxxx</property>
+    <property name="hibernate.connection.password">xxxxxxxx</property>
 <!-- <property name="hibernate.connection.datasource">java:comp/env/jdbc/Testems</property> -->
     <mapping resource="com/myapp/struts/hbm/Login.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/AdminRegistration.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/StaffDetail.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/Institute.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/ElectionManager.hbm.xml"/> 
+
+    <mapping resource="com/myapp/struts/hbm/EmailSetup.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Election.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Electionrule.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Eligibility.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/VoterRegistration.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Ballot.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Position1.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Candidate1.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/CandidateRegistration.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/VotingBallot.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Voting.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/VotingProcess.hbm.xml"/>
     
   </session-factory>
 </hibernate-configuration>

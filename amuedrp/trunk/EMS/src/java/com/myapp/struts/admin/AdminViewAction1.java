@@ -170,8 +170,8 @@ if (institute_id!=null)
             request.setAttribute("accept_msg3",adminReg.getInstituteName() );
             String msg=resource.getString("request_accepted_instituteid");
             request.setAttribute("msg", msg +institute_id);
-             String     path = servlet.getServletContext().getRealPath("/");
-      obj=new Email(path,adminReg.getAdminEmail(),admin_password,"Registration Accepted Successfully from EMS","User Id="+adminReg.getUserId()+" Your Password for EMS Login is="+admin_password);
+           
+         obj=new Email(adminReg.getAdminEmail(),admin_password,"Registration Accepted Successfully from EMS","User Id="+adminReg.getUserId()+" Your Password for EMS Login is="+admin_password,"ems");
          executor.submit(new Runnable() {
 
                 public void run() {

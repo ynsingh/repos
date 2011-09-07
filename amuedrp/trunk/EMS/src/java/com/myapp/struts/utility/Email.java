@@ -50,24 +50,13 @@ public void send(){
 try
 {
 System.out.println(path);
-if(path.lastIndexOf("/")==-1) 
-{
-path=path.substring(0,path.lastIndexOf("\\"));
-path=path.substring(0,path.lastIndexOf("\\")); 
-path=path.substring(0,path.lastIndexOf("\\")); 
-}
-else
-{
-path=path.substring(0,path.lastIndexOf("/"));
-path=path.substring(0,path.lastIndexOf("/"));
-path=path.substring(0,path.lastIndexOf("/"));   
-}
+
 
 
 
   // Open the file that is the first
   // command line parameter
-  FileInputStream fstream = new FileInputStream(path+"/web/admin/mail.txt");
+  FileInputStream fstream = new FileInputStream(path+"/admin/mail.txt");
   InputStreamReader isr = new InputStreamReader(fstream,"UTF8");
  buffer= new StringBuffer();
  Reader in = new BufferedReader(isr);

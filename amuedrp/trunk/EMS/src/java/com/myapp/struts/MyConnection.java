@@ -28,7 +28,7 @@ public class MyConnection {
                 if(ctx==null)
                     throw new RuntimeException("JNDI");
 
-                    ds=(DataSource)ctx.lookup("java:/comp/env/jdbc/Testems");
+                    ds=(DataSource)ctx.lookup("java:/comp/env/jdbc/ems");
                     connection=ds.getConnection();
 
 

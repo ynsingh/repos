@@ -25,7 +25,7 @@ public class LoginAction extends org.apache.struts.action.Action {
     String user_id;
     String username;
     String password;
-   
+    Connection con;
     List rst, rst1, rst2, rst3, rst4, rst5, rst6;
     PreparedStatement stmt;
     String staff_id;
@@ -118,7 +118,12 @@ session.setAttribute("staff_id", user_id);
 
         System.out.println(user_id+"....."+password+"......"+button+"......");
 
-
+//con=MyConnection.getMyConnection();
+//            if(con==null)
+//            {
+//             request.setAttribute("msg1","Database Connectivity is Closed");
+//             return mapping.findForward("failure");
+//            }
 
 
         if (button.equals("Log In")) {
@@ -173,6 +178,7 @@ session.setAttribute("staff_id", user_id);
              //   if(login.getStatus().equalsIgnoreCase("logout") && button!=null){
                 session.setAttribute("institute_id", login.getStaffDetail().getId().getInstituteId());
                 session.setAttribute("username", login.getUserName());
+              
                 session.setAttribute("staff_id", login.getStaffDetail().getId().getStaffId());
                 session.setAttribute("user_id", login.getUserId());
                 session.setAttribute("login_role", login.getRole());
@@ -197,21 +203,7 @@ session.setAttribute("staff_id", user_id);
                    
                     return mapping.findForward("superadmin");
                 }
-               // System.out.println("institute login role="+ login.getRole());
-                //if(login.getRole().equalsIgnoreCase("insti-admin"))
-                //{
-                  //  return mapping.findForward("instituteadmin");
-                //}
-                 
-               // else{
-                //request.setAttribute("msg1","Invalid User Id or Password");
-                //session.setAttribute("staff_id", user_id);
-                //return mapping.findForward("failure");
-               // }
-                //  System.out.println(user_id+""+password+staff_id);
-
-                //check first login
-                //ResultSet block = MyQueryResult.getMyExecuteQuery("select working_status from library where library_id='" + rst.getString("library_id") + "' and working_status='Blocked'");
+               
                 InstituteDAO institutedao = new InstituteDAO();
                 List block = institutedao.getInstituteDetailsByStatus(institute_id, "Blocked");
                 Iterator it = block.iterator();
@@ -229,89 +221,62 @@ session.setAttribute("staff_id", user_id);
                             
                             session.setAttribute("institute_name", rs1.getInstituteName());
                         }
-/*
-                        String sql1 = ("select * from privilege where staff_id='" + staff_id + "' and library_id='" + library_id + "'");
-                        PreparedStatement st = con.prepareStatement(sql1);
-                        rst1 = (List)st.executeQuery();
-                        rst1.next();
-                        session.setAttribute("privilege_resultset", rst1);
 
-                        String sql2 = ("select * from acq_privilege where staff_id='" + staff_id + "' and library_id='" + library_id + "'");
-                        st = con.prepareStatement(sql2);
-                        rst2 = (List)st.executeQuery();
-                        rst2.next();
-                        session.setAttribute("acq_privilege_resultset", rst2);
 
-                        String sql3 = ("select * from cat_privilege where staff_id='" + staff_id + "' and library_id='" + library_id + "'");
-                        st = con.prepareStatement(sql3);
-                        rst3 = (List)st.executeQuery();
-                        rst3.next();
-                        session.setAttribute("cat_privilege_resultset", rst3);
-
-                        String sql4 = ("select * from cir_privilege where staff_id='" + staff_id + "' and library_id='" + library_id + "'");
-                        st = con.prepareStatement(sql4);
-                        rst4 = (List)st.executeQuery();
-                        rst4.next();
-                        session.setAttribute("cir_privilege_resultset", rst4);
-
-                        String sql5 = ("select * from ser_privilege where staff_id='" + staff_id + "' and library_id='" + library_id + "'");
-                        st = con.prepareStatement(sql5);
-                        rst5 = (List)st.executeQuery();
-                        rst5.next();
-                        session.setAttribute("ser_privilege_resultset", rst5);
-*/
                         return mapping.findForward("firstlogin");
 
 
                     }
 
 
-/*
-                    ResultSet rs1 = MyQueryResult.getMyExecuteQuery("select library_name from library where library_id='" + library_id + "'");
-                    if (rs1.next()) {
-                        session.setAttribute("library_name", rs1.getString(1));
-                    }
 
-                    String sql1 = ("select * from privilege where staff_id='" + staff_id + "' and library_id='" + library_id + "'");
-                    PreparedStatement st = con.prepareStatement(sql1);
-                    rst1 = (List)st.executeQuery();
-                    rst1.next();
-                    session.setAttribute("privilege_resultset", rst1);
-
-                    String sql2 = ("select * from acq_privilege where staff_id='" + staff_id + "' and library_id='" + library_id + "'");
-                    st = con.prepareStatement(sql2);
-                    rst2 = (List)st.executeQuery();
-                    rst2.next();
-                    session.setAttribute("acq_privilege_resultset", rst2);
-
-                    String sql3 = ("select * from cat_privilege where staff_id='" + staff_id + "' and library_id='" + library_id + "'");
-                    st = con.prepareStatement(sql3);
-                    rst3 = (List)st.executeQuery();
-                    rst3.next();
-                    session.setAttribute("cat_privilege_resultset", rst3);
-
-                    String sql4 = ("select * from cir_privilege where staff_id='" + staff_id + "' and library_id='" + library_id + "'");
-                    st = con.prepareStatement(sql4);
-                    rst4 = (List)st.executeQuery();
-                    rst4.next();
-                    session.setAttribute("cir_privilege_resultset", rst4);
-
-                    String sql5 = ("select * from ser_privilege where staff_id='" + staff_id + "' and library_id='" + library_id + "'");
-                    st = con.prepareStatement(sql5);
-                    rst5 = (List)st.executeQuery();
-                    rst5.next();
-                    session.setAttribute("ser_privilege_resultset", rst5);
-*/
-                    //System.out.println("ok1"+staff_id);
-                    // System.out.println(user_id+""+password+"1");
                    
 
-else
-                        if(login.getRole().equalsIgnoreCase("insti-admin"))
+                else if(login.getRole().equalsIgnoreCase("insti-admin"))
                 {
+                    Institute rs1 = institutedao.getInstituteDetails(institute_id);
+
+                        if (rs1!=null) {
+
+                            session.setAttribute("institute_name", rs1.getInstituteName());
+                        }
                     return mapping.findForward("instituteadmin");
                 }
-                    //System.out.println("ok"+staff_id);
+
+                 else if(login.getRole().equalsIgnoreCase("Election Manager"))  {
+
+                     Institute rs1 = institutedao.getInstituteDetails(institute_id);
+
+                        if (rs1!=null) {
+
+                            session.setAttribute("institute_name", rs1.getInstituteName());
+                        }
+                     return mapping.findForward("electionmanager");
+                 }
+
+                    else if(login.getRole().equalsIgnoreCase("voter"))  {
+
+                        Institute rs1 = institutedao.getInstituteDetails(institute_id);
+
+                        if (rs1!=null) {
+
+                            session.setAttribute("institute_name", rs1.getInstituteName());
+                        }
+                     return mapping.findForward("voter");
+                 }
+
+                    else if(login.getRole().equalsIgnoreCase("candidate"))  {
+
+                        Institute rs1 = institutedao.getInstituteDetails(institute_id);
+
+                        if (rs1!=null) {
+
+                            session.setAttribute("institute_name", rs1.getInstituteName());
+                            session.setAttribute("user_name", login.getUserName());
+                        }
+                     return mapping.findForward("candidate");
+                 }
+
                 }
 
 
@@ -327,8 +292,7 @@ else
         } //login button
         else if (button.equals("Forget Password")) {
            /* Check Weather the Question is Assigned for the User or Not */
-               // stmt=con.prepareStatement("select * from login where login_id=? and question is not null");
-               /// stmt.setString(1, login_id);
+              
                Login obj=LoginDAO.searchForgetPassword(user_id);
                 if(obj!=null)
                 {
