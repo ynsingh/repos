@@ -196,7 +196,7 @@ $!data.getMessage()
 #if($total_size != 0)
 #if($mode1 == "list")
 <tr bgcolor="$ui.menuColor">
-#set ( $headings = ["$brih_login $brih_name","$brih_student $brih_name","$brih_email"," ",""] )
+#set ( $headings = ["$brih_login $brih_name","$brih_student $brih_name","$brih_email"," ","",""] )
         #foreach ($heading in $headings)
                 <td><font size=3><b>$heading</b></font></td>
         #end
@@ -210,8 +210,9 @@ $!data.getMessage()
         	<td>$!list.getLoginName()</td>
         	<td>$!list.getUserName()</td>
         	<td><a href=mailto:$!list.getEmail()>$!list.getEmail()</a></td>
-		<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("Process","modify").addPathInfo("mode","All").addPathInfo("count",$tdcolor).addPathInfo("from","usermgmt") style=text-decoration:none>$brih_update</a> &nbsp;</td>
+		<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("Process","modify").addPathInfo("mode","sclist").addPathInfo("count",$tdcolor).addPathInfo("from","usermgmt") style=text-decoration:none>$brih_update</a> &nbsp;</td>
         	##<td colspan=5><a href=$link.setPage("call,UserMgmt_Admin,StudentCourselist.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_list</a></td>
+        	<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("mode","changePW").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_changePassword </a> &nbsp;
         	<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_list</a></td>
     		</tr>
         #end
@@ -556,6 +557,32 @@ face="$ui.sansSerifFonts">$type</font>
 #end
 </table>
 #end
+#if($mode=="changePW")
+<form name="frm" method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("UserAction_InstituteAdmin")">
+	<table align="left" width="100%" bgcolor="$ui.menuColor" >
+	#if(($data.getUser().getTemp("lang" ).toString())== "hindi")
+	        <tr><td>$username $brih_Of1  $brih_changePassword1</td></tr>
+	#else
+	        <tr><td>$brih_changePassword1 $username</td></tr>
+	#end
+	</table>
+		<table align="left" width="100%" bgcolor="$ui.tableColor" >
+                        <tr>
+				#formPasswordCell("$brih_pwd  <font color=Red>*</font>" "newpass" "")
+			</tr>
+                </table>
+                <table align="left" width="100%" bgcolor="$ui.menuColor" >
+                <tr><td>
+                        <input type="button" name="eventSubmit_doUpdatePass" value="$brih_update" onClick="checkpass(document.frm,this);"/>
+                        <input type="reset" name="clear" value="$brih_clear" onClick="clearValues(document.frm,this);"/>
+                        <input type="hidden" name="username" value=$username />
+                        <input type="hidden" name="actionName"/>
+                        <input type="hidden" name="mode" value="sclist"/>
+                        <input type="hidden" name="count" value="$tdcolor"/>
+                </td></tr>
+                </table>
+#end
+</form>
 </table>
 <SCRIPT LANGUAGE="javascript">
         ##function checkField(frm,field,b)
@@ -746,6 +773,21 @@ face="$ui.sansSerifFonts">$type</font>
                                 frm.actionName.value=field.name;
                                 frm.submit();
         }
+	function checkpass(frm,field)
+        {
+                if(frm.newpass.value!="")
+                {
+                      frm.actionName.value=field.name;
+                      frm.submit();
+                }
+                else
+                {
+                      alert("Password can not be null!");
+                }
+         }
 
-
+        function clearValues(frm,field)
+        {
+                frm.newpass.value="";
+        }
 </SCRIPT>

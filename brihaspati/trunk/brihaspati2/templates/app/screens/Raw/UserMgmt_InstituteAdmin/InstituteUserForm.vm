@@ -122,7 +122,7 @@ $!data.getMessage()
 </table>
 #if($from=="usermgmt")
 ##<form method="post" action="$link.setPage("call,serMgmt_Admin,UserManagement_Admin.vm").setAction("UserAction_Admin")">
-<form method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("UserAction_InstituteAdmin")">
+<form name="frm" method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("UserAction_InstituteAdmin")">
 #else
 ##<form method="post" action="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").setAction("UserAction_Admin")">
 <form name="frm" method="post" action="$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").setAction("UserAction_InstituteAdmin")">
@@ -213,7 +213,11 @@ $!data.getMessage()
 	        #set($temp=$temp+1)
 	        ## Display more link
 	        #if(($UDetail.size()!=0)&&($counter!=2))
+	        	#if($from=="usermgmt")
+                               <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("Process","modify").addPathInfo("username",$i.UserName).addPathInfo("count","2").addPathInfo("type","more").addPathInfo("mode","sclist").addPathInfo("from","usermgmt") style=text-decoration:none>$brih_more</a>
+	                #else
 	               <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("Process","modify").addPathInfo("username",$i.UserName).addPathInfo("count","1").addPathInfo("type","more").addPathInfo("mode","All") style=text-decoration:none>$brih_more</a>
+			#end
 	        #end
         	</td></tr>
         #end

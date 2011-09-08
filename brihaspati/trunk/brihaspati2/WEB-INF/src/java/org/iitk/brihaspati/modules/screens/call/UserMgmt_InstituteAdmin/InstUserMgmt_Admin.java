@@ -82,7 +82,9 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 	 */
 	String mode=data.getParameters().getString("mode","");
 	String counter=data.getParameters().getString("count"," ");
+	String uname=data.getParameters().getString("username"," ");
 	context.put("tdcolor",counter);
+	context.put("username",uname);
 	context.put("mode",mode);
 	
 	/**

@@ -97,11 +97,10 @@ $page.setBgColor($ui.bgcolor)
 	<td>$!list.getLoginName()</td>
 	<td>$!list.getUserName()</td>
         <td><a href=mailto:$!list.getEmail()>$!list.getEmail()</a></td>
-        <td colspan=4>
-            <font face="$ui.sansSerifFonts">
-            <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_list</a> &nbsp;
-            </font>
-        </td>
+	<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("Process","modify").addPathInfo("mode","sclist").addPathInfo("count",$tdcolor).addPathInfo("from","usermgmt") style=text-decoration:none>$brih_update</a> &nbsp;</td>
+        <td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("mode","changePW").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_changePassword </a> &nbsp;</td>
+        <td colspan=2>
+            <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_list</a> &nbsp;</td>
 	#end
     </tr>
 <tr>

@@ -102,7 +102,7 @@ public class InstAdminviewall extends SecureScreen_Institute_Admin{
 			{
 				//userList=ListManagement.getUserList();
 				userList=ListManagement.getInstituteUserList(instituteId);
-				ErrorDumpUtil.ErrorLog("ulist in adminviewall=="+userList);
+				//ErrorDumpUtil.ErrorLog("ulist in adminviewall=="+userList);
 				//userList=UserManagement.getUserDetail1("All",instituteId);
                         	context.put("mode","All");
 
