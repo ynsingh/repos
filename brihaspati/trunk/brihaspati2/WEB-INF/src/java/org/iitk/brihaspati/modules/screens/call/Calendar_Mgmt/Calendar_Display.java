@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Calendar_Mgmt;
 /*
  * @(#)Calendar_Display.java
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2006,2011 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -56,12 +56,15 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CalendarUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
 /**
  * @author <a href="mailto:singhnk@iitk.ac.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Pal</a>
+ * @ modify date-08july2011
  */
 
 /**
@@ -78,22 +81,25 @@ public class Calendar_Display extends SecureScreen{
 	Hashtable acal=new Hashtable();
 	public void doBuildTemplate(RunData data,Context context){
 		try{
+			/**
+                        * Get the path from URL specifying if the user
+                        * is in personalised or course calendar
+                        */
+			ParameterParser pp=data.getParameters();
+                        String path=pp.getString("path");
 			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
-                    	ErrorDumpUtil.ErrorLog("insid in display calendar=="+instituteId);
-                        if(instituteId.equals("")){
-                        	instituteId="Admin";
-                        }
+			User user=data.getUser();
+			/**
+			* Set Instiutute ID if user role as admin
+			*/
+                        if(instituteId.equals("") || (user.getName()).equals("admin")){
+				instituteId="001";
+                        }			
 			/**
 			* Get the current date and time. Put it in context
 			*/
 			Date d= new Date();
 			context.put("date",d);
-			/**
-			* Get the path from URL specifying if the user
-			* is in personalised or course calendar
-			*/
-			ParameterParser pp=data.getParameters();
-			String path=pp.getString("path");
 			context.put("path",path);
 			/**
 			 * Get the current date in the specific format
@@ -162,7 +168,7 @@ public class Calendar_Display extends SecureScreen{
 				if(year==0)
 					year=curr_year;
 			}
-
+            
 			/**
 			 * Calculating the total number of days for the
 			 * month requested by the user
@@ -233,7 +239,6 @@ public class Calendar_Display extends SecureScreen{
 			if(zeller_firstday != 0)
 				context.put("space",space);
 
-			User user=data.getUser();
 			String userName=user.getName();
 			context.put("name",userName);
 
@@ -245,41 +250,46 @@ public class Calendar_Display extends SecureScreen{
 
 			int user_id=UserUtil.getUID(userName);
 			String uid=Integer.toString(user_id);
-			String course_id=(String)user.getTemp("course_id");
+			String course_id=(String)user.getTemp("course_id","");
+			int gid=1;
+			if(!(course_id.equals(""))){
+				gid=GroupUtil.getGID(course_id);
+			}	
 			String course_name=(String)user.getTemp("course_name");
 			context.put("course",course_name);
+
+			 /**
+                         * Get institute id if role as instructor
+			 * and path for calendar is personal
+                         * @see InstituteIdUtil from Utils
+                         */
 
 			Vector day=new Vector();
 			Vector token_day=new Vector();
 			Criteria crit= new Criteria();
 			/**
 			 * Retreiving the days for which events are
-			 * specified in the calendar. Those days will be
-			 * marked with '*' so that the user can know
+			 * specified in the calendar according to institute id.
+			 * Those days will be marked with '*' so that the user can know
 			 * that there is an entry for that day.
 			 */
-			int gid=1;
+			
 			for(int i=1;i<=days_of_month;i++)
 			{
 				String get_date="";
-				if(i<=9)
+				if(i<=9){
 					get_date=cYear+dmonth+"0"+i;
-				else
+					}
+				else{
 					get_date=cYear+dmonth+i;
-
+				}
 				crit.add(CalInformationPeer.P_DATE,(Object)get_date,crit.EQUAL);
-				if(path.equals("personal"))
-				{
-					crit.add(CalInformationPeer.GROUP_ID,gid);
-					crit.add(CalInformationPeer.USER_ID,user_id);
-				}
-				else
-				{
-					gid=GroupUtil.getGID(course_id);
-					crit.add(CalInformationPeer.GROUP_ID,gid);
-				}
+				crit.add(CalInformationPeer.GROUP_ID,gid);
+				crit.add(CalInformationPeer.USER_ID,user_id);
+				crit.add(CalInformationPeer.INSTITUTE_ID,instituteId);
 				List result=CalInformationPeer.doSelect(crit);
-				String all_date=new String();
+				String all_date="";
+				String description="";
 				if(result.size()!=0)
 				{
 					for(int j=0;j<result.size();j++)
@@ -397,7 +407,6 @@ public class Calendar_Display extends SecureScreen{
 	*and put in the hash table for using in templates
 	*@see CalendarUtil in utils
 	*/		
-
 	public void Holiday(String key,String path){
 		try{
 			String [] AdminConf = CalendarUtil.getValue(path,key);
@@ -437,4 +446,3 @@ public class Calendar_Display extends SecureScreen{
 	}
 			
 }
-       

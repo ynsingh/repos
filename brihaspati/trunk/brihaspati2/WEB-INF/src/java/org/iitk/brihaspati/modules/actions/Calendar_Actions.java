@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)Calendar_Actions.java	
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006,2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -37,6 +37,7 @@ package org.iitk.brihaspati.modules.actions;
 
 
 import java.util.Vector;
+import java.util.Calendar;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -47,10 +48,10 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+//import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.apache.velocity.context.Context;
 
 import org.apache.torque.util.Criteria;
@@ -68,6 +69,7 @@ import org.iitk.brihaspati.om.CalInformationPeer;
  * @author <a href="mailto:singhnk@iitk.ac.in">Nagendra Kumar Singh</a> 
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>  
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Pal</a>
  */
 
 public class Calendar_Actions extends SecureAction
@@ -79,9 +81,9 @@ public class Calendar_Actions extends SecureAction
 	private static String detail_info;
 	private static Time stime;
 	private static Time etime;
-	private static String courseId;
+	//private static String courseId;
 	private static String path;
-	private static int gid;
+	//private static int gid;
 
 	/**
 	 * This method insert the information in the datbase entered by the user from the vm
@@ -97,7 +99,16 @@ public class Calendar_Actions extends SecureAction
 			String LangFile=data.getUser().getTemp("LangFile").toString();  
 			ParameterParser pp=data.getParameters();
 			User user=data.getUser();
+			String Role=(String)user.getTemp("role");
+			String instituteId=(String)user.getTemp("Institute_id","");
+			/**
+			* Set InstituteId if it is not get from temp
+ 			* @user name is admin and role also admin
+               		*/
 
+			if(instituteId.equals("") || (user.getName()).equals("admin")){
+                                instituteId="001";
+                        }
 			/**
 			 * Get the path from the URL specifying if the
 			 * user is in personalised or course specific
@@ -109,13 +120,16 @@ public class Calendar_Actions extends SecureAction
 			 * Get the course id from the temporary variable
 			 * of user when he is in course calendar
 			 */
-
-			if(!path.equals("personal"))
-			{
-				courseId=(String)user.getTemp("course_id");
-				gid=GroupUtil.getGID(courseId);
+			
+			int gid=1;
+			String courseId=(String)user.getTemp("course_id","");
+			if(!(courseId.equals(""))){
+				gid=GroupUtil.getGID(courseId);	
 			}
-
+			//if(!path.equals("personal"))
+			//{
+			//	gid=GroupUtil.getGID(courseId);
+			//}
 			/**
 			 * Get the Deletion Time from the text box in the
 			 * vm page
@@ -133,13 +147,16 @@ public class Calendar_Actions extends SecureAction
 			String detail_info=StringUtil.replaceXmlSpecialCharacters(event_detail);
 			String day_calendar=pp.getString("day");
 			int daycalendar=Integer.parseInt(day_calendar);
-                        //String month_name=pp.getString("month");
+			//if(daycalendar < 10)
+			//day_calendar="0"+day_calendar;	
+                        String month_name=pp.getString("month");
                         String month_number=pp.getString("mon");
 			int mnumber=Integer.parseInt(month_number);
+			//if(mnumber < 10)
+			//month_number="0"+month_number;
                         String year_calendar=pp.getString("year");
                         context.put("day",day_calendar);
                         context.put("month_num",month_number);
-                        //context.put("month_name",month_name);
                         context.put("year",year_calendar);
 			/**
 			* Get the current date of the system
@@ -147,7 +164,7 @@ public class Calendar_Actions extends SecureAction
 			*/
 			String cdate=ExpiryUtil.getCurrentDate("");
                         int curdate=Integer.parseInt(cdate);
- 
+			
                         /**
                          * Generate the date for which event has to be
                          * entered
@@ -156,18 +173,22 @@ public class Calendar_Actions extends SecureAction
 			if((daycalendar<10) && (mnumber<10))
 			{
 				edate=year_calendar+"0"+month_number+"0"+day_calendar;  	
+		
 			}
 			else if((daycalendar<10) && (mnumber>9))
 			{
-				edate=year_calendar+month_number+"0"+day_calendar;
+			     edate=year_calendar+month_number+"0"+day_calendar;
+			
 			}
 			else if((daycalendar>9) && (mnumber<10))
 			{
 				edate=year_calendar+"0"+month_number+day_calendar;
+			
 			}
 			else
 				edate=year_calendar+month_number+day_calendar;
-			int edate1=Integer.parseInt(edate);
+					int edate1=Integer.parseInt(edate);
+			
 			/**
 			* date convert String type to Date type
 			*/
@@ -181,9 +202,14 @@ public class Calendar_Actions extends SecureAction
 			 * and hence concatenate them to get start time
 			 */
 
-			String sh=pp.getString("Start_hr");  
+			String sh=pp.getString("Start_hr");
+			int startinghour=Integer.parseInt(sh);  
 			String sm=pp.getString("Start_min");  
+			int startingmin=Integer.parseInt(sm);  
 			String sTime= sh + ":" + sm+":00";
+			Calendar calend=Calendar.getInstance();
+			int hour=calend.get(calend.HOUR_OF_DAY);
+			int min=calend.get(calend.MINUTE);
 			/**
 			 * Get the hours and minutes for the end time
 			 * and hence concatenate them to get end time
@@ -195,25 +221,37 @@ public class Calendar_Actions extends SecureAction
 			etime=Time.valueOf(eTime);
 			context.put("etime",eTime);	
 			userid=UserUtil.getUID(UserName);
+			Vector ins_id=new Vector();
+			
+			/**
+			 * Set institute id if it is not get from temp
+			 * and role as instructor and path is personal
+			 * @see InstituteIdUtil from Utils
+			 */	
+
 			String msg=new String();
-			if(edate1 >= curdate)
+			if(((edate1 >= curdate) && (startinghour >= hour)) || (edate1 > curdate))
 			{
+				/**
+				* Add Institute Id in table for showing event Institute Wise
+				*/
 				Criteria crit=new Criteria();
 				crit.add(CalInformationPeer.USER_ID,userid);
+				crit.add(CalInformationPeer.INSTITUTE_ID,instituteId); 
 				crit.add(CalInformationPeer.P_DATE,Cal_date);
 				crit.add(CalInformationPeer.DETAIL_INFORMATION,detail_info);
 				crit.add(CalInformationPeer.START_TIME,Time.valueOf(sTime));
 				crit.add(CalInformationPeer.END_TIME,etime);
 				crit.add(CalInformationPeer.EXPIRY,expiry);
 				crit.add(CalInformationPeer.EXPIRY_DATE,Expdate);
-				if(path.equals("personal"))
+				/*if(path.equals("personal"))
 				{
 					crit.add(CalInformationPeer.GROUP_ID,1);
 				}
 				else
-				{
-					crit.add(CalInformationPeer.GROUP_ID,gid);
-				}
+				{*/
+				crit.add(CalInformationPeer.GROUP_ID,gid);
+				//}
 				CalInformationPeer.doInsert(crit);
 				msg=MultilingualUtil.ConvertedString("cal_ins",LangFile);
 				data.setMessage(msg);

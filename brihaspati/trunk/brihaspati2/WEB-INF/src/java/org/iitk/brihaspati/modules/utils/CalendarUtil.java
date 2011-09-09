@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)CalendarUtil.java
  *
- *  Copyright (c) 2005-2008 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2008,2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -43,8 +43,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 
 /**
- *  @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Pal</a>
+ * @modify date:- 08-07-2011
  */
+
 /** 
  * In this class, set and return the value of Academic_Calendar.properties 
  * and Calendar_Holidays.properties file for configuration parameter.
@@ -137,4 +140,55 @@ public class CalendarUtil
         }
         catch(Exception ex){ErrorDumpUtil.ErrorLog("The error in CalendarUtil !!"+ex);}
         }
+
+	/**
+	 * This Method used for getting year, month and day 
+	 * from date into a string 
+	 * @ExpiryUtil
+	 * @return String
+	 */
+
+	public static String getDay(String date)
+        {
+		String getDate="";
+		try{
+			/**
+			 * Now get day, month and year seperately in vector from given date
+			 * get each value from vector into string
+			 */
+                        Vector preVc= ExpiryUtil.getPostDate(date);
+                        String year=(String)preVc.elementAt(0);
+                        String month=(String)preVc.elementAt(1);
+                        String day=(String)preVc.elementAt(2);
+                        int preday = Integer.parseInt(day);
+			/**
+			 * If day is less than 10 then get only number  
+			 */
+                        if(preday<10)
+                        {
+                                char day_nm = day.charAt(1);
+				getDate=getDate+day_nm;
+                        }
+                        else
+                        {
+				getDate=getDate+day;
+                        }
+			getDate=getDate+"-"+year;
+                        int premonth = Integer.parseInt(month);
+			/**
+			 * If month is less than 10 then get only number  
+			 */
+                        if(premonth<10)
+                        {
+                                char month_nm = month.charAt(1);
+				getDate = getDate+"-"+month_nm;
+                        }
+                        else
+                        {
+				getDate = getDate+"-"+month;
+                        }
+		}
+		catch(Exception e){}
+		return getDate;
+	}
 }	

@@ -51,6 +51,7 @@
 	<column name="INFO_ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
 	<column name="USER_ID" required="true" type="INTEGER"/>
 	<column name="GROUP_ID" required="true" type="INTEGER"/>
+	<column name="INSTITUTE_ID" size="255" type="VARCHAR"/>
 	<column name="P_DATE" required="true" type="DATE"/>
 	<column name="DETAIL_INFORMATION" type="BLOB"/>
 	<column name="START_TIME" required="true" type="TIME" />

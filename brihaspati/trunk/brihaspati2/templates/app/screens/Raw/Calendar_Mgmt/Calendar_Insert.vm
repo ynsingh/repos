@@ -48,9 +48,9 @@ $!data.getMessage()
 		$brih_insert $brih_event $brih_detail
  	#else
 		#if($lang=="hindi")
-                $brih_event $brih_detail $brih_update
+                	$brih_event $brih_detail $brih_update
                 #else
-                $brih_update $brih_event $brih_detail
+	                $brih_update $brih_event $brih_detail
                 #end
 
  	#end
@@ -71,9 +71,9 @@ $!data.getMessage()
 		$brih_insert $brih_event $brih_detail
  	#else
 		#if($lang=="hindi")
-                $brih_event $brih_detail $brih_update
+                	$brih_event $brih_detail $brih_update
                 #else
-                $brih_update $brih_event $brih_detail
+	                $brih_update $brih_event $brih_detail
                 #end
 
 	#end
@@ -91,8 +91,7 @@ $!data.getMessage()
 <body bgcolor="$ui.bgcolor">
  	#set($min=["00","05","10","15","20","25","30","35","40","45","50","55"])
 #if($mode=='insert')
-<form name=frm method="post" action="$link.setPage("call,Calendar_Mgmt,Calendar_Insert.vm").setAction("Calendar_Actions")">
- 
+<form name=frm method="post" action="$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").setAction("Calendar_Actions")">
 <div align="left">
 ##<table align=center bgcolor="$ui.bgcolor" border="1" cellspacing="1" cellpadding="1">
 	<tr bgcolor="$ui.menuColor">
@@ -104,23 +103,23 @@ $!data.getMessage()
 		<td><textarea name="detail" cols=40 rows=5></textarea></td>
         </tr>
         <tr bgcolor="$ui.menuColor">
-		<td><b><I>$brih_start $brih_time</I></b></td>
+		<td><b><I>$brih_start $brih_time <font color=RED size="4">* </font></I></b></td>
 		<td>
                 	<select name="Start_hr">
 			#foreach($hr in $hour)
-                        <option value="$hr">$hr
+                        	<option value="$hr">$hr
 		    	#end
 			</select>
                  	&nbsp;<b><font size=+1>:: </font></b>&nbsp;
             		<select name="Start_min">
 			#foreach($m in $min)
-	          	<option value="$m">$m	
+	          		<option value="$m">$m	
 			#end
        			</select>
      		</td>
    	</tr>
        	<tr>
-		<td><b><I>$brih_end $brih_time</I></b></td>
+		<td><b><I>$brih_end $brih_time <font color=RED size="4">* </font></I></b></td>
 		<td>
 			<select name="Last_hr">
          		#foreach($hr in $hour)
@@ -142,14 +141,13 @@ $!data.getMessage()
 		<td colspan=2>
          	<input type ="button" name="eventSubmit_doInsert" value="$brih_insert" onClick="checkField(document.frm,this)"> 
 		<input type="hidden" name="uname" value=$name>
-                <input type= "reset"  value="$brih_reset">
+                <input type= "reset" value="$brih_reset">
 		</td>
 	</tr>
 </table>
 
 #else        
 <form name=frm method="post" action="$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").setAction("Calendar_Actions")">
-   
 <div align="left">
 <table align=left bgcolor="$ui.tableColor" width=100%>
 	<tr bgcolor="$ui.menuColor">
@@ -222,11 +220,9 @@ $!data.getMessage()
 		<input type="hidden" name="year" value=$year>
 		<input type="hidden" name="mode" value=$mode>
 		<input type="hidden" name="info_id" value=$info_id>
-	
 </div>
 </form>
 </body>
-
 <SCRIPT LANGUAGE="javascript">
 function checkField(frm,field)
 {

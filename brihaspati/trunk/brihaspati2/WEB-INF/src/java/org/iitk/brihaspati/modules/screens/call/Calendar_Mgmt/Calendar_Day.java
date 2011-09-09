@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Calendar_Mgmt;
 /*
  * @(#)Calendar_Day.java	
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006,2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -34,11 +34,13 @@ package org.iitk.brihaspati.modules.screens.call.Calendar_Mgmt;
  *  
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
  */
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
+import java.util.StringTokenizer;
 //import java.lang.Integer;
 import java.util.List;
-import java.sql.Date;
+//import java.sql.Date;
 import java.sql.Time;
 import org.apache.turbine.util.RunData;
 import org.apache.torque.util.Criteria;
@@ -52,12 +54,17 @@ import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+//import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.CalendarUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.apache.velocity.context.Context;
 
 /**
  * @author <a href="mailto:singhnk@iitk.ac.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Pal</a>
+ * @modify date -08july2011
  *
  * This class displays the list of entries for the selected date. It also
  * allows the user to insert,update or delete entries.
@@ -72,8 +79,15 @@ public class Calendar_Day extends SecureScreen
 
 			ParameterParser pp=data.getParameters();
 			User user=data.getUser();
+			String instituteId=(String)user.getTemp("Institute_id","");
 			String LangFile =(String)user.getTemp("LangFile");
-
+			/**
+			* Set InstituteId if it is not found from temp
+			* @user role as admin 
+			*/
+			if(instituteId.equals("") || (user.getName()).equals("admin")){
+                                instituteId="001";
+                        }
 			/**
 			 * Get the path from URL specifying whether the
 			 * user is using personal or course specific
@@ -82,7 +96,6 @@ public class Calendar_Day extends SecureScreen
 
 			String path=pp.getString("path","");
 			context.put("path",path);
-
 			/**
 			 * Retreive the user name and then user id of
 			 * the user who is currently logged in and put
@@ -98,18 +111,24 @@ public class Calendar_Day extends SecureScreen
 			 * Set the course id for the event depending
 			 * upon the path variable obtained previously.
 			 */
-
+			
 			int gid=1;
-			String cid=new String();
+                        String cid=(String)user.getTemp("course_id","");
+                        if(!(cid.equals(""))){
+                                gid=GroupUtil.getGID(cid);
+			}
+			context.put("course",(String)user.getTemp("course_name"));
+			/*String cid=new String();
 			if(!path.equals("personal"))
 			{
 				cid=(String)user.getTemp("course_id");
 				gid=GroupUtil.getGID(cid);
-				context.put("course",(String)user.getTemp("course_name"));
-			}
+			}*/
 			/**
 			* Get the roleid of currently logged user
+                        * Get institute id if role as instructor
 			* @see UserManagement in utils
+                        * @see InstituteIdUtil from Utils
 			*/
 			int userid=Integer.parseInt(uid_user);
 			int rid=UserManagement.getRoleinCourse(userid,gid);
@@ -128,6 +147,20 @@ public class Calendar_Day extends SecureScreen
 			context.put("month_num",month_number);
 			//context.put("month_name",month_name);
 			context.put("year",year_calendar);
+
+			/**
+			 * get previous and next date from given date
+			 */
+			String mydate = year_calendar+"-"+month_number+"-"+day_calendar;
+			int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        Date date1=(Date)dateFormat.parse(mydate);
+                        String prevDate = dateFormat.format(date1.getTime() -MILLIS_IN_DAY);
+                        String nextDate = dateFormat.format(date1.getTime() +MILLIS_IN_DAY);
+			String pday = CalendarUtil.getDay(prevDate);
+			context.put("preDay",pday);
+			String nday = CalendarUtil.getDay(nextDate);
+			context.put("nextDay",nday);
 			/**
                          * Initializing the month name depending on the
                          * month number
@@ -200,36 +233,25 @@ public class Calendar_Day extends SecureScreen
 			int cD=Integer.parseInt(ExpiryUtil.getCurrentDate(""));
 			if(cD <= d)
 				context.put("t","true");	
-		//	context.put("cDate",ExpiryUtil.getCurrentDate(""));
+			//	context.put("cDate",ExpiryUtil.getCurrentDate(""));
 			Criteria crit=new Criteria();
 			/**
 			 * Populate the criteria object for selecting
 			 * the entries submitted for the specified date
 			 * depending on the path variable
+			 * Add IntiuteId for showing event instiute wise.
 			 */
-			if(path.equals("personal"))
-			{
-				try
-				{
-				crit=new Criteria();
-				crit.add(CalInformationPeer.USER_ID,uid_user);
-				crit.add(CalInformationPeer.GROUP_ID,gid);
-				crit.add(CalInformationPeer.P_DATE,(Object)Cdate,crit.EQUAL);
-				crit.addAscendingOrderByColumn(CalInformationPeer.START_TIME);
-				}
-				catch(Exception e){data.setMessage("The error in caldetail"+e);}
-			}
-			else
-			{
-				crit=new Criteria();
-				crit.add(CalInformationPeer.GROUP_ID,gid);
-				crit.add(CalInformationPeer.P_DATE,(Object)Cdate,crit.EQUAL);
-				crit.addAscendingOrderByColumn(CalInformationPeer.START_TIME);
-			}
+			crit=new Criteria();
+			crit.add(CalInformationPeer.USER_ID,uid_user);
+			crit.add(CalInformationPeer.GROUP_ID,gid);
+			crit.add(CalInformationPeer.INSTITUTE_ID,instituteId);
+			crit.add(CalInformationPeer.P_DATE,(Object)Cdate,crit.EQUAL);
+			crit.addAscendingOrderByColumn(CalInformationPeer.START_TIME);
 			List cal_detail=CalInformationPeer.doSelect(crit);
 			Vector desc=new Vector();
 			Vector accessible_events=new Vector();
 			Vector st_time=new Vector();
+			Vector end_time=new Vector();
 			/**
 			 * Retreive the details of the events in seperate vectors. 
 			 * Check if the user logged in is a primary instructor. 
@@ -239,17 +261,18 @@ public class Calendar_Day extends SecureScreen
 			 * the students and secondary instructors can only modify or
 			 * delete their own course entries. In personalised calendar the events
 			 * of the user logged will be displayed.
-			 */
-
+                        */
 			for(int i=0;i<cal_detail.size();i++)
 			{
 				CalInformation element=(CalInformation)cal_detail.get(i);
-				String startTime=(element.getStartTime()).toString();
-				st_time.addElement(startTime);
 				byte b[]=element.getDetailInformation();
 				String description=new String(b);
 				desc.addElement(description);
-				String uid=Integer.toString(element.getUserId());
+				String endTime=(element.getEndTime()).toString();
+                                end_time.addElement(endTime);
+				String startTime=(element.getStartTime()).toString();
+                                st_time.addElement(startTime);
+                                String uid=Integer.toString(element.getUserId());
 				context.put("uid",uid);
 				accessible_events.addElement(uid);
 				if(path.equals("fromcourse"))
@@ -271,6 +294,7 @@ public class Calendar_Day extends SecureScreen
 			context.put("description",desc);
 			context.put("information",cal_detail);
                         context.put("start_time",st_time);
+                        context.put("ending_time",end_time);
 			context.put("size",Integer.toString(cal_detail.size()));
 		}
 		catch(Exception e){data.setMessage("The error in showing the event of a particular day"+e);}

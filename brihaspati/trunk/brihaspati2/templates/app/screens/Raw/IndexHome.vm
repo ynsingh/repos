@@ -9,6 +9,7 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:kalpanagtm@gmail.com">Kalpana Gautam</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Pal</a>
  * @ modified date: 13-Oct-2010 (Shaista), 09-11-2010, 07-12-2010 (Problem resolved for view bookmarks)
  * @ modified date: 22-Feb-2011 (Tej)
  * Contributors: Members of ETRG, I.I.T. Kanpur
@@ -51,14 +52,12 @@ $!data.getMessage()
 			#end
 	</td>
 </tr>
-##</table>
 #if($guest_login=="true")
-##<table align=center width=100% bgcolor="$ui.tableColor" cellpadding=5>
-<tr><td><font face="$ui.sansSerifFonts" color="RED">$brih_guestMsg</font></td></tr>
-</table>
+	<tr><td><font face="$ui.sansSerifFonts" color="RED">$brih_guestMsg</font></td></tr>
+	</table>
 #end
 <table width=100% align=left> ##table 1 start
- <tr bgcolor="$ui.menuColor">
+<tr bgcolor="$ui.menuColor">
 ##start of today's task 
 #if($guest_login=="false")
 <td width=20% valign="top">
@@ -74,12 +73,12 @@ $!data.getMessage()
 	#set($allTask="")
 		#foreach ($element in $taskList)
 			#if($velocityCount%2==0)	
-                        <tr bgcolor="$ui.menuColor">
+                        	<tr bgcolor="$ui.menuColor">
                        	#else
-                       	<tr bgcolor="$ui.tableColor">
+	                       	<tr bgcolor="$ui.tableColor">
                        	#end
 			<td>$element.getTitle()</td>
-	##code for delete the task which task is moved	
+##code for delete the task which task is moved	
 	<td><a href=$link.setPage("call,IndexHome.vm").addPathInfo("id",$element.getTask_Id()).addPathInfo("seqno",$element.getSeqNumber()).addPathInfo("actionName","eventSubmit_doDelete").setAction("Task_Action") onclick="javascript:return confirm('Do you want to delete this task')"> $brih_delete </a></td>
 			</tr>
 		#set($allTask = "${allTask}${element.getTitle()}<br>")
@@ -88,18 +87,15 @@ $!data.getMessage()
 	</div>
 	#if($allTask != "")
 	<table width="100%" valign="top" bgcolor="$ui.menuColor">
-	<tr><td>
-	<input type="hidden" name="allTask" value="$allTask">
+		<tr><td><input type="hidden" name="allTask" value="$allTask">
 
-	##Below line for print the Task List 
-	<tr><td colspan="2"><a href=javascript:(popupWin("newWin")),self.print();> #if($lang == "english") $brih_print the $brih_task $brih_list #else $brih_task $brih_list $brih_print $brih_for $brih_view #end </a></td></tr>
-
-	</td></tr> 
+		##Below line for print the Task List 
+		<tr><td colspan="2"><a href=javascript:(popupWin("newWin")),self.print();> #if($lang == "english") $brih_print the $brih_task $brih_list #else $brih_task $brih_list $brih_print $brih_for $brih_view #end </a></td></tr>
+		</td></tr> 
 	</table>
 	#end
 </td>
 #end
-
 ##end of today's task
 	<td valign="top" align="center">
 		#if($inst.size() >1)
@@ -108,9 +104,9 @@ $!data.getMessage()
 		<table width=100%>
 			<tr><td>
 				<table width=100% align=left valign="top">
-				<tr bgcolor="$ui.menuColor"><td colspan=4>
-				<b>$brih_registCourse</b>
-					</td></tr>
+					<tr bgcolor="$ui.menuColor">
+						<td colspan=4><b>$brih_registCourse</b>	</td>
+					</tr>
 				</table>
 			</td></tr>
 			<tr><td bgcolor="$ui.menuColor">
@@ -173,13 +169,12 @@ $!data.getMessage()
 ##		$cid=$instructor.getGroupName();
 						#if($instructor.getCGuest() == "true")
 						<input type="submit"  value="$DisBoard_DBmsg8" name="$DisBoard_DBmsg7">
-                                             #else
+                                             	#else
 						<input type="submit"  value="$DisBoard_DBmsg7" name="$DisBoard_DBmsg8">
-                                               #end
+                                               	#end
 						<input type="hidden" value="$instructor.getGroupName()"  name="courseId">
 						</form>
                                                 </td>
-
  						</tr>
 					#end ## if1 close
 					#set($count1=$count1+1)
@@ -208,7 +203,6 @@ $!data.getMessage()
                                                 #else
                                                         <tr bgcolor="$ui.buttonBoxColor">
                                                 #end
-
 						#set ( $count2 = 1 )
 						#foreach($message in $unread_msg)	
 							##if(($count1 == $count2) && ($count1 == $count3))
@@ -258,9 +252,7 @@ $!data.getMessage()
 						#end
 						</table>
 						</td></tr>
-
 						</td> </tr>
-
 						<tr> <td>
 				<table width="100%" border="0">
 					<tr>
@@ -289,7 +281,7 @@ $!data.getMessage()
                 			</td></tr>
 		                </table>
 				#if($information.size() > 0)
-					<div style="width:300px; overflow: auto;">
+					<div style="width:100%; overflow: auto;">
 				#end
 				<table width="100%" valign="top">
 		                #set ( $count1 = 1 )
@@ -300,27 +292,27 @@ $!data.getMessage()
         	        	                #set ( $count3 = 1 )
         		                        #foreach ($stt in $Etime)
                 		                        #if (($count1 == $count2) && ($count1 ==$count3))
-								 #if($velocityCount % 2 == 0)
-                                		                        <tr bgcolor="$ui.tableColor">
+								#if($velocityCount % 2 == 0)
+                                		                	<tr bgcolor="$ui.menuColor">
                                         		                ##set($row_count=$row_count+1)
                                                 		#else
-                							<tr bgcolor="$ui.menuColor">
+                							<tr bgcolor="$ui.tableColor">
 			                                                ##set($row_count=$row_count+1)
 		                                                #end
-                	                                #if ($INT.valueOf($begt) > $INT.valueOf($currenttime))
-        	        	                                <td><font color="green">$element</font>
-                                	                #elseif($INT.valueOf($currenttime) < $INT.valueOf($stt))
-                	        				<td><blink><font color="red">$element</font></blink>
-                       	                        	#else
-	                                                	<td><font color="black">$element</font>
-							#end
+                	                                	#if ($INT.valueOf($begt) > $INT.valueOf($currenttime))
+        	        	                                	<td><font color="green">$element</font>
+	                                	                #elseif($INT.valueOf($currenttime) < $INT.valueOf($stt))
+        	        	        				<td><blink><font color="red">$element</font></blink>
+                	       	                        	#else
+	                	                                	<td><font color="black">$element</font>
+								#end
         		                                        </td></tr>
-	                	                        #end
+	                	        	      	#end
 	                        	        	#set($count3 =$count3 + 1)
-	        	                        #end
-				                #set($count2=$count2+1)
+		        	              	#end
+					        #set($count2=$count2+1)
 					#end
-			                #set ( $count1 = $count1 + 1 )
+				        #set ( $count1 = $count1 + 1 )
 				#end
 				</table>
 		#if($information != "")
@@ -329,7 +321,6 @@ $!data.getMessage()
         	</table>
         </td>
 #end
-
 ##end of today event 
 	</tr>
 </table>
@@ -339,36 +330,28 @@ $!data.getMessage()
 			<tr bgcolor="$ui.menuColor">
 			<ul>	
 				<td width=20% valign="top"><b><a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none;onmouseover="mopen('m1')" onmouseout="mclosetime()">$brih_My $brih_Bookmark</a></b>
-
 				<div id="m1" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
-
 				<tr bgcolor="$ui.tableColor"><td width=20% valign="top"><a href=$link.setPage("call,Bookmarks,ManageBookmarks.vm").addPathInfo("stat1","All") style=text-decoration:none>$brih_showall</a></b></td><tr>
-                          #end
+                        #end
 				#if($allTopics.size() > 1)
                 		## Below line for horizental scrolling is added by shaista
-                		<div style="width:300px; overflow: auto;">
+                		<div style="width:100%; overflow: auto;">
         			#end
 				#foreach ($Allbookmark in $allTopics)
-
-				#if($velocityCount%2==0)
-                        	<tr bgcolor="$ui.menuColor">
-                        	#else
-                        	<tr bgcolor="$ui.tableColor">
-                        	#end
-
-				#if($Allbookmark.type=="general")
-
-				<td><a href="javascript:void(0)" onclick="window.open('$Allbookmark.Url')" style=text-decoration:none >$Allbookmark.Topic</a></td>
-				#end
-
-				#if($Allbookmark.type=="Course")
-        			<td><a href=$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("btname",$Allbookmark.Topic).addPathInfo("bturl",$Allbookmark.Url).addPathInfo("bgroup",$Allbookmark.Name).addPathInfo("stat","view").addPathInfo("stat1","All") style=text-decoration:none>$Allbookmark.Url</a></td>
-				#end
-
-				#if($Allbookmark.type=="Course_file")
-				<td><a href=javascript:popupWin1($link.setPage("call,ViewFileContent.vm").addPathInfo("topic",$Allbookmark.Topic).addPathInfo("dir",$Allbookmark.Name).addPathInfo("type","Bookmarks").addPathInfo("filename",$Allbookmark.Url) style=text-decoration:none,"newWin")>$Allbookmark.Url</a></td>
-				#end
-
+					#if($velocityCount%2==0)
+                        			<tr bgcolor="$ui.menuColor">
+	                        	#else
+		                        	<tr bgcolor="$ui.tableColor">
+                	        	#end
+					#if($Allbookmark.type=="general")
+					<td><a href="javascript:void(0)" onclick="window.open('$Allbookmark.Url')" style=text-decoration:none >$Allbookmark.Topic</a></td>
+					#end
+					#if($Allbookmark.type=="Course")
+        				<td><a href=$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("btname",$Allbookmark.Topic).addPathInfo("bturl",$Allbookmark.Url).addPathInfo("bgroup",$Allbookmark.Name).addPathInfo("stat","view").addPathInfo("stat1","All") style=text-decoration:none>$Allbookmark.Url</a></td>
+					#end
+					#if($Allbookmark.type=="Course_file")
+					<td><a href=javascript:popupWin1($link.setPage("call,ViewFileContent.vm").addPathInfo("topic",$Allbookmark.Topic).addPathInfo("dir",$Allbookmark.Name).addPathInfo("type","Bookmarks").addPathInfo("filename",$Allbookmark.Url) style=text-decoration:none,"newWin")>$Allbookmark.Url</a></td>
+					#end
 				#end
 				</div>
 				</ul>

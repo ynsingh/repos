@@ -55,7 +55,7 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+//import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.StudentInstructorMAP;
 import org.iitk.brihaspati.modules.utils.NoticeUnreadMsg;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
@@ -71,7 +71,8 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * @modified date: 26-07-2010, 06-08-2010, 09-11-2010, 22-02-2011
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Pal</a>
+ * @modified date: 26-07-2010, 06-08-2010, 09-11-2010, 22-02-2011, 18-07-2011
  */
 
 /* This screen class is called when User's selects a home location as instructor/
@@ -225,7 +226,7 @@ public class IndexHome extends SecureScreen{
                          * specific user to display
                          */
                         crit=new Criteria();
-                        crit.add(CalInformationPeer.GROUP_ID,"1");
+                        //crit.add(CalInformationPeer.GROUP_ID,"1");
                         crit.add(CalInformationPeer.USER_ID,id);
                         crit.add(CalInformationPeer.P_DATE,(Object)Cdate,crit.EQUAL);
                         crit.addAscendingOrderByColumn(CalInformationPeer.START_TIME);

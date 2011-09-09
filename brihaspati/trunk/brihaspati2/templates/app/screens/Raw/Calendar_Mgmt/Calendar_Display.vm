@@ -1,10 +1,12 @@
 #*
  * @(#)Calendar_Display.vm
- * Copyright (c) 2005-2006,2009 ETRG,IIT Kanpur.
+ * Copyright (c) 2005-2006,2009,2011 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:singhnk@iitk.ac.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:prashant.22feb1986@gmail.com">Prashant Mathur</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -18,10 +20,10 @@ $!data.getMessage()
 	<td>
 	##<font face="$ui.sansSerifFonts"><b>
 	<font><b>
-	 #if($data.getUser().getUserName() == "admin")
-         $page.setTitle("Admin's Calendar ")
-         ##<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_home</a> | $brih_calendar 
-         <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | $brih_calendar 
+	#if($data.getUser().getUserName() == "admin")
+        $page.setTitle("Admin's Calendar ")
+        ##<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_home</a> | $brih_calendar 
+        <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | $brih_calendar 
 	#elseif($path =="personal")
 		##<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
 		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_home</a> |
@@ -40,9 +42,13 @@ $!data.getMessage()
 </table>
 
 <table width="100%" bgcolor="$ui.tableColor">
-<tr><td><I>* $brih_star</I></td><td><font color="green"><I>$brih_col2</I></font></td>
-<td><font color="magenta"><I>$brih_col1</I></font></td><td><font color="green"><I>(R)$brih_rh</I></font></td> 
-<td><font color="Gray"><I>$brih_col3</font></I></td></tr>
+	<tr>
+		<td><I>* $brih_star</I></td>
+		<td><font color="green"><I>$brih_col2</I></font></td>
+		<td><font color="magenta"><I>$brih_col1</I></font></td>
+		<td><font color="green"><I>(R)$brih_rh</I></font></td> 
+		<td><font color="Gray"><I>$brih_col3</font></I></td>
+	</tr>
 </table>
 
 ## This is main table
@@ -51,7 +57,6 @@ $!data.getMessage()
 <tr><td align="center" valign="top">
 ## width add by nksingh
 	<table align="left" bgcolor="$ui.tableColor" width="100">
-	#if($currentyear == $year1)	
 		<tr><td align=center bgcolor="$ui.menuColor"><font color="magenta">$brih_col1</font></td></tr>
 		<tr><td align=left><b><I>$M</b></I></td></tr>
 		#if($acal.size() > 0)
@@ -65,7 +70,6 @@ $!data.getMessage()
 		#else
 			<tr><td><I>$brih_noevent </I></td></tr>
 		#end
-	#end
 	</table>
 </td>
 <td align="center" >
@@ -235,7 +239,7 @@ $!data.getMessage()
 			#end
 			##<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$element).addPathInfo("month",$M).addPathInfo("year",$year1).addPathInfo("mon",$month1).addPathInfo("path",$path)><I>$element <font color="black">$flag</font></a></I>
 			<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$element).addPathInfo("year",$year1).addPathInfo("mon",$month1).addPathInfo("path",$path) style=text-decoration:none>
-			 #if($nm==$d)
+			#if($nm==$d)
                                 <font color="red">
                         #elseif($hday.containsKey($element))
                                 <font color="green">
@@ -261,7 +265,6 @@ $!data.getMessage()
        </table>
 </td>
 <td align="left" Valign="top">
-	#if($currentyear == $year1)
 		<table align=right bgcolor="$ui.tableColor">
 		<tr><td align=center bgcolor="$ui.menuColor"><font color="green">$brih_col2</font></td></tr>
 		<tr><td align=center><b><I>$M</I></b></td></tr>
@@ -277,7 +280,6 @@ $!data.getMessage()
 			<tr><td><I>$brih_nohld </I></td></tr>
 		#end
 		</table>
-	#end
 </td>
 </tr>
 </table>
