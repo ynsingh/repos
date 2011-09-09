@@ -57,6 +57,9 @@ import org.iitk.brihaspati.om.NoticeReceivePeer;
 import org.iitk.brihaspati.om.TaskPeer;
 import org.iitk.brihaspati.om.Courses;
 import org.iitk.brihaspati.om.CoursesPeer;
+import org.iitk.brihaspati.om.InstituteAdminUser;
+import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.iitk.brihaspati.om.StudentExpiry;
@@ -445,6 +448,30 @@ public class ExpiryUtil{
 				else if(str[i].equals("Institutedel"))
 				{
 					crit=new Criteria();
+					crit.addAscendingOrderByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
+					crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"2");
+					List lst1=InstituteAdminRegistrationPeer.doSelect(crit);
+					crit=new Criteria();
+					crit.addAscendingOrderByColumn(InstituteAdminUserPeer.INSTITUTE_ID);
+					List lst2=InstituteAdminUserPeer.doSelect(crit);
+					boolean flag=false;
+					for(int p=0;p<lst2.size();p++){
+						InstituteAdminUser detail=(InstituteAdminUser)lst2.get(p);
+						int instIdUser=detail.getInstituteId();
+						for(int q=0;q<lst1.size();q++){
+							InstituteAdminRegistration detail1=(InstituteAdminRegistration)lst1.get(q);
+							int instIdReg=detail1.getInstituteId();
+							if(instIdUser == instIdReg){
+								flag=true;
+							}
+							if(flag){
+								crit=new Criteria();
+								crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instIdUser);
+								InstituteAdminUserPeer.doDelete(crit);
+							}
+						}
+					}
+					crit=new Criteria();
 					crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"2");
 					crit.add(InstituteAdminRegistrationPeer.EXPIRY_DATE,(Object)current_date,crit.LESS_EQUAL);
 					InstituteAdminRegistrationPeer.doDelete(crit);
@@ -475,6 +502,7 @@ public class ExpiryUtil{
 						{
 						StudentExpiry elementt=(StudentExpiry)lstt.get(e);
 						int idd=elementt.getId();
+						//String uname=Integer.toString(elementt.getUid());
 						String uname=String.valueOf(elementt.getUid());
 						int usid=UserUtil.getUID(uname);
 						String c_name=elementt.getCid();
