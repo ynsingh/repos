@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 10, 2011 10:00:02 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class catalog="ems" name="com.myapp.struts.hbm.StaffDetail" table="staff_detail">
+  <class  name="com.myapp.struts.hbm.StaffDetail" table="staff_detail">
     <composite-id class="com.myapp.struts.hbm.StaffDetailId" name="id">
       <key-property name="staffId" type="string">
         <column length="100" name="staff_id"/>

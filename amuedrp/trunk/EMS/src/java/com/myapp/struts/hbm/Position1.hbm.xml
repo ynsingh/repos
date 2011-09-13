@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Jun 13, 2011 4:44:18 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class catalog="ems" name="com.myapp.struts.hbm.Position1" table="position1">
+  <class  name="com.myapp.struts.hbm.Position1" table="position1">
     <composite-id class="com.myapp.struts.hbm.Position1Id" name="id">
       <key-property name="positionId" type="int">
         <column name="position_id"/>
