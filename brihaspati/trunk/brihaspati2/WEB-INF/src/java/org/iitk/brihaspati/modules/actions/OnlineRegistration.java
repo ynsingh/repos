@@ -134,7 +134,7 @@ public class OnlineRegistration extends VelocitySecureAction
 		lname=pp.getString("LNAME","");
 		orgtn=pp.getString("ORGTN","");
                 email=pp.getString("EMAIL");
-                rollno=pp.getString("rollno","");
+                rollno=pp.getString("rollno","").trim();
                 program=pp.getString("prg","");
 		uname=email;
                 passwd=pp.getString("PASSWD");
@@ -187,7 +187,7 @@ public class OnlineRegistration extends VelocitySecureAction
                 Vector userlist = topicmetadata.getOnlineUserDetails();
         	context.put("lang",lang);
 		context.put("status","UserResitration");
-		if(S.checkString(uname)==-1 && S.checkString(fname)==-1 && S.checkString(lname)==-1 && S.checkString(gname)==-1 && S.checkString(orgtn)==-1)
+		if(S.checkString(uname)==-1 && S.checkString(fname)==-1 && S.checkString(lname)==-1 && S.checkString(gname)==-1 && S.checkString(orgtn)==-1 && S.checkString(rollno)==-1)
 		{ //if 1
 			boolean userExists = true;
 			userExists=UserManagement.checkUserExist(uname);

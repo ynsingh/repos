@@ -801,9 +801,7 @@ public class UserManagement
 			List v=StudentRollnoPeer.doSelect(crit);
 			if((v.size())!=0)
 			{
-				String Msg1 =MultilingualUtil.ConvertedString("rollno",File);
-				String Msg2 =MultilingualUtil.ConvertedString("Wikiaction6",File);
-				Msg = Msg1+" "+Msg2;
+				Msg =MultilingualUtil.ConvertedString("rollno_msg",File);
 			}
 			else
 			{
@@ -1100,6 +1098,7 @@ public class UserManagement
 	public static String updateUserDetails(String userName,String fName,String lName,String eMail,String file,String RollNo,String Program, String Instid, String StudSrid)
 	{
 		String msg=new String();
+		String flag = "false";
 		try
 		{
 			String rollmsg = "";
@@ -1123,12 +1122,22 @@ public class UserManagement
  			 */ 
 			if(!RollNo.equals("")&&!StudSrid.equals("")&&!Program.equals("")&&!Instid.equals("0"))
 			{
+				/**
+ 				 * set flag inside catch block to get an error, if occured  
+ 				 */ 
+				try{
 				Criteria crit=new Criteria();
 				crit.add(StudentRollnoPeer.ID,StudSrid);
 	                        crit.add(StudentRollnoPeer.ROLL_NO,RollNo);
 				crit.add(StudentRollnoPeer.PROGRAM,Program);
 				crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
 				StudentRollnoPeer.doUpdate(crit);
+				}
+				catch(Exception ex){
+					ErrorDumpUtil.ErrorLog("Error in UpdateUserDetail method while updating profile[UserManagement.java]--\n"+ex);
+					flag="true";
+					return(flag);
+					}
 			}
 			/**
 			 * else insert value in table

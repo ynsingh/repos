@@ -39,10 +39,10 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.actions.SecureAction_Institute_Admin;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.apache.turbine.om.security.User;
 /**
  * This class is responsible for adding a new user in specified group and 
@@ -92,7 +92,15 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 		/**
                  * Retreiving details entered by the user
                  */
-                String rollno = pp.getString("rollno","");
+                String rollno = pp.getString("rollno","").trim();
+		/**
+ 		 * check if rollno have any special character then return message
+ 		 */
+		if(StringUtil.checkString(rollno) != -1)
+                {
+                	data.addMessage(MultilingualUtil.ConvertedString("c_msg3",LangFile));
+                        return;
+                }
                 String program = pp.getString("prg","");
 		String gname=new String();
 		gname=pp.getString("group","");
@@ -107,7 +115,6 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 			roleName=pp.getString("role_author");
 		}
                 String fname=pp.getString("FNAME");
-		ErrorDumpUtil.ErrorLog("First name"+fname);
 		
                 String lname=pp.getString("LNAME");
                 String email=pp.getString("EMAIL");

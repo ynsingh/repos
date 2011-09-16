@@ -38,7 +38,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.StringUtil;
 
 /**
  * This class is responsible for adding a secondary instructor to the system.
@@ -85,7 +85,15 @@ public class InstructorRegisteration extends SecureAction
 		String fname=pp.getString("FNAME");
 		String lname=pp.getString("LNAME");
 		String passwd=pp.getString("PASSWD");
-		String rollno =pp.getString("rollno","");
+		String rollno =pp.getString("rollno","").trim();
+		if(StringUtil.checkString(rollno) != -1)
+		/**
+                 * check if rollno have any special character then return message
+                 */
+                {
+	                data.addMessage(MultilingualUtil.ConvertedString("c_msg3",LangFile));
+                        return;
+                }	
 		String program =pp.getString("prg","");
 		/**
 		 *If password is empty, then set the password as value of 0th position of emailId.  

@@ -38,6 +38,7 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.StringUtil;
 //import org.iitk.brihaspati.modules.actions.SecureAction_Institute_Admin;
 
 /**
@@ -85,7 +86,15 @@ public class AddUser extends SecureAction_Admin
 		/**
                  * Retreiving details entered by the user
                  */
-                String rollno = pp.getString("rollno","");
+                String rollno = pp.getString("rollno","").trim();
+		/**
+                 * check if rollno have any special character then return it
+                 */
+		if(StringUtil.checkString(rollno) != -1)
+                {
+                	data.addMessage(MultilingualUtil.ConvertedString("c_msg3",LangFile));
+                        return;
+                }
                 String program = pp.getString("prg","");
 		String gname=new String();
 		//String roleName=new String();
@@ -101,13 +110,11 @@ public class AddUser extends SecureAction_Admin
 		{
 			gname=new String();	
 			gname=pp.getString("group_author");
-			ErrorDumpUtil.ErrorLog("gname in loop Ist 94======>"+gname);
 		}
 		if(roleName.equals(""))
 		{
 			roleName=new String();	
 			roleName=pp.getString("role_author");
-			ErrorDumpUtil.ErrorLog("rolename in roleName======> 100"+roleName);
 		}
 		//String uname=pp.getString("UNAME");
                 String passwd=pp.getString("PASSWD");
@@ -123,7 +130,6 @@ public class AddUser extends SecureAction_Admin
                 if(passwd.equals("")){
 			String []starr=email.split("@");
                 	passwd =starr[0];
-			ErrorDumpUtil.ErrorLog("passwd at line 123========"+passwd);
 		}
 		/**
                  * Passing the value of file from temporary variable

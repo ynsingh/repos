@@ -173,8 +173,17 @@ public class UserAction_Admin extends SecureAction_Admin{
 		String fname=StringUtil.replaceXmlSpecialCharacters(pp.getString("firstname"));
 	 	String lname=StringUtil.replaceXmlSpecialCharacters(pp.getString("lastname"));
          	String email=StringUtil.replaceXmlSpecialCharacters(pp.getString("email"));
-		String rollno=StringUtil.replaceXmlSpecialCharacters(pp.getString("rollno",""));
+		String rollno=StringUtil.replaceXmlSpecialCharacters(pp.getString("rollno","")).trim();
                 //ErrorDumpUtil.ErrorLog("value of rollno in user action admin\n"+rollno);
+                /**
+                 * check if rollno have any special character then return message
+                 */
+                if(StringUtil.checkString(rollno) != -1)
+                {
+	                data.addMessage(MultilingualUtil.ConvertedString("quiz_msg8",LangFile));
+	                data.addMessage(MultilingualUtil.ConvertedString("ProxyuserMsg3",LangFile));
+                        return;
+                }
 		String program=StringUtil.replaceXmlSpecialCharacters(pp.getString("prg",""));
 		String insid=pp.getString("InstName","");
 		String Studsrid=pp.getString("Studsrid","");

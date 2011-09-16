@@ -59,7 +59,7 @@ import org.iitk.brihaspati.om.StudentRollno;
  
 public class ViewMarks extends SecureScreen_Student 
 {
-	private String rollno;
+	private String rollno1,rollno2="";
 	public void doBuildTemplate(RunData data,Context context)
 	{
 		
@@ -75,10 +75,17 @@ public class ViewMarks extends SecureScreen_Student
 				Criteria crit=new Criteria();
 	                        crit.add(StudentRollnoPeer.EMAIL_ID,checkUser);
 	                        List v=StudentRollnoPeer.doSelect(crit);
-				//ErrorDumpUtil.ErrorLog("list in view marks---------------->"+v);
 				StudentRollno element=(StudentRollno)v.get(0);
-	                        rollno=element.getRollNo();
-				//ErrorDumpUtil.ErrorLog("roll no of selected student---------------->"+rollno);
+	                        rollno1=element.getRollNo();
+				/**
+ 				 * Vector size greater than 1 shows that user have more than 1 rollno
+ 				 * then get another rollno 
+ 				 */ 
+				if(v.size()>1)
+				{
+					StudentRollno element1=(StudentRollno)v.get(1);
+					rollno2=element1.getRollNo();
+				}
 			}
 			catch(Exception e)
 			{ 
@@ -107,8 +114,8 @@ public class ViewMarks extends SecureScreen_Student
 				sTokenizer=new StringTokenizer(line,",");
 				try{
 					String userName=sTokenizer.nextToken().trim();
-					//if(checkUser.equals(userName))
-					if(rollno.equals(userName))
+					if(rollno1.equals(userName)||rollno2.equals(userName))
+					//if(rollno1.equals(userName))
 					{
 						Vector markDetail=new Vector();
 						while(sTokenizer.hasMoreTokens())

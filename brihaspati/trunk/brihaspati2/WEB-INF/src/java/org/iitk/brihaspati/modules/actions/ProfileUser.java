@@ -204,7 +204,16 @@ public class ProfileUser extends SecureAction
 					{
 						String InstName = pp.getString("instName"+k,"");
 						String PrgName = pp.getString("prg"+k,"");
-						String rollno = pp.getString("rollno"+k,"");
+						String rollno = pp.getString("rollno"+k,"").trim();
+						/**
+				                  * check if rollno have any special character then return message
+		                                  */
+						if(StringUtil.checkString(rollno) != -1)
+			                        {
+							data.addMessage(MultilingualUtil.ConvertedString("quiz_msg8",LangFile));
+			                                data.addMessage(MultilingualUtil.ConvertedString("ProxyuserMsg3",LangFile));
+			                                return;
+			                        }
 					
 					List Rlrecord = new Vector();
 	                                String RlNo ="";
@@ -265,7 +274,16 @@ public class ProfileUser extends SecureAction
                                 {
 					String InstName = pp.getString("instName"+k,"");
                         	        String PrgName = pp.getString("prg"+k,"");
-                                	String rollno = pp.getString("rollno"+k,"");
+                                	String rollno = pp.getString("rollno"+k,"").trim();
+					/**
+                                         * check if rollno have any special character then return message
+                                         */
+					if(StringUtil.checkString(rollno) != -1)
+                        		{
+						data.addMessage(MultilingualUtil.ConvertedString("quiz_msg8",LangFile));
+                                                data.addMessage(MultilingualUtil.ConvertedString("ProxyuserMsg3",LangFile));
+                                                return;
+		                        }	
 
 				/**
  				 * Getting all detail of username from database 	

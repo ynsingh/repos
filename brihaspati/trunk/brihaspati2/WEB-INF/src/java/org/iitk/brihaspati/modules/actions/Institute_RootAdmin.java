@@ -175,7 +175,15 @@ public class Institute_RootAdmin extends VelocitySecureAction
 					String serverName=data.getServerName();
 	                                int srvrPort=data.getServerPort();
 					String serverPort=Integer.toString(srvrPort);
-					String rollno = data.getParameters().getString("rollno","");
+					String rollno = data.getParameters().getString("rollno","").trim();
+					/**
+			                 * check if rollno have any special character then return message
+	                                 */
+					if(StringUtil.checkString(rollno) != -1)
+                        		{
+		                                data.addMessage(MultilingualUtil.ConvertedString("c_msg3",LangFile));
+                		               return;
+		                        }
 					String program = data.getParameters().getString("prg","");
 					String usermgmt = usermanagement.CreateUserProfile(i_adminuname,i_adminpassword,i_adminfname,i_adminlname,i_name,i_adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno,program);
 					crit= new Criteria();
@@ -282,7 +290,15 @@ public class Institute_RootAdmin extends VelocitySecureAction
 			String adminemail = pp.getString("IADMINEMAIL");
 			String adminusername = adminemail;
 			String adminpass = adminemail;
-			String rollno = pp.getString("rollno","");
+			String rollno = pp.getString("rollno","").trim();
+			/**
+                         * check if rollno have any special character then return message
+                         */
+			if(StringUtil.checkString(rollno) != -1)
+                        {
+                                data.addMessage(MultilingualUtil.ConvertedString("c_msg3",LangFile));
+                               return;
+                        }
 			String program = pp.getString("prg","");
                         /**
                         *   Create password string by spliting email with "@" . 

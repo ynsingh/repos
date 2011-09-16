@@ -182,10 +182,28 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
  		 */ 	
 		for(int k=1;k<=count;k++)
                 {
-                       String PrgCode = pp.getString("prg"+k,"");
-                       String rollno = pp.getString("rollno"+k,"");
+	                String PrgCode = pp.getString("prg"+k,"");
+                        String rollno = pp.getString("rollno"+k,"").trim();
+			if(StringUtil.checkString(rollno) != -1)
+			/**
+	                 * check if rollno have any special character then return message
+                         */
+                        {
+                                data.addMessage(MultilingualUtil.ConvertedString("quiz_msg8",LangFile));
+                                data.addMessage(MultilingualUtil.ConvertedString("ProxyuserMsg3",LangFile));
+                               return;
+                        }
                        String Studsrid = pp.getString("Srid"+k,"");
                        msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,PrgCode,Instid,Studsrid);
+		       /**
+ 			* If msg is equal to true, it shows error in updating profile
+ 			* then show message.	 
+ 			*/ 	
+		       if(msg.equals("true")){
+                       		String msg1 = MultilingualUtil.ConvertedString("rollno_msg2",LangFile);
+                                String msg2 = MultilingualUtil.ConvertedString("rollno_msg",LangFile);
+                                msg = msg1+" "+msg2;
+                                break;}
                 }
 		data.setMessage(msg);
 	}
@@ -292,7 +310,6 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
                 	{
                 		Courses nm=(Courses)lstt.get(j);
                        		Gname=nm.getGroupName();
-				ErrorDumpUtil.ErrorLog("gname in modify action=="+Gname);
 				if(Gname.endsWith(userName+"_"+instituteId))
                                 {
 					boolean check_Primary=CourseManagement.IsPrimaryInstructor(Gname,userName+"_"+instituteId);

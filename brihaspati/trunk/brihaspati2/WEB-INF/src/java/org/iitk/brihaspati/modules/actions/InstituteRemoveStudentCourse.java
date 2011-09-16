@@ -52,6 +52,7 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 /** 
@@ -182,7 +183,15 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
                         String serverPort=Integer.toString(srvrPort);
 			String gName=pp.getString("group");
 			String uname=pp.getString("username");
-			String rollno = pp.getString("rollno","");
+			String rollno = pp.getString("rollno","").trim();
+			/**
+	                  * check if rollno have any special character then return message
+	                  */
+			if(StringUtil.checkString(rollno) != -1)
+                        {
+                                data.addMessage(MultilingualUtil.ConvertedString("c_msg3",LangFile));
+                               return;
+                        }
 			String program = pp.getString("prg","");
 			String roleName="student";
 			String msg=UserManagement.CreateUserProfile(uname,"","","","","",gName,roleName,serverName,serverPort,LangFile,rollno,program); // modified by Shikha

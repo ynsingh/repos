@@ -38,7 +38,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.StringUtil;
 
 /**
  * This class is responsible for adding a secondary instructor to the system.
@@ -85,7 +85,15 @@ public class InstructorRegisteration_Institute extends SecureAction_Institute_Ad
 		String lname=pp.getString("LNAME");
 		String email=pp.getString("EMAIL");
 		String passwd=pp.getString("PASSWD");
-		String rollno =pp.getString("rollno","");
+		String rollno =pp.getString("rollno","").trim();
+		/**
+                 * check if rollno have any special character then return message
+                 */
+		if(StringUtil.checkString(rollno) != -1)
+                {
+	                data.addMessage(MultilingualUtil.ConvertedString("c_msg3",LangFile));
+        	        return;
+                }
 		String program =pp.getString("prg","");
 		if(passwd.equals(""))
 			passwd=uname;
@@ -95,7 +103,6 @@ public class InstructorRegisteration_Institute extends SecureAction_Institute_Ad
                 int srvrPort=data.getServerPort();
                 String serverPort=Integer.toString(srvrPort);
 		String InstituteId=(data.getUser().getTemp("Institute_Id")).toString();
-		ErrorDumpUtil.ErrorLog("iid at line 93 in RegisterSecInstructor==="+InstituteId);
 		int instituteId=Integer.parseInt(InstituteId); 	
 		String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,"",email,gName,"instructor",serverName,serverPort,LangFile,rollno,program); // modified by Shikha Shukla
 		context.put("msg",msg);

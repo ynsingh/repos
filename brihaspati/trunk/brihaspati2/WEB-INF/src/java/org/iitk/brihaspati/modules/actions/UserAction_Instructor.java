@@ -117,7 +117,15 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
                         int instid=Integer.parseInt(instituteId);
                         String Instname = InstituteIdUtil.getIstName(instid);
-			String rollno = pp.getString("rollno","");
+			String rollno = pp.getString("rollno","").trim();
+			/**
+	                 * check if rollno have any special character then return message
+	                 */
+			if(StringUtil.checkString(rollno) != -1)
+                	{
+				data.addMessage(MultilingualUtil.ConvertedString("c_msg3",LangFile));
+                               return;
+	                }
 			String program = pp.getString("prg","");
 			/**
  			 * Check value of program, if it is RWP ie RegistrationWithoutProgram 
@@ -426,12 +434,29 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 {
                 	String Instid = pp.getString("instName"+k,"");
                         String PrgCode = pp.getString("prg"+k,"");
-                        String rollno = pp.getString("rollno"+k,"");
+                        String rollno = pp.getString("rollno"+k,"").trim();
+			/**
+	                  * check if rollno have any special character then return message
+	                  */
+			if(StringUtil.checkString(rollno) != -1)
+                        {
+                		data.addMessage(MultilingualUtil.ConvertedString("quiz_msg8",LangFile));
+                                data.addMessage(MultilingualUtil.ConvertedString("ProxyuserMsg3",LangFile));
+                               return;
+                        }
                         String Studsrid = pp.getString("Srid"+k,"");
                 	msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,PrgCode,Instid,Studsrid);
+			/**
+                         * If msg is equal to true, it shows error in updating profile
+                         * then show message.     
+                         */
+			if(msg.equals("true")){
+				String msg1 = MultilingualUtil.ConvertedString("rollno_msg2",LangFile);
+				String msg2 = MultilingualUtil.ConvertedString("rollno_msg",LangFile);
+				msg = msg1+" "+msg2;
+				break;}
                }
-
-                data.setMessage(msg);
+               data.setMessage(msg);
 		}
 		catch(Exception ex){
                 		data.setMessage("The Error in Action UserAction_Intructor doUpdate method !!");
