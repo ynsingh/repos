@@ -10,7 +10,8 @@ import javax.servlet.http.*;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.*;
 import javax.servlet.http.HttpSession;
 import com.myapp.struts.utility.PasswordEncruptionUtility;
@@ -193,6 +194,49 @@ session.setAttribute("staff_id", user_id);
                 staff_id = login.getStaffDetail().getId().getStaffId();
                 institute_id =login.getStaffDetail().getId().getInstituteId();
 
+
+       List<Election> election = ElectionDAO.Elections(institute_id);
+        Iterator ite = election.iterator();
+        //System.out.println("Election List Size="+election.size());
+        ArrayList electionList=new ArrayList();
+        ArrayList currentelectionList=new ArrayList();
+       ArrayList ClosedelectionList=new ArrayList();
+       InstituteDAO insti= new InstituteDAO();
+        String status="OK";
+        List Institute = insti.getInstituteNameByStatus(status);
+        System.out.println( "InstituteList"+""+Institute.size());
+        session.setAttribute("Institute",Institute);
+        while(ite.hasNext())
+        {
+
+            Calendar cal1 = Calendar.getInstance();
+           Date d = cal1.getTime();
+            Election elec = (Election)ite.next();
+            if(elec.getNstart().before(d) && elec.getNend().after(d))
+            {
+               currentelectionList.add(elec);
+
+            }
+            if(elec.getStartDate().before(d) && elec.getEndDate().after(d))
+            {
+
+                elec.setStatus("started");
+                    ElectionDAO.update(elec);
+                electionList.add(elec);
+                
+                    
+
+            }
+            else if(elec.getEndDate().before(d))
+            {
+                elec.setStatus("closed");
+                 ElectionDAO.update(elec);
+                  ClosedelectionList.add(elec);
+            }
+        session.setAttribute("electionList", electionList);
+        session.setAttribute("currentelectionList", currentelectionList);
+        session.setAttribute("ClosedelectionList", ClosedelectionList);
+        }
                 if(login.getRole()==null) login.setRole(" ");
                 if (login.getRole().equalsIgnoreCase("superadmin")) //superadmin
                 {

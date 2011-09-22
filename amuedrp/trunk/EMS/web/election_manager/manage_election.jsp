@@ -21,6 +21,7 @@ String msg1=(String)request.getAttribute("msg1");
 %>
 <html>
 <head>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>EMS : Manage Election </title>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
@@ -48,6 +49,24 @@ locale1=(String)session.getAttribute("locale");
 
     %>
  <script language="javascript" type="text/javascript">
+
+
+function state()
+{
+    window.status=' ';
+}
+
+
+function help1()
+{
+    window.status=' ';
+}
+
+     function help()
+     {
+         window.status='Press F1 for help';
+         statwords('Please enter any unique number or string like 123,asd etc.')
+     }
 
  function Add()
 {
@@ -94,7 +113,14 @@ function check1()
 
   }
 
+function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
 
+         return true;
+      }
 
 
 
@@ -129,7 +155,7 @@ function check1()
                 <table dir="<%=rtl%>" cellspacing="10px">
 
                     <tr><td dir="<%=rtl%>" rowspan="6" class="txt2">Enter Election ID<%--<%=resource.getString("systemsetup.manage_faculty.enterfacultyid")%>--%><br><br>
-                        <html:text property="electionId" styleId="electionid" name="DepActionForm"/>
+                            <html:text property="electionId" styleId="electionid" name="DepActionForm" onkeypress="return isNumberKey(event);" onfocus="return help()" onblur="return help1()"/>
                         </td><td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn" id="Button1"  value="Add<%--<%=resource.getString("systemsetup.manage_notice.add")%>--%>" onclick="return Add();" /></td></tr>
                     <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button2" class="btn"  value="Update<%--<%=resource.getString("circulation.cir_member_reg.update")%>--%>" onclick="return Update();"  /></td></tr>
                     <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button3"  value="View<%--<%=resource.getString("circulation.cir_member_reg.view")%>--%>" onclick="return View();" class="btn"  /></td></tr>

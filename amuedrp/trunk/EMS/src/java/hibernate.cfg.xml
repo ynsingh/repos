@@ -5,8 +5,9 @@
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/emsiitk</property>
-    <property name="hibernate.connection.username">xxxxxxxx</property>
-    <property name="hibernate.connection.password">xxxxxxxx</property>
+    <property name="hibernate.connection.username">username</property>
+    <property name="hibernate.connection.password">password</property>
+    <property name="connection.autoReconnect">true</property>    
 <!-- <property name="hibernate.connection.datasource">java:comp/env/jdbc/Testems</property> -->
     <mapping resource="com/myapp/struts/hbm/Login.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/AdminRegistration.hbm.xml"/>
@@ -26,6 +27,5 @@
     <mapping resource="com/myapp/struts/hbm/VotingBallot.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/Voting.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/VotingProcess.hbm.xml"/>
-    
   </session-factory>
 </hibernate-configuration>

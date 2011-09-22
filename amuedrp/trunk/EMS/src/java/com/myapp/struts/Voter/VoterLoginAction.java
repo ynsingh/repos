@@ -52,35 +52,35 @@ public class VoterLoginAction extends org.apache.struts.action.Action {
         ArrayList electionList=new ArrayList();
         ArrayList currentelectionList=new ArrayList();
        ArrayList ClosedelectionList=new ArrayList();
-       session.removeAttribute("electionList");
-       session.removeAttribute("currentelectionList");
-        session.removeAttribute("ClosedelectionList");
-        while(it.hasNext())
-        {
-
-            Calendar cal1 = Calendar.getInstance();
-           Date d = cal1.getTime();
-            Election elec = (Election)it.next();
-            if(elec.getStartDate().before(d) && elec.getEndDate().after(d))
-            {
-                elec.setStatus("started");
-                    ElectionDAO.update(elec);
-                    currentelectionList.add(elec);
-                if(elec.getNstart().before(d) && elec.getNend().after(d))
-                    electionList.add(elec);
-                
-            }
-            else if(elec.getEndDate().before(d))
-            {
-                elec.setStatus("closed");
-                 ElectionDAO.update(elec);
-                  ClosedelectionList.add(elec);
-            }
-
-        }
-        session.setAttribute("electionList", electionList);
-        session.setAttribute("currentelectionList", currentelectionList);
-        session.setAttribute("ClosedelectionList", ClosedelectionList);
+//       session.removeAttribute("electionList");
+//       session.removeAttribute("currentelectionList");
+//        session.removeAttribute("ClosedelectionList");
+//        while(it.hasNext())
+//        {
+//
+//            Calendar cal1 = Calendar.getInstance();
+//           Date d = cal1.getTime();
+//            Election elec = (Election)it.next();
+//            if(elec.getStartDate().before(d) && elec.getEndDate().after(d))
+//            {
+//                elec.setStatus("started");
+//                    ElectionDAO.update(elec);
+//                    currentelectionList.add(elec);
+//                if(elec.getNstart().before(d) && elec.getNend().after(d))
+//                    electionList.add(elec);
+//
+//            }
+//            else if(elec.getEndDate().before(d))
+//            {
+//                elec.setStatus("closed");
+//                 ElectionDAO.update(elec);
+//                  ClosedelectionList.add(elec);
+//            }
+//
+//        }
+//        session.setAttribute("electionList", electionList);
+//        session.setAttribute("currentelectionList", currentelectionList);
+//        session.setAttribute("ClosedelectionList", ClosedelectionList);
         return mapping.findForward(SUCCESS);
     }
 }

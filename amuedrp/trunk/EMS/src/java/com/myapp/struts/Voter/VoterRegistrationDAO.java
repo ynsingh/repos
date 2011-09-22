@@ -118,6 +118,7 @@ public static boolean update(VoterRegistration obj) {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             String query1 = "FROM VoterRegistration where id.instituteId=:instituteId";
+
             if(status!=null && !status.equalsIgnoreCase("AB"))
                 query1 = query1 + " and status = :status";
             if(status!=null && status.equalsIgnoreCase("AB"))

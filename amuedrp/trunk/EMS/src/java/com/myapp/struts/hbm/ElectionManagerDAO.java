@@ -11,12 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 import org.hibernate.Query;
-import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.impl.SQLQueryImpl;
 
 import org.hibernate.transform.Transformers;
 
@@ -227,6 +222,149 @@ public List Report(String enrollment)
                   .setResultTransformer(Transformers.aliasToBean(CandidateReg.class));
 
           query.setString("enrollment", enrollment);
+            return  query.list();
+        }
+    finally {
+            session.close();
+        }
+}
+
+public List NominationReport(String institueid)
+    {
+    Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            String sql="";
+
+            sql = "select e.id.electionId AS e_election_id,e.electionName AS e_election_name,p.positionName AS p_position_name,v.voterName AS v_voter_name,v.gender AS v_gender,v.birthdate AS v_birthdate,v.mobileNumber AS v_mobile_number,v.CAddress AS v_c_address,v.city AS v_city,v.state AS v_state,v.email AS v_email,v.image AS v_image,v.course AS v_course,v.department AS v_department,v.id.enrollment AS v_enrollment,v.joiningDate AS v_admisionDate,v.courseDuration AS v_duration,v.year AS v_year,v.currentSession AS v_session,c1.PAttendence AS c1_attendence,c1.PMarks AS c1_marks,c1.backlog AS c1_back,c1.criminal AS c1_criminal,v.FName AS v_father,v.MName AS v_mother,v.country AS v_country,v.PAddress AS v_peradd,v.city1 AS v_city1,v.state1 AS v_state1,v.zipCode1 AS v_zip1,v.country1 AS v_country1,v.zipCode AS v_zip FROM Election e,CandidateRegistration c1,VoterRegistration v,Position1 p WHERE  e.id.instituteId = c1.id.instituteId and v.id.instituteId = c1.id.instituteId and e.id.electionId = p.id.electionId and c1.position = p.id.positionId and v.id.enrollment = c1.id.enrollment and c1.status='Registered' and v.id.instituteId = :instituteId order by e.id.electionId,e.electionName,p.positionName,v.voterName asc";
+
+
+            System.out.println(sql);
+
+          Query query =  session.createQuery(sql)
+               .setResultTransformer(Transformers.aliasToBean(CandidateReg.class));
+
+
+
+          query.setString("instituteId",institueid);
+            return  query.list();
+        }
+    finally {
+            session.close();
+        }
+}
+
+
+public List VoterList(String institueid)
+    {
+    Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            String sql="";
+
+            sql = "select i.instituteName As i_institute_name,v.voterName AS v_voter_name,v.gender AS v_gender,v.birthdate AS v_birthdate,v.mobileNumber AS v_mobile_number,v.CAddress AS v_c_address,v.city AS v_city,v.state AS v_state,v.email AS v_email,v.image AS v_image,v.course AS v_course,v.department AS v_department,v.id.enrollment AS v_enrollment,v.joiningDate AS v_admisionDate,v.courseDuration AS v_duration,v.year AS v_year,v.currentSession AS v_session,v.FName AS v_father,v.MName AS v_mother,v.country AS v_country,v.PAddress AS v_peradd,v.city1 AS v_city1,v.state1 AS v_state1,v.zipCode1 AS v_zip1,v.country1 AS v_country1,v.zipCode AS v_zip FROM Institute i,VoterRegistration v WHERE   v.id.instituteId = i.id.instituteId   and v.status='REGISTERED' and v.id.instituteId = :instituteId order by v.voterName asc";
+
+//select e.id.electionId AS e_election_id,i.instituteName As i_institute_name,e.electionName AS e_election_name,p.positionName AS p_position_name,v.voterName AS v_voter_name,v.gender AS v_gender,v.birthdate AS v_birthdate,v.mobileNumber AS v_mobile_number,v.CAddress AS v_c_address,v.city AS v_city,v.state AS v_state,v.email AS v_email,v.image AS v_image,v.course AS v_course,v.department AS v_department,v.id.enrollment AS v_enrollment,v.joiningDate AS v_admisionDate,v.courseDuration AS v_duration,v.year AS v_year,v.currentSession AS v_session,c1.PAttendence AS c1_attendence,c1.PMarks AS c1_marks,c1.backlog AS c1_back,c1.criminal AS c1_criminal,v.FName AS v_father,v.MName AS v_mother,v.country AS v_country,v.PAddress AS v_peradd,v.city1 AS v_city1,v.state1 AS v_state1,v.zipCode1 AS v_zip1,v.country1 AS v_country1,v.zipCode AS v_zip FROM Election e,Institute i,CandidateRegistration c1,VoterRegistration v,Position1 p WHERE  e.id.instituteId = c1.id.instituteId and v.id.instituteId = c1.id.instituteId and i.id.instituteId=c1.id.instituteId and e.id.electionId = p.id.electionId and c1.position = p.id.positionId and v.id.enrollment = c1.id.enrollment and v.status='REGISTERED' and v.id.instituteId = :instituteId order by e.id.electionId,e.electionName,p.positionName,v.voterName asc
+            System.out.println(sql);
+
+          Query query =  session.createQuery(sql)
+               .setResultTransformer(Transformers.aliasToBean(CandidateReg.class));
+
+
+
+          query.setString("instituteId",institueid);
+            return  query.list();
+        }
+    finally {
+            session.close();
+        }
+}
+
+public List RejectedReport(String institueid)
+    {
+    Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            String sql="";
+
+            sql = "select i.instituteName As i_institute_name,e.id.electionId AS e_election_id,e.electionName AS e_election_name,p.positionName AS p_position_name,v.voterName AS v_voter_name,v.gender AS v_gender,v.birthdate AS v_birthdate,v.mobileNumber AS v_mobile_number,v.CAddress AS v_c_address,v.city AS v_city,v.state AS v_state,v.email AS v_email,v.image AS v_image,v.course AS v_course,v.department AS v_department,v.id.enrollment AS v_enrollment,v.joiningDate AS v_admisionDate,v.courseDuration AS v_duration,v.year AS v_year,v.currentSession AS v_session,c1.PAttendence AS c1_attendence,c1.PMarks AS c1_marks,c1.backlog AS c1_back,c1.criminal AS c1_criminal,v.FName AS v_father,v.MName AS v_mother,v.country AS v_country,v.PAddress AS v_peradd,v.city1 AS v_city1,v.state1 AS v_state1,v.zipCode1 AS v_zip1,v.country1 AS v_country1,v.zipCode AS v_zip FROM Institute i, Election e,CandidateRegistration c1,VoterRegistration v,Position1 p WHERE  e.id.instituteId = c1.id.instituteId and v.id.instituteId = c1.id.instituteId and i.id.instituteId= c1.id.instituteId and e.id.electionId = p.id.electionId and c1.position = p.id.positionId and v.id.enrollment = c1.id.enrollment and c1.status='Rejected' and v.id.instituteId = :instituteId order by e.id.electionId,e.electionName,p.positionName,v.voterName asc";
+
+
+            System.out.println(sql);
+
+          Query query =  session.createQuery(sql)
+               .setResultTransformer(Transformers.aliasToBean(CandidateReg.class));
+
+
+
+          query.setString("instituteId",institueid);
+            return  query.list();
+        }
+    finally {
+            session.close();
+        }
+}
+
+
+public List WithdrawlReport(String institueid)
+    {
+    Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            String sql="";
+
+            sql = "select i.instituteName As i_institute_name,e.id.electionId AS e_election_id,e.electionName AS e_election_name,p.positionName AS p_position_name,v.voterName AS v_voter_name,v.gender AS v_gender,v.birthdate AS v_birthdate,v.mobileNumber AS v_mobile_number,v.CAddress AS v_c_address,v.city AS v_city,v.state AS v_state,v.email AS v_email,v.image AS v_image,v.course AS v_course,v.department AS v_department,v.id.enrollment AS v_enrollment,v.joiningDate AS v_admisionDate,v.courseDuration AS v_duration,v.year AS v_year,v.currentSession AS v_session,c1.PAttendence AS c1_attendence,c1.PMarks AS c1_marks,c1.backlog AS c1_back,c1.criminal AS c1_criminal,v.FName AS v_father,v.MName AS v_mother,v.country AS v_country,v.PAddress AS v_peradd,v.city1 AS v_city1,v.state1 AS v_state1,v.zipCode1 AS v_zip1,v.country1 AS v_country1,v.zipCode AS v_zip FROM Institute i, Election e,CandidateRegistration c1,VoterRegistration v,Position1 p WHERE  e.id.instituteId = c1.id.instituteId and v.id.instituteId = c1.id.instituteId and i.id.instituteId= c1.id.instituteId and e.id.electionId = p.id.electionId and c1.position = p.id.positionId and v.id.enrollment = c1.id.enrollment and c1.status='Withdraw' and v.id.instituteId = :instituteId order by e.id.electionId,e.electionName,p.positionName,v.voterName asc";
+
+
+            System.out.println(sql);
+
+          Query query =  session.createQuery(sql)
+               .setResultTransformer(Transformers.aliasToBean(CandidateReg.class));
+
+
+
+          query.setString("instituteId",institueid);
+            return  query.list();
+        }
+    finally {
+            session.close();
+        }
+}
+
+
+public List AllCandiReport(String institueid)
+    {
+    Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            String sql="";
+
+            sql = "select i.instituteName As i_institute_name,e.id.electionId AS e_election_id,e.electionName AS e_election_name,p.positionName AS p_position_name,v.voterName AS v_voter_name,v.gender AS v_gender,v.birthdate AS v_birthdate,v.mobileNumber AS v_mobile_number,v.CAddress AS v_c_address,v.city AS v_city,v.state AS v_state,v.email AS v_email,v.image AS v_image,v.course AS v_course,v.department AS v_department,v.id.enrollment AS v_enrollment,v.joiningDate AS v_admisionDate,v.courseDuration AS v_duration,v.year AS v_year,v.currentSession AS v_session,c1.PAttendence AS c1_attendence,c1.PMarks AS c1_marks,c1.backlog AS c1_back,c1.criminal AS c1_criminal,v.FName AS v_father,v.MName AS v_mother,v.country AS v_country,v.PAddress AS v_peradd,v.city1 AS v_city1,v.state1 AS v_state1,v.zipCode1 AS v_zip1,v.country1 AS v_country1,v.zipCode AS v_zip FROM Institute i, Election e,CandidateRegistration c1,VoterRegistration v,Position1 p WHERE  e.id.instituteId = c1.id.instituteId and v.id.instituteId = c1.id.instituteId and i.id.instituteId= c1.id.instituteId and e.id.electionId = p.id.electionId and c1.position = p.id.positionId and v.id.enrollment = c1.id.enrollment and v.id.instituteId = :instituteId order by e.id.electionId,e.electionName,p.positionName,v.voterName asc";
+
+
+            System.out.println(sql);
+
+          Query query =  session.createQuery(sql)
+               .setResultTransformer(Transformers.aliasToBean(CandidateReg.class));
+
+
+
+          query.setString("instituteId",institueid);
             return  query.list();
         }
     finally {

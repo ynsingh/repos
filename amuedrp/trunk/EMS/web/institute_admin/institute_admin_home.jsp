@@ -123,18 +123,7 @@ function openWindow(url)
 }
 
 
-function additem(linkname,dest){
-  document.write('<a  href="'+dest+'" target="page" onclick="return pageload(3);">'+linkname+'</a><br>');
-}
 
-function toggle_menu(state){
-var theMenu=document.getElementById("ddmenu").style;
-if (state==0) {
-  theMenu.visibility="hidden"; }
-else {
-  theMenu.visibility = (theMenu.visibility=="hidden") ? "visible" : "hidden";
-}
-}
 </script>
 <script type="text/javascript" language="javascript">
 function pageload(loc)
@@ -190,9 +179,20 @@ document.write('<%=user%> <img width=10 height=10 src="<%=request.getContextPath
 document.write('<div id="ddmenu" style="');
 document.write('height:45px;border:0px solid black;background-color:white;text-align: left;');
 document.write('overflow-y:scroll;visibility:hidden;">');
-  additem("<%=resource.getString("view_profile")%>","<%=request.getContextPath()%>/admin_account.do");
-  additem("<%=resource.getString("login.managesuperadminaccount.changepassword")%>","<%=request.getContextPath()%>/admin_password.do");
+add_item("<%=resource.getString("view_profile")%>","<%=request.getContextPath()%>/admin_account.do");
+add_item("<%=resource.getString("login.managesuperadminaccount.changepassword")%>","<%=request.getContextPath()%>/admin_password.do");
+function add_item(linkname,dest){
+  document.write('<a  href="'+dest+'" target="page" onclick="return pageload(3);">'+linkname+'</a><br>');
+}
 
+function toggle_menu(state){
+var theMenu=document.getElementById("ddmenu").style;
+if (state==0) {
+  theMenu.visibility="hidden"; }
+else {
+  theMenu.visibility = (theMenu.visibility=="hidden") ? "visible" : "hidden";
+}
+}
 
 
 document.onclick= function() {toggle_menu(0); }

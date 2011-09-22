@@ -35,10 +35,13 @@ else
 }
 response.setContentType("image/jpeg");
 System.out.println("bytes11="+bytes.length);
-ServletOutputStream servletOutputStream = response.getOutputStream();
+ServletOutputStream servletOutputStream=null;
+response.flushBuffer();
+{
+servletOutputStream =response.getOutputStream();
 servletOutputStream.write(bytes);
 servletOutputStream.flush();
-
+}
 
 %>
 

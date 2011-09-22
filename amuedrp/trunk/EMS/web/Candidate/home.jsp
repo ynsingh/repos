@@ -62,9 +62,9 @@ locale1=(String)session.getAttribute("locale");
 <script type="text/javascript" src="<%=contextPath%>/chromejs/chrome.js"/>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Admin Home</title>
-<script>var loc2 = "http://<%=host%>"+"<%=contextPath%>/login.do";
+<%--<script>var loc2 = "http://<%=host%>"+"<%=contextPath%>/login.do";
     if(window.location=="http://<%=host%><%=contextPath%>login.do")
-        window.location=loc2;</script>
+        window.location=loc2;</script>--%>
 <script  type="text/javascript" language="javascript">
  
  function fnload(){window.setInterval('fn()', 100);}
@@ -190,8 +190,8 @@ if(request.getAttribute("msg")!=null)
 </font>
 
       </td></tr>--%>
-  <tr dir="<%=rtl%>"><td id="ifr3" align="left" rowspan="2" style=" padding-left:200px;" dir="<%=rtl%>">
-          <IFRAME  name="f3" src="#" frameborder=0 scrolling="no" width="100%" style="color:deepskyblue;height:100%;visibility:true;" id="f3" dir="<%=rtl%>"></IFRAME>
+  <tr dir="<%=rtl%>"><td id="ifr3" align="left" rowspan="2" style=" padding-left:200px; height: 450px;" dir="<%=rtl%>">
+          <IFRAME  name="f3" src="#" frameborder=0 scrolling="no" width="100%" height="100%" style="color:deepskyblue;height: 450;visibility:true;" id="f3" dir="<%=rtl%>"></IFRAME>
 
 
       </td></tr>

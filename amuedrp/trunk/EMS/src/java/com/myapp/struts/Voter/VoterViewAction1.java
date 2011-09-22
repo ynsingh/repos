@@ -141,7 +141,8 @@ session.setAttribute("Institute",Institute);
 
 
             employeeform.setDepartment(l.getDepartment());
-             employeeform.setEmail(l.getEmail());
+            System.out.println("emailId="+l.getEmail());
+            employeeform.setEmail(l.getEmail());
              // employeeform.setFilename;
                employeeform.setF_name(l.getFName());
                 employeeform.setGender(l.getGender());
@@ -164,66 +165,12 @@ session.setAttribute("Institute",Institute);
              employeeform.setEnrollment(l.getId().getEnrollment());
             employeeform.setInstitute_id(l.getId().getInstituteId());
 
-            if(request.getParameter("status").equalsIgnoreCase("AB"))
+            if(request.getParameter("status")!=null && request.getParameter("status").equalsIgnoreCase("AB"))
                 button = "AB";
             request.setAttribute("button", button);
             return mapping.findForward("add");
                        }
-           else
-            //request.setAttribute("msg1", "enrollment doesn't exists");
-            //return mapping.findForward("duplicate");
-              //  }
-    //    }
-            /*
-           if(button.equals("Delete"))
-        {
-               System.out.println("View Page");
-            HttpSession session=request.getSession();
-            session.setAttribute("voter", l);
-            if(l!=null){
-             employeeform.setB_date(l.getBirthdate());
-             employeeform.setC_add(l.getCAddress());
-              employeeform.setCity(l.getCity());
-               employeeform.setCity1(l.getCity1());
-                employeeform.setCountry(l.getCountry());
-                employeeform.setCountry1(l.getCountry1());
-            employeeform.setCourse(l.getCourse());
-                 employeeform.setDuration(l.getCourseDuration());
-                 employeeform.setSession(l.getCurrentSession());
-
-
-            employeeform.setDepartment(l.getDepartment());
-             employeeform.setEmail(l.getEmail());
-             // employeeform.setFilename;
-               employeeform.setF_name(l.getFName());
-                employeeform.setGender(l.getGender());
-            //    employeeform.setImage(l.getImage());
-            employeeform.setJ_date(l.getJoiningDate());
-                 employeeform.setM_name(l.getMName());
-                 employeeform.setM_number(l.getMobileNumber());
-
-                employeeform.setP_add(l.getPAddress());
-            employeeform.setState(l.getState());
-                 employeeform.setState1(l.getState1());
-                //employeeform.setUploadedFile(l.getImage());
-
-                employeeform.setV_name(l.getVoterName());
-            employeeform.setYear(l.getYear());
-                 employeeform.setZipcode(l.getZipCode());
-                 employeeform.setZipcode1(l.getZipCode1());
-
-             employeeform.setEnrollment(l.getId().getEnrollment());
-            employeeform.setInstitute_id(l.getId().getInstituteId());
-
-            request.setAttribute("button", button);
-            return mapping.findForward("add");
-                       }
-            else{
-            request.setAttribute("msg1", "enrollment  doesn't exists");
-            return mapping.findForward("duplicate");
-                }
-        }
-*/
+           
 
 
 

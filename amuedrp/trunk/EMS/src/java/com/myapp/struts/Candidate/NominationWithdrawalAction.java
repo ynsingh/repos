@@ -53,7 +53,7 @@ public class NominationWithdrawalAction extends org.apache.struts.action.Action 
             Election e = lstcandi.get(0).getElection();
             Calendar cal = Calendar.getInstance();
             Date d = cal.getTime();
-            if(e.getWithdrawlDate().after(d) && e.getWithdrawlEndDate().before(d))
+            if(e.getWithdrawlDate().before(d) && e.getWithdrawlEndDate().after(d))
             {
             CandidateRegistration cand = lstcandi.get(0).getCandidateRegistration();
             cand.setStatus("Withdraw");

@@ -107,6 +107,22 @@ public class ElectionDAO {
             session.close();
         }
     }
+        public static List<VoterRegistration> searchVoter(String institue_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(VoterRegistration.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.instituteId",institue_id)));
+            return (List<VoterRegistration>) criteria.list();
+
+
+        } finally {
+            session.close();
+        }
+    }
     public static Election searchElectionByName(String ElectionName,String institue_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;

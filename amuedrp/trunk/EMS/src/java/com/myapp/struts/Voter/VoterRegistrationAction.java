@@ -113,7 +113,7 @@ VoterRegistrationId empid=new VoterRegistrationId ();
 
 
         VoterRegistrationDAO.insert(ob);
-         request.setAttribute("msg1", "request for registration has sent succsessfully");
+         request.setAttribute("msg", "request for registration has sent succsessfully");
         return mapping.findForward("add");
        }
 
@@ -161,13 +161,13 @@ VoterRegistrationId empid=new VoterRegistrationId ();
 
 
         VoterRegistrationDAO.update(ob);
-         request.setAttribute("msg1", "record updated  succsessfully");
+         request.setAttribute("msg", "record updated  succsessfully");
         return mapping.findForward("add");
        }
           if(button.equals("Delete"))
        {
               VoterRegistrationDAO.delete(id,lf.getInstitute_id());
-         request.setAttribute("msg1", "record has deleted  successfully");
+         request.setAttribute("msg", "record has deleted  successfully");
         return mapping.findForward("add");
        }
 

@@ -39,6 +39,15 @@ private java.awt.image.BufferedImage image;
     }
 private String e_election_name;
 private String p_position_name;
+private String i_institute_name;
+
+    public String getI_institute_name() {
+        return i_institute_name;
+    }
+
+    public void setI_institute_name(String i_institute_name) {
+        this.i_institute_name = i_institute_name;
+    }
 	private String v_voter_name;
 	private String v_gender;
 	private String v_birthdate;

@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
 <%-- 
     Document   : voter_home
     Created on : Jun 16, 2011, 1:27:11 AM
@@ -5,199 +7,105 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.List,com.myapp.struts.hbm.Election" %>
+<%@page import="java.util.*,com.myapp.struts.hbm.Election" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <jsp:include page="../Voter/login.jsp"/>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+
 
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <style>
-<%--
-.dd-menu {
-    position: relative;
-    top: 0px;
-    width: 70%;
-    margin-left: 0px;
-    background-attachment: scroll;
-    background-clip: border-box;
-    background-color: transparent;
-    
-}
-.dd-menu li{
-   display: inline-block;
-   position: relative;
-   list-style: none;
-   margin-left: 25px;
-   width: 100px;
-
-
-
-}
-
-.dd-menu li a {
-    color: white;
-    outline: none;
-    position: relative;
-    width: 100%;
-    height: 100%;
-    margin: 0 0;
-
-}
-.dd-menu li a:hover, .dd-menu li a.dd-path {
-    background-attachment: scroll;
-    background-clip: border-box;
-    width: 100%;
-    background-color: gray;
-    opacity: 0.7;
-    background-origin: padding-box;
-    overflow: visible;
-    color:  rgb(241,241,241);
-}
-a:hover, a.dd-path {
-    background-attachment: scroll;
-    
-    
-    background-color: gray;
-    
-    background-origin: padding-box;
-    overflow: visible;
-    color:  rgb(241,241,241);
-}
-.dd-menu li ul li a {
-    
-    width: 133px;
-    background-color: black;
-    position: relative;
-    height: 15px;
-    border: 2px solid black;
-    
-    left: inherit;
-    top: -34px;
-    z-index: 1000;
-    overflow: visible;
-
-}
-
-.dd-menu li ul li a:hover, .dd-menu li ul li a.dd-path {
-    background-color: gray;
-    
-    z-index: 1000;
-    
-    color:  rgb(0,0,0);
-}
-.dd-menu, .dd-menu ul {
-padding: 0px;
-margin: 0px 0px;
-position: relative;
-list-style-type: none;
-list-style-position: inside;
-}
-.dd-menu li { position: relative; float: left; }
-.dd-menu li a { position: relative; display: inline; float: left; text-decoration: none; }
-.dd-menu li ul { width: 133px; position: relative; display: none; z-index: 1000; }
-.dd-menu li ul a { }
-/* Links level 1 */
-.dd-menu li { margin-left: 20px; }
-.dd-menu li:first-child { margin-left: 20px;width: 60px; }
-.dd-menu li ul li:first-child {top:0px;left: inherit}
-.dd-menu li a { width: 100%; height: 20px; padding: 0px 5px; line-height:20px; }
-/* Links level 2,3,4 */
-.dd-menu ul li { margin-left: 0px; padding: 0px 0px; top:0px; }
-.dd-menu ul a { height: 18px; width: 100%;  padding: 9px 10px; line-height: 18px; }
-/* Submenu level 1 */
-.dd-menu ul { left: -10px; top: 34px; }
-/* Submenu level 2,3,4 */
-.dd-menu ul ul { left: 15px; top: 0; }
-/* Dropdown mechanism */
-.dd-menu li:hover ul ul,
-.dd-menu li:hover ul ul ul,
-.dd-menu li:hover ul ul ul ul { display:none; }
-.dd-menu li:hover ul,
-.dd-menu li li:hover ul,
-.dd-menu li li li:hover ul,
-.dd-menu li li li li:hover ul { display:block; }
-/* Arrows level 1 */
-.dd-menu a.dd-submenu-title { padding-right: 15px; }
-.dd-menu a span.dd-arrow {
-height: 4px;
-width: 7px;
-position: absolute;
-right: 10px;
-top: 15px;
-
-background-position: 0 60px;
-background-repeat: no-repeat;
-}
-.dd-menu a:hover span.dd-arrow, .dd-menu a.dd-path span.dd-arrow {
-
-}
-/* Arrows level 2,3,4 */
-.dd-menu ul a span.dd-arrow {
-height: 7px;
-width: 4px;
-position: absolute;
-right: 0px;
-top: 14px;
-
-background-position: -20px 0;
-background-repeat: no-repeat;
-}
-.dd-menu ul a.dd-path span.dd-arrow, .dd-menu ul a:hover span.dd-arrow {
-background-position: 0 -60px;
-}
-/* Rounded corners */
-.dd-menu ul {  }
-.dd-menu > li.current-menu-item > a, .dd-menu > li > a:hover, .dd-menu > li > a.dd-path {
-
-}
-
-a{
-    text-decoration: none;
-}
-.dd-menu li ul li a:hover, .dd-menu li ul li a.dd-path {
-    width: 133px;
-    color:rgb(241,241,241);
-    background-color: gray;
-    
-}
-.dd-menu a span.dd-arrow {
-    background-image: url("images/arrow-down.png");
-    background-position: -10px -30px;
-}
-.dd-menu ul a span.dd-arrow {
-    background-image: url("images/arrow-right.png");
-}
-.dd-menu ul a.dd-path span.dd-arrow, .dd-menu ul a:hover span.dd-arrow {
-    background-position: -10px -30px;
-}--%>
-        </style>
-        
-
-        
-        <script type="text/javascript" language="javascript">
-
+       <script type="text/javascript" language="javascript">
 var olddoc;
 var olddoc1;
-var loadcount=0;
+var loadcount;
 function checkElection()
 {
 <%
-List<Election> lstelec = (List<Election>)session.getAttribute("currentelectionList");
+List<Election> lstelec = (List<Election>)session.getAttribute("electionList");
 if(lstelec!=null && !lstelec.isEmpty()){
 %>
-        if(loadcount==0)
+        if(loadcount==0 || loadcount==null)
         {var choice = confirm("Voting for election '<%=lstelec.get(0).getElectionName()%>' is going on. Do you want to vote now?");
         if(choice==true)
             {
-                loadvoting();loadcount++;
+                windload();
             }}<%}%>
 }
+function windload()
+{
+    var divtag = document.createElement("div");
+                divtag.id = "electionPass";
+                window.scrollbars.visible = false;
+                divtag.style.width = "100%";
+                divtag.style.height = "100%";
+                divtag.style.top = "0px";
+                divtag.style.position = "absolute";
+                divtag.style.overflow = "hidden";
+                divtag.style.backgroundColor = "gray";
+                divtag.style.opacity = 0.97;
+                var divtag1 = document.createElement("div");
+                divtag1.id = "block2";
+                divtag1.style.display = "block";
+                divtag1.style.border = "2px solid teal";
+                divtag1.style.backgroundColor = "white";
+                divtag1.style.height = "100px";
+                divtag1.style.width = "450px";
+                divtag1.style.marginLeft = "450px";
+                divtag1.style.position = "absolute";
+                divtag1.style.top = "40%";
+                divtag1.innerHTML = '<table><tr><td colspan="2">Enter Valid Password</td></tr><tr><td><input type="password" id="pass" onblur="getPass();"/></td></tr></table> ';
+                divtag.appendChild(divtag1);
+                document.getElementById("bod").appendChild(divtag);
+}
+function getPass()
+{
+    var val = document.getElementById("pass").value;
+    if(val!=undefined && val!="")
+        checkPassword(val);
+    var child = document.getElementById("electionPass");
+    document.getElementById("bod").removeChild(child);
+}
+function viewelections()
+            {
+                var divtag = document.createElement("div");
+                divtag.id = "overbody";
+                //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserWrite");
+                window.scrollbars.visible = false;
+                    divtag.style.width = "100%";
+                divtag.style.height = "100%";
+                divtag.style.top = "0px";
+                divtag.style.zIndex = "1500";
+                divtag.style.position = "absolute";
+                divtag.style.overflow = "hidden";
+                divtag.style.backgroundColor = "gray";
+                divtag.style.opacity = 0.97;
+                
+                var divtag1 = document.createElement("div");
+                divtag1.id = "electionDetails";
+                divtag1.style.display = "block";
+                divtag1.style.border = "2px solid teal";
+                divtag1.style.backgroundColor = "white";
+                divtag1.style.height = "100px";
+                divtag1.style.width = "450px";
+                divtag1.style.marginLeft = "450px";
+                divtag1.style.position = "absolute";
+                divtag1.style.top = "40%";
+                var doc = document.getElementById("electionView1");
+                if(doc.innerHTML=="") doc.innerHTML = olddoc;
+                var divtag1 = document.createElement("div");
+                var htm = '';
+                
+                divtag1.innerHTML = doc.innerHTML;
+                divtag.appendChild(divtag1);
+                document.getElementById("bod").appendChild(divtag);
+                olddoc = doc.innerHTML;
+                doc.innerHTML = "";
+
+            }
             function elections()
             {
                 var divtag = document.createElement("div");
@@ -206,6 +114,7 @@ if(lstelec!=null && !lstelec.isEmpty()){
                 window.scrollbars.visible = false;
                     divtag.style.width = "100%";
                 divtag.style.height = "100%";
+                divtag.style.zIndex = "1500";
                 divtag.style.top = "0px";
                 divtag.style.position = "absolute";
                 divtag.style.overflow = "hidden";
@@ -247,6 +156,7 @@ if(lstelec!=null && !lstelec.isEmpty()){
                     divtag.style.width = "100%";
                 divtag.style.height = "100%";
                 divtag.style.top = "0px";
+                divtag.style.zIndex = "1500";
                 divtag.style.position = "absolute";
                 divtag.style.overflow = "hidden";
                 divtag.style.backgroundColor = "gray";
@@ -335,7 +245,37 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 }
 }
+function loadelectionview()
+{
+   <%-- alert("fff");
+    alert(document.getElementById('election2').value);--%>
+            if(document.getElementById('electionv2').selectedIndex<0){return false;}
+    var electVal = document.getElementById('electionv2').options[document.getElementById('electionv2').selectedIndex].value;
+   //alert(electVal);
+    if(electVal==undefined) return false;
+    deleteBod();
+    var divtag = document.createElement("div");
+                divtag.id = "overbody";
+                divtag.style.width = "100%";
+                divtag.style.height = "100%";
+                window.scrollBy(0, 0);
+                divtag.style.zIndex="1500";
+                divtag.style.top = "0px";
+                divtag.style.position = "absolute";
+                divtag.style.overflow = "visible";
+                divtag.style.backgroundColor = "gray";
+                divtag.style.opacity = 0.97;
+                var h1 = "495";//alert(h1);
+                var htm = '<div id="electionResult1" style="display: block;opacity:1;background-color: white;border: 2px solid teal;height: 90%; width: 669px;margin-left: 25%; position: absolute;top:100px;">';
+                htm+= '<div style="background-color: teal;width: 100%;position: relative">&nbsp;<span style="float: right;"><a href="#" title="Close this window" onclick="deleteBod();">[X]</a></span></div>';
+                htm+='<div style="position: relative">';
+                htm+='<iframe name="f1" id="f1"  src="<%=request.getContextPath()%>/viewelection.do?election='+ electVal +'" width="665px" style="height: '+ h1 +'px" />';
+                    htm+='</div></div>';
+                divtag.innerHTML = htm;
+                document.getElementById("bod").appendChild(divtag);
 
+
+}
 function loadvoting()
 {
    <%-- alert("fff");
@@ -458,7 +398,7 @@ function candiReq(pos,election) {
     var req = newXMLHttpRequest();
 
 req.onreadystatechange = getReadyStateHandler(req, responseRequest);
-
+//alert("yes its working");
 req.open("POST","<%=request.getContextPath()%>/applyCandidature.do?position="+pos+"&election="+election, true);
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -471,6 +411,39 @@ function responseRequest(cartXML)
 var em1 = em.getElementsByTagName("message");
 alert(em1[0].firstChild.nodeValue);
 }
+function checkPassword(pass) {
+    //alert("index="+index+" current="+current);
+   // alert(document.getElementById("position").style.display);
+
+    var req = newXMLHttpRequest();
+
+req.onreadystatechange = getReadyStateHandler(req, confirmPass);
+
+req.open("POST","<%=request.getContextPath()%>/checkPass.do?pass="+pass, true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send();
+return true;
+}
+  function confirmPass(cartXML)
+{
+var htm="";
+//var curElec = document.getElementById("currentElections");
+//curElec.innerHTML="";
+
+var em = cartXML.getElementsByTagName("messages")[0];
+var em1 = em.getElementsByTagName("message");
+var em2 = em1[0].firstChild.nodeValue;
+
+if(em2=="pass")
+ {
+     loadvoting();
+     loadcount=1;
+}
+else
+    alert(em2);
+}
+
 function loadElections() {
     //alert("index="+index+" current="+current);
    // alert(document.getElementById("position").style.display);
@@ -558,7 +531,16 @@ for(iii=0;iii<em1.length;iii++)
                var position = position1[0].firstChild.nodeValue;
                var candidature1 = post[jj].getElementsByTagName("candidature");
                var candidature = candidature1[0].firstChild.nodeValue;
-               innerhtm +='<tr><td>'+position+' ('+candidature+')</td><td><input type="button" value="Send Request For Candidature" onclick="candiReq('+positionId+','+electionId+');"/></td></tr>';
+              <%-- <%
+               Calendar cal = Calendar.getInstance();
+               Date d = cal.getTime();
+               %>--%>
+                          innerhtm +='<tr><td>'+position+' ('+candidature+')</td>';
+                         <%-- if(Date.parse(nstart)<=Date.parse(<%=d%>) && Date.parse(nend)>Date.parse(<%=d%>))--%>
+                      // {
+                                  innerhtm +='<td><input type="button" value="Send Request For Candidature" onclick="candiReq('+positionId+','+electionId+');"/></td>';
+                       //}
+                       innerhtm +='</tr>';
            }
        innerhtm += '</table>';
        block1.innerHTML = innerhtm;
@@ -611,10 +593,19 @@ var positionname1 = em1[iii].getElementsByTagName("positionname");
 var positionname = positionname1[0].firstChild.nodeValue;
 var noofchoice1 = em1[iii].getElementsByTagName("noofchoice");
 var noofchoice = noofchoice1[0].firstChild.nodeValue;
-htm = '<div class="building_block" >Position: <strong>'+positionname+'</strong><br><strong>You may select up to '+noofchoice+'';
-if(noofchoice>1) htm=htm + ' candidates';
-else htm=htm + ' candidate';
-htm = htm +' for this position</strong><table class="ballot"><tbody><tr><th style="text-align: left;">Candidate Name</th><th>Selection</th></tr>';
+var instruct = em1[iii].getElementsByTagName("instruction");
+var instrucT = instruct[0].firstChild.nodeValue;
+var instruct1;
+var instruct2;
+if(instrucT!=undefined)
+    if(instrucT.lastIndexOf(noofchoice)!=-1)
+        {instruct1 = instrucT.substr(0, instrucT.lastIndexOf(noofchoice)-1);
+        instruct2 = instrucT.substr(instrucT.lastIndexOf(noofchoice)+1,instrucT.length);}
+htm = '<div class="building_block" >Position: <strong>'+positionname+'</strong><br><strong >'+ instruct1 +' <span style="color: red">'+noofchoice+'</span>'+ instruct2 +'</strong>';
+//htm = '<div class="building_block" >Position: <strong>'+positionname+'</strong><br><strong>You may select up to '+noofchoice+'';
+<%--if(noofchoice>1) htm=htm + ' candidates';
+else htm=htm + ' candidate';--%>
+htm = htm +'<table class="ballot"><tbody><tr><th style="text-align: left;">Candidate Name</th><th>Selection</th></tr>';
 
 var ca = em1[iii].getElementsByTagName("candidate");
 for(jj=0;jj<ca.length;jj++)
@@ -680,14 +671,25 @@ function createul(current)
                         <%--<li><a href="#"  onmouseover="createul(this);">Current&nbsp;Elections</a>
                             
                         </li>--%>
+                        <%
+                        List<Election> lstcurelection = (List<Election>)session.getAttribute("currentelectionList");
+                        List<Election> lstelection = (List<Election>)session.getAttribute("electionList");
+                        List<Election> lstclosedelection = (List<Election>)session.getAttribute("ClosedelectionList");
+                        if(lstcurelection!=null && !lstcurelection.isEmpty()){%>
                         <li><a href="#" style="font-size: 13px;font-weight: bold"  onclick="currentElections()">Current&nbsp;Elections</a></li>
+                        <%}
+                        if(lstelection!=null && !lstelection.isEmpty()){%>
                         <li ><a href="#" style="font-size: 13px;font-weight: bold" onclick="elections();">Voting&nbsp;Process</a></li>
+                        <%}
+                        if(lstclosedelection!=null && !lstclosedelection.isEmpty()){%>
                         <li><a href="#" style="font-size: 13px;font-weight: bold" onclick="electionsResults()">Election&nbsp;Results</a>
+                            <%}%>
                            <%-- <ul>
                                 <li><a href="#" style="font-size: 13px;font-weight: bold;z-index:1000" onclick="electionsResults()">Election&nbsp;Results</a></li>
                                 <li><a href="#" style="font-size: 13px;font-weight: bold;z-index:1000" onclick="electionsResults()">Election&nbsp;Results</a></li>
                             </ul>--%>
                         </li>
+                        <li ><a href="#" style="font-size: 13px;font-weight: bold" onclick="viewelections();">View&nbsp;Elections</a></li>
                     </ul>
 
                 </div>
@@ -698,21 +700,31 @@ function createul(current)
             </div>
             <div id="middle" style="width: 100%;height: 70%; position: relative;margin-top: 30px;">
                 <div id="ballot"></div>
-                
+                <%if(lstelection!=null && !lstelection.isEmpty()){%>
                 <div id="electionDetails1" style="border: 2px solid teal;background-color: white;height: 100px; width: 450px;margin-left: 450px; position: absolute;top: 40%;display: none">
                 <div style="background-color: teal;width: 100%;position: relative">&nbsp;<span style="float: right;"><a href="#" title="Close this window" onclick="deleteBod();">[X]</a></span></div>
                 <div style="position: relative;">
                    <html:form action="/election" styleId="election1" target="f1"><table style="width:100%"><tr><td style="text-align:center">Select an Election:
                                    <html:select property="election" styleId="election2"  style="width: 150px">
-                                        <html:options collection="currentelectionList" property="id.electionId" labelProperty="electionName" />
+                                        <html:options collection="electionList" property="id.electionId" labelProperty="electionName" />
                        </html:select></td></tr><tr><td style="text-align:center">
                        <input value="Select" type="button" onclick="loadvoting();" id="electionsubmit"/>
 
                                            </td></tr></table>
                    </html:form></div></div>
-
-
-
+                <div id="electionView1" style="border: 2px solid teal;background-color: white;height: 100px; width: 450px;margin-left: 450px; position: absolute;top: 40%;display: none">
+                <div style="background-color: teal;width: 100%;position: relative">&nbsp;<span style="float: right;"><a href="#" title="Close this window" onclick="deleteBod();">[X]</a></span></div>
+                <div style="position: relative;">
+                   <html:form action="/election" styleId="electionv" target="f1">
+                       <table style="width:100%">
+                           <tr><td style="text-align:center">Select an Election:<html:select property="election" styleId="electionv2"  style="width: 150px">
+                                       <html:options collection="electionList" property="id.electionId" labelProperty="electionName" />
+                                   </html:select></td></tr>
+                           <tr><td style="text-align:center"><input value="Select" type="button" onclick="loadelectionview();" id="electionsubmit"/></td></tr>
+                       </table>
+                   </html:form></div></div>
+                    <%}%>
+                   <%if(lstclosedelection!=null && !lstclosedelection.isEmpty()){%>
                 <div id="electionResults2" style="display: none">
                     <div style="background-color: teal;width: 100%;position: relative">&nbsp;<span style="float: right;"><a href="#" title="Close this window" onclick="deleteBod();">[X]</a></span></div>
                 <div style="position: relative;">
@@ -721,7 +733,8 @@ function createul(current)
               <html:options collection="ClosedelectionList" property="id.electionId" labelProperty="electionName" />
                         </html:select><input type="button" value="Election Result" onclick="loadresult();"  id="electionsubmit"/>
                     </html:form>
-                </div></div>
+                </div></div> <%}%>
+
                 <%--<div id="middleleft" style="display: none;position: relative; width: 30%;float: left" >&nbsp;</div>
                 <div id="middleright" style="display: block;position: relative; width: 30%;float: right" >&nbsp;</div>--%>
                 <div id="currentElections" style="display: none;position: absolute;margin-left: 250px; width: 40%;float: left;">

@@ -9,6 +9,18 @@
 	<parameter name="instituteId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+        <background>
+		<band splitType="Stretch" height="391"/>
+
+      <image>
+        <reportElement x="65" y="0" width="391" height="391"/>
+        <imageExpression class="java.awt.image">
+          <![CDATA["images/election.jpg"]]>
+        </imageExpression>
+      </image>
+    </band>
+	</background>
+
 	<queryString>
 		<![CDATA[SELECT
      election.`election_name` AS election_election_name
@@ -18,10 +30,12 @@ WHERE
      election_id = 1
  AND institute_id = 'amu']]>
 	</queryString>
+
+
+ 
+
 	<field name="election_election_name" class="java.lang.String"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
+	
 	<title>
 		<band height="31" splitType="Stretch">
 			<rectangle>

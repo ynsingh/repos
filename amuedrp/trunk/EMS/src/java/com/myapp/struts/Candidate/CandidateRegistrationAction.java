@@ -196,7 +196,7 @@ System.out.println("Accept is working");
              CandidateRegistrationDAO voterdao=new CandidateRegistrationDAO();
              
              Election e = ElectionDAO.searchElectionByName(election, eid);
-          List vr=voterdao.getCandidateDetailsByStatus1(lf.getInstitute_id(),e.getId().getElectionId());
+          List vr=voterdao.getCandidateDetailsByStatus1(lf.getInstitute_id(),e.getId().getElectionId(),lf.getEnrollment());
           List ve=voterdao.getEmail(lf.getEnrollment());
 
           System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+vr+lf.getInstitute_id());
@@ -214,6 +214,7 @@ c1Id.setInstituteId(ob.getId().getInstituteId());
 c1Id.setPositionId(Integer.valueOf(ob.getPosition()));
 c1.setId(c1Id);
 c1.setCandidateName(ab.getVoterName());
+c1.setEnrollment(ob.getId().getEnrollment());
             admin_password= RandomPassword.getRandomString(10);
                  System.out.println(admin_password);
                 admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
@@ -223,31 +224,33 @@ System.out.println(admin_password1);
 String can="can";
 
 userid=ob.getId().getEnrollment()+""+ob.getId().getInstituteId()+""+ob.getId().getEnrollment();
-                login.setUserId(userid);
-login.setPassword(admin_password1);
-login.setRole("candidate");
 
+login.setUserId(userid);
+login.setPassword(admin_password1);
+login.setUserName(ab.getVoterName());
+login.setRole("candidate");
+System.out.println(userid);
 //login.getStaffDetail().getId().setInstituteId(ob.getId().getInstituteId());
 staffid.setInstituteId(lf.getInstitute_id());
 staffid.setStaffId(lf.getEnrollment());
 staffd.setId(staffid);
 
 login.setStaffDetail(staffd);
-try{
-//logindao.insert(login,userid);
-}catch(Exception e1){}
+
 Position1 pos = positiondao.searchPosition(Integer.parseInt(ob.getPosition()));
  ob.setStatus("REGISTERED");
  try{
-CandidateRegistrationDAO.updateCandidature(login,ob,c1);}catch(Exception e2){System.out.println("Exception"+e2);}
+CandidateRegistrationDAO.updateCandidature(login,ob,c1);
 String path = servlet.getServletContext().getRealPath("/");
-          obj=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Mr. "+ c1.getCandidateName() +"\n"+ (ab.getPAddress()!=null?ab.getPAddress():(ab.getCAddress()!=null?ab.getCAddress():"Address"))+" \n Your request of candidature for the post of "+ pos.getPositionName() +" has been accepted with User Id="+userid +" and your Password for EMS Login is="+admin_password);
+request.setAttribute("msg", "Registration Accepted Successfully");
+obj=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Mr. "+ c1.getCandidateName() +"\n"+ (ab.getPAddress()!=null?ab.getPAddress():(ab.getCAddress()!=null?ab.getCAddress():"Address"))+" \n Your request of candidature for the post of "+ pos.getPositionName() +" has been accepted with User Id="+userid +" and your Password for EMS Login is="+admin_password);
          executor.submit(new Runnable() {
 
                 public void run() {
                     obj.send();
                 }
             });
+            }catch(Exception e2){System.out.println("Exception"+e2);}
              return mapping.findForward(SUCCESS);
          }
          if(button.equals("Update"))

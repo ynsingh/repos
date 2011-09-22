@@ -8,7 +8,6 @@ package com.myapp.struts.institute_admin;
 import com.myapp.struts.admin.AdminViewActionForm;
 import com.myapp.struts.hbm.Login;
 import com.myapp.struts.hbm.LoginDAO;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;

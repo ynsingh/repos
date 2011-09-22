@@ -29,8 +29,8 @@
         left:500px;
         right:5px;
         position: absolute;
-
-        visibility: visible; z-index: 100;" >
+        height: 450px;
+        visibility: visible; z-index: 1500;" >
 
 
         <html:form action="/candidatemenifestoupload" method="post" styleId="form1" enctype="multipart/form-data">

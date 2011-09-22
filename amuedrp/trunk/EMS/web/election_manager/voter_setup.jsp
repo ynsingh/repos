@@ -265,7 +265,7 @@ else
 </c:choose>
 </c:forEach>
 </td>
-
+<td align="right" width="200px"><a href="<%=path%>/voterlist.do">Print Voter List</a></td>
 </tr>
 <%--<tr><td>
         <%

@@ -21,6 +21,8 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 
@@ -88,15 +90,31 @@ public static boolean updateCandidature(Login login,CandidateRegistration obj,Ca
             if(obj!=null)
                 session.update(obj);
             if(cand!=null)
-            session.save(cand);
-            tx.commit();
+            {
+                Criteria crit = session.createCriteria(Candidate1.class)
+                        .setProjection(Projections.max("id.candidateId"))
+                        .add(Restrictions.conjunction()
+                        .add(Restrictions.eq("id.positionId", cand.getId().getPositionId()))
+                        .add(Restrictions.eq("id.electionId", cand.getId().getElectionId()))
+                        .add(Restrictions.eq("id.instituteId", cand.getId().getInstituteId())));
+                    Integer max = (Integer)(crit.uniqueResult()==null?0:crit.uniqueResult());
+                    System.out.println("candidateId="+max);
+                    max++;
+                    System.out.println("candidateId="+max);
+                    
+                    cand.getId().setCandidateId(max);
+
+                    session.save(cand);
+                    crit = null;
+            }
+            
         } catch (RuntimeException e) {
 
             tx.rollback();
             throw e;
 
         }
-
+tx.commit();
         return true;
 
     }
@@ -156,7 +174,23 @@ public static boolean update(CandidateRegistration obj) {
             session.close();
         }
     }
-    
+    public static Candidate1 getCandidate(String instituteId,String Enrollment,String electionId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(Candidate1.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("enrollment", Enrollment))
+                    .add(Restrictions.eq("id.electionId", electionId))
+                   .add(Restrictions.eq("id.instituteId", instituteId)));
+            return (Candidate1) (criteria.list()!=null?criteria.list().get(0):null);
+
+
+        } finally {
+            session.close();
+        }
+    }
     public static List<Candidate1> searchcandidate(String instituteId,String Enrollment) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -179,7 +213,7 @@ public static boolean update(CandidateRegistration obj) {
 
         try {
             session.beginTransaction();
-            Query query = session.createSQLQuery("select l.*,c1.*,cr.*,vr.*,e.*,p.* from login l,candidate1 c1,candidate_registration cr,voter_registration vr,position1 p,election e where l.institute_id=c1.institute_id and l.staff_id = cr.enrollment and c1.position_id = cr.position and c1.election_id = cr.election_id and c1.institute_id = cr.institute_id and c1.institute_id = vr.institute_id and cr.enrollment = vr.enrollment and cr.institute_id = e.institute_id and cr.election_id = e.election_id and e.election_id = p.election_id and c1.position_id = p.position_id and l.`role` = 'candidate' and l.institute_id = :institute_id and c1.position_id IN (select distinct c2.position from candidate_registration c2 where c2.enrollment = :enrollment) and cr.status1 = 'REGISTERED'")
+            Query query = session.createSQLQuery("select l.*,c1.*,cr.*,vr.*,e.*,p.* from login l,candidate1 c1,candidate_registration cr,voter_registration vr,position1 p,election e where l.institute_id=c1.institute_id and l.staff_id = cr.enrollment and c1.position_id = cr.position and c1.election_id = cr.election_id and c1.institute_id = cr.institute_id and c1.institute_id = vr.institute_id and cr.enrollment = vr.enrollment and c1.enrolment=cr.enrollment and cr.institute_id = e.institute_id and cr.election_id = e.election_id and e.election_id = p.election_id and c1.position_id = p.position_id and l.`role` = 'candidate' and l.institute_id = :institute_id and c1.position_id IN (select distinct c2.position from candidate_registration c2 where c2.enrollment = :enrollment) and cr.status1 = 'REGISTERED'")
                     .addEntity(Login.class).addEntity(Candidate1.class).addEntity(CandidateRegistration.class).addEntity(VoterRegistration.class).addEntity(Election.class).addEntity(Position1.class)
                     .setResultTransformer(Transformers.aliasToBean(CandidateRegLoginDetails.class))
                     ;
@@ -210,7 +244,7 @@ public static boolean update(CandidateRegistration obj) {
 
         try {
             session.beginTransaction();
-            Query query = session.createSQLQuery("select l.*,c1.*,cr.*,vr.*,e.*,p.* from login l,candidate1 c1,candidate_registration cr,voter_registration vr,position1 p,election e where l.institute_id=c1.institute_id and l.staff_id = cr.enrollment and c1.position_id = cr.position and c1.election_id = cr.election_id and c1.institute_id = cr.institute_id and c1.institute_id = vr.institute_id and cr.enrollment = vr.enrollment and cr.institute_id = e.institute_id and cr.election_id = e.election_id and e.election_id = p.election_id and c1.position_id = p.position_id and l.`role` = 'candidate' and l.institute_id = :institute_id and c1.position_id IN (select distinct c2.position from candidate_registration c2 where c2.enrollment = :enrollment)")
+            Query query = session.createSQLQuery("select l.*,c1.*,cr.*,vr.*,e.*,p.* from login l,candidate1 c1,candidate_registration cr,voter_registration vr,position1 p,election e where l.institute_id=c1.institute_id and l.staff_id = cr.enrollment and c1.position_id = cr.position and c1.election_id = cr.election_id and c1.institute_id = cr.institute_id and c1.institute_id = vr.institute_id and cr.enrollment = vr.enrollment and c1.enrolment=cr.enrollment and cr.institute_id = e.institute_id and cr.election_id = e.election_id and e.election_id = p.election_id and c1.position_id = p.position_id and l.`role` = 'candidate' and l.institute_id = :institute_id and c1.position_id IN (select distinct c2.position from candidate_registration c2 where c2.enrollment = :enrollment)")
                     .addEntity(Login.class).addEntity(Candidate1.class).addEntity(CandidateRegistration.class).addEntity(VoterRegistration.class).addEntity(Election.class).addEntity(Position1.class)
                     .setResultTransformer(Transformers.aliasToBean(CandidateRegLoginDetails.class))
                     ;
@@ -374,7 +408,24 @@ public static CandidateRegistration searchCandidature(String electionId,String E
             session.close();
         }
 }
+ public List<CandidateRegistration> getCandidateDetailsByStatus1(String instituteid,String electionId,String enrollment){
+  Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM CandidateRegistration where status = :status and id.instituteId=:instituteId and id.electionId=:electionId and id.enrollment=:enrollment");
+             query.setString("status","not registered" );
+             query.setString("instituteId",instituteid );
+             query.setString("enrollment",enrollment );
+                     query.setString("electionId",electionId );
 
+            return (List<CandidateRegistration>) query.list();
+        }
+        finally {
+            session.close();
+        }
+}
 
       public List getEmail(String Enrollment)
       {

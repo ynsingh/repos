@@ -202,10 +202,18 @@ var positionname = positionname1[0].firstChild.nodeValue;
 var noofchoice1 = em1[iii].getElementsByTagName("noofchoice");
 var noofchoice = noofchoice1[0].firstChild.nodeValue;
 posXml[iii]=positionname;
-htm = '<div class="building_block" style="margin-left: 15px">Position: <strong>'+positionname+'</strong><br><strong>You may select up to '+noofchoice+'';
-if(noofchoice>1) htm=htm + ' candidates';
-else htm=htm + ' candidate';
-htm = htm +' for this position</strong><table class="ballot"><tbody><tr><th style="text-align: left;">Candidate Name</th><th>Selection</th></tr>';
+var instruct = em1[iii].getElementsByTagName("instruction");
+var instrucT = instruct[0].firstChild.nodeValue;
+var instruct1;
+var instruct2;
+if(instrucT!=undefined)
+    if(instrucT.lastIndexOf(noofchoice)!=-1)
+        {instruct1 = instrucT.substr(0, instrucT.lastIndexOf(noofchoice)-1);
+        instruct2 = instrucT.substr(instrucT.lastIndexOf(noofchoice)+1,instrucT.length);}
+htm = '<div class="building_block" >Position: <strong>'+positionname+'</strong><br><strong >'+ instruct1 +' <span style="color: red">'+noofchoice+'</span>'+ instruct2 +'</strong>';
+<%--if(noofchoice>1) htm=htm + ' candidates';
+else htm=htm + ' candidate';--%>
+htm = htm +'<table class="ballot"><tbody><tr><th style="text-align: left;">Candidate Name</th><th>Selection</th></tr>';
 
 var ca = em1[iii].getElementsByTagName("candidate");
 choice[iii]=noofchoice;

@@ -12,6 +12,7 @@ import com.myapp.struts.hbm.CandidateRegistration;
 import com.myapp.struts.hbm.CandidateRegistrationId;
 import com.myapp.struts.hbm.Election;
 import com.myapp.struts.hbm.ElectionDAO;
+import com.myapp.struts.hbm.InstituteDAO;
 import com.myapp.struts.hbm.Position1;
 import com.myapp.struts.hbm.PositionDAO;
 import com.myapp.struts.hbm.VoterRegistration;
@@ -52,11 +53,18 @@ private VoterRegistrationId elid=new VoterRegistrationId();
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        
+        HttpSession session = request.getSession();
+        InstituteDAO insti= new InstituteDAO();
+        String status="OK";
+        List Institute = insti.getInstituteNameByStatus(status);
+        System.out.println( "InstituteList"+""+Institute.size());
+session.setAttribute("Institute",Institute);
+
+
         CandidateRegActionForm employeeform=(CandidateRegActionForm)form;
          String button="add";
          String stat = request.getParameter("status");
-           HttpSession session=request.getSession();
+         
           String  id="id";
           id=request.getParameter(id);
           String position = request.getParameter("pos");
@@ -78,7 +86,9 @@ List<Candidate1> c1=p1.ElectionId(Integer.parseInt(c.getPosition()), eid)   ;
  String electionid=c.getId().getElectionId();
 
 Election e=ED.Electionname(eid,electionid);
-String Elec=e.getElectionName();
+String Elec="";
+if(e!=null)
+    Elec=e.getElectionName();
 
 System.out.println("ElectionId    "+electionid+""+"electionname"+Elec);
 
@@ -151,7 +161,8 @@ System.out.println("View Page");
 //            employeeform.setBacklog(c.getBacklog());
 //            employeeform.setCriminal(c.getCriminal());
 //            employeeform.setIndisc(c.getIndisc());
-            employeeform.setPosition(p.getPositionName());
+            if(p!=null)
+                employeeform.setPosition(p.getPositionName());
             employeeform.setElections(Elec);
             request.setAttribute("button", button);
            if(stat.equalsIgnoreCase("NR"))

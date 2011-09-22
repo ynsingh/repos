@@ -7,6 +7,18 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
+<%
+String msg=(String)request.getAttribute("msg");
+if(msg==null){msg=(String)request.getAttribute("msg1");}
+if(msg!=null)
+    {
+    %>
+    <script>
+        alert("<%=msg%>");
+        window.back();
+    </script>
+<%}%>
+
 <jsp:include page="/election_manager/login.jsp"/>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -106,7 +118,7 @@ var divtag = document.createElement("div");
      divtag.style.width = "930px";
      divtag.style.align = "center";
      divtag.style.marginLeft = "0px";
-     divtag.innerHTML ='<table><tr><td>Position Name *&nbsp;&nbsp;<input type="text" Id="position_name'+i+''+j +'" size="25px"/></td>&nbsp;&nbsp;<td>Number of choice *<input type="text" Id="numberofchoice'+i+''+ j +'" size="25px"/></td><td><input type="button" id="but0'+ j +'" value="Save" onclick="search('+ j +');"/></td></tr><tr><td colspan="2">Position instruction for voter:&nbsp;&nbsp;<textarea id="instruct0'+ j+' rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';
+     divtag.innerHTML ='<table><tr><td>Position Name *&nbsp;&nbsp;<input type="text" Id="position_name'+i+''+j +'" size="25px"/></td>&nbsp;&nbsp;<td>Number of choice *<input type="text" Id="numberofchoice'+i+''+ j +'" size="25px"/></td><td><input type="button" id="but0'+ j +'" value="Save" onclick="search('+ j +');"/></td></tr><tr><td colspan="2">Position instruction for voter:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';
     // var tagbr = document.createElement("html");
 
      //document.getElementById("position").appendChild(tagbr);
@@ -732,13 +744,13 @@ function checkdates()
          <tr>
              <td>
     <%if(button.equals("Update")){%>
-    <input id="button1"  name="button" type="submit" onclick="return checkdates();" value="<%=button%>" class="txt1" />
+    <input id="button1"  name="button" type="submit" onclick="<%--return checkdates();--%>" value="<%=button%>" class="txt1" />
     &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()"  class="txt1"/>
     <%}else if(button.equals("Delete")){%>
     <input id="button1"  name="button" type="submit" value="<%=button%>" class="txt1" />
     &nbsp;&nbsp;&nbsp;<input name="button" type="submit" onclick="return send()"  value="Cancel" class="txt1"/>
    <%}else if(button.equals("Add")){%>
-   <input id="button1"  name="button" type="submit" onclick="return checkdates();" value="Submit" class="txt1"  />
+   <input id="button1"  name="button" type="submit" onclick="<%--return checkdates();--%>" value="Submit" class="txt1"  />
     &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()" class="txt1"/>
     <%}else{%>
     <input  name="button" type="button" value="Back" class="txt1" onclick="return send();"/><%}%>
@@ -750,14 +762,4 @@ function checkdates()
   </html:form>
     </body>
 </html>
-<%
-String msg=(String)request.getAttribute("msg");
-if(msg==null){msg=(String)request.getAttribute("msg");}
-if(msg!=null)
-    {
-    %>
-    <script>
-        alert("<%=msg%>");
-     
-    </script>
-<%}%>
+

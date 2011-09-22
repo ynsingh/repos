@@ -15,8 +15,7 @@
         <form-bean name="SuperAdminActionForm" type="com.myapp.struts.SuperAdminActionForm"/>
 
         <!--Admin Form Naming-->
-
-
+ <form-bean name="ShowElectionActionForm" type="com.myapp.struts.institute_admin.ShowElectionActionForm"/>
         <form-bean name="CreateAccountActionForm" type="com.myapp.struts.admin.CreateAccountActionForm"/>
         <form-bean name="SecurityActionForm" type="com.myapp.struts.admin.SecurityActionForm"/>
         <form-bean name="AccountActionForm" type="com.myapp.struts.admin.AccountActionForm"/>
@@ -111,6 +110,8 @@
                         <forward name="success" path="/instituteadmin.do"/>
                         <forward name="failure" path="/login.jsp"/>
                         <forward name="electionmanager" path="/election_manager/login.jsp"/>
+                        <forward name="voter" path="/voter.do"/>
+                        <forward name="candidate" path="/Candidate/home.jsp"/>
                     </action>
 
                     <action  path="/forget"  input="/forget.jsp" name="SecurityActionForm"  scope="request" type="com.myapp.struts.admin.SecurityAction">
@@ -333,7 +334,9 @@
 <action path="/create_manager" scope="request" type="com.myapp.struts.institute_admin.Create_ManagerAction">
     <forward name="success" path="/institute_admin/enter_election_manager_details.jsp"/>
 </action>
-
+<action path="/electionshow"  scope="request" type="com.myapp.struts.institute_admin.ElectionDetailAction" name="ShowElectionActionForm">
+    <forward name="success" path="/institute_admin/show_election.jsp"/>
+        </action>
 
 
 <!--====================================Election Manager Action Setting==========================================-->
@@ -361,6 +364,7 @@
        
             <action input="/createelection.jsp" attribute="DepActionForm" name="DepActionForm" path="/createelection" scope="request" type="com.myapp.struts.election_manager.CreateElectionAction" >
                 <forward name="add" path="/election_manager/ballot_design.jsp"/>
+                <forward name="fail" path="/election_manager/createelection.jsp"/>
             
          </action>
          <action input="/ballot_design.jsp" attribute="BallotActionForm" name="BallotActionForm" path="/ballotdesign" scope="request" type="com.myapp.struts.election_manager.BallotAction" >
@@ -374,6 +378,8 @@
            <action path="/AddPosition" type="com.myapp.struts.election_manager.addPositionBallotDesign"/>
             <action path="/AddCandidate" type="com.myapp.struts.election_manager.addCandidateBallotDesign"/>
             <action path="/getPosition" type="com.myapp.struts.election_manager.getPositionsBallotAction"/>
+
+            <action path="/getViewPosition" type="com.myapp.struts.Voter.getViewPositionsBallotAction"/>
             <action path="/deletePosition" type="com.myapp.struts.election_manager.deletePositionsBallotAction"/>
             <action  path="/votersetup" scope="request" type="com.myapp.struts.election_manager.VotersetupAction">
             <forward name="success" path="/election_manager/voter_setup.jsp"/>
@@ -381,6 +387,10 @@
 <action path="/manageElection" type="com.myapp.struts.election_manager.ManageElectionAction">
     <forward name="success" path="/election_manager/manage_election.jsp"/>
 </action>
+
+<action path="/viewMenifesto" type="com.myapp.struts.Voter.viewMenifestoAction"/>
+    
+
 
 <action path="/position" type="com.myapp.struts.election_manager.FindPosition"/>
 
@@ -391,7 +401,7 @@
 
 
  <action  path="/candidatesetup" scope="request" type="com.myapp.struts.election_manager.CandidatesetupAction">
-            <forward name="success" path="/election_manager/candidate_setup.jsp"/>
+            <forward name="success" path="/election_manager/candidate_setup_1.jsp"/>
            </action>
 
 
@@ -424,6 +434,15 @@
  <forward name="success" path="/election_manager/Election_List.jsp"/>
         </action>
 
+<action input="/election_manager/candidate_setup1.jsp"  path="/PrintNomination" scope="request" type="PrintAction.PrintNomination">
+
+ <forward name="success" path="election_manager/Election_List.jsp"/>
+        </action>
+
+         <action input="/election_manager/voter_setup.jsp"  path="/voterlist" scope="request" type="PrintAction.PrintVoterList"> </action>
+         <action input="/election_manager/candidate_setup1.jsp"  path="/RejectedList" scope="request" type="PrintAction.RejectedList"> </action>
+         <action input="/election_manager/candidate_setup1.jsp"  path="/WithdrawList" scope="request" type="PrintAction.WithdrawlList"> </action>
+         <action input="/election_manager/candidate_setup1.jsp"  path="/AllCandiList" scope="request" type="PrintAction.AllCandiList"> </action>
 
    <!--====================================Voter  Action Setting==========================================-->
 
@@ -460,9 +479,13 @@
            </action>
            <action  path="/election" input="/Voter/voter_home.jsp" name="VoterElectionActionForm"  scope="request" type="com.myapp.struts.Voting.selectElectionAction" >
                 <forward name="success" path="/Voting/voting.jsp"/>
-
+                
+         </action>
+        <action  path="/viewelection" input="/Voter/voter_home.jsp" name="VoterElectionActionForm"  scope="request" type="com.myapp.struts.Voting.selectElectionAction" >
+                <forward name="view" path="/Voting/viewElection.jsp"/>
          </action>
          <action path="/getElection" type="com.myapp.struts.Voter.getElections"/>
+         <action path="/checkPass" type="com.myapp.struts.Voter.checkPassword"/>
          <action  path="/electionResult" input="/Voter/voter_home.jsp" name="VoterElectionActionForm"  scope="request" type="com.myapp.struts.Voting.VotingAction" >
                 <forward name="success" path="/Voting/electionResult.jsp"/>
 

@@ -50,6 +50,13 @@ public class selectElectionAction extends org.apache.struts.action.Action {
 
                session.setAttribute("electionName", elec.getElectionName());
         }
+        System.out.println("request URI="+request.getRequestURI());
+        
+         if(request.getRequestURI().endsWith("viewelection.do"))
+            return mapping.findForward("view");
+
+        if(request.getRequestURI().endsWith("election.do"))
+            return mapping.findForward(SUCCESS);
         return mapping.findForward(SUCCESS);
     }
 }

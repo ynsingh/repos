@@ -12,6 +12,9 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.hbm.*;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -52,7 +55,53 @@ ElectionId empid=new ElectionId ();
       System.out.println(institute_id);
          String button=lf.getButton();
          String id=lf.getElectionId();
-       if(button.equals("Submit"))
+       if(CheckDate(lf.getNominationStart(),lf.getNominationEnd()))
+           if(CheckDate(lf.getScrutnyDate(),lf.getScrutnyEndDate()))
+               if(CheckDate(lf.getWithdrawlDate(),lf.getWithdrawlEndDate()))
+                   if(CheckDate(lf.getStartdate(),lf.getEnddate()))
+                       if(CheckDate(lf.getNominationEnd(),lf.getScrutnyDate()))
+                           if(CheckDate(lf.getScrutnyEndDate(),lf.getWithdrawlDate()))
+                               if(CheckDate(lf.getWithdrawlEndDate(),lf.getStartdate()))
+                               {
+
+                               }
+                               else
+                               {
+                                    request.setAttribute("msg1", "Election Start Date Should be greater than Withdrawal Date");
+                                    return mapping.findForward("fail");
+                               }
+                           else
+                               {
+                                    request.setAttribute("msg1", "Withdrawal Start Date Should be greater than Scrutny End Date");
+                                    return mapping.findForward("fail");
+                               }
+                       else
+                               {
+                                    request.setAttribute("msg1", "Scrutny Start Date Should be greater than Nomination End Date");
+                                    return mapping.findForward("fail");
+                               }
+                   else
+                               {
+                                    request.setAttribute("msg1", "Election Start Date Should be lesser than Election End Date");
+                                    return mapping.findForward("fail");
+                               }
+               else
+                               {
+                                    request.setAttribute("msg1", "Withdrawal Start Date Should be lesser than Withdrawal End Date");
+                                    return mapping.findForward("fail");
+                               }
+            else
+                               {
+                                    request.setAttribute("msg1", "Scrutny Start Date Should be lesser than Scrutny End Date");
+                                    return mapping.findForward("fail");
+                               }
+         else
+                               {
+                                    request.setAttribute("msg1", "Nomination Start Date Should be lesser than Nomination End Date");
+                                    return mapping.findForward("fail");
+                               }
+
+         if(button.equals("Submit"))
        {
          empid.setElectionId(id);
        // empid.setElectionId(lf.getElectionid());
@@ -134,7 +183,9 @@ BallotId ballotid=new BallotId();
             election.setScrutnyEndDate(lf.getScrutnyEndDate());
             election.setWithdrawlDate(lf.getWithdrawlDate());
             election.setWithdrawlEndDate(lf.getWithdrawlEndDate());
-             election.setStatus("under-process");
+            election.setNstart(lf.getNominationStart());
+            election.setNend(lf.getNominationEnd());
+            election.setStatus("under-process");
 
         election.setId(empid);
 electionruleid.setElectionId(lf.getElectionId());
@@ -178,5 +229,12 @@ ob.setBallot(ballot);
         return mapping.findForward("add");
        }
          return mapping.findForward("add");
+    }
+    private boolean CheckDate(Timestamp d1,Timestamp d2)
+    {
+       if(d1.after(d2))
+        return false;
+       else
+           return true;
     }
 }

@@ -204,18 +204,18 @@ public List<Candidate1> getCandidate(int positionId,String electionId, String in
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
-            Query query = session.createQuery("FROM Candidate1 where id.positionId=:positionId and id.electionId = :electionId and id.instituteId=:instituteId");
+            Query query = session.createQuery("SELECT c1 FROM Candidate1 c1,CandidateRegistration cr where c1.id.electionId=cr.id.electionId and c1.id.instituteId=cr.id.instituteId and c1.id.positionId=:positionId and c1.id.electionId = :electionId and c1.id.instituteId=:instituteId and cr.id.enrollment=c1.enrollment and cr.status = 'REGISTERED'");
             query.setInteger("positionId", positionId);
             query.setString("electionId",electionId );
              query.setString("instituteId", instituteId);
             return (List<Candidate1>)query.list();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
-
+         System.out.println("Candidate Query Error:"+e.getStackTrace().toString());
+         throw e;
 
         }
-        return null;
+        //return null;
     }
 public Candidate1 getCandidateDetailByName(String candidateName,int positionId,String electionId, String instituteId) {
         Session session =null;

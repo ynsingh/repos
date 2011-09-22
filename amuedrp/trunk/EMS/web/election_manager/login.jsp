@@ -235,7 +235,7 @@ String instituteName=(String)session.getAttribute("institute_name");
             </ul>
         </li>
             <li>
-                <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><b style="color:white" dir="<%=rtl%>">Manage Candidate Request</b><%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><b>Manage Candidate Request</b><%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
                 <ul>
                         <li>
                             <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=NR"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Accept/Reject<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
@@ -270,6 +270,24 @@ String instituteName=(String)session.getAttribute("institute_name");
                     <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=U" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Update<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
 
                 </li>
+                <li>
+                    <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">Generate Reports</a>
+                    <ul>
+                         <li>
+                            <a href="<%=request.getContextPath()%>/PrintNomination.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Final Candidate List<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                        </li>
+                        <li>
+                            <a href="<%=request.getContextPath()%>/RejectedList.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Rejected Candidate List<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                        </li>
+                        <li>
+                            <a href="<%=request.getContextPath()%>/WithdrawList.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Withdrawl Candidate List<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                        </li>
+                         <li>
+                            <a href="<%=request.getContextPath()%>/AllCandiList.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">All Candidate List<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                        </li>
+                    </ul>
+                </li>
+
                 
             </ul>
         </li>
@@ -284,9 +302,14 @@ String instituteName=(String)session.getAttribute("institute_name");
                     <a  href="<%=contextPath%>/candidatesetup1.do" style="text-decoration:none; color: black;font-size: 15px">Candidate Setup</a>
                     <a  href="<%=contextPath%>/addVoter.do" style="text-decoration:none; color: black;font-size: 15px">Add Voter</a>--%>
                 </td></tr>
+            <%if(request.getAttribute("msg")!=null || request.getAttribute("msg1")!=null){%>
+            <tr><td ><%if(request.getAttribute("msg")!=null){%>
+                    <span style="color: blue;font-size: 3;font-family: Arial" ><%=request.getAttribute("msg")%></span>
+                    <%}else{%><span style="color: red;font-size: 3;font-family: Arial" ><%=request.getAttribute("msg")%></span><%}%>
+                </td></tr><%}%>
         </table>
             
-        <div id="main" style="margin-left: 300px;visibility: hidden; overflow: auto;border: solid aqua 5px;background-color: cyan;width:500px;height: 90px;position: absolute;z-index: 100" >
+       <%-- <div id="main" style="margin-left: 300px;visibility: hidden; overflow: auto;border: solid aqua 5px;background-color: cyan;width:500px;height: 90px;position: absolute;z-index: 100" >
            <html:form method="post" onsubmit="return check1()" action="/electionview">
               Enter Election ID<br>
                                         <html:text property="electionId" styleId="electionid" name="DepActionForm"/><br>
@@ -301,7 +324,7 @@ String instituteName=(String)session.getAttribute("institute_name");
 </html:form>
 
 
-        </div>
+        </div>--%>
 
 
            

@@ -105,7 +105,7 @@ public class VoterImageUploadAction extends org.apache.struts.action.Action {
         request.setAttribute("country", country);
         request.setAttribute("country", country);
         request.setAttribute("button", button);
-        if(page2.equalsIgnoreCase("VoterRegistration"))
+        if(page2!=null && page2.equalsIgnoreCase("VoterRegistration"))
         {
             return mapping.findForward("VoterReg");
         }

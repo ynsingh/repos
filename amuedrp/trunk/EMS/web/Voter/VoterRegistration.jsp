@@ -18,7 +18,9 @@ else
 }
 String msg1=(String) request.getAttribute("msg1");
 VoterRegistration voter = (VoterRegistration)session.getAttribute("voter");
-String status = voter.getStatus();
+String status="";
+if(voter!=null)
+status = voter.getStatus();
 %>
 <script type="text/javascript">
 
@@ -45,22 +47,13 @@ String status = voter.getStatus();
 
 function send()
 {
-    var host = "<%=request.getHeader("host")%>";
-    var str = "http://"+host+"<%=request.getContextPath()%>/election_manager/search_voter.jsp";
-    var winloc = top.location.href;
-    var winpath = winloc.substr(0, winloc.lastIndexOf("?"));
-    if(winpath==str)
-    {
-        window.location = top.location;
-        return false;
-    }
-    else{
-        window.location="<%=request.getContextPath()%>/electionmanager.do";
-    return false;}
+    
+        location.href = window.back()!=undefined?window.back():document.back()!=undefined?document.back():parent.location;
 }
 </script>
 
     <head>
+         <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>EMS</title>
 <%--<link href="<%=request.getContextPath()%>/css/Style1.css" rel="stylesheet" type="text/css" />--%>
@@ -292,7 +285,7 @@ function check3()
   button.value=button1.value;
  // alert("this is working");
   return true;
- <%--// button.value=<%=btn%>;--%>
+ 
   }
 </script>
 </head>
@@ -303,12 +296,6 @@ function check3()
     <h1>
                      Voter Registration Form
                 </h1>
-    <%--  <%if(msg1!=null){%>   <span style=" position:absolute; top: 120px; font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>  <%}%>--%>
-
-
- 
-
-
     <div
    style="  top:250px;
    left:800px;
@@ -402,14 +389,9 @@ function check3()
             <tr><td colspan="2">
                     <table>
               <tr>
-                  <td >Enrollment Number*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>"  name="VoterRegActionForm"  styleId="enrollment1" property="enrollment"  value="<%=enrollment%>" /></td><td>
+                  <td >Enrollment Number*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>"  name="VoterRegActionForm"  styleId="enrollment1" property="enrollment" onfocus="statwords('Please enter enrollment number')" onblur="return status()"  value="<%=enrollment%>" /></td><td>
 <td></td>
-
 </tr>
-<%--<tr>
-    <td width="30%">Institute Name*:</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm"  styleId="ins1"  value="<%=instituteid%>"  property="institute_id"/></td><td width="30%">
-<td></td>
-</tr>--%>
 <tr><td align="left">Institute Name*</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <html:select property="institute_id" value="<%=institute_id%>"  styleId="ins1"  name="VoterRegActionForm"  tabindex="10">
             <html:option  value="Select"> Select </html:option>
@@ -419,24 +401,17 @@ function check3()
                                <html:option value="du">Delhi University</html:option>
                                <html:option value="jnu">JNU</html:option>--%>
 </html:select>
-
       </tr>
 <tr>
-<td align="left">Department*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="dep1" property="department"  value="<%=dep%>" /></td>
+<td align="left">Department*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="dep1" property="department"  value="<%=dep%>" onfocus="statwords('Please enter department name')" onblur="return status()" /></td>
 <td>
-
-
-
 </td>
-
 </tr>
-
 <tr>
-<td align="left">Course*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cour1" property="course" value="<%=cour%>"/></td>
+<td align="left">Course*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cour1" property="course" value="<%=cour%>" onfocus="statwords('Please enter course name')" onblur="return status()"/></td>
 </tr>
-
 <tr>
-    <td align="left">Year :</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="year1" property="year" value="<%=yr%>"/></td>
+    <td align="left">Year :</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="year1" property="year" value="<%=yr%>" onfocus="statwords('Please enter current academic year')" onblur="return status()"/></td>
                                                <%-- <td>Upload Photo:</td><td><html:file property="image"/></td>--%>
 </tr>
                     </table>
@@ -450,85 +425,74 @@ function check3()
 <td align="left">Faculty Roll No :</td><td><html:text name="VoterRegActionForm" property="electionid"/></td>
 </tr>
 <tr--%>
-<tr><td  width="30%">Duration of course:</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="dur1" value="<%=dur%>" property="duration" /> </td><td width="30%">
+<tr><td  width="30%">Duration of course:</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="dur1" value="<%=dur%>" property="duration" onfocus="statwords('Please enter total duration of course')" onblur="return status()"/> </td><td width="30%">
     </tr>
 <tr>
-<td align="left">Current Session:</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="sess1" value="<%=sess%>" property="session"  /></td>
+<td align="left">Current Session:</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="sess1" value="<%=sess%>" property="session" onfocus="statwords('Please enter current academic session')" onblur="return status()" /></td>
 </tr
-<tr><td width="15%">Date of Joining<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="1" property="j_date" value="<%=jdate%>" />
+<tr><td width="15%">Date of Joining<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="1" property="j_date" value="<%=jdate%>" onfocus="statwords('Please enter Admission date')" onblur="return status()" />
 <a href="javascript:NewCal('1','ddmmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></td></tr>
-
-
  <tr>
                 <td align="left">Voter(student) Name*</td>
                 <td>
                         <table><tr><td>
                          <select name="courtesy" size="1" id="courtesy" tabindex="2" style="align:right">
-
                          <option selected value="Select">Select</option>
                          <option  value="mr">Mr.</option>
                          <option value="mrs">Mrs.</option>
                         <option  value="ms">Ms.</option>
                          </select></td>
-                        <td><html:text  name="VoterRegActionForm"  styleId="vname1"  value="<%=vname%>"  property="v_name" readonly="<%=read %>"/></td>
+                        <td><html:text  name="VoterRegActionForm"  styleId="vname1"  value="<%=vname%>"  property="v_name" readonly="<%=read %>" onfocus="statwords('Please enter name')" onblur="return status()"/></td>
                         </table>
                         </td>
                         </tr>
 <tr><td align="left">Gender*</td><td>
-        <html:select property="gender" styleId="gen1"  name="VoterRegActionForm"  tabindex="10">
-
+        <html:select property="gender" styleId="gen1"  name="VoterRegActionForm"  tabindex="10" onfocus="statwords('Please choose gender')" onblur="return status()" >
             <html:option  value="Select"> Select </html:option>
                                 <html:option  value="male">Male</html:option>
                                 <html:option value="female">Female</html:option>
-
 </html:select>
-
       </tr>
       <tr>
-      <td>Date of Birth*<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm"  property="b_date"  value="<%=bdate%>" styleId="3" />
+      <td>Date of Birth*<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm"  property="b_date"  value="<%=bdate%>" styleId="3" onfocus="statwords('Please enter birth date')" onblur="return status()"/>
 <a href="javascript:NewCal('3','ddmmmyyyy')"><img src="<%=request.getContextPath()%>/images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></td>
 </tr>
-
-
-<tr> <td>Father's Name*</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="fname1"  value="<%=fname%>"  property="f_name"/></td></tr>
-  <tr> <td>Mother's Name*</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mname1" value="<%=mname%>" property="m_name"/></td>
+<tr> <td>Father's Name*</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="fname1"  value="<%=fname%>"  property="f_name" onfocus="statwords('Please enter father's name')" onblur="return status()"/></td></tr>
+  <tr> <td>Mother's Name*</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mname1" value="<%=mname%>" property="m_name" onfocus="statwords('Please enter mother's name')" onblur="return status()"/></td>
                                   </tr>
-
 <tr>
-<td align="left">Mobile No*:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mnumb1" value="<%=mnumb%>" property="m_number" /></td>
+<td align="left">Mobile No*:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mnumb1" value="<%=mnumb%>" property="m_number" onfocus="statwords('Please enter valid mobile number')" onblur="return status()" /></td>
+</tr>
+<tr><td></td></tr>
+<tr>
+    <td align="left">email*:</td><td><html:text  name="VoterRegActionForm"   styleId="email1" property="email" readonly="<%=read%>" onfocus="statwords('Please enter active email id')" onblur="return status()"/></td>
 </tr>
                         </table>   </td>
                 <td>
-
  <table> <tr>
-         <td align="left">Corresponding Address:</td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td> &nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cadd1" property="c_add" value="<%=cadd%>"  /></td>
+         <td align="left">Corresponding Address:</td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td> &nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cadd1" property="c_add" value="<%=cadd%>" onfocus="statwords('Please enter corresponding address')" onblur="return status()" /></td>
 </tr>
 <tr>
-    <td align="left">City:</td><td>&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" property="city"  value="<%=city%>" styleId="city1"/></td>
+    <td align="left">City:</td><td>&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" property="city"  value="<%=city%>" styleId="city1" onfocus="statwords('Please enter city name')" onblur="return status()"/></td>
 </tr>
-
  <tr>
-<td align="left">State:</td><td>&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" property="state" value="<%=state%>" styleId="state1"/></td>
-</tr>
-
-
-<tr>
-<td align="left">Zip Code:</td><td>&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" property="zipcode"  value="<%=zcode%>" styleId="zcode1"/></td>
+<td align="left">State:</td><td>&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" property="state" value="<%=state%>" styleId="state1" onfocus="statwords('Please enter state name')" onblur="return status()"/></td>
 </tr>
 <tr>
-<td align="left">Country:*</td><td>&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" property="country"  value="<%=country%>" styleId="country1"/></td>
-
+<td align="left">Zip Code:</td><td>&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" property="zipcode"  value="<%=zcode%>" styleId="zcode1" onfocus="statwords('Please enter zip code')" onblur="return status()"/></td>
+</tr>
+<tr>
+<td align="left">Country:*</td><td>&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" property="country"  value="<%=country%>" styleId="country1" onfocus="statwords('Please enter country name')" onblur="return status()"/></td>
 </tr>
 <tr>
        <td colspan="2"><input type="checkbox" id="Checkbox1" name="check" value="off" tabindex="17" onclick="return copy();" >&nbsp;&nbsp;<b>Click Here</b>&nbsp;(If permanent address is same as corresponding address)</td>
         </tr>
-        <tr>    <td align="left">Permanent Address</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" property="p_add" value="<%=padd%>" styleId="padd1"/></td></tr>
-       <tr>    <td align="left">City</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="city1" value="<%=city1%>"  styleId="city21"/></td></tr>
-        <tr>    <td align="left">State</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="state1" value="<%=state1%>" styleId="state21"/></td></tr>
-         <tr> <td align="left">ZIP Code</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" property="zipcode1"  value="<%=zcode1%>" styleId="zcode21"/></td><td colspan="2"></tr>
-          <tr><td align="left">Country</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="country1" value="<%=country1%>" styleId="country21"/></td></tr>
+        <tr>    <td align="left">Permanent Address</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" property="p_add" value="<%=padd%>" styleId="padd1" onfocus="statwords('Please enter permanent address')" onblur="return status()"/></td></tr>
+       <tr>    <td align="left">City</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="city1" value="<%=city1%>"  styleId="city21" onfocus="statwords('Please enter city name')" onblur="return status()"/></td></tr>
+        <tr>    <td align="left">State</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="state1" value="<%=state1%>" styleId="state21" onfocus="statwords('Please enter state name')" onblur="return status()"/></td></tr>
+         <tr> <td align="left">ZIP Code</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" property="zipcode1"  value="<%=zcode1%>" styleId="zcode21" onfocus="statwords('Please enter zipcode')" onblur="return status()"/></td><td colspan="2"></tr>
+          <tr><td align="left">Country</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="country1" value="<%=country1%>" styleId="country21" onfocus="statwords('Please enter country name')" onblur="return status()"/></td></tr>
  </table>
-
                 </td>
             </tr>
   <tr>
@@ -548,59 +512,48 @@ document.getElementById("state21").value=c;
 document.getElementById("zcode21").value=d;
 document.getElementById("country21").value=e;
 }
+
+function status()
+{
+    window.status='Press F1 for help';
+}
 </script>
-
-
-
                 </table>
             </td>
             </tr>
-                        <%-- <input type="submit" id="Button1" name="" value="Register" >
-                            <input type="reset" id="Button2" name="submit" value="Reset" >
-                            <input type="button" id="Button3" name="" value="Back" onclick="return send()">--%>
-                        <%--</td></tr>--%>
-                <tr>
+                      <tr>
           <td colspan="2"><b>Important! </b>Please provide a working email address:</td>
 
         </tr>
-
-<tr>
-
-    <td align="left" colspan="2">email*:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm"   value="<%=email%>" styleId="email1" property="email"/></td>
-
-</tr>
-</html:form>
-
-<tr><td colspan="5" height="5px" class="mandatory" align="right"><a class="star">*</a>indicated fields are mandatory</td></tr>
-<tr><td colspan="5" height="10px"></td>
-</tr>
+<tr><td colspan="3" height="5px" align="right"><a class="star">*</a>indicated fields are mandatory</td></tr>
 <tr>
 <td align="center" colspan="5">
-     <%if(btn.equals("Update")){%>
+    <%if(btn!=null){
+        if(btn.equals("Update")){%>
     <input id="button1"  name="button" type="submit" value="<%=btn%>" class="txt1" />
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()"  class="txt1"/>
+    &nbsp;&nbsp;&nbsp;<input name="button" type="button" value="Cancel" onclick="return send()"  class="txt1"/>
     <%}else if(btn.equals("Delete")){%>
     <input id="button1"  name="button" type="submit" value="<%=btn%>" class="txt1" />
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" onclick="return send()"  value="Cancel" class="txt1"/>
+    &nbsp;&nbsp;&nbsp;<input name="button" type="button" onclick="return send()"  value="Cancel" class="txt1"/>
    <%}else if(btn.equals("Add") || btn.equals("Submit")==true){%>
     <input id="button1"  name="button" type="submit" value="Submit" class="txt1" />
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()" class="txt1"/>
-    <%}else if(status.equalsIgnoreCase("Block")&& btn.equalsIgnoreCase("Block")){%>
+    &nbsp;&nbsp;&nbsp;<input name="button" type="button" value="Cancel" onclick="return send()" class="txt1"/>
+    <%}else if(status!=null && status.equalsIgnoreCase("Block")&& btn.equalsIgnoreCase("Block")){%>
     <input id="button1"  name="button" type="submit" value="Unblock" class="txt1" />
-    <%}else if(status.equalsIgnoreCase("REGISTERED")&& btn.equalsIgnoreCase("Block")){%>
+    <%}else if(status!=null && status.equalsIgnoreCase("REGISTERED")&& btn.equalsIgnoreCase("Block")){%>
     <input id="button1"  name="button" type="submit" value="Block"  class="txt1" />
-    <%}else{%>
-    <%--<input  name="button" type="submit" value="Accept"  class="txt1" />--%>
-    <input  name="button" type="submit" value="Back" onclick="return send()" class="txt1" />
+    <%}}%>
+    
+    <input  name="button1" type="button" value="Back" onclick="return send();" class="txt1" />
 
 
 
-    <%}%>
+    
 	</td>
-</tr><tr><td colspan="5" height="5px"></td>
 </tr>
                         </table>
 
 </td>
 </tr>
         </table>
+</html:form>

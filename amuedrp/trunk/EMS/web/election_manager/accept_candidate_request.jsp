@@ -501,12 +501,13 @@
                                     </tr>--%>
                                     <tr><td align="left">Institute Name*</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <html:select property="institute_id" styleId="ins1"  name="CandidateRegActionForm"  tabindex="10" disabled="<%=read%>">
-
-                                                <html:option  value="Select"> Select </html:option>
+<html:option  value="Select"> Select </html:option>
+            <html:options collection="Institute"  labelProperty="instituteName" property="instituteId"  name="Institute" ></html:options>
+                                                <%--<html:option  value="Select"> Select </html:option>
                                                 <html:option  value="amu">Aligarh muslim university</html:option>
                                                 <html:option value="jmi">Jamia Millia islamia</html:option>
                                                 <html:option value="du">Delhi University</html:option>
-                                                <html:option value="jnu">JNU</html:option>
+                                                <html:option value="jnu">JNU</html:option>--%>
                                             </html:select>
 
                                     </tr>
