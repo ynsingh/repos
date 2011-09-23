@@ -314,14 +314,10 @@ document.getElementById('subject').blur();
 document.getElementById('subject').disabled=true;
 document.getElementById('notes').blur();
 document.getElementById('notes').disabled=true;
-  document.getElementById("checkbox").value="UnChecked";
-document.getElementById("language").value="";
 }
 }
 function disablecheck(){
     document.getElementById('checkboxId').checked=false;
-    
-
     DisBox();
 }
     </script>
@@ -351,7 +347,7 @@ function disablecheck(){
     <td width="30%"></td>
     <td height="20px;">
         <div id='translControl'>
-     <a class="star">*</a> <input type="checkbox" id="checkboxId" onclick="javascript:checkboxClickHandler();javascript:languageChangeHandler();javascript:DisBox();">
+     <a class="star">*</a> <input type="checkbox" id="checkboxId" onclick="javascript:checkboxClickHandler();javascript:DisBox();javascript:languageChangeHandler()">
       <html:hidden property="checkbox" styleId="checkbox" name="BibliographicDetailEntryActionForm"/>
       <%=resource.getString("cataloguing.catoldtitleentry1.typein")%><select id="languageDropDown" onchange="javascript:languageChangeHandler()"></select>
     </div>
@@ -368,7 +364,7 @@ function disablecheck(){
 </tr>
 <tr>
     <td class="txtStyle" align="<%=align%>"><strong><%=resource.getString("cataloguing.catoldtitleentry1.title")%>:</strong> </td>
-    <td><html:text property="title" readonly="true" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="1" />
+    <td><html:text property="title" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" readonly="true" tabindex="1" />
     </td>
     <td><html:text property="title1" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleId="title" styleClass="keyboardInput" tabindex="2"/></td>
   </tr>

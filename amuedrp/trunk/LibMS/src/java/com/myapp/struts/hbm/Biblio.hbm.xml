@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 19, 2011 4:03:37 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="libms" name="com.myapp.struts.hbm.Biblio" table="biblio">
+    <composite-id class="com.myapp.struts.hbm.BiblioId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="bibId" type="int">
+        <column name="bib_id"/>
+      </key-property>
+      <key-property name="marctag" type="string">
+        <column length="20" name="marctag"/>
+      </key-property>
+    </composite-id>
+    <property name="sublibraryId" type="string">
+      <column length="20" name="sublibrary_id" not-null="true"/>
+    </property>
+    <property name="indicator1" type="java.lang.Character">
+      <column length="1" name="indicator1"/>
+    </property>
+    <property name="indicator2" type="java.lang.Character">
+      <column length="1" name="indicator2"/>
+    </property>
+    <property name="$a" type="string">
+      <column length="100" name="$a"/>
+    </property>
+    <property name="$b" type="string">
+      <column length="100" name="$b"/>
+    </property>
+    <property name="$c" type="string">
+      <column length="100" name="$c"/>
+    </property>
+    <property name="$d" type="string">
+      <column length="100" name="$d"/>
+    </property>
+    <property name="$e" type="string">
+      <column length="100" name="$e"/>
+    </property>
+    <property name="$f" type="string">
+      <column length="100" name="$f"/>
+    </property>
+    <property name="$g" type="string">
+      <column length="100" name="$g"/>
+    </property>
+    <property name="$h" type="string">
+      <column length="100" name="$h"/>
+    </property>
+    <property name="$i" type="string">
+      <column length="100" name="$i"/>
+    </property>
+    <property name="$j" type="string">
+      <column length="100" name="$j"/>
+    </property>
+    <property name="$k" type="string">
+      <column length="100" name="$k"/>
+    </property>
+    <property name="$l" type="string">
+      <column length="100" name="$l"/>
+    </property>
+    <property name="$m" type="string">
+      <column length="100" name="$m"/>
+    </property>
+    <property name="$n" type="string">
+      <column length="100" name="$n"/>
+    </property>
+    <property name="$o" type="string">
+      <column length="100" name="$o"/>
+    </property>
+    <property name="$p" type="string">
+      <column length="100" name="$p"/>
+    </property>
+    <property name="$q" type="string">
+      <column length="100" name="$q"/>
+    </property>
+    <property name="$r" type="string">
+      <column length="100" name="$r"/>
+    </property>
+    <property name="$s" type="string">
+      <column length="100" name="$s"/>
+    </property>
+    <property name="$t" type="string">
+      <column length="100" name="$t"/>
+    </property>
+    <property name="$u" type="string">
+      <column length="100" name="$u"/>
+    </property>
+    <property name="$v" type="string">
+      <column length="100" name="$v"/>
+    </property>
+    <property name="$w" type="string">
+      <column length="100" name="$w"/>
+    </property>
+    <property name="$x" type="string">
+      <column length="100" name="$x"/>
+    </property>
+    <property name="$y" type="string">
+      <column length="100" name="$y"/>
+    </property>
+    <property name="$z" type="string">
+      <column length="100" name="$z"/>
+    </property>
+    <property name="$0" type="string">
+      <column length="100" name="$0"/>
+    </property>
+    <property name="$1" type="string">
+      <column length="100" name="$1"/>
+    </property>
+    <property name="$2" type="string">
+      <column length="100" name="$2"/>
+    </property>
+    <property name="$3" type="string">
+      <column length="100" name="$3"/>
+    </property>
+    <property name="$4" type="string">
+      <column length="100" name="$4"/>
+    </property>
+    <property name="$5" type="string">
+      <column length="100" name="$5"/>
+    </property>
+    <property name="$6" type="string">
+      <column length="100" name="$6"/>
+    </property>
+    <property name="$7" type="string">
+      <column length="100" name="$7"/>
+    </property>
+    <property name="$8" type="string">
+      <column length="100" name="$8"/>
+    </property>
+    <property name="$9" type="string">
+      <column length="100" name="$9"/>
+    </property>
+  </class>
+</hibernate-mapping>

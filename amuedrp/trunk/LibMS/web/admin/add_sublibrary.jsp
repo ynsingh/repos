@@ -47,6 +47,7 @@ locale1=(String)session.getAttribute("locale");
 <link href="<%=request.getContextPath()%>/css/page.css" rel="stylesheet" type="text/css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/acquisition/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css" media="screen"/>
 <script type="text/javascript" src="<%=request.getContextPath()%>/acquisition/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 
 
 <script language="javascript" type="text/javascript">
@@ -99,6 +100,7 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 function search1() {
 
+window.status="Press F1 for Help";
     var keyValue = document.getElementById('TXTFACULTY').options[document.getElementById('TXTFACULTY').selectedIndex].value;
 
 if (keyValue=="Select")
@@ -175,6 +177,10 @@ function hideTextbox(){
                 document.getElementById("sublib_name").style.visibility = "hidden";
             }
 }
+function loadHelp()
+{
+    window.status="Press F1 for Help";
+}
 </script>
 
 </head>
@@ -232,7 +238,7 @@ function hideTextbox(){
 
 
           
-       <html:text property="sublib_name" styleId="sublib_name"  name="AddSubLibraryActionForm" value="" styleClass="textBoxWidth"/></td></tr>
+          <html:text property="sublib_name" styleId="sublib_name"  name="AddSubLibraryActionForm" value="" styleClass="textBoxWidth" onfocus="statwords('Enter Department Name')" onblur="loadHelp()" /></td></tr>
        
 
           
@@ -243,7 +249,7 @@ function hideTextbox(){
   <tr>
    
     <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_sublib.deptadd")%><a class="star">*</a></strong></td>
-    <td dir="<%=rtl%>"><html:text property="department_address" styleId="department_address" name="AddSubLibraryActionForm" styleClass="textBoxWidth"/>
+    <td dir="<%=rtl%>"><html:text property="department_address" styleId="department_address" name="AddSubLibraryActionForm" styleClass="textBoxWidth"  onfocus="statwords('Enter Department Address')" onblur="loadHelp()" />
         
      </td>
     

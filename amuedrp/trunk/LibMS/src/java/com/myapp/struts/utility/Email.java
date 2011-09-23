@@ -33,14 +33,18 @@ String host;
 String path;
 String saluation,closing;
 StringBuffer buffer;
-//
 
 
-public Email(String path,String to,String password,String subject,String body,String saluation,String closing){this.to = to; this.password = password;this.subject=subject;this.text=body;this.path=path;this.saluation=saluation;this.closing=closing;}
+
+public Email(String mail,String pass,String path,String to,String password,String subject,String body,String saluation,String closing)
+{
+ this.userid=mail;
+ this.buffer=new StringBuffer(pass);
+    this.to = to; this.password = password;this.subject=subject;this.text=body;this.path=path;this.saluation=saluation;this.closing=closing;}
 
 public void send(){
  host = "smtp.gmail.com";
- userid = "amuedrp@gmail.com";
+ //userid = "amuedrp@gmail.com";
  
 
 
@@ -49,21 +53,21 @@ try
 {
 System.out.println(path);
 
-  // Open the file that is the first
-  // command line parameter
-  FileInputStream fstream = new FileInputStream(path+"/admin/mail.txt");
-  InputStreamReader isr = new InputStreamReader(fstream,"UTF8");
- buffer= new StringBuffer();
- Reader in = new BufferedReader(isr);
-	int ch;
-	while ((ch = in.read()) > -1) {
-		buffer.append((char)ch);
-	}
-	in.close();
+//  // Open the file that is the first
+//  // command line parameter
+//  FileInputStream fstream = new FileInputStream(path+"/admin/mail.txt");
+//  InputStreamReader isr = new InputStreamReader(fstream,"UTF8");
+// buffer= new StringBuffer();
+// Reader in = new BufferedReader(isr);
+//	int ch;
+//	while ((ch = in.read()) > -1) {
+//		buffer.append((char)ch);
+//	}
+//	in.close();
 
 
 
-  System.out.println(buffer);
+ // System.out.println(buffer+"  "+userid);
   
  
 

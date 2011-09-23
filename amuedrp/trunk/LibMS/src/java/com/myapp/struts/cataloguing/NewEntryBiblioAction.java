@@ -68,10 +68,11 @@ public class NewEntryBiblioAction extends org.apache.struts.action.Action {
     if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
     else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
-        if (StringUtils.isEmpty(isbn10)) {
+        if (StringUtils.isEmpty(isbn10)||StringUtils.isBlank(isbn10)) {
             isbn10 = null;
         }
         if (button.equals("Save")) {
+          //  if(isbn10!=null)
             bib3 = dao.search1Isbn10(isbn10, library_id, sub_library_id);
             if (bib3 != null) {
                 String msg3 = resource.getString("cataloguing.catoldtitleentry1.duplicateisbn");//You are trying to enter duplicate isbn enter different
@@ -124,6 +125,7 @@ public class NewEntryBiblioAction extends org.apache.struts.action.Action {
             }
         }
         if (button.equals("Save and go for accession")) {
+        //    if(isbn10!=null)
             bib3 = dao.search1Isbn10(isbn10, library_id, sub_library_id);
             if (bib3 != null) {
                 String msg3 = resource.getString("cataloguing.catoldtitleentry1.duplicateisbn");//You are trying to enter duplicate isbn enter different

@@ -48,7 +48,7 @@ String msg1=(String) request.getAttribute("msg1");
 <script type="text/javascript">
 function send()
 {
-    window.location="<%=request.getContextPath()%>/acquisition/acq_new_entry.jsp";
+    window.location="<%=request.getContextPath()%>/acquisition/acq_search_title.jsp";
     return false;
 }
 function vendorFalse()
@@ -175,7 +175,7 @@ animatedcollapse.init()
     </head>
     <body>
    <%if(msg1!=null){%>   <span style=" position:absolute; top: 120px; font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>  <%}%>
-   <html:form method="post" onsubmit="return check1();" action="/acquisition/acq_initiate_acquisition" style="position:absolute; left:20%; top:20%;">
+   <html:form method="post" onsubmit="return check1();" action="/acquisition/acq_initiate_acquisition1" style="position:absolute; left:20%; top:20%;">
   <table border="1" class="table" width="750" align="center">
         <html:hidden property="library_id" name="AcqBiblioActionForm" value="<%=library_id%>" />
         <html:hidden property="title_id" name="AcqBiblioActionForm"  />

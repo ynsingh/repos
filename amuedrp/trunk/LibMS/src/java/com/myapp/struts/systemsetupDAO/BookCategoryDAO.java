@@ -175,7 +175,7 @@ criteria.setProjection(Projections.distinct(p));*/
            session.close();
         }
 }
-   public static  SubEmployeeType searchSubMemTypeId(String library_id,String subemptype_id)
+   public static  SubEmployeeType searchSubMemTypeId(String library_id,String emp_id,String subemptype_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -185,6 +185,7 @@ criteria.setProjection(Projections.distinct(p));*/
             Criteria criteria = session.createCriteria(SubEmployeeType.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.emptypeId", emp_id))
                     .add(Restrictions.eq("id.subEmptypeId",subemptype_id)));
             return (SubEmployeeType) criteria.uniqueResult();
 

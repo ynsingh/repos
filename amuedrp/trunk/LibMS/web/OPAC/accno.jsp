@@ -9,6 +9,7 @@
 <meta name="Faraz Hasan" content="MCA,AMU">
 <title>Search by Accession Number...</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <style type="text/css">
 body
 {
@@ -79,6 +80,7 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 }
 function search() {
+    window.status="Press F1 for Help";
 
     var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
 
@@ -156,6 +158,10 @@ function funcSearch()
    document.Form1.method="post";
     document.Form1.submit();
 }
+loadHelp()
+{
+    window.status="Press F1 for Help";
+}
 
 </script>
 <%!
@@ -187,7 +193,7 @@ session.setAttribute("page_name", "accessionno");
 
 
     </head><body onload="search();">
-  <%--  <%if(page.equals(true)){%>--%>
+  
 
 
     <html:form  method="post" action="/OPAC/accession" target="f1" styleId="Form1" >
@@ -206,7 +212,8 @@ session.setAttribute("page_name", "accessionno");
    <tr style="background-color:#e0e8f5;"><td width="800px" rowspan="2" dir="<%=rtl%>">
           <table>
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.accessionno.enteraccessionno")%></td><td>
-                     <input id="TXTKEY" name="TXTKEY" dir="<%=rtl%>" type="text">
+                      <input id="TXTKEY" name="TXTKEY" dir="<%=rtl%>" type="text" onfocus="statwords('Enter Accession Number')" onblur="loadHelp()">
+                     *Case Sensentive
 <input id="TXTPAGE" value="accessionno" name="TXTPAGE" type="hidden">
 
 <td align="<%=align%>" dir="<%=rtl%>">
@@ -238,9 +245,7 @@ session.setAttribute("page_name", "accessionno");
 
      </td></tr><tr><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <html:select property="CMBSUBLib"  dir="<%=rtl%>" value="<%=sublib_id%>"  styleId="SubLibrary" >
-                      <%--     <html:option value="all">All</html:option>
-                              <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
-                --%>       </html:select></td>
+                           </html:select></td>
 
 
               </tr></table></td>
@@ -274,85 +279,5 @@ session.setAttribute("page_name", "accessionno");
         </table>
     </html:form>
 
-<%--
-<%}else{%>
-
-    <form  method="post" action="accession.do" target="f1" name="Form1" >
-          <table align="left" width="1200x" class="datagrid" height="400px" class="datagrid"  style="border:solid 1px #e0e8f5;">
-
-
-  <tr class="header"><td  width="800px"  height="28px" align="center" colspan="2">
-
-
-		Accession No Search
-
-
-
-
-        </td></tr>
-   <tr style="background-color:#e0e8f5;"><td class="header">
-           Restricted By
-
-       </td><td width="800px" rowspan="2" align="right">
-          <table class="datagrid">
-              <tr><td>
-                     <input id="TXTKEY" name="TXTKEY" type="text">
-<input id="TXTPAGE" value="accessionno" name="TXTPAGE" type="hidden">
-
-
-
-
-                  </td><td><%=resource.getString("opac.accessionno.enteraccessionno")%></td></tr>
-
-
-
-
-          </table>
-       </td>
-
-    </tr>
-    <tr style="background-color:#e0e8f5;" >
-          <td    align="left">
-          <table class="datagrid">
-              <tr><td><%=resource.getString("opac.accessionno.library")%></td><td  valign="top">
-
- 
-        
-
-     </td>
-
-              </tr></table></td>
-
-    </tr>
-
-    <tr><td>
-
-
-<input type="submit" id="Button1" name="go"  value="<%=resource.getString("opac.accessionno.go")%>" />
-
-<input type="reset" id="Button2" name="" value="<%=resource.getString("opac.simplesearch.clear")%>">
-
-
-<script>
-    function back()
-    {
-        window.location="/OPAC/OPACmain.jsp";
-
-    }
-    </script>
-      </td></tr>
- <tr style="background-color:#e0e8f5;"><td  height="400px" valign="top" colspan="2" >
-
-             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="400px" width="1200px" scrolling="no"  id="f1"></IFRAME>
-
-
-      </td></tr>
-
-        </table>
-    </form>
-
-
-
-<%}%>--%>
 
     </body></html>

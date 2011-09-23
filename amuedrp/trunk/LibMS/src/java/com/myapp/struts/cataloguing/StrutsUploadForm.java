@@ -18,7 +18,32 @@ import org.apache.struts.upload.FormFile;
 public class StrutsUploadForm extends org.apache.struts.action.ActionForm {
 
     private FormFile excelFile;
-    private String combo_table_name;
+      private FormFile myfile;
+    private String combo_table_name,fileType,combo_delimiter;
+
+    public String getCombo_delimiter() {
+        return combo_delimiter;
+    }
+
+    public void setCombo_delimiter(String combo_delimiter) {
+        this.combo_delimiter = combo_delimiter;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
+    public FormFile getMyfile() {
+        return myfile;
+    }
+
+    public void setMyfile(FormFile myfile) {
+        this.myfile = myfile;
+    }
     private String cell0, cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17, cell18, cell19, cell20, cell21, cell22, cell23, cell24, cell25, cell26, cell27, cell28, cell29, cell30;
     private String cell31, cell32, cell33, cell34, cell35, cell36, cell37, cell38, cell39, cell40;
     private String cell50, cell41, cell42, cell43, cell44, cell45, cell46, cell47, cell48, cell49;
@@ -28,7 +53,15 @@ public class StrutsUploadForm extends org.apache.struts.action.ActionForm {
     private String cell90, cell81, cell82, cell83, cell84, cell85, cell86, cell87, cell88, cell89;
     private String cell100, cell91, cell92, cell93, cell94, cell95, cell96, cell97, cell98, cell99;
     private String cell110, cell101, cell102, cell103, cell104, cell105, cell106, cell107, cell108, cell109;
+private String delimiter;
 
+    public String getDelimiter() {
+        return delimiter;
+    }
+
+    public void setDelimiter(String delimiter) {
+        this.delimiter = delimiter;
+    }
     public String getCell10() {
         return cell10;
     }

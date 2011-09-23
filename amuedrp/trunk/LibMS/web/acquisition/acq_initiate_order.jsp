@@ -67,7 +67,7 @@ String msg=(String)request.getAttribute("msg");
 
       visibility: show;">
 
-       <html:form action="/acq_initiate_order"  onsubmit="return check1()" method="post"  style="position:absolute; left:400px; top:50px;">
+       <html:form action="/acq_initiate_order"  onsubmit="return check1()"method="post"  style="position:absolute; left:400px; top:50px;">
  <table width="400px" height="200px"  valign="top" align="center" style="border:#cccccc solid 1px;">
 
   <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"> Order Processing</td></tr>

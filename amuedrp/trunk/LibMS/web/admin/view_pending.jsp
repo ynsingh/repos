@@ -41,7 +41,40 @@ else{
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
 </head>
+<script>
+    function changerec(){
+        var x=document.getElementById('rec').value;
+    var loc = window.location;
+    loc = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/admin/view_pending.jsp";
 
+    
+        loc = loc + "?pageSize="+x;
+         // alert(loc);
+    window.location = loc;
+  
+
+    }
+
+      document.onkeyup = keyHit
+function keyHit(event) {
+
+  if (event.keyCode == 13) {
+  changerec();
+
+    event.stopPropagation()
+    event.preventDefault()
+  }
+}
+
+function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
+    </script>
 <body>
  <div
    style="  top:0px;
@@ -59,14 +92,16 @@ else{
    int fromIndex=0, toIndex;
 %>
  <%
-
+ int perpage=4;
  List rs = (List)(session.getAttribute("resultset"));
 
-       
+  if(request.getParameter("pageSize")!=null && request.getParameter("pageSize")!="")
+    perpage = Integer.parseInt((String)request.getParameter("pageSize"));
+
 
    requestList = new ArrayList();
    int tcount =0;
-   int perpage=4;
+  
    int tpage=0;
  
 if(rs!=null)
@@ -98,10 +133,11 @@ System.out.println("tcount="+tcount);
        
 <%
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex+4) >= requestList.size ())
+   if ((toIndex = fromIndex+perpage) >= requestList.size ())
    toIndex = requestList.size();
    request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
+    pageContext.setAttribute("rec",perpage);
 %>
 <br><br>
 <%if(tcount==0)
@@ -149,6 +185,7 @@ locale1=(String)session.getAttribute("locale");
   pageContext.setAttribute("Action",Action);
 
 %>
+ View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>
 
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
     
@@ -181,8 +218,9 @@ locale1=(String)session.getAttribute("locale");
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
   <alternateRows styleClass="alternaterows"/>
 
-  <paging size="4" count="${tCount}" custom="true" nextUrlVar="next"
+  <paging size="${rec}" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
+ 
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>
  <table width="700" style="font-family: arial; font-size: 10pt" >

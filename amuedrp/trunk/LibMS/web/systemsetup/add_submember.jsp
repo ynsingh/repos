@@ -43,13 +43,25 @@ locale1=(String)session.getAttribute("locale");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>LibMS : Manage Member </title>
+<script type="text/javascript" language="javascript">
+
+function loadHelp()
+    {
+        window.status="Press F1 for Help";
+
+    }
+
+</script>
+
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
+
 <link href="common" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/css/newformat.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/css/page.css" rel="stylesheet" type="text/css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/acquisition/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css" media="screen"/>
 <script type="text/javascript" src="<%=request.getContextPath()%>/acquisition/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js"></script>
 </head>
-<body>
+<body onload="loadHelp()" >
  <div
    style="  top:120px;
    left:5px;
@@ -92,7 +104,8 @@ locale1=(String)session.getAttribute("locale");
   <tr>
     <tr><td dir="<%=rtl%>" height="5px" colspan="4" ></td></tr>
     <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_submember.submemtypename")%><a class="star">*</a> </strong></td>
-    <td dir="<%=rtl%>"><html:text property="sub_emptype_full_name"  styleId="sub_emptype_full_name" value="" styleClass="textBoxWidth"/>
+    <td dir="<%=rtl%>"><html:text property="sub_emptype_full_name"  styleId="sub_emptype_full_name" value="" styleClass="textBoxWidth" onfocus="statwords('Please Enter Valid Sub Member Name ');" onblur="return loadHelp();"
+/>
        
     </td>
   </tr>
@@ -102,7 +115,8 @@ locale1=(String)session.getAttribute("locale");
 
     <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_submember.maxissuebook")%><a class="star">*</a></strong></td>
 
-    <td dir="<%=rtl%>"><html:text property="no_of_issueable_book" styleId="limit"   value="" styleClass="textBoxWidth" />
+    <td dir="<%=rtl%>"><html:text property="no_of_issueable_book" styleId="limit"  onkeypress="return isNumberKey(event)"  value="" styleClass="textBoxWidth" onfocus="statwords('Please Enter Maximum No. Of  Issuable Books ');" onblur="return loadHelp();"
+/>
 
     </td>
   </tr>
@@ -125,6 +139,14 @@ locale1=(String)session.getAttribute("locale");
 
 
  <script language="javascript" type="text/javascript">
+       function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
   function quit()
   {
 

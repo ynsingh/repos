@@ -135,7 +135,9 @@ String library_id,sublibrary_id;
 
 //BibliographicDetails ob=DAO.searchBiblio(library_id,sublibrary_id,distinctTitleArray[j],distinctCallNo.get(j).toString());
 //if(ob==null)
-{         bibid.setBiblioId(bibdao.returnMaxBiblioId(temobj.getLibraryId(),temobj.getSublibraryId()));
+{
+                        int bib_id=bibdao.returnMaxBiblioId(temobj.getLibraryId(),temobj.getSublibraryId());
+                        bibid.setBiblioId(bib_id);
                     bibid.setLibraryId(temobj.getLibraryId());
                     bibid.setSublibraryId(temobj.getSublibraryId());
                     bibobj.setId(bibid);
@@ -241,7 +243,7 @@ String library_id,sublibrary_id;
                     bibobj.setIssn(temobj.getIssn());
 
                     daoobj.insertBibligraphicDetails(bibobj);
-                    biblist.add(bibdao.returnMaxBiblioId(temobj.getLibraryId(),temobj.getSublibraryId()));
+                    biblist.add(bib_id);
              
 }
 
@@ -250,6 +252,8 @@ String library_id,sublibrary_id;
 
                 }
                 // for accession register
+                System.out.println("No of Titles"+distinctTitleSize);
+
                 for (int j = 0; j < distinctTitleSize; j++) {
 
                     BibliographicDetails obj=daoobj.getTitle(library_id,sublibrary_id,Integer.parseInt(biblist.get(j).toString()));
@@ -257,7 +261,7 @@ String library_id,sublibrary_id;
                     
                     
                 
-                    System.out.println("*****************list size  vvvvvvvvvvvvvvvvvvvv:::::::" + list.size());
+                    System.out.println("*****************list size  vvvvvvvvvvvvvvvvvvvv:::::::" + list.size()+ "  "+biblist.get(0)+biblist.get(1)+biblist.get(2));
                     for (int k = 0; k < list.size(); k++) {
                         temobj2 = (TempExcellImport) list.get(k);
                         System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG" + temobj2.getTitle() + "dsffffff" + temobj2.getSno());
@@ -269,21 +273,21 @@ String library_id,sublibrary_id;
                             accessionobj.setId(accessionidobj);
                             
             accessionobj.setBiblioId(obj.getId().getBiblioId());
-                             if(temobj2.getAccessionNo()!=null)
-                    { DocumentDetails  bibob=bibdao.searchAccession(temobj2.getLibraryId(),temobj2.getSublibraryId(),temobj2.getAccessionNo());
-                      if(bibob!=null)
-                      {
-                               bibdao.deleteBib(biblist,temobj.getLibraryId(),temobj.getSublibraryId());
-                     //   DAO.TruncateTempTable();
+//                             if(temobj2.getAccessionNo()!=null)
+//                    { DocumentDetails  bibob=bibdao.searchAccession(temobj2.getLibraryId(),temobj2.getSublibraryId(),temobj2.getAccessionNo());
+//                      if(bibob!=null)
+//                      {
+//                               bibdao.deleteBib(biblist,temobj.getLibraryId(),temobj.getSublibraryId());
+//                     //   DAO.TruncateTempTable();
+//
+//                       request.setAttribute("msg1", "Accession No already exist cannot import"+temobj2.getAccessionNo());
+//                        return mapping.findForward(SUCCESS);
+//
+//
+//                      }
 
-                       request.setAttribute("msg1", "Accession No already exist cannot import"+temobj2.getAccessionNo());
-                        return mapping.findForward(SUCCESS);
 
-
-                      }
-
-
-                    }
+                   // }
 
 
 
@@ -301,6 +305,8 @@ String library_id,sublibrary_id;
                             accessionobj.setPhysicalForm(temobj2.getPhysicalForm());
                             accessionobj.setColour(temobj2.getColour());
 
+                            System.out.println("************************"+accessionidobj.getRecordNo()+temobj2.getAccessionNo());
+
                             daoobj.insertAccessionRegister(accessionobj);
                         
                         
@@ -309,7 +315,7 @@ String library_id,sublibrary_id;
                             documentIdobj.setSublibraryId(temobj2.getSublibraryId());
 
                             documentobj.setId(documentIdobj);
-                            
+                            documentobj.setStatus(temobj2.getStatus());
 
                             documentobj.setBiblioId(obj.getId().getBiblioId());
                             documentobj.setDocumentType(temobj2.getDocumentType());

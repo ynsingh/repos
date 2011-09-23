@@ -1137,6 +1137,7 @@ else
 
     }
 function loadfaculty(){
+    window.status="Press F1 for Help";
     search();
    
    search1();
@@ -1150,6 +1151,7 @@ function loadfaculty(){
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/newformat.css"/>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 </head>
 <div
    style="  top:130px;
@@ -1177,12 +1179,17 @@ a:active
 </style>
 
 
-
+<script language="javascript" type="text/javascript">
+    function loadHelp()
+    {
+        window.status="Press F1 for Help";
+    }
+</script>
 
 
 
 </head>
-<body onload="return loadfaculty();">
+<body onload="return loadfaculty();loadHelp()">
     <%if (button.equals("Update")==true)
                         {%>
 
@@ -1260,7 +1267,7 @@ a:active
 
 
                 <tr><td dir="<%=rtl%>" class="txtStyle" width="25%"><%=resource.getString("circulation.cir_newmember.memberid")%></td><td dir="<%=rtl%>" width="25%" class="table_textbox">
-                        <html:text    property="TXTMEMID" readonly="true"  styleId="mem_id2" name="CirculationMemberActionForm" value="<%=mem_id%>" style="width:160px" /></td>
+                        <html:text    property="TXTMEMID" readonly="true"  styleId="mem_id2" name="CirculationMemberActionForm" value="<%=mem_id%>" style="width:160px" onfocus="statwords('Member Id');" onblur="loadHelp()"/></td>
                     <td dir="<%=rtl%>" width="25%" rowspan="6" width="150px" valign="bottom">
 
                        <%=resource.getString("circulation.cir_newmember.imageupload")%>
@@ -1277,7 +1284,7 @@ a:active
                         <%}%>
                     </td>
                    </tr>
-                   <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.fname")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  readonly="<%=read%>"  property="TXTFNAME" styleId="fname2" value="<%=fname%>" name="CirculationMemberActionForm" style="width:160px" /><br/>
+                   <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.fname")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  readonly="<%=read%>"  property="TXTFNAME" styleId="fname2" value="<%=fname%>" name="CirculationMemberActionForm" style="width:160px" onfocus="statwords('Edit First Name');" onblur="loadHelp()"/><br/>
                  <html:messages id="err_name" property="TXTFNAME">
 				<bean:write name="err_name" />
 
@@ -1286,8 +1293,8 @@ a:active
                 </td>
 
                 </tr>
-                <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.mname")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTMNAME" readonly="<%=read%>" styleId="mname2"   value="<%=mname%>" name="CirculationMemberActionForm" style="width:160px" /></td></tr>
-            <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.lname")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  readonly="<%=read%>" property="TXTLNAME" styleId="lname2"  value="<%=lname%>" name="CirculationMemberActionForm" style="width:160px" />
+                <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.mname")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTMNAME" readonly="<%=read%>" styleId="mname2"   value="<%=mname%>" name="CirculationMemberActionForm" style="width:160px" onfocus="statwords('Edit Middle Name');" onblur="loadHelp()"/></td></tr>
+            <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.lname")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  readonly="<%=read%>" property="TXTLNAME" styleId="lname2"  value="<%=lname%>" name="CirculationMemberActionForm" style="width:160px"onfocus="statwords('Edit Last Name');" onblur="loadHelp()" />
                 <br/>
                  <html:messages id="err_name" property="TXTLNAME">
 				<bean:write name="err_name" />
@@ -1298,7 +1305,7 @@ a:active
 
 
                 </tr>
-            <tr>  <td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.email")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  readonly="<%=read%>" property="TXTEMAILID"  styleId="mail2" value="<%=mail_id%>" onblur="return echeck(mail2.value)" name="CirculationMemberActionForm" style="width:160px" />
+            <tr>  <td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.email")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  readonly="<%=read%>" property="TXTEMAILID"  styleId="mail2" value="<%=mail_id%>" onblur="return echeck(mail2.value)" name="CirculationMemberActionForm" style="width:160px" onfocus="statwords('Edit email Id');" onblur="loadHelp()" />
                 <br/><div align="left" class="err" id="searchResult" style="border:#000000; "></div>
                  <html:messages id="err_name" property="TXTEMAILID">
 				<bean:write name="err_name" />
@@ -1308,7 +1315,7 @@ a:active
                 
 
             </tr>
-             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.localadd")%>*</td><td dir="<%=rtl%>" class="table_textbox"> <html:text property="TXTADD1" styleId="add11" style="width:160px" value="<%=add1%>"  readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px" />
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.localadd")%>*</td><td dir="<%=rtl%>" class="table_textbox"> <html:text property="TXTADD1" styleId="add11" style="width:160px" value="<%=add1%>"  readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px" onfocus="statwords('Edit street/colony/moh Name');" onblur="loadHelp()"/>
                  <br/>
                  <html:messages id="err_name" property="TXTADD1">
 		<bean:write name="err_name" />
@@ -1319,7 +1326,7 @@ a:active
              
 
              </tr>
-             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.city")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTCITY1" value="<%=city1%>" styleId="city11" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.city")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTCITY1" value="<%=city1%>" styleId="city11" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px" onfocus="statwords('Edit City Name');" onblur="loadHelp()"/>
                  <br/>
 
 
@@ -1369,21 +1376,21 @@ a:active
                       </td>
 
                 </tr>
-             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.country")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTCOUNTRY1" styleId="country11" value="<%=country1%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.country")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTCOUNTRY1" styleId="country11" value="<%=country1%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px" onfocus="statwords('Edit Country Name');" onblur="loadHelp()"/>
                  <br/>
 
 
                  </td>
-                   <td dir="<%=rtl%>"><%=resource.getString("circulation.cir_newmember.empdegn")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTDESG1" value="<%=desg%>" styleId="desg2" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/></td>
+                   <td dir="<%=rtl%>"><%=resource.getString("circulation.cir_newmember.empdegn")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTDESG1" value="<%=desg%>" styleId="desg2" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"onfocus="statwords('Edit Designation of the member');" onblur="loadHelp()"/></td>
                  </tr>
-             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.mobile")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTPH1"  styleId="ph11" value="<%=ph1 %>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.mobile")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTPH1"  styleId="ph11" value="<%=ph1 %>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px" onfocus="statwords('Edit 10 digit mobile Number');" onblur="loadHelp()"/>
                  <br/>
 
 
                  </td>
-                  <td dir="<%=rtl%>"><%=resource.getString("circulation.cir_newmember.officename")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTOFFICE" styleId="office2" value="<%=office%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/></td>
+                  <td dir="<%=rtl%>"><%=resource.getString("circulation.cir_newmember.officename")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTOFFICE" styleId="office2" value="<%=office%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px" onfocus="statwords('Edit Office Name');" onblur="loadHelp()"/></td>
                </tr>
-             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.landlineno")%>.</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTPH2" styleId="ph22" value="<%=ph2%>" readonly="<%=read%>"  name="CirculationMemberActionForm" style="width:160px" /></td>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.landlineno")%>.</td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTPH2" styleId="ph22" value="<%=ph2%>" readonly="<%=read%>"  name="CirculationMemberActionForm" style="width:160px" onfocus="statwords('Edit Land line Number if Any');" onblur="loadHelp()" /></td>
                 <td dir="<%=rtl%>"> <%=resource.getString("circulation.cir_newmember.facof")%>
                   </td><td dir="<%=rtl%>" class="table_textbox">
             <%if(button.equals("View")||button.equals("Delete")){%>
@@ -1405,7 +1412,7 @@ a:active
 
                       </td>
                 </tr>
-             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.fax")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTFAX" styleId="fax2" value="<%=fax%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/></td>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.fax")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTFAX" styleId="fax2" value="<%=fax%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px" onfocus="statwords('Enter FAX Number if Any');" onblur="loadHelp()"/></td>
                    <td dir="<%=rtl%>"> <%=resource.getString("circulation.cir_newmember.dept")%>  </td><td dir="<%=rtl%>" class="table_textbox">
                      <%if(button.equals("View")||button.equals("Delete")){%>
                      <html:select  property="TXTDEPT" styleId="TXTDEPT" style="width:160px" disabled="true" value="<%=dept %>"  onchange="return search_dept();" tabindex="3">
@@ -1468,16 +1475,16 @@ a:active
 
 </td>
                   </tr>
-             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.city")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTCITY2"styleId="city22" value="<%=city2%>" style="width:160px" readonly="<%=read%>"/></td>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.city")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTCITY2"styleId="city22" value="<%=city2%>" style="width:160px" readonly="<%=read%>"onfocus="statwords('Enter City Name');" onblur="loadHelp()"/></td>
 
                   <td> <%=resource.getString("circulation.cir_newmember.sem")%>
                   </td>
-                  <td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTSEM" styleId="sem2"   styleClass="textBoxWidth" value="<%=sem%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"  />
+                  <td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTSEM" styleId="sem2"   styleClass="textBoxWidth" value="<%=sem%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px" onfocus="statwords('Enter Semester or Year of the course');" onblur="loadHelp()" />
 
                   </td>
 
               </tr>
-             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.state")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTSTATE2" styleId="state22" value="<%=state2%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/></td>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.state")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTSTATE2" styleId="state22" value="<%=state2%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"onfocus="statwords('Enter State Name');" onblur="loadHelp()"/></td>
                     <td dir="<%=rtl%>"> <%=resource.getString("circulation.cir_newmember.reg")%>*<br>(YYYY-MM-DD)
                  </td><td class="table_textbox">
                      
@@ -1492,7 +1499,7 @@ a:active
 
                   </td>
                </tr>
-             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.country")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTCOUNTRY2"  styleId="country22" value="<%=country2%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"/></td>
+             <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.country")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTCOUNTRY2"  styleId="country22" value="<%=country2%>" readonly="<%=read%>" name="CirculationMemberActionForm" style="width:160px"onfocus="statwords('Enter Country Name');" onblur="loadHelp()"/></td>
                <td dir="<%=rtl%>" valign="top"><%=resource.getString("circulation.cir_newmember.exp")%>*<br>(YYYY-MM-DD)
                   </td>
                   <td dir="<%=rtl%>" class="table_textbox" valign="top">

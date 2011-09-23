@@ -136,10 +136,23 @@ function send()
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Bibliographic Detail Entry Form</title>
+        <script type="text/javascript" language="javascript">
+        function loadHelp()
+    {
+        window.status="Press F1 for Help";
+
+    }
+
+    </script>
+
+ <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
+
         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
          <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
     </head>
-    <body>
+    <body onload="loadHelp()" >
+
+
    <%if(msg1!=null){%>   <span style=" position:absolute; top: 120px; font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>  <%}%>
    <div
    style="  top:120px;
@@ -169,7 +182,8 @@ function send()
 
 <tr>
     <td dir="<%=rtl%>" width="150" align="<%=align%>" class="txtStyle"><strong><%=resource.getString("systemsetup.document_category.doccategorname")%><a class="star">*</a>:</strong> </td>
-    <td dir="<%=rtl%>"><html:text readonly="<%=read%>"  property="document_category_name" name="DocumentCategoryActionForm" styleClass="textBoxWidth" styleId="document_category_name" />
+    <td dir="<%=rtl%>"><html:text readonly="<%=read%>"  property="document_category_name" name="DocumentCategoryActionForm" styleClass="textBoxWidth" styleId="document_category_name" onfocus="statwords('Please Enter Valid Document Catagory Name ');" onblur="return loadHelp();"
+ />
     </td>
   </tr>
  
@@ -215,7 +229,7 @@ function send()
    <input    type="submit"   value="<%=resource.getString("circulation.cir_newmember.submit")%>" onclick="return Submit();"  />
     &nbsp;&nbsp;&nbsp;<input  type="button" value="<%=resource.getString("circulation.cir_member_reg.back")%>" onclick="return send()" />
     <%}else{%>
-    <input   type="button" value="<%=resource.getString("circulation.cir_member_reg.back")%>"  /><%}%>
+    <input   type="button" value="<%=resource.getString("circulation.cir_member_reg.back")%>" onclick="return send()" /><%}%>
 
     
     <br/><br/>	</td>

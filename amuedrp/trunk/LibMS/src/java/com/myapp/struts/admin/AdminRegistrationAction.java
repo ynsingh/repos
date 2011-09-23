@@ -6,7 +6,7 @@
 package com.myapp.struts.admin;
 import  com.myapp.struts.hbm.*;
 import  com.myapp.struts.AdminDAO.*;
-
+import com.myapp.struts.MyConnection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +42,7 @@ public class AdminRegistrationAction extends org.apache.struts.action.Action {
 private String login_id;
 boolean result;
 AdminRegistration adminobj;
- 
+ Connection con1;
 
  Locale locale=null;
    String locale1="en";
@@ -90,7 +90,13 @@ AdminRegistration adminobj;
 
         try{
        
-            
+             con1= MyConnection.getMyConnection();
+
+            if(con1==null)
+             {
+                request.setAttribute("msg1","Database Connectivity is Closed");
+                return mapping.findForward("failure");
+             }
        
 
 
@@ -145,7 +151,7 @@ AdminRegistration adminobj;
                 adminobj.setWorkingStatus("OK");
                 adminobj.setStatus("NotRegistered");
          
-
+System.out.println(adminobj);
                  result=AdminRegistrationDAO.insert1(adminobj);
                 if(result==false)
                 {
@@ -177,7 +183,7 @@ AdminRegistration adminobj;
   
  String path = servlet.getServletContext().getRealPath("/");
  
-             obj=new Email(path,adminRegistrationActionForm.getAdmin_email(),"",msg,"Your request for Library registration has been accepted Successfully.\nShortly you will get another mail regrading approval of your request.\n","\n\nDear "+adminRegistrationActionForm.getAdmin_fname()+" "+adminRegistrationActionForm.getAdmin_lname()+",\n","Thanks\nWebAdmin\nLibMS");
+             obj=new Email((String)session.getAttribute("webmail"),(String)session.getAttribute("webpass"),path,adminRegistrationActionForm.getAdmin_email(),"",msg,"Your request for Library registration has been accepted Successfully.\nShortly you will get another mail regrading approval of your request.\n","\n\nDear "+adminRegistrationActionForm.getAdmin_fname()+" "+adminRegistrationActionForm.getAdmin_lname()+",\n","Thanks\nWebAdmin\nLibMS");
             executor.submit(new Runnable() {
 
                 public void run() {
@@ -193,7 +199,7 @@ AdminRegistration adminobj;
         }
         catch(Exception e)
         {
-      
+      System.out.println(e);
             String msg="Request for registration failure due to some error";
             //request.setAttribute("msg1", msg);
             request.setAttribute("msg1", resource.getString("admin.adminregistrationaction.error2"));

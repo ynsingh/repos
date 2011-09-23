@@ -101,13 +101,20 @@ function isNumberKey(evt)
       window.location="<%=request.getContextPath()%>/systemsetup/manage_notices.jsp";
       return false;
   }
+  function loadHelp()
+    {
+        window.status="Press F1 for Help";
+
+    }
+
 
 
 
     </script>
+      <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 </head>
-<body>
 
+ <body onload="loadHelp()" >
     <html:form method="post" action="/notice" onsubmit="return check1();">
 
 <div
@@ -140,12 +147,12 @@ function isNumberKey(evt)
                             <tr><td dir="<%=rtl%>"  class="txt2" colspan="2"><%=resource.getString("systemsetup.manage_notice.entersub")%><span class="star">*</span>
 
                         </td>
-                        <td dir="<%=rtl%>" align="<%=align%>"> <html:text styleId="subject_type" property="subject" value=""  /></td>
+                        <td dir="<%=rtl%>" align="<%=align%>"> <html:text styleId="subject_type" property="subject"  onfocus="statwords('Please Enter Valid subject ');" value="" onblur="return loadHelp();"  /></td>
                     </tr>
                        <tr><td dir="<%=rtl%>"  class="txt2" colspan="2"><%=resource.getString("systemsetup.manage_notice.enterdetail")%><span class="star">*</span>
 
                         </td>
-                        <td dir="<%=rtl%>" align="<%=align%>"> <html:textarea  styleId="detail_type"  property="detail"/></td>
+                        <td dir="<%=rtl%>" align="<%=align%>"> <html:textarea  styleId="detail_type"  onfocus="statwords('Please Enter Detail ');"  property="detail" onblur="return loadHelp();"/></td>
                     </tr>
                    
 

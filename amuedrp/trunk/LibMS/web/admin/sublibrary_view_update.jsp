@@ -117,7 +117,7 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 }
 function search1() {
-
+window.status="Press F1 for Help";
     var keyValue = document.getElementById('TXTFACULTY').options[document.getElementById('TXTFACULTY').selectedIndex].value;
 
 if (keyValue=="Select")
@@ -260,6 +260,10 @@ else
                 document.getElementById("sublib_name").style.visibility = "hidden";
             }
 }
+function loadHelp()
+{
+    window.status="Press F1 for Help";
+}
 </script>
 
 <%
@@ -285,6 +289,7 @@ else
 <link href="common" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/css/newformat.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/css/page.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 </head>
 <body onload="search1()">
     <div
@@ -307,7 +312,7 @@ else
             <table dir="<%=rtl%>" align="center" height="200px">
      <tr>
     <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_sublibrary.sublibraryid")%></strong></td>
-    <td dir="<%=rtl%>"><html:text property="sublibrary_id" styleClass="textBoxWidth"   value="<%=sublibrary.getId().getSublibraryId() %>" readonly="true"/></td>
+    <td dir="<%=rtl%>"><html:text property="sublibrary_id" styleClass="textBoxWidth"   value="<%=sublibrary.getId().getSublibraryId() %>" readonly="true" onfocus="statwords('Enter SubLibrary ID')" onblur="loadHelp()" /></td>
   </tr>
    <tr>
     <td dir="<%=rtl%>" width="150" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_sublib.faculty")%></strong> </td><td>
@@ -356,9 +361,9 @@ else
 
                               <% if(sublib_name==null){%>
                                       
-           <html:text property="sublib_name1" styleId="sublib_name" styleClass="textBoxWidth" value="<%=sublibrary.getSublibName() %>" readonly="<%=read%>" />
+           <html:text property="sublib_name1" styleId="sublib_name" styleClass="textBoxWidth" value="<%=sublibrary.getSublibName() %>" readonly="<%=read%>" onfocus="statwords('Enter SubLibrary Name')" onblur="loadHelp()"  />
   <%}else{%>
-           <html:text property="sublib_name1" styleId="sublib_name" styleClass="textBoxWidth" value="" readonly="<%=read%>" />
+           <html:text property="sublib_name1" styleId="sublib_name" styleClass="textBoxWidth" value="" readonly="<%=read%>" onfocus="statwords('Enter SubLibrary Name')" onblur="loadHelp()"  />
            <%}%>
 
   
@@ -371,7 +376,7 @@ else
     
     <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_sublib.deptadd")%><a class="star">*</a></strong></td>
     <td dir="<%=rtl%>" width="280px">
-        <html:text property="department_address" styleClass="textBoxWidth" style="left:40px" value="<%=sublibrary.getDeptAddress()%>" readonly="<%=read%>"/>
+        <html:text property="department_address" styleClass="textBoxWidth" style="left:40px" value="<%=sublibrary.getDeptAddress()%>" readonly="<%=read%>" onfocus="statwords('Enter SubLibrary Address')" onblur="loadHelp()"  />
         
 
 

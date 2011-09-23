@@ -1,5 +1,5 @@
 package com.myapp.struts.hbm;
-// Generated Jul 5, 2011 4:40:52 PM by Hibernate Tools 3.2.1.GA
+// Generated 9 Sep, 2011 9:33:57 AM by Hibernate Tools 3.2.1.GA
 
 
 
@@ -12,32 +12,27 @@ public class Logs  implements java.io.Serializable {
      private Integer sno;
      private String userId;
      private String date;
-     private String time;
-     private String classname;
      private String url;
      private String actionMessage;
      private String actionResult;
      private String libraryId;
      private String sublibraryId;
+     private String username;
+     private String role;
 
     public Logs() {
     }
 
-	
-    public Logs(Integer sno) {
-        this.sno = sno;
-    }
-    public Logs(Integer sno, String userId, String date, String time, String classname, String url, String actionMessage, String actionResult, String libraryId, String sublibraryId) {
-       this.sno = sno;
+    public Logs(String userId, String date, String url, String actionMessage, String actionResult, String libraryId, String sublibraryId, String username, String role) {
        this.userId = userId;
        this.date = date;
-       this.time = time;
-       this.classname = classname;
        this.url = url;
        this.actionMessage = actionMessage;
        this.actionResult = actionResult;
        this.libraryId = libraryId;
        this.sublibraryId = sublibraryId;
+       this.username = username;
+       this.role = role;
     }
    
     public Integer getSno() {
@@ -60,20 +55,6 @@ public class Logs  implements java.io.Serializable {
     
     public void setDate(String date) {
         this.date = date;
-    }
-    public String getTime() {
-        return this.time;
-    }
-    
-    public void setTime(String time) {
-        this.time = time;
-    }
-    public String getClassname() {
-        return this.classname;
-    }
-    
-    public void setClassname(String classname) {
-        this.classname = classname;
     }
     public String getUrl() {
         return this.url;
@@ -109,6 +90,20 @@ public class Logs  implements java.io.Serializable {
     
     public void setSublibraryId(String sublibraryId) {
         this.sublibraryId = sublibraryId;
+    }
+    public String getUsername() {
+        return this.username;
+    }
+    
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public String getRole() {
+        return this.role;
+    }
+    
+    public void setRole(String role) {
+        this.role = role;
     }
 
 

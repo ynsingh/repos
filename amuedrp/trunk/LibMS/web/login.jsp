@@ -20,6 +20,13 @@
     String sessionId="";
     boolean page=true;
     String align="left";
+
+   //  String webadmin=getServletContext().getInitParameter("webmail");
+   //  String webpass=getServletContext().getInitParameter("webpass");
+%>
+<%
+//session.setAttribute("webadmin",webadmin);
+//session.setAttribute("webpass",webpass);
 %>
 <script type="text/javascript" language="javascript">
     this.opener.close();
@@ -238,7 +245,7 @@ sessionId = session.getId().toString();
 
             <tr>
                 <td valign="top" align="center" >
-                    <table width="90%" >
+                    <table width="90%"  border="0px">
                         <tr>
                             <td height="2px" colspan="2">
 
@@ -263,7 +270,7 @@ if(str!=null)
         
 
 
-                        <tr ><td  valign="bottom" height="10%"   colspan="2" >
+                        <tr  ><td  valign="bottom" height="10%"   colspan="2" >
 
 
 
@@ -376,7 +383,7 @@ if(str!=null)
                     </table>
                     <br>
 
-                    <span style="font-family: Tahoma;font-size:14px"><b><a style="text-decoration: none" class="txt2" href="mailto:nesar.ahmad@gmail.com"><%=resource.getString("login.message.newlib")%></a></b></span><br><br>
+                    <span style="font-family: Tahoma;font-size:14px"><b><a style="text-decoration: none" class="txt2" href="<%=request.getContextPath()%>/help/help2.jsp"><%=resource.getString("login.message.newlib")%></a></b></span><br><br>
                   <b><a href="<%=request.getContextPath()%>/admin/admin_registration.jsp" style="text-decoration: none;color:brown;font-family: Tahoma;font-size:13px;font-weight: bold;"><%= resource.getString("login.href.institute.registration") %></a></b>
 
 

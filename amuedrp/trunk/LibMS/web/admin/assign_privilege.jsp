@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
-<%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
+<%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*,com.myapp.struts.admin.Traker"%>
  <jsp:include page="header.jsp" flush="true" />
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -167,7 +167,21 @@ function Send(value)
 </head>
 <body>
        <html:form method="post" onsubmit="return check1()" action="/assign_privilege">
-       
+ <div
+   style="  top:15%;
+   left:5px;
+   right:5px;
+      position: absolute;
+
+      visibility: show;">
+
+        <font size="-2"><br/>&nbsp;&nbsp;<i>You are here : </i>LibMS-><%
+        String p=request.getParameter("p");
+         String data=Traker.getActivity(p,(String)session.getAttribute("locale"));
+        out.println(data);
+
+        %></font>
+</div>
 <div
    style="  top:150px;
    left:5px;

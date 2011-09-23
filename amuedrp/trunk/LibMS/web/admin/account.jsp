@@ -8,7 +8,7 @@ This Page is to Enter Staff Details
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
  <jsp:include page="header.jsp" flush="true" />
-<%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
+<%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*,com.myapp.struts.admin.Traker"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -175,7 +175,21 @@ function Send(value)
 </head>
 <body>
        <html:form method="post" onsubmit="return check1()" action="/account1">
-       
+<div
+   style="  top:15%;
+   left:5px;
+   right:5px;
+      position: absolute;
+
+      visibility: show;">
+
+        <font size="-2"><br/>&nbsp;&nbsp;<i>You are here : </i>LibMS-><%
+        String p=request.getParameter("p");
+         String data=Traker.getActivity(p,(String)session.getAttribute("locale"));
+        out.println(data);
+
+        %></font>
+</div>
 <div
    style="  top:200px;
    left:5px;

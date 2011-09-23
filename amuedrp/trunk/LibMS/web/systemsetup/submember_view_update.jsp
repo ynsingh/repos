@@ -82,8 +82,17 @@ locale1=(String)session.getAttribute("locale");
 <link href="common" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/css/newformat.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/css/page.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
+
+<script language="javascript" type="text/javascript">
+function loadHelp()
+{
+    window.status="Press F1 for Help";
+}
+</script>
+
 </head>
-<body>
+<body onload="loadHelp()">
     <div
    style="  top:120px;
    left:5px;
@@ -109,14 +118,14 @@ locale1=(String)session.getAttribute("locale");
     <td>
         <html:hidden property="emptype_id"  value="<%=emptype.getId().getEmptypeId()  %>"/>
         <html:hidden property="sub_emptype_id"  value="<%=subemployeetype.getId().getSubEmptypeId()  %>"/>
-        <html:text property="sub_emptype_id" styleClass="textBoxWidth" value="<%=subemployeetype.getId().getSubEmptypeId()  %>" readonly="true"/></td>
+        <html:text property="sub_emptype_id" styleClass="textBoxWidth" value="<%=subemployeetype.getId().getSubEmptypeId()  %>" readonly="true"  onfocus="statwords('SubMember Employee Id')" onblur="loadHelp()" /></td>
   </tr>
    <tr><td dir="<%=rtl%>" height="5px" colspan="4" ></td></tr>
     <tr>
     <td dir="<%=rtl%>" width="150" align="<%=align%>"><strong><%=resource.getString("systemsetup.submem_view_update.memtypename")%>  </strong> </td>
     <td dir="<%=rtl%>" width="200">
         <html:hidden  property="emptype_full_name"   value="<%=emptype.getEmptypeFullName()  %>" />
-        <html:text  property="emptype_full_name"  styleClass="textBoxWidth" readonly="true" value="<%=emptype.getEmptypeFullName()  %>" /></td>
+        <html:text  property="emptype_full_name"  styleClass="textBoxWidth" readonly="true" value="<%=emptype.getEmptypeFullName()  %>" onfocus="statwords('Member type Name')" onblur="loadHelp()" /></td>
     
 
   </tr>
@@ -125,7 +134,7 @@ locale1=(String)session.getAttribute("locale");
     
    <tr>
     <td dir="<%=rtl%>" width="150" align="<%=align%>"><strong><%=resource.getString("systemsetup.submem_view_update.submemname")%> *</strong> </td>
-    <td dir="<%=rtl%>" width="200"> <html:text  property="sub_emptype_full_name" styleId="sub_emptype_full_name"  styleClass="textBoxWidth" readonly="<%=read%>" value="<%=subemployeetype.getSubEmptypeFullName()  %>" /></td>
+    <td dir="<%=rtl%>" width="200"> <html:text  property="sub_emptype_full_name" styleId="sub_emptype_full_name"  styleClass="textBoxWidth" readonly="<%=read%>" value="<%=subemployeetype.getSubEmptypeFullName()  %>" onfocus="statwords('Enter SubMember Name')" onblur="loadHelp()" /></td>
     
 
   </tr>
@@ -141,7 +150,7 @@ locale1=(String)session.getAttribute("locale");
 
     <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.submem_view_update.maxnoofissuebook")%>*</strong></td>
 
-    <td dir="<%=rtl%>"><html:text property="no_of_issueable_book" styleId="limit"   value="<%=subemployeetype.getNoOfIssueableBook().toString()  %>" styleClass="textBoxWidth" readonly="<%=read%>" />
+    <td dir="<%=rtl%>"><html:text property="no_of_issueable_book" styleId="limit"  onkeypress="return isNumberKey(event)"  value="<%=subemployeetype.getNoOfIssueableBook().toString()  %>" styleClass="textBoxWidth" readonly="<%=read%>" onfocus="statwords('Enter How many books can be issued to this type of SubMember')" onblur="loadHelp()"/>
 
     </td>
   </tr>
@@ -171,6 +180,14 @@ locale1=(String)session.getAttribute("locale");
 </html>
 
 <script language="javascript" type="text/javascript">
+    function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
      function validation()
     {
 

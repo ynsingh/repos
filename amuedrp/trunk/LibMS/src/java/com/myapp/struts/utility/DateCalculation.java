@@ -70,5 +70,9 @@ System.out.println(year+"-"+month+"-"+day);
     SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
     return sdf.format(cal.getTime());
   }
-
+ public static String dateTime() {
+    Calendar cal = Calendar.getInstance();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    return sdf.format(cal.getTime());
+  }
 }

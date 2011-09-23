@@ -12,9 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 
 import java.sql.*;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import net.sf.jasperreports.engine.JRException;
@@ -24,11 +27,12 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.data.ListOfArrayDataSource;
-
+import net.sf.jasperreports.engine.data.*;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 import javax.servlet.http.HttpSession;
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -50,6 +54,9 @@ public class ReportAction1 extends org.apache.struts.action.Action {
     Connection connection=null;
     Statement statement=null;
     ResultSet resultSet=null;
+    private JRBeanCollectionDataSource dataSource1;
+    private CirculationList cir_checkout_report1;
+     private CirculationList image1;
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -80,6 +87,7 @@ System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
             }
           System.out.println("Compiling report...");
           JasperCompileManager.compileReportToFile(path + "/CirCheckOut.jrxml");
+           JasperCompileManager.compileReportToFile(path + "/CirCheckoutSubReport.jrxml");
           System.out.println("Done!");
           OutputStream ouputStream = response.getOutputStream();
            response.setContentType("application/pdf");
@@ -89,9 +97,67 @@ System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
  JRHibernateListDataSource ds;
 // System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"+cir_checkout_report.get(j).toString());
  HashMap map = new HashMap();
- dataSource = new JRBeanCollectionDataSource(cir_checkout_report);
+ if(!memid.isEmpty())
+ map.put("memid1",memid);
+ else
+     map.put("memid1", "Not Specified");
+ if(!starting_date.isEmpty())
+ map.put("StartingDate",starting_date);
+ else
+     map.put("StartingDate", "Not Specified");
+ if(!end_date.isEmpty())
+ map.put("EndDate",end_date);
+ else
+     map.put("EndDate", "Not Specified");
+     Calendar currentDate = Calendar.getInstance();
+  SimpleDateFormat formatter=   new SimpleDateFormat("yyyy/MMM/dd HH:mm:ss");
+  String dateNow = formatter.format(currentDate.getTime());
 
-          JasperFillManager.fillReportToFile(path+"/CirCheckOut.jasper",map, dataSource);
+     map.put("systemdate", dateNow);
+ 
+
+ //dataSource = new JRBeanCollectionDataSource(cir_checkout_report);
+ //to fill sub report
+ dataSource1 = new JRBeanCollectionDataSource(cir_checkout_report);
+ HashMap  SIMPLE_DATA = new HashMap();
+  SIMPLE_DATA.put("datasource1", dataSource1);
+ // below codes are commmented
+
+// SIMPLE_DATA.put("datasource", dataSource);
+ //Map simpleMasterMap = new HashMap();
+//simpleMasterMap.put("id3", "datasource");
+
+// List simpleMasterList = new ArrayList();
+// simpleMasterList.add(simpleMasterMap);
+
+//JRDataSource simpleDS = new JRBeanCollectionDataSource(simpleMasterList);
+
+ // map.put("SIMPLE_DATA", SIMPLE_DATA);
+
+  // Below code is not comemted
+
+   List simpleMasterList = new ArrayList();
+     simpleMasterList.add(dataSource1);
+
+
+//   Iterator it = cir_checkout_report.iterator();
+//   int i=cir_checkout_report.size();
+//   for(int ii=0;ii<i;ii++)
+//   {
+//         CirculationList  doc = (CirculationList)cir_checkout_report.get(ii);
+//          if(doc.getMemid().equals(memid))
+//          {
+//                 cir_checkout_report1  =doc;
+//                  map.put("cir_checkout_report1", cir_checkout_report1);
+//                  // map.put("image1", image1);
+//          }
+//         it.next();
+//
+//   }
+  map.put("cir_checkout_report", cir_checkout_report);
+            JasperFillManager.fillReportToFile(path+"/CirCheckOut.jasper",map, dataSource1);
+           // JasperFillManager.fillReportToFile(path+"/CirCheckoutSubReport.jasper",map, dataSource1);
+         // JasperFillManager.fillReportToFile(path+"/CirCheckOut.jasper",map, simpleDS);
            System.out.println("Filling report...");
 
           System.out.println("Done!");

@@ -67,7 +67,8 @@ public class DAO {
             session.beginTransaction();
          //    SQLQuery query = session.createQuery("select COLUMN_NAME  from information_schema.columns where table_name ='bibliographic_details' order by ordinal_position) UNION (select COLUMN_NAME from information_schema.columns where table_name ='accession_register' order by ordinal_position)");
 
-            SQLQuery query = session.createSQLQuery("(select COLUMN_NAME  from information_schema.columns where table_name ='bibliographic_details' order by ordinal_position) UNION ALL (select COLUMN_NAME from information_schema.columns where table_name ='accession_register' order by ordinal_position)");
+          //  SQLQuery query = session.createSQLQuery("(select COLUMN_NAME  from information_schema.columns where table_name ='bibliographic_details' order by ordinal_position) UNION ALL (select COLUMN_NAME from information_schema.columns where table_name ='accession_register' order by ordinal_position)");
+              SQLQuery query = session.createSQLQuery("(select COLUMN_NAME  from information_schema.columns where table_name ='temp_excell_import' order by ordinal_position) ");
 //query.setResultTransformer(Transformers.aliasToBean(Tab.class));
             return  query.list();
         } finally {
@@ -98,7 +99,7 @@ public class DAO {
             session.beginTransaction();
          //    SQLQuery query = session.createQuery("select COLUMN_NAME  from information_schema.columns where table_name ='bibliographic_details' order by ordinal_position) UNION (select COLUMN_NAME from information_schema.columns where table_name ='accession_register' order by ordinal_position)");
 
-            SQLQuery query = session.createSQLQuery("(select DATA_TYPE  from information_schema.columns where table_name ='bibliographic_details' order by ordinal_position) UNION ALL (select DATA_TYPE from information_schema.columns where table_name ='accession_register' order by ordinal_position)");
+            SQLQuery query = session.createSQLQuery("select DATA_TYPE  from information_schema.columns where table_name ='temp_excell_import' order by ordinal_position") ;
 //query.setResultTransformer(Transformers.aliasToBean(Tab.class));
             return  query.list();
         } finally {
@@ -611,11 +612,7 @@ public class DAO {
 
 
             }
-            if (map_table[column_index].equals("date_acquired")) {
-                pojo_object.setDateAcquired(cellvalue);
 
-
-            }
             if (map_table[column_index].equals("title")) {
                 pojo_object.setTitle(cellvalue);
 

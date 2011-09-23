@@ -75,7 +75,7 @@ public class SimpleSearchAction extends org.apache.struts.action.Action {
  System.out.println("Check Box"+simpleform.getCheckbox());
  if(simpleform.getCheckbox().equals("Checked")){
  System.out.println("Languagebbb");
- simple_search_list=simpleSearchDAO.simpleLangSearch(lib_id,sub_lib,phrase,cnf,db,sort,cf,yr1,yr2,simpleform.getLanguage());
+ simple_search_list=simpleSearchDAO.simpleLangSearch(lib_id,sub_lib,phrase,cnf,db,sort,cf,yr1,yr2,simpleform.getLanguage().toUpperCase());
 if(!simple_search_list.isEmpty())
 {
     for(int f=0;f<simple_search_list.size();f++)
@@ -87,6 +87,7 @@ if(!simple_search_list.isEmpty())
     }
     } 
  }
+ session.removeAttribute("simple_search_list");
   session.setAttribute("simple_search_list1", bib);
  }
  else{
@@ -106,6 +107,7 @@ if(!simple_search_list1.isEmpty())
     } 
     }  
 }
+ session.removeAttribute("simple_search_list1");
   session.setAttribute("simple_search_list", bib1);
  }
     return mapping.findForward(SUCCESS);

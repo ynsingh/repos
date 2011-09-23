@@ -82,8 +82,8 @@ public class Uploadaction extends org.apache.struts.action.Action {
                     List<String> obj=new ArrayList<String>();
                     int l=0;
                     for (int k = 0; k < DAO.columnname(table_name).size(); k++) {
-                        if(k==51 || k==52|| k==53 || k==0)
-                            continue;                      
+                        if( k==0)
+                            continue; 
                          obj.add(DAO.columnname(table_name).get(k).toString());
                     }
                   

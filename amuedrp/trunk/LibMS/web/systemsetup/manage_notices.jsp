@@ -99,11 +99,18 @@ function check1()
       return false;
   }
 
+   function loadHelp()
+    {
+        window.status="Press F1 for Help";
+
+    }
 
 
     </script>
+      <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 </head>
-<body>
+
+    <body onload="loadHelp()" >
  
     <html:form action="/addnotice" method="post"  onsubmit="return check1()">
        
@@ -126,7 +133,7 @@ function check1()
                     <tr>
                      
                         <td dir="<%=rtl%>" rowspan="5" class="txt2"><%=resource.getString("systemsetup.manage_notice.enternoticeid")%><br><br>
-                        <input type="text" id="notice_id" name="notice_id" value=""/></td>
+                        <input type="text" id="notice_id" name="notice_id" onfocus="statwords('Please Enter Valid Notice Id ');" value=""/></td>
                     </tr>
                     <tr><td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn" id="Button1"  value="<%=resource.getString("systemsetup.manage_notice.add")%>" onclick="return Add();" /></td> </tr>
                     <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button2" class="btn"  value="<%=resource.getString("circulation.cir_member_reg.update")%>" onclick="return Update();"  /></td></tr>

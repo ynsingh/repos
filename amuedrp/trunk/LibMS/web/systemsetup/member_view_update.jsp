@@ -78,8 +78,16 @@ locale1=(String)session.getAttribute("locale");
 <link href="common" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/css/newformat.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/css/page.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
+<script language="javascript" type="text/javascript">
+function loadHelp()
+{
+    window.status="Press F1 for Help";
+}
+</script>
+
 </head>
-<body>
+<body onload="loadHelp()">
     <div
    style="  top:120px;
    left:5px;
@@ -100,7 +108,7 @@ locale1=(String)session.getAttribute("locale");
             <table dir="<%=rtl%>" align="center">
      <tr>
     <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.member_view_update.memshotname")%> :</strong></td>
-    <td dir="<%=rtl%>"><html:text property="emptype_id" styleClass="textBoxWidth" value="<%=employeetype.getId().getEmptypeId() %>" readonly="true"/></td>
+    <td dir="<%=rtl%>"><html:text property="emptype_id" styleClass="textBoxWidth" value="<%=employeetype.getId().getEmptypeId() %>" readonly="true" onfocus="statwords('Member type Id')" onblur="loadHelp()" /></td>
   </tr>
     
    <tr>
@@ -108,7 +116,7 @@ locale1=(String)session.getAttribute("locale");
     <td dir="<%=rtl%>"  width="200">
 
 
-        <html:text  property="emptype_full_name" styleId="emptype_full_name" styleClass="textBoxWidth" readonly="<%=read%>" value="<%=employeetype.getEmptypeFullName() %>" /></td>
+        <html:text  property="emptype_full_name" styleId="emptype_full_name" styleClass="textBoxWidth" readonly="<%=read%>" value="<%=employeetype.getEmptypeFullName() %>" onfocus="statwords('Enter Member Name')" onblur="loadHelp()"/></td>
     
 
   </tr>

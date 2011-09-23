@@ -13,6 +13,71 @@ public class RequestDoc {
         private String userId;
      private String Institute_id;
      private String city;
+     private String role;
+     private String date;
+     private String url;
+     private String user_id;
+     private String sublibrary_id;
+     private String user_name;
+
+    public int getSno() {
+        return sno;
+    }
+
+    public void setSno(int sno) {
+        this.sno = sno;
+    }
+     private int sno;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getSublibrary_id() {
+        return sublibrary_id;
+    }
+
+    public void setSublibrary_id(String sublibrary_id) {
+        this.sublibrary_id = sublibrary_id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+
+
 
     public String getCity() {
         return city;

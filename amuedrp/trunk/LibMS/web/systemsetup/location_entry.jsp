@@ -124,7 +124,14 @@ function send()
     window.location="<%=request.getContextPath()%>/systemsetup/add_location.jsp";
     return false;
 }
+function loadHelp()
+    {
+        window.status="Press F1 for Help";
+
+    }
+
 </script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -132,7 +139,7 @@ function send()
         <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
          <link rel="stylesheet" href="/LibMS-Struts/css/formstyle.css"/>
     </head>
-    <body>
+   <body onload="loadHelp()" >
 
 
    <%if(msg1!=null){%>   <span style=" position:absolute; top: 120px; font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>  <%}%>
@@ -164,14 +171,15 @@ function send()
 </tr>
 <tr>
     <td dir="<%=rtl%>" width="150" align="<%=align%>" class="txtStyle"><strong><%=resource.getString("systemsetup.location_entry.locname")%><a class="star">*</a></strong> </td>
-    <td dir="<%=rtl%>"><html:text readonly="<%=read%>"  property="location_name" name="LocationActionForm" styleClass="textBoxWidth" styleId="location_name" />
+    <td dir="<%=rtl%>"><html:text readonly="<%=read%>"  onfocus="statwords('Please Enter Valid Location Name ');" onblur="return loadHelp();" property="location_name" name="LocationActionForm" styleClass="textBoxWidth" styleId="location_name" />
     </td>
   </tr>
   <tr><td dir="<%=rtl%>" colspan="5" height="5px"></td>
 </tr>
   <tr>
     <td dir="<%=rtl%>" align="<%=align%>" class="txtStyle"><strong><%=resource.getString("systemsetup.location_entry.locdesc")%></strong></td>
-  <td dir="<%=rtl%>"><html:textarea readonly="<%=read%>" property="location_description" name="LocationActionForm" styleClass="textBoxWidth" />
+  <td dir="<%=rtl%>"><html:textarea readonly="<%=read%>" property="location_description" name="LocationActionForm" styleClass="textBoxWidth" onfocus="statwords('Please Enter Location Description ');" onblur="return loadHelp();"
+ />
   </td>
   </tr>
 <tr><td colspan="5" height="5px"></td>
@@ -188,15 +196,16 @@ function send()
 <td dir="<%=rtl%>" align="center" colspan="5">
     <%if(button.equals("Update")){%>
     <input id="button1"  name="button1" type="submit" onclick="return Update();" value="<%=button1%>"/>
-    &nbsp;&nbsp;&nbsp;<input name="button1" type="submit" value="<%=resource.getString("circulation.cir_member_reg.back")%>" onclick="return send()" />
+    &nbsp;&nbsp;&nbsp;<input name="button1" type="button" value="<%=resource.getString("circulation.cir_member_reg.back")%>" onclick="return send()" />
     <%}else if(button.equals("Delete")){%>
     <input id="button1"  name="button1" type="submit" onClick="return confirm1()" value="<%=button1%>"  />
-    &nbsp;&nbsp;&nbsp;<input name="button1" type="submit" onclick="return send()"  value="<%=resource.getString("circulation.cir_member_reg.back")%>" />
+    &nbsp;&nbsp;&nbsp;<input name="button1" type="button" onclick="return send()"  value="<%=resource.getString("circulation.cir_member_reg.back")%>" />
    <%}else if(button.equals("Add")){%>
     <input id="button1"  name="button1" type="submit" value="<%=resource.getString("circulation.cir_newmember.submit")%>" onclick="return Submit();" />
-    &nbsp;&nbsp;&nbsp;<input name="button1" type="submit" value="<%=resource.getString("circulation.cir_member_reg.back")%>" onclick="return send()" />
-    <%}else{%>
-    <input  name="button1" type="submit" value="<%=resource.getString("circulation.cir_newmember.submit")%>" onclick="return Submit();"  /><%}%>
+    &nbsp;&nbsp;&nbsp;<input name="button1" type="button" value="<%=resource.getString("circulation.cir_member_reg.back")%>" onclick="return send()" />
+    <%}else if(button.equals("View")){%>
+    <input name="button1" type="button" value="<%=resource.getString("circulation.cir_member_reg.back")%>" onclick="return send()" />
+    <%}%>
 	</td>
 </tr><tr><td colspan="5" height="5px"></td>
 </tr>

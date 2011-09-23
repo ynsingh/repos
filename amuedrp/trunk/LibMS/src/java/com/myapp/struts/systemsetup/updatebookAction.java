@@ -63,7 +63,7 @@ public class updatebookAction extends org.apache.struts.action.Action {
 /*get the id of member and sub member type*/
 
 EmployeeType memtype=BookCategoryDAO.searchMemTypeId(library_id,emptype_id);
-SubEmployeeType submemtype=BookCategoryDAO.searchSubMemTypeId(library_id,subemptype_id);
+SubEmployeeType submemtype=BookCategoryDAO.searchSubMemTypeId(library_id,emptype_id,subemptype_id);
 
 if(memtype!=null)
     emptype_id=memtype.getId().getEmptypeId();

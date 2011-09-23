@@ -86,10 +86,12 @@ locale1=(String)session.getAttribute("locale");
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/cupertino/jquery.ui.all.css" type="text/css">
+ <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.core.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.widget.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.datepicker.min.js"></script>
+
 <style type="text/css">
 .ui-datepicker
 {
@@ -201,9 +203,17 @@ function del()
 
 
 
+
     </script>
+
+      <script language="javascript" type="text/javascript">
+function loadHelp()
+{
+    window.status="Press F1 for Help";
+}
+</script>
 </head>
-<body>
+<body onload="loadHelp()">
 
     <html:form method="post" action="/viewupdatenotice">
 
@@ -224,11 +234,11 @@ function del()
                             <tr><td dir="<%=rtl%>" colspan="2"><%=resource.getString("circulation.cir_checkout_report.date")%>
 
                         </td>
-                        <td dir="<%=rtl%>" align="<%=align%>"><html:text   property="date"  styleId="date" value="<%=notice.getDate()%>" readonly="true"/><br>
+                        <td dir="<%=rtl%>" align="<%=align%>"><html:text   property="date"  styleId="date" value="<%=notice.getDate()%>" readonly="true" onfocus="statwords('Notice Publication Date')" onblur="loadHelp()" /><br>
                        </td>
                     </tr>
                             <tr><td dir="<%=rtl%>" width="150px"  colspan="2"><%=resource.getString("systemsetup.manage_notice.noticesid")%></td>
-                                <td dir="<%=rtl%>" width="150px" align="<%=align%>"> <html:text   property="notice_id" value="<%= String.valueOf(notice.getId().getNoticeId())%>" readonly="true"/>
+                                <td dir="<%=rtl%>" width="150px" align="<%=align%>"> <html:text   property="notice_id" value="<%= String.valueOf(notice.getId().getNoticeId())%>" readonly="true"onfocus="statwords('Notice Id')" onblur="loadHelp()" />
                                 </td>
                             </tr>
                           
@@ -236,12 +246,12 @@ function del()
                             <tr><td dir="<%=rtl%>"  colspan="2"><%=resource.getString("systemsetup.manage_notice.entersub")%><span class="star">*</span>
 
                         </td>
-                        <td dir="<%=rtl%>" align="<%=align%>"> <html:text  property="subject" styleId="subject" value="<%=notice. getSubject()%>" readonly="<%=read%>" /></td>
+                        <td dir="<%=rtl%>" align="<%=align%>"> <html:text  property="subject" styleId="subject" value="<%=notice. getSubject()%>" readonly="<%=read%>" onfocus="statwords('Enter Subject of the Notice')" onblur="loadHelp()"/></td>
                     </tr>
                        <tr><td dir="<%=rtl%>"  colspan="2"><%=resource.getString("systemsetup.manage_notice.enterdetail")%><span class="star">*</span>
 
                         </td>
-                        <td dir="<%=rtl%>" align="<%=align%>"> <html:textarea    property="detail" styleId="detail" value="<%=notice.getDetail()%>" readonly="<%=read%>"/></td>
+                        <td dir="<%=rtl%>" align="<%=align%>"> <html:textarea    property="detail" styleId="detail" value="<%=notice.getDetail()%>" readonly="<%=read%>" onfocus="statwords('Enter your Notice Here. This will be published in OPAC')" onblur="loadHelp()" /></td>
                     </tr>
                     
                  

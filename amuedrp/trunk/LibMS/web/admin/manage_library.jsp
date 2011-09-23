@@ -25,6 +25,7 @@ String msg1=(String)request.getAttribute("msg1");
 <title>LibMS : Manage SubLibrary </title>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
+ <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
  <%!
     Locale locale=null;
     String locale1="en";
@@ -103,11 +104,14 @@ function check1()
       return false;
   }
 
-
+function loadHelp()
+{
+    window.status="Press F1 for Help";
+}
 
     </script>
 </head>
-<body>
+<body onload="loadHelp()">
  
     <html:form method="post" onsubmit="return check1()" action="/libraryRegistration">
        
@@ -129,7 +133,7 @@ function check1()
                     <tr><td dir="<%=rtl%>" rowspan="5" class="txt2"><%=resource.getString("systemsetup.manage_library.entersubliid")%><br>
                             
                             <br>
-                        <input type="text" id="sublibrary_id" name="sublibrary_id" value=""/><br>
+                            <input type="text" id="sublibrary_id" name="sublibrary_id" value=""onfocus="statwords('Enter SubLibrary Id')" onblur="loadHelp()" /><br>
                         </td><td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn" id="Button1"  value="<%=resource.getString("systemsetup.manage_notice.add")%>" onclick="return Add();" /></td></tr>
                     <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button2" class="btn" value="<%=resource.getString("circulation.cir_member_reg.update")%>" onclick="return Update();"   /></td></tr>
                     <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button3"  value="<%=resource.getString("circulation.cir_member_reg.view")%>"  onclick="return View();" class="btn"  /></td></tr>

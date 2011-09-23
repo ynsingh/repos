@@ -80,7 +80,7 @@ Login logobj=LoginDAO.searchAns(staff_id,library_id,ans);
           
           
             //request.setAttribute("error","Answer not correct");
-            request.setAttribute("error", resource.getString("admin.forgetpassword.errror"));
+            request.setAttribute("error", resource.getString("admin.forgetpassword.error"));
 
             return mapping.findForward("failure");
       }

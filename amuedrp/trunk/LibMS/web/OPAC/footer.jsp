@@ -36,7 +36,7 @@ locale1=(String)session.getAttribute("locale");
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-<table align="center" class="datagrid">
+<table align="center" class="btn3">
       <%if(page.equals(true)){%>
       <tr><td colspan="2" align="center" height="50px" valign="top">
 

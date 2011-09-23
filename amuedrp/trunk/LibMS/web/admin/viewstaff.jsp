@@ -1,7 +1,7 @@
 
     <%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*"%>
     <jsp:include page="/admin/header.jsp" flush="true" />
-    <%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
+    <%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*,com.myapp.struts.admin.Traker"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
@@ -58,6 +58,21 @@ locale1=(String)session.getAttribute("locale");
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
  
 </head>
+<div
+   style="  top:15%;
+   left:5px;
+   right:5px;
+      position: absolute;
+
+      visibility: show;">
+
+        <font size="-2"><br/>&nbsp;&nbsp;<i>You are here : </i>LibMS-><%
+        String p=request.getParameter("p");
+         String data=Traker.getActivity(p,(String)session.getAttribute("locale"));
+        out.println(data);
+
+        %></font>
+</div>
 <div
    style="  top:150px;
    left:5px;

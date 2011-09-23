@@ -4,6 +4,7 @@
  */
 
 package com.myapp.struts.opac;
+import com.myapp.struts.MyConnection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -37,7 +38,13 @@ public class OpacLibResultSetAction extends org.apache.struts.action.Action {
         String formname="";
         String lib_id = (String)session.getAttribute("library_id");
 
- 
+  con1= MyConnection.getMyConnection();
+
+            if(con1==null)
+             {
+                request.setAttribute("msg","Database Connectivity is Closed");
+                return mapping.findForward("failure");
+             }
 
 
         formname = request.getParameter("name");

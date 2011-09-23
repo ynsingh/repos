@@ -63,8 +63,9 @@ if(rs!=null){
    int perpage=4;
    int tpage=0;
  
-if(request.getParameter("pageSize")!=null)
+ if(request.getParameter("pageSize")!=null && request.getParameter("pageSize")!="")
     perpage = Integer.parseInt((String)request.getParameter("pageSize"));
+
 
   while (it.hasNext()) {
 	
@@ -96,6 +97,26 @@ System.out.println("tcount="+tcount);
     window.location = loc;
 
     }
+
+      document.onkeyup = keyHit
+function keyHit(event) {
+
+  if (event.keyCode == 13) {
+  changerec();
+
+    event.stopPropagation()
+    event.preventDefault()
+  }
+}
+
+function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
     </script>
        
 <%
@@ -150,7 +171,7 @@ pageContext.setAttribute("rec",perpage);
 
 
 %>
-
+View Next<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/><br/>
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
     
   <columns>
@@ -205,7 +226,7 @@ pageContext.setAttribute("rec",perpage);
   </c:otherwise>
 </c:choose>
 </c:forEach>
-   View Next<input type="textbox" id="rec" onblur="changerec()" style="width:50px"/></td><td align="center">
+   </td><td align="center">
      Import :<img src="<%=request.getContextPath()%>/images/excel.jpeg" border="1" height="25" width="25">
     <img src="<%=request.getContextPath()%>/images/xml.jpeg" height="25" border="1" width="25">
     <img src="<%=request.getContextPath()%>/images/pdf.jpeg" height="25"border="1" width="25">

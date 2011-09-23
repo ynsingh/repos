@@ -22,6 +22,7 @@ import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.hibernate.exception.SQLGrammarException;
 /**
  *
  * @author edrp01
@@ -30,6 +31,88 @@ public class CirculationDAO
 {
    static  Integer maxNewRegId;
    static Query query;
+
+  
+
+
+
+
+      
+
+
+
+
+
+ public static  Courses LoadCourseName(String library_id,String course_id,String dept_id,String faculty_id)
+{
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        try
+        {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(Courses.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.courseId", course_id))
+                    .add(Restrictions.eq("id.deptId", dept_id))
+                    .add(Restrictions.eq("id.facultyId", faculty_id))
+
+
+                    );
+            return (Courses) criteria.uniqueResult();
+
+
+        }
+        finally
+        {
+           session.close();
+        }
+}
+
+    public static  List<CirMemberAccount> searchCirMemAccount2(String library_id,String sublibrary_id)
+{
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        try
+        {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(CirMemberAccount.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("status", "Blocked"))
+                    .add(Restrictions.eq("id.sublibraryId", sublibrary_id)));
+            return (List<CirMemberAccount>) criteria.list();
+
+
+        }
+        finally
+        {
+           session.close();
+        }
+}
+
+    public static  CirMemberAccount searchCirMemAccountDetails2(String library_id,String sublibrary_id,String mem_id,String status)
+{
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        try
+        {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(CirMemberAccount.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
+                    .add(Restrictions.eq("id.memid", mem_id))
+                    .add(Restrictions.eq("status",status)));
+            return (CirMemberAccount) criteria.uniqueResult();
+
+
+        }
+        finally
+        {
+           session.close();
+        }
+}
 public static List  CheckInReport1(String library_id,String sub_lib,String year1,String year2,String memid)
     {
         //int count=1;
@@ -147,8 +230,9 @@ sql+=" order by a.member_id)";
          hsession.beginTransaction();
           session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            String sql="(select lb.library_name,l.user_name,cma.req_date,cma.expiry_date,a.memid,b.fname,(select CONVERT(f.faculty_name using utf8) from faculty f where f.faculty_id=d.faculty_id and d.library_id=f.library_id) faculty_name,(select CONVERT(da.dept_name using utf8) from department da where d.faculty_id=da.faculty_id and d.library_id=da.library_id and d.dept_id=da.dept_id) dept_name,(select CONVERT(c.course_name using utf8) from courses c where c.faculty_id=d.faculty_id and c.library_id=d.library_id and c.dept_id=d.dept_id and c.course_id=d.course_id) course_name,b.mname,b.lname,ca.title,ca.main_entry,a.issue_date,a.due_date from cir_checkout a,cir_member_detail b,cir_member_account d,document_details ca,cir_member_account cma,login l,library lb where a.library_id=b.library_id and a.memid=b.memid and b.library_id=d.library_id and b.memid=d.memid and b.library_id=ca.library_id and a.document_id=ca.document_id and a.library_id=cma.library_id and a.sublibrary_id=cma.sublibrary_id and a.memid=cma.memid and l.library_id=a.library_id and l.sublibrary_id=a.sublibrary_id and lb.library_id=a.library_id ";
-
+            //String sql="(select  lb.libraryName As library_name,b.image As image,l.userName As user_name,cma.reqDate As req_date,cma.expiryDate As expiry_date,a.memid As memid,b.fname As fname,(select f.facultyName As facultyName from Faculty f where f.id.facultyId=cma.id.facultyId and cma.id.libraryId=f.id.libraryId)As faculty_name,(select da.deptName from Department da where cma.id.facultyId=da.id.facultyId and cma.id.libraryId=da.id.libraryId and cma.id.deptId=da.id.deptId) dept_name,(select c.courseName from Courses c where c.id.facultyId=cma.id.facultyId and c.id.libraryId=cma.id.libraryId and c.id.deptId=cma.id.deptId and c.id.courseId=cma.id.courseId) course_name,b.mname As mname,b.lname As lname,ca.title As title,ca.mainEntry As main_entry,a.issueDate As issue_date,a.dueDate As due_date from CirCheckout a,CirMemberDetail b,DocumentDetails ca,CirMemberAccount cma,Login l,Library lb where a.id.libraryId=b.id.libraryId and a.memid=b.id.memId and b.id.libraryId=cma.id.libraryId and b.id.memId=cma.id.memid and b.id.libraryId=ca.id.libraryId and a.id.documentId=ca.id.documentId and a.id.libraryId=cma.id.libraryId and a.id.sublibraryId=cma.id.sublibraryId and a.memid=cma.id.memid and l.id.libraryId=a.id.libraryId and l.id.sublibraryId=a.id.sublibraryId and lb.id.libraryId=a.id.libraryId ";
+//String sql = "(select lb.library_name,l.user_name,cma.req_date,cma.expiry_date,a.memid,b.fname,b.image,(select f.faculty_name from faculty f where f.faculty_id=cma.faculty_id and cma.library_id=f.library_id) faculty_name,(select da.dept_name from department da where cma.faculty_id=da.faculty_id and cma.library_id=da.library_id and cma.dept_id=da.dept_id) dept_name,(select c.course_name from courses c where c.faculty_id=cma.faculty_id and c.library_id=cma.library_id and c.dept_id=cma.dept_id and c.course_id=cma.course_id) course_name,b.mname,b.lname,ca.title,ca.main_entry,a.issue_date,a.due_date from cir_checkout a,cir_member_detail b,document_details ca,cir_member_account cma,login l,library lb where a.library_id=b.library_id and a.memid=b.memId and b.library_id=cma.library_id and b.memId=cma.memid and b.library_id=ca.library_id and a.document_id=ca.document_id and a.library_id=cma.library_id and a.sublibrary_id=cma.sublibrary_id and a.memid=cma.memid and l.library_id=a.library_id and l.sublibrary_id=a.sublibrary_id and lb.library_id=a.library_id ";
+String sql = "(select distinct lb.*,l.*,cma.*,a.*,b.*,ca.*,(select f.faculty_name from faculty f where f.faculty_id=cma.faculty_id and cma.library_id=f.library_id) faculty_name,(select da.dept_name from department da where cma.faculty_id=da.faculty_id and cma.library_id=da.library_id and cma.dept_id=da.dept_id) dept_name,(select c.course_name from courses c where c.faculty_id=cma.faculty_id and c.library_id=cma.library_id and c.dept_id=cma.dept_id and c.course_id=cma.course_id) course_name from cir_checkout a,cir_member_detail b,document_details ca,cir_member_account cma,login l,library lb where a.library_id=b.library_id and a.memid=b.memId and b.library_id=cma.library_id and b.memId=cma.memid and b.library_id=ca.library_id and a.document_id=ca.document_id and a.library_id=cma.library_id and a.sublibrary_id=cma.sublibrary_id and a.memid=cma.memid and l.library_id=a.library_id and l.sublibrary_id=a.sublibrary_id and lb.library_id=a.library_id ";
 if(memid!=null)
                if(!memid.equals(""))
         {
@@ -166,11 +250,46 @@ if(memid!=null)
          sql+=" and a.issue_date<='"+year2+"'";
          }
 
-            sql+=" order by b.memid)";
+            sql+=" order by b.memId)";
+
+
+
+//if(memid!=null && !memid.equals(""))
+//        {
+//
+//                   sql+=" and a.memid='"+memid+"'";
+//               }
+//
+//       if(year1!=null && !year1.equals("")){
+//
+//         sql+=" and a.issueDate>='"+year1+"'";
+//         }
+//
+// if(year2!=null && !year2.equals("")){
+//
+//         sql+=" and a.issueDate<='"+year2+"'";
+//         }
+//
+//            sql+=" order by b.id.memId)";
+
+
+           // String sql="Select * from  CirCheckout a,CirMemberDetail b,CirMemberAccount d,DocumentDetails ca,CirMemberAccount cma,Login l,Library lb where a.id.libraryId=b.id.libraryId and a.id.memid=b.id.memid and b.id.libraryId=d.id.libraryId and b.id.memid=d.id.memid and b.id.libraryId=ca.id.libraryId and a.id.documentId=ca.id.documentId and a.id.libraryId=cma.id.libraryId and a.id.sublibraryId=cma.id.sublibraryId and a.id.memid=cma.id.memid and l.id.libraryId=a.id.libraryId and l.id.sublibraryId=a.id.sublibraryId and lb.id.libraryId=a.id.libraryId";
     System.out.println(sql);
-          Query query =  session.createSQLQuery(sql);
+          Query query =  session.createSQLQuery(sql)
+                  .addEntity(CirCheckout.class)
+                  .addEntity(CirMemberDetail.class)
+                  .addEntity(CirMemberAccount.class)
+                  .addEntity(DocumentDetails.class)
+                  .addEntity(Login.class)
+                  .addEntity(Library.class)
+                  .addEntity(Faculty.class)
+                  .addEntity(Department.class)
+                  .addEntity(Courses.class)
+                  ;
 
                   query.setResultTransformer(Transformers.aliasToBean(CirculationList.class));
+
+
 
           //System.out.println(C);
             return (List<CirculationList>)query.list();
@@ -210,17 +329,22 @@ System.out.println("sssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
 
 
 
+        }catch(SQLGrammarException e1){
+        System.out.println("Error***** Hibernate Exception"+e1.getMessage());
+        throw e1;
         }
         catch(Exception e)
         {
             System.out.println("Error***** OpacSearchDAO.SimpleSearch():"+e);
             return null;
         }
+
         finally
         {
            hsession.close();
         }
    }
+
 
 
 public static List  ViewAllSearchReport(String library_id,String sub_lib,String year1,String year2,String memid,String status,String fac,String dept,String course,String title,String lib,String login_id)
@@ -776,8 +900,7 @@ public static boolean insert(CirMemberAccount cma)
            session.close();
         }
 }
-
-            public static  CirMemberDetail searchCirMemDetails(String library_id,String mem_id)
+ public static  CirMemberDetail searchCirMemDetails(String library_id,String mem_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -802,6 +925,8 @@ public static boolean insert(CirMemberAccount cma)
            session.close();
         }
 }
+
+           
       public static  CirOpacRequest searchCirOpacRequest(String library_id,String sublibrary_id,String document_id,String accession_no)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -1311,31 +1436,7 @@ catch (Exception ex)
         }
 
     }
-      public static boolean updateAccount(CirMemberAccount cmd)
-        {
-            Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
-
-        try {
-            tx = session.beginTransaction();
-            session.update(cmd);
-
-            tx.commit();
-        }
-        catch (RuntimeException e) {
-                System.out.println("CirculationDAO.Update():*****"+e);
-                tx.rollback();
-                return false;
-
-        }
-        finally
-        {
-          session.close();
-        }
-
-   return true;
-
-        }
+  
  public static boolean insert(CirOpacRequest cmd)
         {
             Session session = HibernateUtil.getSessionFactory().openSession();
@@ -2141,6 +2242,32 @@ public static  boolean delete(CirMemberAccount obj)
    return true;
 
 }
+ public static boolean updateAccount(CirMemberAccount cmd)
+        {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            session.update(cmd);
+
+            tx.commit();
+        }
+        catch (RuntimeException e) {
+                System.out.println("CirculationDAO.Update():*****"+e);
+                tx.rollback();
+                return false;
+
+        }
+        finally
+        {
+          session.close();
+        }
+
+   return true;
+
+        }
+
 public static  boolean insert1(CirMemberAccount obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();

@@ -116,12 +116,12 @@ if(logs.getP7()!=null)
      Logs obj=new Logs();
      obj.setActionMessage(action_result1);
      obj.setActionResult(action_result);
-     obj.setClassname(class_name);
+   //  obj.setClassname(class_name);
      obj.setDate(date);
      obj.setLibraryId(library_id);
      obj.setSublibraryId(sublibrary_id);
      obj.setUserId(login);
-     obj.setTime(time);
+   //  obj.setTime(time);
      obj.setUrl(url);
 
      LogsDAO.insertLog(obj);

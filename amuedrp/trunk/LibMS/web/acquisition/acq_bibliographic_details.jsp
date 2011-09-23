@@ -21,7 +21,7 @@ String authormsg=(String)request.getAttribute("authormsg");
 <script type="text/javascript">
 function send()
 {
-    window.location="<%=request.getContextPath()%>/acquisition/acq_duplicate_titlegrid.jsp";
+    window.location="<%=request.getContextPath()%>/acquisition/acq_new_entry.jsp";
     return false;
 }
 function acq()

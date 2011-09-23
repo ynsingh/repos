@@ -88,13 +88,14 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
     if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
     else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
-        if (StringUtils.isEmpty(isbn10)) {
+        if (StringUtils.isEmpty(isbn10)||StringUtils.isBlank(isbn10)) {
             isbn10 = null;
         }
             if (StringUtils.isEmpty(isbn101)) {
             isbn101 = null;
         }
         if (button.equals("Save")) {
+          //  if(isbn10!=null)
             bib3 = dao.search1Isbn10(isbn10, library_id, sub_library_id);
             if (bib3 != null) {
                 String msg3 = resource.getString("cataloguing.catoldtitleentry1.duplicateisbn");//You are trying to enter duplicate isbn enter different
@@ -158,7 +159,7 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblangid.setLibraryId(library_id);
                 biblangid.setSublibraryId(sub_library_id);
                 biblang.setId(biblangid);
-                biblang.setIsbn10(isbn101);
+                biblang.setIsbn10(isbn10);
                 biblang.setBookType(bibform.getBook_type());
                 biblang.setDocumentType(bibform.getDocument_type());
                 biblang.setTitle(bibform.getTitle1());
@@ -172,10 +173,10 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblang.setPublisherName(bibform.getPublisher_name1());
                 biblang.setPublicationPlace(bibform.getPublication_place1());
                 biblang.setPublishingYear(bibform.getPublishing_year1());
-                biblang.setLccNo(bibform.getLCC_no1());
-                biblang.setIsbn13(bibform.getIsbn131());
+                biblang.setLccNo(bibform.getLCC_no());
+                biblang.setIsbn13(bibform.getIsbn13());
                 biblang.setEdition(bibform.getEdition1());
-                biblang.setCallNo(bibform.getCall_no1());
+                biblang.setCallNo(bibform.getCall_no());
                 biblang.setAltTitle(bibform.getAlt_title1());
                 biblang.setSubject(bibform.getSubject1());
                 biblang.setSeries(bibform.getSer_note1());
@@ -195,7 +196,8 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
             }
         }
         if (button.equals("Save and go for accessioning")) {
-  bib3 = dao.search1Isbn10(isbn10, library_id, sub_library_id);
+      // if(isbn10!=null)
+            bib3 = dao.search1Isbn10(isbn10, library_id, sub_library_id);
             if (bib3 != null) {
                 String msg3 = resource.getString("cataloguing.catoldtitleentry1.duplicateisbn");//You are trying to enter duplicate isbn enter different
                 request.setAttribute("msg1", msg3);
@@ -261,7 +263,7 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblangid.setLibraryId(library_id);
                 biblangid.setSublibraryId(sub_library_id);
                 biblang.setId(biblangid);
-                biblang.setIsbn10(isbn101);
+                biblang.setIsbn10(isbn10);
                 biblang.setBookType(bibform.getBook_type());
                 biblang.setDocumentType(bibform.getDocument_type());
                 biblang.setTitle(bibform.getTitle1());
@@ -275,10 +277,10 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblang.setPublisherName(bibform.getPublisher_name1());
                 biblang.setPublicationPlace(bibform.getPublication_place1());
                 biblang.setPublishingYear(bibform.getPublishing_year1());
-                biblang.setLccNo(bibform.getLCC_no1());
-                biblang.setIsbn13(bibform.getIsbn131());
+                biblang.setLccNo(bibform.getLCC_no());
+                biblang.setIsbn13(bibform.getIsbn13());
                 biblang.setEdition(bibform.getEdition1());
-                biblang.setCallNo(bibform.getCall_no1());
+                biblang.setCallNo(bibform.getCall_no());
                 biblang.setAltTitle(bibform.getAlt_title1());
                 biblang.setSubject(bibform.getSubject1());
                 biblang.setSeries(bibform.getSer_note1());
@@ -348,7 +350,7 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblangid.setLibraryId(library_id);
                 biblangid.setSublibraryId(sub_library_id);
                 biblang.setId(biblangid);
-                biblang.setIsbn10(isbn101);
+                biblang.setIsbn10(isbn10);
                 biblang.setBookType(bibform.getBook_type());
                 biblang.setDocumentType(bibform.getDocument_type());
                 biblang.setTitle(bibform.getTitle1());
@@ -362,10 +364,10 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblang.setPublisherName(bibform.getPublisher_name1());
                 biblang.setPublicationPlace(bibform.getPublication_place1());
                 biblang.setPublishingYear(bibform.getPublishing_year1());
-                biblang.setLccNo(bibform.getLCC_no1());
-                biblang.setIsbn13(bibform.getIsbn131());
+                biblang.setLccNo(bibform.getLCC_no());
+                biblang.setIsbn13(bibform.getIsbn13());
                 biblang.setEdition(bibform.getEdition1());
-                biblang.setCallNo(bibform.getCall_no1());
+                biblang.setCallNo(bibform.getCall_no());
                 biblang.setAltTitle(bibform.getAlt_title1());
                 biblang.setSubject(bibform.getSubject1());
                 biblang.setSeries(bibform.getSer_note1());

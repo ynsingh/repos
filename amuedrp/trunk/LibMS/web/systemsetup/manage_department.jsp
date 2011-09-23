@@ -115,11 +115,19 @@ function check1()
       return false;
   }
 
+function loadHelp()
+    {
+        window.status="Press F1 for Help";
+
+    }
 
 
     </script>
+      <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
+
 </head>
-<body>
+<body onload="loadHelp()" >
+
  
     <html:form action="/deptregistration" method="post"  onsubmit="return check1()">
        
@@ -151,7 +159,8 @@ function check1()
                     <tr>
                      
                         <td dir="<%=rtl%>" ><%=resource.getString("systemsetup.manage_dept.enterdeptid")%></td><td>
-                        <input type="text" id="dept_id" name="dept_id" value=""/></td>
+                        <input type="text" id="dept_id" name="dept_id" value="" onfocus="statwords('Please Enter Valid Department Id: eg cs for ComputerScience ');" onblur="return loadHelp();"
+/></td>
                     </tr>
                 </table>
                     </td><td>

@@ -208,7 +208,7 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
  System.out.println("Check Box"+myForm.getCheckbox());
  if(myForm.getCheckbox().equals("Checked")){
  System.out.println("Languagebbb");
- advance_search_list=opac.advanceLangSearch(lib_id, sub_lib, searchtext1, c1, searchtext2, c2,searchtext3,c3,cnf1,cnf2,cnf3,cf1,cf2,cf3,db,sort,year1,year2,myForm.getLanguage());
+ advance_search_list=opac.advanceLangSearch(lib_id, sub_lib, searchtext1, c1, searchtext2, c2,searchtext3,c3,cnf1,cnf2,cnf3,cf1,cf2,cf3,db,sort,year1,year2,myForm.getLanguage().toUpperCase());
 if(!advance_search_list.isEmpty())
 {
     for(int f=0;f<advance_search_list.size();f++)
@@ -220,7 +220,8 @@ if(!advance_search_list.isEmpty())
     }     
     }
 }
-   session.setAttribute("ResultSet", bib);
+ session.removeAttribute("ResultSet");
+   session.setAttribute("ResultSet1", bib);
  }
  else{
      
@@ -237,6 +238,7 @@ if(!advance_search_list.isEmpty())
     } 
     }
 }
+ session.removeAttribute("ResultSet1");
     session.setAttribute("ResultSet", bib1);
  }
 

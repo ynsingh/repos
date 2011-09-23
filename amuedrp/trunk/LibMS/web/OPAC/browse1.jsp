@@ -32,6 +32,7 @@ body
 
 </style>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <%
 String library_id = (String)session.getAttribute("library_id");
 String sublibrary_id = (String)session.getAttribute("memsublib");
@@ -328,7 +329,7 @@ else{
       </td></tr>
   <tr style="background-color:#e0e8f5;"><td width="800px" dir="<%=rtl%>" >
           <table>
-              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.enterstartingkeyword")%></td><td><input  name="TXTTITLE" id="TXTTITLE" class="keyboardInput" type="text" dir="<%=rtl%>" onkeyup="fun()"></td></tr>
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.enterstartingkeyword")%></td><td><input  name="TXTTITLE" id="TXTTITLE" class="keyboardInput" type="text" dir="<%=rtl%>" onkeyup="fun()" onfocus="statwords('Enter Search Keyword')"></td></tr>
              
 
           </table>

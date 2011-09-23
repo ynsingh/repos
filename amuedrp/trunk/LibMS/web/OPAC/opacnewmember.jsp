@@ -8,6 +8,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <link type="text/css" rel="stylesheet" href="/LibMS/css/page.css"/>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 
 
 
@@ -819,7 +820,10 @@ return true;
 
 
     }
-
+function loadHelp()
+{
+    window.status="Press F1 for Help";
+}
 </script>
 
 </head>
@@ -843,7 +847,7 @@ a:active
 
 
 </head>
-<body  onload="search_sub();search_faculty();search1();search();"style="margin: 0px 0px 0px 0px;">
+<body  onload="search_sub();search_faculty();search1();search();loadHelp();"style="margin: 0px 0px 0px 0px;">
 
      <div id="image1"
    style="  top:130px;background: red; 
@@ -967,7 +971,7 @@ a:active
 </tr>
 
 
-                <tr><td width="150px">&nbsp;<%=resource.getString("opac.myaccount.memberid")%>*</td><td class="table_textbox"><html:text    property="TXTMEMID" value="<%=mem_id1%>" styleId="mem_id2"  style="width:160px" /><br/>
+<tr><td width="150px">&nbsp;<%=resource.getString("opac.myaccount.memberid")%>*</td><td class="table_textbox"><html:text    property="TXTMEMID" value="<%=mem_id1%>" styleId="mem_id2"  style="width:160px" onfocus="statwords('Enter Member Id such En number for Student')" onblur="loadHelp()" /><br/>
                     <html:messages id="err_name" property="TXTMEMID">
 				<bean:write name="err_name" />
 
@@ -986,7 +990,7 @@ a:active
 
                     <a href="#" onclick="javascript:showdiv();"><%=resource.getString("circulation.cir_newmember.imageupload")%></a>
                    </tr>
-            <tr><td ><%=resource.getString("opac.newmemberentry.firstname")%>*</td><td class="table_textbox"><html:text    property="TXTFNAME" styleId="fname2" style="width:160px" value="<%=fname%>" /><br/>
+            <tr><td ><%=resource.getString("opac.newmemberentry.firstname")%>*</td><td class="table_textbox"><html:text    property="TXTFNAME" styleId="fname2" style="width:160px" value="<%=fname%>" onfocus="statwords('Enter First Name')" onblur="loadHelp()" /><br/>
                  <html:messages id="err_name" property="TXTFNAME">
 				<bean:write name="err_name" />
 
@@ -995,8 +999,8 @@ a:active
                 </td>
 
                 </tr>
-            <tr><td>&nbsp;<%=resource.getString("opac.newmemberentry.middlename")%></td><td class="table_textbox"><html:text  property="TXTMNAME" styleId="mname2" style="width:160px" value="<%=mname%>" /></td></tr>
-            <tr><td>&nbsp;<%=resource.getString("opac.newmemberentry.lastname")%>*</td><td class="table_textbox"><html:text  property="TXTLNAME" styleId="lname2" style="width:160px" value="<%=lname%>" />
+            <tr><td>&nbsp;<%=resource.getString("opac.newmemberentry.middlename")%></td><td class="table_textbox"><html:text  property="TXTMNAME" styleId="mname2" style="width:160px" value="<%=mname%>" onfocus="statwords('Enter Middle Name')" onblur="loadHelp()" /></td></tr>
+            <tr><td>&nbsp;<%=resource.getString("opac.newmemberentry.lastname")%>*</td><td class="table_textbox"><html:text  property="TXTLNAME" styleId="lname2" style="width:160px" value="<%=lname%>" onfocus="statwords('Enter Last Name')" onblur="loadHelp()" />
                 <br/>
                  <html:messages id="err_name" property="TXTLNAME">
 				<bean:write name="err_name" />
@@ -1012,7 +1016,7 @@ a:active
 
 
                 </tr>
-            <tr>  <td>&nbsp;<%=resource.getString("opac.newmemberentry.emailid")%>*</td><td class="table_textbox"><html:text  property="TXTEMAILID" styleId="mail2" style="width:160px" value="<%=mail_id%>" />
+            <tr>  <td>&nbsp;<%=resource.getString("opac.newmemberentry.emailid")%>*</td><td class="table_textbox"><html:text  property="TXTEMAILID" styleId="mail2" style="width:160px" value="<%=mail_id%>" onfocus="statwords('Enter Email Id you will get user name and password through thiss email Id')" onblur="loadHelp()" />
                 <br/>
                  <html:messages id="err_name" property="TXTEMAILID">
 				<bean:write name="err_name" />
@@ -1033,7 +1037,7 @@ a:active
 
 
             </tr>
-             <tr><td><%=resource.getString("opac.newmemberentry.localadd")%>*</td><td class="table_textbox"> <html:text property="TXTADD1" style="width:160px" styleId="add11" value="<%=add1%>" />
+             <tr><td><%=resource.getString("opac.newmemberentry.localadd")%>*</td><td class="table_textbox"> <html:text property="TXTADD1" style="width:160px" styleId="add11" value="<%=add1%>" onfocus="statwords('Enter House number/Street/Colony Name')" onblur="loadHelp()" />
                  <br/>
                  <html:messages id="err_name" property="TXTADD1">
 				<bean:write name="err_name" />
@@ -1051,23 +1055,23 @@ a:active
                       </td>
 
              </tr>
-             <tr><td><%=resource.getString("opac.newmemberentry.city")%>*</td><td class="table_textbox"><html:text  property="TXTCITY1" value="<%=city1%>" styleId="city11" style="width:160px"/>
+             <tr><td><%=resource.getString("opac.newmemberentry.city")%>*</td><td class="table_textbox"><html:text  property="TXTCITY1" value="<%=city1%>" styleId="city11" style="width:160px" onfocus="statwords('Enter City Name')" onblur="loadHelp()" />
                  <br/>
                  <html:messages id="err_name" property="TXTCITY1">
 				<bean:write name="err_name" />
 
 			</html:messages>
 
-                 </td><td><%=resource.getString("opac.newmemberentry.empdesign")%></td><td class="table_textbox"><html:text  property="TXTDESG1" style="width:160px" styleId="desg2" value="<%=desg%>"/></td></tr>
-             <tr><td ><%=resource.getString("opac.newmemberentry.state")%>*</td><td class="table_textbox"><html:text  property="TXTSTATE1" style="width:160px" styleId="state11" value="<%=state1%>"/>
+                 </td><td><%=resource.getString("opac.newmemberentry.empdesign")%></td><td class="table_textbox"><html:text  property="TXTDESG1" style="width:160px" styleId="desg2" value="<%=desg%>" onfocus="statwords('Enter Designation studuch as  staff/student/Doctor/professor')" onblur="loadHelp()" /></td></tr>
+             <tr><td ><%=resource.getString("opac.newmemberentry.state")%>*</td><td class="table_textbox"><html:text  property="TXTSTATE1" style="width:160px" styleId="state11" value="<%=state1%>" onfocus="statwords('Enter State Name')" onblur="loadHelp()" />
                  <br/>
                  <html:messages id="err_name" property="TXTSTATE1">
 				<bean:write name="err_name" />
 
 			</html:messages>
 
-                 </td><td><%=resource.getString("opac.newmemberentry.offname")%></td><td class="table_textbox"><html:text  property="TXTOFFICE" style="width:160px" styleId="office2" value="<%=office%>"/></td></tr>
-             <tr><td><%=resource.getString("opac.newmemberentry.country")%>*</td><td class="table_textbox"><html:text  property="TXTCOUNTRY1" value="<%=country1%>" styleId="country11" style="width:160px"/>
+                 </td><td><%=resource.getString("opac.newmemberentry.offname")%></td><td class="table_textbox"><html:text  property="TXTOFFICE" style="width:160px" styleId="office2" value="<%=office%>" onfocus="statwords('Enter Office Name')" onblur="loadHelp()" /></td></tr>
+             <tr><td><%=resource.getString("opac.newmemberentry.country")%>*</td><td class="table_textbox"><html:text  property="TXTCOUNTRY1" value="<%=country1%>" styleId="country11" style="width:160px" onfocus="statwords('Enter Country Name')" onblur="loadHelp()" />
                  <br/>
                  <html:messages id="err_name" property="TXTCOUNTRY1">
 				<bean:write name="err_name" />
@@ -1083,7 +1087,7 @@ a:active
                          
                      </html:select>
                       </td></tr>
-             <tr><td><%=resource.getString("opac.newmemberentry.mobile")%>*</td><td class="table_textbox"><html:text  property="TXTPH1" value="<%=ph1%>" styleId="ph11" style="width:160px"/>
+             <tr><td><%=resource.getString("opac.newmemberentry.mobile")%>*</td><td class="table_textbox"><html:text  property="TXTPH1" value="<%=ph1%>" styleId="ph11" style="width:160px" onfocus="statwords('Enter Mobile Number')" onblur="loadHelp()" />
                  <br/>
                  <html:messages id="err_name" property="TXTPH1">
 				<bean:write name="err_name" />
@@ -1096,7 +1100,7 @@ a:active
                      </html:select>
 
                  </td></tr>
-             <tr><td><%=resource.getString("opac.newmemberentry.landlineno")%>.</td><td class="table_textbox"><html:text  property="TXTPH2" styleId="ph22" value="<%=ph2%>" style="width:160px"/></td>
+             <tr><td><%=resource.getString("opac.newmemberentry.landlineno")%>.</td><td class="table_textbox"><html:text  property="TXTPH2" styleId="ph22" value="<%=ph2%>" style="width:160px"onfocus="statwords('Enter Land Line Number like 0571 207124')" onblur="loadHelp()" /></td>
                  <td><%=resource.getString("opac.newmemberentry.course")%></td><td class="table_textbox">
 
                     <html:select  property="TXTCOURSE" styleId="TXTCOURSE" style="width:160px" value="<%=course%>"  tabindex="3">
@@ -1110,20 +1114,20 @@ a:active
 
 
 </td></tr>
-             <tr><td><%=resource.getString("opac.newmemberentry.fax")%></td><td class="table_textbox"><html:text  property="TXTFAX" styleId="fax2" style="width:160px" value="<%=fax%>"/></td><td><%=resource.getString("opac.newmemberentry.semister")%> 
-                 </td><td class="table_textbox"><html:text  property="TXTSEM"  styleId="sem2"  value="<%=sem%>" styleClass="textBoxWidth" style="width:160px"  />
+             <tr><td><%=resource.getString("opac.newmemberentry.fax")%></td><td class="table_textbox"><html:text  property="TXTFAX" styleId="fax2" style="width:160px" value="<%=fax%>"onfocus="statwords('Enter FAX Number eg. 0571207124')" onblur="loadHelp()" /></td><td><%=resource.getString("opac.newmemberentry.semister")%>
+                 </td><td class="table_textbox"><html:text  property="TXTSEM"  styleId="sem2"  value="<%=sem%>" styleClass="textBoxWidth" style="width:160px" onfocus="statwords('Enter Semester or year of the course eg. First Year/Fist Semester')" onblur="loadHelp()" />
 
                   </td></tr>
 
-            <tr><td><%=resource.getString("opac.newmemberentry.paddress")%></td><td class="table_textbox"><html:text property="TXTADD2" value="<%=add2%>" styleId="add22"  style="width:160px"/></td></tr>
-             <tr><td ><%=resource.getString("opac.newmemberentry.city")%></td><td class="table_textbox"><html:text  property="TXTCITY2" value="<%=city2%>" styleId="city22" style="width:160px"/></td>
+            <tr><td><%=resource.getString("opac.newmemberentry.paddress")%></td><td class="table_textbox"><html:text property="TXTADD2" value="<%=add2%>" styleId="add22"  style="width:160px" onfocus="statwords('Enter House number/Street/Colony Name')" onblur="loadHelp()" /></td></tr>
+             <tr><td ><%=resource.getString("opac.newmemberentry.city")%></td><td class="table_textbox"><html:text  property="TXTCITY2" value="<%=city2%>" styleId="city22" style="width:160px"  onfocus="statwords('Enter City Name)" onblur="loadHelp()" /></td>
               </tr>
 
 
              
-             <tr><td ><%=resource.getString("opac.newmemberentry.state")%></td><td class="table_textbox"><html:text  property="TXTSTATE2" value="<%=state2%>" styleId="state22" style="width:160px"/></td>
+             <tr><td ><%=resource.getString("opac.newmemberentry.state")%></td><td class="table_textbox"><html:text  property="TXTSTATE2" value="<%=state2%>" styleId="state22" style="width:160px" onfocus="statwords('Enter State Name')" onblur="loadHelp()" /></td>
                 </tr>
-             <tr><td ><%=resource.getString("opac.newmemberentry.country")%></td><td class="table_textbox"><html:text  property="TXTCOUNTRY2" value="<%=country2%>" styleId="country22" style="width:160px"/></td>
+             <tr><td ><%=resource.getString("opac.newmemberentry.country")%></td><td class="table_textbox"><html:text  property="TXTCOUNTRY2" value="<%=country2%>" styleId="country22" style="width:160px" onfocus="statwords('Enter Country Name')" onblur="loadHelp()" /></td>
              <td  align="center" class="txt2"> <html:submit property="button" ><%=resource.getString("opac.newmemberentry.submit")%></html:submit>&nbsp;&nbsp;<html:reset><%=resource.getString("opac.newmemberentry.reset")%></html:reset>
                       </td>
              </tr>

@@ -7,18 +7,31 @@
 <jsp:include page="header.jsp" flush="true" />
 <div
    style="
-      top: 105;
+      top: 14%;
    left:5px;
    right:5px;
       position: absolute;
 
       visibility: show;">
-    <table width="100%" height="600px" valign="top" style="">
-        <tr><td valign="top" width="120px" style="">
-                </td><td width="1200px">
+
+
+        <font size="-2"><br/>&nbsp;&nbsp;<i>You are here : </i>LibMS->Welcome Page</font>
+
+
+
+    <table width="100%" height="600px" valign="top" style="" >
+        <tr><td valign="top" width="90%" style="">
+                <br/><p class="mess">
+    Request for Opac MemberShip Pending, View Details<br>
+    Request for CheckOut Pending, View Details
+
+
+</p>
+           
 
 
 <%
+
 session.removeAttribute("page");
 String msg=(String)request.getAttribute("msg");
 if (msg!=null)
@@ -28,7 +41,10 @@ if (msg!=null)
 <%}%>
 
 
-            </td>               <td width="120px"  valign="top">  </td> </tr>
+            </td>               <td   valign="top"> <img src="<%=request.getContextPath()%>/images/ad-space-200x200.jpg" alt="Image not Found"/><br/>
+            <img src="<%=request.getContextPath()%>/images/ad-space-200x200.jpg" alt="Image not Found"/>
+            <br/><img src="<%=request.getContextPath()%>/images/ad-space-200x200.jpg" alt="Image not Found"/>
+            </td> </tr>
 
                 </table>
 

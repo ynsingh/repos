@@ -1,0 +1,77 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.myapp.struts.circulation;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import com.myapp.struts.hbm.*;
+import com.myapp.struts.CirculationDAO.CirculationDAO;
+
+/**
+ *
+ * @author edrp02
+ */
+public class CirShowSingleAccountAction1 extends org.apache.struts.action.Action {
+
+    /* forward name="success" path="" */
+    private static final String SUCCESS = "success";
+    String library_id,sublibrary_id,mem_id,status;
+
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        HttpSession session=request.getSession();
+        library_id=(String)session.getAttribute("library_id");
+        sublibrary_id=(String)session.getAttribute("sublibrary_id");
+        mem_id=(String)request.getParameter("id");
+        status=(String)request.getParameter("status");
+        CirMemberAccount cmaccount;
+        CirMemberDetail cmemdetail=CirculationDAO.searchCirMemDetails(library_id, mem_id);
+        
+
+System.out.println(status+" ............ ");
+if(status==null)
+{
+            cmaccount=CirculationDAO.searchCirMemAccountDetails(library_id, sublibrary_id, mem_id);
+            request.setAttribute("fname",cmemdetail.getFname());
+          request.setAttribute("status", status);
+            request.setAttribute("cmaccount",cmaccount);
+           return mapping.findForward("success");
+}
+
+if(status.equalsIgnoreCase("Blocked")){
+
+        cmaccount=CirculationDAO.searchCirMemAccountDetails2(library_id, sublibrary_id, mem_id,"Active");
+        }
+        else{
+        cmaccount=CirculationDAO.searchCirMemAccountDetails2(library_id, sublibrary_id, mem_id,"Blocked");
+        }
+
+
+System.out.println("#######"+cmaccount+"%%%%%%%%%%%%%%%"+cmemdetail);
+
+        if(cmaccount!=null)
+        {
+          request.setAttribute("fname",cmemdetail.getFname());
+          request.setAttribute("status", status);
+            request.setAttribute("cmaccount",cmaccount);
+           return mapping.findForward("success");
+        }
+        else{
+
+        request.setAttribute("msg1","Member with Id "+mem_id+" Already "+status);
+           return mapping.findForward("fail");
+        }
+
+
+        
+    }
+}

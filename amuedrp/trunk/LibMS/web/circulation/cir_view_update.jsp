@@ -299,12 +299,18 @@ a:active
 </style>
 
 
-
+<script language="javascript" type="text/javascript">
+    function loadHelp()
+    {
+        window.status="Press F1 for Help";
+    }
+</script>
 
 
 
 </head>
-<body>
+
+<body onload="loadHelp()">
 
 
    <div id="image1"

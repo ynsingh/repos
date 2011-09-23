@@ -6,7 +6,7 @@ This Page is to Enter Staff ID
 -->
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
+<%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*,com.myapp.struts.admin.Traker"%>
  <jsp:include page="header.jsp" flush="true" />
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -84,7 +84,22 @@ function Send(value)
 <body>
  
     <html:form method="post"  action="/staffRegistration" onsubmit="return check1();">
-       
+<div
+   style="  top:15%;
+   left:5px;
+   right:5px;
+      position: absolute;
+
+      visibility: show;">
+
+        <font size="-2"><br/>&nbsp;&nbsp;<i>You are here : </i>LibMS-><%
+        String p=request.getParameter("p");
+
+        String data=Traker.getActivity(p,(String)session.getAttribute("locale"));
+        out.println(data);
+
+        %></font>
+</div>
 <div
    style="  top:200px;
    left:5px;

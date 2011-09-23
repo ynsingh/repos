@@ -20,6 +20,24 @@ public class CallNoSearchActionForm extends org.apache.struts.action.ActionForm 
     private String TXTKEY;
     private String CMBLib;
     private String CMBSUBLib;
+    private String checkbox;
+    private String language;
+
+    public String getCheckbox() {
+        return checkbox;
+    }
+
+    public void setCheckbox(String checkbox) {
+        this.checkbox = checkbox;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
     public String getCMBSUBLib() {
         return CMBSUBLib;

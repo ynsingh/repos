@@ -48,7 +48,7 @@ else
             {
             c_value = top.document.getElementById("f").list.value;
 
-            if(c_value==null || c_value=="undefined")
+            if(c_value==null || c_value==undefined)
                 {
                 if(document.getElementById("f1").check1.length>1)
                 {
@@ -134,7 +134,7 @@ else
             {
 //alert("in cc_value");
             var cval = top.document.getElementById("f").list.value;
-            if(cval!="" || cval!=undefined||cval!=" ")
+            if(cval!="" && cval!=undefined && cval!=" ")
                 c_value = cval + document.getElementById("f1").check1.value + ";";
             else
                 c_value =document.getElementById("f1").check1.value + ";";
@@ -189,7 +189,7 @@ return false;
 }
     var val = top.document.getElementById("f").list1.value;
 //alert("before"+ val);
-    if(val!="undefined"||val!=""||val!=" ")
+    if(val!=undefined||val!=""||val!=" ")
          val+=v+";";
      else
        val=v;
@@ -253,7 +253,7 @@ if(document.getElementById("f1").check1.length>1){
     else
         c="";
 }
-
+if(c!=undefined)
    top.document.getElementById("f").list3.value=c;
 
 }
@@ -496,7 +496,7 @@ if(document.getElementById("f1").check1.length>1){
       if (document.getElementById("f1").check1[i].checked)
       {
 
-           if(c==null)
+           if(c==undefined || c==null)
             c =document.getElementById("f1").check1[i].value;
            else
            {
@@ -513,6 +513,7 @@ if(document.getElementById("f1").check1.length>1){
 
        }
 }
+alert("yes its working");
  top.document.getElementById("f").list3.value=c;
 }
 
@@ -555,7 +556,7 @@ function setValues1()
     var list2 = top.document.getElementById("f").list2.value;
     var list3 = top.document.getElementById("f").list3.value;
 //alert(list2);
-    if(list2!="undefined"||list2!=""||list2!=" ")
+    if(list2!=undefined||list2!=""||list2!=" ")
         {
 
             var check = document.getElementById("f1").check.length;
@@ -631,7 +632,7 @@ function setValues1()
                     }
         }
 
-            if(list!="undefined"||list!="" || list!=" ")
+            if(list!=undefined||list!="" || list!=" ")
         {
 
             var check = document.getElementById("f1").check1.length;

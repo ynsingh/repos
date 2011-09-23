@@ -4,7 +4,6 @@
  */
 
 package com.myapp.struts.admin;
-import java.sql.*;
 import  com.myapp.struts.hbm.*;
 import  com.myapp.struts.AdminDAO.*;
 import com.myapp.struts.utility.Email;
@@ -55,8 +54,9 @@ public class ChangePasswordAction extends org.apache.struts.action.Action {
         StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
         Login  log=LoginDAO.searchRole(staff_id, library_id);
  String path = servlet.getServletContext().getRealPath("/");
-        obj=new Email(path,staffobj.getEmailId(),password,"Password Changed Successfully from LibMS Account","Your Password for LibMS Account is changed Successfully.\nYour New Password for libMS Account is:\nUser Id :"+login_id+"\nNew Password :"+password+"\n","Dear "+staffobj.getFirstName()+" "+staffobj.getLastName()+",\n","Thanks,\nWebAdmin\nLibMS");
-         executor.submit(new Runnable() {
+        obj=new Email((String)session.getAttribute("webmail"),(String)session.getAttribute("webpass"),path,staffobj.getEmailId(),password,"Password Changed Successfully from LibMS Account","Your Password for LibMS Account is changed Successfully.\nYour New Password for libMS Account is:\nUser Id :"+login_id+"\nNew Password :"+password+"\n","Dear "+staffobj.getFirstName()+" "+staffobj.getLastName()+",\n","Thanks,\nWebAdmin\nLibMS");
+        System.out.println((String)session.getAttribute("webmail")+" "+(String)session.getAttribute("webpass")+" "+obj);
+        executor.submit(new Runnable() {
 
                 public void run() {
                     obj.send();

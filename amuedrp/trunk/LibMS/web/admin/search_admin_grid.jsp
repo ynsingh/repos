@@ -1,9 +1,3 @@
-<%--
-    Document   : Simple.jsp
-    Created on : Jun 18, 2010, 7:46:24 AM
-    Author     : Mayank Saxena
-<jsp:include page="adminheader.jsp" flush="true" />
---%>
 
     <%@page import="com.myapp.struts.admin.*,com.myapp.struts.hbm.*"%>
     <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -37,7 +31,40 @@ else{
 
 %>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
- 
+ <script>
+    function changerec(){
+        var x=document.getElementById('rec').value;
+    var loc = window.location;
+    loc = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/admin/search_admin_grid.jsp";
+
+
+        loc = loc + "?pageSize="+x;
+         // alert(loc);
+    window.location = loc;
+
+
+    }
+
+      document.onkeyup = keyHit
+function keyHit(event) {
+
+  if (event.keyCode == 13) {
+  changerec();
+
+    event.stopPropagation()
+    event.preventDefault()
+  }
+}
+
+function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
+    </script>
 
  
 </head>
@@ -50,6 +77,7 @@ else{
    RequestDoc Ob;
    ArrayList requestList;
    int fromIndex=0, toIndex;
+   int perpage=4;
 %>
  <%
 List rs=null;
@@ -61,17 +89,16 @@ else{
 rs = (List)(session.getAttribute("search_institute_resultset"));
 }
 
+ if(request.getParameter("pageSize")!=null && request.getParameter("pageSize")!="")
+    perpage = Integer.parseInt((String)request.getParameter("pageSize"));
 
 
    requestList = new ArrayList ();
    int tcount =0;
-   int perpage=4;
-   int tpage=0;
- /*Create a connection by using getConnection() method
-   that takes parameters of string type connection url,
-   user name and password to connect to database.*/
 
-//rs.beforeFirst();
+   int tpage=0;
+
+
 if(rs!=null)
 {
     Iterator it = rs.iterator();
@@ -100,7 +127,7 @@ System.out.println("tcount="+tcount);
 
 <%
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex+4) >= requestList.size ())
+   if ((toIndex = fromIndex+perpage) >= requestList.size ())
    toIndex = requestList.size();
    session.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
@@ -157,8 +184,10 @@ locale1=(String)session.getAttribute("locale");
   pageContext.setAttribute("City",City);
   String InstituteID=resource.getString("admin.searchadmingrid.InstituteId");
   pageContext.setAttribute("InstituteID",InstituteID);
-
+    pageContext.setAttribute("rec",perpage);
 %>
+View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>
+
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
   <columns>
@@ -200,7 +229,7 @@ locale1=(String)session.getAttribute("locale");
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
   <alternateRows styleClass="alternaterows"/>
 
-  <paging size="4" count="${tCount}" custom="true" nextUrlVar="next"
+   <paging size="${rec}" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>

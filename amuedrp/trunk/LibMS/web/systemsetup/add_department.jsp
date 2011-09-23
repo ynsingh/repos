@@ -50,8 +50,18 @@ locale1=(String)session.getAttribute("locale");
 <link href="<%=request.getContextPath()%>/css/page.css" rel="stylesheet" type="text/css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/acquisition/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css" media="screen"/>
 <script type="text/javascript" src="<%=request.getContextPath()%>/acquisition/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js"></script>
+<script type="text/javascript"  language="javascript">
+    function loadHelp()
+    {
+        window.status="Press F1 for Help";
+
+    }
+
+</script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
+
 </head>
-<body>
+<body onload="loadHelp()" >
  <div
    style="  top:120px;
    left:5px;
@@ -95,7 +105,8 @@ locale1=(String)session.getAttribute("locale");
   <tr>
     
     <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_dept.deptname")%><a class="star">*</a></strong></td>
-    <td dir="<%=rtl%>"><html:text property="dept_name" styleId="department_name"  value="" styleClass="textBoxWidth"/>
+    <td dir="<%=rtl%>"><html:text property="dept_name" styleId="department_name"  value="" styleClass="textBoxWidth" onfocus="statwords('Please Enter Valid Department Name ');" onblur="return loadHelp();"
+/>
        
     </td>
   </tr>

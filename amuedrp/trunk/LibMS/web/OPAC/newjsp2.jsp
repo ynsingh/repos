@@ -56,7 +56,7 @@ int no_of_copy=0;
            // location=dd.getLocation();
             lib_id = list.get(0).getId().getLibraryId();
           //  phy_width=dd.getPhysicalWidth();
-         //   status = dd.getStatus();
+            status =list.get(0).getStatus();
             String sublib_id = (String)list.get(0).getId().getSublibraryId();
             if(title==null)title="";
             if(subtitle==null)subtitle="";
@@ -146,11 +146,11 @@ locale1=(String)session.getAttribute("locale");
         <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
         <TD  colspan=2 dir="<%=rtl%>"><%=isbn%></TD>
     </TR>
- <TR dir="<%=rtl%>">
+<%-- <TR dir="<%=rtl%>">
         <TD NOWRAP valign='top' dir="<%=rtl%>"  width=10%>No of Copies</TD>
         <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
         <TD  colspan=2 dir="<%=rtl%>"><%=no_of_copy %></TD>
-    </TR>
+    </TR>--%>
 
     <TR dir="<%=rtl%>">
         <TD NOWRAP valign='top' dir="<%=rtl%>"  width=10%>AccessionNo</TD>
@@ -170,9 +170,11 @@ locale1=(String)session.getAttribute("locale");
       <TD NOWRAP valign='top' dir="<%=rtl%>"  width=10%>Current Status</TD>
         <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
     <td colspan="2">
-        <%if(list.get(0).getStatus().equalsIgnoreCase("available")&& issuetype.equals("Issuable")){%>
- <a href="<%=request.getContextPath()%>/OPAC/checkoutRequest.do?docId=<%= list.get(0).getId().getDocumentId()%>&libId=<%= list.get(0).getId().getLibraryId()%>&sublibId=<%= list.get(0).getId().getSublibraryId() %>">Request for Check Out</a><%}else{%>
- Issued<%}%>
+        <%if(status.equalsIgnoreCase("available")&& issuetype.equals("Issuable")){%>
+ <a href="<%=request.getContextPath()%>/OPAC/checkoutRequest.do?docId=<%= list.get(0).getId().getDocumentId()%>&libId=<%= list.get(0).getId().getLibraryId()%>&sublibId=<%= list.get(0).getId().getSublibraryId() %>">Request for Check Out</a><%}else if(status.equalsIgnoreCase("available")&& !issuetype.equals("Issuable")){%>
+ Not Issuable<%}else{%>
+ Issued
+ <%}%>
 </td></tr>
 </TABLE><br><br>
 <%       }

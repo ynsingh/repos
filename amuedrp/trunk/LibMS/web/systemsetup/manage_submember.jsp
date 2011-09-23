@@ -119,11 +119,18 @@ function check1()
   }
 
 
+function loadHelp()
+    {
+        window.status="Press F1 for Help";
+
+    }
 
     </script>
+
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
+
 </head>
-<body>
- 
+<body onload="loadHelp()" >
     <html:form method="post" onsubmit="return check1()" action="/submemberRegistration">
        
 <div
@@ -152,7 +159,7 @@ function check1()
 
                </td></tr>
                     <tr><td dir="<%=rtl%>" class="txt2"><%=resource.getString("systemsetup.manage_submember.submemtypeid")%></td><td>
-                        <input type="text" id="sub_emptype_id" name="sub_emptype_id" value=""/></td>
+                        <input type="text" id="sub_emptype_id" name="sub_emptype_id" value="" onfocus="statwords('Please Enter Valid Member Id ');" onblur="return loadHelp();"/></td>
                     </tr>
 
                 </table>

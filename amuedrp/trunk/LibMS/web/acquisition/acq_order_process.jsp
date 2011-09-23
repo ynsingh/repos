@@ -234,11 +234,11 @@ $(document).ready(function()
                <table>
                    <tr><td>
          <table>
-             <tr bgcolor="#E0E8F5" ><td width="100" >ISBN</td><td width="200">Title</td><td width="200">Author</td><td width="200">UnitPrice</td><td width="200">No of Copies</td><td width="200">Approval Type</td><td width="200">Select</td></tr>
+             <tr bgcolor="#E0E8F5" ><td width="100" >Control No</td><td width="200">Title</td><td width="200">Author</td><td width="200">UnitPrice</td><td width="200">No of Copies</td><td width="200">Approval Type</td><td width="200">Select</td></tr>
              <logic:iterate id="ApprovalList" name="opacList">
                 <tr>
                     <td><%--<bean:write name="ApprovalList" property="isbn"/>--%>
-                    <input type="textbox" value="<bean:write name="ApprovalList" property="control_no"/>"/>
+                   <bean:write name="ApprovalList" property="control_no"/>
                     </td>
                     <td><bean:write name="ApprovalList" property="title"/></td>
                     <td><bean:write name="ApprovalList" property="author"/></td>

@@ -326,7 +326,8 @@ function copy()
     }
 }
 function send(){
-
+ window.location="<%=request.getContextPath()%>/admin/acq_registerstaff.jsp";
+    return false;
 }
 </script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/cupertino/jquery.ui.all.css" type="text/css">

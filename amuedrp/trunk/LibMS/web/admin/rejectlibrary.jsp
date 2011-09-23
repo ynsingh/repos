@@ -32,7 +32,38 @@ else{
 
 %>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
- 
+ <script>
+    function changerec(){
+        var x=document.getElementById('rec').value;
+    var loc = window.location;
+    loc = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/admin/rejectlibrary.jsp";
+
+  //  alert(loc);
+        loc = loc + "?pageSize="+x;
+    window.location = loc;
+
+    }
+
+      document.onkeyup = keyHit
+function keyHit(event) {
+
+  if (event.keyCode == 13) {
+  changerec();
+
+    event.stopPropagation()
+    event.preventDefault()
+  }
+}
+
+function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
+    </script>
 
 </head>
 
@@ -57,10 +88,13 @@ else{
 AdminRegistrationDAO admindao = new AdminRegistrationDAO();
 List rs =(List) session.getAttribute("rejected");
 AdminRegistration adminReg= new AdminRegistration();
+
    requestList = new ArrayList();
    int tcount =0;
    int perpage=4;
    int tpage=0;
+ if(request.getParameter("pageSize")!=null && request.getParameter("pageSize")!="")
+    perpage = Integer.parseInt((String)request.getParameter("pageSize"));
 
 if (!rs.isEmpty())
 {
@@ -87,11 +121,12 @@ System.out.println("tcount="+tcount);
        
 <%
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex+4) >= requestList.size ())
+   if ((toIndex = fromIndex+perpage) >= requestList.size ())
    toIndex = requestList.size();
    request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
    pageContext.setAttribute("pagecontext", request.getContextPath());
+   pageContext.setAttribute("rec",perpage);
 %>
 <br><br>
 <%if(tcount==0)
@@ -100,6 +135,7 @@ System.out.println("tcount="+tcount);
 <%}
 else
 {%>
+View Next<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/><br/>
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
     
   <columns>
@@ -137,7 +173,7 @@ else
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
   <alternateRows styleClass="alternaterows"/>
 
-  <paging size="4" count="${tCount}" custom="true" nextUrlVar="next"
+ <paging size="${rec}" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>

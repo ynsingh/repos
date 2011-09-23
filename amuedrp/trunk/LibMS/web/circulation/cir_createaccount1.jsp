@@ -13,6 +13,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.core.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.widget.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.datepicker.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%
@@ -429,11 +430,18 @@ function checkDupli()
 
     }
      function loaddata(){
+         window.status="Press F1 for Help";
       search();
       search1();
 search_dept();
   }
     </script>
+<script language="javascript" type="text/javascript">
+    function loadHelp()
+    {
+        window.status="Press F1 for Help";
+    }
+</script>
 
 
 
@@ -447,18 +455,18 @@ search_dept();
                 <br>
                 
                     <table dir="<%=rtl%>" width="400px" align="center">
-                        <tr><td dir="<%=rtl%>" class="txtstyle" width="250px" align="<%=align%>" colspan="2" height="5px"><%=resource.getString("circulation.cir_createaccount1.memberid/loginid")%></td><td dir="<%=rtl%>" width="250px"><input type="text" id="mem_id"  name="mem_id" style="width: 160px" readonly  value="<%=mem_id%>"></td></tr>
+                        <tr><td dir="<%=rtl%>" class="txtstyle" width="250px" align="<%=align%>" colspan="2" height="5px"><%=resource.getString("circulation.cir_createaccount1.memberid/loginid")%></td><td dir="<%=rtl%>" width="250px"><input type="text" id="mem_id"  name="mem_id" style="width: 160px" readonly  value="<%=mem_id%>"  onfocus="statwords('Member Id');" onblur="loadHelp()" ></td></tr>
                         <tr><td dir="<%=rtl%>" colspan="2" height="5px"></td></tr>
-                        <tr><td dir="<%=rtl%>" class="txtstyle" colspan="2" align="left" height="5px"><%=resource.getString("circulation.cir_createaccount1.memname")%></td><td dir="<%=rtl%>"><input type="text"  name="mem_name" id="mem_name"   readonly  value="<%=mem_name%>&nbsp;<%=last_name%>" style="width: 160px"></td></tr>
+                        <tr><td dir="<%=rtl%>" class="txtstyle" colspan="2" align="left" height="5px"><%=resource.getString("circulation.cir_createaccount1.memname")%></td><td dir="<%=rtl%>"><input type="text"  name="mem_name" id="mem_name"   readonly  value="<%=mem_name%>&nbsp;<%=last_name%>" style="width: 160px"onfocus="statwords('Member Name');" onblur="loadHelp()"></td></tr>
                         <tr><td dir="<%=rtl%>" colspan="2" height="5px"></td></tr>
-                        <tr><td dir="<%=rtl%>" class="txtstyle" colspan="2" height="5px" align="<%=align%>" ><%=resource.getString("circulation.cir_newmember.email")%></td><td dir="<%=rtl%>"><input type="text"  name="mail_id" id="mail_id" readonly  name="Editbox2" value="<%=mail_id%>" style="width: 160px"/> </td></tr>
+                        <tr><td dir="<%=rtl%>" class="txtstyle" colspan="2" height="5px" align="<%=align%>" ><%=resource.getString("circulation.cir_newmember.email")%></td><td dir="<%=rtl%>"><input type="text"  name="mail_id" id="mail_id" readonly  name="Editbox2" value="<%=mail_id%>" style="width: 160px"onfocus="statwords('Member email Id');" onblur="loadHelp()"/> </td></tr>
                         <tr><td dir="<%=rtl%>" colspan="2" height="5px"></td></tr>
                       <%--  <tr><td class="txtstyle" colspan="2" height="5px" align="left">Password<a class="star">*</a></td><td><input type="password"   name="password"  id="password" readonly  value="" style="width: 160px"><br/>
                             <div align="left" id="searchResult" class="err" style="border:#000000; "></div>
                             </td></tr>
                         <tr><td colspan="2" height="5px"></td></tr>
                      <tr><td class="txtstyle" colspan="2" height="5px" align="left">Confirm Password<a class="star">*</a></td><td><input type="password"   name="password1" id="password1" onblur="return checkDupli();"   value="" style="width: 160px"></td></tr>--%>
-                        <tr><td dir="<%=rtl%>" class="txtstyle" colspan="2" height="5px"><%=resource.getString("circulation.cir_newmember.cardid")%><a class="star">*</a></td><td dir="<%=rtl%>"><input type="text"   name="card_id" id="card_id"   value="" style="width: 160px"></td></tr>
+                        <tr><td dir="<%=rtl%>" class="txtstyle" colspan="2" height="5px"><%=resource.getString("circulation.cir_newmember.cardid")%><a class="star">*</a></td><td dir="<%=rtl%>"><input type="text"   name="card_id" id="card_id"   value="" style="width: 160px"onfocus="statwords('Enter Card Id for member.This card Id is unique within the library.');" onblur="loadHelp()"></td></tr>
                         <tr><td dir="<%=rtl%>" class="txtstyle" colspan="2" height="5px" align="<%=align%>"> <%=resource.getString("circulation.cir_newmember.typeofmem")%><a class="star">*</a></td><td dir="<%=rtl%>" class="table_textbox">
 
                    <html:select  property="MEMCAT" style="width:160px"  styleId="emptype_id" value="<%=memtype%>" onchange="return search();">
@@ -491,8 +499,8 @@ search_dept();
 			</html:messages>
 
                       </td></tr>
-                        <tr><td dir="<%=rtl%>" colspan="2" class="txtstyle" height="5px"><%=resource.getString("circulation.cir_newmember.empdegn")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTDESG1" style="width:160px" value="<%=desg%>" styleId="desg2"/></td></tr>
-                        <tr><td dir="<%=rtl%>" colspan="2" height="5px" class="txtstyle"><%=resource.getString("circulation.cir_newmember.officename")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTOFFICE" styleId="office2" value="<%=office%>" style="width:160px"/></td></tr>
+                        <tr><td dir="<%=rtl%>" colspan="2" class="txtstyle" height="5px"><%=resource.getString("circulation.cir_newmember.empdegn")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTDESG1" style="width:160px" value="<%=desg%>" styleId="desg2"onfocus="statwords('Enter Designation');" onblur="loadHelp()"/></td></tr>
+                        <tr><td dir="<%=rtl%>" colspan="2" height="5px" class="txtstyle"><%=resource.getString("circulation.cir_newmember.officename")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTOFFICE" styleId="office2" value="<%=office%>" style="width:160px"onfocus="statwords('Enter Office Name');" onblur="loadHelp()"/></td></tr>
                         <tr><td dir="<%=rtl%>" colspan="2" height="5px" class="txtstyle"><%=resource.getString("circulation.cir_newmember.facof")%>
                  </td><td class="table_textbox">
               <html:select  property="TXTFACULTY" styleId="TXTFACULTY" style="width:160px" value="Select"  onchange="return search1()" tabindex="3">
@@ -529,7 +537,7 @@ search_dept();
 
                         <tr>
                             <td dir="<%=rtl%>" colspan="2" height="5px" class="txtstyle"><%=resource.getString("circulation.cir_newmember.sem")%>
-                  </td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTSEM" styleId="sem2"  value="<%=sem%>" styleClass="textBoxWidth" style="width:160px"  />
+                  </td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTSEM" styleId="sem2"  value="<%=sem%>" styleClass="textBoxWidth" style="width:160px" onfocus="statwords('Enter Semester or year of the course');" onblur="loadHelp()" />
 
                   </td>
                         </tr>
@@ -541,7 +549,7 @@ search_dept();
 
                 </td></tr>
                         <tr><td dir="<%=rtl%>" colspan="2" height="5px" class="txtstyle"><%=resource.getString("circulation.cir_newmember.reg")%><a class="star">*</a><br>(YYYY-MM-DD)
-                            </td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTREG_DATE" value="<%=reg_date%>" styleId="TXTREG_DATE"  style="width:160px"  styleClass="textBoxWidth"  />
+                            </td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTREG_DATE" value="<%=reg_date%>" styleId="TXTREG_DATE"  style="width:160px"  styleClass="textBoxWidth" onfocus="statwords('Enter Registration Date');" onblur="loadHelp()" />
                     <html:messages id="err_name" property="TXTREG_DATE">
 				<bean:write name="err_name" />
 
@@ -552,7 +560,7 @@ search_dept();
              <tr>
                  <td dir="<%=rtl%>" valign="top" colspan="2" height="5px" class="txtstyle"><%=resource.getString("circulation.cir_newmember.exp")%><a class="star">*</a><br>(YYYY-MM-DD)
                   </td>
-                  <td dir="<%=rtl%>" class="table_textbox" valign="top"><html:text  property="TXTEXP_DATE" value="<%=exp_date%>" styleId="TXTEXP_DATE" style="width:160px"/>
+                  <td dir="<%=rtl%>" class="table_textbox" valign="top"><html:text  property="TXTEXP_DATE" value="<%=exp_date%>" styleId="TXTEXP_DATE" style="width:160px"onfocus="statwords('Enter Expiry Date');" onblur="loadHelp()" />
                   <html:messages id="err_name" property="TXTEXP_DATE">
 				<bean:write name="err_name" />
 

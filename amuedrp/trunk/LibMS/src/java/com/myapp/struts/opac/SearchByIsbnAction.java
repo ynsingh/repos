@@ -14,8 +14,10 @@ import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.HttpSession;
 import com.myapp.struts.opacDAO.*;
 import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.hbm.BibliographicDetailsLang;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  *
  * @author Faraz
@@ -26,15 +28,7 @@ public class SearchByIsbnAction extends org.apache.struts.action.Action {
     private static final String SUCCESS = "success";
     OpacSearchDAO osdao= new OpacSearchDAO();
     BibliopgraphicEntryDAO bibdao=new BibliopgraphicEntryDAO();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
     
-     */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -45,27 +39,52 @@ public class SearchByIsbnAction extends org.apache.struts.action.Action {
         String lib_id=myForm.getCMBLib();
         String   isbn = myForm.getTXTKEY();
         String sublib=myForm.getCMBSUBLib();
+
+          
+
         if (session.getAttribute("Result")!=null) session.removeAttribute("Result");
+
+        if(myForm.getCheckbox().equals("Checked")){
+ System.out.println("Languagebbb"+myForm.getLanguage());
+  List<BibliographicDetailsLang> documentdetail  =(List)osdao.isbnLangSearch(isbn, lib_id, sublib,myForm.getLanguage().toUpperCase());
+       ArrayList<BibliographicDetailsLang> bib1=new ArrayList<BibliographicDetailsLang>();
+
+// if(!documentdetail.isEmpty())
+//{
+//    for(int f=0;f<documentdetail.size();f++)
+//    {
+//    int bibiid=documentdetail.get(f).getId().getBiblioId();
+//    List<DocumentDetails> ddd=bibdao.searchDoc2(bibiid, lib_id, sublib);
+//    if(!ddd.isEmpty()){
+//        bib1.add(documentdetail.get(f));
+//    }
+//    }
+//}
+        session.removeAttribute("documentdetail");
+        System.out.println(bib1.size());
+      session.setAttribute("documentdetail1", documentdetail);
+ }
+ else{
+      System.out.println("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNLanguagebbb");
+
       List<BibliographicDetails> documentdetail  =(List)osdao.isbnSearch(isbn, lib_id, sublib);
        ArrayList<BibliographicDetails> bib1=new ArrayList<BibliographicDetails>();
-      //  query = "select * from document_details where isbn10='" + isbn + "'";
-      //  if(!lib_id.equals("all"))
-        //     query +=" and library_id='" + lib_id + "'";
-
-       // rst = MyQueryResult.getMyExecuteQuery(query);
-        //session.setAttribute("Result", rst);
- if(!documentdetail.isEmpty())
-{
-    for(int f=0;f<documentdetail.size();f++)
-    {
-    int bibiid=documentdetail.get(f).getId().getBiblioId();
-    List<DocumentDetails> ddd=bibdao.searchDoc2(bibiid, lib_id, sublib);
-    if(!ddd.isEmpty()){
-        bib1.add(documentdetail.get(f));
-    } 
+      
+// if(!documentdetail.isEmpty())
+//{
+//    for(int f=0;f<documentdetail.size();f++)
+//    {
+//    int bibiid=documentdetail.get(f).getId().getBiblioId();
+//    List<DocumentDetails> ddd=bibdao.searchDoc2(bibiid, lib_id, sublib);
+//    if(!ddd.isEmpty()){
+//        bib1.add(documentdetail.get(f));
+//    }
+//    }
+//}
+       session.removeAttribute("documentdetail1");
+      session.setAttribute("documentdetail", documentdetail);
+       
     }
-}
-      session.setAttribute("documentdetail", bib1);
-        return mapping.findForward(SUCCESS);
+         return mapping.findForward(SUCCESS);
     }
 }

@@ -1,10 +1,4 @@
-<%--
-    Document   : Simple.jsp
-    Created on : Jun 18, 2010, 7:46:24 AM
-    Author     : Mayank Saxena
-<jsp:include page="adminheader.jsp" flush="true" />
---%>
- 
+
     <%@page import="com.myapp.struts.admin.RequestDoc,com.myapp.struts.hbm.*"%>
     <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
@@ -39,7 +33,40 @@ else{
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
+<script>
+    function changerec(){
+        var x=document.getElementById('rec').value;
+    var loc = window.location;
+    loc = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/admin/update_admin.jsp";
 
+
+        loc = loc + "?pageSize="+x;
+         // alert(loc);
+    window.location = loc;
+
+
+    }
+
+      document.onkeyup = keyHit
+function keyHit(event) {
+
+  if (event.keyCode == 13) {
+  changerec();
+
+    event.stopPropagation()
+    event.preventDefault()
+  }
+}
+
+function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
+    </script>
 </head>
 
 <body>
@@ -67,11 +94,9 @@ if (rs!=null){
    int tcount =0;
    int perpage=4;
    int tpage=0;
- /*Create a connection by using getConnection() method
-   that takes parameters of string type connection url,
-   user name and password to connect to database.*/
+  if(request.getParameter("pageSize")!=null && request.getParameter("pageSize")!="")
+    perpage = Integer.parseInt((String)request.getParameter("pageSize"));
 
-//rs.beforeFirst();
 
 
    while (it.hasNext()) {
@@ -95,11 +120,12 @@ System.out.println("tcount="+tcount);
        
 <%
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex+4) >= requestList.size ())
+   if ((toIndex = fromIndex+perpage) >= requestList.size ())
    toIndex = requestList.size();
    request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
    pageContext.setAttribute("getContextPath", request.getContextPath());
    pageContext.setAttribute("tCount", tcount);
+     pageContext.setAttribute("rec",perpage);
 %>
 <br><br>
 <%if(tcount==0)
@@ -147,7 +173,8 @@ locale1=(String)session.getAttribute("locale");
   pageContext.setAttribute("Action",Action);
 
 %>
-<ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
+ View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>
+<ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
     
   <columns>
       
@@ -183,7 +210,7 @@ locale1=(String)session.getAttribute("locale");
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
   <alternateRows styleClass="alternaterows"/>
 
-  <paging size="4" count="${tCount}" custom="true" nextUrlVar="next"
+  <paging size="${rec}" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>

@@ -39,6 +39,21 @@ public class AcqOrderDao {
         //session.close();
         return (AcqOrderHeader) criteria.uniqueResult();
     }
+    
+
+     public AcqRecievingHeader searchRecieveHeaderByVendor(String order_no,String vendor, String library_id, String sub_library_id,String recieving_no ) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(AcqRecievingHeader.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).
+                add(Restrictions.eq("id.subLibraryId", sub_library_id)).
+                add(Restrictions.eq("orderNo",order_no)).
+                add(Restrictions.eq("id.recievingNo",recieving_no)).
+                add(Restrictions.eq("vendorId",vendor))
+                );
+        //session.close();
+        return (AcqRecievingHeader) criteria.uniqueResult();
+    }
+
 
 
     public ArrayList<ApprovalList> searchOrderByVendor(String order_no, String library_id, String sublibrary_id) {
@@ -103,6 +118,43 @@ sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date
 
 
     }
+
+
+
+
+      public ArrayList<ApprovalList> searchInvoiceByRecieve(String order_no, String library_id, String sub_library_id, String recieving_no) {
+
+        Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            String sql="";
+
+sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date,d.isbn,d.title,d.author,b.recieved_copies,b.control_no,bg.acq_budget_head_id,bg.amount"
+  
+       + " from acq_recieving_header a,acq_recieving_details b,acq_bibliography_details ca,acq_bibliography d,acq_budget_transaction bg where a.library_id=b.library_id and a.sub_library_id=b.sub_library_id"
+       +
+         " and a.recieving_no=b.recieving_no and b.library_id=ca.library_id and b.sub_library_id=ca.sub_library_id and b.control_no=ca.control_no  and"
+        +
+
+ " ca.library_id=d.library_id and ca.sub_library_id=d.sub_library_id and ca.title_id=d.title_id  and ca.library_id=bg.library_id and ca.control_no=bg.control_no and ca.primary_budget=bg.acq_budget_head_id"
+ + " and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"' and a.order_no='"+order_no+"' and a.recieving_no='"+recieving_no+"')";
+
+ Query query =  session.createSQLQuery(sql)
+
+                    .setResultTransformer(Transformers.aliasToBean(ApprovalList.class));
+            return (ArrayList<ApprovalList>)query.list();
+        }
+        finally {
+            session.close();
+        }
+
+
+
+    }
+
+
 
 
 

@@ -289,6 +289,7 @@ else{
       // Handler for checkbox's click event.  Calls toggleTransliteration to toggle
       // the transliteration state.
       function checkboxClickHandler() {
+          window.status="Press F1 for Help";
         transliterationControl.toggleTransliteration();
       }
 
@@ -314,11 +315,16 @@ else{
         document.getElementById("errorDiv").innerHTML = "";
       }
       google.setOnLoadCallback(onLoad);
+      function loadHelp()
+      {
+          window.status="Press F1 for Help";
+      }
 
     </script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard.js" charset="UTF-8"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
     </head>
 <body onload="checkboxClickHandler();search();">
     <%-- <%if(page.equals(true)){%>--%>
@@ -337,7 +343,7 @@ else{
       </td></tr>
   <tr style="background-color:#e0e8f5;"><td  dir="<%=rtl%>">
           <table  dir="<%=rtl%>">
-              <tr><td width="130px" dir="<%=rtl%>"><%=resource.getString("opac.advance.seachkeyword")%></td><td><input name="TXTPHRASE1" id="TXTPHRASE1" class="keyboardInput"  type="text" dir="<%=rtl%>">
+              <tr><td width="130px" dir="<%=rtl%>"><%=resource.getString("opac.advance.seachkeyword")%></td><td><input name="TXTPHRASE1" id="TXTPHRASE1" class="keyboardInput"  type="text" dir="<%=rtl%>" onfocus="statwords('Enter Keyword')" onblur="loadHelp()">
 </td></tr>
               <tr>   <td><%=resource.getString("opac.simplesearch.connectwordas")%></td><td> <select name="CMB1" size="1" dir="<%=rtl%>">
     <option value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
@@ -364,7 +370,7 @@ else{
               </tr></table></td></tr>
    <tr style="background-color:#e0e8f5;" dir="<%=rtl%>"><td  dir="<%=rtl%>" >
           <table  dir="<%=rtl%>">
-              <tr><td width="130px" dir="<%=rtl%>"><%=resource.getString("opac.advance.seachkeyword")%></td><td dir="<%=rtl%>"> <input name="TXTPHRASE2" id="TXTPHRASE2" class="keyboardInput" dir="<%=rtl%>"  type="text">
+              <tr><td width="130px" dir="<%=rtl%>"><%=resource.getString("opac.advance.seachkeyword")%></td><td dir="<%=rtl%>"> <input name="TXTPHRASE2" id="TXTPHRASE2" class="keyboardInput" dir="<%=rtl%>"  type="text" onfocus="statwords('Enter Keyword')" onblur="loadHelp()" >
 </td></tr>
               <tr>   <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.connectwordas")%></td><td> <select name="CMB2" size="1" dir="<%=rtl%>">
     <option value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
@@ -391,7 +397,7 @@ else{
               </tr></table></td></tr>
     <tr style="background-color:#e0e8f5;" dir="<%=rtl%>"><td   dir="<%=rtl%>">
           <table  dir="<%=rtl%>">
-              <tr><td width="130px" dir="<%=rtl%>"><%=resource.getString("opac.advance.seachkeyword")%></td><td dir="<%=rtl%>"><input name="TXTPHRASE3" id="TXTPHRASE3" class="keyboardInput" type="text" dir="<%=rtl%>">
+              <tr><td width="130px" dir="<%=rtl%>"><%=resource.getString("opac.advance.seachkeyword")%></td><td dir="<%=rtl%>"><input name="TXTPHRASE3" id="TXTPHRASE3" class="keyboardInput" type="text" dir="<%=rtl%>"onfocus="statwords('Enter Keyword')" onblur="loadHelp()" >
 </td></tr>
               <tr>   <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.connectwordas")%></td><td dir="<%=rtl%>"> <select name="CMB3" size="1" dir="<%=rtl%>">
     <option value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
@@ -450,8 +456,8 @@ else{
 <option value="upto" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.upto")%></option>
 <option value="after" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.after")%></option>
 </select></td><td dir="<%=rtl%>">
-<input type="text" dir="<%=rtl%>" id="TXTYR1"  name="TXTYR1" style="width:50px"></td><td>
-<input type="text" id="TXTYR2" dir="<%=rtl%>" name="TXTYR2" style="width:50px">
+<input type="text" dir="<%=rtl%>" id="TXTYR1"  name="TXTYR1" style="width:50px" onfocus="statwords('Enter Year')" onblur="loadHelp()" ></td><td>
+<input type="text" id="TXTYR2" dir="<%=rtl%>" name="TXTYR2" style="width:50px" onfocus="statwords('Enter Year')" onblur="loadHelp()" >
 </td></tr>
 </table>
 </td></tr></table>

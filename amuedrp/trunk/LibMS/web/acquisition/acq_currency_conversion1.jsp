@@ -120,7 +120,7 @@ function send()
 </tr>
 <tr>
     <td align="left" class="txtStyle"><strong>Source Currency Name:</strong></td>
-    <td><html:text readonly="true" property="base_currency_symbol" styleId="currency_id" name="AcqCurrencyActionForm" styleClass="textBoxWidth" /></td>
+    <td><html:text readonly="true" property="base_currency_symbol"styleId="currency_id" name="AcqCurrencyActionForm" styleClass="textBoxWidth" /></td>
 </tr>
   <tr><td colspan="5" height="5px"></td>
 </tr>

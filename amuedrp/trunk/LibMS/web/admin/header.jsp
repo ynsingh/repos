@@ -22,6 +22,8 @@ This Page is to Show Menu and Header Section  of LibMS
     String align="left";
 %>
 <%
+
+
 try{
 locale1=(String)session.getAttribute("locale");
 
@@ -1159,7 +1161,7 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation36") %>", {   disabled: <%=cir_privilege[16]%>,  url:"" }));
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation37") %>", {   disabled: <%=cir_privilege[17]%>,  url:"" }));
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation38") %>", {   disabled: <%=cir_privilege[18]%>,  url:"" }));
-                  oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation39") %>", {   disabled: <%=cir_privilege[19]%>,  url:"" }));
+                  oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation39") %>", {   disabled: <%=cir_privilege[19]%>,  url:"<%=request.getContextPath()%>/circulation/cir_viewallaccount1.do" }));
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation40") %>", {   disabled: <%=cir_privilege[20]%>,  url:"" }));
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation41") %>", {submenu:oCirInstituteMemberMenu ,   disabled: <%=cir_privilege[21]%>,  url:"" }));
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation42") %>", {   disabled: <%=cir_privilege[26]%>,  url:"" }));
@@ -1172,7 +1174,7 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                   oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("Duplicate Card", {  disabled: <%=cir_privilege[31]%>,  url: ""}));
                   oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("Remove Card", {  disabled: <%=cir_privilege[32]%>,  url: ""}));
 */
-                  oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation43") %>", {  disabled: <%=cir_privilege[29]%>,  url: ""}));
+                  oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation43") %>", {  disabled: <%=cir_privilege[29]%>,  url: "<%=request.getContextPath()%>/circulation/cir_generate_card.jsp"}));
                   oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation44") %>", {  disabled: <%=cir_privilege[30]%>,  url: ""}));
                   oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation45") %>", {  disabled: <%=cir_privilege[31]%>,  url: ""}));
                   oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation46") %>", {  disabled: <%=cir_privilege[32]%>,  url: ""}));
@@ -1455,7 +1457,7 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                oDataImportExport.addItem(new YAHOO.widget.MenuItem("Data Export", {  disabled: <%=cat_privilege[28]%>, url: "<%=request.getContextPath()%>/cataloguing/cat_exportDatabaseToExcell.jsp" }));
 */
 
-               oDataImportExport.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing38") %>", {  disabled: <%=cat_privilege[27]%>, url: "" }));
+               oDataImportExport.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing38") %>", {  disabled: <%=cat_privilege[27]%>, url: "<%=request.getContextPath()%>/cataloguing/cat_data_import_read.jsp" }));
                oDataImportExport.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing39") %>", {  disabled: <%=cat_privilege[28]%>, url: "<%=request.getContextPath()%>/cataloguing/cat_exportDatabaseToExcell.jsp" }));
 
 
@@ -1591,6 +1593,10 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 */
                 oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition25") %>", {submenu:oAcqViewListForOrderMenu , disabled: <%=acq_privilege[22]%> ,url: ""}));
 
+
+
+
+
                  oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition26") %>", {disabled: <%=acq_privilege[25]%> ,url: "<%=request.getContextPath()%>/acq_order.do"}));
                  oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition27") %>", {disabled: <%=acq_privilege[26]%> ,url: ""}));
                  oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition28") %>", {disabled: <%=acq_privilege[27]%> ,url: ""}));
@@ -1662,6 +1668,10 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
  oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition39") %>", { disabled: <%=acq_privilege[49]%>, url: ""}));
               oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition40") %>", { disabled: <%=acq_privilege[50]%>, url: ""}));
               oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition41") %>", { disabled: <%=acq_privilege[51]%>, url: ""}));
+
+
+
+
               oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition42") %>", { disabled: <%=acq_privilege[52]%>, url: ""}));
               oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition43") %>", { disabled: <%=acq_privilege[53]%>, url: ""}));
               oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition44") %>", { disabled: <%=acq_privilege[54]%>, url: ""}));
@@ -1727,6 +1737,7 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("Place Order", {submenu:oAcqPlaceorderMenu , disabled:<%=acq_privilege[21]%> , url:"" }));
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("Receive Order", { disabled:<%=acq_privilege[29]%> , url:"<%=request.getContextPath()%>/acquisition/acq_budget_alloc.do" }));
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("Invoice Management", {submenu:oInvoiceManagementMenu , disabled:<%=acq_privilege[30]%> , url:"" }));
+
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("Accessioning", {submenu:oAccessioningMenu , disabled: <%=acq_privilege[39]%> , url:"" }));
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("Manage Demand List", { disabled: <%=acq_privilege[42]%> , url:"" }));
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("Free/Gifted Documents", { disabled:<%=acq_privilege[43]%> , url:"<%=request.getContextPath()%>/acquisition/acq_gift_entry.jsp" }));
@@ -1761,30 +1772,30 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                
 
             //    oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("Create Staff Account", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
-            oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin4")%>", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
+            oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin4")%>", {url: "<%=request.getContextPath()%>/admin/account.jsp?p=6"}));
                 //oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("View Staff Account", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
-                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin5")%>", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
+                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin5")%>", {url: "<%=request.getContextPath()%>/admin/account.jsp?p=7"}));
                 //oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("Update Account", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
-                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin6")%>", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
+                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin6")%>", {url: "<%=request.getContextPath()%>/admin/account.jsp?p=8"}));
                 //oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("Delete Staff Account", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
-                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin7")%>", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
+                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin7")%>", {url: "<%=request.getContextPath()%>/admin/account.jsp?p=9"}));
                 //oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("View All Staff Account", {url: "<%=request.getContextPath()%>/admin/viewallaccount.do"}));
-                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin8")%>", {url: "<%=request.getContextPath()%>/admin/viewallaccount.do"}));
+                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin8")%>", {url: "<%=request.getContextPath()%>/admin/viewallaccount.do?p=10"}));
 
 //submenu of admin Staff
                var oStaffMenu = new YAHOO.widget.Menu("Staff");
 
              //   oStaffMenu.addItem(new YAHOO.widget.MenuItem("Register Staff", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
-                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin9")%>", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
+                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin9")%>", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp?p=1"}));
                 //oStaffMenu.addItem(new YAHOO.widget.MenuItem("Change Staff Details", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
-                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin10")%>", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
+                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin10")%>", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp?p=2"}));
                 //oStaffMenu.addItem(new YAHOO.widget.MenuItem("Delete Staff", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
-                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin11")%>", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
+                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin11")%>", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp?p=3"}));
                 //oStaffMenu.addItem(new YAHOO.widget.MenuItem("View Staff Record", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
-                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin12")%>", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
+                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin12")%>", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp?p=4"}));
 
                 //oStaffMenu.addItem(new YAHOO.widget.MenuItem("View All Staff Record", {url: "<%=request.getContextPath()%>/admin/viewall.do"}));
-                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin13")%>", {url: "<%=request.getContextPath()%>/admin/viewall.do"}));
+                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin13")%>", {url: "<%=request.getContextPath()%>/admin/viewall.do?p=5"}));
 
 
 //submenu of admin-privilege
@@ -1792,11 +1803,12 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                var oPrivilegeMenu = new YAHOO.widget.Menu("Privilege");
 
              //   oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("Assign Privileges", {url: "<%=request.getContextPath()%>/admin/assign_privilege.jsp"}));
-                oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin14")%>", {url: "<%=request.getContextPath()%>/admin/assign_privilege.jsp"}));
+                oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin14")%>", {url: "<%=request.getContextPath()%>/admin/assign_privilege.jsp?p=11"}));
                // oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("Change Privileges", {url: "<%=request.getContextPath()%>/admin/assign_privilege.jsp"}));
-                oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin15")%>", {url: "<%=request.getContextPath()%>/admin/assign_privilege.jsp"}));
+
+                oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin15")%>", {url: "<%=request.getContextPath()%>/admin/assign_privilege.jsp?p=12"}));
                // oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("View Privileges", {url: "<%=request.getContextPath()%>/admin/assign_privilege.jsp"}));
-                oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin16")%>", {url: "<%=request.getContextPath()%>/admin/assign_privilege.jsp"}));
+                oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin16")%>", {url: "<%=request.getContextPath()%>/admin/assign_privilege.jsp?p=13"}));
 
 
 //submenu of Manage Library
@@ -2049,7 +2061,7 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 <% if(locale1.equalsIgnoreCase("ar")|| locale1.equalsIgnoreCase("ur")){%>
 
      //oMenuBar.addItem("HELP");
-                oMenuBar.addItem("<%=resource.getString("admin.header.main10") %>");
+               oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main10") %>", {url:"<%=request.getContextPath()%>/ModuleHelp/MainPage.html"}));
                  //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("OPAC", {url:"<%=request.getContextPath()%>/OPAC/OPACmain.jsp"}));
                 oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main9") %>", {url:"<%=request.getContextPath()%>/OPAC/OPACmain.jsp"}));
          //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("UTILTIES", { disabled: <%=privilege[7]%>}));
@@ -2096,8 +2108,7 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                 //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("OPAC", {url:"<%=request.getContextPath()%>/OPAC/OPACmain.jsp"}));
                 oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main9") %>", {url:"<%=request.getContextPath()%>/OPAC/OPACmain.jsp"}));
                 //oMenuBar.addItem("HELP");
-                oMenuBar.addItem("<%=resource.getString("admin.header.main10") %>");
-
+                 oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main10") %>", {url:"<%=request.getContextPath()%>/ModuleHelp/MainPage.html"}));
 
                 <%}%>
 //*****************************************End main menu*******************************************************
@@ -2182,6 +2193,7 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
             YAHOO.util.Event.addListener(window, "load", YAHOO.example.onWindowLoad);
 
 //Drop Down Menu Code
+
 
 var urls1 = new buildArray("",
 "<%=request.getContextPath()%>/admin/staffupdate.do",
@@ -2309,16 +2321,19 @@ document.write('</div></span>');
 
 <table width="100%"  border="0px"  class="logout">
 
-               <tr><td width="150px"  align="left">
+               <tr><td width="15%"  align="left">
 
 
                     <img src="<%=request.getContextPath()%>/images/opac_lib.PNG" alt="banner space"   align="top" style="padding:5px 5px 5px 5px;">
 
+
+   </font>
                    </td>
                         <td align="center" class=""><span style="font-size:20px;font-weight:bold;color:blue;" > <%=library_name%></span>&nbsp;&nbsp;<br/><span class="mess"><%=resource.getString("opac.simplesearch.library")%>&nbsp;[<%=sublibrary_name%>]&nbsp;&nbsp;<%=resource.getString("admin.header.role")%>:&nbsp;[<%=role_name%>]</span></td>
 
-                    <td  align="<%=align%>"  width="300px"  valign="top">
-                        <table border="0"><tr><td valign="top"><%=resource.getString("login.hello")%>,&nbsp;
+                    <td  align="right"  width="300px"  valign="top">
+                        <table border="0">
+<tr><td valign="top"><%=resource.getString("login.hello")%>,&nbsp;
                         <script>document.write('<span ');
 document.write('height:10px;border:0px solid black;font:bold 10pt Verdana;');
 document.write(' onClick="toggle_menu(1);');
@@ -2339,7 +2354,10 @@ document.write('</div></span>');
                         </script>
                                 </td><td valign="top">
 &nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/logout.do"><%=resource.getString("login.signout")%></a>&nbsp;&nbsp;&nbsp;
-                                </td></tr></table>
+                        </td>
+</tr>
+
+                           </table>
 
 
 

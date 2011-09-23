@@ -8,6 +8,7 @@ package com.myapp.struts.opacDAO;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.hbm.HibernateUtil;
 import com.myapp.struts.opac.MemberSubLibrary;
+import com.myapp.struts.opac.MixAccessionRecord;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -17,7 +18,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
-
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -1196,7 +1197,9 @@ hsession.close();
           criteria.add(Restrictions.eq("id.libraryId",library_id));
           if(!sub_lib.equalsIgnoreCase("all"))
           criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
+           if (!StringUtils.isEmpty(isbn)||!StringUtils.isBlank(isbn)) {
           criteria.add(Restrictions.eq("isbn10",isbn));
+        }
           return (List) criteria.list();
         }
       catch(Exception e)
@@ -1210,6 +1213,39 @@ hsession.close();
         }
     }
 
+public List isbnLangSearch(String isbn,String library_id,String sub_lib,String language)
+    {
+
+
+
+      Session hsession=HibernateUtil.getSessionFactory().openSession();
+      try
+        {
+          hsession.beginTransaction();
+          Criteria criteria = hsession.createCriteria(BibliographicDetailsLang.class);
+          if(!library_id.equalsIgnoreCase("all"))
+          criteria.add(Restrictions.eq("id.libraryId",library_id));
+          if(!sub_lib.equalsIgnoreCase("all"))
+          criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
+    if (!StringUtils.isEmpty(isbn)||!StringUtils.isBlank(isbn)) {
+          criteria.add(Restrictions.eq("isbn10",isbn));
+        }
+
+
+
+          criteria.add(Restrictions.eq("entryLanguage",language));
+          return (List) criteria.list();
+        }
+      catch(Exception e)
+        {
+            System.out.println("Error***** OpacSearchDAO.isbnSearch():"+e);
+            return null;
+        }
+      finally
+        {
+            hsession.close();
+        }
+    }
 
      public List callNoSearch(String call_no,String library_id,String sub_lib)
     {
@@ -1236,6 +1272,65 @@ hsession.close();
         {
             hsession.close();
         }
+    }
+public List callNoLangSearch(String call_no,String library_id,String sub_lib,String language)
+    {
+
+      Session hsession=HibernateUtil.getSessionFactory().openSession();
+      try
+        {
+          hsession.beginTransaction();
+          Criteria criteria = hsession.createCriteria(BibliographicDetailsLang.class);
+          if(!library_id.equalsIgnoreCase("all"))
+          criteria.add(Restrictions.eq("id.libraryId",library_id));
+          if(!sub_lib.equalsIgnoreCase("all"))
+          criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
+         if(call_no.isEmpty()==false)
+          criteria.add(Restrictions.eq("callNo",call_no));
+          criteria.add(Restrictions.eq("entryLanguage",language));
+          return (List) criteria.list();
+        }
+      catch(Exception e)
+        {
+            System.out.println("Error***** OpacSearchDAO.call_noSearch():"+e);
+            return null;
+        }
+      finally
+        {
+            hsession.close();
+        }
+    }
+
+   public List accessionNoLangSearch(String acc_no,String library_id,String sub_lib)
+    {
+     Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            String sql="";
+ sql = "select a.*,b.* from accession_register a,bibliographic_details_lang b where  a.biblio_id=b.biblio_id  and a.library_id=b.library_id and a.sublibrary_id=b.sublibrary_id and  a.accession_no='"+acc_no+"'";
+            
+if(!library_id.equals("all"))
+    sql+="  and a.library_id='"+library_id+"'";
+ if(!sub_lib.equals("all"))
+     sql+=" and a.sublibrary_id='"+sub_lib+"'";
+
+ System.out.println(sql);
+
+          Query query =  session.createSQLQuery(sql)
+                    .addEntity(BibliographicDetailsLang.class)
+                    .addEntity(AccessionRegister.class)
+                    .setResultTransformer(Transformers.aliasToBean(MixAccessionRecord.class));
+            return query.list();
+        }
+        finally {
+         //   session.close();
+        }
+
+
+
+
     }
 
 

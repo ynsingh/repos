@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="log" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#E7D0D0"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#FF0000">
+		<box>
+			<pen lineWidth="0.5" lineColor="#E7D0D0"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#FFE6E6">
+		<box>
+			<pen lineWidth="0.5" lineColor="#E7D0D0"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#E7D0D0"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#FFF8F8"/>
+		</conditionalStyle>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1"/>
+	<subDataset name="Table Dataset 2"/>
+	<subDataset name="dataset1"/>
+	<field name="dateTime" class="java.lang.String"/>
+	<field name="username" class="java.lang.String"/>
+	<field name="userid" class="java.lang.String"/>
+	<field name="library_id" class="java.lang.String"/>
+	<field name="sublibrary_id" class="java.lang.String"/>
+	<field name="role" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="165" splitType="Stretch">
+			<rectangle>
+				<reportElement style="table 1_CH" mode="Opaque" x="0" y="0" width="555" height="20" backcolor="#928181"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement style="table 1_CH" mode="Opaque" x="0" y="42" width="555" height="123" backcolor="#FFFFFF"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement style="table 1_CH" mode="Opaque" x="0" y="21" width="555" height="20" backcolor="#FFFFFF"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="165" y="0" width="224" height="20" forecolor="#F4ECEC"/>
+				<textElement>
+					<font size="14" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[LibMS : SuperAdmin Module]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="50" width="68" height="16"/>
+				<textElement>
+					<font isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Report Title ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="66" width="100" height="13"/>
+				<textElement>
+					<font isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Date of Reporting ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="49" width="69" height="16"/>
+				<textElement>
+					<font isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[User Role ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="65" width="69" height="16"/>
+				<textElement>
+					<font isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Composed By ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="23" width="164" height="20" forecolor="#000000"/>
+				<textElement>
+					<font size="12" isBold="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Report Summary]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="104" width="42" height="16"/>
+				<textElement>
+					<font isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[User Id  ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="104" width="84" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dateTime}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="18" y="124" width="46" height="16"/>
+				<textElement>
+					<font isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Library]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="124" width="66" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{library_id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="19" y="143" width="57" height="16"/>
+				<textElement>
+					<font isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[SubLibrary]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="81" y="143" width="66" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{library_id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="106" width="57" height="16"/>
+				<textElement>
+					<font isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Start End]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement style="table 1_CH" mode="Opaque" x="0" y="82" width="555" height="20" backcolor="#FFFFFF"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="17" y="84" width="199" height="14" forecolor="#000000"/>
+				<textElement>
+					<font size="10" isBold="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Searching Criteria Applied:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="126" width="57" height="16"/>
+				<textElement>
+					<font isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[End Date]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="20" backcolor="#000000"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="12" y="4" width="72" height="16" forecolor="#FFFFFF"/>
+				<textElement>
+					<font isBold="true" isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Login Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="96" y="4" width="68" height="16" forecolor="#FFFFFF"/>
+				<textElement>
+					<font isBold="true" isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[User Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="184" y="4" width="68" height="16" forecolor="#FFFFFF"/>
+				<textElement>
+					<font isBold="true" isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Library]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="272" y="4" width="68" height="16" forecolor="#FFFFFF"/>
+				<textElement>
+					<font isBold="true" isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[User Role]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="9" y="3" width="84" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dateTime}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="3" width="84" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{username}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="3" width="84" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{library_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="272" y="3" width="84" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{role}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="522" y="0" width="12" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[of]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="534" y="0" width="18" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Times-BoldItalic"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="480" y="0" width="32" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Times-BoldItalic"/>
+				</textElement>
+				<text><![CDATA[Page]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="507" y="0" width="15" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Times-BoldItalic"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

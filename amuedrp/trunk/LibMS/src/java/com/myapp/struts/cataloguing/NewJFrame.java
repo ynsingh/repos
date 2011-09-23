@@ -11,7 +11,11 @@
 
 package com.myapp.struts.cataloguing;
 
-
+import com.sun.org.apache.bcel.internal.generic.Select;
+import java.security.spec.ECField;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -20,6 +24,7 @@ package com.myapp.struts.cataloguing;
 public class NewJFrame extends javax.swing.JFrame {
     static String button="";
     static String filename="";
+    static String fileabsolutepath="";
     /** Creates new form NewJFrame */
     public NewJFrame() {
         initComponents();
@@ -39,7 +44,7 @@ public class NewJFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("Form"); // NOI18N
 
-        jFileChooser1.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
+        jFileChooser1.setFileSelectionMode(javax.swing.JFileChooser.FILES_AND_DIRECTORIES);
         jFileChooser1.setName("jFileChooser1"); // NOI18N
         jFileChooser1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -51,7 +56,7 @@ public class NewJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 582, Short.MAX_VALUE)
+            .addGap(0, 435, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -75,7 +80,8 @@ public class NewJFrame extends javax.swing.JFrame {
         
             // TODO add your handling code here:
         button = evt.getActionCommand().toString();
-        filename = jFileChooser1.getCurrentDirectory().getAbsolutePath().toString().concat("/");
+        filename = jFileChooser1.getCurrentDirectory().toString().concat("/");
+        fileabsolutepath=jFileChooser1.getSelectedFile().getAbsolutePath();
 
            System.out.println("Action command="+ button +"&&&&&&&&&&&&&&&&&&&&&&& this is the path of the :" + jFileChooser1.getCurrentDirectory().getAbsoluteFile().getPath().toString().concat("/"));
         //System.out.println("&&&&&&&&&&&&&&&&&&&&&&& this is the path of the :" + evt.toString());
@@ -99,10 +105,27 @@ public class NewJFrame extends javax.swing.JFrame {
          return path;
 
     }
+  public String jFileChooser1ActionPerformedFilepath(NewJFrame obj) {
+
+            // TODO add your handling code here:
+
+       // System.out.println("&&&&&&&&&&&&&&&&&&&&&&& this is the path of the :" + evt.toString());
+            String path="";
+
+            path=fileabsolutepath;
+            System.out.println("&&&&&&&&&&&&&&&&&&&&&&& this is the path of the user defined function is called absolute path :" + fileabsolutepath);
+            obj.setVisible(false);
+            if(obj.button.equalsIgnoreCase("CancelSelection")){
+                obj.setVisible(false);
+            }
+
+         return path;
+
+    }
     /**
     * @param args the command line arguments
     */
- /*
+ 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -110,7 +133,7 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
-    } */
+    } 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser jFileChooser1;

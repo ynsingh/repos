@@ -36,7 +36,13 @@ locale1=(String)session.getAttribute("locale");
 
             document.form1.submit();
         }
+
+        function loadHelp()
+        {
+            window.status="Press F1 for Help";
+        }
     </script>
+
 
 
 </head>

@@ -15,6 +15,7 @@
 <meta name="Mayank Saxena" content="MCA,AMU">
 <title>Member LogIn Page</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <script language="javascript" type="text/javascript">
 /*
 * Returns an new XMLHttpRequest object, or false if the browser
@@ -132,6 +133,10 @@ function quit()
     location.href="<%=request.getContextPath()%>/OPAC/OPACmain.jsp";
 }
 
+function loadHelp()
+{
+    window.status="Press F1 for Help";
+}
 
 </script>
 <style type="text/css">
@@ -175,7 +180,7 @@ locale1=(String)session.getAttribute("locale");
         
 %>
 
-    </head><body>
+    </head><body onload="loadHelp()">
     <%! String message;%>
     
    
@@ -190,8 +195,8 @@ locale1=(String)session.getAttribute("locale");
 
  <table  align="<%=align%>" dir="<%=rtl%>" width="300px" height="200px" style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
            <tr><td dir="<%=rtl%>" style="background-color: #c0003b;color:white;" colspan="2" class="btn1" height="30px"><b><%=resource.getString("opac.myaccount.memberlogin")%></b> </td></tr>
-            <tr><td dir="<%=rtl%>" width="100px" class="btn1" align="<%=align%>"><%=resource.getString("opac.myaccount.memberid")%></td><td dir="<%=rtl%>"><input id="TXTMEMID"  name="TXTMEMID" type="text"></td></tr>
-        <tr><td dir="<%=rtl%>" class="btn1" align="<%=align%>"><%=resource.getString("opac.myaccount.password")%></td><td dir="<%=rtl%>"><input id="TXTPASS" name="TXTPASS" type="password">
+            <tr><td dir="<%=rtl%>" width="100px" class="btn1" align="<%=align%>"><%=resource.getString("opac.myaccount.memberid")%></td><td dir="<%=rtl%>"><input id="TXTMEMID"  name="TXTMEMID" type="text" onfocus="statwords('Enter Your User Name which you have recieved through email')" onblur="loadHelp()" ></td></tr>
+        <tr><td dir="<%=rtl%>" class="btn1" align="<%=align%>"><%=resource.getString("opac.myaccount.password")%></td><td dir="<%=rtl%>"><input id="TXTPASS" name="TXTPASS" type="password" onfocus="statwords('Enter Password which you have recieved through email')" onblur="loadHelp()" >
                
 
 

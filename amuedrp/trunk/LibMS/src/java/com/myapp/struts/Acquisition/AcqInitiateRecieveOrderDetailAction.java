@@ -22,7 +22,7 @@ import org.apache.commons.lang.StringUtils;
  * @author maqbool
  */
 public class AcqInitiateRecieveOrderDetailAction extends org.apache.struts.action.Action {
-    
+
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
    AcquisitionDao ado=new AcquisitionDao();
@@ -33,7 +33,7 @@ public class AcqInitiateRecieveOrderDetailAction extends org.apache.struts.actio
    AcqRecievingHeaderId acqrchid=new AcqRecievingHeaderId();
    AcqRecievingDetails acqa=new AcqRecievingDetails();
     AcqRecievingDetailsId acqaid=new AcqRecievingDetailsId();
-   
+
         String delimiter1 = ";";
         String delimiter2 = ",";
         String items[];
@@ -45,11 +45,11 @@ public class AcqInitiateRecieveOrderDetailAction extends org.apache.struts.actio
         String partial_recieved[];
         String partial_recieved_qty;
         String partial_recieved_title;
-   
+
     private int no_of_copies;
     private int title_id;
-        
-   
+
+
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -59,8 +59,8 @@ public class AcqInitiateRecieveOrderDetailAction extends org.apache.struts.actio
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
         AcqOrderManagementActionForm acqbibform=(AcqOrderManagementActionForm)form;
-        
-       
+
+
             String vendor=acqbibform.getVendor();
         System.out.println(vendor);
         int approval_item_id=acqbibform.getApproval_item_id();
@@ -70,13 +70,13 @@ public class AcqInitiateRecieveOrderDetailAction extends org.apache.struts.actio
         String recieved_date=acqbibform.getRecieved_date();
         String recieved_by=acqbibform.getRecieved_by();
         String order_no=acqbibform.getOrder_no();
-       
+
         String approval_type=acqbibform.getApproval_type();
         String list3=acqbibform.getList3();
         String list2=acqbibform.getList2();
         System.out.println("fdgdgdgdgdgfdgfdgfdgfnmbmbmbmn"+list2+"LIST!!!!!!!!!!!!!!"+list3);
         String list1=acqbibform.getList1();
-        System.out.println("fdgdgdgdgdgfdgfdgfdgfnmbmbmbmn"+list1);      
+        System.out.println("fdgdgdgdgdgfdgfdgfdgfnmbmbmbmn"+list1);
         ArrayList<Integer> l1=new ArrayList<Integer>();
         if(StringUtils.isNotEmpty(list2)&& !list2.equalsIgnoreCase("undefined"))
         {
@@ -101,7 +101,7 @@ public class AcqInitiateRecieveOrderDetailAction extends org.apache.struts.actio
          acqrch.setId(acqrchid);
 
          ado.insert7(acqrch);
-         
+
 // For All Copy Selection
 if(!l1.isEmpty())
         {
@@ -117,7 +117,7 @@ if(!l1.isEmpty())
 
 
       System.out.println("@@@@@@@@@@@@@@@@@"+aa2.size());
-     
+
       for(int k=0;k<aa2.size();k++)
       {
       int x =aa2.get(k).getApprovalItemId();
@@ -141,7 +141,7 @@ if(!l1.isEmpty())
          ado.insert5(acqa);
 
           AcqApproval acqbibdtail1 = ado.BibliobyControlId3(library_id, sub_library_id, con_no,x);
-           
+
 
                  acqbibdtail1.setStatus("Ordered/FullyRecieved");
 
@@ -189,10 +189,10 @@ if(!l1.isEmpty())
         }
        }
 }
-    
+
 /// End For all copy selection
-       
- 
+
+
        //  AcqBibliographyDetails acqbib1=new AcqBibliographyDetails();
         // AcqBibliographyDetailsId acqbibid1=new AcqBibliographyDetailsId();
         //  List<AcqOrder1> aa2=ado.BibliobyControlId2(library_id, sub_library_id, con_no,order_no);
@@ -222,10 +222,10 @@ if(!l1.isEmpty())
        }
        }
 
-     
+
 
      //  System.out.println("itemsaaaaaaaaaaaaaaaa"+items2);
-    
+
        if(!StringUtils.isEmpty(list1));
        {
            String items3[]=list1.split(delimiter1);
@@ -278,12 +278,12 @@ if(!l1.isEmpty())
             acqa.setRecievedCopies(selected_copies);
             acqa.setControlNo(control_no);
             acqa.setUnitPrice(unit_price);
-           
+
              ado.insert5(acqa);
 
               AcqApproval acqbibdtail1 = ado.BibliobyControlId3(library_id, sub_library_id, control_no,x);
            acqbibdtail1.setNoOfCopies(sub_no_of_copies);
-          
+
              if(sub_no_of_copies==0)
          {
 
@@ -301,12 +301,12 @@ if(!l1.isEmpty())
        if(sub_no_of_copies==0)
          {
                  aa3.get(j).setRecievingStatus("Fully Recieved");
-               
+
          }
          else{
               aa3.get(j).setRecievingStatus("Partially Recieved");
          }
-        
+
 aa3.get(j).setRecievingNo(recieving_no);
  ado.update2(aa3.get(j));
          }
@@ -328,13 +328,13 @@ aa3.get(j).setRecievingNo(recieving_no);
             acqa.setRecievedCopies(selected_copies);
             acqa.setControlNo(control_no);
             acqa.setUnitPrice(unit_price);
-           
+
             ado.insert5(acqa);
 
 
             AcqBibliographyDetails acqbibdtail2=ado.BibliobyControlIdonApproval(library_id, sub_library_id,control_no);
 
-         
+
             acqbibdtail2.setNoOfCopies(sub_no_of_copies);
 
             ado.update(acqbibdtail2);
@@ -346,7 +346,7 @@ aa3.get(j).setRecievingNo(recieving_no);
        if(sub_no_of_copies==0)
          {
                  aa3.get(j).setRecievingStatus("Fully Recieved");
-                
+
          }
          else{
               aa3.get(j).setRecievingStatus("Partially Recieved");
@@ -355,26 +355,26 @@ aa3.get(j).setRecievingNo(recieving_no);
          ado.update2(aa3.get(j));
            }
 
-            
+
         }
             }
         }
-      
+
        catch(Exception e)
         {
             System.out.println("SerialFinalDemandAction:"+e+"*******************");
         }
-     
-   
+
+
 
 //###############
-        
 
-         
+
+
 
          String msg="Order Recieved Successfully";
         request.setAttribute("msg",msg);
-         
+
     }
 
        }

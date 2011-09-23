@@ -11,6 +11,9 @@
 
 <title>Simple Search...</title>
 <%
+
+
+
         List libRs = (List)session.getAttribute("libRs");
 
         System.out.println(libRs.size());
@@ -64,6 +67,7 @@ locale1=(String)session.getAttribute("locale");
 
     %>
 <link rel="stylesheet" href="/LibMS/css/page.css"/>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <script language="javascript" type="text/javascript">
 /*
 * Returns an new XMLHttpRequest object, or false if the browser
@@ -323,6 +327,7 @@ else{
       // Handler for checkbox's click event.  Calls toggleTransliteration to toggle
       // the transliteration state.
       function checkboxClickHandler() {
+        window.status="Press F1 for Help";
         transliterationControl.toggleTransliteration();
       }
 
@@ -349,6 +354,10 @@ else{
       }
       google.setOnLoadCallback(onLoad);
 
+function loadHelp()
+{
+    window.status="Press F1 for Help";
+}
     </script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard.js" charset="UTF-8"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
@@ -362,15 +371,21 @@ else{
 </td></tr>
     <tr dir="<%=rtl%>"><td>
    <div id='translControl'>
-      <input type="checkbox" id="checkboxId" onclick="javascript:checkboxClickHandler();javascript:DisBox();javascript:languageChangeHandler()">
+     
       <html:hidden property="checkbox" styleId="checkbox" name="SimpleSearchActionForm"/>
-      <%=resource.getString("cataloguing.catbiblioentry.selectlang")%><select id="languageDropDown" onchange="javascript:languageChangeHandler()"></select>
+      <input type="checkbox" id="checkboxId" onclick="javascript:checkboxClickHandler();javascript:DisBox();javascript:languageChangeHandler()">
+       
+      <%=resource.getString("cataloguing.catbiblioentry.selectlang")%>
+
+    
+      <select id="languageDropDown" onchange="javascript:languageChangeHandler()"></select>
+    
       <html:hidden property="language" styleId="language" name="SimpleSearchActionForm"/>
     </div>
       </td></tr>
   <tr style="background-color:#e0e8f5;"><td  dir="<%=rtl%>" >
           <table dir="<%=rtl%>">
-              <tr><td dir="<%=rtl%>" ><%=resource.getString("opac.simplesearch.enterwordorphrase")%></td><td><input type="text" dir="<%=rtl%>" id="TXTPHRASE" name="TXTPHRASE" class="keyboardInput"></td></tr>
+              <tr><td dir="<%=rtl%>" ><%=resource.getString("opac.simplesearch.enterwordorphrase")%></td><td><input type="text" dir="<%=rtl%>" id="TXTPHRASE" name="TXTPHRASE" class="keyboardInput" onfocus="statwords('Enter Author/Title/Publisher of the book')" onblur="loadHelp()" ></td></tr>
               <tr>   <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.connectwordas")%></td><td><select name="CMBCONN" dir="<%=rtl%>" size="1" id="CMBCONN">
 <option selected dir="<%=rtl%>" value="or"><%=resource.getString("opac.simplesearch.or")%></option>
 <option dir="<%=rtl%>" value="and"><%=resource.getString("opac.simplesearch.and")%></option>
@@ -426,10 +441,10 @@ else{
                                 </select>
                                </td>
                                <td>
-                                   <input type="text" dir="<%=rtl%>" id="TXTYR1"  name="TXTYR1" align="<%=align%>" disabled="true" style="width:50px">
+                                   <input type="text" dir="<%=rtl%>" id="TXTYR1"  name="TXTYR1" align="<%=align%>" disabled="true" style="width:50px" onfocus="statwords('Enter Year')" onblur="loadHelp()" >
                                </td>
 <td>
-    <input type="text" id="TXTYR2"  align="<%=align%>" name="TXTYR2" dir="<%=rtl%>" disabled="true" style="width:50px">
+    <input type="text" id="TXTYR2"  align="<%=align%>" name="TXTYR2" dir="<%=rtl%>" disabled="true" style="width:50px" onfocus="statwords('Enter Year')"  onblur="loadHelp()" >
 </td></tr>
  </table>
  </td></tr></table>

@@ -87,6 +87,7 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 }
 function search() {
+    window.status="Press F1 for Help";
 
     var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
 
@@ -148,7 +149,10 @@ if(ndValue=="<%=sublib_id%>")
 }
 
 }
-
+function loadHelp()
+{
+    window.status="Press F1 for Help";
+}
 </script>
 
 
@@ -263,6 +267,7 @@ locale1=(String)session.getAttribute("locale");
 
 </head>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="search();">
    <%-- <%if(page.equals(true)){%>--%>
 
@@ -305,13 +310,13 @@ locale1=(String)session.getAttribute("locale");
 
               
               <tr><td style="width:130px" align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.feedback.name")%>*:</td><td>
-                 <input type="text" id="name" name="name" dir="<%=rtl%>">
+                 <input type="text" id="name" name="name" dir="<%=rtl%>" onfocus="statwords('Enter Your Name')" onblur="loadHelp()"  >
              </td></tr>
                <tr><td style="width:130px" align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.feedback.email")%>*:</td><td>
-                 <input type="text" id="email" name="email" dir="<%=rtl%>">
+                 <input type="text" id="email" name="email" dir="<%=rtl%>" onfocus="statwords('Enter Your Email Id')" onblur="loadHelp()" >
              </td></tr>
                <tr><td style="width:130px" align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.feedback.comments")%>*:</td><td>
-                 <input type="text" id="comments" name="comments" dir="<%=rtl%>"/>
+                 <input type="text" id="comments" name="comments" dir="<%=rtl%>" onfocus="statwords('Write Your Comments or Suggestions. Thanks')" onblur="loadHelp()"  />
              </td></tr>
                <tr><td></td><td>
               <input class="btn" type="submit" name="Submit" dir="<%=rtl%>" value="<%=resource.getString("opac.feedback.submit")%>" align="right">   <input class=btn type="reset" value="<%=resource.getString("opac.feedback.clear")%>" align="left">

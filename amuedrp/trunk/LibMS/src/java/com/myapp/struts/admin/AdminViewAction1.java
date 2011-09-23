@@ -758,7 +758,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
 
                         
                   String path = servlet.getServletContext().getRealPath("/");
-              obj=new Email(path,staffobj.getEmailId(),password,"Approval of request for library Registration","Your request for Library registration has been Successfully Approved .\n User ID :"+login_id+"\n Password :"+password+"\n","\n\nDear "+logobj.getUserName()+",\n","With Regards\nWebAdmin\nLibMS");
+              obj=new Email((String)session.getAttribute("webmail"),(String)session.getAttribute("webpass"),path,staffobj.getEmailId(),password,"Approval of request for library Registration","Your request for Library registration has been Successfully Approved .\n User ID :"+login_id+"\n Password :"+password+"\n","\n\nDear "+logobj.getUserName()+",\n","With Regards\nWebAdmin\nLibMS");
  
             executor.submit(new Runnable() {
 
@@ -810,7 +810,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
 
 
    String     path = servlet.getServletContext().getRealPath("/");
-      obj=new Email(path,adminobj.getAdminEmail(),"","Approval of request for library Registration","Sorry, Your request for Library registration had not been Approved .\n" ,"\n\nDear "+adminobj.getAdminFname()+" "+adminobj.getAdminLname()+",\n","With Regards\nWebAdmin\nLibMS");
+      obj=new Email((String)session.getAttribute("webmail"),(String)session.getAttribute("webpass"),path,adminobj.getAdminEmail(),"","Approval of request for library Registration","Sorry, Your request for Library registration had not been Approved .\n" ,"\n\nDear "+adminobj.getAdminFname()+" "+adminobj.getAdminLname()+",\n","With Regards\nWebAdmin\nLibMS");
 
  
             executor.submit(new Runnable() {

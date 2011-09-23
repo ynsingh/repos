@@ -16,7 +16,7 @@ import org.apache.struts.action.ActionMessage;
  * @author maqbool
  */
 public class AcqOrderManagementActionForm extends org.apache.struts.action.ActionForm {
-    
+
     private String order_no;
     private String vendor;
     private String button;
@@ -34,9 +34,30 @@ public class AcqOrderManagementActionForm extends org.apache.struts.action.Actio
     private int title_id;
     private String receiving_no;
      private String recieved_date;
-     private String         recieved_by;
+     private String recieved_by;
      private String approval_type;
      private String list1,list2,list3;
+     private String invoice_no;
+     private String invoice_date;
+     private String budget_head_id;
+
+
+
+    public String getInvoice_date() {
+        return invoice_date;
+    }
+
+    public void setInvoice_date(String invoice_date) {
+        this.invoice_date = invoice_date;
+    }
+
+    public String getInvoice_no() {
+        return invoice_no;
+    }
+
+    public void setInvoice_no(String invoice_no) {
+        this.invoice_no = invoice_no;
+    }
 
     public String getUnit_price() {
         return unit_price;
@@ -110,11 +131,11 @@ private int approval_item_id;
     public void setReceiving_no(String receiving_no) {
         this.receiving_no = receiving_no;
     }
-    
+
   /**
      * @return
      */
-   
+
     /**
      *
      */
@@ -130,7 +151,7 @@ private int approval_item_id;
      * @return
      */
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-       
+
         return null;
     }
 
@@ -253,5 +274,13 @@ private int approval_item_id;
         this.title_id = title_id;
     }
 
-    
+
+     public String getBudget_head_id() {
+        return budget_head_id;
+    }
+
+    public void setBudget_head_id(String budget_head_id) {
+        this.budget_head_id = budget_head_id;
+    }
+
 }

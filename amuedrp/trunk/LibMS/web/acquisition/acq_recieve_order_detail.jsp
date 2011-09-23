@@ -82,23 +82,25 @@ function send()
 
 function validate()
 {
-    var list =top.f1.document.f.list.value;
-    var list1=top.f1.document.f.list1.value;
-    var list2 =top.f1.document.f.list2.value;
-    var list3=top.f1.document.f.list3.value;
-    alert ("List selected="+list+list1+list2+list3);
-  document.getElementById("list").value  = list;
-  document.getElementById("list1").value = list1;
-  document.getElementById("list2").value = list2;
-  document.getElementById("list3").value = list3;
-  if (isEmpty(list)!=true||isEmpty(list1)||isEmpty(list2)||isEmpty(list3))
+//alert("dd");
+var list = document.getElementById("list").value;
+    var list1=document.getElementById("list1").value;
+    var list2 =document.getElementById("list2").value;
+    var list3=document.getElementById("list3").value;
+  //  alert ("List selected="+list+list1+list2+list3);
+   
+  
+  
+  
+  if (list1!=""||list2!=""||list3!="")
   {
 
-    alert(list+list1+list2+list3);
+    //alert(list1+list2+list3);
         return true;
   }
   else
-     return false;
+    { alert("No List is Selected");
+        return false;}
 }
 
 function quit()
@@ -119,11 +121,11 @@ function quit()
 
     </head>
     <body>
-        <html:form method="post"  styleId="f" action="/acq_recieve_order_detail" style="position:absolute; left:20%; top:20%;">
+        <html:form method="post"  styleId="f" action="/acq_recieve_order_detail"   style="position:absolute; left:20%; top:20%;">
             <table border="1" class="table" width="900" align="center">
                 <html:hidden property="library_id" name="AcqOrderManagementActionForm" value="<%=library_id%>" />
                  <html:hidden property="sub_library_id" name="AcqOrderManagementActionForm" value="<%=sub_library_id%>" />
-               
+
             <tr>
            <td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Recieving Order Process</td>
        </tr>
@@ -152,7 +154,7 @@ function quit()
                        <td><html:text readonly="false" styleId="orderby" property="recieved_by" name="AcqOrderManagementActionForm" styleClass="textBoxWidth" />
 
                         </td>
-                        
+
 
                    </tr>
                    <tr>
@@ -161,10 +163,10 @@ function quit()
                          </td>
                    </tr>
                     <tr>
-                   <td><input type="text" name="list" id="list" value="" /></td>
-                       <td><input type="text" name="list1" id="list1" value="" /></td>
-                    <td><input type="text" name="list2" id="list2" value="" /></td>
-                    <td><input type="text" name="list3" id="list3" value="" /></td>
+                   <td><input type="hidden" name="list" id="list" value="" /></td>
+                       <td><input type="hidden" name="list1" id="list1" value="" /></td>
+                    <td><input type="hidden" name="list2" id="list2" value="" /></td>
+                    <td><input type="hidden" name="list3" id="list3" value="" /></td>
                    </tr>
 
         </table>
@@ -173,7 +175,7 @@ function quit()
  </td></tr>
         <tr>
                        <td align="center"> <input type="hidden" name="list" id="list" value="" />
-                       <input type="submit"   name="button" value="Process Order" class="txt1" onclick="return validate();" />
+                       <input type="submit"   name="button" value="Receive Order" class="txt1" onclick="return validate();" />
                     <input align="left" type="button" name="button" value="Cancel" class="txt1" onclick="return quit();"/></td>
 
 
@@ -195,7 +197,7 @@ function quit()
         </td>
         <tr><td>
                <table>
-                  
+
                </table>
 
             </td></tr>

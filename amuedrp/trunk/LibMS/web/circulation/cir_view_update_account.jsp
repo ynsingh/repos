@@ -93,6 +93,7 @@ locale1=(String)session.getAttribute("locale");
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.core.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.widget.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.datepicker.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 
          <script language="javascript" type="text/javascript">
 
@@ -636,6 +637,7 @@ else
 
   }
   function loaddata(){
+       window.status="Press F1 for Help";
       search();
       search1();
 search_dept();
@@ -669,7 +671,12 @@ $(document).ready(function()
 
 });
 </script>
-
+<script language="javascript" type="text/javascript">
+    function loadHelp()
+    {
+        window.status="Press F1 for Help";
+    }
+</script>
     </head>
 
     <body onload="loaddata()" >
@@ -683,9 +690,9 @@ $(document).ready(function()
                  
 
                        <table dir="<%=rtl%>" width="400px" align="center">
-                        <tr><td dir="<%=rtl%>" class="txtstyle" width="250px" align="<%=align%>" colspan="2" height="5px"><%=resource.getString("circulation.cir_createaccount1.memberid/loginid")%></td><td dir="<%=rtl%>" width="250px"><input type="text" id="mem_id"  name="mem_id" style="width: 160px" readonly  value="<%=mem_id%>"></td></tr>
+                        <tr><td dir="<%=rtl%>" class="txtstyle" width="250px" align="<%=align%>" colspan="2" height="5px"><%=resource.getString("circulation.cir_createaccount1.memberid/loginid")%></td><td dir="<%=rtl%>" width="250px"><input type="text" id="mem_id"  name="mem_id" style="width: 160px" readonly  value="<%=mem_id%>" onfocus="statwords('Member Id');" onblur="loadHelp()"></td></tr>
                         <tr><td dir="<%=rtl%>" colspan="2" height="5px"></td></tr>
-                        <tr><td dir="<%=rtl%>" class="txtstyle" colspan="2" align="<%=align%>" height="5px"><%=resource.getString("circulation.cir_createaccount1.memname")%></td><td dir="<%=rtl%>" ><input type="text"  name="mem_name" id="mem_name" readonly    value="<%=mem_name%>&nbsp;<%=last_name%>" style="width: 160px"></td></tr>
+                        <tr><td dir="<%=rtl%>" class="txtstyle" colspan="2" align="<%=align%>" height="5px"><%=resource.getString("circulation.cir_createaccount1.memname")%></td><td dir="<%=rtl%>" ><input type="text"  name="mem_name" id="mem_name" readonly    value="<%=mem_name%>&nbsp;<%=last_name%>" style="width: 160px"onfocus="statwords(' Edit Member Name ');" onblur="loadHelp()"></td></tr>
                         <tr><td dir="<%=rtl%>" colspan="2" height="5px"></td></tr>
                         <tr><td dir="<%=rtl%>" class="txtstyle" colspan="2" height="5px" align="<%=align%>" ><%=resource.getString("circulation.cir_newmember.email")%></td><td dir="<%=rtl%>" ><input type="text" readonly name="mail_id" id="mail_id"   name="Editbox2" value="<%=mail_id%>" style="width: 160px"/> </td></tr>
                         <tr><td dir="<%=rtl%>" colspan="2" height="5px"></td></tr>

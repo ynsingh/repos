@@ -24,10 +24,29 @@ public class ApprovalList implements Serializable{
    String acq_mode;
     String status;
     String author;
-     String recieving_no,order_no;
+   String recieving_no,order_no;
    String recieved_by;
    String recieved_date;
    String vendor_id;
+   String invoice_no;
+   String acq_budget_head_id;
+   Double amount;
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public String getInvoice_no() {
+        return invoice_no;
+    }
+
+    public void setInvoice_no(String invoice_no) {
+        this.invoice_no = invoice_no;
+    }
 
     public int getRecieved_copies() {
         return recieved_copies;
@@ -79,7 +98,7 @@ public class ApprovalList implements Serializable{
     }
 
 
-   
+
 
     public String getAuthor() {
         return author;
@@ -99,7 +118,7 @@ public class ApprovalList implements Serializable{
         this.conversion_rate = conversion_rate;
     }
 
-   
+
     public String getStatus() {
         return status;
     }
@@ -107,7 +126,7 @@ public class ApprovalList implements Serializable{
     public void setStatus(String status) {
         this.status = status;
     }
-  
+
 
     public String getAcq_mode() {
         return acq_mode;
@@ -158,7 +177,7 @@ String approval_no;
         this.control_no = control_no;
     }
 
-    
+
 
     public String getIsbn() {
         return isbn;
@@ -183,7 +202,15 @@ String approval_no;
     public void setTitle(String title) {
         this.title = title;
     }
-   
-    
+    public String getAcq_budget_head_id() {
+        return acq_budget_head_id;
+    }
+
+    public void setAcq_budget_head_id(String acq_budget_head_id) {
+        this.acq_budget_head_id = acq_budget_head_id;
+    }
+
+
+
 
 }

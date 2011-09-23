@@ -15,6 +15,7 @@
 
 
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 
  <style>
 
@@ -30,8 +31,14 @@
      .item{ padding-left: 10px;}
 
 </style>
+    <script language="javascript" type="text/javascript ">
+        function loadHelp()
+        {
+            window.status="Press F1 for Help";
+        }
+    </script>
 </head>
-<body bgcolor="#FFFFFF">
+<body bgcolor="#FFFFFF" onload="loadHelp()">
 
 
 <%!
@@ -45,14 +52,15 @@
     String locale1="en";
     String rtl="ltr";
     String align="left";
+    int tcount =0;
 %>
 
 <%
 
-
+if(session.getAttribute("browse_search_list")!=null){
 
  opacList = new ArrayList ();
-   int tcount =0;
+   
    int perpage=10;
    int tpage=0;
 opacList=(ArrayList)session.getAttribute("browse_search_list");
@@ -199,6 +207,159 @@ else
 
 
   </td></tr></table>
+
+  <%}else if(session.getAttribute("browse_search_list1")!=null){
+
+   opacList = new ArrayList ();
+
+   int perpage=10;
+   int tpage=0;
+opacList=(ArrayList)session.getAttribute("browse_search_list1");
+if(opacList!=null)
+    tcount=opacList.size();
+
+   fromIndex = (int)DataGridParameters.getDataGridPageIndex(request, "datagrid1");
+   if ((toIndex = fromIndex+10) >= tcount)
+   toIndex = tcount;
+   System.out.println("opacList="+tcount+" tcount="+tcount);
+   if(opacList!=null)request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
+   pageContext.setAttribute("tCount", tcount);
+
+
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
+<%
+  String Title=resource.getString("opac.simplesearch.title");
+  pageContext.setAttribute("Title", Title);
+  String MainEntry=resource.getString("opac.simplesearch.mainentry");
+  pageContext.setAttribute("MainEntry", MainEntry);
+  String LibraryID=resource.getString("opac.browse.table.Libraryid");
+  pageContext.setAttribute("LibraryID",LibraryID);
+
+%>
+
+    <table align="<%=align%>" dir="<%=rtl%>" width="1200x" height="400px" class="datagrid" style="border:solid 1px #e0e8f5;">
+
+
+
+        <tr style="background-color:#e0e8f5;"><td  width="800px" rowspan="2" dir="<%=rtl%>"  height="18px" align="center" colspan="2">
+
+
+		<%=resource.getString("opac.browse.browsesearchresult")%>
+
+
+
+
+
+        </td><td valign="top" align="center" dir="<%=rtl%>">
+    <%=resource.getString("opac.browse.bibliodetail")%>
+  </td></tr>
+  <tr style="background-color:#e0e8f5;" height="10px" dir="<%=rtl%>">
+  <td valign="top" rowspan="2" dir="<%=rtl%>">
+      <IFRAME  name="fr2" src="#" frameborder=0 scrolling="yes" height="400px"  id="fr2"></IFRAME>
+  </td>
+     </tr>
+     <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
+         <td colspan="2" align="center" valign="top" dir="<%=rtl%>" height="300px">
+
+
+
+
+<%
+
+
+
+
+if(tcount==0)
+{
+%>
+<p class="err"><%=resource.getString("global.norecordfound")%></p>
+<%}
+else
+{%>
+<table height="300px" dir="<%=rtl%>"><tr><td valign="top" dir="<%=rtl%>">
+<ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
+
+  <columns>
+
+
+
+    <column width="450">
+      <header value="${Title}" hAlign="left" styleClass="header" />
+      <item  styleClass="item"  value="${doc.title}" hyperLink="./viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2"   hAlign="left"/>
+    </column>
+
+    <column width="200">
+      <header value="${MainEntry}" hAlign="left" styleClass="header" />
+      <item  styleClass="item"  value="${doc.mainEntry}" hAlign="left"  hyperLink="./viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2"  />
+    </column>
+      <column width="150">
+      <header value="${LibraryID}" hAlign="left" styleClass="header" />
+      <item  styleClass="item"  value="${doc.id.libraryId}" hyperLink="./viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  hyperLinkTarget="fr2" hAlign="left" />
+    </column>
+ </columns>
+
+<rows styleClass="rows" hiliteStyleClass="hiliterows"/>
+  <alternateRows styleClass="alternaterows"/>
+
+  <paging size="10" count="${tCount}" custom="true" nextUrlVar="next"
+       previousUrlVar="previous" pagesVar="pages"/>
+
+</ui:dataGrid>
+</td></tr>
+<tr><td height="5px" style="margin:0px 0px 0px 0px;" >
+        <table width="900"  border=0 class="header">
+    <tr >
+<td align="left" width="10%" class="datagrid" dir="<%=rtl%>">
+<c:if test="${previous != null}">
+    <a style="color:white;" href="<c:out value="${previous}"/>"><%=resource.getString("global.previous")%></a>
+</c:if>&nbsp;
+</td>
+
+<td align="center" width="10%" class="datagrid" dir="<%=rtl%>">
+<c:forEach items="${pages}" var="page">
+<c:choose>
+  <c:when test="${page.current}">
+      <b><a style="color:white" href="<c:out value="${page.url}" />"><c:out value="${page.index}"/></a></b>
+  </c:when>
+  <c:otherwise>
+    <a style="color:white" href="<c:out value="${page.url}" />"><c:out value="${page.index}"/></a>
+  </c:otherwise>
+</c:choose>
+</c:forEach>
+</td>
+<td align="right"  dir="<%=rtl%>" width="10%" class="datagrid">&nbsp;
+<c:if test="${next != null}">
+<a style="color:white;" href="<c:out value="${next}"/>"><%=resource.getString("global.next")%></a>
+</c:if>
+</td>
+</tr>
+    </table></td></tr>
+<tr><td height="10px" dir="<%=rtl%>">
+
+    </td></tr></table>
+  <%}%>
+
+
+  </td></tr></table>
+
+
+
+  <%}%>
 
     </body>
 

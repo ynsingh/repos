@@ -107,10 +107,16 @@ function check1()
   }
 
 
+function loadHelp()
+    {
+        window.status="Press F1 for Help";
+
+    }
 
     </script>
+      <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 </head>
-<body>
+<body onload="loadHelp()" >
  
     <html:form method="post" onsubmit="return check1()" action="/memberRegistration">
        
@@ -130,7 +136,7 @@ function check1()
                 <table dir="<%=rtl%>" cellspacing="10px">
 
                     <tr><td dir="<%=rtl%>" rowspan="5" class="txt2"><%=resource.getString("systemsetup.manage_member.entermemtypeid")%><br><br>
-                        <input type="text" id="emptype_id" name="emptype_id" value=""/>
+                        <input type="text" id="emptype_id" name="emptype_id" value="" onfocus="statwords('Please Enter Valid Member Type Id ');" onblur="return loadHelp();"/>
                         </td><td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn" id="Button1" name="button1" value="<%=resource.getString("systemsetup.manage_notice.add")%>" onclick="return Add();" /></td></tr>
                     <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button2" class="btn" name="button1" value="<%=resource.getString("circulation.cir_member_reg.update")%>" onclick="return Update();" /></td></tr>
                     <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button3" name="button1" value="<%=resource.getString("circulation.cir_member_reg.view")%>" class="btn" onclick="return View();" /></td></tr>

@@ -219,13 +219,25 @@ font-weight:bold;
     font-size:12px;
     text-align:left;
     letter-spacing:1px;
-    width:148px;
+   text-decoration: none;
     valign:bottom;
 
 
 
 }
+.opac_table_textbox a
+{
+    color:blue;
+    font-family:Tahoma;
+    font-size:13px;
+    text-align:left;
+    letter-spacing:1px;
+   text-decoration: none;
+    valign:bottom;
 
+
+
+}
 
 .opac_mandatory
 {
@@ -457,3 +469,7 @@ font-size:12px;
    border-top-color: #1b435e;
    background: #1b435e;
    }
+
+  
+   
+   

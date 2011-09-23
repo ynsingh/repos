@@ -71,7 +71,7 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
           }
 
 
-        
+        System.out.println("I Am here");
         InputStream inputStream = null;
      
 
@@ -98,7 +98,7 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
             String map_table[] = new String[Math.max(sheet_column_size ,size)];
          
             map_table = (String[]) DAO.selectedcombo(map_table, (size), uploadForm);
-            for (int j = 0; j < size; j++) {
+            for (int j = 0; j < size-1; j++) {
                 System.out.println("selected combo box is" + j + ":::::: " + map_table[j]);
             }
             
@@ -172,6 +172,7 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                             }
 
                             int column_index = cell.getColumnIndex();
+                            System.out.println(table_name);
                             if (table_name.equals("bibliographic_details"))
                             {
                                 System.out.println("column index::::::::::::." + column_index);
@@ -389,7 +390,11 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                         }
 
                                          if (map_table[column_index].equals("bind_type")) {
-                                            genericobj.setColour(cellvalue.trim());
+                                            genericobj.setBindType(cellvalue.trim());
+
+                                        }
+                                         if (map_table[column_index].equals("status")) {
+                                            genericobj.setStatus(cellvalue.trim());
 
                                         }
 

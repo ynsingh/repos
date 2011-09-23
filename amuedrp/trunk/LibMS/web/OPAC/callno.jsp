@@ -27,6 +27,7 @@ body
      .item{ padding-left: 10px;}
 </style>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+ <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
  <script language="javascript" type="text/javascript">
 /*
 * Returns an new XMLHttpRequest object, or false if the browser
@@ -178,11 +179,175 @@ locale1=(String)session.getAttribute("locale");
 
     %>
 
+<script type="text/javascript">
+   function DisBox()
+{
+if(document.getElementById('checkboxId').checked)
+{
+document.getElementById("checkbox").value="Checked";
+}
+else{
+    document.getElementById("checkbox").value="Unchecked";
+}
+}
+</script>
+<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAApEiKekYWqFpDa_PStAFTMBRxcC-Fn9tK14QS9YKtPPoXy5_dfhQr8n6mPjQbdLIjMkUpUDQ7khVrfQ">
+        </script>
+        <script type="text/javascript">
+      // Load the Google Transliterate API
+      google.load("elements", "1", {
+            packages: "transliteration"
+          });
 
-    </head><body onload="search();fun();">
+      var transliterationControl;
+      function onLoad() {
+        var options = {
+            sourceLanguage: 'en',
+            destinationLanguage: ['ar','hi','kn','ml','ta','te'],
+            transliterationEnabled: true,
+            shortcutKey: 'ctrl+g'
+        };
+        // Create an instance on TransliterationControl with the required
+        // options.
+        transliterationControl =
+          new google.elements.transliteration.TransliterationControl(options);
+
+        // Enable transliteration in the textfields with the given ids.
+        var ids = [];
+        transliterationControl.makeTransliteratable(ids);
+
+        // Add the STATE_CHANGED event handler to correcly maintain the state
+        // of the checkbox.
+        transliterationControl.addEventListener(
+            google.elements.transliteration.TransliterationControl.EventType.STATE_CHANGED,
+            transliterateStateChangeHandler);
+
+        // Add the SERVER_UNREACHABLE event handler to display an error message
+        // if unable to reach the server.
+        transliterationControl.addEventListener(
+            google.elements.transliteration.TransliterationControl.EventType.SERVER_UNREACHABLE,
+            serverUnreachableHandler);
+
+        // Add the SERVER_REACHABLE event handler to remove the error message
+        // once the server becomes reachable.
+        transliterationControl.addEventListener(
+            google.elements.transliteration.TransliterationControl.EventType.SERVER_REACHABLE,
+            serverReachableHandler);
+
+        // Set the checkbox to the correct state.
+        document.getElementById('checkboxId').checked =
+          transliterationControl.isTransliterationEnabled();
+
+        // Populate the language dropdown
+        var destinationLanguage =
+          transliterationControl.getLanguagePair().destinationLanguage;
+        var languageSelect = document.getElementById('languageDropDown');
+        var supportedDestinationLanguages =
+          google.elements.transliteration.getDestinationLanguages(
+            google.elements.transliteration.LanguageCode.ENGLISH);
+        for (var lang in supportedDestinationLanguages) {
+          var opt = document.createElement('option');
+          opt.text = lang;
+          opt.value = supportedDestinationLanguages[lang];
+          if (destinationLanguage == opt.value) {
+            opt.selected = true;
+          }
+          try {
+            languageSelect.add(opt, null);
+          } catch (ex) {
+            languageSelect.add(opt);
+          }
+        }
+      }
+
+      // Handler for STATE_CHANGED event which makes sure checkbox status
+      // reflects the transliteration enabled or disabled status.
+      function transliterateStateChangeHandler(e) {
+        document.getElementById('checkboxId').checked = e.transliterationEnabled;
+      }
+
+      // Handler for checkbox's click event.  Calls toggleTransliteration to toggle
+      // the transliteration state.
+      function checkboxClickHandler() {
+          window.status="Press F1 for Help";
+        transliterationControl.toggleTransliteration();
+      }
+
+           // Handler for dropdown option change event.  Calls setLanguagePair to
+      // set the new language.
+      function languageChangeHandler() {
+                  var keyValue = document.getElementById('languageDropDown').options[document.getElementById('languageDropDown').selectedIndex].value;
+              document.getElementById("language").value=keyValue;
+        var dropdown = document.getElementById('languageDropDown');
+        transliterationControl.setLanguagePair(
+            google.elements.transliteration.LanguageCode.ENGLISH,
+            dropdown.options[dropdown.selectedIndex].value);
+      }
+
+      // SERVER_UNREACHABLE event handler which displays the error message.
+      function serverUnreachableHandler(e) {
+        document.getElementById("errorDiv").innerHTML =
+            "Transliteration Server unreachable";
+      }
+
+      // SERVER_UNREACHABLE event handler which clears the error message.
+      function serverReachableHandler(e) {
+        document.getElementById("errorDiv").innerHTML = "";
+      }
+      google.setOnLoadCallback(onLoad);
+      function loadHelp()
+      {
+          window.status="Press F1 for Help";
+      }
+
+    </script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard.js" charset="UTF-8"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
+</head>
+<body onload="checkboxClickHandler();search();fun();">
+    <html:form  method="post" action="/OPAC/SearchByCallNo" target="f1" styleId="Form1">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </head><body >
     <%--<%if(page.equals(true)){%>--%>
 
-<html:form method="post" action="/OPAC/SearchByCallNo" target="f1" styleId="Form1">
+
     <table align="<%=align%>" dir="<%=rtl%>" width="1200x" class="datagrid" height="400px"  style="border:solid 1px #e0e8f5;">
 
 
@@ -197,10 +362,22 @@ locale1=(String)session.getAttribute("locale");
         </td></tr>
    <tr style="background-color:#e0e8f5;" dir="<%=rtl%>"><td width="800px" rowspan="2" dir="<%=rtl%>">
           <table>
-              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.callno.entercallno")%></td><td>
-                      <input id="TXTKEY" dir="<%=rtl%>"  name="TXTKEY" type="text">
-<input id="TXTPAGE" value="callno" dir="<%=rtl%>" name="TXTPAGE" type="hidden">
+               <tr><td dir="<%=rtl%>" colspan="2">
+                       <div id='translControl'>
+      <input type="checkbox" id="checkboxId" onclick="javascript:checkboxClickHandler();javascript:DisBox();javascript:languageChangeHandler()">
+      <html:hidden property="checkbox" styleId="checkbox" name="CallNoSearchActionForm"/>
+      <%=resource.getString("cataloguing.catbiblioentry.selectlang")%><select id="languageDropDown" onchange="javascript:languageChangeHandler()"></select>
+      <html:hidden property="language" styleId="language" name="CallNoSearchActionForm"/>
+    </div>
+                   </td>
+</tr>
 
+<tr><td dir="<%=rtl%>" >
+                     
+                      <%=resource.getString("opac.callno.entercallno")%></td><td>
+        <input id="TXTKEY" dir="<%=rtl%>"  name="TXTKEY" type="text" onfocus="statwords('Enter Call Number')">
+<input id="TXTPAGE" value="callno" dir="<%=rtl%>" name="TXTPAGE" type="hidden">
+                  </td>
 </tr>
 
 

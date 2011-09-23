@@ -87,7 +87,7 @@ Locale locale=null;
         admin_lname=adminRegistrationActionForm.getAdmin_lname();
         admin_designation=adminRegistrationActionForm.getAdmin_designation();
         admin_email=adminRegistrationActionForm.getAdmin_email();
-        admin_password=adminRegistrationActionForm.getAdmin_password();
+       // admin_password=adminRegistrationActionForm.getAdmin_password();
         library_name=adminRegistrationActionForm.getLibrary_name();
         courtesy=adminRegistrationActionForm.getCourtesy();
         gender=adminRegistrationActionForm.getGender();
@@ -264,7 +264,7 @@ if(status.equalsIgnoreCase("Registered"))
                     Login login =LoginDAO.searchLoginID(user_id);
                     
                     login.setUserName(admin_fname + " "+admin_lname);
-                    login.setPassword(admin_password);
+                  //  login.setPassword(admin_password);
                     
                     result=LoginDAO.update1(login);
                     

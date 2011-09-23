@@ -25,11 +25,11 @@ import org.apache.struts.action.ActionMapping;
  * @author EdRP-05
  */
 public class AcqBudgetHeadAddAction extends org.apache.struts.action.Action {
-    
+
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
-  
+
+
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -38,22 +38,22 @@ public class AcqBudgetHeadAddAction extends org.apache.struts.action.Action {
         HttpSession session = request.getSession();
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
-      
+
 
         String budgethead_id=(String)lf.getBudgethead_id();
         String button=lf.getButton();
         AcqBudget l=new AcqBudget();
         AcqBudgetId li=new AcqBudgetId();
         String budegetheadname = lf.getBudget_name();
-        
-        
+
+
         if(button.equals("Submit")){
             AcqBudget lcheck = (AcqBudget)BudgetDAO.getLocationByName(library_id,budegetheadname);
         if(lcheck==null){
         l.setBudgetDesc(lf.getBudgethead_description());
         l.setBudgetheadName(lf.getBudget_name());
         li.setLibraryId(library_id);
-        
+
         li.setBudgetheadId(lf.getBudgethead_id());
         l.setId(li);
         BudgetDAO.insert(l);
@@ -77,7 +77,7 @@ public class AcqBudgetHeadAddAction extends org.apache.struts.action.Action {
         l.setBudgetDesc(lf.getBudgethead_description());
         l.setBudgetheadName(lf.getBudget_name());
         li.setLibraryId(library_id);
-        
+
         li.setBudgetheadId(lf.getBudgethead_id());
         l.setId(li);
         BudgetDAO.update(l);

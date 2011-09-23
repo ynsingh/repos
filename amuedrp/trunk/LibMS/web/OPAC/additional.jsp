@@ -19,6 +19,7 @@ body
 }
 </style>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <style type="text/css">
 a:active
 {
@@ -311,6 +312,7 @@ else{
       // Handler for checkbox's click event.  Calls toggleTransliteration to toggle
       // the transliteration state.
       function checkboxClickHandler() {
+        window.status="Press F1 for Help ";
         transliterationControl.toggleTransliteration();
       }
 
@@ -336,6 +338,10 @@ else{
         document.getElementById("errorDiv").innerHTML = "";
       }
       google.setOnLoadCallback(onLoad);
+      function loadHelp()
+      {
+          window.status="Press F1 for Help";
+      }
 
     </script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard.js" charset="UTF-8"></script>
@@ -359,10 +365,10 @@ else{
       </td></tr>
   <tr style="background-color:#e0e8f5;"><td  dir="<%=rtl%>" >
           <table>
-              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.author")%></td><td><input type="text" dir="<%=rtl%>" id="TXTAUTHOR"  name="TXTAUTHOR" class="keyboardInput"></td></tr>
-              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.title")%></td><td><input dir="<%=rtl%>" type="text" id="TXTTITLE" name="TXTTITLE" class="keyboardInput"></td></tr>
-              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.subject")%></td><td><input type="text" dir="<%=rtl%>" id="TXTSUBJECT"  name="TXTSUBJECT" class="keyboardInput"></td></tr>
-              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.otherfield")%></td><td><input dir="<%=rtl%>" type="text" id="TXTOTHER"  name="TXTOTHER" class="keyboardInput"></td></tr>
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.author")%></td><td><input type="text" dir="<%=rtl%>" id="TXTAUTHOR"  name="TXTAUTHOR" class="keyboardInput" onfocus="statwords('Enter Author Name Keyword')" onblur="loadHelp()" ></td></tr>
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.title")%></td><td><input dir="<%=rtl%>" type="text" id="TXTTITLE" name="TXTTITLE" class="keyboardInput" onfocus="statwords('Enter Title  Keyword')" onblur="loadHelp()" ></td></tr>
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.subject")%></td><td><input type="text" dir="<%=rtl%>" id="TXTSUBJECT"  name="TXTSUBJECT" class="keyboardInput"  onfocus="statwords('Enter Subject Keyword')" onblur="loadHelp()" ></td></tr>
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.otherfield")%></td><td><input dir="<%=rtl%>" type="text" id="TXTOTHER"  name="TXTOTHER" class="keyboardInput" onfocus="statwords('Enter Other Keyword')" onblur="loadHelp()" ></td></tr>
           </table>
       </td>
       <td  dir="<%=rtl%>"  align="<%=align%>">

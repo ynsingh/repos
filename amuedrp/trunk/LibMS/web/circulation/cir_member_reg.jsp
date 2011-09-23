@@ -43,9 +43,16 @@ locale1=(String)session.getAttribute("locale");
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Member Registration Page</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
+<script language="javascript" type="text/javascript">
+    function loadHelp()
+    {
+        window.status="Press F1 for Help";
+    }
+</script>
 
 </head>
-<body>
+<body onload="loadHelp()" onblur="loadHelp()">
 
     <html:form method="post" action="/memberreg">
 
@@ -76,7 +83,7 @@ locale1=(String)session.getAttribute("locale");
                 <table cellspacing="10px">
 
                     <tr><td dir="<%=rtl%>" rowspan="5" class="txt2"><%=resource.getString("circulation.cir_member_reg.entermemid")%><br><br>
-                            <html:text property="TXTMEMID" value="" /><br/>
+                            <html:text property="TXTMEMID" value="" onfocus="statwords('Please Enter Member Id for Circulation');" /><br/>
                           <html:messages id="err_name" property="TXTMEMID">
 				<bean:write name="err_name" />
 

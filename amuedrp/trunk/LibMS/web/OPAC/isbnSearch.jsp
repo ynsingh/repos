@@ -79,7 +79,7 @@ function showcount()
 
 <%
 
-
+if(session.getAttribute("documentdetail")!=null){
 
  opacList = new ArrayList ();
  opacList = (ArrayList)session.getAttribute("documentdetail");
@@ -118,6 +118,8 @@ locale1=(String)session.getAttribute("locale");
 
     %>
 <%
+ String ISBN="ISBN";
+  pageContext.setAttribute("ISBN", ISBN);
   String Title=resource.getString("opac.simplesearch.title");
   pageContext.setAttribute("Title", Title);
   String MainEntry=resource.getString("opac.simplesearch.mainentry");
@@ -173,10 +175,13 @@ else
 <ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
 
   <columns>
+ <column width="100">
+      <header value="${ISBN}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.isbn10}" hyperLink="./viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left"/>
+    </column>
 
 
-
-    <column width="450">
+    <column width="350">
       <header value="${Title}" hAlign="left" styleClass="header"/>
       <item  styleClass="item"  value="${doc.title}" hyperLink="./viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left"/>
     </column>
@@ -240,23 +245,75 @@ else
 
 
   </td></tr></table>
- <%-- <%}else {%>
-  <table align="left" width="1200x" height="400px" class="datagrid" style="border:solid 1px #e0e8f5;">
+  <%}else if(session.getAttribute("documentdetail1")!=null) {
+
+ opacList = new ArrayList ();
+ opacList = (ArrayList)session.getAttribute("documentdetail1");
+ int tcount=0;
+ if(opacList!=null)
+    tcount=opacList.size();
+   int perpage=10;
+   int tpage=0;
+   int pagesize = 10;
+     String page1 = (String)request.getParameter("pagesize");
+     //System.out.println("page1="+page1);
+   if (page1!=null) pagesize = Integer.parseInt(page1);
+
+   fromIndex = (int)DataGridParameters.getDataGridPageIndex(request, "datagrid1");
+   if ((toIndex = fromIndex+(int)pagesize) >= tcount)
+   toIndex = tcount;
+   //System.out.println("opacList="+opacList.size()+" tcount="+tcount);
+   if(opacList!=null)request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
+   pageContext.setAttribute("tCount", tcount);
+   pageContext.setAttribute("pagesize", pagesize);
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+<%
+ String ISBN="ISBN";
+  pageContext.setAttribute("ISBN", ISBN);
+  String Title=resource.getString("opac.simplesearch.title");
+  pageContext.setAttribute("Title", Title);
+  String MainEntry=resource.getString("opac.simplesearch.mainentry");
+  pageContext.setAttribute("MainEntry", MainEntry);
+  String CallNo=resource.getString("opac.simplesearch.callno.");
+  pageContext.setAttribute("CallNo",CallNo);
+  String LibraryID=resource.getString("opac.browse.table.Libraryid");
+  pageContext.setAttribute("LibraryID",LibraryID);
+
+%>
+
+
+<table align="<%=align%>" dir="<%=rtl%>" width="1200x" height="400px" class="datagrid" style="border:solid 1px #e0e8f5;">
 
 
 
-    <tr style="background-color:#e0e8f5;"><td valign="top" align="center">
-    Biblograhic Details
-  </td><td  width="800px" rowspan="2"  height="18px" align="center" colspan="2">
+    <tr style="background-color:#e0e8f5;"><td  width="800px" rowspan="2"  height="18px" align="center" colspan="2">
 
 
-		Search Result
+		<%=resource.getString("opac.browse.browsesearchresult")%>
 
 
 
 
 
-        </td></tr>
+        </td><td valign="top" align="center">
+    <%=resource.getString("opac.browse.bibliodetail")%>
+  </td></tr>
   <tr style="background-color:#e0e8f5;" height="10px">
   <td valign="top" rowspan="2">
   <IFRAME  name="fr2" src="#" frameborder=0 scrolling="NO" height="400px"  id="fr2"></IFRAME>
@@ -265,7 +322,7 @@ else
      <tr style="background-color:#e0e8f5;">
          <td colspan="2" align="center" valign="top" height="300px">
 
-
+        <!--     <input type="text" id="pagesize" onblur="showcount()"/>-->
 
 
 <%
@@ -276,42 +333,45 @@ else
 if(tcount==0)
 {
 %>
-<p class="err">No record Found</p>
+<p class="err"><%=resource.getString("global.norecordfound")%></p>
 <%}
 else
 {%>
-<table height="300px" ><tr><td valign="top">
+<table height="300px" dir="<%=rtl%>"><tr><td valign="top" dir="<%=rtl%>">
 <ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
 
   <columns>
+ <column width="100">
+      <header value="${ISBN}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.isbn10}" hyperLink="./viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left"/>
+    </column>
 
 
-
-    <column width="450">
-      <header value="Title" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.title}" hAlign="left"/>
+    <column width="350">
+      <header value="${Title}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.title}" hyperLink="./viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left"/>
     </column>
 
     <column width="200">
-      <header value="Author" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.author}" hAlign="left"  />
+      <header value="${MainEntry}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.mainEntry}" hyperLink="./viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left"   />
     </column>
 
     <column width="100">
-      <header value="Call No." hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.callno}" hAlign="left" />
+      <header value="${CallNo}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.callNo}" hyperLink="./viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2"  hAlign="left" />
     </column>
 
       <column width="150">
-      <header value="Library ID" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.library_id}" hAlign="left" />
+      <header value="${LibraryID}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.id.libraryId}" hyperLink="./viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left" />
     </column>
  </columns>
 
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
   <alternateRows styleClass="alternaterows"/>
 
-  <paging size="10" count="${tCount}" custom="true" nextUrlVar="next"
+  <paging size="${pagesize}" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
 
 </ui:dataGrid>
@@ -321,7 +381,7 @@ else
     <tr >
 <td align="left" width="10%" class="datagrid">
 <c:if test="${previous != null}">
-    <a style="color:white;" href="<c:out value="${previous}"/>">Previous</a>
+    <a style="color:white;" href="<c:out value="${previous}"/>"><%=resource.getString("global.previous")%></a>
 </c:if>&nbsp;
 </td>
 
@@ -339,7 +399,7 @@ else
 </td>
 <td align="right" width="10%" class="datagrid">&nbsp;
 <c:if test="${next != null}">
-<a style="color:white;" href="<c:out value="${next}"/>">Next</a>
+<a style="color:white;" href="<c:out value="${next}"/>"><%=resource.getString("global.next")%></a>
 </c:if>
 </td>
 </tr>
@@ -351,8 +411,7 @@ else
 
 
   </td></tr></table>
-  <%}%>--%>
-
+  <%}%>
     </body>
 
 </html>

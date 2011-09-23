@@ -11,6 +11,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <link rel="Stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 
 <html>
     <head>
@@ -273,10 +274,14 @@ var ndValue = em[i].firstChild.nodeValue;
 availableSelectList.innerHTML += ndValue+"\n";
 }
 }
+function loadHelp()
+{
+    window.status="Press F1 for Help";
+}
 
             </script>
     </head>
-    <body>
+    <body onload="loadHelp()">
         <html:form styleId="form1"  action="/manage_superadmin.do" method="post">
             <table  align="<%=align%>" dir="<%=rtl%>" width="50%" height="150px" style="background-color: white;border:#C7C5B2 1px solid;margin:0px 0px 0px 0px;">
                 <tr><td dir="<%=rtl%>" style="background-color: #7697BC;color:white;" colspan="2" class="btn1" height="30px"><b><%=resource.getString("login.managesuperadminaccount.superadminaccount")%></b> </td></tr>

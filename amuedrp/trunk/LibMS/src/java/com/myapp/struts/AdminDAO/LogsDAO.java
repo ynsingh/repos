@@ -6,6 +6,7 @@
 package com.myapp.struts.AdminDAO;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.admin.Log1;
+import com.myapp.struts.admin.LogInstitute;
 import com.myapp.struts.hbm.HibernateUtil;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,6 +22,31 @@ import org.hibernate.transform.Transformers;
  * @author System Administrator
  */
 public class LogsDAO {
+
+    public static List  searchlog(String search_by, String search_keyword, String sort_by){
+  Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            String sql="";
+
+            sql = "select * from logs   where "+search_by+" like '"+search_keyword +"%' order by "+sort_by+" asc";
+System.out.println("In SQL"+search_by+ "   "+search_keyword);
+            System.out.println(sql);
+
+          Query query =  session.createSQLQuery(sql)
+
+                    .addEntity(Logs.class)
+                    .setResultTransformer(Transformers.aliasToBean(LogInstitute.class));
+            return query.list();
+        }
+        finally {
+         //   session.close();
+        }
+}
+
+
 
     public static  List<Logs> searchlog(String library_id,String sublibrary_id,String year1,String year2,String userid)
 {

@@ -324,7 +324,7 @@ function check1()
    if (keyValue=="Select")
     {
 
-        alert("Select Budget Head");
+        alert("Select Source Currency");
 
         document.getElementById('budgethead_id').focus();
 

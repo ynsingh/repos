@@ -103,6 +103,8 @@ alert("HTTP error "+req.status+": "+req.statusText);
 
 
 function search1() {
+     window.status="Press F1 for Help";
+
 
     var keyValue = document.getElementById('TXTFACULTY').options[document.getElementById('TXTFACULTY').selectedIndex].value;
 
@@ -170,6 +172,8 @@ newOpt.text = ndValue1;
 
 
     </script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
+
  <script language="javascript" type="text/javascript">
 
 
@@ -284,7 +288,8 @@ function check1()
 
                </td></tr>
 <tr><td dir="<%=rtl%>" class="txt2"><%=resource.getString("systemsetup.manage_course.entercourseid")%></td><td>
-                        <input type="text" id="course_id" name="course_id" value=""/>
+                        <input type="text" id="course_id" name="course_id" value="" onfocus="statwords('Please Enter Valid Course Id ');" onblur="return loadHelp();"
+ />
                         </td>
 </tr></table>
             </td><td>

@@ -106,12 +106,19 @@ function isNumberKey(evt)
       window.location="<%=request.getContextPath()%>/systemsetup/manage_book.jsp";
       return false;
   }
+function loadHelp()
+    {
+        window.status="Press F1 for Help";
+
+    }
 
 
 
     </script>
+      <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
+
 </head>
-<body>
+<body onload="loadHelp()" >
 
     <html:form method="post" action="/addbook" onsubmit="return check1()">
 
@@ -155,7 +162,8 @@ function isNumberKey(evt)
                     <tr><td dir="<%=rtl%>"  colspan="2"><%=resource.getString("systemsetup.addbookcategory.noofdaypermited")%><br><br>
 
                         </td>
-                        <td dir="<%=rtl%>" align="<%=align%>"><html:text styleId="permitday" value="" onkeypress="return isNumberKey(event)" property="permitday"/><br>
+                        <td dir="<%=rtl%>" align="<%=align%>"><html:text styleId="permitday" value="" onkeypress="return isNumberKey(event)" property="permitday" onfocus="statwords('Please Enter Permissible no. of Days for No fine ');" onblur="return loadHelp();"
+/><br>
                             <font size="-2" color="blue">(<%=resource.getString("systemsetup.addbookcategory.onlynumericval")%>)</font></td>
                     </tr>
                     <tr><td dir="<%=rtl%>"  colspan="3" height="5px"> </td>
@@ -164,7 +172,9 @@ function isNumberKey(evt)
                   <tr><td dir="<%=rtl%>"  colspan="2"><%=resource.getString("systemsetup.addbookcategory.fineperday")%>
 
                         </td>
-                        <td dir="<%=rtl%>" align="<%=align%>"><font size="-1"><%=resource.getString("systemsetup.addbookcategory.rs")%> <html:text styleId="fineperdayRs"  onkeypress="return isNumberKey(event)" property="fineRs" value="" size="2"/><%=resource.getString("systemsetup.addbookcategory.paise")%> <input type="text" id="fineperdayPs" onkeypress="return isNumberKey(event)" name="finePs" size="2" value=""/>
+                        <td dir="<%=rtl%>" align="<%=align%>"><font size="-1"><%=resource.getString("systemsetup.addbookcategory.rs")%> <html:text styleId="fineperdayRs"  onkeypress="return isNumberKey(event)" property="fineRs" value="" size="2" onfocus="statwords('Please Enter Indian Rs. ');" onblur="return loadHelp();"
+/><%=resource.getString("systemsetup.addbookcategory.paise")%> <input type="text" id="fineperdayPs" onkeypress="return isNumberKey(event)" name="finePs" size="2" value="" onfocus="statwords('Please Enter Paise ');" onblur="return loadHelp();"
+/>
                             </font>  </td>
                     </tr>
 

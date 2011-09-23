@@ -1,5 +1,5 @@
 
-    <%@page import="com.myapp.struts.admin.LoginDoc,com.myapp.struts.hbm.*"%>
+    <%@page import="com.myapp.struts.admin.LoginDoc,com.myapp.struts.hbm.*,com.myapp.struts.admin.Traker"%>
     <jsp:include page="/admin/header.jsp" flush="true" />
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
@@ -59,6 +59,21 @@ locale1=(String)session.getAttribute("locale");
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
  
 </head>
+<div
+   style="  top:15%;
+   left:5px;
+   right:5px;
+      position: absolute;
+
+      visibility: show;">
+
+        <font size="-2"><br/>&nbsp;&nbsp;<i>You are here : </i>LibMS-><%
+        String p=request.getParameter("p");
+         String data=Traker.getActivity(p,(String)session.getAttribute("locale"));
+        out.println(data);
+
+        %></font>
+</div>
 <div
    style="  top:150px;
    left:5px;

@@ -1,38 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Jul 5, 2011 4:40:55 PM by Hibernate Tools 3.2.1.GA -->
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 9 Sep, 2011 9:33:59 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class catalog="libms" name="com.myapp.struts.hbm.Logs" table="logs">
-    <id column="sno" name="sno" unsaved-value="null">
-      <generator class="increment"/>
-    </id>
-    <property name="userId" type="string">
-      <column length="100" name="user_id"/>
-    </property>
-    <property name="date" type="string">
-      <column length="100" name="date"/>
-    </property>
-    <property name="time" type="string">
-      <column length="100" name="time"/>
-    </property>
-    <property name="classname" type="string">
-      <column length="100" name="classname"/>
-    </property>
-    <property name="url" type="string">
-      <column length="100" name="url"/>
-    </property>
-    <property name="actionMessage" type="string">
-      <column length="100" name="action_message"/>
-    </property>
-    <property name="actionResult" type="string">
-      <column length="100" name="action_result"/>
-    </property>
-    <property name="libraryId" type="string">
-      <column length="20" name="library_id"/>
-    </property>
-    <property name="sublibraryId" type="string">
-      <column length="20" name="sublibrary_id"/>
-    </property>
-     
-  </class>
+    <class name="com.myapp.struts.hbm.Logs" table="logs" catalog="libms">
+        <id name="sno" type="java.lang.Integer">
+            <column name="sno" />
+            <generator class="identity" />
+        </id>
+        <property name="userId" type="string">
+            <column name="user_id" length="100" />
+        </property>
+        <property name="date" type="string">
+            <column name="date" length="100" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" length="100" />
+        </property>
+        <property name="actionMessage" type="string">
+            <column name="action_message" length="100" />
+        </property>
+        <property name="actionResult" type="string">
+            <column name="action_result" length="100" />
+        </property>
+        <property name="libraryId" type="string">
+            <column name="library_id" length="20" />
+        </property>
+        <property name="sublibraryId" type="string">
+            <column name="sublibrary_id" length="20" />
+        </property>
+        <property name="username" type="string">
+            <column name="username" length="200" />
+        </property>
+        <property name="role" type="string">
+            <column name="role" length="50" />
+        </property>
+    </class>
 </hibernate-mapping>

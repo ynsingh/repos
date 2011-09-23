@@ -84,8 +84,15 @@ locale1=(String)session.getAttribute("locale");
 <link href="common" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/css/newformat.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/css/page.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
+<script language="javascript" type="text/javascript">
+function loadHelp()
+{
+    window.status="Press F1 for Help";
+}
+</script>
 </head>
-<body>
+<body onload="loadHelp()">
     <div
    style="  top:120px;
    left:5px;
@@ -106,7 +113,7 @@ locale1=(String)session.getAttribute("locale");
             <table dir="<%=rtl%>" align="center">
                  <tr>
     <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("systemsetup.manage_course.courseid")%></strong></td>
-    <td dir="<%=rtl%>"><html:text property="course_id" styleClass="textBoxWidth" value="<%=course.getId().getCourseId()%>" readonly="true"/></td>
+    <td dir="<%=rtl%>"><html:text property="course_id" styleClass="textBoxWidth" value="<%=course.getId().getCourseId()%>" readonly="true" onfocus="statwords('Unique Course Id')" onblur="loadHelp()" /></td>
   </tr>
 
     
@@ -130,7 +137,7 @@ locale1=(String)session.getAttribute("locale");
                </td></tr>
    <tr>
     <td dir="<%=rtl%>" width="150" align="<%=align%>"><strong><%=resource.getString("systemsetup.manage_course.coursename")%> </strong> </td>
-    <td dir="<%=rtl%>" width="200"> <html:text  property="course_name"  styleId="course_name" styleClass="textBoxWidth" readonly="<%=read%>" value="<%=course.getCourseName() %>" /></td>
+    <td dir="<%=rtl%>" width="200"> <html:text  property="course_name"  styleId="course_name" styleClass="textBoxWidth" readonly="<%=read%>" value="<%=course.getCourseName() %>" onfocus="statwords('Enter Courese Name')" onblur="loadHelp()" /></td>
     
 
   </tr>

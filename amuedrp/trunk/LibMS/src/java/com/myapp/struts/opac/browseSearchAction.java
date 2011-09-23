@@ -56,7 +56,7 @@ public class browseSearchAction extends org.apache.struts.action.Action {
  if(myform.getCheckbox().equals("Checked"))
  {
  System.out.println("Languagebbb");
- browse_search_list=opacSearchDAO.browseLangSearch(lib_id, sublib_id,phrase, doc_type, sort, field,myform.getLanguage());
+ browse_search_list=opacSearchDAO.browseLangSearch(lib_id, sublib_id,phrase, doc_type, sort, field,myform.getLanguage().toUpperCase());
 if(!browse_search_list.isEmpty())
 {
     for(int f=0;f<browse_search_list.size();f++)
@@ -69,7 +69,9 @@ if(!browse_search_list.isEmpty())
     }
 
 }
-  session.setAttribute("browse_search_list", bib);
+  System.out.println(bib.size());
+  session.removeAttribute("browse_search_list");
+  session.setAttribute("browse_search_list1", bib);
  }
  else{
      System.out.println("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNLanguagebbb"+lib_id+sublib_id+phrase+doc_type+sort+field);
@@ -89,6 +91,7 @@ if(!browse_search_list1.isEmpty())
 
 }
  System.out.println(bib1.size());
+ session.removeAttribute("browse_search_list1");
 session.setAttribute("browse_search_list", bib1);
  }
       //  List browse_search_list=opacSearchDAO.browseSearch(lib_id, sublib_id,phrase, doc_type, sort, field);

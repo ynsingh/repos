@@ -79,8 +79,16 @@ locale1=(String)session.getAttribute("locale");
 <link href="common" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/css/newformat.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/css/page.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
+
+<script language="javascript" type="text/javascript">
+  function  loadHelp()
+    {
+        window.status="Press F1 for Help";
+    }
+</script>
 </head>
-<body>
+<body onload="loadHelp()">
     <div
    style="  top:120px;
    left:5px;
@@ -114,7 +122,7 @@ locale1=(String)session.getAttribute("locale");
   </tr>
    <tr>
     <td dir="<%=rtl%>" width="150" align="<%=align%>"><strong><%=resource.getString("systemsetup.add_dept.deptname")%> </strong> </td>
-    <td dir="<%=rtl%>" width="200"> <html:text  property="dept_name"  styleClass="textBoxWidth" readonly="<%=read%>" value="<%=dept.getDeptName() %>" /></td>
+    <td dir="<%=rtl%>" width="200"> <html:text  property="dept_name"  styleClass="textBoxWidth" readonly="<%=read%>" value="<%=dept.getDeptName() %>" onfocus="statwords('Enter Department Name')" onblur="loadHelp()" /></td>
     
 
   </tr>

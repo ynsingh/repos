@@ -104,9 +104,7 @@ System.out.println("tcount="+tcount);
    if ((toIndex = fromIndex+4) >= requestList.size ())
    toIndex = requestList.size();
    request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
-   pageContext.setAttribute("tCount", tcount);
-   //}String pageurl = request.getContextPath()+"/admin/view_blocked_institute.jsp?p_datagrid_datagrid1_page_index=0&p_datagrid_datagrid1_order_index=0";
-    //pageContext.setAttribute("pageurl", pageurl);
+   pageContext.setAttribute("tCount", tcount); 
 %>
 
 

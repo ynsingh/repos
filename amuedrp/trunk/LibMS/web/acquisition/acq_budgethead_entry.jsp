@@ -58,7 +58,7 @@ function send()
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-       
+
         <link href="common" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
          <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
@@ -80,8 +80,8 @@ function send()
                 <tr><td>
                         <table width="400px" border="0" cellspacing="4" cellpadding="1" align="left">
                         <tr>
-                        
-                        
+
+
                         </tr>
 <tr><td colspan="5" height="10px"></td>
 </tr>

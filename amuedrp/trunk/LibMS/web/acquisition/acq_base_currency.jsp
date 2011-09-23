@@ -37,17 +37,16 @@ String year=date.substring(0,4);
 
 function check1()
 {
-     var keyValue = document.getElementById('budgethead_id').options[document.getElementById('budgethead_id').selectedIndex].value;
+     var keyValue = document.getElementById('sourcecurency').options[document.getElementById('sourcecurency').selectedIndex].value;
    if (keyValue=="Select")
     {
 
-        alert("Select Budget Head");
+        alert("Select Source Currency");
 
-        document.getElementById('budgethead_id').focus();
+        document.getElementById('sourcecurency').focus();
 
         return false;
     }
-
     return true;
   }
 
@@ -83,8 +82,8 @@ function check1()
                 <tr><td valign="top" align="center"> <br/>
                 <table cellspacing="10px">
                     <tr><td rowspan="5" class="txt2">Select Source Currency:
-                            <html:select property="base_currency_symbol" name="AcqCurrencyActionForm" style="width: 200px;">
-                                            <html:option value="Select">Please select</html:option>
+                            <html:select property="base_currency_symbol" name="AcqCurrencyActionForm" styleId="sourcecurency" style="width: 200px;">
+                                            <html:option value="Select">Select</html:option>
                                             <html:option value="ALL">ALL Albania Leke</html:option>
                                             <html:option value="BGN">BGN Bulgaria Leva</html:option>
                                             <html:option value="BOB">BOB Bolivia Bolivianos</html:option>

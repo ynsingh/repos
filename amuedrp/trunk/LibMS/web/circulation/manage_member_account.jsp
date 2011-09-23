@@ -27,6 +27,7 @@ String msg1=(String)request.getAttribute("msg1");
 <title>LibMS : Manage Member Account</title>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
+ <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
  <script language="javascript" type="text/javascript">
 
  function Create()
@@ -105,8 +106,14 @@ locale1=(String)session.getAttribute("locale");
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
+    <script language="javascript" type="text/javascript">
+    function loadHelp()
+    {
+        window.status="Press F1 for Help";
+    }
+</script>
 </head>
-<body>
+<body onload="loadHelp()">
  
     <html:form method="post" onsubmit="return check1()" action="/mem_account_register">
        
@@ -126,7 +133,7 @@ locale1=(String)session.getAttribute("locale");
                 <table cellspacing="10px">
 
                     <tr><td dir="<%=rtl%>" rowspan="5" class="txt2"><%=resource.getString("circulation.cir_member_reg.entermemid")%><br><br>
-                        <input type="text" id="mem_id" name="mem_id" value=""/>
+                        <input type="text" id="mem_id" name="mem_id" value=""  onfocus="statwords('Member Id');" onblur="loadHelp()"/>
                         </td><td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn" id="button1"  value="<%=resource.getString("circulation.managememacc.create")%>" onclick="return Create();" /></td></tr>
                     <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="button2" class="btn"  value="<%=resource.getString("circulation.cir_member_reg.update")%>" onclick="return Update();"  /></td></tr>
                     <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="button3"  value="<%=resource.getString("circulation.cir_member_reg.view")%>" class="btn" onclick="return View();" /></td></tr>

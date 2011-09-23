@@ -175,7 +175,7 @@ public class AdditionalSearchAction extends org.apache.struts.action.Action {
  if(myForm.getCheckbox().equals("Checked")){
  System.out.println("Languagebbb");
  additional_search_list=opacSearchDAO.additionalSearchLang(lib_id, sub_lib, authors, cnf1, titles, cnf2,
-                subjects,cnf3,other_fields,cnf4,doc_type,sort,yr1,yr2,myForm.getLanguage());
+                subjects,cnf3,other_fields,cnf4,doc_type,sort,yr1,yr2,myForm.getLanguage().toUpperCase());
 if(!additional_search_list.isEmpty())
 {
     for(int f=0;f<additional_search_list.size();f++)
@@ -187,7 +187,8 @@ if(!additional_search_list.isEmpty())
     }
     }  
 }
-     session.setAttribute("additional_search_list", bib);
+ session.removeAttribute("additional_search_list");
+     session.setAttribute("additional_search_list1", bib);
  }
  else{
       System.out.println("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNLanguagebbb");
@@ -204,6 +205,7 @@ if(!additional_search_list1.isEmpty())
     } 
     }
 }
+ session.removeAttribute("additional_search_list1");
    session.setAttribute("additional_search_list", bib1);
  }
  return mapping.findForward(SUCCESS);

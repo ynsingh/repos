@@ -4,11 +4,17 @@
  */
 
 package com.myapp.struts.circulation;
-import com.myapp.struts.hbm.AcqBibliographyDetails;
-import com.myapp.struts.hbm.AcqApproval;
+import com.myapp.struts.hbm.*;
+
 //import com.myapp.struts.hbm.AcqBudgetAllocation;
+import com.myapp.struts.hbm.CirCheckout;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
 
 /**
  *
@@ -27,20 +33,140 @@ public class CirculationList implements Serializable{
     private String dept_name;
     private String course_name;
     private String req_date,user_name,library_name,expiry_date;
-    private ImageIcon image;
-    
+   private java.awt.image.BufferedImage image1;
+    private byte[] image;
+    private CirCheckout cirCheckout;
+    private Library library;
+    private Login login;
+    private CirMemberDetail cirMemberDetail;
+    private CirMemberAccount cirMemberAccount;
+    private DocumentDetails documentDetails;
+    private Faculty faculty;
+    private Department department;
+    private Courses courses;
+
+   
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+        this.dept_name=department.getDeptName();
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+        this.faculty_name=faculty.getFacultyName();
+    }
+
+     public Courses getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Courses courses) {
+        this.courses = courses;
+        
+    }
+
+
+    public CirCheckout getCirCheckout() {
+        return cirCheckout;
+    }
+
+    public void setCirCheckout(CirCheckout cirCheckout) {
+        this.cirCheckout = cirCheckout;
+        this.setMemid(cirCheckout.getMemid());
+        this.issue_date = cirCheckout.getIssueDate();
+        this.due_date = cirCheckout.getDueDate();
+    }
+
+    public CirMemberAccount getCirMemberAccount() {
+        return cirMemberAccount;
+    }
+
+    public void setCirMemberAccount(CirMemberAccount cirMemberAccount) {
+        this.cirMemberAccount = cirMemberAccount;
+        this.setReq_date(cirMemberAccount.getReqDate());
+        this.setExpiry_date(cirMemberAccount.getExpiryDate());
+    }
+
+    public CirMemberDetail getCirMemberDetail() {
+        return cirMemberDetail;
+    }
+
+    public void setCirMemberDetail(CirMemberDetail cirMemberDetail) {
+        this.cirMemberDetail = cirMemberDetail;
+        this.setImage(cirMemberDetail.getImage());
+        this.setFname(cirMemberDetail.getFname());
+        this.mname = cirMemberDetail.getMname();
+        this.lname = cirMemberDetail.getLname();
+    }
+
+    public DocumentDetails getDocumentDetails() {
+        return documentDetails;
+    }
+
+    public void setDocumentDetails(DocumentDetails documentDetails) {
+        this.documentDetails = documentDetails;
+        this.title = documentDetails.getTitle();
+        this.main_entry = documentDetails.getMainEntry();
+    }
+
+    public Library getLibrary() {
+        return library;
+    }
+
+    public void setLibrary(Library library) {
+        this.library = library;
+        this.setLibrary_name(library.getLibraryName());
+    }
+
+    public Login getLogin() {
+        return login;
+    }
+
+    public void setLogin(Login login) {
+        this.login = login;
+        this.setUser_name(login.getUserName());
+    }
 
     
-    
 
-    public ImageIcon getImage() {
+  public byte[] getImage() {
         return image;
     }
 
     public void setImage(byte[] image) {
-            
-        this.image = new ImageIcon((byte[]) image);
+        this.image = image;
     }
+
+    public BufferedImage getImage1() {
+       if(image!=null)
+        { InputStream in = new ByteArrayInputStream(this.image);
+	try{
+        image1 = ImageIO.read(in);
+        }catch(Exception e){}
+
+        return image1;
+    }else{
+    return null;
+    }
+    }
+
+    public void setImage1(BufferedImage image1) {
+        this.image1 = image1;
+    }
+
+
+    
+    
+
+   
     public String getExpiry_date() {
         return expiry_date;
     }
@@ -74,10 +200,12 @@ public class CirculationList implements Serializable{
     }
 
     public String getCourse_name() {
+       // this.course_name=this.courses.getCourseName();
         return course_name;
     }
 
     public void setCourse_name(String course_name) {
+
         this.course_name = course_name;
     }
 

@@ -73,7 +73,7 @@ function check1()
                 <tr><td valign="top" align="center"> 
                 <table cellspacing="10px">
 
-                    <tr><td rowspan="5" class="txt2" valign="center">Enter Budget Head ID<br><br>
+                    <tr><td rowspan="5" class="txt2" valign="center">Enter Budget Head ID:<a class="star">*</a><br><br>
                         <input type="text" id="budgethead_id" name="budgethead_id" value=""/>
                         </td><td width="150px" align="center"> <input type="submit" class="btn" id="Button1" name="button" value="Add" /></td></tr>
                     <tr><td width="150px" align="center"><input type="submit" id="Button2" class="btn" name="button" value="Update"  /></td></tr>

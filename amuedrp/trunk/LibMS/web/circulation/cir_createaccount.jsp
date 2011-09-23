@@ -52,6 +52,7 @@ locale1=(String)session.getAttribute("locale");
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
         <title>LibMS</title>
     </head>
       <script language="javascript" type="text/javascript">
@@ -162,8 +163,14 @@ var x=document.getElementById('card_id');
     }
 
     </script>
+       <script language="javascript" type="text/javascript">
+    function loadHelp()
+    {
+        window.status="Press F1 for Help";
+    }
+</script>
 
-    <body >
+       <body onload="loadHelp()">
 
 
   <html:form  action="/cir_account" method="post" onsubmit="return check1()">
@@ -172,11 +179,11 @@ var x=document.getElementById('card_id');
         <tr><td dir="<%=rtl%>"  valign="top" align="center">
 
                     <table dir="<%=rtl%>" width="400px" align="center" width="100%">
-                        <tr><td dir="<%=rtl%>"class="btn" width="250px"><%=resource.getString("circulation.cir_createaccount1.memberid/loginid")%></td><td dir="<%=rtl%>" width="250px"><input type="text" id="mem_id"  name="mem_id" readonly  value="<%=mem_id%>"></td></tr>
+                        <tr><td dir="<%=rtl%>"class="btn" width="250px"><%=resource.getString("circulation.cir_createaccount1.memberid/loginid")%></td><td dir="<%=rtl%>" width="250px"><input type="text" id="mem_id"  name="mem_id" readonly  value="<%=mem_id%>" onfocus="statwords('Member Login Id. An email regarding username and password will be sent on this emial Id');" onblur="loadHelp()"></td></tr>
                         <tr><td dir="<%=rtl%>" colspan="2" height="5px"></td></tr>
-                        <tr><td dir="<%=rtl%>" class="btn"><%=resource.getString("circulation.cir_createaccount1.memname")%></td><td dir="<%=rtl%>"><input type="text"  name="mem_name" id="mem_name"   readonly  value="<%=mem_name%> <%=last_name%>"></td></tr>
+                        <tr><td dir="<%=rtl%>" class="btn"><%=resource.getString("circulation.cir_createaccount1.memname")%></td><td dir="<%=rtl%>"><input type="text"  name="mem_name" id="mem_name"   readonly  value="<%=mem_name%> <%=last_name%>" onfocus="statwords('Member  Name');" onblur="loadHelp()"></td></tr>
                         <tr><td dir="<%=rtl%>" colspan="2" height="5px"></td></tr>
-                        <tr><td dir="<%=rtl%>" class="btn" ><%=resource.getString("circulation.cir_newmember.email")%></td><td dir="<%=rtl%>"><input type="text"  name="mail_id" id="mail_id" readonly  name="Editbox2" value="<%=mail_id%>"/> </td></tr>
+                        <tr><td dir="<%=rtl%>" class="btn" ><%=resource.getString("circulation.cir_newmember.email")%></td><td dir="<%=rtl%>"><input type="text"  name="mail_id" id="mail_id" readonly  name="Editbox2" value="<%=mail_id%>" onfocus="statwords('eMail Id of the member');" onblur="loadHelp()" /> </td></tr>
                         <tr><td dir="<%=rtl%>"colspan="2" height="5px"></td></tr>
                     
                          <tr><td dir="<%=rtl%>" class="btn"><%=resource.getString("circulation.cir_createacct.cardtype")%></td><td>
@@ -191,7 +198,7 @@ var x=document.getElementById('card_id');
                                  </td></tr>
 
 
-                        <tr><td dir="<%=rtl%>" class="btn"><%=resource.getString("circulation.cir_newmember.cardid")%></td><td dir="<%=rtl%>"><input type="text"   name="card_id" id="card_id"   value=""></td></tr>
+                        <tr><td dir="<%=rtl%>" class="btn"><%=resource.getString("circulation.cir_newmember.cardid")%></td><td dir="<%=rtl%>"><input type="text"   name="card_id" id="card_id"   value="" onfocus="statwords('Enter Card Id for member. Every card must has unique Id within the library');" onblur="loadHelp()" ></td></tr>
 
                         <tr><td dir="<%=rtl%>" colspan="2" align="center">
                                 <br>

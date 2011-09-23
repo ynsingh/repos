@@ -14,6 +14,8 @@ import org.apache.struts.action.ActionMapping;
 import java.sql.*;
 import java.util.List;
 import com.myapp.struts.opacDAO.*;
+import com.myapp.struts.utility.StringRegEx;
+import java.util.ArrayList;
 
 /**
  *
@@ -35,9 +37,58 @@ public class AccessionSearchAction extends org.apache.struts.action.Action {
         String lib_id=myform.getCMBLib();
         String accessionno = myform.getTXTKEY();
           String sublib=myform.getCMBSUBLib();
-       session.removeAttribute("documentdetail");
-        List documentdetail  =(List)osdao.accessionNoSearch(accessionno, lib_id, sublib);
-        session.setAttribute("documentdetail", documentdetail);
+      
+     
+
+      if(accessionno.isEmpty()){
+       
+  request.setAttribute("msg1", "Please Enter Accession No");
+       List documentdetail  =new ArrayList();
+
+            System.out.println(documentdetail.size());
+             session.removeAttribute("accdocumentdetail1");
+            session.setAttribute("accdocumentdetail", documentdetail);
+  return mapping.findForward(SUCCESS);
+      }
+
+        boolean st=StringRegEx.containsOnlyNumbers(accessionno);
+            if(st==true)
+            {
+            List documentdetail  =(List)osdao.accessionNoSearch(accessionno, lib_id, sublib);
+
+            System.out.println(documentdetail.size());
+             session.removeAttribute("accdocumentdetail1");
+            session.setAttribute("accdocumentdetail", documentdetail);
+            return mapping.findForward(SUCCESS);
+            }
+
+
+
+
+boolean upperFound = false;
+for (char c : accessionno.toCharArray()) {
+    if (Character.isUpperCase(c)) {
+        upperFound = true;
+        break;
+    }
+}
+System.out.println(upperFound);
+     if(upperFound==true){
+//check for Inner Join Between BibliograhicLang and document detail
+
+
+        List documentdetail  =(List)osdao.accessionNoLangSearch(accessionno, lib_id, sublib);
+
+        System.out.println("Size"+documentdetail.size());
+        session.removeAttribute("accdocumentdetail");
+        session.setAttribute("accdocumentdetail1", documentdetail);
+     }
+     else
+     {
+            
+                request.setAttribute("msg1", "Enter AccessionNo CharCode in Captial Only");
+
+     }
         return mapping.findForward(SUCCESS);
     }
 }

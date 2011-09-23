@@ -194,5 +194,8 @@
          <property name="bindType" type="string">
             <column name="bind_type" length="20" />
         </property>
+         <property name="status" type="string">
+            <column name="status" length="20" />
+        </property>
     </class>
 </hibernate-mapping>

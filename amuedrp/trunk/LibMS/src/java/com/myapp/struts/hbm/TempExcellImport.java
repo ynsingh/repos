@@ -73,6 +73,15 @@ public class TempExcellImport  implements java.io.Serializable {
      private String colour;
      private String bindType;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+     private String status;
+
     public String getBindType() {
         return bindType;
     }
@@ -89,7 +98,7 @@ public class TempExcellImport  implements java.io.Serializable {
         this.libraryId = libraryId;
         this.sublibraryId = sublibraryId;
     }
-    public TempExcellImport(String libraryId, String sublibraryId, String documentType, String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, String publishingYear, String callNo, String partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, String noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, String productionYear, String source1, String duration, String series, String typeOfDisc, String fileType, String accessionNo, String recordNo, String volumeNo, String location, String shelvingLocation, String indexNo, String noOfPages, String physicalWidth, String physicalForm, String physicalDescription, String colour,String bindType) {
+    public TempExcellImport(String libraryId, String sublibraryId, String documentType, String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, String publishingYear, String callNo, String partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, String noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, String productionYear, String source1, String duration, String series, String typeOfDisc, String fileType, String accessionNo, String recordNo, String volumeNo, String location, String shelvingLocation, String indexNo, String noOfPages, String physicalWidth, String physicalForm, String physicalDescription, String colour,String bindType,String status) {
        this.libraryId = libraryId;
        this.sublibraryId = sublibraryId;
        this.documentType = documentType;
@@ -112,6 +121,7 @@ public class TempExcellImport  implements java.io.Serializable {
        this.partsNo = partsNo;
        this.subject = subject;
        this.entryLanguage = entryLanguage;
+       this.status=status;
        this.isbn10 = isbn10;
        this.isbn13 = isbn13;
        this.lccNo = lccNo;
