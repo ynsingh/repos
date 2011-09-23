@@ -632,16 +632,20 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 if( (grpId.size() > 1) )
                 {
                         if(serverPort.equals("8080"))
-                                 subject="deleteFromGroup$newUser";
+                                 subject="deleteFromGroup";
+                                 //subject="deleteFromGroup$newUser";
                         else
-                                subject="deleteFromGrouphttps$newUserhttps";
+                                subject="deleteFromGrouphttps";
+                                //subject="deleteFromGrouphttps$newUserhttps";
                 }
                 else
                 {
                         if(serverPort.equals("8080"))
-                                subject="deleteUser$newUser";
+                                subject="deleteUser";
+                                //subject="deleteUser$newUser";
                         else
-                                subject="deleteUserhttps$newUserhttps";
+                                subject="deleteUserhttps";
+                                //subject="deleteUserhttps$newUserhttps";
                 }
                 return subject;
 	}
