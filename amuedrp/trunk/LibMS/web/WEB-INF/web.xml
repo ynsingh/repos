@@ -14,7 +14,7 @@
 
  <context-param>
   <param-name>webpass</param-name>
-  <param-value>adminamu</param-value>
+  <param-value>xxxxxxxx</param-value>
 </context-param>
 
 
