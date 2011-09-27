@@ -25,11 +25,15 @@ import java.awt.Graphics2D;
 import java.awt.BorderLayout;
 import javax.swing.JOptionPane;
 import java.awt.image.BufferedImage;
+import java.awt.Toolkit;
+import java.awt.Dimension;
+
 
 public class Desktop_Sharing {
-	
-	private int IMG_WIDTH =800;
-        private int IMG_HEIGHT =700;
+
+	private Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+	private int IMG_WIDTH =((int)dim.getWidth()-500);
+        private int IMG_HEIGHT =((int)dim.getHeight()-300);
 
 	private JScrollPane js=null;
         private JPanel mainPanel=null;
@@ -57,6 +61,7 @@ public class Desktop_Sharing {
 
                 northPanel=new JPanel();
                 mainPanel.add(northPanel,BorderLayout.NORTH);
+		mainPanel.setBackground(java.awt.Color.black);
                 imageDisplay = new JLabel();
                 js.setBackground(java.awt.Color.black);
                 js.getViewport().add(imageDisplay);
