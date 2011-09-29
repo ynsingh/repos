@@ -151,6 +151,7 @@ public class PostSharedScreen implements Runnable {
                        		postMethod.releaseConnection();
                        		try {
                                		Thread.sleep(100);
+                               		Thread.yield();
                                	}catch(Exception ex){}
 				StatusPanel.getController().setdestopClient("yes");
 			}

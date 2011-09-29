@@ -91,7 +91,6 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		north_mainPanel=new JPanel();
 		north_mainPanel.setLayout(new FlowLayout());
 		north_mainPanel.setBackground(Color.LIGHT_GRAY);
-		//String registerstr="<html><b>Course in which you are resistered as a instructor</b></html>";
 		instLabel=new JLabel("<html><b>"+Language.getController().getLangValue("InstructorCSPanel.Label1")+"</b></html>");
 		/**
 		 * get Course list form clienmt object class.
@@ -117,7 +116,9 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		north_mainPanel.add(announceLabel,BorderLayout.SOUTH);
 		
 		mainPanel.add(north_mainPanel, BorderLayout.NORTH);
-		mainPanel.add(showLecture(client_obj.getInstSessionList()),BorderLayout.CENTER);
+		Vector courseName=client_obj.getInstCourseList();
+               	mainPanel.add(showLecture(client_obj.getSessionList(courseName,client_obj.getIndexServerName())),BorderLayout.CENTER);	
+		//mainPanel.add(showLecture(client_obj.getInstSessionList()),BorderLayout.CENTER);
 		return mainPanel;
 	}
 
@@ -213,7 +214,6 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                         center_mainPanel.add(buttonPanel[i]);
                 }
                 if(y==0){
-                        //JOptionPane.showMessageDialog(null,"No Lecture in this course");
                         return new JScrollPane();
                 }else{
                         scrollPane=new JScrollPane(center_mainPanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -234,7 +234,10 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 				announceLabel.removeMouseListener(this);
 				Vector courseName=client_obj.getInstCourseList();
 				mainPanel.add(showLecture(client_obj.getSessionList(courseName,client_obj.getIndexServerName())),BorderLayout.CENTER);
-			}else{
+			}else if(((String)combo.getSelectedItem()).equals("noCourse")){
+				announceLabel.setEnabled(false);
+				StatusPanel.getController().setStatus(Language.getController().getLangValue("InstructorCSPanel.msg"));	
+			}else {	
 				announceLabel.setEnabled(true);
                                 announceLabel.setText("<html><b><font color=blue><u>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</u></font></b></html>");
 				announceLabel.addMouseListener(this);

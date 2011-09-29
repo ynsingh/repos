@@ -102,7 +102,9 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 		north_mainPanel.add(studCourseCombo,BorderLayout.CENTER);
 	   	mainPanel.add(north_mainPanel, BorderLayout.NORTH);
 	   	
-	       	mainPanel.add(showLecture(client_obj.getStudSessionList()), BorderLayout.CENTER);
+		Vector courseName=client_obj.getStudCourseList();
+                mainPanel.add(showLecture(client_obj.getSessionList(courseName,client_obj.getIndexServerName())),BorderLayout.CENTER);
+		//mainPanel.add(showLecture(client_obj.getStudSessionList()), BorderLayout.CENTER);
     		return mainPanel;
 	}
 	
@@ -174,10 +176,8 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 			buttonPanel[i].add(descLabel[i]);
 			center_mainPanel.add(nsPane[i]);
 			center_mainPanel.add(buttonPanel[i]);
-               		//p=p+13;
 		}
        		if(y==0){
-			//JOptionPane.showMessageDialog(null,"No Lecture in this course");
 			return new JScrollPane();
 		}else{
 			scrollPane1=new JScrollPane(center_mainPanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

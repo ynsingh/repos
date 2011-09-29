@@ -150,6 +150,7 @@ public class HandRaiseThreadController implements Runnable{
 						stopgetscreeflag=false;
                                                 try{
                                                         GetSharedScreen.getController().stop();
+							StatusPanel.getController().setdestopClient("no");
                                                 }catch(Exception sp){System.out.println("Error in stopping GetSharedScreen"+sp.getMessage());}
                                         }
 
@@ -167,6 +168,7 @@ public class HandRaiseThreadController implements Runnable{
 						stoppostscreeflag=false;
 						try{
 	                                	        PostSharedScreen.getController().stop();
+							StatusPanel.getController().setdestopClient("no");
 	                                	}catch(Exception sp){System.out.println("Error in stopping PostSharedScreen"+sp.getMessage());}
 					}
 
@@ -236,6 +238,7 @@ public class HandRaiseThreadController implements Runnable{
 					if(stoppostscreeflag) {
 						PostSharedScreen.getController().stop();
 						stoppostscreeflag=false;
+						StatusPanel.getController().setdestopClient("no");	
 					}
 										
 					//Start get screen sharing controll for instructor
@@ -250,6 +253,7 @@ public class HandRaiseThreadController implements Runnable{
 					if(stopgetscreeflag) {
 						stopgetscreeflag=false;
                                         	GetSharedScreen.getController().stop();
+						StatusPanel.getController().setdestopClient("no");
 					}
 					//Start post PPT Presentation controll for instructor.
 					if(startpostpptflag) {

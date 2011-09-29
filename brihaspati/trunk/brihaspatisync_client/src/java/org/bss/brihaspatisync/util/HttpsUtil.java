@@ -238,6 +238,7 @@ public class HttpsUtil{
 							str=str.replaceAll("date","");
 							return str;
 						}else {
+							org.bss.brihaspatisync.gui.StatusPanel.getController().setStatus(org.bss.brihaspatisync.util.Language.getController().getLangValue("JoinSession.MessageDialog1"));	
 							System.out.println(str);
 							return null;
 						}

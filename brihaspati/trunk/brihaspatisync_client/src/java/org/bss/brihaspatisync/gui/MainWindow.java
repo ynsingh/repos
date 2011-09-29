@@ -25,7 +25,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JDesktopPane;
-//import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 
 /**
@@ -49,7 +48,7 @@ public class MainWindow  extends JFrame implements ActionListener{
 	private JPanel east_Panel =null;
 	private JPanel west_Panel =null;
 	private Container content=null;
-	JMenuBar menuBar;	
+	private JMenuBar menuBar;	
 
 	private static MainWindow fw=null;
 	private ClassLoader clr= this.getClass().getClassLoader();
@@ -81,7 +80,7 @@ public class MainWindow  extends JFrame implements ActionListener{
                 north_Panel.setBackground(new Color(24,116,205));
                 content.add(north_Panel,BorderLayout.NORTH);
 
-                south_Panel=new JPanel();
+                south_Panel=StatusPanel.getController();
                 south_Panel.setBackground(new Color(24,116,205));
                 content.add(south_Panel,BorderLayout.SOUTH);
 
@@ -110,7 +109,7 @@ public class MainWindow  extends JFrame implements ActionListener{
 	}
 
 	//Create JmenuBar for Mainwindow frame.
-	public JMenuBar createJMenuBar(){
+	private JMenuBar createJMenuBar(){
 	        menuBar = new JMenuBar();
 
                 menu1 = new JMenu(Language.getController().getLangValue("MainWindow.menu1"));
@@ -178,7 +177,8 @@ public class MainWindow  extends JFrame implements ActionListener{
         	       	p1.add(north_Panel1,BorderLayout.NORTH);
 
                 	JPanel south_Panel1=new JPanel();
-                	south_Panel1.setBackground(new Color(24,116,205));
+                	south_Panel1.setBackground(new Color(0,0,0));
+                	//south_Panel1.setBackground(new Color(24,116,205));
                 	p1.add(south_Panel1,BorderLayout.SOUTH);
 
                 	JPanel east_Panel1=new JPanel();

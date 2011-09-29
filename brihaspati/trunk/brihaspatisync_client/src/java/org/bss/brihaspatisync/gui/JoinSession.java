@@ -83,12 +83,14 @@ public class JoinSession {
 				if(!(ref_ip.equals(""))){
 					// Thread for get userlist and other media data from reflector.
                 			new HTTPClient(ref_ip,Lecture_ID).start();
+					//start GUI for this lecture id 
+					startGUIThread();
+					StatusPanel.getController().sethttpClient("no");
+					StatusPanel.getController().setdestopClient("no");
+					StatusPanel.getController().setpptClient("no");
 				}else{
-					//JOptionPane.showMessageDialog(null,Language.getController().getLangValue("JoinSession.MessageDialog1"));
+					StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog1"));	
 				}
-
-				//start GUI for this lecture id 
-				startGUIThread();
 			}else
                                 log.setLog("Insufficient index Server Name in goTOLecture() in joinSession Class :"+indexName);
 

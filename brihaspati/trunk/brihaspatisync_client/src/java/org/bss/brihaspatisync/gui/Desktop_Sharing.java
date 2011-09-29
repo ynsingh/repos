@@ -56,6 +56,7 @@ public class Desktop_Sharing {
 	public JPanel createGUI(){  
                 js=new JScrollPane();
 		mainPanel=new JPanel();
+		mainPanel.setBackground(new java.awt.Color(0,0,0));
 		slider.setTools("Desktop_Sharing");
                 mainPanel.setLayout(new BorderLayout());
 
@@ -79,7 +80,6 @@ public class Desktop_Sharing {
 	public void runDesktopSharing(BufferedImage originalImage){
                 try {
 			origanalimage=originalImage;
-                        System.out.println(IMG_WIDTH +" , "+ IMG_HEIGHT);
                         int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
                         BufferedImage resizeImageJpg = resizeImage(originalImage, type);
                         imageDisplay.setIcon(new ImageIcon(resizeImageJpg));

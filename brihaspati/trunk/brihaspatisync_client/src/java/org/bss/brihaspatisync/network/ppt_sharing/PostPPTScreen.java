@@ -87,9 +87,11 @@ public class PostPPTScreen {
                        	postMethod.releaseConnection();
 			try {
 				PresentationViewPanel.getController().runPresentationPanel(ImageIO.read(new File("temp/"+"image"+(pptnumber)+".jpeg")));
+				org.bss.brihaspatisync.gui.StatusPanel.getController().setpptClient("yes");
 			}catch(Exception e){}
 		}catch(Exception e){
 			System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());
+			org.bss.brihaspatisync.gui.StatusPanel.getController().setpptClient("no");
 		}
 	}
 }
