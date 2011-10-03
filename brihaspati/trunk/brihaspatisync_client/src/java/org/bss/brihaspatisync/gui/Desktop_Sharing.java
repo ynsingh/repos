@@ -10,7 +10,8 @@ package org.bss.brihaspatisync.gui;
 /**
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Created on feb2011
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav</a>Modified on feb2011
- * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation.
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> testing on aug 2011 for gui.
  */
 
 import javax.swing.JLabel;
@@ -32,12 +33,13 @@ import java.awt.Dimension;
 public class Desktop_Sharing {
 
 	private Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
-	private int IMG_WIDTH =((int)dim.getWidth()-270);
-        private int IMG_HEIGHT =((int)dim.getHeight()-160);
+	private int kk=(((int)dim.getWidth()/5)-50);
+	private int IMG_WIDTH =((int)dim.getWidth()-kk);
+        private int IMG_HEIGHT =((int)dim.getHeight()-220);
 
 	private JScrollPane js=null;
         private JPanel mainPanel=null;
-	//private JPanel northPanel=null;
+	private JPanel centerPanel=null;
 	private JLabel imageDisplay = null;
 	private BufferedImage origanalimage=null;	
         private static Desktop_Sharing desktopSharing=null;
@@ -56,20 +58,18 @@ public class Desktop_Sharing {
 	public JPanel createGUI(){  
                 js=new JScrollPane();
 		mainPanel=new JPanel();
-		mainPanel.setBackground(new java.awt.Color(0,0,0));
-		//slider.setTools("Desktop_Sharing");
+		centerPanel=new JPanel();
                 mainPanel.setLayout(new BorderLayout());
-
-                //northPanel=new JPanel();
-                //mainPanel.add(northPanel,BorderLayout.NORTH);
-		mainPanel.setBackground(java.awt.Color.black);
+		centerPanel.setBackground(new java.awt.Color(24,116,205));
                 imageDisplay = new JLabel();
-                js.setBackground(java.awt.Color.black);
+		imageDisplay.setBackground(new java.awt.Color(24,116,205));
                 js.getViewport().add(imageDisplay);
 
                 mainPanel.add(js,BorderLayout.CENTER);
-                //mainPanel.add(slider.createGUI(),BorderLayout.WEST);
-		
+		mainPanel.add(centerPanel,BorderLayout.EAST);
+		mainPanel.add(centerPanel,BorderLayout.WEST);
+		mainPanel.add(centerPanel,BorderLayout.NORTH);
+		mainPanel.add(centerPanel,BorderLayout.SOUTH);
 		return mainPanel; 	
 	}
 	/*
