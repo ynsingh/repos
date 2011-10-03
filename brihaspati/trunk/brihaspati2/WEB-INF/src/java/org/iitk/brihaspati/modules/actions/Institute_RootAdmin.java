@@ -300,6 +300,8 @@ public class Institute_RootAdmin extends VelocitySecureAction
                                return;
                         }
 			String program = pp.getString("prg","");
+			String instName=InstituteIdUtil.getIstName(Integer.parseInt(instituteid));
+
                         /**
                         *   Create password string by spliting email with "@" . 
                         */
@@ -352,7 +354,8 @@ public class Institute_RootAdmin extends VelocitySecureAction
 							*   Create User Profile to call UserManagement util Method							  *   CreateUserProfile. 
 							*/
 							//LangFile=(String)data.getUser().getTemp("LangFile");
-							usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,"",adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno,program);
+							//usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,"",adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno,program);
+							usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,instName,adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno,program);
 							/**
 							*Update institute status if institute is orphan to active.    							  */
 							if(inststat==3)
