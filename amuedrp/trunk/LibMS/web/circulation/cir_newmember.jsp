@@ -720,7 +720,7 @@ a:active
 
                 </tr>
 
-<tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.mname")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text tabindex="2" property="TXTMNAME" style="width:160px" styleId="mname2"  value="<%=mname%>"onfocus="statwords('Enter Member Middle Name');" onblur="loadHelp()"/></td></tr>
+<tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.mname")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text tabindex="2" property="TXTMNAME" style="width:160px" styleId="mname2"  value="<%=mname%>" onfocus="statwords('Enter Member Middle Name');" onblur="loadHelp()"/></td></tr>
 
                    <tr>                <td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.lname")%>*</td>
                 <td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTLNAME" tabindex="3" style="width:160px" styleId="lname2" value="<%=lname%>" onfocus="statwords('Enter Member Last Name');" onblur="loadHelp()" />

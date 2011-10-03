@@ -233,7 +233,7 @@ animatedcollapse.init()
      <table>
          <tr>
     <td width="150" class="txtStyle" align="<%=align%>"><strong><%=resource.getString("cataloguing.catoldtitleentry1.title")%>:</strong> </td>
-    <td><html:text readonly="true" property="title" readonly="true" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="2" />
+    <td><html:text readonly="true" property="title" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="2" />
     </td>
          </tr>
          <tr><td height="2px"></td>

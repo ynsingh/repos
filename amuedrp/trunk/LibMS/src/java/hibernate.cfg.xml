@@ -4,11 +4,7 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/libms?useUnicode=true&amp;characterEncoding=UTF-8</property>
-<!--    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/libms</property> -->
-    <property name="hibernate.connection.username">username</property>
-    <property name="hibernate.connection.password">password</property>
-<!--   <property name="hibernate.connection.datasource">java:comp/env/jdbc/TestDB</property>  -->
+   <property name="hibernate.connection.datasource">java:comp/env/jdbc/TestDB</property>  
     <property name="current_session_context_class">thread</property>
     <property name="hibernate.show_sql">true</property>
     <mapping resource="com/myapp/struts/hbm/EmployeeType.hbm.xml"/>
@@ -45,26 +41,26 @@
     <mapping resource="com/myapp/struts/hbm/SubLibrary.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/BibliographicDetails.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/AcqVendor.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/AcqOrderHeader.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/AcqOrder1.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/AcqBibliography.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/AcqApprovalHeader.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/AcqBibliographyDetails.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/AcqApproval.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/AcqBudget.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/AcqBudgetAllocation.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/AcqCurrency.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/BaseCurrency.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/AcqBudgetTransaction.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/Logs.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/Logsetting.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/BibliographicDetailsLang.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/TempExcellImport.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/AcqRecievingHeader.hbm.xml"/>
-       <mapping resource="com/myapp/struts/hbm/AcqRecievingDetails.hbm.xml"/>
-<mapping resource="com/myapp/struts/hbm/Editmarc.hbm.xml"/>
-    <mapping resource="com/myapp/struts/hbm/Biblio.hbm.xml"/>
-    <mapping resource="com/myapp/struts/hbm/Customizedbiblio.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/AcqOrderHeader.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/AcqOrder1.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/AcqBibliography.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/AcqApprovalHeader.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/AcqBibliographyDetails.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/AcqApproval.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/AcqBudget.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/AcqBudgetAllocation.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/AcqCurrency.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/BaseCurrency.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/AcqBudgetTransaction.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/Logs.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/Logsetting.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/BibliographicDetailsLang.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/TempExcellImport.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/AcqRecievingHeader.hbm.xml"/>
+       	<mapping resource="com/myapp/struts/hbm/AcqRecievingDetails.hbm.xml"/>
+	<mapping resource="com/myapp/struts/hbm/Editmarc.hbm.xml"/>
+    	<mapping resource="com/myapp/struts/hbm/Biblio.hbm.xml"/>
+    	<mapping resource="com/myapp/struts/hbm/Customizedbiblio.hbm.xml"/>
         <mapping resource="com/myapp/struts/hbm/BiblioTemp.hbm.xml"/>
     <!--20-->
   </session-factory>

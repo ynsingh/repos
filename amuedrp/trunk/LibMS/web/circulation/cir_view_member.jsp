@@ -1294,7 +1294,7 @@ a:active
 
                 </tr>
                 <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.mname")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTMNAME" readonly="<%=read%>" styleId="mname2"   value="<%=mname%>" name="CirculationMemberActionForm" style="width:160px" onfocus="statwords('Edit Middle Name');" onblur="loadHelp()"/></td></tr>
-            <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.lname")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  readonly="<%=read%>" property="TXTLNAME" styleId="lname2"  value="<%=lname%>" name="CirculationMemberActionForm" style="width:160px"onfocus="statwords('Edit Last Name');" onblur="loadHelp()" />
+            <tr><td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.lname")%>*</td><td dir="<%=rtl%>" class="table_textbox"><html:text  readonly="<%=read%>" property="TXTLNAME" styleId="lname2"  value="<%=lname%>" name="CirculationMemberActionForm" style="width:160px" onfocus="statwords('Edit Last Name');" onblur="loadHelp()" />
                 <br/>
                  <html:messages id="err_name" property="TXTLNAME">
 				<bean:write name="err_name" />

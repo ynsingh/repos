@@ -67,7 +67,7 @@ String option=(String)request.getAttribute("option");
     </head>
    <jsp:include page="/admin/header.jsp"/>
     <body>
-        <html:form method="post" action="/acq_new_entry"  onsubmit="return check1();"style="position:absolute; left:30%; top:30%">
+        <html:form method="post" action="/acq_new_entry"  onsubmit="return check1();" style="position:absolute; left:30%; top:30%">
             <table border="1" class="table" width="400">
                 <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;" ><b>Enter New Title</b></td></tr>
                  <html:hidden property="library_id" name="AcqBiblioActionForm" value="<%=library_id%>" />
