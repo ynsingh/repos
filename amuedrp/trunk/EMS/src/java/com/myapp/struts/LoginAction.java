@@ -119,12 +119,12 @@ session.setAttribute("staff_id", user_id);
 
         System.out.println(user_id+"....."+password+"......"+button+"......");
 
-//con=MyConnection.getMyConnection();
-//            if(con==null)
-//            {
-//             request.setAttribute("msg1","Database Connectivity is Closed");
-//             return mapping.findForward("failure");
-//            }
+con=MyConnection.getMyConnection();
+            if(con==null)
+            {
+             request.setAttribute("msg1","Database Connectivity is Closed");
+             return mapping.findForward("failure");
+            }
 
 
         if (button.equals("Log In")) {
