@@ -78,6 +78,7 @@ import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import babylon.babylonUserTool;
 
 /**
