@@ -23,8 +23,6 @@ import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.DateUtil;
 
-import org.bss.brihaspatisync.util.DateUtil;
-
 import java.net.URLEncoder;
 import org.bss.brihaspatisync.network.Log;
 
@@ -33,6 +31,7 @@ import org.bss.brihaspatisync.network.Log;
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified for Signalling.
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>  Modified for GUI on 13 Jun 2011
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> Testing for gui.
  */
 
 public class UpdateSessionPanel extends JFrame implements ActionListener, MouseListener{
@@ -44,6 +43,8 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
         private int day=1;
         private int month=1;
         private int year=2011;
+	private int h=0;
+        private int m=0;
 
         private JLabel closeLabel=null;
         private String courseId=null;
@@ -123,7 +124,8 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 frame.getContentPane().add(mainPanel);                           /**Adding panel to the frame*/
                 frame.setSize(850,250);                                          /**Setting the size of the frame*/
                 frame.setVisible(true);                                          /**Showing the frame*/
-                frame.setLocation(100,100);
+                Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+                frame.setLocation((((int)dim.getWidth()/2)-425),(((int)dim.getHeight()/2)-125));
 		return mainPanel;
 	}
 
@@ -152,14 +154,14 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 updatemailid=str1.nextElement().toString();
                 updatemailidarry=updatemailid.split("-");
 
-                yearBox.setSelectedItem(updatemailidarry[0]);
-                monthBox.setSelectedItem(updatemailidarry[1]);
-                dayBox.setSelectedItem(updatemailidarry[2]);
+                //yearBox.setSelectedItem(updatemailidarry[0]);
+                //monthBox.setSelectedItem(updatemailidarry[1]);
+                //dayBox.setSelectedItem(updatemailidarry[2]);
 
                 updatemailid=str1.nextElement().toString();//Session Time
                 updatemailidarry=updatemailid.split(":");
-                hourBox.setSelectedItem(updatemailidarry[0]);
-                minBox.setSelectedItem(updatemailidarry[1]);
+                //hourBox.setSelectedItem(updatemailidarry[0]);
+                //minBox.setSelectedItem(updatemailidarry[1]);
                 durationBox.setSelectedItem(str1.nextElement().toString());	
 		
 	}	
@@ -248,20 +250,24 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 //creating a new panel for Time entry
                 JPanel timeEntryPanel=new JPanel();
                 timeEntryPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-                hourBox=new JComboBox();
-                minBox=new JComboBox();
+		hourBox=new JComboBox();
+		minBox=new JComboBox();
+		
+		hourBox.addItem(Integer.toString(h));
                 for(int i=0;i<=23;i++){
                         if(i<10)
                                 hourBox.addItem("0"+Integer.toString(i));
-			else
+                        else
                                 hourBox.addItem(Integer.toString(i));
                 }
+                minBox.addItem(Integer.toString(m));
                 for(int i=0;i<60;i++){
                         if(i<10)
                                 minBox.addItem("0"+Integer.toString(i));
                         else
                                 minBox.addItem(Integer.toString(i));
                 }
+		
                 timeEntryPanel.add(hourBox);
                 timeEntryPanel.add(minBox);
 
@@ -358,7 +364,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 	 */
 			
 	private String getLectureValues(){
-	if((lectName_Text.getText().equals(""))|| (urlText.getText().equals(""))||(lecInfoArea.getText().equals(""))||(endText.getText().equals(""))||(phone_Text.getText().equals(""))){
+		if((lectName_Text.getText().equals(""))|| (urlText.getText().equals(""))||(lecInfoArea.getText().equals(""))||(endText.getText().equals(""))||(phone_Text.getText().equals(""))){
 			JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog1"));
                 }
                 else{
@@ -386,8 +392,6 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                         totaltime=totaltime+Integer.parseInt(st_minutes);
                                         if(totaltime< (date.checkTimeInput())) {
                                                 JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog3"));
-
-
                                                 lectValue=null;
                                                 return lectValue.toString();
                                         }
@@ -459,7 +463,6 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 			//URL indexurl=null;
 			try{
 				String lectValue = getLectureValues();
-				System.out.println(lectValue);
                                 String indexServerName=client_obj.getIndexServerName();
 
                                 if(!(indexServerName.equals(""))){
@@ -512,16 +515,22 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
         public void mouseEntered(MouseEvent e) {}
         public void mouseExited(MouseEvent e) {}
 	
-	private void getTimeIndexingServer(){
-                String indexServerName=client_obj.getIndexServerName();
-                if(!(indexServerName.equals(""))){
-                        String  indexServer=indexServerName+"/ProcessRequest?req=getTimeforLecture&";
-                        indexServer=HttpsUtil.getController().getReflectorAddress(indexServer);
-                        String str[]=indexServer.split(" ");
-                        String str1[]=str[0].split("/");
-                        year=Integer.parseInt(str1[0]);
-                        month=Integer.parseInt(str1[1]);
-                        day=Integer.parseInt(str1[2]);
-		}
-	}		
+	private void getTimeIndexingServer() {
+                try {
+  			String indexServer=org.bss.brihaspatisync.http.HttpCommManager.getController().getTimeIndexingServer();
+                        if(indexServer != null) {
+                                indexServer=indexServer.replace("date","");
+                                String str[]=indexServer.split(" ");
+                                String str1[]=str[0].split("/");
+
+                                year=Integer.parseInt(str1[0]);
+                                month=Integer.parseInt(str1[1]);
+                                day=Integer.parseInt(str1[2]);
+
+                                String str2[]=str[1].split(":");
+                                h=Integer.parseInt(str2[0]);
+                                m=Integer.parseInt(str2[1])+10;
+                        }
+                }catch(Exception e){ System.out.println("Error in getTimeIndexingServer() "+e.getMessage());}
+        }
 }//end of class

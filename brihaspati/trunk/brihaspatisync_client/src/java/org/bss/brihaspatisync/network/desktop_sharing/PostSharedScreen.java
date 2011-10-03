@@ -80,7 +80,7 @@ public class PostSharedScreen implements Runnable {
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
-			Desktop_Sharing.getController().setSclollEnable_Decable(false);
+			//Desktop_Sharing.getController().setSclollEnable_Decable(false);
 			System.out.println("PostSharedScreen start successfully !!");
 		}
         }
@@ -94,7 +94,7 @@ public class PostSharedScreen implements Runnable {
 			flag=false;
                         runner.stop();
                         runner = null;
-			Desktop_Sharing.getController().setSclollEnable_Decable(false);
+			//Desktop_Sharing.getController().setSclollEnable_Decable(false);
 			System.out.println("PostSharedScreen stop successfully !!");
                 }
         }

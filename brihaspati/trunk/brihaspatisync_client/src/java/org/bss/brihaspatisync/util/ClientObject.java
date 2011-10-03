@@ -134,6 +134,22 @@ public class ClientObject {
 	public String getUserName(){
 		return usr_name;
 	}
+	
+	public String getwelcomeUserName(){
+                String name_new=usr_name;
+                try {
+                        int k=name_new.lastIndexOf("@");
+                        name_new=name_new.substring(0,k);
+                        System.out.println(name_new);
+                        if(name_new.length()>10){
+                                name_new=name_new.substring(0,12);
+                                name_new=name_new+"..";
+                        }
+                        System.out.println(name_new);
+                }catch(Exception e){}
+                return name_new;
+        }
+
 
 	/**
          * This method is used to get user role of this client.

@@ -109,8 +109,8 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
 	
 		//TabbedPane for whiteboard, screen share and ppt presentation.
 		JTabbedPane jtp = new JTabbedPane();
-		jtp.addTab(Language.getController().getLangValue("JoinSessionPanel.Whiteboard"), WhiteBoardPanel.getController().createGUI());
-	        jtp.addTab(Language.getController().getLangValue("JoinSessionPanel.DesktopSharing"),Desktop_Sharing.getController().createGUI());
+		jtp.addTab(Language.getController().getLangValue("JoinSessionPanel.DesktopSharing"),Desktop_Sharing.getController().createGUI());
+	        jtp.addTab(Language.getController().getLangValue("JoinSessionPanel.Whiteboard"),WhiteBoardPanel.getController().createGUI());
 		jtp.addTab(Language.getController().getLangValue("JoinSessionPanel.PptPresentation"),PresentationViewPanel.getController().createGUI());                
 		
 		//start for whiteboard,chat,remoteDesktop Panel

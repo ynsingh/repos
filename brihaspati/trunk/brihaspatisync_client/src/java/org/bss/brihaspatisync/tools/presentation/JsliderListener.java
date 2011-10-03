@@ -14,6 +14,7 @@ import javax.swing.event.ChangeListener;
 /**
   * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Created on feb2011
   * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav</a>Modified on feb2011
+  * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal</a>Tested on aug2011
   */
       
 public class JsliderListener {  
@@ -51,13 +52,13 @@ public class JsliderListener {
 					if(widthint<value) {
 						if(tools.equals("presentation"))
 							PresentationViewPanel.getController().revalidateImgWidth(value);
-						else if(tools.equals("Desktop_Sharing"))
-							org.bss.brihaspatisync.gui.Desktop_Sharing.getController().revalidateImgWidth(value);		
+						//else if(tools.equals("Desktop_Sharing"))
+						//	org.bss.brihaspatisync.gui.Desktop_Sharing.getController().revalidateImgWidth(value);		
 					} else {
 						if(tools.equals("presentation"))
 							PresentationViewPanel.getController().revalidateImgWidth(-(value));
-						else if(tools.equals("Desktop_Sharing"))
-                                                        org.bss.brihaspatisync.gui.Desktop_Sharing.getController().revalidateImgWidth(-(value));
+						//else if(tools.equals("Desktop_Sharing"))
+                                                //        org.bss.brihaspatisync.gui.Desktop_Sharing.getController().revalidateImgWidth(-(value));
 
 					}		
 					widthint=value;	
@@ -75,14 +76,14 @@ public class JsliderListener {
                                         if(heightint<value) {
 						if(tools.equals("presentation"))
 							PresentationViewPanel.getController().revalidateImgHeight(value);
-						else if(tools.equals("Desktop_Sharing"))
-							org.bss.brihaspatisync.gui.Desktop_Sharing.getController().revalidateImgHeight(value);
+						//else if(tools.equals("Desktop_Sharing"))
+						//	org.bss.brihaspatisync.gui.Desktop_Sharing.getController().revalidateImgHeight(value);
 							
 					} else {
 						if(tools.equals("presentation"))
 							PresentationViewPanel.getController().revalidateImgHeight(-value);
-						else if(tools.equals("Desktop_Sharing"))
-                                                        org.bss.brihaspatisync.gui.Desktop_Sharing.getController().revalidateImgHeight(-(value));
+						//else if(tools.equals("Desktop_Sharing"))
+                                                //        org.bss.brihaspatisync.gui.Desktop_Sharing.getController().revalidateImgHeight(-(value));
 					}
 					heightint=value;
                                 }

@@ -32,16 +32,16 @@ import java.awt.Dimension;
 public class Desktop_Sharing {
 
 	private Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
-	private int IMG_WIDTH =((int)dim.getWidth()-500);
-        private int IMG_HEIGHT =((int)dim.getHeight()-300);
+	private int IMG_WIDTH =((int)dim.getWidth()-270);
+        private int IMG_HEIGHT =((int)dim.getHeight()-160);
 
 	private JScrollPane js=null;
         private JPanel mainPanel=null;
-	private JPanel northPanel=null;
+	//private JPanel northPanel=null;
 	private JLabel imageDisplay = null;
 	private BufferedImage origanalimage=null;	
         private static Desktop_Sharing desktopSharing=null;
-	private org.bss.brihaspatisync.tools.presentation.JsliderListener slider =new org.bss.brihaspatisync.tools.presentation.JsliderListener();
+	//private org.bss.brihaspatisync.tools.presentation.JsliderListener slider =new org.bss.brihaspatisync.tools.presentation.JsliderListener();
 	
 	public static Desktop_Sharing getController(){
                 if (desktopSharing==null){
@@ -57,26 +57,26 @@ public class Desktop_Sharing {
                 js=new JScrollPane();
 		mainPanel=new JPanel();
 		mainPanel.setBackground(new java.awt.Color(0,0,0));
-		slider.setTools("Desktop_Sharing");
+		//slider.setTools("Desktop_Sharing");
                 mainPanel.setLayout(new BorderLayout());
 
-                northPanel=new JPanel();
-                mainPanel.add(northPanel,BorderLayout.NORTH);
+                //northPanel=new JPanel();
+                //mainPanel.add(northPanel,BorderLayout.NORTH);
 		mainPanel.setBackground(java.awt.Color.black);
                 imageDisplay = new JLabel();
                 js.setBackground(java.awt.Color.black);
                 js.getViewport().add(imageDisplay);
 
                 mainPanel.add(js,BorderLayout.CENTER);
-                mainPanel.add(slider.createGUI(),BorderLayout.WEST);
+                //mainPanel.add(slider.createGUI(),BorderLayout.WEST);
 		
 		return mainPanel; 	
 	}
-
+	/*
 	public void setSclollEnable_Decable(boolean flag){
                 slider.setEnable_Decable(flag);
         }
-		
+	*/	
 	public void runDesktopSharing(BufferedImage originalImage){
                 try {
 			origanalimage=originalImage;
@@ -93,7 +93,7 @@ public class Desktop_Sharing {
                 g.dispose();
                 return resizedImage;
         }
-
+	/*
         public void revalidateImgWidth(int w){
                 IMG_WIDTH=IMG_WIDTH+w;
                 int type = origanalimage.getType() == 0? BufferedImage.TYPE_INT_ARGB : origanalimage.getType();
@@ -107,5 +107,6 @@ public class Desktop_Sharing {
                 BufferedImage resizeImageJpg = resizeImage(origanalimage, type);
                 imageDisplay.setIcon(new ImageIcon(resizeImageJpg));
         }
+	*/
 }
 

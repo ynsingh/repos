@@ -66,8 +66,8 @@ public class CourseSessionWindow extends JInternalFrame {
 		
 	  	//setLocation(200,50);
 	  	Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
-                setLocation((((int)dim.getWidth()/2)-385),(((int)dim.getHeight()/2)-310));
-	    	setSize(750, 600);
+                setLocation((((int)dim.getWidth()/2)-420),(((int)dim.getHeight()/2)-325));
+	    	setSize(840, 650);
 	    	setVisible(true); 
 		setResizable(false);	
    	}

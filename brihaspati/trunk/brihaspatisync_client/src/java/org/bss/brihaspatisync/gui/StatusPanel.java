@@ -15,6 +15,11 @@ import java.awt.FlowLayout;
 import javax.swing.ImageIcon;
 import java.awt.BorderLayout;
 
+/**
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind pal </a>
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> 
+ *
+ */
 public class StatusPanel extends JPanel {
 	
 	private JPanel east_panel=new JPanel();
@@ -99,7 +104,7 @@ public class StatusPanel extends JPanel {
 	public void setdestopClient(String message){
 		if(!destopmess.equals(message)){
                         destopmess=message;
-                        if(httpclient != null)
+                        if(destop != null)
                                 desktop_panel.remove(destop);
 			try {
                         	if(message.equals("yes"))
@@ -118,7 +123,7 @@ public class StatusPanel extends JPanel {
 	public void setpptClient(String message){
 		if(!pptmess.equals(message)){
                         pptmess=message;
-                        if(httpclient != null)
+                        if(ppt != null)
                                 ppt_panel.remove(ppt);
                         if(message.equals("yes"))
                                 ppt=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));

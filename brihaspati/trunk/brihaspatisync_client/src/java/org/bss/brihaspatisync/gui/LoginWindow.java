@@ -48,6 +48,8 @@ import org.bss.brihaspatisync.network.Log;
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha</a> Modified this class for signalling. 
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind pal </a>
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> testing
  */
 
 public class LoginWindow extends JInternalFrame implements ActionListener, MouseListener {	
@@ -276,6 +278,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 
                 buttonPanel.add(forgetpass);
                 buttonPanel.add(submitLabel);//Button);
+
                 buttonPanel.add(cancelLabel);//Button);
                 CenterPanel.add(buttonPanel,BorderLayout.SOUTH);
 

@@ -314,7 +314,6 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 			int curdate=Integer.parseInt(client_obj.getServerDate());
 	                int intforduedate=Integer.parseInt(st_year+st_month+st_day);
 			boolean check=DateUtil.getController().checkDateInput(st_year,st_month,st_day);
-			System.out.println(intforduedate+" < "+curdate);
 			if(intforduedate < curdate)
 			{
 				value=Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog2");
@@ -337,7 +336,6 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 					}
 				}
 				
-				System.out.println("1 "+st_hour_st_minutes);
 				if(((String)lectName_Text.getText()).length()<6)
 				{
 					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog4"));
@@ -345,7 +343,6 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 					return lectValue;  
 				}
 	              		String st_duration=(String)durationBox.getSelectedItem();
-				System.out.println("2 "+st_duration);
 				
 				if(!((client_obj.getCourseForAnnounce()).equals("")))
 					courseName=client_obj.getCourseForAnnounce();
@@ -367,7 +364,6 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                             	}else{
 					audio1="0";
                      		}
-				System.out.println("9 "+audio1);
 				String whiteboard1="1";
 				if(whiteboard.isSelected()){
 					whiteboard1="1";
@@ -387,7 +383,6 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 					lectValue =lectValue+"&"+"lectAudio="+URLEncoder.encode(audio1,"UTF-8");
 					lectValue =lectValue+"&"+"lectVedio="+URLEncoder.encode(vedeo,"UTF-8");
 					lectValue =lectValue+"&"+"lectWhiteBoard="+URLEncoder.encode(whiteboard1,"UTF-8");
-					System.out.println(lectValue);
 				} catch(Exception es){}
 			}
             	}//else
@@ -427,24 +422,22 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
         public void mouseEntered(MouseEvent e) {}
         public void mouseExited(MouseEvent e) {}
 	
-	private void getTimeIndexingServer(){
-		String indexServerName=client_obj.getIndexServerName();
-		if(!(indexServerName.equals(""))){
-			String  indexServer=indexServerName+"/ProcessRequest?req=getTimeforLecture&";
-			indexServer=HttpsUtil.getController().getReflectorAddress(indexServer);
-			String str[]=indexServer.split(" ");
-			String str1[]=str[0].split("/");
+	private void getTimeIndexingServer() {
+		try {
+			String indexServer=org.bss.brihaspatisync.http.HttpCommManager.getController().getTimeIndexingServer();
+			if(indexServer != null) {
+				indexServer=indexServer.replace("date","");
+				String str[]=indexServer.split(" ");
+				String str1[]=str[0].split("/");
 			
-			year=Integer.parseInt(str1[0]);
-			month=Integer.parseInt(str1[1]);
-			day=Integer.parseInt(str1[2]);
-			
-			
-			String str2[]=str[1].split(":");
-			h=Integer.parseInt(str2[0]);
-			m=Integer.parseInt(str2[1]);
-           	}else{
-                	System.out.println("insufficient indexServer name in AnnounceSession :" + indexServerName);
-            	}
-	}
+				year=Integer.parseInt(str1[0]);
+				month=Integer.parseInt(str1[1]);
+				day=Integer.parseInt(str1[2]);
+								
+				String str2[]=str[1].split(":");
+				h=Integer.parseInt(str2[0]);
+				m=Integer.parseInt(str2[1])+10;
+			}
+		}catch(Exception e){ System.out.println("Error in getTimeIndexingServer() "+e.getMessage());}
+	}	
 }//end of class

@@ -62,9 +62,6 @@ public class HttpsUtil{
 
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	
-//	private Log log=Log.getController();
-
-		
 	public static HttpsUtil getController(){
 		if (httpsUtil==null){
 			httpsUtil=new HttpsUtil();
@@ -252,6 +249,31 @@ public class HttpsUtil{
                 }
                 return ref_ip;
         }
+	
+	public synchronized String getStringMessage(String sendurl,String message){
+                try {
+                        URL url = new URL(sendurl);
+                        connection=createHTTPConnection(url);
+                        if(connection==null){
+                                System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
+                        }else{
+                                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                                String str="";
+                                try{
+                                        while((str=in.readLine())!=null){
+                                                if(!(str.equals(message))){
+                                                        return str;
+                                                }
+                                        }
+                                }finally {
+                                        if(in != null) in.close();
+                                }
+                        }
+                }catch(Exception e){
+                        System.out.println("Error on getStringMessage(connection) HttpsUtil.java "+e.getMessage());
+                }
+                return null;
+        }
 
 	
 	public synchronized Vector getvectorMessage(String sendurl,String message){
@@ -281,8 +303,9 @@ public class HttpsUtil{
                 }
                 return msgList;
         }
-	
-	public Vector getSessionForCourse(Vector courseList, String indexServerName) {
+	/** get all the session in instruvtor or student ***/	
+
+	public synchronized Vector getSessionForCourse(Vector courseList, String indexServerName) {
 		Vector userlist=new Vector();
                 for(int i=0;i<courseList.size();i++){
                         try{
@@ -299,6 +322,7 @@ public class HttpsUtil{
                                         	while((str=in.readLine())!=null){
                                                 	if(!(str.equals("noLecture"))){
 								java.util.StringTokenizer str1 = new java.util.StringTokenizer(str,"$$");
+								System.out.println(str);
 								while(str1.hasMoreTokens()) {
 									userlist.addElement(str1.nextElement().toString());
 								}
@@ -308,7 +332,6 @@ public class HttpsUtil{
                                         	if(in != null) in.close();
                                 	}
                         	}
-
 			}catch(Exception e){
                                 System.out.println("Error at getSessionList()in HttpsConnection : "+e.getMessage());
                         }

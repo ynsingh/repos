@@ -21,7 +21,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
-//import javax.swing.JOptionPane;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import javax.swing.BorderFactory;
@@ -43,27 +42,35 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 
 	private JLabel studLabel;
 	private JPanel mainPanel;
-	private String lect_id="";
-
 	private JPanel nsPane[]=null;
-        private JButton runButton[]=null;
-        private JLabel descLabel[]=null;
-        private JLabel nameLabel[]=null;
-        private JPanel buttonPanel[] =null;
-        private Vector lectinfoVector=null;
-
 	private JPanel north_mainPanel;
 	private JPanel center_mainPanel;
-	private JComboBox studCourseCombo;
+        private JPanel reload_Panel=null;
+        private JPanel buttonPanel[] =null;
+	private JPanel studentCourseCombo_Panel=null;
+		
+	private String lect_id="";
 	private JScrollPane scrollPane1;
+        private JButton runButton[]=null;
+	private JComboBox studCourseCombo;
+	private ClassLoader clr= this.getClass().getClassLoader();
+				
+	
+	private JLabel reloadLabel;
+        private JLabel descLabel[]=null;
+        private JLabel nameLabel[]=null;
+
+	
+        private Vector lectinfoVector=null;
 	private Vector courseid=new Vector();	
         
 	private Log log=Log.getController();
-	private static StudentCSPanel studcspanel=null;
-	private ClientObject client_obj=ClientObject.getController();
 	
+	private ClientObject client_obj=ClientObject.getController();
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+
+	private static StudentCSPanel studcspanel=null;
 
 	/**
 	 * Controller for class.
@@ -85,28 +92,43 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 			
 		north_mainPanel=new JPanel();
 		north_mainPanel.setLayout(new FlowLayout());
+		studentCourseCombo_Panel=new JPanel();
+		reload_Panel=new JPanel();
+		studentCourseCombo_Panel.setBackground(Color.LIGHT_GRAY);
+		reload_Panel.setBackground(Color.LIGHT_GRAY);
 		north_mainPanel.setBackground(Color.LIGHT_GRAY);
 		studLabel=new JLabel("<html><b>"+Language.getController().getLangValue("StudentCSPanel.TitleLabel")+"</b></html>");
+		
+		studCourseCombo=new JComboBox(reloadCourseList());
+		studCourseCombo.addActionListener(this);	
+		studentCourseCombo_Panel.add(studCourseCombo,BorderLayout.CENTER);
+			
+		reloadLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/reload.png")));
+                reloadLabel.setEnabled(true);
+                reloadLabel.addMouseListener(this);
+                reloadLabel.setName("reloadLabel.Action");
+                reload_Panel.add(reloadLabel,BorderLayout.CENTER);
+		
+		north_mainPanel.add(studLabel,BorderLayout.WEST);
+		north_mainPanel.add(studentCourseCombo_Panel,BorderLayout.CENTER);
+		north_mainPanel.add(reload_Panel,BorderLayout.CENTER);
+	   	mainPanel.add(north_mainPanel, BorderLayout.NORTH);
+	   	
+                mainPanel.add(showLecture(client_obj.getSessionList(reloadCourseList(),client_obj.getIndexServerName())),BorderLayout.CENTER);
+    		return mainPanel;
+	}
+	
+	private Vector reloadCourseList(){
 		Vector courseVec=client_obj.getStudCourseList();
-		String str=courseVec.get(0).toString();
+                String str=courseVec.get(0).toString();
                 courseVec.clear();
                 String str1[]=str.split(",");
                 for(int i=0;i<str1.length;i++){
                         courseVec.add(str1[i]);
                 }
-		courseVec.add(0,"--Show All--");
-		studCourseCombo=new JComboBox(courseVec);
-		studCourseCombo.addActionListener(this);	
-		
-		north_mainPanel.add(studLabel,BorderLayout.WEST);
-		north_mainPanel.add(studCourseCombo,BorderLayout.CENTER);
-	   	mainPanel.add(north_mainPanel, BorderLayout.NORTH);
-	   	
-		Vector courseName=client_obj.getStudCourseList();
-                mainPanel.add(showLecture(client_obj.getSessionList(courseName,client_obj.getIndexServerName())),BorderLayout.CENTER);
-		//mainPanel.add(showLecture(client_obj.getStudSessionList()), BorderLayout.CENTER);
-    		return mainPanel;
-	}
+                courseVec.add(0,"--Show All--");
+                return courseVec;
+        }
 	
 	/**
 	 * Create Grid View for lectures detail.
@@ -220,7 +242,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 
 	public void mouseClicked(MouseEvent ev) {
 		 	 	
-		 if(ev.getComponent().getName().equals("lectureInfo.Action")){
+		if(ev.getComponent().getName().equals("lectureInfo.Action")){
 			try{
 				for(int i=0;i<descLabel.length;i++) {
 					if(ev.getSource()==descLabel[i]){
@@ -228,7 +250,17 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
                     			}
         			}
 			}catch(Exception e){}	 	
-		 }
+		}else if(ev.getComponent().getName().equals("reloadLabel.Action")) {
+			studentCourseCombo_Panel.remove(studCourseCombo);
+			
+			studCourseCombo=new JComboBox(reloadCourseList());
+	                studCourseCombo.addActionListener(this);
+        	        studentCourseCombo_Panel.add(studCourseCombo,BorderLayout.CENTER);
+			studentCourseCombo_Panel.revalidate();
+			mainPanel.remove(1);
+                       	mainPanel.add(showLecture(client_obj.getSessionList(reloadCourseList(),client_obj.getIndexServerName())),BorderLayout.CENTER);
+			StatusPanel.getController().setStatus("reload Successfully");
+		}
 	}
 	
 	public void mousePressed(MouseEvent e) {}
