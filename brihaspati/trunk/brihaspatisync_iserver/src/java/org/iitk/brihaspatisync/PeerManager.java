@@ -79,7 +79,7 @@ public class PeerManager
 	/**
          * This Method Returns Parent Peer's IPAddress for Peer Connection .and also increase load of this parent peer.
          */
-	protected String createPeer(String lect_id, String publicIP,String user,String role,String status,String privateIP,String proxy,String ref_ip){
+	protected String createPeer(String lect_id, String publicIP,String user,String role,String status,String privateIP,String proxy,String ref_ip,String first_lst_name){
 		String message="";
 		try{
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -92,6 +92,7 @@ public class PeerManager
 				if(!searchUserName(lect_id,user)){
 		                	peer.setAttribute("PublicIP",publicIP);
 	        		        peer.setAttribute("User",user);
+	        		        peer.setAttribute("UserName",first_lst_name);
         	        	        peer.setAttribute("Role",role);
                 	        	peer.setAttribute("Status",status);
 	                	       	peer.setAttribute("Reflector",ref_ip);
@@ -102,7 +103,6 @@ public class PeerManager
 					message="Write succfully";	
 				}else{
 					removePeer(lect_id,user);	
-					createPeer(lect_id,publicIP,user,role,status,privateIP,proxy,ref_ip);
 				}
       			} else{
               			ServerLog.getController().Log("Error in insert value to xml file by any null value==>");
@@ -275,10 +275,13 @@ public class PeerManager
                                 	element = ( Element )node;
                                   	userName=element.getAttribute("User");
 					status=element.getAttribute("Status");
+					String fullusername=element.getAttribute("UserName");
         		                StringBuffer string=new StringBuffer(100);
 	                                string=string.append(userName);
         	                        string=string.append("$");
                 	                string=string.append(status);
+        	                        string=string.append("$");
+        	                        string=string.append(fullusername);
                         	        userList.addElement(string.toString());
                         	}
                 	}

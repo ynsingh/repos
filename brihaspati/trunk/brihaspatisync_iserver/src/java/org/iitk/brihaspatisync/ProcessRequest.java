@@ -26,6 +26,7 @@ import java.net.InetAddress;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.*;
 
 import org.apache.torque.Torque;
 import org.apache.torque.om.NumberKey;
@@ -45,6 +46,7 @@ import org.iitk.brihaspatisync.om.LecturePeer;
 import org.iitk.brihaspatisync.om.Courses;
 import org.iitk.brihaspatisync.om.CoursesPeer;
 import org.iitk.brihaspatisync.om.TurbineGroup;
+import org.iitk.brihaspatisync.om.TurbineUser;
 import org.iitk.brihaspatisync.om.TurbineGroupPeer;
 import org.iitk.brihaspatisync.om.TurbineUserGroupRole;
 import org.iitk.brihaspatisync.om.TurbineUserGroupRolePeer;
@@ -118,7 +120,6 @@ public class ProcessRequest extends HttpServlet {
 			if(!message.equals("UnSuccessfull")){
                                 message="successfull";
                         }
-			//ServerLog.getController().Log("reflector_registration------------->"+message);	
 			response.setContentLength(message.length());
                         out.println(message);
                         out.flush();
@@ -302,7 +303,28 @@ public class ProcessRequest extends HttpServlet {
 						String str1[]=ref_ip.split(",");
                 	                        ref_ip=str1[0].replaceAll("current","");
 						str1=null;
-						String msg=PeerManager.getController().createPeer(lect_id,publicIP,user,role,status,privateIP,proxy,ref_ip);
+						String first_lst_name="";
+						{
+							try {
+								Criteria crit=new Criteria();
+		                                                crit.add(TurbineUserPeer.LOGIN_NAME,user);
+                	        	                        List u=TurbineUserPeer.doSelect(crit);
+								for(int i=0;i<u.size();i++)
+					                        {
+					                                TurbineUser element=(TurbineUser)(u.get(i));
+									String firstname=(element.getFirstName());
+									if(firstname.length()>2){
+										String lastname=(element.getLastName());
+										first_lst_name=firstname+" "+lastname;
+										first_lst_name=java.net.URLEncoder.encode(first_lst_name);
+									}
+								}
+							}catch(Exception e){}
+						}
+						if(first_lst_name.equals("")){
+							first_lst_name=user;
+						}
+						String msg=PeerManager.getController().createPeer(lect_id,publicIP,user,role,status,privateIP,proxy,ref_ip,first_lst_name);
 					}
        				}
 				String av_status=ServerUtil.getController().getAVStatus(lect_id);
@@ -365,8 +387,23 @@ public class ProcessRequest extends HttpServlet {
                                 out.flush();
                                 out.close();
 			}catch(Exception e){ ServerLog.getController().Log("error Cancle Lecture  for userlis==> "+e.getMessage()); }
-                }
-
+                }else if(reqType.equals("GetReflectorStatusXML")){
+			try {
+				FileInputStream fstream = new FileInputStream(context.getRealPath("ReflectorStatus.xml"));
+				DataInputStream in = new DataInputStream(fstream);
+  				BufferedReader br = new BufferedReader(new InputStreamReader(in));
+				String message="";
+  				String strLine;
+				while ((strLine = br.readLine()) != null)   {
+					message=message+strLine;
+  				}
+				response.setContentLength(message.length());
+                                out.println(message);
+                                out.flush();
+                                out.close();
+				in.close();	
+			}catch(Exception e){ServerLog.getController().Log("error GetReflectorStatusXML ==> "+e.getMessage());}
+		}
 
 
 	}//end of post method

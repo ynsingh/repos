@@ -98,14 +98,16 @@ public class ServerUtil{
   	}
 	
 	public String getSystemDateTime() {
-		java.text.SimpleDateFormat sdfDate = new java.text.SimpleDateFormat("yyyy/MM/dd");
-                java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("HH:mm");
-                Date now = new Date();
-                String strDate = sdfDate.format(now);
-                String strTime = sdfTime.format(now);
-                System.out.println("Date: " + strDate);
-                System.out.println("Time: " + strTime); 
-                return "date"+strDate+" "+strTime;
+		try {
+			java.text.SimpleDateFormat sdfDate = new java.text.SimpleDateFormat("yyyy/MM/dd");
+        	        java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("HH:mm");
+                	Date now = new Date();
+	                String strDate = sdfDate.format(now);
+        	        String strTime = sdfTime.format(now);
+                	System.out.println("Date: " + strDate);
+	                System.out.println("Time: " + strTime); 
+        	        return "date"+strDate+" "+strTime;
+		}catch(Exception e){return "UnSuccessfull"; }
 	}
 	
 	public String  getAVStatus(String lect_id) {
