@@ -58,7 +58,6 @@ public class HandRaiseAction implements ActionListener {
                         if((client_obj.getUserRole()).equals("student")){
                                 user="loginName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
                         }else if((client_obj.getUserRole()).equals("instructor")){
-				System.out.println("Request  ================>>>>>>>  "+Request);
 				if((!Request.equals("Share-Screen")) && ((!Request.equals("Instructor_Allow-PPT"))) && ((!Request.equals("Instructor_Stop_Allow"))) ){
                                 	if(!selectedUsername.equals("")){
                                                 user="loginName="+URLEncoder.encode(selectedUsername,"UTF-8");
@@ -80,7 +79,6 @@ public class HandRaiseAction implements ActionListener {
 			if(!(indexServer1.equals(""))){
 				sb=sb.append("HandRaiseAction");
                                 sb=sb.append(id+","+user+","+Request);
-                                System.out.println(sb.toString());
                                 utilObject.setSendQueue(sb.toString());
                                 sb.delete(0, sb.length());
 			}else{
@@ -94,49 +92,36 @@ public class HandRaiseAction implements ActionListener {
 
                 String cmd=event.getActionCommand();
                 if(cmd.equals("Allow-WB")) {
-                        System.out.println(cmd);
                         actionONRequest("Allow-WB");
                 }
                 if((cmd.equals("Denie-WB"))|| (cmd.equals("Denie-Mic")) || (cmd.equals("Denie-Screen")) || (cmd.equals("Denie-PPT"))) {
-			System.out.println(cmd);
                         actionONRequest("available");
                 }
                 if(cmd.equals("Allow-Mic")) {
-                        System.out.println(cmd);
                         actionONRequest("Allow-Mic");
                 }
 		if(cmd.equals("Allow-Screen")) {
-                        System.out.println(cmd);
                         actionONRequest("Allow-Screen");
                 }
 		if(cmd.equals("Allow-PPT")) {
-                        System.out.println(cmd);
                         actionONRequest("Allow-PPT");
                 }		
 
 		if(cmd.equals("Get-WB")) {
-                        System.out.println(cmd);
                         actionONRequest("Get-WB");
                 }
 		if(cmd.equals("Get-Mic")) {
-                        System.out.println(cmd);
                         actionONRequest("Get-Mic");
                 }
 		if(cmd.equals("Get-Screen")) {
-                        System.out.println(cmd);
                         actionONRequest("Get-Screen");
                 }
 		if(cmd.equals("Get-PPT")) {
-                        System.out.println(cmd);
                         actionONRequest("Get-PPT");
                 }
 		if(cmd.equals("Cancel-Allow-Screen")) {
-                        System.out.println(cmd);
                         actionONRequest("Cancel-Allow-Screen");
                 }
-
-
-		
         }
 	
 	protected void setSelectedUsername(String str){	

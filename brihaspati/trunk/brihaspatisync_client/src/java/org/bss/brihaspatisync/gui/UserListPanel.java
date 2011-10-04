@@ -73,11 +73,12 @@ public class UserListPanel {
                 mainPanel.setLayout(new BorderLayout());
 		
 		ClassLoader clr= this.getClass().getClassLoader();
-		Object elements[][]=new Object[1][4];
+		Object elements[][]=new Object[1][5];
 		elements[0][0] = new Font("Helvetica", Font.PLAIN, 14);
 		elements[0][1] = Color.black;
 		elements[0][2] = new ImageIcon(clr.getResource("resources/images/user/user.jpe"));
 		elements[0][3] = username;
+		elements[0][4] = username;
 				
                 jlist = new JList(elements);
                 ListCellRenderer renderer = new UserListCellRendered();
@@ -106,7 +107,7 @@ public class UserListPanel {
  	 */  	
 	protected void  userlistPanel(Vector userlist){
 		ClassLoader clr= this.getClass().getClassLoader();
-		Object elements[][]=new Object[userlist.size()][4];
+		Object elements[][]=new Object[userlist.size()][5];
 		statusVector.clear();
                 for (int i=0;i<userlist.size();i++){
                         String str=(String)userlist.elementAt(i);
@@ -114,6 +115,7 @@ public class UserListPanel {
                         while(st.hasMoreTokens()){
 				String user = (String)st.nextToken();
 				String status=st.nextToken().trim();	
+				String fullname=java.net.URLDecoder.decode(st.nextToken().trim());	
 				statusVector.add(status);
 				if(role.equals("student")) {		
 					if(user.equals(username)){
@@ -178,7 +180,6 @@ public class UserListPanel {
                                                 }catch(Exception sp){System.out.println("  Error in catch Allow-Mic ==========> ");}
                                         }
 				}else if(role.equals("instructor")) { // check only for controller according to username.
-
 					if(statusVector.contains("Share-Screen")){
 						if((user.equals(username)) && (status.equals("Share-Screen") && (sharescreenFlag))){
                                                         sharescreenFlag=false;
@@ -221,6 +222,7 @@ public class UserListPanel {
         	        	elements[i][1] = Color.black;
 				elements[i][2] = new ImageIcon(clr.getResource(getImageIcon(status)));
 	                	elements[i][3] = user;
+	                	elements[i][4] = fullname;
                         }
                 }
 

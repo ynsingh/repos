@@ -30,7 +30,8 @@ class UserListCellRendered implements ListCellRenderer {
                 Font theFont = null;
                 Color theForeground = null;
                 ImageIcon theIcon = null;
-                String theText = null;
+                String fullname = null;
+                String userid = null;
 
                 JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index, isSelected,cellHasFocus);
                 if (value instanceof Object[]) {
@@ -38,20 +39,24 @@ class UserListCellRendered implements ListCellRenderer {
                         theFont = (Font) values[0];
                         theForeground = (Color) values[1];
                         theIcon = (ImageIcon) values[2];
-                        theText = (String) values[3];
+                        userid = (String) values[3];
+                        fullname = (String) values[4];
+			System.out.println("userid  "+userid);
+			System.out.println("fullname  "+fullname);
                 } else {
                         theFont = list.getFont();
                         theForeground = list.getForeground();
-                        theText = "";
+                        fullname = "";
+			userid="";
                 }
                 if (isSelected) {
                         renderer.setForeground(theForeground);
-			HandRaiseAction.getController().setSelectedUsername(theText);				
+			HandRaiseAction.getController().setSelectedUsername(userid);				
                 }
                 if (theIcon != null) {
                         renderer.setIcon(theIcon);
                 }
-                renderer.setText(theText);
+                renderer.setText(fullname);
                 renderer.setFont(theFont);
                 return renderer;
         }
