@@ -313,7 +313,7 @@ public class ProcessRequest extends HttpServlet {
 					                        {
 					                                TurbineUser element=(TurbineUser)(u.get(i));
 									String firstname=(element.getFirstName());
-									if(firstname.length()>2){
+									if(firstname.length()>1){
 										String lastname=(element.getLastName());
 										first_lst_name=firstname+" "+lastname;
 										first_lst_name=java.net.URLEncoder.encode(first_lst_name);
@@ -346,7 +346,10 @@ public class ProcessRequest extends HttpServlet {
 				String message="";
                         	if(resultSize!=0){
 					for(int i=0;i<resultSize;i++){
-                                        	message=message+","+result.elementAt(i).toString();
+						if(message.equals(""))
+        	                                        message=result.elementAt(i).toString();
+	                                        else
+                	                                message=message+","+result.elementAt(i).toString();
 					}
                               		response.setContentLength(message.length());
 					out.println(message);
