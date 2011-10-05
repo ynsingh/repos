@@ -62,12 +62,13 @@ public class ServerUtil{
                                 cdate=current_year+delimiter+current_month+delimiter+current_day;
                         else
                                 cdate=current_year+current_month+current_day;
+			
                 }
                 catch(Exception ex)
                 {
                         System.out.println("Error in Expiry Util");
                 }
-                return(cdate);
+                return(cdate.trim());
         }
 	/****************  get Corent Date **************/	
 	/** getting the  day or time difference between the sessionDate and SystemDate. */
@@ -102,11 +103,9 @@ public class ServerUtil{
 			java.text.SimpleDateFormat sdfDate = new java.text.SimpleDateFormat("yyyy/MM/dd");
         	        java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("HH:mm");
                 	Date now = new Date();
-	                String strDate = sdfDate.format(now);
+	                //String strDate = sdfDate.format(now);
         	        String strTime = sdfTime.format(now);
-                	System.out.println("Date: " + strDate);
-	                System.out.println("Time: " + strTime); 
-        	        return "date"+strDate+" "+strTime;
+        	        return "date"+getCurrentDate("/")+" "+strTime;
 		}catch(Exception e){return "UnSuccessfull"; }
 	}
 	
