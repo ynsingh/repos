@@ -185,14 +185,12 @@ public class ClientObject {
 	public String getCourseForAnnounce(){
 		return courseForAnnounce;
 	}
-
-	/**
-         * This method is used get server date to synchronize this client system date.
-         */
+	
+	/*
 	public String getServerDate(){
 		return commMgr.getServerDate();
 	}
-
+	*/
 	/**
          * This method is used store all user status to change icons in userlist.
          */

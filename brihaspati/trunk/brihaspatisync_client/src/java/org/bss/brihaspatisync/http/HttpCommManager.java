@@ -27,8 +27,6 @@ public class HttpCommManager {
 
    	private Vector loginResult=null;
 
-	private String serverDate="";		
-   	
    	private static HttpCommManager httpsConnection=null;
 	
 	private HttpsUtil httpsUtil= HttpsUtil.getController();
@@ -88,7 +86,7 @@ public class HttpCommManager {
 				
 				String req_url=indexServer+"/ProcessRequest?req=login&"+usr+"&"+pass+"&"+ip;
                                 loginResult=httpsUtil.getvectorMessage(req_url,"noLecture");
-                                serverDate=(String)loginResult.get(2);
+                                //serverDate=(String)loginResult.get(2);
 				if(loginResult!=null){
 					indexServerName=indexServer;
                                         index=true;
@@ -113,11 +111,6 @@ public class HttpCommManager {
                 return httpsUtil.getController().getSessionForCourse(getStudCourseList(),indexServerName);//studSessionList;
         }
 	
-
-	public String getServerDate(){
-                return serverDate;
-        }
-	
         public Vector getStudCourseList(){
 		try {
 			String id="id="+URLEncoder.encode((String)loginResult.get(0),"UTF-8");
@@ -139,7 +132,6 @@ public class HttpCommManager {
 	public String  getTimeIndexingServer(){
 		try {
                         String  indexServer=indexServerName+"/ProcessRequest?req=getTimeforLecture&";
-			System.out.println("===========indexServer===========>  "+indexServer);
 			return httpsUtil.getStringMessage(indexServer,"UnSuccessfull");	
 		}catch(Exception e){System.out.println("Error in getTimeIndexingServer() ");}
 		return null;

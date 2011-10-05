@@ -40,6 +40,12 @@ import org.bss.brihaspatisync.network.Log;
 
 public class StudentCSPanel extends JPanel implements ActionListener, MouseListener{
 
+        private int cur_h=0;
+        private int cur_m=0;
+        private int curday=0;
+	private int curyear=0;
+        private int curmonth=0;
+	
 	private JLabel studLabel;
 	private JPanel mainPanel;
 	private JPanel nsPane[]=null;
@@ -57,6 +63,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 				
 	
 	private JLabel reloadLabel;
+	private JLabel reloadLabel_1;
         private JLabel descLabel[]=null;
         private JLabel nameLabel[]=null;
 
@@ -106,8 +113,17 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 		reloadLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/reload.png")));
                 reloadLabel.setEnabled(true);
                 reloadLabel.addMouseListener(this);
+		reloadLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 reloadLabel.setName("reloadLabel.Action");
-                reload_Panel.add(reloadLabel,BorderLayout.CENTER);
+
+		reloadLabel_1=new JLabel("<html><b><font color=blue>"+Language.getController().getLangValue("InstructorCSPanel.reloadLabel")+"</font></b></html>");
+                reloadLabel_1.setEnabled(true);
+                reloadLabel_1.addMouseListener(this);
+                reloadLabel_1.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                reloadLabel_1.setName("reloadLabel.Action");
+		
+                reload_Panel.add(reloadLabel,new FlowLayout());
+                reload_Panel.add(reloadLabel_1,new FlowLayout());
 		
 		north_mainPanel.add(studLabel,BorderLayout.WEST);
 		north_mainPanel.add(studentCourseCombo_Panel,BorderLayout.CENTER);
@@ -134,7 +150,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 	 * Create Grid View for lectures detail.
 	 */
 	private JScrollPane showLecture(Vector lectureVector) {
-		
+		getTimeIndexingServer();
 		lectinfoVector=lectureVector;
 		int y=lectureVector.size();
 		runButton=new JButton[y];			
@@ -148,8 +164,20 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
     		center_mainPanel.setBorder(BorderFactory.createTitledBorder(Language.getController().getLangValue("StudentCSPanel.BorderText")));
 		center_mainPanel.add(new JLabel("<html><b><U><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.LectureLabel")+"</font></U></b>",0));
 		center_mainPanel.add(new JLabel("<html><b><U><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.ActionLabel")+"</font></U></b>",0));
+	
+		String str_curday="";
+                String str_curmonth="";
 		
-		int curdate=Integer.parseInt(client_obj.getServerDate());
+		if(curday<10){
+                        str_curday="0"+Integer.toString(curday);
+                }else
+			str_curday=Integer.toString(curday);
+                if(curmonth<10){
+                        str_curmonth="0"+Integer.toString(curmonth);
+                }else
+			str_curmonth=Integer.toString(curmonth);
+
+                int curdate=Integer.parseInt(Integer.toString(curyear)+str_curmonth+str_curday);	
 		
 		for(int i=0;i<y;i++){
                         java.util.StringTokenizer str1 = new java.util.StringTokenizer(lectureVector.get(i).toString(),",");
@@ -168,7 +196,8 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
                         String lectDuration=str1.nextElement().toString();
                         String repeattime=str1.nextElement().toString();
                         String fortime=str1.nextElement().toString();
-			
+			String time[]=lectTime.split(":");
+			int anausetime= (Integer.parseInt(time[0])*60)+Integer.parseInt(time[1]);	
 			nsPane[i]=new JPanel();
                         nsPane[i].setBorder(BorderFactory.createLineBorder(Color.gray));
 			nameLabel[i]=new JLabel(lectName);
@@ -176,10 +205,17 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 			lectDate=lectDate.substring(0,10);
                         lectDate=lectDate.replaceAll("-","");
 			int checkintdate=Integer.parseInt(lectDate);
-                        if(checkintdate == curdate) {
-                    		runButton[i]=new JButton(Language.getController().getLangValue("StudentCSPanel.JoinBttn"));
-				runButton[i].addActionListener(this);
-
+			
+			int cue_finaltime =(cur_h*60)+cur_m;
+			time=lectDuration.split(":");
+			int durationtime=Integer.parseInt(time[0])*60;
+			durationtime=anausetime+durationtime;
+			if(checkintdate == curdate) {
+				if((anausetime <= cue_finaltime) && (durationtime >= cue_finaltime) ) {				
+	                    		runButton[i]=new JButton(Language.getController().getLangValue("StudentCSPanel.JoinBttn"));
+					runButton[i].addActionListener(this);
+				}else
+				runButton[i]=new JButton("");
                		}
 			else {
 				runButton[i]=new JButton("");
@@ -267,5 +303,25 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 	public void mouseReleased(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
+		
+	private void getTimeIndexingServer() {
+                try {
+                        String indexServer=org.bss.brihaspatisync.http.HttpCommManager.getController().getTimeIndexingServer();
+                        if(indexServer != null) {
+				indexServer=java.net.URLDecoder.decode(indexServer.trim());
+                                indexServer=indexServer.replace("date","");
+                                String str[]=indexServer.split(" ");
+                                String str1[]=str[0].split("/");
+
+                                curyear=Integer.parseInt(str1[0]);
+                                curmonth=Integer.parseInt(str1[1]);
+                                curday=Integer.parseInt(str1[2]);
+                                String str2[]=str[1].split(":");
+                                cur_h=Integer.parseInt(str2[0]);
+                                cur_m=Integer.parseInt(str2[1])+10;
+                        }
+                }catch(Exception e){ System.out.println("Error in getTimeIndexingServer() "+e.getMessage());}
+        }
+
 }
 	

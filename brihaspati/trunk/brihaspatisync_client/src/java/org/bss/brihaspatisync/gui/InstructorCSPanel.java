@@ -44,6 +44,12 @@ import org.bss.brihaspatisync.network.Log;
  */
  
 public class InstructorCSPanel extends JPanel implements ActionListener, MouseListener{
+	
+        private int cur_h=0;
+        private int cur_m=0;
+        private int curday=0;
+	private int curyear=0;
+        private int curmonth=0;
 
 	private JPanel mainPanel;
 	private JPanel north_mainPanel;
@@ -54,6 +60,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 	private JLabel instLabel;
 	private JLabel announceLabel;
 	private JLabel reloadLabel;
+	private JLabel reloadLabel_1;
 	private JComboBox instCourseCombo=null;
 	private JScrollPane scrollPane;
 	private Vector courseid=new Vector();
@@ -77,6 +84,8 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
 	private ClassLoader clr= this.getClass().getClassLoader();
+
+
 	/**
 	 * Controller for the class.
 	 */
@@ -111,8 +120,17 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		reloadLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/reload.png")));
                 reloadLabel.setEnabled(true);
                 reloadLabel.addMouseListener(this);
+		reloadLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 reloadLabel.setName("reloadLabel.Action");	
-		reload_Panel.add(reloadLabel,BorderLayout.CENTER);
+			
+		reloadLabel_1=new JLabel("<html><b><font color=blue>"+Language.getController().getLangValue("InstructorCSPanel.reloadLabel")+"</font></b></html>");
+                reloadLabel_1.setEnabled(true);
+                reloadLabel_1.addMouseListener(this);
+		reloadLabel_1.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                reloadLabel_1.setName("reloadLabel.Action");
+		
+		reload_Panel.add(reloadLabel,new FlowLayout());
+		reload_Panel.add(reloadLabel_1,new FlowLayout());
 
 		announceLabel=new JLabel("<html><b><font color=black>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceNewSession")+"</font></b></html>");
 		announceLabel.setEnabled(false);		
@@ -120,6 +138,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		announceLabel.removeMouseListener(this);
     		announceLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
     		announceLabel.setName("announceLabel.Action");
+		
 		north_mainPanel.add(instLabel,BorderLayout.WEST);
 		north_mainPanel.add(instCourseCombo_Panel,BorderLayout.CENTER);
 		north_mainPanel.add(reload_Panel,BorderLayout.CENTER);
@@ -144,6 +163,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 
 
 	protected JScrollPane showLecture(Vector lectVector){
+		getTimeIndexingServer();
 		lectinfoVector=lectVector;
         	int y=lectVector.size();
 		serialNo=new JLabel[y];
@@ -151,7 +171,20 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		buttonPanel=new JPanel[y];
 		nsPane=new JPanel[y];
 		lectInfo_Pane=new JScrollPane[y];
-                int curdate=Integer.parseInt(client_obj.getServerDate());
+		String str_curday="";
+		String str_curmonth="";
+		if(curday<10){
+                	str_curday="0"+Integer.toString(curday);
+               	}else
+			str_curday=Integer.toString(curday);
+		if(curmonth<10){
+                        str_curmonth="0"+Integer.toString(curmonth);
+                }else
+			str_curmonth=Integer.toString(curmonth);
+			
+	
+                int curdate=Integer.parseInt(Integer.toString(curyear)+str_curmonth+str_curday);
+
 		join=new JButton[y];
                 inLabel=new JLabel[y];
                 upLabel=new JLabel[y];
@@ -182,7 +215,9 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                         String lectDuration=str1.nextElement().toString();
                         String repeattime=str1.nextElement().toString();
                         String fortime=str1.nextElement().toString();
-	
+			String time[]=lectTime.split(":");
+			int anausetime=	(Integer.parseInt(time[0])*60)+Integer.parseInt(time[1]);
+
 			buttonPanel[i]=new JPanel();
                         buttonPanel[i].setLayout(new FlowLayout());
                         buttonPanel[i].setBorder(BorderFactory.createLineBorder(Color.gray));
@@ -196,9 +231,19 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 			lectDate=lectDate.replaceAll("-","");
 			int checkintdate=Integer.parseInt(lectDate);
                         lectInfo_Pane[i]=new JScrollPane(nsPane[i]);
+			/************  time *********************/	
+                        int cue_finaltime =(cur_h*60)+cur_m;
+			/***********  set time *************/	
+			time=lectDuration.split(":");
+                        int durationtime=Integer.parseInt(time[0])*60;
+                        durationtime=anausetime+durationtime;
+				
                         if((checkintdate == curdate )) {
-                       		join[i]=new JButton(Language.getController().getLangValue("InstructorCSPanel.Join"));
-				join[i].addActionListener(this);
+				if((anausetime <= cue_finaltime) && (durationtime > cue_finaltime) ) {
+                       			join[i]=new JButton(Language.getController().getLangValue("InstructorCSPanel.Join"));
+					join[i].addActionListener(this);
+				}else
+					join[i]=new JButton("");
                      	}else {
                        		join[i]=new JButton("");
                     	}
@@ -283,7 +328,6 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 				if(e.getSource()==join[i]){
 					
 					String lect_id=courseid.get(i).toString();
-					System.out.println(lect_id);
 					// store this lect_id in client objects for later use by this client.
 					client_obj.setLectureID(lect_id);	
 					// store role in client objects for later use by this client.
@@ -313,15 +357,17 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		}
 		
 		if(ev.getComponent().getName().equals("reloadLabel.Action")) {
-                	try {	
+                	try {
 				instCourseCombo_Panel.remove(instCourseCombo);
 		                instCourseCombo=new JComboBox(reloadCourseList());
 			        instCourseCombo.addActionListener(this);
 			        instCourseCombo_Panel.add(instCourseCombo,BorderLayout.CENTER);
                	        	instCourseCombo_Panel.revalidate();
 				mainPanel.remove(1);
-                                mainPanel.add(showLecture(client_obj.getSessionList(reloadCourseList(),client_obj.getIndexServerName())),BorderLayout.CENTER);
+				mainPanel.add(showLecture(client_obj.getSessionList(reloadCourseList(),client_obj.getIndexServerName())),BorderLayout.CENTER);
 				StatusPanel.getController().setStatus(Language.getController().getLangValue("InstructorCSPanel.msg1"));
+				reloadLabel.setCursor(defaultCursor);
+				reloadLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 	} catch(Exception ex){ System.out.println("==================="+ex.getMessage());  }
 			center_mainPanel.validate();
                         mainPanel.revalidate();
@@ -361,7 +407,6 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 				mainPanel.remove(1);
 				mainPanel.add(showLecture(client_obj.getSessionList(reloadCourseList(),client_obj.getIndexServerName())),BorderLayout.CENTER);
 	     			mainPanel.revalidate();
-					
                         }catch(Exception e){ log.setLog("  Error in Cancle action !!!!   ");  }
                 }
 	}
@@ -392,9 +437,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 
 	private void cancleLecture(int indexnumber){	
 		try {
-			System.out.println(indexnumber);
         	        String idCourse = "lectValue="+URLEncoder.encode(courseid.get(indexnumber).toString(),"UTF-8");
-			System.out.println(idCourse);
 			String indexServerName=client_obj.getIndexServerName();
 			String indexServer=indexServerName+"/ProcessRequest?req=cancleLecture&"+idCourse;
 			if(!(indexServerName.equals(""))) {
@@ -415,6 +458,25 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 
 	protected JComboBox getinstCourseCombo(){
                 return instCourseCombo;
+        }
+
+	private void getTimeIndexingServer() {
+                try {
+                        String indexServer=org.bss.brihaspatisync.http.HttpCommManager.getController().getTimeIndexingServer();
+                        if(indexServer != null) {
+				indexServer=java.net.URLDecoder.decode(indexServer.trim());
+                                indexServer=indexServer.replace("date","");
+                                String str[]=indexServer.split(" ");
+                                String str1[]=str[0].split("/");
+
+                                curyear=Integer.parseInt(str1[0]);
+                                curmonth=Integer.parseInt(str1[1]);
+                                curday=Integer.parseInt(str1[2]);
+                                String str2[]=str[1].split(":");
+                                cur_h=Integer.parseInt(str2[0]);
+                                cur_m=Integer.parseInt(str2[1])+10;
+                        }
+                }catch(Exception e){ System.out.println("Error in getTimeIndexingServer() "+e.getMessage());}
         }
 
 }	

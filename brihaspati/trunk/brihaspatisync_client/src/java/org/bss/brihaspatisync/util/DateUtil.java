@@ -25,9 +25,8 @@ public class DateUtil {
         }
 
         public DateUtil() { }
-	
-	
-        public int checkTimeInput() {
+	/*
+	public int checkTimeInput() {
 			Calendar calendar=Calendar.getInstance();
                          int curmin=calendar.get(Calendar.HOUR);
                          int min=calendar.get(Calendar.MINUTE);
@@ -38,7 +37,7 @@ public class DateUtil {
 			curmin=curmin+min;
 		return curmin;
 	}
-	
+	*/
 	
         /**
          * This method is used to check to date validation.

@@ -302,6 +302,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 	 */
 	
 	protected String getLectureValues(){
+		getTimeIndexingServer();
 		String courseName="";
 		String value;
        		if((lectName_Text.getText().equals("")) ||(lecInfoArea.getText().equals(""))||(phone_Text.getText().equals(""))){
@@ -311,7 +312,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 	       		String st_year=(String)yearBox.getSelectedItem();
 	               	String st_month=(String)monthBox.getSelectedItem();
                        	String st_day=(String)dayBox.getSelectedItem();
-			int curdate=Integer.parseInt(client_obj.getServerDate());
+			int curdate=year+month+day;
 	                int intforduedate=Integer.parseInt(st_year+st_month+st_day);
 			boolean check=DateUtil.getController().checkDateInput(st_year,st_month,st_day);
 			if(intforduedate < curdate)
@@ -325,12 +326,12 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 				String st_hour=(String)hourBox.getSelectedItem();
                			String st_minutes=(String)minBox.getSelectedItem();
 				String st_hour_st_minutes=st_hour+":"+st_minutes;	
-				
+				int cue_finaltime =(h*60)+m;
 				if(intforduedate == curdate){
 					int totaltime=Integer.parseInt(st_hour)*60;
 					totaltime=totaltime+Integer.parseInt(st_minutes);	
-					if(totaltime< (DateUtil.getController().checkTimeInput())) {
-					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog3"));
+					if(totaltime< cue_finaltime) {
+						JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog3"));
 						lectValue=null;
 						return lectValue;
 					}
@@ -426,6 +427,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 		try {
 			String indexServer=org.bss.brihaspatisync.http.HttpCommManager.getController().getTimeIndexingServer();
 			if(indexServer != null) {
+				indexServer=java.net.URLDecoder.decode(indexServer.trim());
 				indexServer=indexServer.replace("date","");
 				String str[]=indexServer.split(" ");
 				String str1[]=str[0].split("/");

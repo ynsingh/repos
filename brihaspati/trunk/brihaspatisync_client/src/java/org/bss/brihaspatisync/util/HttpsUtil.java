@@ -101,9 +101,8 @@ public class HttpsUtil{
          							}};
 	             		Authenticator.setDefault(authenticator);
 			}
-		}else{
-			System.out.println("you are using DIRECT connection");
 		}
+		
                	connection = (HttpsURLConnection) url.openConnection();
 		//SSL Certificate
       		connection.setHostnameVerifier(new HostnameVerifier() {
@@ -236,7 +235,6 @@ public class HttpsUtil{
 							return str;
 						}else {
 							org.bss.brihaspatisync.gui.StatusPanel.getController().setStatus(org.bss.brihaspatisync.util.Language.getController().getLangValue("JoinSession.MessageDialog1"));	
-							System.out.println(str);
 							return null;
 						}
 					}
@@ -322,7 +320,6 @@ public class HttpsUtil{
                                         	while((str=in.readLine())!=null){
                                                 	if(!(str.equals("noLecture"))){
 								java.util.StringTokenizer str1 = new java.util.StringTokenizer(str,"$$");
-								System.out.println(str);
 								while(str1.hasMoreTokens()) {
 									userlist.addElement(str1.nextElement().toString());
 								}
