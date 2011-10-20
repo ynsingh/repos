@@ -256,18 +256,21 @@ class RegisterController {
 /*---------------------------------------  UNIVERSITY REGISTRATION STARTS HERE -------------------------------------*/
 
     def registerUniversity = {
+    		
+	
+		 
 		// skip if already logged in
 		if (authenticateService.isLoggedIn()) {
-			redirect action: show
+			redirect action: index
 			return
 		}
 
 		def person = new Person()
 		person.properties = params
-                def university = new University()
+        def university = new University()
 		university.properties = params
                 
-                String pswd=params.univ_paswd
+        String pswd=params.univ_paswd
 		def config = authenticateService.securityConfig
 		def defaultRole = config.security.defaultRole
 
@@ -283,7 +286,7 @@ class RegisterController {
 
 		if (params.univ_captcha.toUpperCase() != session.captcha) {
 			person.passwd = ''
-			flash.message = 'Captcha code did not match.'
+			flash.message = '<font color=red><strong>Captcha code did not match.</strong></font>'
 			render view: 'index', model: [person: person]
 			return
 		}
@@ -291,18 +294,20 @@ class RegisterController {
 
 		if (params.univ_paswd != params.univ_conpaswd) {
 			person.passwd = ''
-			flash.message = 'The passwords you entered do not match.'
+			flash.message = '<font color=red><strong>The passwords you entered do not match.</strong></font>'
 			render view: 'index', model: [person: person]
 			return
 		}
 
-        	def pass = authenticateService.encodePassword(params.univ_paswd)
+       	def pass = authenticateService.encodePassword(params.univ_paswd)
+		def real_name=[]
+		real_name=params.univ_username.split('@')
 		bindData(person, [
 				username: params.univ_username,
-                                userRealName : '',
+                userRealName : real_name[0],
 				passwd: pass,
-                                usercode: 'nil',
-				enabled: false,
+                usercode: 'nil',
+				enabled: 'on',
 				emailShow: true,
 				description: '' ])
                  bindData(university, [univ_name: params.univ_name,
@@ -315,7 +320,7 @@ class RegisterController {
          def chkDuplicateUser = personService.checkDuplicateUser(params.univ_username)
 	 if(chkDuplicateUser)
 	       {
-                     flash.message ="${message(code: 'UserName Already Exists')}"
+                     flash.message ="<font color=red><strong>Username Already Exists.</strong></font>"
                     //redirect(action: "index", id: salaryComponentInstance.id)
                     render view: 'index', model: [person: person]
 	       }
@@ -323,11 +328,21 @@ class RegisterController {
              {
               	   if ( person.save() && university.save())
                           {
-                                       Authority.findByAuthority('ROLE_USER').addToPeople(person)								   
+                                       Authority.findByAuthority('ROLE_UNIVERSITY').addToPeople(person)								   
 								
 	//Sending Mail starts here
 	if(params.univ_username!='') {
-	// def mailService =new MailService()
+	def sql=new Sql(dataSource);
+	def host = ""; def port = ""; def username = ""; def password = "";				
+				sql.eachRow("SELECT smtp_host as HOST,smtp_port as PORT,smtp_username as USERNAME,smtp_password as PASSWORD  FROM email_settings")
+				{ 
+				    row ->				
+	    		                host = row.HOST
+	    		                port = row.PORT
+	    		                username = row.USERNAME
+								password = row.PASSWORD
+				}
+					
 	String emailMessage = """
 	Hi,
 	Thanks for Registering in our site:-
@@ -338,21 +353,16 @@ class RegisterController {
 	Username: ${params.univ_username}
 	Password : ${params.univ_paswd}
 	"""
-	// def mailstatus = mailService.sendMessage(params.univ_username,emailMessage)
-					   
-						  def email = [
-										to: [params.univ_username],	
-										subject: "New Registration at DIVE",
-										text: emailMessage // 'text' is the email body
-									]
-									emailerService.sendEmails([email])
+	
+    def mailService =new MailService()
+	def status=mailService.sendMessage(host,port,username,password,params.univ_username,emailMessage)
 						   
 						}
 						//Sending Mail ends here
 
 										
 									   person.save(flush: true)
-                                       flash.message ="<font color='#399C0B'><strong>${message(code: 'Thanks For Registering.... </strong></font>')}"
+                                       flash.message ="<font color='#399C0B'><strong>Thanks For Registering.An email has been send to $params.univ_username</strong></font>"
                                        render view: 'index'
                             }
                             else
@@ -369,9 +379,11 @@ class RegisterController {
 
 /*---------------------------------------  INSTITUTE REGISTRATION STARTS HERE -------------------------------------*/
  def registerInstitute = {
+ 
+         
 
 	   //Setting the LMS Name Array for insertion
-                def sql=new Sql(dataSource);
+        def sql=new Sql(dataSource);
 		def lms_array=[];
 		def index=0;
 		if (params.lmsname.class.isArray())
@@ -396,10 +408,10 @@ class RegisterController {
 
 		def person = new Person()
 		person.properties = params
-                def institute = new Institute()
+        def institute = new Institute()
 		institute.properties = params
-
-                String pswd=params.inst_paswd
+		
+        String pswd=params.inst_paswd
 		def config = authenticateService.securityConfig
 		def defaultRole = config.security.defaultRole
 
@@ -415,7 +427,7 @@ class RegisterController {
 
 		if (params.inst_captcha.toUpperCase() != session.captcha) {
 			person.passwd = ''
-			flash.message = 'Captcha code did not match.'
+			flash.message = '<font color=red><strong>Captcha code did not match.</strong></font>'
 			render view: 'index', model: [person: person]
 			return
 		}
@@ -423,18 +435,20 @@ class RegisterController {
 
 		if (params.inst_paswd != params.inst_conpaswd) {
 			person.passwd = ''
-			flash.message = 'The passwords you entered do not match.'
+			flash.message = '<font color=red><strong>The passwords you entered do not match.</strong></font>'
 			render view: 'index', model: [person: person]
 			return
 		}
 
         	def pass = authenticateService.encodePassword(params.inst_paswd)
+			def real_name=[]
+            real_name=params.inst_username.split('@')
                 
 		bindData(person, [
 				username: params.inst_username,
-                                userRealName : '',
+                userRealName : real_name[0],
 				passwd: pass,
-                                usercode: 'nil',
+                usercode: 'nil',
 				enabled: false,
 				emailShow: true,
 				description: '' ])
@@ -446,7 +460,7 @@ class RegisterController {
          def chkDuplicateUser = personService.checkDuplicateUser(params.inst_username)
 	 if(chkDuplicateUser)
 	       {
-                     flash.message ="${message(code: 'UserName Already Exists')}"
+                     flash.message ="<font color=red><strong>Username Already Exists.</strong></font>"
                     //redirect(action: "index", id: salaryComponentInstance.id)
                     render view: 'index', model: [person: person]
 	       }
@@ -468,9 +482,21 @@ class RegisterController {
                                 Authority.findByAuthority('ROLE_USER').addToPeople(person)
 									   
  //Sending Mail starts here
-    def univ = sql.firstRow("select univ_email as email from university where id='"+params.inst_univ_id+"'")
+    def univ = sql.firstRow("select univ_email as email,univ_name as university from university where id='"+params.inst_univ_id+"'")
     if(univ.email!='') {
-    //def mailService =new MailService()
+
+				def host = ""; def port = ""; def username = ""; def password = "";				
+				sql.eachRow("SELECT smtp_host as HOST,smtp_port as PORT,smtp_username as USERNAME,smtp_password as PASSWORD  FROM email_settings")
+				{ 
+				    row ->				
+	    		                host = row.HOST
+	    		                port = row.PORT
+	    		                username = row.USERNAME
+								password = row.PASSWORD
+				}
+	
+	
+	
     String emailMessage = """
     Hi,
     An Institute under your university has been registered in our site:-
@@ -479,17 +505,15 @@ class RegisterController {
     Here are the Account details of the New Institute Member:
     --------------------------------------------------------
 
+    University Name: ${univ.university}
     Institute Name: ${params.inst_name}
     Email-ID : ${params.inst_username}
     Address : ${params.inst_address}
     """   
- // def mailstatus = mailService.sendMessage(univ.email,emailMessage)
-                            def email = [
-										to: [univ.email],	
-										subject: "New Institution Registration at DIVE",
-										text: emailMessage // 'text' is the email body
-									]
-							emailerService.sendEmails([email])
+ 
+    def mailService =new MailService()
+	def status=mailService.sendMessage(host,port,username,password,univ.email,emailMessage)
+
     }
 //Sending Mail ends here		
 								 
@@ -512,7 +536,7 @@ class RegisterController {
 /*---------------------------------------  AJAX FUNCTIONS START HERE -------------------------------------*/
 def ajaxGetInstitutes={
      def sel_id=params.id;  
-     def response="<select style='width:183px;' id='usr_inst_id' name='usr_inst_id' onchange='getLms(this.value)'><option value=''>-------------- select -------------</option>"
+     def response="<select style='width:223px;' id='usr_inst_id' name='usr_inst_id' onchange='getLms(this.value)'><option value=''>-------------- select -------------</option>"
      def sql=new Sql(dataSource);
      def list1=sql.rows("select id,inst_name from institute where univ_id='"+sel_id+"'");
      for(a in list1)
@@ -525,7 +549,7 @@ def ajaxGetInstitutes={
 
   def ajaxGetLms={
      def sel_id=params.id;
-     def response="<select style='width:183px;' id='lmsname' name='lmsname' multiple size=4 onchange='call()'>"
+     def response="<select style='width:223px;' id='lmsname' name='lmsname' multiple size=4 onchange='call()'>"
      def sql=new Sql(dataSource);
      def lmslist=sql.rows("select id,lms_name from lms where inst_id='"+sel_id+"'");
      for(lmsval in lmslist)
@@ -540,6 +564,8 @@ def ajaxGetInstitutes={
 
 /*---------------------------------------  STAFF/STUDENT REGISTRATION STARTS HERE -------------------------------------*/
     def registerUser={
+	
+	   
 
         //Getting the LMS Username's   
         def split_usrdet=params.usernames.split(",");
@@ -557,7 +583,7 @@ def ajaxGetInstitutes={
 		person.properties = params
 
 
-                String pswd=params.usr_paswd
+        String pswd=params.usr_paswd
 		def config = authenticateService.securityConfig
 		def defaultRole = config.security.defaultRole
 
@@ -573,7 +599,7 @@ def ajaxGetInstitutes={
 
 		if (params.usr_captcha.toUpperCase() != session.captcha) {
 			person.passwd = ''
-			flash.message = 'Captcha code did not match.'
+			flash.message = '<font color=red><strong>Captcha code did not match.</strong></font>'
 			render view: 'index', model: [person: person]
 			return
 		}
@@ -581,18 +607,20 @@ def ajaxGetInstitutes={
 
 		if (params.usr_paswd != params.usr_conpaswd) {
 			person.passwd = ''
-			flash.message = 'The passwords you entered do not match.'
+			flash.message = '<font color=red><strong>The passwords you entered do not match.</strong></font>'
 			render view: 'index', model: [person: person]
 			return
 		}
 
         	def pass = authenticateService.encodePassword(params.usr_paswd)
-
+            def real_name=[]
+            real_name=params.usr_username.split('@')
+			
 		bindData(person, [
 				username: params.usr_username,
-                                userRealName : '',
+                userRealName : real_name[0],
 				passwd: pass,
-                                usercode: 'nil',
+                usercode: 'nil',
 				enabled: false,
 				emailShow: true,
 				description: '' ])
@@ -603,7 +631,7 @@ def ajaxGetInstitutes={
          def chkDuplicateUser = personService.checkDuplicateUser(params.usr_username)
 	 if(chkDuplicateUser)
 	       {
-                     flash.message ="${message(code: 'UserName Already Exists')}"
+                     flash.message ="<font color=red><strong>Username Already Exists.</strong></font>"
                     //redirect(action: "index", id: salaryComponentInstance.id)
                     render view: 'index', model: [person: person]
 	       }
@@ -626,7 +654,17 @@ def ajaxGetInstitutes={
     def univ = sql.firstRow("select univ_name,univ_email from university where id='"+params.usr_univ_id+"'")
     def inst = sql.firstRow("select inst_name,inst_email from institute where id='"+params.usr_inst_id+"'")
     if(inst.inst_email!='') {
-   // def mailService =new MailService()
+	def host = ""; def port = ""; def username = ""; def password = "";				
+				sql.eachRow("SELECT smtp_host as HOST,smtp_port as PORT,smtp_username as USERNAME,smtp_password as PASSWORD  FROM email_settings")
+				{ 
+				    row ->				
+	    		                host = row.HOST
+	    		                port = row.PORT
+	    		                username = row.USERNAME
+					password = row.PASSWORD
+				}
+	
+  
     String emailMessage = """
     Hi,
     A member of your institute has registered in our site:-
@@ -638,13 +676,10 @@ def ajaxGetInstitutes={
     University : ${univ.univ_name}
     Institute : ${inst.inst_name}
     """
-    //def mailstatus = mailService.sendMessage(inst.inst_email,emailMessage)
-                    	def email = [
-										to: [inst.inst_email],	
-										subject: "New User Registration at DIVE",
-										text: emailMessage // 'text' is the email body
-									]
-							emailerService.sendEmails([email])
+	
+	def mailService =new MailService()
+	def status=mailService.sendMessage(host,port,username,password,inst.inst_email,emailMessage)
+
     }
 //Sending Mail ends here
 								 
@@ -685,5 +720,4 @@ def ajaxGetInstitutes={
       def confirmActivation = {}
 	  
 	  def gmsFrame = {}
-
-}
+} // End of Class

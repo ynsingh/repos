@@ -1,0 +1,7 @@
+1. Copy RegisterController.groovy to grails-app/controllers
+
+2. Copy  MailService.groovy to grails-app/services
+
+3. excecute emailsettings.sql into DIVE database
+
+Recreate the war and restart the tomcat

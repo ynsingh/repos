@@ -1,0 +1,4 @@
+1. copy RegisterController.groovy to grails-app\controllers
+
+
+
