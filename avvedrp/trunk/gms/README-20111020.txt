@@ -1,0 +1,15 @@
+
+
+
+
+1) unzip the reports.zip file and copy the files in the reports folder to gms/web-app/reports and recreate the war(Report issue)
+
+
+2) execute the query to drop the column in  notification table( Issue:Projects>Call for perposal>New Notification ) 
+
+SET  FOREIGN_KEY_CHECKS=0 ;
+ALTER TABLE `notification` DROP FOREIGN KEY `FK237A88EB52E8209B`
+ALTER TABLE notification DROP COLUMN `project_id`;
+
+3)Please create a folder ‘applicationForm’ in usr/local . You can change the  folder ‘/usr/local’to any path  by changing  the ‘ProposalApplicationPath’ path in gms_settings
+(Setting>Upload Proposal from)

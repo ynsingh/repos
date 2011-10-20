@@ -1,0 +1,13 @@
+use gmsiitk;
+SET  FOREIGN_KEY_CHECKS=0 ;
+DROP TABLE authority_people;
+DROP TABLE course_activity;
+DROP TABLE errors;
+DROP TABLE event_tool_map;
+DROP TABLE lms_settings;
+DROP TABLE institute;
+DROP TABLE site_help;
+DROP TABLE university;
+DROP TABLE role_user;
+DROP TABLE authority_person;
+DROP TABLE role_people;
