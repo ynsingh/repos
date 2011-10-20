@@ -6,9 +6,6 @@
 package com.myapp.struts.Acquisition;
 
 import com.myapp.struts.AcquisitionDao.AcquisitionDao;
-import com.myapp.struts.CirculationDAO.CirculationDAO;
-import com.myapp.struts.circulation.CirCheckInReportActionForm;
-import com.myapp.struts.hbm.HibernateUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -25,7 +22,6 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.data.ListOfArrayDataSource;
 
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
@@ -35,7 +31,6 @@ import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.data.JRHibernateListDataSource;
 
 
 
@@ -59,10 +54,15 @@ public class ApprovalReportAction extends org.apache.struts.action.Action {
             List list=null;
              String library_id;
         String path = servlet.getServletContext().getRealPath("/");
-      
+       String os=(String)System.getProperty("os.name");
+   System.out.println("OS----------->"+os);
+   if(os.startsWith("Linux"))
+   {
 path=path+"/JasperReport";
 
-
+   }else{
+   path=path+"\\JasperReport";
+   }
         try
         {
           
@@ -80,7 +80,12 @@ path=path+"/JasperReport";
 
 
     System.out.println("Compiling report...");
+    if(os.startsWith("Linux"))
+   {
           JasperCompileManager.compileReportToFile(path + "/approval1.jrxml");
+    }else{
+          JasperCompileManager.compileReportToFile(path + "\\approval1.jrxml");
+    }
           System.out.println("Done!");
           OutputStream ouputStream = response.getOutputStream();
            response.setContentType("application/pdf");
@@ -91,17 +96,35 @@ path=path+"/JasperReport";
 // System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"+cir_checkout_report.get(j).toString());
  HashMap map = new HashMap();
  dataSource = new JRBeanCollectionDataSource(circheckInlist1);
-          JasperFillManager.fillReportToFile(path+"/approval1.jasper",map, dataSource);
+    if(os.startsWith("Linux"))
+   {
+           JasperFillManager.fillReportToFile(path+"/approval1.jasper",map, dataSource);
+    }else{
+           JasperFillManager.fillReportToFile(path+"\\approval1.jasper",map, dataSource);
+    }
            System.out.println("Filling report...");
 
           System.out.println("Done!");
-          File file = new File(path + "/" +
-                                              "approval1.jrprint");
+
+          File file;
+          
+    if(os.startsWith("Linux"))
+   {      
+          file = new File(path + "/" +"approval1.jrprint");
+    }else{
+          file = new File(path + "/" +"approval1.jrprint");
+    }
           JasperPrint jasperPrint = (JasperPrint)JRLoader.loadObject(file);
           JRPdfExporter pdfExporter = new JRPdfExporter();
           pdfExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-	  pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
+if(os.startsWith("Linux"))
+   {
+          pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
                      path + "/" + "approval1.pdf");
+}else{
+          pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
+                     path + "\\" + "approval1.pdf");
+}
 	  System.out.println("Exporting report...");
           pdfExporter.exportReport();
           System.out.println("Done!");

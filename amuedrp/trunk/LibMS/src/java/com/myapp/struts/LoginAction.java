@@ -15,8 +15,7 @@ import  com.myapp.struts.utility.PasswordEncruptionUtility;
 import  com.myapp.struts.utility.DateCalculation;
 import java.sql.Connection;
 import java.util.ResourceBundle;
-//import org.apache.log4j.Logger;
-//import org.apache.log4j.xml.DOMConfigurator;
+
 
 /**
  * Developed By : Kedar Kumar
@@ -57,7 +56,7 @@ List list1,list2;
             throws Exception
     {
 
-     //   DOMConfigurator.configure("log4j.xml");
+     
 
 
 
@@ -86,8 +85,6 @@ time=String.valueOf(System.currentTimeMillis());
     try
     {
 
-
-
  
 
 
@@ -105,12 +102,12 @@ time=String.valueOf(System.currentTimeMillis());
 
 
        
-            con=MyConnection.getMyConnection();
-            if(con==null)
+           con=MyConnection.getMyConnection();
+         if(con==null)
             {
              request.setAttribute("msg1","Database Connectivity is Closed,Please Contact WebAdmin");
              return mapping.findForward("failure");
-            }
+           }
 
 
 
@@ -129,6 +126,7 @@ time=String.valueOf(System.currentTimeMillis());
               /*  If the Entered User and Password in Valid */
               if(tempobj!=null)
               {
+
                 list=(List)SubLibraryDAO.getAllSubLibrary( tempobj.getId().getLibraryId());
                    list1=(List)MemberCategoryDAO.searchEmpType( tempobj.getId().getLibraryId());
          
@@ -144,6 +142,9 @@ time=String.valueOf(System.currentTimeMillis());
                           session.setAttribute("staff_id",tempobj.getId().getStaffId());
                           session.setAttribute("login_role",tempobj.getRole());
                         session.setAttribute("login_id",tempobj.getLoginId());
+                AdminRegistration admin=AdminRegistrationDAO.searchInstituteAdmin((String)session.getAttribute("login_id"));
+                session.setAttribute("AdminDetail",admin);
+
 
                     String lib_id=tempobj.getId().getLibraryId();
                     String sublib_id=tempobj.getSublibraryId();

@@ -15,13 +15,13 @@ import com.myapp.struts.hbm.AcqBibliographyId;
 import com.myapp.struts.AcquisitionDao.AcquisitionDao;
 import com.myapp.struts.AcquisitionDao.BudgetDAO;
 import com.myapp.struts.AcquisitionDao.VendorDAO;
-import com.myapp.struts.hbm.AcqBudgetAllocation;
-import com.myapp.struts.hbm.AcqCurrency;
 import com.myapp.struts.hbm.BaseCurrency;
 import com.myapp.struts.hbm.AcqVendor;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
+import java.util.ResourceBundle;
+import java.util.*;
 /**
  *
  * @author maqbool
@@ -33,15 +33,11 @@ public class AcqBiblioNewEntryAction extends org.apache.struts.action.Action {
     AcqBibliography acqbibdtail=new AcqBibliography();
     AcqBibliographyId acqbibdtailid=new AcqBibliographyId();
     AcquisitionDao acqdao=new AcquisitionDao();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -52,9 +48,25 @@ public class AcqBiblioNewEntryAction extends org.apache.struts.action.Action {
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
         String title=acqbib.getTitle();
         String author=acqbib.getAuthor();
-        
+  try{
+         locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+
+
         if(StringUtils.isEmpty(author)){
-        String authormsg="Author field can't be left blank";
+        //String authormsg="Author field can't be left blank";
+        String authormsg=resource.getString("acquisition.AcqBiblioNewEntryAction.msg1");
         request.setAttribute("authormsg", authormsg);
         return mapping.findForward("fail");
         }
@@ -94,7 +106,8 @@ public class AcqBiblioNewEntryAction extends org.apache.struts.action.Action {
         acqbibdtailid.setTitleId(titId);
         acqbibdtail.setId(acqbibdtailid);
         acqdao.insert(acqbibdtail);
-        String msg="Record is inserted successfully with title id :"+titId;
+      //  String msg="Record is inserted successfully with title id :"+titId;
+          String msg=resource.getString("acquisition.AcqBiblioNewEntryAction.msg2")+titId;
         request.setAttribute("msg", msg);
         acqbib.setDocument_type("");
         acqbib.setTitle("");
@@ -103,7 +116,8 @@ public class AcqBiblioNewEntryAction extends org.apache.struts.action.Action {
         if(button.equals("Initiate Acquisition")){
              List<AcqVendor> acqvendor=VendorDAO.searchDoc5(library_id, sub_library_id);
              if(acqvendor.isEmpty()){
-             String msg1="You need to set vendors list";
+           //  String msg1="You need to set vendors list";
+                   String msg1=resource.getString("acquisition.AcqBiblioNewEntryAction.msg3");
              request.setAttribute("msg1", msg1);
              return mapping.findForward("fail");
              }
@@ -120,7 +134,8 @@ public class AcqBiblioNewEntryAction extends org.apache.struts.action.Action {
              BaseCurrency cur=BudgetDAO.getBaseCurrency(library_id);
            
              if(cur==null){
-             String msg1="You need to set Library Base Currency";
+           //  String msg1="You need to set Library Base Currency";
+                   String msg1=resource.getString("acquisition.AcqBiblioNewEntryAction.msg4");
              request.setAttribute("msg1", msg1);
              return mapping.findForward("fail");
              }
@@ -129,7 +144,8 @@ public class AcqBiblioNewEntryAction extends org.apache.struts.action.Action {
 
           List<MixBudgetAllocation> acqbudget1=BudgetDAO.getMixBudgetAllocation(library_id);
           if(acqbudget1.isEmpty()){
-          String msg1="You need to set Income budget head list";
+       //   String msg1="You need to set Income budget head list";
+                 String msg1=resource.getString("acquisition.AcqBiblioNewEntryAction.msg5");
              request.setAttribute("msg1", msg1);
              return mapping.findForward("fail");
           }

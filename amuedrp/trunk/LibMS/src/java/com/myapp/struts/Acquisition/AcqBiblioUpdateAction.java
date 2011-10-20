@@ -11,7 +11,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.AcquisitionDao.AcquisitionDao;
-import com.myapp.struts.hbm.*;
 import javax.servlet.http.HttpSession;
 import com.myapp.struts.hbm.AcqBibliography;
 import com.myapp.struts.hbm.AcqBibliographyId;

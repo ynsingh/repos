@@ -11,6 +11,15 @@ import org.apache.struts.upload.FormFile;
  */
 public class ImageUploadActionForm extends org.apache.struts.action.ActionForm {
     
+    private byte[] uploadedFile;
+
+    public byte[] getUploadedFile() {
+        return uploadedFile;
+    }
+
+    public void setUploadedFile(byte[] uploadedFile) {
+        this.uploadedFile = uploadedFile;
+    }
     private FormFile img;
     private String filename;
     /**

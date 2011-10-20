@@ -15,7 +15,6 @@ import com.myapp.struts.hbm.AcqBibliography;
 import com.myapp.struts.AcquisitionDao.AcquisitionDao;
 import com.myapp.struts.AcquisitionDao.BudgetDAO;
 import com.myapp.struts.AcquisitionDao.VendorDAO;
-import com.myapp.struts.hbm.AcqCurrency;
 import com.myapp.struts.hbm.AcqVendor;
 import com.myapp.struts.hbm.BaseCurrency;
 import java.util.List;

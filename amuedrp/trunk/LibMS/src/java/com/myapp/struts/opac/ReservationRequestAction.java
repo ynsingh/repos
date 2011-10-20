@@ -6,7 +6,7 @@
 package com.myapp.struts.opac;
 
 import com.myapp.struts.hbm.*;
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
 
 import com.myapp.struts.opacDAO.*;
 import java.util.*;

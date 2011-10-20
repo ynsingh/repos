@@ -47,8 +47,15 @@ public class LogReportAction extends org.apache.struts.action.Action {
             ResultSet rs=null;
             JRBeanCollectionDataSource dataSource=null;
            String path = servlet.getServletContext().getRealPath("/");
-path=pathConversion.getPath(path);
-path=path+"JasperReport";
+ String os=(String)System.getProperty("os.name");
+   System.out.println("OS----------->"+os);
+   if(os.startsWith("Linux"))
+   {
+
+path=path+"/JasperReport";
+   }else{
+       path=path+"\\JasperReport";
+   }
 Connection con=null;
 ResultSet rs1=null;
 HashMap SIMPLE_DATA;
@@ -61,7 +68,12 @@ int sum=0;
         
  
                   System.out.println("Compiling report...");
-          JasperCompileManager.compileReportToFile(path + "/log.jrxml");
+          if(os.startsWith("Linux"))
+   {
+                  JasperCompileManager.compileReportToFile(path + "/log.jrxml");
+          }else{
+                  JasperCompileManager.compileReportToFile(path + "\\log.jrxml");
+          }
              
 
          
@@ -81,7 +93,12 @@ HashMap map = new HashMap();
 
 
 dataSource = new JRBeanCollectionDataSource(log);
+   if(os.startsWith("Linux"))
+   {
 JasperFillManager.fillReportToFile(path+"/log.jasper", map,dataSource );
+   }else{
+   JasperFillManager.fillReportToFile(path+"\\log.jasper", map,dataSource );
+   }
 
 
 System.out.println("End");
@@ -90,18 +107,32 @@ System.out.println("End");
 
 
    System.out.println("Filling report..."+dataSource);
-
-         
- File file1 = new File(path + "/" +
+File file1;
+  if(os.startsWith("Linux"))
+   {
+ file1 = new File(path + "/" +
                                             "log.jrprint");
+  }else{
+ file1 = new File(path + "\\" +
+                                            "log.jrprint");
+
+  }
          System.out.println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
       JasperPrint jasperPrint1 = (JasperPrint)JRLoader.loadObject(file1);
      
        JRPdfExporter pdfExporter = new JRPdfExporter();
    pdfExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint1);
 
+  if(os.startsWith("Linux"))
+   {
+
             pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
                      path + "/" + "log.pdf");
+  }else{
+            pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
+                     path + "\\" + "log.pdf");
+
+  }
        System.out.println("Exporting report...");
           pdfExporter.exportReport();
           System.out.println("Done!");

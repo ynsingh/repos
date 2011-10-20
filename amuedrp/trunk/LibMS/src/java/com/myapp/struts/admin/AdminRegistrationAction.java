@@ -153,6 +153,8 @@ AdminRegistration adminobj;
          
 System.out.println(adminobj);
                  result=AdminRegistrationDAO.insert1(adminobj);
+
+                 System.out.println("Value"+result);
                 if(result==false)
                 {
                     String msg="Request for registration failure due to some error";
@@ -164,26 +166,13 @@ System.out.println(adminobj);
 
 
 
-//       String    path = servlet.getServletContext().getRealPath("/");
-//path=path.substring(0,path.lastIndexOf("/"));
-//path=path.substring(0,path.lastIndexOf("/"));
-//path=path.substring(0,path.lastIndexOf("/"));
-//System.out.println(path+"................");
-//             obj=new Email(path,"amuedrp@gmail.com","","New Request of Library Registration from "+adminRegistrationActionForm.getLibrary_name(),"You Have a Fresh Request for Library Registration Received from \n Library Name :"+adminRegistrationActionForm.getLibrary_name()+" with"+"\n"+"User ID :"+adminRegistrationActionForm.getLogin_id()+"\n Please Check It.","Dear WebAdmin, ","Thanks");
-//            executor.submit(new Runnable() {
-//
-//                public void run() {
-//                    obj.send();
-//                }
-//            });
-
 
 
                 String msg="Request for Library Registration accepted successfully" ;
   
  String path = servlet.getServletContext().getRealPath("/");
  
-             obj=new Email((String)session.getAttribute("webmail"),(String)session.getAttribute("webpass"),path,adminRegistrationActionForm.getAdmin_email(),"",msg,"Your request for Library registration has been accepted Successfully.\nShortly you will get another mail regrading approval of your request.\n","\n\nDear "+adminRegistrationActionForm.getAdmin_fname()+" "+adminRegistrationActionForm.getAdmin_lname()+",\n","Thanks\nWebAdmin\nLibMS");
+             obj=new Email(path,adminRegistrationActionForm.getAdmin_email(),"",msg,"Your request for Library registration has been accepted Successfully.\nShortly you will get another mail regrading approval of your request.\n","\n\nDear "+adminRegistrationActionForm.getAdmin_fname()+" "+adminRegistrationActionForm.getAdmin_lname()+",\n","Thanks\nWebAdmin\nLibMS");
             executor.submit(new Runnable() {
 
                 public void run() {

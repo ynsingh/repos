@@ -29,7 +29,7 @@ public class MyConnection {
                     connection=ds.getConnection();
 
 
-
+System.out.println(connection.toString()+"  "+connection.getCatalog());
 
 
         }

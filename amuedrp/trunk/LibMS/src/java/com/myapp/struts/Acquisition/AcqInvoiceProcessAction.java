@@ -116,10 +116,17 @@ JRBeanCollectionDataSource dataSource11=null;
 JRBeanCollectionDataSource dataSource12=null;
 JRDataSource simpleDS;
 String path = servlet.getServletContext().getRealPath("/");
-path=path.substring(0,path.lastIndexOf("/"));
-path=path.substring(0,path.lastIndexOf("/"));
-path=path.substring(0,path.lastIndexOf("/"));
-path=path+"/web/JasperReport";
+
+
+String os=(String)System.getProperty("os.name");
+   System.out.println("OS----------->"+os);
+   if(os.startsWith("Linux"))
+   {
+path=path+"/JasperReport";
+   }else{
+path=path+"\\JasperReport";
+
+   }
 
 HashMap SIMPLE_DATA;
 
@@ -134,7 +141,12 @@ try
         acqorder1=acqodao.searchOrderByVendor1(order_no,library_id, sub_library_id,recieving_no);
 
           System.out.println("Compiling report..."+acqorder1.size());
+    if(os.startsWith("Linux"))
+   {
           JasperCompileManager.compileReportToFile(path + "/recieveReport.jrxml");
+    }else{
+          JasperCompileManager.compileReportToFile(path + "\\recieveReport.jrxml");
+    }
           System.out.println("Done!");
           OutputStream ouputStream = response.getOutputStream();
            response.setContentType("application/pdf");
@@ -149,13 +161,24 @@ try
            System.out.println("Filling report...");
 
           System.out.println("Done!");
-          File file = new File(path + "/" +
-                                              "recieveReport.jrprint");
+          File file;
+    if(os.startsWith("Linux"))
+   {
+          file = new File(path + "/" +"recieveReport.jrprint");
+    }else{
+          file = new File(path + "\\" +"recieveReport.jrprint");
+    }
           JasperPrint jasperPrint = (JasperPrint)JRLoader.loadObject(file);
           JRPdfExporter pdfExporter = new JRPdfExporter();
           pdfExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+            if(os.startsWith("Linux"))
+   {
 	  pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
                      path + "/" + "recieveReport.pdf");
+            }else{
+             pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
+                     path + "\\" + "recieveReport.pdf");
+            }
 	  System.out.println("Exporting report...");
           pdfExporter.exportReport();
           System.out.println("Done!");

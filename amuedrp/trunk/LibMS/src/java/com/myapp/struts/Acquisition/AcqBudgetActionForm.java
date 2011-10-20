@@ -5,12 +5,6 @@
 
 package com.myapp.struts.Acquisition;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-
 /**
  *
  * @author EdRP-05
