@@ -5,6 +5,7 @@
 <!--@author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>       -->
 <!--@modify Date:- 29 March 2006                                       -->
 <!--@modify Date:- 10-08-2010 (Shaista)                   	       -->
+<!--@author Jaivir Singh mailto:singh_jaivir@rediffmail.com           -->
 <!-- ================================================================= -->
 
 <project name="peer" default="compile" basedir=".">
@@ -414,6 +415,7 @@
 	<delete dir="${build.webappRoot}/Repository"/>
 	<delete dir="${build.webappRoot}/logs"/>
 	<delete dir="${build.webappRoot}/QuestionBank"/>
+	<delete dir="${build.webappRoot}/WEB-INF/conf/InstituteProfileDir"/>
   </target>
 
   <!-- =================================================================== -->
@@ -424,6 +426,7 @@
       <mkdir dir="${build.dest}"/>
       <mkdir dir="${build.webappRoot}/tmp"/>
       <mkdir dir="${build.webappRoot}/Repository"/>
+      <mkdir dir="${build.webappRoot}/WEB-INF/conf/InstituteProfileDir"/>
   </target>
 
   <!-- =================================================================== -->
