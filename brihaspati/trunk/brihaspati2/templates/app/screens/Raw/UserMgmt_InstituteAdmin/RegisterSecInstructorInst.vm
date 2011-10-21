@@ -20,8 +20,8 @@ $!data.getMessage()
 	<td>
 	<font face="$ui.sansSerifFonts" size=3>
 	 <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
-	 <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg $brih_mgmt</a> |
-	 <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","All").addPathInfo("scourse","scourse").addPathInfo("count","3") style=text-decoration:none>$brih_listCourse</a> | 
+	 <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1") style=text-decoration:none>$brih_reg $brih_mgmt</a> |
+	 <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","All").addPathInfo("scourse","scourse").addPathInfo("instituteId",$InstituteId).addPathInfo("count","3") style=text-decoration:none>$brih_listCourse</a> | 
 	#if($lang=="hindi")
 	 $entry $brih_regSecondaryIns 
 	#else
@@ -37,19 +37,19 @@ $!data.getMessage()
 	#elseif($tdcolor=="1")
 	<td width=33% bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg1 $brih_course</a></td>
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1") style=text-decoration:none>$brih_reg1 $brih_course</a></td>
 	#if($tdcolor != "2")
 	<td width=33%>
 	#elseif($tdcolor=="2")
 	<td width=33% bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("count","1") style=text-decoration:none>$brih_reg1 $brih_multiple1 $brih_course</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1") style=text-decoration:none>$brih_reg1 $brih_multiple1 $brih_course</a></td>
 	#if($tdcolor != "3")
 	<td width=33%>
 	#elseif($tdcolor=="3")
 	<td width=33% bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","All").addPathInfo("scourse","scourse").addPathInfo("count","3") style=text-decoration:none>$brih_course $brih_list</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","All").addPathInfo("scourse","scourse").addPathInfo("instituteId",$InstituteId).addPathInfo("count","3") style=text-decoration:none>$brih_course $brih_list</a></td>
         </tr>
 </table>
 <form name=frm method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").setAction("InstructorRegisteration").addPathInfo("cName",$entry)">

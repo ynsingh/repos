@@ -132,7 +132,7 @@ public class InstUserAttendence_Sheet extends SecureScreen_Institute_Admin
 					}
 				}
 			}
-			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
                         int AdminConf = Integer.valueOf(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
 			context.put("AdminConf",new Integer(AdminConf));
                         context.put("AdminConf_str",Integer.toString(AdminConf));

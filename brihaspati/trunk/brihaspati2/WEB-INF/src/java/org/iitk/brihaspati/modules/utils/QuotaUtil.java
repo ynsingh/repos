@@ -194,7 +194,7 @@ public class QuotaUtil {
 		long differ=0;
 		try{
                 long dspace=getFileSystemSpace(instId);
-                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instId+"Admin.properties";
+                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instId+"Admin.properties";
                 String SpacefPrp=AdminProperties.getValue(path,"brihaspati.user.quota.value");
                 long UQuota=new Long(SpacefPrp).longValue();
                 differ=dspace-UQuota;
@@ -210,7 +210,7 @@ public class QuotaUtil {
 		long differ=0;
 		try{
                 long dspace=getFileSystemSpace(instId);
-                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instId+"Admin.properties";
+                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instId+"Admin.properties";
                 String SpacefPrp=AdminProperties.getValue(path,"brihaspati.user.quota.value");
                 long UQuota=new Long(SpacefPrp).longValue();
                 String Spacefcrs=AdminProperties.getValue(path,"brihaspati.admin.quota.value");
@@ -227,7 +227,7 @@ public class QuotaUtil {
 	public static long getFileSystemSpace(int instId) {
 	         long fdisks =0;
 		 try{
-			 String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instId+"Admin.properties";
+			 String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instId+"Admin.properties";
         	         String dirName=AdminProperties.getValue(path,"brihaspati.home.dir.value");
 			 if(dirName.equals("")){
 				dirName=System.getProperty("user.home");
@@ -314,7 +314,7 @@ public class QuotaUtil {
 		try{
 		long iquota=getInstituteQuota(instituteId);
 		long iqtinmb=iquota*1024;
-                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instituteId+"Admin.properties";
+                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
                 String Coursequotasize =AdminProperties.getValue(path,"brihaspati.admin.quota.value");
                 long CQuota=new Long(Coursequotasize).longValue();
 		if(iqtinmb > CQuota){

@@ -676,7 +676,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			String expdays="";
 	                try{
         		        String instituteid=InstituteDetailsManagement.getInsId(cName);
-		                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
+		                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteid+"Admin.properties";
                 		expdays = AdminProperties.getValue(path,"brihaspati.user.expdays.value");
                 	}
 	                catch(Exception ex){ErrorDumpUtil.ErrorLog("This is the exception in getting path :--utils(UserManagement) "+ex);}

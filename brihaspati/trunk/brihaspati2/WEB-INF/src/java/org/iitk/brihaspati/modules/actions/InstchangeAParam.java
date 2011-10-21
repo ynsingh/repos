@@ -42,14 +42,17 @@ import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.QuotaUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.apache.turbine.services.security.TurbineSecurity;
 
 /**
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:singh_jaivir@gmail.com">Jaivir Singh</a>29apr2011
  */
 
 //public class InstchangeAParam extends SecureAction_Admin{
@@ -72,6 +75,14 @@ public class InstchangeAParam extends SecureAction{
 		 */
 
 		User user=data.getUser();
+		/**
+ 		*Get User Name and uid for getting the InstituteId.
+		*@see UserUtil in utils
+		*@see InstituteIdUtil in utils. 	
+ 		*/ 
+		String uname=user.getName();
+		int uid=UserUtil.getUID(uname);
+		//String instituteid=InstituteIdUtil.getAdminInstId(uid);13may11
 
 		/**
                  * getting property file According to selection of Language in temporary variable 
@@ -112,7 +123,7 @@ public class InstchangeAParam extends SecureAction{
 		 */
 		//iname=Institute name
 		String path="";	
-		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
+		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteid+"Admin.properties";
 		StringUtil S = new StringUtil();
 		String prof_update=null;
 		if (S.checkString(AFName)==-1 && S.checkString(ALName)==-1){
@@ -131,6 +142,7 @@ public class InstchangeAParam extends SecureAction{
 			AdminProperties.setValue(path,hdir,"brihaspati.home.dir.value");
 			AdminProperties.setValue(path,AdminFaqExp,"brihaspati.admin.FaqExpiry");
 			AdminProperties.setValue(path,expdays,"brihaspati.user.expdays.value");// Add by @tej
+			setTemplate(data,"Index.vm");
 			prof_update=m_u.ConvertedString("usr_prof",LangFile);
 			data.setMessage(prof_update);
 			boolean qct=QuotaUtil.CreateandUpdate();	

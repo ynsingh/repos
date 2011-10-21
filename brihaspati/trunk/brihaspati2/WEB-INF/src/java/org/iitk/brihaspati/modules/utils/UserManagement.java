@@ -150,7 +150,7 @@ public class UserManagement
 		}
 		if(Role.equals("student")){
 			try{
-				String path12=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
+				String path12=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteid+"Admin.properties";
 				String expdays = AdminProperties.getValue(path12,"brihaspati.user.expdays.value");
 		                Integer exp1 = Integer.valueOf(expdays);		
 				String c_date=ExpiryUtil.getCurrentDate("-");
@@ -441,7 +441,8 @@ public class UserManagement
 						/**
 						* Update last login, user quota  and create date field of turbine user
 						*/
-						String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+						//String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+						String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteid+"Admin.properties";
 				                String SpacefPrp=AdminProperties.getValue(path,"brihaspati.user.quota.value");
 				                long UQuota=new Long(SpacefPrp).longValue();
 

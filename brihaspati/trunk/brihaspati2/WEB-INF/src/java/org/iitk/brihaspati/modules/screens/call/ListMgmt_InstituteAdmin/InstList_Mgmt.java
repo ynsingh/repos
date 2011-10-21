@@ -112,12 +112,12 @@ public class InstList_Mgmt extends SecureScreen_Institute_Admin
                                 context.put("mode","Search");
                         }
 			/**
-			*read the Admin.properties for pagination
+			*read the Institute profile properties for pagination
 			*@see AdminProperties util in utils
 			*@see ListManagement util in utils for link visible and
 			*list divide.	
 			*/
-                        String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                        String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
                         int AdminConf = Integer.valueOf(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
 
 //                      int AdminConf = AdminProperties.getValue(path);

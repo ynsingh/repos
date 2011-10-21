@@ -129,7 +129,7 @@ public class InstAdminviewall extends SecureScreen_Institute_Admin{
                         	userList=ListManagement.getInstituteListBySearchString("UserWise",query,valueString,instituteId);
                         	context.put("mode","Search");
 			}
-			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
 			int AdminConf = Integer.valueOf(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
 
    //                     int AdminConf = AdminProperties.getValue(path);
@@ -139,8 +139,6 @@ public class InstAdminviewall extends SecureScreen_Institute_Admin{
                         int startIndex=pp.getInt("startIndex",0);
 			String status=new String();
                         int t_size=userList.size();
-			ErrorDumpUtil.ErrorLog("tsize before action called=="+t_size);
-			ErrorDumpUtil.ErrorLog("tsize after action called=="+t_size);
                         if(userList.size()!=0){
                                 status="notempty";
                                 int value[]=new int[7];

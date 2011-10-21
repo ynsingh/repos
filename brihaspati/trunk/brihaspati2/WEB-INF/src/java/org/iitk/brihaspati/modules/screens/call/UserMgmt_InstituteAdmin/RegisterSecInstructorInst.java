@@ -38,6 +38,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**
  * This class code contains the registeration of the Secondary Instructor in specific course
  *
@@ -61,6 +62,7 @@ public class RegisterSecInstructorInst extends SecureScreen_Institute_Admin
 		context.put("entry",Gname);
 	   	String counter= data.getParameters().getString("count","");
 		context.put("tdcolor",counter);
+		context.put("InstituteId",data.getParameters().getString("InstituteId"));
 	  }
 	catch(Exception e)
 	{

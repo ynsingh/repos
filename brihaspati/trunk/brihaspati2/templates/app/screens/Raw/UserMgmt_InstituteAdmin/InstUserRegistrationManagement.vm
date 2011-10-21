@@ -79,7 +79,7 @@ $!data.getMessage()
 	#elseif($tdcolor == "2")
         <td width=33% bgcolor="#AFDCEC">
 	#end
-   <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_multiple1 $brih_course $brih_inside $brih_reg1 #else $brih_reg1 $brih_multiple1 $brih_course #end </a></td> 
+   <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("mode","MCRegister").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_multiple1 $brih_course $brih_inside $brih_reg1 #else $brih_reg1 $brih_multiple1 $brih_course #end </a></td> 
 	#if($tdcolor != "3")
         <td width=33%>
 	#elseif($tdcolor == "3")
@@ -281,9 +281,9 @@ $!data.getMessage()
                   #end
                   <td bgcolor="$ui.tableColor">
                         <font face="$ui.sansSerifFonts">
-                        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,RegisterSecInstructorInst.vm").addPathInfo("gName",$entry.getGroupName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_reg1</a>
+                        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,RegisterSecInstructorInst.vm").addPathInfo("gName",$entry.getGroupName()).addPathInfo("InstituteId",$InstituteId).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_reg1</a>&nbsp;&nbsp;&nbsp;
                         </font>
-			<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("institudeName","ListAll").addPathInfo("cName",$entry.getGroupName()).addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> $brih_listOfInstructor </a></td>
+			<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("institudeName","ListAll").addPathInfo("cName",$entry.getGroupName()).addPathInfo("InstituteId",$InstituteId).addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> $brih_listOfInstructor </a></td>
                  </td>
         </tr>
         #end
@@ -295,47 +295,47 @@ $!data.getMessage()
          #if($mode!="Search")
          #if($total_size<= $AdminConf)
 
-         <u><font color="white">$brih_first</font></u> &nbsp;
-         <u><font color="white">$brih_nxt</font></u> &nbsp;
-         <u><font color="white">$brih_pre</font></u> &nbsp;
-         <u><font color="white">$brih_last</font></u> &nbsp;
+         <font color="white">$brih_first</font> &nbsp;
+         <font color="white">$brih_nxt</font> &nbsp;
+         <font color="white">$brih_pre</font> &nbsp;
+         <font color="white">$brih_last</font> &nbsp;
 
           #elseif($startIndex== $AdminConf_str)
 
-          <u><font color="white">$brih_first</font></u> &nbsp;
-          <u><font color="white">$brih_pre</font></u> &nbsp;
+          <font color="white">$brih_first</font> &nbsp;
+          <font color="white">$brih_pre</font> &nbsp;
 
-          <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-          <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
+          <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
+          <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
          #elseif($endIndex == $total_size || $endIndex > $total_size)
 
-         <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-         <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-         <u><font color="white">$brih_nxt</font></u> &nbsp;
-         <u><font color="white">$brih_last</font></u> &nbsp;
+         <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
+         <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
+         <font color="white">$brih_nxt</font> &nbsp;
+         <font color="white">$brih_last</font> &nbsp;
           #else
-           <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-           <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-            <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
+           <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
+           <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
+<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
+            <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
      #end     #else
          #if($total_size<= $AdminConf)
-         <u><font color="white">$brih_first</font></u> &nbsp;         <u><font color="white">$brih_nxt</font></u> &nbsp;
-         <u><font color="white">$brih_pre</font></u> &nbsp;         <u><font color="white">$brih_last</font></u> &nbsp;
+         <font color="white">$brih_first</font> &nbsp;       <font color="white">$brih_nxt</font> &nbsp;
+         <font color="white">$brih_pre</font> &nbsp;         <font color="white">$brih_last</font> &nbsp;
           #elseif($startIndex== $AdminConf_str)
-          <u><font color="white">$brih_first</font></u> &nbsp;          <u><font color="white">$brih_pre</font></u> &nbsp;
-          <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-          <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
+          <font color="white">$brih_first</font>&nbsp;       <font color="white">$brih_pre</font>&nbsp;
+          <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
+          <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
          #elseif($endIndex == $total_size || $endIndex > $total_size)        
-	 <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-	 <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
+	 <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
+	 <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
          <u><font color="white">$brih_nxt</font></u> &nbsp;
          <u><font color="white">$brih_last</font></u> &nbsp;
           #else
-           <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-           <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-           <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-  <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
+           <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
+           <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
+           <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
+  <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("InstituteId",$InstituteId).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
      #end
     #end
     </td>

@@ -202,7 +202,7 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
                                 {
                                 //Vector userList=ListManagement.getDetails(v,"User");
                                 Vector userList=ListManagement.getInstituteUDetails(v,"User");
-                                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
                                 int AdminConf=10;
                                 AdminConf = Integer.parseInt(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
                                 context.put("AdminConf",new Integer(AdminConf));

@@ -115,7 +115,7 @@ public class InstUserRegistrationManagement extends SecureScreen_Institute_Admin
 			/**
  			*Check Institute Profile exist or not
  			*/ 
-			String Path=data.getServletContext().getRealPath("/WEB-INF"+"/conf");
+			String Path=data.getServletContext().getRealPath("/WEB-INF"+"/conf"+"/InstituteProfileDir");
                         File existfile=new File(Path+"/"+instituteId+"Admin.properties");
 			if(!existfile.exists())
 			{
@@ -192,7 +192,8 @@ public class InstUserRegistrationManagement extends SecureScreen_Institute_Admin
 			*Code for pagination
 			*@see ListManagement util in utils.	
 			*/
-                        String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                        String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir"+"/"+instituteId+"Admin.properties";
+			ErrorDumpUtil.ErrorLog("list config value=========="+path);
                         int AdminConf = Integer.valueOf(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
                         context.put("AdminConf",new Integer(AdminConf));
                         context.put("AdminConf_str",Integer.toString(AdminConf));

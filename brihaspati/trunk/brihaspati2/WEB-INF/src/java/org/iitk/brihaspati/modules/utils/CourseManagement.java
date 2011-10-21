@@ -144,7 +144,7 @@ public class CourseManagement
 					/**
 					* Get the course default quota which is set by administrator
 					*/
-					String pathq=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+Integer.toString(institute_id)+"Admin.properties";
+					String pathq=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+Integer.toString(institute_id)+"Admin.properties";
 					/** Making File Object of the given path
 					  * Cheking File existence if it is nt exist show prper message 
 					  * else proceed furter for Registraion of a course with instrutor 

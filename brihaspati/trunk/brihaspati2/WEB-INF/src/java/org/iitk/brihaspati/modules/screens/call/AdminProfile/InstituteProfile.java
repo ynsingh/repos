@@ -59,7 +59,7 @@ public class InstituteProfile extends SecureScreen{
                 context.put("iname",iname);
 		//set path InstituteName+Admin.properies
 		String path="";	
-		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
+		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteid+"Admin.properties";
 		
 		String LangFile=user.getTemp("LangFile").toString();
 		context.put("tdcolor",data.getParameters().getString("count",""));

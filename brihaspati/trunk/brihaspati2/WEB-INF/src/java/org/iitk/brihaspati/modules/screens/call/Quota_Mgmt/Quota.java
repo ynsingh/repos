@@ -113,7 +113,7 @@ public class Quota extends SecureScreen_Institute_Admin
 			long qtingb=QuotaUtil.getInstituteUsedQuota(instituteId);
 			long remquota =(instquota - qtingb);
 			context.put("rquota",remquota);
-			String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instituteId+"Admin.properties";
+			String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
                         String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
                         int list_conf=Integer.parseInt(conf);
                         context.put("userConf",new Integer(list_conf));
