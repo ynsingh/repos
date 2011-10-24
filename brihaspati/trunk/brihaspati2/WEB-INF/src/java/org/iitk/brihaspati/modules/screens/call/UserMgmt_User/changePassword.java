@@ -37,12 +37,14 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
 /**
  * @author <a href="mailto:awadhesh_trivedi@yahoo.com">Awadhesh Kumar Trivedi</a> 
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
-* @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 07-12-2010 
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
+ * @modified date: 07-12-2010, 19-10-2011(sunil)
  */
 
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.turbine.om.security.User; 
 public class changePassword extends SecureScreen{
@@ -54,8 +56,10 @@ public class changePassword extends SecureScreen{
 		User user=data.getUser();
 		String userName=user.getName();
 		String stat=data.getParameters().getString("status","");
+		String mode2=data.getParameters().getString("mode2","");
 		context.put("mode",data.getParameters().getString("mode",""));
 		context.put("status",stat);
+		context.put("mode2",mode2);
 		context.put("uName",userName);
 	}
 }

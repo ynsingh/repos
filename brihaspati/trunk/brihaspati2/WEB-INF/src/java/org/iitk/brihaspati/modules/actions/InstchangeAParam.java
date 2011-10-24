@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)InstchangeAParam.java	
  *
- *  Copyright (c) 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010, 2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -54,6 +54,7 @@ import org.apache.turbine.services.security.TurbineSecurity;
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @author <a href="mailto:singh_jaivir@gmail.com">Jaivir Singh</a>29apr2011
  */
+//Last update 19-10-2011(Sunil)
 
 //public class InstchangeAParam extends SecureAction_Admin{
 public class InstchangeAParam extends SecureAction{
@@ -112,8 +113,6 @@ public class InstchangeAParam extends SecureAction{
 	 	String uquota = pp.getString("uquota","");
 		//Faq Expiry time in days
 		String AdminFaqExp=pp.getString("AdminFaqExp","");
-		//Home Directory
-	 	String hdir = pp.getString("hdir","");
 		//Expiry Days
 		String expdays = pp.getString("expdays","");
 		/**
@@ -139,7 +138,6 @@ public class InstchangeAParam extends SecureAction{
 			AdminProperties.setValue(path,aquota,"brihaspati.admin.quota.value");
 			AdminProperties.setValue(path,uquota,"brihaspati.user.quota.value");
 		//	AdminProperties.setValue(path,iquota,"brihaspati.user.iquota.value");
-			AdminProperties.setValue(path,hdir,"brihaspati.home.dir.value");
 			AdminProperties.setValue(path,AdminFaqExp,"brihaspati.admin.FaqExpiry");
 			AdminProperties.setValue(path,expdays,"brihaspati.user.expdays.value");// Add by @tej
 			setTemplate(data,"Index.vm");

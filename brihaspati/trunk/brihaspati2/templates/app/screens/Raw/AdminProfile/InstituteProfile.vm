@@ -3,7 +3,7 @@
  * All Rights Reserved.
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modify date: 25-02-2011
+ * @modify date: 25-02-2011, 19-10-2011
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("Admin Home | Change Parameters")
@@ -65,10 +65,6 @@ $!data.getMessage()
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminFaqExp" value="$!FaqExp"></font></td>
     </tr>
 ##--------------------------------------FAQ---------------------
-    <tr bgcolor="$ui.tableColor">
-	<td width=30><font face="$ui.sansSerifFonts">$brih_home $brih_dir </td>	
-	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="hdir" value="$!hdir"></font></td>
-   </tr>
 ##-------------------------------------student expiry days----added by @Tej--------------
    <tr bgcolor="$ui.menuColor">
 	<td width=30><font face="$ui.sansSerifFont">$brih_student $brih_course $brih_expiry</td>

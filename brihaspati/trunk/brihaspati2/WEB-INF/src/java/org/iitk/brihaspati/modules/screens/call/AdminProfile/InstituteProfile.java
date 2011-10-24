@@ -30,19 +30,24 @@ package org.iitk.brihaspati.modules.screens.call.AdminProfile;
  *  
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
  */
+import java.util.List;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
+import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.apache.turbine.util.parser.ParameterParser;
 
 /**
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a> 
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a> 
- * @modified date: 22-02-2011 (Tej)
+ * @modified date: 22-02-2011 (Tej)19-10-2011(Sunil)
  */
 
 /**
@@ -60,7 +65,31 @@ public class InstituteProfile extends SecureScreen{
 		//set path InstituteName+Admin.properies
 		String path="";	
 		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteid+"Admin.properties";
-		
+		//when properties file not exists, set given defaul value
+                java.io.File f=new java.io.File(path);
+                if(!f.exists()){
+                        context.put("AdminConf","10");
+                        context.put("CrsExp","210");
+                try{
+                        //get Local domain name, whose given login time
+                        Criteria crit = new Criteria();
+                        ParameterParser pp = data.getParameters();
+                        crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteid);
+                        List instdetail = InstituteAdminRegistrationPeer.doSelect(crit);
+                        for(int i=0;i<instdetail.size();i++)
+                        {
+                                InstituteAdminRegistration element=(InstituteAdminRegistration)instdetail.get(i);
+                                String dName=null;
+                                dName= element.getInstituteDomain();
+                                context.put("dName",dName);
+                                //ErrorDumpUtil.ErrorLog("Sunil=====>>>>"+instdomain);
+                        }
+                }catch(Exception e) {}
+                        context.put("cquota","500");
+                        context.put("uquota","100");
+                        context.put("FaqExp","45");
+                        context.put("expdays","210");
+                }
 		String LangFile=user.getTemp("LangFile").toString();
 		context.put("tdcolor",data.getParameters().getString("count",""));
 		try{
@@ -80,11 +109,6 @@ public class InstituteProfile extends SecureScreen{
 		 context.put("cquota",cquota);
 		 String uquota = AdminProperties.getValue(path,"brihaspati.user.quota.value");
 		 context.put("uquota",uquota);
-		 String hdir = AdminProperties.getValue(path,"brihaspati.home.dir.value");
-		 if(hdir.equals("")){
-			hdir=System.getProperty("user.home");
-		 }
-		 context.put("hdir",hdir);
                  String FaqExp = AdminProperties.getValue(path,"brihaspati.admin.FaqExpiry");
                  context.put("FaqExp",new Integer(FaqExp));
 		/**
