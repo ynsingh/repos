@@ -11,9 +11,9 @@
 $page.setTitle("Brihaspati")
 $page.setBgColor($ui.bgcolor)
 <br>
-<table align="right"><tr><td><b>
+<!-- <table align="right"><tr><td><b> -->
 $!data.getMessage()
-</b></td></tr></table>
+<!-- </b></td></tr></table> -->
 <form name="frm">
 <table>
 <tr>
