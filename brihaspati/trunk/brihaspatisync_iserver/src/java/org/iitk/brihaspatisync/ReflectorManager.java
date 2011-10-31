@@ -34,8 +34,6 @@ public class ReflectorManager
 {
 	
 	private static ReflectorManager rm=null;
-	private Document doc=null;
-        private DocumentBuilder db=null;
 	private final static int maxload = 10;	
 	private ServletContext context=null;
 	/**
@@ -50,22 +48,16 @@ public class ReflectorManager
 
 	public void setContext(ServletContext context1) throws Exception {
                 context=context1;
-		createDocumentObjectModel();
         }
-		
-	private void createDocumentObjectModel() {
-                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                try {
-                        db = dbf.newDocumentBuilder();
-                        try {
-                                doc = db.parse(getFile());
-                        }catch(Exception e){}
-                }catch(ParserConfigurationException pce) { ServerLog.getController().Log("Error while trying to instantiate DocumentBuilder " + pce); }
-
-        }
-		
+	
 	protected String removePeer(String reflector_ip){
 		try {
+			/****************  arvind **************/			
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document doc = builder.parse(getFile());
+
+			/****************  arvind *************/
                         reflector_ip=reflector_ip.replaceAll("/","");
                         NodeList nodeList = doc.getElementsByTagName("IP");
                         for( int i=0; i<nodeList.getLength(); i++ ){
@@ -74,7 +66,7 @@ public class ReflectorManager
                                 if(ip.equals(reflector_ip)){
 					NodeList removenodeList=doc.getElementsByTagName("Reflector");
                 		        doc.getDocumentElement().removeChild(removenodeList.item(i));
-                                        saveXML();
+                                        saveXML(doc);//saveXML();
 					ReflectorStatusManager.getController().removeReflector_IP_Peer(reflector_ip);
                                 }
                         }
@@ -86,6 +78,11 @@ public class ReflectorManager
 	
 	protected String removeLoad(String reflector_ip ,String courseid){
 		try {
+			/********************************************/
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document doc = builder.parse(getFile());
+			/*******************************************/
                         NodeList nodeList = doc.getElementsByTagName("IP");
                         for( int i=0; i<nodeList.getLength(); i++ ){
                                 Node node = nodeList.item(i);
@@ -102,7 +99,7 @@ public class ReflectorManager
 					if(courses.length()<1)
 						courses="0";
 					course.getFirstChild().setNodeValue(courses);
-					saveXML();
+					saveXML(doc);//saveXML();
 				}
 			}
 			nodeList=null;
@@ -118,7 +115,7 @@ public class ReflectorManager
 					int load_int=Integer.parseInt(load);
 					load_int=load_int-1;
                                         node.getFirstChild().setNodeValue(Integer.toString(load_int));
-                                        saveXML();
+                                        saveXML(doc);//saveXML();
                                 }
                         }
                 }catch(Exception e){
@@ -130,7 +127,13 @@ public class ReflectorManager
 	protected String searchElement(String courseid) {
 		File file=new File(context.getRealPath("Reflector.xml"));
 		String message_for_reflector="UnSuccessfull";
-		if(file.exists()) {	
+		try {
+		if(file.exists()) {
+			/********************************/
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document doc = builder.parse(getFile());
+			/*******************************/	
 			NodeList nodeList = doc.getElementsByTagName("Courses");
 			for( int i=0; i<nodeList.getLength(); i++ ) {
 				NodeList newnodeList = doc.getElementsByTagName("Load");
@@ -144,7 +147,7 @@ public class ReflectorManager
 						courses=courseid;
 						course.getFirstChild().setNodeValue(courses);
                                 	        loadnode.getFirstChild().setNodeValue(Integer.toString(load_int+1));
-                                        	saveXML();
+                                        	saveXML(doc);//saveXML();
 	                                        newnodeList = doc.getElementsByTagName("IP");
         	                                loadnode = newnodeList.item(i);
                 	                        return loadnode.getFirstChild().getNodeValue();
@@ -153,7 +156,7 @@ public class ReflectorManager
 						if(k>-1) {
 							//if session id exists then load will increase only 
 							loadnode.getFirstChild().setNodeValue(Integer.toString(load_int+1));
-                	                                saveXML();
+                	                                saveXML(doc);//saveXML();
 							newnodeList = doc.getElementsByTagName("IP");
                                 	                loadnode = newnodeList.item(i);
                                         	        return loadnode.getFirstChild().getNodeValue();
@@ -165,7 +168,7 @@ public class ReflectorManager
                         					courses=courses+","+courseid;	
 								course.getFirstChild().setNodeValue(courses);
 								loadnode.getFirstChild().setNodeValue(Integer.toString(load_int+1));
-        	                                        	saveXML();
+        	                                        	saveXML(doc);//saveXML();
                 	                                	newnodeList = doc.getElementsByTagName("IP");
                         	                        	loadnode = newnodeList.item(i);
                                 	                	return loadnode.getFirstChild().getNodeValue();
@@ -177,11 +180,18 @@ public class ReflectorManager
 			}//for
 		}else
 			message_for_reflector="Reflector is not available !!";		
+		}catch(Exception e){}
 		return message_for_reflector;
 	}
 
 	protected String Register(String reflector_ip, String status){
 		try{
+			/****************************************/
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document doc = builder.parse(getFile());
+			/*****************************************/
+			
                         Element root = doc.getDocumentElement();
                         Element reflector = doc.createElement("Reflector");
 
@@ -206,7 +216,7 @@ public class ReflectorManager
                         reflector.appendChild(load);
                         reflector.appendChild(status_e);
                         root.appendChild(reflector);
-                        return saveXML();
+                        return saveXML(doc);//saveXML();
 		}catch(Exception ex){
 			ServerLog.getController().Log("Error on creating xml file : "+ex.getMessage());
 		} return "";
@@ -214,6 +224,11 @@ public class ReflectorManager
 		
 	protected String updateStatus(String reflector_ip,String status){
 		try {
+			/******************************************/
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document doc = builder.parse(getFile());
+			/*****************************************/
 			reflector_ip=reflector_ip.replaceAll("/","");
                         NodeList nodeList = doc.getElementsByTagName("IP");
                         for( int i=0; i<nodeList.getLength(); i++ ){	
@@ -223,7 +238,7 @@ public class ReflectorManager
 					NodeList statusnodeList = doc.getElementsByTagName("Status");
 					Node node1 = statusnodeList.item(i);	
 					node1.getFirstChild().setNodeValue(status);
-                	       		return saveXML();
+                	       		return saveXML(doc);//saveXML();
 				}
 			}
 		}catch(Exception e){
@@ -232,8 +247,9 @@ public class ReflectorManager
 		return "UnSuccessfull";
 	}
 	
-	private String saveXML() {
+	private String saveXML(Document doc) {
 		try{
+			
                         OutputFormat format = new OutputFormat(doc);
                         format.setIndenting(true);
                         XMLSerializer output = new XMLSerializer(new FileOutputStream(context.getRealPath("Reflector.xml")), format);
@@ -249,13 +265,17 @@ public class ReflectorManager
 
         private File getFile() {
 		File file=new File(context.getRealPath("Reflector.xml"));
+		
                	if(!file.exists()){
                		try {
-                       		doc = db.newDocument();
+				/************************************/
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	                        DocumentBuilder builder = factory.newDocumentBuilder();
+				/************************************/
+				Document doc = builder.newDocument();
 	                        Element rootEle = doc.createElement("Reflector_Peers");
                                 doc.appendChild(rootEle);
-               	                saveXML();
-                       	        doc=null;
+               	                saveXML(doc);
 	               	}catch (Exception ex) { ServerLog.getController().Log("Error in ex "+ex.getMessage()); }
                	} return file;
         }

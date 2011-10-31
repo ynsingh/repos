@@ -34,8 +34,8 @@ public class ReflectorStatusManager
 {
 	
 	private static ReflectorStatusManager rm=null;
-	private Document doc=null;
-        private DocumentBuilder db=null;
+	//private Document doc=null;
+        //private DocumentBuilder db=null;
 	private ServletContext context=null;
 	
 	/**
@@ -50,22 +50,28 @@ public class ReflectorStatusManager
 	
 	public void setContext(ServletContext context1) throws Exception {
                 context=context1;
-		createDocumentObjectModel();
+		//createDocumentObjectModel();
         }
-		
+	/*		
 	private void createDocumentObjectModel() {
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                 try {
-                        db = dbf.newDocumentBuilder();
+                        DocumentBuilder db = dbf.newDocumentBuilder();
                         try {
                                 doc = db.parse(getFile());
                         }catch(Exception e){}
                 }catch(ParserConfigurationException pce) { ServerLog.getController().Log("Error to instantiate DocumentBuilder " + pce); }
 
         }
-	
+	*/
 	protected String searchElement(String userid,String sessionid,String RoleId) {
 		String message_ip="UnSuccessfull";
+		try {
+		/*************************************/	
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = factory.newDocumentBuilder();
+                Document doc = builder.parse(getFile());
+		/*************************************/
 		Element root = doc.getDocumentElement();
                 NodeList peerList = doc.getElementsByTagName("ReflectorStatus");	
 		for( int i=0; i<peerList.getLength(); i++ ) {
@@ -77,13 +83,14 @@ public class ReflectorStatusManager
 				if((user_id.equals(userid)) && (session_id.equals(sessionid))) {
 					Attr attrNode = element.getAttributeNode("Status");
                                        	attrNode.setValue("active");
-                                        if(saveXML().equals("Successfull")){
+                                        if(saveXML(doc).equals("Successfull")){
 						String ip=element.getAttribute("IP");		
 						message_ip="current"+ip+","+"parent"+searchParentIP(ip ,sessionid);		
 					}
 				}
 			}
 		}
+		}catch(Exception e){}
 		return message_ip;
 	}
 
@@ -91,6 +98,11 @@ public class ReflectorStatusManager
 	protected String Register(String userid,String sessionid,String RoleId){
 		String message_ip="";
 		try{
+			/******************************************/
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document doc = builder.parse(getFile());
+			/******************************************/
 			message_ip=searchElement(userid,sessionid,RoleId);
 			if(message_ip.equals("UnSuccessfull")) {
 				String ip=ReflectorManager.getController().searchElement(sessionid);	
@@ -103,7 +115,7 @@ public class ReflectorStatusManager
 					reflector.setAttribute("RoleId", RoleId);
 					reflector.setAttribute("Status", "active");
                 	        	root.appendChild(reflector);
-	                	        if(saveXML().equals("Successfull"))
+	                	        if(saveXML(doc).equals("Successfull"))
 						message_ip="current"+ip+","+"parent"+searchParentIP(ip ,sessionid);
 				}
 			}
@@ -113,26 +125,39 @@ public class ReflectorStatusManager
 	
 	protected String searchParentIP(String reflector_ip ,String sessionid) {
                 String message_ip="";
-                Element root = doc.getDocumentElement();
-                NodeList peerList = doc.getElementsByTagName("ReflectorStatus");
-                for( int i=0; i<peerList.getLength(); i++ ) {
-                        Node node = peerList.item(i);
-                        if( node.getNodeType() == node.ELEMENT_NODE ) {
-                                Element element = (Element)node;
-                                String reflectorip=element.getAttribute("IP");
-                                String session_id=element.getAttribute("SessionId");
-                                if(session_id.equals(sessionid)) {
-					if(!(reflector_ip.equals(reflectorip))){
-                                               	message_ip=element.getAttribute("IP");
-					}
-                                }
-                        }
-                }
+		try {
+			/******************************/
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        	        DocumentBuilder builder = factory.newDocumentBuilder();
+                	Document doc = builder.parse(getFile());
+			/*****************************/
+        	        Element root = doc.getDocumentElement();
+                	NodeList peerList = doc.getElementsByTagName("ReflectorStatus");
+	                for( int i=0; i<peerList.getLength(); i++ ) {
+        	                Node node = peerList.item(i);
+                	        if( node.getNodeType() == node.ELEMENT_NODE ) {
+                        	        Element element = (Element)node;
+                                	String reflectorip=element.getAttribute("IP");
+	                                String session_id=element.getAttribute("SessionId");
+        	                        if(session_id.equals(sessionid)) {
+						if(!(reflector_ip.equals(reflectorip))){
+                        	                       	message_ip=element.getAttribute("IP");
+						}
+	                                }
+        	                }
+                	}
+		}catch(Exception e){}
                 return message_ip;
         }
 	
 	protected void updateStatusPeer(String userid){
 		userid=userid.trim();
+		try {
+		/*****************************/
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+                Document doc = builder.parse(getFile());
+		/*****************************/
 		NodeList peerList = doc.getElementsByTagName("ReflectorStatus");
                 for( int i=0; i<peerList.getLength(); i++ ) {
                 	Node node = peerList.item(i);
@@ -142,15 +167,21 @@ public class ReflectorStatusManager
                                 if(user_id.equals(userid)) {
 					Attr attrNode = element.getAttributeNode("Status");
 					attrNode.setValue("deactive");
-					saveXML();	
+					saveXML(doc);	
                               	}
                    	}
             	}	
+		}catch(Exception e){}
 	}		
 	
 	protected String removeReflector_IP_Peer(String reflector_ip){
 		String message_ip="UnSuccessfull";	
                 try{
+			/**************************************/
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document doc = builder.parse(getFile());
+			/*************************************/
 			NodeList peerList = doc.getElementsByTagName("ReflectorStatus");
                         for( int i=0; i<peerList.getLength(); i++ ){
                                 Node node = peerList.item(i );
@@ -165,7 +196,7 @@ public class ReflectorStatusManager
                                         }
                                 }
                         }
-                        message_ip=saveXML();
+                        message_ip=saveXML(doc);
                 } catch( Exception e ){ ServerLog.getController().Log("Error in removeReflector_IP_Peer "+e.getMessage());	}
 		return message_ip;
         }
@@ -173,6 +204,11 @@ public class ReflectorStatusManager
 	public String removeLoad_and_Sessionid_Peer(String session_id){
                 String message_ip="UnSuccessfull";      
                 try{
+			/*************************************/
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document doc = builder.parse(getFile());
+			/**************************************/
                         NodeList peerList = doc.getElementsByTagName("ReflectorStatus");
                         for( int i=0; i<peerList.getLength(); i++ ){
                                 Node node = peerList.item(i );
@@ -186,12 +222,12 @@ public class ReflectorStatusManager
                                         }
                                 }
                         }       
-                        message_ip=saveXML();
+                        message_ip=saveXML(doc);
                 } catch( Exception e ){ ServerLog.getController().Log("Error in removeLoad_and_Sessionid_Peer  "+e.getMessage());    }
                 return message_ip;
         }
 
-	private String saveXML(){
+	private String saveXML(Document doc){
 		try{
                         OutputFormat format = new OutputFormat(doc);
                         XMLSerializer output = new XMLSerializer(new FileOutputStream(context.getRealPath("ReflectorStatus.xml")), format);
@@ -204,10 +240,12 @@ public class ReflectorStatusManager
 	    	File file=new File(context.getRealPath("ReflectorStatus.xml"));
         	if(!file.exists()){
                 	try {
-                       		doc = db.newDocument();
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                                DocumentBuilder builder = factory.newDocumentBuilder();
+                                Document doc = builder.newDocument();//parse(getFile());
                                	Element rootEle = doc.createElement("ReflectorStatus_Peers");
 	                        doc.appendChild(rootEle);
-        	                saveXML();
+        	                saveXML(doc);
                                 doc=null;
                 	}catch (Exception ex) { ServerLog.getController().Log("Error in get file ========> "+ex.getMessage());}
 	        } return file;
