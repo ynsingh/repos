@@ -443,6 +443,9 @@ public class UserManagement
 						*/
 						//String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
 						String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteid+"Admin.properties";
+						if(!((new File(path)).exists())){
+							path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+						}
 				                String SpacefPrp=AdminProperties.getValue(path,"brihaspati.user.quota.value");
 				                long UQuota=new Long(SpacefPrp).longValue();
 
