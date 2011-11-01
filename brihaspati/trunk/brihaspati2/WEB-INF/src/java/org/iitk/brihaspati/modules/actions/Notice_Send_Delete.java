@@ -528,7 +528,7 @@ public class Notice_Send_Delete extends SecureAction
 		//	String Fheadexp=pp.getString("expiry","");
 			//String fhrole=pp.getString("role");
 			//String fhrole=(String)data.getUser().getTemp("role");
-			String fhrole=data.getUser().getUserName();
+			String fhrole=data.getUser().getName();
 			//if(fhrole.equals("turbine_root")){
 			if(fhrole.equals("admin")){
 			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Notification.properties";
