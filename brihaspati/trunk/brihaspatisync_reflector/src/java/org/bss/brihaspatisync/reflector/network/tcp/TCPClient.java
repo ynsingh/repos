@@ -127,7 +127,6 @@ public class TCPClient implements Runnable{
 										TCPUtil.getController().getString(str1[0],str1[1]);					
 									}else if(str.startsWith("SetUserList=")){
 										String courseid=str.replaceAll("SetUserList=","");
-										UserListUtil.getContriller().clearDataForVector(courseid);			
 									}else if(str.startsWith("UserList=")){
 										String courseid_data=str.replaceAll("UserList=","");
 										String data[]=courseid_data.split("#");
