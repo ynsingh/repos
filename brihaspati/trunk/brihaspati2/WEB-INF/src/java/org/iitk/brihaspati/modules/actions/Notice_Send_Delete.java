@@ -77,6 +77,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.MailNotification;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
@@ -89,7 +90,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 28-01-2010
- * @modified date: 08-07-2010, 13-Oct-2010, 21-04-2011 (Shaista)
+ * @modified date: 08-07-2010, 13-Oct-2010, 21-04-2011, 16-06-2011 (Shaista)
  */
 public class Notice_Send_Delete extends SecureAction
 {
@@ -127,7 +128,7 @@ public class Notice_Send_Delete extends SecureAction
 		 	*/
 			context.put("count",pp.getString("count",""));
 			context.put("countTemp",pp.getString("countTemp",""));
-			ErrorDumpUtil.ErrorLog("Count temp="+pp.getString("countTemp",""));
+			//ErrorDumpUtil.ErrorLog("Count temp="+pp.getString("countTemp",""));
 			String notice_role=pp.getString("role");
 			notice_message=pp.getString("message");	
 
@@ -394,14 +395,14 @@ public class Notice_Send_Delete extends SecureAction
 				info_new= "brihaspatiNoticehttps";
 			Properties pr =MailNotification.uploadingPropertiesFile(fileName);
                         //String subject = MailNotification.subjectFormate(info_new, courseName, pr );
-			String message = MailNotification.getMessage(info_new, courseName, "", data.getUser().getName(), "", "", "",pr);
+			String message = MailNotification.getMessage(info_new, courseName, "", data.getUser().getName(), "", pr);
 			///////////////////////////////////////////////////
 			for(int c1=0;c1<userList.size();c1++) {
 				TurbineUser element=(TurbineUser)(userList.get(c1));
                                 String eMail=element.getEmail();
 				if(!eMail.equals("")){
-					//String Mail_msg=MailNotification.sendMail(notice_message,eMail,courseName,"Updation Mail",userName,"Brihaspati Notice","",server_name,srvrPort,lang);
-					String Mail_msg= MailNotification.sendMail(message+"<br><br>"+notice_message, eMail, noticeSubject, "", lang);
+					//String Mail_msg= MailNotification.sendMail(message+"<br><br>"+notice_message, eMail, noticeSubject, "", lang);
+					String Mail_msg= MailNotificationThread.getController().set_Message(message+"<br><br>"+notice_message, "", "", "", eMail, noticeSubject, "", lang, "");
 				}
 			}
 		}
