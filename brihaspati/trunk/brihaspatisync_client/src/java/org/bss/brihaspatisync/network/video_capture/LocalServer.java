@@ -26,14 +26,6 @@ import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 
-import com.lti.civil.webcam.CivilJPEG_HTTPD;
-import com.lti.civil.webcam.StoreMostRecent_CaptureObserver;
-import com.lti.civil.CaptureDeviceInfo;
-import com.lti.civil.CaptureStream;
-import com.lti.civil.CaptureSystem;
-import com.lti.civil.CaptureSystemFactory;
-import com.lti.civil.DefaultCaptureSystemFactorySingleton;
-
 
 /**
  * @author <a href="mailto: arvindjss17@gmail.com" > Arvind Pal </a>
