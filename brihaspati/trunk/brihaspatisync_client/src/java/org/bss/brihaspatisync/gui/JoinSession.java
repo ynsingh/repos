@@ -129,6 +129,16 @@ public class JoinSession {
 			}
 
 		}catch(Exception ex){log.setLog("Error in Starting GUIThreads"+ex.getMessage());}
+		try {
+			
+			if((client_obj.getUserRole()).equals("instructor")){
+                        	org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();
+				org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start();
+			}else {
+				org.bss.brihaspatisync.network.video_capture.GetVideo.getController().start();
+			}
+			
+                }catch(Exception e){}
 		
 	}
 
