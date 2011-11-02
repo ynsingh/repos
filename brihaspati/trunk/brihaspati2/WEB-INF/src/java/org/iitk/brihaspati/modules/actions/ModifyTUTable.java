@@ -46,6 +46,7 @@ import org.apache.torque.util.Criteria;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.StringUtils;
 
 import org.iitk.brihaspati.om.TurbineUserPeer;
 import org.iitk.brihaspati.om.TurbineUser;
@@ -62,12 +63,14 @@ import java.util.Vector;
  * This class also contains code for recording login statistics of 
  * users.This class is invoked whenever a user logs in to the system
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  */
 
 public class ModifyTUTable extends VelocityAction{
 		private Log log = LogFactory.getLog(this.getClass());
 	
-	public void doPerform( RunData data, Context context )
+//	public void doPerform( RunData data, Context context, String username, String password, String flag, String lang )
+	public void doPerform( RunData data, Context context)
 	{
 		String userLanguage = "";
 		
@@ -75,17 +78,46 @@ public class ModifyTUTable extends VelocityAction{
                  *  Getting Property file  according to Selection of Language
 		 */
 		User user=null;
+		Criteria crit = null;
+
                 String flag=data.getParameters().getString("flag");
-                //String LangFile =data.getParameters().getString("Langfile","");
+                String LangFile =data.getParameters().getString("Langfile","");
                 String lang=data.getParameters().getString("lang","english");
 		try{
 		String username = data.getParameters().getString("username", "" );
-		if(StringUtil.checkString(username) != -1) username="";
+		if(StringUtils.isBlank(username)) {
+			//username="";
+			username = data.getMessage();
+		}
+                ErrorDumpUtil.ErrorLog("The user name is (ModifyTUTable) "+username);
 		String password = data.getParameters().getString("password", "" );
 
 			String str=new String();
+			List vec=null;
+			int uid=UserUtil.getUID(username);
+			try{
+                                crit= new Criteria();
+				crit.add(TurbineUserPeer.USER_ID,uid);
+                                crit.addGroupByColumn(TurbineUserPeer.USER_LANG);
+                                vec=TurbineUserPeer.doSelect(crit);
+                        }
+			catch(Exception e){
+                                ErrorDumpUtil.ErrorLog("This Exception comes (in side First try) in the Login Utils-SetUserData Facility"+e);
+                        }
+
+                       TurbineUser element=(TurbineUser)vec.get(0);
+			// Authenticate with local database of that user and get the object.
+			if(StringUtils.isNotBlank(password)){
+                                password=EncryptionUtil.createDigest("MD5",password);
+                        }
+                        else{
+                                password=element.getPasswordValue().toString();
+                        }
+
+
+
 			// Authenticate the user and get the object.
-			password=EncryptionUtil.createDigest("MD5",password);
+			//password=EncryptionUtil.createDigest("MD5",password);
 			user=TurbineSecurity.getAuthenticatedUser(username, password );
 
 			// Store the user object.
@@ -94,17 +126,17 @@ public class ModifyTUTable extends VelocityAction{
 			// Mark the user as being logged in.
 			user.setHasLoggedIn(new Boolean(true));
 			// get User ID 
-			int uid=UserUtil.getUID(username);
+//			int uid=UserUtil.getUID(username);
 			Date date=new Date();
 				// Set the last_login date in the database.
 				user.updateLastLogin();
-				List vec=null;
-				Criteria crit= new Criteria();
+				vec=null;
+				crit= new Criteria();
                                 crit.add(TurbineUserPeer.USER_ID,uid);
                                 crit.addGroupByColumn(TurbineUserPeer.USER_LANG);
                                 vec=TurbineUserPeer.doSelect(crit);
 				crit = null;
-                                TurbineUser element=(TurbineUser)vec.get(0);
+                                element=(TurbineUser)vec.get(0);
        	                        userLanguage=element.getUserLang().toString();
 				if(vec != null){
 					if((userLanguage.equals("")))
