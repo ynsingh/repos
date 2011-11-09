@@ -45,7 +45,11 @@ import org.apache.torque.util.BasePeer;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import com.workingdogs.village.Record;
 
-
+/**
+ *This class create text file containing necessary field from 'TURBINEUSER' table for backup.
+ *
+ *@author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
+ */
         public class BackupUtil
 	{
 		public static void createTxt(String courseID)
@@ -61,7 +65,7 @@ import com.workingdogs.village.Record;
         	                String login_name="",password_value="",firstname="",lastname="",e_mail="";
                 	        int temp_user_id=0;
 	
-        	                String filePath=TurbineServlet.getRealPath("/BackupData");
+        	                String filePath=TurbineServlet.getRealPath("/BackupData"+"/"+"Admin");
 				File fil=new File(filePath+"/");
 				fil.mkdirs();
 				Date date=new Date();
@@ -103,6 +107,47 @@ import com.workingdogs.village.Record;
   
              }  
      }   
+	public static void createInstituteTxt(String courseID,String instId)
+	{ 
+		try{
+	                GroupUtil temp_group_info=new GroupUtil();
+                        int group_id=temp_group_info.getGID(courseID);
+                        String query1="select USER_ID from TURBINE_USER_GROUP_ROLE where ROLE_ID=3 AND GROUP_ID=" +group_id;
+      	                List u=BasePeer.executeQuery(query1);
+       	                String login_name="",password_value="",firstname="",lastname="",e_mail="";
+               	        int temp_user_id=0;
+       	                String filePath=TurbineServlet.getRealPath("/BackupData"+"/"+instId);
+			File fil=new File(filePath+"/");
+			fil.mkdirs();
+			Date date=new Date();
+                       	FileWriter f=new FileWriter(filePath+"/"+courseID+ExpiryUtil.getCurrentDate("")+".txt");
+			f.write("Login_Name " + " Password "+" First_Name " +" Last_Name " + " E_Mail " + " \n");  
+                        for(Iterator j=u.iterator();j.hasNext();)
+       	                {
+               	                Record temp_item=(Record)j.next();
+       	                        temp_user_id=temp_item.getValue("USER_ID").asInt();
+                       	        String query2="select * from TURBINE_USER where USER_ID="+temp_user_id;
+       	                        List v=BasePeer.executeQuery(query2);
+                                for(Iterator i=v.iterator();i.hasNext();)
+                               	{
+					Record item=(Record)i.next();
+	                                login_name=item.getValue("LOGIN_NAME").asString();
+        	                        password_value=item.getValue("PASSWORD_VALUE").asString();
+                	                firstname=item.getValue("FIRST_NAME").asString();
+                        	        lastname=item.getValue("LAST_NAME").asString();
+                                	e_mail=item.getValue("EMAIL").asString();
+	                                if(!login_name.equals("guest"))
+        	                        f.write(login_name+";"+password_value+";"+firstname+";"+lastname+";"+e_mail+"\n");
+//					f.write("Backup hasbeen taken successfully");
+                	        }
+                       	}
+                        f.close();
+		}//try
+        	catch(Exception e)
+        	{
+                	ErrorDumpUtil.ErrorLog("Error in utils Exception [BackupUtil] in method[createTxt()] is "+ e);
+ 		}  
+       }
 
  } 
 

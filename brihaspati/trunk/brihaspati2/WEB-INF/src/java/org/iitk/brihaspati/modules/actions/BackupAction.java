@@ -35,15 +35,17 @@ package org.iitk.brihaspati.modules.actions;
 
 import java.io.File;
 import java.util.List;
+import java.util.Vector;
 import java.util.Date;
 import java.io.FileWriter;
 //import java.lang.reflect.Array;
 import java.util.StringTokenizer;
-
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.RunData;
 import org.apache.torque.util.BasePeer;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.security.AccessControlList;
 
@@ -51,6 +53,9 @@ import org.iitk.brihaspati.modules.utils.CreateZip;
 import org.iitk.brihaspati.modules.utils.BackupUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
@@ -60,6 +65,7 @@ import org.iitk.brihaspati.modules.utils.CommonUtility;
  *
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:mann_singh2004@yahoo.com">Manvendra Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
 */
 
 public class BackupAction extends SecureAction
@@ -79,13 +85,14 @@ public class BackupAction extends SecureAction
                 String LangFile=(String)user.getTemp("LangFile");
 		try{
 			String dir=data.getParameters().getString("courses");
-			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
-			ErrorDumpUtil.ErrorLog("hgjkghkghkghkghkghk"+instituteId);
 			String destination="";
-			if((user.getName()).equals("admin"))
-			destination=TurbineServlet.getRealPath("/BackupData"+"/Admin");
-			else
-			destination=TurbineServlet.getRealPath("/BackupData"+"/"+instituteId);
+			if((user.getName()).equals("admin")){
+				destination=TurbineServlet.getRealPath("/BackupData"+"/Admin");
+			}
+			else{
+				String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+				destination=TurbineServlet.getRealPath("/BackupData"+"/"+instituteId);
+			}
 			File f=new File(destination+"/");
 			f.mkdirs();
 			String docRoot="";
@@ -121,13 +128,19 @@ public class BackupAction extends SecureAction
 		User user= data.getUser();
                 String LangFile=(String)user.getTemp("LangFile");
 		String courseId=data.getParameters().getString("courses","");
+		String instId=(data.getUser().getTemp("Institute_id")).toString();
 		if ((courseId.equals("Courses"))||(courseId.equals("author"))){
 			data.setMessage(MultilingualUtil.ConvertedString("backup_msg2",LangFile));
 //			data.setMessage("Please choose the course except All.");
 //			setTemplate(data,"call,Backups,BackupAdmin.vm");
 		}
 		else{
+			if((user.getName()).equals("admin")){
 			BackupUtil.createTxt(courseId);
+			}
+			else{
+			BackupUtil.createInstituteTxt(courseId,instId);
+			}
 			data.setMessage(MultilingualUtil.ConvertedString("backup_backup",LangFile)+" "+MultilingualUtil.ConvertedString("backup_msg1",LangFile));
                         data.addMessage(MultilingualUtil.ConvertedString("backup_msg6",LangFile)+" "+MultilingualUtil.ConvertedString("backup_msg7",LangFile));
 
@@ -158,9 +171,7 @@ public class BackupAction extends SecureAction
                 fi.mkdirs();
 		String filePath=CoursesRealPath+"/CompleteDBBackup"+ExpiryUtil.getCurrentDate("")+".sql";
                 FileWriter fw=new FileWriter(filePath);
-
                 if(acl.hasRole("turbine_root","global")){
-
                         try{//try0
                                 /**
                                  * Getting the list of tables in current database
@@ -177,7 +188,6 @@ public class BackupAction extends SecureAction
 					*/
                                         int j=tNm.length();
                                         String ftm=tNm.substring(2,j-2);
-					ErrorDumpUtil.ErrorLog("the name of table is "+ftm);
 				
                                         fw.write("# drop table if exists "+ ftm+";"+"\n");
                                         fw.write(" DELETE FROM "+ ftm+";"+"\n");
@@ -272,10 +282,10 @@ public class BackupAction extends SecureAction
                 String LangFile=(String)user.getTemp("LangFile");
 		String fname=data.getParameters().getString("fname","");
 		context.put("tdcolor",data.getParameters().getString("count",""));
-		ErrorDumpUtil.ErrorLog("count in doDeletebackup="+data.getParameters().getString("count"));
 		AccessControlList acl=data.getACL();
 		String instituteId=(data.getUser().getTemp("Institute_id")).toString();
 		//if(acl.hasRole("turbine_root","global")){//if0
+                if(acl.hasRole("turbine_root","global") || acl.hasRole("institute_admin","institute_admin")){
 			try{ //try0
 				File fle;
 				if((user.getName()).equals("admin"))
@@ -285,10 +295,10 @@ public class BackupAction extends SecureAction
 				boolean res=CommonUtility.autoDeletebackup();
 				fle.delete();
 				data.setMessage(MultilingualUtil.ConvertedString("personal_del2",LangFile));
-				setTemplate(data,"call,Backups,BackupList.vm");
+				setTemplate(data,"call,Backups,Backups.vm");
 			}
 			catch(Exception e){data.addMessage("The error in Backups file deletion : " +e);}
-		//}
+		}
 	}//doDeletebackup
 	 /**
                 * This method is responsble for automatic 
@@ -320,7 +330,8 @@ public class BackupAction extends SecureAction
                 fi.mkdirs();
                 String filePath=CoursesRealPath+"/GlossaryBackup"+ExpiryUtil.getCurrentDate("")+".sql";
                 FileWriter fw=new FileWriter(filePath);
-		if(acl.hasRole("turbine_root","global")){//if0
+		//if(acl.hasRole("turbine_root","global")){//if0
+                if(acl.hasRole("turbine_root","global") || acl.hasRole("institute_admin","institute_admin")){
 
                         try{ //try0
                                 /**
@@ -381,6 +392,24 @@ public class BackupAction extends SecureAction
 
         }//doGlossary_backup
 
+	/**
+ 	* Method for display of all courses of selected Institute.
+ 	*
+	*/
+	public void doCrssearch(RunData data, Context context) throws Exception
+        {
+		String LangFile=(String)data.getUser().getTemp("LangFile");
+                ParameterParser pp=data.getParameters();
+                String instName=pp.getString("instName");
+                Criteria crit=new Criteria();
+                crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,instName);
+                List lst=InstituteAdminRegistrationPeer.doSelect(crit);
+                int instituteId=((InstituteAdminRegistration)lst.get(0)).getInstituteId();
+		Vector courseList=InstituteDetailsManagement.getInstituteCourseDetails(Integer.toString(instituteId));
+                //Vector courseList=CourseManagement.getCrsOnlinDetails(Integer.toString(instituteId));
+                context.put("crsList",courseList);
+        }
+ 
     /**
      * Default action to perform if the specified action
      * cannot be executed
@@ -404,6 +433,8 @@ public class BackupAction extends SecureAction
                        	doGlossary_backup(data,context);
 		else if(actionName.equals("eventSubmit_doDeletebackup"))
                        	doDeletebackup(data,context);
+		else if(actionName.equals("eventSubmit_doCrssearch"))
+                       	doCrssearch(data,context);
                 else
                         data.setMessage(MultilingualUtil.ConvertedString("usr_prof2",LangFile));
 	}//doPerform                                                                
