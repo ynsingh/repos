@@ -163,7 +163,7 @@ public class UserListPanel {
 								}
 								*/
                                                         }
-                                                }catch(Exception sp){System.out.println("  Error in catch Allow-Mic ==========> ");}
+                                                }catch(Exception sp){System.out.println("  Error in catch Allow-Screen ==========> ");}
 					}
 					// Student ppt presentation controller.
 					if(statusVector.contains("Allow-PPT")){
@@ -177,7 +177,7 @@ public class UserListPanel {
                                                                 pptFlag=false;
                                                                 HandRaiseThreadController.getController().startgetpptFlag(true);
                                                         }
-                                                }catch(Exception sp){System.out.println("  Error in catch Allow-Mic ==========> ");}
+                                                }catch(Exception sp){System.out.println("  Error in catch Allow-PPT ==========> ");}
                                         }
 				}else if(role.equals("instructor")) { // check only for controller according to username.
 					if(statusVector.contains("Share-Screen")){
@@ -213,7 +213,7 @@ public class UserListPanel {
                                                                 pptFlag=false;
                                                                 HandRaiseThreadController.getController().startgetpptFlag(true);
                                                         }
-                                                }catch(Exception sp){System.out.println("  Error in catch Allow-Mic ==========> ");}
+                                                }catch(Exception sp){System.out.println("  Error in catch Allow-PPT ==========> ");}
                                         }
 
 

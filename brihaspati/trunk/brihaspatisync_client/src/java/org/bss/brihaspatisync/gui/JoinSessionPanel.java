@@ -13,6 +13,9 @@ import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import java.awt.Dimension;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -86,8 +89,8 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
 		//Audio Vedio Panel
 		av_Pane=new JPanel();
                 av_Pane.setLayout(new BorderLayout());
-		av_Pane.setBackground(Color.BLACK);
-	
+		av_Pane.setBackground(Color.BLUE);
+		av_Pane.setSize(500,400);	
 		//PPT Presentation Panel
                 JPanel chat_slide_Pane=new JPanel();
                 chat_slide_Pane.setLayout(new BorderLayout());
@@ -102,11 +105,25 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
 		JSplitPane av_chat_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,av_Pane, chat_slide_Pane);
                 new_Pane.add(av_chat_Split);
 		av_chat_Split.setDividerLocation(160);
+		/*********************************/
+		av_chat_Split.setContinuousLayout(true);
+                av_chat_Split.setOneTouchExpandable(true);
+                PropertyChangeListener propertyChangeListener1 = new PropertyChangeListener() {
+                        public void propertyChange(PropertyChangeEvent changeEvent) {
+                                JSplitPane sourceSplitPane = (JSplitPane) changeEvent.getSource();
+                                String propertyName = changeEvent.getPropertyName();
+                                if (propertyName.equals(JSplitPane.LAST_DIVIDER_LOCATION_PROPERTY)) {
+                                        VideoPanel.getController().setIMG_HIEGHT(sourceSplitPane.getDividerLocation());
+                                }
+                        }
+                };
+                av_chat_Split.addPropertyChangeListener(propertyChangeListener1);
 
-                JSplitPane ul_av_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,UserListPanel.getController().createGUI(),new_Pane);
+		/*********************************/
+	        JSplitPane ul_av_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,UserListPanel.getController().createGUI(),new_Pane);
                 left_Pane.add(ul_av_Split);
 		ul_av_Split.setDividerLocation(270);
-	
+			
 		//TabbedPane for whiteboard, screen share and ppt presentation.
 		JTabbedPane jtp = new JTabbedPane();
 		jtp.addTab(Language.getController().getLangValue("JoinSessionPanel.DesktopSharing"),Desktop_Sharing.getController().createGUI());
@@ -120,8 +137,31 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
 		right_Pane.add(jtp,BorderLayout.CENTER);
 		right_Pane.setBackground(Color.WHITE);
         	JSplitPane splitPane1=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,left_Pane,right_Pane);
+		splitPane1.setContinuousLayout(true);
+                splitPane1.setOneTouchExpandable(true);
+                PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
+                        public void propertyChange(PropertyChangeEvent changeEvent) {
+                                JSplitPane sourceSplitPane = (JSplitPane) changeEvent.getSource();
+                                String propertyName = changeEvent.getPropertyName();
+                                if (propertyName.equals(JSplitPane.LAST_DIVIDER_LOCATION_PROPERTY)) {
+                                        int current = sourceSplitPane.getDividerLocation();
+					/*
+                                        try {
+                                                System.out.println(current);
+                                    	}catch(Exception e){}
+					*/
+                                        VideoPanel.getController().setIMG_WIDTH(current);
+                                        Desktop_Sharing.getController().setIMG_WIDTH(current);
+                                }
+                        }
+                };
+                splitPane1.addPropertyChangeListener(propertyChangeListener);
+		
 		splitPane1.setBackground(Color.WHITE);
                 splitPane1.setDividerLocation(275);
+		
+		
+		
 		splitPane=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setTopComponent(splitPane1);
 		splitPane.setBottomComponent(StatusPanel.getController());

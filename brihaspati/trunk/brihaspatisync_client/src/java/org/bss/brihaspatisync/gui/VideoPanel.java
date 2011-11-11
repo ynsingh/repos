@@ -23,19 +23,35 @@ import java.awt.BorderLayout;
 import java.awt.Graphics2D;
 import java.awt.BorderLayout;
 import javax.swing.JOptionPane;
+import javax.swing.JLayeredPane;
 import java.awt.image.BufferedImage;
+
+
+import java.awt.Color;
 
 public class VideoPanel {
 	
-	private int IMG_WIDTH =200;
-        private int IMG_HEIGHT =200;
-
+	private int W =200;
+        private int H =150;
+	
+	private int W1 =200;
+        private int H1 =150;
+	
+	private int kk=0;
+	private int kk1=0;
+	private int half=0;
+		
 	private JScrollPane js=null;
-        private JPanel mainPanel=null;
-	private JPanel northPanel=null;
-	private JLabel imageDisplay = null;
-	private BufferedImage origanalimage=null;	
+	private JScrollPane js1=null;
+	
+        private JLayeredPane mainPanel=null;
+        private JPanel leftPanel=null;
+        private JPanel centerPanel=null;
+	
+	private JLabel selfimageDisplay = null;
+        private JLabel otherimageDisplay = null;
         private static VideoPanel videoPanel=null;
+	
 	
 	public static VideoPanel getController(){
                 if (videoPanel==null){
@@ -47,27 +63,133 @@ public class VideoPanel {
 	/**
  	 * Create JscrollPane in which images display label is added to show capture images.
  	 */ 
-	public JPanel createGUI(){  
-                js=new JScrollPane();
-		mainPanel=new JPanel();
-                mainPanel.setLayout(new BorderLayout());
-
-                northPanel=new JPanel();
-                mainPanel.add(northPanel,BorderLayout.NORTH);
-                imageDisplay = new JLabel();
-                js.setBackground(java.awt.Color.black);
-                js.getViewport().add(imageDisplay);
-
-                mainPanel.add(js,BorderLayout.CENTER);
+	public JLayeredPane createGUI() {  
+	
+		mainPanel=new JLayeredPane();
+		mainPanel.setBackground(Color.YELLOW);
 		
+		leftPanel=new JPanel();
+		leftPanel.setLayout(new BorderLayout());
+	        leftPanel.setBackground(Color.BLUE);
+		
+		selfimageDisplay = new JLabel();	
+		js=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                js.getViewport().add(selfimageDisplay);
+		leftPanel.add(js,BorderLayout.CENTER);
+		
+		centerPanel=new JPanel();
+		centerPanel.setLayout(new BorderLayout());
+        	centerPanel.setBackground(Color.GREEN);
+		centerPanel.setLocation(0,0);
+		centerPanel.setSize(0,0);
+		
+		otherimageDisplay= new JLabel();	
+                js1=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                js1.getViewport().add(otherimageDisplay);
+                centerPanel.add(js1,BorderLayout.CENTER);
+        	mainPanel.add(leftPanel, new Integer(0), 0);
+	        mainPanel.add(centerPanel, new Integer(1), 0);
 		return mainPanel; 	
 	}
-
-	public void runDesktopSharing(BufferedImage originalImage){
-                try {
-                        imageDisplay.setIcon(new ImageIcon(originalImage));
-                } catch(Exception e){ System.out.println("Error in VideoPanel.java !! ");}
-	}
 	
+	
+	
+	public void removeStudentPanel(){
+		try {
+			half=0;
+			centerPanel.setSize(0,0);
+			centerPanel.updateUI();
+			mainPanel.updateUI();
+	                mainPanel.revalidate();				
+		} catch(Exception e){ System.out.println("Error in VideoPanel.java !! "+e.getMessage());}
+	}
+	public void addStudentPanel(){
+        	try {
+			half=1;
+		} catch(Exception e){ System.out.println("Error in VideoPanel.java !! "+e.getMessage());}
+        }
+	public void runInstructorVidio(BufferedImage originalImage){
+                try {
+                        int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+                        originalImage=resizeImage(originalImage,type);
+                        selfimageDisplay.setIcon(new ImageIcon(originalImage));
+		} catch(Exception e){ System.out.println("Error in VideoPanel.java 111!! "+e.getMessage());}
+        }
+	
+	public void runStudentVidio(BufferedImage originalImage){
+                try {
+                        int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+                        originalImage=resizeImageforstudent(originalImage,type);
+                        otherimageDisplay.setIcon(new ImageIcon(originalImage));
+                } catch(Exception e){ System.out.println("Error in VideoPanel.java 22222!! "+e.getMessage());}
+        }
+
+	private BufferedImage resizeImageforstudent(BufferedImage originalImage, int type) {
+                BufferedImage resizedImage = new BufferedImage(((W*40)/100),((H*40)/100), type);
+                Graphics2D g = resizedImage.createGraphics();
+                g.drawImage(originalImage, 0, 0,((W*40)/100),((H*40)/100), null);
+		g.dispose();
+		centerPanel.setLocation((W-((W*40)/100)),(H-((H*40)/100)));//setLocation((W-150),(H-120));
+                centerPanel.setSize(((W*40)/100),((H*40)/100));
+                centerPanel.updateUI();
+                return resizedImage;
+        }
+	
+        private BufferedImage resizeImage(BufferedImage originalImage, int type) {
+                BufferedImage resizedImage = new BufferedImage(W,H, type);
+                Graphics2D g = resizedImage.createGraphics();
+                g.drawImage(originalImage, 0, 0,W,H, null);
+		g.dispose();
+		if(half==1){
+			centerPanel.updateUI();
+		}
+       		leftPanel.setSize(W,H);
+		leftPanel.updateUI();
+		mainPanel.updateUI();
+                mainPanel.revalidate();	
+		
+                return resizedImage;
+        }
+	
+	public void setIMG_HIEGHT(int value) {
+		if(H1<value) {
+	                H1=value;
+			if((W1-W)>=(H1-H)){
+				W=W+(H1-H);
+				H=H+(H1-H);
+			}
+		}else if(H1>value) {
+			H1=value;
+			if(H1<H){
+				W=W-(H-H1);
+                	        H=H-(H-H1);
+			}
+		}
+			
+		if(kk==0){
+			H=H1;
+			kk++;
+                }
+        }	
+
+        public void setIMG_WIDTH(int value) {
+		if(W1<value) {
+                	W1=value;
+			if((W1-W)<=(H1-H)){
+				H=H+(W1-W);
+                                W=W+(W1-W);	
+			}
+                }else if(W1>value){
+			W1=value;
+			if(W1<W){
+				H=H-(W-W1);
+                	      	W=W-(W-W1);
+			}
+                }
+		if(kk1==0){
+			W=W1;
+			kk1++;
+                }
+        }	
 }
 

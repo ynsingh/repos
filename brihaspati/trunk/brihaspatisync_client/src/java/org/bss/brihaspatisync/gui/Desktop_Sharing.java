@@ -33,9 +33,9 @@ import java.awt.Dimension;
 public class Desktop_Sharing {
 
 	private Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
-	private int kk=(((int)dim.getWidth()/5)-50);
-	private int IMG_WIDTH =((int)dim.getWidth()-kk);
-        private int IMG_HEIGHT =((int)dim.getHeight()-220);
+	private int kk=(int)dim.getWidth()-5;
+	private int IMG_WIDTH =(int)dim.getWidth();
+        private int IMG_HEIGHT =((int)dim.getHeight()-200);
 
 	private JScrollPane js=null;
         private JPanel mainPanel=null;
@@ -43,7 +43,6 @@ public class Desktop_Sharing {
 	private JLabel imageDisplay = null;
 	private BufferedImage origanalimage=null;	
         private static Desktop_Sharing desktopSharing=null;
-	//private org.bss.brihaspatisync.tools.presentation.JsliderListener slider =new org.bss.brihaspatisync.tools.presentation.JsliderListener();
 	
 	public static Desktop_Sharing getController(){
                 if (desktopSharing==null){
@@ -56,7 +55,7 @@ public class Desktop_Sharing {
  	 * Create JscrollPane in which images dislpay label is added to show screen share images.
  	 */ 
 	public JPanel createGUI(){  
-                js=new JScrollPane();
+                js=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		mainPanel=new JPanel();
 		centerPanel=new JPanel();
                 mainPanel.setLayout(new BorderLayout());
@@ -72,11 +71,6 @@ public class Desktop_Sharing {
 		mainPanel.add(centerPanel,BorderLayout.SOUTH);
 		return mainPanel; 	
 	}
-	/*
-	public void setSclollEnable_Decable(boolean flag){
-                slider.setEnable_Decable(flag);
-        }
-	*/	
 	public void runDesktopSharing(BufferedImage originalImage){
                 try {
 			origanalimage=originalImage;
@@ -93,20 +87,9 @@ public class Desktop_Sharing {
                 g.dispose();
                 return resizedImage;
         }
-	/*
-        public void revalidateImgWidth(int w){
-                IMG_WIDTH=IMG_WIDTH+w;
-                int type = origanalimage.getType() == 0? BufferedImage.TYPE_INT_ARGB : origanalimage.getType();
-                BufferedImage resizeImageJpg = resizeImage(origanalimage, type);
-                imageDisplay.setIcon(new ImageIcon(resizeImageJpg));
-        }
 
-        public void revalidateImgHeight(int h){
-                IMG_HEIGHT=IMG_HEIGHT+h;
-                int type = origanalimage.getType() == 0? BufferedImage.TYPE_INT_ARGB : origanalimage.getType();
-                BufferedImage resizeImageJpg = resizeImage(origanalimage, type);
-                imageDisplay.setIcon(new ImageIcon(resizeImageJpg));
-        }
-	*/
+	public void setIMG_WIDTH(int value){
+        	IMG_WIDTH=kk-value;
+        }	
 }
 

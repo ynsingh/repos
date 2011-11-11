@@ -112,7 +112,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	/**
 	 * Create GUI for LoginWindow
 	 */	
-	protected void createGUI(){
+	private void createGUI(){
 		languages.add("English");
 		languages.add("Greek");
 		languages.add("Korean");

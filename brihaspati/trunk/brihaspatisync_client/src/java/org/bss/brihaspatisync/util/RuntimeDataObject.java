@@ -29,7 +29,8 @@ public class RuntimeDataObject {
 	private String proxy_port="";
 	private String proxy_user="";
 	private String proxy_pass="";
-
+	private String videoServer="";
+	
         public static RuntimeDataObject getController(){
                 if(obj==null) {
                         obj=new RuntimeDataObject();
@@ -46,6 +47,15 @@ public class RuntimeDataObject {
                 }catch(Exception e){ }
         }
 
+	public void setVideoServer(String value){
+                videoServer=value;
+        }
+
+        public String getVideoServer(){
+                return videoServer;
+        }
+	
+	
 	public void setProxyHost(String value){
 		proxy_host=value;
 	}

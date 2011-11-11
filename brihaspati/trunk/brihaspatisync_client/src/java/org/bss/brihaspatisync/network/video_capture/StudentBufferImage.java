@@ -1,7 +1,7 @@
 package org.bss.brihaspatisync.network.video_capture;
 
 /**
- * BufferImage.java
+ * StudentBufferImage.java
  *
  * See LICENCE file for usage and redistribution terms
  * Copyright (c) 2011.
@@ -17,14 +17,14 @@ import java.awt.image.BufferedImage;
  * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep Kumar Pal  </a>
  */
 
-public class BufferImage { 
+public class StudentBufferImage { 
 
 	private Vector buffer; 
-	private static BufferImage bufferImage=null; 
+	private static StudentBufferImage bufferImage=null; 
 
-	public static BufferImage getController(){
+	public static StudentBufferImage getController(){
                 if(bufferImage==null)
-                        bufferImage=new BufferImage();
+                        bufferImage=new StudentBufferImage();
                 return bufferImage;
         }
 	    
@@ -32,7 +32,7 @@ public class BufferImage {
          * Create an empty Buffer
          */
 	
-	public BufferImage(){
+	public StudentBufferImage(){
 		buffer= new Vector();
 	} 
 	
@@ -95,5 +95,5 @@ public class BufferImage {
 	}
 }
 
-class QueueEmptyException extends Exception { 
+class QueueEmptyException12 extends Exception { 
 }

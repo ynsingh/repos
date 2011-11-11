@@ -1,6 +1,7 @@
-package org.bss.brihaspatisync.network.video_capture; 
+package org.bss.brihaspatisync.network.video_capture;
+
 /**
- * LocalServer.java
+ * StudentGetVideo.java
  *
  * See LICENCE file for usage and redistribution terms
  * Copyright (c) 2011, ETRG, IIT Kanpur.
@@ -14,9 +15,8 @@ import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
 import java.awt.image.BufferedImage;
 
+import org.bss.brihaspatisync.gui.Desktop_Sharing;
 import org.bss.brihaspatisync.util.ClientObject;
-import org.bss.brihaspatisync.gui.VideoPanel;
-import org.bss.brihaspatisync.gui.JoinSessionPanel;
 
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 
@@ -30,10 +30,10 @@ import org.apache.commons.httpclient.UsernamePasswordCredentials;
 /**
  * @author <a href="mailto: arvindjss17@gmail.com" > Arvind Pal </a>
  * @author <a href="mailto: ashish.knp@gmail.com" > Ashish Yadav</a>
- * @author <a href="mailto: pradeepmca30@gmail.com" > Pradeep Kumar Pal</a>
+ * @author <a href="mailto:pradeepmca30@gmail.com"> Pradeep Kumar Pal</a>
  */
 
-public class LocalServer implements Runnable {
+public class StudentGetVideo implements Runnable {
 	
 	private Thread runner=null;
 	
@@ -41,15 +41,15 @@ public class LocalServer implements Runnable {
 
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
-	private static LocalServer get_capture=null;
+	private static StudentGetVideo get_screen=null;
 
-	public static LocalServer getController(){
-                if(get_capture==null)
-                        get_capture=new LocalServer();
-                return get_capture;
+	public static StudentGetVideo getController(){
+                if(get_screen==null)
+                        get_screen=new StudentGetVideo();
+                return get_screen;
         }
 
-	public  LocalServer(){ }
+	public  StudentGetVideo(){ }
 
 	/**
          * Start TCPSender Thread.
@@ -59,8 +59,8 @@ public class LocalServer implements Runnable {
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
-			JoinSessionPanel.getController().getAV_Panel().add(VideoPanel.getController().createGUI());
-			System.out.println("Video Captureing start sucessfully !!");
+			//org.bss.brihaspatisync.gui.JoinSessionPanel.getController().getAV_Panel().add(org.bss.brihaspatisync.gui.VideoPanel.getController().createGUI());
+			System.out.println("Student GetVideo start sucessfully !!");
 		}
         }
 
@@ -72,7 +72,7 @@ public class LocalServer implements Runnable {
 			flag=false;
                         runner.stop();
                         runner = null;
-			System.out.println("Video Captureing  stop Successfully !!");
+			System.out.println("Student GetVideo stop Successfully !!");
                 }
         }
 
@@ -80,12 +80,8 @@ public class LocalServer implements Runnable {
 		while(flag) {
 		        try {
 				HttpClient client = new HttpClient();
-				HttpMethod method=null;
-				if(runtime_object.getVideoServer().equals(""))
-					method = new GetMethod("http://localhost:8090");
-				else
-					method = new GetMethod("http://"+runtime_object.getVideoServer()+":8090");
-		                client.setConnectionTimeout(80000);
+				HttpMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":8094");
+		                client.setConnectionTimeout(8000);
                                 method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
 				// Http Proxy Handler
 				if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
@@ -95,27 +91,18 @@ public class LocalServer implements Runnable {
                                         AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
                                         client.getState().setProxyCredentials(authScope, credentials);
                                 }
+
                                 int statusCode1 = client.executeMethod(method);
                                 byte[] bytes1=method.getResponseBody();
                                 BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes1));
                                	method.releaseConnection();
 				try {
-					if(image!=null) {
-						if((clientObject.getUserRole()).equals("instructor")){
-							BufferImage.getController().handleBuffer();
-							BufferImage.getController().put(image);
-							VideoPanel.getController().runInstructorVidio(image);
-						}else {
-							StudentBufferImage.getController().handleBuffer();
-                                                        StudentBufferImage.getController().put(image);
-                                                        VideoPanel.getController().runStudentVidio(image);
-						}
-					}
-				} catch(Exception e){ try { runner.sleep(1000); runner.yield(); System.out.println("Error in loding image in video_panel : "+e.getMessage());}catch(Exception ep){} }
-				try {	runner.sleep(10); runner.yield();}catch(Exception ep){}
+					if(image!=null)
+                        			org.bss.brihaspatisync.gui.VideoPanel.getController().runStudentVidio(image);
+				}catch(Exception e){ System.out.println("Error in loding image in desktop_sharing panel : "+e.getMessage()); }
+				try {	Thread.sleep(100);Thread.yield(); }catch(Exception ep){}
 			} catch(Exception e){ 
-				try {   runner.sleep(1000); runner.yield();}catch(Exception ep){}
-				System.out.println("Error in GetMethod of Video Captureing : "+e.getMessage()); 
+				System.out.println("Error in GetMethod of GetVideo : "+e.getMessage()); 
 			}
 		}
 	}

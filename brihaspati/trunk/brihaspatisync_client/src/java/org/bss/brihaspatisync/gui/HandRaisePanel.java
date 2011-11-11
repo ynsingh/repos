@@ -229,53 +229,53 @@ public class HandRaisePanel {
 
 				if(str.equals("Get-WB")){
                                         wbBttn.setEnabled(true);
-                                        micBttn.setEnabled(false);
-                                        screenBttn.setEnabled(false);
+                                        //micBttn.setEnabled(false);
+                                        //screenBttn.setEnabled(false);
 					denie.setEnabled(true);
                                 }
 				if(str.equals("Allow-WB")){
                 	                wbBttn.setEnabled(false);
-                                	micBttn.setEnabled(false);
-					screenBttn.setEnabled(false);
+                                	//micBttn.setEnabled(false);
+					//screenBttn.setEnabled(false);
 					denie.setEnabled(true);
         	                }
 
 				if(str.equals("Get-Mic")){
-                                        wbBttn.setEnabled(false);
+                                        //wbBttn.setEnabled(false);
                                         micBttn.setEnabled(true);
-                                        screenBttn.setEnabled(false);
+                                        //screenBttn.setEnabled(false);
 					denie.setEnabled(true);	
                                 }
                 	        if(str.equals("Allow-Mic")){
-                        	        wbBttn.setEnabled(false);
+                        	        //wbBttn.setEnabled(false);
 	                                micBttn.setEnabled(false);
-					screenBttn.setEnabled(false);
+					//screenBttn.setEnabled(false);
 					denie.setEnabled(true);
                 	        }
 
 				if(str.equals("Get-Screen")){
-                                        wbBttn.setEnabled(false);
-                                        micBttn.setEnabled(false);
+                                        //wbBttn.setEnabled(false);
+                                        ///micBttn.setEnabled(false);
                                         screenBttn.setEnabled(true);
 					denie.setEnabled(true);
                                 }
 				if(str.equals("Allow-Screen")){
-                                        wbBttn.setEnabled(false);
-                                        micBttn.setEnabled(false);
+                                        //wbBttn.setEnabled(false);
+                                        //micBttn.setEnabled(false);
                                         screenBttn.setEnabled(false);
 					denie.setEnabled(true);
                                 }
 				if(str.equals("Get-PPT")){
-                                        wbBttn.setEnabled(false);
-                                        micBttn.setEnabled(false);
-                                        screenBttn.setEnabled(false);
+                                        //wbBttn.setEnabled(false);
+                                        //micBttn.setEnabled(false);
+                                        //screenBttn.setEnabled(false);
 					pptBttn.setEnabled(true);
 					denie.setEnabled(true);
                                 }
                                 if(str.equals("Allow-PPT")){
-                                        wbBttn.setEnabled(false);
-                                        micBttn.setEnabled(false);
-                                        screenBttn.setEnabled(false);
+                                        //wbBttn.setEnabled(false);
+                                        //micBttn.setEnabled(false);
+                                        //screenBttn.setEnabled(false);
 					pptBttn.setEnabled(false);
 					denie.setEnabled(true);
                                 }

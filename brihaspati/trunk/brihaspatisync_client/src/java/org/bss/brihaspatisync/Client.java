@@ -39,11 +39,11 @@ public class Client {
 	public void startClient(){
                 try{
                 	/* The look and feel is set */
+			Language.getController().SelectLanguage("English");
                         UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
                	}catch(Exception e){System.out.println("Error on Loading Look&Feel");}
 
                 if(((ClientObject.getController().getIndexServerList()).size()) > 1){
-			Language.getController().SelectLanguage("English");
 			MainWindow.getController().createGUI();
                 	MainWindow.getController().getDesktop().add(new LoginWindow());
 		}else{

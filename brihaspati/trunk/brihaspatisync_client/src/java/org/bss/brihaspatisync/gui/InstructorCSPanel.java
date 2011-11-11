@@ -335,6 +335,8 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                                 		client_obj.setUserRole("instructor");
 					JoinSession.getController().goToLecture(lect_id);
 					MainWindow.getController().getMenuItem5().setEnabled(true);
+					MainWindow.getController().getMenuItem6().setEnabled(true);
+					
 				}
 			}
 		}catch(Exception exc){System.out.println("Can't open GUI"+exc.getMessage());}

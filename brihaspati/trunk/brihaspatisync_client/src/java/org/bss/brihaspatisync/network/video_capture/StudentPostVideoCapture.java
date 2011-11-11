@@ -1,7 +1,7 @@
 package org.bss.brihaspatisync.network.video_capture;
 
 /**
- * PostVideoCapture.java
+ * StudentPostVideoCapture.java
  *
  * See LICENCE file for usage and redistribution terms
  * Copyright (c) 2011, ETRG, IIT Kanpur.
@@ -50,28 +50,27 @@ import org.apache.commons.httpclient.UsernamePasswordCredentials;
  * @author <a href="mailto: pradeepmca30@gmail.com" > Pradeep Kumar Pal</a>
  */
 
-public class PostVideoCapture implements Runnable {
+public class StudentPostVideoCapture implements Runnable {
 	
 	private Thread runner=null;
 	
 	private boolean flag=false;
 
 	private String reflectorIP ="";
-	private BufferedImage image=null;
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
-	private static PostVideoCapture post_capture=null;
+	private static StudentPostVideoCapture post_capture=null;
 
 	/**
  	 * Controller for the class.
  	 */ 
-	public static PostVideoCapture getController(){
+	public static StudentPostVideoCapture getController(){
 		if(post_capture==null)
-			post_capture=new PostVideoCapture();
+			post_capture=new StudentPostVideoCapture();
 		return post_capture;
 	}
 
-	public PostVideoCapture(){}
+	public StudentPostVideoCapture(){}
 
 	/**
  	 * Start Thread
@@ -81,7 +80,7 @@ public class PostVideoCapture implements Runnable {
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
-			System.out.println("Post Video Capture  start successfully !!");
+			System.out.println("Student Post Video Capture  start successfully !!");
 		}
         }
 
@@ -94,19 +93,19 @@ public class PostVideoCapture implements Runnable {
 			flag=false;
                         runner.stop();
                         runner = null;
-			System.out.println("Post Video Capture  stop successfully !!");
+			System.out.println("Student Post Video Capture  stop successfully !!");
                 }
         }
 
 	public void run() {
 		while(flag) {
 			try {
-				if(BufferImage.getController().bufferSize()>0) {
+				if(StudentBufferImage.getController().bufferSize()>0) {
 					HttpClient client = new HttpClient();
-			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":8091");
-					client.setConnectionTimeout(800000);
-	                       		ImageIO.write(BufferImage.getController().get(0),"jpeg", new File("image1.jpeg"));
-        	               		postMethod.setRequestBody(new FileInputStream("image1.jpeg"));
+			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":8093");
+					client.setConnectionTimeout(8000);
+	                       		ImageIO.write(StudentBufferImage.getController().get(0),"jpeg", new File("image2.jpeg"));
+        	               		postMethod.setRequestBody(new FileInputStream("image2.jpeg"));
                				postMethod.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
 					
 					// Http Proxy Handler
@@ -121,17 +120,18 @@ public class PostVideoCapture implements Runnable {
         	               		int statusCode1 = client.executeMethod(postMethod);
                 	       		postMethod.getStatusLine();
                        			postMethod.releaseConnection();
-					BufferImage.getController().remove();
+					StudentBufferImage.getController().remove();
                        			try {
-	                               		runner.sleep(5);runner.yield();
+	                               		Thread.sleep(10);
         	                       	}catch(Exception ex){}
-				}else {
-					try { runner.sleep(1000);runner.yield();}catch(Exception ex){}
+				} else {
+					try {
+                                                Thread.sleep(100);
+                                        }catch(Exception ex){}
 				}	
-			}catch(Exception e){	
-				try { runner.sleep(1000);runner.yield();}catch(Exception ex){}
+			}catch(Exception e){
 				System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());
-			}	
+			}
 		}
 	}
 }

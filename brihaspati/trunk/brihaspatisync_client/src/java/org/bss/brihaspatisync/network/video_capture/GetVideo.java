@@ -98,10 +98,11 @@ public class GetVideo implements Runnable {
                                	method.releaseConnection();
 				try {
 					if(image!=null)
-                        			org.bss.brihaspatisync.gui.VideoPanel.getController().runDesktopSharing(image);
+                        			org.bss.brihaspatisync.gui.VideoPanel.getController().runInstructorVidio(image);
 				}catch(Exception e){ System.out.println("Error in loding image in desktop_sharing panel : "+e.getMessage()); }
-				try {	Thread.sleep(100);Thread.yield(); }catch(Exception ep){}
+				try {	Thread.sleep(10);Thread.yield(); }catch(Exception ep){}
 			} catch(Exception e){ 
+				try {   Thread.sleep(1000);Thread.yield(); }catch(Exception ep){}
 				System.out.println("Error in GetMethod of GetVideo : "+e.getMessage()); 
 			}
 		}

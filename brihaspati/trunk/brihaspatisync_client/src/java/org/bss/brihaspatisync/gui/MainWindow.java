@@ -43,6 +43,7 @@ public class MainWindow  extends JFrame implements ActionListener{
 	private JMenuItem menuItem4;
 	private JMenu menu3;
 	private JMenuItem menuItem5;
+	private JMenuItem menuItem6;
 	private JPanel north_Panel =null;
 	private JPanel south_Panel =null;
 	private JPanel east_Panel =null;
@@ -145,6 +146,11 @@ public class MainWindow  extends JFrame implements ActionListener{
                 menuItem5.setActionCommand("Connection");
                 menuItem5.addActionListener(this);
                 menu3.add(menuItem5);
+		
+		menuItem6 = new JMenuItem(Language.getController().getLangValue("MainWindow.menuItem6"));
+                menuItem6.setActionCommand("VideoServer");
+                menuItem6.addActionListener(this);
+                menu3.add(menuItem6);
 
                 menuBar.add(menu1);
                 menuBar.add(menu2);
@@ -157,8 +163,9 @@ public class MainWindow  extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
                 if(e.getActionCommand().equals("Connection")){
 			new PreferenceWindow();
-                }
-		else if(e.getActionCommand().equals("Logout")){
+                }else if(e.getActionCommand().equals("VideoServer")){
+                        new VideoServerConfigure();
+                }else if(e.getActionCommand().equals("Logout")){
 
                         desktop.removeAll();
                         desktop.add(new LoginWindow());
@@ -222,6 +229,7 @@ public class MainWindow  extends JFrame implements ActionListener{
         	menuItem3.setText(Language.getController().getLangValue("MainWindow.menuItem3"));
         	menuItem4.setText(Language.getController().getLangValue("MainWindow.menuItem4"));
         	menuItem5.setText(Language.getController().getLangValue("MainWindow.menuItem5"));
+        	menuItem6.setText(Language.getController().getLangValue("MainWindow.menuItem6"));
 	}
 
         public JDesktopPane getDesktop(){
@@ -245,6 +253,10 @@ public class MainWindow  extends JFrame implements ActionListener{
         protected JMenuItem getMenuItem5(){
                 return menuItem5;
         }
+	protected JMenuItem getMenuItem6(){
+                return menuItem6;
+        }
+	
 
         public  Container getContainer(){
                 return content;

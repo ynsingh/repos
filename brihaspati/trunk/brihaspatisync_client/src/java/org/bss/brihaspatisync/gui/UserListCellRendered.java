@@ -41,8 +41,6 @@ class UserListCellRendered implements ListCellRenderer {
                         theIcon = (ImageIcon) values[2];
                         userid = (String) values[3];
                         fullname = (String) values[4];
-			System.out.println("userid  "+userid);
-			System.out.println("fullname  "+fullname);
                 } else {
                         theFont = list.getFont();
                         theForeground = list.getForeground();

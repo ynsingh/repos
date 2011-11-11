@@ -96,21 +96,33 @@ public class HandRaiseThreadController implements Runnable{
 				//Start audio handraise controll for student
 				if(starthraudioflag){
 					starthraudioflag=false;
+					{	
+						VideoPanel.getController().addStudentPanel();
+					}
+					org.bss.brihaspatisync.network.video_capture.StudentGetVideo.getController().start();
+					/*
 					try{
                                 	        AVTransmitReceiveHandler.getController().startReceiveHandraiseAudio();
                                                 AudioVideoPanel.getController().stopPlayer();
                                                 AudioVideoPanel.getController().startPlayer();
                                         } catch(Exception e){System.out.println("Error in start thread for get handraise audio "+e.getCause());}
+					*/
 				}
 		
 				//Stop audio handraise controll for student
 				if(stophraudioflag){
 					stophraudioflag=false;
+					org.bss.brihaspatisync.network.video_capture.StudentGetVideo.getController().stop();
+					{
+						VideoPanel.getController().removeStudentPanel();
+					}
+					/*
 					try{
                                 	        AVTransmitReceiveHandler.getController().stopReceiveHandraiseAudio();
                                                 AudioVideoPanel.getController().stopPlayer();
                                                 AudioVideoPanel.getController().startPlayer();
                                         } catch(Exception e){System.out.println("Error in stop thread for get handraise audio "+e.getCause());}
+					*/
 				}
 				
 				//Start audio handraise controll for student
@@ -187,6 +199,9 @@ public class HandRaiseThreadController implements Runnable{
 					// Starting Audio mic capture for student to ask question or clear doubts from instructor.
 					if(starthraudio){
 						starthraudio=false;
+						org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();
+						org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start();
+						/*
 						if(stud_audio==null){
 			                                stud_audio=new AudioFromStudent();
                                                 	String result=stud_audio.start();
@@ -194,15 +209,19 @@ public class HandRaiseThreadController implements Runnable{
         	                                        	System.out.println("Could not start audio transmit");
                                                 	else 
                                                 		System.out.println("Starting Audio from Student");
-						}
+						}*/
 					}
 					//Stop Handraise Audio transmission.
 					if(stophraudio){
 						stophraudio=false;
+						org.bss.brihaspatisync.network.video_capture.LocalServer.getController().stop();
+                                                org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().stop();
+						/*
 						try{
                                                         stud_audio.stop();
                                                         stud_audio=null;
                                                 } catch(Exception error){System.out.println("Error in stopping Handraise Audio Transmit");}
+						*/
 					}
 					// Starting Presentation Audio mic capture for student to give presentation.
 					if(start_pres_audio_transmit){
@@ -313,7 +332,7 @@ public class HandRaiseThreadController implements Runnable{
         }
 
         protected void stophandraiseraudioflag(boolean flag) {
-                starthraudio=flag;
+                stophraudio=flag;
         }
 	
 	protected void startpresaudioflag(boolean flag) {
