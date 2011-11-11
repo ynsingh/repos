@@ -1,7 +1,7 @@
 package org.bss.brihaspatisync.reflector.network.video_server;
 
 /**
- * VideoPostSharing.java
+ * StudentPostServer.java
  * See LICENCE file for usage and redistribution terms
  * Copyright (c) 2011,ETRG, IIT Kanpur.
  **/
@@ -35,26 +35,26 @@ import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
  * @author <a href="mailto:pradeepmca30@gmail.com"> Pradeep Kumar Pal</a>
  */
 
-public class VideoPostServer {
+public class StudentPostServer {
 	
-	private static VideoPostServer httppostserver=null;
+	private static StudentPostServer httppostserver=null;
 
         private HttpServer server =null;
 	
 	private boolean flag=false;
 
-	private int server_port = 8091;
+	private int server_port = 8093;
 	
-	public static VideoPostServer getController() throws Exception {
+	public static StudentPostServer getController() throws Exception {
                 if(httppostserver==null)
-                        httppostserver=new VideoPostServer();
+                        httppostserver=new StudentPostServer();
                 return httppostserver;
         }
 	
-	public VideoPostServer() throws Exception {
+	public StudentPostServer() throws Exception {
     		InetSocketAddress addr = new InetSocketAddress(server_port);
     		server = HttpServer.create(addr, 0);
-		server.createContext("/", new MyPostVideoHandler());
+		server.createContext("/", new MyStudentPostVideoHandler());
     		server.setExecutor(Executors.newCachedThreadPool());
   	}
 		
@@ -65,8 +65,8 @@ public class VideoPostServer {
 	public void start() throws Exception {
                 try {
                 	flag=true;
-                        System.out.println(" VideoPostServer start successfully !! ");
                         server.start();
+                        System.out.println(" VideoPostServer start successfully !! ");
                 } catch (Exception e) { }
         }
 
@@ -79,10 +79,10 @@ public class VideoPostServer {
 	
 }
 
-class MyPostVideoHandler implements HttpHandler {
+class MyStudentPostVideoHandler implements HttpHandler {
   	public void handle(HttpExchange exchange) throws IOException {
 		try {
-			while(VideoPostServer.getController().isRunning()){
+			while(StudentPostServer.getController().isRunning()){
 				String requestMethod = exchange.getRequestMethod();
 				if (requestMethod.equalsIgnoreCase("POST")) {
       					Headers responseHeaders = exchange.getResponseHeaders();
@@ -95,18 +95,16 @@ class MyPostVideoHandler implements HttpHandler {
                 			do {
 	                		        count+= in.read(bytes,count,bytes.length-count);
 			                } while(!(count>4&&bytes[count-2]==(byte)-1 && bytes[count-1]==(byte)-39));
+		        	        responseBody.close();
 			                BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 		        	      	try {
-						if(image !=null){
-							if((VideoBufferImage.getController().bufferSize()) < 25){
-        	                                		VideoBufferImage.getController().put(image);
-							}else{
-								VideoBufferImage.getController().handleBuffer();
-								VideoBufferImage.getController().put(image);
-							}
+						if(image!=null) {
+							if((StudentVideoBufferImage.getController().bufferSize()) < 25)
+        	                                		StudentVideoBufferImage.getController().put(image);
+							else
+								StudentVideoBufferImage.getController().handleBuffer();
 						}
                 	                }catch(Exception e){}
-		        	        responseBody.close();
     				}
 			}
 		}catch(Exception ex){}

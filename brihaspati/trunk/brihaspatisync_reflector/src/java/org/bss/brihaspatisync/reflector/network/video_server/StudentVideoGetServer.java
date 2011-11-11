@@ -1,7 +1,7 @@
 package org.bss.brihaspatisync.reflector.network.video_server;
 
 /**
- * VideoGetServer.java
+ * StudentVideoGetServer.java
  * See LICENCE file for usage and redistribution terms
  * Copyright (c) 2011, ETRG, Kanpur.
  **/
@@ -35,26 +35,26 @@ import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
  * @author <a href="mailto:pradeepmca30@gmail.com"> Pradeep Kumar Pal</a>
  */
 
-public class VideoGetServer {
+public class StudentVideoGetServer {
 	
-	private static VideoGetServer httppostserver=null;
+	private static StudentVideoGetServer httppostserver=null;
 
         private HttpServer server =null;
 	
 	private boolean flag=false;
 
-	private int server_port =8092;
+	private int server_port =8094;
 	
-	public static VideoGetServer getController() throws Exception {
+	public static StudentVideoGetServer getController() throws Exception {
                 if(httppostserver==null)
-                        httppostserver=new VideoGetServer();
+                        httppostserver=new StudentVideoGetServer();
                 return httppostserver;
         }
 	
-	public VideoGetServer() throws Exception{
+	public StudentVideoGetServer() throws Exception{
     		InetSocketAddress addr = new InetSocketAddress(server_port);
     		server = HttpServer.create(addr, 0);
-		server.createContext("/", new MyVideoHandler());
+		server.createContext("/", new MyStudentVideoHandler());
     		server.setExecutor(Executors.newCachedThreadPool());
   	}
 		
@@ -65,8 +65,8 @@ public class VideoGetServer {
 	public void start() throws Exception {
                 try {
                 	flag=true;
-                        System.out.println(" VideoGetServer start successfully !! ");
                         server.start();
+                        System.out.println(" StudentVideoGetServer start successfully !! ");
                 } catch (Exception e) { }
         }
 
@@ -74,13 +74,13 @@ public class VideoGetServer {
                 if (server != null) {
                         flag=false;
                         server.stop(0);
-			System.out.println(" VideoGetServer stop successfully !! ");
+			System.out.println(" StudentVideoGetServer stop successfully !! ");
                 }
         }
 	
 }
 
-class MyVideoHandler implements HttpHandler {
+class MyStudentVideoHandler implements HttpHandler {
   	public void handle(HttpExchange exchange) throws IOException {
 		while(true){
 			String requestMethod = exchange.getRequestMethod();
@@ -90,9 +90,9 @@ class MyVideoHandler implements HttpHandler {
                                 exchange.sendResponseHeaders(200, 0);
                                 OutputStream responseBody = exchange.getResponseBody();
 				try {
-					if(VideoBufferImage.getController().bufferSize()>0) {	
-						BufferedImage image=VideoBufferImage.getController().get(0);
-						VideoBufferImage.getController().remove();	
+					if(StudentVideoBufferImage.getController().bufferSize()>0) {
+						BufferedImage image=StudentVideoBufferImage.getController().get(0);
+						StudentVideoBufferImage.getController().remove();	
 						ImageIO.write(image, "jpeg", responseBody);
 					}
 				}catch(Exception e){}

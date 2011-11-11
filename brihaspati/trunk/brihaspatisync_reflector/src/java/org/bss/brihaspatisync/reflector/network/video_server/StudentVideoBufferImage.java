@@ -1,7 +1,7 @@
 package org.bss.brihaspatisync.reflector.network.video_server;
 
 /**
- * VideoBufferImage.java
+ * StudentVideoBufferImage.java
  *
  * See LICENCE file for usage and redistribution terms
  * Copyright (c) 2011.
@@ -12,27 +12,27 @@ import java.util.Vector;
 import java.awt.image.BufferedImage;
 
 /**
- * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal  </a>
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal  </a>
  * @author <a href="mailto:pradeepmca30@gmail.com"> Pradeep Kumar Pal</a> 
  */
 
-public class VideoBufferImage { 
+public class StudentVideoBufferImage { 
 
 	private Vector buffer; 
-	private static VideoBufferImage bufferimage=null; 
+	private static StudentVideoBufferImage bufferimage=null; 
     
 	/**
          * Create an empty Buffer
          */
 	
-	public VideoBufferImage(){
+	public StudentVideoBufferImage(){
 		buffer= new Vector();
 	} 
 	
-	public static VideoBufferImage getController(){
+	public static StudentVideoBufferImage getController(){
                 if(bufferimage==null)
-                        bufferimage=new VideoBufferImage();
+                        bufferimage=new StudentVideoBufferImage();
                 return bufferimage;
         }
 
@@ -93,5 +93,5 @@ public class VideoBufferImage {
 	}
 }
 
-class QueueEmptyException1 extends Exception { 
+class QueueEmptyException2 extends Exception { 
 }

@@ -253,6 +253,11 @@ public class RegisterToIndexServer {
 			DesktopPostServer.getController().start();
 			org.bss.brihaspatisync.reflector.network.video_server.VideoPostServer.getController().start();//8091
 			org.bss.brihaspatisync.reflector.network.video_server.VideoGetServer.getController().start();//8092
+			
+			org.bss.brihaspatisync.reflector.network.video_server.StudentPostServer.getController().start();//8093
+                        org.bss.brihaspatisync.reflector.network.video_server.StudentVideoGetServer.getController().start();//8094
+
+
 			//TCPServer.getController().start(); 	/** port 8888  */
 			//TransmitHandlerThread.getControllerofHandler().start();
 			PPTGetAndPostServer.getController().startThread();
