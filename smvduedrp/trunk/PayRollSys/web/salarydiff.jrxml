@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="salarydiff" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="yrsrc" class="java.lang.Integer"/>
+	<parameter name="yrdist" class="java.lang.Integer"/>
+	<parameter name="monthsrc" class="java.lang.Integer"/>
+	<parameter name="monthdist" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["F:\\PayRollSys\\web\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select count(es_code) as total from employee_salary_summery
+where es_month = $P{monthsrc}
+and es_year = $P{yrsrc}]]>
+	</queryString>
+	<field name="total" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="56" splitType="Stretch">
+			<textField>
+				<reportElement x="125" y="18" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="203">
+			<subreport>
+				<reportElement x="0" y="4" width="263" height="199"/>
+				<subreportParameter name="yrdist">
+					<subreportParameterExpression><![CDATA[$P{yrdist}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="monthsrc">
+					<subreportParameterExpression><![CDATA[$P{monthsrc}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="yrsrc">
+					<subreportParameterExpression><![CDATA[$P{yrsrc}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="monthdist">
+					<subreportParameterExpression><![CDATA[$P{monthdist}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "newempdiff.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="273" y="4" width="266" height="199"/>
+				<subreportParameter name="yrdist">
+					<subreportParameterExpression><![CDATA[$P{yrdist}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="monthsrc">
+					<subreportParameterExpression><![CDATA[$P{monthsrc}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="yrsrc">
+					<subreportParameterExpression><![CDATA[$P{yrsrc}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="monthdist">
+					<subreportParameterExpression><![CDATA[$P{monthdist}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "leftemp.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<summary>
+		<band height="26" splitType="Stretch"/>
+	</summary>
+</jasperReport>
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="salarydiff" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="yrsrc" class="java.lang.Integer"/>
+	<parameter name="yrdist" class="java.lang.Integer"/>
+	<parameter name="monthsrc" class="java.lang.Integer"/>
+	<parameter name="monthdist" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["F:\\PayRollSys\\web\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select count(es_code) as total from employee_salary_summery
+where es_month = $P{monthsrc}
+and es_year = $P{yrsrc}]]>
+	</queryString>
+	<field name="total" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="56" splitType="Stretch">
+			<staticText>
+				<reportElement x="13" y="10" width="526" height="28"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[New Joining & Left employee Record]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="203">
+			<subreport>
+				<reportElement x="0" y="4" width="263" height="199"/>
+				<subreportParameter name="yrdist">
+					<subreportParameterExpression><![CDATA[$P{yrdist}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="monthsrc">
+					<subreportParameterExpression><![CDATA[$P{monthsrc}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="yrsrc">
+					<subreportParameterExpression><![CDATA[$P{yrsrc}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="monthdist">
+					<subreportParameterExpression><![CDATA[$P{monthdist}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "newempdiff.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="273" y="4" width="266" height="199"/>
+				<subreportParameter name="yrdist">
+					<subreportParameterExpression><![CDATA[$P{yrdist}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="monthsrc">
+					<subreportParameterExpression><![CDATA[$P{monthsrc}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="yrsrc">
+					<subreportParameterExpression><![CDATA[$P{yrsrc}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="monthdist">
+					<subreportParameterExpression><![CDATA[$P{monthdist}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "leftemp.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<summary>
+		<band height="26" splitType="Stretch"/>
+	</summary>
+</jasperReport>

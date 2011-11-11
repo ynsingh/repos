@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     temp_sal_data.`emp_code` AS temp_sal_data_emp_code,
+     temp_sal_data.`basic` AS temp_sal_data_basic,
+     temp_sal_data.`da` AS temp_sal_data_da,
+     temp_sal_data.`ta` AS temp_sal_data_ta,
+     temp_sal_data.`tpt` AS temp_sal_data_tpt,
+     temp_sal_data.`hra` AS temp_sal_data_hra,
+     temp_sal_data.`arr` AS temp_sal_data_arr,
+     temp_sal_data.`npa` AS temp_sal_data_npa,
+     temp_sal_data.`gp` AS temp_sal_data_gp,
+     temp_sal_data.`loan` AS temp_sal_data_loan,
+     temp_sal_data.`cmp` AS temp_sal_data_cmp,
+     temp_sal_data.`med` AS temp_sal_data_med,
+     temp_sal_data.`cpf` AS temp_sal_data_cpf,
+     temp_sal_data.`tds` AS temp_sal_data_tds,
+     temp_sal_data.`elc` AS temp_sal_data_elc,
+     temp_sal_data.`wtr` AS temp_sal_data_wtr,
+     temp_sal_data.`hk` AS temp_sal_data_hk,
+     temp_sal_data.`oth` AS temp_sal_data_oth,
+     temp_sal_data.`pfr` AS temp_sal_data_pfr,
+     temp_sal_data.`gsli` AS temp_sal_data_gsli,
+     temp_sal_data.`san` AS temp_sal_data_san
+FROM
+     `temp_sal_data` temp_sal_data]]>
+	</queryString>
+	<field name="temp_sal_data_emp_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_basic" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_da" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_ta" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_tpt" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_hra" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_arr" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_npa" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_gp" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_loan" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_cmp" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_med" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_cpf" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_tds" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_elc" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_wtr" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_hk" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_oth" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_pfr" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_gsli" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="temp_sal_data_san" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Emp Code]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="47" height="20"/>
+				<textElement/>
+				<text><![CDATA[Basic]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="147" y="0" width="47" height="20"/>
+				<textElement/>
+				<text><![CDATA[Ta]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{temp_sal_data_emp_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="47" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Float"><![CDATA[$F{temp_sal_data_basic}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="147" y="0" width="47" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Float"><![CDATA[$F{temp_sal_data_da}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
