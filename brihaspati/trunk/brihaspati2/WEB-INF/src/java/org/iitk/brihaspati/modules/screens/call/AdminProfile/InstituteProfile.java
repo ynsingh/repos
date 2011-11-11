@@ -40,6 +40,9 @@ import org.apache.velocity.context.Context;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
+import org.iitk.brihaspati.om.TelephoneDirectory;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.apache.turbine.util.parser.ParameterParser;
@@ -48,6 +51,7 @@ import org.apache.turbine.util.parser.ParameterParser;
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a> 
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a> 
  * @modified date: 22-02-2011 (Tej)19-10-2011(Sunil)
+ * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
  */
 
 /**
@@ -58,6 +62,8 @@ import org.apache.turbine.util.parser.ParameterParser;
 public class InstituteProfile extends SecureScreen{
 	public void doBuildTemplate(RunData data, Context context){
 		User user = data.getUser();
+		String username=user.getName();
+        	int uid=UserUtil.getUID(username);
 		String instituteid=user.getTemp("Institute_id").toString();
 		//Get Institute name(iname)	
 		String iname=InstituteIdUtil.getIstName(Integer.parseInt(instituteid));
@@ -109,6 +115,59 @@ public class InstituteProfile extends SecureScreen{
 		 context.put("cquota",cquota);
 		 String uquota = AdminProperties.getValue(path,"brihaspati.user.quota.value");
 		 context.put("uquota",uquota);
+
+		/******************************/
+//------------------------------Telephone Directory-------------------------
+        Criteria crt=new Criteria();
+        crt.add(TelephoneDirectoryPeer.USER_ID,uid);
+        List Telelist=TelephoneDirectoryPeer.doSelect(crt);
+        context.put("size",Telelist.size());
+        try {
+        for(int i=0;i<Telelist.size();i++)
+        {
+                TelephoneDirectory td=(TelephoneDirectory)Telelist.get(i);
+                context.put("address",td.getAddress());
+                context.put("state",td.getState());
+                context.put("country",td.getCountry());
+                context.put("department",td.getDepartment());
+                context.put("designation",td.getDesignation());
+                String officeno=td.getOfficeNo();
+                String[] temp;
+                String delimiter = "-";
+                temp = officeno.split(delimiter);
+                        context.put("offradio",temp[0]);
+                        context.put("offprefix",temp[1]);
+                        context.put("offccode",temp[2]);
+                        context.put("offrcode",temp[3]);
+                        context.put("offphone",temp[4]);
+                String mobileno=td.getMobileNo();
+                String[] mob;
+                mob=mobileno.split(delimiter);
+                        context.put("mobradio",mob[0]);
+                        context.put("mobprefix",mob[1]);
+                        context.put("mobccode",mob[2]);
+                        context.put("mobrcode",mob[3]);
+			context.put("mobphone",mob[4]);
+                String homeno=td.getHomeNo();
+                String[] home;
+                home=homeno.split(delimiter);
+                        context.put("homeradio",home[0]);
+                        context.put("homeprefix",home[1]);
+                        context.put("homeccode",home[2]);
+                        context.put("homercode",home[3]);
+                        context.put("homephone",home[4]);
+                String otherno=td.getOtherNo();
+                String[] other;
+                other=otherno.split(delimiter);
+                        context.put("othradio",other[0]);
+                        context.put("othprefix",other[1]);
+                        context.put("othccode",other[2]);
+                        context.put("othrcode",other[3]);
+                        context.put("othphone",other[4]);
+        }
+        }catch(Exception e){}
+//----------------------------Telephone Directory------------------------------
+        /******************************/
                  String FaqExp = AdminProperties.getValue(path,"brihaspati.admin.FaqExpiry");
                  context.put("FaqExp",new Integer(FaqExp));
 		/**

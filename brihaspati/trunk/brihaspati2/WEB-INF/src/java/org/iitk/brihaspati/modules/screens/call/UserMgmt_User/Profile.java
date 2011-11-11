@@ -62,12 +62,16 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
+import org.iitk.brihaspati.om.TelephoneDirectory;
+
 
 /**
  * @author <a href="mailto:singhnk@iitk.ac.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date:3-11-2010,23-12-2010
+ * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kuma Pal</a>
  */
 
 
@@ -94,6 +98,59 @@ public class Profile extends SecureScreen
 	crt.addGroupByColumn(HintQuestionPeer.QUESTION_NAME);
 	List qw=HintQuestionPeer.doSelect(crt);
 	context.put("question",qw);		
+
+	/******************************/
+//---------------------------------Telephone Directory-----------------------
+	crt=new Criteria();
+        crt.add(TelephoneDirectoryPeer.USER_ID,uid);
+        List Telelist=TelephoneDirectoryPeer.doSelect(crt);        
+        context.put("size",Telelist.size());	
+	try {	
+	for(int i=0;i<Telelist.size();i++)
+	{
+		TelephoneDirectory td=(TelephoneDirectory)Telelist.get(i);
+		context.put("address",td.getAddress());
+		context.put("state",td.getState());
+		context.put("country",td.getCountry());
+		context.put("department",td.getDepartment());
+		context.put("designation",td.getDesignation());
+		String officeno=td.getOfficeNo();
+		String[] temp;
+		String delimiter = "-";
+		temp = officeno.split(delimiter);
+			context.put("offradio",temp[0]);
+			context.put("offprefix",temp[1]);
+			context.put("offccode",temp[2]);
+			context.put("offrcode",temp[3]);
+			context.put("offphone",temp[4]);
+		String mobileno=td.getMobileNo();
+		String[] mob;
+		mob=mobileno.split(delimiter);
+			context.put("mobradio",mob[0]);
+                        context.put("mobprefix",mob[1]);
+                        context.put("mobccode",mob[2]);
+                        context.put("mobrcode",mob[3]);
+                        context.put("mobphone",mob[4]);
+		String homeno=td.getHomeNo();
+		String[] home;
+		home=homeno.split(delimiter);
+			context.put("homeradio",home[0]);
+                        context.put("homeprefix",home[1]);
+                        context.put("homeccode",home[2]);
+                        context.put("homercode",home[3]);
+                        context.put("homephone",home[4]);
+		String otherno=td.getOtherNo();
+		String[] other;
+		other=otherno.split(delimiter);
+			context.put("othradio",other[0]);
+                        context.put("othprefix",other[1]);
+                        context.put("othccode",other[2]);
+                        context.put("othrcode",other[3]);
+                        context.put("othphone",other[4]);
+	}
+	}catch(Exception e){}
+//--------------------------------Telephone Directory-------------------
+	/******************************/
 
 	crt=new Criteria();
 	crt.add(UserConfigurationPeer.USER_ID,uid);

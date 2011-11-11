@@ -40,6 +40,11 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
+import org.iitk.brihaspati.om.TelephoneDirectory;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import java.util.List;
+import org.apache.torque.util.Criteria;
 
 /**
  * @author <a href="mailto:chitvesh@yahoo.com ">Chitvesh Dutta</a> 
@@ -50,6 +55,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:jaivir_singh@rediffmail.com">Jaivir Singh</a> 
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a> 
  * @modified date: 29-09-2010
+ * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
  */
 
 
@@ -60,6 +66,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 public class AdminParam extends SecureScreen{
 	public void doBuildTemplate(RunData data, Context context){
 		User user = data.getUser();
+                String loginName=user.getName();
+                int uid=UserUtil.getUID(loginName);
 		String path="";	
 			path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
 		String LangFile=data.getUser().getTemp("LangFile").toString();
@@ -94,6 +102,57 @@ public class AdminParam extends SecureScreen{
 		 String uquota = AdminProperties.getValue(path,"brihaspati.user.quota.value");
 		 context.put("uquota",uquota);
 		 String hdir = AdminProperties.getValue(path,"brihaspati.home.dir.value");
+
+		// --------------------------------Telephone Directory------------------
+	Criteria crt=new Criteria();
+        crt.add(TelephoneDirectoryPeer.USER_ID,uid);
+        List Telelist=TelephoneDirectoryPeer.doSelect(crt);
+        context.put("size",Telelist.size());
+        try {
+        for(int i=0;i<Telelist.size();i++)
+        {
+                TelephoneDirectory td=(TelephoneDirectory)Telelist.get(i);
+                context.put("address",td.getAddress());
+                context.put("state",td.getState());
+                context.put("country",td.getCountry());
+                context.put("department",td.getDepartment());
+                context.put("designation",td.getDesignation());
+                String officeno=td.getOfficeNo();
+                String[] temp;
+                String delimiter = "-";
+                temp = officeno.split(delimiter);
+                        context.put("offradio",temp[0]);
+                        context.put("offprefix",temp[1]);
+                        context.put("offccode",temp[2]);
+                        context.put("offrcode",temp[3]);
+                        context.put("offphone",temp[4]);
+                String mobileno=td.getMobileNo();
+                String[] mob;
+                mob=mobileno.split(delimiter);
+                        context.put("mobradio",mob[0]);
+                        context.put("mobprefix",mob[1]);
+                        context.put("mobccode",mob[2]);
+                        context.put("mobrcode",mob[3]);
+			context.put("mobphone",mob[4]);
+                String homeno=td.getHomeNo();
+                String[] home;
+                home=homeno.split(delimiter);
+                        context.put("homeradio",home[0]);
+                        context.put("homeprefix",home[1]);
+                        context.put("homeccode",home[2]);
+                        context.put("homercode",home[3]);
+                        context.put("homephone",home[4]);
+                String otherno=td.getOtherNo();
+                String[] other;
+                other=otherno.split(delimiter);
+                        context.put("othradio",other[0]);
+                        context.put("othprefix",other[1]);
+                        context.put("othccode",other[2]);
+                        context.put("othrcode",other[3]);
+                        context.put("othphone",other[4]);
+	}
+	}catch(Exception e){}
+// ---------------------------Telephone Directory------------------------------------
 		 if(hdir.equals("")){
 			hdir=System.getProperty("user.home");
 		 }

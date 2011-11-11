@@ -479,7 +479,22 @@
         <column name="PROJECTOR" required="true" type="TINYINT"/>
 </table>
 
+<!-- ==============================DIRECTORY SCHEMA============================================ -->
 
-
+<table name="TELEPHONE_DIRECTORY" idMethod="idbroker" description="Contact No Information">
+        <column name="ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
+        <column name="USER_ID" required="true" type="INTEGER"/>
+        <column name="MAIL_ID" required="true"  Type="VARCHAR" size="255"/>
+        <column name="NAME" Type="VARCHAR" size="255"/>
+        <column name="ADDRESS" Type="VARCHAR" size="255"/>
+        <column name="MOBILE_NO" Type="VARCHAR" size="255"/>
+        <column name="OTHER_NO" Type="VARCHAR" size="255"/>
+        <column name="HOME_NO" Type="VARCHAR" size="255"/>
+        <column name="OFFICE_NO" Type="VARCHAR" size="255"/>
+        <column name="DESIGNATION" Type="VARCHAR" size="255"/>
+        <column name="DEPARTMENT" Type="VARCHAR" size="255"/>
+        <column name="STATE" Type="VARCHAR" size="255"/>
+        <column name="COUNTRY" Type="VARCHAR" size="255"/>
+</table>
 
 </database>

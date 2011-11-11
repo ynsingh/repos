@@ -1,51 +1,207 @@
- #*
-  * @(#)Profile.vm
-  * Copyright (c) 2006,2009,2010 ETRG,IIT Kanpur.
-  * All Rights Reserved
-  * @author <a href="mailto:singhnk@iitk.ac.in ">Nagendra Kumar Singh</a>
-  * @author <a href="mailto:satyapal@iitk.ac.in ">Satyapal Singh</a>
-  * @author <a href="mailto:ynsingh@iitk.ac.in ">Yatindra Nath Singh</a>
-  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
-  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
-  * @modified date:3-11-2010,23-12-2010
-  * Contributors: Members of ETRG, I.I.T. Kanpur
-  *#
+#*
+ * @(#)Profile.vm
+ * Copyright (c) 2006,2009,2010 ETRG,IIT Kanpur.
+ * All Rights Reserved
+ * @author <a href="mailto:singhnk@iitk.ac.in ">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:satyapal@iitk.ac.in ">Satyapal Singh</a>
+ * @author <a href="mailto:ynsingh@iitk.ac.in ">Yatindra Nath Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date:3-11-2010,23-12-2010
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ *#
 
 $page.setTitle("Change Profile")
 $page.setBgColor($ui.bgcolor)
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
-<td><a href=$link.setPage("Index.vm")>$brih_home</a> | $Profile_user</td>
+<td><a href=$link.setPage("Index.vm")>Home</a> | Profile</td>
+<td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Profile.html","newWin");>$brih_help</a></td>
 </tr></table>
 $!data.getMessage()
 
 #set($lang = $data.getUser().getTemp("lang" ).toString())
+#macro(option1)
+        <option value=+>+</option>
+        <option value=0>0</option>
+#end
+#macro(option2)
+	<option value=0>0</option>
+	<option value=+>+</option>
+#end
+                
 <form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("Index.vm").setAction("ProfileUser")">
         <table width=100% bgcolor="$ui.tableColor">
-	 <tr><td><b>$brih_profile1 </b></td></tr>
+	 <tr><td><b>Profile Updation </b></td></tr>
 	 #foreach($ud in $udetl)
 	 <tr>
-           #formCell("$brih_first $brih_name" "FName" "$!ud.getFirstName()")
+           #formCell("First Name" "FName" "$!ud.getFirstName()")
          </tr>
 	 <tr>
-           #formCell("$brih_last $brih_name" "LName" "$!ud.getLastName()")
+           #formCell("Last Name" "LName" "$!ud.getLastName()")
          </tr>
          <tr>
 	   #formCell("$brih_alternate $brih_email" "EMAIL" "$!ud.getEmail()")
 	 </tr>
-	   #end
-	 #*<tr>
-           #formCell("$brih_rollno($brih_if $brih_student)" "rollno" "$!rollno")
-         </tr>*#
+	 #end
+	<tr>
+                                <td>$brih_officeno</td>
+                                <td><select name="Offprefix">
+					#if($!offprefix=="+")
+                                        	#option1()
+                                        #else
+                                        	#option2()
+                                        #end
+                                </select>
+
+
+                                <input type="text" name="Offccode" value="$!offccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)">
+
+
+                                <input type="text" name="Offrcode" value="$!offrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)">
+
+
+                                <input type="text" name="Offphnumber" value="$!offphone" maxlength="10" onkeypress="return isNumberKey(event)">
+                                #if($!offradio=="3")
+                                <input type="radio" name="Offdirectory" value="$public"/>Public
+                                <input type="radio" name="Offdirectory" value="$protected"/>Protected
+                                <input type="radio" name="Offdirectory" value="$private" checked />Private
+                                #elseif($!offradio=="2")
+                                <input type="radio" name="Offdirectory" value="$public"/>Public
+                                <input type="radio" name="Offdirectory" value="$protected" checked />Protected
+                                <input type="radio" name="Offdirectory" value="$private"/>Private
+                                #else
+                                <input type="radio" name="Offdirectory" value="$public" checked />Public
+                                <input type="radio" name="Offdirectory" value="$protected"/>Protected
+                                <input type="radio" name="Offdirectory" value="$private"/>Private
+				#end
+                                
+				</td>
+                        </tr>
+        <tr>
+                                <td>$brih_mobileno</td>
+
+                                <td><select name="Mobprefix">
+                                        #if($!mobprefix=="+")
+                                        	#option1()
+                                        #else   
+                                        	#option2()
+                                        #end
+                                </select>
+
+
+                                <input type="text" name="Mobccode" value="$!mobccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)">
+
+
+                                <input type="text" name="Mobrcode" value="$!mobrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)">
+				<input type="text" name="Mobphnumber" value="$!mobphone" maxlength="10" onkeypress="return isNumberKey(event)">
+				#if($!mobradio=="3")
+				<input type="radio" name="Mobdirectory" value="$public"/>Public
+                                <input type="radio" name="Mobdirectory" value="$protected"/>Protected
+                                <input type="radio" name="Mobdirectory" value="$private" checked />Private
+				#elseif($!mobradio=="2")
+				<input type="radio" name="Mobdirectory" value="$public"/>Public
+                                <input type="radio" name="Mobdirectory" value="$protected" checked/>Protected
+                                <input type="radio" name="Mobdirectory" value="$private"/>Private
+				#else
+				<input type="radio" name="Mobdirectory" value="$public" checked />Public
+                                <input type="radio" name="Mobdirectory" value="$protected"/>Protected
+                                <input type="radio" name="Mobdirectory" value="$private"/>Private
+				#end
+                                </td>
+
+                        </tr>
+                        <tr>
+                                <td>$brih_homeno</td>
+
+                                <td><select name="Homeprefix">
+					#if($!homeprefix=="+")
+                                        	#option1()
+                                        #else
+                                        	#option2()
+                                        #end
+                                </select>
+
+
+                                <input type="text" name="Homeccode" value="$!homeccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)">
+
+
+                                <input type="text" name="Homercode" value="$!homercode" maxlength="5" size="5" onkeypress="return isNumberKey(event)">
+
+
+                                <input type="text" name="Homephnumber" value="$!homephone" maxlength="10" onkeypress="return isNumberKey(event)">
+				#if($!homeradio=="3")
+                                <input type="radio" name="Homedirectory" value="$public"/>Public
+                                <input type="radio" name="Homedirectory" value="$protected"/>Protected
+                                <input type="radio" name="Homedirectory" value="$private" checked />Private
+				#elseif($!homeradio=="2")
+                                <input type="radio" name="Homedirectory" value="$public"/>Public
+                                <input type="radio" name="Homedirectory" value="$protected" checked />Protected
+                                <input type="radio" name="Homedirectory" value="$private"/>Private
+				#else
+                                <input type="radio" name="Homedirectory" value="$public" checked />Public                    
+                                <input type="radio" name="Homedirectory" value="$protected"/>Protected
+                                <input type="radio" name="Homedirectory" value="$private"/>Private
+				#end
+				</td>
+                        </tr>
+                        <tr>
+                                <td>$brih_otherno</td>
+
+                                <td><select name="Othprefix">
+					#if($!othprefix=="+")
+                                        	#option1()
+                                        #else
+                                        	#option2()
+                                        #end
+                                </select>
+
+
+                                <input type="text" name="Othccode" value="$!othccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)">
+				<input type="text" name="Othrcode" value="$!othrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)">
+
+
+                                <input type="text" name="Othphnumber" value="$!othphone" maxlength="10" onkeypress="return isNumberKey(event)">
+				#if($!othradio=="3")
+                                <input type="radio" name="Othdirectory" value="$public"/>Public
+                                <input type="radio" name="Othdirectory" value="$protected"/>Protected
+                                <input type="radio" name="Othdirectory" value="$private" checked />Private
+				#elseif($!othradio=="2")
+                                <input type="radio" name="Othdirectory" value="$public"/>Public
+                                <input type="radio" name="Othdirectory" value="$protected" checked />Protected
+                                <input type="radio" name="Othdirectory" value="$private"/>Private
+				#else
+                                <input type="radio" name="Othdirectory" value="$public" checked />Public                    
+                                <input type="radio" name="Othdirectory" value="$protected"/>Protected
+                                <input type="radio" name="Othdirectory" value="$private"/>Private
+				#end
+				</td>
+                        </tr>
+
+        <tr>
+           #formCell("$brih_address" "address" "$!address")
+         </tr>
+        <tr>
+           #formCell("$Inst_state" "state" "$!state")
+         </tr>
+        <tr>
+           #formCell("$brih_country" "country" "$!country")
+         </tr>
+        <tr>
+           #formCell("$brih_dept" "department" "$!department")
+         </tr>
+        <tr>
+           #formCell("$Inst_designation" "designation" "$!designation")
+         </tr>
 	 <tr>
-	   #fileUpload("$brih_photo" "PHOTO")
+	   #fileUpload("Photo" "PHOTO")
 	 </tr>
 	 <tr>
-	   #formCell("$List_config" "Conf" "$!conf")
+	   #formCell("Max No of Student in list view (Range of Days 1-100)" "Conf" "$!conf")
          </tr>
 	<tr>	
-	   <td>#if($lang=="hindi") $brih_qus $brih_select #else $brih_select $brih_qus #end</td>
+	   <td>#if($lang=="hindi") Question Select #else Select Question #end</td>
 	    <td>
 		 <select name="que" size=1 onChange="clearAnswer(document.frm,this);"/>
                  <option value=$!qid> #foreach($q in $qname) $q.getQuestionName() #end</option>
@@ -56,13 +212,13 @@ $!data.getMessage()
               </select>
             </td>
                 <tr>
-                #formCell("$Profile_Ans:" "ANSWER" "$!ans")
+                #formCell("Enter Your Answer:" "ANSWER" "$!ans")
                 </tr>
 		<tr>
-                #formCell("$brih_tcf" "TaskConf" "$!TaskConf")
+                #formCell("Task_Configuration (Range 0f Days 1-7)" "TaskConf" "$!TaskConf")
                 </tr>
 		<tr>
-		<td>$RemoteInstitute $brih_name</td><td>$brih_program $brih_name</td><td>$brih_rollno</td>
+		<td>Institute Name</td><td>Program Name</td><td>Roll No</td>
 		</tr>
 		#*#if($status == "more")
 			#set ($counter = $counter +1)
@@ -84,7 +240,7 @@ $!data.getMessage()
 					#end
 	                                #set($temp1=$temp1+1)
                                 #end
-						<option>$brih_select $RemoteInstitute </option>
+						<option>Select Institute </option>
 						#foreach($name in $instList)
 					        <option value="$name.getInstituteId()">$name.getInstituteName() </option>
 				          	#end
@@ -97,7 +253,7 @@ $!data.getMessage()
 					#end
                                         #set($temp1=$temp1+1)
                                 #end
-						<option>$brih_select $brih_program </option>
+						<option>Select Program </option>
 					       	#foreach($prgname in $prgList)
 	        	        		<option value="$prgname.getProgramCode()">$prgname.getProgramName() </option>
 	                		  	#end
@@ -123,11 +279,15 @@ $!data.getMessage()
 		</tr>
 		<tr bgcolor="$ui.menuColor">
                 <td colspan=7>
-                 <input type="button" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkAnswer(document.frm,this);"/>                 
-		 <input type="reset"  value="$brih_reset"/>
-		 <input type="hidden" name="actionName"/>
-		 <input type="hidden" name="counter" value="$counter"/>
-		 <input type="hidden" name="count" value="$count"/>
+		#if($size == 0)
+                	<input type="button" name="eventSubmit_doUpdate" value="Submit" onClick="checkAnswer(document.frm,this);"/>                 
+		#else
+			<input type="button" name="eventSubmit_doUpdate" value="Update" onClick="checkAnswer(document.frm,this);"/>
+		#end
+		<input type="reset"  value="Reset"/>
+		<input type="hidden" name="actionName"/>
+		<input type="hidden" name="counter" value="$counter"/>
+		<input type="hidden" name="count" value="$count"/>
                 </td>
           </tr>
      </table>
@@ -175,4 +335,19 @@ $!data.getMessage()
         {
                 frm.prgnm.value=document.frm.prg.value;
 	}
+	function isNumberKey(evt)
+        {
+                var charCode = (evt.which) ? evt.which : event.keyCode
+                   if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+
+                return true;
+        }
+	function popupWin(url,popupName)
+	{
+        	Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+	}
+
+
 </SCRIPT>
+

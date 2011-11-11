@@ -47,6 +47,11 @@ import org.iitk.brihaspati.modules.utils.QuotaUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.apache.turbine.services.security.TurbineSecurity;
+import java.util.List;
+import org.apache.torque.util.Criteria;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.om.TelephoneDirectory;
+import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
 
 /**
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
@@ -115,6 +120,103 @@ public class InstchangeAParam extends SecureAction{
 		String AdminFaqExp=pp.getString("AdminFaqExp","");
 		//Expiry Days
 		String expdays = pp.getString("expdays","");
+
+		String name=AFName+ALName;
+                String address=pp.getString("address");
+                String state=pp.getString("state");
+                String country=pp.getString("country");
+                String department=pp.getString("department");
+                String designation=pp.getString("designation");
+                String officeno=pp.getString("Offprefix")+"-"+pp.getString("Offccode")+"-"+pp.getString("Offrcode")+"-"+pp.getString("Offphnumber");
+                String mobileno=pp.getString("Mobprefix")+"-"+pp.getString("Mobccode")+"-"+pp.getString("Mobrcode")+"-"+pp.getString("Mobphnumber");
+                String homeno=pp.getString("Homeprefix")+"-"+pp.getString("Homeccode")+"-"+pp.getString("Homercode")+"-"+pp.getString("Homephnumber");
+                String otherno=pp.getString("Othprefix")+"-"+pp.getString("Othccode")+"-"+pp.getString("Othrcode")+"-"+pp.getString("Othphnumber");
+                String offdirectory=pp.getString("Offdirectory");
+                String mobdirectory=pp.getString("Mobdirectory");
+                String homedirectory=pp.getString("Homedirectory");
+                String othdirectory=pp.getString("Othdirectory");
+
+		// -----------------Telephone Directory -----------------------------------------
+		/* Insert or update value into database
+ 		* Insert value in table "TELEPHONE_DIRECTORY" when corresponding data are not present
+		* and update value in table "TELEPHONE_DIRECTORY" when corresponding data are present
+		*/
+
+		List li=null;
+                                Criteria tele = new Criteria();
+
+                                tele.add(TelephoneDirectoryPeer.USER_ID,uid);
+                                
+                                               li = TelephoneDirectoryPeer.doSelect(tele);
+                                                if(li.size()>0) {
+                                                        TelephoneDirectory element=(TelephoneDirectory)(li.get(0));
+                                                        int id=(element.getId());
+                                                        tele.add(TelephoneDirectoryPeer.ID,id);
+                                                }
+                                
+
+                                tele.add(TelephoneDirectoryPeer.MAIL_ID,eMail);
+                                tele.add(TelephoneDirectoryPeer.NAME, name);
+                                tele.add(TelephoneDirectoryPeer.ADDRESS, address);
+                                tele.add(TelephoneDirectoryPeer.STATE, state);
+                                tele.add(TelephoneDirectoryPeer.COUNTRY, country);
+                                tele.add(TelephoneDirectoryPeer.DEPARTMENT, department);
+                                tele.add(TelephoneDirectoryPeer.DESIGNATION, designation);
+                                if(offdirectory.equals("Public")){
+                                        String PubOffNo="1-"+officeno;
+                                        tele.add(TelephoneDirectoryPeer.OFFICE_NO, PubOffNo);
+                                        }
+                                        else if(offdirectory.equals("Protected")){
+                                        String ProOffNo="2-"+officeno;
+                                        tele.add(TelephoneDirectoryPeer.OFFICE_NO, ProOffNo);
+                                        }
+                                        else{
+					String PriOffNo="3-"+officeno;
+                                        tele.add(TelephoneDirectoryPeer.OFFICE_NO, PriOffNo);
+                                        }
+                                        if(mobdirectory.equals("Public")){
+                                        String PubMobNo="1-"+mobileno;
+                                        tele.add(TelephoneDirectoryPeer.MOBILE_NO, PubMobNo);
+                                        }
+                                        else if(mobdirectory.equals("Protected")){
+                                        String ProMobNo="2-"+mobileno;
+                                        tele.add(TelephoneDirectoryPeer.MOBILE_NO, ProMobNo);
+                                        }
+                                        else{
+                                        String PriMobNo="3-"+mobileno;
+                                        tele.add(TelephoneDirectoryPeer.MOBILE_NO, PriMobNo);
+                                        }
+                                        if(homedirectory.equals("Public")){
+                                        String PubHomeNo="1-"+homeno;
+                                        tele.add(TelephoneDirectoryPeer.HOME_NO, PubHomeNo);
+                                        }
+                                        else if(homedirectory.equals("Protected")){
+                                        String ProHomeNo="2-"+homeno;
+                                        tele.add(TelephoneDirectoryPeer.HOME_NO, ProHomeNo);
+                                        }
+                                        else{
+                                        String PriHomeNo="3-"+homeno;
+                                        tele.add(TelephoneDirectoryPeer.HOME_NO, PriHomeNo);
+                                        }
+                                        if(othdirectory.equals("Public")){
+                                        String PubOthNo="1-"+otherno;
+                                        tele.add(TelephoneDirectoryPeer.OTHER_NO, PubOthNo);
+					}
+                                        else if(othdirectory.equals("Protected")){
+                                        String ProOthNo="2-"+otherno;
+                                        tele.add(TelephoneDirectoryPeer.OTHER_NO, ProOthNo);
+                                        }
+                                        else{
+                                        String PriOthNo="3-"+otherno;
+                                        tele.add(TelephoneDirectoryPeer.OTHER_NO, PriOthNo);
+                                        }
+                                        if(li.size()==0)
+                                                TelephoneDirectoryPeer.doInsert(tele);
+                                        else
+                                                TelephoneDirectoryPeer.doUpdate(tele);
+
+		// -------------------------------------------------------------------------------
+
 		/**
 		 * Replacing the variable value from Property file
 		 * Update the first,last name configuration parameter values for Institute Admin
