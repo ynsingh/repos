@@ -1,5 +1,0 @@
-payroll_db_host=localhost
-payroll_db_port=3306
-payroll_db_user=username
-payroll_db_password=password
-payroll_db_name=payroll_dev
