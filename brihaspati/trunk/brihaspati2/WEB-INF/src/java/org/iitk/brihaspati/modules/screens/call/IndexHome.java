@@ -51,9 +51,8 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
-import org.iitk.brihaspati.modules.utils.GroupUtil;
-import org.iitk.brihaspati.modules.utils.CourseUtil;
-import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 //import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.StudentInstructorMAP;
@@ -186,8 +185,32 @@ public class IndexHome extends SecureScreen{
 			*/
 			if(Role.equals("instructor"))
 			{
+		
+				//Getting the Instructor's Institute Id from InstituteIdUtil.
+	
+				Vector instlist = InstituteIdUtil.getInstructorInstId(u_id);
+
+			        Vector InsDetail=new Vector();
+				for(int l=0;l<instlist.size();l++)
+				{	
+					 Vector  instname = new Vector();
+					 /*
+					  * Getting InstId from Vector instlist.
+					  * Conveting int type Instid from String type. 
+					  */
+					 int instid=Integer.parseInt((String)instlist.get(l));
+
+					 //Getting Institute Name  from InstituteIdUtil on the basis of InstituteId.
+					 String Inst_name = InstituteIdUtil.getIstName(instid);
+					 CourseUserDetail cDetail = new CourseUserDetail();
+					 cDetail.setInstId(instid);
+					 cDetail.setInstName(Inst_name);
+					 InsDetail.add(cDetail);
+					 instname.addElement(Inst_name);
+					 context.put("Inst_name",InsDetail);
+				}
+					
 				Vector course_inst=StudentInstructorMAP.getIMAP(u_id);
-	//			ErrorDumpUtil.ErrorLog("course_inst"+course_inst);
                         	context.put("inst",course_inst);
 				// getting Unread Notices
 				unread_inst=NoticeUnreadMsg.getUnreadNotice(u_id,2,"All");
