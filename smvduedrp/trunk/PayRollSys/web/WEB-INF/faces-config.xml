@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN" "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+      http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+   version="2.0">
+
+
+
+
+
+<lifecycle>
+      <phase-listener>org.smvdu.payroll.api.security.LoginManager</phase-listener>
+   </lifecycle>
+
+
+
+    <converter>
+        <converter-id>dateConverter</converter-id>
+        <converter-class>org.smvdu.payroll.beans.converter.DateConverter</converter-class>
+    </converter>
+    <converter>
+        <converter-id>departmentConverter</converter-id>
+        <converter-class>org.smvdu.payroll.beans.setup.Department</converter-class>
+    </converter>
+    <converter>
+        <converter-id>designationConverter</converter-id>
+        <converter-class>org.smvdu.payroll.beans.setup.Designation</converter-class>
+    </converter>
+
+    <validator>
+        <validator-id>dateValidator</validator-id>
+        <validator-class>org.smvdu.payroll.beans.validator.DateValidator</validator-class>
+    </validator>
+
+
+
+    <managed-bean>
+        <description>
+			PFAccountController
+        </description>
+        <managed-bean-name>PFAccountController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.pf.PFOpeningBalanceController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			ArrearCalculator
+        </description>
+        <managed-bean-name>ArrearCalculator</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.tools.ArrearCalculator</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>
+			ModuleController
+        </description>
+        <managed-bean-name>ModuleController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.module.ModuleController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+     <managed-bean>
+        <description>
+			Module
+        </description>
+        <managed-bean-name>Module</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.module.Module</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+
+    <managed-bean>
+        <description>
+			PFTransactionController
+        </description>
+        <managed-bean-name>PFTransactionController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.pf.PFTransactionController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			PFTransaction
+        </description>
+        <managed-bean-name>PFTransaction</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.pf.PFTransaction</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			MonthManager
+        </description>
+        <managed-bean-name>MonthManager</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.MonthManager</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+        <managed-bean>
+        <description>
+			LoanRequestController
+        </description>
+        <managed-bean-name>LoanRequestController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.loan.LoanRequestController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			ReportFieldController
+        </description>
+        <managed-bean-name>ReportFieldController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.report.ReportFieldController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>
+			PortalAccessController
+        </description>
+        <managed-bean-name>PortalAccessController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.portal.PortalAccessController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			ReportMasterController
+        </description>
+        <managed-bean-name>ReportMasterController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.report.ReportMasterController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+     <managed-bean>
+        <description>
+			LoanPeriodController
+        </description>
+        <managed-bean-name>LoanPeriodController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.LoanPeriodCoroller</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+     <managed-bean>
+        <description>
+			OrderController
+        </description>
+        <managed-bean-name>OrderController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.emporder.OrderController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    
+    
+    
+     
+     <managed-bean>
+        <description>
+			Order
+        </description>
+        <managed-bean-name>Order</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.emporder.Order</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+     <managed-bean>
+        <description>
+			LoanRequest
+        </description>
+        <managed-bean-name>LoanRequest</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.loan.LoanRequest</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			LoanController
+        </description>
+        <managed-bean-name>LoanController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.loan.LoanController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+     <managed-bean>
+        <description>
+			Loan
+        </description>
+        <managed-bean-name>Loan</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.loan.Loan</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+     <managed-bean>
+        <description>
+			PFConfig
+        </description>
+        <managed-bean-name>PFConfig</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.pf</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>
+			LoggedEmployee
+        </description>
+        <managed-bean-name>LoggedEmployee</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.module.attendance.LoggedEmployee</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			WorkController
+        </description>
+        <managed-bean-name>WorkController</managed-bean-name>
+        <managed-bean-class>com.algox.erp.timesheet.controller.EmployeeWorkCOntroller</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+   
+
+    <managed-bean>
+        <description>
+			SalaryTool
+        </description>
+        <managed-bean-name>SalaryTool</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.tool.SalaryCopierController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			TDSReport
+        </description>
+        <managed-bean-name>TDSReport</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.annualreport.TdsReport</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+     <managed-bean>
+        <description>
+			AnnualPFReport
+        </description>
+        <managed-bean-name>AnnualPFReport</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.annualreport.AnnualPFReport</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+     <managed-bean>
+        <description>
+			PFReport
+        </description>
+        <managed-bean-name>PFReport</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.annualreport.PFReport</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>
+			AttendanceReport
+        </description>
+        <managed-bean-name>AttendanceReport</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.AttendanceReport</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    
+    <managed-bean>
+        <description>
+			ReportBuilder
+        </description>
+        <managed-bean-name>ReportBuilder</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.ReportBuilder</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			MasterPassword
+        </description>
+        <managed-bean-name>MasterPassword</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.admin.UserPass</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			SessionController
+        </description>
+        <managed-bean-name>SessionController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.SessionController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			TaxPlanController
+        </description>
+        <managed-bean-name>TaxPlanController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.taxmanager.TaxPlanController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>
+			SessionBean
+        </description>
+        <managed-bean-name>SessionBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.SessionMaster</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+     <managed-bean>
+        <description>
+			SalaryTypeMaster
+        </description>
+        <managed-bean-name>SalaryTypeMaster</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.SalaryTypeMaster</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    
+    <managed-bean>
+        <description>
+			OrgController
+        </description>
+        <managed-bean-name>OrgController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.OrgController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			DepartmentController
+        </description>
+        <managed-bean-name>DepartmentControllerBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.DepartmentController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			GrossSalaryController
+        </description>
+        <managed-bean-name>GrossSalaryController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.controller.MonthlyGrossSalaryController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			TaxBean
+        </description>
+        <managed-bean-name>TaxBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.taxmanager.TaxCalculatorBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			TaxController
+        </description>
+        <managed-bean-name>TaxControllerBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.taxmanager.TaxController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+
+    <managed-bean>
+        <description>
+			SalaryHeadController
+        </description>
+        <managed-bean-name>SalaryHeadControllerBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.SalaryHeadController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			EmployeeSalaryHeadController
+        </description>
+        <managed-bean-name>EmployeeSalaryHeadControllerBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.EmployeeTypeSalaryController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			DefaultSalaryDataController
+        </description>
+        <managed-bean-name>DefaultSalaryDataController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.DefaultSalaryDataController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			SalaryProcessing
+        </description>
+        <managed-bean-name>SalaryProcessingBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.NewSalaryProcessing</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			MonthlyGrossController
+        </description>
+        <managed-bean-name>MonthlyGrossController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.report.MonthlyGrossController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+
+
+    <managed-bean>
+        <description>
+			LeaveQuotaBean
+        </description>
+        <managed-bean-name>LeaveQuotaBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.LeaveQuotaController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			EmployeeLeaveBean
+        </description>
+        <managed-bean-name>EmployeeLeaveBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.ext.attendance.EmployeeLeave</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+
+    <managed-bean>
+        <description>
+			LeaveTypeBean
+        </description>
+        <managed-bean-name>LeaveTypeBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.ext.attendance.LeaveType</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			LeaveValueBean
+        </description>
+        <managed-bean-name>LeaveValueBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.ext.attendance.LeaveValue</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			ThemeBean
+        </description>
+        <managed-bean-name>ThemeBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.ThemeBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			EmployeeTypeController
+        </description>
+        <managed-bean-name>EmployeeTypeControllerBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.EmployeeTypeController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			SalaryGradeController
+        </description>
+        <managed-bean-name>SalaryGradeControllerBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.SalaryGradeController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+   
+
+
+    <managed-bean>
+        <description>
+			DesignationController
+        </description>
+        <managed-bean-name>DesignationControllerBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.DesignationController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			DefaultSalaryBean
+        </description>
+        <managed-bean-name>DefaultSalaryBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.DefaultSalaryData</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			DatabaseMain
+        </description>
+        <managed-bean-name>CommonDBBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.db.CommonDB</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			Test Date Bean
+        </description>
+        <managed-bean-name>DateBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.DateBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			TestTable
+        </description>
+        <managed-bean-name>TableBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.model.MyTableModel</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			Employee Search Bean
+        </description>
+        <managed-bean-name>SearchBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.EmployeeSearchBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+
+
+    <managed-bean>
+        <description>
+			Organization Profile Bean
+        </description>
+        <managed-bean-name>OrgProfileBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.setup.Org</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			Salary Formula Bean
+        </description>
+        <managed-bean-name>SalaryFormulaBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.SalaryFormula</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+
+
+
+
+    <managed-bean>
+        <description>
+			Test Employee Bean
+        </description>
+        <managed-bean-name>TestEmployee</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.myemp.TestEmployee</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+
+
+
+
+
+
+    <managed-bean>
+        <description>
+			Employee Profile Bean
+        </description>
+        <managed-bean-name>EmployeeBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.Employee</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			Department Bean
+        </description>
+        <managed-bean-name>DepartmentBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.setup.Department</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			Investment Plan Bean
+        </description>
+        <managed-bean-name>InvestmentPlanBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.InvestmentPlan</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			Investment Heads Bean
+        </description>
+        <managed-bean-name>InvestmentHeadBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.setup.InvestmentHead</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			Investment Types
+        </description>
+        <managed-bean-name>InvestmentTypeBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.setup.InvestmentType</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			Investment Type Controller
+        </description>
+        <managed-bean-name>InvestmentTypeController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.InvestmentTypeController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			Employee Type Bean
+        </description>
+        <managed-bean-name>EmployeeTypeBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.setup.EmployeeType</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			Salary Grade Bean
+        </description>
+        <managed-bean-name>SalaryGradeBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.setup.SalaryGrade</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+
+    <managed-bean>
+        <description>
+			Salary Head Bean
+        </description>
+        <managed-bean-name>SalaryHeadBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.setup.SalaryHead</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			Designation Bean
+        </description>
+        <managed-bean-name>DesignationBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.setup.Designation</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			Salary Data Bean
+        </description>
+        <managed-bean-name>SalaryDataBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.SalaryData</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>
+			Employee Investment Controller
+        </description>
+        <managed-bean-name>EmployeeInvestmentController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.taxmanager.EmployeeInvestmentController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    
+    <managed-bean>
+        <description>
+			Salary Profile Bean
+        </description>
+        <managed-bean-name>SalaryProfileBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.SalaryProfile</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			User Bean
+        </description>
+        <managed-bean-name>UserBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.UserInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <navigation-rule>
+        <from-view-id>//auth/Login.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>//MainPage.jsp</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>fail</from-outcome>
+            <to-view-id>//auth/Login.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id > /SalaryOption.jsp</from-view-id >
+        <navigation-case >
+            <from-outcome > test</from-outcome >
+            <to-view-id > /SalaryOption.jsp</to-view-id >
+        </navigation-case >
+    </navigation-rule >
+    <navigation-rule>
+        <from-view-id>/EmployeeProfile.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>case1</from-outcome>
+            <to-view-id>/EmployeeProfile.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/portal/EmployeeLogin.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>case1</from-outcome>
+            <to-view-id>/portal/Home.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+
+
+
+    <managed-bean>
+        <description>
+			fileUploadBean
+        </description>
+        <managed-bean-name>fileUploadBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.user.FileUploadBean</managed-bean-class>
+
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			file
+        </description>
+        <managed-bean-name>file</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.user.MyFile</managed-bean-class>
+
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+
+    <managed-bean>
+        <description>
+			MyTempBean
+        </description>
+        <managed-bean-name>MyTempBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.MyTempBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>reportClass</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.pf.ReportGen.ReportClass</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>annualPF</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.pf.ReportGen.AnnualPF</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>buttonText</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.pf.ReportGen.ButtonText</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>eMployeeMonthSlipPDF</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.pf.ReportGen.EMployeeMonthSlipPDF</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>bankStatementPDF</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.pf.ReportGen.BankStatementPDF</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>conciseReportPDF</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.pf.ReportGen.ConciseReportPDF</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>monthlyRoll</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.pf.ReportGen.MonthlyRoll</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+</faces-config>
+

@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AnnualPFReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="4"/>
+	<parameter name="org_name" class="java.lang.String"/>
+	<parameter name="title" class="java.lang.String"/>
+	<parameter name="org_logo" class="java.awt.Image"/>
+	<parameter name="fin_session" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+     employee_master.`emp_code` AS employee_master_emp_code,
+     employee_master.`emp_name` AS employee_master_emp_name,
+	emp_title,
+     employee_master.`emp_pf_accno` AS employee_master_emp_pf_accno,
+     department_master.`dept_name` AS department_master_dept_name,
+     designation_master.`desig_name` AS designation_master_desig_name,
+     annual_pf_master.`apf_emp_id` AS annual_pf_master_apf_emp_id,
+     annual_pf_master.`apf_op_bal` AS annual_pf_master_apf_op_bal,
+	apf_cum_amount_emp,apf_cum_amount_empl,
+        apf_int_opbal_emp,apf_int_opbal_empr,apf_int_dep_emp,apf_int_dep_empr,
+
+     annual_pf_master.`apf_closing_bal` AS annual_pf_master_apf_closing_bal,
+     annual_pf_master.`apf_recovery` AS annual_pf_master_apf_recovery,apf_withdrawal,
+apf_emp_contribution,apf_empl_contribution,
+session_master.`ss_name` AS session_master_ss_name,
+session_master.`ss_id` AS session_master_ss_id
+FROM
+annual_pf_master left join employee_master on
+emp_id = apf_emp_id left join
+
+      department_master on dept_code = emp_dept_code
+     left JOIN  designation_master ON desig_code = emp_desig_code left JOIN session_master on ss_id=apf_sess_id where session_master.`ss_id`=annual_pf_master.`apf_sess_id` AND annual_pf_master.`apf_sess_id` =$P{fin_session}]]>
+	</queryString>
+	<field name="employee_master_emp_code" class="java.lang.String"/>
+	<field name="employee_master_emp_name" class="java.lang.String"/>
+	<field name="emp_title" class="java.lang.String"/>
+	<field name="employee_master_emp_pf_accno" class="java.lang.String"/>
+	<field name="department_master_dept_name" class="java.lang.String"/>
+	<field name="designation_master_desig_name" class="java.lang.String"/>
+	<field name="annual_pf_master_apf_emp_id" class="java.lang.Integer"/>
+	<field name="annual_pf_master_apf_op_bal" class="java.lang.Integer"/>
+	<field name="apf_cum_amount_emp" class="java.lang.Integer"/>
+	<field name="apf_cum_amount_empl" class="java.lang.Integer"/>
+	<field name="apf_int_opbal_emp" class="java.lang.Integer"/>
+	<field name="apf_int_opbal_empr" class="java.lang.Integer"/>
+	<field name="apf_int_dep_emp" class="java.lang.Integer"/>
+	<field name="apf_int_dep_empr" class="java.lang.Integer"/>
+	<field name="annual_pf_master_apf_closing_bal" class="java.lang.Float"/>
+	<field name="annual_pf_master_apf_recovery" class="java.lang.Integer"/>
+	<field name="apf_withdrawal" class="java.lang.Integer"/>
+	<field name="apf_emp_contribution" class="java.lang.Float"/>
+	<field name="apf_empl_contribution" class="java.lang.Float"/>
+	<field name="session_master_ss_name" class="java.lang.String"/>
+	<field name="session_master_ss_id" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="258" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="72" width="555" height="76"/>
+			</rectangle>
+			<textField>
+				<reportElement x="107" y="78" width="148" height="20"/>
+				<box leftPadding="3" rightPadding="2"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{employee_master_emp_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="464" y="41" width="91" height="20"/>
+				<box leftPadding="3" rightPadding="2"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{session_master_ss_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="393" y="78" width="150" height="20"/>
+				<box leftPadding="3" rightPadding="2"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{emp_title}+" "+$F{employee_master_emp_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="107" y="98" width="172" height="20"/>
+				<box leftPadding="3" rightPadding="2"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{department_master_dept_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="393" y="99" width="150" height="20"/>
+				<box leftPadding="3" rightPadding="2"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{designation_master_desig_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="107" y="118" width="118" height="20"/>
+				<box leftPadding="3" rightPadding="2"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{employee_master_emp_pf_accno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="16" y="78" width="90" height="20"/>
+				<box leftPadding="3" rightPadding="2"/>
+				<textElement/>
+				<text><![CDATA[Employee Code]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="295" y="78" width="88" height="20"/>
+				<box leftPadding="3" rightPadding="2"/>
+				<textElement/>
+				<text><![CDATA[Employee Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="98" width="90" height="20"/>
+				<box leftPadding="3" rightPadding="2"/>
+				<textElement/>
+				<text><![CDATA[Department]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="295" y="99" width="88" height="20"/>
+				<box leftPadding="3" rightPadding="2"/>
+				<textElement/>
+				<text><![CDATA[Designation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="118" width="90" height="20"/>
+				<box leftPadding="3" rightPadding="2"/>
+				<textElement/>
+				<text><![CDATA[PF ACC No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="153" width="44" height="49"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Opening Balance (a)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="62" y="153" width="44" height="49"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Employee's Share (b)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="106" y="153" width="50" height="49"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Employer's Share(c)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="156" y="153" width="47" height="49"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Total Contribution(b+c)=d]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="203" y="153" width="44" height="49"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Refund of withdrawals (e)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="296" y="153" width="54" height="49"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Interest on emp Annual Dep (f)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="153" width="41" height="49"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Total of(d+e+f)=g]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="441" y="153" width="34" height="49"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Withdrawals(h)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="493" y="153" width="50" height="49"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Closing Balance]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="202" width="44" height="20"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{annual_pf_master_apf_op_bal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="493" y="202" width="50" height="20"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{annual_pf_master_apf_closing_bal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="156" y="202" width="47" height="20"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{apf_emp_contribution}+$F{apf_empl_contribution}+$F{annual_pf_master_apf_recovery} - $F{apf_withdrawal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="106" y="202" width="50" height="20"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{apf_empl_contribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="203" y="202" width="44" height="20"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{annual_pf_master_apf_recovery}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="296" y="202" width="54" height="20"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{apf_int_dep_emp}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="400" y="202" width="41" height="20"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{apf_emp_contribution}+$F{apf_empl_contribution}+$F{apf_int_opbal_emp}+$F{apf_int_opbal_empr}+$F{apf_int_dep_emp}+$F{apf_int_dep_empr}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="62" y="202" width="44" height="20"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{apf_emp_contribution} +$F{annual_pf_master_apf_recovery} - $F{apf_withdrawal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="441" y="202" width="34" height="20"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{apf_withdrawal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="116" y="7" width="374" height="31" forecolor="#FF9933"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{org_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="156" y="41" width="308" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{title}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="2" y="234" width="553" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<image onErrorType="Icon">
+				<reportElement x="34" y="5" width="72" height="60"/>
+				<imageExpression class="java.awt.Image"><![CDATA[$P{org_logo}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="2" y="66" width="553" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="247" y="153" width="48" height="49"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Interest  on Emp Op Bal (f)]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="247" y="202" width="48" height="20"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{apf_int_opbal_emp}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="350" y="153" width="50" height="49"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Interest on empr Annual Dep (f)]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="350" y="202" width="50" height="20"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{apf_int_dep_empr}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

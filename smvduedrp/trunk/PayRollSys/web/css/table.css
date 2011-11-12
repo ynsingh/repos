@@ -1,0 +1,131 @@
+/* 
+    Document   : table
+    Created on : Jul 14, 2010, 2:09:21 PM
+    Author     : Algox
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+.myTable{
+background-color:#CCCCCC;
+font-family: serif;
+border-bottom-style: inset;
+font-size: 12px;
+border-color: #AABDE6;
+margin-left: 50px;
+width: 70%;
+}
+
+
+.shift{
+    margin-left: 80px;
+}
+.Caption{
+background-color: #99ccff;
+font-size: 20px;
+width: 400px;
+margin-left: 30px;
+margin-right: 100px;
+margin-bottom: 40px;
+margin-top: 40px;
+}
+.textfield{
+
+    width: 100px;
+}
+.combo{
+
+    width: 150px;
+    font-size: 8px;
+}
+.xerror{
+	padding: 0px;
+        margin-left: 10px;
+        margin-right: 150px;
+	color: #FFF;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 1.5;
+	background-color: #F30;
+	-moz-border-radius:4px 4px 4px 4px;
+
+}
+.line{
+    background-color:#42413C;
+    width: 80%;
+    color: #FFFFFF;
+    margin-left: 10px;
+    
+}
+.panel{
+
+    margin-top: 0px;
+    margin-left: 2px;
+    width: 75px;
+    background-color:#0099cc;
+    
+}
+
+
+.tf{
+height: 12px;
+font-size: 8px;
+width: 10px;
+}
+.cLabel{
+
+font-size: 10px;
+font-weight:bolder;
+margin-left: 20px;
+}
+.cfields{
+height: 16px;
+font-size: 8px;
+background-color:wheat;
+border-color: #000;
+width: 80px;
+}
+.fields{
+height: 16px;
+font-size: 8px;
+background-color:papayawhip;
+border-color: #000;
+width: 150px;
+}
+.Label{
+
+font-size: 12px;
+font-weight:bolder;
+margin-left: 20px;
+}
+.oddRow{
+    background-color:#EAEBD8;
+    font-family:sans-serif;
+    font-size: 10px;
+}
+.evenRow{
+    background-color: #CCCCFF;
+    font-family:sans-serif;
+    font-size: 10px;
+}
+.hfooter{
+    background-color: #AABDE6;
+    font-family: monospace;
+    font-size: large;
+    text-align: center;
+}            
+.notice{
+
+    background-color: #22b195;
+    font-size: 18px;
+    color: #ffffff;
+}
+
+.error {
+    background-color:honeydew;
+    color: tomato;
+}

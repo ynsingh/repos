@@ -1,0 +1,22 @@
+/* 
+    Document   : Form
+    Created on : May 7, 2011, 12:24:31 AM
+    Author     : Algox
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+.form{
+    background-color: snow;
+    border-width: medium;
+}
+
