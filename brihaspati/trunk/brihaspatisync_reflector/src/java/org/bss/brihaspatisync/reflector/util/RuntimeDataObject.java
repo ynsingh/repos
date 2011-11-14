@@ -23,6 +23,8 @@ public class RuntimeDataObject {
 
 	private MyHashTable ht=null;
 
+	private MyHashTable videoht=null;
+
         private String indexServerAddr="";
 
         private boolean handraiseflag=false;
@@ -198,6 +200,12 @@ public class RuntimeDataObject {
                 if(!(indexServerAddr.equals("")))
                         return indexServerAddr;
                 return null;
+        }
+
+	public MyHashTable getVideoMyHashTable(){
+                if(videoht == null)
+                        videoht=new MyHashTable();
+                return videoht;
         }
 
 	public MyHashTable getMyHashTable(){

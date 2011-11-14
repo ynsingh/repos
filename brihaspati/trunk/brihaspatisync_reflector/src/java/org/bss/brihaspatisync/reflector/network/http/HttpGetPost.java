@@ -135,25 +135,16 @@ class MyPostGetHandler implements HttpHandler {
                                         }
                                         if(data_value[2].startsWith("parent")) {
                                                 data_value[2]=data_value[2].replace("parent","");
-						/*
-                                                if(Util.getController().getStatus(data_value[2])){
-                                                        TCPClient.getController().setcourseID(data_value[0]);
-							TCPClient.getController().setparentIp(data_value[2]);
-                                                        TCPClient.getController().start();
-                                                }else{
-                                                        TCPClient.getController().setcourseID(data_value[0]);
-                                                }
-						*/
                                         } 
 					if(!temp_ht.getStatus(data_value[0])) {
 						BufferMgt buffer_mgt= new BufferMgt();
 						temp_ht.setValues(data_value[0],buffer_mgt);
-						buffer_mgt.putByte(data_value[1],client_ip);
+						buffer_mgt.putByte(data_value[1],client_ip,"ch_wb");
 						responseBody.close();
                                         }else if(temp_ht.getStatus(data_value[0])) {
                                                 BufferMgt buffer_mgt=temp_ht.getValues(data_value[0]);
-						buffer_mgt.putByte(data_value[1],client_ip);
-						String str=buffer_mgt.sendData(client_ip);
+						buffer_mgt.putByte(data_value[1],client_ip,"ch_wb");
+						String str=buffer_mgt.sendData(client_ip,"ch_wb");
 						/**  get Lecture id ***************/
 						String data=UserListUtil.getContriller().getDataForVector(data_value[0]);
 						/**  get Lecture id ***************/

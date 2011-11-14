@@ -1,138 +1,123 @@
 package org.bss.brihaspatisync.reflector.buffer_mgt;
 
-/**
+/***
  * BufferMgt.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2009 ETRG, IIT Kanpur.
+ * Copyright (c) 2011 ETRG,IIT Kanpur.
  */
 
 import java.util.Vector;
 import java.util.Enumeration;
-//import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
-	
+import java.io.*;	
+import java.util.Hashtable;
 
 /**
- * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
- * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal  </a> 
+ *@author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
+ *@author <a href="mailto:meera.knit@gmail.com">Meera Pal </a>
  */
 
-public class  BufferMgt extends Thread {
-	private String str="";	
+public class  BufferMgt {
+	
 	private int curpointer = 0;
-	private Buffer buffer=null;
-	private MyHashTable hashTable=null;
-	//private MaintainLog log=MaintainLog.getController();
-	
+	private CreateHashTable createhashtable=new CreateHashTable();
+
 	public BufferMgt() {}
-		
-	private void startBuffer(){
-                try {
-			Vector pointer=new Vector();
-                        int psize=0;
-                        pointer=hashTable.getPointer();
-                        psize=pointer.size();
-                	if((pointer.size()) >0){
-        	        	psize=pointer.size();
-	                        int maxpointer=(Integer)pointer.get(0);
-                                int p1=(Integer)pointer.get((psize-1));
-				if(p1>0) {
-					p1=p1-1;
-	                        	if( (maxpointer-p1) >15) {
-        	        	        	hashTable.resetPointer(5);
-						buffer.removeRange(0,5);
-        	        	      	} else {
-						hashTable.resetPointer(p1);
-                                        	buffer.removeRange(0,p1);
-                                	}
-				}
-                        }
-		}catch(Exception e){
-			System.out.println("Error startBuffer() in BufferMng  "+e.getMessage());	
-                }
-        }
 	
-	private String run1(String ip) throws Exception {
+        /**          
+        *create removeBufferAndSetPointer method to remove the packets from a specific queue.
+        */                   
+
+        private void removeBufferAndSetPointer(String type){
 		try {
-			if(buffer==null){
-                	        buffer=new Buffer();
-			}if(hashTable == null) {
-				hashTable = new MyHashTable();
-			}
-		}catch(Exception e){
-			System.out.println("Error in buffer in BufferMgt");
-		}	
+        		Buffer buffer=createhashtable.setBuffer(type);
+                       	int psize=0;                      
+                       	Vector pointer=createhashtable.getPointer();
+                        psize=pointer.size();
+                        int maxpointer=(Integer)pointer.get(0); 
+                        int p1=(Integer)pointer.get((psize-1));
+                        if(p1>0) {
+                        	p1=p1-1;
+				if( (maxpointer-p1) >15) {
+                                	createhashtable.resetPointer(5,type);
+                                      	buffer.removeRange(0,5);
+                                } else {
+                                	createhashtable.resetPointer(p1,type);
+					buffer.removeRange(0,p1);
+                             	}
+                     	}
+			
+                }catch(Exception e){}
+    	 }
+	 private String sendData_IncreasePointer(String ip,String type) throws Exception {
 		try {	
-			curpointer = hashTable.getValue(ip);
+             		curpointer = createhashtable.getValue(ip,type);
+			Buffer buffer=createhashtable.setBuffer(type);
 			int size=buffer.size();
 			if(curpointer<size){
-				while( curpointer != size){
-					
-					String str1=buffer.getString(curpointer);
-					str1=str1.trim();
-					ip=ip.trim();
-					if(!(str1.startsWith(ip))){
-						int temp=str1.indexOf("@$",0);
-						temp=temp+2;
-			                        str=str1.substring(temp,str1.length());
-						curpointer++;
-        	                                setPointer(ip,curpointer);
-						break;
-                                	}
-					curpointer++;
-					setPointer(ip,curpointer);
-					
+				String str="";	
+				while( curpointer != size) {
+					String str1=(buffer.get(curpointer)).toString();
+                                        str1=str1.trim();
+                                        ip=ip.trim();
+                                        if(!(str1.startsWith(ip))){
+						str=(buffer.getObject(curpointer)).toString();
+						/*
+                                                int temp=str1.indexOf("@$",0);
+                                                temp=temp+2;
+                                                str=str1.substring(temp,str1.length());
+						*/
+                                                curpointer++;
+                                                setPointer(ip,curpointer,type);
+                                                break;
+                                        }
+                                        curpointer++;
+                                        setPointer(ip,curpointer,type);
 				}
-				startBuffer();	
+				removeBufferAndSetPointer(type);
+				return str;
 			}
-			return str;
-			
-		}catch(Exception e){
-			System.out.println("Error in BufferMng  "+e.getMessage());
-		}	
-		return null;
-	}
-	
-	public  synchronized void putByte(String data,String current_ip){ 
+
+		} catch(Exception e){System.out.println("Error in sendData_IncreasePointer method "+e.getMessage());}	
+		return "";
+	 }
+
+         /**
+         * Create putByte method to insert the packets in appropriate queue after matching 
+         * packet type and queue type.                
+         */                  
+
+	 public  synchronized void putByte(String data,String current_ip,String type){
 		try {
-			if(buffer==null)
-				buffer=new Buffer();
-			if(!(data.equals("nodata"))){
-				buffer.putString(current_ip+"@$"+data);
+			if(type.equals("ch_wb")) {
+				Buffer buffer=createhashtable.setBuffer(type);
+				if(!(data.equals("nodata"))){
+					buffer.put(current_ip+"@$");
+					buffer.putObject(data);
+	                	}
 			}
-		}catch(Exception e){ 
-			System.out.println("Error in putByte method "+e.getMessage());
-		}
+
+		}catch(Exception e){ System.out.println("Error in putByte method in BufferMgt class ----->"+e.getMessage()); }
 	}
-	public String sendData(String newip) {
-               	String senddata=null;
+
+ 	public String sendData(String newip,String type) {
+          	String senddata=null;
                 try {
 			if(!newip.equals("")) {
-				String abc=run1(newip);
-        	                if(!(abc.equals(""))){
-                	                senddata=abc;
-                        	        this.str="";
+				String data=sendData_IncreasePointer(newip,type);
+        	                if(!(data.equals(""))){
+                	     		senddata=data;
 				}
 			}
-                }catch(Exception s){
-			System.out.println(" Error in sendData in  BufferMgt.java"+s.getMessage());
-                }
+               	}catch(Exception s){ System.out.println("Error in sendData method ----->"+s.getMessage());}
 		return senddata;
-        }
+	}
 	
-		
-		
-
-	private synchronized void setPointer(String setip , int pointer) {
+	private synchronized void setPointer(String setip , int pointer,String type) {
 		try {	
-			if(hashTable == null){
-        			hashTable = new MyHashTable();
-                	}
-			hashTable.setPointer(setip,pointer);
-		}catch(Exception e){
-			System.out.println("Error in BufferMng  "+e.getMessage());
-		}
-        }
-	
+			createhashtable.setPointer(setip,pointer,type);
+		}catch(Exception e){}
+      	}  
 }
 
+  

@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.reflector.buffer_mgt;
  * MyComparator.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG,IIT Kanpur.
+ * Copyright (c) 2011 ETRG,IIT Kanpur.
  */
 
 
@@ -17,10 +17,14 @@ import java.util.Collections;
 	
 
 /**
- * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal  </a> 
+ *  @author <a href="mailto:meera.knit@gmail.com">Meera Pal </a> 
  */
 
+/**
+ * MyComparator class is used to compare the values stored in hashtable.          
+ *
+ */                    
 
 class MyComparator implements Comparator{
 	public int compare(Object obj1, Object obj2){

@@ -140,11 +140,11 @@ public class TCPClient implements Runnable{
 									MyHashTable temp_ht=RuntimeDataObject.getController().getMyHashTable();
 									if(temp_ht.getStatus(courseid)) {
                                                                                 BufferMgt te=temp_ht.getValues(courseid);
-                                                                                te.putByte(str,client_ip);
+                                                                                te.putByte(str,client_ip,"ch_wb");
                                                                         } else if(!temp_ht.getStatus(courseid)) {
                                                                                 BufferMgt bm= new BufferMgt();
                                                                                 temp_ht.setValues(courseid,bm);
-                                                                                bm.putByte(str,client_ip);
+                                                                                bm.putByte(str,client_ip,"ch_wb");
                                                                         }
 									}	
 								}
@@ -209,7 +209,7 @@ public class TCPClient implements Runnable{
 									TCPUtil.getController().getString(course_id.get(i).toString(),"#Parent"+client_ip);
 									if(temp_ht.getStatus(course_id.get(i).toString())) {
                                                                 		BufferMgt buffer_mgt=temp_ht.getValues(course_id.get(i).toString());
-        	                            					String str=buffer_mgt.sendData(client_ip);
+        	                            					String str=buffer_mgt.sendData(client_ip,"ch_wb");
                 	                                        		if(str !=null ){
 											str=course_id.get(i)+","+str;
 				                                        		out.println(str);

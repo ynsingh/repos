@@ -82,7 +82,17 @@ public class VideoPostServer {
 class MyPostVideoHandler implements HttpHandler {
   	public void handle(HttpExchange exchange) throws IOException {
 		try {
+			int i=0;
 			while(VideoPostServer.getController().isRunning()){
+				/*	
+				RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
+                              	MyHashTable temp_ht=runtimeObject.getVideoMyHashTable();
+				if(i==0) {
+					BufferMgt buffer_mgt= new BufferMgt();
+					temp_ht.setValues("10000",buffer_mgt);	
+					i++;
+				}
+				*/
 				String requestMethod = exchange.getRequestMethod();
 				if (requestMethod.equalsIgnoreCase("POST")) {
       					Headers responseHeaders = exchange.getResponseHeaders();
@@ -99,6 +109,11 @@ class MyPostVideoHandler implements HttpHandler {
 		        	      	try {
 						if(image !=null){
 							if((VideoBufferImage.getController().bufferSize()) < 25){
+								/*{
+									BufferMgt buffer_mgt=temp_ht.getValues("10000");
+			                                                buffer_mgt.putByte(image,client_ip,"ins_video");
+
+								}*/
         	                                		VideoBufferImage.getController().put(image);
 							}else{
 								VideoBufferImage.getController().handleBuffer();
