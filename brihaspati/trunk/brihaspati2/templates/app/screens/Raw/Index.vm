@@ -106,10 +106,10 @@ $!data.getMessage()
 	<td width="16%" > <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","general")> $brih_chat</a> </td>
 	<td width="16%" ><a href=$link.setPage("call,UserMgmt_User,Profile.vm").addPathInfo("lang",$lang) style=text-decoration:none> #if($lang == "hindi") $brih_usr $brih_Of $Profile_user #else  $brih_usr $Profile_user #end </a></td>
 	
-		<td width="16%" > #if($lang == "hindi") $brih_Institute $brih_wise $brih_chat #else $RemoteInstitute wise $brih_chat/$DiscussionBoard #end </td>
+		<td width="16%" > #if($lang == "hindi") $brih_Institute $brih_wise $brih_chat/$DiscussionBoard #else $RemoteInstitute $brih_wise $brih_chat/$DiscussionBoard #end </td>
 		<td width="16%" > 
     		<select name="instName" onChange="checkOption(this);"/>
-                <option> #if($lang == "hindi") $brih_Institute $brih_select #else  $brih_select $RemoteInstitute #end </option>
+                <option> #if($lang == "hindi" || $lang == "gujarati") $brih_Institute $brih_select #else  $brih_select $RemoteInstitute #end </option>
 	  	#foreach($name in $instNameList)
 		<option value="$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8").addPathInfo("grpName",$name)">$name </option>
 		##<option value="$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","instituteWise").addPathInfo("grpName",$name)">$name </option>
