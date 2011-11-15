@@ -106,10 +106,17 @@ public class RuntimeDataObject {
         }
 
 	/**
-         * Load Audio port 
+         * Load Audio post port 
          */
-        public int getAudioPort(){
-                return Integer.parseInt(prop.getProperty("ref_audio_port"));
+        public int getAudioPostPort(){
+                return Integer.parseInt(prop.getProperty("ref_audio_post_port"));
+        }
+
+        /**
+         * Load Audio get port 
+         */
+        public int getAudioGetPort(){
+                return Integer.parseInt(prop.getProperty("ref_audio_get_port"));
         }
 
 	/**

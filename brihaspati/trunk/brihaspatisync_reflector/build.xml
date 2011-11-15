@@ -42,6 +42,11 @@
                          jar="jnlp/*.jar"
                          alias="brihaspati_sync"
                          storepass="ashish" />
+		<signjar keystore="jnlp/brihaspatisync"
+                         jar="jnlp/*.jar"
+                         alias="brihaspati_sync"
+                         storepass="ashish" />
+
         </target>
 
 	
@@ -53,8 +58,16 @@
       		       debug="${debug}"
       		       deprecation="${deprecation}"
       		       optimize="${optimize}">
+			<classpath refid="classpath"/>
     		</javac>
 	</target>
+
+	<path id="classpath">
+            	<fileset dir="${lib.dir}" >
+                	<include name="**/*.jar"/>
+           	</fileset>
+  	</path>
+
 	
 	<target name="clean" description="clean up">
                 <delete dir="${temp.dir}"/>

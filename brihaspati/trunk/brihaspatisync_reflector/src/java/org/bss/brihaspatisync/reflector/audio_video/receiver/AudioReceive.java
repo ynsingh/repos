@@ -60,7 +60,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
 
 	//private MaintainLog log=MaintainLog.getController();
 	
-	private int port=RuntimeDataObject.getController().getAudioPort();                                              
+	private int port=0;                                              
 
 
 	/** getting the clone datasource for the Audio */  

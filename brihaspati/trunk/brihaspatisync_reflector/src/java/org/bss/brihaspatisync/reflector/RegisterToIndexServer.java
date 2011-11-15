@@ -34,6 +34,8 @@ import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
 import org.bss.brihaspatisync.reflector.network.desktop_sharing.DesktopPostServer;
 import org.bss.brihaspatisync.reflector.network.desktop_sharing.DesktopGetServer;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListTimer;
+import org.bss.brihaspatisync.reflector.network.audio.PostAudioServer;
+import org.bss.brihaspatisync.reflector.network.audio.GetAudioServer;
 import java.util.Timer;
 
 /**
@@ -257,6 +259,10 @@ public class RegisterToIndexServer {
 			org.bss.brihaspatisync.reflector.network.video_server.StudentPostServer.getController().start();//8093
                         org.bss.brihaspatisync.reflector.network.video_server.StudentVideoGetServer.getController().start();//8094
 
+			//Audio Thread
+			PostAudioServer.getController().startThread();
+			GetAudioServer.getController().startThread();
+			                                    
 
 			//TCPServer.getController().start(); 	/** port 8888  */
 			//TransmitHandlerThread.getControllerofHandler().start();

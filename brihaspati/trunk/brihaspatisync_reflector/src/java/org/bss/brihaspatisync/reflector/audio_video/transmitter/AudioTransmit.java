@@ -39,7 +39,7 @@ import org.bss.brihaspatisync.reflector.audio_video.receiver.AudioReceive;
 
 public class AudioTransmit {
 
-	private	int port=RuntimeDataObject.getController().getAudioPort();
+	private	int port=0;
 	private RTPManager rtpaudio;
 	private SendStream stream=null;
 	private InetAddress ipAddr=null;
