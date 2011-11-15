@@ -288,6 +288,7 @@ public class HttpsUtil{
 					while((str=in.readLine())!=null){
 	                                	if(!(str.equals(message))){
         	                                	msgList.addElement(str);
+							System.out.println(msgList);
                         	                }
                                 	}
                                 }finally {

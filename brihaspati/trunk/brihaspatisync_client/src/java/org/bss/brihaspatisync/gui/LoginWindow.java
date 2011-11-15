@@ -97,8 +97,10 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	private ClientObject client_obj=ClientObject.getController();
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
 	private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-	private java.util.Vector languages = new java.util.Vector();
+	//private java.util.Vector languages = new java.util.Vector();
 	private ClassLoader clr= this.getClass().getClassLoader();
+	private String[] languages={"English","Hindi","Tamil","Telugu","Bhojpuri","Arabic","Chinies","Greek","Japanese","Korean","Persian","Rusian"};
+
 	
 	/**
 	 * Constructor detail
@@ -113,9 +115,9 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	 * Create GUI for LoginWindow
 	 */	
 	private void createGUI(){
-		languages.add("English");
-		languages.add("Greek");
-		languages.add("Korean");
+	//	languages.add("English");
+	//	languages.add("Greek");
+	//	languages.add("Korean");
 		//languages.add("Hindi");
     		panel=new JPanel();
     		panel.setLayout(new BorderLayout());
@@ -335,24 +337,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 
 				}catch(Exception ex){}
 				return;
-			} else if(languageName.equals("Greek")){
-				try {
-					chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));    
-			        	chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
-					bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
-                                        titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
-                                        setTitle(Language.getController().getLangValue("LoginWindow.Title"));
-					mainPanel.remove(1);
-					mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
-					mainPanel.revalidate();
-					mainPanel.validate();
-					panel.repaint();
-					mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
-					mainWindow.setMenuText();
-                                        mainWindow.setMenuItemText();
-		                }catch(Exception ex){}
-				return;
-			}else if(languageName.equals("Korean")){
+
+			 } else if(languageName.equals("Hindi")){
                                 try {
                                         chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
                                         chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
@@ -364,11 +350,182 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                                         mainPanel.revalidate();
                                         mainPanel.validate();
                                         panel.repaint();
-                                    	mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
-                                     	mainWindow.setMenuText();
-                                	mainWindow.setMenuItemText();
-                            	}catch(Exception ex){}
+                                        mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
+                                        mainWindow.setMenuText();
+                                        mainWindow.setMenuItemText();
+                                }catch(Exception ex){}
+                                return;
+                        }else if(languageName.equals("Tamil")){
+                                try {
+                                        chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
+                                        chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
+                                        bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
+                                        titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
+                                        setTitle(Language.getController().getLangValue("LoginWindow.Title"));
+                                        mainPanel.remove(1);
+                                        mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
+                                        mainPanel.revalidate();
+                                        mainPanel.validate();
+                                        panel.repaint();
+                                        mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
+                                        mainWindow.setMenuText();
+                                        mainWindow.setMenuItemText();
+                                }catch(Exception ex){}
                                         return;
+                        }else if(languageName.equals("Telugu")){
+                                try {
+                                        chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
+                                        chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
+                                        bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
+                                        titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
+                                        setTitle(Language.getController().getLangValue("LoginWindow.Title"));
+                                        mainPanel.remove(1);
+                                        mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
+                                        mainPanel.revalidate();
+                                        mainPanel.validate();
+                                        panel.repaint();
+                                        mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
+                                        mainWindow.setMenuText();
+                                        mainWindow.setMenuItemText();
+                                }catch(Exception ex){}
+                                        return;
+			}else if(languageName.equals("Bhojpuri")){
+                                try {
+                                        chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
+                                        chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
+                                        bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
+                                        titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
+                                        setTitle(Language.getController().getLangValue("LoginWindow.Title"));
+                                        mainPanel.remove(1);
+                                        mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
+                                        mainPanel.revalidate();
+                                        mainPanel.validate();
+                                        panel.repaint();
+                                        mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
+                                        mainWindow.setMenuText();
+                                        mainWindow.setMenuItemText();
+                                }catch(Exception ex){}
+                                        return;
+                        }else if(languageName.equals("Arabic")){
+                                try {
+                                        chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
+                                        chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
+                                        bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
+                                        titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
+                                        setTitle(Language.getController().getLangValue("LoginWindow.Title"));
+                                        mainPanel.remove(1);
+                                        mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
+                                        mainPanel.revalidate();
+                                        mainPanel.validate();
+                                        panel.repaint();
+                                        mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
+                                        mainWindow.setMenuText();
+                                        mainWindow.setMenuItemText();
+                                }catch(Exception ex){}
+                                        return;
+			 }else if(languageName.equals("Chinies")){
+                                try {
+                                        chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
+                                        chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
+                                        bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
+                                        titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
+                                        setTitle(Language.getController().getLangValue("LoginWindow.Title"));
+                                        mainPanel.remove(1);
+                                        mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
+                                        mainPanel.revalidate();
+                                        mainPanel.validate();
+                                        panel.repaint();
+                                        mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
+                                        mainWindow.setMenuText();
+                                        mainWindow.setMenuItemText();
+                                }catch(Exception ex){}
+                                        return;
+                        }else if(languageName.equals("Greek")){
+                                try {
+                                        chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
+                                        chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
+                                        bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
+                                        titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
+                                        setTitle(Language.getController().getLangValue("LoginWindow.Title"));
+                                        mainPanel.remove(1);
+                                        mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
+                                        mainPanel.revalidate();
+                                        mainPanel.validate();
+                                        panel.repaint();
+                                        mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
+                                        mainWindow.setMenuText();
+                                        mainWindow.setMenuItemText();
+                                }catch(Exception ex){}
+                                        return;
+			}else if(languageName.equals("Japanese")){
+                                try {
+                                        chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
+                                        chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
+                                        bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
+                                        titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
+                                        setTitle(Language.getController().getLangValue("LoginWindow.Title"));
+                                        mainPanel.remove(1);
+                                        mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
+                                        mainPanel.revalidate();
+                                        mainPanel.validate();
+                                        panel.repaint();
+                                        mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
+                                        mainWindow.setMenuText();
+                                        mainWindow.setMenuItemText();
+                                }catch(Exception ex){}
+                                        return;
+                        }else if(languageName.equals("Korean")){
+                                try {
+                                        chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
+                                        chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
+                                        bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
+                                        titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
+                                        setTitle(Language.getController().getLangValue("LoginWindow.Title"));
+                                        mainPanel.remove(1);
+                                        mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
+                                        mainPanel.revalidate();
+                                        mainPanel.validate();
+                                        panel.repaint();
+                                        mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
+                                        mainWindow.setMenuText();
+                                        mainWindow.setMenuItemText();
+                                }catch(Exception ex){}
+                                        return;
+                        }else if(languageName.equals("Persian")){
+                                try {
+                                        chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
+                                        chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
+                                        bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
+                                        titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
+                                        setTitle(Language.getController().getLangValue("LoginWindow.Title"));
+                                        mainPanel.remove(1);
+                                        mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
+                                        mainPanel.revalidate();
+                                        mainPanel.validate();
+                                        panel.repaint();
+                                        mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
+                                        mainWindow.setMenuText();
+                                        mainWindow.setMenuItemText();
+                                }catch(Exception ex){}
+                                        return;
+			}else if(languageName.equals("Rusian")){
+                                try {
+                                        chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
+                                        chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
+                                        bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
+                                        titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
+                                        setTitle(Language.getController().getLangValue("LoginWindow.Title"));
+                                        mainPanel.remove(1);
+                                        mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
+                                        mainPanel.revalidate();
+                                        mainPanel.validate();
+                                        panel.repaint();
+                                        mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
+                                        mainWindow.setMenuText();
+                                        mainWindow.setMenuItemText();
+                                }catch(Exception ex){}
+                                        return;
+
                     	}
     		}
 	}   

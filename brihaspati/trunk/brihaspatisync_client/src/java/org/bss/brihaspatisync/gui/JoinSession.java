@@ -121,16 +121,26 @@ public class JoinSession {
 			WhiteBoardDraw.getController().start();
                         ReceiveQueueHandler.getController().start();
 			HandRaiseThreadController.getController().start();
-			String a_status=client_obj.getAudioStatus();
-			String v_status=client_obj.getVideoStatus();
-
-			if((a_status.equals("1"))&&(v_status.equals("1"))){
-				AVTransmitReceiveHandler.getController();
-			}
-
 		}catch(Exception ex){log.setLog("Error in Starting GUIThreads"+ex.getMessage());}
+
+		//start audio thread
+		try{
+			String a_status=client_obj.getAudioStatus();
+
+                        if(a_status.equals("1")){
+                                if((client_obj.getUserRole()).equals("instructor")){
+                                        org.bss.brihaspatisync.tools.audio.PostAudioStream.getController().startThread();
+                                }else {
+                                        org.bss.brihaspatisync.tools.audio.GetAudioStream.getController().startThread();
+                                }	
+			}
+				//AVTransmitReceiveHandler.getController();
+		}catch(Exception ex){System.out.println("Error in start audio thread");}
+
+		//start video thread
 		try {
-					
+			String v_status=client_obj.getVideoStatus();
+			
 			if((client_obj.getUserRole()).equals("instructor")){
                         	org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();
 				org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start();
