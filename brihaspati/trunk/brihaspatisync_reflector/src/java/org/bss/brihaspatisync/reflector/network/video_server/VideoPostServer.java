@@ -27,7 +27,10 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import javax.imageio.ImageIO;
+
+import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal  </a>
@@ -80,20 +83,19 @@ public class VideoPostServer {
 }
 
 class MyPostVideoHandler implements HttpHandler {
+	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
+	
   	public void handle(HttpExchange exchange) throws IOException {
 		try {
-			int i=0;
 			while(VideoPostServer.getController().isRunning()){
-				/*	
-				RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
-                              	MyHashTable temp_ht=runtimeObject.getVideoMyHashTable();
-				if(i==0) {
+                              	MyHashTable temp_ht=runtimeObject.getInstructorVideoMyHashTable();
+				if(!temp_ht.getStatus("ins_video")){ 
 					BufferMgt buffer_mgt= new BufferMgt();
-					temp_ht.setValues("10000",buffer_mgt);	
-					i++;
+					temp_ht.setValues("ins_video",buffer_mgt);	
 				}
-				*/
+				
 				String requestMethod = exchange.getRequestMethod();
+				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
 				if (requestMethod.equalsIgnoreCase("POST")) {
       					Headers responseHeaders = exchange.getResponseHeaders();
       					responseHeaders.set("Content-Type", "text/plain");
@@ -107,18 +109,9 @@ class MyPostVideoHandler implements HttpHandler {
 			                } while(!(count>4&&bytes[count-2]==(byte)-1 && bytes[count-1]==(byte)-39));
 			                BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 		        	      	try {
-						if(image !=null){
-							if((VideoBufferImage.getController().bufferSize()) < 25){
-								/*{
-									BufferMgt buffer_mgt=temp_ht.getValues("10000");
-			                                                buffer_mgt.putByte(image,client_ip,"ins_video");
-
-								}*/
-        	                                		VideoBufferImage.getController().put(image);
-							}else{
-								VideoBufferImage.getController().handleBuffer();
-								VideoBufferImage.getController().put(image);
-							}
+						if(image !=null) {
+							BufferMgt buffer_mgt=temp_ht.getValues("ins_video");
+			                                buffer_mgt.putByte(image,client_ip,"ins_video");
 						}
                 	                }catch(Exception e){}
 		        	        responseBody.close();

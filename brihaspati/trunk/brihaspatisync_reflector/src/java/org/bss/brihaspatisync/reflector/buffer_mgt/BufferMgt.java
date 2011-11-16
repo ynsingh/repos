@@ -49,24 +49,19 @@ public class  BufferMgt {
 			
                 }catch(Exception e){}
     	 }
-	 private String sendData_IncreasePointer(String ip,String type) throws Exception {
+	 private Object sendData_IncreasePointer(String ip,String type) throws Exception {
 		try {	
              		curpointer = createhashtable.getValue(ip,type);
 			Buffer buffer=createhashtable.setBuffer(type);
 			int size=buffer.size();
 			if(curpointer<size){
-				String str="";	
+				Object str="";	
 				while( curpointer != size) {
 					String str1=(buffer.get(curpointer)).toString();
                                         str1=str1.trim();
                                         ip=ip.trim();
                                         if(!(str1.startsWith(ip))){
-						str=(buffer.getObject(curpointer)).toString();
-						/*
-                                                int temp=str1.indexOf("@$",0);
-                                                temp=temp+2;
-                                                str=str1.substring(temp,str1.length());
-						*/
+						str=buffer.getObject(curpointer);
                                                 curpointer++;
                                                 setPointer(ip,curpointer,type);
                                                 break;
@@ -79,7 +74,7 @@ public class  BufferMgt {
 			}
 
 		} catch(Exception e){System.out.println("Error in sendData_IncreasePointer method "+e.getMessage());}	
-		return "";
+		return null;
 	 }
 
          /**
@@ -87,30 +82,21 @@ public class  BufferMgt {
          * packet type and queue type.                
          */                  
 
-	 public  synchronized void putByte(String data,String current_ip,String type){
+	 public  synchronized void putByte(Object data,String current_ip,String type){
 		try {
-			if(type.equals("ch_wb")) {
-				Buffer buffer=createhashtable.setBuffer(type);
-				if(!(data.equals("nodata"))){
-					buffer.put(current_ip+"@$");
-					buffer.putObject(data);
-	                	}
-			}
-
+			Buffer buffer=createhashtable.setBuffer(type);
+			buffer.put(current_ip+"@$");
+			buffer.putObject(data);
 		}catch(Exception e){ System.out.println("Error in putByte method in BufferMgt class ----->"+e.getMessage()); }
 	}
 
- 	public String sendData(String newip,String type) {
-          	String senddata=null;
+ 	public Object sendData(String newip,String type) {
                 try {
 			if(!newip.equals("")) {
-				String data=sendData_IncreasePointer(newip,type);
-        	                if(!(data.equals(""))){
-                	     		senddata=data;
-				}
+				return sendData_IncreasePointer(newip,type);
 			}
                	}catch(Exception s){ System.out.println("Error in sendData method ----->"+s.getMessage());}
-		return senddata;
+		return null;
 	}
 	
 	private synchronized void setPointer(String setip , int pointer,String type) {

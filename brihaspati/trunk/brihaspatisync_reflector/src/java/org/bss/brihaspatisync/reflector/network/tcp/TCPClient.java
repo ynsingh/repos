@@ -209,7 +209,7 @@ public class TCPClient implements Runnable{
 									TCPUtil.getController().getString(course_id.get(i).toString(),"#Parent"+client_ip);
 									if(temp_ht.getStatus(course_id.get(i).toString())) {
                                                                 		BufferMgt buffer_mgt=temp_ht.getValues(course_id.get(i).toString());
-        	                            					String str=buffer_mgt.sendData(client_ip,"ch_wb");
+        	                            					String str=(buffer_mgt.sendData(client_ip,"ch_wb")).toString();
                 	                                        		if(str !=null ){
 											str=course_id.get(i)+","+str;
 				                                        		out.println(str);

@@ -12,7 +12,6 @@ import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 
 import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
-import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 
 //import org.bss.brihaspatisync.reflector.network.tcp.TCPClient;
 
@@ -143,8 +142,9 @@ class MyPostGetHandler implements HttpHandler {
 						responseBody.close();
                                         }else if(temp_ht.getStatus(data_value[0])) {
                                                 BufferMgt buffer_mgt=temp_ht.getValues(data_value[0]);
-						buffer_mgt.putByte(data_value[1],client_ip,"ch_wb");
-						String str=buffer_mgt.sendData(client_ip,"ch_wb");
+						if(data_value[1].equals("nodata"))
+							buffer_mgt.putByte(data_value[1],client_ip,"ch_wb");
+						String str=(buffer_mgt.sendData(client_ip,"ch_wb")).toString();
 						/**  get Lecture id ***************/
 						String data=UserListUtil.getContriller().getDataForVector(data_value[0]);
 						/**  get Lecture id ***************/

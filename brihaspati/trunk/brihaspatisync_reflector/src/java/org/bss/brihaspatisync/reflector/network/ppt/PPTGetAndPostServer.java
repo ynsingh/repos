@@ -20,7 +20,11 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+
+import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
+
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
@@ -66,12 +70,18 @@ public class PPTGetAndPostServer {
 }
 	
 class PPTHandler implements HttpHandler {
+	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
         public void handle(HttpExchange exchange) throws IOException {
 		try {
                 	while(PPTGetAndPostServer.getController().getFlag()){
+				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
 				String requestMethod = exchange.getRequestMethod();
                         	if (requestMethod.equalsIgnoreCase("POST")) {
-                                	System.out.println(requestMethod+"        ppt Server Start         ");
+					MyHashTable temp_ht=runtimeObject.getPPTServerMyHashTable();
+                                	if(!temp_ht.getStatus("ppt_server")){
+                                        	BufferMgt buffer_mgt= new BufferMgt();
+                                        	temp_ht.setValues("ppt_server",buffer_mgt);
+                                	}
 					Headers responseHeaders = exchange.getResponseHeaders();
                                         responseHeaders.set("Content-Type", "text/plain");
                                         exchange.sendResponseHeaders(200, 0);
@@ -84,28 +94,25 @@ class PPTHandler implements HttpHandler {
                                         } while(!(count>4&&bytes[count-2]==(byte)-1 && bytes[count-1]==(byte)-39));
 					
                                         java.awt.image.BufferedImage image = javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream(bytes));
-					System.out.println("    image "+image);
                                         try {
-						
-                                                if((PPTUtil.getController().getBuffer().bufferSize()) < 50)
-                                                        PPTUtil.getController().getBuffer().put(image);
-                                                else
-                                                        PPTUtil.getController().getBuffer().handleBuffer();
-							
-                                        } catch(Exception e){}
+						if(image !=null) {
+                                                        BufferMgt buffer_mgt=temp_ht.getValues("ppt_server");
+                                                        buffer_mgt.putByte(image,client_ip,"ppt_server");
+                                                }	
+					} catch(Exception e){}
                                         responseBody.close();
         	                }
 				
 			  	if (requestMethod.equalsIgnoreCase("GET")) {
-                      			System.out.println(requestMethod+"      ppt Server Start        ");
 					Headers responseHeaders = exchange.getResponseHeaders();
 	                                responseHeaders.set("Content-Type", "text/plain");
         	                        exchange.sendResponseHeaders(200, 0);
                 	                OutputStream responseBody = exchange.getResponseBody();
                         	        try {
-                                	        java.awt.image.BufferedImage image=PPTUtil.getController().getBuffer().get(0);
-                                        	PPTUtil.getController().getBuffer().remove();
-	                                        javax.imageio.ImageIO.write(image, "jpeg", responseBody);
+	        				MyHashTable temp_ht=runtimeObject.getPPTServerMyHashTable();
+                                        	BufferMgt buffer_mgt=temp_ht.getValues("ppt_server");
+                                        	java.awt.image.BufferedImage image=(java.awt.image.BufferedImage)(buffer_mgt.sendData(client_ip,"ppt_server"));
+						javax.imageio.ImageIO.write(image, "jpeg", responseBody);
         	                        }catch(Exception e){}
                 	                responseBody.close();
 				}

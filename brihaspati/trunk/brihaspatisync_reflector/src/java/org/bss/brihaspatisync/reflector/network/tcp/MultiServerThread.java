@@ -161,7 +161,7 @@ public class MultiServerThread extends Thread {
 							for(int i=0 ; i<course_id.size();i++) {
 								if(temp_ht.getStatus(course_id.get(i).toString())){
 									BufferMgt buffer_mgt=temp_ht.getValues(course_id.get(i).toString());
-        	                               				String str=buffer_mgt.sendData(client_ip,"ch_wb");
+        	                               				String str=(buffer_mgt.sendData(client_ip,"ch_wb")).toString();
 							        	if(str !=null ){
 										str=course_id.get(i).toString()+","+str;
                                 	                       	        	out.println(str);

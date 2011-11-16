@@ -24,8 +24,8 @@ public class Buffer {
          * Create an empty Buffer
          */
 	public Buffer(){
-		buffer= new Vector();
-		data= new Vector();
+		buffer= new Vector(20);
+		data= new Vector(20);
 	} 
     
        	/** 

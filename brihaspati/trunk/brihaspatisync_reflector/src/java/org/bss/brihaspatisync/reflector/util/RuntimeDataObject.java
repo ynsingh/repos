@@ -24,6 +24,10 @@ public class RuntimeDataObject {
 	private MyHashTable ht=null;
 
 	private MyHashTable videoht=null;
+	
+	private MyHashTable desktopht=null;
+	
+	private MyHashTable pptht=null;
 
         private String indexServerAddr="";
 
@@ -209,10 +213,28 @@ public class RuntimeDataObject {
                 return null;
         }
 
-	public MyHashTable getVideoMyHashTable(){
+	public MyHashTable getInstructorVideoMyHashTable(){
                 if(videoht == null)
                         videoht=new MyHashTable();
                 return videoht;
+        }
+
+	public MyHashTable getStudentVideoMyHashTable(){
+                if(videoht == null)
+                        videoht=new MyHashTable();
+                return videoht;
+        }	
+
+	public MyHashTable getDesktopServerMyHashTable(){
+                if(desktopht == null)
+                        desktopht=new MyHashTable();
+                return desktopht;
+        }
+		
+	public MyHashTable getPPTServerMyHashTable(){
+                if(pptht == null)
+                        pptht=new MyHashTable();
+                return pptht;
         }
 
 	public MyHashTable getMyHashTable(){

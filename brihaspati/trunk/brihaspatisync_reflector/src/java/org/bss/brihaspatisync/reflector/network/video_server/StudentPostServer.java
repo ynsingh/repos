@@ -27,7 +27,9 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import javax.imageio.ImageIO;
+import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal  </a>
@@ -80,10 +82,19 @@ public class StudentPostServer {
 }
 
 class MyStudentPostVideoHandler implements HttpHandler {
+	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
+	
   	public void handle(HttpExchange exchange) throws IOException {
 		try {
 			while(StudentPostServer.getController().isRunning()){
+                                MyHashTable temp_ht=runtimeObject.getStudentVideoMyHashTable();
+                                if(!temp_ht.getStatus("stud_video")){
+                                        BufferMgt buffer_mgt= new BufferMgt();
+                                        temp_ht.setValues("stud_video",buffer_mgt);
+                                }
+				
 				String requestMethod = exchange.getRequestMethod();
+				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
 				if (requestMethod.equalsIgnoreCase("POST")) {
       					Headers responseHeaders = exchange.getResponseHeaders();
       					responseHeaders.set("Content-Type", "text/plain");
@@ -99,10 +110,8 @@ class MyStudentPostVideoHandler implements HttpHandler {
 			                BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 		        	      	try {
 						if(image!=null) {
-							if((StudentVideoBufferImage.getController().bufferSize()) < 25)
-        	                                		StudentVideoBufferImage.getController().put(image);
-							else
-								StudentVideoBufferImage.getController().handleBuffer();
+							BufferMgt buffer_mgt=temp_ht.getValues("stud_video");
+                                                        buffer_mgt.putByte(image,client_ip,"stud_video");	
 						}
                 	                }catch(Exception e){}
     				}

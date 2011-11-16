@@ -27,7 +27,9 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import javax.imageio.ImageIO;
+import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal  </a>
@@ -81,20 +83,21 @@ public class VideoGetServer {
 }
 
 class MyVideoHandler implements HttpHandler {
+	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
   	public void handle(HttpExchange exchange) throws IOException {
 		while(true){
 			String requestMethod = exchange.getRequestMethod();
 			if (requestMethod.equalsIgnoreCase("GET")) {
 		              	Headers responseHeaders = exchange.getResponseHeaders();
+				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
                                 responseHeaders.set("Content-Type", "text/plain");
                                 exchange.sendResponseHeaders(200, 0);
                                 OutputStream responseBody = exchange.getResponseBody();
 				try {
-					if(VideoBufferImage.getController().bufferSize()>0) {	
-						BufferedImage image=VideoBufferImage.getController().get(0);
-						VideoBufferImage.getController().remove();	
-						ImageIO.write(image, "jpeg", responseBody);
-					}
+		                	MyHashTable temp_ht=runtimeObject.getInstructorVideoMyHashTable();
+					BufferMgt buffer_mgt=temp_ht.getValues("ins_video");
+					BufferedImage image=(BufferedImage)(buffer_mgt.sendData(client_ip,"ins_video"));
+					ImageIO.write(image, "jpeg", responseBody);
 				}catch(Exception e){}
 				responseBody.close();
     			}

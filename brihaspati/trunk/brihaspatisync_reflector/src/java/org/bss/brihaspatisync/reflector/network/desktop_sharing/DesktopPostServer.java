@@ -27,7 +27,9 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import javax.imageio.ImageIO;
+import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal  </a>
@@ -79,10 +81,17 @@ public class DesktopPostServer {
 }
 
 class MyHandler implements HttpHandler {
+	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
   	public void handle(HttpExchange exchange) throws IOException {
 		try {
 			while(DesktopPostServer.getController().isRunning()){
+				MyHashTable temp_ht=runtimeObject.getDesktopServerMyHashTable();
+                                if(!temp_ht.getStatus("Desktop_Post")){
+                                        BufferMgt buffer_mgt= new BufferMgt();
+                                        temp_ht.setValues("Desktop_Post",buffer_mgt);
+                                }
 				String requestMethod = exchange.getRequestMethod();
+				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
 				if (requestMethod.equalsIgnoreCase("POST")) {
       					Headers responseHeaders = exchange.getResponseHeaders();
       					responseHeaders.set("Content-Type", "text/plain");
@@ -96,11 +105,10 @@ class MyHandler implements HttpHandler {
 			                } while(!(count>4&&bytes[count-2]==(byte)-1 && bytes[count-1]==(byte)-39));
 			                BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 		        	      	try {
-						if((DestopSharingUtil.getController().getBuffer().bufferSize()) < 50)
-                                        		DestopSharingUtil.getController().getBuffer().put(image);
-						else
-							DestopSharingUtil.getController().getBuffer().handleBuffer();
-						
+						if(image != null) {
+							BufferMgt buffer_mgt=temp_ht.getValues("Desktop_Post");
+                                                        buffer_mgt.putByte(image,client_ip,"Desktop_Post");		
+						}
                 	                }catch(Exception e){}
 		        	        responseBody.close();
     				}
