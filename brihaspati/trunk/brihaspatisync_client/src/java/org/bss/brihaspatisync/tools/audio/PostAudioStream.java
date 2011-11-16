@@ -9,6 +9,10 @@ package org.bss.brihaspatisync.tools.audio;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.Credentials;
+import org.apache.commons.httpclient.HostConfiguration;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -158,8 +162,16 @@ public class PostAudioStream implements Runnable {
 				client.setConnectionTimeout(20000);
 				if((new File("audio.wav")).exists())
 					postMethod.setRequestBody(AudioSystem.getAudioInputStream(new File("audio.wav")));//is);
-
                			postMethod.setRequestHeader("Content-type","application/octet-stream");
+				// Http Proxy Handler		
+				if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
+                                        HostConfiguration config = client.getHostConfiguration();
+                                        config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
+                                        Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
+                                        AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
+                                        client.getState().setProxyCredentials(authScope, credentials);
+                                }
+				
            			int statusCode1 = client.executeMethod(postMethod);
                 		postMethod.getStatusLine();
                 		postMethod.releaseConnection();

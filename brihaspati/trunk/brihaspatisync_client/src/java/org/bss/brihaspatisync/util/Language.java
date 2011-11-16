@@ -63,9 +63,9 @@ public class Language {
                                 InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/arabic.properties");
                                 prop.load(inputStream);
                         }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
-                }else if(str.equals("Chinies")) {
+                }else if(str.equals("Chinese")) {
                         try{
-                                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/chinies.properties");
+                                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/chinese.properties");
                                 prop.load(inputStream);
                         }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
 		}else if(str.equals("Greek")) {
@@ -88,9 +88,9 @@ public class Language {
                                 InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/persian.properties");
                                 prop.load(inputStream);
                         }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
-                }else if(str.equals("Rusian")) {
+                }else if(str.equals("Russian")) {
                         try{
-                                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/rusian.properties");
+                                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/russian.properties");
                                 prop.load(inputStream);
                         }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
                 }

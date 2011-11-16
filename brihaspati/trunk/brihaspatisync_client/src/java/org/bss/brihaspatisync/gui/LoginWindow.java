@@ -99,7 +99,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 	//private java.util.Vector languages = new java.util.Vector();
 	private ClassLoader clr= this.getClass().getClassLoader();
-	private String[] languages={"English","Hindi","Tamil","Telugu","Bhojpuri","Arabic","Chinies","Greek","Japanese","Korean","Persian","Rusian"};
+	private String[] languages={"English","Hindi","Tamil","Telugu","Bhojpuri","Arabic","Chinese","Greek","Japanese","Korean","Persian","Russian"};
 
 	
 	/**
