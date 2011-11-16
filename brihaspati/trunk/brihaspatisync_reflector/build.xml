@@ -36,12 +36,17 @@
 
         <!-- -->
         <target name="sign" depends="jar">
-		<copy file="${build.dir}/syncreflector.jar" tofile="jnlp/syncreflector.jar"/>
+		<copy file="${build.dir}/syncreflector.jar" tofile="${jnlp.dir}/syncreflector.jar"/>
+		<copy file="${lib.dir}/commons-io-1.1.jar" tofile="${jnlp.dir}/commons-io-1.1.jar"/>
 
 		<signjar keystore="jnlp/brihaspatisync"
-                         jar="jnlp/*.jar"
                          alias="brihaspati_sync"
-                         storepass="ashish" />
+                         storepass="ashish">
+			<path>
+    				<fileset dir="${jnlp.dir}" includes="**/*.jar" />
+			</path>                         
+		</signjar>
+
 
         </target>
 
@@ -69,7 +74,11 @@
                 <delete dir="${temp.dir}"/>
 		<delete dir="${build.dir}"/>
 		<delete dir="${logs.dir}"/>
-		<delete file="${jnlp.dir}/syncreflector.jar"/>
+		<delete>
+			<path>
+			    <fileset dir="${jnlp.dir}" includes="**/*.jar" />
+			</path>
+		</delete>
                 <delete dir="${bin.dir}/org"/>
         </target>
 
