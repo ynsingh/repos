@@ -120,7 +120,7 @@ public class ServerUtil{
                                 Lecture element=(Lecture)(u.get(i));
                                 String str1=(element.getForvideo());
                                 String str2=(element.getForaudio());
-                                str =",A="+str1+",V="+str2;
+                                str =",A="+str2+",V="+str1;
                         }
                 } catch(Exception e) { ServerLog.getController().Log("Error in selection of course"+e); }
                 return str;
