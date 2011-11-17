@@ -70,21 +70,18 @@
 	
 	<!-- -->
     	<target name="sign" depends="jar">
-	    	<copy file="${build.dir}/brihaspatisync.jar" tofile="jnlp/brihaspatisync.jar"/>
-		<copy file="${lib.dir}/poi-scratchpad-3.6-20091214.jar" tofile="jnlp/poi-scratchpad-3.6-20091214.jar"/>
-                <copy file="${lib.dir}/poi-3.6-20091214.jar" tofile="jnlp/poi-3.6-20091214.jar"/>
-	    	<signjar keystore="jnlp/brihaspatisync"
-			 jar="jnlp/brihaspatisync.jar"	
+	    	<copy file="${build.dir}/brihaspatisync.jar" tofile="${jnlp.dir}/brihaspatisync.jar"/>
+		<copy file="${lib.dir}/poi-scratchpad-3.6-20091214.jar" tofile="${jnlp.dir}/poi-scratchpad-3.6-20091214.jar"/>
+                <copy file="${lib.dir}/poi-3.6-20091214.jar" tofile="${jnlp.dir}/poi-3.6-20091214.jar"/>
+                <copy file="${lib.dir}/HttpClient.jar" tofile="${jnlp.dir}/HttpClient.jar"/>
+
+	    	<signjar keystore="${jnlp.dir}/brihaspatisync"
 			 alias="brihaspati_sync"	
-			 storepass="ashish" />
-		<signjar keystore="jnlp/brihaspatisync"
-                         jar="jnlp/poi-scratchpad-3.6-20091214.jar"     
-                         alias="brihaspati_sync"        
-                         storepass="ashish" />
-                 <signjar keystore="jnlp/brihaspatisync"
-                         jar="jnlp/poi-3.6-20091214.jar"  
-                         alias="brihaspati_sync"        
-                         storepass="ashish" />
+			 storepass="ashish">
+			 <path>
+                                <fileset dir="${jnlp.dir}" includes="**/*.jar" />
+                        </path>
+		</signjar>
 	</target>
 	
 	<!-- -->
@@ -94,6 +91,12 @@
                 <delete dir="${bin.dir}/org/bss"/>
 		<delete dir="${logs.dir}"/>
                 <delete dir="${doc.dir}"/>
+		 <delete>
+                        <path>
+                            <fileset dir="${jnlp.dir}" includes="**/*.jar" />
+                        </path>
+                </delete>
+
         </target>
         
    	<target name="javadoc" depends="sign" description="Create component Javadoc documentation">
