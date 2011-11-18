@@ -52,22 +52,21 @@ public class ReflectorManager
 	
 	protected String removePeer(String reflector_ip){
 		try {
-			/****************  arvind **************/			
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                         DocumentBuilder builder = factory.newDocumentBuilder();
                         Document doc = builder.parse(getFile());
-
-			/****************  arvind *************/
                         reflector_ip=reflector_ip.replaceAll("/","");
                         NodeList nodeList = doc.getElementsByTagName("IP");
                         for( int i=0; i<nodeList.getLength(); i++ ){
                                 Node node = nodeList.item(i);
                                 String ip=node.getFirstChild().getNodeValue();
+				ServerLog.getController().Log("   asdsadasdasdasd daas ds-------> "+ip);
                                 if(ip.equals(reflector_ip)){
 					NodeList removenodeList=doc.getElementsByTagName("Reflector");
                 		        doc.getDocumentElement().removeChild(removenodeList.item(i));
-                                        saveXML(doc);//saveXML();
+                     			saveXML(doc);
 					ReflectorStatusManager.getController().removeReflector_IP_Peer(reflector_ip);
+					removePeer(reflector_ip);
                                 }
                         }
                 }catch(Exception e){

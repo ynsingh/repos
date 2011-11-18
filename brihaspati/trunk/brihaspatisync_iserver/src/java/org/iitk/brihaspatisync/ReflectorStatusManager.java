@@ -50,20 +50,8 @@ public class ReflectorStatusManager
 	
 	public void setContext(ServletContext context1) throws Exception {
                 context=context1;
-		//createDocumentObjectModel();
         }
-	/*		
-	private void createDocumentObjectModel() {
-                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                try {
-                        DocumentBuilder db = dbf.newDocumentBuilder();
-                        try {
-                                doc = db.parse(getFile());
-                        }catch(Exception e){}
-                }catch(ParserConfigurationException pce) { ServerLog.getController().Log("Error to instantiate DocumentBuilder " + pce); }
-
-        }
-	*/
+	
 	protected String searchElement(String userid,String sessionid,String RoleId) {
 		String message_ip="UnSuccessfull";
 		try {
@@ -193,10 +181,11 @@ public class ReflectorStatusManager
 					 */
                                         if(ip.equals(reflector_ip)){
 						doc.getDocumentElement().removeChild(peerList.item(i));
+                        			message_ip=saveXML(doc);
+						removeReflector_IP_Peer(reflector_ip);	
                                         }
                                 }
                         }
-                        message_ip=saveXML(doc);
                 } catch( Exception e ){ ServerLog.getController().Log("Error in removeReflector_IP_Peer "+e.getMessage());	}
 		return message_ip;
         }
