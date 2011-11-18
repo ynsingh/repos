@@ -84,7 +84,6 @@ public class VideoPostServer {
 
 class MyPostVideoHandler implements HttpHandler {
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
-	
   	public void handle(HttpExchange exchange) throws IOException {
 		try {
 			while(VideoPostServer.getController().isRunning()){
@@ -112,6 +111,7 @@ class MyPostVideoHandler implements HttpHandler {
 						if(image !=null) {
 							BufferMgt buffer_mgt=temp_ht.getValues("ins_video");
 			                                buffer_mgt.putByte(image,client_ip,"ins_video");
+							buffer_mgt.sendData(client_ip,"ins_video");
 						}
                 	                }catch(Exception e){}
 		        	        responseBody.close();

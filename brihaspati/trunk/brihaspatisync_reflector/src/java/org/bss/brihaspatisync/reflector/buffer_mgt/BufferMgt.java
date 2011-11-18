@@ -39,9 +39,11 @@ public class  BufferMgt {
                         if(p1>0) {
                         	p1=p1-1;
 				if( (maxpointer-p1) >15) {
+					System.out.println(type + " 15 > maxpointer  " +maxpointer+"  p1  "+p1);
                                 	createhashtable.resetPointer(5,type);
                                       	buffer.removeRange(0,5);
                                 } else {
+					System.out.println(type + " 15 < maxpointer  " +maxpointer+"  p1  "+p1);
                                 	createhashtable.resetPointer(p1,type);
 					buffer.removeRange(0,p1);
                              	}
@@ -85,7 +87,7 @@ public class  BufferMgt {
 	 public  synchronized void putByte(Object data,String current_ip,String type){
 		try {
 			Buffer buffer=createhashtable.setBuffer(type);
-			buffer.put(current_ip+"@$");
+			buffer.put(current_ip);
 			buffer.putObject(data);
 		}catch(Exception e){ System.out.println("Error in putByte method in BufferMgt class ----->"+e.getMessage()); }
 	}

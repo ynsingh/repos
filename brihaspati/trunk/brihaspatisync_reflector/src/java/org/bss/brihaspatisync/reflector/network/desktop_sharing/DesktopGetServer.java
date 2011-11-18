@@ -96,7 +96,8 @@ class MyGetHandler implements HttpHandler {
 					MyHashTable temp_ht=runtimeObject.getDesktopServerMyHashTable();
                                         BufferMgt buffer_mgt=temp_ht.getValues("Desktop_Post");
                                         BufferedImage image=(BufferedImage)(buffer_mgt.sendData(client_ip,"Desktop_Post"));
-					ImageIO.write(image, "jpeg", responseBody);
+					if(image!=null)
+						ImageIO.write(image, "jpeg", responseBody);
 				}catch(Exception e){}
 				responseBody.close();
     			}

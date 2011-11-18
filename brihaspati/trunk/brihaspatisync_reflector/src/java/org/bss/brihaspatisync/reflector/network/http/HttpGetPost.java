@@ -142,9 +142,9 @@ class MyPostGetHandler implements HttpHandler {
 						responseBody.close();
                                         }else if(temp_ht.getStatus(data_value[0])) {
                                                 BufferMgt buffer_mgt=temp_ht.getValues(data_value[0]);
-						if(data_value[1].equals("nodata"))
+						if(!data_value[1].equals("nodata"))
 							buffer_mgt.putByte(data_value[1],client_ip,"ch_wb");
-						String str=(buffer_mgt.sendData(client_ip,"ch_wb")).toString();
+						String str=(String)buffer_mgt.sendData(client_ip,"ch_wb");
 						/**  get Lecture id ***************/
 						String data=UserListUtil.getContriller().getDataForVector(data_value[0]);
 						/**  get Lecture id ***************/

@@ -92,7 +92,6 @@ class PPTHandler implements HttpHandler {
                                         do {
                                                 count+= in.read(bytes,count,bytes.length-count);
                                         } while(!(count>4&&bytes[count-2]==(byte)-1 && bytes[count-1]==(byte)-39));
-					
                                         java.awt.image.BufferedImage image = javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream(bytes));
                                         try {
 						if(image !=null) {
@@ -112,7 +111,8 @@ class PPTHandler implements HttpHandler {
 	        				MyHashTable temp_ht=runtimeObject.getPPTServerMyHashTable();
                                         	BufferMgt buffer_mgt=temp_ht.getValues("ppt_server");
                                         	java.awt.image.BufferedImage image=(java.awt.image.BufferedImage)(buffer_mgt.sendData(client_ip,"ppt_server"));
-						javax.imageio.ImageIO.write(image, "jpeg", responseBody);
+						if(image!=null)
+							javax.imageio.ImageIO.write(image, "jpeg", responseBody);
         	                        }catch(Exception e){}
                 	                responseBody.close();
 				}

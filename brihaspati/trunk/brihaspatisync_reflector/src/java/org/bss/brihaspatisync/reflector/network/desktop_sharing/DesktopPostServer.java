@@ -108,6 +108,7 @@ class MyHandler implements HttpHandler {
 						if(image != null) {
 							BufferMgt buffer_mgt=temp_ht.getValues("Desktop_Post");
                                                         buffer_mgt.putByte(image,client_ip,"Desktop_Post");		
+							buffer_mgt.sendData(client_ip,"Desktop_Post");
 						}
                 	                }catch(Exception e){}
 		        	        responseBody.close();
