@@ -124,7 +124,8 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
  * @author <a href="mailto:kalpanagtm@gmail.com">Kalpana Gautam</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modified date:09-11-2010,03-03-2011,02-07-2011
+ * @author <a href="mailto:kishore.shukla@gmail.com">Kishore shukla</a>
+ * @modified date:09-11-2010,03-03-2011,02-07-2011,04-10-2011
  * @version 1.0
  * @since 1.0
  * @see ExpiryUtil
@@ -197,17 +198,16 @@ public class CommonUtility{
 				
                         String clean_Date=Clean_date.substring(0,10);
                         if(!clean_Date.equals(c_date)){//2 if
-                                	/**
-                                        *Code for update the clean date in database
-                                        */
-					
-                                	crit=new Criteria();
-                                        crit.add(SystemCleantimePeer.ID,1);
-                                        crit.add(SystemCleantimePeer.CLEAN_DATE,current_date);
-                                        SystemCleantimePeer.doUpdate(crit);
+                        	/**
+                        	*Code for update the clean date in database
+                        	*/
+                       		crit=new Criteria();
+                                crit.add(SystemCleantimePeer.ID,1);
+                                crit.add(SystemCleantimePeer.CLEAN_DATE,current_date);
+                                SystemCleantimePeer.doUpdate(crit);
                         	boolean Expiry_Success=ExpiryUtil.Expiry();
-			//	UpdateInfoMail.checknWriteXml();
-		//		String  Update_Mail = UpdateInfoMail.getUpdationMail();
+				UpdateInfoMail.checknWriteXml();
+				String  Update_Mail = UpdateInfoMail.getUpdationMail();
                                // if(Expiry_Success=true){//3 if
 	                               // this code moved to upside
                                // }//end of if 3 loop
@@ -217,15 +217,15 @@ public class CommonUtility{
 				boolean OT=optimizeTables();
 				boolean ADB=autoDeletebackup();
 				grpLeader();
-		//		InsertStuExpRecord();
+				//InsertStuExpRecord();
 
                         }//end of if 2 loop
 
 		}//end of if 1 loop
                 else{
-                                        /**
-                                         * Code for first time fill the clean Date in database
-                                         */
+                	/**
+                        * Code for first time fill the clean Date in database
+                        */
                 	crit=new Criteria();
 			crit.add(SystemCleantimePeer.ID,1);
                         crit.add(SystemCleantimePeer.CLEAN_DATE,current_date);

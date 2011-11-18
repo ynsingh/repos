@@ -42,12 +42,14 @@ import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
 //brihaspati
+import org.iitk.brihaspati.om.DbReceivePeer;
 import org.iitk.brihaspati.om.DbSendPeer;
 import org.iitk.brihaspati.om.NewsPeer;
 import org.iitk.brihaspati.om.NoticeReceivePeer;
 import org.iitk.brihaspati.om.NoticeSendPeer;
 import org.iitk.brihaspati.om.NoticeReceive;
 import org.iitk.brihaspati.om.DbSend;
+import org.iitk.brihaspati.om.DbReceive;
 import org.iitk.brihaspati.om.News;
 import org.iitk.brihaspati.om.NoticeSend;
 import org.iitk.brihaspati.om.Courses;
@@ -67,7 +69,9 @@ import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:arvindjss17@yahoo.co.in">Arvind Pal</a> 
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * @modified date: 08-07-2010, 13-07-2011
+ * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
+ * @author <a href="mailto:kishore.shukla@gmail.com">Kishore kumar shukla</a>
+ * @modified date: 08-07-2010, 13-07-2011,05-10-2011
  * @since 1.0
  * @see ExpiryUtil 
  */
@@ -78,7 +82,7 @@ public class UpdateInfoMail{
 			/**  Getting the path of Updation mail File to send Message */
                         String updatePath=TurbineServlet.getRealPath("/Updationmail");
                         File f=new File(updatePath);
-                        String TitalMailMessage="";
+                        //String TitalMailMessage="";
                         if(!f.exists())
                                 f.mkdirs();
                         /**
@@ -122,7 +126,6 @@ public class UpdateInfoMail{
                         crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
                         crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
                         crit.or(TurbineUserGroupRolePeer.ROLE_ID,2);
-                        crit.or(TurbineUserGroupRolePeer.ROLE_ID,1);
                         crit.addAscendingOrderByColumn(TurbineUserPeer.USER_ID);
                         crit.setDistinct();
                         List userList=TurbineUserPeer.doSelect(crit);
@@ -148,24 +151,24 @@ public class UpdateInfoMail{
                         String updatePath=TurbineServlet.getRealPath("/Updationmail");
 			Vector updatelist=userListfrmxml();
 			List userList=userList();
-                        //ErrorDumpUtil.ErrorLog("size in userList -->"+userList.size()+" size in updatelist "+updatelist.size());
 			//Getting the strength of users from database//
                         int userSize =userList.size();
                         //fixing users strength  per day
                         int userDay=userSize/7;
-                        // to send mail Rest users, less then 7
+                        // to send mail Reset users, less then 7
                         int remender=userSize%7;
                         int temp=0;
+                         XmlWriter xmlwriter=null;
                         if( updatelist.size() == 0)
+			{
                                 temp=0;
+			}
                         else
                                 temp=updatelist.size();
-                        XmlWriter xmlwriter=null;
                         if(temp!=userSize )
                         { //if1
                         	if(temp!=0)
                                 { //if2
-                        	//	ErrorDumpUtil.ErrorLog("updatelist ..read from xml.."+updatelist.size());
                                        //To remove the directory
                                         File f=new File(updatePath+"/Update__des.xml");
 					f.delete();
@@ -173,10 +176,8 @@ public class UpdateInfoMail{
                                 } //if2
 				int gi=0;
                                 int count=0; int temp1=userDay;
-                                //String fPath= updatePath;
                                 File f1 = new File(updatePath);
                                 if(f1.exists() && f1.isDirectory()) {
-                        	//	ErrorDumpUtil.ErrorLog("updatlist ..read from xml.12--->  "+userList.size());
                                 	for(int c1=0;c1<userList.size();c1++)
                                         { 
                                         	TurbineUser element=(TurbineUser)(userList.get(c1));
@@ -208,7 +209,6 @@ public class UpdateInfoMail{
 	public static String getUpdationMail(){
                 String Mail_msg="";
                 try {
-                      //  ErrorDumpUtil.ErrorLog("start get Updation Mail !!");
                         java.util.Date curDate=new java.util.Date();
                         long longCurDate= curDate.getTime();
                         String server_name=TurbineServlet.getServerName();
@@ -226,14 +226,12 @@ public class UpdateInfoMail{
                         for(int c=0;c<updatelist.size();c++) {
                                 // xmluid1 contains day (eg. Sunday )
                                 String xmluid1 =((FileEntry) updatelist.elementAt(c)).getstatus();
-                        //	ErrorDumpUtil.ErrorLog("start get Updation Mail 1 !!"+xmluid1);
                                 String cday=curDate.toString();
                                 String day="";
                                 for(int d=0;d<3;d++ )
                                         day=day+cday.charAt(d);
                                         /**  read xml file    */
                                 if(day.equals(xmluid1)) {
-                        	//	ErrorDumpUtil.ErrorLog("start get Updation Mail 2!!"+xmluid1);
                                         String xmluid =((FileEntry) updatelist.elementAt(c)).getuserid();
                                         String emailId1=((FileEntry) updatelist.elementAt(c)).getemailId();
                                         int uId=Integer.parseInt(xmluid);
@@ -243,20 +241,18 @@ public class UpdateInfoMail{
                                                 //Mail_msg=MailNotification.sendMail(Messagebackup,emailId1,"","Updation Mail","","","",server_name,srvrPort,"");
                                                 //Mail_msg=MailNotification.sendMail(Messagebackup, emailId1, "Updation Mail", "", "english");
 						// Shaista did Modification for mail Sending 
-						Mail_msg = MailNotificationThread.getController().set_Message(Messagebackup, "", "", " ", emailId1, "Updation Mail", "", "english", "");
+						Mail_msg = MailNotificationThread.getController().set_Message(Messagebackup, "", "", " ", emailId1, "Updation Mail from brihaspati", "", "english", "");
 						////////////////////////////////////////////
                                         }
                                         else
                                         {
 						String TitalMailMessage="";
                                                 TitalMailMessage=getAllMessage(uId);
-						//ErrorDumpUtil.ErrorLog("Update Info TitalMailMessage"+TitalMailMessage);
                                                 if(!TitalMailMessage.equals("")){
                                                 	//Mail_msg=MailNotification.sendMail(TitalMailMessage,emailId1,"","Updation Mail","","","",server_name,srvrPort,"english");
                                                 	//Mail_msg=MailNotification.sendMail(TitalMailMessage,  emailId1, "Updation Mail", "", "english");
 							// Shaista did Modification for mail Sending 
-							Mail_msg = MailNotificationThread.getController().set_Message(TitalMailMessage, "", "", " ", emailId1, "Updation Mail", "", "english", "");
-                                  //              	ErrorDumpUtil.ErrorLog("This is  else  condision !!!!!");
+							Mail_msg = MailNotificationThread.getController().set_Message(TitalMailMessage, "", "", " ", emailId1, "Updation Mail from brihaspati", "", "english", "");
                                                 }
                                         }
                                 } //if
@@ -269,7 +265,8 @@ public class UpdateInfoMail{
         {
                 String msg_all="";
                 try{
-                        msg_all=getCourss(u_id)+getNews(u_id)+getNotics(u_id)+getDiscussionBoard(u_id);
+			String mess="The following updates are available in your courses from your last login :";
+                        msg_all=mess+"<br>"+getCourse(u_id)+"<br>"+getNews(u_id)+"<br>"+getNotices(u_id)+"<br>"+getDiscussionBoard(u_id);
 			return msg_all;
                 }catch(Exception ex){   
 			ErrorDumpUtil.ErrorLog("Error in UpdateInfoMail util getAllMessage method -->"+ex.getMessage());
@@ -277,7 +274,7 @@ public class UpdateInfoMail{
 		}
         }//method
 	
-	public static String getCourss(int u_id){
+	public static String getCourse(int u_id){
 		java.util.Date curDate=new java.util.Date();
 		long longCurDate= curDate.getTime();
 		String Message="";
@@ -291,7 +288,7 @@ public class UpdateInfoMail{
                         for(int i7=0;i7<userCourse.size();i7++) {
 			        TurbineGroup element2=(TurbineGroup)(userCourse.get(i7));
                         	int gname=element2.getGroupId();
-                                if((gname!=1) && (gname!=2)) {
+                                if((gname!=1) && (gname!=2) && (gname!=3)) {
                                 	String gname1=element2.getName();
                                         //get All deatails of Courses
                                         Criteria crit=new Criteria();
@@ -311,11 +308,11 @@ public class UpdateInfoMail{
                                 }  //if
                        	}//outer for
 			if(!Message.equals("")){
-                                Message=" Courss is "+Message;
+                                Message=" Courses : "+Message;
                                 return Message;
                         }
 		}catch(Exception ex){
-			ErrorDumpUtil.ErrorLog("Error in Courss -->"+ex.getMessage());
+			ErrorDumpUtil.ErrorLog("Error in Course -->"+ex.getMessage());
 			return Message;
 		}
 		
@@ -349,7 +346,7 @@ public class UpdateInfoMail{
  				}
 			}//for nws
 			if(!Message.equals("")){
-                                Message=" News is "+Message;
+                                Message=" News : "+Message;
                                 return Message;
                         }
 		}catch(Exception ex){
@@ -359,7 +356,7 @@ public class UpdateInfoMail{
                 return Message;
 	}
 	
-	public static String getNotics(int u_id){
+	public static String getNotices(int u_id){
                         java.util.Date curDate=new java.util.Date();
 		long longCurDate= curDate.getTime();
 		String Message="";
@@ -387,11 +384,11 @@ public class UpdateInfoMail{
                                 }
 			}//for notice
 			if(!Message.equals("")){
-                                Message=" Notics is "+Message;
+                                Message=" Notices : "+Message;
                         	return Message;
 			}
  		}catch(Exception ex){
-			ErrorDumpUtil.ErrorLog("Error in Notic -->"+ex.getMessage());
+			ErrorDumpUtil.ErrorLog("Error in Notices -->"+ex.getMessage());
 			return Message;	
 		}
 		return Message;
@@ -403,22 +400,30 @@ public class UpdateInfoMail{
 		String Message="";
 		try {
                 	//get All deatails of discussion
-                        Criteria crit4=new Criteria();
-                        crit4.addGroupByColumn(DbSendPeer.MSG_SUBJECT);
-                        List disSub=DbSendPeer.doSelect(crit4);
-                        for(int i=0;i<disSub.size();i++) {//for dis
-	                        DbSend element=(DbSend)(disSub.get(i));
-                                String DB_topic=(element.getMsgSubject());
-                                java.util.Date pd=element.getPostTime();
-                                int userid1=(element.getUserId());
+                	Criteria crit4=new Criteria();
+                        crit4.add(DbReceivePeer.RECEIVER_ID,u_id);
+                        List dblist=DbReceivePeer.doSelect(crit4);
+                        for(int j=0;j<dblist.size();j++) {//for dis
+                                DbReceive element1=(DbReceive)(dblist.get(j));
+                                int  userid1=(element1.getReceiverId());
                                 String userid2=Integer.toString(userid1);
-                                long longModiDate=pd.getTime();
-                                long DBDate=(longCurDate-longModiDate)/(24*3600*1000);
-                                if(DBDate<7 || (longCurDate-longModiDate)!=0 )
-         	                	Message=Message+" "+DB_topic+" ,";
+                                int Msg_id=(element1.getMsgId());
+
+                                Criteria crit2=new Criteria();
+                                crit2.add(DbSendPeer.MSG_ID, Msg_id);
+                                List DbIdlist=DbSendPeer.doSelect(crit2);
+                                for(int k=0;k<DbIdlist.size();k++) {//for dis
+                                        DbSend element=(DbSend)(DbIdlist.get(k));
+                                        String DB_topic=(element.getMsgSubject());
+                                        java.util.Date pd=element.getPostTime();
+                                        long longModiDate=pd.getTime();
+                                        long DBDate=(longCurDate-longModiDate)/(24*3600*1000);
+                                        if(DBDate<7 || (longCurDate-longModiDate)!=0 )
+                                                Message=Message+" "+DB_topic+" ";
+				}
                 	}//for dis
 			if(!Message.equals("")){
-				Message=" Discussion Board "+Message;
+				Message=" Discussion Board : "+Message;
 				return Message;
 			}
 		}catch(Exception ex){ErrorDumpUtil.ErrorLog("Error in Discussion-->"+ex.getMessage());return Message;}

@@ -73,6 +73,8 @@ import org.apache.turbine.services.session.TurbineSessionService;
 import javax.servlet.http.HttpSession ;
 import java.util.Collection;
 import java.util.Vector;
+import org.iitk.brihaspati.modules.utils.UpdateMailthread;
+//import org.iitk.brihaspati.modules.utils.UpdateInfoMail;
 
 /**
  * Action class for authenticating a user into the system
@@ -87,6 +89,8 @@ import java.util.Vector;
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  *  @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ *  @author <a href="mailto:palseema30@gmail.com">Manorama pal</a>
+ *  @author modified date 04 Oct 2011<a href="mailto:kishore.shukla@gmail.com">kishore shukla</a>
  */
 
 public class myLogin extends VelocityAction{
@@ -301,9 +305,11 @@ public class myLogin extends VelocityAction{
 			}
 			ErrorDumpUtil.ErrorLog("After setting the ACL");
 			
-					boolean CL=CommonUtility.CleanSystem();
+					/*boolean CL=CommonUtility.CleanSystem();
 					if(!CL)
-						data.addMessage("The Error in Clean System: see Common Utility");
+						data.addMessage("The Error in Clean System: see Common Utility");*/
+					/*calling UpdateMailThread Util*/
+					 UpdateMailthread.getController().UpdateMailSystem();
 
 					boolean AB=CommonUtility.IFLoginEntry(uid,date);
 
