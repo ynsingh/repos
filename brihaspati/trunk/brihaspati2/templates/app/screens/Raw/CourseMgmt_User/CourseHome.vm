@@ -173,12 +173,12 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0>
 							<tr><td align=center>
-							<a href=$link.setPage("call,Question_Bank,Question_bank.vm").addPathInfo("count","1") style=text-decoration:none>
-							<img border=0 src="$content.getURI("/images/book_que.gif")"></a>
+								<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>
+                                                <img border=0 src="$content.getURI("/images/olexam.jpg")" width="50" height="50" ></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-     									<a href=$link.setPage("call,Question_Bank,Question_bank.vm").addPathInfo("count","1") style=text-decoration:none>$brih_qus $brih_bank</a><br>
+									<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$online_online $brih_examat $brih_system</a>
 							</td></tr>
 						</table>
 					</td> 
@@ -187,12 +187,11 @@ $!data.getMessage()
                                         <td align=center>
                                                 <table border=0>
                                                         <tr><td align=center>
-                                                              <a href=$link.setPage("call,Quiz_Mgmt,Quiz_Start.vm").addPathInfo("count","1") style=text-decoration:none>
-                                                              <img border=0 src="$content.getURI("/images/quiz.jpg")"></a>
+								<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none><img border=0 src="$content.getURI("/images/Instructor.png")"></a>
                                                         </td></tr>
                                                         <tr><td align=center>
                                                                 <font face="$ui.sansSerifFonts">
-                                                                        <a href=$link.setPage("call,Quiz_Mgmt,Quiz_Start.vm").addPathInfo("count","1") style=text-decoration:none>$brih_quiz $brih_mgmt</a><br>
+									<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none>$brih_ins $brih_mgmt</a><br>
                                                         </td></tr>
                                                 </table>
                                         </td>
@@ -259,33 +258,6 @@ $!data.getMessage()
 						</table>
 					</td>
 					## tracking Report
-				</tr>
-				<tr>
-					##Online Examination System 
-					<td align=center>
-					    <table border=0>
-					    <tr><td align=center>
-					    <font face="$ui.sansSerifFonts">
-					    <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>
-						<img border=0 src="$content.getURI("/images/olexam.jpg")" width="50" height="50" ></a>
-					   </td></tr>
-					    <tr><td align=center>
-					    <font face="$ui.sansSerifFonts">
-					    <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$online_online $brih_examat $brih_system</a>
-					   </td></tr>
-					    </table>
-					</td>
-					##Online Examination System 
-					<td align=center>
-					<table border=0>
-				                <tr><td align=center>
-                				<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none><img border=0 src="$content.getURI("/images/Instructor.png")"></a>
-                				</td></tr>
-                				<tr><td align=center><font face="$ui.sansSerifFonts">
-                					<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none>$brih_ins $brih_mgmt</a><br>
-                			</td></tr>
-                			</table>
-                			</td>
 				</tr>
 			#elseif($user_role=="student")
 				## inner row 1 open
@@ -369,12 +341,13 @@ $!data.getMessage()
                                         <td align=center>
                                                 <table border=0>
                                                         <tr><td align=center>
-                                                                       <a href=$link.setPage("call,Quiz_Mgmt,Quiz_Start.vm").addPathInfo("count","1") style=text-decoration:none>
-                                                                        <img border=0 src="$content.getURI("/images/quiz.jpg")"></a>
+								<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/exam.jpg")"></a>
+
                                                         </td></tr>
                                                         <tr><td align=center>
                                                                 <font face="$ui.sansSerifFonts">
-                                                                        <a href=$link.setPage("call,Quiz_Mgmt,Quiz_Start.vm").addPathInfo("count","1") style=text-decoration:none>$brih_quiz $brih_mgmt</a><br>
+									<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1") style=text-decoration:none>
+                                                        $brih_exam </a><br>
                                                         </td></tr>
                                                 </table>
                                         </td>
@@ -426,26 +399,6 @@ $!data.getMessage()
                                 </td>
 				</tr>
 				##inner row 3 close 
-				##=============================================================
-				## inner row 4 open
-				<tr>
-                ## inner column 1 (4)open
-				<td align=center>
-					<table border=0>
-						<tr><td align=center>
-     						<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/exam.jpg")"></a>
-						</td></tr>
-						<tr><td align=center>
-							<font face="$ui.sansSerifFonts">
-	     					<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1") style=text-decoration:none>							
-							$brih_exam </a><br>							
-						</td></tr>
-					</table>
-				</td>
-                ## inner column 1 (4)close                                                                         
-				</tr>
-				##inner row 4 close 
-				##=====================================================================
 			#end
 		#else  ## for guest is not login
 				## inner row 1 open
