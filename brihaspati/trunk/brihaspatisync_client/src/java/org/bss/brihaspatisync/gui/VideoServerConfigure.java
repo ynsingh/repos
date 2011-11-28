@@ -31,8 +31,8 @@ public class VideoServerConfigure implements ActionListener {
         private JPanel main_panel;
         private JPanel center_panel;
         private JPanel south_panel;
-        private JLabel textLabel,name_label;
-        private JTextField usr_text;
+        private JLabel name_label, name_labelPort;
+        private JTextField usr_text ,usr_textPort;
         private JButton ok_bttn,cancel_bttn;
 
 	public VideoServerConfigure(){
@@ -46,11 +46,22 @@ public class VideoServerConfigure implements ActionListener {
                 main_panel.setLayout(new BorderLayout());
 
                 center_panel=new JPanel();
+	
+			
                 name_label=new JLabel(Language.getController().getLangValue("VideoServerConfigure.lable"));
-                usr_text=new JTextField(30);
+                usr_text=new JTextField(15);
 		usr_text.setText(RuntimeDataObject.getController().getVideoServer());
                 center_panel.add(name_label);
                 center_panel.add(usr_text);
+
+		/*** port ******/
+		
+		name_labelPort=new JLabel(Language.getController().getLangValue("VideoServerConfigurePort.lable"));
+                usr_textPort=new JTextField(3);
+                usr_textPort.setText(RuntimeDataObject.getController().getVideoServerPort());
+                center_panel.add(name_labelPort);
+                center_panel.add(usr_textPort);
+		/*** port ******/
                 main_panel.add(center_panel, BorderLayout.CENTER);
 
                 south_panel=new JPanel();
@@ -67,7 +78,7 @@ public class VideoServerConfigure implements ActionListener {
 
                 frame.getContentPane().add(main_panel);
 		java.awt.Dimension dim=java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-                frame.setSize(500,85);
+                frame.setSize(450,100);
                 frame.setLocation((((int)dim.getWidth()/2)-185),(((int)dim.getHeight()/2)-220));
                 frame.setVisible(true);
 
@@ -78,6 +89,7 @@ public class VideoServerConfigure implements ActionListener {
 		if(e.getActionCommand().equals("OK_Bttn")){
 			if(!((usr_text.getText()).equals(""))){
                         	RuntimeDataObject.getController().setVideoServer(usr_text.getText());
+                        	RuntimeDataObject.getController().setVideoServerPort(usr_textPort.getText());
                              	frame.dispose();
                       	}else{
                         	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("VideoServerConfigure.Message"));

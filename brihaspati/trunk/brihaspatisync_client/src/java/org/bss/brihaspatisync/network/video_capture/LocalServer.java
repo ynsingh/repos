@@ -84,8 +84,8 @@ public class LocalServer implements Runnable {
 				if(runtime_object.getVideoServer().equals(""))
 					method = new GetMethod("http://localhost:8090");
 				else
-					method = new GetMethod("http://"+runtime_object.getVideoServer()+":8090");
-		                client.setConnectionTimeout(80000);
+					method = new GetMethod("http://"+runtime_object.getVideoServer()+":"+runtime_object.getVideoServerPort());
+		                client.setConnectionTimeout(800);
                                 method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
 				// Http Proxy Handler
 				if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
