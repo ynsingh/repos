@@ -16,7 +16,7 @@ $page.setBgColor($ui.bgcolor)
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
-<td><a href=$link.setPage("Index.vm")>Home</a> | Profile</td>
+<td><a href=$link.setPage("Index.vm")>$brih_home</a> | $Profile_user</td>
 <td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Profile.html","newWin");>$brih_help</a></td>
 </tr></table>
 $!data.getMessage()
@@ -33,13 +33,13 @@ $!data.getMessage()
                 
 <form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("Index.vm").setAction("ProfileUser")">
         <table width=100% bgcolor="$ui.tableColor">
-	 <tr><td><b>Profile Updation </b></td></tr>
+	 <tr><td><b>$brih_profile1 </b></td></tr>
 	 #foreach($ud in $udetl)
 	 <tr>
-           #formCell("First Name" "FName" "$!ud.getFirstName()")
+           #formCell("$brih_first $brih_name" "FName" "$!ud.getFirstName()")
          </tr>
 	 <tr>
-           #formCell("Last Name" "LName" "$!ud.getLastName()")
+           #formCell("$brih_last $brih_name" "LName" "$!ud.getLastName()")
          </tr>
          <tr>
 	   #formCell("$brih_alternate $brih_email" "EMAIL" "$!ud.getEmail()")
@@ -195,13 +195,13 @@ $!data.getMessage()
            #formCell("$Inst_designation" "designation" "$!designation")
          </tr>
 	 <tr>
-	   #fileUpload("Photo" "PHOTO")
+	   #fileUpload("$brih_photo" "PHOTO")
 	 </tr>
 	 <tr>
-	   #formCell("Max No of Student in list view (Range of Days 1-100)" "Conf" "$!conf")
+	   #formCell("$List_config" "Conf" "$!conf")
          </tr>
 	<tr>	
-	   <td>#if($lang=="hindi") Question Select #else Select Question #end</td>
+	   <td>#if($lang=="hindi") $brih_qus $brih_select #else $brih_select $brih_qus #end</td>
 	    <td>
 		 <select name="que" size=1 onChange="clearAnswer(document.frm,this);"/>
                  <option value=$!qid> #foreach($q in $qname) $q.getQuestionName() #end</option>
@@ -212,13 +212,13 @@ $!data.getMessage()
               </select>
             </td>
                 <tr>
-                #formCell("Enter Your Answer:" "ANSWER" "$!ans")
+                #formCell("$Profile_Ans:" "ANSWER" "$!ans")
                 </tr>
 		<tr>
-                #formCell("Task_Configuration (Range 0f Days 1-7)" "TaskConf" "$!TaskConf")
+                #formCell("$brih_tcf" "TaskConf" "$!TaskConf")
                 </tr>
 		<tr>
-		<td>Institute Name</td><td>Program Name</td><td>Roll No</td>
+		<td>$RemoteInstitute $brih_name</td><td>$brih_program $brih_name</td><td>$brih_rollno</td>
 		</tr>
 		#*#if($status == "more")
 			#set ($counter = $counter +1)
@@ -240,7 +240,7 @@ $!data.getMessage()
 					#end
 	                                #set($temp1=$temp1+1)
                                 #end
-						<option>Select Institute </option>
+						<option>$brih_select $RemoteInstitute </option>
 						#foreach($name in $instList)
 					        <option value="$name.getInstituteId()">$name.getInstituteName() </option>
 				          	#end
@@ -253,7 +253,7 @@ $!data.getMessage()
 					#end
                                         #set($temp1=$temp1+1)
                                 #end
-						<option>Select Program </option>
+						<option>$brih_select $brih_program </option>
 					       	#foreach($prgname in $prgList)
 	        	        		<option value="$prgname.getProgramCode()">$prgname.getProgramName() </option>
 	                		  	#end

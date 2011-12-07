@@ -4,6 +4,8 @@
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modify date: 25-02-2011, 19-10-2011
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul pal</a>
+ * @modify date:
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("Admin Home | Change Parameters")
@@ -21,62 +23,62 @@ $!data.getMessage()
 
 <table bgcolor="$ui.tableColor" width=100%>
 <tr bgcolor="$ui.menuColor">
-	<td colspan="2">
+	<td>
 	<font face="$ui.sansSerifFonts" size=3>
 	<b>
-     	<a href=$link.setPage("Index.vm")> Institute Admin's Home</a> | #if($lang =="hindi") '/'1e ýý #else Institute #end Admin's Profile
+     	<a href=$link.setPage("Index.vm")> $RemoteInstitute $brih_ad $brih_home</a> |#if($lang =="hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_ap 
 	</td>
 <td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Profile.html","newWin");>$brih_help</a></td>
 </tr>
 ## Form action in InstchangeAParam.java
 <form name="frm" method="post" action="$link.setPage("call,AdminProfile,InstituteProfile.vm").setAction("InstchangeAParam")">
-    <tr><td colspan=2><font size=4> #if($lang =="hindi") '/'1e ýý #else Institute #end Admin's Profile  ($iname)</font></td></tr>
+    <tr><td colspan=2><font size=4> #if($lang =="hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_ap  ($iname)</font></td></tr>
     <tr bgcolor="$ui.menuColor">
       ##formCell("First Name" "AFName" "$!afname")
-	<td width="30"> <font face="$ui.sansSerifFonts"> First Name </font></td> 
+	<td width="30"> <font face="$ui.sansSerifFonts"> $brih_first $brih_name </font></td> 
 	<td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AFName" value="$!afname"> </font></td>
     </tr>
     <tr bgcolor="$ui.tableColor">
       ##formCell("Last Name" "ALName" "$!alname")	
-	<td width="30"> <font face="$ui.sansSerifFonts"> Last Name </td>   
+	<td width="30"> <font face="$ui.sansSerifFonts"> $brih_last $brih_name </td>   
 	<td width="50"> <font face="$ui.sansSerifFonts"><input type="text" size="30" name="ALName" value="$!alname"> </font></td>
     </tr>
     <tr bgcolor="$ui.menuColor">
       ##formCell("List Config. Value (Range of List 1-100)" "AdminConf" "$!AdminConf")	
-	<td width="30"> <font face="$ui.sansSerifFonts">List Config. Value (Range of List 1-100) </font></td>
+	<td width="30"> <font face="$ui.sansSerifFonts"> $brih_lcv </font></td>
         <td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminConf" value="$!AdminConf"> </font></td>
     </tr>
     <tr bgcolor="$ui.tableColor">
       ##formCell("Course Expiry Time(in days)" "AdminCrsExp" "$!CrsExp")	
-	<td width="30"> <font face="$ui.sansSerifFonts"> Course Expiry Time(in days) </font></td>	
+	<td width="30"> <font face="$ui.sansSerifFonts"> $brih_course $brih_expiry </font></td>	
         <td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminCrsExp" value="$!CrsExp"> </font></td>
     </tr>
     <tr bgcolor="$ui.menuColor">
       ##formCell("Local Domain Name" "mailDomain" "$!dName")	
-	<td width="30"> <font face="$ui.sansSerifFonts"> #if($lang != "english") Local Domain  Name #else  Local Domain Name #end </font></td>
+	<td width="30"> <font face="$ui.sansSerifFonts"> #if($lang != "english") $RemoteLocal $brih_domain $brih_Of1 $brih_name #else  $RemoteLocal $brih_domain $brih_name #end </font></td>
         <td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="mailDomain" value="$!dName"> </font> </td>
     </tr>
 	## formEmailCell("admin email")
    <tr bgcolor="$ui.tableColor">
-        <td width=30><font face="$ui.sansSerifFonts"> Admin's Email  </td>             
+        <td width=30><font face="$ui.sansSerifFonts"> $brih_ad $brih_email  </td>             
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="eMail" value="$!eMail"></font></td>
 </tr>
     <tr bgcolor="$ui.menuColor">
-	<td width=30><font face="$ui.sansSerifFonts">Course #if($lang =="hindi")  #end Quota  (in MB)</td>	
+	<td width=30><font face="$ui.sansSerifFonts">$brih_course #if($lang =="hindi") $brih_Of1 #end $brih_quota ($quota_sze)</td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="cquota" value="$!cquota"></font></td>
 </tr>
     <tr bgcolor="$ui.tableColor">
-	<td width=30><font face="$ui.sansSerifFonts">User #if($lang =="hindi")  #end Quota  ( in MB)</td>	
+	<td width=30><font face="$ui.sansSerifFonts">$brih_usr #if($lang =="hindi") $brih_Of1 #end $brih_quota ( $quota_sze)</td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="uquota" value="$!uquota"></font></td>
    </tr>
 ##--------------------------------------FAQ---------------------
     <tr bgcolor="$ui.menuColor">
-        <td width=30><font face="$ui.sansSerifFonts">Faq Expiry Time(in days)</td>
+        <td width=30><font face="$ui.sansSerifFonts">$brih_Faq $brih_expiry</td>
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminFaqExp" value="$!FaqExp"></font></td>
     </tr>
 ##-------------------------------------student expiry days----added by @Tej--------------
    <tr bgcolor="$ui.menuColor">
-	<td width=30><font face="$ui.sansSerifFont">Student Course Expiry Time(in days)</td>
+	<td width=30><font face="$ui.sansSerifFont">$brih_student $brih_course $brih_expiry</td>
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="expdays" value="$!expdays"></font></td>
    </tr>
 	<tr>
@@ -284,5 +286,10 @@ function isNumberKey(evt)
 
                 return true;
         }
+function popupWin(url,popupName)
+{
+        Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+}
+
 
 </SCRIPT>
