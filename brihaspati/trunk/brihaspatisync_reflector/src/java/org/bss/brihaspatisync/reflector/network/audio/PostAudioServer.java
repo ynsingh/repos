@@ -24,7 +24,10 @@ import java.io.*;
 import javax.sound.sampled.*;
 
 import org.apache.commons.io.IOUtils;
+
+import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on dec2011
@@ -68,24 +71,23 @@ public class PostAudioServer {
     		if (server != null) {
         		flag=false;
           		server.stop(0);
+        		System.out.println(" PostAudioServer stop successfully !! ");
     		}
   	}
-
-	/*public static void main(String args[]){
-		try{
-			PostAudioServer.getController().startThread();
-			GetAudioServer.getController().start();
-		}catch(Exception e){System.out.println("Error on start post audio server "+e.getMessage());}
-	}*/
-
 }
 
 class MyPostHandler implements HttpHandler {
-
+	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
 	public void handle(HttpExchange exchange) throws IOException {
 		try{
 			while(PostAudioServer.getController().isRunning()){
+				MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
+                                if(!temp_ht.getStatus("Audio_Post")){
+                                        BufferMgt buffer_mgt= new BufferMgt();
+                                        temp_ht.setValues("Audio_Post",buffer_mgt);
+                                }
 				String requestMethod = exchange.getRequestMethod();
+				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();		
 				if (requestMethod.equalsIgnoreCase("POST")) {
 					Headers responseHeaders = exchange.getResponseHeaders();
 					responseHeaders.set("Content-Type", "application/octet-stream");
@@ -95,12 +97,15 @@ class MyPostHandler implements HttpHandler {
 					byte[] bytes=IOUtils.toByteArray(input);
 					InputStream is=new ByteArrayInputStream(bytes);
 					AudioInputStream ais = new AudioInputStream(is, getAudioFormat(), bytes.length / getAudioFormat().getFrameSize());
-    	  	       			if(AudioQueue.getController().size()<50){
-    		       				AudioQueue.getController().put(ais);
-        		   		}else {
-           					AudioQueue.getController().clearQueue();
-           				}
-           				responseBody.close();
+					try {
+                                                if(ais !=null) {
+                                                        BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post");
+                                                        buffer_mgt.putByte(ais,client_ip,"Audio_Post");
+                                                        buffer_mgt.sendData(client_ip,"Audio_Post");
+                                                }
+                                        }catch(Exception e){}
+           				responseBody.flush();
+					responseBody.close();
 				}//end of if
    			}//end of while
 		}catch(Exception ex){}

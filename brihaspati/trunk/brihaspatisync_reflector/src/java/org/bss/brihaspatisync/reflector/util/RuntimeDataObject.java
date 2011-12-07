@@ -25,6 +25,8 @@ public class RuntimeDataObject {
 
 	private MyHashTable videoht=null;
 	
+	private MyHashTable audioht=null;
+
 	private MyHashTable desktopht=null;
 	
 	private MyHashTable pptht=null;
@@ -230,7 +232,13 @@ public class RuntimeDataObject {
                         desktopht=new MyHashTable();
                 return desktopht;
         }
-		
+	
+	public MyHashTable getAudioServerMyHashTable(){
+                if(audioht == null)
+                        audioht=new MyHashTable();
+                return audioht;
+        }
+	
 	public MyHashTable getPPTServerMyHashTable(){
                 if(pptht == null)
                         pptht=new MyHashTable();

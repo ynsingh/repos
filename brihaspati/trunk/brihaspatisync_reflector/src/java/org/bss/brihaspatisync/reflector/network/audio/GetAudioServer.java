@@ -25,8 +25,10 @@ import org.apache.commons.io.IOUtils;
 import java.io.*;
 import java.net.*;
 import javax.sound.sampled.*;
-import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 
+import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
+import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on dec2011
@@ -61,7 +63,6 @@ public class GetAudioServer {
         		flag=true;
           		System.out.println(" GetAudioServer start successfully !! ");
           		server.start();
-			ManageAudioQueue.getController().startThread();
        		} catch (Exception e) { }
   	}
 
@@ -69,21 +70,13 @@ public class GetAudioServer {
     		if (server != null) {
         		flag=false;
           		server.stop(0);
-			ManageAudioQueue.getController().stopThread();
+          		System.out.println(" GetAudioServer stop successfully !! ");
        		}
    	}
-
-	/*public static void main(String args[]){
-    		try{
-        		GetAudioServer.getController().start();
-      		}catch(Exception e){System.out.println("Error in main to start server thread"+e.getMessage());}
-  	}*/
 }
 
 class GetRequestHandler implements HttpHandler {
-
-	private Vector v=null;
-
+	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
   	public void handle(HttpExchange exchange) throws IOException {
   		try{
   			while(GetAudioServer.getController().isRunning()){
@@ -93,36 +86,15 @@ class GetRequestHandler implements HttpHandler {
             				responseHeaders.set("Content-Type", "application/octet-stream");
             				exchange.sendResponseHeaders(200, 0);
             				OutputStream responseBody = exchange.getResponseBody();
-
-					String ip=exchange.getRemoteAddress().getAddress().getHostAddress(); 
-					System.out.println("Request from IP Address =====>"+ip);
-
-					ManageAudioQueue.getController().createRequestQueue(ip);
-					Vector v=new Vector();
-					v= (Vector) ManageAudioQueue.getController().getHashtable().get(ip);
-					System.out.println("get hastable vector object "+ v.size());
-					/*if(v.size() > 0){
-						AudioInputStream input=(AudioInputStream)v.elementAt(0);
-                                                System.out.println(" input "+input);
-                                                if(input!=null) {
-                                                        AudioSystem.write(input,AudioFileFormat.Type.WAVE,responseBody);
-                                                } else
-                                                        System.out.println(" input is null "+input);
-					*/
-				
-					
-					
-            			/*	if(AudioQueue.getController().size() > 0){
-            					AudioInputStream input=(AudioInputStream)AudioQueue.getController().get();
-						System.out.println(" input is null "+input);
-        	    				if(input!=null) {
-            						AudioSystem.write(input,AudioFileFormat.Type.WAVE,responseBody);
-	       					} else
-							System.out.println(" input is null "+input);
-				*/
-					//}else
-					//	System.out.println("Audio Queue is empty "+AudioQueue.getController().size());
-					//v.removeElementAt(0);
+					String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
+					try {
+						MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
+	                                        BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post");
+        	                                AudioInputStream input=(AudioInputStream)(buffer_mgt.sendData(client_ip,"Audio_Post"));
+                	                        if(input!=null)
+							AudioSystem.write(input,AudioFileFormat.Type.WAVE,responseBody);
+                                	}catch(Exception e){}
+					responseBody.flush();
 					responseBody.close();
            			}
 			}
