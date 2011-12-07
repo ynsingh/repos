@@ -36,6 +36,7 @@ package org.iitk.brihaspati.modules.actions;
  * 
  */
 
+import java.util.List;
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;					
@@ -52,6 +53,23 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CalendarUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
+import org.iitk.brihaspati.modules.utils.CourseUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseUtil;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.XMLWriter_Cms;
+import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import org.iitk.brihaspati.om.InstructorPermissionsPeer;
+import org.iitk.brihaspati.om.InstructorPermissions;
+import org.iitk.brihaspati.om.CoursesPeer;
+import org.iitk.brihaspati.om.Courses;
+import org.iitk.brihaspati.om.TurbineUserPeer;
+import org.iitk.brihaspati.om.TurbineUser;
+import org.iitk.brihaspati.om.InstructorPermissionsPeer;
+import org.iitk.brihaspati.om.InstructorPermissions;
+import org.apache.torque.util.Criteria;
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+
 
 /**
  * This Class responsible for all type editing after publish contents file then write and
@@ -62,6 +80,8 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * @author <a href="mailto:kshuklak@rediffmail.com">Kishore Kumar Shukla</a>
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
+ * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
  */
 
 public class EditContent_Action extends SecureAction
@@ -77,13 +97,14 @@ public class EditContent_Action extends SecureAction
 		try
 		{
 			User user=data.getUser();
+			//Course course=data.getCourse();
                         ParameterParser pp=data.getParameters();
                         String topic=pp.getString("topic","");
                         String dir=(String)user.getTemp("course_id");
                         String cName=pp.getString("cName","");
 			String status=pp.getString("status","");
 			//String status=pp.getString("location","");
-			ErrorDumpUtil.ErrorLog("location in crspath===="+status);
+			//ErrorDumpUtil.ErrorLog("location in crspath===="+status);
                         String username=pp.getString("uname");
 			if(status.equals("Remote"))
                         {
@@ -476,6 +497,63 @@ public class EditContent_Action extends SecureAction
 		}
 	}
 	/**
+	* This method responsible for update the value 
+	* into the database regarding course
+        * @param data RunData
+        * @param context Context
+	*/
+	public void doSelect(RunData data,Context context)
+	{
+		ParameterParser pp=data.getParameters();
+		User user = data.getUser();
+                String LangFile=data.getUser().getTemp("LangFile").toString();
+                String msg="";
+                String courseid=((String)user.getTemp("course_id"));
+                String Schedule=pp.getString("selectdays","");
+                String Schedule1=pp.getString("selectdaysintext","");
+		String Venue=pp.getString("Venue","");
+		String midsem=pp.getString("midsem","");
+                String quiz=pp.getString("quiz","");
+                String labwork=pp.getString("labwork","");
+                String endsem=pp.getString("endsem","");
+                String message=pp.getString("message","");
+		org.apache.commons.fileupload.FileItem fileItem;
+                fileItem = pp.getFileItem("file");
+                String fileName=fileItem.getName();
+		fileName=fileName.toLowerCase();
+		//file upload only .txt, .pdf and .html extension
+                if(fileName.endsWith(".txt")||fileName.endsWith(".pdf")||fileName.endsWith(".html"))
+                {//if1
+
+			int startIndex=fileName.lastIndexOf(".")+1;
+                	String fileExt="."+fileName.substring(startIndex);
+			String ffileName=courseid+fileExt;
+			//file path where save xml file
+			String filePath=data.getServletContext().getRealPath("/Courses")+"/"+(String)data.getUser().getTemp("course_id")+"/coursemgmt";
+			if(Schedule.equals("Days"))
+				Schedule=Schedule1;
+				File f=new File(filePath);
+				if(!f.exists())		
+				f.mkdir();
+				String message1 =XMLWriter_Cms.searchElement(filePath+"/Coursemgmt.xml",courseid);		
+				if(!message1.equals("Successfull")) {
+					XMLWriter_Cms.CourseManageMentSystem(filePath+"/Coursemgmt.xml",courseid,Schedule,Venue,midsem,quiz,labwork,endsem,message,ffileName);
+				}else{
+					String ss=XMLWriter_Cms.updateCourseManageMentSystem(filePath+"/Coursemgmt.xml",courseid,Schedule,Venue,midsem,quiz,labwork,endsem,message,ffileName);
+				}
+				try {
+                                	File filewrite=new File(filePath+"/"+ffileName);
+                                	fileItem.write(filewrite);
+              				msg= MultilingualUtil.ConvertedString("cms_msg",LangFile);
+                                        data.setMessage(msg);
+				}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);}
+		}else{
+				msg= MultilingualUtil.ConvertedString("assignment_msg6",LangFile);
+                 		data.setMessage(msg);
+	
+		}
+	}
+	/**
 	* This is default method,to perform if the specified action cannot be executed 
 	* @param data RunData
 	* @param context Context
@@ -484,7 +562,7 @@ public class EditContent_Action extends SecureAction
 	public void doPerform(RunData data,Context context)
 	{
 		String actionToPerform=data.getParameters().getString("actionName","");
-		context.put("actionO",actionToPerform);
+		context.put("action",actionToPerform);
 			
 		if( actionToPerform.equals("eventSubmit_doChangeOrder") )
 		{
@@ -509,6 +587,10 @@ public class EditContent_Action extends SecureAction
 		else if( actionToPerform.equals("eventSubmit_doDeleteTopic") )
 		{
 			doDeleteTopic(data,context);
+		}
+		else if( actionToPerform.equals("eventSubmit_doSelect") )
+		{
+			doSelect(data,context);
 		}
 		else if( actionToPerform.equals("eventSubmit_doChangeTopicOrder") )
 		{

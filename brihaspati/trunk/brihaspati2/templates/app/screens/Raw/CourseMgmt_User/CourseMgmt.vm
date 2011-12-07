@@ -1,0 +1,286 @@
+#*
+ * @(#) CourseMemt.vm
+ * Copyright (c) 2011 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
+*#
+
+$page.setBgColor($ui.bgcolor)
+$page.setTitle("Course Management")
+$!data.getMessage()
+#set ($lang=$data.getUser().getTemp("lang" ).toString())
+<head>
+	<script type="text/javascript">
+        	_editor_url = "$content.getURI("/scrpts/")";
+	        _editor_lang = "en";
+	</script>
+	<script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
+	<script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script> 
+</head>
+
+<body onload="initEditor()">
+<table bgcolor="$ui.menuColor" width=100%>
+	<tr>
+		<td> <a href=$link.setPage("call,IndexHome.vm")>Home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+		#if($lang=="english")
+                        Course Management
+                #else
+                        Management
+                #end
+        </font>
+	</td>
+	</tr>
+	</table>
+<table width=100% bgcolor="$ui.tableColor">
+
+		#if ($user_role =="instructor")
+	<tr><td align="right" colspan="16">
+               <img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati2/docs/CourseMgmt.html","newWin");>Help</a>
+	</td></tr>
+ 		#end
+	<tr bgcolor="$ui.menuColor">
+	#if($user_role != "instructor")
+        #if($tdcolor != "1")    
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1")> #if($lang == "english")Course  Content #else Content #end </a></td>
+        #if($tdcolor != "0")    
+        <td>
+        #elseif($tdcolor == "0")
+        <td bgcolor="#AFDCEC">
+        #end
+       <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")>Course Management</a></td>
+	
+	#else
+        #if($tdcolor != "1")    
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+	 <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1")> #if($lang == "english")Course  Content #else Content #end </a></td>
+        #if($tdcolor != "0")    
+        <td>
+        #elseif($tdcolor == "0")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")>Course Management</a></td>
+
+        #if($tdcolor != "2")    
+        <td>
+        #elseif($tdcolor == "2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2")> #if($lang !="english") Content Upload #else  Upload Course Content #end </a></td>
+        #if($tdcolor != "3")    
+        <td>
+        #elseif($tdcolor == "3")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3")>Course Configuration</a></td>
+        #if($tdcolor != "4")    
+        <td>
+        #elseif($tdcolor == "4")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4")> #if($lang == "english") Upload Course Header #else Course of Header  Upload #end </a></td>
+        #if($tdcolor != "5")    
+        <td>
+        #elseif($tdcolor == "5")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5")> #if($lang == "english") Configuration Grade #else Grade Configuration #end </a></td>
+        #if($tdcolor != "6")    
+        <td>
+        #elseif($tdcolor == "6")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6")>Scorm Packager</a></td>
+        #if($tdcolor != "7")
+         <td>
+        #elseif($tdcolor == "7")
+         <td bgcolor="#AFDCEC">
+        #end
+       <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")>Scorm Player</a></td>
+## #end
+#end
+</tr>
+</table>
+
+<table>
+	<form name="frm" method="post" enctype="multipart/form-data" action="$link.setAction("EditContent_Action").setPage("call,CourseMgmt_User,CourseMgmt.vm")">
+	<table align=left bgcolor="$ui.tableColor" width="100%">
+	<tr>
+        #if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor == "1")        
+        <td bgcolor="#AFDCEC">
+        #end
+      
+      </td>
+        </tr>
+      	<tr bgcolor="$ui.menuColor">
+	<td><b>Course Id</b></td><td> <input type="text" name="Course_Id" value="$!cId" size="20" readonly></td>
+        </tr>
+        <tr>
+	<td><b>Course Name</b></td><td> <input type="text" name="Course_name" value="$!course" size="20" readonly></td>
+        <td colspan=3></td>
+        <tr bgcolor="$ui.menuColor">
+		<td><b>Primary Instructor</b></td><td> <input type="text" name="P_Instr" value="$!lastname $!firstname" size="20" readonly></td>
+        </tr>
+    ##    <tr bgcolor="$ui.menuColor">
+	<td><b>Secondry Instructor/Lab Instructor/Tutor</b> </td>
+        <td><select Instructor="sinst" name="Second_Instructor"  >
+		#if($cyear == "")
+                	<option value="$sinst" >select Instructor</option>
+		#else
+			#foreach ($secIns in $seclist)
+                		<option value="$sinst" > $secIns </option>
+			#end
+		#end
+         </select>
+	 </td>
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+	<td><b>Course Day & Venue<font color=RED> * </b></td>
+	<td>
+	#if($user_role == "instructor")
+	<select name="selectdays" size="1" onChange="Changename(document.frm,this);" />
+	  #if($selectdays1 !="")
+	   <option  value=$!selectdays1>$!selectdays1
+	  #else
+	   <option  value="">Select Schedule
+	#end
+          <option value="odddays">1,3,5
+          <option value="evendays">2,4,6
+          <option value="everyday">1,2,3,4,5,6
+          <option value="Days">Other
+          </option>
+		
+        </select>
+	#else
+	 <select name="selectdays" size="1" onChange="Changename(document.frm,this);" />
+          #if($selectdays1 !="")
+           <option  value=$!selectdays1>$!selectdays1
+          #else
+           <option  value="">Select Schedule
+          <option value="odddays">1,3,5
+          <option value="evendays">2,4,6
+          <option value="everyday">1,2,3,4,5,6
+          <option value="Days">Other
+          </option>
+                
+        #end
+        </select>
+#end
+
+	#if($selectdays1=="Days")
+		#if($user_role == "instructor")
+			<input type="text" size=3 name="selectdaysintext" value="$!abc" >
+		#else
+			<input type="text" size=3 name="selectdaysintext" value="$!abc" readonly>
+		#end
+	#end
+	
+	#if($user_role == "instructor")
+		<input type="text" name="venue" value="$!Venue" size="20"> 
+	#else
+		<input type="text" name="venue" value="$!Venue" size="20" readonly> 
+	#end
+	
+	##<a href=$link.setPage("call,Timetable,html_pdf.vm")>Click Here</a></td>
+        </tr>
+        <tr >
+                <td><b>Marks/Grading Policy<font color=RED> *</font></b></td>
+	<tr>
+		<td>  Mid Sem  </td>
+		#if($user_role == "instructor")
+                <td> <input type="text" size=3 name="midsem" value="$!midsem" ></td>
+		#else
+                <td> <input type="text" size=3 name="midsem" value="$!midsem" readonly></td>
+		#end
+        </tr>
+
+	<tr>
+                <td>  Quiz  </td>
+		#if($user_role == "instructor")
+        	        <td> <input type="text" size=3 name="quiz" value="$!quiz" ></td>
+		#else
+                	<td> <input type="text" size=3 name="quiz" value="$!quiz" readonly ></td>
+		#end
+        </tr>
+	<tr>
+                <td> Lab Work </td>
+		#if($user_role == "instructor")
+                	<td> <input type="text" size=3 name="labwork" value="$!labwork"></td>
+		#else
+               		<td> <input type="text" size=3 name="labwork" value="$!labwork" readonly></td>
+		#end
+        </tr>
+	<tr>
+
+                <td> End Sem  </td>
+		#if($user_role == "instructor")
+                <td> <input type="text" size=3 name="endsem" value="$!endsem" ></td>
+		#else
+                <td> <input type="text" size=3 name="endsem" value="$!endsem" readonly></td>
+		#end
+        </tr>
+
+        <tr bgcolor="$ui.menuColor">
+                <td><b> Instruction  <font color=RED> * </font></b></td>
+		#if($user_role == "instructor")
+		<td align="left" width="3"> <textarea id="id" name="message" rows=10 cols=80 wrap=physical> $!message </textarea></td>
+		#else
+		<td align="left" width="3"> <textarea id="id" name="message" rows=10 cols=80 wrap=physical readonly> $!message </textarea></td>
+		#end
+	</tr>
+        <tr >
+		#if($user_role == "instructor")
+			#fileUpload ("<b>Course Syllabus<font color=RED> * </font></b> " "file")
+		#end
+        </tr>
+	<tr bgcolor="$ui.menuColor">
+		<td><b> Attachments :</b></td>
+		<td> Course Syllabus File <a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("type","coursemgmt").addPathInfo("filename",$fileName)");>DOWNLOAD</a>
+		</td>
+	</tr>
+        <tr>
+        	<td align="center" colspan=5>  
+			#if($user_role == "instructor") 
+        	     		<input type="button" name="eventSubmit_doSelect" value="Submit" onClick="checkField(document.frm,this);"/>&nbsp;
+				<input type="reset" name=" Reset" value="Clear"/>
+			#end
+			<input type="hidden" name="actionName">
+                	<input type="hidden" name="count" value="$tdcolor">
+		        <input type="hidden" name="CMgmt" value="">
+        	</td>
+        </tr>
+</table>
+</form>
+</body> 
+<SCRIPT LANGUAGE="javascript">
+        function checkField(frm,field)
+        {
+		if((frm.midsem.value!="") && (frm.quiz.value!="") && (frm.labwork.value!="")  && (frm.endsem.value!="") && (frm.file.value!="")) {
+                       frm.actionName.value=field.name;
+                       frm.submit();
+		}else
+			alert("Please Fill All The Mandatory(*) Fields");
+        }
+
+        function Changename(frm,field)
+        {
+                if(frm.selectdays.value!=""){
+                        frm.CMgmt.value=field.value;
+                        frm.submit();
+                }
+        }
+        function popupWin(urlName,popupName)
+        {
+                 window.open(urlName,popupName,"toolbar=yes,scrollbars=yes");
+         }
+</SCRIPT>

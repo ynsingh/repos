@@ -8,6 +8,8 @@
  * @author: <a href="mailto:seema_020504@yahoo.com">Seemapal</a>
  * @author <a href="mailto:omprakashkgp@gmail.com">Om Prakash</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">shaista</a>
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
+ * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
  * @modified date: 30-03-2010
 *#
 
@@ -60,7 +62,16 @@ $!data.getMessage()
                 <td bgcolor="#AFDCEC">
                 #end
                 <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","1") > #if($lang == "english") $brih_upload $brih_course $brih_content #else $brih_content $brih_upload #end </a></td>
-                #if($tdcolor != "2")
+               #if($tdcolor != "0")  
+ <td>
+        #elseif($tdcolor == "0")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")>Course Management</a></td><td>
+
+
+
+		 #if($tdcolor != "2")
                 <td>
                 #elseif($tdcolor == "2")
                 <td bgcolor="#AFDCEC">
