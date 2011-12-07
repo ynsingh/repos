@@ -135,20 +135,20 @@ $!data.getMessage()
 					#set($gpnm="")
                                         #set($ins="")
 					##set($row_count=1)
-					#foreach($sk in $Inst_name)
+					#foreach($i_name in $Inst_name)
                                         <tr bgcolor="#CEF6CE">
                                         <font face="$ui.sansSerifFonts">
-                                        <td colspan=5>$sk.getInstName()</td></font>
+                                        <td colspan=5>$i_name.getInstName()</td></font>
                                         </tr>
 					#foreach($instructor in $inst)
 					 ## Getting Inst_Id from group Name using split() method.
 					 
-					#foreach($st in $instructor.getGroupName().split("_"))
+					#foreach($inst_id in $instructor.getGroupName().split("_"))
 						#if($gpnm=="")
-							#set($gpnm=$st)
+							#set($gpnm=$inst_id)
                                                 #else
-                                                        #set($ins=$st)
-                                                #if($ins=="$sk.getInstId()")
+                                                        #set($ins=$inst_id)
+                                                #if($ins=="$i_name.getInstId()")
 
 					#set($count1=1)
 					#foreach($message in $unread_msg)
