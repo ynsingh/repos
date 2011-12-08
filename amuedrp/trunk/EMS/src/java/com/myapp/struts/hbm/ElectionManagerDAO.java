@@ -372,4 +372,66 @@ public List AllCandiReport(String institueid)
         }
 }
 
+public List ElectionDetail(String institueid,String electionid)
+    {
+    Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            String sql="";
+
+            sql = "select e.electionName As e_election_name,e.description As e_description,e.nstart As e_nomistart,e.nend As e_nomiend,e.scrutnyDate As e_scrstart,e.scrutnyEndDate As e_scrend,e.withdrawlDate As e_withstart,e.withdrawlEndDate As e_withend,e.startDate As e_start,e.endDate As e_end from Election e where  e.id.instituteId=:instituteId and e.id.electionId=:electionId";
+
+//"select e.electionName As e_election_name,e.description As e_description,e.nstart As e_nomistart,e.nend As e_nomiend,e.scrutnyDate As e_scrstart,e.scrutnyEndDate As e_scrend,e.withdrawlDate As e_withstart,e.withdrawlEndDate As e_withend,e.startDate As e_start,e.endDate As e_end,p.positionName As p_position_name from Election e,Position1 p where e.id.electionId=p.id.electionId and e.id.instituteId=p.id.instituteId and e.id.instituteId=:instituteId and e.id.electionId=:electionId"
+            System.out.println(sql);
+
+          Query query =  session.createQuery(sql)
+               .setResultTransformer(Transformers.aliasToBean(CandidateReg.class));
+
+
+
+          query.setString("instituteId",institueid);
+          query.setString("electionId",electionid);
+            return  query.list();
+        }
+    finally {
+            session.close();
+        }
 }
+
+//select e.*,p.position_name from election e,position1 p where e.election_id=p.election_id and e.institute_id=p.institute_id and e.institute_id='JMI' and e.election_id=1
+public List PositionDetail(String institueid,String electionid)
+    {
+    Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            String sql="";
+
+            sql = "select p.positionName As p_position_name from Position1 p where p.id.instituteId=:instituteId and p.id.electionId=:electionId";
+
+
+            System.out.println(sql);
+
+          Query query =  session.createQuery(sql)
+               .setResultTransformer(Transformers.aliasToBean(CandidateReg.class));
+
+
+
+          query.setString("instituteId",institueid);
+          query.setString("electionId",electionid);
+            return  query.list();
+        }
+    finally {
+            session.close();
+        }
+}
+
+
+}
+
+

@@ -5,11 +5,7 @@
 
 package com.myapp.struts.Candidate;
 
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
 import org.apache.struts.upload.FormFile;
 
 /**
@@ -44,6 +40,10 @@ private String m_number;
 private String zipcode;
 private String zipcode1;
 private String reason;
+  private byte[] uploadedFile;
+    private FormFile img;
+    private String filename;
+
 
     public String getReason() {
         return reason;
@@ -129,12 +129,7 @@ private String elections;
         this.status = status;
     }
 
-    /**
-     * @return the button
-     */
-  private byte[] uploadedFile;
-    private FormFile img;
-    private String filename;
+  
     public String getButton() {
         return button;
     }

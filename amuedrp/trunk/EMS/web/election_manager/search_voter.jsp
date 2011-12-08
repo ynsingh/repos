@@ -67,13 +67,16 @@ body
 <script language="javascript">
 function fun()
 {
+    
+  <%if(status!=null){%>
     document.Form1.status.value = "<%=status%>";
-document.Form1.action="../votersetup.do";
+    <%}%>
+document.Form1.action="/EMS/votersetup.do";
 document.Form1.method="post";
 document.Form1.target="f1";
 document.Form1.submit();
+  window.setTimeout('winresize()', 100);
 
-window.setTimeout('winresize()', 100);
 }
 
  function winresize()
@@ -102,12 +105,13 @@ window.setTimeout('winresize()', 100);
    
 }
 </script>
+
 </head>
 <link rel="stylesheet" href="/EMS/css/page.css"/>
 <body onload="fun();" class="datagrid">
    
 
-    <form name="Form1" id="form1" action="../votersetup.do" style="" >
+    <form name="Form1" id="form1">
       <table  align="left" width="100%"  class="datagrid"  style="border:solid 1px #e0e8f5;" dir="<%=rtl%>" align="<%=align%>">
 
 
@@ -139,12 +143,12 @@ window.setTimeout('winresize()', 100);
       <td    align="left" valign="top">
           <table >
               <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.infield")%> </td><td rowspan="2" valign="top">
-                      <select name="search_by" onChange="fun()" id="search_by" size="1">
-<option value="firstName">First Name<%--<%=resource.getString("managername")%>--%></option>
-<option value="lastName">Last Name<%--<%=resource.getString("managername")%>--%></option>
-<option value="managerId">Manager Id<%--<%=resource.getString("managerid")%>--%></option>
-<option value="registrationId"><%=resource.getString("registrationid")%></option>
-<option value="city"><%=resource.getString("city")%></option>
+ <select name="search_by" onChange="fun()" id="search_by" size="1">
+<option value="voterName">Voter Name<%--<%=resource.getString("managername")%>--%></option>
+<option value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
+<option value="department">Department<%--<%=resource.getString("managerid")%>--%></option>
+<option value="course">Course</option>
+<%--<option value="city"><%=resource.getString("city")%></option>--%>
 
 
 </select>
@@ -157,10 +161,11 @@ window.setTimeout('winresize()', 100);
    <tr style="background-color:#e0e8f5;">
        <td align="left" colspan="2">
            <table>
-                           <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.field")%></td><td><select name="sort_by" id="sort_by" size="1" onChange="fun()" id="">
-<option selected value="institute_name"><%=resource.getString("institutename")%></option>
-<option value="city"><%=resource.getString("city")%></option>
-<option value="registration_id"><%=resource.getString("registrationid")%></option>
+  <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.field")%></td><td><select name="sort_by" id="sort_by" size="1" onChange="fun()" id="">
+<option value="voterName">Voter Name<%--<%=resource.getString("managername")%>--%></option>
+<option value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
+<option value="department">Department<%--<%=resource.getString("managerid")%>--%></option>
+<option value="course">Course</option>
 </select></td>
                            </tr></table>
 
@@ -168,7 +173,7 @@ window.setTimeout('winresize()', 100);
       </td>
 
   </tr>
-  <tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="#" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
+  <tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="/EMS/votersetup.do" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
      
   <tr><td><input type="hidden" id="hidHigh"/></td></tr>
        </table>

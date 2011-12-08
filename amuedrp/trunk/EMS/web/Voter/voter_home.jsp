@@ -11,17 +11,43 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<jsp:include page="../Voter/login.jsp"/>
+<%--<jsp:include page="../Voter/login.jsp"/>--%>
 
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+    String regid="";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
 
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+    regid = resource.getString("registrationid");
+    System.out.println("Reg id="+regid);
+    %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Election Management System</title>
        <script type="text/javascript" language="javascript">
 var olddoc;
 var olddoc1;
 var loadcount;
+
 function checkElection()
 {
 <%
@@ -35,6 +61,9 @@ if(lstelec!=null && !lstelec.isEmpty()){
                 windload();
             }}<%}%>
 }
+
+
+
 function windload()
 {
     var divtag = document.createElement("div");
@@ -69,8 +98,21 @@ function getPass()
     var child = document.getElementById("electionPass");
     document.getElementById("bod").removeChild(child);
 }
+<%
+List<Election> lstcurelection = (List<Election>)session.getAttribute("currentelectionList");
+                        List<Election> lstelection = (List<Election>)session.getAttribute("electionList");
+                        List<Election> lstclosedelection = (List<Election>)session.getAttribute("ClosedelectionList");
+
+%>
+
 function viewelections()
             {
+              //  alert("<%=lstelection.isEmpty() %>");
+                 <%if(lstelection.isEmpty()==true){%>
+                         alert("No Election is in Process");
+                         return true;
+                         <%}%>
+
                 var divtag = document.createElement("div");
                 divtag.id = "overbody";
                 //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserWrite");
@@ -398,7 +440,7 @@ function candiReq(pos,election) {
     var req = newXMLHttpRequest();
 
 req.onreadystatechange = getReadyStateHandler(req, responseRequest);
-//alert("yes its working");
+
 req.open("POST","<%=request.getContextPath()%>/applyCandidature.do?position="+pos+"&election="+election, true);
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -483,6 +525,7 @@ for(iii=0;iii<em1.length;iii++)
         var posts = em1[iii].getElementsByTagName("Posts")[0];
         var post = posts.getElementsByTagName("post");
         var electionId = electionId1[0].firstChild.nodeValue;
+
         var electionName = electionName1[0].firstChild.nodeValue;
         var description = description1[0].firstChild.nodeValue;
         var nstart = nstart1[0].firstChild.nodeValue;
@@ -505,7 +548,7 @@ for(iii=0;iii<em1.length;iii++)
        doc1.style.backgroundColor = "teal";
        doc1.style.color = "white";
        
-       doc1.innerHTML = '<img src="<%=request.getContextPath()%>/images/plus.jpg" alt="" style="width: 13px;height: 13px;" onclick="fun('+ iii +',this)"/> '+ electionName +'<span style="margin-left: 57%;color: white">Download As:</span><span style="margin-left: 10px;color: white"><a href="#" style="color: white">pdf</a></span><span style="margin-left: 10px;color: white"><a href="#" style="color: white">xml</a></span>';
+       doc1.innerHTML = '<img src="<%=request.getContextPath()%>/images/plus.jpg" alt="" style="width: 13px;height: 13px;" onclick="fun('+ iii +',this)"/> '+ electionName +'<span style="margin-left: 57%;color: white">Download As:</span><span style="margin-left: 10px;color: white"><a href="<%=request.getContextPath()%>/detailreport.do?getElection='+electionId+'" style="color: white">pdf</a></span><span style="margin-left: 10px;color: white"><a href="#" style="color: white">xml</a></span>';
        doc.appendChild(doc1);
        var block1 = document.createElement("div");
        var blockId = "block"+iii;
@@ -523,6 +566,7 @@ for(iii=0;iii<em1.length;iii++)
        innerhtm = innerhtm + '<tr><td>Election Date:</td><td>'+ estart +'&nbsp;&nbsp;&nbsp;&nbsp; to&nbsp;&nbsp;&nbsp;&nbsp; '+ eend +'</td></tr>';
        //innerhtm = innerhtm + '<tr><td>Election End Date:</td><td>'+ eend +'</td></tr>';
        innerhtm += '<tr><td colspan=2>For the Post of:</td></tr>';
+       
        for(jj=0;jj<post.length;jj++)
            {
                var positionId1 = post[jj].getElementsByTagName("positionId");
@@ -538,8 +582,10 @@ for(iii=0;iii<em1.length;iii++)
                           innerhtm +='<tr><td>'+position+' ('+candidature+')</td>';
                          <%-- if(Date.parse(nstart)<=Date.parse(<%=d%>) && Date.parse(nend)>Date.parse(<%=d%>))--%>
                       // {
-                                  innerhtm +='<td><input type="button" value="Send Request For Candidature" onclick="candiReq('+positionId+','+electionId+');"/></td>';
-                       //}
+                      
+                                  innerhtm +='<td><input type="button" value="Send Request For Candidature" onclick="candiReq('+positionId+','+electionId.toString()+');"/></td>';
+                    
+                      //}
                        innerhtm +='</tr>';
            }
        innerhtm += '</table>';
@@ -601,11 +647,11 @@ if(instrucT!=undefined)
     if(instrucT.lastIndexOf(noofchoice)!=-1)
         {instruct1 = instrucT.substr(0, instrucT.lastIndexOf(noofchoice)-1);
         instruct2 = instrucT.substr(instrucT.lastIndexOf(noofchoice)+1,instrucT.length);}
-htm = '<div class="building_block" >Position: <strong>'+positionname+'</strong><br><strong >'+ instruct1 +' <span style="color: red">'+noofchoice+'</span>'+ instruct2 +'</strong>';
+htm = '<div class="building_block" ><%=resource.getString("positionname")%>: <strong>'+positionname+'</strong><br><strong >'+ instruct1 +' <span style="color: red">'+noofchoice+'</span>'+ instruct2 +'</strong>';
 //htm = '<div class="building_block" >Position: <strong>'+positionname+'</strong><br><strong>You may select up to '+noofchoice+'';
 <%--if(noofchoice>1) htm=htm + ' candidates';
 else htm=htm + ' candidate';--%>
-htm = htm +'<table class="ballot"><tbody><tr><th style="text-align: left;">Candidate Name</th><th>Selection</th></tr>';
+htm = htm +'<table class="ballot"><tbody><tr><th style="text-align: left;"><%=resource.getString("candidatename")%></th><th>Selection</th></tr>';
 
 var ca = em1[iii].getElementsByTagName("candidate");
 for(jj=0;jj<ca.length;jj++)
@@ -655,44 +701,84 @@ function createul(current)
     par.appendChild(dul);
     obj = dul;
 }
+<%
+String instituteName=(String)session.getAttribute("institute_name");
 
+ String role=(String)session.getAttribute("login_role");
+
+%>
         </script>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+
+
+   
     </head>
-    <body style="margin:  0px;height: 90%; " id="bod" onload="checkElection();">
+    <body style="margin:  0px;height: 90%; " id="bod" >
+        <table align="center" style="" dir="<%=rtl%>" width="100%">
+
+        <tr>
+            <td  valign="top" colspan="2" width="100%" align="<%=align%>">
+
+                <table  align="<%=align%>"  dir="<%=rtl%>" width="100%">
+            <tr><td valign="bottom"  align="<%=align%>">
+            <img src="<%=request.getContextPath()%>/images/logo.bmp" alt="banner space"  border="0" align="top" id="Image1">
+            </td>
+            <td style="color: maroon;font-size: 12px;font-weight: bold;" align="center"><%=instituteName%><br>&nbsp; Role&nbsp;[<%=role%>]</td>
+            <td align="right" valign="top" dir="<%=rtl%>"><span style="font-family:arial;color:brown;font-size:12px;" dir="<%=rtl%>"><b dir="<%=rtl%>">Welcome <%=session.getAttribute("username")%> &nbsp;|<a href="<%=request.getContextPath()%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             </td></tr>
+            </table><br>
+            </td>
+
+            </tr>
+            <tr><td>
+
+
+
+                </td></tr>
+        </table>
+            
+
         <div id="main" style="width: 100%;height: 100%;margin: 0px;">
             <div id="topstrip" style="margin: 0px; width: 100%;height: 20px;background-color: black;">
-                <div style="float: right;color: white;width: 50px;"><a href="<%=request.getContextPath()%>/logout.do" style="color: white">Logout</a></div>
-                    <div style="float: right;color: white;width: 150px;">Welcome <%=session.getAttribute("username")%></div>
-                    <div style="">
-                    <ul class="dd-menu" >
-                        <li class="current-menu-item">
-                            <a href="#" style="font-size: 13px;font-weight: bold">Home</a>
-                        </li>
-                        <%--<li><a href="#"  onmouseover="createul(this);">Current&nbsp;Elections</a>
-                            
-                        </li>--%>
+                
+                    
+                    <div style="background-color: cyan;color:black">
+                        <table>
+                            <tr><td>
+
+                            <a href="#" style="font-size: 13px;text-decoration: none;">&nbsp;<%=resource.getString("login.home")%></a>&nbsp;|&nbsp;
+                        
+                        
                         <%
-                        List<Election> lstcurelection = (List<Election>)session.getAttribute("currentelectionList");
-                        List<Election> lstelection = (List<Election>)session.getAttribute("electionList");
-                        List<Election> lstclosedelection = (List<Election>)session.getAttribute("ClosedelectionList");
                         if(lstcurelection!=null && !lstcurelection.isEmpty()){%>
-                        <li><a href="#" style="font-size: 13px;font-weight: bold"  onclick="currentElections()">Current&nbsp;Elections</a></li>
+                        <a href="#" style="font-size: 13px;text-decoration: none;"  onclick="currentElections()"><%=resource.getString("currentelection")%></a>&nbsp;|&nbsp;
                         <%}
                         if(lstelection!=null && !lstelection.isEmpty()){%>
-                        <li ><a href="#" style="font-size: 13px;font-weight: bold" onclick="elections();">Voting&nbsp;Process</a></li>
+                        <a href="#" style="font-size: 13px;text-decoration: none;" <%--onclick="elections();"--%> onclick="checkElection();"><%=resource.getString("votingprocess")%></a>&nbsp;|&nbsp;
                         <%}
                         if(lstclosedelection!=null && !lstclosedelection.isEmpty()){%>
-                        <li><a href="#" style="font-size: 13px;font-weight: bold" onclick="electionsResults()">Election&nbsp;Results</a>
+                        <a href="#" style="font-size: 13px;text-decoration: none;" onclick="electionsResults()"><%=resource.getString("electionresults")%></a>&nbsp;|&nbsp;
                             <%}%>
                            <%-- <ul>
                                 <li><a href="#" style="font-size: 13px;font-weight: bold;z-index:1000" onclick="electionsResults()">Election&nbsp;Results</a></li>
                                 <li><a href="#" style="font-size: 13px;font-weight: bold;z-index:1000" onclick="electionsResults()">Election&nbsp;Results</a></li>
                             </ul>--%>
-                        </li>
-                        <li ><a href="#" style="font-size: 13px;font-weight: bold" onclick="viewelections();">View&nbsp;Elections</a></li>
-                    </ul>
+                        
+                        <a href="#" style="font-size: 13px;text-decoration: none;" onclick="viewelections();"><%=resource.getString("view_elction")%></a>
 
+                    </td></tr>
+                            
+                        </table>
+                        
+
+
+                        
                 </div>
+<br/><br/>                        <div style="float: left;color: black;">
+
+                           <%          if(lstelection!=null && !lstelection.isEmpty()){%>
+                    Current Running Election is : <%=lstelec.get(0).getElectionName()%>    <a href="#" style="font-size: 13px;text-decoration: none;" <%--onclick="elections();"--%> onclick="checkElection();">Please Vote</a>
+                        <%}%></div>
             </div>
             <div id="header" style="width: 100%;height: 5%;margin: 0px;">
                 
@@ -704,11 +790,11 @@ function createul(current)
                 <div id="electionDetails1" style="border: 2px solid teal;background-color: white;height: 100px; width: 450px;margin-left: 450px; position: absolute;top: 40%;display: none">
                 <div style="background-color: teal;width: 100%;position: relative">&nbsp;<span style="float: right;"><a href="#" title="Close this window" onclick="deleteBod();">[X]</a></span></div>
                 <div style="position: relative;">
-                   <html:form action="/election" styleId="election1" target="f1"><table style="width:100%"><tr><td style="text-align:center">Select an Election:
+                   <html:form action="/election" styleId="election1" target="f1"><table style="width:100%"><tr><td style="text-align:center"><%=resource.getString("selectanelection")%>:
                                    <html:select property="election" styleId="election2"  style="width: 150px">
                                         <html:options collection="electionList" property="id.electionId" labelProperty="electionName" />
                        </html:select></td></tr><tr><td style="text-align:center">
-                       <input value="Select" type="button" onclick="loadvoting();" id="electionsubmit"/>
+                       <input value="<%=resource.getString("select")%>" type="button" onclick="loadvoting();" id="electionsubmit"/>
 
                                            </td></tr></table>
                    </html:form></div></div>
@@ -717,10 +803,10 @@ function createul(current)
                 <div style="position: relative;">
                    <html:form action="/election" styleId="electionv" target="f1">
                        <table style="width:100%">
-                           <tr><td style="text-align:center">Select an Election:<html:select property="election" styleId="electionv2"  style="width: 150px">
+                           <tr><td style="text-align:center"><%=resource.getString("selectanelection")%>:<html:select property="election" styleId="electionv2"  style="width: 150px">
                                        <html:options collection="electionList" property="id.electionId" labelProperty="electionName" />
                                    </html:select></td></tr>
-                           <tr><td style="text-align:center"><input value="Select" type="button" onclick="loadelectionview();" id="electionsubmit"/></td></tr>
+                           <tr><td style="text-align:center"><input value="<%=resource.getString("select")%>" type="button" onclick="loadelectionview();" id="electionsubmit"/></td></tr>
                        </table>
                    </html:form></div></div>
                     <%}%>

@@ -1,6 +1,6 @@
 
 <%@ page language="java" %>
-
+<jsp:include page="/header.jsp" flush="true" />
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -56,6 +56,7 @@ function back()
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>EMS</title>
 <link href="/css/Style1.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
  <%
 
@@ -258,7 +259,7 @@ function check3()
   var city1=document.getElementById("city1");
   city.value=city1.value;
    var state=document.getElementById("state");
-  var state1=document.getElementById("State1");
+  var state1=document.getElementById("state1");
   state.value=state1.value;
    var state2=document.getElementById("state2");
   var state21=document.getElementById("state21");
@@ -266,12 +267,12 @@ function check3()
    var zcode=document.getElementById("zcode");
   var zcode1=document.getElementById("zcode1");
   zcode.value=zcode1.value;
-   var country=document.getElementById("country");
+  var country=document.getElementById("country");
   var country1=document.getElementById("country1");
   country.value=country1.value;
     var padd=document.getElementById("padd");
   var padd1=document.getElementById("padd1");
-  cadd.value=padd1.value;
+  padd.value=padd1.value;
   var city2=document.getElementById("city2");
   var city21=document.getElementById("city21");
   city2.value=city21.value;
@@ -295,58 +296,44 @@ function check3()
 
 
 <body>
-    <h1>
-                     Voter Registration Form
-                </h1>
+   
     <%--  <%if(msg1!=null){%>   <span style=" position:absolute; top: 120px; font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>  <%}%>--%>
 
 
  <div
-   style="  top:150px;
-   left:905px;
+   style="  top:20%;
+   left:57%;
    right:5px;
-      position: absolute;
+   position: absolute;
+   visibility: show;" >
+     <table>
+         <tr><td>
 
-      visibility: show;" >
+     
   <%if(btn.equals("Add")==true){%>
 
                             <%if(session.getAttribute("image")!=null){%>
-                         <html:img src="/EMS/Voter/upload.jsp"  alt="no Image Selected" width="100" height="100"/>
+                         <html:img src="/EMS/Voter/upload.jsp"  alt="no Image Selected" width="80" height="80"/>
                         <%}else{%>
 
-                        <html:img src="/EMS/images/no-image.jpg"  alt="no Image Selected" width="100" height="100"/>
+                        <html:img src="/EMS/images/no-image.jpg"  alt="no Image Selected" width="80" height="80"/>
                            <%}%>
 
 
                            <%}else{%>
 
                             <%if (request.getAttribute("imagechange")!=null){%>
-                        <html:img src="/EMS/Voter/upload.jsp"  alt="no Image Selected" width="120" height="120"/>
+                        <html:img src="/EMS/Voter/upload.jsp"  alt="no Image Selected" width="80" height="80"/>
                         <%}else{%>
-                        <html:img src="/EMS/Voter/viewimage.jsp" alt="no image selected" width="120" height="120" />
+                        <html:img src="/EMS/Voter/viewimage.jsp" alt="no image selected" width="80" height="80" />
                         <%}%><br/>
 
 
                            <%}%>
+             </td><td valign="bottom">
+      <html:form action="/voterimageupload" method="post" styleId="form1" enctype="multipart/form-data">
 
- </div>
-
-
-    <div
-   style="  top:250px;
-   left:800px;
-   right:5px;
-      position: absolute;
-
-      visibility: visible; z-index: 100;" >
-
-
- <html:form action="/voterimageupload" method="post" styleId="form1" enctype="multipart/form-data">
-       <%if(btn.equals("Update")==true || btn.equals("Add")==true)
-                        {%>
-     <html:file  property="img" name="VoterRegActionForm" styleId="img" onchange="submit()"  onclick="copy1()" />
-                        <%}%>
-
+          <html:file  property="img"  name="VoterRegActionForm" styleId="img" onchange="submit()"  onclick="copy1()" />
 
       <input type="hidden" name="filename" tabindex="16" id="filename" />
 
@@ -382,29 +369,31 @@ function check3()
          <html:hidden property="email" name="VoterRegActionForm" styleId="email"/>
            <html:hidden property="button" name="VoterRegActionForm" styleId="button"/>
     </html:form>
+ </td>
+ </tr></table>
+
+ </div>
 
 
+   
+     <html:form action="/voterregistration" method="post"   onsubmit="return check3();">
 
-     </div>
-     <html:form action="/voterregistration" method="post" style="position:absolute; left:90px; top:90px;"  onsubmit="return check3();">
 
-
-        <table border="1">
+         <table align="center" class="table" width="70%">
             <tr><td>
-        <table border="0" class="table" align="center">
-            <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Register Yourself </b></td></tr>
-            <tr><td colspan="2">
-                    <table>
-              <tr>
-                  <td >Enrollment Number*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="true"  name="VoterRegActionForm"  styleId="enrollment1" property="enrollment"  value="<%=enrollment%>" /></td><td>
-<td></td>
+        <table border="0" class="" align="center" width="100%">
+            <tr><td align="center" class="headerStyle1" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Voter Registration Form </b></td></tr>
+          
 
+            <tr><td>
+                    <table  class="txtStyle"  border="0" cellspacing="6" cellpadding="2" align="center">
+                        
+<tr>
+    <td >Enrollment Number*:</td><td><html:text readonly="true"  name="VoterRegActionForm"  styleId="enrollment1" property="enrollment"  value="<%=enrollment%>" /></td>
+    <td colspan="2" rowspan="3">
 </tr>
-<%--<tr>
-    <td width="30%">Institute Name*:</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm"  styleId="ins1"  value="<%=instituteid%>"  property="institute_id"/></td><td width="30%">
-<td></td>
-</tr>--%>
-<tr><td align="left">Institute Name*</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<tr>
+    <td align="left">Institute Name*</td><td>
         <html:select property="institute_id" styleId="ins1"  name="VoterRegActionForm"  tabindex="10" >
 
             <html:option  value="Select"> Select </html:option>
@@ -416,59 +405,52 @@ function check3()
                                <html:option value="jnu">JNU</html:option>--%>
 </html:select>
 
-      </tr>
+    </td>
+</tr>
 <tr>
-<td align="left">Department*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="dep1" property="department"  value="<%=dep%>" /></td>
-<td>
-
-
-
-</td>
+<td align="left">Department*:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="dep1" property="department"  value="<%=dep%>" /></td>
 
 </tr>
 
 <tr>
-<td align="left">Course*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cour1" property="course" value="<%=cour%>"/></td>
+<td align="left">Course*:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cour1" property="course" value="<%=cour%>"/></td>
+         <td align="left">Corresponding Address:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cadd1" property="c_add" value="<%=cadd%>"/></td>
 </tr>
 
 <tr>
-    <td align="left">Year :</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="year1" property="year" value="<%=yr%>"/></td>
-                                               <%-- <td>Upload Photo:</td><td><html:file property="image"/></td>--%>
+    <td align="left">Year:</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="year1" property="year" value="<%=yr%>"/></td>
+    <td align="left">City:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="city"  value="<%=city%>" styleId="city1"/></td>
 </tr>
-                    </table>
-                </td></tr>
 
-            <tr><td>
-                        <table width="700" border="0" cellspacing="6" cellpadding="2" align="left">
-                        <tr>
-                                 </tr>
-<%--<tr>
-<td align="left">Faculty Roll No :</td><td><html:text name="VoterRegActionForm" property="electionid"/></td>
+<tr>
+ <td  width="30%">Duration of course:</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="dur1" value="<%=dur%>" property="duration" /> </td>
+<td align="left">State:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="state" value="<%=state%>" styleId="state1"/></td>
 </tr>
-<tr--%>
-<tr><td  width="30%">Duration of course:</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="dur1" value="<%=dur%>" property="duration" /> </td><td width="30%">
-    </tr>
 <tr>
 <td align="left">Current Session:</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="sess1" value="<%=sess%>" property="session"  /></td>
-</tr
+<td align="left">Zip Code:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="zipcode"  value="<%=zcode%>" styleId="zcode1"/></td>
+</tr>
 <tr><td width="15%">Date of Joining<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="1" property="j_date" value="<%=jdate%>" />
-<a href="javascript:NewCal('1','ddmmmyyyy')"><img src="image/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></td></tr>
+<a href="javascript:NewCal('1','ddmmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></td>
+<td align="left">Country:*</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="country"  value="<%=country%>" styleId="country1"/></td>
+</tr>
 
 
  <tr>
                 <td align="left">Voter(student) Name*</td>
                 <td>
-                        <table><tr><td>
-                         <select name="courtesy" size="1" id="courtesy" tabindex="2" style="align:right">
+                    <table><tr><td>
+                         <%--<select name="courtesy" size="1" id="courtesy" tabindex="2" style="align:right">
 
                          <option selected value="Select">Select</option>
                          <option  value="mr">Mr.</option>
                          <option value="mrs">Mrs.</option>
                         <option  value="ms">Ms.</option>
-                         </select></td>
+                         </select>--%></td>
                         <td><html:text  name="VoterRegActionForm"  styleId="vname1"  value="<%=vname%>"  property="v_name" readonly="<%=read %>"/></td>
                         </table>
                         </td>
+                     <td colspan="2"><input type="checkbox" id="Checkbox1" name="check" value="off" tabindex="17" onclick="return copy();"><b>Click Here</b>&nbsp;(If permanent address is same as corresponding address)</td>
                         </tr>
 <tr><td align="left">Gender*</td><td>
         <html:select property="gender" styleId="gen1"  name="VoterRegActionForm"  tabindex="10">
@@ -478,53 +460,67 @@ function check3()
                                 <html:option value="female">Female</html:option>
                                
 </html:select>
-
+    </td>
+     <td align="left">Permanent Address</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" property="p_add" value="<%=padd%>" styleId="padd1"/></td>
       </tr>
       <tr>
       <td>Date of Birth*<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm"  property="b_date"  value="<%=bdate%>" styleId="3" />
-<a href="javascript:NewCal('3','ddmmmyyyy')"><img src="image/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></td>
+<a href="javascript:NewCal('3','ddmmmyyyy')"><img src="/EMS/images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></td>
+ <td align="left">City</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="city1" value="<%=city1%>"  styleId="city21"/></td>
+      </tr>
+
+
+<tr> <td>Father's Name*</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="fname1"  value="<%=fname%>"  property="f_name"/></td>
+  <td align="left">State</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="state1" value="<%=state1%>" styleId="state21"/></td>
 </tr>
-
-
-<tr> <td>Father's Name*</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="fname1"  value="<%=fname%>"  property="f_name"/></td></tr>
   <tr> <td>Mother's Name*</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mname1" value="<%=mname%>" property="m_name"/></td>
-                                  </tr>
+  <td align="left">ZIP Code</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" property="zipcode1"  value="<%=zcode1%>" styleId="zcode21"/></td>
+  </tr>
 
 <tr>
 <td align="left">Mobile No*:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mnumb1" value="<%=mnumb%>" property="m_number" /></td>
+<td align="left">Country</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="country1" value="<%=country1%>" styleId="country21"/></td>
 </tr>
+  <tr>
+          <td colspan="2"><b>Important! </b>Please provide a working email address:</td>
+
+        </tr>
+
+<tr>
+
+    <td align="left" colspan="2">email*:<html:text readonly="<%=read%>" name="VoterRegActionForm"   value="<%=email%>" styleId="email1" property="email"/></td>
+
+</tr>
+
+<tr><td colspan="5" height="5px" class="mandatory" align="right"><a class="star">*</a>indicated fields are mandatory</td></tr>
+<tr><td colspan="5" height="10px"></td>
+</tr>
+<tr>
+<td align="center" colspan="5">
+     <%if(btn.equals("Update")){%>
+    <input id="button1"  name="button" type="submit" value="<%=btn%>" class="txt1" />
+    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()"  class="txt1"/>
+    <%}else if(btn.equals("Delete")){%>
+    <input id="button1"  name="button" type="submit" value="<%=btn%>" class="txt1" />
+    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" onclick="return send()"  value="Cancel" class="txt1"/>
+   <%}else if(btn.equals("Add")){%>
+    <input id="button1"  name="button" type="submit" value="Submit" class="txt1" />
+    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()" class="txt1"/>
+    <%}else{%>
+    <input  name="button" type="submit" value="Accept"  class="txt1" />
+    <input  name="button" type="submit" value="Back" onclick="return back()" class="txt1" />
+
+
+
+    <%}%>
+	</td>
+</tr>
+
+
                         </table>   </td>
                 <td>
 
- <table> <tr>
-         <td align="left">Corresponding Address:</td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td> &nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cadd1" property="c_add" value="<%=cadd%>"  /></td>
-</tr>
-<tr>
-    <td align="left">City:</td><td>&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" property="city"  value="<%=city%>" styleId="city1"/></td>
-</tr>
-
- <tr>
-<td align="left">State:</td><td>&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" property="state" value="<%=state%>" styleId="state1"/></td>
-</tr>
-
-
-<tr>
-<td align="left">Zip Code:</td><td>&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" property="zipcode"  value="<%=zcode%>" styleId="zcode1"/></td>
-</tr>
-<tr>
-<td align="left">Country:*</td><td>&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" property="country"  value="<%=country%>" styleId="country1"/></td>
-
-</tr>
-<tr>
-       <td colspan="2"><input type="checkbox" id="Checkbox1" name="check" value="off" tabindex="17" onclick="return copy();" >&nbsp;&nbsp;<b>Click Here</b>&nbsp;(If permanent address is same as corresponding address)</td>
-        </tr>
-        <tr>    <td align="left">Permanent Address</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" property="p_add" value="<%=padd%>" styleId="padd1"/></td></tr>
-       <tr>    <td align="left">City</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="city1" value="<%=city1%>"  styleId="city21"/></td></tr>
-        <tr>    <td align="left">State</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="state1" value="<%=state1%>" styleId="state21"/></td></tr>
-         <tr> <td align="left">ZIP Code</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" property="zipcode1"  value="<%=zcode1%>" styleId="zcode21"/></td><td colspan="2"></tr>
-          <tr><td align="left">Country</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="country1" value="<%=country1%>" styleId="country21"/></td></tr>
- </table>
-
+                
                 </td>
             </tr>
   <tr>
@@ -555,41 +551,11 @@ document.getElementById("country21").value=e;
                             <input type="reset" id="Button2" name="submit" value="Reset" >
                             <input type="button" id="Button3" name="" value="Back" onclick="return send()">--%>
                         <%--</td></tr>--%>
-                <tr>
-          <td colspan="2"><b>Important! </b>Please provide a working email address:</td>
-
-        </tr>
-
-<tr>
-
-    <td align="left" colspan="2">email*:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm"   value="<%=email%>" styleId="email1" property="email"/></td>
-
-</tr>
+              
 </html:form>
 
-<tr><td colspan="5" height="5px" class="mandatory" align="right"><a class="star">*</a>indicated fields are mandatory</td></tr>
-<tr><td colspan="5" height="10px"></td>
-</tr>
-<tr>
-<td align="center" colspan="5">
-     <%if(btn.equals("Update")){%>
-    <input id="button1"  name="button" type="submit" value="<%=btn%>" class="txt1" />
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()"  class="txt1"/>
-    <%}else if(btn.equals("Delete")){%>
-    <input id="button1"  name="button" type="submit" value="<%=btn%>" class="txt1" />
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" onclick="return send()"  value="Cancel" class="txt1"/>
-   <%}else if(btn.equals("Add")){%>
-    <input id="button1"  name="button" type="submit" value="Submit" class="txt1" />
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()" class="txt1"/>
-    <%}else{%>
-    <input  name="button" type="submit" value="Accept"  class="txt1" />
-    <input  name="button" type="submit" value="Back" onclick="return back()" class="txt1" />
-    
 
-
-    <%}%>
-	</td>
-</tr><tr><td colspan="5" height="5px"></td>
+<tr><td colspan="5" height="5px"></td>
 </tr>
                         </table>
 

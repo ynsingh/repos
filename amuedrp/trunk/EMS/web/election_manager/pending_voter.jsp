@@ -38,7 +38,54 @@
 </style>
     </head>
     <body>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String sessionId="";
+    boolean page=true;
+    String align="left";
+%>
 
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+sessionId = session.getId().toString();
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+String user=(String)session.getAttribute("username");
+String instituteName=(String)session.getAttribute("institute_name");
+ String contextPath = request.getContextPath();
+ String role=(String)session.getAttribute("login_role");
+    %>
+
+
+<%
+String Enrollment_No=resource.getString("enrollment");
+pageContext.setAttribute("Enrollment_No",Enrollment_No );
+String Voter_Name=resource.getString("votername");
+pageContext.setAttribute("Voter_Name", Voter_Name);
+String Status=resource.getString("workingstatus");
+pageContext.setAttribute("Status", Status);
+String Department=resource.getString("department");
+pageContext.setAttribute("Department",Department);
+String Year=resource.getString("year");
+pageContext.setAttribute("Year",Year);
+String Course=resource.getString("course");
+pageContext.setAttribute("Course",Course);
+String Edit=resource.getString("edit");
+pageContext.setAttribute("Edit",Edit);
+
+%>
         <%!
 
 
@@ -130,44 +177,44 @@ pageContext.setAttribute("path", path);
 
 <%if(tcount==0)
 {%>
-<p class="err" style="font-size:12px">No Record Found</p>
+<p class="err" style="font-size:12px"><%=resource.getString("no_record_found")%></p>
 <%}
 else
 {%>
-<table align="" dir="" width="80%">
-    <tr dir=""><td dir="">
+<table align="" dir="<%=rtl%>" width="80%">
+    <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
   <columns>
 
     <column width="10%">
-      <header value="Enrollment_No" hAlign="left" styleClass="header"/>
+      <header value="${Enrollment_No}" hAlign="left" styleClass="header"/>
       <item   value="${doc.enrollment}" hyperLink="${path}/newregistration1.do?id=${doc.enrollment}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="10%">
-      <header value="Voter_Name" hAlign="left" styleClass="header"/>
+      <header value="${Voter_Name}" hAlign="left" styleClass="header"/>
       <item   value="${doc.voter_name}" hAlign="left" hyperLink="${path}/newregistration1.do?id=${doc.enrollment}"  styleClass="item"/>
     </column>
     <column width="10%">
-      <header value="Department" hAlign="left" styleClass="header"/>
+      <header value="${Department}" hAlign="left" styleClass="header"/>
       <item   value="${doc.department}" hAlign="left" hyperLink="${path}/newregistration1.do?id=${doc.enrollment}"  styleClass="item"/>
     </column>
 
     <column width="10%">
-      <header value="Course" hAlign="left" styleClass="header"/>
+      <header value="${Course}" hAlign="left" styleClass="header"/>
       <item   value="${doc.course}" hyperLink="${path}/newregistration1.do?id=${doc.enrollment}"  hAlign="left" styleClass="item"/>
     </column>
 
 
        <column width="10%">
-      <header value="Year" hAlign="left" styleClass="header"/>
+      <header value="${Year}" hAlign="left" styleClass="header"/>
       <item   value="${doc.year}" hyperLink="${path}/newregistration1.do?id=${doc.enrollment}"  hAlign="left" styleClass="item"/>
     </column>
 
 
       <column width="10%">
-      <header value="Status" hAlign="left" styleClass="header"/>
+      <header value="${Status}" hAlign="left" styleClass="header"/>
       <item   value="${doc.status}" hyperLink="${path}/newregistration1.do?id=${doc.enrollment}"  hAlign="left" styleClass="item"/>
     </column>
 
@@ -187,10 +234,10 @@ else
 <tr>
 <td align="left" width="100px">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("previous")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-    <a href="<c:out value="${next}"/>">Next</a>
+    <a href="<c:out value="${next}"/>"><%=resource.getString("next")%></a>
 </c:if>
 
 </td><td width="400px" align="center">

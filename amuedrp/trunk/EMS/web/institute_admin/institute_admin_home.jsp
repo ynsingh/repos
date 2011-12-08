@@ -217,7 +217,7 @@ document.write('</div></span>');
         </li>
       <li>
           <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
-              <b>Manage Election Manager</b>
+              <b><%=resource.getString("manage_election_manager")%></b>
           </a>
             <ul>
                 <li>
@@ -235,21 +235,21 @@ document.write('</div></span>');
             </ul>
         </li>
         <li>
-            <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><b>View Election Manager</b></a>
+            <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><b><%=resource.getString("view_electionmanager")%></b></a>
             <ul>
                 <li>
-                    <a href="<%=request.getContextPath()%>/view_managers.do?status=B"  target="page" onclick="return pageload(4);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">View Blocked<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                    <a href="<%=request.getContextPath()%>/view_managers.do?status=B"  target="page" onclick="return pageload(4);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("view_blocked")%><%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
                 </li>
                 <li>
-                    <a href="<%=request.getContextPath()%>/view_managers.do?status=A"  target="page" onclick="return pageload(4);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">View Active<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                    <a href="<%=request.getContextPath()%>/view_managers.do?status=A"  target="page" onclick="return pageload(4);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("view_active")%><%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
                 </li>
                 <li>
-                    <a href="<%=request.getContextPath()%>/view_managers.do"  target="page" onclick="return pageload(4);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">View All<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                    <a href="<%=request.getContextPath()%>/view_managers.do"  target="page" onclick="return pageload(4);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("view_all")%><%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
                 </li>
             </ul>
             </li>
             <li>
-                <a href="<%=request.getContextPath()%>/institute_admin/search_election_details.jsp"  target="page" onclick="return pageload(4);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><b style="color:white" dir="<%=rtl%>">View Election Details</b><%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                <a href="<%=request.getContextPath()%>/institute_admin/search_election_details.jsp"  target="page" onclick="return pageload(4);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><b style="color:white" dir="<%=rtl%>"><%=resource.getString("view_electiondetails")%></b><%--<%=resource.getString("view_electiondetails")%>--%></a>
                 </li>
 </ul>
             

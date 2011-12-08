@@ -28,6 +28,15 @@ public class ShowElectionActionForm extends org.apache.struts.action.ActionForm 
         private String scrutnyEndDate;
          private String withdrawlDate;
        private String withdrawlEndDate;
+       private String noofcandi;
+
+    public String getNoofcandi() {
+        return noofcandi;
+    }
+
+    public void setNoofcandi(String noofcandi) {
+        this.noofcandi = noofcandi;
+    }
 
      private String status;
      private String createdBy;

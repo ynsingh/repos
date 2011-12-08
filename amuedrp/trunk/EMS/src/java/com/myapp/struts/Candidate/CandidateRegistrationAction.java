@@ -22,10 +22,8 @@ import com.myapp.struts.hbm.VoterRegistration;
 import com.myapp.struts.utility.Email;
 import com.myapp.struts.utility.PasswordEncruptionUtility;
 import com.myapp.struts.utility.RandomPassword;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -36,13 +34,11 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.data.ListOfArrayDataSource;
 
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
@@ -52,7 +48,7 @@ import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.data.JRHibernateListDataSource;
+import org.apache.struts.upload.FormFile;
 
 
 /**
@@ -83,35 +79,48 @@ private LoginDAO logindao = new LoginDAO();
       private StaffDetail staffd =new StaffDetail();
       private StaffDetailId staffid =new StaffDetailId();
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
       CandidateRegActionForm lf=(CandidateRegActionForm)form;
-    System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"+lf.getCriminal());
-
+  
       HttpSession session = request.getSession();
          String button=lf.getButton();
          String id=lf.getEnrollment();
          String eid=lf.getInstitute_id();
          String position = lf.getPosition();
          String election = lf.getElections();
-        
+
+        System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"+button+lf.getElections()+lf.getInstitute_id());
+
+        String elec_id=null;
+
+        Election eleobj=ElectionDAO.searchElectionByName(lf.getElections(), eid);
+        if(eleobj!=null)
+            elec_id=eleobj.getId().getElectionId();
+System.out.println("...................."+elec_id);
+
+
+         FormFile v=(FormFile)session.getAttribute("filename");
+       byte[] iii=null;
+       if(v!=null)iii=v.getFileData();
+
+
+
+
+
+
+
+
        if(button.equals("SUBMIT"))
        {
-System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"+lf.getCriminal());
+//System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"+lf.getCriminal());
            empid.setEnrollment(id);
          empid.setInstituteId(eid);
+         empid.setElectionId(elec_id);
         
       
 
@@ -121,9 +130,12 @@ System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"+lf.getCriminal());
            ob.setIndisc(lf.getIndisc());
             ob.setPAttendence(lf.getP_attendence());
              ob.setPMarks(lf.getP_marks());
+
              ob.setPosition(lf.getPosition());
             ob.setStatus("not registered");
             ob.setId(empid);
+
+
          pos1.setElectionId(lf.getElections());
          pos1.setInstituteId(lf.getInstitute_id());
        pos1.setPositionId(Integer.parseInt(lf.getPosition()));
@@ -195,11 +207,13 @@ String path = servlet.getServletContext().getRealPath("/");
 System.out.println("Accept is working");
              CandidateRegistrationDAO voterdao=new CandidateRegistrationDAO();
              
+              System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+eid);
              Election e = ElectionDAO.searchElectionByName(election, eid);
-          List vr=voterdao.getCandidateDetailsByStatus1(lf.getInstitute_id(),e.getId().getElectionId(),lf.getEnrollment());
+               
+          List vr=voterdao.getCandidateDetailsByStatus1(eid,e.getId().getElectionId(),lf.getEnrollment());
           List ve=voterdao.getEmail(lf.getEnrollment());
 
-          System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+vr+lf.getInstitute_id());
+       
           if(!vr.isEmpty())
 
               ob=(CandidateRegistration)vr.get(0);
@@ -255,11 +269,15 @@ obj=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfu
          }
          if(button.equals("Update"))
          {
-
+            
              CandidateRegistrationDAO voterdao=new CandidateRegistrationDAO();
              Election e1 = ElectionDAO.searchElectionByName(lf.getElections(), eid);
+
+
           CandidateRegistration vr=voterdao.searchCandidateRegistration(eid, id,e1.getId().getElectionId());
+          System.out.println(eid+"   "+id+"  ");
           VoterRegistration vr1=voterdao.searchVoterRegistration(eid, id);
+          
           if(vr!=null)
           {
                 if(vr.getBacklog().equalsIgnoreCase(lf.getBacklog())==false)
@@ -274,8 +292,11 @@ obj=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfu
                     vr.setPAttendence(lf.getP_attendence());
                 if(vr.getPMarks().equalsIgnoreCase(lf.getP_marks())==false)
                     vr.setPMarks(lf.getP_marks());
+
                 Election e = ElectionDAO.searchElectionByName(lf.getElections(), eid);
                 Position1 p=null;
+
+
                 if(e!=null)
                     p = positiondao.getPositionByName(lf.getPosition(), e.getId().getElectionId(), eid);
 
@@ -288,6 +309,8 @@ obj=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfu
                 
               
           }
+
+           
           if(vr1!=null)
           {
               vr1.getId().setEnrollment(id);
@@ -316,7 +339,16 @@ obj=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfu
               vr1.setCountry1(lf.getCountry1());
               vr1.setZipCode1(lf.getZipcode1());
           }
+             if (lf.getImg()!=null)
+            vr1.setImage(lf.getImg().getFileData());
+         else
+               if(iii!=null){vr1.setImage(iii);}
+               else{vr1.setImage(null);}
+
+
           CandidateRegistrationDAO.update(vr,vr1);
+
+        
 //String path = servlet.getServletContext().getRealPath("/");
 //          obj=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfully from EMS","User Id="+userid +" Your Password for EMS Login is="+admin_password);
 //         executor.submit(new Runnable() {
@@ -325,6 +357,9 @@ obj=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfu
 //                    obj.send();
 //                }
 //            });
+          session.setAttribute("msg","Candidate record Updated Successfully");
+          System.out.println("ddd");
+
              return mapping.findForward(SUCCESS);
          }
 
@@ -340,7 +375,7 @@ obj=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfu
 String enroll=lf.getEnrollment();
  System.out.println(enroll);
          list=dao.Report(enroll);
-
+if(!list.isEmpty()){
          System.out.println(list.get(0)+""+enroll);
          JRBeanCollectionDataSource data=new  JRBeanCollectionDataSource(list);
 
@@ -375,6 +410,8 @@ JasperExportManager.exportReportToPdfStream(print, ouputStream);
          }
 
 
- return mapping.findForward("add");
+ 
+         }
+       return mapping.findForward("add");
     }
           }

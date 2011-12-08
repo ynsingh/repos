@@ -181,7 +181,7 @@ if(session.getAttribute("username")==null)
 <ul class="dd-menu">
 <li><a href="<%=contextPath%>/admin/admin_home.jsp"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
       <b style="color:white" dir="<%=rtl%>"> &nbsp;&nbsp;<%=resource.getString("login.home")%></b></a></li>
-      <li><a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><b>Institute&nbsp;List</b></a>
+      <li><a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><b><%=resource.getString("instituteList")%></b></a>
     <ul><li><a href="<%=contextPath%>/admin/view_pending.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
       <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.viewpendinglist")%></b></a></li>
         <li><a href="<%=contextPath%>/admin/view_approved.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >

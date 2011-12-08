@@ -10,7 +10,7 @@
 
 <%
 VoterRegistration voter  =(VoterRegistration)session.getAttribute("voter");
-System.out.println(voter.getImage()+"  ......................");
+//System.out.println(voter.getImage()+"  ......................");
 byte[] bytes=null;
 if(voter.getImage()!=null)
 {
@@ -19,7 +19,7 @@ System.out.println("Image Length1="+voter.getImage().length);
 }
 else
 {
-    File file = new File(application.getRealPath("image")+"/no-image.jpg");
+    File file = new File(application.getRealPath("images")+"/no-image.jpg");
 
       
     try{

@@ -227,7 +227,7 @@ function funload()
    var parloc = parent.document.getElementById("pagetab");
     var pagheight = document.height!=undefined?document.height:(document.body!=undefined?document.body.height:document.scrollHeight);
    prevheight = parloc.height;
-   alert(pagheight);
+   //alert(pagheight);
    if(pagheight!=undefined)pagheight+=30;
     parloc.height = pagheight!=undefined?pagheight:650;
     //alert("yes its working");

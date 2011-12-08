@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ElectionDetail" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<import value="net.sf.Jasperreports.engine.*"/>
+	<parameter name="list1" class="java.util.List"/>
+	<parameter name="ElectionDetailSubReport.jasper" class="java.lang.String" isForPrompting="false"/>
+	<field name="e_election_name" class="java.lang.String"/>
+	<field name="e_description" class="java.lang.String"/>
+	<field name="e_nomistart" class="java.sql.Timestamp"/>
+	<field name="e_nomiend" class="java.sql.Timestamp"/>
+	<field name="e_scrstart" class="java.sql.Timestamp"/>
+	<field name="e_scrend" class="java.sql.Timestamp"/>
+	<field name="e_withstart" class="java.sql.Timestamp"/>
+	<field name="e_withend" class="java.sql.Timestamp"/>
+	<field name="e_start" class="java.sql.Timestamp"/>
+	<field name="e_end" class="java.sql.Timestamp"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="41" splitType="Stretch">
+			<rectangle>
+				<reportElement x="10" y="10" width="533" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="23" y="13" width="505" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Bitstream Vera Sans" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Details of ongoing Election]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="364" splitType="Stretch">
+			<staticText>
+				<reportElement x="25" y="22" width="130" height="15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Election Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="22" width="15" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="199" y="22" width="200" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{e_election_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="25" y="47" width="130" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[About Election]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="47" width="15" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="199" y="47" width="200" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{e_description}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="10">
+				<reportElement x="10" y="82" width="533" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="177" y="86" width="237" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Important Dates]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="122" width="140" height="15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Nomination Time Period]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="165" y="122" width="15" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="190" y="122" width="130" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{e_nomistart}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="333" y="122" width="15" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="383" y="122" width="130" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{e_nomiend}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="25" y="147" width="130" height="15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Scrutny Time Period]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="165" y="147" width="15" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="190" y="147" width="130" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{e_scrstart}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="333" y="147" width="17" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="383" y="147" width="130" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{e_scrend}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="25" y="173" width="130" height="15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Withdrawl Time Period]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="165" y="173" width="15" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="190" y="173" width="130" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{e_withstart}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="333" y="173" width="17" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="383" y="173" width="130" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{e_withend}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="25" y="199" width="130" height="15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Election Time Period]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="165" y="199" width="15" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="190" y="199" width="130" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{e_start}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="333" y="199" width="17" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="383" y="199" width="130" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{e_end}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="10">
+				<reportElement x="10" y="241" width="533" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="24" y="244" width="505" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[This Election is For the following posts]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="4" y="265" width="431" height="70"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(((Collection)$P{list1}))]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["ElectionDetailSubReport.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="83" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -44,6 +44,11 @@ private VoterRegistrationId elid=new VoterRegistrationId();
          String button="View";
          System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDD"+"gh"+button);
 
+
+
+     
+
+
         String id="id";
          id=request.getParameter(id);
           String institute_id=(String)session.getAttribute("institute_id");
@@ -166,7 +171,11 @@ session.setAttribute("Institute",Institute);
             employeeform.setInstitute_id(l.getId().getInstituteId());
 
             if(request.getParameter("status")!=null && request.getParameter("status").equalsIgnoreCase("AB"))
-                button = "AB";
+            {button = "AB";}
+            if(request.getParameter("status")!=null && request.getParameter("status").equalsIgnoreCase("B"))
+            {button = "Block1";}
+
+
             request.setAttribute("button", button);
             return mapping.findForward("add");
                        }
@@ -175,7 +184,8 @@ session.setAttribute("Institute",Institute);
 
 
 
-          return mapping.findForward("add");}
+          return mapping.findForward("add");
+       }
         return mapping.findForward("duplicate");
     }
 

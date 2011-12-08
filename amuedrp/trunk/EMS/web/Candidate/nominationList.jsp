@@ -241,7 +241,7 @@ function isNumberKey(evt)
         
 
 
-<br><br>
+<br><br> 
 
 <%if(tcount==0)
 {%>
@@ -249,33 +249,34 @@ function isNumberKey(evt)
 <%}
 else
 {%>
-<table align="<%=align%>" dir="<%=rtl%>" width="90%">
-    <tr><td colspan="2" align="right">View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></td></tr>
-    <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
-            <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" style="margin-left: 30px" cellPadding="0" cellSpacing="0" styleClass="datagrid">
+<table align="<%=align%>" dir="<%=rtl%>" width="50%">
+    <tr><td>Election Details</td><td align="right">View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></td></tr>
+    <tr dir="<%=rtl%>"><td dir="<%=rtl%>" colspan="2">
+            <table width="100%"  align="center"><tr><td colspan="2" align="center">
+            <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1"  cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
   <columns>
 
-    <column width="10%">
+    <column width="20%">
       <header value="Election_Id" hAlign="left" styleClass="header"/>
       <item   value="${doc.election_id}" hyperLink="${path}/Candidate/candidate_details.jsp?id=${doc.index}"  hAlign="left"    styleClass="item"/>
     </column>
 
-    <column width="10%">
+    <column width="20%">
       <header value="Institute_Id" hAlign="left" styleClass="header"/>
       <item   value="${doc.institute_id}" hAlign="left" hyperLink="${path}/Candidate/candidate_details.jsp?id=${doc.index}"  styleClass="item"/>
     </column>
-    <column width="10%">
+    <column width="20%">
       <header value="Election Name" hAlign="left" styleClass="header"/>
       <item   value="${doc.election_name}" hAlign="left" hyperLink="${path}/Candidate/candidate_details.jsp?id=${doc.index}"  styleClass="item"/>
     </column>
 
-    <column width="10%">
+    <column width="20%">
       <header value="Position Name" hAlign="left" styleClass="header"/>
       <item   value="${doc.positionName}" hyperLink="${path}/Candidate/candidate_details.jsp?id=${doc.index}"  hAlign="left" styleClass="item"/>
     </column>
 
-      <column width="10%">
+      <column width="20%">
       <header value="Candidate Name" hAlign="left" styleClass="header"/>
       <item   value="${doc.candidateName}" hyperLink="${path}/Candidate/candidate_details.jsp?id=${doc.index}"  hAlign="left" styleClass="item"/>
     </column>
@@ -294,10 +295,9 @@ else
        previousUrlVar="previous" pagesVar="pages"/>
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>
-
-  <table width="700" style="font-family: arial; font-size: 10pt;margin-left: 30px" border=0>
+</td></tr>
 <tr>
-<td align="left" width="100px">
+<td align="center" colspan="2">
 <c:if test="${previous != null}">
 <a href="<c:out value="${previous}"/>"><%=resource.getString("previous")%></a>
 </c:if>&nbsp;
@@ -305,7 +305,6 @@ else
     <a href="<c:out value="${next}"/>"><%=resource.getString("next")%></a>
 </c:if>
 
-</td><td width="400px" align="center">
 
 <c:forEach items="${pages}" var="page">
 <c:choose>
@@ -334,8 +333,9 @@ if(msg!=null)
 </td></tr>--%>
 </table>
 
-  <%}%></td></tr>
+ </td></tr>
 </table>
+ <%}%>
     </body>
 
 </html>

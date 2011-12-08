@@ -68,49 +68,71 @@ function help1()
          statwords('Please enter any unique number or string like 123,asd etc.')
      }
 
- function Add()
+<%-- function Add(val)
 {
-    var buttonvalue="Add";
-    document.getElementById("button").setAttribute("value", buttonvalue);
-    return true;
+    
+    
+
 }
 
 function View()
 {
+    return check1();
     var buttonvalue="View";
     document.getElementById("button").setAttribute("value", buttonvalue);
     return true;
 }
 function Update()
 {
+    return check1();
     var buttonvalue="Update";
     document.getElementById("button").setAttribute("value", buttonvalue);
     return true;
 }
 function Delete()
 {
+    return check1();
     var buttonvalue="Block";
     document.getElementById("button").setAttribute("value", buttonvalue);
     return true;
 }
 function Preview()
 {
+    return check1();
     var buttonvalue="Preview";
     document.getElementById("button").setAttribute("value", buttonvalue);
     return true;
 }
-
-function check1()
+--%>
+function check1(val)
 {
-    if(document.getElementById('election_id').value=="")
+
+
+var buttonvalue=val;
+    document.getElementById("button").setAttribute("value", buttonvalue);
+  
+
+    if(document.getElementById('electionid').value=="")
     {
         alert("Enter Election ID<%--<%=resource.getString("systemsetup.manage_faculty.enterfacultyid")%>--%>...");
 
-        document.getElementById('election_id').focus();
+        document.getElementById('electionid').focus();
 
         return false;
     }
 
+var aURL = document.getElementById('electionid').value;
+var aPosition = aURL.indexOf("0");
+
+if(aPosition==0)
+{
+    alert("Election Id Cannot Start with 0");
+
+return false;
+}
+
+
+return true;
   }
 
 function isNumberKey(evt)
@@ -135,9 +157,9 @@ function isNumberKey(evt)
 
     </script>
 </head>
-<body>
+<body dir="<%=rtl%>">
  
-    <html:form method="post" onsubmit="return check1()" action="/electionview">
+    <html:form method="post"   action="/electionview">
        
 <div
    style="  top:200px;
@@ -150,18 +172,18 @@ function isNumberKey(evt)
     <table border="1" dir="<%=rtl%>" class="table" width="400px" height="200px" align="center">
 
   
-                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Election<%--<%=resource.getString("systemsetup.manage_faculty.managefaulty")%>--%></td></tr>
+                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("manage_elction")%></td></tr>
                 <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
                 <table dir="<%=rtl%>" cellspacing="10px">
 
-                    <tr><td dir="<%=rtl%>" rowspan="6" class="txt2">Enter Election ID<%--<%=resource.getString("systemsetup.manage_faculty.enterfacultyid")%>--%><br><br>
+                    <tr><td dir="<%=rtl%>" rowspan="6" class="txt2"><%=resource.getString("enterelectionid")%><%----%><br><br>
                             <html:text property="electionId" styleId="electionid" name="DepActionForm" onkeypress="return isNumberKey(event);" onfocus="return help()" onblur="return help1()"/>
-                        </td><td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn" id="Button1"  value="Add<%--<%=resource.getString("systemsetup.manage_notice.add")%>--%>" onclick="return Add();" /></td></tr>
-                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button2" class="btn"  value="Update<%--<%=resource.getString("circulation.cir_member_reg.update")%>--%>" onclick="return Update();"  /></td></tr>
-                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button3"  value="View<%--<%=resource.getString("circulation.cir_member_reg.view")%>--%>" onclick="return View();" class="btn"  /></td></tr>
-                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button4"  value="Block<%--<%=resource.getString("circulation.cir_member_reg.delete")%>--%>" onclick="return Delete();" class="btn" /></td></tr>
-                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button4"  value="Preview Ballot<%--<%=resource.getString("circulation.cir_member_reg.delete")%>--%>" onclick="return Preview();" class="btn" /></td></tr>
-                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="button" id="Button5"  value="Back<%--<%=resource.getString("circulation.cir_member_reg.back")%>--%>" class="btn" onclick="return quit()"/></td></tr>
+                        </td><td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn" id="Button1"  value="<%=resource.getString("addd")%><%----%>" onclick="return check1('Add');" /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button2" class="btn"  value="<%=resource.getString("update")%>" onclick="return check1('Update');"  /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button3"  value="<%=resource.getString("view")%>" onclick="return check1('View');" class="btn"  /></td></tr>
+                    <%--<tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button4"  value="<%=resource.getString("blocked")%>" onclick="return check1('Block');" class="btn" /></td></tr>--%>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="Button4"  value="<%=resource.getString("preview_blt")%>" onclick="return check1('Preview');" class="btn" /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="button" id="Button5"  value="<%=resource.getString("back")%>" class="btn" onclick="return quit()"/></td></tr>
                        
  
 

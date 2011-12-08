@@ -24,11 +24,7 @@ if(msg!=null)
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@page import="java.util.*,java.io.*,java.net.*,java.sql.Timestamp,java.lang.Object"%>
-<%--<link rel="stylesheet" href="<%=request.getContextPath()%>/cupertino/jquery.ui.all.css" type="text/css">
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.core.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.widget.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.datepicker.min.js"></script>--%>
+
 <link type="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <%!
     Locale locale=null;
@@ -118,7 +114,7 @@ var divtag = document.createElement("div");
      divtag.style.width = "930px";
      divtag.style.align = "center";
      divtag.style.marginLeft = "0px";
-     divtag.innerHTML ='<table><tr><td>Position Name *&nbsp;&nbsp;<input type="text" Id="position_name'+i+''+j +'" size="25px"/></td>&nbsp;&nbsp;<td>Number of choice *<input type="text" Id="numberofchoice'+i+''+ j +'" size="25px"/></td><td><input type="button" id="but0'+ j +'" value="Save" onclick="search('+ j +');"/></td></tr><tr><td colspan="2">Position instruction for voter:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';
+     divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%>*&nbsp;&nbsp;<input type="text" Id="position_name'+i+''+j +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%>*<input type="text" Id="numberofchoice'+i+''+ j +'" size="25px"/></td><td><input type="button" id="but0'+ j +'" value="Save" onclick="search('+ j +');"/></td></tr><tr><td colspan="2"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';
     // var tagbr = document.createElement("html");
 
      //document.getElementById("position").appendChild(tagbr);
@@ -281,8 +277,8 @@ for(iii=0;iii<em1.length;iii++)
                 divtag.style.marginTop = "5px";
                 divtag.style.marginLeft = "3px";
                 <%if(!button.equals("View") && !button.equals("Block")){%>
-                            divtag.innerHTML ='<table><tr><td>Position Name *&nbsp;&nbsp;<input type="text" Id="position_name0'+iii +'" size="25px"/><input type="hidden" Id="position_id0'+iii +'" size="25px"/></td>&nbsp;&nbsp;<td>Number of choice *&nbsp;&nbsp;<input type="text" Id="numberofchoice0'+ iii +'" size="25px"/></td><td><input type="button" id="but0'+ iii +'" value="Update" onclick="search('+ iii +');"/></td>&nbsp;&nbsp;<td><input type="button" value="Delete" onclick="deletePosition('+ iii +');"/></td></tr><tr><td colspan="3">Position instruction for voter:&nbsp;&nbsp;<textarea id="instruct0'+ iii+'" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';<%}else{%>
-                           divtag.innerHTML ='<table><tr><td>Position Name *&nbsp;&nbsp;<input type="text" Id="position_name0'+iii +'" size="25px"/><input type="hidden" Id="position_id0'+iii +'" size="25px"/></td>&nbsp;&nbsp;<td>Number of choice *&nbsp;&nbsp;<input type="text" Id="numberofchoice0'+ iii +'" size="25px"/></td></tr><tr><td colspan="3">Position instruction for voter:&nbsp;&nbsp;<textarea id="instruct0'+ iii+'" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';<%}%>
+                            divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%> *&nbsp;&nbsp;<input type="text" Id="position_name0'+iii +'" size="25px"/><input type="hidden" Id="position_id0'+iii +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%> *&nbsp;&nbsp;<input type="text" Id="numberofchoice0'+ iii +'" size="25px"/></td><td><input type="button" id="but0'+ iii +'" value="<%=resource.getString("update")%>" onclick="search('+ iii +');"/></td>&nbsp;&nbsp;<td><input type="button" value="<%=resource.getString("delete")%>" onclick="deletePosition('+ iii +');"/></td></tr><tr><td colspan="3"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ iii+'" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';<%}else{%>
+                           divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%> *&nbsp;&nbsp;<input type="text" Id="position_name0'+iii +'" size="25px"/><input type="hidden" Id="position_id0'+iii +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%> *&nbsp;&nbsp;<input type="text" Id="numberofchoice0'+ iii +'" size="25px"/></td></tr><tr><td colspan="3"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ iii+'" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';<%}%>
                         document.getElementById("position").appendChild(divtag);
         //end of block
 var positionname1 = em1[iii].getElementsByTagName("positionname");
@@ -541,6 +537,12 @@ function matchDate(d1,d2)
         return true;
         else return false;
 }
+function status1(){
+       
+    document.getElementById('status').value=document.getElementById('block').value;
+    alert(document.getElementById('status').value);
+    return true;
+}
 function checkdates()
 {
     var nstart= document.getElementById("Nstart_date");
@@ -672,66 +674,68 @@ function checkdates()
 
         </script>
     </head>
-    <body onload="funconLoad()" >
+    <body onload="funconLoad()" dir="<%=rtl%>" >
    <%if(msg1!=null){%>   <span style=" position:absolute; top: 120px; font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>  <%}%>
    <html:form method="post" action="/createelection" onsubmit="return check1()" style="top: 100px;position: absolute">
-       <table align="center" width="80%" valign="top">
-           <tr><td width="70%" align="left" valign="top" style="border: solid #ECF1EF 5px;">
-                   <table><tr><td colspan="2" style="border: 2px solid teal"><div style="background-color: teal;width: 100%;color: white">Election Details </div>
+       <table align="center" width="80%" valign="top" dir="<%=rtl%>">
+           <tr><td width="70%" align="left" valign="top" style="border: solid #ECF1EF 5px;" dir="<%=rtl%>">
+                   <table><tr><td colspan="2" style="border: 2px solid teal"><div style="background-color: teal;width: 100%;color: white"><%=resource.getString("electiondetail")%> </div>
      <html:hidden value="<%=institute_id%>" name="DepActionForm" property="instituteId"/>
   <html:hidden value="<%=user_id%>" name="DepActionForm" property="createdby"/>
-     <table>
-         <tr><td style="vertical-align: top;width: 550px;">
-    Election Id
+     <table dir="<%=rtl%>">
+         <tr><td style="vertical-align: top;width: 550px;" dir="<%=rtl%>">
+  <%=resource.getString("electionid")%>
     <html:text readonly="true" property="electionId" styleId="electionId" name="DepActionForm" styleClass="textBoxWidth" />
              </td>
- <td style="width: 500px">
-     Election Name<html:text readonly="<%=read %>" name="DepActionForm" style="width: 295px"  property="electionname" styleId="electionname"/><br><span style="font-size: 12px">Name your election: (ex. "Board of Directors Election 2009")*</span>
+ <td style="width: 500px" dir="<%=rtl%>">
+      <%=resource.getString("electionname")%><html:text readonly="<%=read %>" name="DepActionForm" style="width: 295px"  property="electionname" styleId="electionname"/><br><span style="font-size: 12px"><%=resource.getString("nameurelection")%>*</span>
   </td>
          </tr></table></td></tr>
-         <tr><td colspan="2">
+         <tr><td colspan="2" dir="<%=rtl%>">
          <div style="background-color: transparent; border: 2px solid teal">
              <span style="vertical-align: top; margin-left: 20px;">
-                 <div style="background-color: teal;width: 100%;color: white">  Details </div><br><html:textarea readonly="<%=read %>" style="width: 700px;margin-left: 20px;" name="DepActionForm" property="description" styleId="details"/>
+                 <div style="background-color: teal;width: 100%;color: white" dir="<%=rtl%>"> <%=resource.getString("detail")%>  </div><br><html:textarea readonly="<%=read %>" style="width: 700px;margin-left: 20px;" name="DepActionForm" property="description" styleId="details"/>
              </span
-             <table style="margin-left: 20px;">
+             <table style="margin-left: 20px;" dir="<%=rtl%>">
 
-                 <tr><td><span style="font-size: 14px;font-weight: 600">Nomination start date and time: </span><br><span style="font-size: 12px">(Nominations opens and announcement are emailed)  *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="nominationStart"    styleId="Nstart_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Nstart_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td>
-             <td><span style="font-size: 14px;font-weight: 600">Nomination end date and time:</span><br><span style="font-size: 12px"> (Nominations closed)  *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="nominationEnd"    styleId="Nend_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Nend_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td></tr>
-         <tr><td><span style="font-size: 14px;font-weight: 600">Scrutny start date and time: </span><br><span style="font-size: 12px">  *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="scrutnyDate"    styleId="Scr_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Scr_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td>
-             <td><span style="font-size: 14px;font-weight: 600">Scrutny end date and time:</span><br><span style="font-size: 12px"> *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="scrutnyEndDate"    styleId="Scrend_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Scrend_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td></tr>
-        <tr><td><span style="font-size: 14px;font-weight: 600">Nomination Withdrawl start date and time: </span><br><span style="font-size: 12px">  *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="withdrawlDate"    styleId="wtd_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('wtd_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td>
-             <td><span style="font-size: 14px;font-weight: 600">Nomination Withdrawl end date and time:</span><br><span style="font-size: 12px"> *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="withdrawlEndDate"    styleId="wtdend_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('wtdend_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td></tr>
-        <tr><td style="vertical-align: top">
-                 <span style="font-size: 14px;font-weight: 600">Election start date and time: </span><br><span style="font-size: 12px">(voting opens and announcement are emailed)  *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="startdate"    styleId="start_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('start_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" hieght="19" alt="Pick a date"/></a><%}%></td>
-             <td><span style="font-size: 14px;font-weight: 600">Election end date and time: </span><br><span style="font-size: 12px; azimuth: right">(voters can no longer cast ballots and results are emailed)  *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="enddate"    styleId="end_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('end_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" hieght="19" alt="Pick a date"/></a><%}%></td></tr>
+                 <tr><td dir="<%=rtl%>"> <span style="font-size: 14px;font-weight: 600"><%=resource.getString("nominationstart")%>: </span><br><span style="font-size: 12px"><%=resource.getString("nomi")%>*</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="nominationStart"    styleId="Nstart_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Nstart_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td>
+             <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("nominationend")%>:</span><br><span style="font-size: 12px"><%=resource.getString("nomic")%> *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="nominationEnd"    styleId="Nend_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Nend_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td></tr>
+         <tr><td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("scrutnystart")%>: </span><br><span style="font-size: 12px">  *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="scrutnyDate"    styleId="Scr_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Scr_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td>
+             <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("scrutnyend")%>:</span><br><span style="font-size: 12px"> *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="scrutnyEndDate"    styleId="Scrend_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Scrend_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td></tr>
+        <tr><td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("withdrawstrat")%> </span><br><span style="font-size: 12px">  *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="withdrawlDate"    styleId="wtd_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('wtd_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td>
+             <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("withdrawend")%>:</span><br><span style="font-size: 12px"> *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="withdrawlEndDate"    styleId="wtdend_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('wtdend_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td></tr>
+        <tr><td style="vertical-align: top" dir="<%=rtl%>">
+                 <span style="font-size: 14px;font-weight: 600"><%=resource.getString("electionstart")%>: </span><br><span style="font-size: 12px"><%=resource.getString("votingopens")%>*</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="startdate"    styleId="start_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('start_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" hieght="19" alt="Pick a date"/></a><%}%></td>
+             <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("electionend")%>: </span><br><span style="font-size: 12px; azimuth: right"><%=resource.getString("votingend")%>*</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="enddate"    styleId="end_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('end_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" hieght="19" alt="Pick a date"/></a><%}%></td></tr>
              </table>
          </div></td></tr>
-         <tr><td colspan="2" style="border: 2px solid teal"><div style="background-color: teal;width: 100%;color: white">Positions</div>
-                 <table><tr><td><div id="position" style="width: 950px;"></div></td></tr>
-                     <tr><td><div style="position: static"><%if(!button.equals("View")&& !button.equals("Block")){%><input type="button" id="add Position" name="add Position" style="margin-left: 0px;" value="Add New Position" size="50px" onclick="createposition();"><%}%></div></td></tr></table></td></tr>
-         <tr><td colspan="2">
+         <tr><td colspan="2" dir="<%=rtl%>" style="border: 2px solid teal"><div style="background-color: teal;width: 100%;color: white"><%=resource.getString("position")%></div>
+                 <table dir="<%=rtl%>"><tr><td dir="<%=rtl%>"><div id="position" style="width: 950px;"></div></td></tr>
+                     <tr><td dir="<%=rtl%>"><div style="position: static"><%if(!button.equals("View")&& !button.equals("Block")){%><input type="button" id="add Position" name="add Position" style="margin-left: 0px;" value="<%=resource.getString("addnewposition")%>" size="50px" onclick="createposition();"><%}%></div></td></tr></table></td></tr>
+         <tr><td colspan="2" dir="<%=rtl%>">
                  <div style="border: 2px solid teal">
-                     <div style="background-color: teal;width: 100%;color: white">Set Critaria </div>
-                     <table>
-                         <tr><td colspan="2"><br>Critaria for Candidates Nomination:* <html:text readonly="<%=read %>" name="DepActionForm" property="critaria" size="50px" styleId="cri"/></td></tr></table>
+                     <div style="background-color: teal;width: 100%;color: white"><%=resource.getString("setcritaria")%> </div>
+                     <table dir="<%=rtl%>">
+                         <tr><td dir="<%=rtl%>" colspan="2"><br><%=resource.getString("crinomi")%>:* <html:text readonly="<%=read %>" name="DepActionForm" property="critaria" size="50px" styleId="cri"/></td></tr></table>
                  </div>
                  </td></tr>
-         <tr><td colspan="2">
-                 <div style="border: 2px solid teal"><table>
-         <tr><td colspan="3"><div style="font-family: Liberation Serif;font-size: 20px;background-color: teal;width: 100%;color: white">Set Eligiblity </div></td></tr>
-         <tr><td style="width: 250px">Department* <html:text readonly="<%=read %>" name="DepActionForm" property="deaprtment" size="12px"/></td>
-             <td style="width: 350px">% Marks:(Greater than or  Equal to) * <html:text readonly="<%=read %>" name="DepActionForm" property="marks" size="18px"/></td>
-             <td style="width: 200px">% Attendence:(Minimum)<br> <html:text readonly="<%=read %>" name="DepActionForm" property="attendence" size="18px"/></td></tr>
-         <tr><td style="width: 250px">Backlog:(allowed) *</td><td>Criminal Background:(Allowed)*</td><td style="width: 550px">Student involves in Indisciplinery Activity(allowed)*</td></tr>
-         <tr><td style="width: 250px"><html:radio name="DepActionForm" property="backlog" value="yes" />Yes<html:radio name="DepActionForm" property="backlog" value="no"/>No</td>
-             <td style="width: 250px"><html:radio name="DepActionForm" property="criminal" value="yes"/>Yes<html:radio name="DepActionForm" property="criminal" value="no"/>No</td>
-    <td style="width: 250px"><html:radio name="DepActionForm" property="indiscipline" value="yes"/>Yes<html:radio name="DepActionForm" property="indiscipline" value="no"/>No</td></tr>
+         <tr><td colspan="2" dir="<%=rtl%>">
+                 <div style="border: 2px solid teal"><table dir="<%=rtl%>">
+         <tr><td dir="<%=rtl%>" colspan="3"><div style="font-family: Liberation Serif;font-size: 20px;background-color: teal;width: 100%;color: white"><%=resource.getString("seteligiblity")%> </div></td></tr>
+         <tr><td dir="<%=rtl%>" style="width: 250px"><%=resource.getString("department")%>* <html:text readonly="<%=read %>" name="DepActionForm" property="deaprtment" size="12px"/></td>
+             <td dir="<%=rtl%>" style="width: 350px">%<%=resource.getString("marks")%>* <html:text readonly="<%=read %>" name="DepActionForm" property="marks" size="18px"/></td>
+             <td dir="<%=rtl%>" style="width: 200px">%<%=resource.getString("attendence")%> <br> <html:text readonly="<%=read %>" name="DepActionForm" property="attendence" size="18px"/></td></tr>
+         <tr><td dir="<%=rtl%>" style="width: 250px"><%=resource.getString("backlog")%>*</td><td><%=resource.getString("criminal")%>*</td><td style="width: 550px"><%=resource.getString("indiscipline")%>*</td></tr>
+         <tr><td dir="<%=rtl%>" style="width: 250px"><html:radio name="DepActionForm" property="backlog" value="yes" /><%=resource.getString("yes")%><html:radio name="DepActionForm" property="backlog" value="no"/><%=resource.getString("no")%></td>
+             <td dir="<%=rtl%>" style="width: 250px"><html:radio name="DepActionForm" property="criminal" value="yes"/><%=resource.getString("yes")%><html:radio name="DepActionForm" property="criminal" value="no"/><%=resource.getString("no")%></td>
+    <td dir="<%=rtl%>" style="width: 250px"><html:radio name="DepActionForm" property="indiscipline" value="yes"/><%=resource.getString("yes")%><html:radio name="DepActionForm" property="indiscipline" value="no"/><%=resource.getString("no")%></td></tr>
                      </table>
                  </div>
                  </td></tr>
+                 <html:hidden name="DepActionForm" property="status" styleId="status"/>
+
          <%if(request.getAttribute("button").equals("Block")){%>
-         <tr><td>Election Status:&nbsp;&nbsp;<select id="block" name="block"><option selected value="block">Block</option><option selected value="unblock">UnBlock</option></select>
+         <tr><td dir="<%=rtl%>">Election Status:&nbsp;&nbsp;<select id="block" name="block" onchange="return status1();"><option selected value="block">Block</option><option  value="under-process">UnBlock</option></select>
              </td></tr><%}%>
 
 
@@ -739,21 +743,26 @@ function checkdates()
 
 
 
-         <tr><td>*indicated fields are mandatory</td></tr>
+         <tr><td dir="<%=rtl%>">*<%=resource.getString("mendatory")%></td></tr>
 
          <tr>
-             <td>
+             <td dir="<%=rtl%>">
     <%if(button.equals("Update")){%>
     <input id="button1"  name="button" type="submit" onclick="<%--return checkdates();--%>" value="<%=button%>" class="txt1" />
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()"  class="txt1"/>
+    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="<%=resource.getString("cancel")%>" onclick="return send()"  class="txt1"/>
     <%}else if(button.equals("Delete")){%>
     <input id="button1"  name="button" type="submit" value="<%=button%>" class="txt1" />
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" onclick="return send()"  value="Cancel" class="txt1"/>
+    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" onclick="return send()"  value="<%=resource.getString("cancel")%>" class="txt1"/>
    <%}else if(button.equals("Add")){%>
    <input id="button1"  name="button" type="submit" onclick="<%--return checkdates();--%>" value="Submit" class="txt1"  />
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()" class="txt1"/>
+    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="<%=resource.getString("cancel")%>" onclick="return send()" class="txt1"/>
+    <%}else if(button.equalsIgnoreCase("Block")){%>
+    <input id="button1"  name="button" type="submit" onclick="<%--return checkdates();--%>" value="Block" class="txt1"  />
+    <input  name="button" type="button" value="<%=resource.getString("back")%>" class="txt1" onclick="return send();"/>
+    
     <%}else{%>
-    <input  name="button" type="button" value="Back" class="txt1" onclick="return send();"/><%}%>
+    <input  name="button" type="button" value="<%=resource.getString("back")%>" class="txt1" onclick="return send();"/>
+    <%}%>
              </td></tr>
      </table>
 

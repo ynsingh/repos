@@ -52,7 +52,10 @@ public class Candidatesetup1Action extends org.apache.struts.action.Action {
 
 
        // ElectionDAO electiondao=new ElectionDAO();
-String status= (String)request.getParameter("status");
+        String status= (String)request.getParameter("status");
+        String searchby = request.getParameter("search_by");
+       String searchkeyword = request.getParameter("search_keyword");
+      String sortby = request.getParameter("sort_by");
 if(status!=null)
 {if(status.equalsIgnoreCase("A")) status="REGISTERED";
 else if(status.equalsIgnoreCase("B")) status="BLOCK";
@@ -60,9 +63,19 @@ else if(status.equalsIgnoreCase("R")) status="REJECTED";
 else if(status.equalsIgnoreCase("U")) status="REGISTERED";
  else if(status.equalsIgnoreCase("NR")) status="not registered";
 }
-else status=null;
+if(sortby==null)
+    sortby="voter_name";
        //  rst = admindao.getVoterDetailsByStatus(institute_id,"REGISTERED");
-    List<VoterCandidate>     rst1=candidatedao.GetDetails1(institute_id,status );
+   System.out.println(searchkeyword+".......................");
+      List<VoterCandidate>     rst1=null;
+      if(searchkeyword!=null)
+      {
+     rst1=candidatedao.GetDetails2(institute_id,status,searchby,searchkeyword,sortby);
+      }
+      else
+      {
+      rst1=candidatedao.GetDetails2(institute_id,status,null,null,sortby);
+      }
 //System.out.println("VOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"+rst1.get(0).getVoterRegistration().getStatus());
                    // session.setAttribute("resultset", rst);
                     session.setAttribute("resultset1", rst1);

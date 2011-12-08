@@ -99,11 +99,11 @@ public class VoterImageUploadAction extends org.apache.struts.action.Action {
         request.setAttribute("cadd", cadd);
         request.setAttribute("padd",padd);
         request.setAttribute("city",city);
-        request.setAttribute("city1", city);
+        request.setAttribute("city1", city1);
         request.setAttribute("state", state);
         request.setAttribute("state1", state1);
-        request.setAttribute("country", country);
-        request.setAttribute("country", country);
+        request.setAttribute("country1", country);
+        request.setAttribute("country2", country1);
         request.setAttribute("button", button);
         if(page2!=null && page2.equalsIgnoreCase("VoterRegistration"))
         {

@@ -111,19 +111,42 @@ public static boolean update(VoterRegistration obj) {
         }
     }
 
-    public List getVoterDetailsByStatus(String instituteid,String status){
+    public List getVoterDetailsByStatus(String instituteid,String status,String field,String fieldvalue,String sort){
   Session session =null;
     Transaction tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             String query1 = "FROM VoterRegistration where id.instituteId=:instituteId";
+if(status==null){
+  if(fieldvalue!=null)
+                query1 = query1 + "  and "+field+"=:infield";
 
-            if(status!=null && !status.equalsIgnoreCase("AB"))
-                query1 = query1 + " and status = :status";
+   query1=query1+" order by "+sort;
+System.out.println(query1);
+
+}
+else{
+            if(status!=null && !status.equalsIgnoreCase("AB") && fieldvalue!=null)
+                query1 = query1 + " and status = :status and "+field+"=:infield ";
+            else if(status!=null && !status.equalsIgnoreCase("AB"))
+                query1 = query1 + " and status = :status ";
+
             if(status!=null && status.equalsIgnoreCase("AB"))
-                query1 = query1 + " and (status like 'Block' or status like 'Registered'";
+                    query1 = query1 + " and (status like 'Block' or status like 'Registered'";
+            //else if(status!=null && status.equalsIgnoreCase("AB"))
+              //      query1 = query1 + " and (status like 'Block' or status like 'Registered'";
+query1=query1+" order by "+sort;
+}
+
             Query query = session.createQuery(query1);
+            
+            if(fieldvalue!=null)
+            {query.setString("infield", fieldvalue);
+
+            }
+
+
             if(status!=null && !status.equalsIgnoreCase("AB"))
                 query.setString("status",status );
              query.setString("instituteId",instituteid );
@@ -135,6 +158,50 @@ public static boolean update(VoterRegistration obj) {
         }
 }
 
+public List getVoterDetailsByStatus(String instituteid,String status){
+  Session session =null;
+   Query query;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            String query1 = "FROM VoterRegistration where id.instituteId=:instituteId";
+
+
+
+            if(status==null){
+            
+            
+            }else
+            {
+            if(status!=null && !status.equalsIgnoreCase("AB"))
+                query1 = query1 + " and status = :status";
+            if(status!=null && status.equalsIgnoreCase("AB"))
+
+                query1 = query1 + " and (status like 'Block' or status like 'Registered'";
+
+
+
+        
+            
+
+
+
+            }
+                query = session.createQuery(query1);
+
+
+                if(status!=null && !status.equalsIgnoreCase("AB"))
+                query.setString("status",status );
+
+                query.setString("instituteId",instituteid );
+
+            return query.list();
+        }
+        finally {
+            session.close();
+        }
+}
 
      public List<VoterRegistration> getVoterDetailsByStatus1(String instituteid){
   Session session =null;

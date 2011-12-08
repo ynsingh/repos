@@ -43,15 +43,7 @@ public class VoterRegistrationAction extends org.apache.struts.action.Action {
     String userid;
 
 VoterRegistrationId empid=new VoterRegistrationId ();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -68,9 +60,25 @@ VoterRegistrationId empid=new VoterRegistrationId ();
        byte[] iii=null;
        if(v!=null)iii=v.getFileData();
 
-        
+
+
+
+
+
+
+
        if(button.equals("Submit"))
        {
+
+             VoterRegistration obj=VoterRegistrationDAO.searchVoterRegistration(eid, id);
+       if(obj!=null){
+
+       request.setAttribute("msg", "Sorry Enrollment No Already Exist, Use Another");
+        return mapping.findForward("add");
+
+       }
+
+
          empid.setEnrollment(id);
       
         
@@ -215,7 +223,7 @@ break;
                     obj.send();
                 }
             });
-            
+            request.setAttribute("msg", "Voter Request of Enrollment No "+ob.getId().getEnrollment()+" Successfully Accepted");
              return mapping.findForward("accept");
          }
 

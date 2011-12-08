@@ -6,7 +6,7 @@ This Page is to Enter Staff ID
 -->
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+ <jsp:include page="/header.jsp" flush="true" />
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -57,14 +57,14 @@ This Page is to Enter Staff ID
     <body>
         <html:form method="post" onsubmit="return check2()" action="/newregistration">
             <div
-                style="  top:200px;
+                style="  top:100px;
                 left:5px;
                 right:5px;
                 position: absolute;
 
                 visibility: show;">
-                <table border="1" class="table" width="600px" height="300px" align="center">
-                    <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Voter Registration </td></tr>
+                <table  class="table" width="600px" height="300px" align="center">
+                    <tr><td align="center" class="headerStyle1" bgcolor="#E0E8F5" height="25px;">Voter Registration </td></tr>
                     <tr><td valign="top" align="center"> <br><br>
                             <table cellspacing="10px">
 

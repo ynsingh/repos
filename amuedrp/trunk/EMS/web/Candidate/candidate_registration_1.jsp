@@ -48,7 +48,7 @@
 
       function send()
       {
-          window.location="<%=request.getContextPath()%>/candidatesetup.do";
+          window.location="<%=request.getContextPath()%>/candidatesetup1.do";
           return false;
       }
 </script>
@@ -390,9 +390,7 @@
 
 
 <body>
-    <h1>
-        candidate Registration Form
-    </h1>
+   
     <%--  <%if(msg1!=null){%>   <span style=" position:absolute; top: 120px; font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>  <%}%>--%>
 
 
@@ -481,15 +479,16 @@
 
 
     </div>
-    <html:form action="/candidateregistration" method="post" style="position:absolute; left:80px; top:90px;"  onsubmit="return check3()" styleId="radio_form">
+    <html:form action="/candidateregistration" method="post"   onsubmit="return check3()" styleId="radio_form">
 
 
-     <table border="1">
+     <table align="center" class="table1">
+         <tr><td>Candidate Details</td></tr>
      <tr><td>
-             <table border="0" class="table" align="center" width="100%">
+             <table border="0" class="txtStyle" align="center" width="100%">
                         <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Register Yourself </b></td></tr>
                         <tr><td colspan="2">
-                                <table>
+                                <table >
                                     <tr>
                                         <td >Enrollment Number*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="true"  name="CandidateRegActionForm"  styleId="enrollment1" property="enrollment"  value="<%=enrollment%>" /></td><td>
                                         <td></td>
@@ -702,16 +701,16 @@
 
                     <%if (btn.equals("Update")) {%>
                     <input id="button1"  name="button" type="submit" value="<%=btn%>" class="txt1" />
-                    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()"  class="txt1"/>
+                    &nbsp;&nbsp;&nbsp;<input name="button" type="button" value="Cancel" onclick="return send()"  class="txt1"/>
                     <%} else if (btn.equals("Delete")) {%>
                     <input id="button1"  name="button" type="submit" value="<%=btn%>" class="txt1" />
-                    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" onclick="return send()"  value="Cancel" class="txt1"/>
+                    &nbsp;&nbsp;&nbsp;<input name="button" type="button" onclick="return send()"  value="Cancel" class="txt1"/>
                     <%} else if (btn.equals("View")) {%>
                     <input id="button1"  name="button" type="submit" value="Accept" class="txt1" />
-                    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()" class="txt1"/>
+                    &nbsp;&nbsp;&nbsp;<input name="button" type="button" value="Cancel" onclick="return send()" class="txt1"/>
                     <%} else {%>
                     <input  name="button" type="submit" value="Accept" class="txt1"  />
-                    <input name="button" type="submit" value="Cancel" onclick="return send()" class="txt1"/>
+                    <input name="button" type="button" value="Cancel" onclick="return send()" class="txt1"/>
                     <%}%>
                 </td>
             </tr><tr><td colspan="5" height="5px"></td>
@@ -719,6 +718,7 @@
 
 
             </tr></table>
+
 
 
     </html:form>

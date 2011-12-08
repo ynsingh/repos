@@ -8,6 +8,7 @@ package com.myapp.struts.election_manager;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.sql.Timestamp;
 import javax.imageio.ImageIO;
 
 
@@ -18,6 +19,152 @@ import javax.imageio.ImageIO;
 public class CandidateReg {
 private String e_election_id;
 private byte[] v_image;
+private String e_description;
+private Timestamp e_nomistart;
+private Timestamp e_nomiend;
+
+    public Timestamp getE_end() {
+        return e_end;
+    }
+
+    public void setE_end(Timestamp e_end) {
+        this.e_end = e_end;
+    }
+
+    public Timestamp getE_nomiend() {
+        return e_nomiend;
+    }
+
+    public void setE_nomiend(Timestamp e_nomiend) {
+        this.e_nomiend = e_nomiend;
+    }
+
+    public Timestamp getE_nomistart() {
+        return e_nomistart;
+    }
+
+    public void setE_nomistart(Timestamp e_nomistart) {
+        this.e_nomistart = e_nomistart;
+    }
+
+    public Timestamp getE_scrend() {
+        return e_scrend;
+    }
+
+    public void setE_scrend(Timestamp e_scrend) {
+        this.e_scrend = e_scrend;
+    }
+
+    public Timestamp getE_scrstart() {
+        return e_scrstart;
+    }
+
+    public void setE_scrstart(Timestamp e_scrstart) {
+        this.e_scrstart = e_scrstart;
+    }
+
+    public Timestamp getE_start() {
+        return e_start;
+    }
+
+    public void setE_start(Timestamp e_start) {
+        this.e_start = e_start;
+    }
+
+    public Timestamp getE_withend() {
+        return e_withend;
+    }
+
+    public void setE_withend(Timestamp e_withend) {
+        this.e_withend = e_withend;
+    }
+
+    public Timestamp getE_withstart() {
+        return e_withstart;
+    }
+
+    public void setE_withstart(Timestamp e_withstart) {
+        this.e_withstart = e_withstart;
+    }
+private Timestamp e_scrstart;
+private Timestamp e_scrend;
+private Timestamp e_withstart;
+private Timestamp e_withend;
+private Timestamp e_start;
+private Timestamp e_end;
+
+    public String getE_description() {
+        return e_description;
+    }
+
+    public void setE_description(String e_description) {
+        this.e_description = e_description;
+    }
+
+//    public String getE_end() {
+//        return e_end;
+//    }
+//
+//    public void setE_end(String e_end) {
+//        this.e_end = e_end;
+//    }
+//
+//    public String getE_nomiend() {
+//        return e_nomiend;
+//    }
+//
+//    public void setE_nomiend(String e_nomiend) {
+//        this.e_nomiend = e_nomiend;
+//    }
+//
+//    public String getE_nomistart() {
+//        return e_nomistart;
+//    }
+//
+//    public void setE_nomistart(String e_nomistart) {
+//        this.e_nomistart = e_nomistart;
+//    }
+//
+//    public String getE_scrend() {
+//        return e_scrend;
+//    }
+//
+//    public void setE_scrend(String e_scrend) {
+//        this.e_scrend = e_scrend;
+//    }
+//
+//    public String getE_scrstart() {
+//        return e_scrstart;
+//    }
+//
+//    public void setE_scrstart(String e_scrstart) {
+//        this.e_scrstart = e_scrstart;
+//    }
+//
+//    public String getE_start() {
+//        return e_start;
+//    }
+//
+//    public void setE_start(String e_start) {
+//        this.e_start = e_start;
+//    }
+//
+//    public String getE_withend() {
+//        return e_withend;
+//    }
+//
+//    public void setE_withend(String e_withend) {
+//        this.e_withend = e_withend;
+//    }
+//
+//    public String getE_withstart() {
+//        return e_withstart;
+//    }
+//
+//    public void setE_withstart(String e_withstart) {
+//        this.e_withstart = e_withstart;
+//    }
+
 private java.awt.image.BufferedImage image;
 
     public BufferedImage getImage() {

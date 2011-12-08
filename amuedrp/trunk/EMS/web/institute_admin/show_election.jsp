@@ -27,7 +27,8 @@
                     <tr><td>  Withdrawl Start Date <html:text readonly="true" name="ShowElectionActionForm" property="withdrawlDate"/>
               </td><td> Withdrawl End Date <html:text readonly="true" name="ShowElectionActionForm" property="withdrawlEndDate"/></td></tr>
             </html:form>
-                    <tr><td> No of voters  <a href="<%= request.getContextPath() %>/institute_admin/show_voters.jsp"><bean:write name="ShowElectionActionForm" property="no_of_voters"/></a></td></tr>
+                    <tr><td> No of voters  <bean:write name="ShowElectionActionForm" property="no_of_voters"/><%--<a href="<%= request.getContextPath() %>/institute_admin/show_voters.jsp"><bean:write name="ShowElectionActionForm" property="no_of_voters"/></a>--%></td></tr>
+               <tr><td> No of candidates  <bean:write name="ShowElectionActionForm" property="noofcandi"/><%--<a href="<%= request.getContextPath() %>/institute_admin/show_voters.jsp"><bean:write name="ShowElectionActionForm" property="no_of_voters"/></a>--%></td></tr>
                 </table>
         </div>
         <div></div>

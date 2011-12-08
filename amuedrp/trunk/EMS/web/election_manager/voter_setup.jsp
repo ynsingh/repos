@@ -53,6 +53,52 @@
    int fromIndex=0, toIndex;
 
 %>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String sessionId="";
+    boolean page=true;
+    String align="left";
+%>
+
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+sessionId = session.getId().toString();
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+String user=(String)session.getAttribute("username");
+String instituteName=(String)session.getAttribute("institute_name");
+ String contextPath = request.getContextPath();
+ String role=(String)session.getAttribute("login_role");
+    %>
+<%
+String Enrollment_No=resource.getString("enrollment");
+pageContext.setAttribute("Enrollment_No",Enrollment_No );
+String Voter_Name=resource.getString("votername");
+pageContext.setAttribute("Voter_Name", Voter_Name);
+String Status=resource.getString("workingstatus");
+pageContext.setAttribute("Status", Status);
+String Department=resource.getString("department");
+pageContext.setAttribute("Department",Department);
+String Year=resource.getString("year");
+pageContext.setAttribute("Year",Year);
+String Course=resource.getString("course");
+pageContext.setAttribute("Course",Course);
+String Edit=resource.getString("edit");
+pageContext.setAttribute("Edit",Edit);
+
+%>
 
 
 
@@ -60,6 +106,10 @@
 
  List rs = (List)session.getAttribute("resultset");
 String status = (String)request.getParameter("status");
+System.out.println(status+".................");
+if(status!=null && status.equalsIgnoreCase("B")){
+request.setAttribute("button", "Change Status");
+}
 
    requestList = new ArrayList();
 //requestList = (ArrayList)session.getAttribute("resultset");
@@ -188,7 +238,7 @@ function isNumberKey(evt)
 
 <%if(tcount==0)
 {%>
-<p class="err" style="font-size:12px">No Record Found</p>
+<p class="err" style="font-size:12px"><%=resource.getString("no_record_found")%></p>
 <%}
 else
 {%>
@@ -200,33 +250,33 @@ else
   <columns>
 
     <column width="10%">
-      <header value="Enrollment_No" hAlign="left" styleClass="header"/>
+      <header value="${Enrollment_No}" hAlign="left" styleClass="header"/>
       <item   value="${doc.enrollment}" hyperLink="${path}/newregistration2.do?id=${doc.enrollment}${status}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="10%">
-      <header value="Voter_Name" hAlign="left" styleClass="header"/>
+      <header value="${Voter_Name}" hAlign="left" styleClass="header"/>
       <item   value="${doc.voter_name}" hAlign="left" hyperLink="${path}/newregistration2.do?id=${doc.enrollment}${status}"  styleClass="item"/>
     </column>
     <column width="10%">
-      <header value="Department" hAlign="left" styleClass="header"/>
+      <header value="${Department}" hAlign="left" styleClass="header"/>
       <item   value="${doc.department}" hAlign="left" hyperLink="${path}/newregistration2.do?id=${doc.enrollment}${status}"  styleClass="item"/>
     </column>
 
     <column width="10%">
-      <header value="Course" hAlign="left" styleClass="header"/>
+      <header value="${Course}" hAlign="left" styleClass="header"/>
       <item   value="${doc.course}" hyperLink="${path}/newregistration2.do?id=${doc.enrollment}${status}"  hAlign="left" styleClass="item"/>
     </column>
 
 
        <column width="10%">
-      <header value="Year" hAlign="left" styleClass="header"/>
+      <header value="${Year}" hAlign="left" styleClass="header"/>
       <item   value="${doc.year}" hyperLink="${path}/newregistration2.do?id=${doc.enrollment}${status}"  hAlign="left" styleClass="item"/>
     </column>
 
 
       <column width="10%">
-      <header value="Status" hAlign="left" styleClass="header"/>
+      <header value="${Status}" hAlign="left" styleClass="header"/>
       <item   value="${doc.status}" hyperLink="${path}/newregistration2.do?id=${doc.enrollment}${status}"  hAlign="left" styleClass="item"/>
     </column>
 
@@ -246,10 +296,10 @@ else
 <tr>
 <td align="left" width="100px">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("previous")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-    <a href="<c:out value="${next}"/>">Next</a>
+    <a href="<c:out value="${next}"/>"><%=resource.getString("next")%></a>
 </c:if>
 
 </td><td width="400px" align="center">
@@ -281,7 +331,15 @@ if(msg!=null)
 </td></tr>--%>
 </table>
 
-  <%}%></td></tr>
+  <%}%>
+
+  <%
+String msg=(String)request.getAttribute("msg");
+if(msg!=null)
+    out.println(msg);
+%>
+
+  </td></tr>
 </table>
     </body>
 

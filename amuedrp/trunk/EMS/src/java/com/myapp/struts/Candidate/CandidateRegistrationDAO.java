@@ -146,9 +146,10 @@ public static boolean update(CandidateRegistration obj) {
         try {
             tx = (Transaction) session.beginTransaction();
             session.update(obj);
+            System.out.println("hello");
             tx.commit();
         } catch (RuntimeException e) {
-
+System.out.println("hello23456");
             tx.rollback();
             return false;
 
@@ -324,6 +325,23 @@ public static CandidateRegistration searchCandidature(String electionId,String E
         }
 }
 
+      public static List<CandidateRegistration> getCandidateDetails(String instituteid,String enrollment){
+  Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM CandidateRegistration where enrollment = :enrollment and id.instituteId=:instituteId");
+             query.setString("enrollment",enrollment );
+             query.setString("instituteId",instituteid );
+
+            return query.list();
+        }
+        finally {
+            session.close();
+        }
+}
+
 
      public List<VoterCandidate> GetDetails(String instituteId,String status)
     {
@@ -380,6 +398,58 @@ public static CandidateRegistration searchCandidature(String electionId,String E
                     .setResultTransformer(Transformers.aliasToBean(VoterCandidate.class));
           query.setString("institute_id",instituteId );
           if(status!=null && !status.equalsIgnoreCase("null"))
+          query.setString("status", status);
+
+          return (List<VoterCandidate>)query.list();
+        }
+    finally {
+            session.close();
+        }
+}
+
+       public List<VoterCandidate> GetDetails2(String instituteId,String status,String field,String fieldvalue,String sort)
+    {
+            field="a."+field;
+            sort="a."+sort;
+
+           Session session =null;
+           Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            String sql="";
+            System.out.println("status="+ status);
+           // sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and "+field+" like '"+fieldvalue+"' and b.institute_id=:institute_id order by"+sort;
+           if(status==null)
+           {
+               if(fieldvalue!=null && fieldvalue.isEmpty()==false)
+                   sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and "+field+" like '"+fieldvalue+"' and b.institute_id=:institute_id order by "+sort;
+               else
+                   sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and b.institute_id=:institute_id order by "+sort;
+           }
+            
+           else
+           {
+            if(fieldvalue!=null && fieldvalue.isEmpty()==false)
+            sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and b.institute_id=:institute_id and "+field+" like '"+fieldvalue+"'";
+            else
+                  sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and b.institute_id=:institute_id";
+
+            if(status!=null && !status.equalsIgnoreCase("null") && status.isEmpty()==false )
+                {sql += " and b.status1=:status";}
+
+            sql+=" order by "+sort;
+           }
+            System.out.println(sql);
+
+          Query query =  session.createSQLQuery(sql)
+                    .addEntity(VoterRegistration.class)
+                    .addEntity(CandidateRegistration.class)
+
+                    .setResultTransformer(Transformers.aliasToBean(VoterCandidate.class));
+          query.setString("institute_id",instituteId );
+          if(status!=null && !status.equalsIgnoreCase("null") && status.isEmpty()==false)
           query.setString("status", status);
 
           return (List<VoterCandidate>)query.list();

@@ -49,6 +49,7 @@ public class ElectionDetailAction extends org.apache.struts.action.Action {
         if(e!=null)
         {
             List<VoterRegistration> voterreg=ElectionDAO.searchVoter(institute_id);
+            List<Candidate1> candireg=ElectionDAO.searchCandidate(institute_id,election_id);
             sef.setElectionName(e.getElectionName());
             sef.setNstart(e.getNstart().toString());
             sef.setNend(e.getNend().toString());
@@ -59,6 +60,8 @@ public class ElectionDetailAction extends org.apache.struts.action.Action {
             sef.setStartDate(e.getStartDate().toString());
             sef.setEndDate(e.getEndDate().toString());
             sef.setNo_of_voters(String.valueOf(voterreg.size()));
+            sef.setNoofcandi(String.valueOf(candireg.size()));
+
             request.setAttribute("voterreg", voterreg);
            // List<CandidateRegistration> cr = (List<CandidateRegistration>)CandidateRegistrationDAO.
         }

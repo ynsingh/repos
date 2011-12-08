@@ -213,6 +213,7 @@ var ca = em1[iii].getElementsByTagName("candidate");
 
 choice[iii]=noofchoice;
 var ch =0;
+
 for(jj=0;jj<ca.length;jj++)
     {
         var candidatename1 = ca[jj].getElementsByTagName("candidatename");
@@ -345,6 +346,7 @@ function checkCandidateLimit(iii,jj,this1,noofchoice,currentSel,candidateName,po
     </head>
 
     <body onload="previewBallot(this)" style="margin: 0px;">
+ 
         <div id="main" style="width: 100%; height: 100%">
             <div id="middle" style="width: 100%;margin-left: 0%; position: relative;">
                 <form id="form1">

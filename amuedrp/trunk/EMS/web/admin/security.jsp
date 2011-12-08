@@ -34,10 +34,8 @@ String lib_name=(String)session.getAttribute("library_name");
     
 
   <html:form  action="/forget1" method="post" onsubmit="return check1()">
-      <table width="400px" height="600px"  valign="top" align="center" class="txt1">
+      <table width="400px" height="600px"  valign="top" align="center" class="table">
         <tr><td   width="400px" height="500px" valign="top" style="" align="center">
-                <fieldset style="border:solid 1px brown;height:300px;width:300px;padding-left: 10px">
-                    <legend><img src="images/SecurityQuestion.png"/></legend><br>
                     <table width="400px" align="center">
                         <tr><td  class="txt1" width="250px">Staff ID</td><td width="250px"><input type="text" id="staff_id" style="width:200px" name="staff_id" readonly  name="Editbox1" value="<%=staff_id%>"></td></tr>
                         <tr><td colspan="2" height="5px"></td></tr>
@@ -69,9 +67,6 @@ String lib_name=(String)session.getAttribute("library_name");
 
 
 
-
-
-</fieldset>
 
 
 

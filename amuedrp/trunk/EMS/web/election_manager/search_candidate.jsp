@@ -67,7 +67,10 @@ body
 <script language="javascript">
 function fun()
 {
+    
+    <%if(status!=null){%>
     document.Form1.status.value = "<%=status%>";
+    <%}%>
 document.Form1.action="<%=request.getContextPath()%>/candidatesetup1.do";
 document.Form1.method="post";
 document.Form1.target="f1";
@@ -119,7 +122,7 @@ window.setTimeout('winresize()', 100);
           <tr class="header"><td  width="100%"   align="center" colspan="2" dir="<%=rtl%>">
 
 
-                 Search Voter
+                 Search Candidate
                   <%--<%=resource.getString("login.searchinstitute.institutesearch")%>--%>
 
 
@@ -144,11 +147,11 @@ window.setTimeout('winresize()', 100);
           <table >
               <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.infield")%> </td><td rowspan="2" valign="top">
                       <select name="search_by" onChange="fun()" id="search_by" size="1">
-<option value="firstName">First Name<%--<%=resource.getString("managername")%>--%></option>
-<option value="lastName">Last Name<%--<%=resource.getString("managername")%>--%></option>
-<option value="managerId">Manager Id<%--<%=resource.getString("managerid")%>--%></option>
-<option value="registrationId"><%=resource.getString("registrationid")%></option>
-<option value="city"><%=resource.getString("city")%></option>
+<option value="voter_name">Candidate Name<%--<%=resource.getString("managername")%>--%></option>
+<option value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
+<option value="department">Department<%--<%=resource.getString("managerid")%>--%></option>
+<option value="course">Course<%--<%=resource.getString("registrationid")%>--%></option>
+<%--<option value="city"><%=resource.getString("city")%></option>--%>
 
 
 </select>
@@ -161,10 +164,11 @@ window.setTimeout('winresize()', 100);
    <tr style="background-color:#e0e8f5;">
        <td align="left" colspan="2">
            <table>
-                           <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.field")%></td><td><select name="sort_by" id="sort_by" size="1" onChange="fun()" id="">
-<option selected value="institute_name"><%=resource.getString("institutename")%></option>
-<option value="city"><%=resource.getString("city")%></option>
-<option value="registration_id"><%=resource.getString("registrationid")%></option>
+                           <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.field")%></td><td><select name="sort_by" id="sort_by" size="1" onChange="fun()" >
+<option value="voter_name">Candidate Name<%--<%=resource.getString("managername")%>--%></option>
+<option value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
+<option value="department">Department<%--<%=resource.getString("managerid")%>--%></option>
+<option value="course">Course<%--<%=resource.getString("registrationid")%>--%></option>
 </select></td>
                            </tr></table>
 
@@ -178,8 +182,6 @@ window.setTimeout('winresize()', 100);
        </table>
 
 
-
-   
 
 
 <input  name="status" type="hidden" id="status"/>

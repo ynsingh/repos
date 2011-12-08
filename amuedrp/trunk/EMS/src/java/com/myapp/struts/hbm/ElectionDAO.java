@@ -123,6 +123,23 @@ public class ElectionDAO {
             session.close();
         }
     }
+         public static List<Candidate1> searchCandidate(String institue_id,String election_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(Candidate1.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.instituteId",institue_id))
+             .add(Restrictions.eq("id.electionId",election_id)));
+            return (List<Candidate1>) criteria.list();
+
+
+        } finally {
+            session.close();
+        }
+    }
     public static Election searchElectionByName(String ElectionName,String institue_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -249,8 +266,13 @@ Session session =null;
 
 
 
-    public static List <ElectionRuleEligiblity1> GetElectionDetailsbyinstituteId(String institute_id)
+    public static List <ElectionRuleEligiblity1> GetElectionDetailsbyinstituteId(String institute_id,String field,String value,String field1)
     {
+        field="a."+field;
+        field1="a."+field1;
+
+
+      
     Session session =null;
     Transaction tx = null;
     try {
@@ -258,8 +280,12 @@ Session session =null;
             session.beginTransaction();
 
             String sql="";
-
-            sql = "select a.*,b.*,c.* from election a, electionrule b,eligibility c where a.election_id=b.election_id and a.election_id=c.election_id and a.institute_id=c.institute_id  and  a.institute_id=b.institute_id and a.institute_id=:institute_id";
+if(value!=null && value.isEmpty()==false)
+{
+            sql = "select a.*,b.*,c.* from election a, electionrule b,eligibility c where a.election_id=b.election_id and "+field+" like '"+value+"%' and a.election_id=c.election_id and a.institute_id=c.institute_id  and  a.institute_id=b.institute_id and a.institute_id=:institute_id order by "+field1;
+}
+else
+            sql = "select a.*,b.*,c.* from election a, electionrule b,eligibility c where a.election_id=b.election_id and  a.election_id=c.election_id and a.institute_id=c.institute_id  and  a.institute_id=b.institute_id and a.institute_id=:institute_id order by "+field1;
 
 
             System.out.println(sql);

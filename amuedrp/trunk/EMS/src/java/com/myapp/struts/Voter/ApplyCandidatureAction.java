@@ -46,7 +46,7 @@ public class ApplyCandidatureAction extends org.apache.struts.action.Action {
         String election = request.getParameter("election");
         String institute_id =(String)session.getAttribute("institute_id");
         String enrollment =(String)session.getAttribute("staff_id");
-        
+        System.out.println(institute_id+" "+election+" "+enrollment);
 
         CandidateRegistration candi1 = CandidateRegistrationDAO.searchCandidature(election, enrollment, institute_id);
         if(candi1==null)

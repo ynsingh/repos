@@ -5,12 +5,7 @@
 
 package com.myapp.struts.Voter;
 
-import java.util.Date;
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
 import org.apache.struts.upload.FormFile;
 
 /**
@@ -46,6 +41,15 @@ private String m_number;
 private String zipcode;
 private String zipcode1;
 private String page;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+private String status;
 
     private byte[] uploadedFile;
     private FormFile img;

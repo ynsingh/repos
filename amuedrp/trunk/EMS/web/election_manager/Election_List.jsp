@@ -36,19 +36,64 @@
      .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
 	    font-weight: normal }
 </style>
+        <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String sessionId="";
+    boolean page=true;
+    String align="left";
+%>
+
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+sessionId = session.getId().toString();
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+String user=(String)session.getAttribute("username");
+String instituteName=(String)session.getAttribute("institute_name");
+ String contextPath = request.getContextPath();
+ String role=(String)session.getAttribute("login_role");
+    %>
+
         <%
 List rst =(List)session.getAttribute("resultset");
 int count=(Integer)session.getAttribute("count");
-String contextPath = request.getContextPath();
+
  int i=1;
  
 %>
+
+<%
+String Election_Id=resource.getString("electionid");
+pageContext.setAttribute("Election_Id",Election_Id );
+String Election_Name=resource.getString("electionname");
+pageContext.setAttribute("Election_Name", Election_Name);
+String Status=resource.getString("workingstatus");
+pageContext.setAttribute("Status", Status);
+
+String Action=resource.getString("login.ems.action");
+pageContext.setAttribute("Action",Action);
+String Edit=resource.getString("edit");
+pageContext.setAttribute("Edit",Edit);
+
+%>
     </head>
-    <body>
+    <body dir="<%=rtl%>" >
 
 
-        <font color="blue" size="-1" dir="" style="position: absolute;top: 100px">
-                Pending Registration Request of Voter(<%=count%>) &nbsp;<a href="<%=contextPath%>/election_manager/pending_voter.jsp"> Voter</a>
+        <font color="blue" size="-1" dir="<%=rtl%>" style="position: absolute;top: 100px">
+               <%=resource.getString("voterreq")%>(<%=count%>) &nbsp;<a href="<%=contextPath%>/election_manager/pending_voter.jsp"><%=resource.getString("voter")%> </a>
             </font>
 
 
@@ -149,23 +194,23 @@ String msg1=(String)request.getAttribute("msg1");
 
 <%if(tcount==0)
 {%>
-<p class="err" style="font-size:12px">No Record Found</p>
+<p class="err" style="font-size:12px"><%=resource.getString("no_record_found")%></p>
 <%}
 else
 {%>
-<table align="" dir="" width="80%" style="top:140px;position: absolute;z-index: 30 ">
-    <tr dir=""><td dir="">
+<table align="<%=align%>" dir="<%=rtl%>" width="80%" style="top:140px;position: absolute;z-index: 30 ">
+    <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
   <columns>
 
     <column width="10%">
-      <header value="Election_Id" hAlign="left" styleClass="header"/>
+      <header value="${Election_Id}" hAlign="left" styleClass="header"/>
       <item   value="${doc.election_id}" hyperLink="${path}/electionview1.do?id=${doc.election_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="10%">
-      <header value="Election_Name" hAlign="left" styleClass="header"/>
+      <header value="${Election_Name}" hAlign="left" styleClass="header"/>
       <item   value="${doc.election_name}" hAlign="left" hyperLink="${path}/electionview1.do?id=${doc.election_id}"  styleClass="item"/>
     </column>
 
@@ -177,7 +222,7 @@ else
 
 
       <column width="10%">
-      <header value="Status" hAlign="left" styleClass="header"/>
+      <header value="${Status}" hAlign="left" styleClass="header"/>
       <item   value="${doc.status}" hyperLink="${path}/electionview1.do?id=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
 
@@ -197,10 +242,10 @@ else
 <tr>
 <td align="left" width="100px">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("previous")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-    <a href="<c:out value="${next}"/>">Next</a>
+    <a href="<c:out value="${next}"/>"><%=resource.getString("next")%></a>
 </c:if>
 
 </td><td width="400px" align="center">

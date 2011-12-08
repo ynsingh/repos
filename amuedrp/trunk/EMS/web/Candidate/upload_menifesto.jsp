@@ -24,24 +24,25 @@
     }
     </script>
 
-    <div
-        style="  top:250px;
-        left:500px;
-        right:5px;
-        position: absolute;
-        height: 450px;
-        visibility: visible; z-index: 1500;" >
-
+    
 
         <html:form action="/candidatemenifestoupload" method="post" styleId="form1" enctype="multipart/form-data">
             
-            <html:file  property="menifesto" name="CandidateMenifestoActionForm" styleId="menifesto" onchange="submit()"  />
+         <%
+String msg=(String)request.getAttribute("msg");
+if(msg!=null)
+{out.println(msg)      ;  }
+else{
 
+%>
+
+         Upload PDF Format Menifeasto   <html:file  property="menifesto" name="CandidateMenifestoActionForm" styleId="menifesto" onchange="submit()"  />
+<%}%>
         </html:form>
 
 
 
-    </div>
+  
     
 
 

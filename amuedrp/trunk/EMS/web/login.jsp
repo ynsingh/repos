@@ -10,6 +10,7 @@
 
 <html>
 <head>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Election Management System</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
@@ -21,9 +22,7 @@
     boolean page=true;
     String align="left";
 %>
-<script type="text/javascript" language="javascript">
-    this.opener.close();
-</script>
+
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <script language="javascript" type="text/javascript">
 /*
@@ -79,8 +78,10 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 
 function search() {
+
+    window.status=' Press F1 for help';
  availableSelectList = document.getElementById("searchResult");
- // availableSelectList.innerHTML = "";
+  availableSelectList.innerHTML = "";
     var keyValue = document.getElementById("username").value;
 
     //keyValue = keyValue.replace(/^\s*|\s*$/g,"");
@@ -94,7 +95,7 @@ req.onreadystatechange = getReadyStateHandler(req, update);
 req.open("POST","<%=request.getContextPath()%>/adminemail.do", true);
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-//req.send("getEmail_Id="+keyValue);
+req.send("getEmail_Id="+keyValue);
 
 
 }
@@ -109,6 +110,7 @@ return true;
 
 function search1() {
 
+window.status=' Press F1 for help ';
  availableSelectList = document.getElementById("searchResult1");
   //availableSelectList.innerHTML = "";
     var keyValue = document.getElementById("password").value;
@@ -128,7 +130,7 @@ req.open("POST","<%=request.getContextPath()%>/adminpass.do", true);
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-//req.send("getEmail_Id="+keyValue1+"&getPassword="+keyValue);
+req.send("getEmail_Id="+keyValue1+"&getPassword="+keyValue);
 
 }
 else
@@ -182,7 +184,7 @@ function search2()
 {
    search();
    var userid= document.getElementById("searchResult");
-   if(userid=="")
+   if(userid.innerHTML=="")
         {
         search1();
         }
@@ -249,10 +251,10 @@ if(str!=null)
     <td  valign="top" colspan="2" width="100%" align="center">
         <table  align="center"  dir="<%=rtl%>">
             <tr><td  width="73%" valign="bottom"  align="<%=align%>">
-                                <img src="images/logo.bmp" alt="banner space"  border="0" align="top" id="Image1">
+                                <img src="<%=request.getContextPath()%>/images/logo.bmp" alt="banner space"  border="0" align="top" id="Image1">
                           
                
-                </td><td   > <img src="images/logo.png" alt="No Image"  border="0" align="top" id="Image1" style="" height="100px" width="100%"><br/>
+                </td><td   > <img src="<%=request.getContextPath()%>/images/logo.png" alt="No Image"  border="0" align="top" id="Image1" style="" height="100px" width="100%"><br/>
                                 
                             </td></tr>
             </table></td>
@@ -278,12 +280,12 @@ if(str!=null)
                     <td  align="center" width="250px">
                         <table dir="<%=rtl%>" width="250px">
                             <tr> <td width="250px"><%=resource.getString("login.message.signin.username")%></td>
-                                <td align="left"><input name="username" type="text" id="username" onblur="return search();" style="width:160px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;"/>
+                                <td align="left"><input name="username" type="text" id="username" onfocus="return statwords('Please enter your user name for login')" onblur="return search();" style="width:160px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;"/>
                     <br/> <div align="left" id="searchResult" class="err" style="border:#000000; "></div></td>
                     </tr>
                            <tr>
                     <td  ><%=resource.getString("login.message.signin.password")%></td>
-                    <td align="left"><input name="password" class="err" type="password" id="password" value="" onblur="return search1();" style="width:160px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;">
+                    <td align="left"><input name="password" class="err" type="password" id="password" value="" onfocus="return statwords('Please enter your password')" onblur="return search1();" style="width:160px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;">
                      <div align="left" id="searchResult1" class="err" style="border:#000000; "></div>
                     </td>
                     </tr>
@@ -314,7 +316,7 @@ if(str!=null)
                     </td>
                     
 
-                    </tr><tr><td width="250px" colspan="2"> <a href="<%=request.getContextPath()%>/newenrollment.do"> Voter Registration</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td></tr>
+                    </tr><tr><td width="250px" colspan="2"> <a href="<%=request.getContextPath()%>/newenrollment.do">  <%=resource.getString("Voter_Registration")%></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td></tr>
 
 
                     </table>
@@ -357,10 +359,24 @@ else{
 }%>
 
 
-        msg=<%=msg1%>;
-        if (msg!=null  ){
+        msg="<%=msg1%>";
+        if (msg!="null"  ){
             alert(msg);
         }
-}</script>
+}
+
+
+<%--function help()
+     {
+         window.status='Press F1 for help';
+         var username=document.getElementById("username");
+         var password=document.getElementById("password");
+         if(document.getElementById("username")==username)
+         statwords('Please enter user name');
+     else
+         statwords('Please enter password');
+     }--%>
+
+</script>
 </html>
 

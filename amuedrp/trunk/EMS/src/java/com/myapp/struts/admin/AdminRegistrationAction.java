@@ -137,14 +137,14 @@ locale1=(String)session.getAttribute("locale");
         
 System.out.println("institute_name="+institute_name);
         try{
-     //   con1=MyConnection.getMyConnection();
-
-      //  if(con1==null){
-      //  String msg1="Database Not Connected! Please contact web-Administrator";
-     //   request.setAttribute("msg1", msg1);
-     //   session.invalidate();
-      //   return mapping.findForward("failure");
-     //   }
+//        con1=MyConnection.getMyConnection();
+//
+//        if(con1==null){
+//        String msg1="Database Not Connected! Please contact web-Administrator";
+//        request.setAttribute("msg1", msg1);
+//        session.invalidate();
+//         return mapping.findForward("failure");
+//        }
 
         AdminRegistrationDAO admindao = new AdminRegistrationDAO();
         LoginDAO logindao = new LoginDAO();

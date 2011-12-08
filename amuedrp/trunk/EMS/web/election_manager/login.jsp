@@ -175,39 +175,39 @@ String instituteName=(String)session.getAttribute("institute_name");
         </li>
       <li>
           <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
-              <b>Manage Election</b>
+              <b><%=resource.getString("manage_elction")%></b>
           </a>
               
             <ul>
                 <li>
-                    <a href="<%=request.getContextPath()%>/manageElection.do" onclick="<%--return switchMain()--%>"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Create Election<%--<%=resource.getString("createelectionmanager")%>--%></a>
+                    <a href="<%=request.getContextPath()%>/manageElection.do" onclick="<%--return switchMain()--%>"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("create_elction")%><%----%></a>
                 </li>
                 <li>
-                    <a href="<%=request.getContextPath()%>/manageElection.do" onclick="<%--return switchMain()--%>" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Update Election<%--<%=resource.getString("updateelectionmanager")%>--%></a>
+                    <a href="<%=request.getContextPath()%>/manageElection.do" onclick="<%--return switchMain()--%>" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("update_elction")%><%----%></a>
                 </li>
                 <li>
-                    <a href="<%=request.getContextPath()%>/manageElection.do" onclick="<%--return switchMain()--%>" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">View Election<%--<%=resource.getString("deleteelectionmanager")%>--%></a>
+                    <a href="<%=request.getContextPath()%>/manageElection.do" onclick="<%--return switchMain()--%>" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("view_elction")%><%----%></a>
                 </li>
                 <li>
-                    <a href="<%=request.getContextPath()%>/manageElection.do" onclick="<%--return switchMain()--%>" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Block Election<%--<%=resource.getString("blockmanager")%>--%></a>
+                    <a href="<%=request.getContextPath()%>/manageElection.do" onclick="<%--return switchMain()--%>" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("block_elction")%><%----%></a>
                 </li>
                 <li>
-                    <a href="<%=request.getContextPath()%>/manageElection.do" onclick="<%--return switchMain()--%>" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Preview Ballot<%--<%=resource.getString("blockmanager")%>--%></a>
+                    <a href="<%=request.getContextPath()%>/manageElection.do" onclick="<%--return switchMain()--%>" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("preview_blt")%><%----%></a>
                 </li>
             </ul>
         </li>
         <li>
-            <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><b>Manage Voter</b></a>
+            <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><b><%=resource.getString("manage_voter")%></b></a>
             <ul>
                 <li>
-                    <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Add<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                    <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("add")%></a>
                     
                     <ul>
                     <li>
-                        <a href="<%=contextPath%>/addVoter.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Register New Voter<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                        <a href="<%=contextPath%>/addVoter.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("register_newvoter")%></a>
                     </li>
                     <li>
-                        <a href="<%=request.getContextPath()%>/election_manager/pending_voter.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Register From Pending List<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                        <a href="<%=request.getContextPath()%>/registerfrmpending.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("registerform_pending")%><%----%></a>
                     </li>
                     <%--<li>
                         <a href="<%=request.getContextPath()%>/view_managers.do"   style=" text-decoration:none;font-family: Arial;color:white;font-size: 13px;">Add Voter From Existing List<%=resource.getString("Viewmanagerdetails")%></a>
@@ -216,29 +216,29 @@ String instituteName=(String)session.getAttribute("institute_name");
                 </li>
                 
                 <li>
-                    <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">View<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                    <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("view")%></a>
                     <ul>
                         <li>
-                            <a href="<%=contextPath%>/election_manager/search_voter.jsp?status=A"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Active<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                            <a href="<%=contextPath%>/election_manager/search_voter.jsp?status=A"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("active")%></a>
                         </li>
                         <li>
-                            <a href="<%=contextPath%>/election_manager/search_voter.jsp?status=B"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Block<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                            <a href="<%=contextPath%>/election_manager/search_voter.jsp?status=B"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("block")%></a>
                         </li>
                         <li>
-                            <a href="<%=contextPath%>/election_manager/search_voter.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">View All<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                            <a href="<%=contextPath%>/election_manager/search_voter.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("viewall")%></a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="<%=request.getContextPath()%>/election_manager/search_voter.jsp?status=AB"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Block<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                    <a href="<%=request.getContextPath()%>/election_manager/search_voter.jsp?status=AB"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("blockvoter")%></a>
                 </li>
             </ul>
         </li>
             <li>
-                <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><b>Manage Candidate Request</b><%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><b><%=resource.getString("manage_candi_reqst")%></b></a>
                 <ul>
                         <li>
-                            <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=NR"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Accept/Reject<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                            <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=NR"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("accept/reject")%></a>
                         </li>
                         <%--<li>
                             <a href="<%=request.getContextPath()%>/view_managers.do?status=A"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Reject<%=resource.getString("Viewmanagerdetails")%></a>
@@ -247,43 +247,43 @@ String instituteName=(String)session.getAttribute("institute_name");
                 </ul>
            </li>
            <li>
-            <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><b>Manage Candidate</b></a>
+            <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><b><%=resource.getString("manage_candi")%></b></a>
             <ul>
                 <li>
-                    <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">View<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                    <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("view")%></a>
                     <ul>
                         <li>
-                            <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=B"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Blocked<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                            <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=B"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("blockcandidate")%></a>
                         </li>
                         <li>
-                            <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=A"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Accepted<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                            <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=A"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("accepted")%></a>
                         </li>
                         <li>
-                            <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=R"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Rejected<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                            <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=R"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("rejected")%></a>
                         </li>
                         <li>
-                            <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">View All<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                            <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("view_all")%></a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=U" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Update<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                    <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=U" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("Update")%></a>
 
                 </li>
                 <li>
-                    <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">Generate Reports</a>
+                    <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><%=resource.getString("generate_report")%></a>
                     <ul>
                          <li>
-                            <a href="<%=request.getContextPath()%>/PrintNomination.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Final Candidate List<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                            <a href="<%=request.getContextPath()%>/PrintNomination.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("final_candi_list")%></a>
                         </li>
                         <li>
-                            <a href="<%=request.getContextPath()%>/RejectedList.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Rejected Candidate List<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                            <a href="<%=request.getContextPath()%>/RejectedList.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("rejected_candi_list")%></a>
                         </li>
                         <li>
-                            <a href="<%=request.getContextPath()%>/WithdrawList.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Withdrawl Candidate List<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                            <a href="<%=request.getContextPath()%>/WithdrawList.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("with_candi_list")%></a>
                         </li>
                          <li>
-                            <a href="<%=request.getContextPath()%>/AllCandiList.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">All Candidate List<%--<%=resource.getString("Viewmanagerdetails")%>--%></a>
+                            <a href="<%=request.getContextPath()%>/AllCandiList.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("all_candi_list")%></a>
                         </li>
                     </ul>
                 </li>
@@ -302,11 +302,11 @@ String instituteName=(String)session.getAttribute("institute_name");
                     <a  href="<%=contextPath%>/candidatesetup1.do" style="text-decoration:none; color: black;font-size: 15px">Candidate Setup</a>
                     <a  href="<%=contextPath%>/addVoter.do" style="text-decoration:none; color: black;font-size: 15px">Add Voter</a>--%>
                 </td></tr>
-            <%if(request.getAttribute("msg")!=null || request.getAttribute("msg1")!=null){%>
-            <tr><td ><%if(request.getAttribute("msg")!=null){%>
-                    <span style="color: blue;font-size: 3;font-family: Arial" ><%=request.getAttribute("msg")%></span>
-                    <%}else{%><span style="color: red;font-size: 3;font-family: Arial" ><%=request.getAttribute("msg")%></span><%}%>
-                </td></tr><%}%>
+          
+            <tr><td >
+                    <span style="color: blue;font-size: 3;font-family: Arial" ><%=request.getAttribute("msg")==null?"":request.getAttribute("msg")%></span>
+                    
+                </td></tr>
         </table>
             
        <%-- <div id="main" style="margin-left: 300px;visibility: hidden; overflow: auto;border: solid aqua 5px;background-color: cyan;width:500px;height: 90px;position: absolute;z-index: 100" >

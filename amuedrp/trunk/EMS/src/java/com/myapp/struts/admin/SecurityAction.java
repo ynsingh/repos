@@ -55,7 +55,7 @@ public class SecurityAction extends org.apache.struts.action.Action {
            
            HttpSession session=request.getSession();
             institute_id=(String)session.getAttribute("institute_id");
-            role=(String)session.getAttribute("role");
+            role=(String)session.getAttribute("login_role");
           // System.out.println(staff_id+question+ans);
 LoginDAO logindao = new LoginDAO();
 Login loginDetails = new Login();
@@ -84,9 +84,19 @@ if(loginDetails.getRole().equalsIgnoreCase("Election Manager"))
                              
       
         
-    }
+    
+if(loginDetails.getRole().equalsIgnoreCase("voter"))
+{               //request.setAttribute("msg","Requested Page is being developed");
+                                return mapping.findForward("voter");}
 
+if(loginDetails.getRole().equalsIgnoreCase("candidate"))
+{               //request.setAttribute("msg","Requested Page is being developed");
+                                return mapping.findForward("candidate");}
+
+   
+
+
+    }
 return mapping.findForward("failure");
-    }
 }
-
+}

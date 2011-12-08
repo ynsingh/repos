@@ -1,9 +1,3 @@
-<%--
-    Document   : ballot_design
-    Created on : Jun 13, 2011, 12:31:44 PM
-    Author     : Edrp-04
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="/election_manager/login.jsp"/>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -35,38 +29,14 @@
 
     return true;
 }
-function changeValue(value,index)
-{
-/*
-    var len = document.getElementById("form1").candidate.length;
-    var text;
-    var indexval = index.parentNode.id;
-   // alert(len);
-    if(len!=undefined){
 
-    len = len-1;
-   // alert(len);
-    //text = document.getElementById("candidate2").candidate[len-1].value;
-    //alert("Hmmm:"+document.getElementsById("form1").indexval.innerHTML);
-    index.parentNode.innerHTML = "<input id=candidate"+ indexval +" style='border: transparent; background-color: gray'  type='text' value='"+value+ "' onblur='changeValue(this.value,this)' />";
-
-   // alert("its working");
-    }else
-        {
-           // alert(value);
-          //text = candidate2.firstChild.value;
-    //alert(text);
-   index.parentNode.innerHTML = "<input id=candidate"+ indexval +" style='border: transparent; background-color: gray'  type='text' value='"+value+ "' onblur='changeValue(this.value,this)' />";
-        }*/
-}
 function changeProperty(id)
 {
     id.removeAttribute("readonly");
 
 }
 
-        </script>
-         <script type="text/javascript" language="javascript">
+       
            var i=0;
 function create(ii,current,index)
 {
@@ -273,7 +243,6 @@ return true;
 }
 function update1(cartXML)
 {
-alert("call");
 
 var em = cartXML.getElementsByTagName("email_ids")[0];
 var em1 = em.getElementsByTagName("message");
@@ -469,7 +438,7 @@ document.getElementById("previewtext").textContent = "Close Preview";
 
 }
 
-function block()
+<%--function block()
             {
 
                          <%if(request.getParameter("electionId")==null){%>
@@ -480,54 +449,15 @@ function block()
                     document.getElementById("ballot").style.display="block";
                     document.getElementById("electionblock").style.display="none";
                 previewBallot();<%}%>
-            }
+            }--%>
             </script>
     </head>
     <body onload="previewBallot();">
 
-        
-            
-<%--<div id="electionblock" style="margin-left: 300px; display: none; border: solid aqua 5px;background-color: cyan;width:500px;height: 50px" >
-<html:form method="post" action="/ballotdesign" styleId="form1">
-              Choose Election<br>
 
-              <html:select property="election" name="BallotActionForm" styleId="election" >
-              <html:select property="election" styleId="election">
-              <html:options collection="electionList" property="id.electionId" labelProperty="electionName" />
-              </html:select>
-              </html:select>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <input type="submit" class="btn" id="Button1" name="go" value="Go---" />
-</html:form>
-  </div>--%>
+    
               <div id="ballotpreview" style="display: block;overflow: hidden; margin-left: 350px; text-align: center; background-color: gray; width: 600px"><label onclick="previewBallot()" id="previewtext">Preview Ballot</label><br/><div id="ballot" style="display: block"></div>
               </div>
-<!--<div id="position" align="left" class="position" style="left: 250px;">
 
-                <div id="position" style="position: relative;background-color: yellow; border: 5px solid;"><br>
-                    Position Name *
-                    <br><input type="text" Id="position_name" size="40px"/>
-                    <br>
-                   Number of choice *
-                   <br><input type="text"  Id="numberofchoice" size="40px"/>
-                        <br>
-                    <br><br>
-                    <div id="candidate" style="position: relative;background-color: blue; border: 3px solid;display: none;width: 450px">
-                        <div id="0" style="width: 550px">
-                            Candidate Name *  <input type="text" Id="candidate_name" value="Candidate Name" size="40px"/>&nbsp;&nbsp;<input type="button" value="Save" onclick="search1(0,0);"/>
-                        <br></div>
-                    </div>
-                    <input type="button" name="add candidate"  style="border: transparent" onclick="create(0,0,this);" value="Add Candidate" size="50px">
-                </div>
-                        <br/>
-        </div>
-              <input type="button" id="add Position" name="add Position" style="margin-left: 350px;" value="Add New Position" size="50px" onclick="createposition();">
-
-                        <br>
--->
-
-        
     </body>
 </html>

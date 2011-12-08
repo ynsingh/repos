@@ -52,7 +52,7 @@ ElectionId empid=new ElectionId ();
     
         HttpSession session = request.getSession();
       String institue_id=(String)session.getAttribute("institute_id");
-      System.out.println(institute_id);
+     // System.out.println(institute_id);
          String button=lf.getButton();
          String id=lf.getElectionId();
        if(CheckDate(lf.getNominationStart(),lf.getNominationEnd()))
@@ -222,11 +222,14 @@ ob.setBallot(ballot);
         return mapping.findForward("add");
        }
 
-         if(button.equals("Delete"))
+         if(button.equals("Block"))
        {
-        ElectionDAO.delete(id,lf.getInstituteId());
+             System.out.println(lf.getStatus());
+       Election ele=ElectionDAO.searchElection(lf.getElectionId(), institue_id);
+       ele.setStatus(lf.getStatus());
+       ElectionDAO.update(ele);
          request.setAttribute("msg1", "record has deleted  successfully");
-        return mapping.findForward("add");
+        return mapping.findForward("add1");
        }
          return mapping.findForward("add");
     }

@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        
         <script type="text/javascript">
    //var heigh;
    function fn() {
@@ -240,13 +240,17 @@ var divtag2 = document.createElement("div");
                 divtag2.style.align = "center";
                 divtag2.style.marginTop = "5px";
                 divtag2.style.height = document.height;
-                var sql = '<input type="button" value="Back" onclick="" style="margin-left: 45%;"/>';
+                var sql = '<input type="button" value="Back" onclick="send();" style="margin-left: 45%;"/>';
 divtag2.innerHTML = sql;
 document.getElementById("ballot").appendChild(divtag2);
 window.setTimeout('fn()', 400);
 //if(document.parentNode!=undefined)
 
 //document.referrer.getElementById("overbody").style.height=h;
+}
+function send(){
+
+    top.location.href="<%=request.getContextPath()%>/Voter/voter_home.jsp";
 }
 
 var count1=new Array;
@@ -260,6 +264,7 @@ var positionSel = new Array;
     <body onload="previewBallot()" style="margin: 0px;">
         <div id="main" style="width: 100%; height: 100%">
             <div id="middle" style="width: 100%;margin-left: 0%; position: relative;">
+                
                 <form id="form1">
                 <div id="ballot" style="width: 660px; position: relative;margin-left: 0px; margin-top: 0px; border: 2px solid #F2F5A9;background-color: #D8CEF6;overflow: auto">
                     

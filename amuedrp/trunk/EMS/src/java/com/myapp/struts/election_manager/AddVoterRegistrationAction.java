@@ -13,7 +13,6 @@ import com.myapp.struts.hbm.StaffDetail;
 import com.myapp.struts.hbm.StaffDetailId;
 import com.myapp.struts.hbm.VoterRegistrationId;
 import com.myapp.struts.hbm.VoterRegistration;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -46,15 +45,7 @@ public class AddVoterRegistrationAction extends org.apache.struts.action.Action 
 
 VoterRegistrationId empid=new VoterRegistrationId ();
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -63,19 +54,31 @@ VoterRegistrationId empid=new VoterRegistrationId ();
         HttpSession session = request.getSession();
          String button="Submit";
          String button1 = (String)request.getParameter("button");
-         if (button1.equalsIgnoreCase("block") || button1.equalsIgnoreCase("Unblock")) button = button1;
+  String st = (String)request.getParameter("status");
+
+
+         if (button1!=null) button = button1;
          String id=lf.getEnrollment();
-System.out.println(button+" "+id);
+System.out.println(button+".................. "+id+st);
           FormFile v=(FormFile)session.getAttribute("filename");
        byte[] iii=null;
        if(v!=null)iii=v.getFileData();
 
        String instituteid=(String)session.getAttribute("institute_id");
-
+ userid=lf.getEnrollment()+""+instituteid;
 
 
         if(button.equals("Submit"))
        {
+
+              VoterRegistration obj1=VoterRegistrationDAO.searchVoterRegistration(instituteid, id);
+       if(obj1!=null){
+
+       request.setAttribute("msgerr", "Sorry Enrollment No Already Exist, Use Another");
+         return mapping.findForward("success1");
+
+       }
+
          empid.setEnrollment(id);
 
 System.out.println(id+" "+instituteid);
@@ -121,7 +124,7 @@ System.out.println(id+" "+instituteid);
 
 System.out.println(admin_password1);
 
- userid=lf.getEnrollment()+""+instituteid;
+
                 login.setUserId(userid);
 login.setPassword(admin_password1);
 login.setRole("voter");
@@ -148,22 +151,21 @@ String path = servlet.getServletContext().getRealPath("/");
          
 // request.setAttribute("msg1", "Voter Successfully Added");
        }
-        else if(button.equalsIgnoreCase("Block") || button1.equalsIgnoreCase("Unblock"))
+        else if(button.equalsIgnoreCase("Change Status") || button.equalsIgnoreCase("UnBlock"))
         {
             ob = VoterRegistrationDAO.searchVoterRegistration(instituteid, lf.getEnrollment());
-            if(button1.equalsIgnoreCase("block"))
-                ob.setStatus("Block");
-            else if(button1.equalsIgnoreCase("Unblock"))
+            
+                
+            if(button.equalsIgnoreCase("UnBlock"))
                 ob.setStatus("REGISTERED");
-//            List<Login> login1 = logindao.getUser(lf.getEnrollment()+""+instituteid);
-//            if(login1!=null)
-//            {
-//                login = login1.get(0);
-//
-//            }
+            else
+                ob.setStatus(lf.getStatus());
+
+
+          request.setAttribute("msg", "Voter With ID"+lf.getEnrollment() +" Successfully "+lf.getStatus());
             VoterRegistrationDAO.update(ob);
             String path = servlet.getServletContext().getRealPath("/");
-        obj=new Email(path,lf.getEmail(),admin_password,"Voter Account Blocked from EMS","User Id="+userid);
+        obj=new Email(path,lf.getEmail(),admin_password,"Voter Account Status Changed with "+lf.getStatus(),"User Id="+userid);
          executor.submit(new Runnable() {
 
                 public void run() {
@@ -173,7 +175,9 @@ String path = servlet.getServletContext().getRealPath("/");
             }
         
 
-
-        return mapping.findForward(SUCCESS);
+  if(button.equalsIgnoreCase("UnBlock"))
+              return mapping.findForward("success2");
+  else
+              return mapping.findForward("success");
     }
 }

@@ -1,18 +1,44 @@
-<%-- 
-    Document   : candidate_registration
-    Created on : 18 Jun, 2011, 7:28:39 PM
-    Author     : akhtar
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@ page language="java" %>
+<%@ page import="java.util.*,java.lang.*"%>
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+
+
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String sessionId="";
+    boolean page=true;
+    String align="left";
+%>
+
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+sessionId = session.getId().toString();
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+String user=(String)session.getAttribute("username");
+String instituteName=(String)session.getAttribute("institute_name");
+ String contextPath = request.getContextPath();
+ String role=(String)session.getAttribute("login_role");
+    %>
 
 <%! boolean read = false;%>
 <%
@@ -23,7 +49,10 @@
                 read = false;
             }
             String status = request.getParameter("status");
-            if(status.equalsIgnoreCase("U")) {read = false;btn="Update";}
+            if(status==null)
+            status=(String)request.getAttribute("Status");
+            if(status.equalsIgnoreCase("U")){read = false;btn="Update";}
+
             String msg1 = (String) request.getAttribute("msg1");
 %>
 <script type="text/javascript">
@@ -45,20 +74,24 @@
           //alert(document.getElementById("img").value);
 
           document.getElementsById("filename").value=document.getElementById("img").value;
-          //alert(document.getElementsById("filename").value);
+          alert(document.getElementsById("filename").value);
       }
 
-      function send()
+     function send()
       {
-          <%--window.location=--%> window.back();
-          return false;
+          //alert(document.getElementById("img").value);
+
+         window.location="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=U";
+         return true;
       }
+
 </script>
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>EMS</title>
-    <link href="/css/Style1.css" rel="stylesheet" type="text/css" />
+    <link href="/EMS/css/Style1.css" rel="stylesheet" type="text/css" />
+    <link href="/EMS/css/page.css" rel="stylesheet" type="text/css" />
 
     <%
 
@@ -91,6 +124,7 @@
                 String file = (String) request.getAttribute("filename");
                 String position=(String)request.getAttribute("position");
                 String election=(String)request.getAttribute("election");
+                String institute_id=(String)session.getAttribute("institute_id");
     %>
 
 
@@ -382,25 +416,51 @@
             var email1=document.getElementById("email1");
             email.value=email1.value;
 
+
+             var election=document.getElementById("elections");
+            var election1=document.getElementById("elections1");
+            election.value=election1.value;
+
+
+
+
+             var pos=document.getElementById("position");
+            var pos1=document.getElementById("position1");
+            pos.value=pos1.value;
+
+
             var button=document.getElementById("button");
             var button1=document.getElementById("button1");
             button.value=button1.value;
         }
+          function copy()
+                                        {
+                                            var a=document.getElementById("cadd1").value;
+                                            var b=document.getElementById("city1").value;
+                                            var c=document.getElementById("state1").value;
+                                            var d=document.getElementById("zcode1").value;
+                                            var e=document.getElementById("country1").value;
+                                            document.getElementById("padd1").value=a;
+                                            document.getElementById("city21").value=b;
+                                            document.getElementById("state21").value=c;
+                                            document.getElementById("zcode21").value=d;
+                                            document.getElementById("country21").value=e;
+                                        }
     </script>
 </head>
 
 
 
 <body>
-    <h1>
-        candidate Registration Form
-    </h1>
+
+
+    
     <%--  <%if(msg1!=null){%>   <span style=" position:absolute; top: 120px; font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>  <%}%>--%>
 
 
     <div
-        style="  top:200px;
-        left:905px;
+        style="  top:20px;
+        left:50%;
         right:5px;
         position: absolute;
 
@@ -408,20 +468,20 @@
         <%if (btn.equals("View") == true) {%>
 
         <%if (session.getAttribute("image") != null) {%>
-        <html:img src="/EMS/Candidate/upload.jsp"  alt="no Image Selected" width="100" height="100"/>
+        <html:img src="/EMS/Candidate/upload.jsp"  alt="no Image Selected" width="80" height="80"/>
 
         <%} else {%>
 
-        <html:img src="/EMS/images/no-image.jpg"  alt="no Image Selected" width="100" height="100"/>
+        <html:img src="/EMS/images/no-image.jpg"  alt="no Image Selected" width="80" height="80"/>
         <%}%>
 
 
         <%} else {%>
 
         <%if (request.getAttribute("imagechange") != null) {%>
-        <html:img src="/EMS/Candidate/upload.jsp"  alt="no Image Selected" width="120" height="120"/>
+        <html:img src="/EMS/Candidate/upload.jsp"  alt="no Image Selected" width="80" height="80"/>
         <%} else {%>
-        <html:img src="/EMS/Candidate/viewimage.jsp" alt="no image selected" width="120" height="120" />
+        <html:img src="/EMS/Candidate/viewimage.jsp" alt="no image selected" width="80" height="80" />
         <%}%><br/>
 
 
@@ -431,18 +491,19 @@
 
 
     <div
-        style="  top:325px;
-        left:800px;
+        style="  top:50px;
+        left:60%;
         right:5px;
         position: absolute;
 
         visibility: visible; z-index: 100;" >
 
 
-        <html:form action="/candidateimageupload" method="post" styleId="form1" enctype="multipart/form-data">
+        <html:form action="/candidateimageupload1" method="post" styleId="form1" enctype="multipart/form-data">
             <%if (btn.equals("Update") == true || btn.equals("View") == true) {%>
             <html:file  property="img" name="CandidateRegActionForm" styleId="img" onchange="submit()"  onclick="copy1()" />
-            <%}%>
+       
+        <%}%>
 
 
             <input type="hidden" name="filename" tabindex="16" id="filename" />
@@ -475,6 +536,8 @@
             <html:hidden property="zipcode1" name="CandidateRegActionForm" styleId="zcode2"/>
 
             <html:hidden property="country1" name="CandidateRegActionForm" styleId="country2"/>
+            <html:hidden property="position" name="CandidateRegActionForm" styleId="position2"/>
+            <html:hidden property="elections" name="CandidateRegActionForm" styleId="election2"/>
 
             <html:hidden property="email" name="CandidateRegActionForm" styleId="email"/>
             <html:hidden property="button" name="CandidateRegActionForm" styleId="button"/>
@@ -483,71 +546,88 @@
 
 
     </div>
-    <html:form action="/candidateregistration" method="post" style="position:absolute; left:80px; top:90px;"  onsubmit="return check3()" styleId="radio_form">
+    <html:form action="/candidateregistration1" method="post"    onsubmit="return check3()" styleId="radio_form">
 
-
-     <table border="1">
-     <tr><td>
-             <table border="0" class="table" align="center" width="100%">
-                        <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Register Yourself </b></td></tr>
-                        <tr><td colspan="2">
-                                <table>
+        <table  dir="<%=rtl%>" class="table" width="60%">
+        <tr><td class="header" align="center" colspan="3" bgcolor="cyan"> <%=resource.getString("candidateregform")%></td></tr>
+         <tr><td>
+              
                                     <tr>
-                                        <td >Enrollment Number*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read%>"  name="CandidateRegActionForm"  styleId="enrollment1" property="enrollment"  value="<%=enrollment%>" /></td><td>
-                                        <td></td>
+                                        <td ><%=resource.getString("enrollment")%>*:</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm"  styleId="enrollment1" property="enrollment"  value="<%=enrollment%>" /></td>
+                                        
+                                        <td rowspan="15">
+                                            
+                                            
+                                            
+                                            <table>
+                                         <tr>
+                                        <td align="left" colspan="2"></td>
+                                    </tr>
+                                           <tr>
+                                        <td align="left"><%=resource.getString("postaladd")%>:</td> <td><html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="cadd1" property="c_add" value="<%=cadd%>"  /></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left"><%=resource.getString("city")%>:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="city"  value="<%=city%>" styleId="city1"/></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td align="left"><%=resource.getString("state")%>:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="state" value="<%=state%>" styleId="state1"/></td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td align="left"><%=resource.getString("pin")%>:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="zipcode"  value="<%=zcode%>" styleId="zcode1"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left"><%=resource.getString("country")%>:*</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country"  value="<%=country%>" styleId="country1"/></td>
 
                                     </tr>
-                                    <%--<tr>
-                                        <td width="30%">Institute Name*:</td><td><html:text readonly="<%=read %>"  name="CandidateRegActionForm"  styleId="ins1"  value="<%=instituteid%>"  property="institute_id"/></td><td width="30%">
-                                    <td></td>
-                                    </tr>--%>
-                                    <tr><td align="left">Institute Name*</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <html:select property="institute_id" styleId="ins1"  name="CandidateRegActionForm"  tabindex="10" disabled="<%=read%>">
+                                    <tr>
+                                        <td colspan="2"><input type="checkbox" id="Checkbox1" name="check" value="off" tabindex="17" onclick="return copy();" >&nbsp;&nbsp;<b>Click Here</b>&nbsp;(If permanent address is same as corresponding address)</td>
+                                    </tr>
+                                    <tr>    <td align="left"><%=resource.getString("permanent")%></td><td><html:text  readonly="<%=read%>" name="CandidateRegActionForm" property="p_add" value="<%=padd%>" styleId="padd1"/></td></tr>
+                                    <tr>    <td align="left"><%=resource.getString("city")%></td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="city1" value="<%=city1%>"  styleId="city21"/></td></tr>
+                                    <tr>    <td align="left"><%=resource.getString("state")%></td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="state1" value="<%=state1%>" styleId="state21"/></td></tr>
+                                    <tr> <td align="left"><%=resource.getString("pin")%></td><td><html:text  readonly="<%=read%>" name="CandidateRegActionForm" property="zipcode1"  value="<%=zcode1%>" styleId="zcode21"/></td><td colspan="2"></tr>
+                                    <tr><td align="left"><%=resource.getString("country")%></td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country1" value="<%=country1%>" styleId="country21"/></td></tr>
+               </table>
+
+
+                                        </td>
+
+                                    </tr>
+                                    
+                                    <tr><td align="left"><%=resource.getString("institutename")%>*</td><td>
+                                            <html:select property="institute_id" styleId="ins1"  name="CandidateRegActionForm"  tabindex="10" disabled="true">
                                                  <html:option  value="Select"> Select </html:option>
             <html:options collection="Institute"  labelProperty="instituteName" property="instituteId"  name="Institute" ></html:options>
-                                               <%-- <html:option  value="Select"> Select </html:option>
-                                                <html:option  value="amu">Aligarh muslim university</html:option>
-                                                <html:option value="jmi">Jamia Millia islamia</html:option>
-                                                <html:option value="du">Delhi University</html:option>
-                                                <html:option value="jnu">JNU</html:option>--%>
-                                            </html:select>
-
+                                                  </html:select>
+            <html:hidden property="institute_id" value="<%=institute_id%>"  name="CandidateRegActionForm"/>
                                     </tr>
                                     <tr>
-                                        <td align="left">Department*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="dep1" property="department"  value="<%=dep%>" /></td>
+                                        <td align="left"><%=resource.getString("department")%>*:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="dep1" property="department"  value="<%=dep%>" /></td>
 
                                     </tr>
 
                                     <tr>
-                                        <td align="left">Course*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="cour1" property="course" value="<%=cour%>"/></td>
+                                        <td align="left"><%=resource.getString("course")%>*:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="cour1" property="course" value="<%=cour%>"/></td>
                                     </tr>
 
                                     <tr>
-                                        <td align="left">Year :</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read%>"  name="CandidateRegActionForm" styleId="year1" property="year" value="<%=yr%>"/></td>
+                                        <td align="left"> <%=resource.getString("year")%>:</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm" styleId="year1" property="year" value="<%=yr%>"/></td>
 
                                     </tr>
-                                </table>
-                            </td></tr>
-
-                        <tr><td>
-                                <table width="700" border="0" cellspacing="6" cellpadding="2" align="left">
-                                    <tr>
-                                    </tr>
-                                    <%--<tr>
-                                    <td align="left">Faculty Roll No :</td><td><html:text name="CandidateRegActionForm" property="electionid"/></td>
-                                    </tr>
-                                    <tr--%>
-                                    <tr><td  width="30%">Duration of course:</td><td><html:text  readonly="<%=read%>" name="CandidateRegActionForm" styleId="dur1" value="<%=dur%>" property="duration" /> </td><td width="30%">
+                                    <tr><td  width="30%"><%=resource.getString("courseduration")%>:</td><td><html:text  readonly="<%=read%>" name="CandidateRegActionForm" styleId="dur1" value="<%=dur%>" property="duration" /> </td><td width="30%">
                                     </tr>
                                     <tr>
-                                        <td align="left">Current Session:</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm" styleId="sess1" value="<%=sess%>" property="session"  /></td>
+                                        <td align="left"><%=resource.getString("currentsession")%>:</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm" styleId="sess1" value="<%=sess%>" property="session"  /></td>
                                     </tr
-                                    <tr><td width="15%">Date of Joining<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm" styleId="1" property="j_date" value="<%=jdate%>" />
+                                    <tr><td width="15%"><%=resource.getString("dateofjoin")%><br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm" styleId="1" property="j_date" value="<%=jdate%>" />
                                             <a href="javascript:NewCal('1','ddmmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></td></tr>
 
 
                                     <tr>
-                                        <td align="left">Candidate Name*</td>
+                                        <td align="left"><%=resource.getString("candidatename")%>*</td>
                                         <td>
                                             <table><tr><td>
                                                         <select name="courtesy" size="1" id="courtesy" tabindex="2" style="align:right" disabled="<%=read%>">
@@ -561,7 +641,7 @@
                                             </table>
                                         </td>
                                     </tr>
-                                    <tr><td align="left">Gender*</td><td>
+                                    <tr><td align="left"><%=resource.getString("gender")%>*</td><td>
                                             <html:select property="gender" styleId="gen1"  name="CandidateRegActionForm"  tabindex="10" disabled="<%=read%>">
 
                                                 <html:option  value="Select"> Select </html:option>
@@ -572,90 +652,31 @@
 
                                     </tr>
                                     <tr>
-                                        <td>Date of Birth*<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm"  property="b_date"  value="<%=bdate%>" styleId="3" />
+                                        <td><%=resource.getString("birthday")%>*<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm"  property="b_date"  value="<%=bdate%>" styleId="3" />
                                             <a href="javascript:NewCal('3','ddmmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></td>
                                     </tr>
 
 
-                                    <tr> <td>Father's Name*</td><td><html:text  readonly="<%=read%>" name="CandidateRegActionForm" styleId="fname1"  value="<%=fname%>"  property="f_name"/></td></tr>
-                                    <tr> <td>Mother's Name*</td><td><html:text readonly="true" name="CandidateRegActionForm" styleId="mname1" value="<%=mname%>" property="m_name"/></td>
+                                    <tr> <td><%=resource.getString("fathername")%>*</td><td><html:text  readonly="<%=read%>" name="CandidateRegActionForm" styleId="fname1"  value="<%=fname%>"  property="f_name"/></td></tr>
+                                    <tr> <td><%=resource.getString("mothername")%>*</td><td><html:text readonly="true" name="CandidateRegActionForm" styleId="mname1" value="<%=mname%>" property="m_name"/></td>
                                     </tr>
 
                                     <tr>
-                                        <td align="left">Mobile No*:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="mnumb1" value="<%=mnumb%>" property="m_number" /></td>
-                                    </tr>
-                                </table>   </td>
-                            <td>
-
-                                <table> <tr>
-                                        <td align="left">Corresponding Address:</td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td> &nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="cadd1" property="c_add" value="<%=cadd%>"  /></td>
+                                        <td align="left"><%=resource.getString("mobileno")%>*:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="mnumb1" value="<%=mnumb%>" property="m_number" /></td>
                                     </tr>
                                     <tr>
-                                        <td align="left">City:</td><td>&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm" property="city"  value="<%=city%>" styleId="city1"/></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td align="left">State:</td><td>&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm" property="state" value="<%=state%>" styleId="state1"/></td>
-                                    </tr>
-
-
-                                    <tr>
-                                        <td align="left">Zip Code:</td><td>&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm" property="zipcode"  value="<%=zcode%>" styleId="zcode1"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="left">Country:*</td><td>&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country"  value="<%=country%>" styleId="country1"/></td>
-
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2"><input type="checkbox" id="Checkbox1" name="check" value="off" tabindex="17" onclick="return copy();" >&nbsp;&nbsp;<b>Click Here</b>&nbsp;(If permanent address is same as corresponding address)</td>
-                                    </tr>
-                                    <tr>    <td align="left">Permanent Address</td><td><html:text  readonly="<%=read%>" name="CandidateRegActionForm" property="p_add" value="<%=padd%>" styleId="padd1"/></td></tr>
-                                    <tr>    <td align="left">City</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="city1" value="<%=city1%>"  styleId="city21"/></td></tr>
-                                    <tr>    <td align="left">State</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="state1" value="<%=state1%>" styleId="state21"/></td></tr>
-                                    <tr> <td align="left">ZIP Code</td><td><html:text  readonly="<%=read%>" name="CandidateRegActionForm" property="zipcode1"  value="<%=zcode1%>" styleId="zcode21"/></td><td colspan="2"></tr>
-                                    <tr><td align="left">Country</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country1" value="<%=country1%>" styleId="country21"/></td></tr>
-                                </table>
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <table>
-                                    <script>
-                                        function copy()
-                                        {
-                                            var a=document.getElementById("cadd1").value;
-                                            var b=document.getElementById("city1").value;
-                                            var c=document.getElementById("state1").value;
-                                            var d=document.getElementById("zcode1").value;
-                                            var e=document.getElementById("country1").value;
-                                            document.getElementById("padd1").value=a;
-                                            document.getElementById("city21").value=b;
-                                            document.getElementById("state21").value=c;
-                                            document.getElementById("zcode21").value=d;
-                                            document.getElementById("country21").value=e;
-                                        }
-                                    </script>
-
-
-
-                                </table>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="2"><b>Important! </b>Please provide a working email address:</td>
+                                        <td colspan="2"><%=resource.getString("important")%>! <%=resource.getString("workingemail")%>:</td>
 
                         </tr>
 
                         <tr>
 
-                            <td align="left" colspan="2">email*:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm"   value="<%=email%>" styleId="email1" property="email"/></td>
+                            <td align="left" ><%=resource.getString("emailid")%>*:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm"   value="<%=email%>" styleId="email1" property="email"/></td>
 
                         </tr>
 
-                        <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Academic Detail </b></td></tr>
-                        <tr><td align="">Enrolled IN*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                        <tr><td align="center" height="10px;" colspan="3" bgcolor="cyan">Academic Detail</td></tr>
+                        <tr><td align=""><%=resource.getString("department")%>*
                                 <html:select property="enrolled_in" styleId="enrolled"  name="CandidateRegActionForm"  tabindex="10" disabled="<%=read%>">
 
                                     <html:option  value="Select"> Select </html:option>
@@ -666,61 +687,62 @@
                                 </html:select>
                         </tr>
                         <tr>
-                            <td align="left">Marks %*:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<html:text  name="CandidateRegActionForm" styleId="mark" property="p_marks" readonly="<%=read%>" /></td>
+                            <td align="left"><%=resource.getString("marks")%> %*:</td><td><html:text  name="CandidateRegActionForm" styleId="mark" property="p_marks" readonly="<%=read%>" /></td>
                         </tr>
                         <tr>
-                            <td align="left">Attendence %*:&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<html:text  name="CandidateRegActionForm" styleId="attendence" property="p_attendence"  readonly="<%=read%>"/></td>
+                            <td align="left"> <%=resource.getString("attendence")%>%*:</td><td><html:text  name="CandidateRegActionForm" styleId="attendence" property="p_attendence"  readonly="<%=read%>"/></td>
                         </tr>
-                </td></tr>
+              
 
-            <tr><td align="left" >Backlog*
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <html:radio name="CandidateRegActionForm" property="backlog" value="yes" disabled="<%=read%>"/>Yes<html:radio name="CandidateRegActionForm" property="backlog" styleId="backlog" value="no" disabled="<%=read%>"/>N0 </td></tr>
-            <br> <tr><td align="left">Criminal log*&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<html:radio name="CandidateRegActionForm" property="criminal"  value="yes" disabled="<%=read%>"/>Yes<html:radio  name="CandidateRegActionForm" property="criminal"  styleId="criminal" value="no" disabled="<%=read%>"/>No</td></tr>
-            <br><tr><td>Indisciplinery Action*  &nbsp;&nbsp;&nbsp;&nbsp;<html:radio name="CandidateRegActionForm" property="indisc" value="yes" disabled="<%=read%>"/>Yes<html:radio name="CandidateRegActionForm" property="indisc"  value="no" disabled="<%=read%>"/>No</td></tr>
-            <br>
-            <tr><td>Election* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<html:text name="CandidateRegActionForm" property="elections" value="<%=election%>" readonly="<%=read%>"/>
-                </td></tr>
-            <br>
-            <tr><td>Position* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<html:text name="CandidateRegActionForm" property="position" value="<%=position%>" readonly="<%=read%>"/>
+            <tr><td align="left" ><%=resource.getString("backlog")%>*
+                    </td><td><html:radio name="CandidateRegActionForm" property="backlog" value="yes" disabled="<%=read%>"/>Yes<html:radio name="CandidateRegActionForm" property="backlog" styleId="backlog" value="no" disabled="<%=read%>"/>N0 </td></tr>
+             <tr><td align="left"><%=resource.getString("crimi")%>*</td><td><html:radio name="CandidateRegActionForm" property="criminal"  value="yes" disabled="<%=read%>"/>Yes<html:radio  name="CandidateRegActionForm" property="criminal"  styleId="criminal" value="no" disabled="<%=read%>"/>No</td></tr>
+            <tr><td><%=resource.getString("indisc")%>* </td><td><html:radio name="CandidateRegActionForm" property="indisc" value="yes" disabled="<%=read%>"/>Yes<html:radio name="CandidateRegActionForm" property="indisc"  value="no" disabled="<%=read%>"/>No</td></tr>
+      
+            <tr><td><%=resource.getString("electionname")%>* </td><td><html:text name="CandidateRegActionForm" styleId="elections1" property="elections" value="<%=election%>" readonly="<%=read%>"/>
                 </td></tr>
             
+            <tr><td><%=resource.getString("positionname")%>* </td><td><html:text name="CandidateRegActionForm" styleId="position1" property="position" value="<%=position%>" readonly="<%=read%>"/>
+                </td></tr>
 
 
 
-            <%--<tr><td colspan="5" height="5px" class="mandatory" align="right"><a class="star">*</a>indicated fields are mandatory</td></tr>--%>
-            <tr><td colspan="5" height="10px"></td>
-            </tr>
+
+           
             <tr>
-                <td align="center" colspan="5">
+                <td align="center" colspan="3">
 
-
-
-
-                    <br><br><br><br>*indicated fields are mandatory
-                    <br><br>
+                 <%=resource.getString("(*)")%>
+                    <br>
 
 
 
 
                     <%if (btn.equals("Update")) {%>
                     <input id="button1"  name="button" type="submit" value="<%=btn%>" class="txt1" />
-                    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()"  class="txt1"/>
+              
                     <%} else if (btn.equals("Delete")) {%>
                     <input id="button1"  name="button" type="submit" value="<%=btn%>" class="txt1" />
-                    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" onclick="return send()"  value="Cancel" class="txt1"/>
+                 
                     <%} else if (btn.equals("View")) {%>
-                    <input id="button1"  name="button" type="submit" value="Accept" class="txt1" />
-                    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()" class="txt1"/>
-                    <%} else {%>
-                   <input name="button" type="submit" value="Print"  class="txt1"/>
-                    <input name="button" type="submit" value="Cancel" onclick="return send()" class="txt1"/>
-                    <%}%>
+                    <input id="button1"  name="button" type="submit" value="<%=resource.getString("accept")%>" class="txt1" />
+           
+           <%} else if(status.equals("R")==false){%>
+                   <input name="button" type="submit" value="<%=resource.getString("print")%>"  class="txt1"/>
+                   <%}%>
+                    <input name="button" type="button" value="<%=resource.getString("cancel")%>" onclick="return send()" class="txt1"/>
+                    
                 </td>
-            </tr><tr><td colspan="5" height="5px"></td>
+            </tr>
 
+              
 
-
-            </tr></table>
+                                </table>
+                            
+         
+                       
+                                      
+                                   
 
 
     </html:form>

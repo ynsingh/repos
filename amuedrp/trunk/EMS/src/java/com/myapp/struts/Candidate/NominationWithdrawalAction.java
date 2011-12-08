@@ -6,10 +6,8 @@
 package com.myapp.struts.Candidate;
 
 import com.myapp.struts.hbm.*;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.hibernate.Session;
 
 /**
  *
@@ -46,8 +43,11 @@ public class NominationWithdrawalAction extends org.apache.struts.action.Action 
         String user_id = (String)session.getAttribute("user_id");
         String institute_id = (String)session.getAttribute("institute_id");
         String staff_id = (String)session.getAttribute("staff_id");
+        System.out.println("staff_id="+staff_id);
         //ArrayList<CandidateRegLoginDetails> lstcandi1 = new ArrayList<CandidateRegLoginDetails>();
         List<CandidateRegLoginDetails> lstcandi = (List<CandidateRegLoginDetails>)CandidateRegistrationDAO.searchCandidate(staff_id, institute_id);
+        List <CandidateRegistration>stat=CandidateRegistrationDAO.getCandidateDetails(institute_id, staff_id);
+
         if(lstcandi!=null && !lstcandi.isEmpty())
         {
             Election e = lstcandi.get(0).getElection();
@@ -55,9 +55,14 @@ public class NominationWithdrawalAction extends org.apache.struts.action.Action 
             Date d = cal.getTime();
             if(e.getWithdrawlDate().before(d) && e.getWithdrawlEndDate().after(d))
             {
-            CandidateRegistration cand = lstcandi.get(0).getCandidateRegistration();
+           //CandidateRegistration cand = lstcandi.get(0).getCandidateRegistration();
+                CandidateRegistration cand =stat.get(0);
+           System.out.println("Check"+stat.get(0));
+
             cand.setStatus("Withdraw");
+            
             CandidateRegistrationDAO.update(cand);
+           
             request.setAttribute("msg", "Candidate Withdrawal Successful");
             }
             else

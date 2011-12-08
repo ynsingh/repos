@@ -190,7 +190,7 @@ public List getInstituteNameByStatus(String status){
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createQuery("FROM Institute where  working_status = :status");
+            Query query = session.createQuery("FROM Institute where  working_status = :status and institute_id!='ems'");
             
             query.setString("status",status );
 

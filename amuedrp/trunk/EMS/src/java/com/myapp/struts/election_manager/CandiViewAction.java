@@ -40,15 +40,7 @@ public class CandiViewAction extends org.apache.struts.action.Action {
      ElectionDAO ED= new ElectionDAO();
 
 private VoterRegistrationId elid=new VoterRegistrationId();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -70,7 +62,7 @@ session.setAttribute("Institute",Institute);
           String position = request.getParameter("pos");
            String eid=(String)session.getAttribute("institute_id");
            
-          System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR  "+id+eid);
+          System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR  "+id+eid+position);
         VoterRegistration r=CandidateRegistrationDAO.searchVoterRegistration(eid,id);
         CandidateRegistration c=CandidateRegistrationDAO.searchCandidateRegistration(eid,id,position);
 Candidate1 candi=new Candidate1();
@@ -78,7 +70,7 @@ Candidate1 candi=new Candidate1();
         
         //Position1 p= p1.searchPosition(Integer.parseInt(c.getPosition()));
 
-
+System.out.println(c.getPosition());
 List<Candidate1> c1=p1.ElectionId(Integer.parseInt(c.getPosition()), eid)   ;
 
 
@@ -90,14 +82,14 @@ String Elec="";
 if(e!=null)
     Elec=e.getElectionName();
 
-System.out.println("ElectionId    "+electionid+""+"electionname"+Elec);
+
 
         Position1 p=p1.searchPosition1(Integer.parseInt(c.getPosition()),electionid, eid);
 
 
         
 
-        System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+c);
+        System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+c.getPosition()+electionid+" "+eid);
         if(button.equals("add"))
         {
             /* if(l!=null){
@@ -163,12 +155,24 @@ System.out.println("View Page");
 //            employeeform.setIndisc(c.getIndisc());
             if(p!=null)
                 employeeform.setPosition(p.getPositionName());
+            
+ //System.out.println(e.getElectionName());
             employeeform.setElections(Elec);
+
+           
+System.out.println(stat+"....................");
             request.setAttribute("button", button);
+            request.setAttribute("status",c.getStatus());
            if(stat.equalsIgnoreCase("NR"))
                return mapping.findForward("accept");
+           else if(stat.equalsIgnoreCase("R"))
+               return mapping.findForward("success1");
+           else if(stat.equalsIgnoreCase("A"))
+             return mapping.findForward("success2");
+           else if(stat.isEmpty()==true)
+                return mapping.findForward("success3");
            else
-             return mapping.findForward(SUCCESS);
+                return mapping.findForward("success");
                        }
             else{
             request.setAttribute("msg1", "plz register yourself as a voter first ");

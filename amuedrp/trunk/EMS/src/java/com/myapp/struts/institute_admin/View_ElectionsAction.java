@@ -53,13 +53,14 @@ public class View_ElectionsAction extends org.apache.struts.action.Action {
         //con=MyConnection.getMyConnection();
         //PreparedStatement stmt=con.prepareStatement("select * from admin_registration where  status is null");
         //rst=stmt.executeQuery();
-      String para1 = request.getParameter("search_by");
-      String para2 = request.getParameter("search_keyword");
-      String status = request.getParameter("status");
+      String searchby = request.getParameter("search_by");
+      String searchkeyword = request.getParameter("search_keyword");
+      String sortby = request.getParameter("sort_by");
+     System.out.println(sortby+".....................");
 
-        rst =electionmanagerdao.GetElectionDetailsbyinstituteId(instituteId);
+        rst =electionmanagerdao.GetElectionDetailsbyinstituteId(instituteId,searchby,searchkeyword,sortby);
             session.setAttribute("resultset", rst);
-System.out.println("resultset"+ rst);
+         System.out.println("resultset"+ rst);
             System.out.println("rst+"+rst.size());
 
         return mapping.findForward("success");

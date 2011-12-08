@@ -364,6 +364,7 @@
        
             <action input="/createelection.jsp" attribute="DepActionForm" name="DepActionForm" path="/createelection" scope="request" type="com.myapp.struts.election_manager.CreateElectionAction" >
                 <forward name="add" path="/election_manager/ballot_design.jsp"/>
+                 <forward name="add1" path="/election_manager/createelection.jsp"/>
                 <forward name="fail" path="/election_manager/createelection.jsp"/>
             
          </action>
@@ -418,20 +419,24 @@
 
           <action  path="/candidate1" name="CandidateRegActionForm" scope="request" type="com.myapp.struts.election_manager.CandiViewAction" >
                 <forward name="success" path="/Candidate/candidate_registration_2.jsp"/>
-                <forward name="success1" path="/Candidate/candidate_registration.jsp"/>
+                <forward name="success1" path="/Candidate/candidate_reject.jsp"/>
+                   <forward name="success2" path="/Candidate/candidate_accept.jsp"/>
+                    <forward name="success3" path="/Candidate/candidate_viewall.jsp"/>
                 <forward name="accept" path="/election_manager/accept_candidate_request.jsp"/>
          </action>
 
 
          <action  path="/addVoter" name="VoterRegActionForm" scope="request" type="com.myapp.struts.election_manager.AddVoterAction" >
-                <forward name="success" path="/Voter/VoterRegistration.jsp"/>
+                <forward name="success" path="/Voter/VoterRegistration1.jsp"/>
 
          </action>
 
 
-          <action input="/Voter/VoterRegistration.jsp" name="VoterRegActionForm" path="/addvoterregistration" scope="request" type="com.myapp.struts.election_manager.AddVoterRegistrationAction">
+          <action input="/Voter/VoterRegistration1.jsp" name="VoterRegActionForm" path="/addvoterregistration" scope="request" type="com.myapp.struts.election_manager.AddVoterRegistrationAction">
             
- <forward name="success" path="/election_manager/Election_List.jsp"/>
+ <forward name="success" path="/election_manager/search_voter.jsp?status=AB"/>
+  <forward name="success2" path="/election_manager/search_voter.jsp?status=B"/>
+ <forward name="success1" path="/addVoter.do"/>
         </action>
 
 <action input="/election_manager/candidate_setup1.jsp"  path="/PrintNomination" scope="request" type="PrintAction.PrintNomination">
@@ -443,11 +448,15 @@
          <action input="/election_manager/candidate_setup1.jsp"  path="/RejectedList" scope="request" type="PrintAction.RejectedList"> </action>
          <action input="/election_manager/candidate_setup1.jsp"  path="/WithdrawList" scope="request" type="PrintAction.WithdrawlList"> </action>
          <action input="/election_manager/candidate_setup1.jsp"  path="/AllCandiList" scope="request" type="PrintAction.AllCandiList"> </action>
+ <action   path="/detailreport" scope="request" type="PrintAction.ElectionDetails"> </action>
 
+ <action path="/registerfrmpending" scope="request" type="com.myapp.struts.election_manager.RegisterfromPendingAction">
+    <forward name="success" path="/election_manager/pending_voter.jsp"/>
+</action>
    <!--====================================Voter  Action Setting==========================================-->
 
              <action input="/election_manager/pending_voter.jsp" name="VoterRegActionForm" path="/newregistration1" scope="request" type="com.myapp.struts.Voter.VoterViewAction1">
-            <forward name="add" path="/Voter/voter_registration.jsp"/>
+            <forward name="add" path="/Voter/voter_registration1.jsp"/>
             <forward name="duplicate" path="/Voter/enrollment.jsp"/>
              </action>
 
@@ -467,11 +476,16 @@
             <forward name="add" path="/login.jsp"/>
  <forward name="accept" path="/electionmanager.do"/>
         </action>
+<action path="/voterimageupload1" input="/Voter/voter_registration1.jsp" name="VoterRegActionForm" scope="request" type="com.myapp.struts.Voter.VoterImageUploadAction">
+    <forward name="success" path="/Voter/voter_registration1.jsp"/>
 
+    <forward name="VoterReg" path="/Voter/VoterRegistration1.jsp"/>
+</action>
 
 
  <action path="/voterimageupload" input="/Voter/voter_registration.jsp" name="VoterRegActionForm" scope="request" type="com.myapp.struts.Voter.VoterImageUploadAction">
     <forward name="success" path="/Voter/voter_registration.jsp"/>
+    
     <forward name="VoterReg" path="/Voter/VoterRegistration.jsp"/>
 </action>
 <action path="/voter" type="com.myapp.struts.Voter.VoterLoginAction">
@@ -508,6 +522,21 @@
 
               </action>
 
+
+              <action input="/Candidate/accept_candidate_request.jsp" name="CandidateRegActionForm" path="/candidateregistration2" scope="request" type="com.myapp.struts.Candidate.CandidateRegistrationAction">
+            <forward name="add" path="/login.jsp"/>
+            <forward name="success" path="/election_manager/search_candidate.jsp?status=NR"/>
+
+              </action>
+
+
+
+              <action input="/Candidate/candidate_registration_2.jsp" name="CandidateRegActionForm" path="/candidateregistration1" scope="request" type="com.myapp.struts.Candidate.CandidateRegistrationAction">
+            <forward name="add" path="/login.jsp"/>
+            <forward name="success" path="/election_manager/search_candidate.jsp?status=U"/>
+
+              </action>
+
 <action name="NominationListActionForm" path="/nominationList" scope="request" type="com.myapp.struts.Candidate.NominationListAction">
     <forward name="show" path="/Candidate/nominationList.jsp"/>
 </action>
@@ -519,9 +548,12 @@
  <action path="/candidateimageupload" input="/Candidate/candidate_registration.jsp" name="CandidateRegActionForm" scope="request" type="com.myapp.struts.Candidate.CandidateImageUploadAction">
     <forward name="success" path="/Candidate/candidate_registration.jsp"/>
         </action>
+ <action path="/candidateimageupload1" input="/Candidate/candidate_registration_2.jsp" name="CandidateRegActionForm" scope="request" type="com.myapp.struts.Candidate.CandidateImageUploadAction">
+    <forward name="success" path="/Candidate/candidate_registration_2.jsp"/>
+        </action>
 
         <action path="/candidatemenifestoupload" input="/Candidate/upload_menifesto.jsp" name="CandidateMenifestoActionForm" scope="request" type="com.myapp.struts.Candidate.CandidateMenifestoUploadAction">
-    <forward name="success" path="/Candidate/home.jsp"/>
+    <forward name="success" path="/Candidate/upload_menifesto.jsp"/>
         </action>
 
 <action path="/withdrawal"  scope="request" type="com.myapp.struts.Candidate.NominationWithdrawalAction">

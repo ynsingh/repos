@@ -68,6 +68,8 @@ public class CandidateImageUploadAction extends org.apache.struts.action.Action 
         String cadd=form1.getC_add();
         String padd=form1.getP_add();
         String button=form1.getButton();
+        String election=form1.getElections();
+        String position=form1.getPosition();
 
   FormFile filename = form1.getImg();
      byte[]   img = form1.getImg().getFileData();
@@ -92,6 +94,8 @@ public class CandidateImageUploadAction extends org.apache.struts.action.Action 
         request.setAttribute("f_name", f_name);
         request.setAttribute("m_nmae", m_name);
         request.setAttribute("year", year);
+        request.setAttribute("elections", election);
+        request.setAttribute("position", position);
 
         request.setAttribute("mnumb",mnumb);
         request.setAttribute("email", email);
@@ -104,6 +108,7 @@ public class CandidateImageUploadAction extends org.apache.struts.action.Action 
         request.setAttribute("country", country);
         request.setAttribute("country", country);
         request.setAttribute("button", button);
+        request.setAttribute("Status", "U");
  if (page==null){
         return mapping.findForward(SUCCESS);
         }else{

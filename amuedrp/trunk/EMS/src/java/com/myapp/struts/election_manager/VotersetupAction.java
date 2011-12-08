@@ -42,6 +42,9 @@ public class VotersetupAction extends org.apache.struts.action.Action {
         String institute_id=(String)session.getAttribute("institute_id");
         String manager_id=(String)session.getAttribute("user_id");
         String status = (String)request.getParameter("status");
+        String searchby = request.getParameter("search_by");
+      String searchkeyword = request.getParameter("search_keyword");
+      String sortby = request.getParameter("sort_by");
         VoterRegistrationDAO admindao=new VoterRegistrationDAO();
        // ElectionDAO electiondao=new ElectionDAO();
        String status1=null;
@@ -49,9 +52,12 @@ public class VotersetupAction extends org.apache.struts.action.Action {
        else if(status.equalsIgnoreCase("A")) status1 = "REGISTERED";
        else if(status.equalsIgnoreCase("B")) status1 = "Block";
        else if(status.equalsIgnoreCase("AB")) status1 = "REGISTERED";
-         rst = admindao.getVoterDetailsByStatus(institute_id,status1);
+       if(searchkeyword!=null && searchkeyword.isEmpty()==false)
+       rst = admindao.getVoterDetailsByStatus(institute_id,status1,searchby,searchkeyword,sortby);
+       else
+           rst = admindao.getVoterDetailsByStatus(institute_id,status1,null,null,sortby);
 
-                    session.setAttribute("resultset", rst);
+        session.setAttribute("resultset", rst);
         return mapping.findForward(SUCCESS);
     }
 }

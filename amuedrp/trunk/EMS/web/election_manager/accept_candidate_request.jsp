@@ -50,7 +50,7 @@
 
       function send()
       {
-          window.location="<%=request.getContextPath()%>/candidatesetup1.do";
+          window.location="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=NR";
           return false;
       }
 </script>
@@ -91,6 +91,10 @@
                 String file = (String) request.getAttribute("filename");
                 String position=(String)request.getAttribute("position");
                 String election=(String)request.getAttribute("election");
+
+                System.out.println("position@@@@@@@@@"+position+"  "+election+dep);
+
+
     %>
 
 
@@ -389,18 +393,16 @@
     </script>
 </head>
 
-
+<link rel="Stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
 <body>
-    <h1>
-        candidate Registration Form
-    </h1>
+   
     <%--  <%if(msg1!=null){%>   <span style=" position:absolute; top: 120px; font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>  <%}%>--%>
 
 
     <div
-        style="  top:200px;
-        left:905px;
+        style="  top:100px;
+        left:60%;
         right:5px;
         position: absolute;
 
@@ -481,43 +483,36 @@
 
 
     </div>
-    <html:form action="/candidateregistration" method="post" style="position:absolute; left:80px; top:90px;"  onsubmit="return check3()" styleId="radio_form">
+    <html:form action="/candidateregistration2" method="post"   onsubmit="return check3()" styleId="radio_form">
 
 
-     <table border="1">
+     <table width="80%" class="table" align="center">
      <tr><td>
-             <table border="0" class="table" align="center" width="100%">
-                        <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Register Yourself </b></td></tr>
-                        <tr><td colspan="2">
+             <table border="0" class="txtStyle" align="center" width="80%">
+                        <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Candidate Details </b></td></tr>
+                        <tr><td >
                                 <table>
                                     <tr>
-                                        <td >Enrollment Number*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read%>"  name="CandidateRegActionForm"  styleId="enrollment1" property="enrollment"  value="<%=enrollment%>" /></td><td>
+                                        <td >Enrollment Number*:</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm"  styleId="enrollment1" property="enrollment"   /></td><td>
                                         <td></td>
 
                                     </tr>
-                                    <%--<tr>
-                                        <td width="30%">Institute Name*:</td><td><html:text readonly="<%=read %>"  name="CandidateRegActionForm"  styleId="ins1"  value="<%=instituteid%>"  property="institute_id"/></td><td width="30%">
-                                    <td></td>
-                                    </tr>--%>
-                                    <tr><td align="left">Institute Name*</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <html:select property="institute_id" styleId="ins1"  name="CandidateRegActionForm"  tabindex="10" disabled="<%=read%>">
+                                    
+                                    <tr><td align="left">Institute Name*</td><td>
+                                            <html:select property="institute_id" styleId="ins1"  name="CandidateRegActionForm"  tabindex="10" disabled="true">
 <html:option  value="Select"> Select </html:option>
             <html:options collection="Institute"  labelProperty="instituteName" property="instituteId"  name="Institute" ></html:options>
-                                                <%--<html:option  value="Select"> Select </html:option>
-                                                <html:option  value="amu">Aligarh muslim university</html:option>
-                                                <html:option value="jmi">Jamia Millia islamia</html:option>
-                                                <html:option value="du">Delhi University</html:option>
-                                                <html:option value="jnu">JNU</html:option>--%>
+                                              
                                             </html:select>
-
+                                            <html:hidden property="institute_id" styleId="ins1" name="CandidateRegActionForm"></html:hidden>
                                     </tr>
                                     <tr>
-                                        <td align="left">Department*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="dep1" property="department"  value="<%=dep%>" /></td>
+                                        <td align="left">Department*:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="dep1" property="department"   /></td>
 
                                     </tr>
 
                                     <tr>
-                                        <td align="left">Course*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="cour1" property="course" value="<%=cour%>"/></td>
+                                        <td align="left">Course*:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="cour1" property="course" /></td>
                                     </tr>
 
                                     <tr>
@@ -548,13 +543,7 @@
                                         <td align="left">Candidate Name*</td>
                                         <td>
                                             <table><tr><td>
-                                                        <select name="courtesy" size="1" id="courtesy" tabindex="2" style="align:right" disabled="<%=read%>">
-
-                                                            <option selected value="Select">Select</option>
-                                                            <option  value="mr">Mr.</option>
-                                                            <option value="mrs">Mrs.</option>
-                                                            <option  value="ms">Ms.</option>
-                                                        </select></td>
+                                                        </td>
                                                     <td><html:text readonly="<%=read%>"  name="CandidateRegActionForm"  styleId="vname1"  value="<%=vname%>"  property="v_name"/></td>
                                             </table>
                                         </td>
@@ -686,10 +675,10 @@
             <br> <tr><td align="left">Criminal log*&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<html:radio name="CandidateRegActionForm" property="criminal"  value="yes" disabled="<%=read%>"/>Yes<html:radio  name="CandidateRegActionForm" property="criminal"  styleId="criminal" value="no" disabled="<%=read%>"/>No</td></tr>
             <br><tr><td>Indisciplinery Action*  &nbsp;&nbsp;&nbsp;&nbsp;<html:radio name="CandidateRegActionForm" property="indisc" value="yes" disabled="<%=read%>"/>Yes<html:radio name="CandidateRegActionForm" property="indisc"  value="no" disabled="<%=read%>"/>No</td></tr>
             <br>--%>
-            <tr><td>Election* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<html:text name="CandidateRegActionForm" property="elections" value="<%=election%>" readonly="<%=read%>"/>
+            <tr><td>Election* <html:text name="CandidateRegActionForm" property="elections"  readonly="<%=read%>"/>
                 </td></tr>
             <br>
-            <tr><td>Position* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<html:text name="CandidateRegActionForm" property="position" value="<%=position%>" readonly="<%=read%>"/>
+            <tr><td>Position* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<html:text name="CandidateRegActionForm" property="position"  readonly="<%=read%>"/>
                 </td></tr>
             <tr><td>Reason of Rejection* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<html:textarea name="CandidateRegActionForm" style="width: 514px; height: 67px;" styleId="txtReason" property="reason" rows="3" cols="200"/>
                 </td></tr>

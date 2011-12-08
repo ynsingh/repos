@@ -257,10 +257,7 @@ else
       <item   value="${doc.election_id}" hyperLink="${path}/electionshow.do?id=${doc.manager_id}${amp}electionId=${doc.election_id}"  hAlign="left" hyperlinkTarget="_mainframe"    styleClass="item"/>
     </column>
 
-    <column width="10%">
-      <header value="Institute_Id" hAlign="left" styleClass="header"/>
-      <item   value="${doc.institute_id}" hAlign="left" hyperLink="${path}/electionshow.do?id=${doc.manager_id}${amp}electionId=${doc.election_id}"  styleClass="item"/>
-    </column>
+   
     <column width="10%">
       <header value="Election Name" hAlign="left" styleClass="header"/>
       <item   value="${doc.election_name}" hAlign="left" hyperLink="${path}/electionshow.do?id=${doc.manager_id}${amp}electionId=${doc.election_id}"  styleClass="item"/>
