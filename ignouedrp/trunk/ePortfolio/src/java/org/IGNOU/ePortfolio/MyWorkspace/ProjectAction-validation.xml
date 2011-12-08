@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 20, 2011 10:01:47 AM by Hibernate Tools 3.2.1.GA
+Auther : Vinay
+Version :2
+Modified on 02-November 2011 by Vinay
+-->
+ 
+<validators>
+    <field name="proName">
+        <field-validator type="requiredstring">
+            <message key="Please Enter a Project Title" />
+        </field-validator>
+    </field>
+    <field name="role">
+        <field-validator type="requiredstring">
+            <message key="Please Enter your Role in Project" />
+        </field-validator>
+    </field>
+    <field name="teamSize">
+        <field-validator type="int">
+            <message key="Please Enter Team Size" />
+        </field-validator>
+    </field>
+    
+    <field name="startDate">
+        <field-validator type="requiredstring">
+            <message key="Please Choose Project Stating Date" />
+        </field-validator>
+    </field>
+    <field name="endDate">
+        <field-validator type="requiredstring">
+            <message key="Please Choose Project End Date" />
+        </field-validator>
+    </field>
+    <field name="description">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Description of a Project" />
+        </field-validator>
+    </field>
+</validators>

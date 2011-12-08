@@ -1,0 +1,12 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- Author: Vinay 
+Version :   1
+-->
+ 
+<struts>
+    <!-- Add your configuration elements here -->
+    
+</struts>

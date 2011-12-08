@@ -1,0 +1,38 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- 
+Author  :   Vinay
+Created :   on 19-Oct-2011
+Version :   1
+-->
+ 
+<struts>
+    <!-- Add your configuration elements here -->
+    <package name="org.IGNOU.ePortfolio.MyWorkspace" namespace="/MyWorkspace" extends="struts-default">
+        <action name="ProjectInfo" class="org.IGNOU.ePortfolio.MyWorkspace.ProjectInfoAction" method="ShowProjectInfo">
+            <result name="success">ProjectInfo.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ProjectInfoAdd.jsp</result>
+        </action>
+        <action name="AddProjInfo" class="org.IGNOU.ePortfolio.MyWorkspace.ProjectAction">
+            <result name="success" type="redirectAction">ProjectInfo</result>            
+            <result name="error">./error.jsp</result>
+            <result name="input">./ProjectInfoAdd.jsp</result>
+        </action>
+        <action name="editProject" class="org.IGNOU.ePortfolio.MyWorkspace.ProjectInfoAction" method="EditProjectInfo">
+            <result name="success">ProjectInfoEdit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="UpdateProjInfo" class="org.IGNOU.ePortfolio.MyWorkspace.ProjectInfoAction" method="UpdateProjectInfo">
+            <result name="success" type="redirectAction">ProjectInfo</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ProjectInfoAdd.jsp</result>
+        </action>
+        <action name="deleteProject" class="org.IGNOU.ePortfolio.MyWorkspace.ProjectInfoAction" method="DeleteProjectInfo">
+            <result name="success" type="redirectAction">ProjectInfo</result>            
+            <result name="error">./error.jsp</result>
+        </action>
+    </package>
+</struts>

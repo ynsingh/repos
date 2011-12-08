@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.IGNOU.ePortfolio.MyResources.Model.ImageModel" table="file">
+    <id column="fileid" name="fileid">
+      <generator class="increment"/>
+    </id>
+    <property column="filename" name="filename"/>
+    <property column="user_id" name="user_id"/>
+    <property column="size" name="size"/>
+    <property column="filepath" name="filepath"/>
+    <property column="filetype" name="filetype"/>
+    <property column="filedate" name="filedate"/>
+  </class>
+  <class name="org.IGNOU.ePortfolio.MyResources.Model.FolderModel" table="file">
+    <id column="fileid" name="fileid">
+      <generator class="increment"/>
+    </id>
+    <property column="filename" name="filename"/>
+    <property column="user_id" name="user_id"/>
+    <property column="size" name="size"/>
+    <property column="filepath" name="filepath"/>
+    <property column="filetype" name="filetype"/>
+    <property column="filedate" name="filedate"/>
+  </class>
+  <class name="org.IGNOU.ePortfolio.MyResources.Model.ImageList" table="file">
+    <id column="fileid" name="fileid">
+        </id>
+    <property column="filename" name="filename"/>
+    <property column="user_id" name="user_id"/>
+    <property column="size" name="size"/>
+    <property column="filepath" name="filepath"/>
+    <property column="filedate" name="filedate"/>
+    <property column="filetype" name="filetype"/>
+    <property column="description" name="description"/>
+  </class>
+</hibernate-mapping>

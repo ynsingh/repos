@@ -1,0 +1,68 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- Author: Vinay
+Version :   1
+ -->
+ 
+<struts>
+    <!-- Add your configuration elements here -->
+    <package name="org.IGNOU.ePortfolio.MyPlans" namespace="/MyPlans" extends="struts-default">
+      <!-- Configuration for the User's Plan (Create, View, Edit, Delete).
+             This is configured by Vinay-->
+        <action name="fetch" class="org.IGNOU.ePortfolio.MyPlans.MyPlanAction" >
+            <result name="success">MyPlan.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="newplan" class="org.IGNOU.ePortfolio.MyPlans.UserPlanAction" method="DataInsert" >
+            <result name="input">CreateNewPlan.jsp</result>
+            <result name="success" type="redirectAction">fetch</result>
+        </action>
+        
+        <action name="editPlan" class="org.IGNOU.ePortfolio.MyPlans.MyPlanAction" method="editPlan">
+            <result name="success">EditPlan.jsp</result>
+            <result name="error">./error.jsp</result>
+            
+        </action>
+        
+        <action name="updateplan" class="org.IGNOU.ePortfolio.MyPlans.MyPlanAction" method="UpdatePlan">
+            <result name="success" type="redirectAction">fetch</result>
+            <result name="error">./error.jsp</result>
+  
+        </action>
+        <action name="deletePlan" class="org.IGNOU.ePortfolio.MyPlans.MyPlanAction" method="DeletePlan">
+            <result name="success" type="redirectAction">fetch</result>
+            <result name="error">MyPlan.jsp</result>
+        </action>        
+        
+      <!-- Configuration for the Task of User's Plan (Create, View, Edit, Delete).
+           This is configured by Vinay-->  
+      
+        <action name="task" class="org.IGNOU.ePortfolio.MyPlans.PlanTaskAction">
+            <result name="success">MyPlanTask.jsp</result>
+            <result name="error">MyPlan.jsp</result>
+            <result name="input">MyPlan.jsp</result>
+        </action>
+        <action name="newtask" class="org.IGNOU.ePortfolio.MyPlans.NewTaskAction">
+            <result name="success" type="redirectAction">fetch</result>
+            <result name="error">CreateNewTask.jsp</result>
+            <result name="input">CreateNewTask.jsp</result>
+        </action>
+        <action name="editTask" class="org.IGNOU.ePortfolio.MyPlans.PlanTaskAction" method="EditTask">
+            <result name="success">EditTask.jsp</result>
+            <result name="error">MyPlanTask.jsp</result>
+            <result name="input">MyPlanTask.jsp</result>
+        </action>
+        <action name="updatetask" class="org.IGNOU.ePortfolio.MyPlans.PlanTaskAction" method="UpdateTask">
+            <result name="success" type="redirectAction">fetch</result>
+            <result name="error">EditTask.jsp</result>
+            <result name="input">EditTask.jsp</result>
+            <result name="null">EditTask.jsp</result>
+        </action>
+        <action name="deleteTask" class="org.IGNOU.ePortfolio.MyPlans.PlanTaskAction" method="DeleteTask">
+            <result name="success" type="redirectAction">fetch</result>
+            <result name="error">MyPlanTask.jsp</result>
+        </action>
+    </package>
+</struts>

@@ -1,0 +1,54 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- Author: Vinay 
+Version :   1
+-->
+ 
+<struts>
+    <!-- Add your configuration elements here -->
+    
+    <!-- Configuration for the file uploading.
+     This is configured by Amit-->  
+    <package name="org.IGNOU.ePortfolio.MyResources" namespace="/MyResources" extends="struts-default">          
+        <action name="CreateFolder" class="org.IGNOU.ePortfolio.MyResources.FolderInsert" method="folderinsert">
+            <result name="success" type="redirectAction">show_files</result>
+            <result name="error">uploadfile.jsp</result>
+            <result name="input">uploadfile.jsp</result>
+        </action>
+        
+        <action name="addInfo" class="org.IGNOU.ePortfolio.MyResources.ImageInsert" method="dataInsert">
+            <result name="success" type="redirectAction">show_files</result> 
+            <result name="error">uploadfile.jsp</result>
+            <result name="input">uploadfile.jsp</result>
+        </action>
+        <action name="show_files" class="org.IGNOU.ePortfolio.MyResources.FileListAction" method="fetch">
+            <result name="success">uploadfile.jsp</result> 
+            <result name="error">uploadfile.jsp</result>
+            <result name="input">uploadfile.jsp</result>
+        </action>
+        <action name="delete" class="org.IGNOU.ePortfolio.MyResources.FileListAction" method="delete">
+            <result name="success" type="redirectAction">show_files</result> 
+            <result name="error">uploadfile.jsp</result>
+            <result name="input">uploadfile.jsp</result>
+        </action>
+        <action name="edit" class="org.IGNOU.ePortfolio.MyResources.FileListAction" method="edit">
+            <result name="success">editfilevalues.jsp</result> 
+            <result name="error">uploadfile.jsp</result>
+            <result name="input">editfilevalues.jsp</result>
+        </action>
+        <action name="UpdateFile" class="org.IGNOU.ePortfolio.MyResources.FileListAction" method="update">
+            <result name="success" type="redirectAction">show_files</result> 
+            <result name="error">uploadfile.jsp</result>
+            <result name="input">editfilevalues.jsp</result>
+        </action>
+        <action name="download" class="org.IGNOU.ePortfolio.MyResources.FileListAction" method="download">
+            <result name="success" type="stream">
+                <param name="inputName">fis</param>
+                <param name="bufferSize">1024</param>
+                <param name="contentDisposition">attachment;filename="theFile${filetype}"</param>
+            </result>
+        </action>        
+    </package>
+</struts>

@@ -1,0 +1,35 @@
+<!--
+    Document   : HonorAwardAction-validation.xml
+    Created on : October 14, 2011, 03:58 PM
+    Author     : Vinay
+    Version    : 1
+    Description:
+        The Purpose is to validate Honour and Awards Form.
+-->
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+ 
+<validators>
+    <field name="haTitle">
+        <field-validator type="requiredstring">
+            <message key="Please Enter a Title" />
+        </field-validator>
+    </field>
+   
+    <field name="issuer">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Issuer" />
+        </field-validator>
+    </field>
+    
+    <field name="haDate">
+        <field-validator type="requiredstring">
+            <message key="Please Choose Honoured or Awarded Date" />
+        </field-validator>
+    </field>
+    <field name="haDescription">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Description of Honour or Award" />
+        </field-validator>
+    </field>
+</validators>

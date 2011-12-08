@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 11, 2011 11:42:27 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.MyProfile.Model.ProfileTest" table="profile_test" catalog="eportfolio">
+        <id name="testId" type="long">
+            <column name="test_id" />
+            <generator class="increment" />
+        </id>
+        <property name="userId" type="string">
+            <column name="user_id" length="100" />
+        </property>
+        <property name="tname" type="string">
+            <column name="tName" length="65535" />
+        </property>
+        <property name="score" type="java.lang.Integer">
+            <column name="score" />
+        </property>
+        <property name="tdate" type="string">
+            <column name="tDate" length="50" />
+        </property>
+        <property name="tdescription" type="string">
+            <column name="tDescription" length="65535" />
+        </property>
+    </class>
+</hibernate-mapping>

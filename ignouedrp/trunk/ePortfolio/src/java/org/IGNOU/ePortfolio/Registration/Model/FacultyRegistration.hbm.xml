@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 3, 2011 12:32:07 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Registration.Model.FacultyRegistration" table="faculty_registration" catalog="eportfolio">
+        <id name="facultyRegId" type="long">
+            <column name="faculty_reg_id" />
+            <generator class="assigned" />
+        </id>
+        <property name="instituteName" type="string">
+            <column name="institute_name" length="100" />
+        </property>
+        <property name="department" type="string">
+            <column name="department" length="100" />
+        </property>
+        <property name="emailId" type="string">
+            <column name="email_id" length="100" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="20" />
+        </property>
+        <property name="rePassword" type="string">
+            <column name="re_password" length="20" />
+        </property>
+        <property name="fname" type="string">
+            <column name="fName" length="45" />
+        </property>
+        <property name="mname" type="string">
+            <column name="mName" length="45" />
+        </property>
+        <property name="lname" type="string">
+            <column name="lName" length="45" />
+        </property>
+        <property name="organization" type="string">
+            <column name="organization" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<!--
+    Document   : hibernate.cfg.xml
+    Created on : August 15, 2011, 10:23 AM
+    Author     : Vinay
+    Version    : 20
+    Description:
+        Database Configration.
+-->
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+     <property name="hibernate.connection.datasource">java:comp/env/jdbc/myeportdatasource</property>
+   
+    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/Profile.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/MyPlans/Model/MyPlan.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/MyResources/Model/MyResources.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/Model/User.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileAcademic.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileEmployment.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfilePublication.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileSkill.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/Model/Feedback.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/Registration/Model/StudentRegistration.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/Registration/Model/FacultyRegistration.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/Registration/Model/InstituteRegistration.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileTest.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileProAffiliation.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileCertification.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileHonorAward.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileReferences.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/MyConnection/Model/ProfileSocial.hbm.xml"/>
+    <mapping resource="org/IGNOU/ePortfolio/MyWorkspace/Model/Projects.hbm.xml"/>
+  </session-factory>
+</hibernate-configuration>

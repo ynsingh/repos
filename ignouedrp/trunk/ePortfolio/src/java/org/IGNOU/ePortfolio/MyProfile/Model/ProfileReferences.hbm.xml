@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 1, 2011 3:24:37 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.MyProfile.Model.ProfileReferences" table="profile_references" catalog="eportfolio">
+        <id name="referencesId" type="long">
+            <column name="references_id" />
+            <generator class="assigned" />
+        </id>
+        <property name="userId" type="string">
+            <column name="user_id" length="100" />
+        </property>
+        <property name="name" type="string">
+            <column name="name" length="100" />
+        </property>
+        <property name="designation" type="string">
+            <column name="designation" length="100" />
+        </property>
+        <property name="orgUniv" type="string">
+            <column name="org_univ" length="65535" />
+        </property>
+        <property name="place" type="string">
+            <column name="place" length="100" />
+        </property>
+        <property name="city" type="string">
+            <column name="city" length="100" />
+        </property>
+        <property name="state" type="string">
+            <column name="state" length="100" />
+        </property>
+        <property name="country" type="string">
+            <column name="country" length="100" />
+        </property>
+        <property name="phoneno" type="java.lang.Long">
+            <column name="phoneno" />
+        </property>
+        <property name="mobileno" type="java.lang.Long">
+            <column name="mobileno" />
+        </property>
+        <property name="emailId" type="string">
+            <column name="email_id" length="100" />
+        </property>
+        <property name="website" type="string">
+            <column name="website" length="65535" />
+        </property>
+        <property name="department" type="string">
+            <column name="department" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>

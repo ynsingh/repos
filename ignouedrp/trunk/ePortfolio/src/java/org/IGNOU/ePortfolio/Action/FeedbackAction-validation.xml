@@ -1,0 +1,54 @@
+<!--
+    Document   : FeedbackAction-validation.xml
+    Created on : October 4, 2011, 12:00 PM
+    Author     : amit
+    Description:
+       The Purpose is to validate Feedback Form.
+-->
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+    <field name="name">
+        <field-validator type="requiredstring">
+            <message key="Please Enter a Name" />
+        </field-validator>
+    </field>
+   
+    <field name="occupation">
+        <field-validator type="requiredstring">
+            <message key="Please Enter your Occupation" />
+        </field-validator>
+    </field>
+    
+    <field name="organization">
+        <field-validator type="requiredstring">
+            <message key="Please Enter your organisation" />
+        </field-validator>
+    </field>
+         
+    <field name="emailId"> 
+        <field-validator type="requiredstring"> 
+            <message>You cannot leave the email address field empty.</message> 
+        </field-validator> 
+        <field-validator type="email"> 
+            <message>The email address you entered is not valid.</message> 
+        </field-validator> 
+    </field> 
+    
+     
+    
+    <field name="phone"> 
+        <field-validator type="required"> 
+            <message>You cannot leave the phone number field empty.</message> 
+        </field-validator> 
+        <field-validator type="long"> 
+            <message>The phone number you entered is not valid.</message> 
+        </field-validator> 
+    </field> 
+    
+    <field name="comment">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Comment" />
+        </field-validator>
+    </field>
+</validators>

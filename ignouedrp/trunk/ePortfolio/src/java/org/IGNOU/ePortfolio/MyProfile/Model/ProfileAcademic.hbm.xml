@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Sep 12, 2011 5:13:21 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="eportfolio" name="org.IGNOU.ePortfolio.MyProfile.Model.ProfileAcademic" table="profile_academic">
+    <id name="academicInfoId" type="long">
+      <column name="academicInfo_id"/>
+      <generator class="increment"/>
+    </id>
+    <property name="userId" type="string">
+      <column length="100" name="user_id"/>
+    </property>
+    <property name="degree" type="string">
+      <column length="65535" name="degree"/>
+    </property>
+    <property name="university" type="string">
+      <column length="65535" name="university"/>
+    </property>
+    <property name="location" type="string">
+      <column length="65535" name="location"/>
+    </property>
+    <property name="fstudy" type="string">
+      <column length="65535" name="fStudy"/>
+    </property>
+    <property name="pyear" type="string">
+      <column length="45" name="pYear"/>
+    </property>
+    <property name="percentage" type="java.lang.Integer">
+      <column name="percentage"/>
+    </property>
+    <property name="division" type="string">
+      <column length="20" name="division"/>
+    </property>
+  </class>
+</hibernate-mapping>

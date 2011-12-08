@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Sep 14, 2011 4:19:23 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="eportfolio" name="org.IGNOU.ePortfolio.MyProfile.Model.ProfilePublication" table="profile_publication">
+    <id name="publicationId" type="long">
+      <column name="publication_id"/>
+      <generator class="increment"/>
+    </id>
+    <property name="userId" type="string">
+      <column length="100" name="user_id"/>
+    </property>
+    <property name="pubTitle" type="string">
+      <column length="65535" name="pubTitle"/>
+    </property>
+    <property name="publisher" type="string">
+      <column length="65535" name="publisher"/>
+    </property>
+    <property name="pubDate" type="string">
+      <column length="10" name="pubDate"/>
+    </property>
+    <property name="pubUrl" type="string">
+      <column length="65535" name="pubURL"/>
+    </property>
+    <property name="auther1" type="string">
+      <column length="100" name="auther1"/>
+    </property>
+    <property name="auther2" type="string">
+      <column length="100" name="auther2"/>
+    </property>
+    <property name="auther3" type="string">
+      <column length="100" name="auther3"/>
+    </property>
+    <property name="auther4" type="string">
+      <column length="100" name="auther4"/>
+    </property>
+    <property name="summary" type="string">
+      <column length="65535" name="summary"/>
+    </property>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,19 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- Author: amit
+Version :   1
+ -->
+ 
+<struts>
+    <!-- Add your configuration elements here -->
+    
+    <package name="org.IGNOU.ePortfolio.Registration" namespace="/Registration" extends="struts-default">
+    <action name="StudentReg" class="org.IGNOU.ePortfolio.Registration.StudRegistrationAction">
+            <result name="success">../Student-Index.jsp</result>
+            <result name="error">./StudentRegistration.jsp</result>
+            <result name="input">./StudentRegistration.jsp</result>
+        </action>    
+    </package>
+</struts>

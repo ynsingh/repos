@@ -1,0 +1,80 @@
+    <!--
+    Document   : ReferenceAddAction-validation.xml
+    Created on : October 14, 2011, 03:25 PM
+    Author     : Vinay
+    Version    : 1
+    Description:
+                The Purpose is to validate My References Form.
+-->
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+    <field name="name">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Full Name" />
+        </field-validator>
+    </field>
+   
+    <field name="designation">
+        <field-validator type="requiredstring">
+            <message key="Please Enter a Designation" />
+        </field-validator>
+    </field>
+    
+    <field name="orgUniv">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Organisation or University" />
+        </field-validator>
+    </field>
+    <field name="place">
+        <field-validator type="requiredstring">
+            <message key="Please Enter his Place or Location" />
+        </field-validator>
+    </field>
+    <field name="city">
+        <field-validator type="requiredstring">
+            <message key="Please Enter his City" />
+        </field-validator>
+    </field>
+    <field name="state">
+        <field-validator type="requiredstring">
+            <message key="Please Enter his State" />
+        </field-validator>
+    </field>
+    <field name="country">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Country" />
+        </field-validator>
+    </field>
+      
+    <field name="emailId"> 
+        <field-validator type="requiredstring"> 
+            <message>You cannot leave the email address field empty.</message> 
+        </field-validator> 
+        <field-validator type="email"> 
+            <message>The email address you entered is not valid.</message> 
+        </field-validator> 
+    </field> 
+    
+    <field name="phoneno"> 
+        <field-validator type="required"> 
+            <message>You cannot leave the phone number field empty.</message> 
+        </field-validator> 
+        <field-validator type="int"> 
+            <message>The phone number you entered is not valid.</message> 
+        </field-validator> 
+    </field> 
+    <field name="mobileno"> 
+        <field-validator type="required"> 
+            <message>You cannot leave the Mobile number field empty.</message> 
+        </field-validator> 
+        <field-validator type="long"> 
+            <message>The Mobile number you entered is not valid.</message> 
+        </field-validator> 
+    </field> 
+    <field name="website">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Website URL" />
+        </field-validator>
+    </field>
+</validators>

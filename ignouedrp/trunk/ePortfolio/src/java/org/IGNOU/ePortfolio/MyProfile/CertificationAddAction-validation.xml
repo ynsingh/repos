@@ -1,0 +1,35 @@
+<!--
+    Document   : CertificationAddAction-validation.xml
+    Created on : October 14, 2011, 03:40 PM
+    Author     : Vinay
+    Version    : 1
+    Description:
+        The Purpose is to validate My Certificate Form.
+-->
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+ 
+<validators>
+    <field name="certificationName">
+        <field-validator type="requiredstring">
+            <message key="Please Enter a Certificate Name" />
+        </field-validator>
+    </field>
+   
+    <field name="certificationAuthority">
+        <field-validator type="requiredstring">
+            <message key="Please Enter a Certificate Authority" />
+        </field-validator>
+    </field>
+    
+    <field name="license">
+        <field-validator type="requiredstring">
+            <message key="Please Enter a Certificate's License" />
+        </field-validator>
+    </field>
+    <field name="certificationDate">
+        <field-validator type="requiredstring">
+            <message key="Please Choose Certificate Date (Valid Since)" />
+        </field-validator>
+    </field>
+</validators>

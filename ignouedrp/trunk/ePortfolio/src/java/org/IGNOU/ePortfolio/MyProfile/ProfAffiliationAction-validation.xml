@@ -1,0 +1,44 @@
+<!--
+    Document   : ProfAffiliationAction-validation.xml
+    Created on : October 14, 2011, 01:15 PM
+    Author     : Vinay
+    Description:
+        The Purpose is to validate Professional Affiliation Form.
+-->
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+ 
+<validators>
+    <field name="role">
+        <field-validator type="requiredstring">
+            <message key="Please Enter your Role" />
+        </field-validator>
+    </field>
+   
+    <field name="orgBody">
+        <field-validator type="requiredstring">
+            <message key="Please Enter your Organization or Body" />
+        </field-validator>
+    </field>
+    
+    <field name="vfrom">
+        <field-validator type="requiredstring">
+            <message key="Select Date" />
+        </field-validator>
+    </field>
+    <field name="place">
+        <field-validator type="requiredstring">
+            <message key="Please Enter your Location" />
+        </field-validator>
+    </field>
+    <field name="country">
+        <field-validator type="requiredstring">
+            <message key="Please Enter your Country" />
+        </field-validator>
+    </field>
+    <field name="summary">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Summary" />
+        </field-validator>
+    </field>
+</validators>

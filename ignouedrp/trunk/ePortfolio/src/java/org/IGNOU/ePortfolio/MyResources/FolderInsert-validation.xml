@@ -1,0 +1,18 @@
+<!--
+    Document   : FolderInsert-validation.xml
+    Created on : August 26, 2011, 2:05 PM
+    Author     : Amit
+    Description:
+        Purpose of the document follows.
+-->
+
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+    <field name="name">
+        <field-validator type="requiredstring">
+            <message key="Please Enter a Name" />
+        </field-validator>
+    </field>
+      
+  </validators>

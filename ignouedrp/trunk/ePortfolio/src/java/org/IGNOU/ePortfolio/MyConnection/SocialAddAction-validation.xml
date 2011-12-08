@@ -1,0 +1,45 @@
+<!--
+    Document   : SocialAddAction-validation.xml
+    Created on : October 14, 2011, 03:12 PM
+    Author     : Vinay
+    Version    : 1
+    Description:
+        The Purpose is to validate My Social Connection Form.
+-->
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+ 
+<validators>
+    <field name="gtalk">
+        <field-validator type="requiredstring">
+            <message key="Please Enter your gTalk ID" />
+        </field-validator>
+    </field>
+   
+    <field name="skype">
+        <field-validator type="requiredstring">
+            <message key="Please Enter your Skype ID" />
+        </field-validator>
+    </field>
+    
+    <field name="msn">
+        <field-validator type="requiredstring">
+            <message key="Please Enter your Hotmail, MSN ID" />
+        </field-validator>
+    </field>
+    <field name="facebook">
+        <field-validator type="requiredstring">
+            <message key="Please Enter your Facebook Profile URL" />
+        </field-validator>
+    </field>
+    <field name="twitter">
+        <field-validator type="requiredstring">
+            <message key="Please Enter your  Twitter Profile URL" />
+        </field-validator>
+    </field>
+    <field name="blog">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Blog Profile URL" />
+        </field-validator>
+    </field>
+</validators>

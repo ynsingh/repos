@@ -1,0 +1,41 @@
+<!--
+    Document   : TestScoreAction-validation.xml
+    Created on : October 14, 2011, 03:57 PM
+    Author     : Vinay
+    Version    : 1
+    Description:
+                The Purpose is to validate My Test Score Form.
+-->
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+    <field name="tname">
+        <field-validator type="requiredstring">
+            <message key="Please Enter a Test Name" />
+        </field-validator>
+    </field>
+   
+    <field name="tdate">
+        <field-validator type="requiredstring">
+            <message key="Please Choose Test Date" />
+        </field-validator>
+    </field>
+    
+    <field name="tdescription">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Test Description" />
+        </field-validator>
+    </field>
+   
+    
+    <field name="score"> 
+        <field-validator type="required"> 
+            <message>You cannot leave the Score field empty.</message> 
+        </field-validator> 
+        <field-validator type="int"> 
+            <message>The Score you entered is not valid.</message> 
+        </field-validator> 
+    </field> 
+   
+</validators>
+

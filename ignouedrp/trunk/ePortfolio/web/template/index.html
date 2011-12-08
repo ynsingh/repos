@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Home</title>
+<script type="text/javascript" src="<s:url value="/JS/jquery-latest.js"/>"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+$("#accordion > li > div").click(function(){
+ 
+    if(false == $(this).next().is(':visible')) {
+        $('#accordion ul').slideUp(300);
+    }
+    $(this).next().slideToggle(300);
+});
+ 
+$('#accordion ul:eq(0)').show();
+
+});
+</script>
+<link href="../theme1/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="header">
+  <div class="wrapper"><div id="logo"><img src="../theme1/images/logo.png"/></div>
+  <div id="accountinfo"><div id="profilepic">
+          <img src="../images/vinay.JPG"></img>
+      </div><img src="../theme1/images/ignou-logo.jpg" /><div id="profilelinks"><a href="#">My Profile</a>|<a href="#">Logout</a></div></div>
+  <div id="changecolors"><a href="#"><img src="../theme1/images/theme-red.gif" alt="Red" /></a><a href="#"><img src="../theme1/images/theme-green.gif" alt="Green" /></a><a href="#"><img src="../theme1/images/theme-yellow.gif" alt="Yellow" /></a><a href="#"><img src="../theme1/images/theme-blue.gif" alt="Blue" /></a></div>
+  </div>
+</div>
+
+<div id="container">
+  <div class="wrapper">
+  
+  <div id="col1">
+  <ul id="accordion">
+      <li style="background:none;"><div><a style="color:#000; font-size:16px;" href="../index.jsp">Home</a></div></li>
+ <li><div><a href="#">My Portfolio</a></div>
+                            <ul><li><a href="#">My Profile</a></li>
+                                <li><a href="#">My Resources</a></li>
+                                <li><a href="#">My Plans</a></li>
+                                <li><a href="#">Testimonials</a></li>
+                                <li><a href="#">References</a></li>
+                                <li><a href="indexResume.jsp">Resume Builder</a></li>
+                            </ul></li>
+                        <li><div><a href="#">My Education and Work</a></div><ul>
+
+                                <li><a href="#">Institute</a></li>
+                                <li><a href="#">Course</a></li>
+                                <li><a href="#">Examination and Evaluation</a></li>
+                            </ul></li>
+                        <li><div><a href="#">My Connections</a></div><ul>
+                                <li><a href="#">Social Network</a></li>
+                                <li><a href="#">Chat</a></li>
+                                <li><a href="#">Blog</a></li>
+                                <li><a href="#">Wiki</a></li>
+                                <li><a href="#">Communication</a></li>
+                                <li><a href="#">Discussion Forum</a></li>
+                            </ul></li>
+</ul>
+  </div>
+  <div id="col2">
+  <h3>My Account</h3>
+  
+  <h1>Welcome to SVN Testing</h1>
+  
+  
+  
+  
+    
+  </div>
+  <div id="col3">  
+                    <h3>Calender</h3>
+                    <div>
+                        <img src="../images/calender.gif"/>
+                    </div>
+                    <h3>Upcoming Events</h3>
+                    <div>
+                        <marquee direction="up" onmouseover="this.stop();" onmouseout="this.start();" style="padding:0px 5px; margin:0px; color:#6699FF;">
+                            <a href="http://www.ignou.ac.in/upload/24ConvocationInviteforweb.pdf" target="_black">IGNOU's 24th Convocation on September 05th, 2011.</a>
+                        </marquee>
+                    </div>
+                    <h3>Online Users</h3>
+                    <div>
+                        <img src="../images/onlineUsers.png"/>
+                    </div>
+
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div id="footerlinks"><a href="#">News &amp; Events</a> | <a href="#">About Us</a> | <a href="#">Sitemap</a> | <a href="#">My Preferences</a> | <a href="#">Feedback</a> | <a href="#">Help</a> | <a href="#">Contact Us</a></div><div id="footer"><div class="wrapper">Designed &amp; Developed by: eGyanKosh, IGNOU- 2011 - Best Viewed with 1024 X 768</div></div>
+    </body>
+</html>

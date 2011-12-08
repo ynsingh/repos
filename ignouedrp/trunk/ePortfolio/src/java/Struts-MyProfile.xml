@@ -1,0 +1,338 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- Author: Vinay 
+* Version  1.0-->
+ 
+<struts>
+    <!-- Add your configuration elements here -->
+ 
+    <package name="org.IGNOU.ePortfolio.MyProfile" namespace="/MyProfile" extends="struts-default">
+        <!-- Configuration for the my profile Updating.
+     This is configured by Vinay on 31-Aug-2011.-->       
+        
+        <action name="ShowBasicInfo" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="ShowBasicInfo">
+            <result name="success">BasicInfo.jsp</result>
+            <result name="input">./BasicInfoAdd.jsp</result>
+        </action>
+        <action name="EditBasicInfo" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="ShowBasicInfo">
+            <result name="success">BasicInfoEdit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="ShowContactInfo" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="ShowContactInfo">
+            <result name="success">ContactInfo.jsp</result>
+            <result name="input">./ContactInfoAdd.jsp</result>
+        </action>
+        <action name="EditContactInfo" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="ShowContactInfo">
+            <result name="success">ContactInfoEdit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="ShowAcademic_Info" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="ShowAcademicInfo">
+            <result name="success">AcademicInfo.jsp</result>
+            <result name="input">./AcademicInfoAdd.jsp</result>
+        </action>
+        <action name="ShowEmployeeInfo" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="ShowEmploymentInfo">
+            <result name="success">EmployeeInfo.jsp</result>
+            <result name="input">./EmployeeInfoAdd.jsp</result>
+        </action>
+        <action name="ShowPersonalInfo" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="ShowPersonalInfo">
+            <result name="success">PersonalInfo.jsp</result>
+            <result name="input">./PersonalInfoAdd.jsp</result>
+        </action>
+        
+        <action name="updateBasic" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="UpdateBasicInfo">
+            <result name="success" type="redirectAction">ShowBasicInfo</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">BasicInfo.jsp</result>
+        </action>
+        <action name="updateContact" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="UpdateContactInfo">
+            <result name="success" type="redirectAction">ShowContactInfo</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">ContactInfo.jsp</result>
+        </action>
+        <action name="updatePersonal" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="UpdatePersonalInfo">
+            <result name="success" type="redirectAction">ShowPersonalInfo</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">PersonalInfo.jsp</result>
+        </action>
+      <!-- Configuration for the my profile Updating.
+      * Version  1.1
+     This is configured by Vinay on 04-Sep-2011.-->    
+     
+        <action name="editAcademic" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="EditAcademicInfo">
+            <result name="success">AcademicInfoEdit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="updateAcademicInformation" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="UpdateAcademicInfo">
+            <result name="success" type="redirectAction">ShowAcademic_Info</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">AcademicInfoEdit.jsp</result>
+        </action>
+        <action name="AddAcademicInfo" class="org.IGNOU.ePortfolio.MyProfile.AcademicInfoAction">
+            <result name="success" type="redirectAction">ShowAcademic_Info</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">AcademicInfoAdd.jsp</result>
+        </action>
+        <action name="deleteAcademic" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="DeleteAcademicInfo">
+            <result name="success" type="redirectAction">ShowAcademic_Info</result>
+            <result name="error">./error.jsp</result>
+        </action>
+    <!--
+     * Created on 13-Sep-2011
+     * Version  1.2
+     *@Author Vinay
+     *-->
+       
+        <action name="AddEmploment" class="org.IGNOU.ePortfolio.MyProfile.EmploymentInfoAction">
+            <result name="success" type="redirectAction">ShowEmployeeInfo</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">EmployeeInfoAdd.jsp</result>
+        </action>
+        <action name="EditEmpInfo" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="EditEmploymentInfo">
+            <result name="success">EmployeeInfoEdit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="updateEmpInfo" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="UpdateEmploymentInfo">
+            <result name="success" type="redirectAction">ShowEmployeeInfo</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">EmployeeInfoEdit.jsp</result>
+        </action>
+        <action name="DeleteEmpInfo" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="DeleteEmploymentInfo">
+            <result name="success" type="redirectAction">ShowEmployeeInfo</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        
+        <action name="AddPublication" class="org.IGNOU.ePortfolio.MyProfile.PublicationInfoAction">
+            <result name="success" type="redirectAction">ShowPublicationInfo</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">PublicationInfoAdd.jsp</result>
+        </action>
+        <!--
+     * Created on 14-Sep-2011
+     * Version  1.3
+     *@Author Vinay
+     *-->
+        <action name="ShowPublicationInfo" class="org.IGNOU.ePortfolio.MyProfile.PublicationAction" method="ShowPubInfo">
+            <result name="success">PublicationInfo.jsp</result>
+            <result name="input">./PublicationInfoAdd.jsp</result>
+        </action>        
+        
+        <action name="deletePub" class="org.IGNOU.ePortfolio.MyProfile.PublicationAction" method="DeletePublicationInfo">
+            <result name="success" type="redirectAction">ShowPublicationInfo</result>
+            <result name="error">./error.jsp</result>            
+        </action>
+        
+        <action name="editPub" class="org.IGNOU.ePortfolio.MyProfile.PublicationAction" method="EditPubInfo">
+            <result name="success">PublicationInfoEdit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        
+        <action name="UpdatePub" class="org.IGNOU.ePortfolio.MyProfile.PublicationAction" method="UpdatePubInfo">
+            <result name="success" type="redirectAction">ShowPublicationInfo</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">PublicationInfoEdit.jsp</result>
+        </action>        
+         
+        <action name="AddSkill" class="org.IGNOU.ePortfolio.MyProfile.SkillAddAction">
+            <result name="success" type="redirectAction">ShowSkillInfo</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        
+        <action name="ShowSkillInfo" class="org.IGNOU.ePortfolio.MyProfile.SkillAction" method="ShowSkillInfo">
+            <result name="success">SkillInfo.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+          <!--
+     * Created on 15-Sep-2011
+     * Version  1.4
+     *@Author Vinay
+     *-->
+        <action name="deleteSkill" class="org.IGNOU.ePortfolio.MyProfile.SkillAction" method="DeleteSkillInfo">
+            <result name="success" type="redirectAction">ShowSkillInfo</result>
+            <result name="error">./error.jsp</result>
+        </action>
+           <!--
+     * Created on 16-Sep-2011
+     * Version  1.5
+     *@Author Vinay
+     *-->
+        <action name="AddBasic" class="org.IGNOU.ePortfolio.MyProfile.BasicAction">
+            <result name="success" type="redirectAction">ShowBasicInfo</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">BasicInfoAdd.jsp</result>
+        </action>       
+        <action name="EditPersonalInfo" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="ShowPersonalInfo">
+            <result name="success">PersonalInfoEdit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        
+        <action name="AddPersonalInfo" class="org.IGNOU.ePortfolio.MyProfile.PersonalAction">
+            <result name="success" type="redirectAction">ShowPersonalInfo</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">AddPersonalInfo.jsp</result>
+        </action>
+         
+        <action name="AddContactInfo" class="org.IGNOU.ePortfolio.MyProfile.ContactAction">
+            <result name="success" type="redirectAction">ShowContactInfo</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">ContactInfoAdd.jsp</result>
+        </action>
+        <!--
+          * Added on 04-Oct-2011
+          * Version  1.6
+          *@Author Vinay
+          *-->
+        <action name="ShowCertificateInfo" class="org.IGNOU.ePortfolio.MyProfile.CertificationAction" >
+            <result name="success">CertificationInfo.jsp</result>
+            <result name="input">./CertificationInfoAdd.jsp</result>
+        </action>
+          <!--
+          * Added on 05-Oct-2011
+          * Version  1.7
+          *@Author Vinay
+          *-->
+        <action name="AddCertificateInfo" class="org.IGNOU.ePortfolio.MyProfile.CertificationAddAction">
+            <result name="success" type="redirectAction">ShowCertificateInfo</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./CertificationInfoAdd.jsp</result>
+        </action>
+             <!--
+          * Added on 06-Oct-2011
+          * Version  1.8
+          *@Author Vinay
+          *-->
+        <action name="editCertificate" class="org.IGNOU.ePortfolio.MyProfile.CertificationAction" method="editCertificateInfo">
+            <result name="success">./CertificationInfoEdit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="UpdateCertificateInfo" class="org.IGNOU.ePortfolio.MyProfile.CertificationAction" method="UpdateCertificateInfo">
+            <result name="success" type="redirectAction">ShowCertificateInfo</result>
+            <result name="error">./error.jsp</result>
+        </action>        
+        <action name="deleteCertificate" class="org.IGNOU.ePortfolio.MyProfile.CertificationAction" method="deleteCertificateInfo">
+            <result name="success" type="redirectAction">ShowCertificateInfo</result>
+            <result name="error">./error.jsp</result>
+        </action>
+          <!--
+          * Added on 11-Oct-2011
+          * Version  1.9
+          * @Author  Vinay
+          *-->
+        <action name="AddReferenceInfo" class="org.IGNOU.ePortfolio.MyProfile.ReferenceAddAction">
+            <result name="success" type="redirectAction">ShowReference</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ReferencesInfoAdd.jsp</result>
+        </action>
+        <action name="ShowReference" class="org.IGNOU.ePortfolio.MyProfile.ReferenceAction" method="ShowInfo">
+            <result name="success">./References.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ReferencesInfoAdd.jsp</result>
+        </action>
+            
+          <!--
+          * Added on 12-Oct-2011
+          * Version  1.10
+          * @Author  Vinay
+          *--> 
+        <action name="editReference" class="org.IGNOU.ePortfolio.MyProfile.ReferenceAction" method="EditInfo">
+            <result name="success">./ReferencesInfoEdit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="UpdateInfo" class="org.IGNOU.ePortfolio.MyProfile.ReferenceAction" method="UpdateRefInfo">
+            <result name="success" type="redirectAction">ShowReference</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ReferencesInfoEdit.jsp</result>
+        </action>
+        <action name="deleteReference" class="org.IGNOU.ePortfolio.MyProfile.ReferenceAction" method="DeleteRefInfo">
+            <result name="success" type="redirectAction">ShowReference</result>
+            <result name="error">./error.jsp</result>
+        </action>        
+        <action name="AddTestInfo" class="org.IGNOU.ePortfolio.MyProfile.TestScoreAction">
+            <result name="success" type="redirectAction">ShowScore</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./TestScoreInfoAdd.jsp</result>
+        </action>
+        <action name="ShowScore" class="org.IGNOU.ePortfolio.MyProfile.TestScoreInfoAction" method="ShowInfo">
+            <result name="success">./TestScoreInfo.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./TestScoreInfoAdd.jsp</result>
+        </action>
+        <action name="editTest" class="org.IGNOU.ePortfolio.MyProfile.TestScoreInfoAction" method="EditInfo">
+            <result name="success">./TestScoreInfoEdit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="UpdateTest" class="org.IGNOU.ePortfolio.MyProfile.TestScoreInfoAction" method="UpdateInfo">
+            <result name="success" type="redirectAction">ShowScore</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./TestScoreInfoEdit.jsp</result>
+        </action>
+        <action name="deleteTest" class="org.IGNOU.ePortfolio.MyProfile.TestScoreInfoAction" method="DeleteInfo">
+            <result name="success" type="redirectAction">ShowScore</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./TestScoreInfoEdit.jsp</result>
+        </action>
+        <!--
+          * Added on 13-Oct-2011
+          * Version  1.11
+          * @Author  Vinay
+          *--> 
+        <action name="AddHonor" class="org.IGNOU.ePortfolio.MyProfile.HonorAwardAction">
+            <result name="success" type="redirectAction">ShowHonor</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./HonourAwardInfoAdd.jsp</result>
+        </action>
+        <action name="ShowHonor" class="org.IGNOU.ePortfolio.MyProfile.HonorAwardInfoAction" method="ShowHonorInfo">
+            <result name="success">./HonourAwardInfo.jsp</result>
+            <result name="error">.error.jsp</result>
+            <result name="input">./HonourAwardInfoAdd.jsp</result>
+        </action> 
+        
+        <action name="editAwardInfo" class="org.IGNOU.ePortfolio.MyProfile.HonorAwardInfoAction" method="EditHonoprInfo">
+            <result name="success">./HonourAwardInfoEdit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="UpdateHonor" class="org.IGNOU.ePortfolio.MyProfile.HonorAwardInfoAction" method="UpdateHonorInfo">
+            <result name="success" type="redirectAction">ShowHonor</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./HonourAwardInfoEdit.jsp</result>
+        </action>
+        <action name="deleteAwardInfo" class="org.IGNOU.ePortfolio.MyProfile.HonorAwardInfoAction" method="DeleteHonorInfo">
+            <result name="success" type="redirectAction">ShowHonor</result>
+            <result name="error">./error.jsp</result>
+        </action>
+         <!--
+          * Added on 13-Oct-2011
+          * Version  1.12
+          * @Author  Vinay
+          *--> 
+        <action name="AddAffiliation" class="org.IGNOU.ePortfolio.MyProfile.ProfAffiliationAction">
+            <result name="success" type="redirectAction">ShowAffiliation</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ProfAffiliationInfoAdd.jsp</result>
+        </action>
+        <action name="ShowAffiliation" class="org.IGNOU.ePortfolio.MyProfile.ProfAffiliationInfoAction" method="ShowAffiliationInfo">
+            <result name="success">./ProfAffiliationInfo.jsp</result>
+            <result name="error">.error.jsp</result>
+            <result name="input">./ProfAffiliationInfoAdd.jsp</result>
+        </action> 
+        <!--
+          * Added on 17-Oct-2011
+          * Version  1.13
+          * @Author  Vinay
+          *--> 
+        <action name="editAffiliationInfo" class="org.IGNOU.ePortfolio.MyProfile.ProfAffiliationInfoAction" method="EditAffiliationInfo">
+            <result name="success">./ProfAffiliationInfoEdit.jsp</result>
+            <result name="error">.error.jsp</result>
+        </action>
+        <action name="UpdateAffiliation" class="org.IGNOU.ePortfolio.MyProfile.ProfAffiliationInfoAction" method="UpdateAffiliationInfo">
+            <result name="success" type="redirectAction">ShowAffiliation</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ProfAffiliationInfoEdit.jsp</result>
+        </action>
+        <action name="deleteAffiliationInfo" class="org.IGNOU.ePortfolio.MyProfile.ProfAffiliationInfoAction" method="DeleteAffiliationInfo">
+            <result name="success" type="redirectAction">ShowAffiliation</result>
+            <result name="error">./error.jsp</result>
+        </action>
+    </package>    
+</struts>
