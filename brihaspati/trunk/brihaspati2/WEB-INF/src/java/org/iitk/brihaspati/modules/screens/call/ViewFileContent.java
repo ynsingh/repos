@@ -57,6 +57,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
+ * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
  */
 
 public class ViewFileContent extends SecureScreen
@@ -89,7 +90,6 @@ public class ViewFileContent extends SecureScreen
                         context.put("stats",stats);
 			String mode2=data.getParameters().getString("mode2","");
                         context.put("mode2",mode2);
-			//ErrorDumpUtil.ErrorLog("stats======>>>"+stats+"mode2======>>>"+mode2);
 			
 			/**
                         * getting the actual path where stored the Repository contents file
@@ -162,11 +162,9 @@ public class ViewFileContent extends SecureScreen
                         	        dir="instituteWise";
                         	}else	
                                         dir=(String)data.getUser().getTemp("course_id")+"/";
-					//String dir=(String)data.getUser().getTemp("course_id")+"/";
 					String topic=pp.getString("topic","")+"/";
 					String msg_id=pp.getString("msgid","");
                 	             	filePath=docRoot+dir+"/DisBoard/"+topic+"/Attachment/"+msg_id+"/"+fileID;
-					//ErrorDumpUtil.ErrorLog("==============file path======db==>>>>"+filePath);
 			}
                         else if(Type.equals("reload"))
                         {
@@ -209,8 +207,13 @@ public class ViewFileContent extends SecureScreen
                                 String msg_id=pp.getString("msgid","");
                                 filePath=docRoot+Type+"/DisBoard/"+topic+"/Attachment/"+msg_id+"/"+fileID;
                         }
-
-				
+			/**
+			* getting the actual path where store the Course Syllabus file
+			*/	
+			else if(Type.equals("coursemgmt")) {
+				String dir=(String)data.getUser().getTemp("course_id");
+				filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/coursemgmt/"+fileID;
+			}	
 			/**
                          * getting the actual path where stored the Archive file
                          */
@@ -224,9 +227,7 @@ public class ViewFileContent extends SecureScreen
 				}else{
 					dir=(String)data.getUser().getTemp("course_id");
 				}
-				//String dir=data.getUser().getTemp("course_id")+"/";
 				String msg_id=pp.getString("msgid","");
-				//ErrorDumpUtil.ErrorLog("\nDir =========>>>>>>>>"+dir);
 					if(attachment.equals("Attachment")){
                                 		filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Archive/"+msg_id+"/Attachment"+"/"+fileID;
 	                               	}else{

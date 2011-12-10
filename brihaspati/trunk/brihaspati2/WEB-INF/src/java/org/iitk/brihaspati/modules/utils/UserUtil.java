@@ -38,6 +38,9 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
+import org.apache.commons.lang.StringUtils;
+
+
 
 /**
  * This utils class have all details of User
@@ -103,9 +106,13 @@ public class UserUtil
 			crit.add(TurbineUserPeer.USER_ID,uid);						
 			List v=TurbineUserPeer.doSelect(crit);
 			TurbineUser element=(TurbineUser)v.get(0);
+			String LoginName= element.getUserName().toString();
 			String firstName = element.getFirstName().toString();
 			String lastName = element.getLastName().toString();
-			fullName = firstName + " "+lastName;			
+			fullName = firstName + " "+lastName;
+			if(StringUtils.isBlank(fullName)){
+				fullName=LoginName;
+			}  			
 		}
 		catch(Exception e){
 			ErrorDumpUtil.ErrorLog("inside exception : userutil:getFullName "+e);

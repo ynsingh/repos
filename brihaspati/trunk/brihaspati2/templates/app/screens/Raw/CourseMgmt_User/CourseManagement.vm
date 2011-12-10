@@ -15,51 +15,50 @@
 $page.setTitle("Home | $course | Course management")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())  
-
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
 <td>
-	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>Home</a> |
-	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> | 
-	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>Course Management</a> | #if($lang == "english") Upload Course Content #else Content Upload #end
+	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> | #if($lang == "english") $brih_upload $brih_course $brih_content #else $brih_content $brih_upload #end
 </td>
 </tr>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
 #if($errorMess!="")
      <tr>
-           <td><b>Error in Uploading :  </b>$!errorMess </td>
+           <td><b>$brih_uploadingError </b>$!errorMess </td>
      </tr>
 #else
         <tr >
         #if($uploadStatus=="full")
                 <td>
                 #if($pub=="Publish")
-                Your Files have been successfully uploaded   &  Publish
+                $brih_uploadSucessfully  &  $brih_publish
                 #else
-                Your Files have been successfully uploaded 
+                $brih_uploadSucessfully
                 #end
                 </td>
         #else
                 #if($uploadStatus=="partial")
                         <td>
                        ## Some of the files have been uploaded
-                        Some of the files have been uploaded   <br>
+                        $brih_uploadSomeFile  <br>
 
                        ## Following files already existed, so were not uploaded :
-                        Following files already exist, so were not uploaded Or file name contains comma character<br>
-
-                #elseif($totalFilesEntries.Count>0)
+                        $brih_uploadFileExist $brih_commaexist<br>
+                
+		#elseif($totalFilesEntries.Count>0)
                         <td>
                         ##None of the files were Uploaded <br>
                         ##All of the following  Existed at Server :
-                        None of the files were upload <br>
-                        Files with the following names already exist at Server :     Or file name contains comma character<br>
+			$brih_uploadNonefile <br>
+                        $brih_uploadFileOnServer $brih_commaexist<br>
                 #elseif($uploadStatus!="")
                         <td>
                         ##There is nothing to Upload
-                        There is nothing to upload <br>
-		#end
+                        $brih_uploadNothin <br>
+                #end
                  <br>
                 #set($count=1)
                 #foreach($File in $failedFiles)
@@ -75,70 +74,67 @@ $!data.getMessage()
 </table>
 <table width=100% bgcolor="$ui.tableColor">
 <tr>
-	#if($lang == "hindi")
-		 <td><b>Space for uploading   in MB: $!aSize </b></td><td align=right ><b>Used Space  in MB: $!aSize </b></td>
-	#else
-		 <td><b>Space for uploading   $!aSize in MB</b></td><td align=right ><b>Used Space    $!TUSize in MB </b></td>
-	#end
-
-	<td align=right>
-	<img src="$content.getURI("/images/hand.gif")">	<a href=javascript:popupWin("/brihaspati2/docs/Upload.html","newWin"); style=text-decoration:none>Help</a>
-	</td>
-
+        #if($lang == "hindi")
+                 <td><b>$brih_space $quota_sze: $!aSize </b></td><td align=right ><b>$brih_usedspace $quota_sze: $!aSize </b></td>
+        #else
+                 <td><b>$brih_space $!aSize $quota_sze</b></td><td align=right ><b>$brih_usedspace   $!TUSize $quota_sze </b></td>
+        #end
+        <td align=right>
+        <img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati2/docs/Upload.html","newWin"); style=text-decoration:none>$brih_help</a>
+        </td>
 </tr>
 </table>
 ##if($user_role == "instructor")
-	<table width="100%" align="left" bgcolor="$ui.tableColor">
-  	<tr bgcolor="$ui.menuColor">
-		#if($tdcolor != "1")
-		<td>
-		#elseif($tdcolor == "1")
-		<td bgcolor="#AFDCEC">
-		#end
-		<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") > #if($lang == "english")Course  Content #else Content #end </a></td>
-		
+        <table width="100%" align="left" bgcolor="$ui.tableColor">
+        <tr bgcolor="$ui.menuColor">
+                #if($tdcolor != "1")
+                <td>
+                #elseif($tdcolor == "1")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") > #if($lang == "english")$brih_course  $brih_content #else $brih_content #end </a></td>
 		#if($tdcolor != "0")  
 		<td>
 	        #elseif($tdcolor == "0")
         	<td bgcolor="#AFDCEC">
 	        #end
-        	<a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")>Course Management</a></td><td>
+        	<a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user</a></td><td>
 		#if($tdcolor != "2")
 		<td>
 		#elseif($tdcolor == "2")
 		<td bgcolor="#AFDCEC">
 		#end
-		<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") > #if($lang == "english") Upload Course Content #else Content Upload #end </a></td>
-		#if($tdcolor != "3")
-		<td>
-		#elseif($tdcolor == "3")
-		<td bgcolor="#AFDCEC">
-		#end
-		<a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3")>Course Configuration</a></td>
-		#if($tdcolor != "4")
-		<td>
-		#elseif($tdcolor == "4")
-		<td bgcolor="#AFDCEC">
-		#end
-		<a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4") > #if($lang == "english") Upload Course Header #else Course of Header  Upload #end </a></td> 
-		#if($tdcolor != "5")
-		<td>
-		#elseif($tdcolor == "5")
-		<td bgcolor="#AFDCEC">
-		#end
-                <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") > #if($lang == "english") Configuration Grade #else Grade Configuration #end </a></td>
-		#if($tdcolor != "6")
-		<td>
-		#elseif($tdcolor == "6")
-		<td bgcolor="#AFDCEC">
-		#end
-                <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6") >Scorm Packager</a></td>
-          	#if($tdcolor != "7")
+		<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") > #if($lang == "english") $brih_upload $brih_course $brih_content #else $brih_content $brih_upload #end </a></td>
+                #if($tdcolor != "3")
+                <td>
+                #elseif($tdcolor == "3")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3")>$brih_course $RemoteConfiguration</a></td>
+                #if($tdcolor != "4")
+                <td>
+                #elseif($tdcolor == "4")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4") > #if($lang == "english") $brih_upload $brih_course $brih_header #else $brih_course $brih_Of $brih_header  $brih_upload #end </a></td> 
+                #if($tdcolor != "5")
+                <td>
+                #elseif($tdcolor == "5")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") > #if($lang == "english") $RemoteConfiguration $brih_grade #else $brih_grade $RemoteConfiguration #end </a></td>
+                #if($tdcolor != "6")
+                <td>
+                #elseif($tdcolor == "6")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6") >$brih_scorm $brih_packager</a></td>
+		#if($tdcolor != "7")
                 <td>
                 #elseif($tdcolor == "7")
                 <td bgcolor="#AFDCEC">
                 #end
-                <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")>Scorm Player</a>
+                <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")>$brih_scorm $Repo_Player</a>
                 </td>
 	</tr>
 	</table>
