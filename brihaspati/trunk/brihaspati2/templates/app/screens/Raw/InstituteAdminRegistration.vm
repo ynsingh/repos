@@ -5,10 +5,14 @@
  *
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a> 
  * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modify date- 10-12-2011
  *#
 $!data.getMessage()
 $page.setTitle("Login Page | Institute Admin Registration ")
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/InstituteAdminRegistration.js")"></script>
 	
 ## Adding the line containing urls after the header image.
 	<table bgcolor="$ui.menuColor" width=100%>
@@ -116,139 +120,3 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 			
 		</table>
 	</form>
-
-
-<SCRIPT LANGUAGE="javascript">
-
-        function checkField(frm,field)
-        {
-
-                if ((frm.INAME.value !="") && (frm.IADDRESS.value !="") && (frm.ICITY.value !="") && (frm.IPINCODE.value !="") && (frm.ISTATE.value !="") && (frm.ccode.value !="") && (frm.rcode.value !="") && (frm.phnumber.value !="") && (frm.IDOMAIN.value !="") && (frm.ITYPE.value !="") && (frm.IWEBSITE.value !="") && (frm.IADMINFNAME.value !="") && (frm.IADMINLNAME.value !="")&& (frm.IADMINEMAIL.value !="") && (frm.IADMINDESIGNATION.value !=""))
-                {
-			if(isNumberString(frm.IPINCODE.value))
-                        {
-				if(frm.IPINCODE.value.length ==6){
-                                	if((isNumberString(frm.ccode.value))&& (isNumberString(frm.rcode.value)) && (isNumberString(frm.phnumber.value)))
-                                	{
-						if(frm.ccode.value.length < 3){
-							if(frm.rcode.value.length < 6){
-								if(frm.phnumber.value.length < 9){
-                        						var adminemailid = document.frm.IADMINEMAIL.value;
-                        						if (CheckValidEmail(adminemailid) == false)
-                        						{
-                                						adminemailid = "";
-                                						adminemailid.focus();
-                                						return;
-                        						}
-                        						else
-                        						{
-                                						frm.actionName.value=field.name;
-                                						frm.submit();
-                        						}
-								}
-                                        			else{
-                                             				alert(" Number should not be more than 8 digit");
-                                        			}
-							}
-                                        		else{
-                                             			alert(" Region code should not be more than 5 digit");
-                                        		}
-						}
-                                        	else{
-                                             		alert(" Country code should not be more than 3 digit");
-                                        	}
-
-					}
-                                	else
-                                	{
-                                        	alert(" Landline no. should be numeric");
-                                	}
-				}
-                                else
-                                {
-                                        alert(" pincode no. should be 6 digit");
-                                }
-                        }
-                        else
-                        {
-                                alert("pincode no. should be numeric");
-                        }
-                }
-                else
-                {
-                        alert("Please fill all the mandatory(*) Fields !");
-                }
-
-        }
-
-        function CheckValidEmail(adminemail)
-        {
-                var atrate = "@";
-                var dot = ".";
-                var indexofatrate = adminemail.indexOf(atrate);
-                var emaillength = adminemail.length;
-                var indexofdot = adminemail.indexOf(dot);
-
-                if (indexofatrate == -1)
-                {
-                        alert("Invalid email ID")
-                        return false;
-                }
-
-                if (indexofatrate == -1 || indexofatrate == 0 || indexofatrate == emaillength)
-                {
-                        alert("Invalid email ID ")
-                        return false;
-                }
-
-                if (indexofdot == -1 || indexofdot == 0 || indexofdot == emaillength)
-                {
-                        alert("Invalid E-mail ID")
-                        return false
-                }
-
-                if (adminemail.indexOf(atrate,(indexofatrate+1)) != -1)
-                {
-                        alert("Invalid E-mail ID")
-                        return false
-                }
-
-                if (adminemail.substring(indexofatrate-1,indexofatrate)==dot || adminemail.substring(indexofatrate+1,indexofatrate+2)==dot)
-                {
-                        alert("Invalid E-mail ID")
-                        return false
-                }
-
-                if (adminemail.indexOf(dot,(indexofatrate+2))==-1)
-                {
-                        alert("Invalid E-mail ID")
-                        return false
-                }
-
-                if (adminemail.indexOf(" ")!=-1)
-                {
-                        alert("Invalid E-mail ID")
-                        return false
-                }
-
-                 return true
-        }
-	function isNumberString(chString)
-        {
-                if(chString.length==0)
-                return false;
-                var RefString="0123456789";
-                for(count=0;count<chString.length;count++)
-                {
-                        tempChar=chString.charAt(count);
-                        if(RefString.indexOf(tempChar)==-1)
-                        {
-                                return false;
-                        }
-                }
-                return true;
-        }
-
-
-</SCRIPT>
-

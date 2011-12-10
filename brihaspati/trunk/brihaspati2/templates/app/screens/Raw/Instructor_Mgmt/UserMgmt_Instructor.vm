@@ -3,12 +3,16 @@
  * Copyright (c) 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modify date: 10-12-2011
 *#
 
 $page.setTitle("brih_home | $course1 | $brih_ins $brih_mgmt")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/StudentManagement.js")"></script>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #if($institudeName != "ListAll")
 <table bgcolor="$ui.tableColor" width=100%>
@@ -228,20 +232,7 @@ $!data.getMessage()
 </form>
 </table>
  #end
-
 <SCRIPT LANGUAGE="javascript">
-        function checkField(frm,field)
-        {
-		if((frm.EMAIL.value!="")) {
-                        frm.actionName.value=field.name;
-                        frm.submit();
-               	}
-                else
-                {
-                        alert("Please fill the Mandatory(*) Fields !");
-                }
-        }
-	  function addDeleteList(field,frm){
                 if(field.checked){
 	                frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";
 			

@@ -5,13 +5,16 @@
  * @author <a href="mailto:shaistashekh@hotmail.com"> Shaista</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
- * @modified date: 19-08-2011
+ * @modified date: 19-08-2011,10-12-2011
 *#
 
 $page.setTitle("Admin Home | Registration Management")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/RegisterationManagement.js")"></script>
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
 
 ##<table bgcolor="#d9e3ec" width=100% cellspacing=0>
@@ -393,54 +396,3 @@ face="$ui.sansSerifFonts">$type</font>
 </tr>
 </table>
 </table>
-<SCRIPT LANGUAGE="javascript">
-        function checkCourseName(frm,field)
-        {
-                //if((frm.COURSEID.value!="") && (frm.UNAME.value!="")  && (frm.CNAME.value!=""))
-                if((frm.COURSEID.value!="") && (frm.CNAME.value!="") && (frm.EMAIL.value!="") && (frm.instName.value!=""))
-                {
-                                frm.actionName.value=field.name;
-                                frm.submit();
-                }
-                else
-                {
-			if(frm.instName.value=="")
-                        	alert("No Institute is register till now");
-			else
-				alert("Please Fill All The Mandatory(*) Fields");
-                }
-        }
-        function checkClear(frm,field)
-        {
-        frm.COURSEID.value="";
-        frm.UNAME.value="";
-        frm.CNAME.value="";
-        }
-	 function popupWin(url,popupName)
-        {
-                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
-        }
-
-        function CheckFields(frm,field)
-        {
-                if(frm.file.value!="")
-                {
-                                frm.actionName.value=field.name;
-                                frm.submit();
-                }
-                else
-                {
-                        alert("Please Fill All The Mandatory(*) Fields");
-                }
-        }
-	 function checkNull(frm,field){
-                if(frm.valueString.value!=""){
-                        frm.submit();
-                }
-                else{
-                        alert("The 'Match String' text box can not be NULL");
-                }
-        }
-
-
-</SCRIPT>

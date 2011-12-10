@@ -4,13 +4,16 @@
  * All Rights Reserved.
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 22-11-2010
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date: 22-11-2010,10-12-2011
  * Contributors: Members of Brihaspati software solutions Kanpur
 *#
 
 $page.setBgColor($ui.bgcolor)
 $page.setTitle(" Home | Institute  Management | Upload Institute Logo")
 $!data.getMessage()
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/RegisterationManagement.js")"></script>
 
 #set($lang = $data.getUser().getTemp("lang").toString())
 
@@ -38,7 +41,7 @@ $!data.getMessage()
         </tr>
         <tr bgcolor="$ui.menuColor">
         <td colspan=2 align="left">
-       		<input type="button" name="eventSubmit_doUploadLogo" value="$brih_upload" onClick="CheckField(document.frm,this);"/>
+       		<input type="button" name="eventSubmit_doUploadLogo" value="$brih_upload" onClick="CheckFields(document.frm,this);"/>
                 <input type="hidden" name="actionName" value=""/>
                 <input type="hidden" name="count" value="$tdcolor"/>
 
@@ -46,22 +49,4 @@ $!data.getMessage()
         </tr>
 </table>
 </form>
-<SCRIPT LANGUAGE="javascript">
-        function popupWin(url,popupName)
-        {
-                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
-        }
 
-        function CheckField(frm,field)
-        {
-                if(frm.file.value!="")
-                {
-                                frm.actionName.value=field.name;
-                                frm.submit();
-                }
-                else
-                {
-                        alert("Please Fill All The Mandatory(*) Fields");
-                }
-        }
-</SCRIPT>
