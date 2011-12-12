@@ -22,12 +22,20 @@ $!data.getMessage()
 
 <body onload="initEditor()">
 <table bgcolor="$ui.menuColor" width=100%>
-	<tr>
-		<td> <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+	<tr><td>
+		 #if($isAdmin=="true")
+                <a href=$link.setPage("Index.vm") style=text-decoration:none> $brih_home </a> | $course |
+	        #elseif ($isInstructor=="true")
+		 <a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> | 
+		 <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
+		 <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> | 
+		#else
+                <a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>Home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
+		#end
 		#if($lang=="english")
-			$brih_course $brih_content
+			$brih_course $Profile_user
                 #else
-                        $brih_content
+                        $Profile_user
                 #end
         </font>
 	</td>
@@ -35,27 +43,12 @@ $!data.getMessage()
 	</table>
 <table width=100% bgcolor="$ui.tableColor">
 
-		#if ($user_role =="instructor")
+		#if ($isInstructor=="true")
 	<tr><td align="right" colspan="16">
                <img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati2/docs/CourseMgmt.html","newWin");>  $brih_help</a>
 	</td></tr>
- 		#end
 	<tr bgcolor="$ui.menuColor">
-#if($user_role != "instructor")
-        #if($tdcolor != "1")    
-        <td>
-        #elseif($tdcolor == "1")
-        <td bgcolor="#AFDCEC">
-        #end
-	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1")> #if($lang == "english") $brih_course $brih_content #else $brih_content #end </a></td>
-        #if($tdcolor != "0")    
-        <td>
-        #elseif($tdcolor == "0")
-        <td bgcolor="#AFDCEC">
-        #end
-       <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user</a></td>
 	
-#else
         #if($tdcolor != "1")    
         <td>
         #elseif($tdcolor == "1")
@@ -105,7 +98,20 @@ $!data.getMessage()
          <td bgcolor="#AFDCEC">
         #end
        <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")> $brih_scorm $Repo_Player</a></td>
-## #end
+#else
+	<tr bgcolor="$ui.menuColor">
+        #if($tdcolor != "1")    
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1")> #if($lang == "english") $brih_course $brih_content #else $brih_content #end </a></td>
+        #if($tdcolor != "0")    
+        <td>
+        #elseif($tdcolor == "0")
+        <td bgcolor="#AFDCEC">
+        #end
+       <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user</a></td>
 #end
 </tr>
 </table>
@@ -147,7 +153,7 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor">
 	<td><b>$brih_course $brih_day & $brih_venue <font color=RED> * </b></td>
 	<td>
-	#if($user_role == "instructor")
+	#if($isInstructor=="true")
 	<select name="selectdays" size="1" onChange="Changename(document.frm,this);" />
 	  #if($selectdays1 !="")
 	   <option  value=$!selectdays1>$!selectdays1
@@ -178,14 +184,14 @@ $!data.getMessage()
 #end
 
 	#if($selectdays1=="Days")
-		#if($user_role == "instructor")
+		#if($isInstructor=="true")
 			<input type="text" size=3 name="selectdaysintext" value="$!abc" >
 		#else
 			<input type="text" size=3 name="selectdaysintext" value="$!abc" readonly>
 		#end
 	#end
 	
-	#if($user_role == "instructor")
+	#if($isInstructor=="true")
 		<input type="text" name="venue" value="$!Venue" size="20"> 
 	#else
 		<input type="text" name="venue" value="$!Venue" size="20" readonly> 
@@ -196,7 +202,7 @@ $!data.getMessage()
                 <td><b> $brih_marks/$brih_grading<font color=RED> *</font></b></td>
 	<tr>
 		<td>  $brih_midsem  </td>
-		#if($user_role == "instructor")
+		#if($isInstructor=="true")
                 <td> <input type="text" size=3 name="midsem" value="$!midsem" ></td>
 		#else
                 <td> <input type="text" size=3 name="midsem" value="$!midsem" readonly></td>
@@ -205,7 +211,7 @@ $!data.getMessage()
 
 	<tr>
                 <td> $brih_quiz </td>
-		#if($user_role == "instructor")
+		#if($isInstructor=="true")
         	        <td> <input type="text" size=3 name="quiz" value="$!quiz" ></td>
 		#else
                 	<td> <input type="text" size=3 name="quiz" value="$!quiz" readonly ></td>
@@ -213,7 +219,7 @@ $!data.getMessage()
         </tr>
 	<tr>
                 <td> $brih_lab $brih_work </td>
-		#if($user_role == "instructor")
+		#if($isInstructor=="true")
                 	<td> <input type="text" size=3 name="labwork" value="$!labwork"></td>
 		#else
                		<td> <input type="text" size=3 name="labwork" value="$!labwork" readonly></td>
@@ -222,7 +228,7 @@ $!data.getMessage()
 	<tr>
 
                 <td> $brih_endsem  </td>
-		#if($user_role == "instructor")
+		#if($isInstructor=="true")
                 <td> <input type="text" size=3 name="endsem" value="$!endsem" ></td>
 		#else
                 <td> <input type="text" size=3 name="endsem" value="$!endsem" readonly></td>
@@ -231,14 +237,14 @@ $!data.getMessage()
 
         <tr bgcolor="$ui.menuColor">
                 <td><b> $brih_instruction  <font color=RED> * </font></b></td>
-		#if($user_role == "instructor")
+		#if($isInstructor=="true")
 		<td align="left" width="3"> <textarea id="id" name="message" rows=10 cols=80 wrap=physical> $!message </textarea></td>
 		#else
 		<td align="left" width="3"> <textarea id="id" name="message" rows=10 cols=80 wrap=physical readonly> $!message </textarea></td>
 		#end
 	</tr>
         <tr >
-		#if($user_role == "instructor")
+		#if($isInstructor=="true")
 			#fileUpload ("<b> $brih_course $brih_syllabus<font color=RED> * </font></b> " "file")
 		#end
         </tr>
@@ -251,7 +257,7 @@ $!data.getMessage()
 		#end
         <tr>
         	<td align="center" colspan=5>  
-			#if($user_role == "instructor") 
+			#if($isInstructor=="true") 
         	     		<input type="button" name="eventSubmit_doSelect" value="$brih_submit" onClick="checkField(document.frm,this);"/>&nbsp;
 				<input type="reset" name="Reset" value="$brih_clear"/>
 			#end

@@ -55,6 +55,7 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.XMLWriter_Cms;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.StudentInstructorMAP;
+import org.apache.turbine.util.security.AccessControlList;
 
 /**
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
@@ -66,22 +67,25 @@ public class CourseMgmt extends SecureScreen {
 	MultilingualUtil Mutil=new MultilingualUtil();
 	public void doBuildTemplate(RunData data,Context context) {
 		Vector v1=new Vector();
-			
+		 AccessControlList acl=data.getACL();	
 		ParameterParser pp=data.getParameters();
                 String langfile=data.getUser().getTemp("LangFile").toString();
 		context.put("tdcolor",pp.getString("count",""));
 		User user = data.getUser();
-		String Role=(String)user.getTemp("role");
-                context.put("user_role",Role);
+	//	String Role=(String)user.getTemp("role");
+          //      context.put("user_role",Role);
+		 context.put("isAdmin",acl.hasRole("turbine_root")?"true":"false");
 		/**
 		*This is use for get course name and course_id
 		*/
 		context.put("course",((String)user.getTemp("course_name")));	
                 String cid=(String)user.getTemp("course_id");
 		context.put("cId",(String)user.getTemp("course_id"));
+		
+		 context.put("isInstructor",acl.hasRole("instructor",cid)?"true":"false");
         	int GID=GroupUtil.getGID((String)user.getTemp("course_id"));
 		/**
-		* This vector use for get secondry Instructor 
+		* This vector use for get Course Instructor & secondry Instructor 
 		*/
 		String username=user.getName();
 		int u_id=UserUtil.getUID(username);
@@ -91,11 +95,11 @@ public class CourseMgmt extends SecureScreen {
                 List uidvector=new Vector();
                 for(int i=0;i<UID.size();i++) {
                 	int uid=Integer.parseInt(UID.get(i).toString());
-                        String loginname=UserUtil.getLoginName(uid);
-			if(cid.indexOf(loginname)>0){
+                   	        String loginname=UserUtil.getLoginName(uid);
+				if(cid.indexOf(loginname)>0){
 				UserUtil.getFullName(UserUtil.getUID(loginname));
                 		context.put("firstname",UserUtil.getFullName(UserUtil.getUID(loginname)));
-			}	
+		}	
                         String uName=UserUtil.getFullName(uid);
                         uidvector.add(uName);
             	}
