@@ -284,8 +284,7 @@ $!data.getMessage()
                   #end
                   <td bgcolor="$ui.tableColor">
                         <font face="$ui.sansSerifFonts">
-                        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,RegisterSecInstructorInst.vm").addPathInfo("gName",$entry.getGroupName()).addPathInfo("InstituteId",$InstituteId).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_reg1</a>&nbsp;&nbsp;&nbsp;
- erMgmt_InstituteAdmin%2CInstUserRegistrationManagement.vm                      </font>
+                        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,RegisterSecInstructorInst.vm").addPathInfo("gName",$entry.getGroupName()).addPathInfo("InstituteId",$InstituteId).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_reg1</a>&nbsp;&nbsp;&nbsp; </font>
 			<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("institudeName","ListAll").addPathInfo("cName",$entry.getGroupName()).addPathInfo("InstituteId",$InstituteId).addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> $brih_listOfInstructor </a></td>
                  </td>
         </tr>
