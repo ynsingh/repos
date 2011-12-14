@@ -48,6 +48,8 @@ import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.StringUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.ListManagement;
@@ -57,6 +59,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 * Class for to display for list of approved institute.
 * @author <a href="nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
 * @author <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>21102010
+* @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
 */
 
 public class ViewInstituteList extends VelocityScreen
@@ -70,18 +73,16 @@ public class ViewInstituteList extends VelocityScreen
                         context.put("lang",lang);
 			String mode=pp.getString("mode","");
 			context.put("mode",mode);
-			/**
-			* Get the list of registered Institute
-			*  status for approved(1) institute list
-			*  orphan(3) having no institute admin in an institute.
-			*/
+			String query=pp.getString("queryList","");
+			String valueString = StringUtil.replaceXmlSpecialCharacters(pp.getString("valueString",""));
+			String TbNme=null;
+			String clmn=null;
+
 			Criteria crit = new Criteria();
-                        crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
-                        crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
-                        crit.or(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"3");
-                        List instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
+                        List instdetail=InstituteIdUtil.searchInst(mode, query, valueString);
 			/**
-			 *Get InstituteId and using this InstituteId in 'INSTITUTEADMINUSER' to get details of institute admin(user) of that Institute.
+			 * Get InstituteId and using this InstituteId in 'INSTITUTEADMINUSER' 
+			 * to get details of institute admin(user) of that Institute.
 			 */
 			Vector iidvector=new Vector(); 
 			Vector vct=new Vector();

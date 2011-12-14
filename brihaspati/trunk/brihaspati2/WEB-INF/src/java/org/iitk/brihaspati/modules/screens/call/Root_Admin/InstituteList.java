@@ -40,6 +40,7 @@ package org.iitk.brihaspati.modules.screens.call.Root_Admin;
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
  */
 
 import java.util.Vector;
@@ -126,7 +127,11 @@ public class InstituteList extends SecureScreen_Admin
                                 int list_conf=Integer.parseInt(conf);
                                 context.put("userConf",new Integer(list_conf));
                                 context.put("userConf_string",conf);
-                                List instdetail=InstituteIdUtil.getInstList();
+				String md=pp.getString("mod","");
+				String query=pp.getString("queryList","");
+				String values=pp.getString("valueString","");
+				List instdetail=InstituteIdUtil.searchInst(md, query, values);
+                               // List instdetail=InstituteIdUtil.getInstList();
 				Vector vctr=new Vector(instdetail);
                                 Vector vct=CommonUtility.PListing(data,context,vctr,list_conf);
                                 context.put("approved",vct);

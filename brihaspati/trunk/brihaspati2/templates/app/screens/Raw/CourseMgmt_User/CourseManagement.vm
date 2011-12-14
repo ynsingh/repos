@@ -201,9 +201,9 @@ $!data.getMessage()
                 }
         }
 </script>
-<table>
 ##<form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,Upload.vm").setAction("UploadAction")">
 <form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,CourseManagement.vm").setAction("UploadAction")">
+<table width="100%" align="left">
     ##<table width=100% align=left bgcolor="$ui.tableColor" cellpadding="0">
       #if ($errorTemplate)
       <tr>

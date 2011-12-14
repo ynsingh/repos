@@ -62,6 +62,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
  * @modify date:23-12-2010,10-02-2011,05-08-2011(Richa)
  */
 public class InstituteIdUtil
@@ -85,7 +86,45 @@ public class InstituteIdUtil
 
 		return instdetail;
 	}
-	
+	/**	
+	* Search Institute on the basis of Id, Name and address
+	* @param md String mode (search /all)
+	* @param by String search criteria
+	* @param vale String search value
+	* @return List InstituteInfo
+	*/ 	
+	public static List searchInst(String md, String by, String vale)
+        {
+		List instdetail=null;
+		try{
+		Criteria crit = new Criteria();
+                        if((md.equals("Search"))&&(org.apache.commons.lang.StringUtils.isNotBlank(vale))){
+                                if(by.equals("InstituteId")){
+                                        crit.add("INSTITUTE_ADMIN_REGISTRATION","INSTITUTE_ID",(Object)("%"+vale+"%"),crit.LIKE);
+                                }
+                                if(by.equals("InstituteName")){
+                                        crit.add("INSTITUTE_ADMIN_REGISTRATION","INSTITUTE_NAME",(Object)("%"+vale+"%"),crit.LIKE);
+                                }
+                                if(by.equals("InstituteAdd")){
+                                        crit.add("INSTITUTE_ADMIN_REGISTRATION","INSTITUTE_ADDRESS",(Object)("%"+vale+"%"),crit.LIKE);
+                                }
+                        }
+                        else{
+                        /**
+                         * Get the list of all registered Institute
+                         *  status for approved(1) institute list
+                         *  orphan(3) having no institute admin in an institute.
+                         */
+					crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
+                                	crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
+                        	        crit.or(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"3");
+
+                        }
+                        instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
+		}
+		catch(Exception ex){ErrorDumpUtil.ErrorLog("The error in searchInst() - Institute Id Util class !!"+ex);}
+		return instdetail;
+	}
 	/** 
 	 * Get the Institute Name on the basis of Institute Id
 	 */

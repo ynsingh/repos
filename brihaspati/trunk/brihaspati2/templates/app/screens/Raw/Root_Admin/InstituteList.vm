@@ -6,6 +6,7 @@
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modified date: 10-08-2010 (Shaista)
  * @modified date: 10-10-2010, 22-11-2010 (Shaista)
@@ -49,7 +50,6 @@ $!data.getMessage()
 		</td>
 	</tr>
 </table>
-<form name="frm" method="Post" action="$link.setPage("call,Root_Admin,InstituteList.vm").setAction("Institute_RootAdmin")">
 <table  bgcolor="$ui.tableColor" width=100%>
 	<tr>
 		#if($tdcolor != "1")
@@ -72,6 +72,33 @@ $!data.getMessage()
 		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","reject").addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi") $brih_rejected $brih_Institute $brih_Of $brih_list #else $brih_rejected $RemoteInstitute $brih_list #end </a></td>
 	</tr>
 </table>
+#if($mode=="approved")
+	<form name="frm1" method="post" action="$link.setPage("call,Root_Admin,InstituteList.vm")">
+		<table width=100% align=left bgcolor="$ui.tableColor">
+	        <tr>
+        		<td><b>$brih_searchBy</b></td>
+	                <td align=left>
+        	                <select name="queryList">
+                	                <option value="InstituteId"> $RemoteInstitute  $brih_ID</option>
+                        	        <option value="InstituteName"> $RemoteInstitute $brih_name</option>
+                                	<option value="InstituteAdd"> $RemoteInstitute  $brih_address</option>
+                	        </select>
+	                </td>
+        	        <td align=left><b>$brih_match_str</b></td>
+                	<td align=left>
+                        	<input align=center type="text" name="valueString" value="">
+	                </td>
+        	        <td>
+                	        <input type="button" name="Search" value="Search" onClick="checkNull(document.frm1,this);">
+                        	<input type="hidden" name="mode" value="approved">
+                        	<input type="hidden" name="mod" value="Search">
+	                        <input type="hidden" name="count" value="2">
+        	      </td>
+	        </tr>
+		</table>
+	</form>
+#end
+<form name="frm" method="Post" action="$link.setPage("call,Root_Admin,InstituteList.vm").setAction("Institute_RootAdmin")">
 <table  bgcolor="$ui.tableColor" width=100%>
 	#if($mode=="pendinglist")
       	<tr bgcolor="$ui.menuColor">
@@ -160,10 +187,12 @@ $!data.getMessage()
 </table>
 <table width=100% bgcolor="$ui.tableColor">
 	#if($mode=="approved")
+	<tr><td colspan="5">
+	</td></tr>
 	<tr bgcolor="$ui.menuColor">
-		<td>$RemoteInstitute $brih_name</td>
-		<td>$RemoteInstitute $brih_ID</td>
-		<td align="center" colspan="4">$brih_availableAction</td>
+		<td><b>$RemoteInstitute $brih_name</b></td>
+		<td><b>$RemoteInstitute $brih_ID</b></td>
+		<td align="center" colspan="4"><b>$brih_availableAction</b></td>
 	</tr>
 	#foreach($applist in $approved)
 	#if($velocityCount%2==0)
@@ -254,6 +283,14 @@ $!data.getMessage()
 </body>
 
 <SCRIPT LANGUAGE="javascript">
+	function checkNull(frm1,field){
+                if(frm1.valueString.value!=""){
+                        frm1.submit();
+                }
+                else{
+                        alert("The 'Match String' text box can not be NULL");
+                }
+        }
 
         function AcceptField(frm,field)
         {
