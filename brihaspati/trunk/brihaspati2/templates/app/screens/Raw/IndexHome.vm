@@ -12,7 +12,7 @@
  * @author <a href="mailto:rekha20july@gmail.com">Rekha Pal</a>
  * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
  * @ modified date: 13-Oct-2010 (Shaista), 09-11-2010, 07-12-2010 (Problem resolved for view bookmarks)
- * @ modified date: 22-Feb-2011 (Tej)
+ * @ modified date: 22-Feb-2011 (Tej), 19-08-2011 (Shaista)
  * @ modified date: 24-Oct-2011 (Sunil)(Institutewise Course List)
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
@@ -44,14 +44,12 @@ $!data.getMessage()
 <table bgcolor="$ui.tableColor" width=100% CellPadding=0 align=center>
 <tr bgcolor="$ui.menuColor">
 	<td align="center">
-			#if(( $data.getUser().getTemp("lang" ).toString())=="hindi")
+			#if($lang == "hindi" || $lang == "gujarati")
 			        <font size=4 face="$ui.sansSerifFonts"><b>#UNAME()  $brih_welcome
-			        </font>
 			#else
-			        <font size=4 face="$ui.sansSerifFonts"><b>$brih_welcome
-			        #UNAME()
-			        </font>
+			        <font size=4 face="$ui.sansSerifFonts"><b>$brih_welcome #UNAME()
 			#end
+			        </font>
 	</td>
 </tr>
 #if($guest_login=="true")

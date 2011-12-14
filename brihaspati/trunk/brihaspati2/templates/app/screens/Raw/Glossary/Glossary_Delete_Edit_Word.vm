@@ -19,6 +19,7 @@ $page.setTitle("Home | Glossary | Delete & Edit Word")
 #end
 
 $!data.getMessage()
+#set($lang= $data.getUser().getTemp("lang" ).toString())
 <table bgcolor="$ui.menuColor" width=100%>
     <tr> 
         <td><b>
@@ -28,7 +29,7 @@ $!data.getMessage()
              <a href="$link.setPage("Index.vm")">$brih_home</a> |
 	     #end
              <a href="$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1")">$Glossary</a> | 
-             #if(( $data.getUser().getTemp("lang" ).toString())=="hindi")
+             #if( $lang=="hindi" || $lang =="gujarati" )
 			$brih_word $brih_delete/ $brih_edit 
 	    #else
 			$brih_delete/ $brih_edit $brih_word
@@ -45,20 +46,20 @@ $!data.getMessage()
         #elseif($tdcolor=="1")
         <td width=33% bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1")>Search Word </td>
+        <a href=$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1")> #if( $lang=="hindi" || $lang =="gujarati" ) $brih_word $brih_search #else $brih_search $brih_word #end </td>
       #if($guest_login=="false")
         #if($tdcolor !="2")
        <td width=33%>
         #elseif($tdcolor=="2")
         <td width=33% bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,Glossary,Glossary_Insert_Word.vm").addPathInfo("mode","Insert").addPathInfo("count","2")>Insert Word </td>
+        <a href=$link.setPage("call,Glossary,Glossary_Insert_Word.vm").addPathInfo("mode","Insert").addPathInfo("count","2")> #if( $lang=="hindi" || $lang =="gujarati" ) $brih_word $brih_insert #else $brih_insert $brih_word #end </td>
         #if($tdcolor !="3")
         <td>
         #elseif($tdcolor=="3")
         <td bgcolor="#AFDCEC">
         #end
-       <a href=$link.setPage("call,Glossary,Glossary_Delete_Edit_Word.vm").addPathInfo("status","blank").addPathInfo("count","3")>Delete/Edit</td>
+       <a href=$link.setPage("call,Glossary,Glossary_Delete_Edit_Word.vm").addPathInfo("status","blank").addPathInfo("count","3")> $brih_delete/ $brih_edit</td>
       #end
     </tr>
   </table>
@@ -93,10 +94,11 @@ $!data.getMessage()
 							$v.get($i).getWord()
 						</td>
 						#if($currentuid == "$v.get($i).getUserId()")
-							<td><a href="$link.setPage("call,Glossary,Glossary_Insert_Word.vm").addPathInfo("mode","modify").addPathInfo("wid",$v.get($i).getWordId()).addPathInfo("status",$stat).addPathInfo("alpha",$alpha).addPathInfo("count",$tdcolor)">$brih_update $brih_word</a>
+							<td><a href="$link.setPage("call,Glossary,Glossary_Insert_Word.vm").addPathInfo("mode","modify").addPathInfo("wid",$v.get($i).getWordId()).addPathInfo("status",$stat).addPathInfo("alpha",$alpha).addPathInfo("count",$tdcolor)"> 
+#if($lang == "hindi" || $lang == "gujarati") $brih_word $brih_update #else $brih_update $brih_word #end </a>
 							</td>
 						#else 
-							<td> $brih_update $brih_word </td>
+							<td> #if($lang == "hindi" || $lang == "gujarati") $brih_word $brih_update #else $brih_update $brih_word #end </td>
 						#end	
 							<td><a href="$link.setPage("call,Glossary,Glossary_Insert_Word.vm").addPathInfo("mode","alias").addPathInfo("wid",$v.get($i).getWordId()).addPathInfo("status",$stat).addPathInfo("alpha",$alpha).addPathInfo("count",$tdcolor)">$Glossary_instAlias</a>
 					 </td> </tr>

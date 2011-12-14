@@ -62,7 +62,7 @@ $!data.getMessage()
 #elseif($tdcolor == "2")
 	<td width="50%" bgcolor="#AFDCEC">
 #end 
-        <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2")"> #if($lang == "hindi") $brih_all $brih_usr $brih_Of1 $brih_view  #else $brih_view_all $brih_usr #end </a>
+        <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2")"> #if($lang == "hindi" || $lang == "gujarati") $brih_all $brih_usr $brih_Of1 $brih_view  #else $brih_view_all $brih_usr #end </a>
         </td>  
 	</tr>
 ##  </table>
@@ -71,7 +71,8 @@ $!data.getMessage()
 <table width=100% align=left bgcolor="$ui.tableColor">
         <tr bgcolor="$ui.menuColor">
 ## **************** Search By Institute *****************
-                <td><b>$brih_searchBy $RemoteInstitute</b></td>
+	
+                <td><b> #if($lang == "hindi" || $lang == "gujarati") $RemoteInstitute $brih_searchBy #else $brih_searchBy $RemoteInstitute #end </b></td>
                 <td align=left>
 			<select name="ciname" size="1" onChange="Changename(document.frm,this);">
 				#if($mode != "All")
@@ -86,8 +87,8 @@ $!data.getMessage()
                 <td><b>$brih_searchBy</b></td>
                 <td align=left>
                         <select name="queryList">
-                                <option value="CourseId"> $brih_course #if($lang == "hindi")  #end ID</option>
-                                <option value="Course Name"> $brih_course #if($lang == "hindi")  #end Name</option>
+                                <option value="CourseId"> $brih_course #if($lang == "hindi") $brih_Of1  #end $brih_ID</option>
+                                <option value="Course Name"> $brih_course #if($lang == "hindi") $brih_Of1  #end $brih_name</option>
                                 <option value="Dept"> $brih_dept </option>
                         </select>
                 </td>
@@ -96,7 +97,7 @@ $!data.getMessage()
                         <input align=center type="text" name="valueString" value="">
                 </td>
                 <td>
-                        <input type="button" name="Search" value="Search" onClick="checkNull(document.frm,this);">
+                        <input type="button" name="Search" value=$brih_search onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="listcourse" value="listcourse">
                         <input type="hidden" name="count" value="$tdcolor">
@@ -106,9 +107,9 @@ $!data.getMessage()
 
 #if($status=="Noblank")
 	#if($lang == "hindi")
-		#set($headings = ["","Course  ID","Course  Name","Department","Description","Creation Date","Status",""] )
+		#set($headings = ["","$brih_course $brih_Of1 $brih_ID","$brih_course $brih_Of1 $brih_name","$brih_dept","$brih_desc","$brih_creation $brih_Da","$brih_status",""] )
 	#else
-		#set($headings = ["","Course ID","Course Name","Department","Description","Creation Date","Status",""] )
+		#set($headings = ["","$brih_course $brih_ID","$brih_course $brih_name","$brih_dep","$brih_desc","$brih_creation $brih_Da","$brih_status",""] )
 	#end
 <table bgcolor="$ui.tableColor" align="left" width="100%">
   <tr><td>
@@ -122,7 +123,7 @@ $!data.getMessage()
 	#if($velocityCount%2==0)
         <tr bgcolor="$ui.tableColor">
 	#else
-	<tr bgcolor="$ui.menuColor">
+
 	#end
                   <td>
                         <font face="$ui.sansSerifFonts">

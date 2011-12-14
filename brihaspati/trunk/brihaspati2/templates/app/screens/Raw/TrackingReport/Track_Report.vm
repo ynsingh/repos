@@ -81,13 +81,18 @@ $!data.getMessage()
 #if($mode !="repotype" && $type !="System")
 <tr bgcolor="$ui.menuColor" width="100%">
         <td>
-        <b>Match String </b>
+        <b>$brih_match $brih_string </b>
               <input align=center type="text" name="valueString" value="" >
               <input type="button" name="eventSubmit_doSearchvalue" value="$brih_search" onClick="checkNull(document.frm,this);">
               <input type="hidden" name="status" value="Search">
         </td>
-        <td><b>$brih_select $brih_usr $brih_for $brih_reports:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="uname" size="1" onChange="Changename(document.frm,this);"/>
-        <option>  - Select - </option>
+        <td><b> 
+		#if($lang == "hindi" || $lang=="gujarati") 
+			$brih_reports $brih_for $brih_usr $brih_select 
+		#else  
+			$brih_select $brih_usr $brih_for $brih_reports 
+		#end :</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="uname" size="1" onChange="Changename(document.frm,this);"/>
+        <option>  - $brih_select - </option>
                                 #if($data.getUser().getUserName() == "admin"||$data.getUser().getTemp("role")=="institute_admin")
                                 #foreach($usrname in $userList1)
                                 <option value="$usrname.getLoginName()">$usrname.getLoginName()
@@ -105,7 +110,11 @@ $!data.getMessage()
 </tr>
 #end
 #if($status == "Search")
-<tr bgcolor="$ui.tableColor" width="100%"><td width="100%" colspan="5"><b> $brih_select $brih_usr $brih_for $brih_reports:</b>&nbsp;
+	<tr bgcolor="$ui.tableColor" width="100%"><td width="100%" colspan="5"><b> #if($lang == "hindi" || $lang=="gujarati") 
+											$brih_reports $brih_for $brih_usr $brih_select 
+										   #else 
+											$brih_select $brih_usr $brih_for $brih_reports 
+										   #end :</b>&nbsp;
 #if($data.getUser().getUserName() == "admin")
 #foreach($usrname1 in $userList2)
 #if($type =="user")
@@ -130,19 +139,19 @@ $!data.getMessage()
 #else
 #if($mode == "repoinfo" && $usrname!="")
 #if($type =="user")
-<tr><td><b><i>$brih_usr $brih_reports $usrname</font></i></b></td></tr>
+<tr><td><b><i>$brih_usr #if($lang == "hindi") $brih_Of #end $brih_reports $usrname</font></i></b></td></tr>
 <table bgcolor="$ui.tableColor" width="100%" align="left" cellsapacing="0" cellpadding ="0">
-<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_usr $brih_general $brih_infos</b></td></tr>
+<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_usr #if($lang == "hindi") $brih_Of #end $brih_general $brih_infos</b></td></tr>
 <tr bgclor="$ui.tableColor" align="left">
         <td align="left" width="50%">$brih_usrName:
         <td align="left" width="50%"><b>$usrname</b>
 </tr>
 <tr bgclor="$ui.menuColor" >
-        <td align="left" width="50%">$brih_usr $brih_role:
+        <td align="left" width="50%">$brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_role:
         <td align="left" width="50%"><b>$Rolename</b>
 </tr>
 <tr bgclor="$ui.menuColor" >
-        <td align="left" width="50%">$brih_usr $brih_rollno:
+        <td align="left" width="50%">$brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_rollno:
 	#if($empty=="falgrollnoprg")
         <td align="left" width="50%"><b>-</b>
 	#else
@@ -150,7 +159,7 @@ $!data.getMessage()
 	#end
 </tr>
 <tr bgclor="$ui.menuColor" >
-        <td align="left" width="50%">$brih_usr $brih_program:
+        <td align="left" width="50%">$brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_program:
 	#if($empty=="falgrollnoprg")
         <td align="left" width="50%"><b>-</b>
 	#else
@@ -159,7 +168,7 @@ $!data.getMessage()
 </tr>
 <tr bgclor="$ui.menuColor">
 	#if($data.getUser().getUserName() == "admin"||$data.getUser().getTemp("role")=="institute_admin")
-        <td align="left" width="50">$brih_course $brih_name:
+        <td align="left" width="50">$brih_course #if($lang == "hindi") $brih_Of1 #end $brih_name:
 	#else
         <td align="left" width="50%">$brih_topic:
 	#end
@@ -186,7 +195,11 @@ $!data.getMessage()
         <td align="left" width="50%">$Res_join:</td>
         <td align="left" width="50%"><b>$jdate</td>
 </tr>
-<tr bgcolor="$ui.menuColor" width="100%"><td td width="100%" colspan="5"><b>$brih_usr $brih_info $brih_on $brih_communication</b></td></tr>
+<tr bgcolor="$ui.menuColor" width="100%"><td td width="100%" colspan="5"><b> #if($lang == "hindi" || $lang=="gujarati")
+										$brih_communication  $brih_in $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_info 
+									     #else 
+										$brih_usr $brih_info $brih_on $brih_communication 
+									     #end </b></td></tr>
 <tr bgclor="$ui.menuColor" width="100%" aligh="left">
         <td align="left" width="50%">$personal $brih_indexHome_Msg:</td>
         <td align="left" width="50%"><b>$personalmess</td>
@@ -212,12 +225,16 @@ $!data.getMessage()
         <td align="left" width="50%"><b>$unreadDB</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%" aligh="left">
-        <td align="left" width="50%">$brih_number $brih_Of $brih_Notices:</td>
+        <td align="left" width="50%"> #if($lang == "hindi" || $lang=="gujarati")
+						$brih_Notices $brih_number 
+					#else 
+						$brih_number $brih_Of $brih_Notices 
+					#end :</td>	
         <td align="left" width="50%"><b>$notices</td>
 </tr>
-<tr bgcolor="$ui.menuColor" width="100%"><td td width="100%" colspan="5"><b>$brih_usr $brih_grp $brih_trkdetail</b></td></tr>
+<tr bgcolor="$ui.menuColor" width="100%"><td td width="100%" colspan="5"><b> $brih_usr $brih_grp #if($lang == "hindi") $brih_Of1 #end $brih_trkdetail </b></td></tr>
 <tr bgclor="$ui.menuColor" width="100%" aligh="left">
-        <td align="left" width="50%">$brih_grp $brih_name:</td>
+        <td align="left" width="50%">$brih_grp #if($lang == "hindi") $brih_Of1 #end $brih_name:</td>
 	#if($name =="yes")
         <td align="left" width="50%"><b>$gname</td>
 	#else
@@ -225,7 +242,7 @@ $!data.getMessage()
 	#end
 </tr>
 <tr bgclor="$ui.menuColor" width="100%" aligh="left">
-        <td align="left" width="50%">$brih_grp $brih_grpleader:</td>
+        <td align="left" width="50%">$brih_grp #if($lang == "hindi") $brih_Of1 #end $brih_grpleader:</td>
 	#if($name2=="yes")
         <td align="left" width="50%"><b>$sname</td>
 	#else
@@ -233,13 +250,17 @@ $!data.getMessage()
 	#end
 </tr>
 #if($data.getUser().getUserName() == "admin")
-<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_usr $brih_info $brih_on $brih_system $brih_Usage</b></td></tr>
+<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b> #if($lang == "hindi" || $lang=="gujarati") 
+										$brih_Usage $brih_system $brih_in $brih_usr #if($lang == "hindi") $brih_Of  #end $brih_info 
+									#else 
+										$brih_usr $brih_info $brih_on $brih_system $brih_Usage 
+									#end</b></td></tr>
 <tr bgclor="$ui.menuColor" width="100%" aligh="left">
         <td align="left" width="50%">$brih_last $brih_login:</td>
         <td align="left" width="50%"><b>$ldate</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%" aligh="left">
-        <td align="left" width="50%">$brih_login $brih_last $brih_trkmonth:</td>
+        <td align="left" width="50%">$brih_login #if($lang == "hindi" || $lang=="gujarati") $brih_Of1 #end $brih_last $brih_trkmonth:</td>
         <td align="left" width="50%"><b>$lastdate</td>
 </tr>
 #end

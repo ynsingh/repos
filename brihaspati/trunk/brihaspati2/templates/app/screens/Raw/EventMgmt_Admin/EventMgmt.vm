@@ -19,11 +19,7 @@ $!data.getMessage()
 		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | $brih_emgmt</b>
 	#elseif($mode=="adphase")
         	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
-        	#if($lang=="hindi")
-			<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_emgmt</a> | $brih_ins $brih_for $brih_survey
-                #else
-	                <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_emgmt</a> | Create& Post $brih_survey $brih_for $brih_ins
-                #end
+                <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_emgmt</a> | #if($lang=="hindi" || $lang =="gujarati") $brih_ins brih_for $brih_survey $WikiCreate & $brih_post #else $WikiCreate & $brih_post $brih_survey $brih_for $brih_ins #end
         #elseif($mode=="sresult")
         	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
 	        <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_emgmt</a> | $brih_survey #if($lang=="hindi") $brih_Of1 #end $brih_result
@@ -31,7 +27,7 @@ $!data.getMessage()
 	        <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_emgmt</a> | $brih_survey #if($lang=="hindi") $brih_Of1 #end $brih_update
         #else
 	        <a href=$link.setPage("Index.vm")>$brih_home</a> |
-        	#if($lang=="hindi")
+        	#if($lang=="hindi" || $lang =="gujarati")
 	        	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$cname</a> | $cname $brih_for $brih_survey
 	        #else
         		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$cname</a> | $brih_survey $brih_for $cname

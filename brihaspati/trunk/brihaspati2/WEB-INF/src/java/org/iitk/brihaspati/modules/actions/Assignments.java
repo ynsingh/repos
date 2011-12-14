@@ -1147,7 +1147,8 @@ public class Assignments extends SecureAction
                       // 	ErrorDumpUtil.ErrorLog("\nassignid"+assignid+"\nfilepath"+filepath+"\nAssDir"+AssDir);
                        	SystemIndependentUtil.deleteFile(AssDir);
 			//AssDir.delete();
-                        data.setMessage("Assignment deleted successfully !!");
+                        data.setMessage(MultilingualUtil.ConvertedString("assignment_msg19",LangFile));
+			//"Assignment deleted successfully !!"
 		}
                 catch(Exception ex){data.setMessage("Error in Delete word and alias" + ex);}
        	}//method close

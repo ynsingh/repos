@@ -104,7 +104,7 @@ $!data.getMessage()
 </tr>
 <tr>
 	<td><select name="courses">
-        <option value="Courses">$Notice_All $brih_courses</option>
+        <option value="Courses">$brih_all $brih_courses</option>
         #foreach($group in $courseList)
 		#if($data.getUser().getUserName() == "admin")
                 	#if(($group.Name !="global") && ($group.Name !="author")&&($group.Name !="institute_admin"))

@@ -160,8 +160,8 @@ $page.setBgColor("#ffffff")
 	#end
 </table>
 
-#set ( $b= $dirContent.size())
-#if($b>0)
+#set($bl= $dirContent.size())
+#if($bl>0)
 	<div style="background-color:$ui.tableColor">	
 	<br><H3>${Wikimain3}</H3>&nbsp
 	</div>

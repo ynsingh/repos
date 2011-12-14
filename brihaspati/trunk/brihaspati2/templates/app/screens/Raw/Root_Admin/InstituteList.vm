@@ -175,9 +175,9 @@ $!data.getMessage()
 	<td>$applist.getInstituteId()</td>
 
 	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","addadmin").addPathInfo("count","2") style=text-decoration:none>
-	#if($lang=="hindi") $RemoteInstitute $brih_ad $brih_add #else $brih_add $RemoteInstitute $brih_admin #end</a></td>
+	#if($lang=="english")$brih_add $RemoteInstitute $brih_admin #else $RemoteInstitute $brih_ad $brih_add #end</a></td>
 	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","viewadmin").addPathInfo("count","2") style=text-decoration:none>
-#if($lang=="hindi")$brih_Institute $brih_Of2 $brih_ad $brih_Of1 $brih_view #else $brih_view $RemoteInstitute $brih_admin #end</a></td>
+#if($lang=="gujarati") $RemoteInstitute $brih_admin $brih_view  #elseif($lang == "hindi") $brih_Institute $brih_Of2 $brih_ad $brih_Of1 $brih_view #else $brih_view $RemoteInstitute $brih_admin #end</a></td>
 	<td><a href=$link.setPage("call,Root_Admin,UpdateInstituteAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("status","instituteedit").addPathInfo("count","2") style=text-decoration:none>
 #if($lang=="hindi")$brih_detail $brih_Of1 $brih_edit #else $brih_edit $brih_detail #end</a></td>
 	<td><a href=$link.setPage("call,Root_Admin,InstituteList.vm").setAction("Institute_RootAdmin").addPathInfo("deleteFileNames",$applist.getInstituteId()).addPathInfo("actionName","eventSubmit_RejectAdmin").addPathInfo("count","2") style=text-decoration:none>$brih_delete

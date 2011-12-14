@@ -75,13 +75,13 @@ $!data.getMessage()
                 	#elseif($tdcolor == "8")
                         	<td bgcolor="#AFDCEC">
 	                #end
-        	                <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8")>$RemoteInstitute $brih_wise $DiscussionBoard</td>
+        	                <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8").addPathInfo("grpName",$grpName) >$RemoteInstitute $brih_wise $DiscussionBoard</td>
                 	#if($tdcolor!="2")
                         	<td>
 	                #elseif($tdcolor == "2")
         	                <td bgcolor="#AFDCEC">
                 	#end
-		                <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","2")>$brih_chat</a></td>
+		                <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","2").addPathInfo("grpName",$grpName)>$brih_chat</a></td>
 		#end
 </tr>
 	<form name="frm" ENCTYPE="multipart/form-data" METHOD="POST" action="$link.setPage("call,Dis_Board,DB.vm").setAction("SendDB")">

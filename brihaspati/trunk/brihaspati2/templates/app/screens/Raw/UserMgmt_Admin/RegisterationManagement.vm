@@ -30,8 +30,8 @@ $!data.getMessage()
 	$brih_multi_usr2
 	#else		
         #if($mode!="Search")
-                #if($lang == "hindi")
-                 $brih_view_all1
+                #if($lang == "hindi" || $lang == "gujarati")
+                	$brih_view_all1
         <td width="30%" align="right">
         #if( $total_size!=0 )
         #if( $endIndex < $total_size )
@@ -46,7 +46,7 @@ $!data.getMessage()
         #end
         </td>
                 #else
-                $brih_view_all $brih_course
+	                $brih_view_all $brih_course
         <td width="30%" align="right">
         #if( $total_size!=0 )
         #if( $endIndex < $total_size )
@@ -76,13 +76,13 @@ $!data.getMessage()
 	#elseif($tdcolor == "1")
         <td width=33% bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_course $brih_Of1 $brih_reg1 #else $brih_reg1 $brih_course #end </a> </td> 
+        <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none>  #if($lang == "hindi" || $lang == "gujarati") $brih_course #if($lang == "hindi") $brih_Of1 #end $brih_reg1 #else $brih_reg1 $brih_course #end </a> </td> 
 	#if($tdcolor != "2")
         <td width=33%>
 	#elseif($tdcolor == "2")
         <td width=33% bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("count","2") style=text-decoration:none>  #if($lang == "hindi") $brih_multiple1 $brih_course $brih_Of1 $brih_reg1 #else $brih_reg1 $brih_multiple1 $brih_course #end </a></td> 
+        <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("count","2") style=text-decoration:none>  #if($lang == "hindi" || $lang == "gujarati") $brih_multiple1 $brih_course $brih_Of1 $brih_reg1 #else $brih_reg1 $brih_multiple1 $brih_course #end </a></td> 
 	#if($tdcolor != "3")
         <td width=33%>
 	#elseif($tdcolor == "3")
@@ -150,7 +150,7 @@ $!data.getMessage()
 		 * @ modified by shaista
 		*#
             <tr bgcolor="$ui.menuColor">
-		<td> #if($lang =="hindi") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font></td>
+		<td> #if($lang =="hindi" || $lang == "gujarati") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font></td>
                 <td>
                 <select name="instName" size=1 />
                           #foreach($name in $instList)

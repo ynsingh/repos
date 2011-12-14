@@ -56,6 +56,7 @@ public class MailNotificationThread implements Runnable {
 	private boolean flag=false;
 	private static Thread runner=null;
 	private static MailNotificationThread mailNotificationThread=null;
+	private static MultilingualUtil mu=new MultilingualUtil();
 	
 
 	/**
@@ -85,7 +86,8 @@ public class MailNotificationThread implements Runnable {
                 v.add(msg_UserInfo);  //8 
 		mailnotification.add(0,v);
 		start();
-		return "Message is in queue";
+		return mu.ConvertedString("mail_msg", LangFile);
+		//"Message is in queue";
 	}
 	
 	/**

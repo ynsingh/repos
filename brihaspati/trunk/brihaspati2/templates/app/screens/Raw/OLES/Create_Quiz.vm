@@ -65,7 +65,7 @@ $!data.getMessage()
 <table border=1 align="center" width="60%" bgcolor="$ui.tableColor" cellpadding="3">
 	<tr bgcolor="$ui.menuColor" >
 		<td width=30% align="centre">
-	      		<b><font face="$ui.sansSerifFonts"> $brih_select  $brih_quiz </font></b>
+	      		<b><font face="$ui.sansSerifFonts"> #if($lang == "hindi" || $lang == "gujarati") $brih_quiz $brih_select #else $brih_select  $brih_quiz #end </font></b>
 	   	</td>
 	   	<td  width=70% align="left"  >
 	        	<font face="$ui.sansSerifFonts">

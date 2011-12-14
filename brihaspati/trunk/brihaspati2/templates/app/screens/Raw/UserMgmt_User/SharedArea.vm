@@ -45,7 +45,7 @@ $!data.getMessage()
                         <input align=center type="text" name="valueString" value="">
                 </td>
                 <td>
-                        <input type="button" name="eventSubmit_doSearch" value="Search" onClick="checkNull(document.frm,this);">
+                        <input type="button" name="eventSubmit_doSearch" value="$brih_search" onClick="checkNull(document.frm,this);">
 			<input type="hidden" name="ulist" value=$userlist>
                 </td>
 		<td colspan=5><a href=$link.setPage("call,UserMgmt_User,SharedArea.vm") style=text-decoration:none>$brih_listUsr</a></td>

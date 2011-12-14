@@ -63,31 +63,30 @@ $!data.getMessage()
         #else
         <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
         <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a> |
-	<a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("topic",$category).addPathInfo("count","1")">$brih_view $brih_content</a> |
+	<a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("topic",$category).addPathInfo("count","1")"> #if($lang =="hindi" || $lang =="gujarati") $brih_content $brih_Of1 $brih_view #else $brih_view $brih_content #end </a> |
         #end
 	#if($modeadd!="ques" && $modeedit!="edit" && $mode!="faqcheck" && $stat!="addfav" && $stat!="unfav")
 	$brih_FAQ$brih_list 
 	#end
 	#if($modeadd=="ques")
-	<a href=$link.setPage("call,FAQ,FAQ.vm").addPathInfo("mode","alllist").addPathInfo("category",$category)>$brih_FAQ$brih_list</a> |
-	$brih_add $brih_Faq
+	<a href=$link.setPage("call,FAQ,FAQ.vm").addPathInfo("mode","alllist").addPathInfo("category",$category)>$brih_FAQ  #if($lang =="hindi") $brih_Of #end $brih_list</a> |
+	#if($lang =="hindi" || $lang =="gujarati") $brih_Faq $brih_add #else $brih_add $brih_Faq #end
 	#end
 	#if($modeedit=="edit")
-	<a href=$link.setPage("call,FAQ,FAQ.vm").addPathInfo("mode","alllist").addPathInfo("category",$category)>$brih_FAQ$brih_list</a> |
-	$brih_edit $brih_Faq
+	<a href=$link.setPage("call,FAQ,FAQ.vm").addPathInfo("mode","alllist").addPathInfo("category",$category)>$brih_FAQ #if($lang =="hindi") $brih_Of #end $brih_list</a> | #if($lang =="hindi" || $lang =="gujarati") $brih_Faq $brih_edit #else $brih_edit $brih_Faq #end
 	#end
 	#if($mode=="faqcheck")
 	<a href=$link.setPage("call,FAQ,FAQ.vm").addPathInfo("mode","alllist").addPathInfo("category",$category)>$brih_FAQ$brih_list</a> |
-	$brih_view$brih_Faq
+	#if($lang =="hindi" || $lang =="gujarati") $brih_Faq $brih_Of1 $brih_view #else $brih_view $brih_Faq #end
 	#end
 	#if($stat == "addfav" || $stat == "unfav")
-	<a href=$link.setPage("call,FAQ,FAQ.vm").addPathInfo("mode","alllist").addPathInfo("category",$category)>$brih_FAQ$brih_list</a> |
+	<a href=$link.setPage("call,FAQ,FAQ.vm").addPathInfo("mode","alllist").addPathInfo("category",$category)>$brih_FAQ #if($lang =="hindi") $brih_Of #end$brih_list</a> |
 	#end
 	#if($stat == "addfav")
-	$brih_select $brih_fav
+		#if($lang =="hindi" || $lang =="gujarati") $brih_fav $brih_select #else $brih_select $brih_fav #end
 	#end
 	#if($stat == "unfav")
-	$brih_select $brih_unfav
+		#if($lang =="hindi" || $lang =="gujarati")  $brih_unfav $brih_select #else $brih_select $brih_unfav #end
 	#end
 	</font>
 </b>
@@ -111,13 +110,13 @@ $!data.getMessage()
         #elseif($tdcolor == "1")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1")> #if($lang == "english")$brih_course  $brih_content #else $brih_content #end </a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1")> #if($lang =="hindi" || $lang =="gujarati") $brih_content #else $brih_course  $brih_content #end </a></td>
         #if($tdcolor != "2")    
         <td>
         #elseif($tdcolor == "2")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2")> #if($lang !="english") $brih_content $brih_upload #else  $brih_upload $brih_course $brih_content #end </a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2")> #if($lang =="hindi" || $lang =="gujarati") $brih_content $brih_upload #else  $brih_upload $brih_course $brih_content #end </a></td>
         #if($tdcolor != "3")    
         <td>
         #elseif($tdcolor == "3")
@@ -129,13 +128,13 @@ $!data.getMessage()
         #elseif($tdcolor == "4")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4")> #if($lang == "english") $brih_upload $brih_course $brih_header #else $brih_course $brih_Of $brih_header  $brih_upload #end </a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4")> #if($lang =="hindi" || $lang =="gujarati") $brih_course $brih_Of $brih_header  $brih_upload #else $brih_upload $brih_course $brih_header #end </a></td>
         #if($tdcolor != "5")    
         <td>
  #elseif($tdcolor == "5")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5")> #if($lang == "english") $RemoteConfiguration $brih_grade #else $brih_grade $RemoteConfiguration #end </a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5")> #if($lang =="hindi" || $lang =="gujarati") $RemoteConfiguration $brih_grade #else $brih_grade $RemoteConfiguration #end </a></td>
         #if($tdcolor != "6")    
         <td>
         #elseif($tdcolor == "6")
@@ -157,9 +156,9 @@ $!data.getMessage()
 ##creating link add faq,favorite and unfavorite faq
 <table width="100%" bgcolor="$ui.tableColor">
 		<tr bgcolor="$ui.menuColor" width="100%"><td width="25%"><b>$brih_cat : $category</b>
-		&nbsp;&nbsp;&nbsp;&nbsp;<a href=$link.setPage("call,FAQ,FAQ.vm").addPathInfo("mode","alllist").addPathInfo("category",$category)>$brih_FAQ$brih_list</a></td>
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href=$link.setPage("call,FAQ,FAQ.vm").addPathInfo("mode","alllist").addPathInfo("category",$category)>$brih_FAQ #if($lang == "hindi") $brih_Of #end $brih_list</a></td>
 #if($modeedit!="edit")
-	<td width="25%" align="center"><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("modeadd","ques").addPathInfo("category",$category).addPathInfo("mode","alllist")">$brih_add $brih_FAQ</a></td>
+	<td width="25%" align="center"><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("modeadd","ques").addPathInfo("category",$category).addPathInfo("mode","alllist")"> #if($lang == "hindi" || $lang== "gujarati") $brih_FAQ $brih_add #else $brih_add $brih_FAQ #end </a></td>
 #end
 		#if($modeadd!="ques")
 		#if($user_role == "instructor")
@@ -173,7 +172,7 @@ $!data.getMessage()
 	## adding textarea for answer and textbox for question,expiry field
 	<table width="100%" bgcolor="$ui.tableColor"> ## table start
         #if($modeadd=="ques")
-                <tr><td width="100%" colspan="5">$brih_add $brih_new $brih_qus</td></tr>
+                <tr><td width="100%" colspan="5"> #if($lang == "hindi" || $lang== "gujarati") $brih_new $brih_qus $brih_add #else $brih_add $brih_new $brih_qus #end </td></tr>
                 <tr><td>$brih_qus :</td>
 		##<textarea  id="ta" name="question" rows=5 cols=60></textarea></td></tr>
 		<td align="left"><input type="text" name="question" size="60" value=""></td></tr>
@@ -182,16 +181,16 @@ $!data.getMessage()
 		<td align="left" width="10%"><textarea id="ta" name="answer" wrap="physical" rows=9 cols=80></textarea></td></tr>
 		#if($user_role == "instructor"||$user_role == "student")
                 <tr>
-                        <td>Rating Expiry for FAQ (in Days)</td>
+                        <td>  #if($lang == "hindi" || $lang== "gujarati") $brih_FAQ $brih_Of $brih_expiry $brih_for $brih_rating #else $brih_rating $brih_Of $brih_FAQ $brih_expiry #end </td>
                         <td><input id="exp_id" type="text" name="expiry" value="7" size="26"></td>
                 </tr>
                 #end
                 <tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5">&nbsp;&nbsp;&nbsp;
 		#if($data.getUser().getUserName() == "admin" ||$user_role == "institute_admin")
-               <input type="button" name="eventSubmit_doSaveQues" value="Save" onClick="checkField(document.frm,this);"/>
+               <input type="button" name="eventSubmit_doSaveQues" value="$WikiSave" onClick="checkField(document.frm,this);"/>
 		<input type="reset" name="reset" value="Clear" onClick="checkClear(document.frm,this);"/>
 		#else
-               <input type="button" name="eventSubmit_doSaveQues" value="Save" onClick="checkBlank(document.frm,this);"/>
+               <input type="button" name="eventSubmit_doSaveQues" value="$WikiSave" onClick="checkBlank(document.frm,this);"/>
 		<input type="reset" name="reset" value="Clear" onClick="checkClear(document.frm,this);"/>
                 #end
                 </td></tr><br><br>
@@ -275,7 +274,7 @@ $!data.getMessage()
                         #end
 			</tr>
 			<tr bgcolor="$ui.menuColor"><td align="left" colspan="10">
-                        <input type="button" name="eventSubmit_doSelectFav_Unfav" value="$brih_add$brih_fav" onClick="deleteConfirm(document.frm,this);"/>
+                        <input type="button" name="eventSubmit_doSelectFav_Unfav" value="$brih_add $brih_fav" onClick="deleteConfirm(document.frm,this);"/>
 			</td></tr>
 			 #else
                         <tr><td align="center"><b><font size="3">$brih_faqmsg1</font></td></tr>
@@ -288,13 +287,13 @@ $!data.getMessage()
 		#if($mode=="faqcheck")
 		<table width="100%" bgcolor="$ui.tableColor">
 			#if($data.getUser().getUserName() == "admin"  || $user_role == "institute_admin")
-			<tr bgcolor="$ui.menuColor"><td width="100%" colspan="5"><b>$brih_qus: $ques </b>&nbsp;&nbsp;&nbsp;<a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("quesid",$quesid).addPathInfo("category",$category).addPathInfo("modeedit","edit").addPathInfo("mode","alllist")">$brih_edit $brih_answer</a></td>
+			<tr bgcolor="$ui.menuColor"><td width="100%" colspan="5"><b>$brih_qus: $ques </b>&nbsp;&nbsp;&nbsp;<a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("quesid",$quesid).addPathInfo("category",$category).addPathInfo("modeedit","edit").addPathInfo("mode","alllist")"> #if($lang == "hindi" || $lang=="gujarati") $brih_answer $brih_edit #else $brih_edit $brih_answer #end </a></td>
 			#else
 			<tr bgcolor="$ui.menuColor"><td width="100%" colspan="5"><b>$brih_qus: $ques </b>&nbsp;&nbsp;&nbsp;<a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("quesid",$quesid).addPathInfo("category",$category).addPathInfo("modeedit","edit").addPathInfo("mode","alllist").addPathInfo("edittype","addedit")">
 			#if($relation=="before")
 			#foreach($list in $answerlist)
 			#if($list.getVote()=="notattempt")
-			$brih_add $brih_answer</a></td>
+			#if($lang == "hindi" || $lang=="gujarati") $brih_answer $brih_add #else $brih_add $brih_answer #end </a></td>
 			#end
 			#end
 			<td width="30%">Total voting percentage:<align="right"><div style="border: 1px solid black; width:200px; height:7px;"><div id="progress" style="height:7px; width:0px; background-color:red;"/></div></td>
@@ -318,12 +317,12 @@ $!data.getMessage()
 					#if($count== $count1 && $count2==$count1)
 					<tr width="100%"><td width="100%">
 						$count. $anslist.Answer
-						<a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("quesid",$anslist.questionid).addPathInfo("faqid",$anslist.faqid).addPathInfo("category",$category).addPathInfo("modeedit","edit").addPathInfo("mode","alllist")"> #if($user_role!= "student")$brih_edit $brih_answer #end</a></td>
+						<a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("quesid",$anslist.questionid).addPathInfo("faqid",$anslist.faqid).addPathInfo("category",$category).addPathInfo("modeedit","edit").addPathInfo("mode","alllist")"> #if($user_role!= "student") #if($lang == "hindi" || $lang=="gujarati") $brih_answer $brih_edit #else $brih_edit $brih_answer #end #end</a></td>
 							#if($user_role == "student" && $list.getVote()=="notattempt" && $relation=="before")
 							#if($ratelist.getFaqId()=="$anslist.faqid" && $ratelist.getUserId()== "$uid")
 							<td width="20%">$brih_rate$brih_Faq</a></td>
 							#else
-							<td width="20%"><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("faqid",$anslist.faqid).addPathInfo("quesid",$quesid).addPathInfo("category",$category).addPathInfo("modetype","rate").addPathInfo("mode","faqcheck")">$brih_rate$brih_Faq</a></td>
+							<td width="20%"><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("faqid",$anslist.faqid).addPathInfo("quesid",$quesid).addPathInfo("category",$category).addPathInfo("modetype","rate").addPathInfo("mode","faqcheck")">$brih_rate $brih_Faq</a></td>
 							#end
 							#end
                         				#if($modetype == "rate" && $faqid==$anslist.faqid)
@@ -358,7 +357,7 @@ $!data.getMessage()
 ##this part for editing the Answer
 ## showing question and answer for editing
 #if($modeedit=="edit")
-	<tr><td width="100%" colspan="5">$brih_add $brih_answer</td></tr>
+	<tr><td width="100%" colspan="5"> #if($lang == "hindi" || $lang=="gujarati") $brih_answer $brih_add #else $brih_add $brih_answer #end </td></tr>
         <tr><td>$brih_qus :</td>
 	<td><input type="text" name="question" size="70" value="$ques" readonly></td></tr>
         <tr><td>$brih_answer :</td>
@@ -374,7 +373,7 @@ $!data.getMessage()
 	#end
 	#end
         <tr bgcolor="$ui.tableColor" width="100%"><td align="left" width="100%" colspan="5">&nbsp;&nbsp;&nbsp;
-        <input type="button" name="eventSubmit_doAddAnswer" value="Save" onClick="checkField2(document.frm,this);"/>
+        <input type="button" name="eventSubmit_doAddAnswer" value="$WikiSave" onClick="checkField2(document.frm,this);"/>
 #end
 </table>
 ##passing hidden variables for use in action.

@@ -51,7 +51,11 @@ $!data.getMessage()
 <form name="frm" method="post" action=$link.setPage("call,TrackingReport,TrkReport_Instadmin.vm")>
 <table width=100%  bgcolor="$ui.tableColor">
 ##<tr><td bgcolor="$ui.menuColor"><b>Select Institute For Report:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="instname" size="1" onChange="Changename(document.frm,this);"/>
-<tr><td><b>$brih_select $RemoteInstitute $brih_for $brih_reports:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="instname" size="1" onChange="Changename(document.frm,this);"/>
+<tr><td><b> #if($lang == "hindi" || $lang == "gujarati") 
+		$brih_reports $brih_for $RemoteInstitute $brih_select 
+	#else 
+		$brih_select $RemoteInstitute $brih_for $brih_reports 
+	#end:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="instname" size="1" onChange="Changename(document.frm,this);"/>
         <option>$brih_select</option>
                                 #if($data.getUser().getUserName() == "admin")
                                 #foreach($instname in $instdetail)
@@ -70,7 +74,11 @@ $!data.getMessage()
         <td align="left" width="50%"><b>$inst_name</b>
 </tr>
 <tr>
-        <td align="left" width="50%">$brih_total $brih_nos $brih_program:
+        <td align="left" width="50%"> #if($lang == "hindi" || $lang == "gujarati") 
+						$brih_program $brih_Of $brih_total $brih_nos 
+					#else 
+						$brih_total $brih_nos $brih_program 
+					#end :
 	#if($Instproglist.size()==0)
         <td align="left" width="50%">$brih_program<b></b>
 	#else
@@ -78,19 +86,31 @@ $!data.getMessage()
 	#end
 </tr>
 <tr bgcolor="$ui.menuColor" >
-        <td align="left" width="50%">$brih_total $brih_nos $brih_course:
+        <td align="left" width="50%"> #if($lang == "hindi" || $lang == "gujarati") $brih_course $brih_Of $brih_total $brih_nos #else $brih_total $brih_nos $brih_course #end:
         <td align="left" width="50%"><b>$ttlno_Course</b>
 </tr>
 <tr>
-        <td align="left" width="50%">$brih_total $brih_nos $brih_student:
+        <td align="left" width="50%"> #if($lang == "hindi" || $lang == "gujarati") 
+					$brih_student $brih_Of $brih_total $brih_nos 
+				#else 
+					$brih_total $brih_nos $brih_student 
+				#end:
         <td align="left" width="50%"><b>$Studentlist</b>
 </tr>
 <tr bgcolor="$ui.menuColor" >
-        <td align="left" width="50%">$brih_total $brih_nos $brih_ins:
+        <td align="left" width="50%">  #if($lang == "hindi" || $lang == "gujarati") 
+						$brih_ins $brih_Of $brih_total $brih_nos 
+					#else 
+						$brih_total $brih_nos $brih_ins 
+					#end :
         <td align="left" width="50%"><b>$istructorlist</b>
 </tr>
 <tr>
-        <td align="left" width="50%">$brih_total $brih_nos $brih_admin($RemoteInstitute $brih_admin):
+        <td align="left" width="50%"> #if($lang == "hindi" || $lang == "gujarati")
+						$brih_admin($brih_Institute $brih_admin)  $brih_Of $brih_total $brih_nos 
+					#else 
+						$brih_total $brih_nos $brih_admin($RemoteInstitute $brih_admin) 
+					#end :
         <td align="left" width="50%"><b>$instadmin</b>
 </tr>
 #end

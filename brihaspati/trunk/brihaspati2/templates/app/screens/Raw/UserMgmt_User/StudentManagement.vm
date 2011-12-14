@@ -31,7 +31,7 @@ $!data.getMessage()
 	#elseif($tdcolor == "1")	
 	<td bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi") $brih_student $brih_add #else $brih_add $brih_students #end </a>
+	<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_student $brih_add #else $brih_add $brih_students #end </a>
 	</td>
 	#if($tdcolor != "2")
 	<td>
@@ -44,7 +44,7 @@ $!data.getMessage()
 	#elseif($tdcolor == "3")	
 	<td bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3") style=text-decoration:none> #if($lang =="hindi") $brih_multiple1 $brih_student $brih_add #else $brih_add $brih_multiple1 $brih_students #end </a></td>
+	<a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_multiple1 $brih_student $brih_add #else $brih_add $brih_multiple1 $brih_students #end </a></td>
 	#if($tdcolor != "4")
 	<td>
 	#elseif($tdcolor == "4")	
@@ -99,7 +99,7 @@ $!data.getMessage()
 	<tr>
 	        <td>$brih_program</td>
          	<td colspan=3><select name="prg" size=1 onChange="ChkPrg(document.frm,this);"/>
-			<option value="Select Program"> #if($lang=="hindi") $brih_program $brih_select #else $brih_select $brih_program #end</option>
+			<option value="Select Program"> #if($lang=="hindi"  || $lang == "gujarati" ) $brih_program $brih_select #else $brih_select $brih_program #end</option>
 			#foreach($progname in $PrgDetail)
 				<option value="$progname.getPrgCode()">$progname.getPrgName() </option>
 			#end

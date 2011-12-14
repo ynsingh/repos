@@ -20,9 +20,9 @@ $!data.getMessage()
 			$page.setTitle("Admin Home ")
 			<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
 			#if($mode == "edit")
-			<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("count","1")>$brih_emgmt</a> | #if($lang=="hindi") $brih_Ev $brih_Of1  $brih_update #else  $brih_update $brih_Ev #end
+			<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("count","1")>$brih_emgmt</a> | #if($lang=="hindi" || $lang == "gujarati") $brih_Ev #if($lang=="hindi") $brih_Of1 #end $brih_update #else  $brih_update $brih_Ev #end
 			#else
-			<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("count","1")>$brih_emgmt</a> | #if($lang=="hindi") $brih_Ev $brih_add #else $brih_add $brih_Ev #end
+			<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("count","1")>$brih_emgmt</a> | #if($lang=="hindi" || $lang =="gujarati") $brih_Ev $brih_add #else $brih_add $brih_Ev #end
 			#end
 			##end
        </td></tr>
@@ -72,9 +72,9 @@ $!data.getMessage()
   ##<table align=left bgcolor="$ui.tableColor" width=100%>
 	<tr bgcolor="$ui.tableColor">
 		#if(($mode == "edit") && ($actionName!="eventSubmit_doInsert") && ($actionName!="eventSubmit_doUpdate"))		
-        	<td colspan=4><b><i> #if($lang =="hindi" ) $brih_col1 $brih_update #else $brih_update $brih_col1 #end </i></b></td>
+        	<td colspan=4><b><i> #if($lang =="hindi" || $lang == "gujarati") $brih_col1 $brih_update #else $brih_update $brih_col1 #end </i></b></td>
 		#else
-        	<td colspan=4><b><i> #if($lang == "hindi") $brih_col1 $brih_add #else  $brih_add $brih_col1 #end </i></b></td>
+        	<td colspan=4><b><i> #if($lang == "hindi" || $lang == "gujarati") $brih_col1 $brih_add #else  $brih_add $brih_col1 #end </i></b></td>
 		#end
 	</tr>
 	##</table>
@@ -123,7 +123,7 @@ $!data.getMessage()
                 <td colsapn=3><input type="text" size=25 name="date" value="$!keydate" "readonly"></td>
                 </tr>
 		<tr>
-                <td>$brih_Ev $brih_type</td>
+                <td>$brih_Ev  #if($lang =="hindi") $brih_Of2 #end $brih_type</td>
                 <td colspan=3><input type="text" size=25 name="etype" value="$!etype" "readonly"></td>
                 </tr>
 		<tr bgcolor="$ui.menuColor">
