@@ -106,7 +106,7 @@ public class InstituteIdUtil
                                         crit.add("INSTITUTE_ADMIN_REGISTRATION","INSTITUTE_NAME",(Object)("%"+vale+"%"),crit.LIKE);
                                 }
                                 if(by.equals("InstituteAdd")){
-                                        crit.add("INSTITUTE_ADMIN_REGISTRATION","INSTITUTE_ADDRESS",(Object)("%"+vale+"%"),crit.LIKE);
+                                        crit.add("INSTITUTE_ADMIN_REGISTRATION","INSTIUTE_ADDRESS",(Object)("%"+vale+"%"),crit.LIKE);
                                 }
                         }
                         else{
