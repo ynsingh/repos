@@ -141,7 +141,7 @@ VoterRegistrationDAO.insert(ob);
 logindao.insert(login, userid);
 request.setAttribute("msg", "Voter Successfully Added");
 String path = servlet.getServletContext().getRealPath("/");
-        obj=new Email(path,lf.getEmail(),admin_password,"Registration Accepted Successfully from EMS","User Id="+userid +" Your Password for EMS Login is="+admin_password);
+        obj=new Email(path,lf.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+lf.getV_name()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for EMS Login ="+admin_password+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
          executor.submit(new Runnable() {
 
                 public void run() {

@@ -251,6 +251,10 @@ document.write('</div></span>');
             <li>
                 <a href="<%=request.getContextPath()%>/institute_admin/search_election_details.jsp"  target="page" onclick="return pageload(4);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><b style="color:white" dir="<%=rtl%>"><%=resource.getString("view_electiondetails")%></b><%--<%=resource.getString("view_electiondetails")%>--%></a>
                 </li>
+
+                <li>
+                <a href="<%=request.getContextPath()%>/ModuleHelp/index.html"  target="_blank"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><b style="color:white" dir="<%=rtl%>"> Operational Help</b><%--<%=resource.getString("view_electiondetails")%>--%></a>
+                </li>
 </ul>
             
             <%--<table border="0" width="100%" bgcolor="#7697BC" style="font-family: arial;font-weight: bold;font-size:13px" dir="<%=rtl%>">

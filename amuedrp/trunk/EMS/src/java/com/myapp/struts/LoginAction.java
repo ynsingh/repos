@@ -177,6 +177,15 @@ session.setAttribute("staff_id", user_id);
                 }*/
 
              //   if(login.getStatus().equalsIgnoreCase("logout") && button!=null){
+                InstituteDAO  obj=new InstituteDAO();
+            Institute x= obj.getInstituteDetails(login.getStaffDetail().getId().getInstituteId());
+if(x!=null)
+{      session.setAttribute("institute_name", x.getInstituteName());
+       
+}
+
+
+
                 session.setAttribute("institute_id", login.getStaffDetail().getId().getInstituteId());
                 session.setAttribute("username", login.getUserName());
               

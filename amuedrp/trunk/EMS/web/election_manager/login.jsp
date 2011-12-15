@@ -219,19 +219,19 @@ String instituteName=(String)session.getAttribute("institute_name");
                     <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("view")%></a>
                     <ul>
                         <li>
-                            <a href="<%=contextPath%>/election_manager/search_voter.jsp?status=A"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("active")%></a>
+                            <a href="<%=contextPath%>/election_manager/search_voter.jsp?status=A"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%--<%=resource.getString("active")%>--%>Registered</a>
                         </li>
-                        <li>
+                        <%--<li>
                             <a href="<%=contextPath%>/election_manager/search_voter.jsp?status=B"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("block")%></a>
-                        </li>
+                        </li>--%>
                         <li>
                             <a href="<%=contextPath%>/election_manager/search_voter.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("viewall")%></a>
                         </li>
                     </ul>
                 </li>
-                <li>
+                <%--<li>
                     <a href="<%=request.getContextPath()%>/election_manager/search_voter.jsp?status=AB"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("blockvoter")%></a>
-                </li>
+                </li>--%>
             </ul>
         </li>
             <li>
@@ -252,9 +252,9 @@ String instituteName=(String)session.getAttribute("institute_name");
                 <li>
                     <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("view")%></a>
                     <ul>
-                        <li>
+                        <%--<li>
                             <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=B"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("blockcandidate")%></a>
-                        </li>
+                        </li>--%>
                         <li>
                             <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=A"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("accepted")%></a>
                         </li>

@@ -30,6 +30,7 @@ public class change_statusAction extends org.apache.struts.action.Action {
     private String status;
     private String manager_id;
     private String institute_id;
+    private String name;
     private final ExecutorService executor=Executors.newFixedThreadPool(1);
     Email obj;
     private String admin_email;
@@ -53,8 +54,9 @@ public class change_statusAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
          Election_Manager_RegistrationActionForm electionManagerForm=(Election_Manager_RegistrationActionForm)form;
+         HttpSession session=request.getSession();
         try{
-HttpSession session=request.getSession();
+
 
 
 
@@ -91,6 +93,7 @@ String instituteId = (String)session.getAttribute("institute_id");
                 admin_email=ems.getStaffDetail().getEmailId();
                 }
             ems.getElectionManager().setStatus(status);
+            name=ems.getStaffDetail().getFirstName() + " "+ems.getStaffDetail().getLastName();
 
             staffmanagerdao.update(ems);
 
@@ -101,7 +104,8 @@ String instituteId = (String)session.getAttribute("institute_id");
         catch(Exception e){
         }
  String path = servlet.getServletContext().getRealPath("/");
-           obj=new Email(path,admin_email,status,"Manager Status is Changed from admin of Institute in EMS","Status"+status);
+           obj=new Email(path,admin_email,status,"Election Manager Status Changed by Institute Adnim in EMS","Dear"+name+",\n Your Working Status Modified to "+status+"\n With Regards,\nInstitute Admin\n"+session.getAttribute("institute_name")+"\nElectionMS");
+
          executor.submit(new Runnable() {
 
                 public void run() {

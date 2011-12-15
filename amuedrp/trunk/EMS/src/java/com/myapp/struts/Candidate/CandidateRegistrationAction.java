@@ -193,7 +193,7 @@ String reason = lf.getReason();
  ob.setStatus("Rejected");
 CandidateRegistrationDAO.update(ob);
 String path = servlet.getServletContext().getRealPath("/");
-          obj=new Email(path,ab.getEmail(),admin_password,"Candidature Request Rejected from EMS","Candidature Request Rejected by Election Manager \n Reason:"+reason);
+          obj=new Email(path,ab.getEmail(),admin_password,"Candidature Request Rejected from EMS","Dear "+lf.getV_name()+"\nCandidature Request Rejected by Election Manager \n Reason:"+reason+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
          executor.submit(new Runnable() {
 
                 public void run() {
@@ -257,7 +257,7 @@ Position1 pos = positiondao.searchPosition(Integer.parseInt(ob.getPosition()));
 CandidateRegistrationDAO.updateCandidature(login,ob,c1);
 String path = servlet.getServletContext().getRealPath("/");
 request.setAttribute("msg", "Registration Accepted Successfully");
-obj=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Mr. "+ c1.getCandidateName() +"\n"+ (ab.getPAddress()!=null?ab.getPAddress():(ab.getCAddress()!=null?ab.getCAddress():"Address"))+" \n Your request of candidature for the post of "+ pos.getPositionName() +" has been accepted with User Id="+userid +" and your Password for EMS Login is="+admin_password);
+obj=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Mr. "+ c1.getCandidateName() +"\n"+ (ab.getPAddress()!=null?ab.getPAddress():(ab.getCAddress()!=null?ab.getCAddress():"Address"))+" \n Your request of candidature for the post of "+ pos.getPositionName() +" has been accepted with User Id="+userid +" and your Password for EMS Login is="+admin_password+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
          executor.submit(new Runnable() {
 
                 public void run() {

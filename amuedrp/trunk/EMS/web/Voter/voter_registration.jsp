@@ -8,6 +8,7 @@
 <%! boolean read=false;%>
 <%
 String btn=(String)request.getAttribute("button");
+
  if(btn.equals("View")||btn.equals("Delete"))
 read=true;
 else
@@ -287,8 +288,11 @@ function check3()
   email.value=email1.value;
 
   var button=document.getElementById("button");
+
   var button1=document.getElementById("button1");
+
   button.value=button1.value;
+
   }
 </script>
 </head>
@@ -394,9 +398,9 @@ function check3()
 </tr>
 <tr>
     <td align="left">Institute Name*</td><td>
-        <html:select property="institute_id" styleId="ins1"  name="VoterRegActionForm"  tabindex="10" >
+        <html:select property="institute_id" styleId="ins1" disabled="true" name="VoterRegActionForm"  tabindex="10" >
 
-            <html:option  value="Select"> Select </html:option>
+           
 
             <html:options collection="Institute" labelProperty="instituteName" property="instituteId" name="Institute"></html:options>
                                <%-- <html:option  value="amu">Aligarh muslim university</html:option>
@@ -404,6 +408,8 @@ function check3()
                                <html:option value="du">Delhi University</html:option>
                                <html:option value="jnu">JNU</html:option>--%>
 </html:select>
+            <html:hidden property="institute_id" styleId="ins1"  name="VoterRegActionForm"  />
+
 
     </td>
 </tr>
@@ -504,8 +510,9 @@ function check3()
     <input id="button1"  name="button" type="submit" value="<%=btn%>" class="txt1" />
     &nbsp;&nbsp;&nbsp;<input name="button" type="submit" onclick="return send()"  value="Cancel" class="txt1"/>
    <%}else if(btn.equals("Add")){%>
-    <input id="button1"  name="button" type="submit" value="Submit" class="txt1" />
+    <input id="button1"  name="button"  type="submit" value="<%=btn%>" class="txt1" />
     &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()" class="txt1"/>
+
     <%}else{%>
     <input  name="button" type="submit" value="Accept"  class="txt1" />
     <input  name="button" type="submit" value="Back" onclick="return back()" class="txt1" />

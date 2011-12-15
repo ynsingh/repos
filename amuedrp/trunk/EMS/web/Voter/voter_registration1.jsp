@@ -318,9 +318,9 @@ function check3()
 
                            <%}else{%>
 
-                            <%if(session.getAttribute("image")==null){%>
+                        <%--    <%if(session.getAttribute("image")==null){%>
                               <html:img src="/EMS/images/no-image.jpg"  alt="no Imagew Selected" width="80" height="80"/>
-                            <%}else{%>
+                            <%}else{%>--%>
 
 
                             <%if (request.getAttribute("imagechange")!=null){%>
@@ -330,7 +330,7 @@ function check3()
                         <%}%><br/>
 
 
-                           <%}}%>
+                           <%}%>
 
  </div>
 
