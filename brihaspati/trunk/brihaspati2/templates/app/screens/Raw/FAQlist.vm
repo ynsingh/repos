@@ -3,21 +3,44 @@
  * Copyright (c) 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
- *  @author <a href="mailto:seema_020504@yahoo.com ">Manorama Pal</a>
- *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
+ * @author <a href="mailto:seema_020504@yahoo.com ">Manorama Pal</a>
+ * @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:tpthshobhi30@gmail.com">Shobhika</a>
  * @modified date: 22-11-2010
  *
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("FAQ")
 $page.setBgColor("bgcolor")
-$!data.getMessage()
+##$!data.getMessage()
 #set($lang=$data.getUser().getTemp("lang").toString())
-<table bgcolor="$ui.menuColor" width=100%>
+#if($mode == "showmessage")
+<table width="100%" bgcolor="$ui.menuColor">
+<tr bgcolor="$ui.menuColor">
+<td>
+        <font face="$ui.sansSerifFonts" size=3>
+        <a href=$link.setPage("Index.vm")>$brih_home</a> |
+        <a href="$link.setPage("FAQlist.vm").addPathInfo("mode","alllist")"> $brih_important $DiscussionBoard $brih_message </a>
+</td>
+</tr>
+        #if($type == "faq")
+        <tr bgcolor="$ui.tableColor"><b>
+        	<td><font color=Red><b>Question  :</b></font><font color=Red><b> $subject </b></font></td>
+	</tr>
+	<tr>
+		<td><b>Answer :</b> $message</td>
+	</tr>
+        <tr bgcolor="$ui.tableColor">
+		<td><a href=$link.setPage("FAQlist.vm").addPathInfo("mode","alllist").addPathInfo("type","instadmin").addPathInfo("lang",$lang)> $brih_backtofaq </a></td>
+	</tr>
+        #end
+</table>
+#else
+<table bgcolor="$ui.menuColor" width="100%">
 <tr><td>
         <font face="$ui.sansSerifFonts" size=3>
-	#if($type=="instadmin")
+	#if(($type=="instadmin")&& ($mode != "alllist") )
         <b><a href=$link.setPage("Index.vm")>$brih_home</a> |</b>
 	#end
 	#if($type =="general")
@@ -25,6 +48,10 @@ $!data.getMessage()
 	#end
 	#if($mode=="list")
         <a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type",$type)>$brih_cat$brih_list</a> |
+        #end
+	#if($mode =="alllist")
+         <b><a href=$link.setPage("Index.vm")>Home</a> |</b>
+        <a href="$link.setPage("FAQlist.vm").addPathInfo("mode","alllist")"> $brih_important $DiscussionBoard $brih_message </a> |
         #end
         $brih_FAQ$brih_list
         </font>
@@ -48,6 +75,16 @@ $!data.getMessage()
                         #end
                 #end
         </td>
+</tr>
+<tr bgcolor="$ui.tableColor">
+#if($mode == "alllist")
+<tr><td><b>$Notice_Subject</b></td></tr>
+#end
+        #foreach ($ass in $assign)
+                <tr bgcolor="$ui.tableColor">
+                <td colspan="2"><a href="$link.setPage("FAQlist.vm").addPathInfo("mode","showmessage").addPathInfo("type","faq").addPathInfo("subject",$ass.getAssignmentfile())"> $!ass.getStudentname() </a>
+                </td>
+        #end
 </tr>
 </table>
 <form name="frm" method="post">
@@ -119,6 +156,10 @@ $!data.getMessage()
 		<tr><td align="center"><b><font size="3"> #if($lang == "hindi") $brih_faqmsg #else  $brih_faqmsg $brih_cat #end </font></td></tr>
 		#end
 	#end
-	 <tr><td align="left"><img src="$content.getURI("/images/backtotop.gif")"><a href="#top" onclick="window.scrollTo(0,0); return false">$brih_backtotop</a></td></tr>
+	 <tr>
+		<td align="left"><img src="$content.getURI("/images/backtotop.gif")"><a href="#top" onclick="window.scrollTo(0,0); return false">$brih_backtotop</a></td>
+		<td><a href="$link.setPage("FAQlist.vm").addPathInfo("mode","alllist").addPathInfo("type","instadmin")"> $brih_backtofaq </a></td>
+	</tr>
 </table>
+#end
 </form>

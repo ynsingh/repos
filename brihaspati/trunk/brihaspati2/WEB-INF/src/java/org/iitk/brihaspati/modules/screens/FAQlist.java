@@ -40,6 +40,7 @@ package org.iitk.brihaspati.modules.screens;
  *This class contains code for FAQlist 
  *@author: <a href="mailto:seema_020504@yahoo.com">Seemapal</a>
  *@author: <a href="mailto:kshuklak@rediffmail.com">Kishore Kumar shukla</a>
+ *@author: <a href="mailto:tpthshobhi30@gmail.com">Shobhika</a>
  */
 
 import org.apache.turbine.util.RunData;
@@ -66,10 +67,17 @@ import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
 import org.iitk.brihaspati.om.FaqPeer;
 import org.iitk.brihaspati.om.Faq;
+import org.iitk.brihaspati.om.FaqmovePeer;
+import org.iitk.brihaspati.om.Faqmove;
+import org.iitk.brihaspati.modules.utils.AssignmentDetail;
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 
 import java.util.Vector;
 import java.util.List;
 import java.io.File;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.FileReader;
 
 
 public class FAQlist extends VelocityScreen
@@ -100,6 +108,8 @@ public class FAQlist extends VelocityScreen
 			context.put("type",type);
 			String modefaq=pp.getString("modefaq","");
 			context.put("modefaq",modefaq);
+			//String DB_subject=pp.getString("DB_subject","");
+			User user=data.getUser();
 			/**
 			*Getting the list from the Database
                         *put in the context for the use in templates
@@ -112,11 +122,11 @@ public class FAQlist extends VelocityScreen
 			String username="",filePath="";
 			int uid=0,gid=0;
 			//getting istitute id for the institute admin FAQs
+                        username=data.getUser().getName();
 			if(type.equals("instadmin"))
 			{
 				/*getting username and uid*/
-				User user=data.getUser();
-                        	username=data.getUser().getName();
+			//	User user=data.getUser();
 				uid=UserUtil.getUID(username);
                                	gidlist=InstituteIdUtil.getAllInstId(uid);
 				for(int m=0;m<gidlist.size();m++){
@@ -128,6 +138,36 @@ public class FAQlist extends VelocityScreen
                         	}
 				/*getting group id for the FAQ*/
 			}
+			/**
+			* this is use for show topic and message in text area
+			*/
+		        if(mode.equals("showmessage")){
+					user=data.getUser();
+                                        uid=UserUtil.getUID(username);
+                                        Criteria crit2=new Criteria();
+                                        crit2.add(FaqmovePeer.USER_ID,uid);
+                                        List v=FaqmovePeer.doSelect(crit2);
+                                        for(int n=0;n<v.size();n++)
+                                        {
+						Faqmove element=(Faqmove)v.get(n);
+	                                        int instid3=(element.getInstId());
+						String subject=pp.getString("subject","");
+						String faqpath=data.getServletContext().getRealPath("/UserArea")+"/"+instid3+"/"+subject;	
+						File topicDir=new File(faqpath);
+		                        	String ContentList1 []= topicDir.list();
+						faqpath=data.getServletContext().getRealPath("/UserArea")+"/"+instid3+"/"+subject+"/"+ContentList1[0];
+						BufferedReader br=new BufferedReader(new FileReader (faqpath));
+						String msg="";
+						String str;
+		                                while ((str=br.readLine()) != null) {
+							msg=msg+str;	
+                		                }
+						String str1[]=ContentList1[0].split(".txt");
+						context.put("subject",str1[0]);
+						context.put("message",msg);
+                		              	br.close();
+					}//for
+			}//end showmessage
 			if(mode.equals("alllist"))
 			{
 				/**
@@ -228,7 +268,6 @@ public class FAQlist extends VelocityScreen
                                 	context.put("userConf",new Integer(list_conf));
                                 	context.put("userConf_string",conf);
 					Vector vct=CommonUtility.PListing(data ,context ,entry,list_conf);
-					ErrorDumpUtil.ErrorLog("vct at line 231======"+vct);
 					context.put("entry",vct);
 				}
 			}
@@ -262,6 +301,44 @@ public class FAQlist extends VelocityScreen
 				}//for
 				context.put("queslist",queslist);
 			}
+			/**
+			*This is use for show message subject 
+			*/
+			if(mode.equals("alllist")){
+				user=data.getUser();
+				uid=UserUtil.getUID(username);
+				Criteria crit1=new Criteria();
+                        	crit1.add(FaqmovePeer.USER_ID,uid);
+                        	List u=FaqmovePeer.doSelect(crit1);
+                                for(int m=0;m<u.size();m++)
+                                {
+					Faqmove element=(Faqmove)u.get(m);
+	                                int instid2=(element.getInstId());
+        	                       	String subject=pp.getString("subject","");
+					String faqpath1=data.getServletContext().getRealPath("/UserArea")+"/"+instid2;
+                	               	File topicDir1=new File(faqpath1);
+	                	        String ContentList []=topicDir1.list();
+        	                        String faqpath2="";
+                	               	Vector FileViewId_tiopic=new Vector();
+	                                if(ContentList.length == 0) {
+        	                               	String LangFile=(String)data.getUser().getTemp("LangFile");
+	        	                        String  mssg=MultilingualUtil.ConvertedString("faq_msg3",LangFile);
+        	        	                data.setMessage(mssg);
+                	                        return;
+                                	}
+	                               	for(int s=0;s<=ContentList.length;s++)
+        	                       	{
+                	                       	AssignmentDetail assignmentdetail=new AssignmentDetail();
+	                	                faqpath2=faqpath1+"/"+ContentList[s];
+        	                	        File topicDir=new File(faqpath2);
+                	                        String ContentList1 []= topicDir.list();
+                        	               	assignmentdetail.setStudentname(ContentList1[0]);
+	                                        assignmentdetail.setAssignmentfile(ContentList[s]);                             
+        	                               	FileViewId_tiopic.add(assignmentdetail);
+	        	                        context.put("assign",FileViewId_tiopic);
+        	        	        }
+        	                }
+		  	}
 		}//try
 		catch(Exception e){ data.setMessage("Error in screen [FAQlist] !! " + e); }
 	}

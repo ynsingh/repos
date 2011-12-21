@@ -70,6 +70,7 @@
 	<column name="EXPIRY_DATE" required="true" type="DATE"/>
 	<column name="PERMISSION" type="INTEGER" size="1"/>
 	<column name="GRPMGMT_TYPE" type="VARCHAR" size="255"/>
+	<column name="STATUS" type="INTEGER"/>
 </table>
 <table name="DB_RECEIVE">
 	<column name="MSG_ID" required="true" primaryKey="true" type="INTEGER"/>
@@ -334,6 +335,12 @@
         <column name="EXPIRY_DATE" required="true" type="DATE"/>
         <column name="VOTE" size="255" type="VARCHAR"/>
 </table>
+<table name="FAQMOVE" idMethod="idbroker">
+        <column name="FAQ_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+        <column name="USER_ID" type="INTEGER"/>
+	<column name="INST_ID" type="INTEGER"/>
+</table>
+
 <table name="FAQ_VOTE" idMethod="idbroker">
         <column name="FAQ_ID" required="true" primaryKey="true" type="INTEGER"/>
         <column name="USER_ID" required="true" primaryKey="true" type="INTEGER"/>

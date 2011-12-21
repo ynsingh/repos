@@ -71,6 +71,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author  <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:tpthshobhi30@gmail.com">Shobhika</a>
  * @ modified date: 13-Oct-2010 (Shaista)
  * @ modified date: 15-Feb-2011 (Shaista)
  * @ modified date: 24-Aug-2011 (Sunil Kumar)
@@ -99,7 +100,8 @@ public class DBContent extends SecureScreen
                         context.put("from",frompath);
                         context.put("tdcolor",pp.getString("count","4"));
                         context.put("tdcolor1",pp.getString("countTemp",""));
-			
+			String userid1=pp.getString("userid1","");
+                        context.put("userid1",userid1);	
 
            		/**	
 	    		* Retrive the UserId from Turbine_User table
@@ -146,7 +148,7 @@ public class DBContent extends SecureScreen
 				}
 				crit.add(DbReceivePeer.GROUP_ID,group_id);
 				v=DbReceivePeer.doSelect(crit);
-				//ErrorDumpUtil.ErrorLog("when from index mode all ==v=====>>"+v);
+				
 			}
 			else
 			{
@@ -158,6 +160,20 @@ public class DBContent extends SecureScreen
 				crit.add(DbReceivePeer.READ_FLAG,readflg);
 	        		v=DbReceivePeer.doSelect(crit);
 			}
+			/**
+			*This is use for get STATUS in DB_SEND table
+			*/	
+			List l=null;
+			Criteria crit2=new Criteria();
+			crit2.add(DbSendPeer.GROUP_ID,group_id);
+                        l=DbSendPeer.doSelect(crit2);
+			for(int i=0;i<l.size();i++)
+                        {
+                                DbSend element=(DbSend)(l.get(i));
+                                String stat=Integer.toString(element.getStatus());
+				context.put("stat",stat);
+			}
+			
 			/**
 		 	* Below code just converts the List 'v' into Vector 'entry' 
 		 	*/ 
@@ -182,6 +198,7 @@ public class DBContent extends SecureScreen
 					DbSend element1=(DbSend)(u.get(count1));
 			  		String msgid=Integer.toString(element1.getMsgId());
 					String message_subject=(element1.getMsgSubject());
+					String stat=Integer.toString(element1.getStatus());
 					int sender_userid=(element1.getUserId());
 					String permit=Integer.toString(element1.getPermission());
 					String dbType=(element1.getGrpmgmtType());
@@ -215,6 +232,7 @@ public class DBContent extends SecureScreen
 		               		dbDetail.setPermission(permit);
 		               		dbDetail.setExpiryDate(exDate);
 					dbDetail.setGrpmgmtType(dbType);
+					dbDetail.setPrgCode(stat);
 					entry.addElement(dbDetail);
 				}//for2	
 			}//for1
