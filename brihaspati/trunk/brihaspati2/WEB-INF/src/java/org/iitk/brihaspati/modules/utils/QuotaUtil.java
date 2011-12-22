@@ -227,14 +227,14 @@ public class QuotaUtil {
 	public static long getFileSystemSpace(int instId) {
 	         long fdisks =0;
 		 try{
-			 String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instId+"Admin.properties";
+			 String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf/Admin.properties";
         	         String dirName=AdminProperties.getValue(path,"brihaspati.home.dir.value");
-			 if(dirName.equals("")){
+			 if((dirName.equals(""))||(dirName.equals(null))){
 				dirName=System.getProperty("user.home");
 			 }
 	        	 fdisks = FileSystemUtils.freeSpaceKb(dirName);
 			 fdisks = fdisks/1024;
-//			ErrorDumpUtil.ErrorLog("The space is on the disk"+fdisks);
+	//		ErrorDumpUtil.ErrorLog("The space is on the disk"+fdisks);
         	 } catch (Exception ex) {
 	             ex.printStackTrace();
         	 }
@@ -243,7 +243,7 @@ public class QuotaUtil {
 	public static long getFileSystemSpaceinGB() {
 	         long sysdisks =0;
 		 try{
-			 String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+			 String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf/Admin.properties";
         	         String dirName=AdminProperties.getValue(path,"brihaspati.home.dir.value");
 			 if(dirName.equals("")){
 				dirName=System.getProperty("user.home");

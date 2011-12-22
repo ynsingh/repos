@@ -164,7 +164,7 @@ public class UploadAction extends SecureAction_Instructor
 		long dirS=QuotaUtil.getDirSizeInMegabytes(new File(coursesRealPath+"/"+courseHome));
 	//	ErrorDumpUtil.ErrorLog(" The dirs is "+ Long.toString(dirS)+ "C Name "+gname+ " C Home "+courseHome );
                 boolean check=QuotaUtil.CompareQuotainCourse(dirS,courseHome);
-	//	ErrorDumpUtil.ErrorLog(" The Compare quota in course is "+check);
+		//ErrorDumpUtil.ErrorLog(" The Compare quota in course is "+check);
                 if(check){
 		try
 		{
@@ -211,7 +211,8 @@ public class UploadAction extends SecureAction_Instructor
 		catch(FileUploadException ex)
 		{
 			ErrorDumpUtil.ErrorLog("Error in writing topic in xml"+ex);
-			data.setMessage("See ExceptionLog");
+		
+	data.setMessage("See ExceptionLog");
 		}
 			int successfulUploadFilesCount=0;
 			int totalFilesEntries=0;
@@ -246,7 +247,7 @@ public class UploadAction extends SecureAction_Instructor
 					long uquota=QuotaUtil.getCrsQuota(courseHome);
 					uquota= uquota - dirS;
 					long disSpace=QuotaUtil.getFileSystemSpace(instituteId);
-				//	ErrorDumpUtil.ErrorLog("The value of quota in upload course content"+uquota+"and f size "+fsize +"and dspace "+disSpace);
+			//		ErrorDumpUtil.ErrorLog("The value of quota in upload course content"+uquota+"and f size "+fsize +"and dspace "+disSpace);
 					if((uquota>fsize)&&(disSpace>fsize))
 					{
                                         	f.mkdirs();
@@ -317,7 +318,7 @@ public class UploadAction extends SecureAction_Instructor
 			}
 			}//ifflag1
 			else
-			data.setMessage(MultilingualUtil.ConvertedString("qmgmt_msg2",LangFile));
+			data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg2",LangFile));
 
 		}//try
 		catch(FileUploadException ex)

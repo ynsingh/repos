@@ -636,7 +636,7 @@ public class TopicMetaDataXmlReader
 		try
 		{	
 		XmlData files[]=xr.getElements("File");
-		ErrorDumpUtil.ErrorLog("fls in util"+files);
+//		ErrorDumpUtil.ErrorLog("fls in util"+files);
 		if(files!=null)
 		{
 			Attributes ats;

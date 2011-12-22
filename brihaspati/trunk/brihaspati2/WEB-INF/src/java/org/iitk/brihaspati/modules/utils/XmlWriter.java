@@ -70,7 +70,7 @@ public class XmlWriter
 		xmlReader=new XmlReader(fileName);
 		this.fileName=fileName;
 		ht=xmlReader.getAllElements();
-		ErrorDumpUtil.ErrorLog("inside xml writer constructor hastable is "+ht.size());
+		//ErrorDumpUtil.ErrorLog("inside xml writer constructor hastable is "+ht.size());
 	}
 	
 	public int getElementCount(String element)
@@ -110,9 +110,9 @@ public class XmlWriter
 	*/
 	public void changeAttributes(String element,Attributes nameValue,int seqno) throws Exception
 	{
-		ErrorDumpUtil.ErrorLog("inside change attribute"+element);
+		//ErrorDumpUtil.ErrorLog("inside change attribute"+element);
 		Vector v=(Vector)ht.get(element);
-		ErrorDumpUtil.ErrorLog("vector "+v);
+	//	ErrorDumpUtil.ErrorLog("vector "+v);
 		Vector parentVector=(Vector)ht.get(xmlReader.getRootElement());
 		XmlData parent=(XmlData)parentVector.elementAt(0);
 		int offset=0;
@@ -307,9 +307,9 @@ public class XmlWriter
 
 	public XmlData removeElement(String element,int seqno)
 	{
-		ErrorDumpUtil.ErrorLog("coming inside xml writer "+seqno + element);
+	//	ErrorDumpUtil.ErrorLog("coming inside xml writer "+seqno + element);
 		Vector v=(Vector)ht.get(element);
-		ErrorDumpUtil.ErrorLog("inside xml writer vector v is"+v);
+	//	ErrorDumpUtil.ErrorLog("inside xml writer vector v is"+v);
 		Vector parentVector=(Vector)ht.get(xmlReader.getRootElement());
 		XmlData parent=(XmlData)parentVector.elementAt(0);
 		XmlData xmlData;
@@ -338,11 +338,11 @@ public class XmlWriter
 		else if(element.equals("Quiz"))
             offset=0;
 //----------------------------------------	
-		ErrorDumpUtil.ErrorLog("after offset setting "+offset + element);
+	//	ErrorDumpUtil.ErrorLog("after offset setting "+offset + element);
 		int array[]={seqno+offset};
-		ErrorDumpUtil.ErrorLog("After array in xml writer 11111"+array.length);
+	//	ErrorDumpUtil.ErrorLog("After array in xml writer 11111"+array.length);
 		parent.removeSubElements(array);
-		ErrorDumpUtil.ErrorLog("after remove offset setting "+v.size()+" : "+v);
+	//	ErrorDumpUtil.ErrorLog("after remove offset setting "+v.size()+" : "+v);
 		xmlData=(XmlData)v.elementAt(seqno);
 		v.removeElementAt(seqno);
 		ht.put(element,v);
