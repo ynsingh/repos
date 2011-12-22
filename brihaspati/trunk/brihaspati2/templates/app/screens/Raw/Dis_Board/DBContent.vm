@@ -101,8 +101,10 @@ $!data.getMessage()
 			#else
 				<td>
 		        #end
-		#if($stat == "1")
-		<blink><font color="Green" size="3"><b>*</b> $brih_greenasterisk </font>&nbsp;</blink>-> $brih_msgmove <br>
+		#if(($stats !="fromIndex") || ($mode2 != "instituteWise"))
+			#if($stat == "1")
+				<blink><font color="Green" size="3"><b>*</b> $brih_greenasterisk </font>&nbsp;</blink>-> $brih_msgmove <br>
+			#end
 		#end
 		#if($stats == "fromIndex")
                 	<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("stats","fromIndex")>$LocalMail_MailContent_msg1</a>
@@ -214,7 +216,11 @@ $!data.getMessage()
 	   		#end
 	 
 			</td>
+			#if(($stats=="fromIndex") || ($mode2 == "instituteWise"))
+			<td> $e.getSender() </td>
+			#else
 			<td> #if($e.getPrgCode()=="1") <blink><font color="Green" size="3"><b>*</b></font></blink> #else &nbsp; #end  $e.getSender()</td>
+			#end
 			<td>$e.getPDate()</td>
 			<td>$e.getMSubject()</td>
 			<td> 
@@ -296,11 +302,10 @@ $!data.getMessage()
 		#if(($stats=="fromIndex") || ($mode2 == "instituteWise"))
 			<INPUT TYPE="button" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
 			<INPUT TYPE="button" NAME="eventSubmit_doArchive" VALUE="$brih_archive" onClick="checkValue(document.frm,this);">
-			<INPUT TYPE="button" NAME="eventSubmit_doMove" VALUE="$brih_move" onClick="checkValue(document.frm,this);">
 		#else
 			<INPUT TYPE="button" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
 			<INPUT TYPE="button" NAME="eventSubmit_doArchive" VALUE="$brih_archive" onClick="checkValue(document.frm,this);">
-			<INPUT TYPE="button" NAME="eventSubmit_doMove" VALUE="$brih_move" onClick="checkValue(document.frm,this);">
+			<INPUT TYPE="button" NAME="eventSubmit_doMove" VALUE="Move" onClick="checkValue(document.frm,this);">
                 #end	
 			<INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
 	     		<INPUT TYPE="hidden" NAME="actionName">

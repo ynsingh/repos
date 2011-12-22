@@ -77,9 +77,6 @@ $page.setBgColor("bgcolor")
         </td>
 </tr>
 <tr bgcolor="$ui.tableColor">
-#if($mode == "alllist")
-<tr><td><b>$Notice_Subject</b></td></tr>
-#end
         #foreach ($ass in $assign)
                 <tr bgcolor="$ui.tableColor">
                 <td colspan="2"><a href="$link.setPage("FAQlist.vm").addPathInfo("mode","showmessage").addPathInfo("type","faq").addPathInfo("subject",$ass.getAssignmentfile())"> $!ass.getStudentname() </a>

@@ -911,35 +911,28 @@ public class SendDB extends SecureAction
 					String username=data.getUser().getName();
                                         int uid=UserUtil.getUID(username);
 					instid=(String)user.getTemp("Institute_id");
+					
+					Criteria crit1=new Criteria();
+                                        crit1.add(FaqmovePeer.USER_ID,uid);
+                                        crit1.add(FaqmovePeer.INST_ID,instid);
+                                        FaqmovePeer.doInsert(crit1);
 
-						/**  
-						* get the dbsubject and msg file.
-						*/
-						DB_subject = topicarray[j];
-                        	                String readMsg=data.getServletContext().getRealPath("/Courses"+"/"+course_id+"/DisBoard"+"/"+DB_subject+"/Msg.txt");
-                        			String writepath=data.getServletContext().getRealPath("/UserArea"+"/"+instid+"/"+msg_idd);
-                                        	File f=new File(writepath);
-	                                        if(f.exists()){
-							String strmess=MultilingualUtil.ConvertedString("faq_msg1",LangFile);
-                	                                data.setMessage(strmess);
-                        	                        return;
-                                	        }
-                        			String dirpath=data.getServletContext().getRealPath("/UserArea/"+instid);
-						File topicDir1 = new File(dirpath);
-						if(!topicDir1.exists()){
-							if(!stats.equals("fromIndex")&&(!mode2.equals("instituteWise")))
-							{
-								Criteria crit1=new Criteria();
-        	                                		crit1.add(FaqmovePeer.USER_ID,uid);
-	        	                			crit1.add(FaqmovePeer.INST_ID,instid);
-	                                        		FaqmovePeer.doInsert(crit1);
-							}
-						}
-						/**  
-						* make a directory where we store dbsubject and message file.
-						*/
-	
-        	                                File topicDir = new File(writepath);
+					/**  
+					* get the dbsubject and msg file.
+					*/
+					DB_subject = topicarray[j];
+                        	        String readMsg=data.getServletContext().getRealPath("/Courses"+"/"+course_id+"/DisBoard"+"/"+DB_subject+"/Msg.txt");
+                        		String writepath=data.getServletContext().getRealPath("/UserArea"+"/"+instid+"/"+msg_idd);
+                                        File f=new File(writepath);
+	                                if(f.exists()){
+						String strmess=MultilingualUtil.ConvertedString("faq_msg1",LangFile);
+                	                        data.setMessage(strmess);
+                        	                return;
+                                	}
+					/**  
+					* make a directory where we store dbsubject and message file.
+					*/
+	   	                                File topicDir = new File(writepath);
                 	                        if(!topicDir.exists()) //{
                         	                        topicDir.mkdirs();
 							writepath = writepath+"/"+DB_subject+".txt";
