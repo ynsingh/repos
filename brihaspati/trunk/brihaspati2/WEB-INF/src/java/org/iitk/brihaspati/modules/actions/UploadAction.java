@@ -73,10 +73,12 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:seema_020504@yahoo.com">Seema Pal</a>
  * @author <a href="mailto:kshuklak@rediffmail.com">Kishore kumar shukla</a> 
+ * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a> 
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  */
 
-public class UploadAction extends SecureAction_Instructor
+public class UploadAction extends SecureAction
+
 {
     /**
     * This method responsible for uploadng of files

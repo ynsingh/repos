@@ -84,7 +84,7 @@ $!data.getMessage()
         </td>
 </tr>
 </table>
-##if($user_role == "instructor")
+#if($user_role == "instructor")
         <table width="100%" align="left" bgcolor="$ui.tableColor">
         <tr bgcolor="$ui.menuColor">
                 #if($tdcolor != "1")
@@ -138,7 +138,30 @@ $!data.getMessage()
                 </td>
 	</tr>
 	</table>
-##end
+#else
+	<table width="100%" align="left" bgcolor="$ui.tableColor">
+        <tr bgcolor="$ui.menuColor">
+		 #if($tdcolor != "1")
+                <td>
+                #elseif($tdcolor == "1")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") > #if($lang == "english")$brih_course  $brih_content #else $brih_content #end </a></td>
+                #if($tdcolor != "0")  
+                <td>
+                #elseif($tdcolor == "0")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user</a></td><td>
+                #if($tdcolor != "2")
+                <td>
+                #elseif($tdcolor == "2")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") > #if($lang == "english") $brih_upload $brih_course $brih_content #else $brih_content $brih_upload #end </a></td>
+	 </tr>
+        </table>
+#end
 ######################################
  ## Upload.vm
 <script LANGUAGE="JAVASCRIPT">
@@ -224,6 +247,8 @@ $!data.getMessage()
         <tr width=100% bgcolor="$ui.menuColor">
                 <img src="$content.getURI("/images/hand.gif")"><font color="red">Please make sure you do not have <b>'+' and ','</b> characters in the filenames of the files you are uploading !! </font>
         </tr>
+	
+	#if($user_role == "instructor")
       <tr width=100% bgcolor="$ui.tableColor">
          <td colspan=4>
          <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
@@ -242,6 +267,21 @@ $!data.getMessage()
         <INPUT TYPE="CHECKBOX" name="publish" value="Publish"> <b>Publish</b>
         </td>
         </tr>
+	#else
+	<tr width=100% bgcolor="$ui.tableColor">
+         <td colspan=6>
+         <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
+        <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>Existing Topic
+        <SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+          <option></option>
+        #foreach($topic in $allTopics)
+                <option>$topic</option>
+          #end
+        </SELECT>
+        <input type="RADIO" name=topicExisting value="NEWTOPIC" >New Topic
+        </td>
+	</tr>	
+	#end
       <tr bgcolor="$ui.menuColor" width=100%>
         ##formCell ("Topic Name" "contentTopic" "")
         <td>

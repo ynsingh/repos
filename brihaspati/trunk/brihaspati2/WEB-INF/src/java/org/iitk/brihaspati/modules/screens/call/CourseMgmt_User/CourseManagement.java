@@ -51,7 +51,7 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.apache.turbine.util.parser.ParameterParser;
-import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
+import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.Courses;
 
@@ -60,10 +60,10 @@ import org.iitk.brihaspati.om.Courses;
  * @author <a href="mailto:ammuamit@hotmail.com">Amit Joshi</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
- *
+ *@author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
  */
 
-public class CourseManagement extends SecureScreen_Instructor
+public class CourseManagement extends SecureScreen
 {
     public void doBuildTemplate( RunData data, Context context )
     {
@@ -78,6 +78,8 @@ public class CourseManagement extends SecureScreen_Instructor
                 context.put("course",(String)user.getTemp("course_name"));
 		String counter=pp.getString("count","");
 		context.put("tdcolor",counter);
+		String role=(String)user.getTemp("role");
+                context.put("user_role",role);
                 String filePath1=data.getServletContext().getRealPath("/Courses")+"/"+dir;
                 File dirHandle1=new File(filePath1);
                 long unpdir=QuotaUtil.getDirSizeInMegabytes(dirHandle1);
