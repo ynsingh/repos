@@ -1,0 +1,60 @@
+<project name="brihaspatisync_monitor" default="main" basedir=".">
+	
+	<property name="monitor.home" value="."/>
+  	<property name="build-monitor.properties" value="build-monitor.properties"/>
+  	<property file="${build-monitor.properties}"/>
+  	<property name="lib.dir" value="lib"/>
+	<property name="src.dir" value="src/java"/>
+        <property name="bin.dir" value="bin/classes"/>
+        <property name="jnlp.dir" value="jnlp"/>
+        <property name="debug" value="on"/>
+        <property name="deprecation" value="off"/>
+        <property name="optimize" value="off"/>
+	<property name="user.name" value="Ashish Yadav"/>
+
+ 	<target name="init" description="===> Creates the Directory or package">
+    		<property name="bin.dir" value="${targetPackage}"/>
+    		<mkdir dir="${bin.dir}"/>
+    		<mkdir dir="${lib.dir}"/>
+  	</target>
+        
+	<target name="jar" depends="compile" description="**** Create executable JAR file">
+                <jar destfile="${jnlp.dir}/syncmonitor.jar">
+                        <fileset dir="${bin.dir}" includes="**/*"/>
+                        <manifest>
+                                <attribute name="Built-By" value="${user.name}" />
+                                <attribute name="Main-Class" value="org.bss.brihaspatisync.monitor.Monitor"/>
+                        </manifest>
+                </jar>
+        </target>
+
+	<target name="clean" description="clean up">
+                <delete dir="${temp.dir}"/>
+                <delete dir="${bin.dir}/org/bss"/>
+                <delete dir="${doc.dir}"/>
+        </target>
+        
+        <target name="sign" depends="jar">
+        	<signjar keystore="jnlp/brihaspatisync"
+                         jar="jnlp/*.jar"
+                         alias="brihaspati_sync"
+                         storepass="ashish" />
+        </target>
+	
+	<target name="compile" depends="init" description="**** Compiles the JAVA classes">
+    		<mkdir dir="${bin.dir}"/>
+    		<javac srcdir="${src.dir}"
+      		       destdir="${bin.dir}"
+      		       debug="${debug}"
+      		       deprecation="${deprecation}"
+      		       optimize="${optimize}">
+      		       <classpath refid="classpath"/>	
+    		</javac>
+	</target>
+	<path id="classpath">
+		<fileset dir="${lib.dir}">
+	        	<include name="**/*.jar"/>
+	     	</fileset>		
+	</path>
+</project>
+
