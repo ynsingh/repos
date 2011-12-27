@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteBase /
+#RewriteRule ^([^/]*)/([^/]*)/([^/]*)$ :8000/index.php?control=$1&method=$2&param=$3 [L]
+RewriteRule ^/(.*) /dabba.php

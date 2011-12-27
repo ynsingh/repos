@@ -1,0 +1,7 @@
+<?php
+/**
+*	@author : Abhay Rana <captn3m0@gmail.com>
+*	This is the master controller which decides where to send the user
+*/
+
+$uri = $_SERVER['REQUEST_URI'];

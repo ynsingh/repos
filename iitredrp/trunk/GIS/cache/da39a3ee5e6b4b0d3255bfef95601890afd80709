@@ -1,0 +1,23 @@
+var institutes = [
+	{
+		"latitude": 29.8662184,
+		"longitude": 77.8953180999999,
+		"name": "IIT Roorkee",
+		"seats": 30,
+		"courses": 1,
+		"address": "Main Bldg Rd\r\nRoorkee"	},
+	{
+		"latitude": 29.891704,
+		"longitude": 77.9601001999999,
+		"name": "College Of Engineering Roorkee",
+		"seats": 0,
+		"courses": 0,
+		"address": "National Highway 58\r\nHaridwar"	},
+	{
+		"latitude": 29.8662184,
+		"longitude": 77.8953180999999,
+		"name": "IIT Roorkee",
+		"seats": 30,
+		"courses": 1,
+		"address": "Main Bldg Rd\r\nRoorkee"	},
+]

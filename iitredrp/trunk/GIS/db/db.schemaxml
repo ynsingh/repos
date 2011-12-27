@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="latin1" collation="latin1_swedish_ci">erp_gis</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="degrees" view="colnames">
+<left>40</left>
+<top>175</top>
+<width>144</width>
+<height>158</height>
+<sql_create_table>CREATE TABLE `degrees` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Course ID',
+  `name` tinytext COMMENT 'Course Name (btech etc)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="disciplines" view="colnames">
+<left>20</left>
+<top>441</top>
+<width>155</width>
+<height>143</height>
+<sql_create_table>CREATE TABLE `disciplines` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Discipline ID',
+  `name` tinytext,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="districts" view="colnames">
+<left>732</left>
+<top>224</top>
+<width>78</width>
+<height>107</height>
+<sql_create_table>CREATE TABLE `districts` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'District ID',
+  `name` tinytext COMMENT 'Name of the disctrict',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="institute_courses" view="colnames">
+<left>262</left>
+<top>224</top>
+<width>115</width>
+<height>141</height>
+<sql_create_table>CREATE TABLE `institute_courses` (
+  `institute_id` int(10) NOT NULL COMMENT 'The institute ID',
+  `degree_id` int(10) NOT NULL COMMENT 'Degree ID',
+  `discipline_id` int(10) NOT NULL COMMENT 'Discipline ID',
+  `seats` int(5) NOT NULL COMMENT 'No. Of seats for this course',
+  PRIMARY KEY (`institute_id`),
+  KEY `FK_discpline_id` (`discipline_id`),
+  KEY `FK_degree_id` (`degree_id`),
+  CONSTRAINT `FK_degree_id` FOREIGN KEY (`degree_id`) REFERENCES `degrees` (`id`),
+  CONSTRAINT `FK_discpline_id` FOREIGN KEY (`discipline_id`) REFERENCES `disciplines` (`id`),
+  CONSTRAINT `institute_courses_ibfk_1` FOREIGN KEY (`institute_id`) REFERENCES `institutes` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="institute_data" view="colnames">
+<left>568</left>
+<top>266</top>
+<width>110</width>
+<height>277</height>
+<sql_create_table>CREATE TABLE `institute_data` (
+  `institute_id` int(10) NOT NULL COMMENT 'Institute Id',
+  `name` tinytext NOT NULL COMMENT 'Name of the institute',
+  `address` text COMMENT 'Address of the institute',
+  `district_id` int(10) NOT NULL COMMENT 'District ID of the institute''s location',
+  `state_id` int(10) NOT NULL COMMENT 'State ID of the insti',
+  `established` int(10) NOT NULL COMMENT 'Date in unix epoch',
+  `phone` tinytext NOT NULL COMMENT 'Contact Phone number',
+  `url` tinytext COMMENT 'Institute''s home page',
+  `fax` tinytext COMMENT 'Fax number',
+  `affiliation` int(10) NOT NULL COMMENT 'Affiliation ID',
+  `latitude` float NOT NULL COMMENT 'Latitude Of the place',
+  `longitude` float NOT NULL COMMENT 'Longitude',
+  PRIMARY KEY (`institute_id`),
+  KEY `FK_state_id` (`state_id`),
+  KEY `FK_district` (`district_id`),
+  KEY `FK_affiliation` (`affiliation`),
+  CONSTRAINT `FK_affiliation` FOREIGN KEY (`affiliation`) REFERENCES `affiliations` (`id`),
+  CONSTRAINT `FK_district` FOREIGN KEY (`district_id`) REFERENCES `districts` (`id`),
+  CONSTRAINT `FK_state_id` FOREIGN KEY (`state_id`) REFERENCES `states` (`id`),
+  CONSTRAINT `institute_data_ibfk_1` FOREIGN KEY (`institute_id`) REFERENCES `institutes` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="institutes" view="colnames">
+<left>416</left>
+<top>300</top>
+<width>111</width>
+<height>141</height>
+<sql_create_table>CREATE TABLE `institutes` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Institute ID',
+  `registration` int(1) DEFAULT '0' COMMENT 'Registration Status',
+  `verification` int(1) DEFAULT '0',
+  `user_id` int(10) NOT NULL COMMENT 'The user id of the contact person for institute',
+  PRIMARY KEY (`id`),
+  KEY `FK_user_id_in_institute` (`user_id`),
+  CONSTRAINT `FK_user_id_in_institute` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="states" view="colnames">
+<left>742</left>
+<top>389</top>
+<width>78</width>
+<height>107</height>
+<sql_create_table>CREATE TABLE `states` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'State ID',
+  `name` tinytext COMMENT 'State name',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="users" view="colnames">
+<left>283</left>
+<top>409</top>
+<width>100</width>
+<height>214</height>
+<sql_create_table>CREATE TABLE `users` (
+  `id` int(10) NOT NULL DEFAULT '0',
+  `name` text,
+  `email` tinytext,
+  `userid` tinytext,
+  `password` tinytext COMMENT 'sha1 hash',
+  `role` enum('USER','ADMIN','VIEWER') DEFAULT NULL COMMENT 'The role / privilege of the user',
+  `salt` tinytext NOT NULL COMMENT 'Salt used for the hashing',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="affiliations" view="colnames">
+<left>745</left>
+<top>509</top>
+<width>78</width>
+<height>107</height>
+<sql_create_table>CREATE TABLE `affiliations` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Affiliation ID',
+  `name` text NOT NULL COMMENT 'Text used by the affiliation system',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>

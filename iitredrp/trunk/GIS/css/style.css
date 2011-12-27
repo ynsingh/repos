@@ -1,0 +1,14 @@
+#links{background:#eef}
+#links li{border:2px solid #dde9f5;list-style:none;display:inline;border-radius:4px;background:#eee;padding:3px 5px 3px 5px;}
+header{text-align:center;}
+#links li a,#links li a:visited{text-decoration:none;color:#45b;}
+#form_left{float:left;border-radius:5px;border:2px solid grey;padding:10px 5px;}
+#map{float:right;min-width:45%;min-height:400px;}
+.clear{clear:both;}
+#query_builder{background:#eef;border-radius:8px;}
+#query_builder ul li{list-style-type:none; display:inline; padding-left:25px;color:black;vertical-align:middle}
+header h1 a,header h1 a:visited{text-decoration: none;color:#222;}
+body{font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;}
+footer{bottom:0px;position:absolute;margin-left:auto;margin-right:auto;text-align:center;}
+.clear{clear:both;}
+#right{margin-right:100px;background:cream;float:left;min-width:45%;min-height:600px;}	

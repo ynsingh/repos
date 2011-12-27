@@ -1,0 +1,30 @@
+var institutes = [
+	{
+		"latitude": 29.866208507357825,
+		"longitude": 77.89536573864746,
+		"name": "IIT Roorkee",
+		"seats": 67,
+		"courses": 2,
+		"address": "Somewhere in Roorkee\r\nIIT Roorkee\r\nRoorkee\r\n247667"	},
+	{
+		"latitude": 29.021285,
+		"longitude": 79.49084760000005,
+		"name": "Pantnagar University",
+		"seats": 30,
+		"courses": 1,
+		"address": "NH 87\r\nUdham Singh Nagar"	},
+	{
+		"latitude": 29.891666793723523,
+		"longitude": 77.96010019999994,
+		"name": "College Of Engineering, Roorkee",
+		"seats": 98,
+		"courses": 3,
+		"address": "National Highway 58\r\nHaridwar"	},
+	{
+		"latitude": 29.214861,
+		"longitude": 78.95864899999992,
+		"name": "IIM Kashipur",
+		"seats": 30,
+		"courses": 1,
+		"address": "National Highway 121\r\nKashipur"	},
+]
