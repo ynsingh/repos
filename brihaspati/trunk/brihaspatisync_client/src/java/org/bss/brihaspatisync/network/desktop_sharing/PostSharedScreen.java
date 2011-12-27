@@ -43,6 +43,9 @@ import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import com.sun.image.codec.jpeg.JPEGEncodeParam;
 
 /**
  * @author <a href="mailto: arvindjss17@gmail.com" > Arvind Pal </a>
@@ -55,12 +58,12 @@ public class PostSharedScreen implements Runnable {
 	
 	private boolean flag=false;
 
+	private Robot robot=null;
 	private String reflectorIP ="";
-	private BufferedImage image=null;
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	private static PostSharedScreen post_screen=null;
-
+	
 	/**
  	 * Controller for the class.
  	 */ 
@@ -100,8 +103,8 @@ public class PostSharedScreen implements Runnable {
         }
 
 	public BufferedImage captureScreen() {
+		BufferedImage image=null;
 		try{
-			Robot robot = new Robot();
         	      	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
              		Rectangle size = new Rectangle(0, 0, screenSize.width, screenSize.height);
                 
@@ -125,35 +128,41 @@ public class PostSharedScreen implements Runnable {
 
 	public void run() {
 		try {
-			Robot robot = new Robot();
-                        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                        Rectangle size = new Rectangle(0, 0, screenSize.width, screenSize.height);
-				
+			robot = new Robot();
 			while(flag) {
-				HttpClient client = new HttpClient();
-		        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":8884");
-				client.setConnectionTimeout(8000);
-                       		ImageIO.write(captureScreen(), "jpeg", new File("image.jpeg"));
-                       		postMethod.setRequestBody(new FileInputStream("image.jpeg"));
-               			postMethod.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
-				
-				// Http Proxy Handler
-				if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
-                                        HostConfiguration config = client.getHostConfiguration();
-                                        config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
-                                        Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
-                                        AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
-                                        client.getState().setProxyCredentials(authScope, credentials);
-                                }
-
-                       		int statusCode1 = client.executeMethod(postMethod);
-                       		postMethod.getStatusLine();
-                       		postMethod.releaseConnection();
-                       		try {
-                               		Thread.sleep(100);
-                               		Thread.yield();
-                               	}catch(Exception ex){}
-				StatusPanel.getController().setdestopClient("yes");
+				try {
+					HttpClient client = new HttpClient();
+			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":8884");
+					client.setConnectionTimeout(8000);
+					BufferedImage bimg=captureScreen();
+                                	java.io.FileOutputStream fout = new java.io.FileOutputStream("image.jpeg");
+					JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(fout);
+                        	        JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
+                                	enParam.setQuality(0.25F, true);
+	                                jencoder.setJPEGEncodeParam(enParam);
+        	                        jencoder.encode(bimg);
+                	                fout.close();
+                        	        postMethod.setRequestBody(new FileInputStream("image.jpeg"));
+	               			postMethod.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
+					
+					// Http Proxy Handler
+					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
+                                	        HostConfiguration config = client.getHostConfiguration();
+	                                        config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
+        	                                Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
+                	                        AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
+                        	                client.getState().setProxyCredentials(authScope, credentials);
+                                	}
+	
+        	               		int statusCode1 = client.executeMethod(postMethod);
+                	       		postMethod.getStatusLine();
+                       			postMethod.releaseConnection();
+                       			try {
+	                               		runner.sleep(100);
+        	                       		runner.yield();
+                	               	}catch(Exception ex){}
+					StatusPanel.getController().setdestopClient("yes");
+				}catch(Exception e){    StatusPanel.getController().setdestopClient("no"); }
 			}
 		}catch(Exception e){
 			System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());

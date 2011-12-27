@@ -43,6 +43,9 @@ import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import com.sun.image.codec.jpeg.JPEGEncodeParam;
 
 /**
  * @author <a href="mailto: arvindjss17@gmail.com" > Arvind Pal </a>
@@ -105,7 +108,15 @@ public class PostVideoCapture implements Runnable {
 					HttpClient client = new HttpClient();
 			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":8091");
 					client.setConnectionTimeout(800000);
-	                       		ImageIO.write(BufferImage.getController().get(0),"jpeg", new File("image1.jpeg"));
+					
+					BufferedImage bimg=BufferImage.getController().get(0);
+                                        java.io.FileOutputStream fout = new java.io.FileOutputStream("image1.jpeg");
+                                        JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(fout);
+                                        JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
+                                        enParam.setQuality(0.25F, true);
+                                        jencoder.setJPEGEncodeParam(enParam);
+                                        jencoder.encode(bimg);
+                                        fout.close();	
         	               		postMethod.setRequestBody(new FileInputStream("image1.jpeg"));
                				postMethod.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
 					
@@ -123,7 +134,7 @@ public class PostVideoCapture implements Runnable {
                        			postMethod.releaseConnection();
 					BufferImage.getController().remove();
                        			try {
-	                               		runner.sleep(5);runner.yield();
+	                               		runner.sleep(100);runner.yield();
         	                       	}catch(Exception ex){}
 				}else {
 					try { runner.sleep(1000);runner.yield();}catch(Exception ex){}

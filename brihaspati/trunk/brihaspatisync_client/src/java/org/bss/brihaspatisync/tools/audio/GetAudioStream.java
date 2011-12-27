@@ -80,31 +80,34 @@ public class GetAudioStream implements Runnable {
   	public void run() {
 		try {
 			while(flag) {
-				HttpClient client = new HttpClient();
-				HttpMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":2001");
-				client.setConnectionTimeout(8000);
-        			method.setRequestHeader("Content-type","application/octet-stream");
-				// Http Proxy Handler
-				if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
-                                        HostConfiguration config = client.getHostConfiguration();
-                                        config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
-                                        Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
-                                        AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
-                                        client.getState().setProxyCredentials(authScope, credentials);
-                                }
-
-				int statusCode = client.executeMethod(method);
-                		byte audioBytes[]=method.getResponseBody();
-                		System.out.println("Bytes length----------------------------------"+audioBytes.length);
-                		if(audioBytes.length > 0){
-                			playAudio(audioBytes);
-                		}else{
-                			System.out.println("Empty Audio byte");
-                		}
-               			try {
-                 			Thread.yield();
-               			}catch(Exception ex){}
-               		method.releaseConnection();
+				try {
+					HttpClient client = new HttpClient();
+					HttpMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":2001");
+					client.setConnectionTimeout(200000);
+        				method.setRequestHeader("Content-type","application/octet-stream");
+					/*
+					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
+        	                                HostConfiguration config = client.getHostConfiguration();
+                	                        config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
+                        	                Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
+                                	        AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
+                                        	client.getState().setProxyCredentials(authScope, credentials);
+	                                }
+					*/	
+                			System.out.println("Bytes length----------------------------------      \n\n\n\n\n\n\n\n");
+					int statusCode = client.executeMethod(method);
+                			System.out.println("Bytes length--------------------statusCode--------------"+statusCode+"      \n\n\n\n\n\n\n\n");
+                			byte audioBytes[]=method.getResponseBody();
+               				method.releaseConnection();
+                			System.out.println("Bytes length----------------------------------"+audioBytes.length+"      \n\n\n\n\n\n\n\n");
+	                		if(audioBytes.length > 0){
+        	        			playAudio(audioBytes);
+                			}
+               				try {
+                 				runner.sleep(100);
+                 				runner.yield();
+	               			}catch(Exception e){}
+				}catch(Exception ex){ System.out.println("Error       \n\n\n\n\n\n\n\n"+ex.getMessage()); }
 			}
 		}catch(Exception exe){System.out.println("Error on open sourceDataLine "+exe.getMessage());}
 	}

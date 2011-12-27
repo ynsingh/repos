@@ -112,7 +112,10 @@ public class LocalServer implements Runnable {
 						}
 					}
 				} catch(Exception e){ try { runner.sleep(1000); runner.yield(); System.out.println("Error in loding image in video_panel : "+e.getMessage());}catch(Exception ep){} }
-				try {	runner.sleep(10); runner.yield();}catch(Exception ep){}
+				try {
+                                	runner.sleep(100);runner.yield();
+				}catch(Exception ex){}
+
 			} catch(Exception e){ 
 				try {   runner.sleep(1000); runner.yield();}catch(Exception ep){}
 				System.out.println("Error in GetMethod of Video Captureing : "+e.getMessage()); 

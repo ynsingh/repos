@@ -43,6 +43,9 @@ import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import com.sun.image.codec.jpeg.JPEGEncodeParam;
 
 /**
  * @author <a href="mailto: arvindjss17@gmail.com" > Arvind Pal </a>
@@ -104,7 +107,15 @@ public class StudentPostVideoCapture implements Runnable {
 					HttpClient client = new HttpClient();
 			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":8093");
 					client.setConnectionTimeout(8000);
-	                       		ImageIO.write(StudentBufferImage.getController().get(0),"jpeg", new File("image2.jpeg"));
+						
+					BufferedImage bimg=StudentBufferImage.getController().get(0);
+                                        java.io.FileOutputStream fout = new java.io.FileOutputStream("image2.jpeg");
+                                        JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(fout);
+                                        JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
+                                        enParam.setQuality(0.25F, true);
+                                        jencoder.setJPEGEncodeParam(enParam);
+                                        jencoder.encode(bimg);
+                                        fout.close();	
         	               		postMethod.setRequestBody(new FileInputStream("image2.jpeg"));
                				postMethod.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
 					
@@ -122,12 +133,11 @@ public class StudentPostVideoCapture implements Runnable {
                        			postMethod.releaseConnection();
 					StudentBufferImage.getController().remove();
                        			try {
-	                               		Thread.sleep(10);
+	                               		runner.sleep(10);
+						runner.yield();
         	                       	}catch(Exception ex){}
 				} else {
-					try {
-                                                Thread.sleep(100);
-                                        }catch(Exception ex){}
+					try {	runner.sleep(100); runner.yield(); }catch(Exception ex){}
 				}	
 			}catch(Exception e){
 				System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());
