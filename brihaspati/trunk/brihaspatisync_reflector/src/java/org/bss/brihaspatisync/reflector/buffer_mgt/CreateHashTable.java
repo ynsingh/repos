@@ -30,12 +30,12 @@ public class  CreateHashTable {
 	public CreateHashTable() { }	
                           
          /**
-         * Create setBuffer method to check incoming packet type
+         * Create set_getBuffer method to check incoming packet type
          *queue is available or not if not then create queue of that type.
          *         
          */          
 	
-	public Buffer setBuffer(String type) {
+	public Buffer set_getBuffer(String type) {
 		if(!storedata_hashtable.containsKey(type)){
                 	storedata_hashtable.put(type,new Buffer());
 		}
@@ -58,7 +58,7 @@ public class  CreateHashTable {
         * resetPointer method is used to reset the values stored in hashtable after packets has deleted from queue.
         *
         */ 
-        public void resetPointer(int minpoint,String type){
+        public synchronized void resetPointer(int decreasepointer,String type){
                 try{
 			Hashtable ht=setPointertoHashtable(type);
                         ArrayList myArrayList=new ArrayList(ht.entrySet());
@@ -68,12 +68,13 @@ public class  CreateHashTable {
                                 Map.Entry e=(Map.Entry)itr.next();
                                 String key = (String)e.getKey();
                                 int value = ((Integer)e.getValue()).intValue();
-                                if((value-minpoint) >0 ) {
-                                        value=value-minpoint;
+                                if((value-decreasepointer) >0 ) {
+                                        value=value-decreasepointer;
                                         ht.put(key,value);
                                      
-                                }else {
-                                        ht.put(key,minpoint);
+                                }
+				else {
+                                        ht.put(key,decreasepointer);
                                 }
                         }
                 }catch(Exception e){ System.out.println("Error in resetPointer Method in CreateHashTable class ");}
@@ -86,7 +87,7 @@ public class  CreateHashTable {
          *
          */ 
 	     	
-        public void setPointer(String ip,int pointer ,String type){
+        public synchronized void setPointer(String ip,int pointer ,String type){
 		Hashtable ht=setPointertoHashtable(type);
                 try {
                         ht.put(ip,pointer);
@@ -106,7 +107,7 @@ public class  CreateHashTable {
 		}catch(Exception e){System.out.println("Error in setPointer Method in CreateHashTable class ");}
         }
     
-	public Vector getPointer() throws Exception {
+	public synchronized Vector getPointer() throws Exception {
   		return this.vector;
         }
 

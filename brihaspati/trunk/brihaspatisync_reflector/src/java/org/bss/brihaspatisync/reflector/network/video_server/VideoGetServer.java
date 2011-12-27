@@ -100,6 +100,7 @@ class MyVideoHandler implements HttpHandler {
 					if(image!=null)
 						ImageIO.write(image, "jpeg", responseBody);
 				}catch(Exception e){}
+				responseBody.flush();
 				responseBody.close();
     			}
 		}

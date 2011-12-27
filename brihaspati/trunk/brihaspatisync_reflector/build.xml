@@ -79,7 +79,7 @@
 			    <fileset dir="${jnlp.dir}" includes="**/*.jar" />
 			</path>
 		</delete>
-                <delete dir="${bin.dir}/org"/>
+                <delete dir="${bin.dir}/org/bss"/>
         </target>
 
 </project>

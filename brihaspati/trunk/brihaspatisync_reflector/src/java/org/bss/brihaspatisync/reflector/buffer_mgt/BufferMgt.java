@@ -19,7 +19,6 @@ import java.util.Hashtable;
 
 public class  BufferMgt {
 	
-	private int curpointer = 0;
 	private CreateHashTable createhashtable=new CreateHashTable();
 
 	public BufferMgt() {}
@@ -30,7 +29,7 @@ public class  BufferMgt {
 
         private void removeBufferAndSetPointer(String type){
 		try {
-        		Buffer buffer=createhashtable.setBuffer(type);
+        		Buffer buffer=createhashtable.set_getBuffer(type);
                        	int psize=0;                      
                        	Vector pointer=createhashtable.getPointer();
                         psize=pointer.size();
@@ -38,26 +37,26 @@ public class  BufferMgt {
                         int p1=(Integer)pointer.get((psize-1));
                         if(p1>0) {
                         	p1=p1-1;
-				if( (maxpointer-p1) >15) {
-					System.out.println(type + " 15 > maxpointer  " +maxpointer+"  p1  "+p1);
+				if(((maxpointer-p1) >10)|| (buffer.size()>10)) {
+					//System.out.println(type + " 15 maxpointer  " +maxpointer+"  p1  "+p1);
+					//System.out.println(type + " Vector   " +pointer);
                                 	createhashtable.resetPointer(5,type);
                                       	buffer.removeRange(0,5);
                                 } else {
-					System.out.println(type + " 15 < maxpointer  " +maxpointer+"  p1  "+p1);
                                 	createhashtable.resetPointer(p1,type);
 					buffer.removeRange(0,p1);
                              	}
                      	}
-			
-                }catch(Exception e){}
-    	 }
-	 private Object sendData_IncreasePointer(String ip,String type) throws Exception {
+            	}catch(Exception e){}
+    	}
+	
+	private Object sendData_IncreasePointer(String ip,String type) throws Exception {
 		try {	
-             		curpointer = createhashtable.getValue(ip,type);
-			Buffer buffer=createhashtable.setBuffer(type);
+             		int curpointer = createhashtable.getValue(ip,type);
+			Buffer buffer=createhashtable.set_getBuffer(type);
 			int size=buffer.size();
 			if(curpointer<size){
-				Object str="";	
+				Object str=null;	
 				while( curpointer != size) {
 					String str1=(buffer.get(curpointer)).toString();
                                         str1=str1.trim();
@@ -73,8 +72,7 @@ public class  BufferMgt {
 				}
 				removeBufferAndSetPointer(type);
 				return str;
-			}
-
+			}  
 		} catch(Exception e){System.out.println("Error in sendData_IncreasePointer method "+e.getMessage());}	
 		return null;
 	 }
@@ -86,7 +84,7 @@ public class  BufferMgt {
 
 	 public  synchronized void putByte(Object data,String current_ip,String type){
 		try {
-			Buffer buffer=createhashtable.setBuffer(type);
+			Buffer buffer=createhashtable.set_getBuffer(type);
 			buffer.put(current_ip);
 			buffer.putObject(data);
 		}catch(Exception e){ System.out.println("Error in putByte method in BufferMgt class ----->"+e.getMessage()); }
@@ -107,5 +105,3 @@ public class  BufferMgt {
 		}catch(Exception e){}
       	}  
 }
-
-  

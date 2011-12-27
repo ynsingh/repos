@@ -100,18 +100,15 @@ class MyStudentPostVideoHandler implements HttpHandler {
       					responseHeaders.set("Content-Type", "text/plain");
       					exchange.sendResponseHeaders(200, 0);
 					OutputStream responseBody = exchange.getResponseBody();
-        	        		InputStream in = exchange.getRequestBody();
-			                byte[] bytes = new byte[1024*1024];
-		        	        int count = 0;
-                			do {
-	                		        count+= in.read(bytes,count,bytes.length-count);
-			                } while(!(count>4&&bytes[count-2]==(byte)-1 && bytes[count-1]==(byte)-39));
+			                byte[] bytes = org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
+					responseBody.flush();
 		        	        responseBody.close();
 			                BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 		        	      	try {
 						if(image!=null) {
 							BufferMgt buffer_mgt=temp_ht.getValues("stud_video");
                                                         buffer_mgt.putByte(image,client_ip,"stud_video");	
+							buffer_mgt.sendData(client_ip,"stud_video");
 						}
                 	                }catch(Exception e){}
     				}

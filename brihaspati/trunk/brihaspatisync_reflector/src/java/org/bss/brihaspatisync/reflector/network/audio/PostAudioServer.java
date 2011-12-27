@@ -93,8 +93,7 @@ class MyPostHandler implements HttpHandler {
 					responseHeaders.set("Content-Type", "application/octet-stream");
 					exchange.sendResponseHeaders(200, 0);
 					OutputStream responseBody = exchange.getResponseBody();
-	           			InputStream input = exchange.getRequestBody();
-					byte[] bytes=IOUtils.toByteArray(input);
+					byte[] bytes=org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
 					InputStream is=new ByteArrayInputStream(bytes);
 					AudioInputStream ais = new AudioInputStream(is, getAudioFormat(), bytes.length / getAudioFormat().getFrameSize());
 					try {

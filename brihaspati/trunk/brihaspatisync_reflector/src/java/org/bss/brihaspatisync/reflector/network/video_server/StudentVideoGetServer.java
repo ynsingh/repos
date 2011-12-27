@@ -98,9 +98,10 @@ class MyStudentVideoHandler implements HttpHandler {
                                 	MyHashTable temp_ht=runtimeObject.getStudentVideoMyHashTable();
                                         BufferMgt buffer_mgt=temp_ht.getValues("stud_video");
                                         BufferedImage image=(BufferedImage)(buffer_mgt.sendData(client_ip,"stud_video"));
-					if(image!=null)
+					if(image != null)
 	                                        ImageIO.write(image, "jpeg", responseBody);
-				}catch(Exception e){}
+				} catch(Exception e){}
+				responseBody.flush();
 				responseBody.close();
     			}
 		}

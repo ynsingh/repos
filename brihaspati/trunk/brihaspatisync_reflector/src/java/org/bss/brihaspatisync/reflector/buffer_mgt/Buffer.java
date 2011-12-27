@@ -24,8 +24,8 @@ public class Buffer {
          * Create an empty Buffer
          */
 	public Buffer(){
-		buffer= new Vector(20);
-		data= new Vector(20);
+		buffer= new Vector(11);
+		data= new Vector(11);
 	} 
     
        	/** 
@@ -38,11 +38,6 @@ public class Buffer {
                	Object obj = buffer.elementAt(temp); 
                	return obj; 
        	} 
-	
-        public void put(Object x) {
-                buffer.add(x);
-        }
-	
 		
 	public synchronized Object getObject(int temp) throws QueueEmptyException {
                 if(isEmpty())
@@ -50,8 +45,12 @@ public class Buffer {
                 Object obj = data.elementAt(temp);      
                 return obj;
         }
+        
+	public synchronized void put(Object x) {
+                buffer.add(x);
+        }
     	
-	public void putObject(Object x) {
+	public synchronized void putObject(Object x) {
                 data.add(x);
         }
 	 
@@ -59,7 +58,7 @@ public class Buffer {
          * Remove an Object from buffer
          */
      	public synchronized void remove() {
-                if(buffer.size() > 0){
+                if((buffer.size() > 0) && (data.size() > 0)){
 			buffer.removeElementAt(0);
 			data.removeElementAt(0);
                 }
@@ -69,9 +68,9 @@ public class Buffer {
 	 * remove element from buffer 
 	 */
 	
-	public void removeRange(int fromIndex, int endIndex) {
-		if(buffer.size() >= endIndex){
-			for(int j=fromIndex;j<endIndex;j++){
+	public synchronized void removeRange(int fromIndex, int endIndex) {
+		if(buffer.size() > endIndex){
+			for(int j=fromIndex;j<=endIndex;j++){
 				buffer.removeElementAt(0);
 				data.removeElementAt(0);
 			}
