@@ -41,6 +41,11 @@
          <form-bean name="NominationListActionForm" type="com.myapp.struts.Candidate.NominationListActionForm"/>
          <form-bean name="VoterElectionActionForm" type="com.myapp.struts.Voting.VoterElectionActionForm"/>
          <form-bean name="CandidateMenifestoActionForm" type="com.myapp.struts.Candidate.CandidateMenifestoActionForm"/>
+  <!--CHAT Form Naming-->
+        <form-bean name="ListRoomsActionForm" type="com.myapp.struts.chat.ListRoomsActionForm"/>
+        <form-bean name="CatchRoomActionForm" type="com.myapp.struts.chat.CatchRoomActionForm"/>
+        <form-bean name="AddNewRoomActionForm" type="com.myapp.struts.chat.AddNewRoomActionForm"/>
+        <form-bean name="SendMessageActionForm" type="com.myapp.struts.chat.SendMessageActionForm"/>
 
     </form-beans>
 
@@ -561,6 +566,31 @@
         </action>
 
 
+<!-- Chat Configuration mapping   -->
+<action path="/listrooms"  name="ListRoomsActionForm" scope="session" type="com.myapp.struts.chat.ListRoomsAction">
+<forward name="success" path="/chat/listrooms.jsp"/>
+<forward name="success1" path="/chat/addRoom.jsp"/>
+</action>
+<action path="/catchroom" input="/chat/listrooms.jsp" name="CatchRoomActionForm" scope="request" type="com.myapp.struts.chat.CatchRoomAction">
+<forward name="success" path="/chat/chatrooms.jsp"/>
+ <forward name="success1" path="/chat/listrooms.jsp"/>
+</action>
+<action path="/listrooms1" input="/chat/addRoom.jsp" name="ListRoomsActionForm" scope="request" type="com.myapp.struts.chat.ListRoomsAction">
+<forward name="success" path="/listrooms.do"/>
+<forward name="success1" path="/chat/addRoom.jsp"/>
+</action>
+<action path="/sendmessage" input="/chat/sendMessage.jsp" name="SendMessageActionForm" scope="request" type="com.myapp.struts.chat.SendMessageAction"/>
+
+<action path="/catchroom1"  name="CatchRoomActionForm" scope="request" type="com.myapp.struts.chat.CatchRoomAction1">
+<forward name="success" path="/chat/chatrooms.jsp"/>
+<forward name="success1" path="/Candidate/home.jsp"/>
+ 
+</action>
+<action path="/chatlogout"  name="CatchRoomActionForm" scope="request" type="com.myapp.struts.chat.ChatLogoutAction">
+<forward name="success" path="/Candidate/home.jsp"/>
+<forward name="success1" path="/Voter/voter_home.jsp"/>
+
+</action>
 
    </action-mappings>
 

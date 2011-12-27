@@ -32,6 +32,7 @@ String contextPath = request.getContextPath();
     Locale locale=null;
     String locale1="en";
     String rtl="ltr";
+     String align="left";
     boolean page=true;
 %>
 <%
@@ -51,6 +52,33 @@ locale1=(String)session.getAttribute("locale");
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
+
+<%
+try{
+if(session.getAttribute("institute_id")!=null){
+System.out.println("institute_id"+session.getAttribute("institute_id"));
+}
+else{
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %><script>parent.location = "<%=request.getContextPath()%>"+"/logout.do?session=\"expired\"";</script><%
+    }
+}catch(Exception e){
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
+    }
+
+String user=(String)session.getAttribute("username");
+String pass=(String)session.getAttribute("pass");
+ session.setAttribute("pass","t");
+   user_id=   (String)session.getAttribute("user_id");
+String user_name=   (String) session.getAttribute("username");
+  String question=  (String)request.getAttribute("question");
+   String staff_id=  (String) request.getAttribute("staff_id");
+   String instituteName=  (String) session.getAttribute("institute_name");
+   String role=  (String) session.getAttribute("login_role");
+
+%>
+
 <html>
 <head>
 
@@ -138,19 +166,67 @@ if(session.getAttribute("username")==null)
 if(request.getAttribute("msg")!=null)
    { %><script>alert("<%=request.getAttribute("msg")%>");</script>
 <%}%>
- <jsp:include page="candidateheader.jsp" flush="true" />
+ 
 </head>
 
-<div
-   style="  top:55px;
-   left:5px;
-   right:5px;
-      position: absolute;
-      height: 600px;
-      visibility: show;">
+
     
     <body leftmargin="0" topmargin="0" marginwidth="0" onload="fn();" marginheight="0" dir="<%=rtl%>">
+ <table width="100%"   border="0px"  style="margin:0px 0px 0px 0px;" dir="<%=rtl%>">
+
+    <tr dir="<%=rtl%>" valign="top"><td valign="top" dir="<%=rtl%>" width="550px">
+
+                        <p align="<%=align%>"  style="font-family:Arial;color:brown;font-size:22px; " dir="<%=rtl%>">&nbsp;&nbsp;<%=resource.getString("electionmanagement")%><br/><br></td>
+                    <td dir="<%=rtl%>" valign="top"><p align="left"   style="font-family:Arial;color:brown;font-size:16px;margin-top: 0px;" dir="<%=rtl%>"><span dir="<%=rtl%>"><b><%=instituteName%><br>&nbsp; Role[<%=role%>]</b></span></td>
+
+                    <td align="right" width="250px" valign="top" dir="<%=rtl%>"><span style="font-family:arial;color:brown;font-size:12px;" dir="<%=rtl%>"><b dir="<%=rtl%>"><%=resource.getString("login.hello")%>
+
+                                <%--[<%=user%>]&nbsp;|<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a>--%>
+                        
+  <script type="text/javascript" language="javascript">
+document.write("<span " );
+document.write('style="height:10px;border:0px solid black;font:bold 10pt Verdana;"');
+document.write(' onclick="toggle_menu(1);');
+document.write('event.cancelBubble=1" ><span style="cursor:hand;">');
+document.write('<%=user%> <img width=10 height=10 src="<%=request.getContextPath()%>/images/down.gif"></span>| &nbsp;<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></b>');
+document.write('<div id="ddmenu" style="');
+document.write('height:45px;border:0px solid black;width:200px;text-align: left;');
+document.write('visibility:hidden;">');
+add_item("<%=resource.getString("view_profile")%>","<%=request.getContextPath()%>/candidate1.do?id=<%=session.getAttribute("candidate_id")%>&pos=<%=session.getAttribute("position_id")%>&status=");
+add_item("<%=resource.getString("login.managesuperadminaccount.changepassword")%>","<%=request.getContextPath()%>/change_password.do");
+function add_item(linkname,dest){
+  document.write('<a target="f3" href="'+dest+'">'+linkname+'</a><br>');
+}
+
  
+
+function toggle_menu(state){
+var theMenu=document.getElementById("ddmenu").style;
+if (state==0) {
+  theMenu.visibility="hidden"; }
+else {
+  theMenu.visibility = (theMenu.visibility=="hidden") ? "visible" : "hidden";
+}
+}
+
+
+document.onclick= function() {toggle_menu(0); }
+document.write('</div></span>');
+
+
+</script>
+
+
+                            </b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                     </td>
+                </tr>
+
+
+
+
+                <tr><td colspan="3">
+
 <ul class="dd-menu">
 <li><a href="<%=contextPath%>/Candidate/home.jsp"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
       <b style="color:white" dir="<%=rtl%>"> &nbsp;&nbsp;<%=resource.getString("login.home")%></b></a></li>
@@ -161,6 +237,9 @@ if(request.getAttribute("msg")!=null)
       <b style="color:white" dir="<%=rtl%>"> Final List</b></a></li>
       <li><a href="<%=contextPath%>/Candidate/upload_menifesto.jsp"  target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
         <b style="color:white" dir="<%=rtl%>">Upload Menifesto</b> </a></li>
+         <li><a href="<%=contextPath%>/catchroom1.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
+        <b style="color:white" dir="<%=rtl%>">Chat</b> </a>
+         </li>
       <%--<li><a href="<%=contextPath%>/admin/view_all.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
       <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.viewall")%></b></a></li>--%>
   
@@ -177,21 +256,13 @@ if(request.getAttribute("msg")!=null)
     <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.changeworkingstatus")%> </b></a></li>--%>
 
 </ul>
+                    </td></tr>
 
 
 
-<table border=0 cellpadding=0 cellspacing=0 style="position: absolute;top: 20px" width="100%" dir="<%=rtl%>">
    
-  <%--<tr><td dir="<%=rtl%>">
-            <font color="blue" size="-1" dir="<%=rtl%>"><b><br>
-<%=resource.getString("login.pendingrequestforinstitueregistration")%> (<%=count%>)&nbsp;<a href="<%=contextPath%>/admin/view_pending.jsp" target="f3" dir="<%=rtl%>"> <%=resource.getString("viewpending")%></a>
-
-    </b>
-</font>
-
-      </td></tr>--%>
-  <tr dir="<%=rtl%>"><td id="ifr3" align="left" rowspan="2" style=" padding-left:200px; height: 450px;" dir="<%=rtl%>">
-          <IFRAME  name="f3" src="#" frameborder=0 scrolling="no" width="100%" height="100%" style="color:deepskyblue;height: 450;visibility:true;" id="f3" dir="<%=rtl%>"></IFRAME>
+                <tr dir="<%=rtl%>"><td id="ifr3" align="left" colspan="3" style=" padding-left:200px; height: 450px;" dir="<%=rtl%>">
+          <IFRAME  name="f3" src="#" frameborder=0 scrolling="yes" width="100%" height="100%" style="color:deepskyblue;height: 450;visibility:true;" id="f3" dir="<%=rtl%>"></IFRAME>
 
 
       </td></tr>
@@ -201,7 +272,7 @@ if(request.getAttribute("msg")!=null)
       
 </table>
 
-    </div>
+   
         </body>
    </html>
    <%}else{

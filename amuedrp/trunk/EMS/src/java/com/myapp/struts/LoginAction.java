@@ -193,6 +193,8 @@ if(x!=null)
                 session.setAttribute("user_id", login.getUserId());
                 session.setAttribute("login_role", login.getRole());
                 session.setAttribute("password", login.getPassword());
+               
+
                // login.setStatus("login");
                 //dao.update(login);
                 //loginActionForm.setButton1(null);
@@ -304,6 +306,22 @@ if(x!=null)
 
                             session.setAttribute("institute_name", rs1.getInstituteName());
                         }
+
+                       ElectionManager electionmanager=   institutedao.getElectionManagerDetails(login.getUserId(),institute_id);
+
+                       System.out.println(electionmanager.getId().getManagerId().toString()+"..........");
+                          if(electionmanager!=null)
+                          {
+
+                             session.setAttribute("manager_id",electionmanager.getId().getManagerId().toString());
+
+                          }
+
+
+
+
+
+
                      return mapping.findForward("electionmanager");
                  }
 
@@ -312,6 +330,13 @@ if(x!=null)
                         Institute rs1 = institutedao.getInstituteDetails(institute_id);
 
                         if (rs1!=null) {
+
+
+                           
+                          session.setAttribute("voter_id",login.getStaffDetail().getId().getStaffId());
+
+                          System.out.println("StaffIddddddddddddddddddd"+login.getStaffDetail().getId().getStaffId());
+
 
                             session.setAttribute("institute_name", rs1.getInstituteName());
                         }
@@ -324,8 +349,25 @@ if(x!=null)
 
                         if (rs1!=null) {
 
+
+                            session.setAttribute("candidate_id",login.getStaffDetail().getId().getStaffId());
+
+                            Candidate1 obj1= institutedao.getCandidatePosition(login.getStaffDetail().getId().getInstituteId(),login.getStaffDetail().getId().getStaffId());
+
+                            session.setAttribute("position_id",obj1.getId().getPositionId());
+
                             session.setAttribute("institute_name", rs1.getInstituteName());
                             session.setAttribute("user_name", login.getUserName());
+
+                               Position1 pos=institutedao.getCandidatePositionName(login.getStaffDetail().getId().getInstituteId(),obj1.getId().getElectionId(),String.valueOf(obj1.getId().getPositionId()));
+                            session.setAttribute("positionname", pos.getPositionName());
+
+                            Election elec=ElectionDAO.searchElection(pos.getId().getElectionId(), login.getStaffDetail().getId().getInstituteId());
+
+                             session.setAttribute("electionname", elec.getElectionName());
+
+
+
                         }
                      return mapping.findForward("candidate");
                  }

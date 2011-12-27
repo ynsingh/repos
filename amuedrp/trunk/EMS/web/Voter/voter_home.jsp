@@ -117,7 +117,7 @@ function viewelections()
                 divtag.id = "overbody";
                 //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserWrite");
                 window.scrollbars.visible = false;
-                    divtag.style.width = "100%";
+                divtag.style.width = "100%";
                 divtag.style.height = "100%";
                 divtag.style.top = "0px";
                 divtag.style.zIndex = "1500";
@@ -724,7 +724,42 @@ String instituteName=(String)session.getAttribute("institute_name");
             <img src="<%=request.getContextPath()%>/images/logo.bmp" alt="banner space"  border="0" align="top" id="Image1">
             </td>
             <td style="color: maroon;font-size: 12px;font-weight: bold;" align="center"><%=instituteName%><br>&nbsp; Role&nbsp;[<%=role%>]</td>
-            <td align="right" valign="top" dir="<%=rtl%>"><span style="font-family:arial;color:brown;font-size:12px;" dir="<%=rtl%>"><b dir="<%=rtl%>">Welcome <%=session.getAttribute("username")%> &nbsp;|<a href="<%=request.getContextPath()%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <td align="right" valign="top" dir="<%=rtl%>"><span style="font-family:arial;color:brown;font-size:12px;" dir="<%=rtl%>"><b dir="<%=rtl%>">Welcome 
+                        
+                        <%--<%=session.getAttribute("username")%> &nbsp;|<a href="<%=request.getContextPath()%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a>--%>
+                      <script type="text/javascript" language="javascript">
+document.write("<span " );
+document.write('style="height:10px;border:0px solid black;font:bold 10pt Verdana;"');
+document.write(' onclick="toggle_menu(1);');
+document.write('event.cancelBubble=1" ><span style="cursor:hand;">');
+document.write('<%=(String)session.getAttribute("username")%> <img width=10 height=10 src="<%=request.getContextPath()%>/images/down.gif"></span>| &nbsp;<a href="<%=request.getContextPath()%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></b>');
+document.write('<div id="ddmenu" style="');
+document.write('height:45px;border:0px solid black;width:200px;text-align: left;');
+document.write('visibility:hidden;">');
+add_item("<%=resource.getString("view_profile")%>","<%=request.getContextPath()%>/newregistration2.do?id=<%=session.getAttribute("voter_id")%>");
+add_item("<%=resource.getString("login.managesuperadminaccount.changepassword")%>","<%=request.getContextPath()%>/change_password.do");
+function add_item(linkname,dest){
+  document.write('<a  href="'+dest+'"  onclick="return pageload(3);">'+linkname+'</a><br>');
+}
+
+function toggle_menu(state){
+var theMenu=document.getElementById("ddmenu").style;
+if (state==0) {
+  theMenu.visibility="hidden"; }
+else {
+  theMenu.visibility = (theMenu.visibility=="hidden") ? "visible" : "hidden";
+}
+}
+
+
+document.onclick= function() {toggle_menu(0); }
+document.write('</div></span>');
+
+
+</script>
+
+
+                    </b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
              </td></tr>
             </table><br>
             </td>
@@ -746,7 +781,7 @@ String instituteName=(String)session.getAttribute("institute_name");
                         <table>
                             <tr><td>
 
-                            <a href="#" style="font-size: 13px;text-decoration: none;">&nbsp;<%=resource.getString("login.home")%></a>&nbsp;|&nbsp;
+                            <a href="/EMS/Voter/voter_home.jsp" style="font-size: 13px;text-decoration: none;">&nbsp;<%=resource.getString("login.home")%></a>&nbsp;|&nbsp;
                         
                         
                         <%
@@ -764,8 +799,9 @@ String instituteName=(String)session.getAttribute("institute_name");
                                 <li><a href="#" style="font-size: 13px;font-weight: bold;z-index:1000" onclick="electionsResults()">Election&nbsp;Results</a></li>
                             </ul>--%>
                         
-                        <a href="#" style="font-size: 13px;text-decoration: none;" onclick="viewelections();"><%=resource.getString("view_elction")%></a>
+                        <a href="#" style="font-size: 13px;text-decoration: none;" onclick="viewelections();"><%=resource.getString("view_elction")%></a>&nbsp;|&nbsp;
 
+                   <a href="<%=request.getContextPath()%>/listrooms.do" style="font-size: 13px;text-decoration: none;" onclick="">Chat</a>
                     </td></tr>
                             
                         </table>

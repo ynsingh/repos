@@ -124,6 +124,73 @@ public Institute getInstituteDetails(String instituteId){
             session.close();
         }
 }
+
+public Candidate1 getCandidatePosition(String instituteId,String enrolment){
+  Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM Candidate1 where id.instituteId =:instituteId and enrolment=:enrolment");
+            query.setString("instituteId", instituteId);
+             query.setString("enrolment", enrolment);
+            return (Candidate1)query.uniqueResult();
+        }
+        finally {
+            session.close();
+        }
+}
+public Position1 getCandidatePositionName(String instituteId,String electionId,String positionId){
+  Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM Position1 where id.instituteId =:instituteId and id.electionId =:electionId and id.positionId=:positionId");
+            query.setString("instituteId", instituteId);
+         
+              query.setString("electionId", electionId);
+              query.setString("positionId", positionId);
+            return (Position1)query.uniqueResult();
+        }
+        finally {
+            session.close();
+        }
+}
+public ElectionManager getElectionManagerDetails(String userId,String instituteId){
+  Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM ElectionManager where id.instituteId = :instituteId and userId =:userId");
+            query.setString("instituteId", instituteId);
+            query.setString("userId", userId);
+            return (ElectionManager)query.uniqueResult();
+        }
+        finally {
+            session.close();
+        }
+}
+
+
+public VoterRegistration getVoterDetails(String staffId,String instituteId){
+  Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM VoterRegistration where id.enrollment = :staffId and id.instituteId =:instituteId");
+            query.setString("instituteId", instituteId);
+            query.setString("staffId", staffId);
+            return (VoterRegistration)query.uniqueResult();
+        }
+        finally {
+            session.close();
+        }
+}
+
+
 public Institute getInstituteDetailsByRegistrationId(Integer RegistrationId){
   Session session =null;
     Transaction tx = null;
