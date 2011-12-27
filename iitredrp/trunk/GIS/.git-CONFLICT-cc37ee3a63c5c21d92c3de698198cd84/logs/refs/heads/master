@@ -1,6 +1,0 @@
-0000000000000000000000000000000000000000 2c48a8737c709ef83a0bd3f6592137b9d0dbeb47 Abhay Rana <capt.n3m0@gmail.com> 1323499070 +0530	commit (initial): Initial commit
-2c48a8737c709ef83a0bd3f6592137b9d0dbeb47 cfe493407ee63ffdb49f0110cd24595fe0614f77 Abhay Rana <capt.n3m0@gmail.com> 1323499277 +0530	commit: Added sample config php file
-cfe493407ee63ffdb49f0110cd24595fe0614f77 545f7db268479856f6cc0915edfbcd6129615b9d Abhay Rana <capt.n3m0@gmail.com> 1323500741 +0530	commit: Better compatibility with older php versions
-545f7db268479856f6cc0915edfbcd6129615b9d 4154fe85a85614b66ab57fcee025d8e867a5236a Abhay Rana <capt.n3m0@gmail.com> 1323500877 +0530	commit: Moved BRIHASPATI OPEN ID URL to config file
-4154fe85a85614b66ab57fcee025d8e867a5236a 0690bbd49a65b9671dbceb24af4e5dd4a9efc387 Abhay Rana <capt.n3m0@gmail.com> 1323502108 +0530	commit: Added php5-pdo requirement
-0690bbd49a65b9671dbceb24af4e5dd4a9efc387 097ecf110d01dc82e3bc898f523dca93fef758d3 Abhay Rana <capt.n3m0@gmail.com> 1323502489 +0530	commit: Added more requirements
