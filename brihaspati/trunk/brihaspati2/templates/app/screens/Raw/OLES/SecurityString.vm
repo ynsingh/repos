@@ -17,17 +17,17 @@ $page.setBgColor($ui.bgcolor)
 <table bgcolor="$ui.menuColor" width=100%>
         <tr><td><b>
 		<font face="$ui.sansSerifFonts">
-                <a href=$link.setPage("Index.vm")>Home</a> |
+                <a href=$link.setPage("Index.vm")>$brih_home</a> |
                 <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> |
-                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")>OnLine Examination System</a>|
+                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")>$online_online $brih_examat $brih_system</a>|
                 #if($flag == "security")
-              	  Security String   
+              	  $brith_security $brih_string   
               	#elseif($flag == "show") 
-              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security")>$brith_security</a>| Show Security String
+              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security")>$brith_security</a>| $RemoteShow $brith_security $brih_string 
               	#elseif($flag == "generate") 
-              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security")>$brith_security</a>| Generate Security String
+              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security")>$brith_security</a>| $brih_generate $brith_security $brih_string
               	#else
-              	Security String
+			$brith_security $brih_string              	
               	#end
         </b></td> </tr>    
 </table>
@@ -60,7 +60,7 @@ $page.setBgColor($ui.bgcolor)
 </table>
 <table bgcolor="$ui.tableColor" width="100%">
 	<tr bgcolor="$ui.menuColor" width="100%">
-		<td align="left" width="100%" colspan="6"><b><i><font size="3">Security String</font><b></i></td>
+		<td align="left" width="100%" colspan="6"><b><i><font size="3"> $brith_security $brih_string </font><b></i></td>
 	</tr>
 </table>
 #elseif($flag == "show")
@@ -71,7 +71,7 @@ $page.setBgColor($ui.bgcolor)
       	  </td>
 			<td>
     			<SELECT name=userList>	
-    			<option value="1" >Select Student</option>
+    			<option value="1" > #if($lang =="hindi" || $lang=="gujarati") $brih_student $brih_select #else $brih_select $brih_student #end </option>
 				#foreach($topic in $userList2)
 					#if($!topic.getLoginName()==$!studentLoginName)
 						<option value="$!topic.getLoginName()">$!topic.getLoginName()</option>
@@ -88,7 +88,7 @@ $page.setBgColor($ui.bgcolor)
     		</td>
 			<td>
         		<SELECT name=quizlist>       		
-				<option value="1">Select Quiz</option>			
+				<option value="1"> #if($lang =="hindi" || $lang=="gujarati") $brih_quiz $brih_select #else $brih_select $brih_quiz #end </option>			
 					#foreach($topic in $quizList)
 						#if($!topic.getQuizID()==$!quizID)
 							<option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
@@ -102,7 +102,7 @@ $page.setBgColor($ui.bgcolor)
 	
 		<tr bgcolor="$ui.menuColor">
 			<td colspan="2">
-				<input type="button" name="eventSubmit_Security" value="Show Security String" onClick="checkField(document.frm,this);"/>		
+				<input type="button" name="eventSubmit_Security" value="$brith_showSecurity" onClick="checkField(document.frm,this);"/>		
 			</td>
 		</tr>    
 		<input type="hidden" name="actionName">
@@ -120,7 +120,7 @@ $page.setBgColor($ui.bgcolor)
     		</td>
 			<td>
         		<SELECT name=quizlist>       		
-				<option value="1">Select Quiz</option>			
+				<option value="1"> $brih_select $brih_quiz </option>			
 					#foreach($topic in $quizList)
 						#if($!topic.getQuizID()==$!quizID)
 							<option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
@@ -135,7 +135,7 @@ $page.setBgColor($ui.bgcolor)
 	
 		<tr bgcolor="$ui.menuColor">
 			<td colspan="2">
-				<input type="button" name="eventSubmit_generateSecurity" value="Generate Security String" onClick="checkField1(document.frm,this);"/>		
+				<input type="button" name="eventSubmit_generateSecurity" value="$brith_generateSecurity" onClick="checkField1(document.frm,this);"/>		
 			</td>
 		</tr>    
 		<input type="hidden" name="actionName">

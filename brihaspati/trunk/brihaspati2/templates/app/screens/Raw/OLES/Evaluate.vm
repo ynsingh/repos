@@ -17,13 +17,13 @@ $page.setBgColor("bgcolor")
 <table bgcolor="$ui.menuColor" width=100%>
         <tr><td><b>
 		<font face="$ui.sansSerifFonts">
-                <a href=$link.setPage("Index.vm")>Home</a> |
+                <a href=$link.setPage("Index.vm")>$brih_home</a> |
                 <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> |
-                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")>OnLine Examination System</a>|
+                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")> $online_online $brih_examat $brih_system</a>|
                 #if($!type == "result")
-                	Result
+                	$brih_result
                 #else
-					Evaluate
+					$brih_evaluate
 				#end
         </b>
         </td>
@@ -33,7 +33,7 @@ $page.setBgColor("bgcolor")
 <table width="100%">
 	<tr>
 		<td align=right>
-			<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>Help</a>
+			<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
 		</td>
 	</tr>
 </table>

@@ -92,12 +92,12 @@ $!data.getMessage()
            	<b><I><a href=$link.setPage("call,OLES,OLES_ReEvaluation.vm").addPathInfo("count","7") style=text-decoration:none>$brih_reevaluation</I></b></a></td>
 		</tr>
 		<tr bgcolor="$ui.menuColor"><td colspan="7">
-		<b><a href="$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode","cnqb").addPathInfo("count","1")" style=text-decoration:none>$WikiCreate $brih_new $brih_queBank</a></b>
+		<b><a href="$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode","cnqb").addPathInfo("count","1")" style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_queBank $brih_new $brih_Of1 $WikiCreate #else $WikiCreate $brih_new $brih_queBank #end </a></b>
 		</td></tr>
 		#if( $total_size!=0 )
 			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="7"><b><i><font size="3">$brih_queBank $brih_topics</font><b></i></td></tr>
 		#else
-			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="7"> $brih_question $brih_arenotexists $brih_in $brih_queBank </td></tr>
+			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="7"> #if($lang =="hindi" || $lang == "gujarati") $brih_queBank $brih_in $brih_question $brih_arenotexists #else $brih_question $brih_arenotexists $brih_in $brih_queBank #end </td></tr>
 		#end
 </table>
 <table width="100%" bgcolor="$ui.tableColor">
@@ -108,9 +108,9 @@ $!data.getMessage()
                                 <tr bgcolor="$ui.tableColor">
                                 #end
 					<td width="30%">$topics</td>
-				       	<td><a href="$link.setPage("call,OLES,Create_QB.vm").addPathInfo("addques","addques").addPathInfo("Topicname",$topics).addPathInfo("mode","cnqb").addPathInfo("count","1")" style=text-decoration:none>$brih_add $brih_question </a></td>
-                                        <td><a href="$link.setPage("call,OLES,View_QB.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topics).addPathInfo("count","1")" style=text-decoration:none>$brih_view $brih_question</a></td>
-					<td><a href="$link.setPage("call,OLES,Oles_QB.vm").setAction("OnlineExaminationSystem").addPathInfo("mode","alllist").addPathInfo("deltype","topicdel").addPathInfo("topic",$topics).addPathInfo("actionName","eventSubmit_dodeletetopic")" style=text-decoration:none onclick="javascript:return confirm('Do you want to delete this topic')">$brih_delete $brih_topic</a></td>
+				       	<td><a href="$link.setPage("call,OLES,Create_QB.vm").addPathInfo("addques","addques").addPathInfo("Topicname",$topics).addPathInfo("mode","cnqb").addPathInfo("count","1")" style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_question $brih_add #else $brih_add $brih_question #end </a></td>
+                                        <td><a href="$link.setPage("call,OLES,View_QB.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topics).addPathInfo("count","1")" style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_question $brih_Of1 $brih_view #else $brih_view $brih_question #end </a></td>
+					<td><a href="$link.setPage("call,OLES,Oles_QB.vm").setAction("OnlineExaminationSystem").addPathInfo("mode","alllist").addPathInfo("deltype","topicdel").addPathInfo("topic",$topics).addPathInfo("actionName","eventSubmit_dodeletetopic")" style=text-decoration:none onclick="javascript:return confirm('Do you want to delete this topic')"> #if($lang =="hindi" || $lang == "gujarati") $brih_topic $brih_delete #else $brih_delete $brih_topic #end </a></td>
                                 </tr>
 		#end
 		#if( $total_size!=0 )

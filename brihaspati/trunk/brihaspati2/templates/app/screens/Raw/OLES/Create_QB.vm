@@ -75,7 +75,7 @@ $!Msg
 			#end
         	</tr>
 		<tr>
-                	<td><b>$brih_qus if($lang =="hindi" || $lang == "gujarati")  $brih_Of2 #end $brih_type</b><font color=Red>*</font>
+                	<td><b>$brih_qus #if($lang =="hindi" || $lang == "gujarati")  $brih_Of2 #end $brih_type</b><font color=Red>*</font>
 			</td>
                 	<td>
 			<select name="Questype" onChange="ChangeQuestype(document.frm);"/>

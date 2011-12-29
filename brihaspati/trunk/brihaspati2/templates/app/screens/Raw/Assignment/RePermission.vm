@@ -85,7 +85,7 @@ $!data.getMessage()
                </tr>
 	<tr bgcolor="$ui.menuColor">
      		<td colspan=3>
-		<input type="button" name="Repermission" value="$Repo_Perm #if($lang == "hindi") $brih_Of1 #end $brih_granted" onClick="checkBlank(document.uploadform,this);"  />
+		<input type="button" name="Repermission" value="$Repo_Perm #if($lang == "hindi") $brih_Of #end $brih_granted" onClick="checkBlank(document.uploadform,this);"  />
 		<input type="button" name="Reset" value="$brih_reset" onClick="checkBlank1(document.uploadform,this);"  />
 		<input type="hidden" name="actionName"> 
 		</td>

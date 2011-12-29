@@ -22,17 +22,17 @@ $!data.getMessage()
         <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a>|
         <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1")>$brih_grp $brih_mgmt </a>|
 	#if($Status!="Edit")
-	#if($lang == "english")
-	$brih_add $brih_member</b>
-	#else
+	#if($lang =="hindi" || $lang =="gujarati")
 	$brih_member $brih_add</b>
+	#else
+	$brih_add $brih_member</b>
 	#end
 	#else
         ##<a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1")>$brih_grp $brih_mgmt </a>|
-	#if($lang=="english")
-        <a href=$link.setPage("call,Group_Mgmt,Editgroup.vm").addPathInfo("count","4")>$brih_edit $brih_grp</a> | $brih_remove $brih_member</b>
-	#else
+	#if($lang =="hindi" || $lang =="gujarati")
         <a href=$link.setPage("call,Group_Mgmt,Editgroup.vm").addPathInfo("count","4")>$brih_grp $brih_Of1 $brih_edit</a> | $brih_member $brih_remove</b>
+	#else
+        <a href=$link.setPage("call,Group_Mgmt,Editgroup.vm").addPathInfo("count","4")>$brih_edit $brih_grp</a> | $brih_remove $brih_member</b>
 	#end
 	#end
      </td></tr>
@@ -103,10 +103,10 @@ $!data.getMessage()
         	<table bgcolor="$ui.tableColor" width="100%" > ## table 6 start
 			#if($Status != "Edit")
 				<tr><td>
-					#if($lang == "english")
-					<b><font color="Red">*</font>$brih_select $brih_grp:&nbsp;&nbsp;</b>
-					#else
+					#if($lang =="hindi" || $lang =="gujarati")
 					<b><font color="Red">*</font>$brih_grp $brih_select:&nbsp;&nbsp;</b>
+					#else
+					<b><font color="Red">*</font>$brih_select $brih_grp:&nbsp;&nbsp;</b>
 					#end
                 			<select name="groupname" size="1" onChange="Changegroup(document.frm,this);"/>
                         			<option> </option>
@@ -120,17 +120,17 @@ $!data.getMessage()
 				#if($nolist == "yeslist")
 				#if($Status!="Edit")
 				<td bgcolor="$ui.menuColor">
-					#if($lang == "english")
-                      			#set($headings=["","&nbsp;&nbsp;$brih_student$brih_name"])
-					#else
+					#if($lang =="hindi" || $lang =="gujarati")
                       			#set($headings=["","&nbsp;&nbsp;$brih_student $brih_Of2 $brih_name"])
+					#else
+                      			#set($headings=["","&nbsp;&nbsp;$brih_student$brih_name"])
 					#end
 				#else
 				<td>
-					#if($lang=="english")
-                        		#set($headings=["","&nbsp;$brih_selected $brih_student $brih_Of <font color=green>$grpname</font> $brih_grp"])
-					#else
+					#if($lang =="hindi" || $lang =="gujarati")
                         		#set($headings=["","<font color=green>$grpname</font> $brih_grp $brih_Of2 $brih_selected $brih_student "])
+					#else
+                        		#set($headings=["","&nbsp;$brih_selected $brih_student $brih_Of <font color=green>$grpname</font> $brih_grp"])
 					#end
 				#end
 				#end
@@ -152,10 +152,10 @@ $!data.getMessage()
 							</b> </td>
 							<td>
 							<select name="leadername" size="1"  onChange="Changeleader(document.frm,this);"/>
-							#if($lang == "hindi")
+							#if($lang == "hindi" || $lang == "gujarati")
 	               						<option>  - $brih_grpleader $brih_select - </option>
 							#else
-                						<option>  - $brih_select leader - </option>
+                						<option>  - $brih_select $brih_grpleader - </option>
 							#end
                         				#foreach($selectedlist1 in $selectedlist)
                         				<option value="$selectedlist1.UserName">$selectedlist1.UserName
@@ -226,10 +226,10 @@ $!data.getMessage()
 				#if($val == "")
 					<td bgcolor="$ui.menuColor"><i><font color="blue">$brih_grpmsg13</font><i></td>
 				#else
-					#if($lang=="english")
-                        		#set($headings=["","&nbsp;$brih_selected $brih_student $brih_Of1 <font color=green>$val</font> $brih_grp"])
-					#else
+					#if($lang =="hindi" || $lang =="gujarati")
                         		#set($headings=["","<font color=green>$val</font> $brih_grp $brih_Of2 $brih_selected $brih_student "])
+					#else
+                        		#set($headings=["","&nbsp;$brih_selected $brih_student $brih_Of1 <font color=green>$val</font> $brih_grp"])
 					#end
 					#foreach($headings in $headings)
                                 		<font size="4"><I><b>$headings</b></I></font>
@@ -258,24 +258,24 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor"><td>
 		#if($Status =="Edit")
 			#if($actmode =="lead")
-        		<input type="button" name="eventSubmit_doRemoveselectedstudent" value= #if($lang =="hindi") "$brih_grpleader $brih_select" #else "$brih_select $brih_grpleader" #end onClick="checkfield(document.frm,this);"/>
+        		<input type="button" name="eventSubmit_doRemoveselectedstudent" value= #if($lang =="hindi" || $lang =="gujarati") "$brih_grpleader $brih_select" #else "$brih_select $brih_grpleader" #end onClick="checkfield(document.frm,this);"/>
 			#else
-			#if($lang == "english")
-        		<input type="button" name="eventSubmit_doRemoveselectedstudent" value="$brih_remove $brih_member" onClick="checkfield(document.frm,this);"/>
-			#else
+			#if($lang == "hindi" || $lang =="gujarati")
         		<input type="button" name="eventSubmit_doRemoveselectedstudent" value="$brih_member $brih_remove" onClick="checkfield(document.frm,this);"/>
+			#else
+        		<input type="button" name="eventSubmit_doRemoveselectedstudent" value="$brih_remove $brih_member" onClick="checkfield(document.frm,this);"/>
 			#end
 			#end
 		#else
-			#if($lang == "english")
-        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="eventSubmit_doAddSelected" value="$brih_add $brih_member" onClick="checkselect(document.frm,this);"/>
-			#else
+			#if($lang == "hindi" || $lang =="gujarati")
         		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="eventSubmit_doAddSelected" value="$brih_member $brih_add" onClick="checkselect(document.frm,this);"/>
-			#end
-			#if($lang == "english")
-        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="eventSubmit_doViewmember" value="$brih_view $brih_member " onClick="checkselect1(document.frm,this);"/>
 			#else
+        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="eventSubmit_doAddSelected" value="$brih_add $brih_member" onClick="checkselect(document.frm,this);"/>
+			#end
+			#if($lang =="hindi" || $lang =="gujarati")
         		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="eventSubmit_doViewmember" value="$brih_member $brih_Of1 $brih_view" onClick="checkselect1(document.frm,this);"/>
+			#else
+        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="eventSubmit_doViewmember" value="$brih_view $brih_member " onClick="checkselect1(document.frm,this);"/>
 			#end
 		#end
 			&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel"/>

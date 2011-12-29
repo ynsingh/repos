@@ -130,13 +130,13 @@ $!data.getMessage()
 	        <td><input type="text" name="maxTime" value=""></td>
         </tr>
 	<tr>
-           	<td><b>$brih_nos $brih_qus2</b><font color=Red>*</font></td>
+           	<td><b> #if($lang =="hindi" || $lang =="gujarati") $brih_qus2 $brih_Of brih_nos #else $brih_nos $brih_qus2 #end </b><font color=Red>*</font></td>
 		<td><input type="text" name="numberQuestion" value=""></td>
         </tr>  
         <tr>
 		<td><b>$brih_allowpractice</b><font color=Red>*</font></td>        	
-		<td><input type="radio" name="allow" value="yes">Yes
-       		<input type="radio" name="allow" value="no" checked>No<br>		
+		<td><input type="radio" name="allow" value="yes">$brih_yes
+       		<input type="radio" name="allow" value="no" checked> $brih_no <br>		
 		</tr>              
 #end	
        

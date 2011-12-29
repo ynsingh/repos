@@ -111,10 +111,11 @@ $!data.getMessage()
 	</td>
 	</tr>
 	<tr  bgcolor="$ui.tableHeaderColor"> <td colspan="5">
-		#if($lang == "english")
-        	<input type="button" name="eventSubmit_doActivity" value="$brih_set $brih_activity " onClick="checkselect(document.frm,this);"/>
-		#else
+		#if($lang == "hindi" || $lang == "gujarati")
         	<input type="button" name="eventSubmit_doActivity" value="$brih_activity $brih_insert1 " onClick="checkselect(document.frm,this);"/>
+		
+		#else
+        	<input type="button" name="eventSubmit_doActivity" value="$brih_set $brih_activity " onClick="checkselect(document.frm,this);"/>
 		#end
 		#if($lang == "english")
         	<input type="button" name="eventSubmit_doResetActivity" value="$brih_reset $brih_activity " onClick="checkselect(document.frm,this);"/>
