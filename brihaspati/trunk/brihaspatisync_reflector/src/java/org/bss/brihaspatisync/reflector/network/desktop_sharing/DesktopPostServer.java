@@ -85,25 +85,28 @@ class MyHandler implements HttpHandler {
   	public void handle(HttpExchange exchange) throws IOException {
 		try {
 			while(DesktopPostServer.getController().isRunning()){
-				MyHashTable temp_ht=runtimeObject.getDesktopServerMyHashTable();
-                                if(!temp_ht.getStatus("Desktop_Post")){
-                                        BufferMgt buffer_mgt= new BufferMgt();
-                                        temp_ht.setValues("Desktop_Post",buffer_mgt);
-                                }
 				String requestMethod = exchange.getRequestMethod();
 				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
 				if (requestMethod.equalsIgnoreCase("POST")) {
       					Headers responseHeaders = exchange.getResponseHeaders();
       					responseHeaders.set("Content-Type", "text/plain");
       					exchange.sendResponseHeaders(200, 0);
+					Headers responseHeader = exchange.getRequestHeaders();
+					String lecture_id=responseHeader.get("session").toString();
 					OutputStream responseBody = exchange.getResponseBody();
 			                byte[] bytes =org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody()); 
 			                BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 		        	      	try {
 						if(image != null) {
-							BufferMgt buffer_mgt=temp_ht.getValues("Desktop_Post");
-                                                        buffer_mgt.putByte(image,client_ip,"Desktop_Post");		
-							buffer_mgt.sendData(client_ip,"Desktop_Post");
+							MyHashTable temp_ht=runtimeObject.getDesktopServerMyHashTable();
+			                                if(!temp_ht.getStatus("Desktop_Post"+lecture_id)){
+                        			                BufferMgt buffer_mgt= new BufferMgt();
+			                                        temp_ht.setValues("Desktop_Post"+lecture_id,buffer_mgt);
+                        				}
+							
+							BufferMgt buffer_mgt=temp_ht.getValues("Desktop_Post"+lecture_id);
+                                                        buffer_mgt.putByte(image,client_ip,"Desktop_Post"+lecture_id);		
+							buffer_mgt.sendData(client_ip,"Desktop_Post"+lecture_id);
 						}
                 	                }catch(Exception e){}
 					responseBody.flush();

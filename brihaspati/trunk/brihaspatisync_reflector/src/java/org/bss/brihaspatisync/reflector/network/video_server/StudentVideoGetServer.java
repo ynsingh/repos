@@ -86,24 +86,28 @@ public class StudentVideoGetServer {
 class MyStudentVideoHandler implements HttpHandler {
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
   	public void handle(HttpExchange exchange) throws IOException {
-		while(true){
-			String requestMethod = exchange.getRequestMethod();
-			String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
-			if (requestMethod.equalsIgnoreCase("GET")) {
-		              	Headers responseHeaders = exchange.getResponseHeaders();
-                                responseHeaders.set("Content-Type", "text/plain");
-                                exchange.sendResponseHeaders(200, 0);
-                                OutputStream responseBody = exchange.getResponseBody();
-				try {
-                                	MyHashTable temp_ht=runtimeObject.getStudentVideoMyHashTable();
-                                        BufferMgt buffer_mgt=temp_ht.getValues("stud_video");
-                                        BufferedImage image=(BufferedImage)(buffer_mgt.sendData(client_ip,"stud_video"));
-					if(image != null)
-	                                        ImageIO.write(image, "jpeg", responseBody);
-				} catch(Exception e){}
-				responseBody.flush();
-				responseBody.close();
-    			}
-		}
+		try {
+			while(StudentVideoGetServer.getController().isRunning()){
+				String requestMethod = exchange.getRequestMethod();
+				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
+				if (requestMethod.equalsIgnoreCase("GET")) {
+			              	Headers responseHeaders = exchange.getResponseHeaders();
+                	                responseHeaders.set("Content-Type", "text/plain");
+					Headers responseHeader = exchange.getRequestHeaders();
+                                	String lecture_id=responseHeader.get("session").toString();
+	                                exchange.sendResponseHeaders(200, 0);
+        	                        OutputStream responseBody = exchange.getResponseBody();
+					try {
+                        	        	MyHashTable temp_ht=runtimeObject.getStudentVideoMyHashTable();
+                                	        BufferMgt buffer_mgt=temp_ht.getValues("stud_video"+lecture_id);
+                                        	BufferedImage image=(BufferedImage)(buffer_mgt.sendData(client_ip,"stud_video"+lecture_id));
+						if(image != null)
+		                                        ImageIO.write(image, "jpeg", responseBody);
+					} catch(Exception e){}
+					responseBody.flush();
+					responseBody.close();
+	    			}
+			}
+		}catch(Exception ex){}
 	}
 }

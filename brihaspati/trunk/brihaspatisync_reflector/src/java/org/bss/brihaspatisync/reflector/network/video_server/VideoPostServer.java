@@ -87,12 +87,6 @@ class MyPostVideoHandler implements HttpHandler {
   	public void handle(HttpExchange exchange) throws IOException {
 		try {
 			while(VideoPostServer.getController().isRunning()){
-                              	MyHashTable temp_ht=runtimeObject.getInstructorVideoMyHashTable();
-				if(!temp_ht.getStatus("ins_video")){ 
-					BufferMgt buffer_mgt= new BufferMgt();
-					temp_ht.setValues("ins_video",buffer_mgt);	
-				}
-				
 				String requestMethod = exchange.getRequestMethod();
 				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
 				if (requestMethod.equalsIgnoreCase("POST")) {
@@ -102,11 +96,18 @@ class MyPostVideoHandler implements HttpHandler {
 					OutputStream responseBody = exchange.getResponseBody();
 			                byte[] bytes = org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
 			                BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
+					Headers responseHeader = exchange.getRequestHeaders();
+                                        String lecture_id=responseHeader.get("session").toString();	
 		        	      	try {
 						if(image !=null) {
-							BufferMgt buffer_mgt=temp_ht.getValues("ins_video");
-			                                buffer_mgt.putByte(image,client_ip,"ins_video");
-							buffer_mgt.sendData(client_ip,"ins_video");
+							MyHashTable temp_ht=runtimeObject.getInstructorVideoMyHashTable();
+                                			if(!temp_ht.getStatus("ins_video"+lecture_id)){
+			                                        BufferMgt buffer_mgt= new BufferMgt();
+                        			                temp_ht.setValues("ins_video"+lecture_id,buffer_mgt);
+			                                }
+							BufferMgt buffer_mgt=temp_ht.getValues("ins_video"+lecture_id);
+			                                buffer_mgt.putByte(image,client_ip,"ins_video"+lecture_id);
+							buffer_mgt.sendData(client_ip,"ins_video"+lecture_id);
 						}
                 	                }catch(Exception e){}
 					responseBody.flush();

@@ -14,7 +14,6 @@ import java.util.TimerTask;
 import java.net.URLEncoder;
 
 import org.bss.brihaspatisync.reflector.RegisterToIndexServer;
-//import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 
 /**
@@ -40,7 +39,7 @@ public class UserListTimer extends TimerTask{
 
         /**Overrides the run method */
 
-        public void run(){
+        public void run() {
                try{
                     	String index_url=RuntimeDataObject.getController().getindexServerAddr().trim()+"req=userlist&";    
                         Vector masterReflector=RuntimeDataObject.getController().getMastrerReflecterCourseid();

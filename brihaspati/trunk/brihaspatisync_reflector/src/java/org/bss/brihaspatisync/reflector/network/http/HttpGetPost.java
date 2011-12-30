@@ -98,7 +98,10 @@ class MyPostGetHandler implements HttpHandler {
                                 responseHeaders.set("Content-Type", "text/plain");
                                 exchange.sendResponseHeaders(200, 0);
                                 OutputStream responseBody = exchange.getResponseBody();
-
+				
+				Headers responseHeader = exchange.getRequestHeaders();
+				String lecture_id=responseHeader.get("session").toString();
+				System.out.println("================> "+lecture_id);	
                                 java.io.BufferedReader rd = new java.io.BufferedReader(new java.io.InputStreamReader(exchange.getRequestBody()));
 				String req="";
                                 String line;
@@ -135,16 +138,16 @@ class MyPostGetHandler implements HttpHandler {
                                         if(data_value[2].startsWith("parent")) {
                                                 data_value[2]=data_value[2].replace("parent","");
                                         } 
-					if(!temp_ht.getStatus(data_value[0])) {
+					if(!temp_ht.getStatus("ch_wb"+lecture_id)) {
 						BufferMgt buffer_mgt= new BufferMgt();
-						temp_ht.setValues(data_value[0],buffer_mgt);
-						buffer_mgt.putByte(data_value[1],client_ip,"ch_wb");
+						temp_ht.setValues("ch_wb"+lecture_id,buffer_mgt);
+						buffer_mgt.putByte(data_value[1],client_ip,"ch_wb"+lecture_id);
 						responseBody.close();
-                                        }else if(temp_ht.getStatus(data_value[0])) {
-                                                BufferMgt buffer_mgt=temp_ht.getValues(data_value[0]);
+                                        }else if(temp_ht.getStatus("ch_wb"+lecture_id)) {
+                                                BufferMgt buffer_mgt=temp_ht.getValues("ch_wb"+lecture_id);
 						if(!data_value[1].equals("nodata"))
-							buffer_mgt.putByte(data_value[1],client_ip,"ch_wb");
-						String str=(String)buffer_mgt.sendData(client_ip,"ch_wb");
+							buffer_mgt.putByte(data_value[1],client_ip,"ch_wb"+lecture_id);
+						String str=(String)buffer_mgt.sendData(client_ip,"ch_wb"+lecture_id);
 						/**  get Lecture id ***************/
 						String data=UserListUtil.getContriller().getDataForVector(data_value[0]);
 						/**  get Lecture id ***************/

@@ -85,12 +85,15 @@ class GetRequestHandler implements HttpHandler {
 		      			Headers responseHeaders = exchange.getResponseHeaders();
             				responseHeaders.set("Content-Type", "application/octet-stream");
             				exchange.sendResponseHeaders(200, 0);
+					Headers responseHeader = exchange.getRequestHeaders();
+                                        String lecture_id=responseHeader.get("session").toString();
+					
             				OutputStream responseBody = exchange.getResponseBody();
 					String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
 					try {
 						MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
-	                                        BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post");
-        	                                AudioInputStream input=(AudioInputStream)(buffer_mgt.sendData(client_ip,"Audio_Post"));
+	                                        BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
+        	                                AudioInputStream input=(AudioInputStream)(buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id));
                 	                        if(input!=null){
 							AudioSystem.write(input,AudioFileFormat.Type.WAVE,responseBody);
 						}

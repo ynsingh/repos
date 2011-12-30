@@ -87,18 +87,14 @@ class MyStudentPostVideoHandler implements HttpHandler {
   	public void handle(HttpExchange exchange) throws IOException {
 		try {
 			while(StudentPostServer.getController().isRunning()){
-                                MyHashTable temp_ht=runtimeObject.getStudentVideoMyHashTable();
-                                if(!temp_ht.getStatus("stud_video")){
-                                        BufferMgt buffer_mgt= new BufferMgt();
-                                        temp_ht.setValues("stud_video",buffer_mgt);
-                                }
-				
 				String requestMethod = exchange.getRequestMethod();
 				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
 				if (requestMethod.equalsIgnoreCase("POST")) {
       					Headers responseHeaders = exchange.getResponseHeaders();
       					responseHeaders.set("Content-Type", "text/plain");
       					exchange.sendResponseHeaders(200, 0);
+					Headers responseHeader = exchange.getRequestHeaders();
+                                        String lecture_id=responseHeader.get("session").toString();
 					OutputStream responseBody = exchange.getResponseBody();
 			                byte[] bytes = org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
 					responseBody.flush();
@@ -106,9 +102,14 @@ class MyStudentPostVideoHandler implements HttpHandler {
 			                BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 		        	      	try {
 						if(image!=null) {
-							BufferMgt buffer_mgt=temp_ht.getValues("stud_video");
-                                                        buffer_mgt.putByte(image,client_ip,"stud_video");	
-							buffer_mgt.sendData(client_ip,"stud_video");
+							MyHashTable temp_ht=runtimeObject.getStudentVideoMyHashTable();
+                                			if(!temp_ht.getStatus("stud_video"+lecture_id)){
+			                                        BufferMgt buffer_mgt= new BufferMgt();
+                        			                temp_ht.setValues("stud_video"+lecture_id,buffer_mgt);
+                                			}
+							BufferMgt buffer_mgt=temp_ht.getValues("stud_video"+lecture_id);
+                                                        buffer_mgt.putByte(image,client_ip,"stud_video"+lecture_id);	
+							buffer_mgt.sendData(client_ip,"stud_video"+lecture_id);
 						}
                 	                }catch(Exception e){}
     				}

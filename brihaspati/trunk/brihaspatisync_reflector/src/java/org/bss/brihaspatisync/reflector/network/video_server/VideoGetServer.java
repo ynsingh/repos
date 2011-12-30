@@ -93,10 +93,12 @@ class MyVideoHandler implements HttpHandler {
                                 responseHeaders.set("Content-Type", "text/plain");
                                 exchange.sendResponseHeaders(200, 0);
                                 OutputStream responseBody = exchange.getResponseBody();
+				Headers responseHeader = exchange.getRequestHeaders();
+                                String lecture_id=responseHeader.get("session").toString();
 				try {
 		                	MyHashTable temp_ht=runtimeObject.getInstructorVideoMyHashTable();
-					BufferMgt buffer_mgt=temp_ht.getValues("ins_video");
-					BufferedImage image=(BufferedImage)(buffer_mgt.sendData(client_ip,"ins_video"));
+					BufferMgt buffer_mgt=temp_ht.getValues("ins_video"+lecture_id);
+					BufferedImage image=(BufferedImage)(buffer_mgt.sendData(client_ip,"ins_video"+lecture_id));
 					if(image!=null)
 						ImageIO.write(image, "jpeg", responseBody);
 				}catch(Exception e){}

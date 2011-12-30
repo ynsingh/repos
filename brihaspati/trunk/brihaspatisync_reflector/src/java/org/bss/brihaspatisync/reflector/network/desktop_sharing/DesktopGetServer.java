@@ -91,11 +91,13 @@ class MyGetHandler implements HttpHandler {
 		              	Headers responseHeaders = exchange.getResponseHeaders();
                                 responseHeaders.set("Content-Type", "text/plain");
                                 exchange.sendResponseHeaders(200, 0);
+				Headers responseHeader = exchange.getRequestHeaders();
+                                String lecture_id=responseHeader.get("session").toString();
                                 OutputStream responseBody = exchange.getResponseBody();
 				try {
 					MyHashTable temp_ht=runtimeObject.getDesktopServerMyHashTable();
-                                        BufferMgt buffer_mgt=temp_ht.getValues("Desktop_Post");
-                                        BufferedImage image=(BufferedImage)(buffer_mgt.sendData(client_ip,"Desktop_Post"));
+                                        BufferMgt buffer_mgt=temp_ht.getValues("Desktop_Post"+lecture_id);
+                                        BufferedImage image=(BufferedImage)(buffer_mgt.sendData(client_ip,"Desktop_Post"+lecture_id));
 					if(image!=null)
 						ImageIO.write(image, "jpeg", responseBody);
 				}catch(Exception e){}
