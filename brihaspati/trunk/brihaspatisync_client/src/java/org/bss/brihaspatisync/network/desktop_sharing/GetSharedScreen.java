@@ -76,12 +76,15 @@ public class GetSharedScreen implements Runnable {
         }
 
 	public void run() {
+		org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
+		h.setName("session");
+                h.setValue(clientObject.getLectureID());
 		while(flag) {
 		        try {
 				HttpClient client = new HttpClient();
 				HttpMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":8883");
 		                client.setConnectionTimeout(8000);
-                                method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
+                                method.setRequestHeader(h);
 				// Http Proxy Handler
 				if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
                                         HostConfiguration config = client.getHostConfiguration();

@@ -155,6 +155,9 @@ public class PostAudioStream implements Runnable {
   	public void run() {
 		startCapture();
 		try {
+			org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
+                        h.setName("session");
+                        h.setValue(clientObject.getLectureID());
 			while(flag) {
 				stopCapture();
 				HttpClient client = new HttpClient();
@@ -162,7 +165,7 @@ public class PostAudioStream implements Runnable {
 				client.setConnectionTimeout(20000);
 				if((new File("audio.wav")).exists())
 					postMethod.setRequestBody(AudioSystem.getAudioInputStream(new File("audio.wav")));//is);
-               			postMethod.setRequestHeader("Content-type","application/octet-stream");
+               			postMethod.setRequestHeader(h);
 				// Http Proxy Handler		
 				if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
                                         HostConfiguration config = client.getHostConfiguration();

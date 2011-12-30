@@ -79,12 +79,15 @@ public class GetAudioStream implements Runnable {
 
   	public void run() {
 		try {
+			org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
+                        h.setName("session");
+                        h.setValue(clientObject.getLectureID());
 			while(flag) {
 				try {
 					HttpClient client = new HttpClient();
 					HttpMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":2001");
 					client.setConnectionTimeout(200000);
-        				method.setRequestHeader("Content-type","application/octet-stream");
+        				method.setRequestHeader(h);
 					/*
 					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
         	                                HostConfiguration config = client.getHostConfiguration();

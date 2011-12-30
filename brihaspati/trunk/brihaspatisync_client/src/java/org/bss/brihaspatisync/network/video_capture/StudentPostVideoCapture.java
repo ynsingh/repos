@@ -101,6 +101,9 @@ public class StudentPostVideoCapture implements Runnable {
         }
 
 	public void run() {
+		org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
+		h.setName("session");
+                h.setValue(clientObject.getLectureID());	
 		while(flag) {
 			try {
 				if(StudentBufferImage.getController().bufferSize()>0) {
@@ -117,7 +120,7 @@ public class StudentPostVideoCapture implements Runnable {
                                         jencoder.encode(bimg);
                                         fout.close();	
         	               		postMethod.setRequestBody(new FileInputStream("image2.jpeg"));
-               				postMethod.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
+               				postMethod.setRequestHeader(h);
 					
 					// Http Proxy Handler
 					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){

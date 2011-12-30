@@ -129,6 +129,9 @@ public class PostSharedScreen implements Runnable {
 	public void run() {
 		try {
 			robot = new Robot();
+			org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
+                        h.setName("session");
+                        h.setValue(clientObject.getLectureID());
 			while(flag) {
 				try {
 					HttpClient client = new HttpClient();
@@ -143,7 +146,7 @@ public class PostSharedScreen implements Runnable {
         	                        jencoder.encode(bimg);
                 	                fout.close();
                         	        postMethod.setRequestBody(new FileInputStream("image.jpeg"));
-	               			postMethod.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
+	               			postMethod.setRequestHeader(h);
 					
 					// Http Proxy Handler
 					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
