@@ -20,11 +20,12 @@ $!Msg
 	<font face="$ui.sansSerifFonts">
 	<a href=$link.setPage("Index.vm")>$brih_home</a>|
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")> $online_online $brih_examat $brih_system</a>|
 	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</a> |
 	#if($addques=="addques")
-	$brih_add $brih_question
+		$brih_add $brih_question
 	#else
-	$WikiCreate $brih_new $brih_queBank
+		$WikiCreate $brih_new $brih_queBank
 	#end
 </b></td>
 </tr>
@@ -104,10 +105,10 @@ $!Msg
                 </tr>
 		<tr>
 		#if($typeques!="imgtypeques")
-		#if($typeques!="obo_ques")
+			#if($typeques!="obo_ques")
 		##if($typeques=="upload_multiple")
-                #fileUpload ("<b>$brih_at_file </b><font color=Red>*</font>" "file")
-		#end
+        		        #fileUpload ("<b>$brih_at_file </b><font color=Red>*</font>" "file")
+			#end
 		#end
 		</tr>
 		<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5">
@@ -118,7 +119,7 @@ $!Msg
 		#end
 		<input type="reset" name="reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
 		</td></tr>
-		#end
+	#end
 		##foreach( $e in $Msg )
 		 ##       <tr bgcolor="$ui.tableColor">
 		 ##       <td align=center>

@@ -33,12 +33,13 @@
                         <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_student $brih_mgmt</a>
 			</td> ##today28july
                 </tr>
-                <tr>
+#*                <tr>
                         <td>
                         ##<a href=$link.setPage("call,Question_Bank,Question_bank.vm")>$brih_queBank</a>
                         <a href=$link.setPage("call,Question_Bank,Question_bank.vm").addPathInfo("count","1") style=text-decoration:none>$brih_qus $brih_bank</a>
                         </td>
                 </tr>
+*#
                 <tr bgcolor="$ui.menuColor">
                         <td>
                         ##<a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm")>$brih_upload $brih_marks</a>
@@ -88,12 +89,13 @@
                         </td>
                 </tr>
 	#if($data.getUser().getUserName() != "guest") ##guest is not login
-                <tr>
+  #*              <tr>
                         <td>
                         ##<a href=$link.setPage("call,Quiz_Mgmt,Quiz_Start.vm")>$brih_quiz</a>
                         <a href=$link.setPage("call,Quiz_Mgmt,Quiz_Start.vm").addPathInfo("count","1") style=text-decoration:none>$brih_quiz</a>
                         </td>
                 </tr>
+*#
                 <tr bgcolor="$ui.menuColor">
                         <td>
                         ##<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse")>$brih_courseCal</a>

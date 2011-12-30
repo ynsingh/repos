@@ -18,6 +18,7 @@ $!data.getMessage()
 	<font face="$ui.sansSerifFonts">
 	<a href=$link.setPage("Index.vm")>$brih_home</a>|
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")> $online_online $brih_examat $brih_system</a>|
 	$brih_queBank
 </b></td>
  <td align=right>
