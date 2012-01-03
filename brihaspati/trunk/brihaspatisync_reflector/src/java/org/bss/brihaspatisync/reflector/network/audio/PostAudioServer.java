@@ -38,7 +38,6 @@ public class PostAudioServer {
 	private static PostAudioServer postserver=null;
     	private HttpServer server =null;
 	private SourceDataLine line;
-	private boolean flag=false;
 	private int server_port=RuntimeDataObject.getController().getAudioPostPort();
 
 
@@ -55,13 +54,8 @@ public class PostAudioServer {
     		server.setExecutor(Executors.newCachedThreadPool());
   	}
 
-	protected boolean isRunning() throws Exception {
-    		return flag;
-   	}
-
 	public void startThread() throws Exception {
     		try {
-           		flag=true;
         		System.out.println(" PostAudioServer start successfully !! ");
           		server.start();
       		} catch (Exception e) { }
@@ -69,7 +63,6 @@ public class PostAudioServer {
 
    	public void stopThread() throws Exception {
     		if (server != null) {
-        		flag=false;
           		server.stop(0);
         		System.out.println(" PostAudioServer stop successfully !! ");
     		}
@@ -80,35 +73,33 @@ class MyPostHandler implements HttpHandler {
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
 	public void handle(HttpExchange exchange) throws IOException {
 		try{
-			while(PostAudioServer.getController().isRunning()){
-				String requestMethod = exchange.getRequestMethod();
-				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();		
-				if (requestMethod.equalsIgnoreCase("POST")) {
-					Headers responseHeaders = exchange.getResponseHeaders();
-					responseHeaders.set("Content-Type", "application/octet-stream");
-					exchange.sendResponseHeaders(200, 0);
-					Headers responseHeader = exchange.getRequestHeaders();
-                                        String lecture_id=responseHeader.get("session").toString();
-					OutputStream responseBody = exchange.getResponseBody();
-					byte[] bytes=org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
-					InputStream is=new ByteArrayInputStream(bytes);
-					AudioInputStream ais = new AudioInputStream(is, getAudioFormat(), bytes.length / getAudioFormat().getFrameSize());
-					try {
-                                                if(ais !=null) {
-							MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
-			                                if(!temp_ht.getStatus("Audio_Post"+lecture_id)){
-                        			                BufferMgt buffer_mgt= new BufferMgt();
-			                                        temp_ht.setValues("Audio_Post"+lecture_id,buffer_mgt);
-                                			}
-                                                        BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
-                                                        buffer_mgt.putByte(ais,client_ip,"Audio_Post"+lecture_id);
-                                                        buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id);
-                                                }
-                                        }catch(Exception e){}
-           				responseBody.flush();
-					responseBody.close();
-				}//end of if
-   			}//end of while
+			String requestMethod = exchange.getRequestMethod();
+			String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();		
+			if (requestMethod.equalsIgnoreCase("POST")) {
+				Headers responseHeaders = exchange.getResponseHeaders();
+				responseHeaders.set("Content-Type", "application/octet-stream");
+				exchange.sendResponseHeaders(200, 0);
+				Headers responseHeader = exchange.getRequestHeaders();
+                                String lecture_id=responseHeader.get("session").toString();
+				OutputStream responseBody = exchange.getResponseBody();
+				byte[] bytes=org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
+				InputStream is=new ByteArrayInputStream(bytes);
+				AudioInputStream ais = new AudioInputStream(is, getAudioFormat(), bytes.length / getAudioFormat().getFrameSize());
+				try {
+                        		if(ais !=null) {
+						MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
+			                        if(!temp_ht.getStatus("Audio_Post"+lecture_id)){
+                        		                BufferMgt buffer_mgt= new BufferMgt();
+			                                temp_ht.setValues("Audio_Post"+lecture_id,buffer_mgt);
+                                		}
+                                                BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
+                                                buffer_mgt.putByte(ais,client_ip,"Audio_Post"+lecture_id);
+                                                buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id);
+                                        }
+                              	}catch(Exception e){}
+           			responseBody.flush();
+				responseBody.close();
+			}//end of if
 		}catch(Exception ex){}
 	}
 

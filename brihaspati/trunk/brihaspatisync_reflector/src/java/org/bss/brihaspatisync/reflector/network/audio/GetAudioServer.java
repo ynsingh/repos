@@ -38,7 +38,6 @@ public class GetAudioServer {
 
 	private static GetAudioServer getAudio=null;
    	private HttpServer server =null;
-	private boolean flag=false;
 	private int server_port = RuntimeDataObject.getController().getAudioGetPort();
 
 	public static GetAudioServer getController() throws Exception {
@@ -54,21 +53,15 @@ public class GetAudioServer {
     		server.setExecutor(Executors.newCachedThreadPool());
   	}
 
-	protected boolean isRunning() throws Exception {
-      		return flag;
-   	}
-
 	public void startThread() throws Exception {
     		try {
-        		flag=true;
-          		System.out.println(" GetAudioServer start successfully !! ");
           		server.start();
+          		System.out.println(" GetAudioServer start successfully !! ");
        		} catch (Exception e) { }
   	}
 
   	public void stopThread() throws Exception {
     		if (server != null) {
-        		flag=false;
           		server.stop(0);
           		System.out.println(" GetAudioServer stop successfully !! ");
        		}
@@ -79,29 +72,27 @@ class GetRequestHandler implements HttpHandler {
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
   	public void handle(HttpExchange exchange) throws IOException {
   		try{
-  			while(GetAudioServer.getController().isRunning()){
-				String requestMethod = exchange.getRequestMethod();
-				if (requestMethod.equalsIgnoreCase("GET")) {
-		      			Headers responseHeaders = exchange.getResponseHeaders();
-            				responseHeaders.set("Content-Type", "application/octet-stream");
-            				exchange.sendResponseHeaders(200, 0);
-					Headers responseHeader = exchange.getRequestHeaders();
-                                        String lecture_id=responseHeader.get("session").toString();
+			String requestMethod = exchange.getRequestMethod();
+			if (requestMethod.equalsIgnoreCase("GET")) {
+		      		Headers responseHeaders = exchange.getResponseHeaders();
+            			responseHeaders.set("Content-Type", "application/octet-stream");
+            			exchange.sendResponseHeaders(200, 0);
+				Headers responseHeader = exchange.getRequestHeaders();
+                                String lecture_id=responseHeader.get("session").toString();
 					
-            				OutputStream responseBody = exchange.getResponseBody();
-					String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
-					try {
-						MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
-	                                        BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
-        	                                AudioInputStream input=(AudioInputStream)(buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id));
-                	                        if(input!=null){
-							AudioSystem.write(input,AudioFileFormat.Type.WAVE,responseBody);
-						}
-                                	}catch(Exception e){}
-					responseBody.flush();
-					responseBody.close();
-           			}
-			}
+            			OutputStream responseBody = exchange.getResponseBody();
+				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
+				try {
+					MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
+	                                BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
+        	                        AudioInputStream input=(AudioInputStream)(buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id));
+                	                if(input!=null) {
+						AudioSystem.write(input,AudioFileFormat.Type.WAVE,responseBody);
+					}
+                                }catch(Exception e){}
+				responseBody.flush();
+				responseBody.close();
+           		}
 		}catch(Exception exe){}
 	}
 }

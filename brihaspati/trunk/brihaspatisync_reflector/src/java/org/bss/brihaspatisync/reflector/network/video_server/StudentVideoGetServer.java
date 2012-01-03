@@ -44,8 +44,6 @@ public class StudentVideoGetServer {
 
         private HttpServer server =null;
 	
-	private boolean flag=false;
-
 	private int server_port =8094;
 	
 	public static StudentVideoGetServer getController() throws Exception {
@@ -60,14 +58,9 @@ public class StudentVideoGetServer {
 		server.createContext("/", new MyStudentVideoHandler());
     		server.setExecutor(Executors.newCachedThreadPool());
   	}
-		
-	protected boolean isRunning() throws Exception {
-                return flag;
-        }
 	
 	public void start() throws Exception {
                 try {
-                	flag=true;
                         server.start();
                         System.out.println(" StudentVideoGetServer start successfully !! ");
                 } catch (Exception e) { }
@@ -75,7 +68,6 @@ public class StudentVideoGetServer {
 
         public void stop() throws Exception {
                 if (server != null) {
-                        flag=false;
                         server.stop(0);
 			System.out.println(" StudentVideoGetServer stop successfully !! ");
                 }
@@ -87,27 +79,25 @@ class MyStudentVideoHandler implements HttpHandler {
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
   	public void handle(HttpExchange exchange) throws IOException {
 		try {
-			while(StudentVideoGetServer.getController().isRunning()){
-				String requestMethod = exchange.getRequestMethod();
-				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
-				if (requestMethod.equalsIgnoreCase("GET")) {
-			              	Headers responseHeaders = exchange.getResponseHeaders();
-                	                responseHeaders.set("Content-Type", "text/plain");
-					Headers responseHeader = exchange.getRequestHeaders();
-                                	String lecture_id=responseHeader.get("session").toString();
-	                                exchange.sendResponseHeaders(200, 0);
-        	                        OutputStream responseBody = exchange.getResponseBody();
-					try {
-                        	        	MyHashTable temp_ht=runtimeObject.getStudentVideoMyHashTable();
-                                	        BufferMgt buffer_mgt=temp_ht.getValues("stud_video"+lecture_id);
-                                        	BufferedImage image=(BufferedImage)(buffer_mgt.sendData(client_ip,"stud_video"+lecture_id));
-						if(image != null)
-		                                        ImageIO.write(image, "jpeg", responseBody);
-					} catch(Exception e){}
-					responseBody.flush();
-					responseBody.close();
-	    			}
-			}
+			String requestMethod = exchange.getRequestMethod();
+			String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
+			if (requestMethod.equalsIgnoreCase("GET")) {
+			       	Headers responseHeaders = exchange.getResponseHeaders();
+                	        responseHeaders.set("Content-Type", "text/plain");
+				Headers responseHeader = exchange.getRequestHeaders();
+                               	String lecture_id=responseHeader.get("session").toString();
+	                        exchange.sendResponseHeaders(200, 0);
+        	                OutputStream responseBody = exchange.getResponseBody();
+				try {
+                                	MyHashTable temp_ht=runtimeObject.getStudentVideoMyHashTable();
+                               	        BufferMgt buffer_mgt=temp_ht.getValues("stud_video"+lecture_id);
+                                       	BufferedImage image=(BufferedImage)(buffer_mgt.sendData(client_ip,"stud_video"+lecture_id));
+					if(image != null)
+		        			ImageIO.write(image, "jpeg", responseBody);
+				} catch(Exception e){}
+				responseBody.flush();
+				responseBody.close();
+	    		}
 		}catch(Exception ex){}
 	}
 }

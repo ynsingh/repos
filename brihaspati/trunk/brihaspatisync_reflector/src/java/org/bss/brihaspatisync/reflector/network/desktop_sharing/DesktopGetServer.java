@@ -19,8 +19,8 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-import java.io.*;
-import java.net.*;
+//import java.io.*;
+//import java.net.*;
 import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -43,8 +43,6 @@ public class DesktopGetServer {
 
         private HttpServer server =null;
 	
-	private boolean flag=false;
-
 	private int server_port =RuntimeDataObject.getController().getDesktopGetPort();//8883
 	
 	public static DesktopGetServer getController() throws Exception {
@@ -59,22 +57,16 @@ public class DesktopGetServer {
 		server.createContext("/", new MyGetHandler());
     		server.setExecutor(Executors.newCachedThreadPool());
   	}
-		
-	protected boolean isRunning() throws Exception {
-                return flag;
-        }
 	
 	public void start() throws Exception {
                 try {
-                	flag=true;
-                        System.out.println(" DesktopGetServer start successfully !! ");
                         server.start();
+                        System.out.println(" DesktopGetServer start successfully !! ");
                 } catch (Exception e) { }
         }
 
         public void stop() throws Exception {
                 if (server != null) {
-                        flag=false;
                         server.stop(0);
                 }
         }
@@ -84,26 +76,26 @@ public class DesktopGetServer {
 class MyGetHandler implements HttpHandler {
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
   	public void handle(HttpExchange exchange) throws IOException {
-		while(true){
+		try {
 			String requestMethod = exchange.getRequestMethod();
 			String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
 			if (requestMethod.equalsIgnoreCase("GET")) {
-		              	Headers responseHeaders = exchange.getResponseHeaders();
-                                responseHeaders.set("Content-Type", "text/plain");
-                                exchange.sendResponseHeaders(200, 0);
+		       		Headers responseHeaders = exchange.getResponseHeaders();
+	                        responseHeaders.set("Content-Type", "text/plain");
+        	                exchange.sendResponseHeaders(200, 0);
 				Headers responseHeader = exchange.getRequestHeaders();
-                                String lecture_id=responseHeader.get("session").toString();
-                                OutputStream responseBody = exchange.getResponseBody();
+                        	String lecture_id=responseHeader.get("session").toString();
+	                        OutputStream responseBody = exchange.getResponseBody();
 				try {
 					MyHashTable temp_ht=runtimeObject.getDesktopServerMyHashTable();
-                                        BufferMgt buffer_mgt=temp_ht.getValues("Desktop_Post"+lecture_id);
-                                        BufferedImage image=(BufferedImage)(buffer_mgt.sendData(client_ip,"Desktop_Post"+lecture_id));
+                        	        BufferMgt buffer_mgt=temp_ht.getValues("Desktop_Post"+lecture_id);
+                                	BufferedImage image=(BufferedImage)(buffer_mgt.sendData(client_ip,"Desktop_Post"+lecture_id));
 					if(image!=null)
 						ImageIO.write(image, "jpeg", responseBody);
 				}catch(Exception e){}
 				responseBody.flush();
 				responseBody.close();
     			}
-		}
+		}catch(Exception ex){}
 	}
 }

@@ -44,8 +44,6 @@ public class VideoPostServer {
 
         private HttpServer server =null;
 	
-	private boolean flag=false;
-
 	private int server_port = 8091;
 	
 	public static VideoPostServer getController() throws Exception {
@@ -61,22 +59,17 @@ public class VideoPostServer {
     		server.setExecutor(Executors.newCachedThreadPool());
   	}
 		
-	protected boolean isRunning() throws Exception {
-                return flag;
-        }
-	
 	public void start() throws Exception {
                 try {
-                	flag=true;
-                        System.out.println(" VideoPostServer start successfully !! ");
                         server.start();
+                        System.out.println(" VideoPostServer start successfully !! ");
                 } catch (Exception e) { }
         }
 
         public void stop() throws Exception {
                 if (server != null) {
-                        flag=false;
                         server.stop(0);
+                        System.out.println(" VideoPostServer stop successfully !! ");
                 }
         }
 	
@@ -86,34 +79,32 @@ class MyPostVideoHandler implements HttpHandler {
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
   	public void handle(HttpExchange exchange) throws IOException {
 		try {
-			while(VideoPostServer.getController().isRunning()){
-				String requestMethod = exchange.getRequestMethod();
-				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
-				if (requestMethod.equalsIgnoreCase("POST")) {
-      					Headers responseHeaders = exchange.getResponseHeaders();
-      					responseHeaders.set("Content-Type", "text/plain");
-      					exchange.sendResponseHeaders(200, 0);
-					OutputStream responseBody = exchange.getResponseBody();
-			                byte[] bytes = org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
-			                BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
-					Headers responseHeader = exchange.getRequestHeaders();
-                                        String lecture_id=responseHeader.get("session").toString();	
-		        	      	try {
-						if(image !=null) {
-							MyHashTable temp_ht=runtimeObject.getInstructorVideoMyHashTable();
-                                			if(!temp_ht.getStatus("ins_video"+lecture_id)){
-			                                        BufferMgt buffer_mgt= new BufferMgt();
-                        			                temp_ht.setValues("ins_video"+lecture_id,buffer_mgt);
-			                                }
-							BufferMgt buffer_mgt=temp_ht.getValues("ins_video"+lecture_id);
-			                                buffer_mgt.putByte(image,client_ip,"ins_video"+lecture_id);
-							buffer_mgt.sendData(client_ip,"ins_video"+lecture_id);
-						}
-                	                }catch(Exception e){}
-					responseBody.flush();
-		        	        responseBody.close();
-    				}
-			}
+			String requestMethod = exchange.getRequestMethod();
+			String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
+			if (requestMethod.equalsIgnoreCase("POST")) {
+      				Headers responseHeaders = exchange.getResponseHeaders();
+      				responseHeaders.set("Content-Type", "text/plain");
+      				exchange.sendResponseHeaders(200, 0);
+				OutputStream responseBody = exchange.getResponseBody();
+			        byte[] bytes = org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
+			        BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
+				Headers responseHeader = exchange.getRequestHeaders();
+                                String lecture_id=responseHeader.get("session").toString();	
+		              	try {
+					if(image !=null) {
+						MyHashTable temp_ht=runtimeObject.getInstructorVideoMyHashTable();
+                               			if(!temp_ht.getStatus("ins_video"+lecture_id)){
+				                        BufferMgt buffer_mgt= new BufferMgt();
+                        		                temp_ht.setValues("ins_video"+lecture_id,buffer_mgt);
+			        		}
+						BufferMgt buffer_mgt=temp_ht.getValues("ins_video"+lecture_id);
+			                        buffer_mgt.putByte(image,client_ip,"ins_video"+lecture_id);
+						buffer_mgt.sendData(client_ip,"ins_video"+lecture_id);
+					}
+                	  	}catch(Exception e){}
+				responseBody.flush();
+		                responseBody.close();
+    			}
 		}catch(Exception ex){}
 	}
 }

@@ -43,8 +43,6 @@ public class VideoGetServer {
 
         private HttpServer server =null;
 	
-	private boolean flag=false;
-
 	private int server_port =8092;
 	
 	public static VideoGetServer getController() throws Exception {
@@ -59,14 +57,9 @@ public class VideoGetServer {
 		server.createContext("/", new MyVideoHandler());
     		server.setExecutor(Executors.newCachedThreadPool());
   	}
-		
-	protected boolean isRunning() throws Exception {
-                return flag;
-        }
 	
 	public void start() throws Exception {
                 try {
-                	flag=true;
                         System.out.println(" VideoGetServer start successfully !! ");
                         server.start();
                 } catch (Exception e) { }
@@ -74,7 +67,6 @@ public class VideoGetServer {
 
         public void stop() throws Exception {
                 if (server != null) {
-                        flag=false;
                         server.stop(0);
 			System.out.println(" VideoGetServer stop successfully !! ");
                 }
@@ -85,7 +77,7 @@ public class VideoGetServer {
 class MyVideoHandler implements HttpHandler {
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
   	public void handle(HttpExchange exchange) throws IOException {
-		while(true){
+		try {	
 			String requestMethod = exchange.getRequestMethod();
 			if (requestMethod.equalsIgnoreCase("GET")) {
 		              	Headers responseHeaders = exchange.getResponseHeaders();
@@ -105,6 +97,6 @@ class MyVideoHandler implements HttpHandler {
 				responseBody.flush();
 				responseBody.close();
     			}
-		}
+		}catch(Exception ex){}
 	}
 }

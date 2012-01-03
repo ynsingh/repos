@@ -43,8 +43,6 @@ public class HttpGetPost {
 
 	private HttpServer server =null;
 		
-	private boolean flag=false;
-	
 	private int server_port = RuntimeDataObject.getController().getHttpPort();
 	
 	public static HttpGetPost getController() throws Exception {
@@ -67,7 +65,6 @@ public class HttpGetPost {
 	
         public void start() throws Exception {
 		try {
-			flag=true;
 			server.start();
 			System.out.println("HttpServer start successfully !! ");
 		} catch( Exception e ) {
@@ -80,8 +77,8 @@ public class HttpGetPost {
          */
         public void stop() {
 		if (server != null) {
-                        flag=false;
                         server.stop(0);
+			System.out.println("HttpServer stop successfully !! ");
 	        }
         }
 }
@@ -90,7 +87,7 @@ class MyPostGetHandler implements HttpHandler {
 	private String client_ip="";
 	private HandraiseAction handraiseAction=new HandraiseAction();
         public void handle(HttpExchange exchange) throws IOException {
-                while(true){
+		try {
                         String requestMethod = exchange.getRequestMethod();
 			client_ip=exchange.getRemoteAddress().getHostName();
                         if (requestMethod.equalsIgnoreCase("POST")) {
@@ -101,7 +98,6 @@ class MyPostGetHandler implements HttpHandler {
 				
 				Headers responseHeader = exchange.getRequestHeaders();
 				String lecture_id=responseHeader.get("session").toString();
-				System.out.println("================> "+lecture_id);	
                                 java.io.BufferedReader rd = new java.io.BufferedReader(new java.io.InputStreamReader(exchange.getRequestBody()));
 				String req="";
                                 String line;
@@ -161,8 +157,8 @@ class MyPostGetHandler implements HttpHandler {
                                              responseBody.close();
 					}
                                 }
-                        }
-                }
+                     	}   
+                }catch(Exception ex){}
         }
 }
 
