@@ -106,12 +106,12 @@ public class StudentPostVideoCapture implements Runnable {
                 h.setValue(clientObject.getLectureID());	
 		while(flag) {
 			try {
-				if(StudentBufferImage.getController().bufferSize()>0) {
+				if(BufferImage.getController().bufferSize()>0) {
 					HttpClient client = new HttpClient();
 			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":8093");
 					client.setConnectionTimeout(8000);
 						
-					BufferedImage bimg=StudentBufferImage.getController().get(0);
+					BufferedImage bimg=BufferImage.getController().get(0);
                                         java.io.FileOutputStream fout = new java.io.FileOutputStream("image2.jpeg");
                                         JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(fout);
                                         JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
@@ -134,7 +134,7 @@ public class StudentPostVideoCapture implements Runnable {
         	               		int statusCode1 = client.executeMethod(postMethod);
                 	       		postMethod.getStatusLine();
                        			postMethod.releaseConnection();
-					StudentBufferImage.getController().remove();
+					BufferImage.getController().remove();
                        			try {
 	                               		runner.sleep(10);
 						runner.yield();

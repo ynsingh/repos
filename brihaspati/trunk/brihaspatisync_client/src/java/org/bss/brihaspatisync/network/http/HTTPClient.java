@@ -97,7 +97,6 @@ public class HTTPClient extends Thread {
 					}
 
 	                        	int statusCode1 = client.executeMethod(method);
-					System.out.println("\n\n\n\n----------------------------"+statusCode1);
         	                	java.io.BufferedReader rd = new java.io.BufferedReader(new java.io.InputStreamReader(method.getResponseBodyAsStream()));
                 	        	String str;
                         		while((str = rd.readLine()) != null) {

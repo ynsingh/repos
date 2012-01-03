@@ -101,13 +101,13 @@ public class LocalServer implements Runnable {
                                	method.releaseConnection();
 				try {
 					if(image!=null) {
+						BufferImage.getController().handleBuffer();
+						BufferImage.getController().put(image);
 						if((clientObject.getUserRole()).equals("instructor")){
-							BufferImage.getController().handleBuffer();
-							BufferImage.getController().put(image);
 							VideoPanel.getController().runInstructorVidio(image);
 						}else {
-							StudentBufferImage.getController().handleBuffer();
-                                                        StudentBufferImage.getController().put(image);
+							//StudentBufferImage.getController().handleBuffer();
+                                                        //StudentBufferImage.getController().put(image);
                                                         VideoPanel.getController().runStudentVidio(image);
 						}
 					}
