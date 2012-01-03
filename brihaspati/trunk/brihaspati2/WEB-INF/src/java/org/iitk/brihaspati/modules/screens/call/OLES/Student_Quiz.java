@@ -72,7 +72,7 @@ import org.iitk.brihaspati.modules.utils.DbDetail;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.om.QuizPeer;
 import org.iitk.brihaspati.om.Quiz;
-
+import javax.servlet.http.*;
 /**
  *   This class contains code for quiz attempt part from student login
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
@@ -125,13 +125,10 @@ public class Student_Quiz extends SecureScreen
 					quizList=quizmetadata.getPracticeQuiz_Detail();
 					ErrorDumpUtil.ErrorLog("inside else "+quizList.size());
 					if(quizList!=null){
-						ErrorDumpUtil.ErrorLog("nside null");
 						if(quizList.size()!=0){
-							ErrorDumpUtil.ErrorLog("inside if001");
 							context.put("quizList",quizList);	              
 						}
 						else{
-							ErrorDumpUtil.ErrorLog("inside Else001");
 							data.setMessage(MultilingualUtil.ConvertedString("brih_nopracticequiz",LangFile));
 						}
 					}
@@ -152,7 +149,8 @@ public class Student_Quiz extends SecureScreen
 				//----------Functionality to get Security String for Login Student of a perticular Quiz from xml files------
 					
 					HashMap securityData=new HashMap(); 
-					String IPAddr=data.getRemoteAddr();
+					//String IPAddr=request.getRemoteAddr();
+					String IPAddr=getClientIpAddr(data.getRequest());
 					context.put("ip",IPAddr);
 					ErrorDumpUtil.ErrorLog("IP Address is: "+IPAddr);
 					
@@ -163,12 +161,15 @@ public class Student_Quiz extends SecureScreen
 							File secFile=new File(path+"/"+quizid+"_Security.xml");
 							Vector collect=new Vector();
 							if(secFile.exists()){
+								ErrorDumpUtil.ErrorLog("inside if file exists :: "+path+"/"+quizid+"_Security.xml");
 								QuizMetaDataXmlReader reader=new QuizMetaDataXmlReader(path+"/"+quizid+"_Security.xml");
 								collect=reader.getSecurityDetail();
 								if(collect!=null && collect.size()!=0){
+									ErrorDumpUtil.ErrorLog("inside for collect not null "+collect.size());
 									for(int j=0;j<collect.size();j++){
 										String student=((QuizFileEntry) collect.elementAt(j)).getStudentID();
 										if(student.equals(loginname)){
+											ErrorDumpUtil.ErrorLog("inside for if student is "+student+" and login name is "+loginname);
 											String securityString=((QuizFileEntry) collect.elementAt(j)).getSecurityID();
 											String ip=((QuizFileEntry) collect.elementAt(j)).getIP();
 											String temp=securityString+":"+ip;
@@ -254,5 +255,25 @@ public class Student_Quiz extends SecureScreen
 			data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,LangFile));
 		}
 	}
+	
+	public static String getClientIpAddr(HttpServletRequest request) {
+		String ip = request.getHeader("X-Forwarded-For");
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		ip = request.getHeader("HTTP_CLIENT_IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		ip = request.getRemoteAddr();
+		}
+		return ip;
+		}
 }
 
