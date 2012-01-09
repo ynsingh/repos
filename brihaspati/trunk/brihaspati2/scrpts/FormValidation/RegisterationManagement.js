@@ -108,28 +108,14 @@ var error = "";
 /**
  * This java script is used validate the Match String.
  */
-
-function checkNull(frm,fld) {
-var reason = "";
-    reason += validateMatchString(frm.valueString);
-
-if (reason != "") {
-        alert("" + reason);
-        return false;
-}
-        frm.actionName.value=fld.name;
-        frm.submit();
-}
-function validateMatchString(fld){
-var error = "";
-        if (fld.value.length == 0) {
-                fld.style.background = 'Yellow';
-                error = "\n* The 'Match box' can not be empty !!";
-        } else {
-                fld.style.background = 'White';
+ function checkNull(frm,field){
+                if(frm.valueString.value!=""){
+                        frm.submit();
+                }
+                else{
+                        alert("The 'Match String' text box can not be NULL");
+                }
         }
-        return error;
-}
 
 /*
 * This function in used for clear the form data
