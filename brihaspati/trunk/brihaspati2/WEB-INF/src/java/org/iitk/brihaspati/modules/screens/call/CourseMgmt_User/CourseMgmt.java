@@ -113,12 +113,15 @@ public class CourseMgmt extends SecureScreen {
 		*/
 		String filePath=data.getServletContext().getRealPath("/Courses")+"/"+(String)user.getTemp("course_id")+"/coursemgmt/Coursemgmt.xml";
 		File f=new File(filePath);
-                if(f.exists()){
-			v1.add("odddays");
-			v1.add("evendays");
-			v1.add("everyday");
-                   	Vector v=XMLWriter_Cms.getSearchElement(filePath,(String)user.getTemp("course_id"));
+             	 if(f.exists()){
+			//v1.add("odddays");
+			//v1.add("evendays");
+			//v1.add("everyday");
+                
+		   	Vector v=XMLWriter_Cms.getSearchElement(filePath,(String)user.getTemp("course_id"));
+		
 			if(v.size()>3){	
+				/*
 				if((selectdays.equals(""))){
 					if(!(v1.contains(v.get(0)))) {
 						context.put("selectdays1","Days");
@@ -135,19 +138,35 @@ public class CourseMgmt extends SecureScreen {
                                                 //context.put("selectdays1",v.get(0));
                                                 context.put("abc",v.get(0));
                                         }
-				} 
-				context.put("Venue",v.get(1));
+				}*/ 
+				context.put("sch4",v.get(0));
+				context.put("sch5",v.get(1));
                 		context.put("midsem",v.get(2));
 	                	context.put("quiz",v.get(3));
 	        	        context.put("labwork",v.get(4));
         	        	context.put("endsem",v.get(5));
                 		context.put("message",v.get(6));
                 		context.put("fileName",v.get(7));
-			}
+				context.put("labinst",v.get(8));
+				context.put("labinst1",v.get(9));
+				context.put("tute",v.get(10));
+				context.put("tute1",v.get(11));
+				context.put("t",v.get(12));
+				context.put("t1",v.get(13));
+				context.put("t2",v.get(14));	
+
+				context.put("t3",v.get(15));
+				context.put("t4",v.get(16));
+				context.put("t5",v.get(17));	
+				context.put("sch",v.get(18));
+				context.put("sch1",v.get(19));
+				context.put("sch2",v.get(20));
+				context.put("sch3",v.get(21));
+		}
 			
 		}
                 context.put("seclist",uidvector);
 		
 	
-        }
+       }
 }

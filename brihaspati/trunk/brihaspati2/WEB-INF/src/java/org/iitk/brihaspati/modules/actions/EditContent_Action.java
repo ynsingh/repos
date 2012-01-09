@@ -104,7 +104,7 @@ public class EditContent_Action extends SecureAction
                         String cName=pp.getString("cName","");
 			String status=pp.getString("status","");
 			//String status=pp.getString("location","");
-			//ErrorDumpUtil.ErrorLog("location in crspath===="+status);
+			//ErrorDumpUtil.ErrorLog("locatior in crspath===="+status);
                         String username=pp.getString("uname");
 			if(status.equals("Remote"))
                         {
@@ -508,15 +508,30 @@ public class EditContent_Action extends SecureAction
 		User user = data.getUser();
                 String LangFile=data.getUser().getTemp("LangFile").toString();
                 String msg="";
-                String courseid=((String)user.getTemp("course_id"));
-                String Schedule=pp.getString("selectdays","");
-                String Schedule1=pp.getString("selectdaysintext","");
-		String Venue=pp.getString("Venue","");
-		String midsem=pp.getString("midsem","");
-                String quiz=pp.getString("quiz","");
-                String labwork=pp.getString("labwork","");
-                String endsem=pp.getString("endsem","");
-                String message=pp.getString("message","");
+		String courseid=((String)user.getTemp("course_id"));
+		String midsem=pp.getString("midsem","null");
+                String quiz=pp.getString("quiz","null");
+                String labwork=pp.getString("labwork","null");
+                String endsem=pp.getString("endsem","null");
+                String message=pp.getString("message","null");
+		String labinst=pp.getString("labinst","null");
+		String labinst1=pp.getString("labinst1","null");
+		String tute=pp.getString("tute","null");
+		String tute1=pp.getString("tute1","null");
+		
+		String t=pp.getString("t","null");
+		String t1=pp.getString("t1","null");
+		String t2=pp.getString("t2","null");
+		String t3=pp.getString("t3","null");
+		String t4=pp.getString("t4","null");
+		String t5=pp.getString("t5","null");
+		
+		String sch=pp.getString("sch","null");
+		String sch1=pp.getString("sch1","null");
+		String sch2=pp.getString("sch2","null");
+		String sch3=pp.getString("sch3","null");
+                String sch4=pp.getString("sch4","null");
+		String sch5=pp.getString("sch5","null");
 		org.apache.commons.fileupload.FileItem fileItem;
                 fileItem = pp.getFileItem("file");
                 String fileName=fileItem.getName();
@@ -530,27 +545,24 @@ public class EditContent_Action extends SecureAction
 			String ffileName=courseid+fileExt;
 			//file path where save xml file
 			String filePath=data.getServletContext().getRealPath("/Courses")+"/"+(String)data.getUser().getTemp("course_id")+"/coursemgmt";
-			if(Schedule.equals("Days"))
-				Schedule=Schedule1;
-				File f=new File(filePath);
-				if(!f.exists())		
+			File f=new File(filePath);
+			if(!f.exists())		
 				f.mkdir();
-				String message1 =XMLWriter_Cms.searchElement(filePath+"/Coursemgmt.xml",courseid);		
-				if(!message1.equals("Successfull")) {
-					XMLWriter_Cms.CourseManageMentSystem(filePath+"/Coursemgmt.xml",courseid,Schedule,Venue,midsem,quiz,labwork,endsem,message,ffileName);
-				}else{
-					String ss=XMLWriter_Cms.updateCourseManageMentSystem(filePath+"/Coursemgmt.xml",courseid,Schedule,Venue,midsem,quiz,labwork,endsem,message,ffileName);
-				}
-				try {
-                                	File filewrite=new File(filePath+"/"+ffileName);
-                                	fileItem.write(filewrite);
-              				msg= MultilingualUtil.ConvertedString("cms_msg",LangFile);
-                                        data.setMessage(msg);
-				}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);}
-		}else{
-				msg= MultilingualUtil.ConvertedString("assignment_msg6",LangFile);
-                 		data.setMessage(msg);
-	
+			String message1 =XMLWriter_Cms.searchElement(filePath+"/Coursemgmt.xml",courseid);		
+			if(!message1.equals("Successfull")) {
+				XMLWriter_Cms.CourseManageMentSystem(filePath+"/Coursemgmt.xml",courseid,sch4,sch5,midsem,quiz,labwork,endsem,message,ffileName,labinst,labinst1,tute,tute1,t,t1,t2,t3,t4,t5,sch,sch1,sch2,sch3);
+			}else{
+				String ss=XMLWriter_Cms.updateCourseManageMentSystem(filePath+"/Coursemgmt.xml",courseid,sch4,sch5,midsem,quiz,labwork,endsem,message,ffileName,labinst,labinst1,tute,tute1,t,t1,t2,t3,t4,t5,sch,sch1,sch2,sch3);
+			}
+			try {
+                               	File filewrite=new File(filePath+"/"+ffileName);
+                               	fileItem.write(filewrite);
+              			msg= MultilingualUtil.ConvertedString("cms_msg",LangFile);
+                                data.setMessage(msg);
+			}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);}
+		}else {
+			msg= MultilingualUtil.ConvertedString("assignment_msg6",LangFile);
+                 	data.setMessage(msg);
 		}
 	}
 	/**
