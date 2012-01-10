@@ -48,13 +48,13 @@ import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import java.util.Vector;
 import javax.xml.parsers.ParserConfigurationException;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 /**
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal</a>
  */
-
 
 public class XMLWriter_Cms {
 
@@ -94,184 +94,219 @@ public class XMLWriter_Cms {
                                         String course=(String)(node.getFirstChild()).getNodeValue();
 					if(course.equals(courseid)) {
 						v=new Vector();
+						try {	
+							NodeList node1 = doc.getElementsByTagName("sch4");
+        	                                        node = node1.item(i);
+                	                                String sch4=(String)(node.getFirstChild()).getNodeValue();
+							if(sch4.equals("null"))
+								v.add("");
+							else
+								v.add(sch4);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
+						try {
+							NodeList node1 = doc.getElementsByTagName("sch5");
+        	                                        node = node1.item(i);
+                	                                String sch5=(String)(node.getFirstChild()).getNodeValue();
+                        	                       if(sch5.equals("null"))
+                                	                        v.add("");
+                                        	        else
+							 v.add(sch5);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
+						try {
+	                                      		 NodeList node1 = doc.getElementsByTagName("Mid_Sem");
+							node = node1.item(i);
+							String Mid_Sem=(String)(node.getFirstChild()).getNodeValue();	
+							if(Mid_Sem.equals("null"))
+                                	                        v.add("");
+                                        	        else
+								v.add(Mid_Sem);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
+						try {							
+							 NodeList node1 = doc.getElementsByTagName("Quiz");
+        	                                        node = node1.item(i);
+                	                                String Quiz=(String)(node.getFirstChild()).getNodeValue();     
+							if(Quiz.equals("null"))
+                                	                        v.add("");
+                                        	        else
+                                                		v.add(Quiz);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
+						try {
+							 NodeList node1 = doc.getElementsByTagName("LabWork");
+	                                                node = node1.item(i);
+        	                                        String LabWork=(String)(node.getFirstChild()).getNodeValue();    
+							if(LabWork.equals("null"))
+                        	                                v.add("");
+                                	                else
+                        	                	        v.add(LabWork);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
 						
-						NodeList node1 = doc.getElementsByTagName("sch4");
-                                                node = node1.item(i);
-                                                String sch4=(String)(node.getFirstChild()).getNodeValue();
-						if(sch4.equals("null"))
-							v.add("");
-						else
-							v.add(sch4);
-
-						node1 = doc.getElementsByTagName("sch5");
-                                                node = node1.item(i);
-                                                String sch5=(String)(node.getFirstChild()).getNodeValue();
-                                               if(sch5.equals("null"))
-                                                        v.add("");
-                                                else
-						 v.add(sch5);
-
-                                      		node1 = doc.getElementsByTagName("Mid_Sem");
-						node = node1.item(i);
-						String Mid_Sem=(String)(node.getFirstChild()).getNodeValue();	
-						if(Mid_Sem.equals("null"))
-                                                        v.add("");
-                                                else
-						v.add(Mid_Sem);
+						try {
+							 NodeList node1 = doc.getElementsByTagName("End_Sem");
+                                               		node = node1.item(i);
+	                                                String End_Sem=(String)(node.getFirstChild()).getNodeValue();    
+							if(End_Sem.equals("null"))
+                	                                        v.add("");
+                        	                        else
+                                	                v.add(End_Sem);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
 						
-						node1 = doc.getElementsByTagName("Quiz");
-                                                node = node1.item(i);
-                                                String Quiz=(String)(node.getFirstChild()).getNodeValue();     
-						if(Quiz.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(Quiz);
-				
-						node1 = doc.getElementsByTagName("LabWork");
-                                                node = node1.item(i);
-                                                String LabWork=(String)(node.getFirstChild()).getNodeValue();    
-						if(LabWork.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(LabWork);
-		
-						node1 = doc.getElementsByTagName("End_Sem");
-                                                node = node1.item(i);
-                                                String End_Sem=(String)(node.getFirstChild()).getNodeValue();    
-						if(End_Sem.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(End_Sem);
-						
-						
-						node1 = doc.getElementsByTagName("Instrction");
-                                                node = node1.item(i);
-                                                String Instrction=(String)(node.getFirstChild()).getNodeValue();    
-						if(Instrction.equals("null"))
-                                                        v.add("");
-                                                else   
-                                                v.add(Instrction);
-
-						node1 = doc.getElementsByTagName("FileName");
-                                                node = node1.item(i);
-                                                String FileName=(String)(node.getFirstChild()).getNodeValue();
-                                                v.add(FileName);
-
-                                                node1 = doc.getElementsByTagName("LabInstructor");
-                                                node = node1.item(i);
-                                                String LabInstructor=(String)(node.getFirstChild()).getNodeValue();
-						if(LabInstructor.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(LabInstructor);
-
-                                                node1 = doc.getElementsByTagName("LabInstructor1");
-                                                node = node1.item(i);
-                                                String LabInstructor1=(String)(node.getFirstChild()).getNodeValue();
-						if(LabInstructor1.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(LabInstructor1);
-
-                                                node1 = doc.getElementsByTagName("Tutor");
-                                                node = node1.item(i);
-                                                String Tutor=(String)(node.getFirstChild()).getNodeValue();
-						if(Tutor.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(Tutor);
-
-                                                node1 = doc.getElementsByTagName("Tutor1");
-                                                node = node1.item(i);
-                                                String Tutor1=(String)(node.getFirstChild()).getNodeValue();
-						if(Tutor1.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(Tutor1);
-						
-						node1 = doc.getElementsByTagName("T");
-                                                node = node1.item(i);
-                                                String T=(String)(node.getFirstChild()).getNodeValue();
-						if(T.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(T);
-				
-						node1 = doc.getElementsByTagName("T1");
-                                                node = node1.item(i);
-                                                String T1=(String)(node.getFirstChild()).getNodeValue();
-						if(T1.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(T1);
-				
-						node1 = doc.getElementsByTagName("T2");
-                                                node = node1.item(i);
-                                                String T2=(String)(node.getFirstChild()).getNodeValue();
-						if(T2.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(T2);
-
-						node1 = doc.getElementsByTagName("T3");
-                                                node = node1.item(i);
-                                                String T3=(String)(node.getFirstChild()).getNodeValue();
-						if(T3.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(T3);
-	
-						node1 = doc.getElementsByTagName("T4");
-                                                node = node1.item(i);
-                                                String T4=(String)(node.getFirstChild()).getNodeValue();
-						if(T4.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(T4);
+						try {						
+							 NodeList node1 = doc.getElementsByTagName("Instrction");
+        	                                        node = node1.item(i);
+                	                                String Instrction=(String)(node.getFirstChild()).getNodeValue();    
+							if(Instrction.equals("null"))
+                                	                        v.add("");
+                                        	        else   
+                                                		v.add(Instrction);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
 					
-						node1 = doc.getElementsByTagName("T5");
-                                                node = node1.item(i);
-                                                String T5=(String)(node.getFirstChild()).getNodeValue();
-						if(T5.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(T5);
+						try {
+							 NodeList node1 = doc.getElementsByTagName("FileName");
+	                                                node = node1.item(i);
+        	                                        String FileName=(String)(node.getFirstChild()).getNodeValue();
+                	                                v.add(FileName);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
+
+						try{	
+        	                                       NodeList node1 = doc.getElementsByTagName("LabInstructor");
+                	                                node = node1.item(i);
+                        	                        String LabInstructor=(String)(node.getFirstChild()).getNodeValue();
+							if(LabInstructor.equals("null"))
+                                        	                v.add("");
+                                                	else
+		                                                v.add(LabInstructor);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
 						
-						node1 = doc.getElementsByTagName("Sch");
-                                                node = node1.item(i);
-                                                String Sch=(String)(node.getFirstChild()).getNodeValue();
-						if(Sch.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(Sch);
-						
-						node1 = doc.getElementsByTagName("Sch1");
-                                                node = node1.item(i);
-                                                String Sch1=(String)(node.getFirstChild()).getNodeValue();
-						if(Sch1.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(Sch1);
-		
-						node1 = doc.getElementsByTagName("Sch2");
-                                                node = node1.item(i);
-                                                String Sch2=(String)(node.getFirstChild()).getNodeValue();
-						if(Sch2.equals("null"))
-                                                        v.add("");
-                                                else
-                                                v.add(Sch2);
+						try {
+	                                                NodeList node1 = doc.getElementsByTagName("LabInstructor1");
+        	                                        node = node1.item(i);
+                	                                String LabInstructor1=(String)(node.getFirstChild()).getNodeValue();
+							if(LabInstructor1.equals("null"))
+                                	                        v.add("");
+                                        	        else
+                                                		v.add(LabInstructor1);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
 				
-						node1 = doc.getElementsByTagName("Sch3");
-                                                node = node1.item(i);
-                                                String Sch3=(String)(node.getFirstChild()).getNodeValue();
-						if(Sch3.equals("null"))
+						try {
+	                                                NodeList node1 = doc.getElementsByTagName("Tutor");
+        	                                        node = node1.item(i);
+                	                                String Tutor=(String)(node.getFirstChild()).getNodeValue();
+							if(Tutor.equals("null"))
+                                	                        v.add("");
+                                        	        else
+                                                		v.add(Tutor);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
+			
+						try {
+	                                                NodeList node1 = doc.getElementsByTagName("Tutor1");
+        	                                        node = node1.item(i);
+                	                                String Tutor1=(String)(node.getFirstChild()).getNodeValue();
+							if(Tutor1.equals("null"))
+                                	                        v.add("");
+                                        	        else
+                                                		v.add(Tutor1);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
+			
+						try {						
+							NodeList node1 = doc.getElementsByTagName("T");
+        	                                        node = node1.item(i);
+                	                                String T=(String)(node.getFirstChild()).getNodeValue();
+							if(T.equals("null"))
+                                	                        v.add("");
+                                        	        else
+                                                		v.add(T);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);v.add(""); }	
+					
+						try {				
+							NodeList node1 = doc.getElementsByTagName("T1");
+        	                                        node = node1.item(i);
+                	                                String T1=(String)(node.getFirstChild()).getNodeValue();
+							if(T1.equals("null"))
+                                	                        v.add("");
+                                        	        else
+                                                		v.add(T1);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
+				
+						try {				
+							NodeList node1 = doc.getElementsByTagName("T2");
+        	                                        node = node1.item(i);
+                	                                String T2=(String)(node.getFirstChild()).getNodeValue();
+							if(T2.equals("null"))
+                                	                        v.add("");
+                                        	        else
+                                                		v.add(T2);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
+							
+						try {
+							NodeList node1 = doc.getElementsByTagName("T3");
+        	                                        node = node1.item(i);
+                	                                String T3=(String)(node.getFirstChild()).getNodeValue();
+							if(T3.equals("null"))
+                                	                        v.add("");
+                                        	        else
+                                                		v.add(T3);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);v.add(""); }
+					
+						try{
+							NodeList node1 = doc.getElementsByTagName("T4");
+                                                	node = node1.item(i);
+                                              		String T4=(String)(node.getFirstChild()).getNodeValue();
+							if(T4.equals("null"))
                                                         v.add("");
-                                                else
-                                                v.add(Sch3);
-
-
-
+                                                	else
+                                                	v.add(T4);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
 						
+						try{
+							NodeList node1 = doc.getElementsByTagName("T5");
+                                                	node = node1.item(i);
+                                                	String T5=(String)(node.getFirstChild()).getNodeValue();
+							if(T5.equals("null"))
+                                                        v.add("");
+                                                	else
+                                                	v.add(T5);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
+		
+						try{
+							NodeList node1 = doc.getElementsByTagName("Sch");
+                                                	node = node1.item(i);
+                                                	String Sch=(String)(node.getFirstChild()).getNodeValue();
+							if(Sch.equals("null"))
+                                                        v.add("");
+                                                	else
+                                                	v.add(Sch);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
+						
+						try{
+							NodeList node1 = doc.getElementsByTagName("Sch1");
+                                                	node = node1.item(i);
+                                                	String Sch1=(String)(node.getFirstChild()).getNodeValue();
+							if(Sch1.equals("null"))
+                                                        v.add("");
+                                                	else
+                                                	v.add(Sch1);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);v.add(""); }
+
+						try{
+							NodeList node1 = doc.getElementsByTagName("Sch2");
+                                                	node = node1.item(i);
+                                                	String Sch2=(String)(node.getFirstChild()).getNodeValue();
+							if(Sch2.equals("null"))
+                                                        v.add("");
+                                                	else
+                                                	v.add(Sch2);
+				
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);v.add(""); }
+	
+						try{	
+							NodeList node1 = doc.getElementsByTagName("Sch3");
+                                                	node = node1.item(i);
+                                                	String Sch3=(String)(node.getFirstChild()).getNodeValue();
+							if(Sch3.equals("null"))
+                        	                                v.add("");
+                	                      		 else
+		                                                v.add(Sch3);
+						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);v.add(""); }
 						return v;
                                         }
                                 }
@@ -282,6 +317,7 @@ public class XMLWriter_Cms {
 	
 	public static String  updateCourseManageMentSystem(String filePath,String couse_id,String sch4,String sch5,String mid_sem,String quiz,String labwork,String end_sem,String instrction,String filename,String labinst,String labinst1,String tute,String tute1,String t,String t1,String t2,String t3,String t4,String t5,String sch,String sch1,String sch2,String sch3){	
 		try {
+			
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                         DocumentBuilder builder = factory.newDocumentBuilder();
                         Document doc = builder.parse(getFile(filePath));	
@@ -453,7 +489,7 @@ public class XMLWriter_Cms {
 		
 		
                         Element t_e = doc.createElement("T");
-                        Text tText = doc.createTextNode(t1);
+                        Text tText = doc.createTextNode(t);
                         t_e.appendChild(tText);
 			
 			Element t1_e = doc.createElement("T1");

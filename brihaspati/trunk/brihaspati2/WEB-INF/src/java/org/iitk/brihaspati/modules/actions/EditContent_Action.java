@@ -549,11 +549,15 @@ public class EditContent_Action extends SecureAction
 			if(!f.exists())		
 				f.mkdir();
 			String message1 =XMLWriter_Cms.searchElement(filePath+"/Coursemgmt.xml",courseid);		
-			if(!message1.equals("Successfull")) {
-				XMLWriter_Cms.CourseManageMentSystem(filePath+"/Coursemgmt.xml",courseid,sch4,sch5,midsem,quiz,labwork,endsem,message,ffileName,labinst,labinst1,tute,tute1,t,t1,t2,t3,t4,t5,sch,sch1,sch2,sch3);
-			}else{
-				String ss=XMLWriter_Cms.updateCourseManageMentSystem(filePath+"/Coursemgmt.xml",courseid,sch4,sch5,midsem,quiz,labwork,endsem,message,ffileName,labinst,labinst1,tute,tute1,t,t1,t2,t3,t4,t5,sch,sch1,sch2,sch3);
+			if(message1.equals("Successfull")) {
+				File deletefile=new File(filePath+"/Coursemgmt.xml");	
+				deletefile.delete();
 			}
+			//if(message1.equals("Successfull")) {
+			XMLWriter_Cms.CourseManageMentSystem(filePath+"/Coursemgmt.xml",courseid,sch4,sch5,midsem,quiz,labwork,endsem,message,ffileName,labinst,labinst1,tute,tute1,t,t1,t2,t3,t4,t5,sch,sch1,sch2,sch3);
+			//}else{
+			//	String ss=XMLWriter_Cms.updateCourseManageMentSystem(filePath+"/Coursemgmt.xml",courseid,sch4,sch5,midsem,quiz,labwork,endsem,message,ffileName,labinst,labinst1,tute,tute1,t,t1,t2,t3,t4,t5,sch,sch1,sch2,sch3);
+			//}
 			try {
                                	File filewrite=new File(filePath+"/"+ffileName);
                                	fileItem.write(filewrite);

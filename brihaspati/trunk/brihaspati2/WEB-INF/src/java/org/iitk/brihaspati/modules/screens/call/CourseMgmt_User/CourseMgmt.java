@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
 /*
  * @(#)CourseMgmt.java   
  *
- *  Copyright (c) 2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2011,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -67,14 +67,12 @@ public class CourseMgmt extends SecureScreen {
 	MultilingualUtil Mutil=new MultilingualUtil();
 	public void doBuildTemplate(RunData data,Context context) {
 		Vector v1=new Vector();
-		 AccessControlList acl=data.getACL();	
+		AccessControlList acl=data.getACL();	
 		ParameterParser pp=data.getParameters();
                 String langfile=data.getUser().getTemp("LangFile").toString();
 		context.put("tdcolor",pp.getString("count",""));
 		User user = data.getUser();
-	//	String Role=(String)user.getTemp("role");
-          //      context.put("user_role",Role);
-		 context.put("isAdmin",acl.hasRole("turbine_root")?"true":"false");
+		context.put("isAdmin",acl.hasRole("turbine_root")?"true":"false");
 		/**
 		*This is use for get course name and course_id
 		*/
@@ -82,7 +80,7 @@ public class CourseMgmt extends SecureScreen {
                 String cid=(String)user.getTemp("course_id");
 		context.put("cId",(String)user.getTemp("course_id"));
 		
-		 context.put("isInstructor",acl.hasRole("instructor",cid)?"true":"false");
+		context.put("isInstructor",acl.hasRole("instructor",cid)?"true":"false");
         	int GID=GroupUtil.getGID((String)user.getTemp("course_id"));
 		/**
 		* This vector use for get Course Instructor & secondry Instructor 
@@ -95,11 +93,11 @@ public class CourseMgmt extends SecureScreen {
                 List uidvector=new Vector();
                 for(int i=0;i<UID.size();i++) {
                 	int uid=Integer.parseInt(UID.get(i).toString());
-                   	        String loginname=UserUtil.getLoginName(uid);
-				if(cid.indexOf(loginname)>0){
+                   	String loginname=UserUtil.getLoginName(uid);
+			if(cid.indexOf(loginname)>0){
 				UserUtil.getFullName(UserUtil.getUID(loginname));
                 		context.put("firstname",UserUtil.getFullName(UserUtil.getUID(loginname)));
-		}	
+			}	
                         String uName=UserUtil.getFullName(uid);
                         uidvector.add(uName);
             	}
@@ -113,32 +111,9 @@ public class CourseMgmt extends SecureScreen {
 		*/
 		String filePath=data.getServletContext().getRealPath("/Courses")+"/"+(String)user.getTemp("course_id")+"/coursemgmt/Coursemgmt.xml";
 		File f=new File(filePath);
-             	 if(f.exists()){
-			//v1.add("odddays");
-			//v1.add("evendays");
-			//v1.add("everyday");
-                
+		if(f.exists()){
 		   	Vector v=XMLWriter_Cms.getSearchElement(filePath,(String)user.getTemp("course_id"));
-		
 			if(v.size()>3){	
-				/*
-				if((selectdays.equals(""))){
-					if(!(v1.contains(v.get(0)))) {
-						context.put("selectdays1","Days");
-						context.put("abc",v.get(0));	
-					}else{
-						context.put("selectdays1",v.get(0));
-						context.put("abc",v.get(0));
-					}
-				}else {
-					if(!(v1.contains(v.get(0)))) {
-                                                //context.put("selectdays1","other");
-                                                context.put("abc",v.get(0));
-                                        }else{
-                                                //context.put("selectdays1",v.get(0));
-                                                context.put("abc",v.get(0));
-                                        }
-				}*/ 
 				context.put("sch4",v.get(0));
 				context.put("sch5",v.get(1));
                 		context.put("midsem",v.get(2));
@@ -154,7 +129,6 @@ public class CourseMgmt extends SecureScreen {
 				context.put("t",v.get(12));
 				context.put("t1",v.get(13));
 				context.put("t2",v.get(14));	
-
 				context.put("t3",v.get(15));
 				context.put("t4",v.get(16));
 				context.put("t5",v.get(17));	
@@ -162,11 +136,9 @@ public class CourseMgmt extends SecureScreen {
 				context.put("sch1",v.get(19));
 				context.put("sch2",v.get(20));
 				context.put("sch3",v.get(21));
-		}
+			}
 			
 		}
                 context.put("seclist",uidvector);
-		
-	
        }
 }
