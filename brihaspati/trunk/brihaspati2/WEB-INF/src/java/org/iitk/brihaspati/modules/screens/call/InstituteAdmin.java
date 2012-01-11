@@ -115,6 +115,7 @@ public class InstituteAdmin extends SecureScreen{
 				int instid=Integer.parseInt(inst_id);
 				crit=new Criteria();
 				crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instid);
+				crit.and(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,1);
 				try{
 	                                list2=InstituteAdminRegistrationPeer.doSelect(crit);
                                         for(int k=0;k<list2.size();k++)
