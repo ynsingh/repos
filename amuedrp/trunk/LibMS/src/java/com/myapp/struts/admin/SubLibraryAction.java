@@ -127,20 +127,19 @@ SubLibrary sublibobj;
          if(sublibobj!=null)
          {
            
-           
-          request.setAttribute("button",button);
+           request.setAttribute("button",button);
+         
            request.setAttribute("sublib", sublibobj);
 
          Department ds= DeptDAO.getDeptName(library_id,sublibobj.getSublibName());
-         if(ds!=null){
-         request.setAttribute("sublib_name",sublibobj.getSublibName());
-         }
-         
-
+        if(ds!=null)
+            request.setAttribute("sublib_name",sublibobj.getSublibName());
+      
+        
              return mapping.findForward("update/view/delete");
          }
         
-
+ 
        
     }
  return null;

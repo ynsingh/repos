@@ -35,14 +35,15 @@ locale1=(String)session.getAttribute("locale");
     %>
 <%if(notice!=null){ %>
 <html>
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        
     </head>
     <body>
-        <table>
+        <table class="datagrid" width="100%" style="border: solid 1px black;">
 
-            <tr><td  align="<%=align%>" dir="<%=rtl%>" class="heading"><p align="justify"><%=notice.getDetail() %></p></td></tr>
+            <tr><td  align="<%=align%>" dir="<%=rtl%>" ><p align="justify"><b>Notice Details</b> <br/><hr/><%=notice.getDetail() %></p></td></tr>
          </table>
     </body>
 </html>

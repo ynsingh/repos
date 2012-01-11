@@ -161,7 +161,8 @@ function loadHelp()
 
                 <tr><td class="mess">
                                  <%
-          if (msg!=null && back!=null)
+                                 String del=(String)request.getAttribute("bt");
+          if (msg!=null && back!=null && del==null)
           {
               
         %>

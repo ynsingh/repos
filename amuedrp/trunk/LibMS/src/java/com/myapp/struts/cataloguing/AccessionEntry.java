@@ -40,6 +40,7 @@ public class AccessionEntry extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        
         BibliographicDetailEntryActionForm bibform = (BibliographicDetailEntryActionForm) form;
         HttpSession session = request.getSession();
         String library_id = (String) session.getAttribute("library_id");
@@ -56,8 +57,29 @@ public class AccessionEntry extends org.apache.struts.action.Action {
      locale = new Locale(locale1);
     if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
     else{ rtl="RTL";align="right";}
-    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
-        List<Location> loc=LocationDAO.listlocation(library_id, sub_library_id);
+      ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+             List<DocumentCategory> ll=DocumentCategoryDAO.ListbookType(library_id,sub_library_id);
+                if(ll.isEmpty()){
+                      String msg1 = resource.getString("cataloguing.catoldtitle.setdocumentcategory");//You need to set document category
+                      request.setAttribute("msg1", msg1);
+                      return mapping.findForward("fail");
+        }
+        ArrayList list2=new ArrayList();
+        System.out.println(ll.size());
+        for(int i=0;i<ll.size();i++)
+        {
+          List obj = (List)ll.get(i);
+          String details = (String)obj.get(0);
+          String book_type=(String)obj.get(1);
+          DocumentCategory book=new DocumentCategory();
+          DocumentCategoryId bookid=new DocumentCategoryId(book_type, library_id, sub_library_id);
+
+          book.setDocumentCategoryName(details);
+          book.setId(bookid);
+          list2.add(book);
+         }
+        session.setAttribute("DocumentCategory", list2);
+      List<Location> loc=LocationDAO.listlocation(library_id, sub_library_id);
                 if(loc.isEmpty()){
                         String msg1 = resource.getString("cataloguing.catoldtitle.setlocation");//You need to set location
                         request.setAttribute("msg1", msg1);

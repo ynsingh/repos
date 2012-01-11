@@ -31,6 +31,12 @@ public class SubMember1Action extends org.apache.struts.action.Action {
              HttpSession session=request.getSession();
              library_id=(String)session.getAttribute("library_id");
              List list1=MemberDAO.searchEmployeeType(library_id);
+
+              if(list1.isEmpty() && list1==null){
+  String msg="You need to set Member";
+  request.setAttribute("msg1", msg);
+    return mapping.findForward("success");
+  }
              session.setAttribute("list1", list1);
              
              return mapping.findForward("success");

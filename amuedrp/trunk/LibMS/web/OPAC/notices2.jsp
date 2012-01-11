@@ -52,7 +52,7 @@ fromIndex++;
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        
         <%!
     Locale locale=null;
     String locale1="en";
@@ -78,7 +78,7 @@ locale1=(String)session.getAttribute("locale");
     %>
     </head>
     <body>
-     <table style="width:500px" align="center" dir="<%=rtl%>" >
+        <table  align="center" dir="<%=rtl%>" width="100%" class="datagrid" >
 <%if(size==0){%>
 <p class="err"> <%=resource.getString("global.norecordfound")%></p>
 <%}else{%>
@@ -86,11 +86,11 @@ locale1=(String)session.getAttribute("locale");
      <% for(;fromIndex<=toIndex;fromIndex++){%>
      
 
-     <tr dir="<%=rtl%>" align="center">
-     <table dir="<%=rtl%>" align="center" width="50%">
+     <tr dir="<%=rtl%>" align="left"><td>
+     <table dir="<%=rtl%>" align="left" class="datagrid" width="50%">
 
       <tr dir="<%=rtl%>" align="<%=align%>">
-          <td  align="<%=align%>" dir="<%=rtl%>" class="heading"><p dir="<%=rtl%>" align="justify" align="<%=align%>"><a dir="<%=rtl%>" href="<%=request.getContextPath()%>/viewnotices.do?name=<%=notices.get(fromIndex-1).getId().getNoticeId()%>" target="f5"><%=notices.get(fromIndex-1).getSubject()%></a></p></td></tr>
+          <td  align="<%=align%>" dir="<%=rtl%>" class="heading"><p dir="<%=rtl%>" align="justify" align="<%=align%>">Notices Id :<a dir="<%=rtl%>" href="<%=request.getContextPath()%>/viewnotices.do?name=<%=notices.get(fromIndex-1).getId().getNoticeId()%>" target="f5"><%=notices.get(fromIndex-1).getSubject()%></a></p></td></tr>
 
       <tr dir="<%=rtl%>" align="<%=align%>"><td dir="<%=rtl%>" align="<%=align%>">
               <%
@@ -161,23 +161,21 @@ case 12:
 
 
 
-                    %><%=day%>&nbsp;<%=txtmonth%>&nbsp;,&nbsp;<%=year%></td></tr>
-      <tr dir="<%=rtl%>" align="<%=align%>"><td dir="<%=rtl%>" align="<%=align%>"><a dir="<%=rtl%>" href="<%=request.getContextPath()%>/viewnotices.do?name=<%=notices.get(fromIndex-1).getId().getNoticeId()%>" target="f5"><font size="3" color="blue">More</font></a></td></tr>
+                    %>Date :&nbsp;<%=day%>&nbsp;<%=txtmonth%>&nbsp;,&nbsp;<%=year%></td></tr>
+      <tr dir="<%=rtl%>" align="<%=align%>"><td dir="<%=rtl%>" align="<%=align%>"><a dir="<%=rtl%>" href="<%=request.getContextPath()%>/viewnotices.do?name=<%=notices.get(fromIndex-1).getId().getNoticeId()%>" target="f5"><font size="3" color="blue"><i>Click for Details</i></font></a></td></tr>
      <tr dir="<%=rtl%>" align="<%=align%>"><td dir="<%=rtl%>" align="<%=align%>"></td></tr>
      </table>
-     
+         </td>
  </tr>
      
     <% }%>
-     
-    <tr align="center">
-        <td align="center" dir="<%=rtl%>" colspan="4"><p align="center" dir="<%=rtl%>">Pages&nbsp;&nbsp;
+    <tr><td>
+    <p class="datagrid"> Pages&nbsp;&nbsp;
         <%for(int i=1;i<=noofpages;i++){%>
         <a dir="<%=rtl%>" href="<%=request.getContextPath()%>/OPAC/notices2.jsp?pageIndex=<%=i%>"><%=i%></a>&nbsp;&nbsp;
         <%}%>
-            </p>
-        </td>
-    </tr>
+    </p>
+        </td></tr>
     <%}%>
 </table>
     </body>

@@ -277,10 +277,19 @@ if (answer!=true)
 
                         <%}else{%>
 
-                        <input type="hidden" name="sublibrary_id" value="<%=sublibrary_id%>"/>
-                        <html:select  property="sublibrary_id" tabindex="3"  value="<%=sublibrary_id%>"  disabled="true">
-                    <html:options name="SubLibrary" collection="sublib" property="sublibName"></html:options>
+                        <%if(user_sublibrary_id.equalsIgnoreCase(mainlib)){%>
+
+                    <html:select  property="sublibrary_id" styleId="sublibrary_id" tabindex="3"  value="<%=sublibrary_id%>" onchange="return checkrole();">
+                   <html:options name="SubLibrary" collection="sublib" property="id.sublibraryId" labelProperty="sublibName"></html:options>
                      </html:select>
+
+                    <%}else{%>
+                        <html:hidden property="sublibrary_id" value="<%=sublibrary_id%>"/>
+                        <html:select  property="sublibrary_id" tabindex="3" disabled="true"  value="<%=sublibrary_id%>">
+                    <html:options name="SubLibrary" collection="sublib" property="id.sublibraryId" labelProperty="sublibName"></html:options>
+                     </html:select>
+
+                    <%}%>
 
 
 

@@ -109,7 +109,7 @@ function func1(t){
     }
 
 function func2(t){
-    alert(t);
+ //   alert(t);
     if(t.value!=3){
 
         document.getElementById("ucat3").submit();
@@ -208,67 +208,67 @@ Go BACK to Manage MARC Bibliography.
      <html:form styleId="ucat3" action="/vdaction.do" method="post">
 <table width="100%" cellspacing="5" >
     <tr><input type="hidden"  name="zclick" id="zclick" /></tr>
-<tr><td>Physical Description (R)(300) : <a href="javascript:animatedcollapse.toggle('300')">ind</a> <div id="300" style="width: 150px; display:none" >ind1<input type="text" name="in3001" readonly value="<%=marc300.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in3002" value="<%=marc300.getIndicator2() %>" readonly maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+<tr><td>Physical Description (R)(300) : <a href="javascript:animatedcollapse.toggle('300')">ind</a> <div id="300" style="width: 150px; display:none" >ind1<input type="text" name="in3001" readonly value="<%=marc300.getIndicator1()==null?"":marc300.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in3002" value="<%=marc300.getIndicator2()==null?"":marc300.getIndicator2() %>" readonly maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
 <td>
-    $a Extent (R) <input type="text" readonly value="<%=marc300.get$a() %>" name="z300a" id="300a" onFocus="setObj(description[1],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    $a Extent (R) <input type="text" readonly value="<%=marc300.get$a()==null?"":marc300.get$a() %>" name="z300a" id="300a" onFocus="setObj(description[1],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('300b')">$b </a>
 
 <div id="300b" style="width: 400px; background: #FDF5E6; display:none">
-    Other physical details (NR) <input type="text" readonly value="<%=marc300.get$b() %>" name="z300b" id="300b" onFocus="setObj(description[2],'override',900,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Other physical details (NR) <input type="text" readonly value="<%=marc300.get$b()==null?"":marc300.get$b() %>" name="z300b" id="300b" onFocus="setObj(description[2],'override',900,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('300c')">$c </a>
 <div id="300c" style="width: 400px; background: #FDF5E6; display:none">
-    Dimensions (R) <input type="text" value="<%=marc300.get$c() %>" readonly name="z300c" id="300c" onFocus="setObj(description[3],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Dimensions (R) <input type="text" value="<%=marc300.get$c()==null?"":marc300.get$c() %>" readonly name="z300c" id="300c" onFocus="setObj(description[3],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('300e')">$e </a>
 <div id="300e" style="width: 400px; background: #FDF5E6; display:none">
-    Accompanying material (NR) <input type="text" value="<%=marc300.get$e() %>" readonly name="z300e" id="300e" onFocus="setObj(description[4],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Accompanying material (NR) <input type="text" value="<%=marc300.get$e()==null?"":marc300.get$e() %>" readonly name="z300e" id="300e" onFocus="setObj(description[4],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('300f')">$f </a>
 
 <div id="300f" style="width: 400px; background: #FDF5E6; display:none">
-    Type of unit (R) <input type="text" value="<%=marc300.get$f() %>" name="z300f" id="300f" readonly onFocus="setObj(description[5],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Type of unit (R) <input type="text" value="<%=marc300.get$f()==null?"":marc300.get$f() %>" name="z300f" id="300f" readonly onFocus="setObj(description[5],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('300g')">$g </a>
 <div id="300g" style="width: 400px; background: #FDF5E6; display:none">
-    Size of unit (R) <input type="text" value="<%=marc300.get$g() %>" name="z300g" id="300g" readonly onFocus="setObj(description[6],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Size of unit (R) <input type="text" value="<%=marc300.get$g()==null?"":marc300.get$g() %>" name="z300g" id="300g" readonly onFocus="setObj(description[6],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('3003')">$3 </a>
 <div id="3003" style="width: 400px; background: #FDF5E6; display:none">
-    Materials specified (NR)  <input type="text" value="<%=marc300.get$3() %>" name="z3003" id="3003" readonly onFocus="setObj(description[7],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Materials specified (NR)  <input type="text" value="<%=marc300.get$3()==null?"":marc300.get$3() %>" name="z3003" id="3003" readonly onFocus="setObj(description[7],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 </font></td></tr>
 
 <tr><td colspan="2"><hr width="90%" size="2" color="green"/></td></tr>
 
 <tr>
-    <td>Playing Time (NR)(306) : <a href="javascript:animatedcollapse.toggle('306')">ind</a> <div id="306" style="width: 150px; display:none" >ind1<input type="text" name="in3061" readonly value="<%=marc306.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in3602" readonly value="<%=marc306.getIndicator2() %>" maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+    <td>Playing Time (NR)(306) : <a href="javascript:animatedcollapse.toggle('306')">ind</a> <div id="306" style="width: 150px; display:none" >ind1<input type="text" name="in3061" readonly value="<%=marc306.getIndicator1()==null?"":marc306.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in3602" readonly value="<%=marc306.getIndicator2()==null?"":marc306.getIndicator2() %>" maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
 <td>
-    $a Playing time (R)<input type="text" value="<%=marc306.get$a() %>" readonly name="z306a" id="306a" onFocus="setObj(description[8],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    $a Playing time (R)<input type="text" value="<%=marc306.get$a()==null?"":marc306.get$a() %>" readonly name="z306a" id="306a" onFocus="setObj(description[8],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </td></tr>
 
 <tr><td colspan="2"><hr width="90%" size="2" color="green"/></td></tr>
 
 <tr>
-    <td>Content Type (R)(336) : <a href="javascript:animatedcollapse.toggle('336')">ind</a> <div id="336" style="width: 150px; display:none" >ind1<input type="text" name="in3361" value="<%=marc336.getIndicator1() %>" readonly maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in3362" value="<%=marc336.getIndicator2() %>" readonly maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+    <td>Content Type (R)(336) : <a href="javascript:animatedcollapse.toggle('336')">ind</a> <div id="336" style="width: 150px; display:none" >ind1<input type="text" name="in3361" value="<%=marc336.getIndicator1()==null?"":marc336.getIndicator1() %>" readonly maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in3362" value="<%=marc336.getIndicator2()==null?"":marc336.getIndicator2() %>" readonly maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
 <td>
-    $a Content type term (R)<input type="text" value="<%=marc336.get$a() %>" readonly name="z336a" id="336a" onFocus="setObj(description[9],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    $a Content type term (R)<input type="text" value="<%=marc336.get$a()==null?"":marc336.get$a() %>" readonly name="z336a" id="336a" onFocus="setObj(description[9],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 
 <a href="javascript:animatedcollapse.toggle('336b')">$b </a>
 
 <div id="336b" style="width: 400px; background: #FDF5E6; display:none">
-    Content type code (R)<input type="text" value="<%=marc336.get$b() %>" name="z336b" readonly id="336b" onFocus="setObj(description[10],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Content type code (R)<input type="text" value="<%=marc336.get$b()==null?"":marc336.get$b() %>" name="z336b" readonly id="336b" onFocus="setObj(description[10],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('3362')">$2 </a>
 
 <div id="3362" style="width: 400px; background: #FDF5E6; display:none" >
-    Source (NR)<input type="text" value="<%=marc336.get$2() %>" name="z3362" id="3362" readonly onFocus="setObj(description[11],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Source (NR)<input type="text" value="<%=marc336.get$2()==null?"":marc336.get$2() %>" name="z3362" id="3362" readonly onFocus="setObj(description[11],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('3363')">$3 </a>
 
 <div id="3363" style="width: 400px; background: #FDF5E6; display:none">
-    Materials specified (NR)<input type="text" value="<%=marc336.get$3() %>" name="z3363" readonly id="3363" onFocus="setObj(description[12],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Materials specified (NR)<input type="text" value="<%=marc336.get$3()==null?"":marc336.get$3() %>" name="z3363" readonly id="3363" onFocus="setObj(description[12],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div></td> </tr>
 
 </table></html:form>

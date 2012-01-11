@@ -60,6 +60,7 @@ System.out.println("In SQL"+search_by+ "   "+search_keyword);
          criteria.add(Restrictions.eq("libraryId",library_id));
          if(!sublibrary_id.equalsIgnoreCase("all"))
          criteria.add(Restrictions.eq("sublibraryId",sublibrary_id));
+         
 
 
              if(!userid.equals(""))

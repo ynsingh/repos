@@ -62,13 +62,6 @@ public class AcqInitiateRecieveOrderAction extends org.apache.struts.action.Acti
 
           if(button.equals("New Recieve Order"))
             {
-             AcqRecievingHeader aa1=ado.getRecieveOrder(library_id,  sub_library_id, recieving_no,order_no,vendor_id);
-          if(aa1!=null){
-                    String msg1="This Recieving No Already Exist";
-                    request.setAttribute("msg1", msg1);
-                    return mapping.findForward("duplicateorderno");
-            }
-
             if(acqordrhr ==null)
              {
          String msg1="This Order No does'nt found";
@@ -123,14 +116,11 @@ JRBeanCollectionDataSource dataSource11=null;
 JRBeanCollectionDataSource dataSource12=null;
 JRDataSource simpleDS;
 String path = servlet.getServletContext().getRealPath("/");
-String os=(String)System.getProperty("os.name");
-   System.out.println("OS----------->"+os);
-   if(os.startsWith("Linux"))
-   {
+//path=path.substring(0,path.lastIndexOf("/"));
+//path=path.substring(0,path.lastIndexOf("/"));
+//path=path.substring(0,path.lastIndexOf("/"));
 path=path+"/JasperReport";
-   }else{
-   path=path+"\\JasperReport";
-   }
+
 HashMap SIMPLE_DATA;
 
 if(button.equals("Print"))
@@ -144,12 +134,7 @@ try
         acqorder1=acqodao.searchOrderByVendor1(order_no,library_id, sub_library_id,recieving_no);
       
           System.out.println("Compiling report..."+acqorder1.size());
-            if(os.startsWith("Linux"))
-   {
           JasperCompileManager.compileReportToFile(path + "/recieveReport.jrxml");
-            }else{
-            JasperCompileManager.compileReportToFile(path + "\\recieveReport.jrxml");
-            }
           System.out.println("Done!");
           OutputStream ouputStream = response.getOutputStream();
            response.setContentType("application/pdf");
@@ -160,36 +145,17 @@ try
 // System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"+cir_checkout_report.get(j).toString());
  HashMap map = new HashMap();
  dataSource20 = new JRBeanCollectionDataSource(acqorder1);
-   if(os.startsWith("Linux"))
-   {
           JasperFillManager.fillReportToFile(path+"/recieveReport.jasper",map, dataSource20);
-   }else
-   {
-          JasperFillManager.fillReportToFile(path+"\\recieveReport.jasper",map, dataSource20);
-   }
            System.out.println("Filling report...");
 
           System.out.println("Done!");
-          File file;
-          if(os.startsWith("Linux"))
-   {
-             file = new File(path + "/" +"recieveReport.jrprint");
-          }else{
-             file = new File(path + "/" +"recieveReport.jrprint");
-          }
+          File file = new File(path + "/" +
+                                              "recieveReport.jrprint");
           JasperPrint jasperPrint = (JasperPrint)JRLoader.loadObject(file);
           JRPdfExporter pdfExporter = new JRPdfExporter();
           pdfExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-    if(os.startsWith("Linux"))
-   {
 	  pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
                      path + "/" + "recieveReport.pdf");
-    }else{
-    	  pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                     path + "/" + "recieveReport.pdf");
-
-    }
-
 	  System.out.println("Exporting report...");
           pdfExporter.exportReport();
           System.out.println("Done!");

@@ -165,6 +165,7 @@
                                         <html:option value="<%=table_column[j]%>"><%=table_column[j]%>&nbsp;&nbsp;<p class="mess"><%=column_datatype[j]%></p></html:option><%}
                                                                                     }
                                         %>
+                                        <html:option value="No map">NO MAP</html:option>
                                     </html:select>
                                    
                                 </td>

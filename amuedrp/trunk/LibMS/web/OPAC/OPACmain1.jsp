@@ -48,20 +48,20 @@ locale1=(String)session.getAttribute("locale");
 </head>
 
 
-<frameset rows="16%,74%,10%" border="0" frameborder=2 framespacing="0" dir="<%=rtl%>" align="<%=align%>">
+<frameset rows="16%,74%,*" border="0" frameborder=2 framespacing="0" dir="<%=rtl%>" align="<%=align%>">
 
 
   <frame name="f1" src="../OPAC/opacframe1.jsp" frameborder=2 scrolling="NO" dir="<%=rtl%>" align="<%=align%>"/>
   <%if(align.equals("left")){%>
-<frameset cols="11%,*">
-<frame name="f2" src="../OPAC/m.jsp" frameborder=0 scrolling="NO" dir="<%=rtl%>" align="<%=align%>"/>
+<%--<frameset cols="11%,*">--%>
+<%--<frame name="f2" src="../OPAC/m.jsp" frameborder=0 scrolling="NO" dir="<%=rtl%>" align="<%=align%>"/>--%>
 <frame name="f3" src="../OPAC/opachome.jsp" frameborder=2 scrolling="yes" dir="<%=rtl%>" align="<%=align%>"/>
 <%}else{%>
-<frameset cols="89%,*">
+<%--<frameset cols="89%,*">--%>
 <frame name="f3" src="../OPAC/opachome.jsp" frameborder=2 scrolling="yes" dir="<%=rtl%>" align="<%=align%>"/>
-<frame name="f2" src="../OPAC/m.jsp" frameborder=0 scrolling="NO" dir="<%=rtl%>" align="<%=align%>"/>
+<%--<frame name="f2" src="../OPAC/m.jsp" frameborder=0 scrolling="NO" dir="<%=rtl%>" align="<%=align%>"/>--%>
 <%}%>
-</frameset>
+<%--</frameset>--%>
        <frame name="f4" src="<%=request.getContextPath()%>/OPAC/footer.jsp" frameborder=0 scrolling="NO" dir="<%=rtl%>" align="<%=align%>"/>
 
 </frameset>

@@ -5,7 +5,7 @@
 
 package com.myapp.struts.circulation;
 
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
 import com.myapp.struts.hbm.*;
 import java.util.List;
 import java.util.Locale;

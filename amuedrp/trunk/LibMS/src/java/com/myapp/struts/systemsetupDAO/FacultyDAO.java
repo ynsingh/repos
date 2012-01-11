@@ -5,7 +5,6 @@
 
 package com.myapp.struts.systemsetupDAO;
 import com.myapp.struts.hbm.*;
-import com.myapp.struts.systemsetupDAO.DeptDAO;
 import java.util.*;
 import com.myapp.struts.hbm.HibernateUtil;
 import org.hibernate.Transaction;
@@ -28,154 +27,190 @@ public class FacultyDAO {
 
 public static Faculty getFacultyName(String library_id,String faculty_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        Faculty obj = null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  Faculty  WHERE id.libraryId =:library_id and id.facultyId = :facultyId");
+             query = session.createQuery("FROM  Faculty  WHERE id.libraryId =:library_id and id.facultyId = :facultyId");
             query.setString("library_id", library_id);
             query.setString("facultyId",faculty_id);
 
-            return (Faculty) query.uniqueResult();
+            obj= (Faculty) query.uniqueResult();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
 
 public static List<CirMemberAccount> searchAccountCourse(String library_id,String course_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+       List<CirMemberAccount> obj = null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  CirMemberAccount  WHERE id.libraryId =:library_id and courseId = :course_id");
+            query = session.createQuery("FROM  CirMemberAccount  WHERE id.libraryId =:library_id and courseId = :course_id");
             query.setString("library_id", library_id);
             query.setString("course_id", course_id);
 
-            return (List<CirMemberAccount>) query.list();
+           obj= (List<CirMemberAccount>) query.list();
+        }
+         catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
 public static List<CirMemberAccount> searchAccount(String library_id,String faculty_id,String dept_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+      List<CirMemberAccount> obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  CirMemberAccount  WHERE id.libraryId =:library_id and facultyId = :faculty_id and deptId=:dept_id");
+         query = session.createQuery("FROM  CirMemberAccount  WHERE id.libraryId =:library_id and facultyId = :faculty_id and deptId=:dept_id");
             query.setString("library_id", library_id);
             query.setString("faculty_id", faculty_id);
             query.setString("dept_id", dept_id);
-            return (List<CirMemberAccount>) query.list();
+            obj= (List<CirMemberAccount>) query.list();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
 public static List<CirMemberAccount> searchAccount(String library_id,String faculty_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+       List<CirMemberAccount>  obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  CirMemberAccount  WHERE id.libraryId =:library_id and facultyId = :faculty_id");
+        query = session.createQuery("FROM  CirMemberAccount  WHERE id.libraryId =:library_id and facultyId = :faculty_id");
             query.setString("library_id", library_id);
             query.setString("faculty_id", faculty_id);
 
-            return (List<CirMemberAccount>) query.list();
+           obj= (List<CirMemberAccount>) query.list();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
 public static List<Faculty> getFaculty(String library_id,String faculty_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+         List<Faculty> obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  Faculty  WHERE id.libraryId =:library_id and id.facultyId = :facultyId");
+            query = session.createQuery("FROM  Faculty  WHERE id.libraryId =:library_id and id.facultyId = :facultyId");
             query.setString("library_id", library_id);
             query.setString("facultyId",faculty_id);
 
-            return (List<Faculty>) query.list();
+            obj= (List<Faculty>) query.list();
+        }
+         catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
 
 public static Faculty getFacultyId(String library_id,String faculty_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+       Faculty obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  Faculty  WHERE id.libraryId =:library_id and facultyName= :faculty_name");
+             query = session.createQuery("FROM  Faculty  WHERE id.libraryId =:library_id and facultyName= :faculty_name");
             query.setString("library_id", library_id);
             query.setString("faculty_name",faculty_name);
 
-            return  (Faculty)query.uniqueResult();
+           obj=  (Faculty)query.uniqueResult();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
 public static List<Faculty> getFacultyRecord(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+       List<Faculty> obj=null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  Faculty  WHERE id.libraryId =:library_id");
             query1.setString("library_id", library_id);
            
 
-            return (List<Faculty>) query1.list();
+            obj= (List<Faculty>) query1.list();
+        }
+         catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
 public static List<Faculty> searchFaculty(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+ List<Faculty> obj=null;
         try {
             session.beginTransaction();
-            Query query1 ;
+            
             
             if(library_id!=null)
-            {    query1= session.createQuery("FROM  Faculty  WHERE id.libraryId=:library_id");
+            {    query= session.createQuery("FROM  Faculty  WHERE id.libraryId=:library_id");
 
-            query1.setString("library_id", library_id);
+            query.setString("library_id", library_id);
             }else{
-                query1= session.createQuery("FROM  Faculty ");
+                query= session.createQuery("FROM  Faculty ");
             }
 
-            return (List<Faculty>) query1.list();
+            obj=(List<Faculty>) query.list();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
 
   public static Faculty searchFacultyName(String library_id,String faculty_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        Faculty obj=null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  Faculty  WHERE id.libraryId = :libraryId and id.facultyId = :facultyId");
             query1.setString("libraryId",library_id);
             query1.setString("facultyId",faculty_id);
-            return (Faculty) query1.uniqueResult();
+            obj= (Faculty) query1.uniqueResult();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
 public static  boolean update(Faculty obj,String library_id)
@@ -199,7 +234,7 @@ else
            
         }
         catch (RuntimeException e) {
-
+e.printStackTrace();
                 tx.rollback();
                 return false;
 
@@ -224,7 +259,7 @@ public static  boolean Delete(Faculty obj)
             tx.commit();
         }
         catch (RuntimeException e) {
-                System.out.println("FacultyDAO.Delete():*****"+e);
+             e.printStackTrace();
                 tx.rollback();
                 return false;
 
@@ -258,9 +293,11 @@ public static  boolean insert(Faculty obj)
         }
         catch (Exception ex)
         {
+            ex.printStackTrace();
+            tx.rollback();
              return false;
 
-       //  System.out.println(ex.toString());
+       
 
         }
         finally
@@ -274,18 +311,20 @@ public static  boolean insert(Faculty obj)
 
  public static List getMaxFacultyRecordIdNo(String library_id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = null;
+      List obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("SELECT Max(id.facultyId)FROM Faculty where id.libraryId = :library_id ");
+            query = session.createQuery("SELECT Max(id.facultyId)FROM Faculty where id.libraryId = :library_id ");
             query.setString("library_id",library_id );
-            return  query.list();
+           obj=  query.list();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
-
-
+        return obj;
 
 }
 
@@ -293,23 +332,25 @@ public static  boolean insert(Faculty obj)
 
   public static Faculty getFacultyRecordIdNo1(String library_id,String faculty_name) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = null;
+      Faculty obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM Faculty where id.libraryId = :libraryId and facultyName = :facultyName ");
+            query = session.createQuery("FROM Faculty where id.libraryId = :libraryId and facultyName = :facultyName ");
             query.setString("libraryId",library_id );
             query.setString("facultyName",faculty_name);
-            return (Faculty) query.uniqueResult();
+            obj= (Faculty) query.uniqueResult();
            
+        }
+       
+         catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
-
-
+        return obj;
 
 }
-
 public String getDeptByFacultyID (String library_id,String faculty_id) {
 StringBuffer dept_ids = new StringBuffer();
 
@@ -336,14 +377,8 @@ dept_ids.append("</dept_ids>");
 catch(Exception se) {
 se.printStackTrace();
 }
-finally {
-try {
 
-}
-catch(Exception e) {
-e.printStackTrace();
-}
-}
+
 return dept_ids.toString();
 }
 
@@ -374,14 +409,8 @@ dept_ids.append("</course_ids>");
 catch(Exception se) {
 se.printStackTrace();
 }
-finally {
-try {
 
-}
-catch(Exception e) {
-e.printStackTrace();
-}
-}
+
 return dept_ids.toString();
 
 
@@ -417,14 +446,7 @@ dept_ids.append("</faculty_ids>");
 catch(Exception se) {
 se.printStackTrace();
 }
-finally {
-try {
 
-}
-catch(Exception e) {
-e.printStackTrace();
-}
-}
 return dept_ids.toString();
 
 

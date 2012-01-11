@@ -7,7 +7,6 @@ package com.myapp.struts.cataloguing;
 
 import com.myapp.struts.cataloguingDAO.MarcHibDAO;
 import com.myapp.struts.hbm.Biblio;
-import com.myapp.struts.hbm.BiblioTemp;
 import com.myapp.struts.hbm.BibliographicDetails;
 import com.myapp.struts.hbm.BibliographicDetailsId;
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public class ViewMarcReposAction1 extends org.apache.struts.action.Action {
         ls.removeAll(ls);
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
-        List<Integer> rst = dao.searchDoc1(library_id, sub_library_id);
+        List<Integer> rst = dao.searchDoc2(library_id, sub_library_id);
         for(int g=0;g<rst.size();g++){
         int bib_id=rst.get(g);
         bibid.setBiblioId(bib_id);

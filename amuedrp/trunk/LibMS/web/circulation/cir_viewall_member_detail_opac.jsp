@@ -30,7 +30,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-    <title>LibMS : Manage Staff Details</title>
+    
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <script language="javascript" >
 function b1click()
@@ -49,13 +49,6 @@ f.submit();
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
 </head>
-<div
-   style="  top:150px;
-   left:5px;
-   right:5px;
-      position: absolute;
-
-      visibility: show;">
 
 <body>
     <%!
@@ -63,7 +56,7 @@ f.submit();
     String locale1="en";
     String rtl="ltr";
     String align="left";
-    boolean page=true;
+  
 %>
 <%
  String lib_id = (String)session.getAttribute("library_id");
@@ -79,8 +72,8 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";page=true;}
-    else{ rtl="RTL";align="right";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
     %>
 
@@ -110,6 +103,8 @@ String path= request.getContextPath();
    request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
    }
+
+   System.out.println(tcount+"..............");
 %>
 
 
@@ -129,7 +124,8 @@ pageContext.setAttribute("EmailId",EmailId);
 %>
 
 
-<table border="1" class="table" width="700px" align="center" dir="<%=rtl%>">
+<table  class="table"  align="center" dir="<%=rtl%>" width="100%" valign="top">
+
 
 
 
@@ -161,27 +157,27 @@ else
 
     <column width="200">
       <header value="MemberId" hAlign="left" styleClass="admingridheader"  />
-      <item   value="${doc.memId}" hyperLink="${path}/circulation/showMember.do?id=${doc.memId}"  hAlign="left"   styleClass="item"/>
+      <item   value="${doc.memId}"   hAlign="left"   styleClass="item"/>
 
     </column>
 
     <column width="200">
       <header value="FirstName" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.fname}" hyperLink="${path}/circulation/showMember.do?id=${doc.memId}"   hAlign="left"  styleClass="item"/>
+      <item   value="${doc.fname}"    hAlign="left"  styleClass="item"/>
     </column>
 
     <column width="200">
       <header value="MiddleName" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.mname}" hyperLink="${path}/circulation/showMember.do?id=${doc.memId}"   hAlign="left"  styleClass="item"/>
+      <item   value="${doc.mname}"   hAlign="left"  styleClass="item"/>
     </column>
    <column width="200">
       <header value="LastName" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.lname}" hyperLink="${path}/circulation/showMember.do?id=${doc.memId}"  hAlign="left"  styleClass="item"/>
+      <item   value="${doc.lname}"   hAlign="left"  styleClass="item"/>
     </column>
 
     <column width="200">
       <header value="EmailId" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.email}" hyperLink="${path}/circulation/showMember.do?id=${doc.memId}"  hAlign="left"  styleClass="item"/>
+      <item   value="${doc.email}"   hAlign="left"  styleClass="item"/>
     </column>
 
        <column width="200">
@@ -265,7 +261,6 @@ else
 
 
     </body>
-</div>
 
 </html>
 

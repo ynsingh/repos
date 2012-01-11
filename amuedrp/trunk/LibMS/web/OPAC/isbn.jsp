@@ -1,31 +1,18 @@
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*,java.io.*,java.net.*"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@page import="java.sql.ResultSet"%>
-<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*,java.io.*,java.net.*"%>
-<html><head>
+
+<html>
+    <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="Faraz Hasan" content="MCA,AMU">
+
 <title>Search by ISBN Number...</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
-<style type="text/css">
-body
-{
-   background-color: #FFFFFF;
-   color: #000000;
-}
-th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white;border: solid 1px blue; }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold;border: solid 1px blue; }
-     .alternaterows { background-color: #efefef; }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold;text-decoration: none;padding-left: 10px; }
 
-     .datagrid      {  font-family: arial; font-size: 9pt;
-	    font-weight: normal;}
-     .item{ padding-left: 10px;}
-</style>
 <script language="javascript" type="text/javascript">
 /*
 * Returns an new XMLHttpRequest object, or false if the browser
@@ -146,10 +133,10 @@ funcSearch();
 
 function funcSearch()
 {
-    document.getElementById("FORM1").action="/OPAC/SearchByIsbn.do";
-    document.getElementById("Form1").method="post";
-
-    document.getElementById("Form1").submit();
+    document.getElementById("Form1").action="SearchByIsbn.do";
+document.getElementById("Form1").method="post";
+document.getElementById("Form1").target="f1";
+document.getElementById("Form1").submit();
 }
 
 </script>
@@ -305,11 +292,14 @@ else{
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
     </head>
-<body onload="checkboxClickHandler();search();funcSearch();">
+<body onload="checkboxClickHandler();search();funcSearch();" style="background-color:#e0e8f5;margin: 0px 0px 0px 0px;">
 
     <html:form  method="post" action="/OPAC/SearchByIsbn" target="f1" styleId="Form1" onsubmit="return validate();" acceptCharset="utf-8">
-           <table align="<%=align%>" dir="<%=rtl%>" width="1200x" class="datagrid" height="400px"  style="border:solid 1px #e0e8f5;" >
-  <tr class="header"><td  width="800px" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
+        <table align="<%=align%>" dir="<%=rtl%>" width="100%" class="datagrid">
+            <tr>
+                <td valign="top" width="20%" height="100%">
+        <table align="<%=align%>" dir="<%=rtl%>"  class="datagrid"  style="border:solid 1px black;" >
+            <tr class="header"><td   dir="<%=rtl%>"  height="28px" align="center" colspan="2" >
 
 
 	<%=resource.getString("opac.isbn.isbnsearch")%>
@@ -318,13 +308,13 @@ else{
 
 
         </td></tr>
-  <tr dir="<%=rtl%>"><td>
+  <tr dir="<%=rtl%>"><td> <%=resource.getString("cataloguing.catbiblioentry.selectlang")%></td><td>
     <div id='translControl'>
       <input type="checkbox" id="checkboxId" onclick="javascript:checkboxClickHandler();javascript:DisBox();javascript:languageChangeHandler();">
       <html:hidden property="checkbox" styleId="checkbox" name="SearchByIsbnActionForm"/>
-      <%=resource.getString("cataloguing.catbiblioentry.selectlang")%>
+     
 
-      <select id="languageDropDown" onchange="javascript:languageChangeHandler()">
+      <select id="languageDropDown" class="selecthome" onchange="javascript:languageChangeHandler()">
           
       </select>
    <html:hidden property="language" styleId="language" name="SearchByIsbnActionForm"/>
@@ -341,74 +331,64 @@ else{
 
 
   
-   <tr style="background-color:#e0e8f5;"><td width="800px" rowspan="2" dir="<%=rtl%>">
-          <table>
-              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.isbn.isbnsearch")%></td><td>
+   <tr ><td  dir="<%=rtl%>">
+          <%=resource.getString("opac.isbn.isbnsearch")%></td><td>
                       <input id="TXTKEY" name="TXTKEY" dir="<%=rtl%>" type="text"onfocus="statwords('Enter ISBN Number of the Book/Document')" onblur="loadHelp()">
 <input id="TXTPAGE" value="accessionno" name="TXTPAGE" type="hidden">
 
-<td align="<%=align%>" dir="<%=rtl%>">
+</tr>
 
 
 
 
-                  </td></tr>
-
-
-
-
-          </table>
-       </td><td class="header" dir="<%=rtl%>">
+          
+   
+<tr><td class="header" dir="<%=rtl%>" colspan="2">
            <%=resource.getString("opac.simplesearch.restrictedby")%>
 
-       </td>
+       </td></tr>
+    <tr>
+        <td    align="<%=align%>" dir="<%=rtl%>">
+            
+              <%=resource.getString("opac.accessionno.library")%></td><td>
 
-    </tr>
-    <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
-          <td    align="<%=align%>" dir="<%=rtl%>">
-          <table>
-              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.accessionno.library")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-<html:select property="CMBLib" dir="<%=rtl%>" tabindex="3"  value="<%=lib_id%>" styleId="CMBLib" onchange="search()">
+                      <html:select property="CMBLib" styleClass="selecthome" dir="<%=rtl%>" tabindex="3"  value="<%=lib_id%>" styleId="CMBLib" onchange="search()">
     <html:option value="all">All</html:option>
     <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
  </html:select>
 
-     </td></tr><tr><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <html:select property="CMBSUBLib"  dir="<%=rtl%>" value="<%=sublib_id%>"  styleId="SubLibrary" >
+     </td></tr>
+              <tr><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>
+                  </td><td>
+                      <html:select property="CMBSUBLib" styleClass="selecthome" dir="<%=rtl%>" value="<%=sublib_id%>"  styleId="SubLibrary" onchange="funcSearch();">
                       <%--     <html:option value="all">All</html:option>
                               <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
                 --%>       </html:select></td>
 
 
-              </tr></table></td>
-
+             
     </tr>
-
-    <tr><td>
-
-
-<input type="submit" id="Button1" name="go" dir="<%=rtl%>" value="<%=resource.getString("opac.accessionno.go")%>" class="btn" />
-
-<input type="reset" id="Button2" name="" value="<%=resource.getString("opac.browse.clear")%>" class="btn">
+    <tr><td colspan="2">
 
 
-<script>
-    function back()
-    {
-        window.location="<%=request.getContextPath()%>/OPAC/OPACmain.jsp";
+<input type="submit" id="Button1" name="go" dir="<%=rtl%>" value="<%=resource.getString("opac.accessionno.go")%>" class="buttonhome" />
 
-    }
-    </script>
-      </td></tr>
- <tr style="background-color:#e0e8f5;"><td dir="<%=rtl%>"  height="400px" valign="top" colspan="2" >
+<input type="reset" id="Button2" name="" value="<%=resource.getString("opac.browse.clear")%>" class="buttonhome">
 
-             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="400px" width="1200px" scrolling="no"  id="f1"></IFRAME>
 
 
       </td></tr>
 
+        </table>
+                </td>
+                <td dir="<%=rtl%>"  height="600px"  valign="top">
 
+                    <IFRAME  name="f1"  src="#" frameborder=0 height="100%" width="100%" scrolling="yes"  id="f1"></IFRAME>
+
+
+      </td>
+
+            </tr>
         </table>
     </html:form>
 

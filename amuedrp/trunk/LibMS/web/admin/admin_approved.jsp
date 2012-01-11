@@ -220,7 +220,7 @@ body
             
 
              <tr><td dir="<%=rtl%>"><%=resource.getString("landlineno")%></td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="Editbox8"   name="land_line_no" value="<%=land_line_no%>" tabindex="8" title="Enter Land Line No" readonly></td>
-             <td dir="<%=rtl%>"><%=resource.getString("password")%></td><td dir="<%=rtl%>"><input type="password" id="Editbox11" readonly  name="admin_password" dir="<%=rtl%>" value="<%=admin_password%>" tabindex="17" title="Enter Password" readonly></td>
+            <%-- <td dir="<%=rtl%>"><%=resource.getString("password")%></td><td dir="<%=rtl%>"><input type="password" id="Editbox11" readonly  name="admin_password" dir="<%=rtl%>" value="<%=admin_password%>" tabindex="17" title="Enter Password" readonly></td>--%>
              </tr>
 
              <tr><td dir="<%=rtl%>"><%=resource.getString("typeofinstitute")%></td><td dir="<%=rtl%>"><select name="type_of_institute" disabled id="type_of_institute" style="width:148px" dir="<%=rtl%>" >

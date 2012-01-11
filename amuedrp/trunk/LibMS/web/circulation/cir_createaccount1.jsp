@@ -499,8 +499,8 @@ search_dept();
 			</html:messages>
 
                       </td></tr>
-                        <tr><td dir="<%=rtl%>" colspan="2" class="txtstyle" height="5px"><%=resource.getString("circulation.cir_newmember.empdegn")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTDESG1" style="width:160px" value="<%=desg%>" styleId="desg2"onfocus="statwords('Enter Designation');" onblur="loadHelp()"/></td></tr>
-                        <tr><td dir="<%=rtl%>" colspan="2" height="5px" class="txtstyle"><%=resource.getString("circulation.cir_newmember.officename")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTOFFICE" styleId="office2" value="<%=office%>" style="width:160px"onfocus="statwords('Enter Office Name');" onblur="loadHelp()"/></td></tr>
+                        <tr><td dir="<%=rtl%>" colspan="2" class="txtstyle" height="5px"><%=resource.getString("circulation.cir_newmember.empdegn")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTDESG1" style="width:160px" value="<%=desg%>" styleId="desg2" onfocus="statwords('Enter Designation');" onblur="loadHelp()"/></td></tr>
+                        <tr><td dir="<%=rtl%>" colspan="2" height="5px" class="txtstyle"><%=resource.getString("circulation.cir_newmember.officename")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTOFFICE" styleId="office2" value="<%=office%>" style="width:160px" onfocus="statwords('Enter Office Name');" onblur="loadHelp()"/></td></tr>
                         <tr><td dir="<%=rtl%>" colspan="2" height="5px" class="txtstyle"><%=resource.getString("circulation.cir_newmember.facof")%>
                  </td><td class="table_textbox">
               <html:select  property="TXTFACULTY" styleId="TXTFACULTY" style="width:160px" value="Select"  onchange="return search1()" tabindex="3">
@@ -560,7 +560,7 @@ search_dept();
              <tr>
                  <td dir="<%=rtl%>" valign="top" colspan="2" height="5px" class="txtstyle"><%=resource.getString("circulation.cir_newmember.exp")%><a class="star">*</a><br>(YYYY-MM-DD)
                   </td>
-                  <td dir="<%=rtl%>" class="table_textbox" valign="top"><html:text  property="TXTEXP_DATE" value="<%=exp_date%>" styleId="TXTEXP_DATE" style="width:160px"onfocus="statwords('Enter Expiry Date');" onblur="loadHelp()" />
+                  <td dir="<%=rtl%>" class="table_textbox" valign="top"><html:text  property="TXTEXP_DATE" value="<%=exp_date%>" styleId="TXTEXP_DATE" style="width:160px" onfocus="statwords('Enter Expiry Date');" onblur="loadHelp()" />
                   <html:messages id="err_name" property="TXTEXP_DATE">
 				<bean:write name="err_name" />
 

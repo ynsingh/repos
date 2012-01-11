@@ -21,12 +21,12 @@
 
     <table width="100%" height="600px" valign="top" style="" >
         <tr><td valign="top" width="90%" style="">
-                <br/><p class="mess">
+                <br/><%--<p class="mess">
     Request for Opac MemberShip Pending, View Details<br>
     Request for CheckOut Pending, View Details
 
 
-</p>
+</p>--%>
            
 
 
@@ -41,9 +41,8 @@ if (msg!=null)
 <%}%>
 
 
-            </td>               <td   valign="top"> <img src="<%=request.getContextPath()%>/images/ad-space-200x200.jpg" alt="Image not Found"/><br/>
-            <img src="<%=request.getContextPath()%>/images/ad-space-200x200.jpg" alt="Image not Found"/>
-            <br/><img src="<%=request.getContextPath()%>/images/ad-space-200x200.jpg" alt="Image not Found"/>
+            </td>               <td   valign="top"> 
+          
             </td> </tr>
 
                 </table>

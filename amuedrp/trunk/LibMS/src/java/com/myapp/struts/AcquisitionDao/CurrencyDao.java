@@ -7,7 +7,6 @@ package com.myapp.struts.AcquisitionDao;
 
 import com.myapp.struts.hbm.AcqCurrency;
 import com.myapp.struts.hbm.HibernateUtil;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -27,9 +26,9 @@ public class CurrencyDao {
             tx.commit();
         }
         catch (RuntimeException e) {
-            if(employee != null)
+          
                 tx.rollback();
-            throw e;
+          e.printStackTrace();
         }
         finally {
             session.close();

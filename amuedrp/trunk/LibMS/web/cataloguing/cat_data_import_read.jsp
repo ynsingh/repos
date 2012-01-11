@@ -1,7 +1,7 @@
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 <html>
     <head>
-        <title>Struts File Upload</title>
+       
          <jsp:include page="/admin/header.jsp"/>
         <html:base />
     </head>
@@ -9,7 +9,7 @@
             <tr><td align="center" colspan="3" height="25px" class="headerStyle">Import Data</td></tr>
             <tr><td height="5px"></td></tr>
 
-            <html:form action="/uploadExcel" method="post"  enctype="multipart/form-data">
+           <html:form action="/uploadExcel" method="post"  enctype="multipart/form-data">
                 <tr><td colspan="3" align="center" class="headerStyle">Upload Excel File</td></tr>
             <tr>
                <td align="left" style="padding:10px">
@@ -20,12 +20,14 @@
                       <html:option value="bibliographic_details">bibliographic_details</html:option>
                     </html:select>
                     </div>
+                    <br><a href="<%=request.getContextPath()%>/cataloguing/Import.pdf">Help of Excel File</a>
+                    <a href="<%=request.getContextPath()%>/cataloguing/CatalogImport.xls">Excel File</a>
                 </td>            
             </tr>
             </html:form>
 
 
-     <html:form action="/ImportTextFileReadAction" method="post"  enctype="multipart/form-data">
+    <html:form action="/uploadtxt" method="post"  enctype="multipart/form-data">
           <tr><td colspan="3" align="center" class="headerStyle">Upload Txt/Flat File</td></tr>
          
             <tr>

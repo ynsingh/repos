@@ -85,6 +85,19 @@
         <property name="remark" type="string">
             <column name="remark" length="1000" />
         </property>
+         <property name="cardStatus" type="string">
+            <column name="card_status" length="20" />
+        </property>
+         <property name="cardIssueDate" type="string">
+            <column name="cardIssueDate" length="15" />
+        </property>
+          <property name="LostDate" type="string">
+            <column name="LostDate" length="15" />
+        </property>
+          <property name="DuplicateIssueDate" type="string">
+            <column name="DuplicateIssueDate" length="15" />
+        </property>
+
         <set name="demandlists" inverse="true">
             <key>
                 <column name="library_id" length="20" not-null="true" />

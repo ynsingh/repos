@@ -47,6 +47,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
       private final ExecutorService executor=Executors.newFixedThreadPool(1);
   Email obj;
     boolean result;
+    LoginDAO logindao;
    
     private  String user_name;
     private  String password;
@@ -86,7 +87,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
          HttpSession session=request.getSession();
          try{
               locale1=(String)session.getAttribute("locale");
-
+logindao=new LoginDAO();
               if(session.getAttribute("locale")!=null)
               {
                 locale1 = (String)session.getAttribute("locale");
@@ -235,7 +236,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
                 System.out.println(staff_id+library_id+admin_password+sublibrary_id+user_name+login_id);
                 
 
-                 result=LoginDAO.insert1(logobj);
+                 result=logindao.insert1(logobj);
                 if(result==false)
                 {
                     String msg=resource.getString("admin.acceptmesg.msg2");

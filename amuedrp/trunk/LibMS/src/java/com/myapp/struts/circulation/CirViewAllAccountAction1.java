@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
 import java.util.List;
 
 /**
@@ -32,14 +32,23 @@ public class CirViewAllAccountAction1 extends org.apache.struts.action.Action {
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
         List cirmemacclist=CirculationDAO.searchCirMemAccount2(library_id,sublibrary_id);
-        if(!cirmemacclist.isEmpty())
-        {
+
+        session.removeAttribute("cirmemacclist");
+        session.removeAttribute("cirmemacclist1");
+       
           session.setAttribute("cirmemacclist", cirmemacclist);
+         
+
+
+         List cirmemacclist1=CirculationDAO.searchCirMemCancel(library_id,sublibrary_id);
+       
+          session.setAttribute("cirmemacclist1", cirmemacclist1);
+
+
+
           return mapping.findForward("success");
-        }
-        else{
-          return mapping.findForward("success");
-        }
+        
+       
 
     }
 }

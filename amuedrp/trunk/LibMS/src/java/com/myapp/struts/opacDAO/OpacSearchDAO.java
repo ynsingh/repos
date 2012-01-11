@@ -19,6 +19,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.SQLQuery;
 
 /**
  *
@@ -27,9 +28,83 @@ import org.apache.commons.lang.StringUtils;
 public class OpacSearchDAO {
     Criterion criterion;
     Criterion criterion1,criterion2,criterion3;
+
+    public BibliographicDetails DocumentSearch2(int doc_id,String library_id,String sub_lib)
+    {
+        BibliographicDetails obj=null;
+      Session hsession=HibernateUtil.getSessionFactory().openSession();
+      try
+        {
+          hsession.beginTransaction();
+          Criteria criteria = hsession.createCriteria(BibliographicDetails.class);
+          criteria.add(Restrictions.eq("id.libraryId",library_id));
+          criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
+          criteria.add(Restrictions.eq("id.biblioId",doc_id));
+          obj= (BibliographicDetails)criteria.uniqueResult();
+        }
+      catch(Exception e)
+        {
+          e.printStackTrace();
+            
+        }
+      finally
+        {
+            hsession.close();
+        }
+      return obj;
+    }
+      public static List searchVol(String library_id,String sub_lib,int biblio_id)
+    {
+          SQLQuery query=null;
+          List obj=null;
+      Session session=HibernateUtil.getSessionFactory().openSession();
+       try {
+            session.beginTransaction();
+              query = session.createSQLQuery("select distinct volume_no  from document_details where library_id='"+library_id+"' and sublibrary_id='"+sub_lib+"' and biblio_id="+biblio_id +" and volume_no is not null and volume_no!=''");
+
+          obj=  (List)query.list();
+        }
+       catch(Exception e){
+           e.printStackTrace();
+ 
+       }
+       finally {
+            session.close();
+        }
+       return obj;
+        
+    }
+     public DocumentDetails accessionNoSearch2(String acc_no,String library_id,String sub_lib)
+    {
+         DocumentDetails obj=null;
+      Session hsession=HibernateUtil.getSessionFactory().openSession();
+      try
+        {
+          hsession.beginTransaction();
+          Criteria criteria = hsession.createCriteria(DocumentDetails.class);
+          if(!library_id.equalsIgnoreCase("all"))
+          criteria.add(Restrictions.eq("id.libraryId",library_id));
+          if(!sub_lib.equalsIgnoreCase("all"))
+          criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
+            if(acc_no.isEmpty()==false)
+          criteria.add(Restrictions.eq("accessionNo",acc_no));
+          obj= (DocumentDetails)criteria.uniqueResult();
+        }
+      catch(Exception e)
+        {
+           e.printStackTrace();
+            return null;
+        }
+      finally
+        {
+            hsession.close();
+        }
+      return obj;
+    }
+     
       public List simpleSearch(String library_id,String sub_lib,String [] searching_word,String word_connector,String doc_type,String sortby,String searching_field,Integer year1,Integer year2)
     {
-        //int count=1;
+        List obj=null;
         Session hsession=HibernateUtil.getSessionFactory().openSession();
         try
         {
@@ -115,22 +190,23 @@ String yr1 =null;
          yr2 = String.valueOf(year2);
          criteria.add(Restrictions.lt("publishingYear",yr2));}
          criteria.addOrder(Order.asc(sortby));
-         return criteria.list();
+         obj= criteria.list();
 
         }
         catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.SimpleSearch():"+e.getMessage());
-            return null;
+            e.printStackTrace();
+            
         }
         finally
         {
 hsession.close();
         }
+        return obj;
             }
         public List simpleLangSearch(String library_id,String sub_lib,String [] searching_word,String word_connector,String doc_type,String sortby,String searching_field,Integer year1,Integer year2,String lang)
     {
-        //int count=1;
+        List obj=null;
         Session hsession=HibernateUtil.getSessionFactory().openSession();
         try
         {
@@ -222,18 +298,19 @@ String yr1 =null;
         }
         catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.SimpleSearch():"+e.getMessage());
-            return null;
+           e.printStackTrace();
+            
         }
         finally
         {
 hsession.close();
         }
+        return obj;
             }
 
       public List browseSearch(String library_id,String sub_lib,String searching_word,String doc_type,String sortby,String searching_field)
     {
-        //int count=1;
+        List obj=null;
         Session hsession=HibernateUtil.getSessionFactory().openSession();
         try
         {
@@ -264,23 +341,23 @@ hsession.close();
          criteria.add(Restrictions.like(searching_field,searching_word+"%"));
          }
          criteria.addOrder(Order.asc(sortby));
-         return criteria.list();
+         obj= criteria.list();
         }
         catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.browseSearch():"+e);
-            return null;
+           e.printStackTrace();
+           
         }
         finally
         {
 hsession.close();
         }
-
+return obj;
    }
 
                 public List browseLangSearch(String library_id,String sub_lib,String searching_word,String doc_type,String sortby,String searching_field,String language)
     {
-        //int count=1;
+       List obj=null;
         Session hsession=HibernateUtil.getSessionFactory().openSession();
         try
         {
@@ -311,17 +388,18 @@ hsession.close();
          criteria.add(Restrictions.like(searching_field,searching_word+"%"));
          }
          criteria.addOrder(Order.asc(sortby));
-         return criteria.list();
+        obj= criteria.list();
         }
         catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.browseSearch():"+e);
-            return null;
+            e.printStackTrace();
+           
         }
         finally
         {
 hsession.close();
         }
+        return obj;
 
    }
 
@@ -331,6 +409,7 @@ hsession.close();
          String sortby,Integer year1,Integer year2)
     {
         Session hsession=HibernateUtil.getSessionFactory().getCurrentSession();
+        List obj=null;
         try
         {
             hsession.beginTransaction();
@@ -449,19 +528,20 @@ hsession.close();
          criteria.add(Restrictions.lt("publishingYear",year2));
          if(sortby!=null)
             criteria.addOrder(Order.asc(sortby));
-         return criteria.list();
+        obj= criteria.list();
 
         }
         catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.additionalSearch():"+e.toString());
+            e.printStackTrace();
             
-            return null;
+           
         }
         finally
         {
 hsession.close();
         }
+        return obj;
             }
 
   public List additionalSearchLang(String library_id,String sub_lib,String [] author,String author_connector,
@@ -469,7 +549,7 @@ hsession.close();
          String [] other_field,String other_connector,String doc_type,
          String sortby,Integer year1,Integer year2,String language)
     {
-        //int count=1;
+        List obj=null;
       System.out.println("Library not Pass");
         Session hsession=HibernateUtil.getSessionFactory().openSession();
         try
@@ -598,20 +678,21 @@ System.out.println("Author Pass");
          criteria.add(Restrictions.lt("publishingYear",year2));
          if(sortby!=null)
             criteria.addOrder(Order.asc(sortby));
-System.out.println("sortBy Pass");
-//System.out.println("author="+author[0].toString()+" Title="+title[0].toString());
-         return criteria.list();
+        System.out.println("sortBy Pass");
+
+         obj= criteria.list();
 
         }
         catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.additionalSearch():"+e);
-            return null;
+            e.printStackTrace();
+            
         }
         finally
         {
 hsession.close();
         }
+        return obj;
             }
   
  public List advanceSearch(String library_id,String sub_lib,String [] searchText1,String searchText1_connector,
@@ -620,7 +701,7 @@ hsession.close();
          String field1,String field2,String field3,
          String doc_type,String sortby,Integer year1,Integer year2)
     {
-        //int count=1;
+        List obj=null;
       System.out.println("lib_id="+library_id+" sublib="+sub_lib+" searchText1="+searchText1+" search1connector="+searchText1_connector);
       System.out.println("searchText2="+searchText2+" search2connector="+searchText2_connector+" searchText3="+searchText3+" search3connector="+searchText3_connector);
       System.out.println("query1connector="+query1_connector+" query2connector="+query2_connector+" query3connector="+query3_connector+" field1="+field1+" field2="+field2+" field3="+field3);
@@ -885,18 +966,19 @@ System.out.println("searchText1="+searchText1[count]);
          else if(sortby.equals("subject"))
               criteria.addOrder(Order.asc("subject"));
 
-         return criteria.list();
+         obj= criteria.list();
 
         }
-       /* catch(Exception e)
+        catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.advanceSearch():"+e.fillInStackTrace());
-            return null;
-        }*/
+         e.printStackTrace();
+            
+        }
         finally
         {
 hsession.close();
         }
+        return obj;
             }
 
   public List advanceLangSearch(String library_id,String sub_lib,String [] searchText1,String searchText1_connector,
@@ -905,7 +987,7 @@ hsession.close();
          String field1,String field2,String field3,
          String doc_type,String sortby,Integer year1,Integer year2,String language)
     {
-        //int count=1;
+      List obj=null;
       System.out.println("lib_id="+library_id+" sublib="+sub_lib+" searchText1="+searchText1+" search1connector="+searchText1_connector);
       System.out.println("searchText2="+searchText2+" search2connector="+searchText2_connector+" searchText3="+searchText3+" search3connector="+searchText3_connector);
       System.out.println("query1connector="+query1_connector+" query2connector="+query2_connector+" query3connector="+query3_connector+" field1="+field1+" field2="+field2+" field3="+field3);
@@ -1171,23 +1253,25 @@ System.out.println("searchText1="+searchText1[count]);
          else if(sortby.equals("subject"))
               criteria.addOrder(Order.asc("subject"));
 
-         return criteria.list();
+        obj= criteria.list();
 
         }
-       /* catch(Exception e)
+        catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.advanceSearch():"+e.fillInStackTrace());
-            return null;
-        }*/
+         e.printStackTrace();
+            
+        }
         finally
         {
 hsession.close();
         }
+        return obj;
             }
 
 
  public List isbnSearch(String isbn,String library_id,String sub_lib)
     {
+     List obj=null;
       Session hsession=HibernateUtil.getSessionFactory().openSession();
       try
         {
@@ -1200,23 +1284,24 @@ hsession.close();
            if (!StringUtils.isEmpty(isbn)||!StringUtils.isBlank(isbn)) {
           criteria.add(Restrictions.eq("isbn10",isbn));
         }
-          return (List) criteria.list();
+         obj= (List) criteria.list();
         }
       catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.isbnSearch():"+e);
-            return null;
+           e.printStackTrace();
+          
         }
       finally
         {
             hsession.close();
         }
+      return obj;
     }
 
 public List isbnLangSearch(String isbn,String library_id,String sub_lib,String language)
     {
 
-
+List obj=null;
 
       Session hsession=HibernateUtil.getSessionFactory().openSession();
       try
@@ -1234,22 +1319,23 @@ public List isbnLangSearch(String isbn,String library_id,String sub_lib,String l
 
 
           criteria.add(Restrictions.eq("entryLanguage",language));
-          return (List) criteria.list();
+         obj= (List) criteria.list();
         }
       catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.isbnSearch():"+e);
-            return null;
+           e.printStackTrace();
+            
         }
       finally
         {
             hsession.close();
         }
+      return obj;
     }
 
      public List callNoSearch(String call_no,String library_id,String sub_lib)
     {
-        
+        List obj=null;
       Session hsession=HibernateUtil.getSessionFactory().openSession();
       try
         {
@@ -1261,21 +1347,22 @@ public List isbnLangSearch(String isbn,String library_id,String sub_lib,String l
           criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
          if(call_no.isEmpty()==false)
           criteria.add(Restrictions.eq("callNo",call_no));
-          return (List) criteria.list();
+          obj= (List) criteria.list();
         }
       catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.call_noSearch():"+e);
-            return null;
+            e.printStackTrace();
+           
         }
       finally
         {
             hsession.close();
         }
+      return obj;
     }
 public List callNoLangSearch(String call_no,String library_id,String sub_lib,String language)
     {
-
+List obj=null;
       Session hsession=HibernateUtil.getSessionFactory().openSession();
       try
         {
@@ -1288,23 +1375,24 @@ public List callNoLangSearch(String call_no,String library_id,String sub_lib,Str
          if(call_no.isEmpty()==false)
           criteria.add(Restrictions.eq("callNo",call_no));
           criteria.add(Restrictions.eq("entryLanguage",language));
-          return (List) criteria.list();
+       obj= (List) criteria.list();
         }
       catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.call_noSearch():"+e);
-            return null;
+            e.printStackTrace();
+            
         }
       finally
         {
             hsession.close();
         }
+      return obj;
     }
 
-   public List accessionNoLangSearch(String acc_no,String library_id,String sub_lib)
+   public List<MixAccessionRecord> accessionNoLangSearch(String acc_no,String library_id,String sub_lib)
     {
      Session session =null;
-    Transaction tx = null;
+    List<MixAccessionRecord> obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -1322,21 +1410,78 @@ if(!library_id.equals("all"))
                     .addEntity(BibliographicDetailsLang.class)
                     .addEntity(AccessionRegister.class)
                     .setResultTransformer(Transformers.aliasToBean(MixAccessionRecord.class));
-            return query.list();
+          obj=(List<MixAccessionRecord>) query.list();
         }
+    catch(Exception e){
+    e.printStackTrace();
+    }
         finally {
-         //   session.close();
+            session.close();
         }
 
-
+return obj;
 
 
     }
+ public List<BibliographicDetails> accessionNoBibSearch(int biblio_id,String library_id,String sub_lib)
+    {
+      List<BibliographicDetails> obj=null;
+      Session hsession=HibernateUtil.getSessionFactory().openSession();
+      try
+        {
+          hsession.beginTransaction();
+          Criteria criteria = hsession.createCriteria(BibliographicDetails.class);
+         
+           criteria.add(Restrictions.eq("id.libraryId",library_id));
+          
+            criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
+          
+             criteria.add(Restrictions.eq("id.biblioId",biblio_id));
+          obj= (List<BibliographicDetails>) criteria.list();
+        }
+      catch(Exception e)
+        {
+           e.printStackTrace();
+        }
+      finally
+        {
+            hsession.close();
+        }
+      return obj;
+    }
+
+public List<BibliographicDetailsLang> accessionNoBibLangSearch(int biblio_id,String library_id,String sub_lib)
+    {
+     List<BibliographicDetailsLang> obj=null;
+      Session hsession=HibernateUtil.getSessionFactory().openSession();
+      try
+        {
+          hsession.beginTransaction();
+          Criteria criteria = hsession.createCriteria(BibliographicDetailsLang.class);
+
+           criteria.add(Restrictions.eq("id.libraryId",library_id));
+
+            criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
+
+             criteria.add(Restrictions.eq("id.biblioId",biblio_id));
+          obj= (List<BibliographicDetailsLang>) criteria.list();
+        }
+      catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+      finally
+        {
+            hsession.close();
+        }
+      return obj;
+    }
 
 
-      public List accessionNoSearch(String acc_no,String library_id,String sub_lib)
+      public List<DocumentDetails> accessionNoSearch(String acc_no,String library_id,String sub_lib)
     {
       Session hsession=HibernateUtil.getSessionFactory().openSession();
+      List<DocumentDetails> obj=null;
       try
         {
           hsession.beginTransaction();
@@ -1347,46 +1492,50 @@ if(!library_id.equals("all"))
           criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
             if(acc_no.isEmpty()==false)
           criteria.add(Restrictions.eq("accessionNo",acc_no));
-          return (List) criteria.list();
+          obj= (List<DocumentDetails>) criteria.list();
         }
       catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.call_noSearch():"+e);
-            return null;
+            e.printStackTrace();
+            
         }
       finally
         {
             hsession.close();
         }
+      return obj;
     }
 
 public List LibrarySearch(String library_id)
     {
-      Session hsession=HibernateUtil.getSessionFactory().openSession();
+      Session hsession=null;
+      List obj=null;
       try
         {
+          hsession=HibernateUtil.getSessionFactory().openSession();
           hsession.beginTransaction();
           Criteria criteria = hsession.createCriteria(Library.class);
-          //if(library_id!=null)
-          //criteria.add(Restrictions.not(Restrictions.like("libraryId",library_id)));
           criteria.add(Restrictions.not(Restrictions.like("libraryId","libms")));
 
-          return (List) criteria.list();
+        obj= (List) criteria.list();
         }
       catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.call_noSearch():"+e);
-            return null;
+            
+            e.printStackTrace();
+            
         }
       finally
         {
             hsession.close();
         }
+      return obj;
     }
 
 public List subLibrarySearch(String library_id)
     {
       Session hsession=HibernateUtil.getSessionFactory().openSession();
+      List obj=null;
       try
         {
           hsession.beginTransaction();
@@ -1395,21 +1544,23 @@ public List subLibrarySearch(String library_id)
             criteria.add(Restrictions.like("id.libraryId",library_id));
          criteria.add(Restrictions.not(Restrictions.like("id.libraryId","libms")));
 
-          return (List) criteria.list();
-        }
+          obj= (List) criteria.list();
+      }
       catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.call_noSearch():"+e);
-            return null;
+            e.printStackTrace();
+            
         }
       finally
         {
             hsession.close();
         }
+      return obj;
     }
 public List<DocumentDetails> DocumentSearchByDocId(String doc_id,String library_id,String sub_lib)
     {
       Session hsession=HibernateUtil.getSessionFactory().openSession();
+      List<DocumentDetails> obj=null;
       try
         {
           hsession.beginTransaction();
@@ -1417,23 +1568,25 @@ public List<DocumentDetails> DocumentSearchByDocId(String doc_id,String library_
           criteria.add(Restrictions.eq("id.libraryId",library_id));
           criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
           criteria.add(Restrictions.eq("accessionNo",doc_id));
-          return (List<DocumentDetails>) criteria.list();
+          obj=(List<DocumentDetails>) criteria.list();
         }
       catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.call_noSearch():"+e);
-            return null;
+            e.printStackTrace();
+            
         }
       finally
         {
             hsession.close();
         }
+      return obj;
     }
 
 
 public List<DocumentDetails> DocumentSearchById(int doc_id,String library_id,String sub_lib)
     {
       Session hsession=HibernateUtil.getSessionFactory().openSession();
+      List<DocumentDetails> obj=null;
       try
         {
           hsession.beginTransaction();
@@ -1441,22 +1594,24 @@ public List<DocumentDetails> DocumentSearchById(int doc_id,String library_id,Str
           criteria.add(Restrictions.eq("id.libraryId",library_id));
           criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
           criteria.add(Restrictions.eq("biblioId",doc_id));
-          return (List<DocumentDetails>) criteria.list();
+          obj= (List<DocumentDetails>) criteria.list();
         }
       catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.call_noSearch():"+e);
-            return null;
+            e.printStackTrace();
+            
         }
       finally
         {
             hsession.close();
         }
+      return obj;
     }
 
 public List<DocumentDetails> DocumentSearchById1(int doc_id,String library_id,String sub_lib)
     {
       Session hsession=HibernateUtil.getSessionFactory().openSession();
+      List<DocumentDetails> obj=null;
       try
         {
           hsession.beginTransaction();
@@ -1464,23 +1619,25 @@ public List<DocumentDetails> DocumentSearchById1(int doc_id,String library_id,St
           criteria.add(Restrictions.eq("id.libraryId",library_id));
           criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
           criteria.add(Restrictions.eq("id.documentId",doc_id));
-          return (List<DocumentDetails>) criteria.list();
+          obj=(List<DocumentDetails>) criteria.list();
         }
       catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.call_noSearch():"+e);
-            return null;
+           e.printStackTrace();
+            
         }
       finally
         {
             hsession.close();
         }
+      return obj;
     }
 
 
 public List<BibliographicDetailsLang> DocumentSearch(int doc_id,String library_id,String sub_lib)
     {
       Session hsession=HibernateUtil.getSessionFactory().openSession();
+      List<BibliographicDetailsLang> obj=null;
       try
         {
           hsession.beginTransaction();
@@ -1488,22 +1645,24 @@ public List<BibliographicDetailsLang> DocumentSearch(int doc_id,String library_i
           criteria.add(Restrictions.eq("id.libraryId",library_id));
           criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
           criteria.add(Restrictions.eq("id.biblioId",doc_id));
-          return (List<BibliographicDetailsLang>) criteria.list();
+          obj= (List<BibliographicDetailsLang>) criteria.list();
         }
       catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.call_noSearch():"+e);
-            return null;
+           e.printStackTrace();
+            
         }
       finally
         {
             hsession.close();
         }
+      return obj;
     }
 
 public List<BibliographicDetails> DocumentSearch1(int doc_id,String library_id,String sub_lib)
     {
       Session hsession=HibernateUtil.getSessionFactory().openSession();
+      List<BibliographicDetails> obj=null;
       try
         {
           hsession.beginTransaction();
@@ -1511,28 +1670,29 @@ public List<BibliographicDetails> DocumentSearch1(int doc_id,String library_id,S
           criteria.add(Restrictions.eq("id.libraryId",library_id));
           criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
           criteria.add(Restrictions.eq("id.biblioId",doc_id));
-          return (List<BibliographicDetails>) criteria.list();
+          obj= (List<BibliographicDetails>) criteria.list();
         }
       catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.call_noSearch():"+e);
-            return null;
+            e.printStackTrace();
+            
         }
       finally
         {
             hsession.close();
         }
+      return obj;
     }
 
 public static List<MemberSubLibrary> MembersubLibrarySearch(String library_id,String memid) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = null;
+       List<MemberSubLibrary> obj=null;
        
         try {
             session.beginTransaction();
 
 
-            //Query query = session.createSQLQuery("select * from sub_library where sublibrary_id in (select sublibrary_id from cir_member_detail a where a.memId='"+memid+"' and a.library_id=:libraryid)")
+           
             Query query = session.createSQLQuery("select * from sub_library a inner join cir_member_account b where a.library_id=b.library_id and a.sublibrary_id=b.sublibrary_id and b.memId=:mem_id1 and b.library_id=:libraryid")
                     .addEntity(SubLibrary.class)
                     .addEntity(CirMemberAccount.class);
@@ -1544,12 +1704,12 @@ public static List<MemberSubLibrary> MembersubLibrarySearch(String library_id,St
            
             query.setResultTransformer(Transformers.aliasToBean(MemberSubLibrary.class));
 
-            return  (List<MemberSubLibrary>)query.list();
+            obj=(List<MemberSubLibrary>)query.list();
         }
         finally {
-
+        session.close();
         }
-
+return obj;
      }
 
 

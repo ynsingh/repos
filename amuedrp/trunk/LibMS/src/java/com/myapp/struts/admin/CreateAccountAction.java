@@ -11,7 +11,6 @@ import com.myapp.struts.hbm.*;
 //import javax.mail.internet.*;
 
 
-import java.sql.*;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +42,7 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
     private String sublibrary_id;
     private String role;
     private boolean result;
+    LoginDAO logindao;
     int i;
     private String password1;
    Locale locale=null;
@@ -78,7 +78,7 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
       role=accountobj.getRole();
       sublibrary_id=accountobj.getSublibrary_id();
 
-      
+      logindao=new LoginDAO();
     
       library_id=(String)session.getAttribute("library_id");
      
@@ -92,12 +92,12 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
     
       request.setAttribute("library_id",library_id);
 
-                        Login log=LoginDAO.searchLoginID(login_id);
+                        Login log=logindao.searchLoginID(login_id);
                         if(log!=null)
                         {
                             //String msg="Duplicate Login Id ";
                          String msg=resource.getString("admin.createaccountaction.duplicate");
-                            request.setAttribute("msg", msg);
+                            request.setAttribute("msg1", msg);
                              return mapping.findForward("duplicate");
 
                         }
@@ -117,19 +117,19 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
                 {
                    // String msg="Request for registration failure due to some error";
                     String msg=resource.getString("admin.StaffDetailAction.error");
-                               request.setAttribute("msg", msg);
+                               request.setAttribute("msg1", msg);
                                return mapping.findForward("error");
 
                 }
 
 
-              staffobj=StaffDetailDAO.searchStaffId(staff_id,library_id,sublibrary_id);
+              staffobj=StaffDetailDAO.searchStaffId(staff_id,library_id);
               LoginId loginIdobj=new LoginId(staff_id, library_id);
               Login logobj=new Login(loginIdobj,staffobj,login_id) ;
 
               /*Password Generate and Reset It*/
                  password= RandomPassword.getRandomString(10);
-                 System.out.println(password);
+                 System.out.println(password+"................"+staffobj);
 
 
               password1=PasswordEncruptionUtility.password_encrupt(password);
@@ -139,7 +139,7 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
                 logobj.setSublibraryId(sublibrary_id);
                 logobj.setUserName(user_name);
                 logobj.setQuestion("@");
-                  result=LoginDAO.insert1(logobj);
+                  result=logindao.insert1(logobj);
                 if(result==false)
                 {
 
@@ -147,13 +147,14 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
 
                     //String msg="Request for registration failure due to some error";
                       String msg=resource.getString("admin.StaffDetailAction.error");
-                    request.setAttribute("msg", msg);
+                    request.setAttribute("msg1", msg);
                     return mapping.findForward("error");
 
                 }
                 else{
 
  String path = servlet.getServletContext().getRealPath("/");
+ System.out.println(path+"  "+staffobj);
              obj=new Email(path,staffobj.getEmailId(),password,"Your Account on LibMS Created Successfully","Your Account of LibMS has been Created Successfully for LibMS.\nUser Id="+login_id+"\nPassword:"+password+"\nUser Role:"+role,"Dear "+staffobj.getFirstName()+" "+staffobj.getLastName()+",\n","Thanks,"+session.getAttribute("username").toString()+"\nInstitute Admin");
 
             executor.submit(new Runnable() {
@@ -180,7 +181,7 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
                            {
                                //String msg="Request for registration failure due to some error";
                                  String msg=resource.getString("admin.StaffDetailAction.error");
-                               request.setAttribute("msg", msg);
+                               request.setAttribute("msg1", msg);
                                return mapping.findForward("error");
                           }
                           

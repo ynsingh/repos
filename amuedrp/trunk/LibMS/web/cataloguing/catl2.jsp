@@ -10,7 +10,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-
+<%@ page import="java.util.HashMap"%>
+<%@ page import="com.myapp.struts.hbm.Biblio"%>
 <html>
     <head>
        <title> Bibliographic Cataloguing According to MARC21 -- 2XX</title>
@@ -27,8 +28,38 @@
 ***********************************************/
 
 </script>
+<% HashMap hm1 = new HashMap();
+    Biblio bib1=new Biblio();
+    Biblio bib2=new Biblio();
+    Biblio bib3=new Biblio();
+    Biblio bib4=new Biblio();
+    Biblio bib5=new Biblio();
+    Biblio bib6=new Biblio();
+%>
+<%
+ String msg1=(String)request.getAttribute("msg1");
+ hm1 = (HashMap)session.getAttribute("hsmp");
 
-
+  if(hm1.containsKey("9")){
+       bib1=(Biblio)hm1.get("9");
+        }
+   if(hm1.containsKey("10")){
+       bib2=(Biblio)hm1.get("10");
+        }
+   if(hm1.containsKey("11")){
+       bib3=(Biblio)hm1.get("11");
+        }
+   if(hm1.containsKey("12")){
+       bib4=(Biblio)hm1.get("12");
+        }
+   if(hm1.containsKey("13")){
+       bib5=(Biblio)hm1.get("13");
+        }
+   if(hm1.containsKey("14")){
+       bib6=(Biblio)hm1.get("14");
+        }
+%>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/page.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ddtabmenufiles/solidblocksmenu.css" />
 <script type="text/javascript">
 
@@ -146,11 +177,11 @@ function func1(t){
     }
 
 function func2(t){
-    alert(t);
+   // alert(t);
     if(t.value!=2){
 
         document.getElementById("cat2").submit();
-     alert("submitted! ");
+   //  alert("submitted! ");
 }
 }
 
@@ -184,7 +215,7 @@ function keyHit(event) {
 <li><a href="<%=request.getContextPath()%>/cataloguing/catl7.jsp" onclick="func1(7)" rel="sb7">7 (70X-78X)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/catl8.jsp" onclick="func1(8)" rel="sb8">8 (80X-88X)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/catl9.jsp" onclick="func1(9)" rel="sb9">9 (9XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/cat_new_MARC.jsp"  rel="home">HOME</a></li>
+<li><a href="<%=request.getContextPath()%>/cataloguing/marchome.do"  rel="home">HOME</a></li>
 </ul>
 </div>
 
@@ -247,27 +278,23 @@ Control Field Entry
 
                                       <!-- Marc entries Starts from here . -->
 <!-- Title statements fields 20x-24x -->
-<div style="position:absolute;left:80%;top:18%;">
-                                         <table>
-                                     <tr><td></td><td align="right"><a href="<%=request.getContextPath() %>/marccommit.do"><input type="submit" value="Commit Data" /></a></td></tr>
-                                     </table>
-                                     </div>
+
 <div style="position:absolute;left:5%;top:25%;width:90%;border:1px #C0C0C0 solid;background: #f5fffa;">
     <html:form styleId="cat2" action="/cataction2.do" method="post">
 <table width="100%" cellspacing="5" >
     <tr><input type="hidden" value="" name="zclick" id="zclick" /></tr>
- <tr><td>Abbreviated Title (210) : <a href="javascript:animatedcollapse.toggle('210')">ind</a> <div id="210" style="width: 150px; display:none" >ind1<input type="text" name="in2101" value="" maxlength="1" size="1" onFocus="statwords(description[0],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in2102" value="" maxlength="1" size="1" onFocus="statwords(description[1],550,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+<tr><td>Abbreviated Title (210) : <a href="javascript:animatedcollapse.toggle('210')">ind</a> <div id="210" style="width: 150px; display:none" >ind1<input type="text" value="<% if(bib1.getIndicator1()!=null){%><%= bib1.getIndicator1() %><%}%>" name="in2101" maxlength="1" size="1" onFocus="statwords(description[0],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in2102" <% if(bib1.getIndicator2()!=null){%><%= bib1.getIndicator2() %><%}%>  maxlength="1" size="1" onFocus="statwords(description[1],550,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
 <td>
-$a Abbreviated Title (NR)<input type="text" value="" name="z210a" id="210a" onFocus="statwords(description[2],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+$a Abbreviated Title (NR)<input type="text" value="<% if(bib1.get$a()!=null){%><%= bib1.get$a() %><%}%>" name="z210a" id="210a" onFocus="statwords(description[2],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('210b')">$b </a>
 
 <div id="210b" style="width: 500px; background: #FDF5E6; display:none">
-Qualifying Information (NR) <input type="text" value="" name="z210b" id="210b" onFocus="statwords(description[3],650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Qualifying Information (NR) <input type="text" value="<% if(bib1.get$b()!=null){%><%= bib1.get$b() %><%}%>" name="z210b" id="210b" onFocus="statwords(description[3],650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('2102')">$2 </a>
 <div id="2102" style="width: 500px; background: #FDF5E6; display:none">
-Source (R) <input type="text" value="" name="z2102" id="2102"  onFocus="statwords(description[4],650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Source (R) <input type="text" value="<% if(bib1.get$2()!=null){%><%= bib1.get$2() %><%}%>" name="z2102" id="2102"  onFocus="statwords(description[4],650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 </font></td></tr>
 
@@ -275,26 +302,26 @@ Source (R) <input type="text" value="" name="z2102" id="2102"  onFocus="statword
 
 
 <tr>
-    <td>Title Statement (245) :<a href="javascript:animatedcollapse.toggle('245')">ind</a> <div id="245" style="width: 150px; display:none" >ind1<input type="text" name="in2451" value="" maxlength="1" size="1" onFocus="statwords(description[5],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="2452" value="" maxlength="1" size="1" onFocus="statwords(description[6],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
-<td>$a Title (NR)<input type="text" value="<% if(session.getAttribute("title")!=null){
+    <td>Title Statement (245) :<a href="javascript:animatedcollapse.toggle('245')">ind</a> <div id="245" style="width: 150px; display:none" >ind1<input type="text" value="<% if(bib2.getIndicator1()!=null){%><%= bib2.getIndicator1() %><%}%>" name="in2451"  maxlength="1" size="1" onFocus="statwords(description[5],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="2452" value="<% if(bib2.getIndicator2()!=null){%><%= bib2.getIndicator2() %><%}%>"  maxlength="1" size="1" onFocus="statwords(description[6],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+<td>$a *Title (NR)<input type="text" value="<% if(session.getAttribute("title")!=null){
                   out.println(session.getAttribute("title"));
-        }%>" name="z245a" id="245a" onFocus="statwords(description[7],650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+        }else if(bib2.get$a()!=null){%><%= bib2.get$a() %><%}%>" name="z245a" id="245a" onFocus="statwords(description[7],650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('245b')">$b</a>
 <div id="245b" style="width: 500px; background: #FDF5E6; display:none">
- Remainder of title (NR)<input type="text" value="" name="z245b" id="245b" onFocus="statwords(description[8],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+ Remainder of title (NR)<input type="text" value="<% if(bib2.get$b()!=null){%><%= bib2.get$b() %><%}%>" name="z245b" id="245b" onFocus="statwords(description[8],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('245c')"> $c</a>
 <div id="245c" style="width: 500px; background: #FDF5E6; display:none">
-Statement of responsibility (NR)<input type="text" value="" name="z245c" id="245c" onFocus="statwords(description[9],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+*Statement of responsibility (NR)<input type="text" value="<% if(bib2.get$c()!=null){%><%= bib2.get$c() %><%}%>" name="z245c" id="245c" onFocus="statwords(description[9],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('245n')"> $n</a>
 <div id="245n" style="width: 500px; background: #FDF5E6; display:none">
-Number of Part/Section of Work(NR)<input type="text" value="" name="z245n" id="245n" onFocus="statwords(description[10],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Number of Part/Section of Work(NR)<input type="text" value="<% if(bib2.get$n()!=null){%><%= bib2.get$n() %><%}%>" name="z245n" id="245n" onFocus="statwords(description[10],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('245k')"> $k</a>
 <div id="245k" style="width: 500px; background: #FDF5E6; display:none">
-Form (NR)<input type="text" value="" name="z245k" id="245k" onFocus="statwords(description[11],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Form (NR)<input type="text" value="<% if(bib2.get$k()!=null){%><%= bib2.get$k() %><%}%>" name="z245k" id="245k" onFocus="statwords(description[11],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 
 </font></td></tr>
@@ -306,12 +333,12 @@ Form (NR)<input type="text" value="" name="z245k" id="245k" onFocus="statwords(d
 <!-- 25X-28X - Edition, Imprint, Etc. Fields-General Information-->
 <tr>
     <td>Edition Statement (250) :<a href="javascript:animatedcollapse.toggle('250')">ind</a> <div id="250" style="width: 150px; display:none" >ind1<input type="text" name="in2501" value="#" maxlength="1" size="1" onFocus="statwords(description[12],650,30)" onBlur="clearTimeout(openTimer);stopIt()"  /> ind2<input type="text" name="in2502" value="#" maxlength="1" size="1" onFocus="setObj(description[12],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
-<td>$a Edition Statement(NR)<input type="text" value="" name="z250a" id="250a" onFocus="statwords(description[13],800,30)" onBlur="clearTimeout(openTimer);stopIt()"  />
+<td>$a Edition Statement(NR)<input type="text" value="<% if(bib3.get$a()!=null){%><%= bib3.get$a() %><%}%>" name="z250a" id="250a" onFocus="statwords(description[13],800,30)" onBlur="clearTimeout(openTimer);stopIt()"  />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('250b')">$b</a>
 
 <div id="250b" style="width: 500px; background: #FDF5E6; display:none">
-Remainder of edition statement(NR)<input type="text" value="" name="z250b" id="250b" onFocus="statwords(description[14],800,30)" onBlur="clearTimeout(openTimer);stopIt()"  />
+Remainder of edition statement(NR)<input type="text" value="<% if(bib3.get$b()!=null){%><%= bib3.get$b() %><%}%>" name="z250b" id="250b" onFocus="statwords(description[14],800,30)" onBlur="clearTimeout(openTimer);stopIt()"  />
 </div>
 </font></td></tr>
 
@@ -320,33 +347,33 @@ Remainder of edition statement(NR)<input type="text" value="" name="z250b" id="2
 <tr><td colspan="2"><hr width="90%" size="2" color="green"/></td></tr>
 
 <tr>
-    <td>Computer File Characteristics (NR)(256) :<a href="javascript:animatedcollapse.toggle('256')">ind</a> <div id="256" style="width: 150px; display:none" >ind1<input type="text" name="in2561" value="" maxlength="1" size="1" onFocus="statwords(description[12],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in2562" value="" maxlength="1" size="1" onFocus="statwords(description[12],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
-<td>$a Computer file characteristics (NR) <input type="text" value="" name="z256a" id="256a" onFocus="statwords(description[15],800,30)" onBlur="clearTimeout(openTimer);stopIt()"  />
+    <td>Computer File Characteristics (NR)(256) :<a href="javascript:animatedcollapse.toggle('256')">ind</a> <div id="256" style="width: 150px; display:none" >ind1<input type="text" name="in2561" value="<% if(bib4.getIndicator1()!=null){%><%= bib4.getIndicator1() %><%}%>" maxlength="1" size="1" onFocus="statwords(description[12],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in2562" value="<% if(bib4.getIndicator2()!=null){%><%= bib4.getIndicator2() %><%}%>"  maxlength="1" size="1" onFocus="statwords(description[12],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+<td>$a Computer file characteristics (NR) <input type="text" value="<% if(bib4.get$a()!=null){%><%= bib4.get$a() %><%}%>" name="z256a" id="256a" onFocus="statwords(description[15],800,30)" onBlur="clearTimeout(openTimer);stopIt()"  />
 <font size="2">
 </font></td></tr>
 
 <tr><td colspan="2"><hr width="90%" size="2" color="green"/></td></tr>
 
 <tr>
-    <td>Publication, Distribution, etc(Imprint) (260) :<a href="javascript:animatedcollapse.toggle('260')">ind</a> <div id="260" style="width: 150px; display:none">ind1<input type="text" name="2601" value="" maxlength="1" size="1" onFocus="statwords(description[16],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="2602" value="#" maxlength="1" size="1" onFocus="setObj(description[17],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
-<td>$a Place of Publication, Distribution, etc(R)<input type="text" value="" name="z260a" id="260a" onFocus="statwords(description[18],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    <td>Publication, Distribution, etc(Imprint) (260) :<a href="javascript:animatedcollapse.toggle('260')">ind</a> <div id="260" style="width: 150px; display:none">ind1<input type="text" name="2601" value="<% if(bib5.getIndicator1()!=null){%><%= bib5.getIndicator1() %><%}%>"  maxlength="1" size="1" onFocus="statwords(description[16],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="2602" value="#" maxlength="1" size="1" onFocus="setObj(description[17],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+<td>$a Place of Publication, Distribution, etc(R)<input type="text" value="<% if(bib5.get$a()!=null){%><%= bib5.get$a() %><%}%>" name="z260a" id="260a" onFocus="statwords(description[18],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('260b')">$b</a>
 
 <div id="260b" style="width: 500px; background: #FDF5E6; display:none">
-Name of Publisher, Distributor, etc (R)<input type="text" value="" name="z260b" id="260b" onFocus="statwords(description[19],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Name of Publisher, Distributor, etc (R)<input type="text" value="<% if(bib5.get$b()!=null){%><%= bib5.get$b() %><%}%>" name="z260b" id="260b" onFocus="statwords(description[19],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('260c')">$c</a>
 <div id="260c" style="width: 500px; background: #FDF5E6; display:none">
-Date of Publication,Distribution etc(R)<input type="text" value="" name="z260c" id="260c" onFocus="statwords(description[20],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Date of Publication,Distribution etc(R)<input type="text" value="<% if(bib5.get$c()!=null){%><%= bib5.get$c() %><%}%>" name="z260c" id="260c" onFocus="statwords(description[20],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('260e')">$e</a>
 <div id="260e" style="width: 500px; background: #FDF5E6; display:none">
-Place of Manufacturer(NR)<input type="text" value="" name="z260e" id="260e" onFocus="statwords(description[21],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Place of Manufacturer(NR)<input type="text" value="<% if(bib5.get$e()!=null){%><%= bib5.get$e() %><%}%>" name="z260e" id="260e" onFocus="statwords(description[21],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('260f')">$f</a>
 <div id="260f" style="width: 500px; background: #FDF5E6; display:none">
-Manufacturer(NR)<input type="text" value="" name="z260f" id="260f" onFocus="statwords(description[22],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Manufacturer(NR)<input type="text" value="<% if(bib5.get$f()!=null){%><%= bib5.get$f() %><%}%>" name="z260f" id="260f" onFocus="statwords(description[22],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 </font>
 </td></tr>
@@ -354,10 +381,15 @@ Manufacturer(NR)<input type="text" value="" name="z260f" id="260f" onFocus="stat
 <tr><td colspan="2"><hr width="90%" size="2" color="green"/></td></tr>
 
 <tr>
-    <td>Projected Publication Date (NR)(263) :<a href="javascript:animatedcollapse.toggle('263')">ind</a> <div id="263" style="width: 150px; display:none" >ind1<input type="text" name="in2631" value="" maxlength="1" size="1" onFocus="statwords(description[12],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in2632" value="" maxlength="1" size="1" onFocus="(description[12],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
-<td>$a Projected publication date (NR) <input type="text" value="" name="z263a" id="263a" onFocus="(description[23],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    <td>Projected Publication Date (NR)(263) :<a href="javascript:animatedcollapse.toggle('263')">ind</a> <div id="263" style="width: 150px; display:none" >ind1<input type="text" name="in2631" value="<% if(bib6.getIndicator1()!=null){%><%= bib6.getIndicator1() %><%}%>" maxlength="1" size="1" onFocus="statwords(description[12],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in2632" value="<% if(bib6.getIndicator2()!=null){%><%= bib6.getIndicator2() %><%}%>" maxlength="1" size="1" onFocus="(description[12],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+<td>$a Projected publication date (NR) <input type="text" value="<% if(bib6.get$a()!=null){%><%= bib6.get$a() %><%}%>" name="z263a" id="263a" onFocus="(description[23],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 </font></td></tr>
+<tr><td><%
+if(msg1!=null)
+       {%>
+       <p class="err"><%=msg1%></p><%}
+%></td></tr>
 </table></html:form>
 </div>
 

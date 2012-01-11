@@ -7,7 +7,7 @@ package com.myapp.struts.circulation;
 
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.BookCategoryDAO.BookCategoryDAO;
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;

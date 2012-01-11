@@ -5,12 +5,6 @@
 
 package com.myapp.struts.marc;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-
 /**
  *
  * @author zeeshan
@@ -180,7 +174,6 @@ public class CatActionForm7 extends org.apache.struts.action.ActionForm {
         this.z700t = z700t;
     }
 
-
     public String getZ740a() {
         return z740a;
     }
@@ -219,18 +212,6 @@ public class CatActionForm7 extends org.apache.struts.action.ActionForm {
 
     public void setZclick(String zclick) {
         this.zclick = zclick;
-    }
-    /**
-     * @return
-     */
-   
-
-    /**
-     *
-     */
-    public CatActionForm7() {
-        super();
-        // TODO Auto-generated constructor stub
     }
 
    

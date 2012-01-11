@@ -40,6 +40,12 @@ public class FacultyViewAllAction extends org.apache.struts.action.Action {
              HttpSession session=request.getSession();
              library_id=(String)session.getAttribute("library_id");
              List faculty=FacultyDAO.searchFaculty(library_id);
+
+             if(faculty==null && faculty.isEmpty())
+             {
+
+
+             }
              session.setAttribute("faculty", faculty);
              return mapping.findForward("success");
     }

@@ -5,12 +5,6 @@
 
 package com.myapp.struts.marc;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-
 /**
  *
  * @author zeeshan
@@ -23,21 +17,6 @@ public class CatActionForm8 extends org.apache.struts.action.ActionForm {
     private String  z852a,z852b,z852c,z852f,z852e,z852h,z852i,z852n,z852t,z852u, z856a,z856b,z856c,z856d,z856h,z856i,z856f,z856j,z856k,z856l,z856m,z856n,z856o,z856p,z856q,z856u,z856t,z856s,z856x,z856z;
    private Character in8001,in8002,in8301,in8302,in8501,in8502,in8521,in8522,in8561,in8562;
 
-    public String getZ800b() {
-        return z800b;
-    }
-
-    public void setZ800b(String z800b) {
-        this.z800b = z800b;
-    }
-
-    public String getZ800f() {
-        return z800f;
-    }
-
-    public void setZ800f(String z800f) {
-        this.z800f = z800f;
-    }
     public Character getIn8001() {
         return in8001;
     }
@@ -134,6 +113,14 @@ public class CatActionForm8 extends org.apache.struts.action.ActionForm {
         this.z800a = z800a;
     }
 
+    public String getZ800b() {
+        return z800b;
+    }
+
+    public void setZ800b(String z800b) {
+        this.z800b = z800b;
+    }
+
     public String getZ800c() {
         return z800c;
     }
@@ -148,6 +135,14 @@ public class CatActionForm8 extends org.apache.struts.action.ActionForm {
 
     public void setZ800d(String z800d) {
         this.z800d = z800d;
+    }
+
+    public String getZ800f() {
+        return z800f;
+    }
+
+    public void setZ800f(String z800f) {
+        this.z800f = z800f;
     }
 
     public String getZ800l() {
@@ -502,13 +497,6 @@ public class CatActionForm8 extends org.apache.struts.action.ActionForm {
         this.zclick = zclick;
     }
 
-    /**
-     *
-     */
-    public CatActionForm8() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
+   
    
 }

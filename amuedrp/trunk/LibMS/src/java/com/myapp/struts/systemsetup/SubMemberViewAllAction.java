@@ -30,6 +30,13 @@ public class SubMemberViewAllAction extends org.apache.struts.action.Action {
          HttpSession session=request.getSession();
          library_id=(String)session.getAttribute("library_id");
          List submember=SubMemberDAO.searchSubEmployeeType(library_id);
+
+          if(submember.isEmpty() && submember==null){
+  String msg="You need to Add Sub Members";
+  request.setAttribute("msg1", msg);
+    return mapping.findForward("success");
+  }
+
          session.setAttribute("submember", submember);
         
         return mapping.findForward(SUCCESS);

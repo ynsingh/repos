@@ -24,19 +24,17 @@ public class StaffAccountAction extends org.apache.struts.action.Action {
     private String staff_id;
     private String button;
     private String library_id;
-    Connection con;
-    PreparedStatement stmt;
-    String sql;
-    ResultSet rst,rst1;
+    
+    
 
-    private String sublibrary_id;
+    LoginDAO logindao;
     
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         
-      
+      logindao=new LoginDAO();
    
         staff_id=request.getParameter("staff_id");
         
@@ -44,7 +42,7 @@ public class StaffAccountAction extends org.apache.struts.action.Action {
         
          HttpSession session=request.getSession();
         library_id=(String)session.getAttribute("library_id");
-        sublibrary_id=(String)session.getAttribute("sublibrary_id");
+        
 
 
 
@@ -55,7 +53,7 @@ public class StaffAccountAction extends org.apache.struts.action.Action {
 
       
 
-             Login loginobj=(Login)LoginDAO.searchStaffLogin(staff_id, library_id);
+             Login loginobj=(Login)logindao.searchStaffLogin(staff_id, library_id);
 
 
          if(loginobj!=null)

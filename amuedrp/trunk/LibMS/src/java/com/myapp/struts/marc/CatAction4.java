@@ -11,6 +11,7 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -72,12 +73,20 @@ public class CatAction4 extends org.apache.struts.action.Action {
             biblioid.setLibraryId(library_id);
             biblio.setSublibraryId(sub_library_id);
             biblioid.setMarctag("490");
+           if(caf4.getIn4901()!=null)
+            if(StringUtils.isNotBlank(in4901.toString())&&StringUtils.isNotEmpty(in4901.toString()))
             biblio.setIndicator1(in4901);
+           if(caf4.getIn4902()!=null)
+            if(StringUtils.isNotBlank(in4902.toString())&&StringUtils.isNotEmpty(in4902.toString()))
             biblio.setIndicator2(in4902);
-                biblio.set$a(z490a);
+           if(StringUtils.isNotBlank(z490a)&&StringUtils.isNotEmpty(z490a))
+            biblio.set$a(z490a);
+           if(StringUtils.isNotBlank(z490v)&&StringUtils.isNotEmpty(z490v))
                 biblio.set$v(z490v);
-                biblio.set$x(z490x);
-                biblio.set$3(z4903);
+           if(StringUtils.isNotBlank(z490x)&&StringUtils.isNotEmpty(z490x))
+            biblio.set$x(z490x);
+          if(StringUtils.isNotBlank(z4903)&&StringUtils.isNotEmpty(z4903))
+            biblio.set$3(z4903);
 
               biblioid.setBibId(bibid);
                    biblio.setId(biblioid);

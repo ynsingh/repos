@@ -5,7 +5,7 @@
 
 package com.myapp.struts.circulation;
 
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -131,7 +131,7 @@ private String password1;
                 CirMemberDetail cirobj=CirculationDAO.searchCirMemDetails(library_id, mem_id);
                 //Create Member Account  Successfully from LibMS OPAC Login","User Id="+mem_id+" Your Password for LibMS OPAC Login is="
                   String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email((String)session.getAttribute("webmail"),(String)session.getAttribute("webpass"),path,cirobj.getEmail(),password,"Congruation,Your are Registered as Library Member","You Have been registered as a valid Library member for Library Name"+session.getAttribute("library_name").toString()+"\nYour Member Account as Follows \nUser Id:"+mem_id+"\nPassword:"+password+".\n","Dear "+cirobj.getMname()+" "+cirobj.getMname()+" "+cirobj.getLname()+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+            obj=new Email(path,cirobj.getEmail(),password,"Congruation,Your are Registered as Library Member","You Have been registered as a valid Library member for Library Name"+session.getAttribute("library_name").toString()+"\nYour Member Account as Follows \nUser Id:"+mem_id+"\nPassword:"+password+"\n","Dear "+cirobj.getMname()+" "+cirobj.getMname()+" "+cirobj.getLname()+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
             
             executor.submit(new Runnable() {
 

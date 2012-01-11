@@ -10,24 +10,12 @@ package com.myapp.struts.admin;
 //import  com.myapp.struts.hbm.*;
 
 import  com.myapp.struts.hbm.Privilege;
-import  com.myapp.struts.hbm.PrivilegeId;
-import  com.myapp.struts.hbm.Library;
 import  com.myapp.struts.hbm.SerPrivilege;
-import  com.myapp.struts.hbm.CirPrivilegeId;
 import  com.myapp.struts.hbm.CirPrivilege;
 import  com.myapp.struts.hbm.CatPrivilege;
-import  com.myapp.struts.hbm.CatPrivilegeId;
 import  com.myapp.struts.hbm.AcqPrivilege;
-import  com.myapp.struts.hbm.AcqPrivilegeId;
 import  com.myapp.struts.hbm.Login;
-import  com.myapp.struts.hbm.LoginId;
 import  com.myapp.struts.hbm.StaffDetail;
-import  com.myapp.struts.hbm.StaffDetailId;
-import  com.myapp.struts.hbm.SubLibrary;
-import  com.myapp.struts.hbm.SubLibraryId;
-import  com.myapp.struts.hbm.Library;
-import  com.myapp.struts.hbm.AdminRegistration;
-import  com.myapp.struts.hbm.SerPrivilegeId;
 import  com.myapp.struts.AdminDAO.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,7 +35,7 @@ public class ShowCheckedPrivilegeAction extends org.apache.struts.action.Action 
     private String staff_id;
     private String library_id;
     private String sublibrary_id;
-
+LoginDAO logindao;
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -55,7 +43,7 @@ public class ShowCheckedPrivilegeAction extends org.apache.struts.action.Action 
 
 
 
-
+logindao=new LoginDAO();
 
 
 
@@ -76,7 +64,7 @@ public class ShowCheckedPrivilegeAction extends org.apache.struts.action.Action 
         sublibrary_id=staffobj.getSublibraryId();
 System.out.println(sublibrary_id);
 
-Login staffobj1=LoginDAO.searchStaffLogin(staff_id, library_id,sublibrary_id);
+Login staffobj1=logindao.searchStaffLogin(staff_id, library_id,sublibrary_id);
 if(staffobj1!=null)
  request.setAttribute("staff_role",staffobj1.getRole());
 

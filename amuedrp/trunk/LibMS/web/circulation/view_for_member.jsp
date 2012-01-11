@@ -47,7 +47,7 @@ locale1=(String)session.getAttribute("locale");
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Serial Entry</title>
+
 <link href="common" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/css/newformat.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/css/page.css" rel="stylesheet" type="text/css" />
@@ -69,7 +69,7 @@ locale1=(String)session.getAttribute("locale");
       return false;
   }
 
-document.getElementById("section").innerHTML = "<iframe align=center name=section scrolling=no id=section width=400px src=<%=request.getContextPath()%>/cir_view_member.do frameborder=0 />";
+document.getElementById("section1").innerHTML = "<iframe align=center name=section scrolling=no id=section width=400px src=<%=request.getContextPath()%>/cir_view_member.do frameborder=0 />";
   
 //window.frames['section'].location.href = "<%=request.getContextPath()%>/cir_view_member.do";
 
@@ -77,29 +77,40 @@ document.getElementById("section").innerHTML = "<iframe align=center name=sectio
 
   return true;
 }
+ function call()
+{
 
+
+
+document.getElementById("section1").innerHTML = "<iframe align=center name=section scrolling=no id=section width=100% height=350px src=<%=request.getContextPath()%>/circulation/cir_memcheckout_details.do frameborder=0 />";
+
+
+
+  return true;
+}
 </script>
 </head>
 <body>
-    <div
+     <div
    style="  top:120px;
-  left:50px;
-  bottom: 20px;
+   left:5px;
+   right:5px;
       position: absolute;
 
       visibility: show;">
 
-        <html:form action="/cir_view_member" method="post" >
+    <html:form action="/cir_view_member" method="post" >
+ <table dir="<%=rtl%>" class="table" width="88%"  align="center">
 
-  <table dir="<%=rtl%>" width="100%" class="table"   align="center">
+   
 
       <tr><td dir="<%=rtl%>" align="center" colspan="2" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("circulation.viewformember.memberchkoutdetail")%></td></tr>
-                <tr><td valign="top" align="center" style=" padding-left: 5px;">
+      <tr><td valign="top" align="center" style=" padding-left: 10px;" width="50%">
                         <br/><br/>
 
 
-            <table dir="<%=rtl%>" align="center" width="50%">
-    <tr><td dir="<%=rtl%>" ><html:img src="<%=path%>" width="128" height="120" /></td></tr>
+                        <table dir="<%=rtl%>" align="center" width="100%" >
+                <tr><td >Member Snap</td><td dir="<%=rtl%>" align="left"><html:img src="<%=path%>" width="128" height="120"  style="border:solid 4px cyan;" /><br/><br/></td></tr>
    <tr>
     <td dir="<%=rtl%>" width="200" align="<%=align%>"><strong><%=resource.getString("circulation.cir_newmember.memberid")%> </strong> </td>
     <td dir="<%=rtl%>" width=""> <html:text  property="memid"  styleClass="textBoxWidth" readonly="true" value="<%=cirmemberdetail.getId().getMemId()%>" /></td>
@@ -125,7 +136,7 @@ document.getElementById("section").innerHTML = "<iframe align=center name=sectio
   <tr><td dir="<%=rtl%>" height="5px" colspan="4" ></td></tr>
   <tr>
     <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("circulation.viewformember.noofcurrentchkout")%>  </strong></td>
-    <td dir="<%=rtl%>" ><html:text property="total_issued_book" styleClass="textBoxWidth" value="<%=cma.getCurrentIssuedBook() %>" readonly="true"/><a class="mess" href="<%=request.getContextPath()%>/cir_memcheckout_details.do"><%=resource.getString("circulation.viewformember.detail")%></a></td>
+    <td dir="<%=rtl%>" ><html:text property="total_issued_book" styleClass="textBoxWidth" value="<%=cma.getCurrentIssuedBook() %>" readonly="true"/><a class="mess" onClick="call();" href="#"><%=resource.getString("circulation.viewformember.detail")%></a></td>
   </tr>
   <tr><td dir="<%=rtl%>" height="5px" colspan="4" ></td></tr>
   <tr>
@@ -153,7 +164,7 @@ document.getElementById("section").innerHTML = "<iframe align=center name=sectio
    <span style="font-size:12px;font-weight:bold;color:red;" ><%if(checkout !=null){%><%=checkout%><%}%></span>
        </td></tr>
             </table></td>
- <td>
+       <td valign="top">
            <div id="section1">
                
            </div>
@@ -167,10 +178,10 @@ document.getElementById("section").innerHTML = "<iframe align=center name=sectio
                </div>
            </td>
            <td  valign="top">
-               <div id="section2">
-                   <iframe align=center name="section2" scrolling=yes id="section2" height="300px" width="500px" src="#" frameborder="0"/>
+               <%--<div id="section2">
+                   <iframe align=center name="section2" scrolling=yes id="section2" height="50%" width="100%" src="#" frameborder="0"/>
 
-               </div>
+               </div>--%>
            </td>
 
       </tr>

@@ -1,8 +1,4 @@
-<%-- 
-    Document   : notices.jsp
-    Created on : Mar 31, 2011, 7:50:31 AM
-    Author     : edrp02
---%>
+
 <%@ page import="java.util.*,com.myapp.struts.hbm.*,java.text.*,java.text.SimpleDateFormat"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -22,7 +18,7 @@ List noticelibray_id=(List)session.getAttribute("noticelibray_id");
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        
 
      <script language="javascript" type="text/javascript">
 /*
@@ -150,6 +146,7 @@ function fun()
 }
 
 </script>
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <%!
     Locale locale=null;
     String locale1="en";
@@ -175,12 +172,17 @@ locale1=(String)session.getAttribute("locale");
     %>
 
     </head>
-    <body onload="fun()">
+    <body onload="fun()" style="background-color:#e0e8f5;margin: 0px 0px 0px 0px">
        <html:form method="post" action="/noticeaction1" target="f4" styleId="form1">
-           <table dir="<%=rtl%>" align="center">
-        <tr><td style="width:130px" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("opac.simplesearch.library")%></td>
-            <td width="200px" align="<%=align%>" dir="<%=rtl%>">
-             <html:select property="CMBLib" dir="<%=rtl%>" tabindex="3" value="<%=library_id%>"  styleId="CMBLib"  onchange="search()">
+           <table dir="<%=rtl%>" align="center" class="datagrid" width="80%" style="border: solid 1px black;">
+               <TR><TD class="header" colspan="2" align="center">Notices</TD></TR>
+        <tr>
+            <td colspan="2">
+                <table>
+                    <tr>
+            <td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("opac.simplesearch.library")%></td>
+            <td  align="<%=align%>" dir="<%=rtl%>">
+                <html:select property="CMBLib" dir="<%=rtl%>" styleClass="selecthome" tabindex="3" value="<%=library_id%>"  styleId="CMBLib"  onchange="search()">
                  <html:option value="sel">Select</html:option>
                  <html:options collection="noticelibray_id" property="libraryId" labelProperty="libraryName"/>
                  
@@ -188,30 +190,25 @@ locale1=(String)session.getAttribute("locale");
              </html:select>
 
             </td>
-            <td style="width:130px" align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%></td>
-             <td width="200px" dir="<%=rtl%>">
-                 <html:select property="CMBSUBLib" dir="<%=rtl%>"  styleId="SubLibary" value="<%=sublib_id%>" onchange="fun()">
+            <td  align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%></td>
+             <td  dir="<%=rtl%>">
+                 <html:select property="CMBSUBLib" dir="<%=rtl%>" styleClass="selecthome" styleId="SubLibary" value="<%=sublib_id%>" onchange="fun()">
                      <html:option value="sel">Select</html:option>
                      <html:options collection="noticesublib" property="id.sublibraryId" labelProperty="sublibName"  />
             </html:select>
-
-             </td>
-        </tr>
-        <tr dir="<%=rtl%>"><td dir="<%=rtl%>"></td></tr>
-        <tr dir="<%=rtl%>" style="background-color:#e0e8f5;">
-            
-            
-            <td  height="500px" dir="<%=rtl%>" valign="top" colspan="2">
-                <table dir="<%=rtl%>">
-                    <tr dir="<%=rtl%>">
-            <td dir="<%=rtl%>">
-             <IFRAME  src="<%=request.getContextPath()%>/OPAC/notices2.jsp" style="background-color:#e0e8f5;"  frameborder=0 height="300px" width="600px" scrolling="no" name="f4" id="f4"></IFRAME>
+             </td></tr></table>
             </td>
-                </tr>
-        </table>
-
+        </tr>
+        
+        <tr dir="<%=rtl%>" >
+            
+            
+            <td   dir="<%=rtl%>" valign="top" width="40%">
+               
+             <IFRAME  src="<%=request.getContextPath()%>/OPAC/notices2.jsp"   frameborder="0" height="400px" width="100%" scrolling="no" name="f4" id="f4"></IFRAME>
+            
       </td>
-      <td colspan="2" dir="<%=rtl%>"><IFRAME  src="<%=request.getContextPath()%>/OPAC/notices_view.jsp" style="background-color:#e0e6c7;"  frameborder=0 height="600px" width="600px"  scrolling="no" name="f5" id="f5"></IFRAME>
+      <td dir="<%=rtl%>" ><IFRAME  src="<%=request.getContextPath()%>/OPAC/notices_view.jsp" width="100%"  frameborder="0" height="400px"   scrolling="no" name="f5" id="f5"></IFRAME>
       </td>
 
 </tr>

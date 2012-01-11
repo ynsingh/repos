@@ -4,6 +4,7 @@
  */
 
 package com.myapp.struts.admin;
+import com.myapp.struts.AdminDAO.LoginDAO;
 import javax.servlet.http.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,19 +12,20 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import  com.myapp.struts.hbm.*;
-import  com.myapp.struts.AdminDAO.*;
 import java.util.List;
 /**
  *
  * @author Dushyant
  */
 public class ViewAllStaffAccountAction extends org.apache.struts.action.Action {
-    
+
+    LoginDAO logindao;
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception
     {
+        logindao=new LoginDAO();
   HttpSession session=request.getSession();
         String login_role=(String)session.getAttribute("login_role");
         String sublibrary_id=(String)session.getAttribute("sublibrary_id");
@@ -32,11 +34,11 @@ public class ViewAllStaffAccountAction extends org.apache.struts.action.Action {
 System.out.println(login_role+library_id);
         if(login_role.equalsIgnoreCase("insti-admin")==true)
         {
-            loginobj=LoginDAO.searchAllStaffListAccount(library_id);
+            loginobj=logindao.searchAllStaffListAccount(library_id);
         }
         else
         {
-              loginobj=LoginDAO.searchAllStaffListAccount(library_id,sublibrary_id);
+              loginobj=logindao.searchAllStaffListAccount(library_id,sublibrary_id);
         }
 System.out.println(loginobj.size());
         if(!loginobj.isEmpty())

@@ -54,7 +54,7 @@ String memid = (String)session.getAttribute("memid");
 
 System.out.println("memid="+memid+" sublibraryId="+sublibrary_id+" libraryId="+library_id);
 requestList = (List<CheckoutDeocumentDetails>)CirRequestfromOpacDAO.getCheckOuts(library_id, sublibrary_id, memid);
-System.out.println("size="+requestList.size());
+System.out.println("size111111="+requestList.size());
         
 session.setAttribute("membercheckoutDetail", requestList);
        

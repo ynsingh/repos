@@ -17,20 +17,7 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 
- <style>
-
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white;border: solid 1px blue; }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold;border: solid 1px blue; }
-     .alternaterows { background-color: #efefef; }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold;text-decoration: none;padding-left: 10px; }
-
-     .datagrid      {  font-family: arial; font-size: 9pt;
-	    font-weight: normal;}
-     .item{ padding-left: 10px;}
-
-</style>
+ 
     <script language="javascript" type="text/javascript ">
         function loadHelp()
         {
@@ -38,7 +25,7 @@
         }
     </script>
 </head>
-<body bgcolor="#FFFFFF" onload="loadHelp()">
+<body style="margin:0px 0px 0px 0px 0px;background-color:#e0e8f5;" onload="loadHelp()">
 
 
 <%!
@@ -100,32 +87,37 @@ locale1=(String)session.getAttribute("locale");
   pageContext.setAttribute("MainEntry", MainEntry);
   String LibraryID=resource.getString("opac.browse.table.Libraryid");
   pageContext.setAttribute("LibraryID",LibraryID);
+pageContext.setAttribute("project",request.getContextPath());
+  pageContext.setAttribute("fromIndex", fromIndex);
+   pageContext.setAttribute("fromIndex1", fromIndex+1);
+ 
+   pageContext.setAttribute("toIndex1", toIndex);
 
 %>
 
-    <table align="<%=align%>" dir="<%=rtl%>" width="1200x" height="400px" class="datagrid" style="border:solid 1px #e0e8f5;">
+    <table align="<%=align%>" dir="<%=rtl%>"  class="datagrid" >
 
 
 
-        <tr style="background-color:#e0e8f5;"><td  width="800px" rowspan="2" dir="<%=rtl%>"  height="18px" align="center" colspan="2">
+        <tr ><td   dir="<%=rtl%>"   height="18px" align="<%=align%>" >
 
 
-		<%=resource.getString("opac.browse.browsesearchresult")%>
+		<i><%--<%=resource.getString("opac.browse.browsesearchresult")%>--%> Browse Search Result >> <%=tcount%> Record Found</i>
 
 
 
 
 
-        </td><td valign="top" align="center" dir="<%=rtl%>">
-    <%=resource.getString("opac.browse.bibliodetail")%> 
-  </td></tr>
-  <tr style="background-color:#e0e8f5;" height="10px" dir="<%=rtl%>">
-  <td valign="top" rowspan="2" dir="<%=rtl%>">
-      <IFRAME  name="fr2" src="#" frameborder=0 scrolling="yes" height="400px"  id="fr2"></IFRAME>
-  </td>
-     </tr>
+        </td><%--<td valign="top" align="left" dir="<%=rtl%>">
+    <i><%=resource.getString("opac.browse.bibliodetail")%>>></i>
+  </td>--%></tr>
+  
+  
+      
+  
+  
      <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
-         <td colspan="2" align="center" valign="top" dir="<%=rtl%>" height="300px">
+         <td  align="center" width="80%" valign="top" dir="<%=rtl%>" height="300px">
 
 
 
@@ -138,30 +130,49 @@ locale1=(String)session.getAttribute("locale");
 if(tcount==0)
 {
 %>
-<p class="err"><%=resource.getString("global.norecordfound")%></p>
+ <i>    Browse Search Results>><span class="err"> <%=tcount%> Record Found</span></i>
 <%}
 else
 {%>
-<table height="300px" dir="<%=rtl%>"><tr><td valign="top" dir="<%=rtl%>">
+<table  dir="<%=rtl%>"><tr><td valign="top" dir="<%=rtl%>">
 <ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
 
   <columns>
 
-
-
-    <column width="450">
-      <header value="${Title}" hAlign="left" styleClass="header" />
-      <item  styleClass="item"  value="${doc.title}" hyperLink="./viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2"   hAlign="left"/>
+ <column width="15%">
+      <header value="${Title}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.title}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  hAlign="left"/>
     </column>
 
-    <column width="200">
-      <header value="${MainEntry}" hAlign="left" styleClass="header" />
-      <item  styleClass="item"  value="${doc.mainEntry}" hAlign="left"  hyperLink="./viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2"  />
+    <column width="15%">
+      <header value="${MainEntry}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.mainEntry}" hAlign="left" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"   />
     </column>
-      <column width="150">
-      <header value="${LibraryID}" hAlign="left" styleClass="header" />
-      <item  styleClass="item"  value="${doc.id.libraryId}" hyperLink="./viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  hyperLinkTarget="fr2" hAlign="left" />
+ <column width="10%">
+      <header value="PublisherName" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.publisherName}" hAlign="left" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  />
     </column>
+ <column width="10%">
+      <header value="PublicationPlace" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.publicationPlace}" hAlign="left" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  />
+    </column>
+ 
+
+      <column width="10%">
+      <header value="CallNo" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.callNo}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hAlign="left" />
+    </column>
+
+      <column width="10%">
+      <header value="${LibraryID}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.id.libraryId}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hAlign="left" />
+    </column>
+       <column width="10%">
+      <header value="SubLibrary" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.id.sublibraryId}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  hAlign="left" />
+    </column>
+
+   
  </columns>
 
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
@@ -172,41 +183,49 @@ else
 
 </ui:dataGrid>
 </td></tr>
-<tr><td height="5px" style="margin:0px 0px 0px 0px;" >
-        <table width="900"  border=0 class="header">
-    <tr >
-<td align="left" width="10%" class="datagrid" dir="<%=rtl%>">
-<c:if test="${previous != null}">
-    <a style="color:white;" href="<c:out value="${previous}"/>"><%=resource.getString("global.previous")%></a>
-</c:if>&nbsp;
-</td>
+<tr class="header">
 
-<td align="center" width="10%" class="datagrid" dir="<%=rtl%>">
-<c:forEach items="${pages}" var="page">
+<td align="center" class="datagrid">
+ <c:if test="${previous != null}">
+   <a style="color:white;" href="<c:out value="${previous}"/>">
+      <b><i><< <%=resource.getString("global.previous")%></i></b>
+    </a>
+</c:if>&nbsp;
+
+
+   <c:forEach items="${pages}"  var="page"  >
+
+
+
+
+
 <c:choose>
   <c:when test="${page.current}">
-      <b><a style="color:white" href="<c:out value="${page.url}" />"><c:out value="${page.index}"/></a></b>
+
+ <span style="color:white;font-weight:italic" href="<c:out value="${page.url}" />">Record No : <%=pageContext.getAttribute("fromIndex1")%></span>
   </c:when>
-  <c:otherwise>
-    <a style="color:white" href="<c:out value="${page.url}" />"><c:out value="${page.index}"/></a>
-  </c:otherwise>
+
 </c:choose>
-</c:forEach>
-</td>
-<td align="right"  dir="<%=rtl%>" width="10%" class="datagrid">&nbsp;
-<c:if test="${next != null}">
-<a style="color:white;" href="<c:out value="${next}"/>"><%=resource.getString("global.next")%></a>
+ <%--<c:if test="${next != null}">
+<a style="color:white;" href="<c:out value="${next}" />">  <%=pageContext.getAttribute("toIndex1")%></a>
 </c:if>
+--%>
+
+</c:forEach>
+    <span style="color:white;"> to <%=pageContext.getAttribute("toIndex1")%></span>&nbsp;&nbsp;
+<c:if test="${next != null}">
+<a style="color:white;" href="<c:out value="${next}"/>"> <b><i> <%=resource.getString("global.next")%>>></i></b></a>
+</c:if>
+
+
 </td>
 </tr>
-    </table></td></tr>
-<tr><td height="10px" dir="<%=rtl%>">
-
-    </td></tr></table>
+</table>
   <%}%>
 
 
-  </td></tr></table>
+         </td><%--<td valign="top">
+             <IFRAME  name="fr2" src="#" width="100%" frameborder=0 scrolling="no" height="400px"  id="fr2"></IFRAME></td>--%></tr></table>
 
   <%}else if(session.getAttribute("browse_search_list1")!=null){
 
@@ -250,31 +269,35 @@ locale1=(String)session.getAttribute("locale");
   String LibraryID=resource.getString("opac.browse.table.Libraryid");
   pageContext.setAttribute("LibraryID",LibraryID);
 
+pageContext.setAttribute("project",request.getContextPath());
+  pageContext.setAttribute("fromIndex", fromIndex);
+   pageContext.setAttribute("fromIndex1", fromIndex+1);
+   pageContext.setAttribute("toIndex1", toIndex);
 %>
 
-    <table align="<%=align%>" dir="<%=rtl%>" width="1200x" height="400px" class="datagrid" style="border:solid 1px #e0e8f5;">
+   <table align="<%=align%>" width="100%" dir="<%=rtl%>"  class="datagrid" >
 
 
 
-        <tr style="background-color:#e0e8f5;"><td  width="800px" rowspan="2" dir="<%=rtl%>"  height="18px" align="center" colspan="2">
+        <tr ><td   dir="<%=rtl%>"   height="18px" align="<%=align%>" >
 
 
-		<%=resource.getString("opac.browse.browsesearchresult")%>
+		<i><%--<%=resource.getString("opac.browse.browsesearchresult")%>--%> Browse Search Result >> <%=tcount%> Record Found</i>
 
 
 
 
 
-        </td><td valign="top" align="center" dir="<%=rtl%>">
-    <%=resource.getString("opac.browse.bibliodetail")%>
-  </td></tr>
-  <tr style="background-color:#e0e8f5;" height="10px" dir="<%=rtl%>">
-  <td valign="top" rowspan="2" dir="<%=rtl%>">
-      <IFRAME  name="fr2" src="#" frameborder=0 scrolling="yes" height="400px"  id="fr2"></IFRAME>
-  </td>
-     </tr>
+        </td><%--<td valign="top" align="left" dir="<%=rtl%>">
+    <i><%=resource.getString("opac.browse.bibliodetail")%>>></i>
+  </td>--%></tr>
+
+
+
+
+
      <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
-         <td colspan="2" align="center" valign="top" dir="<%=rtl%>" height="300px">
+         <td  align="center" width="80%" valign="top" dir="<%=rtl%>" height="300px">
 
 
 
@@ -287,31 +310,54 @@ locale1=(String)session.getAttribute("locale");
 if(tcount==0)
 {
 %>
-<p class="err"><%=resource.getString("global.norecordfound")%></p>
+ <i>    Browse Search Results>><span class="err"> <%=tcount%> Record Found</span></i>
 <%}
 else
 {%>
-<table height="300px" dir="<%=rtl%>"><tr><td valign="top" dir="<%=rtl%>">
+<table width="80%" dir="<%=rtl%>">
+    <tr><td valign="top" dir="<%=rtl%>">
+
 <ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
 
   <columns>
 
-
-
-    <column width="450">
-      <header value="${Title}" hAlign="left" styleClass="header" />
-      <item  styleClass="item"  value="${doc.title}" hyperLink="./viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2"   hAlign="left"/>
+ <column width="25%">
+      <header value="${Title}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.title}" hyperLink="${project}/OPAC/viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  hAlign="left"/>
     </column>
 
-    <column width="200">
-      <header value="${MainEntry}" hAlign="left" styleClass="header" />
-      <item  styleClass="item"  value="${doc.mainEntry}" hAlign="left"  hyperLink="./viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2"  />
+    <column width="25%">
+      <header value="${MainEntry}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.mainEntry}" hAlign="left" hyperLink="${project}/OPAC/viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"   />
     </column>
-      <column width="150">
-      <header value="${LibraryID}" hAlign="left" styleClass="header" />
-      <item  styleClass="item"  value="${doc.id.libraryId}" hyperLink="./viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  hyperLinkTarget="fr2" hAlign="left" />
+ <column width="10%">
+      <header value="PublisherName" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.publisherName}" hAlign="left" hyperLink="${project}/OPAC/viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  />
     </column>
+ <column width="10%">
+      <header value="PublicationPlace" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.publicationPlace}" hAlign="left" hyperLink="${project}/OPAC/viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  />
+    </column>
+
+
+      <column width="10%">
+      <header value="CallNo" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.callNo}" hyperLink="${project}/OPAC/viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hAlign="left" />
+    </column>
+
+      <column width="10%">
+      <header value="${LibraryID}" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.id.libraryId}" hyperLink="${project}/OPAC/viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hAlign="left" />
+    </column>
+       <column width="10%">
+      <header value="SubLibrary" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.id.sublibraryId}" hyperLink="${project}/OPAC/viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  hAlign="left" />
+    </column>
+
+
  </columns>
+
+ 
 
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
   <alternateRows styleClass="alternaterows"/>
@@ -321,41 +367,48 @@ else
 
 </ui:dataGrid>
 </td></tr>
-<tr><td height="5px" style="margin:0px 0px 0px 0px;" >
-        <table width="900"  border=0 class="header">
-    <tr >
-<td align="left" width="10%" class="datagrid" dir="<%=rtl%>">
-<c:if test="${previous != null}">
-    <a style="color:white;" href="<c:out value="${previous}"/>"><%=resource.getString("global.previous")%></a>
-</c:if>&nbsp;
-</td>
 
-<td align="center" width="10%" class="datagrid" dir="<%=rtl%>">
-<c:forEach items="${pages}" var="page">
+
+  <%}%>
+   <tr class="header">
+
+<td align="center" class="datagrid">
+ <c:if test="${previous != null}">
+   <a style="color:white;" href="<c:out value="${previous}"/>">
+      <b><i><< <%=resource.getString("global.previous")%></i></b>
+    </a>
+</c:if>&nbsp;
+
+
+   <c:forEach items="${pages}"  var="page"  >
+
+
+
+
+
 <c:choose>
   <c:when test="${page.current}">
-      <b><a style="color:white" href="<c:out value="${page.url}" />"><c:out value="${page.index}"/></a></b>
+
+ <span style="color:white;font-weight:italic" href="<c:out value="${page.url}" />">Record No : <%=pageContext.getAttribute("fromIndex1")%></span>
   </c:when>
-  <c:otherwise>
-    <a style="color:white" href="<c:out value="${page.url}" />"><c:out value="${page.index}"/></a>
-  </c:otherwise>
+
 </c:choose>
+
+
 </c:forEach>
-</td>
-<td align="right"  dir="<%=rtl%>" width="10%" class="datagrid">&nbsp;
+    <span style="color:white;"> to <%=pageContext.getAttribute("toIndex1")%></span>&nbsp;&nbsp;
 <c:if test="${next != null}">
-<a style="color:white;" href="<c:out value="${next}"/>"><%=resource.getString("global.next")%></a>
+<a style="color:white;" href="<c:out value="${next}"/>"> <b><i> <%=resource.getString("global.next")%>>></i></b></a>
 </c:if>
+
+
 </td>
 </tr>
-    </table></td></tr>
-<tr><td height="10px" dir="<%=rtl%>">
+</table>
 
-    </td></tr></table>
-  <%}%>
+  </td></tr>
 
-
-  </td></tr></table>
+   </table>
 
 
 

@@ -6,6 +6,7 @@
 package com.myapp.struts.hbm;
 
 
+import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.SessionFactory;
 
@@ -17,37 +18,56 @@ import org.hibernate.SessionFactory;
 public class HibernateUtil {
 
 
-    private static final SessionFactory sessionFactory = buildSessionFactory();
+   //Static Session Factory
+	    private static org.hibernate.SessionFactory sessionFactory;
 
+	    private HibernateUtil() {}
 
-    private static SessionFactory buildSessionFactory() {
+	    static {
 
-        try {
+	        //Creates the SessionFactory based on the XML Configuration
+	        Configuration configs = new Configuration();
+	        sessionFactory = configs.configure().buildSessionFactory();
 
-            // Create the SessionFactory from hibernate.cfg.xml
+	    }
 
-            return new Configuration().configure().buildSessionFactory();
+	    public static SessionFactory getSessionFactory() {
+	        return sessionFactory;
+	    }
 
-        }
+	    public Session openSession() {
+	        return sessionFactory.openSession();
+	    }
 
-        catch (Throwable ex) {
+	    public Session getCurrentSession() {
+	        return sessionFactory.getCurrentSession();
+	    }
 
-            // Make sure you log the exception, as it might be swallowed
-
-            System.err.println("Initial SessionFactory creation failed." + ex);
-
-            throw new ExceptionInInitializerError(ex);
-
-        }
-
-    }
-
-
-    public static SessionFactory getSessionFactory() {
-
-        return sessionFactory;
-
-    }
-
+	    public static void close() {
+	        if (sessionFactory != null)
+	            sessionFactory.close();
+	        sessionFactory = null;
+	    }
 
 }
+//
+//import org.hibernate.SessionFactory;
+//import org.hibernate.cfg.*;
+//
+//public class HibernateUtil {
+//  private static final SessionFactory sessionFactory;
+//  static {
+//  try {
+//  // Create the SessionFactory from hibernate.cfg.xml
+//  sessionFactory = new  AnnotationConfiguration().configure().buildSessionFactory();
+//  } catch (Throwable ex) {
+//  // Make sure you log the exception, as it might be swallowed
+//  System.err.println("Initial SessionFactory creation failed." + ex);
+//  throw new ExceptionInInitializerError(ex);
+//  }
+//  }
+//
+//  public static SessionFactory getSessionFactory() {
+//  return sessionFactory;
+//  }
+//}

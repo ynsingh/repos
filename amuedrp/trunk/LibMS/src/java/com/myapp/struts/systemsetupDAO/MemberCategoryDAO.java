@@ -18,7 +18,7 @@ import org.hibernate.Session;
 public class MemberCategoryDAO {
     public static List<EmployeeType> searchEmpType(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List<EmployeeType> obj=null;
         try {
             session.beginTransaction();
             Query query1;
@@ -29,17 +29,20 @@ public class MemberCategoryDAO {
             else
                 query1 = session.createQuery("FROM  EmployeeType");
 
-            return (List<EmployeeType>) query1.list();
+            obj= (List<EmployeeType>) query1.list();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
            session.close();
         }
-
+return obj;
 }
 
             public static SubEmployeeType searchSubMemberType(String library_id,String memtype_id,String submemtype_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+SubEmployeeType obj=null;
         try {
             session.beginTransaction();
             Query query1;
@@ -52,17 +55,20 @@ public class MemberCategoryDAO {
 
             return (SubEmployeeType) query1.uniqueResult();
         }
+       catch(Exception e){
+        e.printStackTrace();
+        }
         finally {
            session.close();
         }
-
+return obj;
 }
 
 
 
      public static List<SubEmployeeType> searchSubEmpType(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List<SubEmployeeType> obj=null;
         try {
             session.beginTransaction();
             Query query1;
@@ -73,16 +79,19 @@ public class MemberCategoryDAO {
            }else{
            query1 = session.createQuery("FROM  SubEmployeeType ");
            }
-            return (List<SubEmployeeType>) query1.list();
+           obj=(List<SubEmployeeType>) query1.list();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
            session.close();
         }
-
+return obj;
 }
 public static EmployeeType searchMemberType(String library_id,String memtype_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+EmployeeType obj=null;
         try {
             session.beginTransaction();
             Query query1;
@@ -92,12 +101,15 @@ public static EmployeeType searchMemberType(String library_id,String memtype_id)
             query1.setString("memtype_id", memtype_id);
 
 
-            return (EmployeeType) query1.uniqueResult();
+            obj=(EmployeeType) query1.uniqueResult();
+        }
+      catch(Exception e){
+        e.printStackTrace();
         }
         finally {
            session.close();
         }
-
+return obj;
 }
 
 
@@ -105,7 +117,7 @@ public static EmployeeType searchMemberType(String library_id,String memtype_id)
 
      public static List<SubEmployeeType> searchSubEmpTypeByEmpId(String library_id,String empTypeId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List<SubEmployeeType> obj=null;
         try {
             session.beginTransaction();
             Query query1;
@@ -115,11 +127,14 @@ public static EmployeeType searchMemberType(String library_id,String memtype_id)
             query1.setString("library_id", library_id);
             query1.setString("empTypeId", empTypeId);
 
-            return (List<SubEmployeeType>) query1.list();
+           obj= (List<SubEmployeeType>) query1.list();
+        }
+      catch(Exception e){
+        e.printStackTrace();
         }
         finally {
            session.close();
         }
-
+return obj;
 }
 }

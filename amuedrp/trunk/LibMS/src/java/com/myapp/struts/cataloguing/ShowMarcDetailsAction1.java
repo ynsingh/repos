@@ -41,9 +41,17 @@ public class ShowMarcDetailsAction1 extends org.apache.struts.action.Action {
         session.removeAttribute("opacList");
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
+
+        if(request.getParameter("id")!=null){
         int bib_id= Integer.parseInt(request.getParameter("id"));
+
+        
+
         List<Biblio> rst1 = dao.searchBiblioId(library_id, sub_library_id,bib_id);
         session.setAttribute("opacList", rst1);
         return mapping.findForward(SUCCESS);
+        }
+       
+          return null;
     }
 }

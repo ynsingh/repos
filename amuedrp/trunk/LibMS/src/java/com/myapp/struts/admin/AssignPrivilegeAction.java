@@ -7,24 +7,11 @@ package com.myapp.struts.admin;
 //import  com.myapp.struts.hbm.*;
 
 import  com.myapp.struts.hbm.Privilege;
-import  com.myapp.struts.hbm.PrivilegeId;
-import  com.myapp.struts.hbm.Library;
 import  com.myapp.struts.hbm.SerPrivilege;
-import  com.myapp.struts.hbm.CirPrivilegeId;
 import  com.myapp.struts.hbm.CirPrivilege;
 import  com.myapp.struts.hbm.CatPrivilege;
-import  com.myapp.struts.hbm.CatPrivilegeId;
 import  com.myapp.struts.hbm.AcqPrivilege;
-import  com.myapp.struts.hbm.AcqPrivilegeId;
 import  com.myapp.struts.hbm.Login;
-import  com.myapp.struts.hbm.LoginId;
-import  com.myapp.struts.hbm.StaffDetail;
-import  com.myapp.struts.hbm.StaffDetailId;
-import  com.myapp.struts.hbm.SubLibrary;
-import  com.myapp.struts.hbm.SubLibraryId;
-import  com.myapp.struts.hbm.Library;
-import  com.myapp.struts.hbm.AdminRegistration;
-import  com.myapp.struts.hbm.SerPrivilegeId;
 import  com.myapp.struts.AdminDAO.*;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import java.sql.*;
 /**
  *
  * @author System Administrator
@@ -45,8 +31,8 @@ public class AssignPrivilegeAction extends org.apache.struts.action.Action {
     private String library_id;
     private String staff_name;
     private String staff_sublibrary_id;
-private String sql1,sql2,sql3,sql4,sql5;
-//private ResultSet privilege_resultset,acq_privilege_resultset,cat_privilege_resultset,cir_privilege_resultset,ser_privilege_resultset;
+   LoginDAO logindao;
+
 
     String sql;
    
@@ -62,13 +48,13 @@ private String sql1,sql2,sql3,sql4,sql5;
         HttpSession session=request.getSession();
         library_id=(String)session.getAttribute("library_id");
 
-
+logindao=new LoginDAO();
 
 
 
         if(button.equals("Assign Privilege")||button.equals("Change Privilege"))
         {
-         Login loginobj=LoginDAO.searchStaffId(staff_id, library_id);
+         Login loginobj=logindao.searchStaffId(staff_id, library_id);
         if(loginobj==null)
          {
             request.setAttribute("msg1", "Staff Id: "+staff_id+" Account not exists");
@@ -137,7 +123,7 @@ private String sql1,sql2,sql3,sql4,sql5;
        CatPrivilege catprivobj=CatPrivilegeDAO.getPrivilege(library_id,staff_sublibrary_id, staff_id);
         CirPrivilege cirprivobj=CirPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
         SerPrivilege serprivobj=SerPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
-        Login loginprivobj=LoginDAO.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
+        Login loginprivobj=logindao.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
 
         session.setAttribute("privilege", privobj);
         session.setAttribute("acq_privilege", acqprivobj);
@@ -153,7 +139,7 @@ private String sql1,sql2,sql3,sql4,sql5;
         {
 
 
-          Login loginobj=LoginDAO.searchStaffId(staff_id, library_id);
+          Login loginobj=logindao.searchStaffId(staff_id, library_id);
         if(loginobj!=null){
                     staff_name=loginobj.getUserName();
                     request.setAttribute("staff_name", staff_name);

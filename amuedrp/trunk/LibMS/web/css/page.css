@@ -1,3 +1,78 @@
+.homepage{
+    font-family: arial;
+    font-size: 12px;
+    line-height: 17px;
+
+
+
+}
+.homepage a{
+    text-decoration: none;
+    color:black;
+
+}
+.txtStylehome
+    {
+       font-family:arial;
+    font-size:12px;
+    letter-spacing:1px;
+     padding-left:5px;
+     color:black;
+
+}
+.emailheadhome
+    {
+       font-family:arial;
+    font-size:13px;
+    letter-spacing:1px;
+     padding-left:5px;
+     color:white;
+     font-weight:  bold;
+
+}
+.emailheadhome1
+    {
+       font-family:arial;
+    font-size:10px;
+    letter-spacing:1px;
+     padding-left:5px;
+     color:black;
+    
+
+}
+.emailheadhome1 a
+    {
+       font-family:arial;
+    font-size:11px;
+    letter-spacing:1px;
+     padding-left:5px;
+     color:black;
+     text-decoration: none;
+
+
+}
+
+.selecthome
+    {
+    font-family:arial;
+    font-size:12px;
+    letter-spacing:1px;
+    padding-left:5px;
+     color:black;
+     border:dotted 1px black;
+
+}
+
+.buttonhome
+    {
+    font-family:arial;
+    font-size:13px;
+
+background-color: #E2F3FE;
+     color:black;
+     border:Solid 1px black;
+
+}
 .l{
     text-decoration: none;
     font-weight: bold;
@@ -57,6 +132,21 @@ font-family:Tahoma;
 
 
     }
+
+     .btn2width
+    {
+font-family:Tahoma;
+    font-size:13px;
+    letter-spacing:1px;
+   
+ 
+     text-align:center;
+    width: 120px;
+
+
+
+    }
+
     .txt1
     {
        font-family:Tahoma;
@@ -138,6 +228,8 @@ color:white;
 
 
     }
+
+    
 
     .accountbar
     {
@@ -268,9 +360,11 @@ font-weight:bold;
      .rows          { background-color: white;height:30px; }
      .hiliterows    { background-color: white; color: black; font-weight: bold;height:30px; }
      .alternaterows { background-color: #efefef;height:30px; }
-     .header        { background-color: 7697BC; color: #FFFFFF;font-weight: bold;padding-left: 5px;height:30px;}
+     .header        { 
+                     background-image: url("../images/body-bg.png");
+                     color: white;font-weight: bold;padding-left: 5px;height:30px;}
 
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
+     .datagrid      {  font-family: arial; font-size: 9pt;
 	    font-weight: normal;color: black;height:30px;height:30px; }
 
 .textBoxWidth {
@@ -331,12 +425,25 @@ color:black;
 
 .logintxtStyle
     {
-       font-family:Tahoma;
-    font-size:12px;
+       font-family:arial;
+    font-size:14px;
     
      padding-left:5px;
       color: #006BF5;
       text-align: justify;
+
+
+}
+.logintxtStyle a
+    {
+       font-family:arial;
+    font-size:14px;
+
+     padding-left:5px;
+      color: #006BF5;
+      text-decoration: none;
+      text-align: justify;
+
 
 }
 
@@ -470,6 +577,10 @@ font-size:12px;
    background: #1b435e;
    }
 
-  
+  .search a{
+      color:white;letter-spacing: 1px;text-decoration:none;font-family: Arial;font-size: 11px;font-weight: bold;text-decoration: none;
+  }
    
-   
+  .search {
+   color:white;letter-spacing: 1px;text-decoration:none;font-family: Arial;font-size: 11px;font-weight: bold;text-decoration: none;border: solid 2px black;
+  }

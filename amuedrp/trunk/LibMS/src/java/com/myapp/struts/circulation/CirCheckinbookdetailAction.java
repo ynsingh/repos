@@ -5,7 +5,7 @@
 
 package com.myapp.struts.circulation;
 
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
 import com.myapp.struts.hbm.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -76,6 +76,7 @@ public class CirCheckinbookdetailAction extends org.apache.struts.action.Action 
         if(circheckout!=null){
          checkout_id = String.valueOf(circheckout.getId().getCheckoutId());
             circheckout.setStatus("returned");
+
 //setting variable for checkin table
             Integer checkinId = cirDAO.returnMaxCheckInId(library_id, sublibrary_id);
             CirCheckin circheckin = new CirCheckin();
@@ -89,6 +90,7 @@ public class CirCheckinbookdetailAction extends org.apache.struts.action.Action 
             circheckin.setLossStatus(loss);
 
 
+
             circheckin.setCirCheckout(circheckout);
             circheckin.getCirCheckout().getId().setCheckoutId(circheckout.getId().getCheckoutId());
             
@@ -96,6 +98,7 @@ public class CirCheckinbookdetailAction extends org.apache.struts.action.Action 
             CirTransactionHistory cirHistory = (CirTransactionHistory)CirculationDAO.searchCirTransactionHistory(library_id, sublibrary_id, Integer.parseInt(checkout_id));
             cirHistory.setCheckinDate(returnningDate);
             cirHistory.setCheckinId(checkinId);
+            cirHistory.setIssueDate(circheckout.getIssueDate());
             Float i  =Float.parseFloat(fine);
             cirHistory.setFineAmt(i);
             cirHistory.setStatus("returned");

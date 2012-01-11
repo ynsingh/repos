@@ -6,7 +6,6 @@
 package com.myapp.struts.admin;
 import  com.myapp.struts.hbm.*;
 import  com.myapp.struts.AdminDAO.*;
-import com.myapp.struts.MyConnection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +18,6 @@ import java.sql.Connection;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import com.myapp.struts.utility.*;
 import com.myapp.struts.utility.Email;
 
 
@@ -43,7 +41,7 @@ private String login_id;
 boolean result;
 AdminRegistration adminobj;
  Connection con1;
-
+LoginDAO logindao;
  Locale locale=null;
    String locale1="en";
    String rtl="ltr";
@@ -60,7 +58,7 @@ AdminRegistration adminobj;
 
 
 
-             UserLog.setPath(request.getContextPath());
+          logindao=new LoginDAO();
 
  HttpSession session1 =request.getSession();
 
@@ -90,14 +88,6 @@ AdminRegistration adminobj;
 
         try{
        
-             con1= MyConnection.getMyConnection();
-
-            if(con1==null)
-             {
-                request.setAttribute("msg1","Database Connectivity is Closed");
-                return mapping.findForward("failure");
-             }
-       
 
 
 
@@ -109,7 +99,7 @@ AdminRegistration adminobj;
 
             
             AdminRegistration tempobj=(AdminRegistration)AdminRegistrationDAO.searchLoginID(login_id);
-            Login loginobj=(Login)LoginDAO.searchLoginID(login_id);
+            Login loginobj=(Login)logindao.searchLoginID(login_id);
            
 
    
@@ -153,8 +143,6 @@ AdminRegistration adminobj;
          
 System.out.println(adminobj);
                  result=AdminRegistrationDAO.insert1(adminobj);
-
-                 System.out.println("Value"+result);
                 if(result==false)
                 {
                     String msg="Request for registration failure due to some error";
@@ -165,6 +153,19 @@ System.out.println(adminobj);
                 }
 
 
+
+//       String    path = servlet.getServletContext().getRealPath("/");
+//path=path.substring(0,path.lastIndexOf("/"));
+//path=path.substring(0,path.lastIndexOf("/"));
+//path=path.substring(0,path.lastIndexOf("/"));
+//System.out.println(path+"................");
+//             obj=new Email(path,"amuedrp@gmail.com","","New Request of Library Registration from "+adminRegistrationActionForm.getLibrary_name(),"You Have a Fresh Request for Library Registration Received from \n Library Name :"+adminRegistrationActionForm.getLibrary_name()+" with"+"\n"+"User ID :"+adminRegistrationActionForm.getLogin_id()+"\n Please Check It.","Dear WebAdmin, ","Thanks");
+//            executor.submit(new Runnable() {
+//
+//                public void run() {
+//                    obj.send();
+//                }
+//            });
 
 
 
@@ -188,14 +189,15 @@ System.out.println(adminobj);
         }
         catch(Exception e)
         {
-      System.out.println(e);
-            String msg="Request for registration failure due to some error";
-            //request.setAttribute("msg1", msg);
-            request.setAttribute("msg1", resource.getString("admin.adminregistrationaction.error2"));
+               request.setAttribute("msg1","Database Connectivity is Closed");
+               e.printStackTrace();
 
-            session.invalidate();
-            System.out.println(e.toString());
-            return mapping.findForward("failure");
+                return mapping.findForward("failure");
+
+
+
+            
+            
         }
 
     }

@@ -23,7 +23,6 @@ import org.marc4j.MarcReader;
 import org.marc4j.MarcStreamReader;
 import org.marc4j.marc.ControlField;
 import org.marc4j.marc.DataField;
-import org.marc4j.marc.Leader;
 import org.marc4j.marc.Record;
 import org.marc4j.marc.Subfield;
 /**

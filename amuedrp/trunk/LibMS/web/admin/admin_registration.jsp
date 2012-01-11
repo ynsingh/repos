@@ -123,9 +123,20 @@ else{
 </head>
 <body>
    <html:form  method="post" action="/registration">
- <table class="table" width="50%" align="center">
+          <table  style="background-color: #BFDBFF;  background-image: url('<%=request.getContextPath()%>/images/body-bg.png'); border:  solid 1px black;margin: 0px 0px 0px 0px" height="100px" width="100%">
+                        <tr class="search"><td class="homepage"  valign="middle" align="left">&nbsp;&nbsp;<span style="color:white;font-size: 30px;font-family: arial;font-weight: bold">Lib</span><span style="color:pink;font-size: 30px;font-family: arial;font-weight: bold">MS</span>
+
+                                <br>( A Complete Online Library Membership just 2 Steps Ahead )
+                </td><td  valign="bottom" align="right" >
 <a style="text-decoration: none" class="txt2" href="<%=request.getContextPath()%>/help/help2.jsp#step2">Get Help</a>
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("admin.admin_registration.heading")%></td></tr>
+                </td>    </tr>
+
+
+                    </table>
+
+ <table class="table" width="50%" align="center">
+
+                <tr><td align="center" class="header" height="25px;"><span class="homepage"><%=resource.getString("admin.admin_registration.heading")%></span></td></tr>
                 <tr><td align="right" class="err">
                                         <%
                                         String msg=(String)request.getAttribute("msg");
@@ -287,7 +298,7 @@ else{
 
 			</html:messages>
          </td></tr>
-             <tr><td></td><td align="left" colspan="2" ><br/>&nbsp;&nbsp;<input type="submit"  id="submit" name="submit" value="<%=resource.getString("register")%>" onclick="return check();" styleClass="textBoxWidth">&nbsp;<input type="button"   name="cancel" value="<%=resource.getString("cancel")%>" styleClass="textBoxWidth" onclick="quit()">
+             <tr><td></td><td align="left" colspan="2" ><br/>&nbsp;&nbsp;<input type="submit"  id="submit" name="submit" value="<%=resource.getString("register")%>" onclick="return check();" Class="buttonhome">&nbsp;<input type="button"   name="cancel" value="<%=resource.getString("cancel")%>" Class="buttonhome" onclick="quit()">
             <br/><br/>
 
          </td></tr>

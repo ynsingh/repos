@@ -19,6 +19,15 @@ public class CardInformationActionForm extends org.apache.struts.action.ActionFo
     
     private String TXTMEMID;
 
+    public String getButton() {
+        return button;
+    }
+
+    public void setButton(String button) {
+        this.button = button;
+    }
+    private String button;
+
     public String getTXTMEMID() {
         return TXTMEMID;
     }

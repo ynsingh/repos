@@ -5,9 +5,11 @@
 
 package com.myapp.struts.systemsetup;
 
-import com.myapp.struts.hbm.*;
+import com.myapp.struts.hbm.SubEmployeeType;
 import com.myapp.struts.systemsetupDAO.*;
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
+import com.myapp.struts.hbm.BookCategory;
+import com.myapp.struts.hbm.CirMemberAccount;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -74,7 +76,9 @@ public class SubMemberUpdateViewAction extends org.apache.struts.action.Action {
          if(button.equals("Update"))
         {
              List<CirMemberAccount> cirobj=null;
-            if(!subemptype.getNoOfIssueableBook().equals(no_of_issueable_book))
+             int no=subemptype.getNoOfIssueableBook().intValue();
+
+            if(no!=Integer.parseInt(no_of_issueable_book))
             {
               cirobj=(List<CirMemberAccount>)CirculationDAO.searchCirMemAccountDetailsBySubMember(library_id,emptype_id,sub_emptype_id);
              if(cirobj!=null && !cirobj.isEmpty())

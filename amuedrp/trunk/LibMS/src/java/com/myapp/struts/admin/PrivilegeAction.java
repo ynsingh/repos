@@ -7,26 +7,13 @@ package com.myapp.struts.admin;
 //import  com.myapp.struts.hbm.*;
 
 import  com.myapp.struts.hbm.Privilege;
-import  com.myapp.struts.hbm.PrivilegeId;
-import  com.myapp.struts.hbm.Library;
 import  com.myapp.struts.hbm.SerPrivilege;
-import  com.myapp.struts.hbm.CirPrivilegeId;
 import  com.myapp.struts.hbm.CirPrivilege;
 import  com.myapp.struts.hbm.CatPrivilege;
-import  com.myapp.struts.hbm.CatPrivilegeId;
 import  com.myapp.struts.hbm.AcqPrivilege;
-import  com.myapp.struts.hbm.AcqPrivilegeId;
 import  com.myapp.struts.hbm.Login;
-import  com.myapp.struts.hbm.LoginId;
 import  com.myapp.struts.hbm.StaffDetail;
-import  com.myapp.struts.hbm.StaffDetailId;
-import  com.myapp.struts.hbm.SubLibrary;
-import  com.myapp.struts.hbm.SubLibraryId;
-import  com.myapp.struts.hbm.Library;
-import  com.myapp.struts.hbm.AdminRegistration;
-import  com.myapp.struts.hbm.SerPrivilegeId;
 import  com.myapp.struts.AdminDAO.*;
-import java.sql.*;
 import javax.servlet.http.*;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -48,7 +35,7 @@ public class PrivilegeAction extends org.apache.struts.action.Action {
     //ResultSet privilege_resultset,acq_privilege_resultset,cat_privilege_resultset,cir_privilege_resultset,ser_privilege_resultset;
  
    
-
+LoginDAO logindao;
 
     
     @Override
@@ -57,7 +44,7 @@ public class PrivilegeAction extends org.apache.struts.action.Action {
             throws Exception {
         HttpSession session=request.getSession();
         PrivilegeActionForm privilege=(PrivilegeActionForm)form;
-
+logindao=new LoginDAO();
 
         library_id=(String)session.getAttribute("library_id");
 
@@ -96,7 +83,7 @@ public class PrivilegeAction extends org.apache.struts.action.Action {
        CatPrivilege backupcatprivobj=CatPrivilegeDAO.getPrivilege(library_id,staff_sublibrary_id, staff_id);
         CirPrivilege backupcirprivobj=CirPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
         SerPrivilege backupserprivobj=SerPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
-        Login login=LoginDAO.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
+        Login login=logindao.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
 
 
         session.setAttribute("privilege_priv_backup",backupprivobj);
@@ -150,7 +137,7 @@ public class PrivilegeAction extends org.apache.struts.action.Action {
          if(privobj.getAdministrator().equalsIgnoreCase("true"))
          {
              System.out.println("Admin");
-           Login logobj=LoginDAO.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
+           Login logobj=logindao.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
 
 
            if(logobj.getRole().equalsIgnoreCase("dept-admin"))
@@ -160,7 +147,7 @@ public class PrivilegeAction extends org.apache.struts.action.Action {
                logobj.setRole("staff");
          
 
-             result=LoginDAO.update1(logobj);
+             result=logindao.update1(logobj);
 
 
              if(result==false)
@@ -176,7 +163,7 @@ public class PrivilegeAction extends org.apache.struts.action.Action {
          }
 
          }
- Login logobj1=LoginDAO.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
+ Login logobj1=logindao.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
 
          request.setAttribute("staff_role", logobj1.getRole());
 
@@ -189,7 +176,7 @@ public class PrivilegeAction extends org.apache.struts.action.Action {
         else      //if(button.equals("View Privilge"))
         {
         System.out.println(staff_sublibrary_id);
-          Login staff=LoginDAO.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
+          Login staff=logindao.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
 
         String staff_role=staff.getRole();
 

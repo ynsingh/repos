@@ -35,13 +35,13 @@ public class LibraryDAO {
             session.save(instituteDetails);
             tx.commit();
         }
-        catch (RuntimeException e) {
-            if(instituteDetails != null)
+        catch (Exception e) {
+          
                 tx.rollback();
-            throw e;
+        e.printStackTrace();
         }
         finally {
-        //  session.close();
+          session.close();
         }
     }
 public void update(Library instituteDetails) {
@@ -53,10 +53,10 @@ public void update(Library instituteDetails) {
             session.update(instituteDetails);
             tx.commit();
         }
-        catch (RuntimeException e) {
-          //  if(bibDetails != null)
+        catch (Exception e) {
+          
                 tx.rollback();
-            throw e;
+          e.printStackTrace();
         }
         finally {
        session.close();
@@ -68,88 +68,119 @@ public void delete(int instituteId) {
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
-            //acqdocentry = session.load(BibliographicDetails.class, id);
-            Query query = session.createQuery("DELETE FROM Library  WHERE  id.instituteId = :instituteId");
+            
+            query = session.createQuery("DELETE FROM Library  WHERE  id.instituteId = :instituteId");
 
             query.setInteger("instituteId",instituteId );
 
             query.executeUpdate();
             tx.commit();
-            //return (BibliographicDetails) query.uniqueResult();
+            
         }
+ catch (Exception e) {
 
+                tx.rollback();
+          e.printStackTrace();
+        }
         finally {
-            //session.close();
+            session.close();
         }
     }
 
 public Integer getInstituteRequestCount(String status){
         Session session = null;
+        Integer countrequest=null;
     try {
         session = HibernateUtil.getSessionFactory().openSession();
-        //Transaction tx = null;
+        
         Criteria criteria = session.createCriteria(Library.class)
                  .setProjection(Projections.count("id.libraryId"));
         criteria.add(Restrictions.eq("status",status ));
-            Integer countrequest = Integer.parseInt((String)criteria.uniqueResult());
+              countrequest= Integer.parseInt((String)criteria.uniqueResult());
 
-    //Session session = HibernateUtil.getSessionFactory().openSession();
+    
 
 
-            return countrequest;
+           
+        }
+    catch (Exception e) {
+
+                
+          e.printStackTrace();
         }
         finally {
-          //  session.close();
+            session.close();
         }
+         return countrequest;
 }
 public List getInstituteDetailsByStatus(String institute_id, String status){
   Session session =null;
-    Transaction tx = null;
+  List obj=null;
+    
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createQuery("FROM Library where id.libraryId = :libraryId and working_status = :status");
+            query = session.createQuery("FROM Library where id.libraryId = :libraryId and working_status = :status");
             query.setString("libraryId",institute_id );
             query.setString("status",status );
+obj=(List)query.list();
+            
+        }
+    catch (Exception e) {
 
-            return (List)query.list();
+         
+          e.printStackTrace();
         }
         finally {
-          //  session.close();
+            session.close();
         }
+        return obj;
 }
 public Library getInstituteDetails(String instituteId){
   Session session =null;
-    Transaction tx = null;
+    Library obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createQuery("FROM Library where id.libraryId = :instituteId");
+            query = session.createQuery("FROM Library where id.libraryId = :instituteId");
             query.setString("instituteId", instituteId);
-            return (Library)query.uniqueResult();
+           obj=(Library)query.uniqueResult();
+        }
+    catch (Exception e) {
+
+
+          e.printStackTrace();
         }
         finally {
             session.close();
         }
+         return obj;
 }
 public Library getInstituteDetailsByRegistrationId(Integer RegistrationId){
   Session session =null;
-    Transaction tx = null;
+    Library obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createQuery("FROM Library where registrationId = :registrationId");
+            query = session.createQuery("FROM Library where registrationId = :registrationId");
             query.setInteger("registrationId", RegistrationId);
-            return (Library)query.uniqueResult();
+     obj=(Library)query.uniqueResult();
         }
+     catch (Exception e) {
+
+
+          e.printStackTrace();
+        }
+    
         finally {
             session.close();
         }
+               return obj;
 }
 
 public List getLibrarySearch(String search_by, String search_keyword, String sort_by){
   Session session =null;
-    Transaction tx = null;
+    List obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -160,36 +191,41 @@ public List getLibrarySearch(String search_by, String search_keyword, String sor
             sql = "select a.*,b.* from admin_registration a left outer join library b on a.registration_id=b.registration_id  where a."+search_by+" like '"+search_keyword +"%' order by a."+sort_by+" asc";}
             System.out.println(sql);
 
-          Query query =  session.createSQLQuery(sql)
+           query =  session.createSQLQuery(sql)
                     .addEntity(AdminRegistration.class)
                     .addEntity(Library.class)
                     .setResultTransformer(Transformers.aliasToBean(AdminReg_Institute.class));
-            return query.list();
+           obj= query.list();
+        }
+     catch (Exception e) {
+          e.printStackTrace();
         }
         finally {
-         //   session.close();
+            session.close();
         }
+         return obj;
 }
 
 
 public Integer getLibraryRequestCount(){
         Session session = null;
+        Integer countrequest=null;
     try {
         session = HibernateUtil.getSessionFactory().openSession();
-        //Transaction tx = null;
+        
         Criteria criteria = session.createCriteria(Library.class)
                  .setProjection(Projections.count("id.libraryId"));
-       // criteria.add(Restrictions.eq("status",status ));
-            Integer countrequest = Integer.parseInt((String)criteria.uniqueResult());
-
-    //Session session = HibernateUtil.getSessionFactory().openSession();
-
-
-            return countrequest;
+       
+             countrequest= Integer.parseInt((String)criteria.uniqueResult());
+   
+        }
+     catch (Exception e) {
+          e.printStackTrace();
         }
         finally {
-          //  session.close();
+            session.close();
         }
+        return countrequest;
 }
 
 
@@ -198,25 +234,21 @@ public Integer getLibraryRequestCount(){
 public static  List<Library> searchAllLibrary()
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List obj=null;
         try
         {
             session.beginTransaction();
             query = session.createQuery("FROM  Library where id.libraryId !=:lib");
             query.setString("lib","libms");
-
-
-
+            obj=(List<Library>) query.list();
         }
-        catch(Exception e)
-        {
-        System.out.println(e.toString());
+         catch (Exception e) {
+          e.printStackTrace();
         }
-        finally
-        {
-         //   session.close();
+        finally {
+            session.close();
         }
-        return (List<Library>) query.list();
+        return obj;
 
 }
 
@@ -226,96 +258,88 @@ public static  List<Library> searchAllLibrary()
 public static  Library searchLibraryID(String library_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Library obj=null;
         try
         {
             session.beginTransaction();
             query = session.createQuery("FROM  Library  WHERE libraryId =:library_id  ");
             query.setString("library_id", library_id);
+            obj=( Library) query.uniqueResult();
             
-            
         }
-        catch(Exception e)
-        {
-        System.out.println(e.toString());
+        catch (Exception e) {
+          e.printStackTrace();
         }
-        finally
-        {
-         //   session.close();
+        finally {
+            session.close();
         }
-        return ( Library) query.uniqueResult();
+        return obj;
 
 }
 
 public static  Library searchBlockLibrary(String library_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Library obj=null;
         try
         {
             session.beginTransaction();
             query = session.createQuery("FROM  Library  WHERE libraryId =:library_id and workingStatus =:working_status ");
             query.setString("library_id", library_id);
             query.setString("working_status", "Blocked");
-
+obj=( Library) query.uniqueResult();
         }
-        catch(Exception e)
-        {
-        System.out.println(e.toString());
+        catch (Exception e) {
+          e.printStackTrace();
         }
-        finally
-        {
-         //  session.close();
+        finally {
+            session.close();
         }
-        return ( Library) query.uniqueResult();
+        return obj;
 
 }
 
 public static  Library getLibraryName(String library_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Library obj=null;
         try
         {
             session.beginTransaction();
             query = session.createQuery("FROM  Library  WHERE libraryId =:library_id  ");
             query.setString("library_id", library_id);
+obj=( Library) query.uniqueResult();
 
-
         }
-        catch(Exception e)
-        {
-        System.out.println(e.toString());
+        catch (Exception e) {
+          e.printStackTrace();
         }
-        finally
-        {
-       //    session.close();
+        finally {
+            session.close();
         }
-        return ( Library) query.uniqueResult();
+        return obj;
 
 }
 
 public static  Library getLibraryNameByID(String library_name)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Library obj=null;
         try
         {
             session.beginTransaction();
             query = session.createQuery("FROM  Library  WHERE libraryName =:library_name");
             query.setString("library_name", library_name);
+obj=( Library) query.uniqueResult();
 
-
         }
-        catch(Exception e)
-        {
-        System.out.println(e.toString());
+       catch (Exception e) {
+          e.printStackTrace();
         }
-        finally
-        {
-         //   session.close();
+        finally {
+            session.close();
         }
-        return ( Library) query.uniqueResult();
+        return obj;
 
 }
 
@@ -335,16 +359,12 @@ public static  boolean insert1(Library obj)
 
 
         }
-        catch (Exception ex)
-        {
-             return false;
-
-       //  System.out.println(ex.toString());
-
+        catch (Exception e) {
+            tx.rollback();
+          e.printStackTrace();
         }
-        finally
-        {
-          //session.close();
+        finally {
+            session.close();
         }
    return true;
 

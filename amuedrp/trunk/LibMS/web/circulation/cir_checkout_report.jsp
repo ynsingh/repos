@@ -15,7 +15,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Checkout Report : LibMS</title>
 <script language="javascript">
 function fun()
 {
@@ -227,23 +227,23 @@ $(document).ready(function()
       visibility: show;">
 
        <html:form  method="post" action="/checkoutReport" target="f4" styleId="form1">
-           <table  dir="<%=rtl%>" class="table" width="600px"  align="center">
+           <table  dir="<%=rtl%>" class="table" width="50%"  align="center">
 
 
                 <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("circulation.cir_checkout_report.chekoutreport")%></td></tr>
                 <tr><td dir="<%=rtl%>" valign="top" align="center">
-                        <table>
+                        <table width="90%">
                  <tr>
-                     <td dir="<%=rtl%>" align="<%=align%>" ><%=resource.getString("circulation.cir_newmember.memberid")%>:</td><td dir="<%=rtl%>" colspan="3"><html:text property="memid" styleId="memid"  value=""  onchange="fun()" /> </td>
+                     <td dir="<%=rtl%>" align="left" valign="top" ><br/><%=resource.getString("circulation.cir_newmember.memberid")%>:</td><td><html:text property="memid" styleId="memid"  value=""  onchange="fun()" /> </td>
         </tr>
 
         <tr>
-         <td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("circulation.cir_checkin_report.startdate")%>
-             </td><td><html:text property="starting_date" styleId="starting_date"  value=""  onchange="fun()"/>
-         </td><td>
-        <%=resource.getString("circulation.cir_checkin_report.enddate")%></td><td dir="<%=rtl%>" >
+            <td dir="<%=rtl%>" align="left" valign="top">Issue Date from
+            </td><td><html:text property="starting_date" styleId="starting_date"  value=""  onchange="fun()"/>
+         
+        to
         <html:text property="end_date" styleId="end_date"  value=""  onchange="fun()"/> 
-             <input type="submit" value="<%=resource.getString("opac.simplesearch.find")%>"  onclick="fun()"/>
+         <br/>    <input type="submit" value="<%=resource.getString("opac.simplesearch.find")%>"  onclick="fun()"/>
              <input type="reset" value="<%=resource.getString("opac.simplesearch.clear")%>"  onclick="clear()"/>
              <input type="reset" value="Print Report"  onclick="print()"/>
 
@@ -255,8 +255,8 @@ $(document).ready(function()
 
         </tr></table>
       </tr>
-      <tr><td><br>
-           <IFRAME  src=""  frameborder=0  height="400px" width="600px" scrolling="no" name="f4" id="f4"></IFRAME>
+      <tr><td valign="top">
+           <IFRAME  src=""  frameborder=1  height="400px" width="100%" scrolling="no" name="f4" id="f4"></IFRAME>
 
       
 

@@ -1,4 +1,4 @@
-<%@ page import="com.myapp.struts.hbm.*,java.util.*,com.myapp.struts.systemsetupDAO.DocumentCategoryDAO;" %>
+<%@ page import="com.myapp.struts.hbm.*,java.util.*,com.myapp.struts.systemsetupDAO.DocumentCategoryDAO,com.myapp.struts.opacDAO.*;" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html>
 <head>
@@ -6,51 +6,63 @@
     <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
     <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
     <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
- <style>
-
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white;border: solid 1px blue; }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold;border: solid 1px blue; }
-     .alternaterows { background-color: #efefef; }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold;text-decoration: none;padding-left: 10px; }
-
-     .datagrid      {  font-family: arial; font-size: 9pt;
-	    font-weight: normal;}
-     .item{ padding-left: 10px;}
-
-</style>
 
 <script language="javaScript" src="fulldetail.js"></script>
 </head>
-<body>
-<%! String title,author,publ_pl,pub_name,pub_yr,pages,index,callno,phy_width,loc,pubyr,copy,vol,ed,publ,place,isbn,accno,subtitle,subject,id,lib_id,status,location,booktype;
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+<body> 
+<%! String title,author,doctype,publ_pl,pub_name,pub_yr,pages,index,callno,phy_width,loc,pubyr,copy,vol,ed,publ,place,isbn,accno,subtitle,subject,id,lib_id,status,location,booktype,lccno;
 int no_of_copy=0;
 List<BibliographicDetails> dd=new ArrayList<BibliographicDetails>();
     
-%>
+%> 
 <%
 if(session.getAttribute("documentDetail")!=null)  {
     List<DocumentDetails> list=(List<DocumentDetails>)session.getAttribute("documentDetail");
 no_of_copy=list.size();
+loc=list.get(0).getLocation();
+phy_width=list.get(0).getPhysicalWidth();
+index=list.get(0).getIndexNo();
+pages=list.get(0).getNoOfPages();
+ booktype=list.get(0).getBookType();
+ doctype=list.get(0).getDocumentType();
+ List ob=(List<String>)OpacSearchDAO.searchVol(list.get(0).getId().getLibraryId(),list.get(0).getId().getSublibraryId(),list.get(0).getBiblioId());
+ int i=0;
+ String totvol="";
+ System.out.println(ob.size());
+ if(ob!=null && ob.size()>0){
+ while(i<ob.size())
+     {
+     if(ob.get(i).toString()!=null && ob.get(i).toString().isEmpty()==false)
+     totvol+=ob.get(i).toString()+",";
+     i++;
+ }
+ 
+
+ }
+ if(totvol!=null && totvol!="")
+ vol=totvol;
+ else
+     vol="No Given";
 }
 dd = (List<BibliographicDetails>)session.getAttribute("documentDetail1");
         if(dd!=null){
             
-           booktype=dd.get(0).getBookType();
+           //booktype=dd.get(0).getBookType();
             title=dd.get(0).getTitle();
             subtitle=dd.get(0).getSubtitle();
             author=dd.get(0).getMainEntry();
             publ_pl=dd.get(0).getPublicationPlace();
             pub_name=dd.get(0).getPublisherName();
             pub_yr=dd.get(0).getPublishingYear();
-            
+            lccno=dd.get(0).getLccNo();
+
             callno=dd.get(0).getCallNo();
             isbn=dd.get(0).getIsbn10();
             ed=dd.get(0).getEdition();
            // location=dd.getLocation();
             lib_id = dd.get(0).getId().getLibraryId();
-          //  phy_width=dd.getPhysicalWidth();
+            
          //   status = dd.getStatus();
             String sublib_id = (String)dd.get(0).getId().getSublibraryId();
             if(title==null)title="";
@@ -69,9 +81,14 @@ dd = (List<BibliographicDetails>)session.getAttribute("documentDetail1");
             if(status==null)status="";
             if(accno==null)accno="";
             DocumentCategory docc = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategory(lib_id, sublib_id, booktype);
+
             String issuetype ="";
+
             if(docc!=null)
-                issuetype=docc.getIssueCheck();
+             {   issuetype=docc.getIssueCheck();
+                
+}
+System.out.println(issuetype+"  "+booktype+docc+lib_id+sublib_id);
  %>
 
 <%!
@@ -97,63 +114,102 @@ locale1=(String)session.getAttribute("locale");
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-<button  onmousedown="fontResize('-5')">Font Size -&nbsp;-</button><button  onmousedown="fontResize('+5')">Font Size ++</button>
-<br>
-<TABLE align="<%=align%>" dir="<%=rtl%>"  border='0' class="datagrid" cellspacing='0' cellpadding='0' valign="top" width="200px">
-   
+
+
+    <TABLE align="center" dir="<%=rtl%>"  style="text-align: justify;"  border='0' class="datagrid" cellspacing='0' cellpadding='0' valign="top" width="60%">
+   <TR dir="<%=rtl%>">
+       <td colspan="3" align="center" style="margin:0px 0px 0px 0px" class="header">
+           <%--<a href="" style="border: none;text-decoration: none;" onclick="document.getElementById('s1').src='<%=request.getContextPath()%>/images/sub.gif'">  <img id="s1" src="<%=request.getContextPath()%>/images/sub1.gif"/></a>
+           <img id="b1" src="<%=request.getContextPath()%>/images/brief1.gif"/>
+       <img id="m1" src="<%=request.getContextPath()%>/images/marc1.gif"/>
+       <img id="f1" src="<%=request.getContextPath()%>/images/full1.gif"/>--%>
+      <a href="../OPAC/newjsp.jsp" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
+      <b >Brief Details</b></a>&nbsp;|&nbsp;
+       <a href="../OPAC/subject.jsp" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
+      <b > Subject Details</b></a>&nbsp;|&nbsp;
+      <a href="../OPAC/fulldetails.jsp"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
+      <b> Full Details</b></a>&nbsp;|&nbsp;
+     <a href="<%=request.getContextPath()%>/OPAC/marc_details.jsp"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
+      <b> MARC Details</b></a>
+
+       </td>
+    </TR>
+<TR dir="<%=rtl%>">
+        <td   valign='top' dir="<%=rtl%>"   ><b>LC Code:</b></td>
+
+        <td>:</td><td><%=lccno!=null?lccno:"" %></td>
+    </TR>
+    <TR dir="<%=rtl%>">
+        <td   valign='top' dir="<%=rtl%>"   ><b>Type of material:</b></td>
+
+        <td>:</td><td><%=doctype!=null?doctype:"" %></td>
+    </TR>
    
     <TR dir="<%=rtl%>">
-        <TD NOWRAP valign='top' dir="<%=rtl%>"  width=10%><%=resource.getString("opac.newjsp.title")%></TD>
-        <TD valign='top' dir="<%=rtl%>" >&nbsp; </TD>
-        <TD  colspan=2 dir="<%=rtl%>"><%=title%></TD>
+        <TD   valign='top' dir="<%=rtl%>"   ><b>Main <%=resource.getString("opac.newjsp.title")%></b></TD>
+        <td>:</td>
+      
+        <td> <%=title%></td>
     </TR>
 
     <TR dir="<%=rtl%>">
-        <TD NOWRAP valign='top' dir="<%=rtl%>"  width="10%"><%=resource.getString("opac.newjsp.mainauthor")%></TD>
-        <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
-        <TD  colspan=2 dir="<%=rtl%>"><%=author%></TD>
+        <TD NOWRAP valign='top' dir="<%=rtl%>"  ><b>Personal name//Main Entry/<%=resource.getString("opac.newjsp.mainauthor")%></b></TD>
+        <td>:</td>
+      
+       <TD><%=author%></TD>
     </TR>
       
+  
     <TR dir="<%=rtl%>">
-        <TD NOWRAP valign='top' dir="<%=rtl%>" width=10%><%=resource.getString("opac.newjsp.pubplace")%>  </TD>
-        <TD valign='top' dir="<%=rtl%>" >&nbsp; </TD>
-        <TD  colspan=2 dir="<%=rtl%>"><%=publ_pl%></TD>
-    </TR>
-    <TR dir="<%=rtl%>">
-        <TD NOWRAP valign='top' dir="<%=rtl%>" width=10%><%=resource.getString("opac.newjsp.pubname")%>  </TD>
-        <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
-        <TD colspan=2 dir="<%=rtl%>"><%=pub_name%></TD>
-    </TR>
-    <TR dir="<%=rtl%>">
-        <TD NOWRAP valign='top' dir="<%=rtl%>" width=10%><%=resource.getString("opac.newjsp.pubyear")%>  </TD>
-        <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
-        <TD  colspan=2 dir="<%=rtl%>"><%=pub_yr%></TD>
-    </TR>
-   
-    <TR dir="<%=rtl%>">
-        <TD NOWRAP valign='top' dir="<%=rtl%>" width=10%><%=resource.getString("opac.newjsp.callno")%> </TD>
-        <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
-        <TD  colspan=2 dir="<%=rtl%>"><%=callno%></TD>
+        <TD NOWRAP valign='top' dir="<%=rtl%>"><b>Published/Created : </b></TD>
+        <td>:</td><TD>
+        <%=pub_name%>, <%=publ_pl%>,<%=pub_yr%></TD>
     </TR>
     
     <TR dir="<%=rtl%>">
-        <TD NOWRAP valign='top' dir="<%=rtl%>"  width=10%><%=resource.getString("opac.newjsp.isbn")%></TD>
-        <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
-        <TD  colspan=2 dir="<%=rtl%>"><%=isbn%></TD>
-    </TR>
+        <TD NOWRAP valign='top' dir="<%=rtl%>"><b>Physical Description : </b></TD>
+        <td>:</td>
 
-    <TR>
-        <TD NOWRAP valign='top' dir="<%=rtl%>" width=10%><%=resource.getString("opac.newjsp.issuetype")%></TD>
-        <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
-        <TD  colspan=2 dir="<%=rtl%>"><%=issuetype%></TD>
+        <TD><%=index %>, <%=pages%>,<%=phy_width %></TD>
+    </TR>
+   
+    
+    <TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>" ><b><%=resource.getString("opac.newjsp.isbn")%></b></TD>
+        <td>:</td>
+    
+        <TD><%=isbn%></TD>
     </TR>
  <TR dir="<%=rtl%>">
-        <TD NOWRAP valign='top' dir="<%=rtl%>"  width=10%>No of Copies</TD>
-        <TD valign='top' dir="<%=rtl%>">&nbsp; </TD>
-        <TD  colspan=2 dir="<%=rtl%>"><%=no_of_copy %></TD>
+        <TD NOWRAP valign='top' dir="<%=rtl%>"><b><%=resource.getString("opac.newjsp.callno")%> </b></TD>
+        <td>:</td>
+        <TD><%=callno%></TD>
+    </TR>
+    <TR>
+        <TD NOWRAP valign='top' dir="<%=rtl%>" width=10%><b><%=resource.getString("opac.newjsp.issuetype")%></b></TD>
+        <td>:</td>
+        <TD>
+<%=issuetype%></TD>
+    </TR>
+ <TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>"  width=10%><b>No of Copies</b></TD>
+        <td>:</td>
+        <TD><%=no_of_copy %></TD>
+    </TR>
+    <TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>"  width=10%><b>Total No's of Volumns</b></TD>
+        <td>:</td>
+        <TD><%=vol%></TD>
+    </TR>
+<TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>"  width=10%><b>Request In</b></TD>
+        <td>:</td>
+        <TD><%=loc %></TD>
     </TR>
 
-<tr><td colspan="2"><a href="<%= request.getContextPath()%>/OPAC/record.jsp" target="mainframe">View Detail</a></td></tr>
+<tr><td colspan="3"><a href="<%= request.getContextPath()%>/OPAC/record.jsp" ><br/>View Detail</a><br/><br/>
+        <%--<button class="buttonhome"  onmousedown="fontResize('-5')">Font Size -&nbsp;-</button><button  class="buttonhome" onmousedown="fontResize('+5')">Font Size ++</button>--%>
+    </td></tr>
 </TABLE><br><br>
 <%       }
 %>

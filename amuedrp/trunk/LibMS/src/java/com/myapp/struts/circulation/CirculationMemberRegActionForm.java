@@ -19,6 +19,7 @@ public class CirculationMemberRegActionForm  extends ValidatorForm {
    
 
     private String TXTMEMID;
+    
     private String TXTFNAME;
     private String TXTLNAME;
     private String TXTMNAME;

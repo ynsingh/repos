@@ -17,6 +17,36 @@ public class CirMemberDetail  implements java.io.Serializable {
 
      private CirMemberDetailId id;
      private Library library;
+     private String college;
+     private String collAddress;
+     private String tempStatus;
+
+    public String getCollAddress() {
+        return collAddress;
+    }
+
+    public void setCollAddress(String collAddress) {
+        this.collAddress = collAddress;
+    }
+
+    public String getTempStatus() {
+        return tempStatus;
+    }
+
+    public void setTempStatus(String tempStatus) {
+        this.tempStatus = tempStatus;
+    }
+
+    
+    public String getCollege() {
+        return college;
+    }
+
+    public void setCollege(String college) {
+        this.college = college;
+    }
+
+    
      private String fname;
      private String mname;
      private String lname;
@@ -49,7 +79,7 @@ public class CirMemberDetail  implements java.io.Serializable {
         this.id = id;
         this.library = library;
     }
-    public CirMemberDetail(CirMemberDetailId id, Library library, String fname, String mname, String lname, String address1, String address2, String city1, String state1, String pin1, String country1, String city2, String state2, String pin2, String country2, String email, String fax, String phone1, String phone2, String location, byte[] image, String createdBy, Set cirOpacRequests, Set cirMemberAccounts) {
+    public CirMemberDetail(CirMemberDetailId id, Library library, String fname, String mname, String lname, String address1, String address2, String city1, String state1, String pin1, String country1, String city2, String state2, String pin2, String country2, String email, String fax, String phone1, String phone2, String location, byte[] image, String createdBy, Set cirOpacRequests, Set cirMemberAccounts,String temp_reg,String coll,String colladd) {
        this.id = id;
        this.library = library;
        this.fname = fname;
@@ -74,6 +104,9 @@ public class CirMemberDetail  implements java.io.Serializable {
        this.createdBy = createdBy;
        this.cirOpacRequests = cirOpacRequests;
        this.cirMemberAccounts = cirMemberAccounts;
+       this.tempStatus=temp_reg;
+       this.college=coll;
+       this.collAddress=colladd;
     }
 
     public BufferedImage getImage1() {

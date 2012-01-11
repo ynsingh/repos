@@ -38,7 +38,9 @@ public class DeleteFixedMarcAction extends org.apache.struts.action.Action {
 
             HttpSession session = request.getSession();
                 String bib_id=(String)session.getAttribute("biblio_id") ;
-                boolean m=mhd.deleteMarcBiblio(bib_id);
+                      String library_id = (String) session.getAttribute("library_id");
+        String sub_library_id = (String) session.getAttribute("sublibrary_id");
+                boolean m=mhd.deleteMarcBiblio(bib_id,library_id,sub_library_id);
         System.out.println("s###################### "+m);
 
         request.setAttribute("del", "the record is deleted!");

@@ -21,73 +21,23 @@ String msg=(String)request.getAttribute("msg");
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+        <link rel="stylesheet" href="/LibMS/css/page.css"/>
         <title>LibMS</title>
     </head>
     <body>
 
-<div
-   style="  top:120px;
-   left:15px;
-   right:5px;
-      position: absolute;
-
-      visibility: show;">
-    <br><br>
-
-    <%-- <p class="mess"><b>Member Registration Details:-</b><br>
-     <br>
-         Member ID    :<b><%=mem_id%></b><br><br>
-                    Member Name  :<b><%=mem_name%></b>
- </p>
- <br>--%>
-
-                    <br>
+               
                     <p  class="mess">
-                          <% if(msg!=null){%>
-                    <script type="text/javascript">
-                           alert("<%=msg%>");
+                          <% if(msg!=null)
+                    {
+                          %><%=msg%>
                        
-
-                        </script>                      <%}%>
-
-
-</p>
-<br>
-<%--
-<p  class="mess">
-                          <% if(msg1!=null){%>
-                    <script type="text/javascript">
-                           alert("<%=msg1%>");
-                           window.location="/LibMS-Struts/circulation/cir_member_reg.jsp";
-
-                        </script>                      <%}%>
+<%
+                                         }%>
 
 
 </p>
-
-<p  class="mess">
-                          <% if(msg2!=null){%>
-                    <script type="text/javascript">
-                           alert("<%=msg2%>");
-                           window.location="/LibMS-Struts/circulation/cir_member_reg.jsp";
-
-                        </script>                      <%}%>
-
-
-</p>--%>
-
-        </div>
-    <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        
-
-</div>
+   
 
     </body>
 </html>

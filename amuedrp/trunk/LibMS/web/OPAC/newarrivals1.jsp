@@ -15,21 +15,7 @@ and open the template in the editor.
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="Mayank Saxena" content="MCA,AMU">
 
-<style type="text/css">
-body
-{
-   background-color: #FFFFFF;
-   color: #000000;
-}
-.rows          { background-color: white;border: solid 1px blue; }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold;border: solid 1px blue; }
-     .alternaterows { background-color: #efefef; }
-     .header        { background-color: #c0003b; color: #FFFFFF;text-decoration: none;padding-left: 10px; }
 
-     .datagrid      {  font-family: arial; font-size: 9pt;
-	    font-weight: normal;}
-     .item{ padding-left: 10px;}
-</style>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
 <script language="javascript" type="text/javascript">
@@ -187,12 +173,12 @@ locale1=(String)session.getAttribute("locale");
 
 </head>
 
-<body>
+<body style="background-color:  #e0e8f5;">
  
 
 
     <html:form  method="post" action="/NewArrival" target="f1" styleId="form1">
-        <table  align="<%=align%>" dir="<%=rtl%>" width="100%" class="datagrid"  style="border:solid 1px #e0e8f5;" class="txt">
+        <table  align="center" dir="<%=rtl%>" width="70%" class="datagrid"  style="border:solid 1px black;" class="txt">
 
 
 
@@ -207,10 +193,10 @@ locale1=(String)session.getAttribute("locale");
         </td></tr>
   <tr><td align="center" width="1200px" height="15px" dir="<%=rtl%>">
           <table class="datagrid" dir="<%=rtl%>">
-              <tr><td width="150px" dir="<%=rtl%>">
+              <tr><td  dir="<%=rtl%>">
 <%=resource.getString("opac.newarrivals.library")%></td>
     <td width="200px" dir="<%=rtl%>">
-        <html:select property="CMBLib" dir="<%=rtl%>"  value="<%=lib_id%>"  styleId="CMBLib" onchange="search()">
+        <html:select property="CMBLib" styleClass="selecthome" dir="<%=rtl%>"  value="<%=lib_id%>"  styleId="CMBLib" onchange="search()">
       <html:option value="al2">All Library</html:option>
             <html:options collection="lib" property="libraryId" labelProperty="libraryName"/>
     </html:select>
@@ -218,9 +204,9 @@ locale1=(String)session.getAttribute("locale");
                   </td>
 
    
-<td style="width:130px" align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%></td>
-<td width="200px" dir="<%=rtl%>">
-    <html:select property="CMBSUBLib" dir="<%=rtl%>" value="<%=sublib_id%>" styleId="SubLibary" onchange="return fun();" >
+<td  align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%></td>
+<td  dir="<%=rtl%>">
+    <html:select property="CMBSUBLib" styleClass="selecthome" dir="<%=rtl%>" value="<%=sublib_id%>" styleId="SubLibary" onchange="return fun();" >
                             <html:option value="suball">All Sub Library</html:option>
                            <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
                        </html:select>
@@ -233,19 +219,20 @@ locale1=(String)session.getAttribute("locale");
 <input type="radio" id="RadioButton2" name="r" dir="<%=rtl%>" onclick="fun()" value="journal"><%=resource.getString("opac.newarrivals.journals")%>
 <input type="radio" id="RadioButton3" name="r" dir="<%=rtl%>" onclick="fun()" value="other"><%=resource.getString("opac.newarrivals.other")%>
                   </td><td width="300px" dir="<%=rtl%>">
-     <%=resource.getString("opac.newarrivals.selectperiod")%><select dir="<%=rtl%>" name="CMBPERIOD" onChange="fun()" size="1">
+     <%=resource.getString("opac.newarrivals.selectperiod")%><select dir="<%=rtl%>" class="selecthome" name="CMBPERIOD" onChange="fun()" size="1">
 <option value="2"><%=resource.getString("opac.newarrivals.selectperiod1")%></option>
 <option value="6"><%=resource.getString("opac.newarrivals.selectperiod2")%></option>
 <option value="12"><%=resource.getString("opac.newarrivals.selectperiod3")%></option>
 </select>
-                  </td><td><input type="submit" name="b1" value="<%=resource.getString("opac.accessionno.go")%>"  class="txt2" dir="<%=rtl%>"></td></tr></table>
+                  </td><td><input type="submit" class="buttonhome" name="b1" value="<%=resource.getString("opac.accessionno.go")%>"  class="txt2" dir="<%=rtl%>"></td></tr></table>
 
 
       </td></tr>
 
 <tr style="background-color:#e0e8f5;"><td   valign="top"  dir="<%=rtl%>">
-
-             <IFRAME  style="margin:0px 0px 0px 0px" src="<%=request.getContextPath()%>/OPAC/newarrivals.jsp" style="background-color:#e0e8f5;"  frameborder=0 height="400px" width="100%" scrolling="no" name="f1" id="f1"></IFRAME>
+        <hr/>
+       
+             <IFRAME  style="margin:0px 0px 0px 0px" src="<%=request.getContextPath()%>/OPAC/newarrivals.jsp" style="background-color:#e0e8f5;"  frameborder=0 height="370px" width="100%" scrolling="no" name="f1" id="f1"></IFRAME>
   
 
       </td>

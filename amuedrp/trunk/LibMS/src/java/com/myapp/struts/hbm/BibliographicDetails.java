@@ -11,6 +11,9 @@ import java.util.Set;
 public class BibliographicDetails  implements java.io.Serializable {
 
 
+
+    
+
      private BibliographicDetailsId id;
      private Library library;
      private String documentType;

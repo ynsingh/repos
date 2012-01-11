@@ -34,17 +34,42 @@
                 location.href="<%=request.getContextPath()%>/cataloguing/cat_editmarc.jsp";
             }
  </script>
+<script type="text/javascript">
+var intTextBox=0;
 
+//FUNCTION TO ADD TEXT BOX ELEMENT
+function addElement()
+{
+intTextBox = intTextBox + 1;
+var contentID = document.getElementById('content');
+var newTBDiv = document.createElement('table');
+newTBDiv.setAttribute('id','strText'+intTextBox);
+var tt=newTBDiv.innerHTML;
+newTBDiv.innerHTML =
+   // "<tr><td id='"+intTextBox+"'><input type='text' name='act_name'/><input type='text' name='act_duration'/><input type='text' name='predecessors'/></td></tr>";
+                          "<tr><td>Symbol $<input type='text' name='subsymbol1' size='2' maxlength='1' /></td><td> Description <input type='text' name='subdesc1'  maxlength='100' /></td><td>R <select name='repeatable11' > <option value='true' >true</option>  <option value='false' >false</option> </select></td></tr>";
+contentID.appendChild(newTBDiv);
+}
+
+//FUNCTION TO REMOVE TEXT BOX ELEMENT
+function removeElement()
+{
+if(intTextBox != 0)
+{
+var contentID = document.getElementById('content');
+contentID.removeChild(document.getElementById('strText'+intTextBox));
+intTextBox = intTextBox-1;
+}
+}
+</script>
     </head>
     <body background="marccat1.jpg" >
-
-        
         <table border="0" cellspacing="4" cellpadding="1" bgcolor="lightskyblue" width="60%" style="position: absolute; top: 23%; left: 20%">
             <tr><td colspan="3" height="30px" bgcolor="#E0E8F5" align="center" ><b>ADD NEW MARC TAG</b></td></tr>
          
           <% String tagnumber="";
             if(request.getAttribute("tagnumber")!=null){
-                     tagnumber = (String)request.getAttribute("tagnumber");}
+            tagnumber = (String)request.getAttribute("tagnumber");}
           %>
             <html:form action="/newmarc" method="post" >
                 <tr><td align="center" >Tag Number</td><td ><input type="text" value="<%=tagnumber %>" readonly name="tagnumber" /></td><td></td></tr>
@@ -55,7 +80,9 @@
             <option value="false" >false</option>
             </select></td></tr>
 
-            <tr><td colspan="3"><a href="javascript:animatedcollapse.toggle('toggle')">+</a>
+            <tr><td colspan="3">
+                    <p><a href="javascript:addElement();" >Add Subfileds</a> <a href="javascript:removeElement();" >Remove Subfields</a></p>
+                   <%-- <a href="javascript:animatedcollapse.toggle('toggle')">+</a>
                     <div id="toggle" style="width: 100%; background: lightskyblue; display:none" >
                         <table border="0" align="center" width="80%">
                             <th><b>More Subfields</b></th>
@@ -81,7 +108,10 @@
                 <option value="true" >true</option>
             <option value="false" >false</option>
             </select></td></tr>
-            </table></div></td></tr>
+            </table></div>--%>
+<div id="content">
+</div>
+                </td></tr>
 
             <tr><td align="center"><input type="submit" value="Save" name="btn" style="width: 150px;" /></td><td><input type="button" value="Cancel" name="cancel" onclick="back();" style="width: 150px;" /></td></tr>
            </html:form>

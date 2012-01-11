@@ -80,7 +80,7 @@ locale1=(String)session.getAttribute("locale");
 if(session.getAttribute("username")==null)
    { %><script>parent.location="<%=request.getContextPath()%>/login.jsp"</script>
 <%}%>
- <jsp:include page="adminheader.jsp" flush="true" />
+ <jsp:include page="superadminheader.jsp" flush="true" />
 
 </head>
 <link rel="stylesheet" type="text/css" href="chrometheme/chromestyle.css" />
@@ -89,7 +89,7 @@ if(session.getAttribute("username")==null)
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/page.css">
 
 <div
-   style="top:60px;
+   style="top:85px;
    left:5px;
    right:5px;
       position: absolute;
@@ -128,26 +128,20 @@ document.write('</div></span>');
 
                         </script></b></a></td>
   </tr>
-  <tr><td dir="<%=rtl%>" class="headerStyle">
-            
-<%=resource.getString("login.pendingrequestforinstitueregistration")%> (<%=count%>)<a href="<%=contextPath%>/admin/view_pending.jsp" target="f3" dir="<%=rtl%>"> <u><%=resource.getString("viewpending")%></u></a>
+  
+ 
+ 
+ 
 
 
 
 
-      </td></tr>
-  <tr dir="<%=rtl%>"><td align="left" style="padding-left: 200px;" dir="<%=rtl%>">
-            <IFRAME  name="f3" src="#" frameborder=0 scrolling="no" width="100%" style="color:deepskyblue;height:650px;padding-left:100px;visibility:true;" id="f3" dir="<%=rtl%>"></IFRAME>
+</table><br/>
+<p class="txtStyle">    <%=resource.getString("login.pendingrequestforinstitueregistration")%> (<%=count%>)<a href="<%=contextPath%>/admin/view_pending.jsp" target="f3" dir="<%=rtl%>"> <u><%=resource.getString("viewpending")%></u></a></p>
+            <IFRAME  name="f3" src="#" frameborder=0 scrolling="no" width="97%" style="color:deepskyblue;height:650px;padding-left:100px;visibility:true;" id="f3" dir="<%=rtl%>"></IFRAME>
 
 
-      </td></tr>
-
-
-
-
-</table>
-
-<div class="chromestyle" id="chromemenu"  style="top:70px;
+<div class="chromestyle" id="chromemenu"  style="top:89px;
    left:5px;
    right:5px;
       position: absolute;
@@ -161,7 +155,7 @@ document.write('</div></span>');
 <li><a href="<%=contextPath%>/manage_superadmin.jsp"  target="f3">Change Password</a></li>
 <li><a href="<%=contextPath%>/admin/block_admin.jsp"  target="f3"><%=resource.getString("login.delinquentinstitutelist")%></a></li>
 <li><a href="<%=contextPath%>/admin/view_blocked_institute.jsp"  target="f3"><%=resource.getString("login.changeworkingstatus")%></a></li>
-<li><a href="<%=contextPath%>/admin/search_log.jsp"  target="f3">User Log</a></li>
+<li><%--<a href="<%=contextPath%>/logs/search_log.jsp"  target="f3">--%>User Log<%--</a>--%></li>
 </ul>
 </div>
 

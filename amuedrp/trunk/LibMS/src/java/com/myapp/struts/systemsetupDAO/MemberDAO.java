@@ -25,90 +25,130 @@ public class MemberDAO {
 
 public static EmployeeType getEployeeName(String library_id,String emptype_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+       EmployeeType obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  EmployeeType  WHERE id.libraryId =:library_id and id.emptypeId = :emptype_id");
             query.setString("library_id", library_id);
             query.setString("emptype_id",emptype_id);
 
-            return (EmployeeType) query.uniqueResult();
+            obj= (EmployeeType) query.uniqueResult();
+        }
+         catch (Exception ex)
+        {
+            ex.printStackTrace();
+
+
+
         }
         finally {
             session.close();
         }
-
+return obj;
 }
+
 public static List<CirMemberAccount> searchAccount(String library_id,String emptype_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+       List<CirMemberAccount> obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  CirMemberAccount  WHERE id.libraryId =:library_id and memType = :emptype_id");
             query.setString("library_id", library_id);
             query.setString("emptype_id",emptype_id);
 
-            return (List<CirMemberAccount>) query.list();
+           obj= (List<CirMemberAccount>) query.list();
+        }
+         catch (Exception ex)
+        {
+            ex.printStackTrace();
+
+
+
         }
         finally {
             session.close();
         }
-
+return obj;
 }
+
 public static List<CirMemberAccount> searchAccount(String library_id,String emptype_id,String subemp_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        List<CirMemberAccount> obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  CirMemberAccount  WHERE id.libraryId =:library_id and memType = :emptype_id and subMemberType=:subemp_id");
             query.setString("library_id", library_id);
             query.setString("emptype_id",emptype_id);
             query.setString("subemp_id",subemp_id);
-            return (List<CirMemberAccount>) query.list();
+           obj= (List<CirMemberAccount>) query.list();
+        }
+         catch (Exception ex)
+        {
+            ex.printStackTrace();
+
+
+
         }
         finally {
             session.close();
         }
-
+return obj;
 }
+
 public static EmployeeType getEployeeByName(String library_id,String emptype_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+       EmployeeType obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  EmployeeType  WHERE id.libraryId =:library_id and id.emptypeId = :emptype_id");
             query.setString("library_id", library_id);
             query.setString("emptype_id",emptype_id);
 
-            return (EmployeeType) query.uniqueResult();
+            obj= (EmployeeType) query.uniqueResult();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+
+
+
         }
         finally {
             session.close();
         }
-
+return obj;
 }
+
 
 
 public static EmployeeType getEmployeeByName(String library_id,String empname) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        EmployeeType obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  EmployeeType  WHERE id.libraryId =:library_id and emptypeFullName = :emptype_id");
             query.setString("library_id", library_id);
             query.setString("emptype_id",empname);
 
-            return (EmployeeType) query.uniqueResult();
+            obj= (EmployeeType) query.uniqueResult();
+        }
+         catch (Exception ex)
+        {
+            ex.printStackTrace();
+
+
+
         }
         finally {
             session.close();
         }
-
+return obj;
 }
+
 
 public static SubEmployeeType getSubEmployeeByName(String library_id,String emptype_id,String empname) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+       SubEmployeeType obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  SubEmployeeType  WHERE id.libraryId =:library_id and id.emptypeId=:emptypeId and subEmptypeFullName = :empname");
@@ -116,28 +156,43 @@ public static SubEmployeeType getSubEmployeeByName(String library_id,String empt
             query.setString("emptypeId", emptype_id);
             query.setString("empname",empname);
 
-            return (SubEmployeeType) query.uniqueResult();
+            obj= (SubEmployeeType) query.uniqueResult();
+        }
+         catch (Exception ex)
+        {
+            ex.printStackTrace();
+
+
+
         }
         finally {
             session.close();
         }
-
+return obj;
 }
+
 public static List<EmployeeType> searchEmployeeType(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+ List<EmployeeType> obj=null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  EmployeeType  WHERE id.libraryId=:library_id");
             query1.setString("library_id", library_id);
 
 
-            return (List<EmployeeType>) query1.list();
+            obj= (List<EmployeeType>) query1.list();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+
+
+
         }
         finally {
             session.close();
         }
-
+return obj;
 }
 
 public static  boolean insert(EmployeeType obj)
@@ -156,20 +211,19 @@ public static  boolean insert(EmployeeType obj)
             return true;
 
         }
-        catch (Exception ex)
+         catch (Exception ex)
         {
-             return false;
-
-       //  System.out.println(ex.toString());
+            ex.printStackTrace();
+tx.rollback();
+return false;
 
         }
-        finally
-        {
-          session.close();
+        finally {
+            session.close();
         }
-
 
 }
+
 
 
 
@@ -192,22 +246,23 @@ if(i!=0)
     return true;
 else
     return false;
-           //session.update(obj);
+         
 
         }
-        catch (RuntimeException e) {
-
-                tx.rollback();
-                return false;
-
-        }
-
-   finally
+        catch (Exception ex)
         {
-          session.close();
+            ex.printStackTrace();
+            tx.rollback();
+            return false;
+
+
+        }
+        finally {
+            session.close();
         }
 
 }
+
 
 
 
@@ -223,7 +278,7 @@ public static  boolean Delete(EmployeeType obj)
             tx.commit();
         }
         catch (RuntimeException e) {
-                System.out.println("FacultyDAO.Delete():*****"+e);
+               e.printStackTrace();
                 tx.rollback();
                 return false;
 
@@ -265,14 +320,7 @@ dept_ids.append("</emp_ids>");
 catch(Exception se) {
 se.printStackTrace();
 }
-finally {
-try {
 
-}
-catch(Exception e) {
-e.printStackTrace();
-}
-}
 return dept_ids.toString();
 
 

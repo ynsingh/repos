@@ -41,6 +41,8 @@ public class CirTransactionHistoryDAO {
         }
         catch (Exception ex)
         {
+            ex.printStackTrace();
+            tx.rollback();
              return false;
 
       
@@ -58,7 +60,7 @@ public class CirTransactionHistoryDAO {
 
      public static CirTransactionHistory getMemberDetail(String library_id,String sublibrary_id,String memid) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = null;
+        CirTransactionHistory obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM CirTransactionHistory where id.libraryId = :library_id and id.sublibraryId=:sublibrary_id and memid=:mem_id");
@@ -67,17 +69,25 @@ public class CirTransactionHistoryDAO {
             query.setString("mem_id",memid);
             
 
-            return  (CirTransactionHistory)query.uniqueResult();
+            obj=  (CirTransactionHistory)query.uniqueResult();
+            
         }
-        finally {
-         
-        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            
 
+        }
+        finally
+        {
+          session.close();
+        }
+        return obj;
      }
 
 public static List<MemberFinewithDocument> getMemberFineWithDocumentDetail(String library_id,String sublibrary_id,String memid) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = null;
+       List<MemberFinewithDocument> obj = null;
         Criterion criterion;
         try {
             session.beginTransaction();
@@ -94,11 +104,19 @@ public static List<MemberFinewithDocument> getMemberFineWithDocumentDetail(Strin
             query.setString("mem_id",memid);
             query.setResultTransformer(Transformers.aliasToBean(MemberFinewithDocument.class));
 
-            return  (List<MemberFinewithDocument>)query.list();
+          obj=  (List<MemberFinewithDocument>)query.list();
         }
-        finally {
+       catch (Exception ex)
+        {
+            ex.printStackTrace();
+
 
         }
+        finally
+        {
+          session.close();
+        }
+        return obj;
 
      }
       

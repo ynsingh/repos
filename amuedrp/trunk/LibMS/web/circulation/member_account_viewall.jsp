@@ -46,7 +46,7 @@ f.submit();
     String locale1="en";
     String rtl="ltr";
     String align="left";
-    boolean page=true;
+    
 %>
 <%
  String lib_id = (String)session.getAttribute("library_id");
@@ -62,8 +62,8 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";page=true;}
-    else{ rtl="RTL";align="right";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
     %>
 

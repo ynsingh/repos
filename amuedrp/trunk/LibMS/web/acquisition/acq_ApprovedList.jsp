@@ -86,13 +86,14 @@ tcount = opacList2.size();
    request.setAttribute ("opacList2", opacList2.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
 %>
-<table  width="750" style="font-family: arial; font-size: 10pt" border=0>
+<table  width="750" style="font-family: arial; font-size: 10pt" border=0 class="table">
+    <tr class="headerStyle" align="center"><td>Approved List</td></tr>
 
 <%
 if(tcount==0)
 {
 %>
-<p class="err">No record Found</p>
+    <tr><td><p class="err">No record Found</p></td></tr>
 <%}
 else
 {%>
@@ -170,7 +171,7 @@ else
 <%}%>
 </td>
 </tr>
-</table>
+
 
 <tr><td height="20px;"></td></tr>
 <tr> <td align="left">

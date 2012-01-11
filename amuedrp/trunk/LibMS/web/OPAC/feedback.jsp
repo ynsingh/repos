@@ -1,8 +1,4 @@
-<%--
-    Document   : FeedBack.jsp
-    Created on : Jun 5, 2010, 5:15:00 PM
-    Author     : Mayank Saxena
---%>
+
 
 <%@ page import="java.util.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*,java.io.*,java.net.*"%>
@@ -235,10 +231,7 @@ frmRegister.method="post";
 frmRegister.submit();
 }
 }
-function quit()
-{
-    location.href="<%=request.getContextPath()%>/OPAC/opachome.jsp";
-}
+
 </script>
 <%!
     Locale locale=null;
@@ -268,43 +261,38 @@ locale1=(String)session.getAttribute("locale");
 </head>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
-<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="search();">
-   <%-- <%if(page.equals(true)){%>--%>
+<body  leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="search();" style="background-color:#e0e8f5;" >
+   
 
     <html:form  action="/Feedback" method="post" onsubmit="return validateAll()">
-        <table  align="<%=align%>" dir="<%=rtl%>" width="600px"  style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
+        <table  align="center" dir="<%=rtl%>" width="50%" class="datagrid" style="border:solid 1px black;">
 
-
-
-            <tr><td  width="600px" dir="<%=rtl%>" style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="left">
-          <table dir="<%=rtl%>">
-              <tr dir="<%=rtl%>"><td width="600px" dir="<%=rtl%>" style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="center"><b>
+            <tr dir="<%=rtl%>"><td  dir="<%=rtl%>"  class="header" align="center">
 
 		    <%=resource.getString("opac.feedback.yourfeedback")%>
 
 
 
-          </b>
+          
                   </td></tr>
-              </table>
-        </td></tr>
 
-  <tr><td class="btn1" width="600px" dir="<%=rtl%>">
+
+  <tr><td dir="<%=rtl%>">
           <br>
 
-          <table align="center" width="600px" dir="<%=rtl%>">
-              <tr><td  align="right" dir="<%=rtl%>" colspan="2" class="mess" width="600px" >  <font dir="<%=rtl%>" color="blue">  <b><%=resource.getString("opac.feedback.note")%></b><br><br></font> </td></tr>
- <tr><td style="width:130px" align="<%=align%>" dir="<%=rtl%>">Library ID</td><td width="200px" dir="<%=rtl%>">
-         <html:select property="CMBLib"  tabindex="3" dir="<%=rtl%>" value="<%=library_id%>"  styleId="CMBLib" onchange="search()">
+          <table align="center" class="datagrid" width="100%" dir="<%=rtl%>">
+              <tr><td  align="right" dir="<%=rtl%>" colspan="2">  <font dir="<%=rtl%>">  <%=resource.getString("opac.feedback.note")%></font></td></tr>
+ <tr><td  align="<%=align%>" dir="<%=rtl%>">Library ID</td><td  dir="<%=rtl%>">
+         <html:select property="CMBLib"  tabindex="3" dir="<%=rtl%>" styleClass="selecthome" value="<%=library_id%>"  styleId="CMBLib" onchange="search()">
              <html:option value="Select">Select</html:option>
              <html:options collection="lib" property="libraryId" labelProperty="libraryName"/>
  </html:select></td></tr>
 
-  <tr><td dir="<%=rtl%>" style="width:130px" align="<%=align%>">SubLibrary ID</td><td width="200px">
-         <html:select dir="<%=rtl%>" property="CMBSUBLib"  styleId="SubLibary" >
+  <tr><td dir="<%=rtl%>" align="<%=align%>">SubLibrary ID</td><td >
+          <html:select dir="<%=rtl%>" property="CMBSUBLib"  styleClass="selecthome" styleId="SubLibary" >
                            <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
                        </html:select></td></tr>
-              <tr><td style="width:130px" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("opac.feedback.date")%>:</td><td>
+              <tr><td  dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("opac.feedback.date")%>:</td><td>
               <input type="text" name="date1" dir="<%=rtl%>"  font="Arial" color="BLACK" disabled="disabled"  value=<%=date%>>
              </td></tr>
 
@@ -319,8 +307,8 @@ locale1=(String)session.getAttribute("locale");
                  <input type="text" id="comments" name="comments" dir="<%=rtl%>" onfocus="statwords('Write Your Comments or Suggestions. Thanks')" onblur="loadHelp()"  />
              </td></tr>
                <tr><td></td><td>
-              <input class="btn" type="submit" name="Submit" dir="<%=rtl%>" value="<%=resource.getString("opac.feedback.submit")%>" align="right">   <input class=btn type="reset" value="<%=resource.getString("opac.feedback.clear")%>" align="left">
-              <input class=btn type="button" name="Cancel" dir="<%=rtl%>" value="<%=resource.getString("opac.feedback.cancel")%>" align="left" onclick="quit();">
+              <input class="buttonhome" type="submit" name="Submit" dir="<%=rtl%>" value="<%=resource.getString("opac.feedback.submit")%>" align="right">   <input class="buttonhome" type="reset" value="<%=resource.getString("opac.feedback.clear")%>" align="left">
+              <input class="buttonhome" type="button" name="Cancel" dir="<%=rtl%>" value="<%=resource.getString("opac.feedback.cancel")%>" align="left" onclick="quit();">
                    </td></tr>
 
             </table>

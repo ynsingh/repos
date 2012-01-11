@@ -20,7 +20,7 @@
  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="Faraz Hasan" content="MCA,AMU">
       <title></title>
-
+<jsp:include page="/admin/header.jsp"/>
 <script type="text/javascript">
 function send()
 {

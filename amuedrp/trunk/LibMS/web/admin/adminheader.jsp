@@ -54,14 +54,27 @@ String user=(String)session.getAttribute("username");
 
 <table width="100%"  border="0px" style="margin:0px 0px 0px 0px" dir="<%=rtl%>">
 
-    <tr dir="<%=rtl%>"><td valign="top"  dir="<%=rtl%>">
-
-                        <p align="<%=align%>"   dir="<%=rtl%>"><img src="<%=request.getContextPath()%>/images/opac_lib.PNG" alt="banner space"   align="top" style="padding:5px 5px 5px 5px;"><br/><br></td>
-                   
-
-                    <td align="right" width="250px" valign="top" dir="<%=rtl%>"><span  dir="<%=rtl%>" style="font:10pt Verdana;"><%=resource.getString("login.hello")%> [<%=user%>]&nbsp;|<a href="<%=request.getContextPath()%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                
+    <tr dir="<%=rtl%>">
+          <td align="left" width="350px" valign="bottom" dir="<%=rtl%>">
+                       <%-- <span style="color:Blue;font-size: 30px;font-family: arial;font-weight: bold">Lib</span><span style="color:pink;font-size: 30px;font-family: arial;font-weight: bold">MS</span>--%>
+                       <img src="<%=request.getContextPath()%>/images/bp.PNG" alt="" height="65px" width="160px" border="0" align="top" id="Image1" style="">
                      </td>
+        <td valign="bottom" align="right">
+
+
+
+
+
+        </td>
+        
+                     <td valign="bottom"  dir="<%=rtl%>" align="right" width="350px">
+                         <span  dir="<%=rtl%>" style="font:8pt Verdana;"><%=resource.getString("login.hello")%> [<%=user%>]&nbsp;|<a href="<%=request.getContextPath()%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></span>
+                        <br>
+              
+                         <img src="<%=request.getContextPath()%>/images/logo.png" alt="" height="65px" width="160px" border="0" align="top" id="Image1" style=""></td>
+
+
+                  
                 </tr>
 
 

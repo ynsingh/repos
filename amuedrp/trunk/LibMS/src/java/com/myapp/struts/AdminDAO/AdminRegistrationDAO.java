@@ -44,14 +44,16 @@ public static  boolean insert1(AdminRegistration obj)
         }
         catch (Exception ex)
         {
+            tx.rollback();
+              System.out.println(ex.toString());
              return false;
 
-       //  System.out.println(ex.toString());
+       
 
         }
         finally
         {
-       //   session.close();
+          session.close();
         }
    return true;
 
@@ -60,11 +62,12 @@ public static  boolean insert1(AdminRegistration obj)
  public Integer insert(AdminRegistration adminDetails){
     Session session =null;
     Transaction tx = null;
+    Integer maxNewAdminId=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(AdminRegistration.class)
                  .setProjection(Projections.max("registrationId"));
-            Integer maxNewAdminId = new Integer((Integer)criteria.uniqueResult()==null?0:(Integer)criteria.uniqueResult());
+             maxNewAdminId= new Integer((Integer)criteria.uniqueResult()==null?0:(Integer)criteria.uniqueResult());
             maxNewAdminId++;
             System.out.println("New Registration Id="+maxNewAdminId);
 
@@ -73,16 +76,18 @@ public static  boolean insert1(AdminRegistration obj)
             adminDetails.setRegistrationId(maxNewAdminId);
             session.save(adminDetails);
             tx.commit();
-            return maxNewAdminId;
+            
         }
-        catch (RuntimeException e) {
-            if(adminDetails != null)
+        catch (Exception e) {
+            
                 tx.rollback();
-            throw e;
+                System.out.println(e);
+            
         }
         finally {
-      //    session.close();
+          session.close();
         }
+        return maxNewAdminId;
     }
 public void update(AdminRegistration adminDetails) {
         Session session =null;
@@ -93,10 +98,10 @@ public void update(AdminRegistration adminDetails) {
             session.update(adminDetails);
             tx.commit();
         }
-        catch (RuntimeException e) {
-          //  if(bibDetails != null)
+        catch (Exception e) {
+          
                 tx.rollback();
-            throw e;
+            e.printStackTrace();
         }
         finally {
            session.close();
@@ -108,7 +113,7 @@ public void delete(int registration_id) {
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
-            //acqdocentry = session.load(BibliographicDetails.class, id);
+            
             Query query = session.createQuery("DELETE FROM AdminRegistration  WHERE  id.registrationId = :registrationId");
 
             query.setInteger("registrationId",registration_id );
@@ -117,15 +122,21 @@ public void delete(int registration_id) {
             tx.commit();
           
         }
+catch (Exception e) {
 
+                tx.rollback();
+            e.printStackTrace();
+        }
+        
         finally {
-            //session.close();
+            session.close();
         }
     }
 
 public Integer getAdminRequestCount(String status){
         Session session =null;
     Transaction tx = null;
+    Integer countrequest=null;
     try {
 
         session = HibernateUtil.getSessionFactory().openSession();
@@ -133,84 +144,120 @@ public Integer getAdminRequestCount(String status){
         Criteria criteria = session.createCriteria(AdminRegistration.class)
                  .setProjection(Projections.count("registrationId"));
         criteria.add(Restrictions.eq("status",status ));
-            Integer countrequest = (Integer)criteria.uniqueResult();
+           countrequest  = (Integer)criteria.uniqueResult();
 
    
 
 
-            return countrequest;
+        
         }
+    catch (Exception e) {
+
+                tx.rollback();
+            e.printStackTrace();
+        }
+
         finally {
-         //   session.close();
+           session.close();
         }
+            return countrequest;
 }
 
 public List getAdminDetailsByStatus(String status){
   Session session =null;
     Transaction tx = null;
+    List obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createQuery("FROM AdminRegistration where status = :status");
+            query = session.createQuery("FROM AdminRegistration where status = :status");
              query.setString("status",status );
+obj=query.list();
+           
+        }
+      catch (Exception e) {
 
-            return query.list();
+                tx.rollback();
+            e.printStackTrace();
         }
         finally {
-        //    session.close();
+            session.close();
         }
+         return obj;
 }
 public List getAdminDetails(){
   Session session =null;
     Transaction tx = null;
+    List obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createQuery("FROM AdminRegistration");
-            return query.list();
+            query = session.createQuery("FROM AdminRegistration");
+        obj=    query.list();
+        }
+    catch (Exception e) {
+
+                tx.rollback();
+            e.printStackTrace();
         }
         finally {
-        //    session.close();
+            session.close();
         }
+        return obj;
 }
 public List getAdminInstituteDetails(){
   Session session =null;
     Transaction tx = null;
+    List obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createSQLQuery("select a.*,b.* FROM admin_registration a,library b where a.registration_id=b.registration_id and b.working_status='Blocked'")
+             query = session.createSQLQuery("select a.*,b.* FROM admin_registration a,library b where a.registration_id=b.registration_id and b.working_status='Blocked'")
                     .addEntity(AdminRegistration.class)
                     .addEntity(Library.class)
                     .setResultTransformer(Transformers.aliasToBean(AdminReg_Institute.class));
-            return query.list();
+           obj=query.list();
+        }
+    catch (Exception e) {
+
+                tx.rollback();
+            e.printStackTrace();
         }
         finally {
-        //    session.close();
+            session.close();
         }
+         return obj;
 }
 
 public List getAdminInstituteDetailsById(Integer registerationId){
   Session session =null;
     Transaction tx = null;
+    List obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createSQLQuery("select a.*,b.* from admin_registration a left outer join library b on a.registration_id=b.registration_id where a.registration_id=:registrationId")
+            query = session.createSQLQuery("select a.*,b.* from admin_registration a left outer join library b on a.registration_id=b.registration_id where a.registration_id=:registrationId")
                     .addEntity(AdminRegistration.class)
                     .addEntity(Library.class)
                     .setResultTransformer(Transformers.aliasToBean(AdminReg_Institute.class));
             query.setInteger("registrationId", registerationId);
-            System.out.println("Sql Query="+query.getQueryString());
-            return query.list();
+            obj= query.list();
+         
+        }
+    catch (Exception e) {
+
+                tx.rollback();
+            e.printStackTrace();
         }
         finally {
-          //  session.close();
+            session.close();
         }
+           return obj;
 }
 public List getAdminInstituteDetailsByStatus(String status){
   Session session =null;
     Transaction tx = null;
+    List list=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -220,48 +267,69 @@ public List getAdminInstituteDetailsByStatus(String status){
                     .setResultTransformer(Transformers.aliasToBean(AdminReg_Institute.class));
             query.setString("status", status);
             System.out.println("Sql Query="+query.getQueryString());
-            return query.list();
+           list=query.list();
+        }
+    catch (Exception e) {
+
+                tx.rollback();
+            e.printStackTrace();
         }
         finally {
             session.close();
         }
+         return list;
 }
 
 public List getAdminDeatilsById(Integer registrationId){
  Session session =null;
     Transaction tx = null;
+    List list=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             int i = registrationId.intValue();
             Query query = session.createQuery("FROM AdminRegistration where id.registrationId = :registrationId");
            query.setInteger("registrationId",i);
-            return query.list();
+          list= query.list();
+        }
+      catch (Exception e) {
+
+                tx.rollback();
+            e.printStackTrace();
         }
         finally {
-         //   session.close();
+            session.close();
         }
+         return list;
 }
 
 public List getAdminDeatilsByUserId(String UserId){
   Session session =null;
     Transaction tx = null;
+    List list=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             //int i = registrationId.intValue();
             Query query = session.createQuery("FROM AdminRegistration where loginId = :userId");
            query.setString("userId",UserId);
-            return query.list();
+           list=query.list();
+        }
+      catch (Exception e) {
+
+                tx.rollback();
+            e.printStackTrace();
         }
         finally {
             session.close();
         }
+         return list;
 }
 
 public Integer getAdminRequestCount(){
         Session session =null;
-    Transaction tx = null;
+
+    Integer countrequest=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
         session = HibernateUtil.getSessionFactory().openSession();
@@ -269,16 +337,22 @@ public Integer getAdminRequestCount(){
         Criteria criteria = session.createCriteria(AdminRegistration.class)
                  .setProjection(Projections.count("registrationId"));
    
-            Integer countrequest = (Integer)criteria.uniqueResult();
+           countrequest  = (Integer)criteria.uniqueResult();
 
    
 
 
-            return countrequest;
+           
+        }
+    catch (Exception e) {
+
+
+            e.printStackTrace();
         }
         finally {
-          //  session.close();
+            session.close();
         }
+         return countrequest;
 }
 
 public boolean checkDuplicate(String instituteId)
@@ -309,8 +383,9 @@ return true;
 
              System.out.println(e.toString());
         }
+
         finally{
-       // session.close();
+        session.close();
         }
          return maxNewRegId;
     }
@@ -320,14 +395,14 @@ return true;
 public static  AdminRegistration searchLoginID(String login_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+AdminRegistration obj=null;
         try
         {
             session.beginTransaction();
             query = session.createQuery("FROM  AdminRegistration  WHERE loginId =:login_id  ");
             query.setString("login_id", login_id);
            
-            
+            obj=(AdminRegistration) query.uniqueResult();
         }
         catch(Exception e)
         {
@@ -335,23 +410,23 @@ public static  AdminRegistration searchLoginID(String login_id)
         }
         finally
         {
-        //    session.close();
+            session.close();
         }
-        return (AdminRegistration) query.uniqueResult();
+        return obj;
 
 }
 
 public static  AdminRegistration searchInstituteAdmin(String staff_id,String library_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+AdminRegistration obj=null;
         try
         {
             session.beginTransaction();
             query = session.createQuery("FROM  AdminRegistration  WHERE staffId =:staff_id and libraryId=:library_id");
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
-
+obj=(AdminRegistration) query.uniqueResult();
 
         }
         catch(Exception e)
@@ -360,21 +435,21 @@ public static  AdminRegistration searchInstituteAdmin(String staff_id,String lib
         }
         finally
         {
-         //   session.close();
+            session.close();
         }
-        return (AdminRegistration) query.uniqueResult();
+        return obj;
 
 }
 public static  AdminRegistration searchInstituteAdmin(String login_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+AdminRegistration obj=null;
         try
         {
             session.beginTransaction();
             query = session.createQuery("FROM  AdminRegistration  WHERE loginId =:login_id");
             query.setString("login_id", login_id);
-
+obj=(AdminRegistration) query.uniqueResult();
 
         }
         catch(Exception e)
@@ -383,9 +458,9 @@ public static  AdminRegistration searchInstituteAdmin(String login_id)
         }
         finally
         {
-        //    session.close();
+            session.close();
         }
-        return (AdminRegistration) query.uniqueResult();
+        return obj;
 
 }
 public static  boolean update1(AdminRegistration obj)
@@ -406,6 +481,7 @@ public static  boolean update1(AdminRegistration obj)
         }
         catch (Exception ex)
         {
+            tx.rollback();
          System.out.println(ex.toString());
              return false;
 
@@ -414,7 +490,7 @@ public static  boolean update1(AdminRegistration obj)
         }
         finally
         {
-          //session.close();
+          session.close();
         }
    return true;
 

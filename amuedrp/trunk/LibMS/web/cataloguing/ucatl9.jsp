@@ -74,7 +74,8 @@ if (ns4){
                                           <h2 align="center">MARC Based Bibliographic Cataloging</h2>
 
 <div id="ddtabs3" class="solidblockmenu">
-<ul>
+<ul
+     <li><a href="<%=request.getContextPath()%>/cataloguing/updatecatlcontrol.jsp" onclick="func1(10)"  rel="sb10">Control Fields</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/ucatl0.jsp" onclick="func1(0)"  rel="sb0">0 (01X-09X)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/ucatl1.jsp" onclick="func1(1)" rel="sb1">1 (1XX)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/ucatl2.jsp" onclick="func1(2)" rel="sb2">2 (20X-28X)</a></li>
@@ -142,7 +143,11 @@ Local Fields 900 and onwards.
 Go BACK to Manage MARC Bibliography.
 </div></FONT>
 </DIV>
-
+                  <div style="position:absolute;left:80%;top:18%;">
+                                         <table>
+                                     <tr><td></td><td align="right"><a href="<%=request.getContextPath() %>/marccommit.do"><input type="submit" value="Commit Data" /></a></td></tr>
+                                     </table>
+                                     </div>
 <div style="position:absolute;left:5%;top:23%;width:90%;border:1px #C0C0C0 solid;background: #f5fffa;">
     <table border="0" >
         <tr><td align="center"><img src="<%=request.getContextPath()%>/images/ucons.jpeg" alt="under construction"  /></td><td align="center"><font face="areal" size="6" color="blue">This page Is Under Construction !</font></td></tr>

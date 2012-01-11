@@ -117,11 +117,11 @@ function func1(t){
     }
 
 function func2(t){
-    alert(t);
+  //  alert(t);
     if(t.value!=6){
 
         document.getElementById("ucat6").submit();
-     alert("submitted! ");
+   //  alert("submitted! ");
 }
 }
 </script>
@@ -216,88 +216,88 @@ Go BACK to Manage MARC Bibliography.
 <table width="100%" cellspacing="5" >
   <tr><input type="hidden"  name="zclick" id="zclick" /></tr>
 <tr>
-    <td>Subject Added Entry-Personal Name (R)(600) : <a href="javascript:animatedcollapse.toggle('600')">ind</a> <div id="600" style="width: 150px; display:none" >ind1<input type="text" value="<%=marc600.getIndicator1() %>" name="in6001" readonly maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" value="<%=marc600.getIndicator2() %>" name="in6002" readonly maxlength="1" size="1" onFocus="setObj(description[1],'override',800,60)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+    <td>Subject Added Entry-Personal Name (R)(600) : <a href="javascript:animatedcollapse.toggle('600')">ind</a> <div id="600" style="width: 150px; display:none" >ind1<input type="text" value="<%=marc600.getIndicator1()==null?"":marc600.getIndicator1() %>" name="in6001" readonly maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" value="<%=marc600.getIndicator2()==null?"":marc600.getIndicator2() %>" name="in6002" readonly maxlength="1" size="1" onFocus="setObj(description[1],'override',800,60)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
 <td>
-    $a Personal name (NR) <input type="text" value="<%=marc600.get$a() %>" name="z600a" readonly id="600a" onFocus="setObj(description[2],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    $a Personal name (NR) <input type="text" value="<%=marc600.get$a()==null?"":marc600.get$a() %>" name="z600a" readonly id="600a" onFocus="setObj(description[2],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('600b')">$b </a>
 
 <div id="600b" style=" background: #FDF5E6; display:none">
-    Numeration (NR) <input type="text" value="<%=marc600.get$b() %>" readonly name="z600b" id="600b" />
+    Numeration (NR) <input type="text" value="<%=marc600.get$b()==null?"":marc600.get$b() %>" readonly name="z600b" id="600b" />
 </div>
 <a href="javascript:animatedcollapse.toggle('600c')">$c </a>
 
 <div id="600c" style=" background: #FDF5E6; display:none">
-    Titles and other words associated with a name (R)<input type="text" value="<%=marc600.get$c() %>" name="z600c" readonly id="600c" onFocus="setObj(description[3],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Titles and other words associated with a name (R)<input type="text" value="<%=marc600.get$c()==null?"":marc600.get$c() %>" name="z600c" readonly id="600c" onFocus="setObj(description[3],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 
 <a href="javascript:animatedcollapse.toggle('600d')">$d </a>
 
 <div id="600d" style=" background: #FDF5E6; display:none">
-    Dates associated with a name (NR) <input type="text" value="<%=marc600.get$d() %>" name="z600d" readonly id="600d" onFocus="setObj(description[4],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Dates associated with a name (NR) <input type="text" value="<%=marc600.get$d()==null?"":marc600.get$d() %>" name="z600d" readonly id="600d" onFocus="setObj(description[4],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 
 </div>
 </font></td></tr>
 
 <tr><td colspan="2"><hr width="90%" size="2" color="green"/></td></tr>
 <tr>
-    <td>Subject Added Entry-Topical Term (R)(650) : <a href="javascript:animatedcollapse.toggle('650')">ind</a> <div id="650" style="width: 150px; display:none" >ind1<input type="text" value="<%=marc650.getIndicator1() %>" readonly name="in6501" maxlength="1" size="1" onFocus="setObj(description[5],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" value="<%=marc650.getIndicator2() %>" name="in6502" readonly maxlength="1" size="1" onFocus="setObj(description[1],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+    <td>Subject Added Entry-Topical Term (R)(650) : <a href="javascript:animatedcollapse.toggle('650')">ind</a> <div id="650" style="width: 150px; display:none" >ind1<input type="text" value="<%=marc650.getIndicator1()==null?"":marc650.getIndicator1() %>" readonly name="in6501" maxlength="1" size="1" onFocus="setObj(description[5],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" value="<%=marc650.getIndicator2()==null?"":marc650.getIndicator2() %>" name="in6502" readonly maxlength="1" size="1" onFocus="setObj(description[1],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
 <td>
-    $a Topical term or geographic name entry element (NR) <input type="text" readonly value="<%=marc650.get$a() %>" name="z650a" id="650a" onFocus="setObj(description[6],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    $a Topical term or geographic name entry element (NR) <input type="text" readonly value="<%=marc650.get$a()==null?"":marc650.get$a() %>" name="z650a" id="650a" onFocus="setObj(description[6],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('650b')">$b </a>
 
 <div id="650b" style=" background: #FDF5E6; display:none">
-    Topical term following geographic name entry element (NR) <input type="text" value="<%=marc650.get$b() %>" name="z650b" readonly id="650b" onFocus="setObj(description[7],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Topical term following geographic name entry element (NR) <input type="text" value="<%=marc650.get$b()==null?"":marc650.get$b() %>" name="z650b" readonly id="650b" onFocus="setObj(description[7],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('650c')">$c </a>
 
 <div id="650c" style=" background: #FDF5E6; display:none">
-    Location of event (NR) <input type="text" value="<%=marc650.get$c() %>" readonly name="z650c" id="650c"  />
+    Location of event (NR) <input type="text" value="<%=marc650.get$c()==null?"":marc650.get$c() %>" readonly name="z650c" id="650c"  />
 </div>
 
 <a href="javascript:animatedcollapse.toggle('650d')">$d </a>
 
 <div id="650d" style=" background: #FDF5E6; display:none">
-    Active dates (NR) <input type="text" value="<%=marc650.get$d() %>" name="z650d" readonly id="650d" onFocus="setObj(description[8],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Active dates (NR) <input type="text" value="<%=marc650.get$d()==null?"":marc650.get$d() %>" name="z650d" readonly id="650d" onFocus="setObj(description[8],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 
 <a href="javascript:animatedcollapse.toggle('650e')">$e</a>
 
 <div id="650e" style=" background: #FDF5E6; display:none">
-    Relator term (R) <input type="text" value="<%=marc650.get$e() %>" name="z650e" readonly id="650e" onFocus="setObj(description[9],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Relator term (R) <input type="text" value="<%=marc650.get$e()==null?"":marc650.get$e() %>" name="z650e" readonly id="650e" onFocus="setObj(description[9],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('6504')">$4 </a>
 
 <div id="6504" style=" background: #FDF5E6; display:none">
-    Relator code (R)  <input type="text" value="<%=marc650.get$4() %>" name="z6504" id="6504" readonly onFocus="setObj(description[10],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Relator code (R)  <input type="text" value="<%=marc650.get$4()==null?"":marc650.get$4() %>" name="z6504" id="6504" readonly onFocus="setObj(description[10],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 
 <a href="javascript:animatedcollapse.toggle('650v')">$v </a>
 
 <div id="650v" style=" background: #FDF5E6; display:none">
-    Form subdivision (R) <input type="text" value="<%=marc650.get$v() %>" name="z650v" id="650v" readonly onFocus="setObj(description[11],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Form subdivision (R) <input type="text" value="<%=marc650.get$v()==null?"":marc650.get$v() %>" name="z650v" id="650v" readonly onFocus="setObj(description[11],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 
 <a href="javascript:animatedcollapse.toggle('650x')">$x </a>
 <div id="650x" style=" background: #FDF5E6; display:none">
-    General subdivision (R) <input type="text" value="<%=marc650.get$x() %>" name="z650x" id="650x" readonly onFocus="setObj(description[12],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    General subdivision (R) <input type="text" value="<%=marc650.get$x()==null?"":marc650.get$x() %>" name="z650x" id="650x" readonly onFocus="setObj(description[12],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 
 <a href="javascript:animatedcollapse.toggle('650y')">$y </a>
 <div id="650y" style=" background: #FDF5E6; display:none">
-    Chronological subdivision (R) <input type="text" value="<%=marc650.get$y() %>" name="z650y" id="650y" readonly onFocus="setObj(description[13],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Chronological subdivision (R) <input type="text" value="<%=marc650.get$y()==null?"":marc650.get$y() %>" name="z650y" id="650y" readonly onFocus="setObj(description[13],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 
 
 <a href="javascript:animatedcollapse.toggle('650z')">$z </a>
 <div id="650z" style=" background: #FDF5E6; display:none">
-    Geographic subdivision (R) <input type="text" value="<%=marc650.get$z() %>" name="z650z" readonly id="650z" onFocus="setObj(description[14],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Geographic subdivision (R) <input type="text" value="<%=marc650.get$z()==null?"":marc650.get$z() %>" name="z650z" readonly id="650z" onFocus="setObj(description[14],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 
 <a href="javascript:animatedcollapse.toggle('6502')">$2 </a>
 <div id="6502" style=" background: #FDF5E6; display:none">
-    Source of heading or term (NR) <input type="text" value="<%=marc650.get$2() %>" name="z6502" id="6502" readonly onFocus="setObj(description[15],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Source of heading or term (NR) <input type="text" value="<%=marc650.get$2()==null?"":marc650.get$2() %>" name="z6502" id="6502" readonly onFocus="setObj(description[15],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 
 </font></td></tr>

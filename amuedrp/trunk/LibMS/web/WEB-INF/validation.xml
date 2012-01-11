@@ -12,7 +12,7 @@
 
     <global>
 
-        An example global constant
+      <!--  An example global constant
         <constant>
             <constant-name>postalCode</constant-name>
             <constant-value>^\d{5}\d*$</constant-value>

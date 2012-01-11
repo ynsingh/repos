@@ -5,12 +5,6 @@
 
 package com.myapp.struts.marc;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-
 /**
  *
  * @author zeeshan
@@ -21,15 +15,6 @@ public class CatActionForm5 extends org.apache.struts.action.ActionForm {
 
     private Character in5001,in5002,in5021,in5022,in5041,in5042,in5051,in5052,in5201,in5202,in5461,in5462;
 
-
-    public String getZclick() {
-        return zclick;
-    }
-
-    public void setZclick(String zclick) {
-        this.zclick = zclick;
-    }
-    
     public Character getIn5001() {
         return in5001;
     }
@@ -318,17 +303,13 @@ public class CatActionForm5 extends org.apache.struts.action.ActionForm {
         this.z546b = z546b;
     }
 
-    /**
-     * @return
-     */
-    
-    /**
-     *
-     */
-    public CatActionForm5() {
-        super();
-        // TODO Auto-generated constructor stub
+    public String getZclick() {
+        return zclick;
     }
 
-    
+    public void setZclick(String zclick) {
+        this.zclick = zclick;
+    }
+
+
 }

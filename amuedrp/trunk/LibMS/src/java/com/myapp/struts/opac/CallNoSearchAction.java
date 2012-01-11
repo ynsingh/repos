@@ -40,7 +40,8 @@ public class CallNoSearchAction extends org.apache.struts.action.Action {
         String lib_id=myform.getCMBLib();
         String callno = myform.getTXTKEY();
         String sublib =myform.getCMBSUBLib();
-
+if(sublib==null)
+    sublib="All";
            if(myform.getCheckbox().equals("Checked")){
  System.out.println("Languagebbb"+myform.getLanguage());
    List<BibliographicDetailsLang> documentdetail  =(List)osdao.callNoLangSearch(callno, lib_id, sublib,myform.getLanguage().toUpperCase());

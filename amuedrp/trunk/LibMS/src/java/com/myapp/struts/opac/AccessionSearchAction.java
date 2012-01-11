@@ -5,6 +5,9 @@
 
 package com.myapp.struts.opac;
 import  com.myapp.struts.*;
+import com.myapp.struts.hbm.BibliographicDetails;
+import com.myapp.struts.hbm.BibliographicDetailsLang;
+import com.myapp.struts.hbm.DocumentDetails;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -13,10 +16,10 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import java.sql.*;
 import java.util.List;
-import com.myapp.struts.opacDAO.*;
+
 import com.myapp.struts.utility.StringRegEx;
 import java.util.ArrayList;
-
+import com.myapp.struts.opacDAO.OpacSearchDAO;
 /**
  *
  * @author Faraz
@@ -37,28 +40,36 @@ public class AccessionSearchAction extends org.apache.struts.action.Action {
         String lib_id=myform.getCMBLib();
         String accessionno = myform.getTXTKEY();
           String sublib=myform.getCMBSUBLib();
-      
-     
+       session.removeAttribute("documentDetail1");
+        session.removeAttribute("documentDetail");
+     session.removeAttribute("documentDetail2");
 
       if(accessionno.isEmpty()){
        
   request.setAttribute("msg1", "Please Enter Accession No");
        List documentdetail  =new ArrayList();
 
-            System.out.println(documentdetail.size());
-             session.removeAttribute("accdocumentdetail1");
-            session.setAttribute("accdocumentdetail", documentdetail);
+           
+           
+            session.setAttribute("documentDetail1", documentdetail);
   return mapping.findForward(SUCCESS);
       }
 
         boolean st=StringRegEx.containsOnlyNumbers(accessionno);
             if(st==true)
             {
-            List documentdetail  =(List)osdao.accessionNoSearch(accessionno, lib_id, sublib);
+          
 
-            System.out.println(documentdetail.size());
-             session.removeAttribute("accdocumentdetail1");
-            session.setAttribute("accdocumentdetail", documentdetail);
+
+            List<DocumentDetails> documentdetail  =(List<DocumentDetails>)osdao.accessionNoSearch(accessionno, lib_id, sublib);
+
+                      List<BibliographicDetails>    biblio=null;
+if(documentdetail.isEmpty()==false){
+               biblio=osdao.accessionNoBibSearch(documentdetail.get(0).getBiblioId(),documentdetail.get(0).getId().getLibraryId(),documentdetail.get(0).getId().getSublibraryId());
+}
+       //     System.out.println(documentdetail.size()+"  "+biblio.size()+"  "+documentdetail.get(0).getBiblioId());
+            session.setAttribute("documentDetail", documentdetail);
+            session.setAttribute("documentDetail1", biblio);
             return mapping.findForward(SUCCESS);
             }
 
@@ -77,17 +88,26 @@ System.out.println(upperFound);
 //check for Inner Join Between BibliograhicLang and document detail
 
 
-        List documentdetail  =(List)osdao.accessionNoLangSearch(accessionno, lib_id, sublib);
+       List<MixAccessionRecord> documentdetail1  =(List<MixAccessionRecord>)osdao.accessionNoLangSearch(accessionno, lib_id, sublib);
 
-        System.out.println("Size"+documentdetail.size());
-        session.removeAttribute("accdocumentdetail");
-        session.setAttribute("accdocumentdetail1", documentdetail);
-     }
+
+
+             //List<BibliographicDetailsLang>    biblio1=osdao.accessionNoBibLangSearch(documentdetail1.get(0).getBiblioId(),documentdetail1.get(0).getId().getLibraryId(),documentdetail1.get(0).getId().getSublibraryId());
+
+            System.out.println(documentdetail1.size());
+
+          //  session.setAttribute("documentDetail2", documentdetail1);
+            session.setAttribute("documentDetail2", documentdetail1);
+            return mapping.findForward(SUCCESS);
+   }
      else
      {
             
-                request.setAttribute("msg1", "Enter AccessionNo CharCode in Captial Only");
-
+            request.setAttribute("msg1", "Enter AccessionNo CharCode in Captial Only");
+                  
+          
+            
+              
      }
         return mapping.findForward(SUCCESS);
     }

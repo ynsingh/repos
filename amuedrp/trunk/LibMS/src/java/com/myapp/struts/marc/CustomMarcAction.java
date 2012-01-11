@@ -43,32 +43,25 @@ public class CustomMarcAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
         int i;
         System.out.println("inside Custom MArc action");
-
         CustomMarcActionForm cmaf=(CustomMarcActionForm)form;
-               String subfieldvalue[]=cmaf.getSub_names();
+        String subfieldvalue[]=cmaf.getSub_names();
         String marctags[]=cmaf.getMarctags();
         char ind1[] = cmaf.getInd1();
         char ind2[] = cmaf.getInd2();
         String t =cmaf.getZclick();
-
-         HttpSession session = request.getSession();
-      int  bibid = (Integer)session.getAttribute("biblio_id");
-
+        HttpSession session = request.getSession();
+        int  bibid = (Integer)session.getAttribute("biblio_id");
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
         String tagsymbols[]=cmaf.getAllmarc();
-    List<String> list2 = new ArrayList<String>(tagsymbols.length);
-     
+        List<String> list2 = new ArrayList<String>(tagsymbols.length);
         list2=Arrays.asList(tagsymbols);
-System.out.println("IIIIIIIIIIIIINNNNNNNNNNNNNNNNNNNNN"+list2.toString());
-
+        System.out.println("IIIIIIIIIIIIINNNNNNNNNNNNNNNNNNNNN"+list2.toString());
         System.out.println("allmarc ki length = "+tagsymbols.length);
-
-  ArrayList<Integer> sr=new ArrayList();
-  ArrayList<List> jr=new ArrayList();
+        ArrayList<Integer> sr=new ArrayList();
+        ArrayList<List> jr=new ArrayList();
 //String bb=null;
 //        for(int pg=0;pg<list2.size();pg++){
 //
@@ -82,24 +75,22 @@ System.out.println("IIIIIIIIIIIIINNNNNNNNNNNNNNNNNNNNN"+list2.toString());
 //    sr.add(index);
 //    index++;
 //        }
-for( i=0;i<list2.size();i++){
-    if(list2.get(i).equals("a")){
+        for( i=0;i<list2.size();i++){
+        if(list2.get(i).equals("a")){
         sr.add(i);
-        
-    }
-}
-  System.out.println("SSSSSSSSSSSSSSSSSSSSSSr"+sr.toString());
-  if(sr.size()==1){
-  jr.add(list2.subList(sr.get(0), list2.size()));
-  }
-  else{
-  for(int b=0;b<sr.size();b++){
-    System.out.println("Senior List := "+sr.get(b));
-  
-    int bb=sr.lastIndexOf(sr.get(b));
-    System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"+sr.size());
-   System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTT"+bb);
-    if(bb==sr.size()-1)
+            }
+        }
+        System.out.println("SSSSSSSSSSSSSSSSSSSSSSr"+sr.toString());
+        if(sr.size()==1){
+        jr.add(list2.subList(sr.get(0), list2.size()));
+        }
+        else{
+        for(int b=0;b<sr.size();b++){
+        System.out.println("Senior List := "+sr.get(b));
+        int bb=sr.lastIndexOf(sr.get(b));
+        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"+sr.size());
+        System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTT"+bb);
+        if(bb==sr.size()-1)
     {
         jr.add(list2.subList(sr.get(b), list2.size()));
         System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"+sr.get(b-1));
@@ -111,15 +102,13 @@ for( i=0;i<list2.size();i++){
     System.out.println("Junior List =  "+jr.toString());
 }
         }
-
         for(i=0;i<tagsymbols.length;i++){
             System.out.println("allmarc= "+tagsymbols[i]);
         }
-
         for(i=0;i<subfieldvalue.length;i++){
             System.out.println("subnames= "+subfieldvalue[i]);
         }
-     int j=0; int k=0;
+        int j=0; int k=0;
         for(i=0;i<marctags.length;i++){
             System.out.println("000000000000000000000000000000000"+tagsymbols[0].charAt(0));
             biblioid.setLibraryId(library_id);
@@ -128,10 +117,9 @@ for( i=0;i<list2.size();i++){
             biblioid.setMarctag(marctags[i]);
             biblio.setIndicator1(ind1[i]);
             biblio.setIndicator2(ind2[i]);
-
-
                 for(j=0;j<jr.get(i).size();j++)
-                { System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"+jr.get(i).get(j).toString().charAt(0)+" ########  "+subfieldvalue[k]);
+                {
+                       System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"+jr.get(i).get(j).toString().charAt(0)+" ########  "+subfieldvalue[k]);
                        switch(jr.get(i).get(j).toString().charAt(0))
                        {
                           case 'a':
@@ -242,24 +230,16 @@ for( i=0;i<list2.size();i++){
                            case '9':
                                biblio.set$9(subfieldvalue[k]);
                                break;
-                            default:
-                           
+                            default:                           
                        }
-                       k++;
-                  
-                }
-
-
-      
+                       k++;               
+                }     
   biblio.setId(biblioid);
            marcdao.insertBiblio(biblio);
           biblio=new Customizedbiblio();
           //insert
-
-
     System.out.println("object saved");
         }
-
 System.out.println("t value is = "+t);
         //code for mapping forwards......
          if(t.equals("1"))

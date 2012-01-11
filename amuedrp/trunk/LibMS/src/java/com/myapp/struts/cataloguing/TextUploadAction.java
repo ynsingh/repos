@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package com.myapp.struts.cataloguing;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,14 +20,13 @@ import org.apache.struts.upload.FormFile;
 
 /**
  *
- * @author khushnood
+ * @author EdRP-05
  */
 public class TextUploadAction extends org.apache.struts.action.Action {
-
+    
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     NewJFrame newjframe = new NewJFrame();
-
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -40,14 +40,14 @@ public class TextUploadAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        StrutsUploadForm uploadForm = (StrutsUploadForm) form;
+         StrutsUploadForm uploadForm = (StrutsUploadForm) form;
        // FormFile myFile = uploadForm.getMyfile();
         FileInputStream fstream = null;
 
          String path = null;
          String temppath="";
 
-        if(uploadForm.getButton().equals("Brows file")){
+        if(uploadForm.getButton().equals("Browse file")){
 
          try {
 
@@ -71,10 +71,10 @@ public class TextUploadAction extends org.apache.struts.action.Action {
 
             }
 
-           path = (String) newjframe.jFileChooser1ActionPerformedFilepath(newjframe);
+           path = (String) newjframe.jFileChooser1ActionPerformed1(newjframe);
              if (NewJFrame.button.equalsIgnoreCase("ApproveSelection")) {
                     NewJFrame.button = "";
-                    NewJFrame.fileabsolutepath = "";
+                    NewJFrame.filename = "";
              }
            //System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFPPPPPPPPAAAAAAAAATHHHHH::::" + temppath);
         } catch (Exception e) {
@@ -184,7 +184,7 @@ public class TextUploadAction extends org.apache.struts.action.Action {
 
 
                             fstream = new FileInputStream(path);
-                                 System.out.println("fstreanmmmmmmmmmmmmm::::" + fstream.toString());
+                                // System.out.println("fstreanmmmmmmmmmmmmm::::" + fstream.toString());
 
                             // fstream=(FileInputStream)uploadForm.getMyfile().getInputStream();
                             // Open the file that is the first
@@ -213,7 +213,7 @@ public class TextUploadAction extends org.apache.struts.action.Action {
                                 }
 
 
-                                System.out.println(strLine+"..........................");
+                                System.out.println(strLine);
                                 Totalrow++;
 
                             }

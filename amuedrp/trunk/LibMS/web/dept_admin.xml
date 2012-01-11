@@ -22,38 +22,43 @@
                             <item text="Change Accession No" id="212" im0="magazines_close.gif" im1="book_titel.gif" im2="book_titel.gif"/>
                             <item text="Assign Accession No" id="213" im0="magazines_close.gif" im1="book_titel.gif" im2="book_titel.gif"/>
                         </item>
-                        <item text="Non Marc Bibliography Management" id="214" im0="book_titel.gif" im1="books_open.gif" im2="book_titel.gif">
-                            <item text="Manage Bibliography" id="215" im0="magazines_close.gif" im1="books_open.gif" im2="book.gif"/>
-                            <item text="View All" id="216" im0="magazines_close.gif" im1="books_open.gif" im2="book.gif"/>
+                        <item text="Cataloguing of New Titles" id="214" im0="book_titel.gif" im1="books_open.gif" im2="book_titel.gif">
+                            <item text="Entry using Simple Template" id="215" im0="magazines_close.gif" im1="books_open.gif" im2="book.gif"/>
+                            <item text="Entry using MARC21 Template" id="216" im0="magazines_close.gif" im1="books_open.gif" im2="book.gif"/>
+                            <item text="Entry using Customized Template" id="217" im0="magazines_close.gif" im1="books_open.gif" im2="book.gif"/>
                         </item>
 
 
 
-                        <item text="Multimedia Management" id="217" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                        <item text="Multimedia Management" id="218" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
 	</item>
 
-        <item text="Latest Cognizance" id="218" im0="tombs.gif" im1="magazines_open.gif" im2="tombs_mag.gif">
-			<item text="Generate Latest Addition List" id="219" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-			<item text="Update Latest Addition List" id="220" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-			<item text="View Latest Addition List" id="221" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                        <item text="Develop Bibliography" id="222" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+        <item text="Latest Cognizance" id="219" im0="tombs.gif" im1="magazines_open.gif" im2="tombs_mag.gif">
+			<item text="Generate Latest Addition List" id="220" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+			<item text="Update Latest Addition List" id="221" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+			<item text="View Latest Addition List" id="222" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                        <item text="Develop Bibliography" id="223" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
         </item>
-	<item text="Print Catalogue Cards" id="223" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
-        <item text="Catalogue System Setup" id="224" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
-        <item text="Data Import/Export" id="225" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
-        <item text="Catalogue Reports" id="226" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif">
+	<item text="Print Catalogue Cards" id="224" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
+        <item text="Catalogue System Setup" id="225" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
+        <item text="Data Import/Export" id="226" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif">
+            	<item text="Data Import" id="227" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                <item text="Data Export" id="228" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
 
-                        <item text="Document Slip" id="227" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-			<item text=" List Titles " id="228" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-			<item text="Titles Check List" id="229" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                        <item text="Arrival Notice" id="230" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                        <item text="Classified Subject" id="231" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                        <item text="Highly Priced Titles" id="232" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
-                        <item text="Withdrawn Register" id="233" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+            </item>
+        <item text="Catalogue Reports" id="229" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif">
+
+                        <item text="Document Slip" id="230" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+			<item text="List Titles " id="231" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+			<item text="Subjects/Keywords " id="232" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                        <item text="Arrival Notice" id="233" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                        <item text="Classified Subject" id="234" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                        <item text="Highly Priced Titles" id="235" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
+                        <item text="Withdrawn Register" id="236" im0="book_titel.gif" im1="book_titel.gif" im2="book_titel.gif"/>
         </item>
-        <item text="Annual Stock" id="234" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
-        <item text="Database Backup" id="235" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
-        <item text="Online Search" id="236" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
+        <item text="Annual Stock" id="237" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
+        <item text="Database Backup" id="238" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
+        <item text="Online Search" id="239" im0="tombs_mag.gif" im1="tombs_mag.gif" im2="tombs_mag.gif"/>
 </item>
 <!-- ========================= Cataloguing End ================================= -->
 

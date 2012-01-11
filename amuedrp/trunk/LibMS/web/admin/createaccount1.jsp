@@ -299,7 +299,16 @@ else{
 
                                 </select>
                                 </td></tr>
-                            <tr><td colspan="2" height="5px" dir="<%=rtl%>">
+                            <tr><td></td><td  height="5px" dir="<%=rtl%>">
+                                  <br/>  <%
+String msg=(String)request.getAttribute("msg1");
+if(msg!=null)
+    {
+%>
+<p  class="err"><%=msg%></p>
+<%}%>
+
+
                       <%-- <tr><td class="txt2">Password</td><td><input type="password" id="password"  name="password"  onblur="return check1();"  value="">
                            <div align="left" id="searchResult" class="err" style="border:#000000; "></div>
                            </td></tr>

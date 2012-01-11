@@ -13,9 +13,18 @@ import com.myapp.struts.hbm.DocumentDetails;
  * @author faraz
  */
 
-public class CheckoutDeocumentDetails {
+public class CheckoutDeocumentDetails implements java.io.Serializable{
 private CirCheckout cirCheckout;
 private DocumentDetails documentDetails;
+int fine;
+
+    public int getFine() {
+        return fine;
+    }
+
+    public void setFine(int fine) {
+        this.fine = fine;
+    }
 
     public CirCheckout getCirCheckout() {
         return cirCheckout;

@@ -269,16 +269,6 @@ function loadHelp()
  
 </div>
 </body>
-<div
-   style="
-      top: 680px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="/admin/footer.jsp" />
-
-</div>
 
  <script language="javascript" type="text/javascript">
   function quit()

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -144,17 +145,31 @@ public class CatAction8 extends org.apache.struts.action.Action {
                 biblioid.setLibraryId(library_id);
                 biblio.setSublibraryId(sub_library_id);
                 biblioid.setMarctag("800");
+                if(caf8.getIn8001()!=null)
+                if(StringUtils.isNotBlank(in8001.toString())&&StringUtils.isNotEmpty(in8001.toString()))
                 biblio.setIndicator1(in8001);
+                if(caf8.getIn8002()!=null)
+                if(StringUtils.isNotBlank(in8002.toString())&&StringUtils.isNotEmpty(in8002.toString()))
                 biblio.setIndicator2(in8002);
-                    biblio.set$3(z800a);
+                if(StringUtils.isNotBlank(z800a)&&StringUtils.isNotEmpty(z800a))
+                biblio.set$3(z800a);
+                if(StringUtils.isNotBlank(z800b)&&StringUtils.isNotEmpty(z800b))
                     biblio.set$a(z800b);
+               if(StringUtils.isNotBlank(z800c)&&StringUtils.isNotEmpty(z800c))
                     biblio.set$3(z800c);
+                if(StringUtils.isNotBlank(z800d)&&StringUtils.isNotEmpty(z800d))
                     biblio.set$a(z800d);
+                if(StringUtils.isNotBlank(z800t)&&StringUtils.isNotEmpty(z800t))
                     biblio.set$3(z800t);
+                 if(StringUtils.isNotBlank(z800l)&&StringUtils.isNotEmpty(z800l))
                     biblio.set$a(z800l);
-                    biblio.set$3(z800f);
+                if(StringUtils.isNotBlank(z800f)&&StringUtils.isNotEmpty(z800f))
+                biblio.set$3(z800f);
+                if(StringUtils.isNotBlank(z800s)&&StringUtils.isNotEmpty(z800s))
                     biblio.set$a(z800s);
+               if(StringUtils.isNotBlank(z800v)&&StringUtils.isNotEmpty(z800v))
                     biblio.set$3(z800v);
+              if(StringUtils.isNotBlank(z8004)&&StringUtils.isNotEmpty(z8004))
                     biblio.set$a(z8004);
 
                    biblioid.setBibId(bibid);
@@ -171,16 +186,28 @@ if(hm1.containsKey("30")){
                 biblioid1.setLibraryId(library_id);
                 biblio1.setSublibraryId(sub_library_id);
                 biblioid1.setMarctag("830");
+                if(caf8.getIn8301()!=null)
+                if(StringUtils.isNotBlank(in8301.toString())&&StringUtils.isNotEmpty(in8301.toString()))
                 biblio1.setIndicator1(in8301);
+                if(caf8.getIn8302()!=null)
+                if(StringUtils.isNotBlank(in8302.toString())&&StringUtils.isNotEmpty(in8302.toString()))
                 biblio1.setIndicator2(in8302);
-                    biblio1.set$a(z830a);
+            if(StringUtils.isNotBlank(z830a)&&StringUtils.isNotEmpty(z830a))
+                biblio1.set$a(z830a);
+            if(StringUtils.isNotBlank(z830h)&&StringUtils.isNotEmpty(z830h))
                     biblio1.set$b(z830h);
-                    biblio1.set$c(z830n);
-                    biblio1.set$d(z830p);
-                    biblio1.set$g(z830v);
-                    biblio1.set$g(z830x);
-                    biblio1.set$a(z8303);
-                    biblio1.set$b(z8305);
+            if(StringUtils.isNotBlank(z830n)&&StringUtils.isNotEmpty(z830n))
+                biblio1.set$c(z830n);
+            if(StringUtils.isNotBlank(z830p)&&StringUtils.isNotEmpty(z830p))
+                biblio1.set$d(z830p);
+             if(StringUtils.isNotBlank(z830v)&&StringUtils.isNotEmpty(z830v))
+                biblio1.set$g(z830v);
+              if(StringUtils.isNotBlank(z830x)&&StringUtils.isNotEmpty(z830x))
+                biblio1.set$g(z830x);
+             if(StringUtils.isNotBlank(z8303)&&StringUtils.isNotEmpty(z8303))
+                biblio1.set$a(z8303);
+           if(StringUtils.isNotBlank(z8305)&&StringUtils.isNotEmpty(z8305))
+                biblio1.set$b(z8305);
 
                     biblioid1.setBibId(bibid);
                        biblio1.setId(biblioid1);
@@ -195,9 +222,14 @@ if(hm1.containsKey("31")){
                 biblioid2.setLibraryId(library_id);
                 biblio2.setSublibraryId(sub_library_id);
                 biblioid2.setMarctag("850");
+                if(caf8.getIn8501()!=null)
+                if(StringUtils.isNotBlank(in8501.toString())&&StringUtils.isNotEmpty(in8501.toString()))
                 biblio2.setIndicator1(in8501);
+                if(caf8.getIn8502()!=null)
+                if(StringUtils.isNotBlank(in8502.toString())&&StringUtils.isNotEmpty(in8502.toString()))
                 biblio2.setIndicator2(in8502);
-                    biblio2.set$a(z850a);
+              if(StringUtils.isNotBlank(z850a)&&StringUtils.isNotEmpty(z850a))
+                biblio2.set$a(z850a);
                     
                           biblioid2.setBibId(bibid);
                        biblio2.setId(biblioid2);
@@ -213,18 +245,32 @@ if(hm1.containsKey("32")){
                 biblioid3.setLibraryId(library_id);
                 biblio3.setSublibraryId(sub_library_id);
                 biblioid3.setMarctag("852");
+               if(caf8.getIn8521()!=null)
+                if(StringUtils.isNotBlank(in8521.toString())&&StringUtils.isNotEmpty(in8521.toString()))
                 biblio3.setIndicator1(in8521);
+                if(caf8.getIn8522()!=null)
+                if(StringUtils.isNotBlank(in8522.toString())&&StringUtils.isNotEmpty(in8522.toString()))
                 biblio3.setIndicator2(in8522);
-                    biblio3.set$a(z852a);
-                    biblio3.set$g(z852b);
-                    biblio3.set$r(z852c);
-                    biblio3.set$t(z852e);
-                    biblio3.set$u(z852f);
-                    biblio3.set$a(z852h);
-                    biblio3.set$g(z852i);
-                    biblio3.set$r(z852n);
-                    biblio3.set$t(z852t);
-                    biblio3.set$u(z852u);
+                if(StringUtils.isNotBlank(z852a)&&StringUtils.isNotEmpty(z852a))
+                biblio3.set$a(z852a);
+                if(StringUtils.isNotBlank(z852b)&&StringUtils.isNotEmpty(z852b))
+                biblio3.set$g(z852b);
+                if(StringUtils.isNotBlank(z852c)&&StringUtils.isNotEmpty(z852c))
+                biblio3.set$r(z852c);
+              if(StringUtils.isNotBlank(z852e)&&StringUtils.isNotEmpty(z852e))
+                biblio3.set$t(z852e);
+               if(StringUtils.isNotBlank(z852f)&&StringUtils.isNotEmpty(z852f))
+                biblio3.set$u(z852f);
+                if(StringUtils.isNotBlank(z852h)&&StringUtils.isNotEmpty(z852h))
+                biblio3.set$a(z852h);
+               if(StringUtils.isNotBlank(z852i)&&StringUtils.isNotEmpty(z852i))
+                biblio3.set$g(z852i);
+               if(StringUtils.isNotBlank(z852n)&&StringUtils.isNotEmpty(z852n))
+                biblio3.set$r(z852n);
+               if(StringUtils.isNotBlank(z852t)&&StringUtils.isNotEmpty(z852t))
+                biblio3.set$t(z852t);
+               if(StringUtils.isNotBlank(z852u)&&StringUtils.isNotEmpty(z852u))
+                biblio3.set$u(z852u);
 
                   biblioid3.setBibId(bibid);
                        biblio3.setId(biblioid3);
@@ -240,28 +286,52 @@ if(hm1.containsKey("33")){
                 biblioid4.setLibraryId(library_id);
                 biblio4.setSublibraryId(sub_library_id);
                 biblioid4.setMarctag("856");
+               if(caf8.getIn8561()!=null)
+                if(StringUtils.isNotBlank(in8561.toString())&&StringUtils.isNotEmpty(in8561.toString()))
                 biblio4.setIndicator1(in8561);
+               if(caf8.getIn8562()!=null)
+                if(StringUtils.isNotBlank(in8562.toString())&&StringUtils.isNotEmpty(in8562.toString()))
                 biblio4.setIndicator2(in8562);
-                    biblio4.set$a(z856a);
-                    biblio4.set$b(z856b);
+              if(StringUtils.isNotBlank(z856a)&&StringUtils.isNotEmpty(z856a))
+                biblio4.set$a(z856a);
+                if(StringUtils.isNotBlank(z856b)&&StringUtils.isNotEmpty(z856b))
+                biblio4.set$b(z856b);
+                if(StringUtils.isNotBlank(z856c)&&StringUtils.isNotEmpty(z856c))
                     biblio4.set$c(z856c);
-                    biblio4.set$u(z856d);
+               if(StringUtils.isNotBlank(z856d)&&StringUtils.isNotEmpty(z856d))
+                biblio4.set$u(z856d);
+            if(StringUtils.isNotBlank(z856f)&&StringUtils.isNotEmpty(z856f))
                     biblio4.set$2(z856f);
-                    biblio4.set$3(z856h);
-                    biblio4.set$a(z856i);
+                if(StringUtils.isNotBlank(z856h)&&StringUtils.isNotEmpty(z856h))
+                biblio4.set$3(z856h);
+               if(StringUtils.isNotBlank(z856i)&&StringUtils.isNotEmpty(z856i))
+                biblio4.set$a(z856i);
+             if(StringUtils.isNotBlank(z856j)&&StringUtils.isNotEmpty(z856j))
                     biblio4.set$b(z856j);
-                    biblio4.set$c(z856k);
-                    biblio4.set$u(z856l);
-                    biblio4.set$2(z856m);
-                    biblio4.set$3(z856n);
-                    biblio4.set$a(z856o);
+                if(StringUtils.isNotBlank(z856k)&&StringUtils.isNotEmpty(z856k))
+                biblio4.set$c(z856k);
+              if(StringUtils.isNotBlank(z856l)&&StringUtils.isNotEmpty(z856l))
+                biblio4.set$u(z856l);
+                if(StringUtils.isNotBlank(z856m)&&StringUtils.isNotEmpty(z856m))
+                biblio4.set$2(z856m);
+              if(StringUtils.isNotBlank(z856n)&&StringUtils.isNotEmpty(z856n))
+                biblio4.set$n(z856n);
+             if(StringUtils.isNotBlank(z856o)&&StringUtils.isNotEmpty(z856o))
+                biblio4.set$a(z856o);
+             if(StringUtils.isNotBlank(z856p)&&StringUtils.isNotEmpty(z856p))
                     biblio4.set$b(z856p);
-                    biblio4.set$c(z856q);
-                    biblio4.set$u(z856u);
-                    biblio4.set$2(z856t);
-                    biblio4.set$3(z856s);
-                    biblio4.set$2(z856x);
-                    biblio4.set$3(z856z);
+                if(StringUtils.isNotBlank(z856q)&&StringUtils.isNotEmpty(z856q))
+                biblio4.set$q(z856q);
+               if(StringUtils.isNotBlank(z856u)&&StringUtils.isNotEmpty(z856u))
+                biblio4.set$u(z856u);
+             if(StringUtils.isNotBlank(z856t)&&StringUtils.isNotEmpty(z856t))
+                biblio4.set$t(z856t);
+             if(StringUtils.isNotBlank(z856s)&&StringUtils.isNotEmpty(z856s))
+                biblio4.set$s(z856s);
+             if(StringUtils.isNotBlank(z856x)&&StringUtils.isNotEmpty(z856x))
+                biblio4.set$x(z856x);
+              if(StringUtils.isNotBlank(z856z)&&StringUtils.isNotEmpty(z856z))
+                biblio4.set$z(z856z);
                     
                    biblioid4.setBibId(bibid);
                        biblio4.setId(biblioid4);

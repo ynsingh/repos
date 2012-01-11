@@ -11,6 +11,7 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -92,14 +93,20 @@ public class CatAction6 extends org.apache.struts.action.Action {
                 biblioid.setLibraryId(library_id);
                 biblio.setSublibraryId(sub_library_id);
                 biblioid.setMarctag("600");
+                if(caf6.getIn6001()!=null)
+                if(StringUtils.isNotBlank(in6001.toString())&&StringUtils.isNotEmpty(in6001.toString()))
                 biblio.setIndicator1(in6001);
+                if(caf6.getIn6002()!=null)
+                if(StringUtils.isNotBlank(in6002.toString())&&StringUtils.isNotEmpty(in6002.toString()))
                 biblio.setIndicator2(in6002);
-                    biblio.set$a(z600a);
+                if(StringUtils.isNotBlank(z600a)&&StringUtils.isNotEmpty(z600a))
+                biblio.set$a(z600a);
+               if(StringUtils.isNotBlank(z600b)&&StringUtils.isNotEmpty(z600b))
                     biblio.set$b(z600b);
+               if(StringUtils.isNotBlank(z600c)&&StringUtils.isNotEmpty(z600c))
                     biblio.set$c(z600c);
-                    biblio.set$d(z600d);
-
-
+               if(StringUtils.isNotBlank(z600d)&&StringUtils.isNotEmpty(z600d))
+                biblio.set$d(z600d);
                    biblioid.setBibId(bibid);
                        biblio.setId(biblioid);
 //                       marchib.insert(biblio);
@@ -115,19 +122,34 @@ if(hm1.containsKey("26")){
                 biblioid1.setLibraryId(library_id);
                 biblio1.setSublibraryId(sub_library_id);
                 biblioid1.setMarctag("650");
+         if(caf6.getIn6501()!=null)
+                if(StringUtils.isNotBlank(in6501.toString())&&StringUtils.isNotEmpty(in6501.toString()))
                 biblio1.setIndicator1(in6501);
+        if(caf6.getIn6502()!=null)
+                if(StringUtils.isNotBlank(in6502.toString())&&StringUtils.isNotEmpty(in6502.toString()))
                 biblio1.setIndicator2(in6502);
-                    biblio1.set$a(z650a);
-                    biblio1.set$b(z650b);
+if(StringUtils.isNotBlank(z650a)&&StringUtils.isNotEmpty(z650a))
+                biblio1.set$a(z650a);
+if(StringUtils.isNotBlank(z650b)&&StringUtils.isNotEmpty(z650b))
+                biblio1.set$b(z650b);
+           if(StringUtils.isNotBlank(z650c)&&StringUtils.isNotEmpty(z650c))
                     biblio1.set$c(z650c);
+if(StringUtils.isNotBlank(z650d)&&StringUtils.isNotEmpty(z650d))
                     biblio1.set$d(z650d);
+           if(StringUtils.isNotBlank(z650e)&&StringUtils.isNotEmpty(z650e))
                     biblio1.set$e(z650e);
+  if(StringUtils.isNotBlank(z6504)&&StringUtils.isNotEmpty(z6504))
                     biblio1.set$4(z6504);
+           if(StringUtils.isNotBlank(z650v)&&StringUtils.isNotEmpty(z650v))
                     biblio1.set$a(z650v);
+           if(StringUtils.isNotBlank(z650x)&&StringUtils.isNotEmpty(z650x))
                     biblio1.set$b(z650x);
-                    biblio1.set$c(z650y);
+             if(StringUtils.isNotBlank(z650y)&&StringUtils.isNotEmpty(z650y))
+                biblio1.set$c(z650y);
+          if(StringUtils.isNotBlank(z650z)&&StringUtils.isNotEmpty(z650z))
                     biblio1.set$d(z650z);
-                    biblio1.set$e(z6502);
+        if(StringUtils.isNotBlank(z6502)&&StringUtils.isNotEmpty(z6502))
+                    biblio1.set$2(z6502);
 
                     biblioid1.setBibId(bibid);
                        biblio1.setId(biblioid1);

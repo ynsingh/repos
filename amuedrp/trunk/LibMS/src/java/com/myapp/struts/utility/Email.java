@@ -5,24 +5,32 @@
 
 package com.myapp.struts.utility;
 
-
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Writer;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.Message.RecipientType;
+import javax.mail.MessagingException;
 import javax.mail.Multipart;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-
+import javax.mail.SendFailedException;
 public class Email {
 private String to;
 private String subject;
@@ -30,44 +38,47 @@ private String password;
 private String text;
 String userid;
 String host;
-String path;
+String path,path1;
 String saluation,closing;
-StringBuffer buffer;
+String buffer;
+InternetAddress toAddress;
 
 
 
-public Email(String mail,String pass,String path,String to,String password,String subject,String body,String saluation,String closing)
+
+public Email(String path,String to,String password,String subject,String body,String saluation,String closing)
 {
- this.userid=mail;
- this.buffer=new StringBuffer(pass);
+ this.path1=path;
     this.to = to; this.password = password;this.subject=subject;this.text=body;this.path=path;this.saluation=saluation;this.closing=closing;}
 
-public void send(){
+public int send(){
  host = "smtp.gmail.com";
- //userid = "amuedrp@gmail.com";
  
 
 
 
 try
 {
-System.out.println(path);
+path=System.getProperty("user.home");
 
-//  // Open the file that is the first
-//  // command line parameter
-//  FileInputStream fstream = new FileInputStream(path+"/admin/mail.txt");
-//  InputStreamReader isr = new InputStreamReader(fstream,"UTF8");
-// buffer= new StringBuffer();
-// Reader in = new BufferedReader(isr);
-//	int ch;
-//	while ((ch = in.read()) > -1) {
-//		buffer.append((char)ch);
-//	}
-//	in.close();
+//   Open the file that is the first
+ //  command line parameter
+
+   Properties libmspro = new Properties();
+
+            // DriverClass & url
+           
+             libmspro.load(new FileInputStream(path+"/libms.properties"));
+
+             
+        String     userid = libmspro.getProperty("webadmin");
+        buffer = libmspro.getProperty("webpass");
+         
+            
 
 
 
- // System.out.println(buffer+"  "+userid);
+  System.out.println(buffer+"  "+userid);
   
  
 
@@ -83,15 +94,15 @@ props.put("mail.smtp.auth", "true");
 Session session = Session.getDefaultInstance(props, null);
 MimeMessage message = new MimeMessage(session);
 InternetAddress fromAddress = null;
-InternetAddress toAddress = null;
+ toAddress = null;
 
-try {
+
 fromAddress = new InternetAddress(userid);
 toAddress = new InternetAddress(to);
-} catch (AddressException e) {
 
-e.printStackTrace();
-}
+
+
+
 message.setFrom(fromAddress);
 message.setRecipient(RecipientType.TO, toAddress);
 message.setSubject(subject);
@@ -155,10 +166,135 @@ message.setSubject("Create Account Successfully from LibMS");
 String pass=buffer.toString();
 Transport transport = session.getTransport("smtp");
 transport.connect(host, userid, pass);
+
+//check Email ID
+//boolean res=isValidDomain("gmail.com");
+//System.out.println(res+".............>>>>>>>>>>>>>>"+toAddress.toString());
+
+
+try{
 transport.sendMessage(message, message.getAllRecipients());
+}
+catch(MessagingException e){
+  System.out.println("sdfsdfsd"+e);
+
+}
 transport.close();
-} catch (Exception e) {
-e.printStackTrace();
+return 0;
 }
+catch(SendFailedException e1){
+  
+try{
+System.out.println("//write xml file to save pending mailer details in xml file");
+    File f;
+  f=new File(path1+"/logs/myfile.txt");
+  if(!f.exists()){
+  f.createNewFile();
+  System.out.println("New file \"myfile.txt\" has been created  to the current directory");
+  Writer output = null;
+  output = new BufferedWriter(new FileWriter(f));
+  output.write(toAddress.toString());
+  output.close();
+
+
+ }
+   }catch(Exception e2){
+System.out.println(e2);
+
+  }
+
+
 }
+catch (Exception e) {
+//write xml file to save pending mailer details in xml file
+
+
+    System.out.println("Ex");
+
+ try
+
+     {
+
+       /*
+#
+        * To append output to a file, use
+#
+        * FileOutputStream(String file, booean blnAppend) or
+#
+        * FileOutputStream(File file, booean blnAppend) constructor.
+#
+        *
+#
+        * If blnAppend is true, output will be appended to the existing content
+#
+        * of the file. If false, file will be overwritten.
+#
+        */
+
+path1=path1.substring(0,path1.indexOf("/"));
+path1=path1.substring(0,path1.indexOf("/"));
+path1=path1.substring(0,path1.indexOf("/"));
+
+      FileOutputStream fos = new FileOutputStream(path1+"/web/logs/email.txt", true);
+
+      
+
+     String data=toAddress.toString();
+
+       fos.write(data.getBytes());
+
+
+
+      /*
+#
+       * Close FileOutputStream using,
+#
+       * void close() method of Java FileOutputStream class.
+#
+       *
+#
+       */
+
+
+
+       fos.close();
+
+
+
+     }
+
+     catch(FileNotFoundException ex)
+
+     {
+
+      System.out.println("FileNotFoundException : " + ex);
+
+     }
+
+     catch(IOException ioe)
+
+     {
+
+      System.out.println("IOException : " + ioe);
+
+     }
+return 1;
+
+}
+ return 0;
+}
+public boolean isValidDomain(String domainName)
+{
+    try
+    {
+        InetAddress.getByName(domainName);
+        return true;
+    }
+    catch (UnknownHostException e)
+    {
+        return false;
+    }
+}
+
+
 }

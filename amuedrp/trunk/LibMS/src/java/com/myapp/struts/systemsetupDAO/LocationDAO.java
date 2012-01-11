@@ -22,41 +22,49 @@ import org.hibernate.criterion.Restrictions;
 public class LocationDAO {
      public static List<Location> getLocation(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+      List<Location> obj = null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  Location  WHERE id.libraryId =:library_id and id.sublibraryId = :sublibrary_id ");
             query1.setString("library_id", library_id);
             query1.setString("sublibrary_id", sublibrary_id);
 
-            return (List<Location>) query1.list();
+            obj= (List<Location>) query1.list();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
 
       public static List<DocumentDetails> Search(String library_id,String loc) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        List<DocumentDetails> obj = null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  DocumentDetails  WHERE id.libraryId =:library_id and location = :loc ");
             query1.setString("library_id", library_id);
             query1.setString("loc", loc);
 
-            return (List<DocumentDetails>)  query1.list();
+           obj= (List<DocumentDetails>)  query1.list();
+        }
+      catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
 
 public static Location getLocationByName(String library_id,String sublibrary_id,String locName) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        Location obj=null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  Location  WHERE id.libraryId =:library_id and locationName=:locationName  and id.sublibraryId = :sublibrary_id ");
@@ -64,11 +72,15 @@ public static Location getLocationByName(String library_id,String sublibrary_id,
             query1.setString("sublibrary_id", sublibrary_id);
             query1.setString("locationName", locName);
 
-            return (Location) query1.uniqueResult();
+           obj= (Location) query1.uniqueResult();
+        }
+       catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
     public static boolean insert(Location obj) {
@@ -85,12 +97,13 @@ public static Location getLocationByName(String library_id,String sublibrary_id,
 
 
         } catch (Exception ex) {
+            ex.printStackTrace();
             return false;
 
-            //  System.out.println(ex.toString());
+         
 
         } finally {
-            //session.close();
+            session.close();
         }
         return true;
 
@@ -104,7 +117,7 @@ public static Location getLocationByName(String library_id,String sublibrary_id,
             session.update(obj);
             tx.commit();
         } catch (RuntimeException e) {
-
+e.printStackTrace();
             tx.rollback();
             return false;
 
@@ -130,20 +143,21 @@ public static Location getLocationByName(String library_id,String sublibrary_id,
 
 
         } catch (Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
+            tx.rollback();
             return false;
 
-            //  System.out.println(ex.toString());
+            
 
         } finally {
-            // session.close();
+             session.close();
         }
         return true;
 
     }
     public static Location searchLocation(String library_id, String sublibrary_id, String location_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Location obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(Location.class)
@@ -151,27 +165,37 @@ public static Location getLocationByName(String library_id,String sublibrary_id,
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
                     .add(Restrictions.eq("id.locationId", location_id)));
-            return (Location) criteria.uniqueResult();
+           obj= (Location) criteria.uniqueResult();
 
 
-        } finally {
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
-    }
+        return obj;
+
+}
     public static List<Location> listlocation(String library_id, String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+ List<Location> obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(Location.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id)));
-            return (List<Location>) criteria.list();
+           obj= (List<Location>) criteria.list();
 
 
-        } finally {
+        } catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
+        return obj;
+
 }
 }

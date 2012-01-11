@@ -92,11 +92,11 @@ function func1(t){
     }
 
 function func2(t){
-    alert(t);
+ //   alert(t);
     if(t.value!=4){
 
         document.getElementById("ucat4").submit();
-     alert("submitted! ");
+   //  alert("submitted! ");
 }
 }
 </script>
@@ -188,22 +188,22 @@ Go BACK to Manage MARC Bibliography.
     <table width="100%" cellspacing="5" >
          <tr><input type="hidden"  name="zclick" id="zclick" /></tr>
     <tr>
-        <td>Series Statement (R)(490) : <a href="javascript:animatedcollapse.toggle('490')">ind</a> <div id="490" style="width: 150px; display:none" >ind1<input type="text" name="in4901" value="<%=marc490.getIndicator1() %>" readonly maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in4902" value="<%=marc490.getIndicator2() %>" readonly maxlength="1" size="1" onFocus="setObj(description[1],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
-        <td>$a Series statement (R)<input type="text" value="<%=marc490.get$a() %>" readonly name="z490a" id="490a" onFocus="setObj(description[2],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+        <td>Series Statement (R)(490) : <a href="javascript:animatedcollapse.toggle('490')">ind</a> <div id="490" style="width: 150px; display:none" >ind1<input type="text" name="in4901" value="<%=marc490.getIndicator1()==null?"":marc490.getIndicator1() %>" readonly maxlength="1" size="1" onFocus="setObj(description[0],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in4902" value="<%=marc490.getIndicator2()==null?"":marc490.getIndicator2() %>" readonly maxlength="1" size="1" onFocus="setObj(description[1],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+        <td>$a Series statement (R)<input type="text" value="<%=marc490.get$a()==null?"":marc490.get$a() %>" readonly name="z490a" id="490a" onFocus="setObj(description[2],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('490v')">$v </a>
 
 <div id="490v" style=" background: #FDF5E6; display:none">
-    Volume/sequential designation (R)<input type="text" value="<%=marc490.get$v() %>" readonly name="z490v" id="490v" onFocus="setObj(description[3],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Volume/sequential designation (R)<input type="text" value="<%=marc490.get$v()==null?"":marc490.get$v() %>" readonly name="z490v" id="490v" onFocus="setObj(description[3],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('490x')">$x </a>
 <div id="490x" style=" background: #FDF5E6; display:none">
-    International Standard Serial Number (R)<input type="text" value="<%=marc490.get$x() %>" readonly name="z490x" id="490x" onFocus="setObj(description[4],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    International Standard Serial Number (R)<input type="text" value="<%=marc490.get$x()==null?"":marc490.get$x() %>" readonly name="z490x" id="490x" onFocus="setObj(description[4],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 
 <a href="javascript:animatedcollapse.toggle('4903')">$3 </a>
 <div id="4903" style=" background: #FDF5E6; display:none">
-    Materials specified (NR) <input type="text" value="<%=marc490.get$3() %>" name="z4903" id="4903" readonly onFocus="setObj(description[5],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    Materials specified (NR) <input type="text" value="<%=marc490.get$3()==null?"":marc490.get$3() %>" name="z4903" id="4903" readonly onFocus="setObj(description[5],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 </font></td></tr>
 

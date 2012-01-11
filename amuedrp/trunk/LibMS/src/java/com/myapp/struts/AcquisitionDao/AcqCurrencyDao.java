@@ -9,13 +9,9 @@ import  com.myapp.struts.hbm.*;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.LogicalExpression;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import java.util.List;
 import org.hibernate.Query;
-import org.hibernate.criterion.Property;
 
 /**
  *
@@ -25,42 +21,54 @@ public class AcqCurrencyDao {
 
     public static BaseCurrency searchCurrency(String library_id, String base_currency_symbol) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+BaseCurrency obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(BaseCurrency.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.baseCurrencySymbol", base_currency_symbol)));
-            return (BaseCurrency) criteria.uniqueResult();
+            obj= (BaseCurrency) criteria.uniqueResult();
 
 
-        } finally {
+        }
+        catch(Exception e){
+        e.printStackTrace();
+
+        }
+        finally {
             session.close();
         }
+        return obj;
     }
 
     public static BaseCurrency searchCurrency1(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+BaseCurrency obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(BaseCurrency.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id))
                    );
-            return (BaseCurrency) criteria.uniqueResult();
+            obj= (BaseCurrency) criteria.uniqueResult();
 
 
-        } finally {
+        }
+        catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
+        return obj;
     }
 
 
     public static BaseCurrency getCurrencyByName(String library_id,String base_currency_symbol) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+
+        BaseCurrency obj=null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  BaseCurrency  WHERE id.libraryId =:library_id and id.baseCurrencySymbol=:baseCurrencySymbol");
@@ -68,17 +76,21 @@ public class AcqCurrencyDao {
 
             query1.setString("baseCurrencySymbol", base_currency_symbol);
 
-            return (BaseCurrency) query1.uniqueResult();
+            obj= (BaseCurrency) query1.uniqueResult();
+        }
+       catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
+    }
 
-}
 
 public static List<AcqCurrency> getCurrencyList(String library_id,String base_currency_symbol) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+       List<AcqCurrency> obj=null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  AcqCurrency  WHERE id.libraryId =:library_id and targetCurrency=:targetCurrency");
@@ -86,17 +98,21 @@ public static List<AcqCurrency> getCurrencyList(String library_id,String base_cu
 
             query1.setString("targetCurrency", base_currency_symbol);
 
-            return (List<AcqCurrency>) query1.list();
+            obj= (List<AcqCurrency>) query1.list();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
+    }
 
-}
 
 public static List<BaseCurrency> getCurrencyList1(String library_id,String base_currency_symbol) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        List<BaseCurrency> obj=null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  BaseCurrency  WHERE id.libraryId =:library_id and id.baseCurrencySymbol =:baseCurrencySymbol");
@@ -104,13 +120,17 @@ public static List<BaseCurrency> getCurrencyList1(String library_id,String base_
 
             query1.setString("baseCurrencySymbol", base_currency_symbol);
 
-            return (List<BaseCurrency>) query1.list();
+          obj=(List<BaseCurrency>) query1.list();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
+    }
 
-}
     public static void insert(BaseCurrency obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -124,17 +144,17 @@ public static List<BaseCurrency> getCurrencyList1(String library_id,String base_
 
 
 
-        } catch (Exception ex) {
-       //     return false;
-
-            //  System.out.println(ex.toString());
-
-        } finally {
-            //session.close();
         }
-      //  return true;
-
+         catch(Exception e){
+             tx.rollback();
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+       
     }
+
 
     public static void update(BaseCurrency obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -144,15 +164,14 @@ public static List<BaseCurrency> getCurrencyList1(String library_id,String base_
             tx = session.beginTransaction();
             session.update(obj);
             tx.commit();
-        } catch (RuntimeException e) {
-
-            tx.rollback();
-        //    return false;
-
+        }  catch(Exception e){
+        e.printStackTrace();
+        tx.rollback();
         }
-
-   //     return true;
-
+        finally {
+            session.close();
+        }
+     
     }
 
 
@@ -172,17 +191,15 @@ public static List<BaseCurrency> getCurrencyList1(String library_id,String base_
 
 
 
-        } catch (Exception ex) {
-            System.out.println(ex);
-            return false;
-
-            //  System.out.println(ex.toString());
-
-        } finally {
-            // session.close();
         }
-        return true;
-
+         catch(Exception e){
+        e.printStackTrace();
+        return false;
+        }
+        finally {
+            session.close();
+        }
+       return true;
     }
 
 

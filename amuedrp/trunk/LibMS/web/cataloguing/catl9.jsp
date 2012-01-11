@@ -75,6 +75,7 @@ if (ns4){
 
 <div id="ddtabs3" class="solidblockmenu">
 <ul>
+    <li><a href="<%=request.getContextPath()%>/cataloguing/catlcontrol.jsp" onclick="func1(10)"  rel="sb10">Control Fields</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/catl0.jsp" onclick="func1(0)"  rel="sb0">0 (01X-09X)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/catl1.jsp" onclick="func1(1)" rel="sb1">1 (1XX)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/catl2.jsp" onclick="func1(2)" rel="sb2">2 (20X-28X)</a></li>
@@ -85,7 +86,7 @@ if (ns4){
 <li><a href="<%=request.getContextPath()%>/cataloguing/catl7.jsp" onclick="func1(7)" rel="sb7">7 (70X-78X)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/catl8.jsp" onclick="func1(8)" rel="sb8">8 (80X-88X)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/catl9.jsp" onclick="func1(9)" rel="sb9">9 (9XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/cat_new_MARC.jsp"  rel="home">HOME</a></li>
+<li><a href="<%=request.getContextPath()%>/cataloguing/marchome.do"  rel="home">HOME</a></li>
 </ul>
 </div>
 
@@ -146,7 +147,11 @@ Control Field Entry
 </div>
 </FONT>
 </DIV>
-
+                  <div style="position:absolute;left:80%;top:18%;">
+                                         <table>
+                                     <tr><td></td><td align="right"><a href="<%=request.getContextPath() %>/marccommit1.do"><input type="submit" value="Commit Data" /></a></td></tr>
+                                     </table>
+                                     </div>
 <div style="position:absolute;left:5%;top:23%;width:90%;border:1px #C0C0C0 solid;background: #f5fffa;">
     <table border="0" >
         <tr><td align="center"><img src="<%=request.getContextPath()%>/images/ucons.jpeg" alt="under construction"  /></td><td align="center"><font face="areal" size="6" color="blue">This page Is Under Construction !</font></td></tr>

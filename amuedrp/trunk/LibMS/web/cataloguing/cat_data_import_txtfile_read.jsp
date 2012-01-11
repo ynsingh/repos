@@ -7,7 +7,7 @@
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 <html>
     <head>
-        <title>Text File Upload</title>
+       
         <html:base />
     </head>
     <html:form action="/uploadExcel" method="post"  enctype="multipart/form-data">

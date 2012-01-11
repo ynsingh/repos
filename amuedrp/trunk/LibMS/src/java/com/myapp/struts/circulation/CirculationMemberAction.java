@@ -12,7 +12,7 @@ import com.myapp.struts.systemsetupDAO.*;
 import java.util.ResourceBundle;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.systemsetupDAO.MemberCategoryDAO;
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
 import java.util.List;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
@@ -42,14 +42,7 @@ public class CirculationMemberAction extends org.apache.struts.action.Action {
    String rtl="ltr";
    String align="left";
 
-    /**
-      Design by Iqubal Ahmad
-      Modified on 2011-02-02
-     This Action Class is meant for Checking Duplicasy first During member Registeration process.
-     And if it is not Duplicate Cir_view_member.jsp will appear.
-     This Action Class also send faculty_resultset Object For Calling Ajax in Fac,Dept, & Course.
-   
-     */
+    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)

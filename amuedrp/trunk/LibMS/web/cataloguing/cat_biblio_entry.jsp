@@ -364,7 +364,7 @@ function disablecheck(){
 </tr>
 <tr>
     <td class="txtStyle" align="<%=align%>"><strong><%=resource.getString("cataloguing.catoldtitleentry1.title")%>:</strong> </td>
-    <td><html:text property="title" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth"  tabindex="1" />
+    <td><html:text property="title" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="1" />
     </td>
     <td><html:text property="title1" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleId="title" styleClass="keyboardInput" tabindex="2"/></td>
   </tr>

@@ -54,7 +54,7 @@ public class UpdateStaffAction extends org.apache.struts.action.Action {
     private boolean result;
          private byte[] imagefile;
          private String role;
-
+LoginDAO logindao;
     int i=0;
     Locale locale=null;
    String locale1="en";
@@ -67,7 +67,7 @@ public class UpdateStaffAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception
     {
-       
+       logindao=new LoginDAO();
         HttpSession session=request.getSession();
 
        try{
@@ -156,7 +156,7 @@ public class UpdateStaffAction extends org.apache.struts.action.Action {
              id=(String)session.getAttribute("staff_id");
          String  login_role=(String)session.getAttribute("login_role");    //cannot update  same role person if it is not u
 
-            Login logobj=LoginDAO.searchRole(staff_id,library_id);
+            Login logobj=logindao.searchRole(staff_id,library_id);
 
          
   if(logobj!=null)
@@ -242,7 +242,7 @@ System.out.println(sublibrary_id+"/////////////////////////////////"+staff_id);
                 }
 
       /* Use to Update Login Entry related to Library Table & SubLibrary Table and Staff Table */
-            logobj=LoginDAO.searchStaffId(staff_id,library_id);
+            logobj=logindao.searchStaffId(staff_id,library_id);
             
                 
                 if(logobj!=null)
@@ -273,7 +273,7 @@ System.out.println(sublibrary_id+"/////////////////////////////////"+staff_id);
 
 
 
-                    result=LoginDAO.update1(logobj);
+                    result=logindao.update1(logobj);
                 if(result==false)
                 {
                     request.setAttribute("staff_id",staff_id );
@@ -288,7 +288,7 @@ System.out.println(sublibrary_id+"/////////////////////////////////"+staff_id);
 
  /* Use to Update Privilege Entry related to Library Table & SubLibrary Table and Staff Table */
             
-            Login log=LoginDAO.searchRole(staff_id, library_id);
+            Login log=logindao.searchRole(staff_id, library_id);
             if(log!=null)
             {  role=log.getRole();
 
@@ -421,7 +421,7 @@ if(adminobj!=null)
             }
       String  login_role=(String)session.getAttribute("login_role");    //cannot create co-admin
 
-      Login  logobj=LoginDAO.searchRole(staff_id,library_id);
+      Login  logobj=logindao.searchRole(staff_id,library_id);
          
 
             if(logobj!=null)
@@ -441,7 +441,7 @@ if(adminobj!=null)
 
 System.out.println(sublibrary_id);
            
-                  result=LoginDAO.DeleteLogin(staff_id,library_id,sublibrary_id);
+                  result=logindao.DeleteLogin(staff_id,library_id,sublibrary_id);
 
 
            

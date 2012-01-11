@@ -64,7 +64,7 @@ public class MemberUpdateViewAction extends org.apache.struts.action.Action {
        
         if(button.equals("Update"))
         {
-             
+          request.setAttribute("bt", "nodirecttosetup");
              result=MemberDAO.update(emptype,library_id,emptype_full_name);
              if(result==true)
              {
@@ -75,14 +75,15 @@ public class MemberUpdateViewAction extends org.apache.struts.action.Action {
              else
              {
                  //request.setAttribute("msg", "Record Not Update");
-                 request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recupdatenotsecc"));
+                 request.setAttribute("msg1", resource.getString("circulation.circulationnewmemberregAction.recupdatenotsecc"));
               return mapping.findForward("success");
              }
 
         }
         if(button.equals("Delete"))
         {
-           List<CirMemberAccount> cir=   (List<CirMemberAccount>)MemberDAO.searchAccount(library_id,emptype_id);
+         request.setAttribute("bt", "nodirecttosetup");
+            List<CirMemberAccount> cir=   (List<CirMemberAccount>)MemberDAO.searchAccount(library_id,emptype_id);
            if(!cir.isEmpty()){
 
             //  request.setAttribute("msg1", "Account Created With This Member,Cannot Deleted");

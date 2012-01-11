@@ -21,6 +21,7 @@
     <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
   <jsp:include page="/admin/header.jsp"/>
 <html>
+     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
     <head>
 <%
  String lib_id = (String)session.getAttribute("library_id");
@@ -120,8 +121,8 @@ else
     }
     %>
 
-        <table style="position:absolute; left: 10%; top: 40%;" >
-        <tr bgcolor="#E0E8F5" ><td width="100" >Biblio Id</td><td width="200">MarcTag</td><td width="200">Title</td><td width="100">Action</td></tr>
+        <table style="position:absolute; left: 10%; top: 20%;" class="table">
+        <tr class="headerStyle" ><td width="100" >Biblio Id</td><td width="200">MarcTag</td><td width="200">Title</td><td width="100">Action</td></tr>
         <logic:iterate id="Biblio" name="MARCList" offset="<%=String.valueOf(fromIndex)%>" length="2">
           <html:form action="/viewMARC">
             <tr>

@@ -4,6 +4,8 @@
 <!-- Generated Mar 11, 2011 5:57:04 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="com.myapp.struts.hbm.BibliographicDetails" table="bibliographic_details" catalog="libms">
+ 
+
         <composite-id name="id" class="com.myapp.struts.hbm.BibliographicDetailsId">
             <key-property name="biblioId" type="int">
                 <column name="biblio_id" />
@@ -18,6 +20,7 @@
         <many-to-one name="library" class="com.myapp.struts.hbm.Library" update="false" insert="false" fetch="select">
             <column name="library_id" length="20" not-null="true" unique="true" />
         </many-to-one>
+       
         <property name="documentType" type="string">
             <column name="document_type" length="20" />
         </property>

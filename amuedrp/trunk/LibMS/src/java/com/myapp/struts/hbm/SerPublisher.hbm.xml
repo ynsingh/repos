@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16 Nov, 2011 3:36:59 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.SerPublisher" table="ser_publisher" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.SerPublisherId">
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+            <key-property name="sublibraryId" type="string">
+                <column name="sublibrary_id" length="20" />
+            </key-property>
+            <key-property name="pubId" type="string">
+                <column name="pub_id" length="20" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="library" class="com.myapp.struts.hbm.Library" update="false" insert="false" fetch="select">
+            <column name="library_id" length="20" not-null="true" />
+        </many-to-one>
+        <property name="pubName" type="string">
+            <column name="`pub-name`" length="15" />
+        </property>
+        <property name="pubAdd" type="string">
+            <column name="pub_add" length="30" />
+        </property>
+        <property name="city" type="string">
+            <column name="city" length="15" />
+        </property>
+        <property name="state" type="string">
+            <column name="state" length="15" />
+        </property>
+        <property name="country" type="string">
+            <column name="country" length="15" />
+        </property>
+        <property name="pubUrl" type="string">
+            <column name="pub_url" length="15" />
+        </property>
+        <property name="pubPhone" type="string">
+            <column name="pub_phone" length="15" />
+        </property>
+        <property name="fax" type="string">
+            <column name="fax" length="15" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="15" />
+        </property>
+    </class>
+</hibernate-mapping>

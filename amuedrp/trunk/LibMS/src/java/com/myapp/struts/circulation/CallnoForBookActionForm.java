@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
 
 /**
  *
@@ -18,6 +17,15 @@ import org.apache.struts.action.ActionMessage;
 public class CallnoForBookActionForm extends org.apache.struts.action.ActionForm {
     
     private String call_no;
+    private String accessionno;
+
+    public String getAccessionno() {
+        return accessionno;
+    }
+
+    public void setAccessionno(String accessionno) {
+        this.accessionno = accessionno;
+    }
 
     public String getCall_no() {
         return call_no;

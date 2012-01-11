@@ -36,9 +36,11 @@ public class NoticeDAO {
         }
         catch (Exception ex)
         {
+            ex.printStackTrace();
+            tx.rollback();
              return false;
 
-       //  System.out.println(ex.toString());
+       
 
         }
         finally
@@ -51,19 +53,26 @@ public class NoticeDAO {
 
 public static Notices getNoticeName(String library_id,String notice_id,String sub_lib) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+       Notices obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  Notices  WHERE id.libraryId =:library_id and id.noticeId = :noticeId and id.sublibraryId=:sublibraryId");
             query.setString("library_id", library_id);
             query.setString("noticeId",notice_id);
             query.setString("sublibraryId", sub_lib);
-            return (Notices) query.uniqueResult();
+           obj= (Notices) query.uniqueResult();
+        }
+         catch (Exception ex)
+        {
+            ex.printStackTrace();
+
+
+
         }
         finally {
             session.close();
         }
-
+return obj;
 }
 
 
@@ -77,11 +86,14 @@ public static  boolean update(Notices obj)
             session.update(obj);
             tx.commit();
         }
-        catch (RuntimeException e) {
+        catch (Exception e) {
 
                 tx.rollback();
                 return false;
 
+        }
+        finally{
+        session.close();
         }
 
    return true;
@@ -98,8 +110,8 @@ public static  boolean Delete(Notices obj)
             session.delete(obj);
             tx.commit();
         }
-        catch (RuntimeException e) {
-               // System.out.println("FacultyDAO.Delete():*****"+e);
+        catch (Exception e) {
+              e.printStackTrace();
                 tx.rollback();
                 return false;
 
@@ -114,20 +126,28 @@ public static  boolean Delete(Notices obj)
 }
 public static List<Notices> searchNotices(String library_id,String sub_lib) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List<Notices> obj=null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  Notices  WHERE id.libraryId=:library_id and id.sublibraryId=:sublibraryId");
             query1.setString("library_id", library_id);
 
              query1.setString("sublibraryId", sub_lib);
-            return (List<Notices>) query1.list();
+           obj= (List<Notices>) query1.list();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+
+
+
         }
         finally {
             session.close();
         }
-
+return obj;
 }
+
 
 
 }

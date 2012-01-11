@@ -5,10 +5,9 @@
 
 package com.myapp.struts.circulation;
 
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.opacDAO.CheckoutDeocumentDetails;
+import com.myapp.struts.opacDAO.CirRequestfromOpacDAO;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -43,18 +42,17 @@ public class CirCheckOutViewAllAction extends org.apache.struts.action.Action {
         session.removeAttribute("cir_checkout_report");
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
-        
-        List cir_checkout_report=CirculationDAO.CheckoutReport(library_id,sublibrary_id, starting_date,end_date, memid);
-       System.out.println("@@@@@@@@"+cir_checkout_report.size());
 
-        if(!cir_checkout_report.isEmpty())
-        {
-         
-          session.setAttribute("cir_checkout_report",cir_checkout_report);
-          return mapping.findForward("success");
+        List<CheckoutDeocumentDetails>  requestList=null;
 
-        }
-        
+
+
+requestList = (List<CheckoutDeocumentDetails>)CirRequestfromOpacDAO.getCheckOuts(library_id, sublibrary_id, memid,starting_date,end_date);
+System.out.println("size="+requestList.size());
+
+session.setAttribute("membercheckoutDetail", requestList);
+
+
         return mapping.findForward("success");
     }
 }

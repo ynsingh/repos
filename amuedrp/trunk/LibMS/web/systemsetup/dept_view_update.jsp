@@ -160,16 +160,7 @@ locale1=(String)session.getAttribute("locale");
 
 </body>
 </html>
-<div
-   style="
-      top: 750px;
 
-      position: absolute;
-
-      visibility: show;">
-
-<jsp:include page="/admin/footer.jsp"/>
-  </div>
 <script language="javascript" type="text/javascript">
   function quit()
   {

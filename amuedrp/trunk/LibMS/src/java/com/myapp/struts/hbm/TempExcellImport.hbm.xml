@@ -197,5 +197,11 @@
          <property name="status" type="string">
             <column name="status" length="20" />
         </property>
+         <property name="bookLanguage" type="string">
+            <column name="book_language" length="20" />
+        </property>
+         <property name="refNo" type="string">
+            <column name="ref_no" length="20" />
+        </property>
     </class>
 </hibernate-mapping>

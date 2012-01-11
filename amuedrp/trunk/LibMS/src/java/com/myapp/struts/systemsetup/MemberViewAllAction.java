@@ -31,6 +31,13 @@ public class MemberViewAllAction extends org.apache.struts.action.Action {
          HttpSession session=request.getSession();
          library_id=(String)session.getAttribute("library_id");
          List member=MemberDAO.searchEmployeeType(library_id);
+
+          if(member.isEmpty() && member==null){
+  String msg="You need to Add Members";
+  request.setAttribute("msg1", msg);
+    return mapping.findForward("success");
+  }
+
          session.setAttribute("member", member);
         
         return mapping.findForward(SUCCESS);

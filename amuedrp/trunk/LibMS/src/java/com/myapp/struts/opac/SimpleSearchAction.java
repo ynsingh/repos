@@ -61,7 +61,7 @@ public class SimpleSearchAction extends org.apache.struts.action.Action {
         cnf = simpleform.getCMBCONN();
         sort= simpleform.getCMBSORT();
         int flag=0;
-        
+    session.getAttribute("documentDetail1");
 
     phrase=p.split(" ");
     System.out.println("*************************"+phrase.length+phrase[0]+".....");

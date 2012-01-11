@@ -54,7 +54,7 @@ document.Form1.submit();
 </script>
     </head>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
-<body onload="fun()" class="datagrid">
+<body onload="fun()">
 <form name="Form1" action="viewAllBiblio.do"  >
       <table dir="<%=rtl%>"  align="<%=align%>" width="100%" class="datagrid"  style="border:solid 1px #e0e8f5; position: absolute; top: 20%">
   <tr bgcolor="#7697BC"><td  width="100%"   align="center" colspan="2">

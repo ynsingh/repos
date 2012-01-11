@@ -45,54 +45,50 @@ locale1=(String)session.getAttribute("locale");
 
 <body>
 
-
+   
      <html:form action="/cir_callno" method="post">
-        <%-- <table dir="<%=rtl%>"  class="table" width="400px" align="center" valign="top">
+       
 
+<table dir="<%=rtl%>" align="center">
+    <tr>
 
-                <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("circulation.cir_checkout.managechkout")%></td></tr>
-                <tr><td dir="<%=rtl%>" valign="top" align="center"> <br/>
-        --%>        <table dir="<%=rtl%>" align="center">
-
-                   
-  
-
-  <tr>
-
-      <td dir="<%=rtl%>"  align="<%=align%>"><p class="txt2"><%=resource.getString("circulation.showcirreqopac.callno")%><a class="star">*</a> :</p></td>
+      <td dir="<%=rtl%>"  align="<%=align%>"><p class="txt2"><%=resource.getString("circulation.showcirreqopac.callno")%><a class="star"></a> :</p></td>
     <td dir="<%=rtl%>"><html:text property="call_no" styleId="call_no"  value="" styleClass="textBoxWidth"/>
 
     </td>
   </tr>
- 
+  <tr>
+
+      <td dir="<%=rtl%>"  align="<%=align%>"><p class="txt2">or Accession No<a class="star"></a> :</p></td>
+    <td dir="<%=rtl%>"><html:text property="accessionno" styleId="accessionno"  value="" styleClass="textBoxWidth"/>
+
+    </td>
+  </tr>
  
   <tr>
     <td dir="<%=rtl%>" colspan="2" align="center"><input type="button"  value="<%=resource.getString("circulation.cir_newmember.submit")%>"  onClick="return validation();"/>
 
-     <%--   <input type="button"  value="<%=resource.getString("circulation.cir_newmember.back")%>" onclick="return quit();" />--%>
+    
  </td>
 </tr>
   
   <tr><td dir="<%=rtl%>" colspan="2">
-              <%
+    <%
  String msg=(String)request.getAttribute("msg");
  String msg1=(String)request.getAttribute("msg1");
            if (msg!=null){
 %>
-    <span style="font-size:12px;font-weight:bold;color:blue;" ><%=msg%></span>
+  <br/>   <span style="font-size:12px;font-weight:bold;color:blue;" ><%=msg%></span>
  <%
 }else if(msg1!=null){%>
-  <span style="font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>
+  <br/> <span style="font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>
   <%}
 %>
-<div id="err" class="err">
-</div>
 
         </td></tr>
                 </table>
-               <%--     </td></tr>
 
- </table>--%>
+               
 </html:form>
 
 
@@ -113,7 +109,7 @@ locale1=(String)session.getAttribute("locale");
 
 
     var sublib_name=document.getElementById('call_no');
-
+  var keyValue1 = document.getElementById('accessionno');
 
 
 
@@ -127,18 +123,27 @@ var str="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")
 
 
 
-    if(sublib_name.value=="")
-        {str+="\n <%=resource.getString("opac.callno.entercallno")%> ";
+    if(sublib_name.value=="" && keyValue1.value=="")
+        {str+="\n Please Enter AccessionNo/CallNo ";
              alert(str);
              document.getElementById('call_no').focus();
             return false;
 
         }
+if(keyValue1.value!="")
+    {
+        
+var keyValue = document.getElementById('accessionno').value;
+var framevalue = "<iframe align=center name=section1 id=section1 height=300px width=500px scrolling=no src=<%=request.getContextPath()%>/showbook.do?id="+ keyValue+"&b="+"back"+" frameborder=0 />";
+top.document.getElementById("section1").innerHTML = framevalue;
+    }
+
+  //  search();
 
 
-    search();
-
-
+var keyValue = document.getElementById('call_no').value;
+var framevalue = "<iframe align=center name=section1 id=section1 height=300px width=500px scrolling=no src=<%=request.getContextPath()%>/cir_callno.do?callno="+ keyValue +" frameborder=0 />";
+top.document.getElementById("section1").innerHTML = framevalue;
 
 
 
@@ -197,6 +202,8 @@ function search() {
 
     var keyValue = document.getElementById('call_no').value;
 
+    
+
 //alert("caa");
 
 
@@ -215,6 +222,7 @@ req.send("getCallNo="+keyValue);
 
 
 }
+
 return true;
 
 }

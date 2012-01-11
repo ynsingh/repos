@@ -4,6 +4,7 @@
     Author     : zeeshan
 --%>
 
+<%@page import="java.util.HashMap"%>
 <%@page import="com.myapp.struts.hbm.Biblio"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -140,11 +141,11 @@ function func1(t){
     }
 
 function func2(t){
-    alert(t);
+   // alert(t);
     if(t.value!=2){
 
         document.getElementById("ucat2").submit();
-     alert("submitted! ");
+   //  alert("submitted! ");
 }
 }
 </script>
@@ -152,6 +153,7 @@ function func2(t){
 
 <div id="ddtabs3" class="solidblockmenu">
 <ul>
+     <li><a href="<%=request.getContextPath()%>/cataloguing/updatecatlcontrol.jsp" onclick="func1(10)"  rel="sb10">Control Fields</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/ucatl0.jsp" onclick="func1(0)"  rel="sb0">0 (01X-09X)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/ucatl1.jsp" onclick="func1(1)" rel="sb1">1 (1XX)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/ucatl2.jsp" onclick="func1(2)" rel="sb2">2 (20X-28X)</a></li>
@@ -221,7 +223,9 @@ Go BACK to Manage MARC Bibliography.
 </DIV>
 
                                       <!-- Marc entries Starts from here . -->
-                                      <%! Biblio marc210=new Biblio();
+                                      <%! 
+                                       HashMap hm1 = new HashMap();
+                                      Biblio marc210=new Biblio();
                                           Biblio marc245=new Biblio();
                                           Biblio marc250=new Biblio();
                                           Biblio marc256=new Biblio();
@@ -229,6 +233,33 @@ Go BACK to Manage MARC Bibliography.
                                           Biblio marc263=new Biblio();
                                        %>
   <%
+   String msg1=(String)request.getAttribute("msg1");
+   hm1 = (HashMap)session.getAttribute("hsmp");
+ // if(!hm1.isEmpty()){
+
+  if(hm1.containsKey("9")){
+       marc210=(Biblio)hm1.get("9");
+        }
+   if(hm1.containsKey("10")){
+       marc245=(Biblio)hm1.get("10");
+        }
+   if(hm1.containsKey("11")){
+       marc250=(Biblio)hm1.get("11");
+        }
+  if(hm1.containsKey("12")){
+       marc256=(Biblio)hm1.get("12");
+        }
+  if(hm1.containsKey("13")){
+       marc260=(Biblio)hm1.get("13");
+        }
+  if(hm1.containsKey("14")){
+       marc263=(Biblio)hm1.get("14");
+        }
+  
+ //  }else{
+    
+  
+  
      if(request.getAttribute("210")!=null){
              marc210=(Biblio)request.getAttribute("210");}
      if(request.getAttribute("245")!=null){
@@ -241,30 +272,26 @@ Go BACK to Manage MARC Bibliography.
              marc260=(Biblio)request.getAttribute("260");}
      if(request.getAttribute("263")!=null){
              marc263=(Biblio)request.getAttribute("263");}
-
+  // }
      %>
 <!-- Title statements fields 20x-24x -->
-<div style="position:absolute;left:80%;top:18%;">
-                                         <table>
-                                     <tr><td></td><td align="right"><a href="<%=request.getContextPath() %>/marccommit.do"><input type="submit" value="Commit Data" /></a></td></tr>
-                                     </table>
-                                     </div>
+
 <div style="position:absolute;left:5%;top:25%;width:90%;border:1px #C0C0C0 solid;background: #f5fffa;">
 <html:form styleId="ucat2" action="/ucataction2.do" method="post">
 <table width="100%" cellspacing="5" >
     <tr><input type="hidden" value="" name="zclick" id="zclick" /></tr>
-    <tr><td>Abbreviated Title (210) : <a href="javascript:animatedcollapse.toggle('210')">ind</a> <div id="210" style="width: 150px; display:none" >ind1<input type="text" name="in2101" value="<%=marc210.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[0],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in2102" value="<%=marc210.getIndicator2()  %>" maxlength="1" size="1" onFocus="setObj(description[1],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+    <tr><td>Abbreviated Title (210) : <a href="javascript:animatedcollapse.toggle('210')">ind</a> <div id="210" style="width: 150px; display:none" >ind1<input type="text" name="in2101" value="<%=marc210.getIndicator1()==null?"":marc210.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[0],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in2102" value="<%=marc210.getIndicator2()==null?"":marc210.getIndicator2()  %>" maxlength="1" size="1" onFocus="setObj(description[1],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
 <td>
-$a Abbreviated Title (NR)<input type="text" value="<%=marc210.get$a() %>" name="z210a" id="210a" onFocus="setObj(description[2],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+$a Abbreviated Title (NR)<input type="text" value="<%=marc210.get$a()==null?"":marc210.get$a() %>" name="z210a" id="210a" onFocus="setObj(description[2],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('210b')">$b </a>
 
 <div id="210b" style="width: 500px; background: #FDF5E6; display:none">
-Qualifying Information (NR) <input type="text" value="<%=marc210.get$b() %>" name="z210b" id="210b" onFocus="setObj(description[3],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Qualifying Information (NR) <input type="text" value="<%=marc210.get$b()==null?"":marc210.get$b() %>" name="z210b" id="210b" onFocus="setObj(description[3],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('2102')">$2 </a>
 <div id="2102" style="width: 500px; background: #FDF5E6; display:none">
-Source (R) <input type="text" value="<%=marc210.get$2() %>" name="z2102" id="2102"  onFocus="setObj(description[4],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Source (R) <input type="text" value="<%=marc210.get$2()==null?"":marc210.get$2() %>" name="z2102" id="2102"  onFocus="setObj(description[4],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 </font></td></tr>
 
@@ -272,26 +299,26 @@ Source (R) <input type="text" value="<%=marc210.get$2() %>" name="z2102" id="210
 
 
 <tr>
-    <td>Title Statement (245) :<a href="javascript:animatedcollapse.toggle('245')">ind</a> <div id="245" style="width: 150px; display:none" >ind1<input type="text" name="in2451" value="<%=marc245.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[5],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="2452" value="<%=marc245.getIndicator2() %>" maxlength="1" size="1" onFocus="setObj(description[6],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
-<td>$a Title (NR)<input type="text" value="<% if(session.getAttribute("title")!=null){
+    <td>Title Statement (245) :<a href="javascript:animatedcollapse.toggle('245')">ind</a> <div id="245" style="width: 150px; display:none" >ind1<input type="text" name="in2451" value="<%=marc245.getIndicator1()==null?"":marc245.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[5],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="2452" value="<%=marc245.getIndicator2()==null?"":marc245.getIndicator2() %>" maxlength="1" size="1" onFocus="setObj(description[6],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+<td>$a *Title (NR)<input type="text" value="<% if(session.getAttribute("title")!=null){
                   out.println(session.getAttribute("title"));
         }%>" name="z245a" id="245a" onFocus="setObj(description[7],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('245b')">$b</a>
 <div id="245b" style="width: 500px; background: #FDF5E6; display:none">
- Remainder of title (NR)<input type="text" value="<%=marc245.get$b() %>" name="z245b" id="245b" onFocus="setObj(description[8],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+ Remainder of title (NR)<input type="text" value="<%=marc245.get$b()==null?"":marc245.get$b() %>" name="z245b" id="245b" onFocus="setObj(description[8],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('245c')"> $c</a>
 <div id="245c" style="width: 500px; background: #FDF5E6; display:none">
-Statement of responsibility (NR)<input type="text" value="<%=marc245.get$c() %>" name="z245c" id="245c" onFocus="setObj(description[9],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+*Statement of responsibility (NR)<input type="text" value="<%=marc245.get$c()==null?"":marc245.get$c() %>" name="z245c" id="245c" onFocus="setObj(description[9],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('245n')"> $n</a>
 <div id="245n" style="width: 500px; background: #FDF5E6; display:none">
-Number of Part/Section of Work(NR)<input type="text" value="<%=marc245.get$n() %>" name="z245n" id="245n" onFocus="setObj(description[10],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Number of Part/Section of Work(NR)<input type="text" value="<%=marc245.get$n()==null?"":marc245.get$n() %>" name="z245n" id="245n" onFocus="setObj(description[10],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('245k')"> $k</a>
 <div id="245k" style="width: 500px; background: #FDF5E6; display:none">
-Form (NR)<input type="text" value="<%=marc245.get$k() %>" name="z245k" id="245k" onFocus="setObj(description[11],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Form (NR)<input type="text" value="<%=marc245.get$k()==null?"":marc245.get$k()%>" name="z245k" id="245k" onFocus="setObj(description[11],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 
 </font></td></tr>
@@ -303,12 +330,12 @@ Form (NR)<input type="text" value="<%=marc245.get$k() %>" name="z245k" id="245k"
 <!-- 25X-28X - Edition, Imprint, Etc. Fields-General Information-->
 <tr>
     <td>Edition Statement (250) :<a href="javascript:animatedcollapse.toggle('250')">ind</a> <div id="250" style="width: 150px; display:none" >ind1<input type="text" name="in2501" value="#" maxlength="1" size="1" onFocus="setObj(description[12],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()"  /> ind2<input type="text" name="in2502" value="#" maxlength="1" size="1" onFocus="setObj(description[12],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
-<td>$a Edition Statement(NR)<input type="text" value="<%=marc250.get$a() %>" name="z250a" id="250a" onFocus="setObj(description[13],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()"  />
+<td>$a Edition Statement(NR)<input type="text" value="<%=marc250.get$a()==null?"":marc250.get$a() %>" name="z250a" id="250a" onFocus="setObj(description[13],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()"  />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('250b')">$b</a>
 
 <div id="250b" style="width: 500px; background: #FDF5E6; display:none">
-Remainder of edition statement(NR)<input type="text" value="<%=marc250.get$b() %>" name="z250b" id="250b" onFocus="setObj(description[14],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()"  />
+Remainder of edition statement(NR)<input type="text" value="<%=marc250.get$b()==null?"":marc250.get$b() %>" name="z250b" id="250b" onFocus="setObj(description[14],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()"  />
 </div>
 </font></td></tr>
 
@@ -317,33 +344,33 @@ Remainder of edition statement(NR)<input type="text" value="<%=marc250.get$b() %
 <tr><td colspan="2"><hr width="90%" size="2" color="green"/></td></tr>
 
 <tr>
-    <td>Computer File Characteristics (NR)(256) :<a href="javascript:animatedcollapse.toggle('256')">ind</a> <div id="256" style="width: 150px; display:none" >ind1<input type="text" name="in2561" value="<%=marc256.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[12],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in2562" value="<%=marc256.getIndicator2() %>" maxlength="1" size="1" onFocus="setObj(description[12],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
-<td>$a Computer file characteristics (NR) <input type="text" value="<%=marc256.get$a()  %>" name="z256a" id="256a" onFocus="setObj(description[15],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()"  />
+    <td>Computer File Characteristics (NR)(256) :<a href="javascript:animatedcollapse.toggle('256')">ind</a> <div id="256" style="width: 150px; display:none" >ind1<input type="text" name="in2561" value="<%=marc256.getIndicator1()==null?"":marc256.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[12],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in2562" value="<%=marc256.getIndicator2()==null?"":marc256.getIndicator2() %>" maxlength="1" size="1" onFocus="setObj(description[12],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+<td>$a Computer file characteristics (NR) <input type="text" value="<%=marc256.get$a()==null?"":marc256.get$a()  %>" name="z256a" id="256a" onFocus="setObj(description[15],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()"  />
 <font size="2">
 </font></td></tr>
 
 <tr><td colspan="2"><hr width="90%" size="2" color="green"/></td></tr>
 
 <tr>
-    <td>Publication, Distribution, etc(Imprint) (260) :<a href="javascript:animatedcollapse.toggle('260')">ind</a> <div id="260" style="width: 150px; display:none">ind1<input type="text" name="2601" value="<%=marc260.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[16],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="2602" value="#" maxlength="1" size="1" onFocus="setObj(description[17],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
-<td>$a Place of Publication, Distribution, etc(R)<input type="text" value="<%=marc260.get$a() %>" name="z260a" id="260a" onFocus="setObj(description[18],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    <td>Publication, Distribution, etc(Imprint) (260) :<a href="javascript:animatedcollapse.toggle('260')">ind</a> <div id="260" style="width: 150px; display:none">ind1<input type="text" name="2601" value="<%=marc260.getIndicator1()==null?"":marc260.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[16],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="2602" value="#" maxlength="1" size="1" onFocus="setObj(description[17],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+<td>$a Place of Publication, Distribution, etc(R)<input type="text" value="<%=marc260.get$a()==null?"":marc260.get$a() %>" name="z260a" id="260a" onFocus="setObj(description[18],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('260b')">$b</a>
 
 <div id="260b" style="width: 500px; background: #FDF5E6; display:none">
-Name of Publisher, Distributor, etc (R)<input type="text" value="<%=marc260.get$b() %>" name="z260b" id="260b" onFocus="setObj(description[19],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Name of Publisher, Distributor, etc (R)<input type="text" value="<%=marc260.get$b()==null?"":marc260.get$b() %>" name="z260b" id="260b" onFocus="setObj(description[19],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('260c')">$c</a>
 <div id="260c" style="width: 500px; background: #FDF5E6; display:none">
-Date of Publication,Distribution etc(R)<input type="text" value="<%=marc260.get$c() %>" name="z260c" id="260c" onFocus="setObj(description[20],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Date of Publication,Distribution etc(R)<input type="text" value="<%=marc260.get$c()==null?"":marc260.get$c() %>" name="z260c" id="260c" onFocus="setObj(description[20],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('260e')">$e</a>
 <div id="260e" style="width: 500px; background: #FDF5E6; display:none">
-Place of Manufacturer(NR)<input type="text" value="<%=marc260.get$e() %>" name="z260e" id="260e" onFocus="setObj(description[21],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Place of Manufacturer(NR)<input type="text" value="<%=marc260.get$e()==null?"":marc260.get$e() %>" name="z260e" id="260e" onFocus="setObj(description[21],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('260f')">$f</a>
 <div id="260f" style="width: 500px; background: #FDF5E6; display:none">
-Manufacturer(NR)<input type="text" value="<%=marc260.get$f() %>" name="z260f" id="260f" onFocus="setObj(description[22],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Manufacturer(NR)<input type="text" value="<%=marc260.get$f()==null?"":marc260.get$f() %>" name="z260f" id="260f" onFocus="setObj(description[22],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 </font>
 </td></tr>
@@ -351,10 +378,15 @@ Manufacturer(NR)<input type="text" value="<%=marc260.get$f() %>" name="z260f" id
 <tr><td colspan="2"><hr width="90%" size="2" color="green"/></td></tr>
 
 <tr>
-    <td>Projected Publication Date (NR)(263) :<a href="javascript:animatedcollapse.toggle('263')">ind</a> <div id="263" style="width: 150px; display:none" >ind1<input type="text" name="in2631" value="<%=marc263.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[12],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in2632" value="<%=marc263.getIndicator2() %>" maxlength="1" size="1" onFocus="setObj(description[12],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
-<td>$a Projected publication date (NR) <input type="text" value="<%=marc263.get$a() %>" name="z263a" id="263a" onFocus="setObj(description[23],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+    <td>Projected Publication Date (NR)(263) :<a href="javascript:animatedcollapse.toggle('263')">ind</a> <div id="263" style="width: 150px; display:none" >ind1<input type="text" name="in2631" value="<%=marc263.getIndicator1()==null?"":marc263.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[12],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in2632" value="<%=marc263.getIndicator2()==null?"":marc263.getIndicator2() %>" maxlength="1" size="1" onFocus="setObj(description[12],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+<td>$a Projected publication date (NR) <input type="text" value="<%=marc263.get$a()==null?"":marc263.get$a() %>" name="z263a" id="263a" onFocus="setObj(description[23],'override',800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 </font></td></tr>
+<tr><td><%
+if(msg1!=null)
+       {%>
+       <p class="err"><%=msg1%></p><%}
+%></td></tr>
 </table></html:form>
 </div>
 

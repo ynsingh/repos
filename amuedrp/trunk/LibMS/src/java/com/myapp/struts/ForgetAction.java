@@ -29,6 +29,7 @@ public class ForgetAction extends org.apache.struts.action.Action {
     String question;
     String ans;
  Locale locale=null;
+ LoginDAO logindao=new LoginDAO();
    String locale1="en";
    String rtl="ltr";
    String align="left";
@@ -61,7 +62,7 @@ public class ForgetAction extends org.apache.struts.action.Action {
            ans=login.getAns();
 
 System.out.println(staff_id+""+ans+library_id);
-Login logobj=LoginDAO.searchAns(staff_id,library_id,ans);
+Login logobj=logindao.searchAns(staff_id,library_id,ans);
         
 
       if(logobj!=null)

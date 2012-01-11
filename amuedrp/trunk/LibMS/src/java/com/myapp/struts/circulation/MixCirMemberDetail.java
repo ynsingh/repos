@@ -19,7 +19,13 @@ public class MixCirMemberDetail implements Serializable {
   private String  email;
   private String  req_date;
   private String  expiry_date;
- private String status;
+ private String    sublibrary_id;
+private String    faculty_name;
+private String    dept_name;
+private String    course_name;
+private String library_id;
+private String requestdate;
+private String sublib_name;
 
     public String getStatus() {
         return status;
@@ -28,13 +34,7 @@ public class MixCirMemberDetail implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
-private String    sublibrary_id;
-private String    faculty_name;
-private String    dept_name;
-private String    course_name;
-private String library_id;
-private String requestdate;
-private String sublib_name;
+private String status;
 
     public String getSublib_name() {
         return sublib_name;

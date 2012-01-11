@@ -7,7 +7,6 @@ package com.myapp.struts.cataloguingDAO;
 import com.myapp.struts.cataloguing.StrutsUploadForm;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.hbm.HibernateUtil;
-import java.util.ArrayList;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
 import org.hibernate.Query;
@@ -15,9 +14,6 @@ import java.util.List;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
-import java.lang.*;
-import java.util.Iterator;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.TitlePaneLayout;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.LogicalExpression;
@@ -41,17 +37,17 @@ public class DAO {
             tx = (Transaction) session.beginTransaction();
 
             session.save(obj);
-            // System.out.println("insti name value:::::::::::::::: " + obj.getInstituteName());
+            
             tx.commit();
 
 
 
         } catch (Exception ex) {
 
+tx.rollback();
 
-
-            System.out.println(ex.toString());
-            throw ex;
+            ex.printStackTrace();
+          return false;
 
         } finally {
             session.close();
@@ -62,84 +58,116 @@ public class DAO {
 
     public static List columnname(String table_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List obj=null;
         try {
             session.beginTransaction();
          //    SQLQuery query = session.createQuery("select COLUMN_NAME  from information_schema.columns where table_name ='bibliographic_details' order by ordinal_position) UNION (select COLUMN_NAME from information_schema.columns where table_name ='accession_register' order by ordinal_position)");
 
           //  SQLQuery query = session.createSQLQuery("(select COLUMN_NAME  from information_schema.columns where table_name ='bibliographic_details' order by ordinal_position) UNION ALL (select COLUMN_NAME from information_schema.columns where table_name ='accession_register' order by ordinal_position)");
-              SQLQuery query = session.createSQLQuery("(select COLUMN_NAME  from information_schema.columns where table_name ='temp_excell_import' order by ordinal_position) ");
+              query = session.createSQLQuery("(select distinct COLUMN_NAME  from information_schema.columns where table_name ='temp_excell_import' and  TABLE_SCHEMA='libms' order by ordinal_position)");
+            //SQLQuery query = session.createSQLQuery("SHOW COLUMNS FROM temp_excell_import");
 //query.setResultTransformer(Transformers.aliasToBean(Tab.class));
-            return  query.list();
-        } finally {
+           obj=  query.list();
+        }
+        catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
-
+return obj;
     }
 
         public static List columnname1(String table_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List obj=null;
         try {
             session.beginTransaction();
 
 
-            SQLQuery query = session.createSQLQuery("(select COLUMN_NAME  from information_schema.columns where table_name ='"+table_name+"' order by ordinal_position)");
+            SQLQuery query = session.createSQLQuery("(select COLUMN_NAME  from information_schema.columns where table_name ='"+table_name+"' TABLE_SCHEMA='libms' order by ordinal_position)");
 
-            return  query.list();
-        } finally {
+           obj=  query.list();
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
-
+return obj;
     }
      public static List datatype(String table_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List obj=null;
         try {
             session.beginTransaction();
          //    SQLQuery query = session.createQuery("select COLUMN_NAME  from information_schema.columns where table_name ='bibliographic_details' order by ordinal_position) UNION (select COLUMN_NAME from information_schema.columns where table_name ='accession_register' order by ordinal_position)");
 
-            SQLQuery query = session.createSQLQuery("select DATA_TYPE  from information_schema.columns where table_name ='temp_excell_import' order by ordinal_position") ;
+            SQLQuery query = session.createSQLQuery("select DATA_TYPE  from information_schema.columns where table_name ='temp_excell_import' and TABLE_SCHEMA='libms' order by ordinal_position") ;
 //query.setResultTransformer(Transformers.aliasToBean(Tab.class));
-            return  query.list();
-        } finally {
+            obj=  query.list();
+        } catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
-
+return obj;
     }
     public static List<String> distintTitle(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List<String> obj=null;
         try {
             session.beginTransaction();
             SQLQuery query = session.createSQLQuery("select distinct call_no from temp_excell_import where library_id='"+library_id+"' and sublibrary_id='"+sublibrary_id+"'");
 
-            if(query.list()!=null)
-            return (List<String>) query.list();
-            else
-                return null;
-        } finally {
+            
+           obj= (List<String>) query.list();
+            
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
-
+return obj;
     }
   public static List distintTitleCallno(String library_id,String sublibrary_id,String callno) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List obj=null;
         try {
             session.beginTransaction();
-            SQLQuery query = session.createSQLQuery("select distinct title from temp_excell_import where library_id='"+library_id+"' and call_no='"+callno+"'");
+            SQLQuery query = session.createSQLQuery("select distinct title from temp_excell_import where library_id='"+library_id+"' and sublibrary_id='"+sublibrary_id+"' and call_no='"+callno+"'");
 
-            if(query.list()!=null)
-            return (List) query.list();
-            else
-                return null;
-        } finally {
+            
+            obj= (List) query.list();
+            
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
-
+return obj;
     }
+ public static List distintTitleAccessionno(String library_id,String sublibrary_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+List obj=null;
+        try {
+            session.beginTransaction();
+            SQLQuery query = session.createSQLQuery("SELECT accession_no, count(*) as n  FROM temp_excell_import  where  library_id='"+library_id+"' and sublibrary_id='"+sublibrary_id+"'  group by accession_no  HAVING n>1 ");
 
+           
+            obj= (List) query.list();
+           
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+return obj;
+    }
 
     public static boolean  TruncateTempTable(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -155,7 +183,7 @@ public class DAO {
         }
         catch(Exception e){
             tx.rollback();
-        System.out.println(e);
+       e.printStackTrace();
         return  false;
         }
         finally {
@@ -166,95 +194,119 @@ public class DAO {
 
     public List AllrecordForGivenTitle(String title,String callno) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
+        List obj=null;
+        
         try {
+            session.beginTransaction();
             Criteria criteria = session.createCriteria(TempExcellImport.class).add(Restrictions.eq("title", title)).add(Restrictions.eq("callNo", callno));
-            return (List) criteria.list();
-        } finally {
+           obj=(List) criteria.list();
+        } catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
+return obj;
     }
 
      public List getTempRecord(String library_id,String sublibrary_id,String title,String callno) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
+       List obj=null;
         try {
+             session.beginTransaction();
             Criteria criteria = session.createCriteria(TempExcellImport.class).add(Restrictions.eq("libraryId", library_id)).add(Restrictions.eq("sublibraryId",sublibrary_id)).add(Restrictions.eq("title",title)).add(Restrictions.eq("callNo", callno));
-            return (List) criteria.list();
-        } finally {
+           obj= (List) criteria.list();
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
+return obj;
     }
 
     public BibliographicDetails getTitle(String library_id,String sublibrary_id,int biblio_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        try {
-            Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.eq("id.biblioId", biblio_id));
-            return (BibliographicDetails) criteria.uniqueResult();
-        } finally {
-            session.close();
-        }
-    }
-
-       public BibliographicDetails getBiblio(String library_id,String sublibrary_id,String title,String callno) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        try {
-            Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.eq("libraryId",library_id)).add(Restrictions.eq("sublibraryId",library_id)).add(Restrictions.eq("libraryId",library_id)).add(Restrictions.eq("libraryId",library_id));
-            return (BibliographicDetails) criteria.uniqueResult();
-        } finally {
-            session.close();
-        }
-    }
-
-    public static List ViewAllTable1(String tablename) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+       BibliographicDetails obj=null;
 
         try {
             session.beginTransaction();
-            // Query query = session.createQuery("FROM '"+tablename+"'");
+            Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.eq("id.biblioId", biblio_id)).add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sublibrary_id));
+          obj= (BibliographicDetails) criteria.uniqueResult();
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+return obj;
+    }
+       public BibliographicDetails getBiblio(String library_id,String sublibrary_id,String title,String callno) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        BibliographicDetails obj=null;
+       
+        try {
+             session.beginTransaction();
+            Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.eq("libraryId",library_id)).add(Restrictions.eq("sublibraryId",library_id)).add(Restrictions.eq("libraryId",library_id)).add(Restrictions.eq("libraryId",library_id));
+           obj= (BibliographicDetails) criteria.uniqueResult();
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+return obj;
+    }
+    public static List ViewAllTable1(String tablename) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+List obj=null;
+        try {
+            session.beginTransaction();
+          
             SQLQuery query = session.createSQLQuery("select * from " + tablename);
 
 
-            return (List) query.list();
-        } finally {
+          obj= (List) query.list();
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
-
+return obj;
     }
 
     public static List ViewAllTable(String tablename,String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List obj=null;
         try {
             session.beginTransaction();
             query = session.createSQLQuery("select * from " + tablename+" where library_id='"+library_id+"'");
 
 
-            query.setResultTransformer(Transformers.TO_LIST);
+           obj=(List) query.list();
 
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        } finally {
-            // session.close();
+        } catch(Exception e){
+        e.printStackTrace();
         }
-        return (List) query.list();
-
+        finally {
+            session.close();
+        }
+return obj;
     }
 
     public static Integer  getmax_biblio_id_temp_excell_import(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
 
-
+ Integer maxbiblio=null;
         session.beginTransaction();
         try {
             Criteria criteria = session.createCriteria(TempExcellImport.class);
             Criterion a = Restrictions.eq("id.libraryId", library_id);
             Criterion b = Restrictions.eq("id.sublibraryId", sublibrary_id);
             LogicalExpression le = Restrictions.and(a, b);
-            Integer maxbiblio = criteria.add(le).setProjection(Projections.max("id.biblioId")).uniqueResult()==null?0:Integer.valueOf(criteria.add(le).setProjection(Projections.count("id.biblioId")).uniqueResult().toString());
+             maxbiblio = criteria.add(le).setProjection(Projections.max("id.biblioId")).uniqueResult()==null?0:Integer.valueOf(criteria.add(le).setProjection(Projections.count("id.biblioId")).uniqueResult().toString());
            System.out.println(maxbiblio);
 
             if (maxbiblio == null) {
@@ -263,113 +315,96 @@ public class DAO {
                 maxbiblio++;
             }
 
-            return maxbiblio;
-        } finally {
+           
+        } catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
-
-
-
-
-
-
-    /*    try {
-            session.beginTransaction();
-            query = session.createSQLQuery("select max(biblio_id) from temp_excell_import");
-            if (query.uniqueResult() != null) {
-                return (Integer) query.uniqueResult();
-            } else {
-                return 0;
-            }
-
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        } finally {
-            // session.close();
-        }
-        return (Integer) query.uniqueResult();*/
-
+ return maxbiblio;
     }
 
     public static int getmax_biblio_id_bibliographic_detals() {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+ Integer maxbiblio=null;
         try {
             session.beginTransaction();
             query = session.createSQLQuery("select max(biblio_id) from bibliographic_details");
             if (query.uniqueResult() != null) {
-                return (Integer) query.uniqueResult();
+                maxbiblio= (Integer) query.uniqueResult();
             } else {
-                return 0;
+                maxbiblio=new Integer("0");
             }
 
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        } finally {
-            // session.close();
+        }catch(Exception e){
+        e.printStackTrace();
         }
-        return (Integer) query.uniqueResult();
-
+        finally {
+            session.close();
+        }
+return maxbiblio;
     }
 
     public static int getmax_record_no_accession_register() {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+ Integer maxbiblio=null;
         try {
             session.beginTransaction();
             query = session.createSQLQuery("select max(record_no) from accession_register");
             if (query.uniqueResult() != null) {
-                return (Integer) query.uniqueResult();
+                maxbiblio= (Integer) query.uniqueResult();
             } else {
-                return 0;
+               maxbiblio=new Integer("0");
             }
 
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        } finally {
-             session.close();
+        }catch(Exception e){
+        e.printStackTrace();
         }
-        return (Integer) query.uniqueResult();
-
+        finally {
+            session.close();
+        }
+return maxbiblio;
     }
         public static int getmax_documentId_DocumentDetalils() {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Integer maxbiblio=null;
         try {
             session.beginTransaction();
             query = session.createSQLQuery("select max(document_id) from document_details");
             if (query.uniqueResult() != null) {
-                return (Integer) query.uniqueResult();
+               maxbiblio= (Integer) query.uniqueResult();
             } else {
-                return 0;
+                maxbiblio=new Integer("0");
             }
 
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        } finally {
-             session.close();
+        }catch(Exception e){
+        e.printStackTrace();
         }
-        return (Integer) query.uniqueResult();
-
+        finally {
+            session.close();
+        }
+return maxbiblio;
     }
 
     public static boolean insertgeneric(TempExcellImport obj) throws Exception {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
-        System.out.println("isert is called :::::::::::::::: " + obj);
+       
 
         try {
             tx = (Transaction) session.beginTransaction();
 
             session.save(obj);
-            //  System.out.println("insti name value:::::::::::::::: " + obj.getInstituteName());
+            
             tx.commit();
 
 
 
         } catch (Exception ex) {
-            throw ex;
-
+            ex.printStackTrace();
+            tx.rollback();
+return false;
 
 
         } finally {
@@ -382,19 +417,21 @@ public class DAO {
     public static boolean insertBibligraphicDetails(BibliographicDetails obj) throws Exception {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
-        System.out.println("isert is called :::::::::::::::: " + obj);
+      
 
         try {
             tx = (Transaction) session.beginTransaction();
 
             session.save(obj);
-            //  System.out.println("insti name value:::::::::::::::: " + obj.getInstituteName());
+           
             tx.commit();
 
 
 
         } catch (Exception ex) {
-            throw ex;
+            ex.printStackTrace();
+            tx.rollback();
+            return false;
 
 
 
@@ -408,19 +445,21 @@ public class DAO {
     public static boolean insertAccessionRegister(AccessionRegister obj) throws Exception {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
-        System.out.println("isert is called :::::::::::::::: " + obj);
+        
 
         try {
             tx = (Transaction) session.beginTransaction();
 
             session.save(obj);
-            //  System.out.println("insti name value:::::::::::::::: " + obj.getInstituteName());
+           
             tx.commit();
 
 
 
         } catch (Exception ex) {
-            throw ex;
+          ex.printStackTrace();
+          tx.rollback();
+          return false;
 
 
 
@@ -433,19 +472,21 @@ public class DAO {
     public static boolean insertDocumentsDetails(DocumentDetails obj) throws Exception {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
-        System.out.println("isert is called :::::::::::::::: " + obj);
+      
 
         try {
             tx = (Transaction) session.beginTransaction();
 
             session.save(obj);
-            //  System.out.println("insti name value:::::::::::::::: " + obj.getInstituteName());
+           
             tx.commit();
 
 
 
         } catch (Exception ex) {
-            throw ex;
+           ex.printStackTrace();
+           tx.rollback();
+           return false;
 
 
 
@@ -796,14 +837,12 @@ public class DAO {
 
 
         } catch (Exception ex) {
-            throw ex;
+           ex.printStackTrace();
 
 
-            //  System.out.println(ex.toString());
+            
 
-        } finally {
-        }
-
+        } 
         return pojo_object;
     }
 }

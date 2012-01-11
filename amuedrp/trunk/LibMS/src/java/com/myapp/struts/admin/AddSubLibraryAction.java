@@ -71,7 +71,7 @@ public class AddSubLibraryAction extends org.apache.struts.action.Action {
         faculty1=aslaf.getFaculty1();
         sublib_name1=aslaf.getSublib_name1();
 
-        System.out.println(sublib_name1);
+        System.out.println(sublib_name1+"........................."+sublib_name+faculty+faculty1+sublibrary_id);
 
 
 

@@ -18,7 +18,7 @@
     </head>
     <body>
       
-         <html:form action="/TempToDatabase" method="post"  enctype="multipart/form-data">
+         <html:form action="/TempToDatabase1" method="post"  enctype="multipart/form-data">
          <input align="center" name="button" style="text-align: center;color:green;  " type="submit" value="Import Data" />
          </html:form>
          <font size="2" color="red">

@@ -141,7 +141,7 @@ function loadHelp()
 
       visibility: show;">
 
-    <table border="1" dir="<%=rtl%>"  class="table" width="500px" height="200px" align="center">
+    <table border="1"  dir="<%=rtl%>"  class="table" width="500px" height="200px" align="center">
 
   
         <tr><td dir="<%=rtl%>" align="center" colspan="2" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("systemsetup.manage_submember.managesubmemtype")%></td></tr>

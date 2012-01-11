@@ -64,10 +64,6 @@ public class AccessionSingleUpdate extends org.apache.struts.action.Action {
         int biblio_id = bform.getBiblio_id();
         doc1 = dao.searchDoc(biblio_id, record_no, library_id, sub_library_id);
         ac1 = dao.searchAccByRecord(library_id, sub_library_id, record_no);
-                String isbn10 = (String) bform.getIsbn10();
-        if (StringUtils.isEmpty(isbn10)||StringUtils.isBlank(isbn10)) {
-            isbn10 = null;
-        }
         String button = (String) bform.getButton();
         if (button.equals("Update")) {
             if (StringUtils.isEmpty(acc_no)) {
@@ -170,7 +166,7 @@ public class AccessionSingleUpdate extends org.apache.struts.action.Action {
                     bib.setPublishingYear(bform.getPublishing_year());
                     bib.setLccNo(bform.getLCC_no());
                     bib.setIsbn13(bform.getIsbn13());
-                    bib.setIsbn10(isbn10);
+                    bib.setIsbn10(bform.getIsbn10());
                     bib.setEdition(bform.getEdition());
                     bib.setCallNo(bform.getCall_no());
                     bib.setAltTitle(bform.getAlt_title());

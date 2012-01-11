@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CirViewAll" pageWidth="1100" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="271"/>
+	<property name="ireport.x" value="82"/>
 	<property name="ireport.y" value="0"/>
 	<field name="library_name" class="java.lang.String"/>
 	<field name="memId" class="java.lang.String"/>
@@ -11,7 +11,6 @@
 	<field name="email" class="java.lang.String"/>
 	<field name="req_date" class="java.lang.String"/>
 	<field name="expiry_date" class="java.lang.String"/>
-	<field name="status" class="java.lang.String"/>
 	<field name="faculty_name" class="java.lang.String"/>
 	<field name="dept_name" class="java.lang.String"/>
 	<field name="course_name" class="java.lang.String"/>
@@ -26,164 +25,172 @@
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="54" splitType="Stretch">
+		<band height="98" splitType="Stretch">
 			<staticText>
-				<reportElement x="239" y="31" width="110" height="20"/>
-				<textElement>
-					<font size="12"/>
+				<reportElement x="411" y="47" width="238" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="14" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Circulation Member Report]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="154" y="75" width="784" height="20" backcolor="#C5B0B0"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="165" y="75" width="19" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Sno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="188" y="75" width="45" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Member Id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="76" width="91" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[Member Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="396" y="34" width="61" height="20"/>
-				<textElement>
-					<font size="12"/>
+				<reportElement x="329" y="76" width="76" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[EmailId]]></text>
+				<text><![CDATA[Email ID]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="477" y="31" width="104" height="20"/>
-				<textElement>
-					<font size="12"/>
+				<reportElement x="406" y="76" width="75" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[RegistrationDate]]></text>
+				<text><![CDATA[Registration Date]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="580" y="31" width="68" height="20"/>
-				<textElement>
-					<font size="12"/>
+				<reportElement x="481" y="76" width="56" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[ExpiryDate]]></text>
+				<text><![CDATA[Expiry Date]]></text>
 			</staticText>
+			
 			<staticText>
-				<reportElement x="656" y="31" width="40" height="20"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<text><![CDATA[Status]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="704" y="31" width="45" height="20"/>
-				<textElement>
-					<font size="12"/>
+				<reportElement x="592" y="76" width="77" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[Faculty]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="750" y="31" width="75" height="20"/>
-				<textElement>
-					<font size="12"/>
+				<reportElement x="669" y="76" width="90" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[Department]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="825" y="31" width="47" height="20"/>
-				<textElement>
-					<font size="12"/>
+				<reportElement x="759" y="76" width="89" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[Course]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="871" y="31" width="68" height="20"/>
-				<textElement>
-					<font size="12"/>
+				<reportElement x="848" y="76" width="92" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[SubLibrary]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="161" y="34" width="63" height="20"/>
-				<textElement/>
-				<text><![CDATA[Member Id]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="124" y="34" width="38" height="20"/>
-				<textElement/>
-				<text><![CDATA[S. No.]]></text>
-			</staticText>
-			<line>
-				<reportElement x="33" y="29" width="1001" height="1"/>
-			</line>
-			<line>
-				<reportElement x="33" y="48" width="1001" height="1"/>
-			</line>
-			<staticText>
-				<reportElement x="396" y="8" width="238" height="20"/>
-				<textElement>
-					<font size="14" isBold="true" isItalic="true" isUnderline="false"/>
+			<textField>
+				<reportElement x="362" y="11" width="337" height="26"/>
+				<textElement textAlignment="Center">
+					<font size="18" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Circulation Member Report]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{library_name}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="23" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<textField>
-				<reportElement x="333" y="0" width="176" height="20"/>
-				<textElement/>
+				<reportElement x="329" y="0" width="67" height="20"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="6" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{email}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="500" y="0" width="82" height="20"/>
-				<textElement/>
+				<reportElement x="405" y="0" width="76" height="20"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="6" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{req_date}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="585" y="0" width="57" height="20"/>
-				<textElement/>
+				<reportElement x="481" y="0" width="55" height="20"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="6" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{expiry_date}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="642" y="1" width="60" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{status}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="703" y="0" width="59" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{faculty_name}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="762" y="0" width="70" height="20"/>
-				<textElement/>
+				<reportElement x="669" y="1" width="90" height="20"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="6" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{dept_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="833" y="0" width="39" height="20"/>
-				<textElement/>
+				<reportElement x="759" y="0" width="89" height="20"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="6" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{course_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="293" y="0" width="50" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{lname}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="206" y="1" width="45" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{fname}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="173" y="1" width="31" height="20"/>
-				<textElement/>
+				<reportElement x="195" y="1" width="38" height="20"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="6" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{memId}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="136" y="5" width="33" height="15"/>
-				<textElement/>
+				<reportElement x="156" y="3" width="39" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="248" y="0" width="43" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{mname}]]></textFieldExpression>
+				<reportElement x="592" y="2" width="77" height="18"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="6" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{faculty_name}]]></textFieldExpression>
+			</textField>
+			
+			<textField>
+				<reportElement x="851" y="1" width="71" height="18"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="6" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sublib_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="872" y="1" width="102" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{sublib_name}]]></textFieldExpression>
+				<reportElement x="236" y="2" width="52" height="17"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="6" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{fname}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -193,65 +200,75 @@
 	<pageFooter>
 		<band height="46" splitType="Stretch">
 			<staticText>
-				<reportElement x="860" y="20" width="32" height="20"/>
-				<textElement/>
+				<reportElement x="848" y="20" width="32" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
 				<text><![CDATA[Page]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="902" y="20" width="12" height="20"/>
-				<textElement/>
-				<text><![CDATA[of]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="140" y="0" width="41" height="20"/>
-				<textElement/>
-				<text><![CDATA[Library:]]></text>
+				<reportElement x="907" y="20" width="0" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="887" y="20" width="15" height="20"/>
-				<textElement/>
+				<reportElement x="880" y="20" width="15" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="914" y="20" width="18" height="20"/>
-				<textElement/>
+				<reportElement x="895" y="19" width="18" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="189" y="0" width="285" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{library_name}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="140" y="21" width="78" height="20"/>
-				<textElement/>
+				<reportElement x="157" y="26" width="54" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
 				<text><![CDATA[User Name:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="213" y="21" width="133" height="20"/>
-				<textElement/>
+				<reportElement x="211" y="26" width="90" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{user_name}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="889" y="19" width="32" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="true" pdfFontName="Times-BoldItalic" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="34" splitType="Stretch">
-			<line>
-				<reportElement x="722" y="0" width="271" height="1"/>
-			</line>
-			<textField>
-				<reportElement x="897" y="3" width="79" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_COUNT}]]></textFieldExpression>
-			</textField>
+		<band height="26" splitType="Stretch">
+			<rectangle>
+				<reportElement x="154" y="2" width="786" height="20" backcolor="#C5B0B0"/>
+			</rectangle>
 			<staticText>
-				<reportElement x="725" y="3" width="138" height="20"/>
-				<textElement/>
+				<reportElement x="783" y="3" width="90" height="19" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
 				<text><![CDATA[Total No. of Members]]></text>
 			</staticText>
-			<line>
-				<reportElement x="722" y="22" width="271" height="1"/>
-			</line>
+			<textField>
+				<reportElement x="873" y="3" width="27" height="19" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

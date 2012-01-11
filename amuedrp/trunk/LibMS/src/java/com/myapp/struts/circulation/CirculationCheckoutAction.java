@@ -5,7 +5,7 @@
 
 package com.myapp.struts.circulation;
 
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -71,10 +71,16 @@ public class CirculationCheckoutAction extends org.apache.struts.action.Action {
           String date_ex=cma.getExpiryDate();
           String system_date=DateCalculation.now();
           long days1=DateCalculation.getDifference(date_ex, system_date);
-          if(days1<0){
+          if(days1<=0){
 
              //request.setAttribute("msg1", "Member's account is expired");
               request.setAttribute("msg1", resource.getString("circulation.circhkout.memaccisexpired"));
+               session.removeAttribute("cma");
+          session.removeAttribute("cirmemberdetail");
+          session.setAttribute("cma",cma);
+          session.setAttribute("cirmemberdetail",cirmemberdetail);
+          session.setAttribute("memid",memid);
+          return mapping.findForward("failure");
           }
           long days=DateCalculation.getDifference( date_ex,system_date);
           System.out.println("GHHHHHHHHHHHHHHHHHHH"+days);
@@ -84,6 +90,8 @@ public class CirculationCheckoutAction extends org.apache.struts.action.Action {
            String msg=resource.getString("circulation.circhkout.remainder")+days+resource.getString("circulation.circhkout.accwillexpire");
           request.setAttribute("msg2", msg);
           }
+          session.removeAttribute("cma");
+          session.removeAttribute("cirmemberdetail");
           session.setAttribute("cma",cma);
           session.setAttribute("cirmemberdetail",cirmemberdetail);
           session.setAttribute("memid",memid);

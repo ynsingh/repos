@@ -11,6 +11,7 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -94,15 +95,26 @@ public class CatAction3 extends org.apache.struts.action.Action {
             biblioid.setLibraryId(library_id);
             biblio.setSublibraryId(sub_library_id);
             biblioid.setMarctag("300");
+            if(caf3.getIn3001()!=null)
+            if(StringUtils.isNotBlank(in3001.toString())&&StringUtils.isNotEmpty(in3001.toString()))
             biblio.setIndicator1(in3001);
+            if(caf3.getIn3002()!=null)
+            if(StringUtils.isNotBlank(in3002.toString())&&StringUtils.isNotEmpty(in3002.toString()))
             biblio.setIndicator2(in3002);
-                biblio.set$a(z300a);
+            if(StringUtils.isNotBlank(z300a)&&StringUtils.isNotEmpty(z300a))
+            biblio.set$a(z300a);
+            if(StringUtils.isNotBlank(z300b)&&StringUtils.isNotEmpty(z300b))
                 biblio.set$b(z300b);
-                biblio.set$c(z300c);
-                biblio.set$f(z300f);
-                biblio.set$e(z300e);
-                biblio.set$g(z300g);
-                biblio.set$3(z3003);
+if(StringUtils.isNotBlank(z300c)&&StringUtils.isNotEmpty(z300c))
+            biblio.set$c(z300c);
+          if(StringUtils.isNotBlank(z300f)&&StringUtils.isNotEmpty(z300f))
+            biblio.set$f(z300f);
+           if(StringUtils.isNotBlank(z300e)&&StringUtils.isNotEmpty(z300e))
+            biblio.set$e(z300e);
+          if(StringUtils.isNotBlank(z300g)&&StringUtils.isNotEmpty(z300g))
+            biblio.set$g(z300g);
+          if(StringUtils.isNotBlank(z3003)&&StringUtils.isNotEmpty(z3003))
+            biblio.set$3(z3003);
 
                biblioid.setBibId(bibid);
                    biblio.setId(biblioid);
@@ -119,9 +131,14 @@ if(hm1.containsKey("15")){
             biblioid1.setLibraryId(library_id);
             biblio1.setSublibraryId(sub_library_id);
             biblioid1.setMarctag("306");
+           if(caf3.getIn3061()!=null)
+            if(StringUtils.isNotBlank(in3061.toString())&&StringUtils.isNotEmpty(in3061.toString()))
             biblio1.setIndicator1(in3061);
+           if(caf3.getIn3062()!=null)
+            if(StringUtils.isNotBlank(in3062.toString())&&StringUtils.isNotEmpty(in3062.toString()))
             biblio1.setIndicator2(in3062);
-                biblio1.set$a(z306a);
+           if(StringUtils.isNotBlank(z306a)&&StringUtils.isNotEmpty(z306a))
+            biblio1.set$a(z306a);
                
                   biblioid1.setBibId(bibid);
                    biblio1.setId(biblioid1);
@@ -138,12 +155,20 @@ if(hm1.containsKey("16")){
             biblioid2.setLibraryId(library_id);
             biblio2.setSublibraryId(sub_library_id);
             biblioid2.setMarctag("336");
+        if(caf3.getIn3361()!=null)
+            if(StringUtils.isNotBlank(in3361.toString())&&StringUtils.isNotEmpty(in3361.toString()))
             biblio2.setIndicator1(in3361);
+         if(caf3.getIn3362()!=null)
+            if(StringUtils.isNotBlank(in3362.toString())&&StringUtils.isNotEmpty(in3362.toString()))
             biblio2.setIndicator2(in3362);
-                biblio2.set$a(z336a);
-                biblio2.set$b(z336b);
-                biblio2.set$2(z3362);
-                biblio2.set$3(z3363);
+          if(StringUtils.isNotBlank(z336a)&&StringUtils.isNotEmpty(z336a))
+            biblio2.set$a(z336a);
+           if(StringUtils.isNotBlank(z336b)&&StringUtils.isNotEmpty(z336b))
+            biblio2.set$b(z336b);
+           if(StringUtils.isNotBlank(z3362)&&StringUtils.isNotEmpty(z3362))
+            biblio2.set$2(z3362);
+          if(StringUtils.isNotBlank(z3363)&&StringUtils.isNotEmpty(z3363))
+            biblio2.set$3(z3363);
 
                 biblioid2.setBibId(bibid);
                    biblio2.setId(biblioid2);

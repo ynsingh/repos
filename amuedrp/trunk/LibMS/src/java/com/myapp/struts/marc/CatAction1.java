@@ -11,10 +11,10 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
 /**
  *
  * @author zeeshan
@@ -30,7 +30,15 @@ HashMap hm1 = new HashMap();
 private Biblio bib=new Biblio();
     private Biblio biblio=new Biblio();
     private BiblioId biblioid= new BiblioId();
-
+   /**
+     * This is the action called from the Struts framework.
+     * @param mapping The ActionMapping used to select this instance.
+     * @param form The optional ActionForm bean for this request.
+     * @param request The HTTP Request we are processing.
+     * @param response The HTTP Response we are processing.
+     * @throws java.lang.Exception
+     * @return
+     */
     private Biblio biblio1=new Biblio();
     private BiblioId biblioid1= new BiblioId();
 
@@ -74,7 +82,7 @@ private Biblio bib=new Biblio();
         in1302=caf1.getIn1302();
 
         //getting values of subfields from CatActionForm1
-        z100=caf1.getZ100();
+                z100=caf1.getZ100();
                 z100c=caf1.getZ100c();
                 z100d=caf1.getZ100d();
                 z100q=caf1.getZ100q();
@@ -110,15 +118,26 @@ private Biblio bib=new Biblio();
     biblioid.setLibraryId(library_id);
     biblio.setSublibraryId(sub_library_id);
     biblioid.setMarctag("100");
+   if(caf1.getIn1001()!=null)
+    if(StringUtils.isNotBlank(in1001.toString())&&StringUtils.isNotEmpty(in1001.toString()))
     biblio.setIndicator1(in1001);
+    if(caf1.getIn1002()!=null)
+    if(StringUtils.isNotBlank(in1002.toString())&&StringUtils.isNotEmpty(in1002.toString()))
     biblio.setIndicator2(in1002);
+ if(StringUtils.isNotBlank(z100)&&StringUtils.isNotEmpty(z100))
         biblio.set$a(z100);
-        biblio.set$c(z100c);
+     if(StringUtils.isNotBlank(z100c)&&StringUtils.isNotEmpty(z100c))
+    biblio.set$c(z100c);
+ if(StringUtils.isNotBlank(z100d)&&StringUtils.isNotEmpty(z100d))
         biblio.set$d(z100d);
-        biblio.set$q(z100q);
+    if(StringUtils.isNotBlank(z100q)&&StringUtils.isNotEmpty(z100q))
+    biblio.set$q(z100q);
+     if(StringUtils.isNotBlank(z100j)&&StringUtils.isNotEmpty(z100j))
         biblio.set$j(z100j);
+      if(StringUtils.isNotBlank(z100u)&&StringUtils.isNotEmpty(z100u))
         biblio.set$u(z100u);
-        biblio.set$0(z1000);
+     if(StringUtils.isNotBlank(z1000)&&StringUtils.isNotEmpty(z1000))
+    biblio.set$0(z1000);
 
         biblioid.setBibId(bibid);
            biblio.setId(biblioid);
@@ -136,18 +155,33 @@ private Biblio bib=new Biblio();
     biblio1.setSublibraryId(sub_library_id);
     biblioid1.setMarctag("110");
     biblio1.setId(biblioid1);
+    if(caf1.getIn1101()!=null)
+    if(StringUtils.isNotBlank(in1101.toString())&&StringUtils.isNotEmpty(in1101.toString()))
     biblio1.setIndicator1(in1101);
+    if(caf1.getIn1102()!=null)
+    if(StringUtils.isNotBlank(in1102.toString())&&StringUtils.isNotEmpty(in1102.toString()))
     biblio1.setIndicator2(in1102);
-        biblio1.set$a(z110);
+     if(StringUtils.isNotBlank(z110)&&StringUtils.isNotEmpty(z110.toString()))
+    biblio1.set$a(z110);
+     if(StringUtils.isNotBlank(z110b)&&StringUtils.isNotEmpty(z110b))
         biblio1.set$b(z110b);
+      if(StringUtils.isNotBlank(z110c)&&StringUtils.isNotEmpty(z110c))
         biblio1.set$c(z110c);
+      if(StringUtils.isNotBlank(z110d)&&StringUtils.isNotEmpty(z110d))
         biblio1.set$d(z110d);
-        biblio1.set$k(z110k);
-        biblio1.set$n(z110n);
-        biblio1.set$p(z110p);
-        biblio1.set$0(z1100);
-        biblio1.set$t(z110t);
+      if(StringUtils.isNotBlank(z110k)&&StringUtils.isNotEmpty(z110k))
+    biblio1.set$k(z110k);
+     if(StringUtils.isNotBlank(z110n)&&StringUtils.isNotEmpty(z110n))
+    biblio1.set$n(z110n);
+     if(StringUtils.isNotBlank(z110p)&&StringUtils.isNotEmpty(z110p))
+    biblio1.set$p(z110p);
+      if(StringUtils.isNotBlank(z1100)&&StringUtils.isNotEmpty(z1100))
+    biblio1.set$0(z1100);
+     if(StringUtils.isNotBlank(z110t)&&StringUtils.isNotEmpty(z110t))
+    biblio1.set$t(z110t);
+      if(StringUtils.isNotBlank(z110u)&&StringUtils.isNotEmpty(z110u))
         biblio1.set$u(z110u);
+    if(StringUtils.isNotBlank(z1104)&&StringUtils.isNotEmpty(z1104))
         biblio1.set$4(z1104);
 
         biblioid1.setBibId(bibid);
@@ -166,18 +200,33 @@ private Biblio bib=new Biblio();
     biblioid2.setLibraryId(library_id);
     biblio2.setSublibraryId(sub_library_id);
     biblioid2.setMarctag("130");
+    if(caf1.getIn1301()!=null)
+    if(StringUtils.isNotBlank(in1301.toString())&&StringUtils.isNotEmpty(in1301.toString()))
     biblio2.setIndicator1(in1301);
+    if(caf1.getIn1302()!=null)
+    if(StringUtils.isNotBlank(in1302.toString())&&StringUtils.isNotEmpty(in1302.toString()))
     biblio2.setIndicator2(in1302);
-        biblio2.set$a(z130);
+     if(StringUtils.isNotBlank(z130)&&StringUtils.isNotEmpty(z130))
+    biblio2.set$a(z130);
+     if(StringUtils.isNotBlank(z130d)&&StringUtils.isNotEmpty(z130d))
         biblio2.set$d(z130d);
+      if(StringUtils.isNotBlank(z130f)&&StringUtils.isNotEmpty(z130f))
         biblio2.set$f(z130f);
+     if(StringUtils.isNotBlank(z130h)&&StringUtils.isNotEmpty(z130h))
         biblio2.set$h(z130h);
-        biblio2.set$k(z130k);
+     if(StringUtils.isNotBlank(z130k)&&StringUtils.isNotEmpty(z130k))
+    biblio2.set$k(z130k);
+     if(StringUtils.isNotBlank(z130m)&&StringUtils.isNotEmpty(z130m))
         biblio2.set$m(z130m);
+      if(StringUtils.isNotBlank(z130n)&&StringUtils.isNotEmpty(z130n))
         biblio2.set$n(z130n);
+     if(StringUtils.isNotBlank(z130p)&&StringUtils.isNotEmpty(z130p))
         biblio2.set$p(z130p);
-        biblio2.set$l(z130l);
+     if(StringUtils.isNotBlank(z130l)&&StringUtils.isNotEmpty(z130l))
+    biblio2.set$l(z130l);
+     if(StringUtils.isNotBlank(z130r)&&StringUtils.isNotEmpty(z130r))
         biblio2.set$r(z130r);
+     if(StringUtils.isNotBlank(z130s)&&StringUtils.isNotEmpty(z130s))
         biblio2.set$s(z130s);
 
         biblioid2.setBibId(bibid);

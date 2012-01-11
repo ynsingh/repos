@@ -13,6 +13,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.AcquisitionDao.AcquisitionDao;
+import com.myapp.struts.AcquisitionDao.VendorDAO;
 import java.util.List;
 
 /**

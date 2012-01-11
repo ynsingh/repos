@@ -35,6 +35,43 @@ public class CirMemberAccount  implements java.io.Serializable {
      private String semester;
      private String approvedBy;
      private String remark;
+     private String cardIssueDate;
+     private String cardStatus;
+     private String LostDate;
+     private String DuplicateIssueDate;
+
+    public String getDuplicateIssueDate() {
+        return DuplicateIssueDate;
+    }
+
+    public void setDuplicateIssueDate(String DuplicateIssueDate) {
+        this.DuplicateIssueDate = DuplicateIssueDate;
+    }
+
+    public String getLostDate() {
+        return LostDate;
+    }
+
+    public void setLostDate(String LostDate) {
+        this.LostDate = LostDate;
+    }
+
+
+    public String getCardIssueDate() {
+        return cardIssueDate;
+    }
+
+    public void setCardIssueDate(String cardIssueDate) {
+        this.cardIssueDate = cardIssueDate;
+    }
+
+    public String getCardStatus() {
+        return cardStatus;
+    }
+
+    public void setCardStatus(String cardStatus) {
+        this.cardStatus = cardStatus;
+    }
      private Set demandlists = new HashSet(0);
 
     public CirMemberAccount() {
@@ -45,7 +82,7 @@ public class CirMemberAccount  implements java.io.Serializable {
         this.id = id;
         this.cirMemberDetail = cirMemberDetail;
     }
-    public CirMemberAccount(CirMemberAccountId id, CirMemberDetail cirMemberDetail, String noOfIssueableBook, String currentIssuedBook, String totalIssuedBook, String fine, String noOfChkout, String reservationMade, String lastchkoutdate, String status, String password, String cardId, String reqDate, String expiryDate, String memType, String subMemberType, String desg, String office, String facultyId, String deptId, String courseId, String semester, String approvedBy, String remark, Set demandlists) {
+    public CirMemberAccount(CirMemberAccountId id, CirMemberDetail cirMemberDetail, String noOfIssueableBook, String currentIssuedBook, String totalIssuedBook, String fine, String noOfChkout, String reservationMade, String lastchkoutdate, String status, String password, String cardId, String reqDate, String expiryDate, String memType, String subMemberType, String desg, String office, String facultyId, String deptId, String courseId, String semester, String approvedBy, String remark, Set demandlists,String card_status,String card_issue_date,String LostDate,String DuplicateIssueDate) {
        this.id = id;
        this.cirMemberDetail = cirMemberDetail;
        this.noOfIssueableBook = noOfIssueableBook;
@@ -71,6 +108,10 @@ public class CirMemberAccount  implements java.io.Serializable {
        this.approvedBy = approvedBy;
        this.remark = remark;
        this.demandlists = demandlists;
+       this.cardStatus=card_status;
+       this.cardIssueDate=card_issue_date;
+       this.LostDate=LostDate;
+       this.DuplicateIssueDate=DuplicateIssueDate;
     }
    
     public CirMemberAccountId getId() {

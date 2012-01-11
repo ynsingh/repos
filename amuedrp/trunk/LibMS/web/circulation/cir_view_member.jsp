@@ -82,7 +82,7 @@ if (req.status == 200) {
 responseXmlHandler(req.responseXML);
 } else {
 // An HTTP problem has occurred
-alert("HTTP error "+req.status+": "+req.statusText);
+//alert("HTTP error "+req.status+": "+req.statusText);
 }
 }
 }
@@ -1394,8 +1394,9 @@ a:active
                 <td dir="<%=rtl%>"> <%=resource.getString("circulation.cir_newmember.facof")%>
                   </td><td dir="<%=rtl%>" class="table_textbox">
             <%if(button.equals("View")||button.equals("Delete")){%>
-            <html:select disabled="true"  property="TXTFACULTY" styleId="TXTFACULTY" style="width:160px" value="<%=faculty%>"  onclick="return search1()" tabindex="3">
-                  <html:options  collection="list2"  labelProperty="facultyName" property="id.facultyId"></html:options>
+            <html:select disabled="true" property="TXTFACULTY" styleId="TXTFACULTY" value="<%=faculty%>" style="width:160px"  onclick="return search1()" tabindex="3">
+                <html:option value="Select"><%=resource.getString("circulation.cir_newmember.select")%></html:option>
+                <html:options  collection="list2"  labelProperty="facultyName" property="id.facultyId"></html:options>
                      </html:select>
                       <%}
          else

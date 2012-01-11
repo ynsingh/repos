@@ -55,14 +55,11 @@ public class ReportAction extends org.apache.struts.action.Action {
             ResultSet rs=null;
             JRBeanCollectionDataSource dataSource=null;
            String path = servlet.getServletContext().getRealPath("/");
- String os=(String)System.getProperty("os.name");
-   System.out.println("OS----------->"+os);
-   if(os.startsWith("Linux"))
-   {
+//path=path.substring(0,path.lastIndexOf("/"));
+//path=path.substring(0,path.lastIndexOf("/"));
+//path=path.substring(0,path.lastIndexOf("/"));
+//path=path+"/src/java/com/myapp/struts/Acquisition/JasperReport";
 path=path+"/JasperReport";
-   }else{
-   path=path+"\\JasperReport";
-   }
 Connection con=null;
 ResultSet rs1=null;
 HashMap SIMPLE_DATA;
@@ -76,13 +73,7 @@ int sum=0;
         String sub_library_id = (String) session1.getAttribute("sublibrary_id");
  
                   System.out.println("Compiling report...");
-
-                  if(os.startsWith("Linux"))
-   {
           JasperCompileManager.compileReportToFile(path + "/onapproval.jrxml");
-                  }else{
-                  JasperCompileManager.compileReportToFile(path + "\\onapproval.jrxml");
-                  }
              
 
            System.out.println("a******************************************************");
@@ -103,44 +94,27 @@ HashMap map = new HashMap();
 
 
 dataSource = new JRBeanCollectionDataSource(aa);
-                  if(os.startsWith("Linux"))
-   {
-
 JasperFillManager.fillReportToFile(path+"/onapproval.jasper", map,dataSource );
-                  }else{
-   JasperFillManager.fillReportToFile(path+"\\onapproval.jasper", map,dataSource );
-                  }
 
 
 System.out.println("End");
 
 
-File file1;
+
 
    System.out.println("Filling report..."+dataSource);
-         if(os.startsWith("Linux"))
-   {
-       
- file1 = new File(path + "/" +"onapproval.jrprint");
-         }else{
- file1 = new File(path + "\\" +"onapproval.jrprint");
-         }
+
+         
+ File file1 = new File(path + "/" +
+                                            "onapproval.jrprint");
          System.out.println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
       JasperPrint jasperPrint1 = (JasperPrint)JRLoader.loadObject(file1);
      
        JRPdfExporter pdfExporter = new JRPdfExporter();
    pdfExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint1);
 
-         if(os.startsWith("Linux"))
-   {
-
             pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
                      path + "/" + "onapproval.pdf");
-         }else{
-            pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                     path + "\\" + "onapproval.pdf");
-
-         }
        System.out.println("Exporting report...");
           pdfExporter.exportReport();
           System.out.println("Done!");

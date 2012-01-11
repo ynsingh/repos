@@ -14,17 +14,12 @@ import com.myapp.struts.hbm.AcqBudgetTransaction;
 import com.myapp.struts.hbm.BaseCurrency;
 import java.util.List;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import com.myapp.struts.utility.DateCalculation;
 import java.util.Iterator;
-import org.hibernate.SessionFactory;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -42,6 +37,7 @@ public class BudgetDAO {
  int year=Integer.parseInt(dob.substring(0,4));
   Session session =null;
     Transaction tx = null;
+    List<MixBudgetAllocation> obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -55,11 +51,15 @@ public class BudgetDAO {
                     .addEntity(AcqBudget.class)
                     .addEntity(AcqBudgetAllocation.class)
                     .setResultTransformer(Transformers.aliasToBean(MixBudgetAllocation.class));
-            return (List<MixBudgetAllocation>)query.list();
+            obj= (List<MixBudgetAllocation>)query.list();
         }
+    catch(Exception e){
+    e.printStackTrace();
+    }
         finally {
             session.close();
         }
+        return obj;
 }
 
       public static String getBudgetTransaction(String library_id,String budgetheadId) {
@@ -80,34 +80,40 @@ public class BudgetDAO {
      amount=query.uniqueResult().toString();
         System.out.println("Total rows1: " + amount);
 
-      sess.close();
+     
     }
     catch(Exception e){
-      System.out.println
-(e.getMessage());
+      e.printStackTrace();
+    }
+    finally{
+    sess.close();
     }
      return amount;
 }
 
      public static List<AcqBudget> getBudget(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        List<AcqBudget> obj=null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  AcqBudget  WHERE id.libraryId =:library_id  ");
             query1.setString("library_id", library_id);
       
 
-            return (List<AcqBudget>) query1.list();
+            obj= (List<AcqBudget>) query1.list();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
         public static AcqBudgetAllocation getSearchBudgetHead(String library_id,String budgethead,String year) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        AcqBudgetAllocation obj = null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  AcqBudgetAllocation  WHERE id.libraryId =:library_id and budgetheadId=:budgethead and financialYr1=:year");
@@ -115,16 +121,20 @@ public class BudgetDAO {
             query1.setString("budgethead", budgethead);
             query1.setString("year",year);
 
-            return (AcqBudgetAllocation) query1.uniqueResult();
+            obj= (AcqBudgetAllocation) query1.uniqueResult();
+        }
+ catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
         public static List<AcqBudgetAllocation> getSearchBudgetHead1(String library_id,String budgethead) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        List<AcqBudgetAllocation> obj = null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  AcqBudgetAllocation  WHERE id.libraryId =:library_id and budgetheadId=:budgethead");
@@ -132,65 +142,80 @@ public class BudgetDAO {
             query1.setString("budgethead", budgethead);
 
 
-            return (List<AcqBudgetAllocation>) query1.list();
+            obj= (List<AcqBudgetAllocation>) query1.list();
+        }
+ catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
-
       public static BaseCurrency getBaseCurrency(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+       BaseCurrency obj = null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  BaseCurrency  WHERE id.libraryId =:library_id  ");
             query1.setString("library_id", library_id);
 
 
-            return (BaseCurrency) query1.uniqueResult();
+            obj= (BaseCurrency) query1.uniqueResult();
+        }
+ catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
-       public static AcqCurrency getConversionRate(String library_id,String scurr) {
+      public static AcqCurrency getConversionRate(String library_id,String scurr) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        AcqCurrency obj = null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  AcqCurrency  WHERE id.libraryId =:library_id  and sourceCurrency=:scurr order by sourceCurrency desc");
             query1.setString("library_id", library_id);
             query1.setString("scurr", scurr);
 
-            return (AcqCurrency) query1.setMaxResults(1).uniqueResult();
+            obj= (AcqCurrency) query1.setMaxResults(1).uniqueResult();
+        }
+      catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
        public static List<AcqBudgetAllocation> getBudgetAllocation(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        List<AcqBudgetAllocation> obj = null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  AcqBudgetAllocation  WHERE id.libraryId =:library_id  ");
             query1.setString("library_id", library_id);
 
 
-            return (List<AcqBudgetAllocation>) query1.list();
+           obj= (List<AcqBudgetAllocation>) query1.list();
+        }
+ catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
   public static AcqBudget getBudgetid(String library_id,String id1) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+       AcqBudget obj = null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  AcqBudget  WHERE id.libraryId =:library_id and id.budgetheadId=:id1");
@@ -198,19 +223,22 @@ public class BudgetDAO {
         query1.setString("id1",id1);
 
 
-            return (AcqBudget) query1.uniqueResult();
+            obj= (AcqBudget) query1.uniqueResult();
+        }
+ catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
 
 
-
 public static AcqBudget getLocationByName(String library_id,String budegetheadname) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        AcqBudget obj = null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  AcqBudget  WHERE id.libraryId =:library_id and budgetheadName=:budgetheadName");
@@ -218,17 +246,20 @@ public static AcqBudget getLocationByName(String library_id,String budegetheadna
             
             query1.setString("budgetheadName", budegetheadname);
 
-            return (AcqBudget) query1.uniqueResult();
+            obj= (AcqBudget) query1.uniqueResult();
+        }
+ catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
-
 public static AcqBudgetAllocation getBudgetHeadByName(String library_id,String budegetheadId,String financial_yr) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        AcqBudgetAllocation obj = null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  AcqBudgetAllocation  WHERE id.libraryId =:library_id and budgetheadId=:budgetheadId and financialYr1");
@@ -237,37 +268,45 @@ public static AcqBudgetAllocation getBudgetHeadByName(String library_id,String b
             query1.setString("budgetheadName", budegetheadId);
            query1.setString("financialYr1", financial_yr);
 
-            return (AcqBudgetAllocation) query1.uniqueResult();
+            obj= (AcqBudgetAllocation) query1.uniqueResult();
+        }
+ catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
 
 }
 
-
 public static Integer returnMaxBiblioId(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx=session.beginTransaction();
+         Integer maxbiblio=null;
         try {
+            session.beginTransaction();
             Criteria criteria = session.createCriteria(AcqBudgetAllocation.class);
             Criterion a = Restrictions.eq("id.libraryId", library_id);
             
            // LogicalExpression le = Restrictions.and(a, b);
-            Integer maxbiblio = (Integer) criteria.add(a).setProjection(Projections.max("id.transactionId")).uniqueResult();
+             maxbiblio = (Integer) criteria.add(a).setProjection(Projections.max("id.transactionId")).uniqueResult();
             if (maxbiblio == null) {
                 maxbiblio = 1;
             } else {
                 maxbiblio++;
             }
 
-            return maxbiblio;
-        } finally {
+           
+        }
+        catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
+        return maxbiblio;
 
-    }
-       
+}
     public static void insert1(AcqBudgetAllocation obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -281,17 +320,17 @@ public static Integer returnMaxBiblioId(String library_id) {
 
 
 
-        } catch (Exception ex) {
-       //     return false;
-
-            //  System.out.println(ex.toString());
-
-        } finally {
-            //session.close();
         }
-      //  return true;
+        catch(Exception e){
+        e.printStackTrace();
+        tx.rollback();
+        }
+        finally {
+            session.close();
+        }
+        
 
-    }
+}
 
  public static void insertTransaction(AcqBudgetTransaction obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -306,18 +345,16 @@ public static Integer returnMaxBiblioId(String library_id) {
 
 
 
-        } catch (Exception ex) {
-       //     return false;
-
-            //  System.out.println(ex.toString());
-
-        } finally {
-            //session.close();
         }
-      //  return true;
+        catch(Exception e){
+        e.printStackTrace();
+        tx.rollback();
+        }
+        finally {
+            session.close();
+        }
 
-    }
-
+}
     public static boolean insert(AcqBudget obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -329,19 +366,19 @@ public static Integer returnMaxBiblioId(String library_id) {
             session.save(obj);
             tx.commit();
 
+            return true;
 
-
-        } catch (Exception ex) {
-            return false;
-
-            //  System.out.println(ex.toString());
-
-        } finally {
-            //session.close();
         }
-        return true;
+        catch(Exception e){
+        e.printStackTrace();
+        tx.rollback();
+        return false;
+        }
+        finally {
+            session.close();
+        }
 
-    }
+}
         public static boolean update(AcqBudget obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -350,16 +387,19 @@ public static Integer returnMaxBiblioId(String library_id) {
             tx = session.beginTransaction();
             session.update(obj);
             tx.commit();
-        } catch (RuntimeException e) {
-
-            tx.rollback();
-            return false;
-
-        }
-
         return true;
+        }
+        catch(Exception e){
+        e.printStackTrace();
+        tx.rollback();
+        return false;
+        }
+        finally {
+            session.close();
+        }
+        
 
-    }
+}
              public static void update1(AcqBudgetAllocation obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -368,14 +408,18 @@ public static Integer returnMaxBiblioId(String library_id) {
             tx = session.beginTransaction();
             session.update(obj);
             tx.commit();
-        } catch (RuntimeException e) {
+        }
+        catch (Exception e) {
 
             tx.rollback();
-        //    return false;
+        e.printStackTrace();
 
         }
+        finally{
+        session.close();
+        }
 
-   //     return true;
+   
 
     }
         public static boolean delete(String library_id,String budgethead_id) {
@@ -392,18 +436,19 @@ public static Integer returnMaxBiblioId(String library_id) {
             query.executeUpdate();
             tx.commit();
 
-
+return true;
 
         } catch (Exception ex) {
-            System.out.println(ex);
+   ex.printStackTrace();
+   tx.rollback();
             return false;
 
-            //  System.out.println(ex.toString());
+            
 
         } finally {
-            // session.close();
+             session.close();
         }
-        return true;
+       
 
     }
      public static void delete1(String library_id,int trans_id) {
@@ -417,37 +462,42 @@ public static Integer returnMaxBiblioId(String library_id) {
             query.executeUpdate();
             tx.commit();
         } catch (Exception ex) {
-            System.out.println(ex);
-      //      return false;
+            ex.printStackTrace();
+      tx.rollback();
 
-            //  System.out.println(ex.toString());
+            
 
         } finally {
-            // session.close();
+          session.close();
         }
-    //    return true;
+    
 
     }
         public static AcqBudget searchBudget(String library_id, String budgethead_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+AcqBudget obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(AcqBudget.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id))                  
                     .add(Restrictions.eq("id.budgetheadId", budgethead_id)));
-            return (AcqBudget) criteria.uniqueResult();
+            obj= (AcqBudget) criteria.uniqueResult();
 
 
-        } finally {
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
-    }
+        return obj;
+
+}
 
     public static AcqBudgetAllocation searchBudgetAllocation(String library_id, String budgethead_id,String fyear) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+AcqBudgetAllocation obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(AcqBudgetAllocation.class)
@@ -455,27 +505,37 @@ public static Integer returnMaxBiblioId(String library_id) {
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("financialYr1", fyear))
                     .add(Restrictions.eq("budgetheadId", budgethead_id)));
-            return (AcqBudgetAllocation) criteria.uniqueResult();
+            obj= (AcqBudgetAllocation) criteria.uniqueResult();
 
 
-        } finally {
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
-    }
+        return obj;
+
+}
     public static List<AcqBudget> listlocation(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List<AcqBudget> obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(AcqBudget.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id))
                    );
-            return (List<AcqBudget>) criteria.list();
+            obj= (List<AcqBudget>) criteria.list();
 
 
-        } finally {
+        } catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
+        return obj;
+
 }
 }

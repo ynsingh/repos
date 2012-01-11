@@ -4,7 +4,6 @@
  */
 
 package com.myapp.struts.opac;
-import com.myapp.struts.MyConnection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -33,18 +32,12 @@ public class OpacLibResultSetAction extends org.apache.struts.action.Action {
         
         HttpSession session = request.getSession();
         session.removeAttribute("libRs");
-        String sqlQuery="";
+       
         List rs = null;
         String formname="";
         String lib_id = (String)session.getAttribute("library_id");
+try{
 
-  con1= MyConnection.getMyConnection();
-
-            if(con1==null)
-             {
-                request.setAttribute("msg","Database Connectivity is Closed");
-                return mapping.findForward("failure");
-             }
 
 
         formname = request.getParameter("name");
@@ -106,7 +99,7 @@ public class OpacLibResultSetAction extends org.apache.struts.action.Action {
          }
          if(formname.equals("newmember"))
         {
-            List list1,list2,list3,list4,list5;
+            List list1;
 
                 list1=(List)MemberCategoryDAO.searchEmpType(lib_id);
             //    list2=(List)MemberCategoryDAO.searchSubEmpType(lib_id);
@@ -152,6 +145,11 @@ if(formname.equals("newdemand"))
 
 
 return mapping.findForward(SUCCESS);
+}catch(Exception e){
+e.printStackTrace();
+    request.setAttribute("msg","Database Connectivity Problem,Contact WebAdmin");
+                return mapping.findForward("failure");
 
+}
     }
 }

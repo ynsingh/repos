@@ -57,7 +57,7 @@ public class ManageBookAction extends org.apache.struts.action.Action {
    list1=(List)MemberCategoryDAO.searchEmpType(library_id);
    list2=(List)MemberCategoryDAO.searchSubEmpType(library_id);
    list3=(List)DocumentCategoryDAO.listdoccategory1(library_id,sublibrary_id);
-  if(list1.isEmpty()||list2.isEmpty()){
+  if((list1.isEmpty() && list1==null)||(list2.isEmpty() && list2==null)){
   // String msg="You need to set member and submembers";
   String msg=resource.getString("systemsetup.managebookaction.youneedtosetmember");
   request.setAttribute("msg", msg);

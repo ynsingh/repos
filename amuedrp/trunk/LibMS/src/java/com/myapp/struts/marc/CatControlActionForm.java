@@ -5,31 +5,20 @@
 
 package com.myapp.struts.marc;
 
-import javax.servlet.http.HttpServletRequest;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
-
 /**
  *
  * @author EdRP-05
  */
 public class CatControlActionForm extends org.apache.struts.action.ActionForm {
 
-    private String fix_data=null;
-private String phy_desc=null;
-private String d_t_l_t=null;
-private String control_no_id=null;
-private String control_no=null;
-private String leader=null;
-private String zclick=null;
+    private String fix_data;
+private String phy_desc;
+private String d_t_l_t;
+private String control_no_id;
+private String control_no;
+private String leader;
+private String zclick;
 
-    public String getZclick() {
-        return zclick;
-    }
-
-    public void setZclick(String zclick) {
-        this.zclick = zclick;
-    }
     public String getControl_no() {
         return control_no;
     }
@@ -77,15 +66,14 @@ private String zclick=null;
     public void setPhy_desc(String phy_desc) {
         this.phy_desc = phy_desc;
     }
-    @Override
-  public void reset(ActionMapping mapping, HttpServletRequest request) {
-  this.control_no=null;
-  this.control_no_id=null;
-  this.d_t_l_t=null;
-  this.fix_data=null;
-  this.leader=null;
-  this.phy_desc=null;
-  this.zclick=null;
-  }
 
+    public String getZclick() {
+        return zclick;
+    }
+
+    public void setZclick(String zclick) {
+        this.zclick = zclick;
+    }
+
+  
 }

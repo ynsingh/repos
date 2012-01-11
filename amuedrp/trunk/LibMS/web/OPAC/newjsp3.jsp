@@ -6,20 +6,7 @@
     <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
     <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
     <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
- <style>
-
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white;border: solid 1px blue; }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold;border: solid 1px blue; }
-     .alternaterows { background-color: #efefef; }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold;text-decoration: none;padding-left: 10px; }
-
-     .datagrid      {  font-family: arial; font-size: 9pt;
-	    font-weight: normal;}
-     .item{ padding-left: 10px;}
-
-</style>
+ 
 
 <script language="javaScript" src="fulldetail.js"></script>
 </head>
@@ -107,7 +94,7 @@ locale1=(String)session.getAttribute("locale");
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-<button  onmousedown="fontResize('-5')">Font Size -&nbsp;-</button><button  onmousedown="fontResize('+5')">Font Size ++</button>
+<%--<button  onmousedown="fontResize('-5')">Font Size -&nbsp;-</button><button  onmousedown="fontResize('+5')">Font Size ++</button>--%>
 <br>
 <TABLE align="<%=align%>" dir="<%=rtl%>"  border='0' class="datagrid" cellspacing='0' cellpadding='0' valign="top" width="200px">
    

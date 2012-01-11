@@ -41,7 +41,7 @@ public class SublibraryUpdateDeleteAction extends org.apache.struts.action.Actio
           HttpSession session=request.getSession();
           library_id=(String)session.getAttribute("library_id");
          sublibrary_id=subobj.getSublibrary_id();
-         
+         System.out.println(button+".......................");
           if(button.equals("Update"))
           {
            

@@ -91,7 +91,7 @@ locale1=(String)session.getAttribute("locale");
     function show()
     {
 
-location.href="./CheckedPrivilege.do?staff_id=<%=staff_id%>";
+location.href="<%=request.getContextPath()%>/admin/CheckedPrivilege.do?staff_id=<%=staff_id%>";
 
     }
     </script>

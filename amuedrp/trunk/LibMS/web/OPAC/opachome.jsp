@@ -8,8 +8,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="Mayank Saxena" content="MCA,AMU">
+
 <title>OPAC</title>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/cupertino/jquery.ui.all.css" type="text/css">
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.widget.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.datepicker.min.js"></script>
 <style type="text/css">
 
 body
@@ -19,22 +24,7 @@ body
 }
 </style>
 
-<style type="text/css">
-a:active
-{
-   color: #0000FF;
-}
-.rows          { background-color: white;border: solid 1px blue; }
-     .hiliterows    { background-color: pink; color: #000000; border: solid 1px blue; }
-     .alternaterows { background-color: #efefef; }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-family:Tahoma;font-size: 12px;text-decoration: none;padding-left: 10px; }
-  .header1        { font-family:Tahoma;font-size: 12px;text-decoration: none;padding-left: 10px; }
-     .datagrid      { 
-    font-weight: normal;font-size: 10px;
-	  }
-     .item{ padding-left: 10px;}
 
-</style>
 <%!
     Locale locale=null;
     String locale1="en";
@@ -67,8 +57,8 @@ locale1=(String)session.getAttribute("locale");
 
 
 </head>
-
-<body>
+<link rel="StyleSheet" href="<%=request.getContextPath()%>/css/page.css"/>
+<body style="margin: 0px 0px 0px 0px">
 
 
     <form method="post" action="opachomeRTL.jsp" name="form1">
@@ -76,33 +66,158 @@ locale1=(String)session.getAttribute("locale");
        
      
 
-        <table cellpadding="0" cellspacing="1" id="Table1" dir="<%=rtl%>" align="<%=align%>">
+        <table cellpadding="0" border="0px" width="100%"  cellspacing="1" id="Table1" dir="<%=rtl%>" align="center">
  
- <tr><td dir="<%=rtl%>" align="<%=align%>" valign="top">
-        <table  dir="<%=rtl%>" align="<%=align%>" width="800x"  style="border:solid 1px #e0e8f5;">
+            <tr><td dir="<%=rtl%>" align="<%=align%>" valign="top" >
+         <table  dir="<%=rtl%>" align="center" border="0px"  <%--style="border:solid 1px #e0e8f5;"--%>>
 
 
 
-  <tr class="header" dir="<%=rtl%>" align="<%=align%>"><td  width="800px"  height="40px" dir="<%=rtl%>"  align="center" colspan="2" style="font-size: 18px;">
+             <tr  dir="<%=rtl%>" align="<%=align%>"><td     height="40px" dir="<%=rtl%>"  align="<%=align%>" colspan="2" class="headerStyle" style="background-color: white">
+<%--   <div id="divTestArea1" style="padding: 50px; background-color: #89BC38; text-align: center; display: none;">
+        <b>Under Construction</b>
+</div>
+<a href="javascript:void(0);" onclick="ShowBox();">News</a>
+<script type="text/javascript">
+function ShowBox()
+{
+        $("#divTestArea1").fadeIn();
+}
+</script>
+--%>
 
 
-		<%=resource.getString("opacmainframe.opachome.text1")%>
+<%--<div id="divTestArea21" style="width: 50px; height: 50px; display: none; background-color: #89BC38;"></div>
+<div id="divTestArea22" style="width: 50px; height: 50px; display: none; background-color: #C3D1DF;"></div>
+<div id="divTestArea23" style="width: 50px; height: 50px; display: none; background-color: #9966FF;"></div>
+<a href="javascript:void(0);" onclick="ShowBoxes();">Show boxes</a>
+<script type="text/javascript">
+function ShowBoxes()
+{
+        $("#divTestArea21").fadeIn("fast");
+        $("#divTestArea22").fadeIn("slow");
+        $("#divTestArea23").fadeIn(2000);
+}
+</script>
+--%>
+
+<%--<div id="divTestArea3" style="width: 50px; height: 50px; display: none; background-color: #89BC38;"></div>
+<script type="text/javascript">
+$(function()
+{
+        $("#divTestArea3").fadeIn(2000, function()
+        {
+                $("#divTestArea3").fadeOut(3000);
+        });
+});
+</script>--%>
+
+<%--
+<a href="javascript:void(0);" onclick="ShowBox();">News</a>
+<div id="divTestArea1" style="padding: 50px; background-color: #89BC38; text-align: left; display: none;">
+        <b>Under Construction</b>
+</div>
+
+<script type="text/javascript">
+function ShowBox()
+{
+        $("#divTestArea1").slideDown();
+}
+</script>
 
 
+
+                   <br/>   <a href="javascript:void(0);" onclick="ShowBox1();">Help Desk</a>
+<div id="divTestArea2" style="padding: 50px; background-color: #89BC38; text-align: left; display: none;">
+        <b>Under Construction</b>
+</div>
+
+<script type="text/javascript">
+function ShowBox1()
+{
+        $("#divTestArea2").slideDown();
+}
+</script>
+--%>
+<%--
+                   <div id="divTestArea21" style="width: 50px; height: 50px; display: none; background-color: #89BC38;"></div>
+<div id="divTestArea22" style="width: 50px; height: 50px; display: none; background-color: #C3D1DF;"></div>
+<div id="divTestArea23" style="width: 50px; height: 50px; display: none; background-color: #9966FF;"></div>
+<a href="javascript:void(0);" onclick="ShowBoxes();">Show boxes</a>
+<script type="text/javascript">
+function ShowBoxes()
+{
+        $("#divTestArea21").slideDown("fast");
+        $("#divTestArea22").slideDown("slow");
+        $("#divTestArea23").slideDown(2000);
+}
+</script>
+--%>
+
+      <div>
+        <div id="divTestBox1" style=" width: 200px; position: absolute;"><a href="javascript:void(0);" onclick="ToggleBox();">News</a>
+
+<div id="divTestArea4" style="width: 200px; height: 150px; display: none; background-color: #89BC38;">Under Construction</div><br />
+
+<script type="text/javascript">
+function ToggleBox()
+{
+        $("#divTestArea4").slideToggle("slow");
+}
+</script>
+
+
+<a href="javascript:void(0);" onclick="ToggleBox1();">Help Desk</a>
+
+
+<div id="divTestArea5" style="width: 200px; height: 150px; display: none; background-color: #89BC38;">Under Construction</div><br />
+
+<script type="text/javascript">
+function ToggleBox1()
+{
+        $("#divTestArea5").slideToggle("slow");
+}
+</script>
+
+
+</div>
+</div>
+<script type="text/javascript">
+$(function()
+{
+        $("#divTestBox1").animate(
+                {
+                        "left" : "40px"
+                }
+        );
+});
+</script>         
 
         </td></tr>
-  <tr><td width="800px" dir="<%=rtl%>">
-              <table  height="300px" border="0" dir="<%=rtl%>" cellpadding="2" cellspacing="0" width="100%" frame="hspaces" >
+  <tr><td width="800px" dir="<%=rtl%>" align="right">
+              <table style="color:white;letter-spacing: 1px;text-decoration:none;font-family: Arial;color:black;font-size: 11px"  height="300px" border="0" dir="<%=rtl%>" cellpadding="2" cellspacing="0" width="100%" frame="hspaces" >
 
     <tbody><tr dir="<%=rtl%>">
-            <td  align="<%=align%>" dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
-    	<%=resource.getString("opacmainframe.opachome.text2")%>
+            <td  align="<%=align%>" dir="<%=rtl%>">
+    An Online Public Access Catalog provides an online database of materials held by a library or group of libraries. Users search a library catalog principally to locate books and other material physically located at a library.
+    <br><br><b><i> Its Faciliates :-</i></b>
     </td>
 
     </tr>
-<tr>
+    <tr>
+
     <td  class="tipstext" align="<%=align%>"  dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
-    	<%=resource.getString("opacmainframe.opachome.text3")%>
+    		<%=resource.getString("opacmainframe.opachome.text2")%>
+       
+    </td>
+
+    </tr>
+
+<tr>
+
+    <td  class="tipstext" align="<%=align%>"  dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
+    		
+        <%=resource.getString("opacmainframe.opachome.text3")%>
     </td>
 
     </tr>
@@ -152,7 +267,12 @@ locale1=(String)session.getAttribute("locale");
       </td></tr></table>
 
 
-     </td></tr>
+                </td></tr>
+           
+                
+               
+            
+           
 
 
   <%
@@ -166,7 +286,34 @@ locale1=(String)session.getAttribute("locale");
    <% }else
         message="";
     %>
+    <%--<tr><td colspan="2">
+              <table align="center" border="0px" width="100%" style="background-image: url('<%=request.getContextPath()%>/images/footerbg.gif')">
+    <tr>
+
+
+                <td class="homepage" valign="top">
+
+
+
+
+    </td><td class="homepage" valign="top" >
+        <b style="color:white">
+        <b>Help Center</b> &nbsp;About Us&nbsp;|&nbsp;Advertising&nbsp;|&nbsp;User Agreement&nbsp;|&nbsp;Copyright Policy&nbsp;|&nbsp;<a href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx">NME-ICT ERP Mission</a><%=resource.getString("developedby")%> &nbsp;<br/> &copy; <%=resource.getString("login.message.footer")%>
+        <br>follow us : <img src="<%=request.getContextPath()%>/images/blog.jpeg" height="16px" width="20px"/>
+     <img src="<%=request.getContextPath()%>/images/facebook.jpeg" height="16px" width="20px"/>
+     <img src="<%=request.getContextPath()%>/images/twitter.jpeg" height="16px" width="20px"/>
+      <a href="http://www.youtube.com/user/DrAasimZafar?blend=15&ob=5#p/u/0/COwssqRU9Ao"><img src="<%=request.getContextPath()%>/images/youtube.jpeg" height="16px" width="40px"/></a>
+        </b>
+    </td><td class="homepage" align="right" valign="top">
+         <b style="color:white">Based on Open Source LibMS at<br></b>
+         <a href="http://sourceforge.net/projects/libms/">   <img src="/LibMS/images/sflogo.png"/></a>
+    </td>
+
+    </tr>
 </table>
+        </td></tr>--%>
+</table>
+  
     </form>
 </body>
 </html>

@@ -13,6 +13,7 @@ import org.apache.struts.action.ActionMapping;
 import java.sql.*;
 import java.util.*;
 import javax.servlet.http.HttpSession;
+import com.myapp.struts.hbm.HibernateUtil;
 
 /**
  *

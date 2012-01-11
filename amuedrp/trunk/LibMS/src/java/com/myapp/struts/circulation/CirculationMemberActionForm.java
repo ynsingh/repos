@@ -15,6 +15,11 @@ import org.apache.struts.upload.FormFile;
 public class CirculationMemberActionForm  extends org.apache.struts.action.ActionForm{
     
     private String TXTMEMID;
+    private String college;
+    private String colladd;
+
+
+    private String tempreg;
     private String[] library;
     private String TXTFNAME;
     private String TXTLNAME;
@@ -49,6 +54,38 @@ public class CirculationMemberActionForm  extends org.apache.struts.action.Actio
     private FormFile img;
     private String filename;
 
+
+     public String getColladd() {
+        return colladd;
+    }
+
+    public void setColladd(String colladd) {
+        this.colladd = colladd;
+    }
+
+    public String getCollege() {
+        return college;
+    }
+
+    public void setCollege(String college) {
+        this.college = college;
+    }
+
+    public String getTempreg() {
+        return tempreg;
+    }
+
+    public void setTempreg(String tempreg) {
+        this.tempreg = tempreg;
+    }
+
+
+
+
+
+
+
+
     public String getFilename() {
         return filename;
     }
@@ -64,17 +101,7 @@ public class CirculationMemberActionForm  extends org.apache.struts.action.Actio
     public void setImg(FormFile img) {
         this.img = img;
     }
-   /*  private String TXTREQ_DATE;
-
-   public String getTXTREQ_DATE() {
-        return TXTREQ_DATE;
-    }
-
-    public void setTXTREQ_DATE(String TXTREQ_DATE) {
-        this.TXTREQ_DATE = TXTREQ_DATE;
-    }*/
-   
-
+  
   
 
     

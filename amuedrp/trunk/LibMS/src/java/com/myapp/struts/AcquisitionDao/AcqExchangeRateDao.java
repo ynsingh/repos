@@ -10,12 +10,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import java.util.List;
 import org.hibernate.Query;
-import org.hibernate.criterion.Property;
 
 /**
  *
@@ -25,7 +22,7 @@ public class AcqExchangeRateDao {
 
    public static AcqCurrency searchSourceCurrency1(String library_id, String scurrency,String date) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+AcqCurrency obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(AcqCurrency.class)
@@ -33,71 +30,93 @@ public class AcqExchangeRateDao {
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("systemDate", date))
                     .add(Restrictions.eq("sourceCurrency",scurrency)));
-            return (AcqCurrency) criteria.uniqueResult();
+           obj= (AcqCurrency) criteria.uniqueResult();
 
 
-        } finally {
+        }
+        catch(Exception e){
+
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
+        return obj;
     }
  
     public static AcqCurrency searchSourceCurrency(String library_id, int convrsion_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+AcqCurrency obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(AcqCurrency.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.conversionId",convrsion_id)));
-            return (AcqCurrency) criteria.uniqueResult();
+            obj=(AcqCurrency) criteria.uniqueResult();
 
 
-        } finally {
+        }
+        catch(Exception e){
+        e.printStackTrace();
+        }
+
+        finally {
             session.close();
         }
+        return obj;
     }
 
 
 
     public static AcqCurrency searchSourceCurrency1(String library_id, String scurrency) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+AcqCurrency obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(AcqCurrency.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("sourceCurrency",scurrency)));
-            return (AcqCurrency) criteria.uniqueResult();
+           obj= (AcqCurrency) criteria.uniqueResult();
 
 
-        } finally {
+        }
+        catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
+        return obj;
     }
 
 
    public static AcqCurrency searchCurrency1(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+AcqCurrency obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(AcqCurrency.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id))
                    );
-            return (AcqCurrency) criteria.uniqueResult();
+            obj= (AcqCurrency) criteria.uniqueResult();
 
 
-        } finally {
+        }
+        catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
+        return obj;
     }
 
  public static AcqCurrency getCurrencyBySourceName(String library_id,int convrsion_id ) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+      AcqCurrency obj=null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  AcqCurrency  WHERE id.libraryId =:library_id and id.conversionId=:conversionId");
@@ -105,18 +124,22 @@ public class AcqExchangeRateDao {
 
             query1.setInteger("conversionId",convrsion_id);
 
-            return (AcqCurrency) query1.uniqueResult();
+           obj= (AcqCurrency) query1.uniqueResult();
+        }
+       catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
+        return obj;
+    }
 
-}
 
 
   public static AcqCurrency getCurrencyBySourceName1(String library_id,String scurrency ) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        AcqCurrency obj=null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  AcqCurrency  WHERE id.libraryId =:library_id and sourceCurrency =:sourceCurrency");
@@ -124,15 +147,16 @@ public class AcqExchangeRateDao {
 
             query1.setString("sourceCurrency",scurrency);
 
-            return (AcqCurrency) query1.uniqueResult();
+            obj= (AcqCurrency) query1.uniqueResult();
+        }
+       catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
-
-}
-
-
+      return obj;
+    }
 
 
   public static void insert(AcqCurrency obj) {
@@ -148,16 +172,14 @@ public class AcqExchangeRateDao {
 
 
 
-        } catch (Exception ex) {
-       //     return false;
-
-            //  System.out.println(ex.toString());
-
-        } finally {
-            //session.close();
+        }catch(Exception e){
+        e.printStackTrace();
+        tx.rollback();
         }
-      //  return true;
-
+        finally {
+            session.close();
+        }
+        
     }
 
 
@@ -169,17 +191,15 @@ public class AcqExchangeRateDao {
             tx = session.beginTransaction();
             session.update(obj);
             tx.commit();
-        } catch (RuntimeException e) {
-
-            tx.rollback();
-        //    return false;
-
+        }catch(Exception e){
+        e.printStackTrace();
+        tx.rollback();
         }
-
-   //     return true;
-
+        finally {
+            session.close();
+        }
+     
     }
-
 
     public static boolean delete(String library_id,int conversion_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -197,39 +217,41 @@ public class AcqExchangeRateDao {
 
 
 
-        } catch (Exception ex) {
-            System.out.println(ex);
-            return false;
-
-            //  System.out.println(ex.toString());
-
-        } finally {
-            // session.close();
+        } catch(Exception e){
+        e.printStackTrace();
+        tx.rollback();
+        return false;
+        
+        }
+        finally {
+            session.close();
         }
         return true;
-
     }
 
     public Integer returnMaxConversionId(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-         Transaction tx=session.beginTransaction();
+       Integer maxbiblio =null;
         try {
             Criteria criteria = session.createCriteria(AcqCurrency.class);
             Criterion a = Restrictions.eq("id.libraryId", library_id);
            
             
-            Integer maxbiblio = (Integer) criteria.add(a).setProjection(Projections.max("id.conversionId")).uniqueResult();
+             maxbiblio = (Integer) criteria.add(a).setProjection(Projections.max("id.conversionId")).uniqueResult();
             if (maxbiblio == null) {
                 maxbiblio = 1;
             } else {
                 maxbiblio++;
             }
 
-            return maxbiblio;
-        } finally {
+           
+        } catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
-
+      return maxbiblio;
     }
 
 

@@ -15,22 +15,7 @@
     String rtl="ltr";
     String align="left";
 %>
-<style type="text/css">
-body
-{
-   background-color: #FFFFFF;
-   color: #000000;
-}
-  .rows          { background-color: white;border: solid 1px blue; }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold;border: solid 1px blue; }
-     .alternaterows { background-color: #efefef; }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-family:Tahoma;font-size: 12px;font-weight: bold;text-decoration: none;padding-left: 10px; }
 
-     .datagrid      {  font-family: arial; font-size: 9pt;
-	    font-weight: normal;}
-     .item{ padding-left: 10px;}
-
-</style>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <%
@@ -303,14 +288,17 @@ else{
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
     </head>
-<body onload="checkboxClickHandler();search();">
+<body onload="checkboxClickHandler();search();fun();" style="margin:0px 0px 0px 0px 0px;background-color:#e0e8f5;">
     
     <html:form action="/OPAC/browse"  styleId="Form1" target="f1" acceptCharset="utf-8">
-   <table  align="<%=align%>" dir="<%=rtl%>" width="100%" class="datagrid" style="border:solid 1px #e0e8f5;">
+        <table align="<%=align%>" dir="<%=rtl%>" width="100%" class="datagrid" >
+            <tr><td width="20%" valign="top">
+
+        <table  align="<%=align%>" dir="<%=rtl%>" width="100%" class="datagrid"  style="border: 1px solid black"  >
 
 
 
-  <tr class="header"><td  width="1000px" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
+  <tr class="header"><td  dir="<%=rtl%>" width="20%" height="28px" align="center" colspan="2">
 
 
 	<%=resource.getString("opac.browse.browsesearch")%>	
@@ -318,28 +306,28 @@ else{
 
 
 
-        </td></tr>
-    <tr dir="<%=rtl%>"><td>
+      </td></tr>
+  <tr dir="<%=rtl%>"><td width="13%"> <%=resource.getString("cataloguing.catbiblioentry.selectlang")%></td><td>
     <div id='translControl'>
       <input type="checkbox" id="checkboxId" onclick="javascript:checkboxClickHandler();javascript:DisBox();javascript:languageChangeHandler();javascript:fun1()">
       <html:hidden property="checkbox" styleId="checkbox" name="browseSearchActionForm"/>
-      <%=resource.getString("cataloguing.catbiblioentry.selectlang")%><select id="languageDropDown" onchange="javascript:languageChangeHandler()"></select>
+     <select id="languageDropDown" class="selecthome" onchange="javascript:languageChangeHandler()"></select>
     <html:hidden property="language" styleId="language" name="browseSearchActionForm"/>
     </div>
       </td></tr>
-  <tr style="background-color:#e0e8f5;"><td width="800px" dir="<%=rtl%>" >
-          <table>
-              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.enterstartingkeyword")%></td><td><input  name="TXTTITLE" id="TXTTITLE" class="keyboardInput" type="text" dir="<%=rtl%>" onkeyup="fun()" onfocus="statwords('Enter Search Keyword')"></td></tr>
+  <tr ><td  dir="<%=rtl%>" >
+         <%=resource.getString("opac.browse.enterstartingkeyword")%></td><td><input  name="TXTTITLE" id="TXTTITLE" class="keyboardInput" type="text" dir="<%=rtl%>" onkeyup="fun()" onfocus="statwords('Enter Search Keyword')"></td></tr>
              
 
-          </table>
-      </td>
+          
+  <tr>
       <td dir="<%=rtl%>"   align="<%=align%>" valign="top">
-          <table >
-              <tr><td dir="<%=rtl%>"> <%=resource.getString("opac.simplesearch.field")%> </td><td rowspan="2" dir="<%=rtl%>" valign="top">
+         
+         <%=resource.getString("opac.simplesearch.field")%> </td>
+      <td  dir="<%=rtl%>" valign="top">
 
 
-<select dir="<%=rtl%>" name="CMBFIELD" onChange="fun()" size="1">
+<select dir="<%=rtl%>" name="CMBFIELD" class="selecthome" onChange="fun()" size="1">
 <option value="any field" selected dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%></option>
 <option value="mainEntry" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
 <option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
@@ -348,27 +336,28 @@ else{
 </select>
      </td>
 
-              </tr></table></td></tr>
-  <tr class="header"><td width="1000px" dir="<%=rtl%>"  align="<%=align%>" ><%=resource.getString("opac.simplesearch.restrictedby")%></td><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
-   <tr style="background-color:#e0e8f5;" dir="<%=rtl%>"> <td width="800px" dir="<%=rtl%>"  align="<%=align%>">
-           <table  width="800px" dir="<%=rtl%>"><tr><td align="<%=align%>" dir="<%=rtl%>">
-          <table>
+              </tr>
+              <tr class="header"><td colspan="2" dir="<%=rtl%>"  align="<%=align%>" ><%=resource.getString("opac.simplesearch.restrictedby")%></td></tr>
+   
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.database")%></td><td>
-                    <select name="CMBDB" dir="<%=rtl%>" onChange="fun1()" size="1">
+                    <select name="CMBDB" class="selecthome" dir="<%=rtl%>" onChange="fun1()" size="1">
 <option selected value="combined" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.combnd")%></option>
     <option value="book" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.books")%></option>
      <option value="cd" dir="<%=rtl%>">CDs</option>
   
   
 </select>
-                  </td><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%></td>
+                  </td></tr>
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%></td>
                   <td>
-                      <html:select property="CMBLib" dir="<%=rtl%>"  tabindex="3" value="<%=library_id%>"  styleId="CMBLib" onchange="search();fun()">
+                      <html:select property="CMBLib" styleClass="selecthome" dir="<%=rtl%>"  tabindex="3" value="<%=library_id%>"  styleId="CMBLib" onchange="search();fun()">
                            <html:option value="all">All</html:option>
                             <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
                       </html:select>
                   </td>
-                  <td align="left" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%><html:select property="CMBSUBLib" dir="<%=rtl%>" value="<%=sublibrary_id%>" styleId="SubLibary" onchange="fun1()">
+              </tr>
+              <tr>
+                  <td align="left" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%></td><td><html:select styleClass="selecthome" property="CMBSUBLib" dir="<%=rtl%>" value="<%=sublibrary_id%>" styleId="SubLibary" onchange="fun1()">
                           <%--<html:option value="all">All</html:option>--%>
                           <%--<html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />--%>
                        </html:select>
@@ -377,50 +366,39 @@ else{
 
 </tr>
             
-          </table>
-                   </td><td align="<%=align%>" dir="<%=rtl%>">
-                      
-
-
-
-
-                   </td></tr></table>
-      </td>
-      <td align="<%=align%>" dir="<%=rtl%>">
-           <table>
-                           <tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.title")%></td><td dir="<%=rtl%>"> <select name="CMBSORT" dir="<%=rtl%>" size="1" onChange="fun()" id="CMBSORT">
-<option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
-<option  value="mainEntry" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.field1")%></option>
+         
+<tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.title")%></td><td dir="<%=rtl%>"> <select class="selecthome" name="CMBSORT" dir="<%=rtl%>" size="1" onChange="fun()" id="CMBSORT">
+<option value="title" dir="<%=rtl%>">Title</option>
+<option  value="mainEntry" dir="<%=rtl%>">Main Author</option>
 <option value="isbn10" dir="<%=rtl%>">ISBN</option>
 <option value="publisherName" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.pub")%></option>
 </select>
 </td>
-                           </tr></table>
+                           </tr>
 
 
-      </td>
-
-  </tr>
-  <tr><td>
+      
+                           <tr><td colspan="2">
 
 
-<input type="submit" id="Button1" name="" dir="<%=rtl%>" class="btn" value="<%=resource.getString("opac.simplesearch.find")%>">
-<input type="reset" id="Button2" name="" dir="<%=rtl%>" class="btn" value="<%=resource.getString("opac.browse.clear")%>">
-
-
-      </td></tr>
- <tr><td  height="400px" valign="top" colspan="2"  dir="<%=rtl%>">
-
-             <IFRAME  name="f1"  src="#" frameborder=0 height="400px" width="1200px" scrolling="no"  id="f1"></IFRAME>
+<input type="submit" class="buttonhome" id="Button1" name="" dir="<%=rtl%>"  value="<%=resource.getString("opac.simplesearch.find")%>">
+<input type="reset" id="Button2" class="buttonhome" name="" dir="<%=rtl%>"  value="<%=resource.getString("opac.browse.clear")%>">
 
 
       </td></tr>
+<%-- <tr></tr>--%>
       
 
        </table>
    
 
-        
+                </td><td   style="background-color:#e0e8f5;" valign="top"   dir="<%=rtl%>">
+
+          <IFRAME  style="background-color:#e0e8f5;" name="f1"  src="#" frameborder=0 height="460px" width="100%" scrolling="yes"  id="f1"></IFRAME>
+
+
+      </td>  </tr>
+        </table>
 
     
 

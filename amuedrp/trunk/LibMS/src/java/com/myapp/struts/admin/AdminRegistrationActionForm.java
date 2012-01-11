@@ -7,7 +7,6 @@ package com.myapp.struts.admin;
 
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.upload.FormFile;
 import org.apache.struts.validator.ValidatorForm;
 
 /**
@@ -41,24 +40,6 @@ private String gender;
 private String login_id;
 private String library_id;
  private byte[] uploadedFile;
-    private FormFile img;
-    private String filename;
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-
-    public FormFile getImg() {
-        return img;
-    }
-
-    public void setImg(FormFile img) {
-        this.img = img;
-    }
 
 /**
      * @return the uploadedFile

@@ -174,17 +174,8 @@ JRBeanCollectionDataSource dataSource11=null;
 JRBeanCollectionDataSource dataSource12=null;
 JRDataSource simpleDS;
 String path = servlet.getServletContext().getRealPath("/");
-
-
-String os=(String)System.getProperty("os.name");
-   System.out.println("OS----------->"+os);
-   if(os.startsWith("Linux"))
-   {
 path=path+"/JasperReport";
-   }else{
 
-   path=path+"\\JasperReport";
-   }
 HashMap SIMPLE_DATA;
 
 if(button.equals("Print Order"))
@@ -208,24 +199,13 @@ try
 if(demo!=null)
 {
   
-if(os.startsWith("Linux"))
-   {
+
 JasperCompileManager.compileReportToFile(path + "/AircraftStateReport_1_subreport1.jrxml");
 JasperCompileManager.compileReportToFile(path + "/AircraftStateReport_1.jrxml");
 JasperCompileManager.compileReportToFile(path + "/AircraftStateReport_1_subreport3.jrxml");
 JasperCompileManager.compileReportToFile(path + "/AircraftStateReport_1_subreport6.jrxml");
 JasperCompileManager.compileReportToFile(path + "/AircraftStateReport_1_subreport8.jrxml");
 JasperCompileManager.compileReportToFile(path + "/purchaseordersubreport.jrxml");
-}else{
-JasperCompileManager.compileReportToFile(path + "\\AircraftStateReport_1_subreport1.jrxml");
-JasperCompileManager.compileReportToFile(path + "\\AircraftStateReport_1.jrxml");
-JasperCompileManager.compileReportToFile(path + "\\AircraftStateReport_1_subreport3.jrxml");
-JasperCompileManager.compileReportToFile(path + "\\AircraftStateReport_1_subreport6.jrxml");
-JasperCompileManager.compileReportToFile(path + "\\AircraftStateReport_1_subreport8.jrxml");
-JasperCompileManager.compileReportToFile(path + "\\purchaseordersubreport.jrxml");
-
-
-}
 OutputStream ouputStream = response.getOutputStream();
 response.setContentType("application/pdf");
 HashMap map = new HashMap();
@@ -288,29 +268,12 @@ List simpleMasterList = new ArrayList();
 simpleMasterList.add(simpleMasterMap);
 simpleDS = new JRBeanCollectionDataSource(simpleMasterList);
 map.put("SIMPLE_DATA", SIMPLE_DATA);
-if(os.startsWith("Linux"))
-   {
 JasperFillManager.fillReportToFile(path+"/AircraftStateReport_1.jasper", map, simpleDS);
-}
-else{
-JasperFillManager.fillReportToFile(path+"\\AircraftStateReport_1.jasper", map, simpleDS);
-}
-File file1;
-if(os.startsWith("Linux"))
-   {
- file1 = new File(path + "/" +"AircraftStateReport_1.jrprint");
-}else{
-file1 = new File(path + "\\" +"AircraftStateReport_1.jrprint");
-}
+File file1 = new File(path + "/" +"AircraftStateReport_1.jrprint");
 JasperPrint jasperPrint1 = (JasperPrint)JRLoader.loadObject(file1);
 JRPdfExporter pdfExporter = new JRPdfExporter();
 pdfExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint1);
-if(os.startsWith("Linux"))
-   {
 pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,path + "/" + "AircraftStateReport_1.pdf");
-}else{
-pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,path + "\\" + "AircraftStateReport_1.pdf");
-}
 pdfExporter.exportReport();
 JRExporter exporter = null;
 exporter = new JRHtmlExporter();
@@ -318,8 +281,6 @@ JasperExportManager.exportReportToPdfStream(jasperPrint1, ouputStream);
 }
 else{
    
-if(os.startsWith("Linux"))
-   {
 
     JasperCompileManager.compileReportToFile(path + "/AircraftStateReport_1_subreport1.jrxml");
 JasperCompileManager.compileReportToFile(path + "/AircraftStateReport_1_1.jrxml");
@@ -327,16 +288,6 @@ JasperCompileManager.compileReportToFile(path + "/AircraftStateReport_1_subrepor
 JasperCompileManager.compileReportToFile(path + "/AircraftStateReport_1_subreport6.jrxml");
 JasperCompileManager.compileReportToFile(path + "/AircraftStateReport_1_subreport8.jrxml");
 JasperCompileManager.compileReportToFile(path + "/purchaseordersubreport_1.jrxml");
-}else{
-JasperCompileManager.compileReportToFile(path + "\\AircraftStateReport_1_subreport1.jrxml");
-JasperCompileManager.compileReportToFile(path + "\\AircraftStateReport_1_1.jrxml");
-JasperCompileManager.compileReportToFile(path + "\\AircraftStateReport_1_subreport3.jrxml");
-JasperCompileManager.compileReportToFile(path + "\\AircraftStateReport_1_subreport6.jrxml");
-JasperCompileManager.compileReportToFile(path + "\\AircraftStateReport_1_subreport8.jrxml");
-JasperCompileManager.compileReportToFile(path + "\\purchaseordersubreport_1.jrxml");
-
-
-}
 OutputStream ouputStream = response.getOutputStream();
 response.setContentType("application/pdf");
 HashMap map = new HashMap();
@@ -399,28 +350,12 @@ List simpleMasterList = new ArrayList();
 simpleMasterList.add(simpleMasterMap);
 simpleDS = new JRBeanCollectionDataSource(simpleMasterList);
 map.put("SIMPLE_DATA", SIMPLE_DATA);
-if(os.startsWith("Linux"))
-   {
 JasperFillManager.fillReportToFile(path+"/AircraftStateReport_1_1.jasper", map, simpleDS);
-}else{
-JasperFillManager.fillReportToFile(path+"\\AircraftStateReport_1_1.jasper", map, simpleDS);
-}
-File file1;
-if(os.startsWith("Linux"))
-   {
- file1 = new File(path + "/" +"AircraftStateReport_1_1.jrprint");
-}else{
- file1 = new File(path + "/" +"AircraftStateReport_1_1.jrprint");
-}
+File file1 = new File(path + "/" +"AircraftStateReport_1_1.jrprint");
 JasperPrint jasperPrint1 = (JasperPrint)JRLoader.loadObject(file1);
 JRPdfExporter pdfExporter = new JRPdfExporter();
 pdfExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint1);
-if(os.startsWith("Linux"))
-   {
 pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,path + "/" + "AircraftStateReport_1_1.pdf");
-}else{
-pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,path + "\\" + "AircraftStateReport_1_1.pdf");
-}
 pdfExporter.exportReport();
 JRExporter exporter = null;
 exporter = new JRHtmlExporter();

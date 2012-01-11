@@ -12,10 +12,10 @@
                 <column name="library_id" length="20" />
             </key-property>
         </composite-id>
-        <many-to-one name="staffDetail" class="com.myapp.struts.hbm.StaffDetail" update="false" insert="false" fetch="select">
+       <!-- <many-to-one name="staffDetail" class="com.myapp.struts.hbm.StaffDetail" update="false" insert="false" fetch="select">
             <column name="staff_id" length="100" not-null="true" />
             <column name="library_id" length="20" not-null="true" />
-        </many-to-one>
+        </many-to-one>-->
         <property name="sublibraryId" type="string">
             <column name="sublibrary_id" length="20" not-null="true" />
         </property>

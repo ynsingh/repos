@@ -7,26 +7,15 @@ package com.myapp.struts.admin;
 //import  com.myapp.struts.hbm.*;
 
 import  com.myapp.struts.hbm.Privilege;
-import  com.myapp.struts.hbm.PrivilegeId;
-import  com.myapp.struts.hbm.Library;
 import  com.myapp.struts.hbm.SerPrivilege;
-import  com.myapp.struts.hbm.CirPrivilegeId;
 import  com.myapp.struts.hbm.CirPrivilege;
 import  com.myapp.struts.hbm.CatPrivilege;
-import  com.myapp.struts.hbm.CatPrivilegeId;
 import  com.myapp.struts.hbm.AcqPrivilege;
 import  com.myapp.struts.hbm.AcqPrivilegeId;
 import  com.myapp.struts.hbm.Login;
-import  com.myapp.struts.hbm.LoginId;
 import  com.myapp.struts.hbm.StaffDetail;
-import  com.myapp.struts.hbm.StaffDetailId;
-import  com.myapp.struts.hbm.SubLibrary;
-import  com.myapp.struts.hbm.SubLibraryId;
-import  com.myapp.struts.hbm.Library;
-import  com.myapp.struts.hbm.AdminRegistration;
 import  com.myapp.struts.hbm.SerPrivilegeId;
 import  com.myapp.struts.AdminDAO.*;
-import java.sql.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletResponse;
@@ -62,7 +51,7 @@ public class UpdateAccountAction extends org.apache.struts.action.Action {
     private boolean result;
      private String login_role;
     int i;
-    Connection con;
+    LoginDAO logindao;
     private String password1;
     Locale locale=null;
    String locale1="en";
@@ -102,11 +91,11 @@ public class UpdateAccountAction extends org.apache.struts.action.Action {
       role=caaction.getRole();
       question=caaction.getQuestion();
       ans=caaction.getAns();
-     
+     logindao=new LoginDAO();
       library_id=(String)session.getAttribute("library_id");
       request.setAttribute("btn",button);
      System.out.println(question+".......");
-       Login logobj=LoginDAO.searchRole(staff_id, library_id);
+       Login logobj=logindao.searchRole(staff_id, library_id);
 
 
       
@@ -185,20 +174,20 @@ public class UpdateAccountAction extends org.apache.struts.action.Action {
 
 
 String user_role="";
-logobj=LoginDAO.searchRole(staff_id, library_id);
+logobj=logindao.searchRole(staff_id, library_id);
 
 
 user_role=logobj.getRole();
 
 if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrary_id))
 {
-    logobj=LoginDAO.searchStaffId(staff_id, library_id);
+    logobj=logindao.searchStaffId(staff_id, library_id);
     logobj.setPassword(password1);
     logobj.setSublibraryId(sublibrary_id);
     
  
    
-    result=LoginDAO.update1(logobj);
+    result=logindao.update1(logobj);
 
              
                 if(result==true)
@@ -249,7 +238,7 @@ if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrar
 
 
 
-logobj=LoginDAO.searchRole(staff_id, library_id);
+logobj=logindao.searchRole(staff_id, library_id);
 
 
 user_role=logobj.getRole();
@@ -257,12 +246,12 @@ if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrar
 {
 
     
-    logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
+    logobj=logindao.searchStaffLogin(staff_id, library_id);
     logobj.setPassword(password1);
     logobj.setSublibraryId(sublibrary_id);
 
 
-    result=LoginDAO.update1(logobj);
+    result=logindao.update1(logobj);
 
 
                 if(result==true)
@@ -331,13 +320,13 @@ System.out.println("user_role="+user_role+ "  role="+role);
 if(user_role.equals("admin") && role.equals("staff"))
 {
 
-  logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
+  logobj=logindao.searchStaffLogin(staff_id, library_id);
     logobj.setRole(role);
     logobj.setPassword(password1);
       logobj.setSublibraryId(sublibrary_id);
       logobj.setQuestion(question);
       logobj.setAns(ans);
-    result=LoginDAO.update1(logobj);
+    result=logindao.update1(logobj);
 
 
 
@@ -431,13 +420,13 @@ if(user_role.equals("admin") && role.equals("dept-staff"))
 {
    
 
-    logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
+    logobj=logindao.searchStaffLogin(staff_id, library_id);
     logobj.setRole(role);
       logobj.setSublibraryId(sublibrary_id);
       logobj.setQuestion(question);
       logobj.setPassword(password1);
       logobj.setAns(ans);
-    result=LoginDAO.update1(logobj);
+    result=logindao.update1(logobj);
 
 
 
@@ -736,13 +725,13 @@ if(user_role.equals("admin") && role.equals("dept-staff"))
 
 if(user_role.equals("admin") && role.equals("dept-admin"))
 {
-    logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
+    logobj=logindao.searchStaffLogin(staff_id, library_id);
     logobj.setRole(role);
       logobj.setSublibraryId(sublibrary_id);
       logobj.setQuestion(question);
       logobj.setAns(ans);
       logobj.setPassword(password1);
-    result=LoginDAO.update1(logobj);
+    result=logindao.update1(logobj);
 
 
 
@@ -1042,13 +1031,13 @@ if(user_role.equals("admin") && role.equals("dept-admin"))
 if(user_role.equals("dept-admin") && role.equals("admin"))
 {
     //////////////////////need to change
- logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
+ logobj=logindao.searchStaffLogin(staff_id, library_id);
     logobj.setRole(role);
       logobj.setSublibraryId(sublibrary_id);
       logobj.setQuestion(question);
       logobj.setPassword(password1);
       logobj.setAns(ans);
-    result=LoginDAO.update1(logobj);
+    result=logindao.update1(logobj);
 
 
 
@@ -1113,13 +1102,13 @@ if(user_role.equals("dept-admin") && role.equals("admin"))
 if(user_role.equals("dept-admin") && role.equals("staff"))
 {
     //////////////////////need to change
- logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
+ logobj=logindao.searchStaffLogin(staff_id, library_id);
     logobj.setRole(role);
     logobj.setQuestion(question);
       logobj.setAns(ans);
       logobj.setPassword(password1);
       logobj.setSublibraryId(sublibrary_id);
-    result=LoginDAO.update1(logobj);
+    result=logindao.update1(logobj);
 
 
 
@@ -1420,14 +1409,14 @@ if(user_role.equals("dept-admin") && role.equals("staff"))
 if(user_role.equals("dept-admin") && role.equals("dept-staff"))
 {
     //////////////////////need to change
- logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
+ logobj=logindao.searchStaffLogin(staff_id, library_id);
 
     logobj.setRole(role);
     logobj.setQuestion(question);
       logobj.setAns(ans);
       logobj.setPassword(password1);
       logobj.setSublibraryId(sublibrary_id);
-    result=LoginDAO.update1(logobj);
+    result=logindao.update1(logobj);
 
 
 
@@ -1727,13 +1716,13 @@ if(user_role.equals("dept-admin") && role.equals("dept-staff"))
 if(user_role.equals("staff") && role.equals("admin"))
 {
     //////////////////////need to change
- logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
+ logobj=logindao.searchStaffLogin(staff_id, library_id);
     logobj.setRole(role);
      logobj.setQuestion(question);
       logobj.setAns(ans);
       logobj.setPassword(password1);
       logobj.setSublibraryId(sublibrary_id);
-    result=LoginDAO.update1(logobj);
+    result=logindao.update1(logobj);
 
 
 
@@ -1799,13 +1788,13 @@ if(user_role.equals("staff") && role.equals("admin"))
 if(user_role.equals("staff") && role.equals("dept-admin"))
 {
    //////////////////////need to change
- logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
+ logobj=logindao.searchStaffLogin(staff_id, library_id);
     logobj.setRole(role);
      logobj.setQuestion(question);
       logobj.setAns(ans);
       logobj.setPassword(password1);
       logobj.setSublibraryId(sublibrary_id);
-    result=LoginDAO.update1(logobj);
+    result=logindao.update1(logobj);
 
 
 
@@ -2105,13 +2094,13 @@ if(user_role.equals("staff") && role.equals("dept-admin"))
 if(user_role.equals("staff") && role.equals("dept-staff"))
 {
       //////////////////////need to change
- logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
+ logobj=logindao.searchStaffLogin(staff_id, library_id);
     logobj.setRole(role);
      logobj.setQuestion(question);
       logobj.setAns(ans);
       logobj.setPassword(password1);
       logobj.setSublibraryId(sublibrary_id);
-    result=LoginDAO.update1(logobj);
+    result=logindao.update1(logobj);
 
 
 
@@ -2411,13 +2400,13 @@ if(user_role.equals("staff") && role.equals("dept-staff"))
 
 if(user_role.equals("dept-staff") && role.equals("admin"))
 {
-  logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
+  logobj=logindao.searchStaffLogin(staff_id, library_id);
     logobj.setRole(role);
       logobj.setSublibraryId(sublibrary_id);
       logobj.setQuestion(question);
       logobj.setAns(ans);
       logobj.setPassword(password1);
-    result=LoginDAO.update1(logobj);
+    result=logindao.update1(logobj);
 
 
 
@@ -2496,13 +2485,13 @@ if(user_role.equals("dept-staff") && role.equals("dept-admin"))
     }
 
 
-logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
+logobj=logindao.searchStaffLogin(staff_id, library_id);
     logobj.setRole(role);
     logobj.setPassword(password1);
       logobj.setSublibraryId(sublibrary_id);
       logobj.setQuestion(question);
       logobj.setAns(ans);
-    result=LoginDAO.update1(logobj);
+    result=logindao.update1(logobj);
 
 
 
@@ -2800,13 +2789,13 @@ logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
    }
 if(user_role.equals("dept-staff") && role.equals("staff"))
 {
- logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
+ logobj=logindao.searchStaffLogin(staff_id, library_id);
     logobj.setRole(role);
       logobj.setSublibraryId(sublibrary_id);
       logobj.setQuestion(question);
       logobj.setPassword(password1);
       logobj.setAns(ans);
-    result=LoginDAO.update1(logobj);
+    result=logindao.update1(logobj);
 
 
 
@@ -3152,7 +3141,7 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
 
        login_role=(String)session.getAttribute("login_role");    //cannot delete Same Level Account
 
-    Login    log=LoginDAO.searchRole(staff_id, library_id);
+    Login    log=logindao.searchRole(staff_id, library_id);
 
             if(log!=null)
             {
@@ -3169,7 +3158,7 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
                 }
             }
 
-    result=LoginDAO.DeleteLogin(staff_id, library_id,sublibrary_id);
+    result=logindao.DeleteLogin(staff_id, library_id,sublibrary_id);
     result=PrivilegeDAO.DeleteStaff(staff_id, library_id, sublibrary_id);
     result=AcqPrivilegeDAO.DeleteLogin(staff_id, library_id,sublibrary_id);
     result=CatPrivilegeDAO.DeleteLogin(staff_id, library_id,sublibrary_id);

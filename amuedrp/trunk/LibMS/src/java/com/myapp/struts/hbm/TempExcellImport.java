@@ -72,6 +72,25 @@ public class TempExcellImport  implements java.io.Serializable {
      private String physicalDescription;
      private String colour;
      private String bindType;
+     private String bookLanguage;
+     private String refNo;
+
+    public String getBookLanguage() {
+        return bookLanguage;
+    }
+
+    public void setBookLanguage(String bookLanguage) {
+        this.bookLanguage = bookLanguage;
+    }
+
+    public String getRefNo() {
+        return refNo;
+    }
+
+    public void setRefNo(String refNo) {
+        this.refNo = refNo;
+    }
+     
 
     public String getStatus() {
         return status;

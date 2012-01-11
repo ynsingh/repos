@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 import org.hibernate.Session;
 import org.hibernate.Query;
 import java.util.*;
+import org.hibernate.HibernateException;
 import org.hibernate.transform.Transformers;
 
 /**
@@ -28,13 +29,13 @@ public class LoginDAO {
             session.save(loginDetails);
             tx.commit();
         }
-        catch (RuntimeException e) {
-            if(loginDetails != null)
+        catch (HibernateException e) {
+          
                 tx.rollback();
             throw e;
         }
         finally {
-        //  session.close();
+      session.close();
         }
     }
 public void update(Login loginDetails) {
@@ -50,12 +51,12 @@ public void update(Login loginDetails) {
             tx.commit();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
+          
                 tx.rollback();
             throw e;
         }
         finally {
-           //session.close();
+         session.close();
         }
     }
 
@@ -80,7 +81,7 @@ public boolean updateadmin(Login loginDetails) {
 
         }
         finally {
-           //session.close();
+          session.close();
         }
         return true;
     }
@@ -93,13 +94,13 @@ public void updateByStaffId(Login loginDetails) {
             session.saveOrUpdate(loginDetails);
             tx.commit();
         }
-        catch (RuntimeException e) {
-          //  if(bibDetails != null)
+        catch (HibernateException e) {
+          
                 tx.rollback();
             throw e;
         }
         finally {
-           //session.close();
+         session.close();
         }
     }
 public void delete(String user_id) {
@@ -108,229 +109,318 @@ public void delete(String user_id) {
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
-            //acqdocentry = session.load(BibliographicDetails.class, id);
+          
             Query query = session.createQuery("DELETE FROM Login  WHERE  id.userId = :userId ");
 
             query.setString("userId",user_id );
-            //query.setString("instituteId",institute_id );
+          
             query.executeUpdate();
             tx.commit();
-            //return (BibliographicDetails) query.uniqueResult();
+          
         }
-
+ catch (HibernateException e) {
+          
+                tx.rollback();
+            throw e;
+        }
         finally {
-            //session.close();
+           session.close();
         }
     }
 
 public List getLoginDetails(String user_id,String password){
  Session session =null;
-    Transaction tx = null;
+ Query query=null;
+    List obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createQuery("FROM Login where loginId = :userId and password=:password");
+             query = session.createQuery("FROM Login where loginId = :userId and password=:password");
              query.setString("userId",user_id );
              query.setString("password",password);
              System.out.println("user_id="+user_id+ "  Passwoord="+password);
-            return query.list();
+            obj=query.list();
+        }
+     catch (HibernateException e) {
+          
+
+            System.out.println(e);
         }
         finally {
-          //  session.close();
+        session.close();
         }
-
+return obj;
 }
-public static Login getSuperAdminLoginDetails(String user_id,String password,String role)
+public  Login getSuperAdminLoginDetails(String user_id,String password,String role)
 {
  Session session =null;
-    Transaction tx = null;
+    Login obj=null;
+    Query query=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createQuery("FROM Login where loginId = :userId and password=:password and role=:role");
+             query = session.createQuery("FROM Login where loginId = :userId and password=:password and role=:role");
              query.setString("userId",user_id );
              query.setString("password",password);
              query.setString("role",role);
-          return (Login)query.uniqueResult();
+          
+obj=(Login)query.uniqueResult();
+        }
+ catch (HibernateException e) {
 
+
+            System.out.println(e);
         }
         finally {
-          //  session.close();
+        session.close();
         }
-
+        return obj;
 }
 
 
 public List getLoginDetailsbyRole(String role){
  Session session =null;
-    Transaction tx = null;
+    Query query=null;
+    List obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createQuery("FROM Login where role = :role");
+             query = session.createQuery("FROM Login where role = :role");
              query.setString("role",role );
-            // query.setString("password",password.trim() );
-            return query.list();
+            obj=query.list();
+            
+        }
+    catch (HibernateException e) {
+
+
+            System.out.println(e);
         }
         finally {
-            session.close();
+           session.close();
         }
+        return obj;
 }
 
 public List getUser(String user_id){
- Session session =null;
-    Transaction tx = null;
+ Session session =HibernateUtil.getSessionFactory().openSession();
+    Query query=null;
+    List obj=null;
     try {
-        session= HibernateUtil.getSessionFactory().openSession();
+      
+        System.out.println(session);
                 session.beginTransaction();
-                Query query = session.createQuery("FROM Login where loginId = :userId");
+                
+                 query = session.createQuery("FROM Login where loginId = :userId");
                 query.setString("userId",user_id );
-                return query.list();
+                 obj= query.list();
+        }
+    catch (HibernateException e) {
+
+e.printStackTrace();
+            
         }
         finally {
-       //     session.close();
+    session.close();
         }
+      return obj;
+
 }
 
 
-public static Login searchAns(String staff_id,String library_id,String ans1) {
+public  Login searchAns(String staff_id,String library_id,String ans1) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Query query=null;
+Login obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  Login  WHERE id.libraryId =:library_id  and id.staffId=:staff_id and ans=:ans1");
+             query = session.createQuery("FROM  Login  WHERE id.libraryId =:library_id  and id.staffId=:staff_id and ans=:ans1");
             query.setString("staff_id",staff_id );
             query.setString("library_id",library_id );
             query.setString("ans1",ans1 );
+obj=( Login) query.uniqueResult();
+           
+        } catch (HibernateException e) {
 
-            return ( Login) query.uniqueResult();
+
+            System.out.println(e);
         }
+
         finally {
-         //   session.close();
+        session.close();
         }
-
+ return obj;
 }
 
-public static Login searchLoginID(String login_id) {
+public  Login searchLoginID(String login_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
-        try {
+Query query=null;
+Login obj=null;
+try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  Login  WHERE loginId =:login_id  ");
+            query = session.createQuery("FROM  Login  WHERE loginId =:login_id  ");
             query.setString("login_id", login_id);
-
-            return ( Login) query.uniqueResult();
+obj=( Login) query.uniqueResult();
+           
         }
+         catch (HibernateException e) {
+
+
+            System.out.println(e);
+        }
+
         finally {
-            session.close();
+        session.close();
         }
-
+ return obj;
 }
 
-public static Login searchAllStaffAccount(String library_id) {
+public  Login searchAllStaffAccount(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Query query=null;
+Login obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  Login  WHERE id.libraryId =:library_id  ");
+            query = session.createQuery("FROM  Login  WHERE id.libraryId =:library_id  ");
             query.setString("login_id", library_id);
+obj=( Login) query.uniqueResult();
+            
+        }
+         catch (HibernateException e) {
 
-            return ( Login) query.uniqueResult();
+
+            System.out.println(e);
         }
+
         finally {
-          ///  session.close();
+     HibernateUtil.getSessionFactory().close();
         }
+  return obj;
 
 }
-public static Login searchAllStaffAccount(String library_id,String sublibrary_id) {
+public  Login searchAllStaffAccount(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Query query=null;
+Login obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  Login  WHERE id.libraryId =:library_id  and sublibraryId=:sublibrary_id ");
+             query = session.createQuery("FROM  Login  WHERE id.libraryId =:library_id  and sublibraryId=:sublibrary_id ");
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
-            return (Login) query.uniqueResult();
+          obj=  (Login) query.uniqueResult();
         }
-        finally {
-        //    session.close();
+         catch (HibernateException e) {
+
+
+            System.out.println(e);
         }
 
+        finally {
+     session.close();
+        }
+return obj;
 }
 
-public static List<AccountSubLibrary> searchAllStaffListAccount(String library_id) {
+public  List<AccountSubLibrary> searchAllStaffListAccount(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
+        Query query=null;
+        List<AccountSubLibrary> obj=null;
          try {
             session.beginTransaction();
-        Query query = session.createSQLQuery("select a.*,b.* from login a inner join sub_library b on a.sublibrary_id=b.sublibrary_id and a.library_id=b.library_id where a.library_id=:library_id")
+         query = session.createSQLQuery("select a.*,b.* from login a inner join sub_library b on a.sublibrary_id=b.sublibrary_id and a.library_id=b.library_id where a.library_id=:library_id")
                 .addEntity(Login.class)
                 .addEntity(SubLibrary.class)
                 .setResultTransformer(Transformers.aliasToBean(AccountSubLibrary.class));
 
             query.setString("library_id", library_id);
             
-
-            return (List<AccountSubLibrary>) query.list();
+obj=(List<AccountSubLibrary>) query.list();
+           
               }
-        finally {
-         //   session.close();
+         catch (HibernateException e) {
+
+
+            System.out.println(e);
         }
 
+        finally {
+         session.close();
+        }
+ return obj;
 }
-public static List<AccountSubLibrary> searchAllStaffListAccount(String library_id,String sublibrary_id) {
+public  List<AccountSubLibrary> searchAllStaffListAccount(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Query query=null;
+List<AccountSubLibrary>  obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createSQLQuery("select a.*,b.* from login a inner join sub_library b on a.sublibrary_id=b.sublibrary_id and a.library_id=b.library_id where a.library_id=:library_id and  a.sublibrary_id=:sublibrary_id")
+             query = session.createSQLQuery("select a.*,b.* from login a inner join sub_library b on a.sublibrary_id=b.sublibrary_id and a.library_id=b.library_id where a.library_id=:library_id and  a.sublibrary_id=:sublibrary_id")
                 .addEntity(Login.class)
                 .addEntity(SubLibrary.class)
                 .setResultTransformer(Transformers.aliasToBean(AccountSubLibrary.class));
 
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
-
-             return (List<AccountSubLibrary>) query.list();
+obj=(List<AccountSubLibrary>) query.list();
+             
         }
+         catch (HibernateException e) {
+
+
+            System.out.println(e);
+        }
+
         finally {
-         //   session.close();
+         session.close();
         }
-
+return obj;
 }
-public static Login searchStaffLogin(String staff_id,String library_id,String sublibrary_id) {
+public  Login searchStaffLogin(String staff_id,String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Query query=null;
+Login login=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  Login  WHERE id.staffId =:staff_id and id.libraryId=:library_id and sublibraryId=:sublibrary_id");
+            query = session.createQuery("FROM  Login  WHERE id.staffId =:staff_id and id.libraryId=:library_id and sublibraryId=:sublibrary_id");
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
-            return ( Login) query.uniqueResult();
+         login=( Login) query.uniqueResult();
         }
+         catch (HibernateException e) {
+
+
+            System.out.println(e);
+        }
+
         finally {
-            session.close();
+         session.close();
         }
-
+   return login;
 }
-public static Login searchStaffLogin(String staff_id,String library_id) {
+public  Login searchStaffLogin(String staff_id,String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Query query=null;
+Login obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  Login  WHERE id.staffId =:staff_id and id.libraryId=:library_id");
+             query = session.createQuery("FROM  Login  WHERE id.staffId =:staff_id and id.libraryId=:library_id");
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
+obj=( Login) query.uniqueResult();
+           
+        }
+        catch (HibernateException e) {
 
-            return ( Login) query.uniqueResult();
+
+            System.out.println(e);
         }
         finally {
-            session.close();
+          session.close();
         }
-
+ return obj;
 }
 
-public static  boolean update1(Login obj)
+public  boolean update1(Login obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -346,8 +436,9 @@ public static  boolean update1(Login obj)
 
 
         }
-        catch (Exception ex)
+        catch (HibernateException ex)
         {
+            tx.rollback();
          System.out.println(ex.toString());
              return false;
 
@@ -356,13 +447,13 @@ public static  boolean update1(Login obj)
         }
         finally
         {
-          //session.close();
+        session.close();
         }
    return true;
 
 }
 
-public static  boolean updatePriv(Login obj,Privilege priv,AcqPrivilege acqpriv,CatPrivilege catpriv,CirPrivilege cirpriv,SerPrivilege serpriv)
+public boolean updatePriv(Login obj,Privilege priv,AcqPrivilege acqpriv,CatPrivilege catpriv,CirPrivilege cirpriv,SerPrivilege serpriv)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -394,46 +485,60 @@ public static  boolean updatePriv(Login obj,Privilege priv,AcqPrivilege acqpriv,
         }
         finally
         {
-          //session.close();
+          session.close();
         }
    return true;
 
 }
-public static Login searchStaffId(String staff_id,String library_id) {
+public Login searchStaffId(String staff_id,String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Query  query=null;
+Login obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  Login  where id.libraryId =:library_id and id.staffId =:staff_id");
+            query = session.createQuery("FROM  Login  where id.libraryId =:library_id and id.staffId =:staff_id");
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
            
-            return ( Login) query.uniqueResult();
+         obj=( Login) query.uniqueResult();
+        }
+           catch (Exception ex)
+        {
+         System.out.println(ex.toString());
+
+
+
+
+
         }
         finally {
-          //  session.close();
+         session.close();
         }
-
+   return obj;
 }
 
-public static Login searchRole(String staff_id,String library_id) {
+public Login searchRole(String staff_id,String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Query query=null;
+Login obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  Login  where id.libraryId =:library_id and id.staffId =:staff_id");
+             query = session.createQuery("FROM  Login  where id.libraryId =:library_id and id.staffId =:staff_id");
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
-           
+           obj=( Login) query.uniqueResult();
 
-            return ( Login) query.uniqueResult();
+            
+        }
+        catch(HibernateException e){
+        e.printStackTrace();
         }
         finally {
-            session.close();
+        session.close();
         }
-
+return obj;
 }
-public static boolean DeleteLogin(String staff_id,String library_id,String sublibrary_id) {
+public boolean DeleteLogin(String staff_id,String library_id,String sublibrary_id) {
       Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -454,20 +559,22 @@ public static boolean DeleteLogin(String staff_id,String library_id,String subli
         }
         catch (Exception ex)
         {
+            tx.rollback();
+              System.out.println(ex.toString());
              return false;
 
-       //  System.out.println(ex.toString());
+       
 
         }
         finally
         {
-          //session.close();
+        session.close();
         }
    return true;
 
 
 }
-public static boolean DeleteLogin(String staff_id,String library_id) {
+public boolean DeleteLogin(String staff_id,String library_id) {
       Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -487,46 +594,59 @@ public static boolean DeleteLogin(String staff_id,String library_id) {
 
         }
         catch (Exception ex)
-        {
+        { tx.rollback();
+            System.out.println(ex.toString());
              return false;
 
-       //  System.out.println(ex.toString());
+       
 
         }
         finally
         {
-          //session.close();
+         session.close();
         }
    return true;
 
 
 }
-public static Login searchForgetPassword(String login_id) {
+public Login searchForgetPassword(String login_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Query query=null;
+Login obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  Login  WHERE loginId =:login_id and question!=:ques");
+             query = session.createQuery("FROM  Login  WHERE loginId =:login_id and question!=:ques");
             query.setString("login_id", login_id);
             query.setString("ques", "@");
-
-            return ( Login) query.uniqueResult();
-        }
-        finally {
-         //   session.close();
+obj=( Login) query.uniqueResult();
+          
         }
 
+         catch (Exception ex)
+        {
+            System.out.println(ex.toString());
+
+
+
+
+        }
+        finally
+        {
+         session.close();
+        }
+  return obj;
 }
 
-public static Login searchFirstLogin(String staff_id,String library_id,String sublibrary_id,String login) {
+public Login searchFirstLogin(String staff_id,String library_id,String sublibrary_id,String login) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Query query=null;
+Login obj=null;
         try {
             session.beginTransaction();
 
         
 
-            Query query = session.createQuery("FROM  Login  WHERE id.libraryId =:library_id and id.staffId =:staff_id and sublibraryId= :sublibrary_id and question = :ques  and loginId= :login_id");
+            query = session.createQuery("FROM  Login  WHERE id.libraryId =:library_id and id.staffId =:staff_id and sublibraryId= :sublibrary_id and question = :ques  and loginId= :login_id");
             query.setString("library_id",library_id);
             query.setString("sublibrary_id", sublibrary_id);
             query.setString("staff_id", staff_id);
@@ -534,33 +654,54 @@ public static Login searchFirstLogin(String staff_id,String library_id,String su
             
             query.setString("login_id", login);
          
+           obj=(Login) query.uniqueResult();
            
-            return (Login) query.uniqueResult();
 
             
             
         }
-        finally {
-        //   session.close();
-        }
+         catch (Exception ex)
+        {
+            System.out.println(ex.toString());
 
+
+
+
+        }
+        finally
+        {
+         session.close();
+        }
+ return obj;
 }
-public static Login searchUser(String login_id,String password) {
+public  Login searchUser(String login_id,String password) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+        System.out.println(session+"...........................");
+Query query=null;
+Login obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  Login  WHERE loginId =:login_id and password =:password");
+             query = session.createQuery("FROM  Login  WHERE loginId =:login_id and password =:password");
             query.setString("login_id", login_id);
             query.setString("password", password);
-            return (Login) query.uniqueResult();
-        }
-        finally {
-           // session.close();
+            obj=(Login) query.uniqueResult();
         }
 
+       catch (Exception ex)
+        {
+            System.out.println(ex.toString());
+
+
+
+
+        }
+        finally
+        {
+         session.close();
+        }
+      return obj;
 }
-public static  boolean insert1(Login obj)
+public  boolean insert1(Login obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -578,14 +719,16 @@ public static  boolean insert1(Login obj)
         }
         catch (Exception ex)
         {
+            tx.rollback();
+              System.out.println(ex.toString());
              return false;
 
-       //  System.out.println(ex.toString());
+       
 
         }
         finally
         {
-          //session.close();
+        session.close();
         }
    return true;
 

@@ -40,6 +40,12 @@ public class DepartmentViewAllAction extends org.apache.struts.action.Action {
          HttpSession session=request.getSession();
          library_id=(String)session.getAttribute("library_id");
          List dept=DeptDAO.searchDept(library_id);
+          if(dept==null && dept.isEmpty())
+             {
+
+
+             }
+
          session.setAttribute("dept", dept);
          return mapping.findForward("success");
     }

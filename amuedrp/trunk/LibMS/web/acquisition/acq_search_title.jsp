@@ -17,11 +17,7 @@ String msg1=(String)request.getAttribute("msg1");
 String msg2=(String)request.getAttribute("msg2");
 %>
         <style type="text/css">
-body
-{
-   background-color: #FFFFFF;
-   color: #000000;
-}
+
 </style>
 <script language="javascript">
 function fun()
@@ -35,7 +31,7 @@ document.Form1.submit();
 </script>
 </head>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
-<body onload="fun()" class="datagrid">
+<body onload="fun()" >
 
 
 <form name="Form1" action="acqAllBiblio.do"  >

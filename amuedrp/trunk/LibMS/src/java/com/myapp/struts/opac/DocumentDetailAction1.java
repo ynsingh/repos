@@ -23,6 +23,7 @@ public class DocumentDetailAction1 extends org.apache.struts.action.Action {
 HttpSession session = request.getSession();
  session.removeAttribute("documentDetail");
        session.removeAttribute("documentDetail1");
+        session.removeAttribute("MLIdocumentDetail");
         int document_id = Integer.parseInt(request.getParameter("doc_id"));
         String library_id = (String)request.getParameter("library_id");
         String sublibrary_id = (String)request.getParameter("sublibrary_id");
@@ -30,7 +31,7 @@ HttpSession session = request.getSession();
         List<DocumentDetails> doc = (List<DocumentDetails>)opacDao.DocumentSearchById(document_id, library_id, sublibrary_id);
         List<BibliographicDetailsLang> doc1 = (List<BibliographicDetailsLang>)opacDao.DocumentSearch(document_id, library_id, sublibrary_id);
        session.setAttribute("documentDetail", doc);
-       session.setAttribute("documentDetail1", doc1);
+       session.setAttribute("MLIdocumentDetail", doc1);
         return mapping.findForward(SUCCESS);
     }
 }

@@ -240,7 +240,7 @@ locale1=(String)session.getAttribute("locale");
 
 
              <tr><td dir="<%=rtl%>"><%=resource.getString("landlineno")%></td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="land_line_no"   name="land_line_no" value="<%=land_line_no%>" tabindex="9" title="Enter Land Line No" ></td>
-             <td dir="<%=rtl%>"><%=resource.getString("password")%></td><td dir="<%=rtl%>"><input type="password" id="admin_password" dir="<%=rtl%>"  name="admin_password" value="<%=admin_password%>"  title="Enter Password" readonly/></td>
+            <%-- <td dir="<%=rtl%>"><%=resource.getString("password")%></td><td dir="<%=rtl%>"><input type="password" id="admin_password" dir="<%=rtl%>"  name="admin_password" value="<%=admin_password%>"  title="Enter Password" readonly/></td>--%>
              </tr>
 
              <tr><td dir="<%=rtl%>"><%=resource.getString("typeofinstitute")%></td><td><select name="type_of_institute" dir="<%=rtl%>" tabindex="10" id="type_of_institute" style="width:148px" >

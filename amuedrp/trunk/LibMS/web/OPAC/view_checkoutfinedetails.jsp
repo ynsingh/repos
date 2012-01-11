@@ -5,7 +5,7 @@
 
 --%>
  
-    <%@page import="com.myapp.struts.CirculationDAO.*,com.myapp.struts.hbm.*,com.myapp.struts.opac.*,java.text.*,java.util.Calendar"%>
+    <%@page import="com.myapp.struts.CirDAO.*,com.myapp.struts.hbm.*,com.myapp.struts.opac.*,java.text.*,java.util.Calendar"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>

@@ -55,16 +55,11 @@ public class ApprovalReportAction2 extends org.apache.struts.action.Action {
              String library_id;
         String path = servlet.getServletContext().getRealPath("/");
 System.out.println(path+"................");
- String os=(String)System.getProperty("os.name");
-   System.out.println("OS----------->"+os);
-   if(os.startsWith("Linux"))
-   {
+
+        
   
 
-path=path+"/JasperReport";
-   }else{
-   path=path+"\\JasperReport";
-   }
+path=path+"JasperReport";
 System.out.println(path);
 
         try
@@ -79,18 +74,12 @@ System.out.println(path);
         // session.setAttribute("circheckInlist1", circheckInlist1);
         
         //return mapping.findForward(SUCCESS);
- System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+ System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"+circheckInlist1.size());
 
 
 
     System.out.println("Compiling report...");
-    if(os.startsWith("Linux"))
-   {
-
-         JasperCompileManager.compileReportToFile(path + "/approval1_1.jrxml");
-    }else{
-         JasperCompileManager.compileReportToFile(path + "\\approval1_1.jrxml");
-    }
+          JasperCompileManager.compileReportToFile(path + "/approval1_1.jrxml");
           System.out.println("Done!");
           OutputStream ouputStream = response.getOutputStream();
            response.setContentType("application/pdf");
@@ -101,30 +90,17 @@ System.out.println(path);
 // System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"+cir_checkout_report.get(j).toString());
  HashMap map = new HashMap();
  dataSource = new JRBeanCollectionDataSource(circheckInlist1);
-
           JasperFillManager.fillReportToFile(path+"/approval1_1.jasper",map, dataSource);
            System.out.println("Filling report...");
 
           System.out.println("Done!");
-          File file;
-            if(os.startsWith("Linux"))
-   {      
-            file = new File(path + "/" +"approval1_1.jrprint");
-            }else{
-           file = new File(path + "/" +"approval1_1.jrprint");
-            }
+          File file = new File(path + "/" +
+                                              "approval1_1.jrprint");
           JasperPrint jasperPrint = (JasperPrint)JRLoader.loadObject(file);
           JRPdfExporter pdfExporter = new JRPdfExporter();
           pdfExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-          if(os.startsWith("Linux"))
-   {
 	  pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
                      path + "/" + "approval1_1.pdf");
-          }else{
-          pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                     path + "\\" + "approval1_1.pdf");
-
-          }
 	  System.out.println("Exporting report...");
           pdfExporter.exportReport();
           System.out.println("Done!");

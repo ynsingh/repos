@@ -13,7 +13,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
 
 /**

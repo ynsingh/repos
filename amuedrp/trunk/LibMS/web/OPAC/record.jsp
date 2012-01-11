@@ -4,10 +4,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*,java.io.*,java.net.*,com.myapp.struts.hbm.DocumentDetails"%>
+
 <html><head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="Faraz Hasan" content="MCA,AMU">
-<title>Search by Accession Number...</title>
+
+
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <%!
     Locale locale=null;
@@ -16,7 +17,7 @@
     String align="left";
 
 int fromIndex,toIndex;
-int pagesize=2,size;
+int pagesize=10,size;
 int pageIndex;
 int noofpages;
 int modvalue;
@@ -80,12 +81,13 @@ System.out.println(size+"   "+pageIndex+" "+noofpages);
 
 
 
-    </head><body>
+    </head><body style="margin:0px 0px 0px 0px;background-color:#e0e8f5;font: arial;font-size: 11px;text-align: center">
+        
 
 
 
    
-             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="<%=request.getContextPath()%>/OPAC/allitems.jsp" frameborder=0 height="400px" width="80%" scrolling="no"  id="f1"></IFRAME>
+             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="<%=request.getContextPath()%>/OPAC/allitems.jsp" frameborder=0 height="260px" width="80%" scrolling="no"  id="f1"></IFRAME>
 <br/>Pages&nbsp;&nbsp;
         <%for(int ii=1;ii<=noofpages;ii++){%>
         <a dir="" target="f1" href="<%=request.getContextPath()%>/OPAC/allitems.jsp?pageIndex=<%=ii%>"><%=ii%></a>&nbsp;&nbsp;

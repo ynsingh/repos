@@ -28,6 +28,7 @@ private String institute_name ;
 private String abbreviated_name ;
 private String institute_address ;
 private String city ;
+LoginDAO logindao;
 private String state ;
 private String country ;
 private String pin ;
@@ -69,6 +70,7 @@ Locale locale=null;
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         AdminViewActionForm adminRegistrationActionForm=(AdminViewActionForm)form;
+        logindao=new LoginDAO();
         registration_id=adminRegistrationActionForm.getRegistration_request_id();
         institute_name=adminRegistrationActionForm.getInstitute_name();
         abbreviated_name=adminRegistrationActionForm.getAbbreviated_name();
@@ -100,7 +102,7 @@ Locale locale=null;
         HttpSession session=request.getSession();
         LibraryDAO institutedao = new LibraryDAO();
         AdminRegistrationDAO admindao = new AdminRegistrationDAO();
-        LoginDAO logindao = new LoginDAO();
+        
         StaffDetailDAO staffdetaildao = new StaffDetailDAO();
 
         try{
@@ -261,12 +263,12 @@ if(status.equalsIgnoreCase("Registered"))
          System.out.println(user_id+"............");
 
 
-                    Login login =LoginDAO.searchLoginID(user_id);
+                    Login login =logindao.searchLoginID(user_id);
                     
                     login.setUserName(admin_fname + " "+admin_lname);
                   //  login.setPassword(admin_password);
                     
-                    result=LoginDAO.update1(login);
+                    result=logindao.update1(login);
                     
                      if(result==true)
                      {  System.out.println("Here");

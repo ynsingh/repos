@@ -2,6 +2,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ page import="java.util.HashMap"%>
+<%@ page import="com.myapp.struts.hbm.Biblio"%>
 <%-- <%@page contentType="text/html" import="java.util.Calendar"%>
  <%
 Calendar now = Calendar.getInstance();
@@ -122,9 +124,9 @@ function func1(t){
      func2(t);
     }
 function func2(t){
-    alert(t);
+  //  alert(t);
     if(t.value!=10){
-        document.getElementById("cat0").submit();
+        document.getElementById("catcontrol").submit();
        // alert("submitted! ");
 }
 }
@@ -153,8 +155,21 @@ function leader(){
     var g=document.getElementById("dcf").value;
     var h=document.getElementById("mrrl").value;
     var z="00000"+a+b+c+d+e+"2"+"2"+"00000"+f+g+h+"4500";
+    
+     
     document.getElementById("catch").value=z;
-    $("#layer1").hide();
+    
+   $("#layer1").hide();
+    document.getElementById("catcontrol").submit();
+   
+<%
+      if(request.getParameter("zclick")!=null)
+        session.setAttribute("data",(String)request.getParameter("catch"));
+      
+      System.out.println(request.getParameter("zclick"));
+   %>
+       
+   
 }
 function fixedfield(){
     var a=document.getElementById("vo").value;
@@ -182,7 +197,39 @@ var a=document.getElementById("sr").value;
      $("#layer3").hide();
 }
   </script>
-        <title>Struts File Upload</title>
+<% HashMap hm1 = new HashMap();
+    Biblio bib1=new Biblio();
+    Biblio bib2=new Biblio();
+    Biblio bib3=new Biblio();
+    Biblio bib4=new Biblio();
+    Biblio bib5=new Biblio();
+    Biblio bib6=new Biblio();
+%>
+<%
+ hm1 = (HashMap)session.getAttribute("hsmp");
+System.out.println(hm1+"...........in jsp page");
+  if(hm1.containsKey("Leader")){
+           bib1=(Biblio)hm1.get("Leader");
+         
+        }
+   if(hm1.containsKey("001")){
+       bib2=(Biblio)hm1.get("001");
+        }
+   if(hm1.containsKey("003")){
+       bib3=(Biblio)hm1.get("003");
+        }
+   if(hm1.containsKey("005")){
+       bib4=(Biblio)hm1.get("005");
+        }
+   if(hm1.containsKey("007")){
+       bib5=(Biblio)hm1.get("007");
+        }
+   if(hm1.containsKey("008")){
+       bib6=(Biblio)hm1.get("008");
+        }
+ %>
+
+<title>LibMS</title>
         <html:base />
     <style type="text/css">
 		body
@@ -363,7 +410,7 @@ var a=document.getElementById("sr").value;
 	</script>
     </head>
     <body onload="search()">
-    <h2 align="center">Bibliographic Cataloguing</h2>
+ <h2 align="center">MARC Based Bibliographic Cataloging</h2>
 
 <div id="ddtabs3" class="solidblockmenu">
 <ul>
@@ -378,7 +425,7 @@ var a=document.getElementById("sr").value;
 <li><a href="<%=request.getContextPath()%>/cataloguing/catl7.jsp" onclick="func1(7)" rel="sb7">7 (70X-78X)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/catl8.jsp" onclick="func1(8)" rel="sb8">8 (80X-88X)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/catl9.jsp" onclick="func1(9)" rel="sb9">9</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/cat_new_MARC.jsp"  rel="home">HOME</a></li>
+<li><a href="<%=request.getContextPath()%>/cataloguing/marchome.do"  rel="home">HOME</a></li>
 </ul>
 </div>
 <DIV class="tabcontainer ieclass">
@@ -422,42 +469,47 @@ Control Field Entry
 </FONT>
 </DIV>
 <br>
-<html:form method="post" action="/catcontrolaction" styleId="cat0">
-  <input type="hidden" value="" name="zclick" id="zclick" />
+<html:form method="post" action="/catcontrolaction" styleId="catcontrol">
+  
+<input type="hidden" value="" name="zclick" id="zclick" />
     <div id="content" style="position: absolute; left: 5%;top: 20%">
     <b>    LEADER:</b>
-    <br><html:text  property="leader" name="CatControlActionForm" styleId="catch"/>
+    <br>    
+    
+    <input type="text"  name="leader" value="<%if(request.getParameter("data")!=null) { %><%=(String)request.getParameter("data")%> <%}%><% if(bib1.get$a()!=null){%><%= bib1.get$a() %><%}%>"  id="catch"/>
         <input type="button" id="preferences"  value="Leader Structure"/>
     </div>
     <br>
     <div id="c1" style="position: absolute; left: 5%;top: 30%">
         <b>001 - CONTROL NUMBER:</b>
-        <br><html:text styleId="control_no" name="CatControlActionForm" property="control_no"/>
+        <br><input type="text" id="control_no" value="<% if(bib2.get$a()!=null){%><%= bib2.get$a() %><%}%>"  name="control_no"/>
     </div>
     <br>
     <div id="c1" style="position: absolute; left: 5%;top: 40%">
         <b> 003 - CONTROL NUMBER IDENTIFIER:</b>
-        <br><html:text  styleId="control_no_id" name="CatControlActionForm" property="control_no_id"/>
+        <br><input type="text"  id="control_no_id" value="<% if(bib3.get$a()!=null){%><%= bib3.get$a() %><%}%>" name="control_no_id"/>
     </div>
     <br>
     <div id="c1" style="position: absolute; left: 5%;top: 50%">
         <b> 005 - DATE AND TIME OF LATEST TRANSACTION:</b>
-        <br><html:text  styleId="d_t_l_t" name="CatControlActionForm" property="d_t_l_t" readonly="true"/>
+        <br><input type="text"  id="d_t_l_t" value="<% if(bib4.get$a()!=null){%><%= bib4.get$a() %><%}%>" name="d_t_l_t" readonly="true"/>
     </div>
     <br>
     <div id="content2" style="position: absolute; left: 5%;top: 60%">
             <b> 007- PHYSICAL DESCRIPTION FIXED FIELD:</b>
-            <br><html:text property="phy_desc"  styleId="catch2" name="CatControlActionForm"/>
+            <br><input type="text" name="phy_desc"  id="catch2" value="<% if(bib5.get$a()!=null){%><%= bib5.get$a() %><%}%>" />
         <input type="button" id="preferences2"  value="Physical Desc Structure"/>
     </div>
     <br>
     <div id="content1" style="position: absolute; left: 5%;top: 70%">
         <b>  008-FIXED-LENGTH DATA ELEMENTS:</b>
-        <br><html:text property="fix_data"  styleId="catch1" name="CatControlActionForm"/>
+        <br><input type="text" name="fix_data"  id="catch1" value="<% if(bib6.get$a()!=null){%><%= bib6.get$a() %><%}%>" />
         <input type="button" id="preferences1"  value="Fixed Field Structure"/>
     </div>
     <br>
+  
 </html:form>
+    
     <div id="layer1">
 		<div id="layer1_handle">
 			<a href="#" id="close">[ x ]</a>

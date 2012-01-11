@@ -12,8 +12,6 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.servlet.http.*;
-import org.hibernate.Transaction;
-import org.hibernate.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -110,8 +108,10 @@ public class OpacNewMemberAction extends org.apache.struts.action.Action {
 
       //  OpacImageUploadActionForm form1 = (OpacImageUploadActionForm)session1.getAttribute("OpacImageUploadActionForm");
        
-         Session session=HibernateUtil.getSessionFactory().getCurrentSession();
-            Transaction tx=null;
+
+
+    //Session session=HibernateUtil.getSessionFactory().getCurrentSession();
+      //      Transaction tx=null;
 
 
               CirRequestfromOpac test=(CirRequestfromOpac)CirRequestfromOpacDAO.getMemberDetail(cmdf.getCMBLib(),cmdf.getCmdSubLibrary(),cmdf.getTXTMEMID());
@@ -137,10 +137,7 @@ public class OpacNewMemberAction extends org.apache.struts.action.Action {
 
 
            
-               try
-              {
-              tx=session.beginTransaction();
-
+             
              
             cro.setLibraryId(CMBLib);
             
@@ -179,19 +176,20 @@ public class OpacNewMemberAction extends org.apache.struts.action.Action {
             if (cmdf.getImg()!=null)
             cro.setImage(iii);
             else cro.setImage(null);
-            session.save(cro);
-            tx.commit();
+
+          boolean result= CirRequestfromOpacDAO.insert(cro);
+          if(result==true){
            //String msg="Request for Member Registration sent successfully to Circulation Division";
             String msg=resource.getString("circulation.opacnewmem.reqsendtocirdiv");
             request.setAttribute("msg",msg);
             session1.removeAttribute("image");
             return mapping.findForward("Submit");
-
-            }catch(RuntimeException e)
+          }
+          else
+            
             {
-                System.out.println("Exception Generated:"+ e);
-                tx.rollback();
-                return mapping.findForward("failure");
+                System.out.println("Exception Generated:");
+               return mapping.findForward("failure");
               
 
             }

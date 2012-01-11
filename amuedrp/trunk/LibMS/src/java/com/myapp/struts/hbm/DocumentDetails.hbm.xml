@@ -180,7 +180,7 @@
             <column name="call_no" length="30" />
         </property>
         <property name="volumeNo" type="string">
-            <column name="volume_no" length="5" />
+            <column name="volume_no" length="20" />
         </property>
         <property name="location" type="string">
             <column name="location" length="200" />

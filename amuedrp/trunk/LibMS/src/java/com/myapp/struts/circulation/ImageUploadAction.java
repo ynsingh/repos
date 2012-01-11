@@ -65,6 +65,8 @@ public class ImageUploadAction extends org.apache.struts.action.Action {
         String sem=form1.getTXTSEM();
         String state1=form1.getTXTSTATE1();
         String state2=form1.getTXTSTATE2();
+        String uni=form1.getCollege();
+        String uniadd=form1.getColladd();
 
 
        // byte[] img;
@@ -106,6 +108,8 @@ public class ImageUploadAction extends org.apache.struts.action.Action {
         request.setAttribute("state2", state2);
         request.setAttribute("pin1", pin1);
         request.setAttribute("pin2",pin2);
+        request.setAttribute("uni", uni);
+        request.setAttribute("uniadd", uniadd);
         if (page==null){
         return mapping.findForward(SUCCESS);
         }else{

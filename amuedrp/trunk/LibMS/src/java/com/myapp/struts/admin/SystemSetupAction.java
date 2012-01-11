@@ -64,20 +64,20 @@ List<DocumentCategory> docobj=(List<DocumentCategory>)DocumentCategoryDAO.search
             return mapping.findForward("document");*/
             if(locobj.isEmpty())
             {
-            session.setAttribute("location","Manage Location");
+            session.setAttribute("location1","Manage Location");
             }
 
             if(empobj.isEmpty())
             {
-           session.setAttribute("member","Manage Member Type");
+           session.setAttribute("member1","Manage Member Type");
             }
             if(subempobj.isEmpty())
             {
-            session.setAttribute("submember","Mamage SubMember Type");
+            session.setAttribute("submember1","Mamage SubMember Type");
             }
             if(docobj.isEmpty())
             {
-            session.setAttribute("document","Manage Document Category");
+            session.setAttribute("document1","Manage Document Category");
             }
 
         if(locobj.isEmpty() || empobj.isEmpty() || subempobj.isEmpty() || docobj.isEmpty())

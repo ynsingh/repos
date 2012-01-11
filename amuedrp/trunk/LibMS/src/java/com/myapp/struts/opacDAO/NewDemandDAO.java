@@ -24,7 +24,7 @@ public class NewDemandDAO {
 
   public static Notices ViewNotice(String library_id,String sublibrary_id,String notice_id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = null;
+       Notices obj = null;
         System.out.println("LibraryID="+library_id+" SublibraryId="+sublibrary_id+" noticeId="+notice_id);
         try {
             session.beginTransaction();
@@ -32,7 +32,7 @@ public class NewDemandDAO {
             query.setString("library_id",library_id );
             query.setString("sublibrary_id",sublibrary_id);
             query.setString("notice_id",notice_id);
-            return (Notices) query.uniqueResult();
+           obj= (Notices) query.uniqueResult();
         }
         catch(Exception e){
         System.out.println("Notices NewDemandDAO Action "+e);
@@ -41,7 +41,7 @@ public class NewDemandDAO {
         finally {
             session.close();
         }
-
+return obj;
 
 
 }
@@ -49,7 +49,7 @@ public class NewDemandDAO {
 
     public static List Notice(String library_id,String sub_lib)
     {
-        //int count=1;
+        List obj=null;
         Session hsession=HibernateUtil.getSessionFactory().openSession();
         try
         {
@@ -61,21 +61,23 @@ public class NewDemandDAO {
          criteria.add(Restrictions.eq("id.libraryId",library_id));
          if(!sub_lib.equalsIgnoreCase("all"))
          criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
-         return  criteria.list();
+         obj= criteria.list();
          }
-         return null;
+         
          
 
         }
         catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.SimpleSearch():"+e);
-            return null;
+            e.printStackTrace();
+           
+           
         }
         finally
         {
            hsession.close();
         }
+        return obj;
    }
 
 
@@ -84,7 +86,7 @@ public class NewDemandDAO {
 
     public static List NewArrival(String library_id,String sub_lib,String year1,String year2,String cat)
     {
-        //int count=1;
+       List obj=null;
         Session hsession=HibernateUtil.getSessionFactory().openSession();
         try
         {
@@ -97,25 +99,26 @@ public class NewDemandDAO {
 
          if(!cat.equalsIgnoreCase("all"))
          criteria.add(Restrictions.eq("documentType",cat));
-System.out.println(year1  +  " <  "+year2);
+            System.out.println(year1  +  " <  "+year2);
          if(year1!=null){
 
          criteria.add(Restrictions.gt("dateAcquired",year1));
          }
 
 
-         return criteria.list();
+         obj= criteria.list();
 
         }
         catch(Exception e)
         {
-            System.out.println("Error***** OpacSearchDAO.SimpleSearch():"+e);
-            return null;
+            e.printStackTrace();
+           
         }
         finally
         {
            hsession.close();
         }
+        return obj;
    }
 
 
@@ -137,9 +140,11 @@ System.out.println(year1  +  " <  "+year2);
         }
         catch (Exception ex)
         {
+            tx.rollback();
+            ex.printStackTrace();
              return false;
 
-       //  System.out.println(ex.toString());
+      
 
         }
         finally
@@ -169,9 +174,11 @@ System.out.println(year1  +  " <  "+year2);
         }
         catch (Exception ex)
         {
+            ex.printStackTrace();
+            tx.rollback();
              return false;
 
-       //  System.out.println(ex.toString());
+       
 
         }
         finally
@@ -200,9 +207,11 @@ System.out.println(year1  +  " <  "+year2);
         }
         catch (Exception ex)
         {
+            ex.printStackTrace();
+            tx.rollback();
              return false;
 
-       //  System.out.println(ex.toString());
+
 
         }
         finally
@@ -214,7 +223,8 @@ System.out.println(year1  +  " <  "+year2);
 }
      public static Demandlist getDemandList(String library_id,String sublibrary_id,String memid,String title,String status) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = null;
+        Demandlist obj=null;
+       
         try {
             System.out.println("Call");
             session.beginTransaction();
@@ -225,31 +235,34 @@ System.out.println(year1  +  " <  "+year2);
             query.setString("title",title);
             query.setString("status",status);
 
-            return  (Demandlist)query.uniqueResult();
+           obj=  (Demandlist)query.uniqueResult();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
-
+return obj;
      }
 
 
        public static List getMaxReservationId(String library_id,String sublibrary_id,String memId) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = null;
+        List obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("SELECT Max(id.requestId)FROM Reservationlist where id.libraryId = :library_id and id.sublibraryId = :sublibrary and id.memid = :memId ");
             query.setString("library_id",library_id );
             query.setString("sublibrary",sublibrary_id );
             query.setString("memId",memId );
-            return  query.list();
+            obj=query.list();
         }
         finally {
             session.close();
         }
 
-
+return obj;
 
 }
 

@@ -4,11 +4,8 @@
  */
 
 package com.myapp.struts.admin;
-import com.myapp.struts.admin.SecurityActionForm;
 import  com.myapp.struts.hbm.*;
 import  com.myapp.struts.AdminDAO.*;
-import java.sql.*;
-import  com.myapp.struts.*;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +29,7 @@ public class SecurityAction extends org.apache.struts.action.Action {
 
     String library_id;
     private boolean result;
-
+LoginDAO logindao;
 
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -41,7 +38,7 @@ public class SecurityAction extends org.apache.struts.action.Action {
     {
      SecurityActionForm login=(SecurityActionForm)form;
 
-
+logindao=new LoginDAO();
            staff_id=login.getStaff_id();
            user_name=login.getUser_id();
            question=login.getQuestion();
@@ -50,14 +47,14 @@ public class SecurityAction extends org.apache.struts.action.Action {
 library_id=(String)session.getAttribute("library_id");
 
 
-Login obj=LoginDAO.searchStaffId(staff_id, library_id);
+Login obj=logindao.searchStaffId(staff_id, library_id);
 obj.setQuestion(question);
 obj.setAns(ans);
 
-result=LoginDAO.update1(obj);
+result=logindao.update1(obj);
       if(result==true)
       {
-          Login rs=LoginDAO.searchStaffId(staff_id, library_id);
+          Login rs=logindao.searchStaffId(staff_id, library_id);
 
                             if(rs!=null)
                              {

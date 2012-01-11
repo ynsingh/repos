@@ -11,9 +11,9 @@ String staff_id=(String)request.getAttribute("new_staff_id");
 String library_id = (String)session.getAttribute("library_id");
 
 String sublibrary_id=(String)request.getAttribute("staff_sub_library");
+LoginDAO logindao=new LoginDAO();
 
-
-Login staffobj=LoginDAO.searchStaffLogin(staff_id, library_id,sublibrary_id);
+Login staffobj=logindao.searchStaffLogin(staff_id, library_id,sublibrary_id);
 String staff_role="";
 if(staffobj!=null)
    staff_role = staffobj.getRole();
@@ -1227,6 +1227,32 @@ switch(x){
 
      case 463:
       t="<%=resource.getString("admin.header.serial31") %>"
+      break
+ case 464:
+      t="<%=resource.getString("admin.header.serial79") %>"
+      break
+    case 465:
+      t="<%=resource.getString("admin.header.serial81") %>"
+      break
+    case 466:
+      t="<%=resource.getString("admin.header.serial82") %>"
+      break
+    case 467:
+      t="<%=resource.getString("admin.header.serial83") %>"
+      break
+    case 468:
+{  
+    t="<%=resource.getString("admin.header.serial84") %>"
+      break
+      }
+    case 469:
+      t="<%=resource.getString("admin.header.serial85") %>"
+      break
+    case 470:
+      t="<%=resource.getString("admin.header.serial86") %>"
+      break
+    case 471:
+      t="<%=resource.getString("admin.header.serial87") %>"
       break
 
 
@@ -2600,10 +2626,11 @@ this._clearMove(htmlObject);if(this._autoOpenTimer)clearTimeout(this._autoOpenTi
 			
 						<br>
 						<br>
-			<table width="400px" height="300px"  valign="top" align="center">
-        <tr><td   width="400px" height="300px" valign="top" style="" class="txt2" align="center">
-                <fieldset style="border:solid 1px brown;height:200px;padding-left: 5px">
-                    <legend><img src="<%=request.getContextPath()%>/images/StaffAssignPrivilege.png"></legend>
+                                                <table width="400px"   valign="top" align="center" border="1px">
+                                                    <tr><td class="headerStyle" height="25px" align="center">Assign/Change Privileges</td></tr>
+        <tr><td   width="400px" height="150px" valign="top" style="" class="txt2" align="center">
+                
+                    
 						<br>
 						<br>
 	
@@ -2613,8 +2640,8 @@ this._clearMove(htmlObject);if(this._autoOpenTimer)clearTimeout(this._autoOpenTi
                                                    // out.println("<script language=\"javascript\">alert(\""+msg+"\");</script>");
                                                        }%>
 
-			<a href="javascript:void(0);" class="l" onclick="alert('You Assigned priveleges to the following activities:\n' + tree.getAllCheckedNames());">View list of checked Privilege</a><br><br>
-                        <a href="javascript:void(0);" class="l" onclick="show_priveleges();">Show previously assigned privileges</a><br><br>
+			<a href="javascript:void(0);"  onclick="alert('You Assigned priveleges to the following activities:\n' + tree.getAllCheckedNames());">View list of checked Privilege</a><br><br>
+                        <a href="javascript:void(0);"  onclick="show_priveleges();">Show previously assigned privileges</a><br><br>
                         <input name="privilege_list" id="list11" type="hidden" />
                        <!--<input type="checkbox" value="" onchange="return setAllUncheck();"/>Uncheck All Privileges&nbsp;&nbsp;-->
                         <input name="privilege_list1" id="list12" type="hidden" />
@@ -2625,7 +2652,7 @@ this._clearMove(htmlObject);if(this._autoOpenTimer)clearTimeout(this._autoOpenTi
                        <input name="back" id="back" type="button" class="txt2"  value="Back" onclick="send();"/>
                         
 
-                        </fieldset>
+                        
 
                     </td></tr></table>
                         </td></tr></table>

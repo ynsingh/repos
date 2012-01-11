@@ -10,7 +10,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-
+<%@ page import="java.util.HashMap"%>
+<%@ page import="com.myapp.struts.hbm.Biblio"%>
 <html>
     <head>
         <title> Bibliographic Cataloguing According to MARC21 -- 4XX</title>
@@ -27,6 +28,16 @@
 ***********************************************/
 
 </script>
+<% HashMap hm1 = new HashMap();
+    Biblio bib1=new Biblio();
+%>
+<%
+ hm1 = (HashMap)session.getAttribute("hsmp");
+
+  if(hm1.containsKey("19")){
+       bib1=(Biblio)hm1.get("19");
+        }
+%>
 
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ddtabmenufiles/solidblocksmenu.css" />
@@ -99,11 +110,11 @@ function func1(t){
     }
 
 function func2(t){
-    alert(t);
+  //  alert(t);
     if(t.value!=4){
 
         document.getElementById("cat4").submit();
-     alert("submitted! ");
+   //  alert("submitted! ");
 }
 }
 
@@ -137,7 +148,7 @@ function keyHit(event) {
 <li><a href="<%=request.getContextPath()%>/cataloguing/catl7.jsp" onclick="func1(7)" rel="sb7">7 (70X-78X)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/catl8.jsp" onclick="func1(8)" rel="sb8">8 (80X-88X)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/catl9.jsp" onclick="func1(9)" rel="sb9">9 (9XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/cat_new_MARC.jsp"  rel="home">HOME</a></li>
+<li><a href="<%=request.getContextPath()%>/cataloguing/marchome.do"  rel="home">HOME</a></li>
 </ul>
 </div>
 
@@ -200,32 +211,28 @@ Control Field Entry
 
                                       <!-- Marc entries Starts from here . -->
 
-<div style="position:absolute;left:80%;top:18%;">
-                                         <table>
-                                     <tr><td></td><td align="right"><a href="<%=request.getContextPath() %>/marccommit.do"><input type="submit" value="Commit Data" /></a></td></tr>
-                                     </table>
-                                     </div>
+
 <div style="position:absolute;left:5%;top:25%;width:90%;border:1px #C0C0C0 solid;background: #f5fffa;">
  <html:form styleId="cat4" action="/cataction4.do" method="post">
     <table width="100%" cellspacing="5" >
          <tr><input type="hidden" value="" name="zclick" id="zclick" /></tr>
     <tr>
-        <td>Series Statement (R)(490) : <a href="javascript:animatedcollapse.toggle('490')">ind</a> <div id="490" style="width: 150px; display:none" >ind1<input type="text" name="in4901" value="" maxlength="1" size="1" onFocus="statwords(description[0],800,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in4902" value="" maxlength="1" size="1" onFocus="statwords(description[1],800,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
-<td>$a Series statement (R)<input type="text" value="" name="z490a" id="490a" onFocus="statwords(description[2],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+        <td>Series Statement (R)(490) : <a href="javascript:animatedcollapse.toggle('490')">ind</a> <div id="490" style="width: 150px; display:none" >ind1<input type="text" value="<% if(bib1.getIndicator1()!=null){%><%= bib1.getIndicator1() %><%}%>" name="in4901" maxlength="1" size="1" onFocus="statwords(description[0],800,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" value="<% if(bib1.getIndicator2()!=null){%><%= bib1.getIndicator2() %><%}%>" name="in4902"  maxlength="1" size="1" onFocus="statwords(description[1],800,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+<td>$a Series statement (R)<input type="text" value="<% if(bib1.get$a()!=null){%><%= bib1.get$a() %><%}%>" name="z490a" id="490a" onFocus="statwords(description[2],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('490v')">$v </a>
 
 <div id="490v" style=" background: #FDF5E6; display:none">
-Volume/sequential designation (R)<input type="text" value="" name="z490v" id="490v" onFocus="statwords(description[3],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Volume/sequential designation (R)<input type="text" value="<% if(bib1.get$v()!=null){%><%= bib1.get$v() %><%}%>" name="z490v" id="490v" onFocus="statwords(description[3],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('490x')">$x </a>
 <div id="490x" style=" background: #FDF5E6; display:none">
-International Standard Serial Number (R)<input type="text" value="" name="z490x" id="490x" onFocus="statwords(description[4],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+International Standard Serial Number (R)<input type="text" value="<% if(bib1.get$x()!=null){%><%= bib1.get$x() %><%}%>" name="z490x" id="490x" onFocus="statwords(description[4],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 
 <a href="javascript:animatedcollapse.toggle('4903')">$3 </a>
 <div id="4903" style=" background: #FDF5E6; display:none">
-Materials specified (NR) <input type="text" value="" name="z4903" id="4903" onFocus="statwords(description[5],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Materials specified (NR) <input type="text" value="<% if(bib1.get$3()!=null){%><%= bib1.get$3() %><%}%>" name="z4903" id="4903" onFocus="statwords(description[5],800,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 </font></td></tr>
 

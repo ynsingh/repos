@@ -49,7 +49,7 @@ locale1=(String)session.getAttribute("locale");
     <head>
  <%!
 int fromIndex,toIndex;
-int pagesize=2,size;
+int pagesize=10,size;
 int pageIndex;
 int noofpages;
 int modvalue;
@@ -88,6 +88,17 @@ if(toIndex>size)toIndex=size;
 
 %>
 <%
+List<BibliographicDetailsLang> dd1 = (List<BibliographicDetailsLang>)session.getAttribute("MLIdocumentDetail");
+
+
+
+
+
+
+
+
+
+
 String sublib_id1=null;
 dd = (List<DocumentDetails>)session.getAttribute("documentDetail");
         if(dd!=null){
@@ -104,28 +115,35 @@ dd = (List<DocumentDetails>)session.getAttribute("documentDetail");
        
     </head>
     <body>
-              <table  dir="<%=rtl %>"  class="datagrid" >
+        <table  dir="<%=rtl %>"  class="datagrid" style="border:solid 1px black;">
 
-        <tr  class="header"><td colspan="8" height="25px" align="center"><b><%= resource.getString("cataloguing.cataccessionentry.bibliodetail")%></b></td></tr>
-        <tr  class="header"><td width="150" height="25px">Accession No</td><td width="200"><%= resource.getString("cataloguing.catoldtitleentry1.title")%></td><td width="200"><%= resource.getString("cataloguing.catoldtitleentry1.mainentry")%></td><td width="100">Location</td><td width="100">Call No</td><td width="100">Status</td><td width="200">Issue Type</td><td width="200"><%= resource.getString("cataloguing.catviewownbibliogrid.action")%></td></tr>
+        <tr  class="header"><td colspan="9" height="25px" align="center"><b><%= resource.getString("cataloguing.cataccessionentry.bibliodetail")%></b></td></tr>
+        <tr  class="header"><td width="150" height="25px" align="center">Accession No</td><td width="200" align="center"><%= resource.getString("cataloguing.catoldtitleentry1.title")%></td><td width="200" align="center"><%= resource.getString("cataloguing.catoldtitleentry1.mainentry")%></td><td width="100" align="center">Location</td><td width="100" align="center">Call No</td><td width="100" align="center">VolumeNo</td><td width="100" align="center">Status</td><td width="200" align="center">Issue Type</td><td width="200" align="center"><%= resource.getString("cataloguing.catviewownbibliogrid.action")%></td></tr>
 <% for(int t=fromIndex,c=1;t<dd.size();t++,c++){
 if(c>pagesize)
   break;
     %>
-<tr class="row"><td><%= dd.get(t).getAccessionNo() %></td>
-<td><%= dd.get(t).getTitle() %></td>
-<td><%= dd.get(t).getMainEntry() %></td>
-<td><%= dd.get(t).getLocation() %></td>
-<td><%= dd.get(t).getCallNo() %></td>
-<td><%= dd.get(t).getStatus() %></td>
-<td><%= issuetype %></td>
+<tr class="row"><td align="center"><%= dd.get(t).getAccessionNo() %></td>
+    <% if(dd1!=null){%>
+<td align="center"><%= dd1.get(0).getTitle()!=null ?dd1.get(0).getTitle():""%></td>
+<td align="center"><%= dd1.get(0).getMainEntry()!=null?dd1.get(0).getMainEntry():""%></td>
+<%}else{%>
+<td align="center"><%= dd.get(t).getTitle() %></td>
+<td align="center"><%= dd.get(t).getMainEntry() %></td>
+
+<%}%>
+<td align="center"><%= dd.get(t).getLocation() %></td>
+<td align="center"><%= dd.get(t).getCallNo() %></td>
+<td align="center"><%= dd.get(t).getVolumeNo()==null?"No Given":dd.get(t).getVolumeNo() %></td>
+<td align="center"><%= dd.get(t).getStatus() %></td>
+<td align="center"><%= issuetype %></td>
  <%if(dd.get(t).getStatus().equalsIgnoreCase("available")&& issuetype.equals("Issuable")){%>
- <td><a href="<%=request.getContextPath()%>/OPAC/checkoutRequest.do?docId=<%= dd.get(t).getId().getDocumentId()%>&libId=<%= dd.get(t).getId().getLibraryId()%>&sublibId=<%= dd.get(t).getId().getSublibraryId() %>">Request for Check Out</a></td><%}%>
+ <td align="center"><a href="<%=request.getContextPath()%>/OPAC/checkoutRequest.do?docId=<%= dd.get(t).getId().getDocumentId()%>&libId=<%= dd.get(t).getId().getLibraryId()%>&sublibId=<%= dd.get(t).getId().getSublibraryId() %>">Request for Check Out</a></td><%}%>
 
 </tr>
  <%}%>
        
-        <tr><td colspan="8" align="center" height="20px;"></td></tr>
+       
        
 </table>
     </body>

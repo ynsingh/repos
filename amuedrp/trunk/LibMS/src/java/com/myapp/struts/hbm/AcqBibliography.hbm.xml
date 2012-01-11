@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 18, 2011 7:00:14 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.AcqBibliography" table="acq_bibliography" catalog="libms">
+    <class name="com.myapp.struts.hbm.AcqBibliography" table="acq_bibliography" catalog="libms" lazy="false">
         <composite-id name="id" class="com.myapp.struts.hbm.AcqBibliographyId">
             <key-property name="libraryId" type="string">
                 <column name="library_id" length="20" />

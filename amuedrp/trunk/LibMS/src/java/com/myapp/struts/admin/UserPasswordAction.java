@@ -30,14 +30,14 @@ public class UserPasswordAction extends org.apache.struts.action.Action {
     private String login_id;
     private boolean result;
     int i;
-    Connection con;
+    LoginDAO logindao;
    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
             CreateAccountActionForm caaction=(CreateAccountActionForm)form;
-
+logindao=new LoginDAO();
 
             login_id=caaction.getLogin_id();
             user_name=caaction.getUser_name();
@@ -51,9 +51,9 @@ public class UserPasswordAction extends org.apache.struts.action.Action {
      
         password=PasswordEncruptionUtility.password_encrupt(password);
 
-        Login  log=LoginDAO.searchRole(staff_id, library_id);
+        Login  log=logindao.searchRole(staff_id, library_id);
         log.setPassword(password);
-        result=LoginDAO.update1(log);
+        result=logindao.update1(log);
 
 
         AdminRegistration admin=AdminRegistrationDAO.searchInstituteAdmin(staff_id, library_id);

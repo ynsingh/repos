@@ -7,7 +7,7 @@ package com.myapp.struts.circulation;
 
 import com.myapp.struts.systemsetupDAO.BookCategoryDAO;
 import java.util.List;
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -112,7 +112,7 @@ public class CallnoForBookAction extends org.apache.struts.action.Action {
 
         String mem_type=cma.getMemType();
         String submem_type=cma.getSubMemberType();
-        System.out.println(document_category+"   "+mem_type);
+        System.out.println(document_category+"   "+mem_type+submem_type);
 
       BookCategory bookobj=BookCategoryDAO.searchBookTypeDetails(library_id, mem_type, submem_type, document_category);
         if(bookobj==null){
@@ -146,12 +146,6 @@ public class CallnoForBookAction extends org.apache.struts.action.Action {
         session.setAttribute("list", list);
         return mapping.findForward("success");
         }
- else{
-
- //String msg1="The title is of Not Issuable type can not be issued";
- String msg1=resource.getString("circulation.callnoforbook.youcanotckhoutnonissue");
- request.setAttribute("msg1", msg1);
-  return mapping.findForward("fail");
- }      
+ return null;
     }
 }

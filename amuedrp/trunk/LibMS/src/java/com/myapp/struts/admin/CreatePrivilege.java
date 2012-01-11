@@ -8,7 +8,6 @@ package com.myapp.struts.admin;
 
 import  com.myapp.struts.hbm.Privilege;
 import  com.myapp.struts.hbm.PrivilegeId;
-import  com.myapp.struts.hbm.Library;
 import  com.myapp.struts.hbm.SerPrivilege;
 import  com.myapp.struts.hbm.CirPrivilegeId;
 import  com.myapp.struts.hbm.CirPrivilege;
@@ -17,13 +16,7 @@ import  com.myapp.struts.hbm.CatPrivilegeId;
 import  com.myapp.struts.hbm.AcqPrivilege;
 import  com.myapp.struts.hbm.AcqPrivilegeId;
 import  com.myapp.struts.hbm.Login;
-import  com.myapp.struts.hbm.LoginId;
 import  com.myapp.struts.hbm.StaffDetail;
-import  com.myapp.struts.hbm.StaffDetailId;
-import  com.myapp.struts.hbm.SubLibrary;
-import  com.myapp.struts.hbm.SubLibraryId;
-import  com.myapp.struts.hbm.Library;
-import  com.myapp.struts.hbm.AdminRegistration;
 import  com.myapp.struts.hbm.SerPrivilegeId;
 import  com.myapp.struts.AdminDAO.*;
 
@@ -35,7 +28,7 @@ import java.sql.*;
  */
 public class CreatePrivilege {
     static public boolean result=true;
-    static Connection con;
+    
   static  String  sql;
    static PreparedStatement stmt;
   
@@ -2101,15 +2094,12 @@ for(int i =0; i < substring.length; i++)
     //To Delete privilege from all tables for a particular staff in the library
     result=PrivilegeDAO.DeleteStaffPrivilege(staff_id, library_id, sublibrary_id);
    
-    //result=AcqPrivilegeDAO.DeleteLogin(staff_id, library_id, sublibrary_id);
-    //result=SerPrivilegeDAO.DeleteLogin(staff_id, library_id, sublibrary_id);
-    //result=CatPrivilegeDAO.DeleteLogin(staff_id, library_id, sublibrary_id);
-    //result=CirPrivilegeDAO.DeleteLogin(staff_id, library_id, sublibrary_id);
-
+   
+LoginDAO logindao=new LoginDAO();
     if(result==true){
 
 
-        Login login=LoginDAO.searchStaffLogin(staff_id, library_id, sublibrary_id);
+        Login login=logindao.searchStaffLogin(staff_id, library_id, sublibrary_id);
 
         if(!admincheck)
         {
@@ -2120,7 +2110,7 @@ for(int i =0; i < substring.length; i++)
             {
                 login.setRole("dept-staff");
             }
-            LoginDAO.update1(login);
+            logindao.update1(login);
         }
 
         StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
@@ -2621,6 +2611,7 @@ public static boolean update_ser_priv(String staff_id,String library_id,String s
                 ser.setSer497(ser_arr[97]);
                 ser.setSer498(ser_arr[98]);
                 ser.setSer499(ser_arr[99]);
+                
                 result=SerPrivilegeDAO.insert(ser);
 
             if(result==false)

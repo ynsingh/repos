@@ -25,7 +25,7 @@ public class AccountAction extends org.apache.struts.action.Action {
     private String button;
     private String library_id;
     private String loginstaff_id;
-    Connection con;
+    LoginDAO logindao;
     PreparedStatement stmt;
     String sql;
     ResultSet rst,rst1;
@@ -40,7 +40,7 @@ public class AccountAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        
+        logindao=new LoginDAO();
        HttpSession session=request.getSession();
        try{
 
@@ -83,7 +83,7 @@ Login loginobj;
             if(staff!=null)
             {
              
-                         loginobj=(Login)LoginDAO.searchStaffLogin(staff_id, library_id);
+                         loginobj=(Login)logindao.searchStaffLogin(staff_id, library_id);
 
 
 
@@ -166,12 +166,12 @@ Login loginobj;
              {
 
 
-                        loginobj=(Login)LoginDAO.searchStaffLogin(staff_id, library_id);
+                        loginobj=(Login)logindao.searchStaffLogin(staff_id, library_id);
 
              }
              else
              {
-                         loginobj=(Login)LoginDAO.searchStaffLogin(staff_id, library_id,sublibrary_id);
+                         loginobj=(Login)logindao.searchStaffLogin(staff_id, library_id,sublibrary_id);
 
 
 

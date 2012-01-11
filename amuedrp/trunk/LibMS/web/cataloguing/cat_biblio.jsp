@@ -9,6 +9,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib uri="/WEB-INF/struts-layout.tld" prefix="layout" %>
+
 <%!
     Locale locale=null;
     String locale1="en";
@@ -77,9 +79,20 @@ function submitDelete()
         <title>JSP Page</title>
              <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
          <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
+         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.autocomplete.css" />
+    <script src="<%=request.getContextPath()%>/js/jquery.autocomplete.js"></script>
+    <script type="text/javascript"
+            src="<%=request.getContextPath()%>/js/jquery-1.4.2.min.js"></script>
+             <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<%--        <script type="text/javascript" src="<%= request.getContextPath() %>/config/datagrid.js"></script>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/config/default.css"/>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/config/skin1.css"/>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/config/skin2.css"/>--%>
     </head>
    <jsp:include page="/admin/header.jsp"/>
     <body>
+
         <html:form method="post" action="/catNewTitle" style="position:absolute; left:30%; top:30%">
             <table border="1" class="table" width="400" dir="<%=rtl%>">
                 <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;" ><b><%=resource.getString("cataloguing.catbiblio.header")%></b></td></tr>
@@ -103,8 +116,10 @@ function submitDelete()
             <br><span class="err">   <html:messages id="err_name" property="document_type">
         <%=resource.getString("cataloguing.catoldtitle.err1")%>
     </html:messages></span><br>
-                           <strong dir="<%=rtl%>"><%=resource.getString("cataloguing.catoldtitle.entertitle")%>:<a class="star">*</a></strong>   <br>
-                            <html:text property="title" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /><br>
+                           <strong dir="<%=rtl%>"><%=resource.getString("cataloguing.catoldtitle.entertitle")%>:<a class="star">*</a></strong> <br>
+                         <html:text property="title" styleId="title" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
+                           
+                           <br>
                                 <span class="err"><html:messages id="err_name" property="title">
                           <%=resource.getString("cataloguing.catoldtitle.err2")%>
                                        <%-- <bean:write name="err_name" />--%>
@@ -136,5 +151,5 @@ function submitDelete()
 
             </table>
     </html:form>
- </body>
+        </body>
 </html>

@@ -33,12 +33,14 @@ public class DocumentCategoryDAO {
 
 
         } catch (Exception ex) {
+            ex.printStackTrace();
+            tx.rollback();
             return false;
 
-            //  System.out.println(ex.toString());
+           
 
         } finally {
-            //session.close();
+           session.close();
         }
         return true;
 
@@ -52,7 +54,7 @@ public class DocumentCategoryDAO {
             session.update(obj);
             tx.commit();
         } catch (RuntimeException e) {
-
+e.printStackTrace();
             tx.rollback();
             return false;
 
@@ -63,45 +65,30 @@ public class DocumentCategoryDAO {
     }
          public static List<DocumentCategory> ListbookType(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
+        List<DocumentCategory> obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("Select documentCategoryName,id.documentCategoryId From  DocumentCategory where id.libraryId =:library_id and id.sublibraryId=:sublibrary_id");
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
             query.setResultTransformer(Transformers.TO_LIST);
-            return (List<DocumentCategory>)  query.list();
+            obj= (List<DocumentCategory>)  query.list();
 
-        //    List results = session.createCriteria(Cat.class).setProjection(Projections.projectionList().add(Projections.rowCount()).add(Projections.avg("weight")).add(Projections.max("weight")).add(Projections.groupProperty("color"))).list();
-
-
-         /*   Criteria criteria = session.createCriteria(BookCategory.class)
-                    .add(Restrictions.eq("id.libraryId", library_id))
-                    .setProjection(Projections.projectionList())
-                    .add(Projections.distinct(Property.forName("id.bookType"))
-                    .add(Projections.distinct(Property.forName("detail")));*/
-            //   criteria.setProjection(projList);
-
-/*Criteria criteria=session.createCriteria(BookCategory.class)
-        .add(Restrictions.eq("id.libraryId", library_id));
-
-ProjectionList p=Projections.projectionList();
-p.add(Projections.property("id.bookType"));
-p.add(Projections.property("detail"));
-criteria.setProjection(Projections.distinct(p));*/
-
-            // .add(Restrictions.conjunction()
-
-            // List<BookCategory> doclist =  criteria.setProjection(Projections.groupProperty("detail")).list();
-         //   return (List<BookCategory>) criteria.list();
-        } finally {
+       
+        }
+        catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
+        return obj;
     }
 
 
          public static List<DocumentDetails> searchDocumentDetailByDocumentCategory(String library_id, String sublibrary_id, String doc_category_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List<DocumentDetails> obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(DocumentDetails.class)
@@ -109,12 +96,16 @@ criteria.setProjection(Projections.distinct(p));*/
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
                     .add(Restrictions.eq("bookType", doc_category_id)));
-            return (List<DocumentDetails>) criteria.list();
+           obj= (List<DocumentDetails>) criteria.list();
 
 
-        } finally {
+        }  catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
+        return obj;
     }
 
 
@@ -134,21 +125,20 @@ criteria.setProjection(Projections.distinct(p));*/
 
 
 
-        } catch (Exception ex) {
-            System.out.println(ex);
-            return false;
-
-            //  System.out.println(ex.toString());
-
-        } finally {
-            // session.close();
+        }  catch(Exception e){
+        e.printStackTrace();
+        tx.rollback();
+        return false;
         }
-        return true;
-
+        finally {
+            session.close();
+        }
+       return true;
     }
+
     public static DocumentCategory searchDocumentCategory(String library_id, String sublibrary_id, String doc_category_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+ DocumentCategory obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(DocumentCategory.class)
@@ -156,17 +146,22 @@ criteria.setProjection(Projections.distinct(p));*/
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
                     .add(Restrictions.eq("id.documentCategoryId", doc_category_id)));
-            return (DocumentCategory) criteria.uniqueResult();
+           obj=(DocumentCategory) criteria.uniqueResult();
 
 
-        } finally {
+        }  catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
+        return obj;
     }
+
     public static List<DocumentCategory> searchDocumentCategory(String library_id, String sublibrary_id)
     {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+ List<DocumentCategory> obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(DocumentCategory.class)
@@ -174,16 +169,21 @@ criteria.setProjection(Projections.distinct(p));*/
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
                    );
-            return (List<DocumentCategory>) criteria.list();
+           obj= (List<DocumentCategory>) criteria.list();
 
 
-        } finally {
-           // session.close();
+        }  catch(Exception e){
+        e.printStackTrace();
         }
+        finally {
+            session.close();
+        }
+        return obj;
     }
+
     public static List<DocumentCategory> listdoccategory(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+ List<DocumentCategory> obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(DocumentCategory.class)
@@ -191,17 +191,22 @@ criteria.setProjection(Projections.distinct(p));*/
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.sublibraryId",sublibrary_id))
                    );
-            return (List<DocumentCategory>) criteria.list();
+           obj= (List<DocumentCategory>) criteria.list();
 
 
-        } finally {
-           
+        }  catch(Exception e){
+        e.printStackTrace();
         }
-}
+        finally {
+            session.close();
+        }
+        return obj;
+    }
+
 
     public static DocumentCategory searchDocumentCategoryByName(String library_id, String sublibrary_id, String doc_category_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+DocumentCategory obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(DocumentCategory.class)
@@ -209,17 +214,22 @@ criteria.setProjection(Projections.distinct(p));*/
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
                     .add(Restrictions.eq("documentCategoryName", doc_category_name)));
-            return (DocumentCategory) criteria.uniqueResult();
+            obj= (DocumentCategory) criteria.uniqueResult();
 
 
-        } finally {
+        }  catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
+        return obj;
     }
+
     public static List<DocumentCategory> listdoccategory1(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         String status="NotIssuable";
-
+List<DocumentCategory> obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(DocumentCategory.class)
@@ -228,11 +238,16 @@ criteria.setProjection(Projections.distinct(p));*/
                     .add(Restrictions.ne("issueCheck", status))
                     .add(Restrictions.eq("id.sublibraryId",sublibrary_id))
                    );
-            return (List<DocumentCategory>) criteria.list();
+           obj= (List<DocumentCategory>) criteria.list();
 
 
-        } finally {
-
+        }  catch(Exception e){
+        e.printStackTrace();
         }
-}
+        finally {
+            session.close();
+        }
+        return obj;
+    }
+
 }

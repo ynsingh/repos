@@ -76,7 +76,8 @@ public class CatControlAction extends org.apache.struts.action.Action {
                 biblioid.setLibraryId(library_id);
                 biblio.setSublibraryId(sub_library_id);
                 biblioid.setMarctag("Leader");
-                    biblio.set$a(caf8.getLeader());
+                if(caf8.getLeader()!=null && !caf8.getLeader().equals(""))
+                biblio.set$a(caf8.getLeader());
                    biblioid.setBibId(bibid);
                        biblio.setId(biblioid);
 //                       marchib.insert(biblio);
@@ -90,7 +91,8 @@ if(hm1.containsKey("Leader")){
                 biblioid1.setLibraryId(library_id);
                 biblio1.setSublibraryId(sub_library_id);
                 biblioid1.setMarctag("001");
-                    biblio1.set$a(control_no);
+                if(control_no!=null && !control_no.equals(""))
+                biblio1.set$a(control_no);
                    biblioid1.setBibId(bibid);
                        biblio1.setId(biblioid1);
 //                       marchib.insert(biblio);
@@ -104,7 +106,8 @@ if(hm1.containsKey("001")){
                 biblioid2.setLibraryId(library_id);
                 biblio2.setSublibraryId(sub_library_id);
                 biblioid2.setMarctag("003");
-                    biblio2.set$a(caf8.getControl_no_id());
+                if(caf8.getControl_no()!=null && !caf8.getControl_no().equals(""))
+                biblio2.set$a(caf8.getControl_no_id());
                    biblioid2.setBibId(bibid);
                        biblio2.setId(biblioid2);
 //                       marchib.insert(biblio);
@@ -118,7 +121,8 @@ if(hm1.containsKey("003")){
                 biblioid3.setLibraryId(library_id);
                 biblio3.setSublibraryId(sub_library_id);
                 biblioid3.setMarctag("005");
-                    biblio3.set$a(caf8.getD_t_l_t());
+                if(caf8.getD_t_l_t()!=null && !caf8.getD_t_l_t().equals(""))
+                biblio3.set$a(caf8.getD_t_l_t());
                    biblioid3.setBibId(bibid);
                        biblio3.setId(biblioid3);
 //                       marchib.insert(biblio);
@@ -132,7 +136,8 @@ if(hm1.containsKey("005")){
                 biblioid4.setLibraryId(library_id);
                 biblio4.setSublibraryId(sub_library_id);
                 biblioid4.setMarctag("007");
-                    biblio4.set$a(caf8.getPhy_desc());
+                if(caf8.getPhy_desc()!=null && !caf8.getPhy_desc().equals(""))
+                biblio4.set$a(caf8.getPhy_desc());
                    biblioid4.setBibId(bibid);
                        biblio4.setId(biblioid4);
 //                       marchib.insert(biblio);
@@ -146,7 +151,8 @@ if(hm1.containsKey("007")){
                 biblioid5.setLibraryId(library_id);
                 biblio5.setSublibraryId(sub_library_id);
                 biblioid5.setMarctag("008");
-                    biblio5.set$a(caf8.getPhy_desc());
+                if(caf8.getFix_data()!=null && !caf8.getFix_data().equals(""))
+                    biblio5.set$a(caf8.getFix_data());
                    biblioid5.setBibId(bibid);
                        biblio5.setId(biblioid4);
 //                       marchib.insert(biblio);

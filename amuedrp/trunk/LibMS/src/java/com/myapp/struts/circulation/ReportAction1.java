@@ -4,7 +4,7 @@
  */
 
 package com.myapp.struts.circulation;
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
 import com.myapp.struts.circulation.CirCheckOutViewAllActionForm;
 import com.myapp.struts.hbm.HibernateUtil;
 import javax.servlet.http.HttpServletRequest;
@@ -64,8 +64,14 @@ public class ReportAction1 extends org.apache.struts.action.Action {
             List list=null;
              String library_id,sublibrary_id;
         String path = servlet.getServletContext().getRealPath("/");
-
+String os=(String)System.getProperty("os.name");
+   System.out.println("OS----------->"+os);
+   if(os.startsWith("Linux"))
+   {
 path=path+"/JasperReport";
+   }else{
+   path=path+"\\JasperReport";
+   }
 System.out.println(path+" .....");
         try
         {
@@ -86,8 +92,13 @@ System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
           session1.setAttribute("cir_checkout_report",cir_checkout_report);
             }
           System.out.println("Compiling report...");
+            if(os.startsWith("Linux"))
+   {
           JasperCompileManager.compileReportToFile(path + "/CirCheckOut.jrxml");
-           JasperCompileManager.compileReportToFile(path + "/CirCheckoutSubReport.jrxml");
+            }else{
+            JasperCompileManager.compileReportToFile(path + "\\CirCheckOut.jrxml");
+            }
+        //   JasperCompileManager.compileReportToFile(path + "/CirCheckoutSubReport.jrxml");
           System.out.println("Done!");
           OutputStream ouputStream = response.getOutputStream();
            response.setContentType("application/pdf");
@@ -109,6 +120,8 @@ System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
  map.put("EndDate",end_date);
  else
      map.put("EndDate", "Not Specified");
+ map.put("library_name",library_id);
+ map.put("username",(String)session1.getAttribute("username"));
      Calendar currentDate = Calendar.getInstance();
   SimpleDateFormat formatter=   new SimpleDateFormat("yyyy/MMM/dd HH:mm:ss");
   String dateNow = formatter.format(currentDate.getTime());
@@ -155,19 +168,36 @@ System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 //
 //   }
   map.put("cir_checkout_report", cir_checkout_report);
+  if(os.equals("Linux")){
             JasperFillManager.fillReportToFile(path+"/CirCheckOut.jasper",map, dataSource1);
+  }else{
+            JasperFillManager.fillReportToFile(path+"\\CirCheckOut.jasper",map, dataSource1);
+  }
            // JasperFillManager.fillReportToFile(path+"/CirCheckoutSubReport.jasper",map, dataSource1);
          // JasperFillManager.fillReportToFile(path+"/CirCheckOut.jasper",map, simpleDS);
            System.out.println("Filling report...");
 
           System.out.println("Done!");
-          File file = new File(path + "/" +
+
+          File file;
+          if(os.equals("Linux")){
+          file= new File(path + "/" +
                                               "CirCheckOut.jrprint");
+          }else{
+          file= new File(path + "\\" +
+                                              "CirCheckOut.jrprint");
+          }
           JasperPrint jasperPrint = (JasperPrint)JRLoader.loadObject(file);
           JRPdfExporter pdfExporter = new JRPdfExporter();
           pdfExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+          if(os.equals("Linux")){
 	  pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
                      path + "/" + "CirCheckOut.pdf");
+          }else{
+          pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
+                     path + "\\" + "CirCheckOut.pdf");
+
+          }
 	  System.out.println("Exporting report...");
           pdfExporter.exportReport();
           System.out.println("Done!");

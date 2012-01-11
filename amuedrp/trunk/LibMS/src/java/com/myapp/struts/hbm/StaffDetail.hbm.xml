@@ -91,34 +91,34 @@
             </key>
             <one-to-many class="com.myapp.struts.hbm.Privilege" />
         </set>
-        <set name="acqPrivileges" inverse="true">
+       <!-- <set name="acqPrivileges" inverse="true">
             <key>
                 <column name="staff_id" length="100" not-null="true" />
                 <column name="library_id" length="20" not-null="true" />
             </key>
             <one-to-many class="com.myapp.struts.hbm.AcqPrivilege" />
-        </set>
-        <set name="serPrivileges" inverse="true">
+        </set>-->
+       <!-- <set name="serPrivileges" inverse="true">
             <key>
                 <column name="staff_id" length="100" not-null="true" />
                 <column name="library_id" length="20" not-null="true" />
             </key>
             <one-to-many class="com.myapp.struts.hbm.SerPrivilege" />
-        </set>
-        <set name="cirPrivileges" inverse="true">
+        </set>-->
+       <!-- <set name="cirPrivileges" inverse="true">
             <key>
                 <column name="staff_id" length="100" not-null="true" />
                 <column name="library_id" length="20" not-null="true" />
             </key>
             <one-to-many class="com.myapp.struts.hbm.CirPrivilege" />
-        </set>
-        <set name="catPrivileges" inverse="true">
+        </set>-->
+       <!-- <set name="catPrivileges" inverse="true">
             <key>
                 <column name="staff_id" length="100" not-null="true" />
                 <column name="library_id" length="20" not-null="true" />
             </key>
             <one-to-many class="com.myapp.struts.hbm.CatPrivilege" />
-        </set>
+        </set>-->
         <set name="logins" inverse="true">
             <key>
                 <column name="staff_id" length="100" not-null="true" />

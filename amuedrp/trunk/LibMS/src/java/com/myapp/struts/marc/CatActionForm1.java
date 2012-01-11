@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-
 /**
  *
  * @author zeeshan
@@ -27,6 +25,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn1001(Character in1001) {
+       
         this.in1001 = in1001;
     }
 
@@ -35,6 +34,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn1002(Character in1002) {
+       
         this.in1002 = in1002;
     }
 
@@ -43,6 +43,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn1101(Character in1101) {
+       
         this.in1101 = in1101;
     }
 
@@ -51,6 +52,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn1102(Character in1102) {
+       
         this.in1102 = in1102;
     }
 
@@ -59,6 +61,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn1301(Character in1301) {
+       
         this.in1301 = in1301;
     }
 
@@ -67,6 +70,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn1302(Character in1302) {
+       
         this.in1302 = in1302;
     }
 
@@ -95,6 +99,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ100(String z100) {
+       
         this.z100 = z100;
     }
 
@@ -103,6 +108,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ1000(String z1000) {
+       
         this.z1000 = z1000;
     }
 
@@ -111,6 +117,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ100c(String z100c) {
+       
         this.z100c = z100c;
     }
 
@@ -119,6 +126,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ100d(String z100d) {
+       
         this.z100d = z100d;
     }
 
@@ -127,6 +135,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ100j(String z100j) {
+        
         this.z100j = z100j;
     }
 
@@ -135,6 +144,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ100q(String z100q) {
+        
         this.z100q = z100q;
     }
 
@@ -143,6 +153,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ100u(String z100u) {
+        
         this.z100u = z100u;
     }
 
@@ -151,6 +162,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ110(String z110) {
+        
         this.z110 = z110;
     }
 
@@ -159,6 +171,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ1100(String z1100) {
+        
         this.z1100 = z1100;
     }
 
@@ -167,6 +180,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ1104(String z1104) {
+        
         this.z1104 = z1104;
     }
 
@@ -175,6 +189,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ110b(String z110b) {
+        
         this.z110b = z110b;
     }
 
@@ -183,6 +198,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ110c(String z110c) {
+        
         this.z110c = z110c;
     }
 
@@ -191,6 +207,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ110d(String z110d) {
+        
         this.z110d = z110d;
     }
 
@@ -199,6 +216,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ110k(String z110k) {
+        
         this.z110k = z110k;
     }
 
@@ -207,6 +225,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ110n(String z110n) {
+        
         this.z110n = z110n;
     }
 
@@ -215,6 +234,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ110p(String z110p) {
+        
         this.z110p = z110p;
     }
 
@@ -223,6 +243,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ110t(String z110t) {
+        
         this.z110t = z110t;
     }
 
@@ -231,6 +252,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ110u(String z110u) {
+        
         this.z110u = z110u;
     }
 
@@ -239,6 +261,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ130(String z130) {
+        
         this.z130 = z130;
     }
 
@@ -247,6 +270,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ130d(String z130d) {
+        
         this.z130d = z130d;
     }
 
@@ -255,6 +279,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ130f(String z130f) {
+        
         this.z130f = z130f;
     }
 
@@ -263,6 +288,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ130h(String z130h) {
+        
         this.z130h = z130h;
     }
 
@@ -271,6 +297,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ130k(String z130k) {
+        
         this.z130k = z130k;
     }
 
@@ -279,6 +306,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ130l(String z130l) {
+        
         this.z130l = z130l;
     }
 
@@ -287,6 +315,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ130m(String z130m) {
+        
         this.z130m = z130m;
     }
 
@@ -295,6 +324,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ130n(String z130n) {
+        
         this.z130n = z130n;
     }
 
@@ -303,6 +333,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ130p(String z130p) {
+        
         this.z130p = z130p;
     }
 
@@ -311,6 +342,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ130r(String z130r) {
+        
         this.z130r = z130r;
     }
 
@@ -319,6 +351,7 @@ public class CatActionForm1 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ130s(String z130s) {
+        
         this.z130s = z130s;
     }
    

@@ -75,6 +75,18 @@
         <property name="createdBy" type="string">
             <column name="CreatedBy" length="50" />
         </property>
+        <property name="college" type="string">
+            <column name="college" length="200" />
+        </property>
+        <property name="collAddress" type="string">
+            <column name="coll_address" length="150" />
+        </property>
+        <property name="tempStatus" type="string">
+            <column name="temp_status" length="1" />
+        </property>
+
+
+
         <set name="cirOpacRequests" inverse="true">
             <key>
                 <column name="library_id" length="20" not-null="true" />

@@ -1,6 +1,11 @@
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
-<%@page import="java.util.*,java.io.*,java.net.*"%>
+
+
+<%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%!
     Locale locale=null;
     String locale1="en";
@@ -27,9 +32,24 @@ locale1=(String)session.getAttribute("locale");
     regid = resource.getString("registrationid");
     System.out.println("Reg id="+regid);
     %>
+    <body style="background-color:#e0e8f5;margin: 0px 0px 0px 0px;">
+       <%-- <table align="center" width="75%"   dir="<%=rtl%>" >
+       <tr  ><td  valign="bottom" height="10%"   colspan="2" >
 
-     <img src="<%=request.getContextPath()%>/images/opac_lib.PNG" alt="banner space"   align="top" style="padding:5px 5px 5px 5px;">
-                    
-                  
-              
-                    <hr>
+
+
+
+
+               <font color="black" size="20px" face="arial"><b>Lib</b></font><font color="blue" size="20px" face="arial" size="20px"><b>MS</b></font><img src="<%=request.getContextPath()%>/images/bp.PNG" alt="banner space"  border="0" align="<%=align%>" dir="<%=rtl%>" id="Image1" style="height:50px;width:200px;">
+                                <br>
+
+
+                            </td>
+                            <td align="right" valign="bottom" >
+                                <img src="<%=request.getContextPath()%>/images/logo.png" alt=""  border="0" align="top" id="Image1" style="">
+                </td>
+
+            </tr>
+
+</table>--%>
+    </body>

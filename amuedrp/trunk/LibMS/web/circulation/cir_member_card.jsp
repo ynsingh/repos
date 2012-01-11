@@ -1,14 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<%--
-     Design by Iqubal Ahmad
-     Modified on 2011-02-02
-     This jsp page is meant for Dynamically change button value as View,Update,Deleate this is only page from where
-     View, update, Deleate is done also used for   Ajax for
-     Dept,Fac,course & image upload can be done.
-     This jsp page is third page  for one Complete Process  of member Registration.
---%>
-
 
 <%@page  pageEncoding="UTF-8" contentType="text/html" import="java.util.*,java.io.*,com.myapp.struts.hbm.*,com.myapp.struts.circulation.CirCardProcessActionForm"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -67,6 +58,106 @@ a:active
 
 <script type="text/javascript" language="javascript">
 
+
+
+  function quit()
+  {
+
+      window.location="<%=request.getContextPath()%>/circulation/cir_generate_card.jsp";
+      return false;
+  }
+
+
+  function validation()
+    {
+
+var library_id=document.getElementById('f1').b1.value;
+var Add=document.getElementById('f1').b2.value;
+var card_type=document.getElementById('f1').b3.value;
+var name=document.getElementById('f1').b5.value;
+var class1=document.getElementById('f1').b7.value;
+var session=document.getElementById('f1').b8.value;
+var sadd=document.getElementById('f1').b9.value;
+var sign=document.getElementById('f1').b12.value;
+
+
+if(library_id==""){
+    alert("Please Enter Library Name");
+    document.getElementById('f1').b1.focus();
+    return false;
+
+
+}
+if(Add==""){
+    alert("Please Enter Library Address");
+    document.getElementById('f1').b2.focus();
+    return false;
+
+
+}
+
+if(card_type==""){
+    alert("Please Enter Card Type Name");
+    document.getElementById('f1').b3.focus();
+    return false;
+
+
+}
+if(name==""){
+    alert("Please Enter Student Name Label");
+    document.getElementById('f1').b5.focus();
+    return false;
+
+
+}
+if(class1==""){
+    alert("Please Enter Label for Class Name");
+    document.getElementById('f1').b7.focus();
+    return false;
+
+
+}
+if(session==""){
+    alert("Please Enter Session ");
+    document.getElementById('f1').b8.focus();
+    return false;
+
+
+}
+if(sadd==""){
+    alert("Please Enter Lable for Student Address");
+    document.getElementById('f1').b9.focus();
+    return false;
+
+
+}
+
+if(sign==""){
+    alert("Please Enter Authorized Sign Label");
+    document.getElementById('f1').b12.focus();
+    return false;
+
+
+}
+
+
+   if(document.getElementById('f1').a1.checked && document.getElementById('f1').a2.checked && document.getElementById('f1').a3.checked && document.getElementById('f1').a5.checked &&  document.getElementById('f1').a7.checked &&  document.getElementById('f1').a8.checked && document.getElementById('f1').a9.checked && document.getElementById('f1').a12.checked)
+
+{
+
+    return true;
+
+}
+else{
+    alert("All Fields are Mandatory to Select");
+    return false;
+
+
+}
+
+    }
+
+
 function set(x,y)
 {
         document.getElementById(x).value=document.getElementById(y).value;
@@ -81,27 +172,27 @@ alert(document.getElementById(x).value);
 
 <body>
 
- <html:form action="/card_process" method="post">
+    <html:form action="/card_process" styleId="f1" method="post">
 
 
-   <table  align="center" width="80%"   class="table">
+   <table  align="center" width="70%"   class="table">
 
 
 
-  <tr><td width="60%" height="25px"  class="headerStyle"  align="center"> Member Card Setup
+  <tr><td colspan="2" width="60%" height="25px"  class="headerStyle"  align="center"> Member Card Setup
 
 
 
         </td></tr>
 
-  <tr><td  align="center">
+  <tr><td  align="center" width="50%">
 
-          <br>
-            <table  width="60%" >
+          <br/>
+            <table  >
 
 
 
-                <tr><td  class="txtStyle" width="25%">Library Name</td><td  width="25%" class="table_textbox">
+                <tr><td  class="txtStyle" >Library Name</td><td  width="25%" class="table_textbox">
                         <input type="text" name="library_id" id="b1"  style="width:160px" /></td>
                     <td>
                                               
@@ -119,21 +210,21 @@ alert(document.getElementById(x).value);
 
                 </tr>
 
-                <tr><td class="txtStyle">Group</td><td class="table_textbox"><input type="text"  name="group"  id="b4" style="width:160px" />
+              <%--  <tr><td class="txtStyle">Group</td><td class="table_textbox"><input type="text"  name="group"  id="b4" style="width:160px" />
 
                        </td><td><input type="checkbox" name="checkbox4" onclick="set('a4','b4')" id="a4" value=""/> </td><td class="txtStyle">Print</td>
 
-                </tr>
+                </tr>--%>
 
 
                 <tr><td class="txtStyle">Name</td><td class="table_textbox"><input type="text" name="name" id="b5" style="width:160px" /></td>
                     <td><input type="checkbox" name="checkbox5" onclick="set('a5','b5')" id="a5"/> </td><td class="txtStyle">Print</td>
                 </tr>
                
-                <tr><td class="txtStyle">ID</td><td class="table_textbox"><input type="text"  name="id" id="b6" style="width:160px" />
+               <%-- <tr><td class="txtStyle">ID</td><td class="table_textbox"><input type="text"  name="id" id="b6" style="width:160px" />
                     </td>
                 <td><input type="checkbox" name="checkbox6" onclick="set('a6','b6')"  id="a6"/> </td><td class="txtStyle">Print</td>
-                </tr>
+                </tr>--%>
               
                 <tr>  <td class="txtStyle">Class</td><td class="table_textbox"><input type="text" name="clas" id="b7" style="width:160px" />
                 <br/><div align="left" class="err" id="searchResult" style="border:#000000; "></div>
@@ -151,15 +242,15 @@ alert(document.getElementById(x).value);
                  <td><input type="checkbox" name="checkbox9" onclick="set('a9','b9')" id="a9"/> </td><td class="txtStyle">Print</td>
                 </tr>
    
-                <tr><td class="txtStyle">Holder sign</td><td  class="table_textbox"> <input type="text" name="holder_sign" id="b10" style="width:160px"  style="width:160px" />
+               <%-- <tr><td class="txtStyle">Holder sign</td><td  class="table_textbox"> <input type="text" name="holder_sign" id="b10" style="width:160px"  style="width:160px" />
                 </td>
                  <td><input type="checkbox" name="checkbox10" onclick="set('a10','b10')" id="a10"/> </td><td class="txtStyle">Print</td>
-                </tr>
+                </tr>--%>
    
-                <tr><td class="txtStyle">DOB</td><td  class="table_textbox"> <input type="text" name="dob" id="b11" style="width:160px"  style="width:160px" />
+              <%--  <tr><td class="txtStyle">DOB</td><td  class="table_textbox"> <input type="text" name="dob" id="b11" style="width:160px"  style="width:160px" />
                  </td>
                  <td><input type="checkbox" name="checkbox11" onclick="set('a11','b11')" id="a11"/> </td><td class="txtStyle">Print</td>
-                </tr>
+                </tr>--%>
    
                 <tr><td class="txtStyle">Auth. Sign</td><td  class="table_textbox"> <input type="text" name="auth_sign" id="b12" style="width:160px"  style="width:160px" />
                  </td>
@@ -170,10 +261,15 @@ alert(document.getElementById(x).value);
 
 
      </table>
+      </td><td style="border : solid 1px black">
+          <img src="<%=request.getContextPath()%>/images/MemberCard1.jpg" height="200px" border="3px" width="450px"/><br/>
+          <%--<img src="<%=request.getContextPath()%>/images/MemberCard.jpg" height="200px" width="450px"/>--%>
+
       </td></tr>
- <tr><td colspan="4" align="center" class="txt2">
-         <html:button property="cancel" value="Cancel"  />
-         <html:submit value="OK"  />
+ <tr><td colspan="3" align="center" class="txt2"><br/>
+         <html:submit value="Submit"  onclick="return validation()" />
+         <html:button property="cancel" value="Cancel" onclick="quit();" />
+        
 
          &nbsp;&nbsp;
 

@@ -12,7 +12,8 @@ Calendar cal=Calendar.getInstance();
 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 String date=(String)request.getAttribute("limit");
 String memId=(String)request.getAttribute("memid");
-String back=(String)request.getAttribute("back");
+//String back=(String)request.getAttribute("back");
+String back=(String)request.getParameter("b");
 String msg1 = (String)request.getAttribute("msg1");
 
 %>
@@ -86,12 +87,15 @@ locale1=(String)session.getAttribute("locale");
    
    
   
-  
    <tr>
     <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("circulation.cir_view_book.authorname")%> :</strong></td>
     <td><html:text property="author_name" styleClass="textBoxWidth" readonly="true"  value="<%=docdetail.getMainEntry() %>" /></td>
    </tr>
-    
+   <tr>
+    <td dir="<%=rtl%>" width="150" align="<%=align%>"><strong> Call No</strong> </td>
+    <td width="200"> <html:text  property="callno" readonly="true"  styleClass="textBoxWidth" value="<%=docdetail.getCallNo() %>" /></td>
+  </tr>
+
   
     
  
@@ -120,15 +124,11 @@ locale1=(String)session.getAttribute("locale");
   <tr>
     <td dir="<%=rtl%>" colspan="4" align="center">
         <input type="submit"  value="<%=resource.getString("circulation.viewformember.chkout")%>"  class="btn" style="left:80px" />
-        <%if(back!=null)
-{%>
-    <input type="button" onclick="return quit();" class="btn" style="left:150px" value="<%=resource.getString("circulation.cir_newmember.back")%>"/>
-<%}
-else{%>
+        
          
-           <input type="button" onclick="return quit();" class="btn" style="left:150px" value="<%=resource.getString("circulation.cir_newmember.back")%>"/>
+           <input type="button" onclick="quit();" class="btn" style="left:150px" value="<%=resource.getString("circulation.cir_newmember.back")%>"/>
 
-    <%}%>
+    
 
 
 
@@ -146,11 +146,11 @@ else{%>
 <script language="javascript" type="text/javascript">
   function quit()
   {
-<%if(back!=null)
-{%>
-      window.location="<%=request.getContextPath()%>/circulation/cir_checkout.jsp";
-<%}
-else{%>
+    
+  
+  <%if(back!=null){%>
+window.location="<%=request.getContextPath()%>/circulation/cir_callno_view.jsp";
+<%}else{%>
          window.location="<%=request.getContextPath()%>/circulation/cir_viewall_callno.jsp";
     <%}%>
 

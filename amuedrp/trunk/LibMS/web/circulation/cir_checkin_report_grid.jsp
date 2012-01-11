@@ -1,4 +1,4 @@
- <%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*"%>
+ <%@page import="com.myapp.struts.circulation.CheckInDocumentDetails,com.myapp.struts.systemsetupDAO.BookCategoryDAO,com.myapp.struts.utility.DateCalculation,com.myapp.struts.hbm.*,com.myapp.struts.opacDAO.*"%>
   
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
@@ -93,20 +93,36 @@ String path= request.getContextPath();
 %>
 
 <%
+ List<CheckInDocumentDetails>  requestList=(List<CheckInDocumentDetails>)session.getAttribute("circheckInlist1");
+  
 
-   opacList = new ArrayList ();
-   opacList=(ArrayList)session.getAttribute("circheckInlist1");
+   int tcount =requestList.size();
 
-   System.out.println(opacList.size()+"In JSP");
-   int tcount =0;
-   int perpage=4;
-   int tpage=0;
-   fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
+String Title="Title";
+pageContext.setAttribute("Title", Title);
 
-   tcount=opacList.size();
-   if ((toIndex = fromIndex+4) >= opacList.size ())
-   toIndex = opacList.size();
-   request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
+String Status=resource.getString("circulation.cirviewall.status");
+pageContext.setAttribute("Status", Status);
+String DocumentId=resource.getString("circulation.cir_viewmem_chkoutreport.docid");
+pageContext.setAttribute("DocumentId", DocumentId);
+String Author=resource.getString("opac.simplesearch.auth");
+pageContext.setAttribute("Author",Author);
+String CallNo=resource.getString("opac.myaccount.reservationrequest.callno");
+pageContext.setAttribute("CallNo",CallNo);
+String IssueDate=resource.getString("circulation.cir_view_book.issuedate");
+pageContext.setAttribute("IssueDate",IssueDate);
+String DueDate=resource.getString("circulation.cir_view_book.duedate");
+pageContext.setAttribute("DueDate",DueDate);
+String Edition=resource.getString("opac.myaccount.newdemand.edition");
+pageContext.setAttribute("Edition",Edition);
+
+
+   
+
+  fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
+   if ((toIndex = fromIndex+4) >= requestList.size ())
+   toIndex = requestList.size();
+   request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
 %>
 <%
@@ -120,33 +136,54 @@ else
 {%>
 
 
-<ui:dataGrid items="${opacList}" var="doc"  name="datagrid1" cellPadding="0"
+<ui:dataGrid items="${requestList}" var="doc"  name="datagrid1" cellPadding="0"
     cellSpacing="0" styleClass="datagrid"  >
 
-  <columns>
+ 
 
 
-
-    <column width="200">
-      <header value="${LibraryId}" hAlign="left" styleClass="admingridheader"  />
-      <item   value="${doc.id.libraryId}" hyperLinkTarget="_parent" hyperLink="${path}/circulation/showMemberReport.do?id=${doc.memberId}&amp;checkIn=${doc.id.checkinId}"   hAlign="left"   styleClass="item"/>
-
+<columns>
+      <column width="15%">
+      <header value="MemberID" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.cirCheckin.memberId}"  hAlign="left"    styleClass="item"/>
     </column>
 
-    <column width="200">
-      <header value="${SubLibraryId}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.id.sublibraryId}" hyperLinkTarget="_parent" hyperLink="${path}/circulation/showMemberReport.do?id=${doc.memberId}&amp;checkIn=${doc.id.checkinId}"  hAlign="left"  styleClass="item"/>
+
+    <column width="15%">
+      <header value="${Title}" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.documentDetails.title}"  hAlign="left"    styleClass="item"/>
     </column>
 
- <column width="200">
-      <header value="${MemberId}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.memberId}" hyperLinkTarget="_parent" hyperLink="${path}/circulation/showMemberReport.do?id=${doc.memberId}&amp;checkIn=${doc.id.checkinId}" hAlign="left"  styleClass="item"/>
-    </column>
-   <column width="200">
-      <header value="${ReturningDate}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.returningDate}" hyperLinkTarget="_parent" hyperLink="${path}/circulation/showMemberReport.do?id=${doc.memberId}&amp;checkIn=${doc.id.checkinId}"  hAlign="left"  styleClass="item"/>
+    <column width="10%">
+      <header value="${Author}" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.documentDetails.mainEntry}" hAlign="left"   styleClass="item"/>
     </column>
 
+    <column width="10%">
+      <header value="${CallNo}" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.documentDetails.callNo}"   hAlign="left" styleClass="item"/>
+    </column>
+    <column width="15%">
+      <header value="AccessionNo" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.documentDetails.accessionNo}"   hAlign="left" styleClass="item"/>
+    </column>
+<column width="10%">
+      <header value="IssueDate" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.cirTransactionHistory.issueDate}" hAlign="left" styleClass="item"/>
+    </column>
+
+    <column width="10%">
+      <header value="Returningdate" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.cirCheckin.returningDate}" hAlign="left" styleClass="item"/>
+    </column>
+       <column width="15%">
+      <header value="${Edition}" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.documentDetails.edition}"   hAlign="left" styleClass="item"/>
+    </column>
+      <column width="15%">
+      <header value="Fine" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.cirTransactionHistory.fineAmt}"   hAlign="left" styleClass="item"/>
+    </column>
  </columns>
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
   <alternateRows styleClass="alternaterows"/>

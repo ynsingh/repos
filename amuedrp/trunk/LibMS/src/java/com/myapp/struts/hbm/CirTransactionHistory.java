@@ -21,6 +21,15 @@ public class CirTransactionHistory  implements java.io.Serializable {
      private String checkinDate;
      private Float fineAmt;
      private String lostItemId;
+       private String issueDate;
+
+    public String getIssueDate() {
+        return issueDate;
+    }
+
+    public void setIssueDate(String issueDate) {
+        this.issueDate = issueDate;
+    }
 
     public CirTransactionHistory() {
     }

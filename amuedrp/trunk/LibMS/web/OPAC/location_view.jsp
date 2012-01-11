@@ -39,19 +39,19 @@ locale1=(String)session.getAttribute("locale");
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
     </head>
     <body>
    
-        <table dir="<%=rtl%>" align="<%=align%>">
+        <table dir="<%=rtl%>" align="<%=align%>" class="datagrid" width="50%" style="border: solid 1px black;">
         <%if(loc.size()==0){%> <%=resource.getString("global.norecordfound")%><%}else{%>
 
-        <tr bgcolor="#CCDD66" dir="<%=rtl%>"><td dir="<%=rtl%>"><%=resource.getString("opac.locationview.locid")%></td><td><%=resource.getString("opac.locationview.locname")%></td></tr>
+        <tr  dir="<%=rtl%>" class="header"><td  width="20%" align="center" dir="<%=rtl%>"><b><%=resource.getString("opac.locationview.locid")%></b></td><td><%=resource.getString("opac.locationview.locname")%></td></tr>
 
          <% for(int i=0;i<loc.size();i++ ){%>
         
-        <tr bgcolor="#AADD88" dir="<%=rtl%>">
-                <td  align="<%=align%>" dir="<%=rtl%>" class="heading"><p dir="<%=rtl%>" align="justify"><%=loc.get(i).getId().getLocationId()%></p></td>
+        <tr  dir="<%=rtl%>">
+                <td  align="center" dir="<%=rtl%>" class="heading"><p dir="<%=rtl%>" align="justify"><%=loc.get(i).getId().getLocationId()%></p></td>
                 <td  align="<%=align%>" dir="<%=rtl%>" class="heading"><%=loc.get(i).getLocationName()%></td>
             </tr>
          <%}%>

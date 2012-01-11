@@ -26,7 +26,9 @@ import org.apache.commons.lang.StringUtils;
 import org.marc4j.marc.Leader;
     import org.marc4j.marc.Record;
     import org.marc4j.marc.DataField;
-
+    import com.myapp.struts.hbm.BibliographicDetails;
+    import com.myapp.struts.hbm.BibliographicDetailsId;
+import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
 /**
  *
  * @author zeeshan
@@ -37,52 +39,131 @@ public class MarcCommitAction extends org.apache.struts.action.Action {
     private static final String SUCCESS = "success";
     private MarcHibDAO marchib=new MarcHibDAO();
     HashMap hm1=new HashMap();
-   
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   BibliographicDetails bibd=new BibliographicDetails();
+   BibliographicDetailsId biblid=new BibliographicDetailsId();
+   BibliopgraphicEntryDAO dao=new BibliopgraphicEntryDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
             HttpSession session=request.getSession();
-            int bibid = (Integer)session.getAttribute("biblio_id");
+            Object b=session.getAttribute("biblio_id");
+            int bibid=0;            
+            try{
+            bibid =(Integer)b;
+            }catch(Exception e){
+            bibid=Integer.parseInt((String)b);           
+            }           
             String library_id = (String) session.getAttribute("library_id");
             String sub_library_id = (String) session.getAttribute("sublibrary_id");
-            hm1=(HashMap) session.getAttribute("hsmp");
-
+            hm1=(HashMap) session.getAttribute("hsmp");          
+//            if(!hm1.containsKey("245")){
+//             return mapping.findForward("forward2");
+//        }
+//            if(!hm1.containsKey("245")){
+//             return mapping.findForward("forward2");
+//        }
+//            if(!hm1.containsKey("245")){
+//             return mapping.findForward("forward2");
+//        }
+//            if(!hm1.containsKey("245")){
+//             return mapping.findForward("forward2");
+//        }
+//            
+                Set set1=hm1.keySet();
+            Iterator is1=set1.iterator();         
+            while(is1.hasNext())
+            {
+                String key=(String)is1.next();
+                Biblio bib=new Biblio();
+                bib=(Biblio)hm1.get(key);
+                 if(key.equals("5")&& bib.get$a()==null){
+                    request.setAttribute("msg1","Please Enter Value in 082 $a Field");
+                return mapping.findForward("forward0");
+                }
+                if(key.equals("6")&& bib.get$a()==null){
+                    request.setAttribute("msg1","Please Enter Value in 100 $a Field");
+                return mapping.findForward("forward1");
+                }
+                if(key.equals("10")&& bib.get$a()==null){
+                    request.setAttribute("msg1","Please Enter Value in 245 $a Field");
+                return mapping.findForward("forward2");
+                }
+                if(key.equals("10")&& bib.get$c()==null){
+                    request.setAttribute("msg1","Please Enter Value in 245 $c Field");
+                return mapping.findForward("forward2");
+                }               
+            }                
             Set set=hm1.keySet();
-
-            Iterator is=set.iterator();
-            
+            Iterator is=set.iterator();           
             while(is.hasNext())
             {
                 String key=(String)is.next();
                 Biblio bib=new Biblio();
-                bib=(Biblio)hm1.get(key);
+                bib=(Biblio)hm1.get(key); 
+                if(bib.getId().getMarctag().equals("001")){
+                bibd.setLccNo(bib.get$a());
+                }
+                if(bib.getId().getMarctag().equals("020")){
+                bibd.setIsbn10(bib.get$a());
+                }
+                if(bib.getId().getMarctag().equals("100")){
+                bibd.setMainEntry(bib.get$a());
+                }
+                if(bib.getId().getMarctag().equals("245")){
+                bibd.setTitle(bib.get$a());
+                bibd.setSubtitle(bib.get$b());
+                bibd.setStatementResponsibility(bib.get$c());
+                }
+                if(bib.getId().getMarctag().equals("250")){
+                bibd.setEdition(bib.get$a());
+                }
+                if(bib.getId().getMarctag().equals("260")){
+                bibd.setPublicationPlace(bib.get$a());
+                bibd.setPublisherName(bib.get$b());
+                bibd.setPublishingYear(bib.get$c());
+                }
+                if(bib.getId().getMarctag().equals("490")){
+                bibd.setSeries(bib.get$a());
+                }
+                if(bib.getId().getMarctag().equals("600")){
+                bibd.setAddedEntry(bib.get$a());
+                }
+                if(bib.getId().getMarctag().equals("082")){
+                bibd.setCallNo(bib.get$a());
+                String call_no=bib.get$a();
+                BibliographicDetails bbd=dao.searchcall(call_no, library_id, sub_library_id);
+                if(bbd!=null){
+              //  biblid.setBiblioId(bbd.getId().getBiblioId());
+              //  biblid.setLibraryId(library_id);
+               // biblid.setSublibraryId(sub_library_id);
+               // dao.update(bibd);
+                }
+                else{
+                biblid.setBiblioId(dao.returnMaxBiblioId(library_id, sub_library_id));
+                biblid.setLibraryId(library_id);
+                biblid.setSublibraryId(sub_library_id);
+                bibd.setDocumentType("Book");
+                dao.insert(bibd);
+                }
+                }         
                 marchib.insert(bib);
             }
             session.removeAttribute("hsmp");
-
-              /**
-             * Part2:: Taking data from database and generate .mrc file
-             */
-
             // create a factory instance
 MarcFactory factory = MarcFactory.newInstance();
 // create a record with leader
 Record record = factory.newRecord();
 StringBuffer gg=new StringBuffer();
 int high=0;
+System.out.println("Bib Id:::::::::"+bibid);
+System.out.println("Lib Id:::::::::"+library_id);
+System.out.println("Sub Lib Id:::::::::"+sub_library_id);
 // add a control field
 //record.addVariableField(factory.newControlField("001", "12883376"));
 List<Biblio> lbb=marchib.searchDoc1(bibid, library_id, sub_library_id);
+
+System.out.println("Bib Size"+lbb.size());
 for(int g=0;g<lbb.size();g++){
 String marctag=lbb.get(g).getId().getMarctag();
 if(marctag.equals("Leader")){

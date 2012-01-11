@@ -139,10 +139,10 @@ public class MemberAction extends org.apache.struts.action.Action {
                 session.removeAttribute("checkoutRequestLibId");
                 session.removeAttribute("checkoutRequestSubLibId");
                 session.removeAttribute("checkoutRequestDocId");
-               // session.removeAttribute("type");
+                session.removeAttribute("type");
                // session.removeAttribute("memId");
                 request.setAttribute("confirm", "continue");
-                request.setAttribute("msg", "Your request successfully Send");
+                session.setAttribute("msg", "Your request successfully Send");
             }
             else
             {
@@ -154,7 +154,7 @@ public class MemberAction extends org.apache.struts.action.Action {
                 request.setAttribute("confirm", "continue");
             }
                }
-               else request.setAttribute("msg", "Your request already Pending");
+               else session.setAttribute("msg", "Your request already Pending");
             }
        }
 

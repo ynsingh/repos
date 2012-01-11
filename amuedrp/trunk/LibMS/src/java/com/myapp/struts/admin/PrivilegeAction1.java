@@ -7,24 +7,11 @@ package com.myapp.struts.admin;
 //import  com.myapp.struts.hbm.*;
 
 import  com.myapp.struts.hbm.Privilege;
-import  com.myapp.struts.hbm.PrivilegeId;
-import  com.myapp.struts.hbm.Library;
 import  com.myapp.struts.hbm.SerPrivilege;
-import  com.myapp.struts.hbm.CirPrivilegeId;
 import  com.myapp.struts.hbm.CirPrivilege;
 import  com.myapp.struts.hbm.CatPrivilege;
-import  com.myapp.struts.hbm.CatPrivilegeId;
 import  com.myapp.struts.hbm.AcqPrivilege;
-import  com.myapp.struts.hbm.AcqPrivilegeId;
 import  com.myapp.struts.hbm.Login;
-import  com.myapp.struts.hbm.LoginId;
-import  com.myapp.struts.hbm.StaffDetail;
-import  com.myapp.struts.hbm.StaffDetailId;
-import  com.myapp.struts.hbm.SubLibrary;
-import  com.myapp.struts.hbm.SubLibraryId;
-import  com.myapp.struts.hbm.Library;
-import  com.myapp.struts.hbm.AdminRegistration;
-import  com.myapp.struts.hbm.SerPrivilegeId;
 import  com.myapp.struts.AdminDAO.*;
 import javax.servlet.http.*;
 import javax.servlet.http.HttpServletResponse;
@@ -39,7 +26,7 @@ public class PrivilegeAction1 extends org.apache.struts.action.Action {
     String sql1,sql2,sql3,sql4,sql5;
     String button;
     boolean result;
-   
+  LoginDAO logindao;
    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -52,6 +39,7 @@ public class PrivilegeAction1 extends org.apache.struts.action.Action {
         staff_id=privilege.getStaff_id();
         staff_name=privilege.getStaff_name();
         button=privilege.getButton();
+        logindao=new LoginDAO();
         System.out.println(button+".....................................");
 if(button.equals("Restore Previous Privilege"))
 {
@@ -63,7 +51,7 @@ if(button.equals("Restore Previous Privilege"))
         Login backuploginprivobj = (Login)session.getAttribute("login_privilege");
 
 
-        result = LoginDAO.updatePriv(backuploginprivobj,backupprivobj,backupacqprivobj,backupcatprivobj,backupcirprivobj,backupserprivobj);
+        result = logindao.updatePriv(backuploginprivobj,backupprivobj,backupacqprivobj,backupcatprivobj,backupcirprivobj,backupserprivobj);
    if(result==true)
                             {
                             request.setAttribute("res","Privileage Successfully Restored");

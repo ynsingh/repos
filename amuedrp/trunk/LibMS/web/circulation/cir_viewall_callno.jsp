@@ -1,6 +1,5 @@
  <%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*"%>
-  <%--  <jsp:include page="/admin/header.jsp" flush="true" />--%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+ <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridTag"%>
@@ -26,6 +25,13 @@ f.action="<%=request.getContextPath()%>/admin/main.jsp";
 f.method="post";
 f.target="_self";
 f.submit();
+}
+
+ function quit()
+  {
+
+
+      window.location="<%=request.getContextPath()%>/circulation/cir_callno_view.jsp";
 }
 
 </script>
@@ -61,7 +67,7 @@ locale1=(String)session.getAttribute("locale");
 
 <body>
     
-    <table dir="<%=rtl%>" class="table"  align="center" >
+    <table dir="<%=rtl%>" class="table" width="100%"  align="center" >
 
 
 
@@ -127,23 +133,26 @@ else
 
     <column width="200">
       <header value="${Title}" hAlign="left" styleClass="admingridheader"  />
-      <item   value="${doc.title}" hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left" hyperLinkTarget="section2"   styleClass="item"/>
+      <item   value="${doc.title}" hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left" hyperLinkTarget="section1"   styleClass="item"/>
 
     </column>
-
-    <column width="50">
+ <column width="200">
+      <header value="Author/Main Entry" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.mainEntry}"  hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left"  hyperLinkTarget="section1" styleClass="item"/>
+    </column>
+    <column width="100">
       <header value="${CallNo}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.callNo}"  hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left"  hyperLinkTarget="section2" styleClass="item"/>
+      <item   value="${doc.callNo}"  hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left"  hyperLinkTarget="section1" styleClass="item"/>
     </column>
 
-    <column width="50">
+    <column width="100">
       <header value="${AccessionNo}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.accessionNo}" hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left" hyperLinkTarget="section2" styleClass="item"/>
+      <item   value="${doc.accessionNo}" hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left" hyperLinkTarget="section1" styleClass="item"/>
     </column>
 
     <column width="100">
       <header value="${Status}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.status}" hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left" hyperLinkTarget="section2" styleClass="item"/>
+      <item   value="${doc.status}" hyperLink="${path}/showbook.do?id1=${doc.accessionNo}"  hAlign="left" hyperLinkTarget="section1" styleClass="item"/>
     </column>
 
 
@@ -188,13 +197,13 @@ else
   <tr><td align="center" width="400px">
 <form name="f">
 
-    <%--<input type="button" name="b1" value="<%=resource.getString("circulation.cir_newmember.back")%>" onclick="b1click()" class="txt2">--%>
+   
    
 </form>
 
       </td></tr></table>
 
-
+ <input type="button" onclick="return quit();" class="btn" style="left:150px" value="<%=resource.getString("circulation.cir_newmember.back")%>"/>
     </body>
 
    

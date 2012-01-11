@@ -74,10 +74,10 @@ public class AddCourseAction extends org.apache.struts.action.Action {
        
         library_id=(String)session.getAttribute("library_id");
 
-        
+      //  System.out.println(library_id+" "+faculty_id+dept_id+course_id+course_name);
        
       Courses course = CourseDAO.searchCourseByName(library_id, faculty_id, dept_id, course_name);
-        System.out.println("courses"+course);
+    //    System.out.println("courses"+course);
          if(course!=null)
          {
             //request.setAttribute("msg1", "Course Name : "+course_name+" already exists");
@@ -88,10 +88,11 @@ public class AddCourseAction extends org.apache.struts.action.Action {
          {
         
         
-        cid.setCourseId(course_id);
+       
         cid.setLibraryId(library_id);
         cid.setDeptId(dept_id);
         cid.setFacultyId(faculty_id);
+        cid.setCourseId(course_id);
 
         did.setDeptId(dept_id);
         did.setFacultyId(faculty_id);

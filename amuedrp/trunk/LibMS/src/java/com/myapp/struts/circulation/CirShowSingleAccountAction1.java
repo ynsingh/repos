@@ -12,7 +12,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.hbm.*;
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
 
 /**
  *
@@ -37,7 +37,7 @@ public class CirShowSingleAccountAction1 extends org.apache.struts.action.Action
         CirMemberDetail cmemdetail=CirculationDAO.searchCirMemDetails(library_id, mem_id);
         
 
-System.out.println(status+" ............ ");
+//System.out.println(status+" ............ "+mem_id);
 if(status==null)
 {
             cmaccount=CirculationDAO.searchCirMemAccountDetails(library_id, sublibrary_id, mem_id);
@@ -46,17 +46,26 @@ if(status==null)
             request.setAttribute("cmaccount",cmaccount);
            return mapping.findForward("success");
 }
+if(status.equalsIgnoreCase("Renewal")){
 
-if(status.equalsIgnoreCase("Blocked")){
+        cmaccount=CirculationDAO.searchCirMemAccountDetails2(library_id, sublibrary_id, mem_id,"Cancel");
+        }
+else if(status.equalsIgnoreCase("Blocked")){
 
         cmaccount=CirculationDAO.searchCirMemAccountDetails2(library_id, sublibrary_id, mem_id,"Active");
         }
-        else{
+       
+
+else if(status.equalsIgnoreCase("Cancel")){
+
+        cmaccount=CirculationDAO.searchCirMemAccountDetails2(library_id, sublibrary_id, mem_id,"Active");
+        }
+       
+ else{
         cmaccount=CirculationDAO.searchCirMemAccountDetails2(library_id, sublibrary_id, mem_id,"Blocked");
         }
 
 
-System.out.println("#######"+cmaccount+"%%%%%%%%%%%%%%%"+cmemdetail);
 
         if(cmaccount!=null)
         {
@@ -67,7 +76,7 @@ System.out.println("#######"+cmaccount+"%%%%%%%%%%%%%%%"+cmemdetail);
         }
         else{
 
-        request.setAttribute("msg1","Member with Id "+mem_id+" Already "+status);
+        request.setAttribute("msg1","Member with Id "+mem_id+" Already Cancel/Blocked");
            return mapping.findForward("fail");
         }
 

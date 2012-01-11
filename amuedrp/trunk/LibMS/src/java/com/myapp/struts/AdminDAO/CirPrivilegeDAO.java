@@ -240,12 +240,13 @@ public class CirPrivilegeDAO {
         {
 
 
-       //  System.out.println(ex.toString());
+        System.out.println(ex.toString());
 
         }
         finally
         {
-         // session.close();
+          session.close();
+         
         }
 
 return "";
@@ -272,14 +273,15 @@ public static boolean DeleteLogin(String staff_id,String library_id,String subli
         }
         catch (Exception ex)
         {
+              System.out.println(ex.toString());
              return false;
 
-       //  System.out.println(ex.toString());
+       
 
         }
         finally
         {
-          //session.close();
+        session.close();
         }
    return true;
 
@@ -295,11 +297,15 @@ public static boolean DeleteLogin(String staff_id,String library_id,String subli
             session.update(obj);
             tx.commit();
         }
-        catch (RuntimeException e) {
+        catch (Exception e) {
 
                 tx.rollback();
+                System.out.println(e);
                 return false;
 
+        }
+        finally{
+        session.close();
         }
 
    return true;
@@ -309,18 +315,26 @@ public static boolean DeleteLogin(String staff_id,String library_id,String subli
 
 public static CirPrivilege searchStaffLogin(String staff_id,String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+CirPrivilege cirobj=null;
         try {
             session.beginTransaction();
         query = session.createQuery("FROM  CirPrivilege WHERE id.staffId =:staff_id and id.libraryId=:library_id");
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
-            return ( CirPrivilege) query.uniqueResult();
+            cirobj=( CirPrivilege) query.uniqueResult();
+        }
+         catch (Exception e) {
+
+               
+                System.out.println(e);
+
+                
+
         }
         finally {
-           // session.close();
+        session.close();
         }
-
+return cirobj;
 }
   
 
@@ -345,14 +359,15 @@ public static  boolean insert(CirPrivilege obj)
         }
         catch (Exception ex)
         {
+              System.out.println(ex.toString());
              return false;
 
-       //  System.out.println(ex.toString());
+       
 
         }
         finally
         {
-         // session.close();
+        HibernateUtil.getSessionFactory().close();
         }
    return true;
 
@@ -360,7 +375,7 @@ public static  boolean insert(CirPrivilege obj)
  public static  CirPrivilege getPrivilege(String library_id,String sublibrary_id,String staff_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+CirPrivilege cirobj=null;
         try
         {
             session.beginTransaction();
@@ -368,7 +383,7 @@ public static  boolean insert(CirPrivilege obj)
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
             query.setString("staff_id", staff_id);
-
+cirobj=( CirPrivilege) query.uniqueResult();
         }
         catch(Exception e)
         {
@@ -376,9 +391,9 @@ public static  boolean insert(CirPrivilege obj)
         }
         finally
         {
-           //session.close();
+        session.close();
         }
-        return ( CirPrivilege) query.uniqueResult();
+        return cirobj;
 
 }
 public static boolean DeleteStaff(String staff_id,String library_id) {
@@ -402,15 +417,16 @@ public static boolean DeleteStaff(String staff_id,String library_id) {
         }
         catch (Exception ex)
         {
+            tx.rollback();
             System.out.println(ex);
              return false;
 
-       //  System.out.println(ex.toString());
+       
 
         }
         finally
         {
-        // session.close();
+       session.close();
         }
    return true;
 
@@ -419,7 +435,7 @@ public static boolean DeleteStaff(String staff_id,String library_id) {
 public static  List getPrivilege1(String library_id,String sublibrary_id,String staff_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List obj=null;
         try
         {
             session.beginTransaction();
@@ -428,6 +444,7 @@ public static  List getPrivilege1(String library_id,String sublibrary_id,String 
             query.setString("sublibrary_id", sublibrary_id);
             query.setString("staff_id", staff_id);
             query.setResultTransformer(Transformers.TO_LIST);
+            obj=( List) query.list();
         }
         catch(Exception e)
         {
@@ -435,9 +452,9 @@ public static  List getPrivilege1(String library_id,String sublibrary_id,String 
         }
         finally
         {
-         //   session.close();
+        session.close();
         }
-        return ( List) query.list();
+        return obj;
 
 }
 }

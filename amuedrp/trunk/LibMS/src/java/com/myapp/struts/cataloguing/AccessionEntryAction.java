@@ -44,10 +44,6 @@ public class AccessionEntryAction extends org.apache.struts.action.Action {
         HttpSession session = request.getSession();
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
-        String isbn10 = (String) bform.getIsbn10();
-        if (StringUtils.isEmpty(isbn10)||StringUtils.isBlank(isbn10)) {
-            isbn10 = null;
-        }
               try{
         locale1=(String)session.getAttribute("locale");
     if(session.getAttribute("locale")!=null)
@@ -171,7 +167,7 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                     bib.setPublicationPlace(bform.getPublication_place());
                     bib.setPublishingYear(bform.getPublishing_year());
                     bib.setLccNo(bform.getLCC_no());
-                    bib.setIsbn10(isbn10);
+                    bib.setIsbn10(bform.getIsbn10());
                     bib.setIsbn13(bform.getIsbn13());
                     bib.setEdition(bform.getEdition());
                     bib.setCallNo(bform.getCall_no());

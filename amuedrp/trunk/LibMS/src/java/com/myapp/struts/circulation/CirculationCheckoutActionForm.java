@@ -18,6 +18,24 @@ import org.apache.struts.action.ActionMessage;
 public class CirculationCheckoutActionForm extends org.apache.struts.action.ActionForm {
     
     private String memid;
+    private String accessionno;
+    private String button;
+
+    public String getButton() {
+        return button;
+    }
+
+    public void setButton(String button) {
+        this.button = button;
+    }
+
+    public String getAccessionno() {
+        return accessionno;
+    }
+
+    public void setAccessionno(String accessionno) {
+        this.accessionno = accessionno;
+    }
 
     public String getMemid() {
         return memid;

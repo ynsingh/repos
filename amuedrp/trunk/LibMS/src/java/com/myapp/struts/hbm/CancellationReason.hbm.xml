@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 1 Oct, 2011 2:10:20 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.CancellationReason" table="cancellation_reason" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.CancellationReasonId">
+            <key-property name="id" type="string">
+                <column name="id" length="50" />
+            </key-property>
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+            <key-property name="sublibraryId" type="string">
+                <column name="sublibrary_id" length="20" />
+            </key-property>
+        </composite-id>
+        <property name="details" type="string">
+            <column name="details" length="200" />
+        </property>
+    </class>
+</hibernate-mapping>

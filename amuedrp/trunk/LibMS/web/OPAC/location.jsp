@@ -17,7 +17,7 @@ String library_id=(String)session.getAttribute("library_id");
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
      <script language="javascript" type="text/javascript">
 /*
@@ -169,38 +169,37 @@ locale1=(String)session.getAttribute("locale");
     %>
 
     </head>
-    <body onload="fun()">
+    <body onload="fun()" style="background-color:#e0e8f5;" >
        <html:form method="post" action="/Locationview" target="f4" styleId="form1">
-           <table dir="<%=rtl%>">
-        <tr><td dir="<%=rtl%>" style="width:130px" align="<%=align%>"><%=resource.getString("opac.simplesearch.library")%></td>
-            <td width="200px" dir="<%=rtl%>" align="<%=align%>">
-                <html:select property="CMBLib" dir="<%=rtl%>" value="<%=library_id%>" tabindex="3"  styleId="CMBLib" onchange="search()">
+           <table dir="<%=rtl%>" align="center" width="80%" class="datagrid" style="border: solid 1px black">
+               <tr><td class="header" align="center">Location</td></tr>
+               <tr><td>
+                       <table>
+        <tr><td dir="<%=rtl%>"  align="<%=align%>"><%=resource.getString("opac.simplesearch.library")%></td>
+            <td  dir="<%=rtl%>" align="<%=align%>">
+                <html:select property="CMBLib" styleClass="selecthome" dir="<%=rtl%>" value="<%=library_id%>" tabindex="3"  styleId="CMBLib" onchange="search()">
                     <html:option value="sel">Select</html:option>
                     <html:options collection="lib" property="libraryId" labelProperty="libraryName"/>
              </html:select>
 
             </td>
-            <td style="width:130px" align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%></td>
-             <td width="200px" dir="<%=rtl%>">
-                 <html:select property="CMBSUBLib" dir="<%=rtl%>" value="<%=sublib_id%>"  styleId="SubLibary" onchange="fun()">
+            <td  align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%></td>
+             <td  dir="<%=rtl%>">
+                 <html:select property="CMBSUBLib" styleClass="selecthome" dir="<%=rtl%>" value="<%=sublib_id%>"  styleId="SubLibary" onchange="fun()">
                <html:option value="sel">Select</html:option>
                      <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName"  />
             </html:select>
 
              </td>
         </tr>
+                       </table></td></tr>
         <tr><td></td></tr>
         <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
 
 
-            <td  height="500px" valign="top" colspan="2" dir="<%=rtl%>">
-                <table dir="<%=rtl%>">
-                    <tr>
-            <td>
-             <IFRAME  src="<%=request.getContextPath()%>/OPAC/location_view.jsp" style="background-color:#e0e8f5;"  frameborder=0 height="300px" width="600px" scrolling="no" name="f4" id="f4"></IFRAME>
-            </td>
-                </tr>
-        </table>
+            <td  height="300px" valign="top" dir="<%=rtl%>">
+             <IFRAME  src="<%=request.getContextPath()%>/OPAC/location_view.jsp" style="background-color:#e0e8f5;"  frameborder=0 height="300px" width="100%" scrolling="no" name="f4" id="f4"></IFRAME>
+            
 
       </td>
      

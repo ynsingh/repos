@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CirCheckoutSubReport" pageWidth="755" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="memid1" class="java.lang.String"/>
+	<field name="memid" class="java.lang.String"/>
+	<field name="issue_date" class="java.lang.String"/>
+	<field name="due_date" class="java.lang.String"/>
+	<field name="title" class="java.lang.String"/>
+	<field name="main_entry" class="java.lang.String"/>
+	<field name="faculty_name" class="java.lang.String"/>
+	<field name="dept_name" class="java.lang.String"/>
+	<field name="course_name" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="96" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{memid1}==$F{memid}]]></printWhenExpression>
+			<textField>
+				<reportElement x="6" y="2" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="105" y="1" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="203" y="1" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{main_entry}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="302" y="2" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{issue_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="403" y="2" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{due_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

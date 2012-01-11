@@ -42,7 +42,9 @@ public class VDAction extends org.apache.struts.action.Action {
         String t=caf.getZclick();
          HttpSession session = request.getSession();
 String bib_id=(String)session.getAttribute("biblio_id") ;
-
+               String library_id = (String) session.getAttribute("library_id");
+        String sub_library_id = (String) session.getAttribute("sublibrary_id");
+     List<Biblio> biblist= marchib.getdataforupdate(bib_id, library_id, sub_library_id);
       System.out.println("t value is = "+t+"  and bib_id is = "+bib_id);
      
         //code for mapping forwards......
@@ -51,7 +53,7 @@ String bib_id=(String)session.getAttribute("biblio_id") ;
 
          if(t.equals("1"))
         {
-              List<Biblio> biblist= marchib.getdataforupdate2(bib_id);
+
 System.out.println("1111111111111111111111   "+biblist.size());
 
             for(int i=0;biblist.size()>i;i++)
@@ -73,7 +75,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
         }
 
         else if(t.equals("2")){
-            List<Biblio> biblist = marchib.getdataforupdate3(bib_id);
+
                 System.out.println("22222222222222    "+biblist.size());
                 for(int i=0;biblist.size()>i;i++)
             {
@@ -107,7 +109,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
 
         else if(t.equals("3")){
 
-             List<Biblio> biblist = marchib.getdataforupdate4(bib_id);
+
                 System.out.println("333333333    "+biblist.size());
                 for(int i=0;biblist.size()>i;i++)
                  {
@@ -130,7 +132,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
 
         else if(t.equals("4"))
         {
-                 List<Biblio> biblist = marchib.getdataforupdate44(bib_id);
+        
                 System.out.println("44444444444    "+biblist.size());
                 for(int i=0;biblist.size()>i;i++)
             {
@@ -144,7 +146,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
         }
         else if(t.equals("5"))
         {
-                 List<Biblio> biblist = marchib.getdataforupdate5(bib_id);
+     
                 System.out.println("555555555555    "+biblist.size());
                 for(int i=0;biblist.size()>i;i++)
             {
@@ -177,7 +179,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
         }
         else if(t.equals("6"))
         {
-                 List<Biblio> biblist = marchib.getdataforupdate6(bib_id);
+         
                 System.out.println("666666666    "+biblist.size());
                 for(int i=0;biblist.size()>i;i++)
             {
@@ -196,7 +198,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
 
         else if(t.equals("7"))
         {
-                List<Biblio> biblist = marchib.getdataforupdate7(bib_id);
+           
                         System.out.println("77777777777    "+biblist.size());
                         for(int i=0;biblist.size()>i;i++)
                     {
@@ -213,7 +215,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
         }
         else if(t.equals("8"))
         {
-                List<Biblio> biblist = marchib.getdataforupdate8(bib_id);
+        
                         System.out.println("888888888888    "+biblist.size());
                         for(int i=0;biblist.size()>i;i++)
                          {
@@ -251,7 +253,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
         return mapping.findForward("forward9");
         }
 
-         List<Biblio> biblist= marchib.getdataforupdate1(bib_id,"082");
+    
 System.out.println("BBBBGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+biblist.size());
 
             for(int i=0;biblist.size()>i;i++)

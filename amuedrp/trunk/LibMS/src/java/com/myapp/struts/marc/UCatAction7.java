@@ -12,6 +12,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -92,24 +93,44 @@ public class UCatAction7 extends org.apache.struts.action.Action {
                 biblioid.setLibraryId(library_id);
                 biblio.setSublibraryId(sub_library_id);
                 biblioid.setMarctag("700");
+                 if(caf7.getIn7001()!=null)
+                if(StringUtils.isNotBlank(in7001.toString())&&StringUtils.isNotEmpty(in7001.toString()))
                 biblio.setIndicator1(in7001);
+               if(caf7.getIn7002()!=null)
+                if(StringUtils.isNotBlank(in7002.toString())&&StringUtils.isNotEmpty(in7002.toString()))
                 biblio.setIndicator2(in7002);
-                    biblio.set$a(z700a);
+             if(StringUtils.isNotBlank(z700a)&&StringUtils.isNotEmpty(z700a))
+                biblio.set$a(z700a);
+                if(StringUtils.isNotBlank(z700b)&&StringUtils.isNotEmpty(z700b))
                     biblio.set$b(z700b);
-                    biblio.set$c(z700c);
+                if(StringUtils.isNotBlank(z700c)&&StringUtils.isNotEmpty(z700c))
+                biblio.set$c(z700c);
+                if(StringUtils.isNotBlank(z700d)&&StringUtils.isNotEmpty(z700d))
                     biblio.set$d(z700d);
-                    biblio.set$a(z700e);
-                    biblio.set$b(z700f);
+                if(StringUtils.isNotBlank(z700e)&&StringUtils.isNotEmpty(z700e))
+                biblio.set$a(z700e);
+                if(StringUtils.isNotBlank(z700f)&&StringUtils.isNotEmpty(z700f))
+                biblio.set$b(z700f);
                     biblio.set$c(z700h);
+                    if(StringUtils.isNotBlank(z700k)&&StringUtils.isNotEmpty(z700k))
                     biblio.set$d(z700k);
+                 if(StringUtils.isNotBlank(z700l)&&StringUtils.isNotEmpty(z700l))
                     biblio.set$a(z700l);
+                   if(StringUtils.isNotBlank(z700m)&&StringUtils.isNotEmpty(z700m))
                     biblio.set$b(z700m);
+if(StringUtils.isNotBlank(z700n)&&StringUtils.isNotEmpty(z700n))
                     biblio.set$c(z700n);
+if(StringUtils.isNotBlank(z700p)&&StringUtils.isNotEmpty(z700p))
                     biblio.set$d(z700p);
+                 if(StringUtils.isNotBlank(z700r)&&StringUtils.isNotEmpty(z700r))
                     biblio.set$a(z700r);
+                     if(StringUtils.isNotBlank(z700s)&&StringUtils.isNotEmpty(z700s))
                     biblio.set$b(z700s);
+                if(StringUtils.isNotBlank(z700t)&&StringUtils.isNotEmpty(z700t))
                     biblio.set$c(z700t);
+                     if(StringUtils.isNotBlank(z7004)&&StringUtils.isNotEmpty(z7004))
                     biblio.set$d(z7004);
+
 
 
                     biblioid.setBibId(bibid);
@@ -126,13 +147,20 @@ if(hm1.containsKey("28")){
                 biblioid1.setLibraryId(library_id);
                 biblio1.setSublibraryId(sub_library_id);
                 biblioid1.setMarctag("740");
+                 if(caf7.getIn7401()!=null)
+                if(StringUtils.isNotBlank(in7401.toString())&&StringUtils.isNotEmpty(in7401.toString()))
                 biblio1.setIndicator1(in7401);
+               if(caf7.getIn7402()!=null)
+                if(StringUtils.isNotBlank(in7402.toString())&&StringUtils.isNotEmpty(in7402.toString()))
                 biblio1.setIndicator2(in7402);
-                    biblio1.set$a(z740a);
+              if(StringUtils.isNotBlank(z740a)&&StringUtils.isNotEmpty(z740a))
+                biblio1.set$a(z740a);
+               if(StringUtils.isNotBlank(z740h)&&StringUtils.isNotEmpty(z740h))
                     biblio1.set$b(z740h);
+            if(StringUtils.isNotBlank(z740n)&&StringUtils.isNotEmpty(z740n))
                     biblio1.set$c(z740n);
-                    biblio1.set$d(z740p);
-
+            if(StringUtils.isNotBlank(z740p)&&StringUtils.isNotEmpty(z740p))
+                biblio1.set$d(z740p);
 
                      biblioid1.setBibId(bibid);
                        biblio1.setId(biblioid1);
@@ -146,10 +174,11 @@ if(hm1.containsKey("29")){
 
              System.out.println(" both objects saved now NAvigating to page "+t);
              String bib_id=(String)session.getAttribute("biblio_id") ;
+                List<Biblio> biblist= marchib.getdataforupdate(bib_id, library_id, sub_library_id);
              //code for mapping forwards......
                      if(t.equals("0"))
                     {
-                         List<Biblio> biblist= marchib.getdataforupdate1(bib_id,"082");
+             
                         System.out.println("BBBBGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+biblist.size());
 
                     for(int i=0;biblist.size()>i;i++)
@@ -181,7 +210,7 @@ if(hm1.containsKey("29")){
              
                     else if(t.equals("1"))
                     {
-                            List<Biblio> biblist= marchib.getdataforupdate2(bib_id);
+           
 System.out.println("1111111111111111111111   "+biblist.size());
 
             for(int i=0;biblist.size()>i;i++)
@@ -203,7 +232,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
                     }
                      else if(t.equals("2"))
                      {
-                             List<Biblio> biblist = marchib.getdataforupdate3(bib_id);
+        
                 System.out.println("22222222222222    "+biblist.size());
                 for(int i=0;biblist.size()>i;i++)
             {
@@ -237,7 +266,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
 
                     else if(t.equals("3"))
                     {
-                                    List<Biblio> biblist = marchib.getdataforupdate4(bib_id);
+                  
                         System.out.println("666666666666    "+biblist.size());
                         for(int i=0;biblist.size()>i;i++)
                     {
@@ -261,7 +290,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
 
                     else if(t.equals("4"))
                     {
-                             List<Biblio> biblist = marchib.getdataforupdate44(bib_id);
+           
                         System.out.println("44444444444    "+biblist.size());
                         for(int i=0;biblist.size()>i;i++)
                     {
@@ -277,7 +306,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
 
                     else if(t.equals("5"))
                     {
-                             List<Biblio> biblist = marchib.getdataforupdate5(bib_id);
+                     
                         System.out.println("555555555555    "+biblist.size());
                         for(int i=0;biblist.size()>i;i++)
                          {
@@ -312,7 +341,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
 
                     else if(t.equals("6"))
                     {
-                             List<Biblio> biblist = marchib.getdataforupdate6(bib_id);
+                 
                         System.out.println("3333333333333    "+biblist.size());
                         for(int i=0;biblist.size()>i;i++)
                     {
@@ -330,7 +359,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
                     }
                     else if(t.equals("8"))
                     {
-                            List<Biblio> biblist = marchib.getdataforupdate8(bib_id);
+             
                         System.out.println("888888888888    "+biblist.size());
                         for(int i=0;biblist.size()>i;i++)
                          {
@@ -367,11 +396,43 @@ System.out.println("1111111111111111111111   "+biblist.size());
                     {
                             return mapping.findForward("forward9");
                     }
+ else if(t.equals("10"))
+        {
+
+System.out.println("1111111111111111111111   "+biblist.size());
+
+            for(int i=0;biblist.size()>i;i++)
+            {
+                   if(biblist.get(i).getId().getMarctag().equals("Leader")){
+
+                     request.setAttribute("Leader", biblist.get(i));
+                    }
+                   if(biblist.get(i).getId().getMarctag().equals("001")){
+
+                     request.setAttribute("001", biblist.get(i));
+                    }
+                   if(biblist.get(i).getId().getMarctag().equals("003")){
+                      // System.out.println("^^^^^^^^^^^^^ "+biblist.get(i).get$a());
+                     request.setAttribute("003", biblist.get(i));
+                    }
+                 if(biblist.get(i).getId().getMarctag().equals("005")){
+                      // System.out.println("^^^^^^^^^^^^^ "+biblist.get(i).get$a());
+                     request.setAttribute("005", biblist.get(i));
+                    }
+                      if(biblist.get(i).getId().getMarctag().equals("007")){
+                      // System.out.println("^^^^^^^^^^^^^ "+biblist.get(i).get$a());
+                     request.setAttribute("007", biblist.get(i));
+                    }
+                     if(biblist.get(i).getId().getMarctag().equals("008")){
+                      // System.out.println("^^^^^^^^^^^^^ "+biblist.get(i).get$a());
+                     request.setAttribute("008", biblist.get(i));
+                    }
+            }
+            return mapping.findForward("forward10");
+        }
 
 
 
-
-                    List<Biblio> biblist = marchib.getdataforupdate7(bib_id);
                         System.out.println("77777777777    "+biblist.size());
                         for(int i=0;biblist.size()>i;i++)
                     {

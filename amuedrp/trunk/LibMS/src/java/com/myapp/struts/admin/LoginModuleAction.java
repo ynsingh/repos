@@ -17,7 +17,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.utility.DateCalculation;
-//import com.myapp.struts.utility.writeLog;
+
 
 /**
  *
@@ -37,12 +37,12 @@ public class LoginModuleAction extends org.apache.struts.action.Action {
 HttpSession session=request.getSession();
  HttpServletRequest req=(HttpServletRequest)request;
        String ipAddress =request.getRemoteAddr();
- System.out.println("Request for URL="+ " By UserName="+((String)session.getAttribute("username"))+" From Libraary="+((String)session.getAttribute("library_id"))+ " SubLibrary="+((String)session.getAttribute("sublibrary_id"))+" LoginID="+((String)session.getAttribute("login_id"))+" Having Role="+ ((String)session.getAttribute("login_role")+" At "));
+ //System.out.println("Request for URL="+ " By UserName="+((String)session.getAttribute("username"))+" From Libraary="+((String)session.getAttribute("library_id"))+ " SubLibrary="+((String)session.getAttribute("sublibrary_id"))+" LoginID="+((String)session.getAttribute("login_id"))+" Having Role="+ ((String)session.getAttribute("login_role")+" At "));
    if(((String)session.getAttribute("username")!=null) && ((String)session.getAttribute("library_id")!=null) && ((String)session.getAttribute("sublibrary_id")!=null) &&  ((String)session.getAttribute("login_id")!=null) && ((String)session.getAttribute("login_role")!=null))
           {
-System.out.println("*************************    Log Information   ************************************");
-         //   System.out.println("Request for URL="+ req.getRequestURI() +" By UserName="+((String)session.getAttribute("username"))+" From Libraary="+((String)session.getAttribute("library_id"))+ " SubLibrary="+((String)session.getAttribute("sublibrary_id"))+" LoginID="+((String)session.getAttribute("login_id"))+" Having Role="+ ((String)session.getAttribute("login_role")+" At "+DateCalculation.dateTime().toString()));
-System.out.println("*************************************************************");
+//System.out.println("*************************    Log Information   ************************************");
+          //  System.out.println("Request for URL="+ req.getRequestURI() +" By UserName="+((String)session.getAttribute("username"))+" From Libraary="+((String)session.getAttribute("library_id"))+ " SubLibrary="+((String)session.getAttribute("sublibrary_id"))+" LoginID="+((String)session.getAttribute("login_id"))+" Having Role="+ ((String)session.getAttribute("login_role")+" At "+DateCalculation.dateTime().toString()));
+//System.out.println("*************************************************************");
  Logs obj=new Logs();
           obj.setUrl(req.getRequestURI());
           obj.setDate(DateCalculation.dateTime().toString());
@@ -52,9 +52,9 @@ System.out.println("************************************************************
           obj.setUsername((String)session.getAttribute("username"));
           obj.setRole((String)session.getAttribute("login_role"));
 //System.out.println("Object"+obj);
-     //     LogsDAO.insertLog(obj);
+        //  LogsDAO.insertLog(obj);
 
-         // writeLog.writelog(req.getRealPath(req.getContextPath().toString()),DateCalculation.dateTime().toString(), ipAddress, req.getRequestURI(),((String)session.getAttribute("username")),((String)session.getAttribute("library_id")), ((String)session.getAttribute("sublibrary_id")),((String)session.getAttribute("login_id")), ((String)session.getAttribute("login_role")));
+       //   writeLog.writelog(req.getRealPath(req.getContextPath().toString()),DateCalculation.dateTime().toString(), ipAddress, req.getRequestURI(),((String)session.getAttribute("username")),((String)session.getAttribute("library_id")), ((String)session.getAttribute("sublibrary_id")),((String)session.getAttribute("login_id")), ((String)session.getAttribute("login_role")));
            }
 
 

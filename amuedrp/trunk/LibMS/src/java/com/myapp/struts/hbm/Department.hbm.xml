@@ -25,13 +25,6 @@
         <property name="deptName" type="string">
             <column name="dept_name" length="50" />
         </property>
-        <set name="courseses" inverse="true">
-            <key>
-                <column name="library_id" length="20" not-null="true" />
-                <column name="faculty_id" length="20" not-null="true" />
-                <column name="dept_id" length="20" not-null="true" />
-            </key>
-            <one-to-many class="com.myapp.struts.hbm.Courses" />
-        </set>
+       
     </class>
 </hibernate-mapping>

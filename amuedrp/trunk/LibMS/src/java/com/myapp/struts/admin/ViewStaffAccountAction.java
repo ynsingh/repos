@@ -18,12 +18,16 @@ import java.util.List;
  * @author Dushyant
  */
 public class ViewStaffAccountAction extends org.apache.struts.action.Action {
-    
+
+
+    LoginDAO logindao;
+
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         HttpSession session=request.getSession();
+        logindao=new LoginDAO();
      
         String sublibrary_id=(String)session.getAttribute("sublibrary_id");
 
@@ -33,7 +37,7 @@ public class ViewStaffAccountAction extends org.apache.struts.action.Action {
 
          System.out.println(staff_id+library_id);
 
-        Login loginobj=LoginDAO.searchStaffId(staff_id, library_id);
+        Login loginobj=logindao.searchStaffId(staff_id, library_id);
         if(loginobj!=null){
              
              // request.setAttribute("button", button);

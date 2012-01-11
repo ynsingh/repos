@@ -35,6 +35,7 @@ public class BibliographicDetailAction2 extends org.apache.struts.action.Action 
         int ii = Integer.parseInt(id);
         BibliographicDetails bib = dao.getBiblio(library_id, sub_library_id, ii);
         bibform.setBiblio_id(ii);
+        if(bib.getNoOfCopies()!=null)
         bibform.setNo_of_copies(bib.getNoOfCopies());
         bibform.setThesis_abstract(bib.getAbstract_());
         bibform.setNotes(bib.getNotes());

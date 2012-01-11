@@ -13,7 +13,7 @@
             </key-property>
         </composite-id>
         <property name="budgetheadName" type="string">
-            <column name="budgethead_name" length="20" />
+            <column name="budgethead_name" length="500" />
         </property>
         <property name="budgetDesc" type="string">
             <column name="budget_desc" length="2000" />

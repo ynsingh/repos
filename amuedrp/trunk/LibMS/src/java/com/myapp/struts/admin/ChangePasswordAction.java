@@ -30,6 +30,7 @@ public class ChangePasswordAction extends org.apache.struts.action.Action {
     private String library_id;
     private String login_id;
     private boolean result;
+    LoginDAO logindao;
     int i;
     Email obj;
     private final ExecutorService executor=Executors.newFixedThreadPool(1);
@@ -39,7 +40,7 @@ public class ChangePasswordAction extends org.apache.struts.action.Action {
             throws Exception {
             CreateAccountActionForm caaction=(CreateAccountActionForm)form;
 
-
+logindao=new LoginDAO();
             login_id=caaction.getLogin_id();
             user_name=caaction.getUser_name();
             password=caaction.getPassword();
@@ -52,7 +53,7 @@ public class ChangePasswordAction extends org.apache.struts.action.Action {
      
        
         StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
-        Login  log=LoginDAO.searchRole(staff_id, library_id);
+        Login  log=logindao.searchRole(staff_id, library_id);
  String path = servlet.getServletContext().getRealPath("/");
         obj=new Email(path,staffobj.getEmailId(),password,"Password Changed Successfully from LibMS Account","Your Password for LibMS Account is changed Successfully.\nYour New Password for libMS Account is:\nUser Id :"+login_id+"\nNew Password :"+password+"\n","Dear "+staffobj.getFirstName()+" "+staffobj.getLastName()+",\n","Thanks,\nWebAdmin\nLibMS");
         System.out.println((String)session.getAttribute("webmail")+" "+(String)session.getAttribute("webpass")+" "+obj);
@@ -66,7 +67,7 @@ public class ChangePasswordAction extends org.apache.struts.action.Action {
 
         password=PasswordEncruptionUtility.password_encrupt(password);
         log.setPassword(password);
-        result=LoginDAO.update1(log);
+        result=logindao.update1(log);
         System.out.println(login_id+"................"+password);
 
 

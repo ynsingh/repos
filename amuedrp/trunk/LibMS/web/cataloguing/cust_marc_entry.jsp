@@ -76,10 +76,7 @@ function func2(t){
 }
 animatedcollapse.init();
 </script>
-
-                                          <h2 align="center">Bibliographic Cataloging</h2>
-
-
+<h2 align="center">Bibliographic Cataloging</h2>
 <div id="ddtabs3" class="solidblockmenu">
 <ul>
     <li><a href="<%=request.getContextPath()%>/cataloguing/cust_marc_entry.jsp" onclick="func1(0)"  rel="sb0">0 (01X-09X)</a></li>

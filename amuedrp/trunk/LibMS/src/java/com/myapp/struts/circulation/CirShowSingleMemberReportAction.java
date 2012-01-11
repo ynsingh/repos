@@ -4,7 +4,7 @@
  */
 
 package com.myapp.struts.circulation;
-import com.myapp.struts.CirculationDAO.*;
+import com.myapp.struts.CirDAO.*;
 import com.myapp.struts.hbm.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

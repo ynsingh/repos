@@ -7,8 +7,6 @@ package com.myapp.struts.admin;
 import  com.myapp.struts.hbm.*;
 import  com.myapp.struts.AdminDAO.*;
 
-import java.sql.*;
-import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -27,7 +25,7 @@ public class LoginPasswordAction extends org.apache.struts.action.Action {
     private String button;
     private String library_id;
     private String sublibrary_id;
-    
+    LoginDAO logindao;
 
     
     @Override
@@ -42,13 +40,13 @@ public class LoginPasswordAction extends org.apache.struts.action.Action {
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
         staff_id=(String)session.getAttribute("staff_id");
 Login loginobj;
-
+logindao=new LoginDAO();
        
 
 
 
 
-                         loginobj=(Login)LoginDAO.searchStaffLogin(staff_id, library_id);
+                         loginobj=(Login)logindao.searchStaffLogin(staff_id, library_id);
 
 
 

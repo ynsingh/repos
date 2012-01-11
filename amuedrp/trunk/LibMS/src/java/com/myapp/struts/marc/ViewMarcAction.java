@@ -38,12 +38,23 @@ public class ViewMarcAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         ViewMarcActionForm vma=(ViewMarcActionForm) form;
+        String id=(String)request.getParameter("id");
+          HttpSession session = request.getSession();
+        
+        
         String bibid=vma.getBib_id();
+        if(bibid==null)
+            bibid=(String)request.getParameter("id");
+        
         System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"+bibid);
-        HttpSession session = request.getSession();
+      
          session.setAttribute("biblio_id", bibid);
-
-         List<Biblio> biblist= mhd.getdataforupdate1(bibid,"082");
+            String library_id = (String) session.getAttribute("library_id");
+        String sub_library_id = (String) session.getAttribute("sublibrary_id");
+      List<Biblio> biblist= mhd.getdataforupdate(bibid, library_id, sub_library_id);
+      
+       
+      
 System.out.println("BBBBGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+biblist.size());
        //  int i=0;
             for(int i=0;biblist.size()>i;i++){
@@ -73,5 +84,6 @@ System.out.println("BBBBGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+biblist.size());
 
 
         return mapping.findForward(SUCCESS);
-    }
+}
+   
 }

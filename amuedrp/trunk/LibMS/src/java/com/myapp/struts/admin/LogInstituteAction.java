@@ -9,20 +9,14 @@ import com.myapp.struts.AdminDAO.LibraryDAO;
 import com.myapp.struts.AdminDAO.LogsDAO;
 import com.myapp.struts.hbm.Logs;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
 /**
  *
@@ -56,66 +50,11 @@ public class LogInstituteAction extends org.apache.struts.action.Action {
 
       String path = servlet.getServletContext().getRealPath("/");
 
-   String os=(String)System.getProperty("os.name");
-   System.out.println("OS----------->"+os);
-   if(os.startsWith("Linux"))
-   {
-
 path=path.substring(0,path.lastIndexOf("/"));
 path=path.substring(0,path.lastIndexOf("/"));
 path=path.substring(0,path.lastIndexOf("/"));
-   }
-   else{
-path=path.substring(0,path.lastIndexOf("\\"));
-path=path.substring(0,path.lastIndexOf("\\"));
-path=path.substring(0,path.lastIndexOf("\\"));
 
-
-   }
-
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
-    Document doc = null;
-
-  try
-   {
-
-   factory.setAttribute(
-    "http://java.sun.com/xml/jaxp/properties/schemaLanguage",
-   "http://www.w3.org/2001/XMLSchema");
-   factory.setAttribute(
-   "http://java.sun.com/xml/jaxp/properties/schemaSource",
-   "logrule.xsd");
-   DocumentBuilder parser = factory.newDocumentBuilder();
-   if(os.startsWith("Linux")){
-   doc = parser.parse(path+"/web/logs/list.xml");
-   }
-   else{
-   doc = parser.parse(path+"\\web\\logs\\list.xml");
-   }
-   }
-   catch (ParserConfigurationException e)
-   {
-  e.printStackTrace();
-   return null;
-  }
-   catch(SAXException e)
-  {
-   e.printStackTrace();
-    return null;
-   }
-   catch (IOException e)
-   {
-   e.printStackTrace();
-    return null;
-   }
-  
- if(os.startsWith("Linux"))
-   {
 	readConfig  = read.readConfig(path+"/web/logs/list.xml");
- }else{
- 	readConfig  = read.readConfig(path+"\\web\\logs\\list.xml");
- }
 		for (Item item : readConfig) {
 			System.out.println(item);
 		}

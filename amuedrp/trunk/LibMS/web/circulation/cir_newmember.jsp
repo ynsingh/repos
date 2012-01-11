@@ -588,7 +588,7 @@ function copy(){
    var mem_id1=document.getElementById("mem_id1");
    var mem_id2=document.getElementById("mem_id2");
    mem_id1.value=mem_id2.value;
-  
+      
 }
 </script>
 
@@ -668,6 +668,7 @@ a:active
           <html:hidden property="TXTREG_DATE" name="CirculationMemberActionForm" styleId="TXTREG_DATE1"/>
           <html:hidden property="TXTEXP_DATE" name="CirculationMemberActionForm" styleId="TXTEXP_DATE1"/>
           <html:hidden property="TXTMEMID" name="CirculationMemberActionForm" styleId="mem_id1"/>
+         
 
     </html:form>
    
@@ -691,7 +692,11 @@ a:active
 
           <br>
           <table dir="<%=rtl%>"  width="80%" >
+              <tr><td dir="<%=rtl%>" class="txtStyle" colspan="2"><html:checkbox  property="tempreg" value="y" styleId="tempreg1" style="width:160px" onfocus="statwords('Checked for Temporary Reg');" onblur="loadHelp()" />&nbsp;Check It, If Member has Temporary Registration
 
+                </td>
+
+                </tr>
              
                     <tr>
                         <td width="25%" dir="<%=rtl%>" align="<%=align%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.memberid")%></td><td dir="<%=rtl%>" align="left" width="25%"><html:text  styleId="mem_id2"   property="TXTMEMID" value="<%=memid%>" readonly="true" style="width:160px" onfocus="statwords('Member Id');" onblur="loadHelp()" /></td>
@@ -734,7 +739,7 @@ a:active
                 </tr>
             <tr>
                               <td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.email")%>*</td>
-                <td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTEMAILID" tabindex="4" style="width:160px" styleId="mail2" value="<%=mail_id%>" onblur="return echeck(mail2.value);loadHelp()"onfocus="statwords('Enter Member Email Id. The Username and password will be sent on this email id.');" />
+                <td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTEMAILID" tabindex="4" style="width:160px" styleId="mail2" value="<%=mail_id%>" onblur="return echeck(mail2.value);loadHelp()" onfocus="statwords('Enter Member Email Id. The Username and password will be sent on this email id.');" />
                 <br/> <div align="left" class="err" id="searchResult" style="border:#000000; "></div>
                  <html:messages id="err_name" property="TXTEMAILID">
 				<bean:write name="err_name" />
@@ -758,7 +763,7 @@ a:active
                 </tr>
             <tr>
                  <td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.city")%>*</td>
-                 <td dir="<%=rtl%>" class="table_textbox"><html:text tabindex="6"  property="TXTCITY1" style="width:160px" styleId="city11" value="<%=city1%>"onfocus="statwords('Enter City Name');" onblur="loadHelp()"/>
+                 <td dir="<%=rtl%>" class="table_textbox"><html:text tabindex="6"  property="TXTCITY1" style="width:160px" styleId="city11" value="<%=city1%>" onfocus="statwords('Enter City Name');" onblur="loadHelp()"/>
                  <br/>
                  <html:messages id="err_name" property="TXTCITY1">
 				<bean:write name="err_name" />
@@ -785,7 +790,7 @@ a:active
             </tr>
              <tr>
                  <td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.state")%>*</td>
-                 <td dir="<%=rtl%>" class="table_textbox"><html:text tabindex="7" property="TXTSTATE1" styleId="state11" value="<%=state1%>" style="width:160px"onfocus="statwords('Enter State Name');" onblur="loadHelp()"/>
+                 <td dir="<%=rtl%>" class="table_textbox"><html:text tabindex="7" property="TXTSTATE1" styleId="state11" value="<%=state1%>" style="width:160px" onfocus="statwords('Enter State Name');" onblur="loadHelp()"/>
                  <br/>
                  <html:messages id="err_name" property="TXTSTATE1">
 				<bean:write name="err_name" />
@@ -834,7 +839,7 @@ a:active
                 <td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.landlineno")%>.</td>
                  <td dir="<%=rtl%>" class="table_textbox"><html:text tabindex="10" property="TXTPH2" styleId="ph22" value="<%=ph2%>" style="width:160px"/></td><td><%=resource.getString("circulation.cir_newmember.facof")%>
                  </td><td dir="<%=rtl%>" class="table_textbox">
-              <html:select  property="TXTFACULTY" styleId="TXTFACULTY" style="width:160px" value="<%=faculty%>"  onclick="return search1()" tabindex="21"onfocus="statwords('Enter faculty');" onblur="loadHelp()">
+              <html:select  property="TXTFACULTY" styleId="TXTFACULTY" style="width:160px" value="<%=faculty%>"  onclick="return search1()" tabindex="21" onfocus="statwords('Enter faculty');" onblur="loadHelp()">
                   <html:option value="Select"><%=resource.getString("circulation.cir_newmember.select")%></html:option>
                   <html:options  collection="list2"  labelProperty="facultyName" property="id.facultyId"></html:options>
                      </html:select>
@@ -842,7 +847,7 @@ a:active
                       </td></tr>
              <tr>
                                <td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.fax")%></td>
-                 <td dir="<%=rtl%>" class="table_textbox"><html:text styleId="fax2" tabindex="11" property="TXTFAX" value="<%=fax%>" style="width:160px"onfocus="statwords('Enter FAX Number if any');" onblur="loadHelp()"/></td>
+                 <td dir="<%=rtl%>" class="table_textbox"><html:text styleId="fax2" tabindex="11" property="TXTFAX" value="<%=fax%>" style="width:160px" onfocus="statwords('Enter FAX Number if any');" onblur="loadHelp()"/></td>
                  <td dir="<%=rtl%>"><%=resource.getString("circulation.cir_newmember.dept")%>   </td><td class="table_textbox">
 
                   <html:select  property="TXTDEPT" styleId="TXTDEPT" style="width:160px"  onchange="return search_dept();" value="<%=dept%>" tabindex="22">
@@ -855,7 +860,7 @@ a:active
                  </td></tr>
              <tr>
                         <td class="txtStyle" dir="<%=rtl%>"><%=resource.getString("circulation.cir_newmember.permadd")%></td>
-                <td dir="<%=rtl%>" class="table_textbox"><html:text property="TXTADD2" tabindex="12" styleId="add22" value="<%=add2%>" style="width:160px"onfocus="statwords('Enter Street/colony/moh name');" onblur="loadHelp()"/></td>
+                <td dir="<%=rtl%>" class="table_textbox"><html:text property="TXTADD2" tabindex="12" styleId="add22" value="<%=add2%>" style="width:160px" onfocus="statwords('Enter Street/colony/moh name');" onblur="loadHelp()"/></td>
                  <td> <%=resource.getString("circulation.cir_newmember.course")%>
                   </td><td dir="<%=rtl%>" class="table_textbox">
                   <html:select  property="TXTCOURSE" styleId="TXTCOURSE" style="width:160px" value="<%=course%>"  tabindex="23">
@@ -872,7 +877,7 @@ a:active
 </td></tr>
              <tr>
                 <td dir="<%=rtl%>" class="txtStyle"><%=resource.getString("circulation.cir_newmember.city")%></td>
-                 <td dir="<%=rtl%>" class="table_textbox"><html:text  tabindex="13" property="TXTCITY2" styleId="city22" value="<%=city2%>" style="width:160px"onfocus="statwords('Enter City Name');" onblur="loadHelp()"/></td>
+                 <td dir="<%=rtl%>" class="table_textbox"><html:text  tabindex="13" property="TXTCITY2" styleId="city22" value="<%=city2%>" style="width:160px" onfocus="statwords('Enter City Name');" onblur="loadHelp()"/></td>
                  <td> <%=resource.getString("circulation.cir_newmember.sem")%>
                   </td><td dir="<%=rtl%>" class="table_textbox"><html:text  property="TXTSEM" styleId="sem2" tabindex="24" value="<%=sem%>" styleClass="textBoxWidth" style="width:160px" onfocus="statwords('Enter Semester/year of the course eg. First Yr or First Sem');" onblur="loadHelp()" />
 
@@ -902,8 +907,8 @@ a:active
 
                   </td></tr>
              <tr>
-                 <td></td>
-                 <td></td>
+                 <td dir="<%=rtl%>" class="txtStyle">University/College</td>
+                 <td dir="<%=rtl%>" class="table_textbox"><html:text tabindex="15"  property="college" styleId="uni1"  value="" style="width:160px" onfocus="statwords('Enter University/College Name');" onblur="loadHelp()"/></td>
                  <td dir="<%=rtl%>" valign="top"><%=resource.getString("circulation.cir_newmember.exp")%>*<br>(YYYY-MM-DD)
                   </td>
                   <td dir="<%=rtl%>" class="table_textbox" valign="top"><html:text  property="TXTEXP_DATE" value="<%=exp_date%>" tabindex="27" styleId="TXTEXP_DATE" style="width:160px" onfocus="statwords('Enter Date');" onblur="loadHelp()"/>
@@ -914,6 +919,10 @@ a:active
 
                    <br/> <div align="<%=align%>" class="err" id="searchResult2" style="border:#000000;"></div>
                        </td></tr>
+            <tr>
+                 <td dir="<%=rtl%>" class="txtStyle">University/College Address</td>
+                 <td dir="<%=rtl%>" class="table_textbox"><html:text tabindex="15"  property="colladd" styleId="uniadd1"   value="" style="width:160px" onfocus="statwords('Enter University/College Name');" onblur="loadHelp()"/></td>
+                 </tr>
              <tr>
                  <td></td>
                  <td></td></tr>
@@ -1023,6 +1032,10 @@ availableSelectList.innerHTML="";
 
     function validation()
     {
+
+
+
+
    var email_id=document.getElementById('mail2');
     var first_name=document.getElementById('fname2');
 
@@ -1037,10 +1050,42 @@ availableSelectList.innerHTML="";
     var state1=document.getElementById('state11');
     var country1=document.getElementById('country11');
 
-
+       
+     var temp=document.getElementById('tempreg1');
+var coll=document.getElementById('uni1');
+var colladd=document.getElementById('uniadd1');
 
 
 var str= "<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")%>:-";
+
+  if(temp.checked==true){
+
+       if(coll.value=="")
+        {
+            str+="\n Enter College Name for Temporory Registration ";
+            alert(str);
+            document.getElementById('uni1').focus();
+            return false;
+        }
+
+  if(colladd.value=="")
+        {
+            str+="\n Enter College Address ";
+            alert(str);
+            document.getElementById('uniadd1').focus();
+            return false;
+        }
+
+
+  }
+
+
+
+
+
+
+
+
 
 
    if(email_id.value=="")

@@ -8,6 +8,7 @@ import com.myapp.struts.hbm.*;
 import java.util.*;
 import com.myapp.struts.hbm.HibernateUtil;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
 import org.hibernate.Query;
@@ -30,7 +31,7 @@ public class SubLibraryDAO {
         try
         {
             tx = (Transaction) session.beginTransaction();
-            Query query = session.createQuery("Delete From  SubLibrary where id.libraryId =:library_id and id.sublibraryId= :sublibrary_id  ");
+            query = session.createQuery("Delete From  SubLibrary where id.libraryId =:library_id and id.sublibraryId= :sublibrary_id  ");
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
 
@@ -40,16 +41,13 @@ public class SubLibraryDAO {
 
 
         }
-        catch (Exception ex)
-        {
-             return false;
-
-       //  System.out.println(ex.toString());
-
-        }
+       catch (HibernateException e) {
+	                tx.rollback();
+	                e.printStackTrace();
+	            }
         finally
         {
-          //session.close();
+       session.close();
         }
    return true;
 
@@ -58,140 +56,172 @@ public class SubLibraryDAO {
 
 public static SubLibrary getMainSubLibraryId(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-      Query query1;
+      SubLibrary sublib=null;
         try {
             session.beginTransaction();
-       query1= session.createQuery("FROM  SubLibrary  WHERE id.libraryId =:library_id and id.sublibraryId=:sublibrary_id");
-            query1.setString("library_id", library_id);
-            query1.setString("sublibrary_id", sublibrary_id);
-            
+       query= session.createQuery("FROM  SubLibrary  WHERE id.libraryId =:library_id and id.sublibraryId=:sublibrary_id");
+            query.setString("library_id", library_id);
+            query.setString("sublibrary_id", sublibrary_id);
+            sublib=(SubLibrary) query.uniqueResult();
 
            
         }
+        catch (HibernateException e) {
+
+	                e.printStackTrace();
+	            }
         finally {
-      //      session.close();
+    session.close();
         }
-         return (SubLibrary) query1.uniqueResult();
+         return sublib;
 
 }
 
 public static List<SubLibrary> getAllSubLibrary(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List<SubLibrary> obj=null;
         try {
             session.beginTransaction();
-            Query query1 = session.createQuery("FROM  SubLibrary  WHERE id.libraryId =:library_id");
-            query1.setString("library_id", library_id);
+             query = session.createQuery("FROM  SubLibrary  WHERE id.libraryId =:library_id");
+            query.setString("library_id", library_id);
 
 
-            return (List<SubLibrary>) query1.list();
+           obj=(List<SubLibrary>) query.list();
         }
+         catch (HibernateException e) {
+
+	                e.printStackTrace();
+	            }
         finally {
-         //   session.close();
+        session.close();
         }
-
+ return obj;
 }
 
 
 public static SubLibrary getLibName(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+SubLibrary obj=null;
         try {
             session.beginTransaction();
-            Query query1 = session.createQuery("FROM  SubLibrary  WHERE id.libraryId =:library_id and id.sublibraryId=:sublibrary_id");
-            query1.setString("library_id", library_id);
-            query1.setString("sublibrary_id",sublibrary_id);
+            query = session.createQuery("FROM  SubLibrary  WHERE id.libraryId =:library_id and id.sublibraryId=:sublibrary_id");
+            query.setString("library_id", library_id);
+            query.setString("sublibrary_id",sublibrary_id);
 
-            return (SubLibrary) query1.uniqueResult();
+           obj=(SubLibrary) query.uniqueResult();
         }
+        catch (HibernateException e) {
+
+	                e.printStackTrace();
+	            }
         finally {
-          //  session.close();
+         session.close();
         }
-
+ return obj;
 }
 
 public static SubLibrary getSubLibraryId(String library_id,String sublibrary_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+        SubLibrary sublib=null;
         try {
             session.beginTransaction();
-            Query query1 = session.createQuery("FROM  SubLibrary  WHERE id.libraryId =:library_id and sublibName=:sublibrary_name");
-            query1.setString("library_id", library_id);
-            query1.setString("sublibrary_name",sublibrary_name);
+            query = session.createQuery("FROM  SubLibrary  WHERE id.libraryId =:library_id and sublibName=:sublibrary_name");
+            query.setString("library_id", library_id);
+            query.setString("sublibrary_name",sublibrary_name);
 
-            return (SubLibrary) query1.uniqueResult();
+           sublib=(SubLibrary) query.uniqueResult();
         }
+          catch (HibernateException e) {
+
+	                e.printStackTrace();
+	            }
         finally {
-          //  session.close();
+          HibernateUtil.getSessionFactory().close();
         }
-
+ return sublib;
 }
 
 public static List<SubLibrary> searchAccessibleSubLib(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List<SubLibrary> sublib=null;
         try {
             session.beginTransaction();
-            Query query1 = session.createQuery("FROM  SubLibrary  WHERE id.libraryId =:library_id and id.sublibraryId=:sublibrary_id or id.sublibraryId=:library_id");
-            query1.setString("library_id", library_id);
-            query1.setString("sublibrary_id", sublibrary_id);
-
-            return (List<SubLibrary>) query1.list();
+             query = session.createQuery("FROM  SubLibrary  WHERE id.libraryId =:library_id and id.sublibraryId=:sublibrary_id or id.sublibraryId=:library_id");
+            query.setString("library_id", library_id);
+            query.setString("sublibrary_id", sublibrary_id);
+sublib=(List<SubLibrary>) query.list();
+           
         }
+          catch (HibernateException e) {
+
+	                e.printStackTrace();
+	            }
         finally {
-            //session.close();
+          session.close();
         }
-
+ return sublib;
 }
 
 public static List<SubLibrary> searchSubLib(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List<SubLibrary> sublib=null;
         try {
             session.beginTransaction();
-            Query query1 = session.createQuery("FROM  SubLibrary  WHERE id.libraryId =:library_id");
-            query1.setString("library_id", library_id);
+            query = session.createQuery("FROM  SubLibrary  WHERE id.libraryId =:library_id");
+            query.setString("library_id", library_id);
            
 
-            return (List<SubLibrary>) query1.list();
+            sublib=(List<SubLibrary>) query.list();
         }
+        catch (HibernateException e) {
+
+	                e.printStackTrace();
+	            }
         finally {
            session.close();
         }
-
+return sublib;
 }
 public static List<SubLibrary> searchSubLib(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List<SubLibrary> sublib=null;
         try {
             session.beginTransaction();
-            Query query1 = session.createQuery("FROM  SubLibrary  WHERE id.sublibraryId !=:sublibrary_id and id.libraryId=:library_id");
-            query1.setString("library_id", library_id);
-            query1.setString("sublibrary_id", sublibrary_id);
-
-            return (List<SubLibrary>) query1.list();
+            query = session.createQuery("FROM  SubLibrary  WHERE id.sublibraryId !=:sublibrary_id and id.libraryId=:library_id");
+            query.setString("library_id", library_id);
+            query.setString("sublibrary_id", sublibrary_id);
+sublib=(List<SubLibrary>) query.list();
+            
         }
+         catch (HibernateException e) {
+
+	                e.printStackTrace();
+	            }
         finally {
-       //     session.close();
+            session.close();
         }
-
+return sublib;
 }
 
   public static SubLibrary searchLibraryName(String sublibrary_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+SubLibrary sub=null;
         try {
             session.beginTransaction();
-            Query query1 = session.createQuery("FROM  SubLibrary  WHERE sublibName=:sublibraryname");
+             query = session.createQuery("FROM  SubLibrary  WHERE sublibName=:sublibraryname");
            
-            query1.setString("sublibraryname",sublibrary_name);
+            query.setString("sublibraryname",sublibrary_name);
 
-            return (SubLibrary) query1.uniqueResult();
+       sub=(SubLibrary) query.uniqueResult();
         }
+        catch (HibernateException e) {
+
+	                e.printStackTrace();
+	            }
         finally {
-      //      session.close();
+            session.close();
         }
-
+return sub;
 }
 public static  boolean update(SubLibrary obj)
 {
@@ -209,6 +239,10 @@ public static  boolean update(SubLibrary obj)
                 return false;
 
         }
+        finally{
+                 session.close();
+        }
+
 
    return true;
 
@@ -231,16 +265,15 @@ public static  boolean insert(SubLibrary obj)
 
 
         }
-        catch (Exception ex)
-        {
-             return false;
+         catch (RuntimeException e) {
 
-       //  System.out.println(ex.toString());
+                tx.rollback();
+                return false;
 
         }
         finally
         {
-          //session.close();
+          session.close();
         }
    return true;
 

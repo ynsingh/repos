@@ -6,7 +6,8 @@
    "http://www.w3.org/TR/html4/loose.dtd">
 <%
 String login_id=(String)request.getAttribute("user_id");
-Login rs=LoginDAO.searchLoginID(login_id);
+LoginDAO logindao=new LoginDAO();
+Login rs=logindao.searchLoginID(login_id);
 String staff_id="";
 if(rs!=null)
     staff_id=rs.getId().getStaffId();

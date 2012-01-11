@@ -14,10 +14,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
-        <title>JSP Page</title>
+        <title>LibMS</title>
     </head>
     <body>
         <table class="datagrid">
+            
             <logic:iterate id="BiblioTemp" name="opacList">
                 <tr>
                     <td>

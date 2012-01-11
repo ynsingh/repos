@@ -29,15 +29,7 @@ public class requestCheckOutAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -51,7 +43,7 @@ public class requestCheckOutAction extends org.apache.struts.action.Action {
 
         String memId = (String)session.getAttribute("mem_id");
         String memlibId = (String)session.getAttribute("memlib");
-
+System.out.println("Caadddddddddddddd");
         if(memId==null || memlibId==null)
         {
             //send request to member login page
@@ -61,6 +53,7 @@ public class requestCheckOutAction extends org.apache.struts.action.Action {
                 session.setAttribute("checkoutRequestSubLibId", sublibId);
                 session.setAttribute("checkoutRequestDocId", docId);
                 request.setAttribute("msg", "Please login!");
+               // session.setAttribute("type","CheckoutRequest");
                     return mapping.findForward("login");
          
         }
@@ -82,14 +75,17 @@ public class requestCheckOutAction extends org.apache.struts.action.Action {
 
 
 
-
+  System.out.println(">>>>>>>>>>>>>>>>>");
 
 
 
                  List<CirOpacRequest> check1 = (List<CirOpacRequest>)CirRequestfromOpacDAO.checkDuplicateRequest(libId, sublibId, memId, docId);
-                if(check1.isEmpty()){
+
+              
+                 if(check1.isEmpty()){
                 
                 boolean flag = CirRequestfromOpacDAO.SendCheckOutRequest(memId, libId, sublibId, docId);
+               
                 if(flag){
                     request.setAttribute("msg", "Your Request is successfully send");
                     return mapping.findForward("success");

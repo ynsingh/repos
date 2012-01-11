@@ -18,7 +18,8 @@ public class BookCategoryDAO {
 
 public static BookCategory getMemid(String library_id,String memtype,String sub_memtype,String book_type) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
+        BookCategory obj=null;
+        
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM BookCategory WHERE id.libraryId =:library_id and id.emptypeId= :memtype and id.subEmptypeId=:sub_memtype and id.bookType=:book_type");
@@ -26,12 +27,16 @@ public static BookCategory getMemid(String library_id,String memtype,String sub_
             query.setString("memtype",memtype);
             query.setString("sub_memtype",sub_memtype);
             query.setString("book_type",book_type);
-            return (BookCategory) query.uniqueResult();
+           obj=(BookCategory) query.uniqueResult();
         }
-        finally {
-            session.close();
+        catch(Exception e){
+        e.printStackTrace();
         }
-
+        finally{
+        session.close();
+        }
+        return obj;
+        
 }
 
 }

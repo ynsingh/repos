@@ -32,6 +32,8 @@ public class SublibraryViewAllAction extends org.apache.struts.action.Action {
            
            
               List sublibrary=SubLibraryDAO.searchSubLib(library_id);
+
+              
               session.setAttribute("sublibrary", sublibrary);
               return mapping.findForward("success");
           

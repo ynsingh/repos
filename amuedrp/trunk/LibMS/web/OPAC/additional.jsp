@@ -20,21 +20,7 @@ body
 </style>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
-<style type="text/css">
-a:active
-{
-   color: #0000FF;
-}
-.rows          { background-color: white;border: solid 1px blue; }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold;border: solid 1px blue; }
-     .alternaterows { background-color: #efefef; }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-family:Tahoma;font-size: 12px;font-weight: bold;text-decoration: none;padding-left: 10px; }
 
-     .datagrid      {  font-family: arial; font-size: 9pt;
-	    font-weight: normal;}
-     .item{ padding-left: 10px;}
-
-</style>
 
 <%!
     Locale locale=null;
@@ -348,34 +334,34 @@ else{
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
 </head>
-<body onload="checkboxClickHandler();search();">
+<body onload="checkboxClickHandler();search();"  style="margin:0px 0px 0px 0px 0px;background-color:#e0e8f5;">
     
     <html:form styleId="F1" method="post" action="/OPAC/additional" onsubmit="return validate();" acceptCharset="utf-8">
-        <table  align="<%=align%>" dir="<%=rtl%>" width="100%" class="datagrid" style="border:solid 1px #e0e8f5;">
-  <tr class="header"><td  width="100%"align="center" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
+        <table   align="center" dir="<%=rtl%>" width="50%" class="datagrid" style="border:solid 1px black">
+  <tr class="header"><td  width="100%"align="center" dir="<%=rtl%>"  height="28px" align="center" colspan="3">
 	   <%=resource.getString("opac.additional.additionalsearchtext")%>
         </td></tr>
-  <tr dir="<%=rtl%>"><td>
+  <tr dir="<%=rtl%>"><td colspan="3">
     <div id='translControl'>
       <input type="checkbox" id="checkboxId" onclick="javascript:checkboxClickHandler();javascript:DisBox();javascript:languageChangeHandler();">
       <html:hidden property="checkbox" styleId="checkbox" name="AdditionalSearchActionForm"/>
-      <%=resource.getString("cataloguing.catbiblioentry.selectlang")%><select id="languageDropDown" onchange="javascript:languageChangeHandler()"></select>
+      <%=resource.getString("cataloguing.catbiblioentry.selectlang")%><select id="languageDropDown" class="selecthome" onchange="javascript:languageChangeHandler()"></select>
        <html:hidden property="language" styleId="language" name="AdditionalSearchActionForm"/>
     </div>
       </td></tr>
-  <tr style="background-color:#e0e8f5;"><td  dir="<%=rtl%>" >
-          <table>
+  <tr><td  dir="<%=rtl%>" width="50%" valign="top">
+          <table width="100%">
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.author")%></td><td><input type="text" dir="<%=rtl%>" id="TXTAUTHOR"  name="TXTAUTHOR" class="keyboardInput" onfocus="statwords('Enter Author Name Keyword')" onblur="loadHelp()" ></td></tr>
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.title")%></td><td><input dir="<%=rtl%>" type="text" id="TXTTITLE" name="TXTTITLE" class="keyboardInput" onfocus="statwords('Enter Title  Keyword')" onblur="loadHelp()" ></td></tr>
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.subject")%></td><td><input type="text" dir="<%=rtl%>" id="TXTSUBJECT"  name="TXTSUBJECT" class="keyboardInput"  onfocus="statwords('Enter Subject Keyword')" onblur="loadHelp()" ></td></tr>
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.otherfield")%></td><td><input dir="<%=rtl%>" type="text" id="TXTOTHER"  name="TXTOTHER" class="keyboardInput" onfocus="statwords('Enter Other Keyword')" onblur="loadHelp()" ></td></tr>
           </table>
       </td>
-      <td  dir="<%=rtl%>"  align="<%=align%>">
-          <table >
-              <tr><td dir="<%=rtl%>"> <%=resource.getString("opac.additional.connectas1")%> </td><td  valign="top" dir="<%=rtl%>">
+      <td  dir="<%=rtl%>"  align="<%=align%>" valign="top" >
+          <table   width="100%">
+              <tr><td  dir="<%=rtl%>"> <%=resource.getString("opac.additional.connectas1")%> </td><td  valign="top" dir="<%=rtl%>">
 
-         <select name="CMBCONN1" size="1" dir="<%=rtl%>" id="CMBCONN1" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier;font-size:13px;">
+         <select name="CMBCONN1" class="selecthome" size="1" dir="<%=rtl%>" id="CMBCONN1" >
 <option selected value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
 <option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
 <option value="phrase" dir="<%=rtl%>"><%=resource.getString("opac.additional.phrase")%></option>
@@ -383,7 +369,7 @@ else{
      </td>
               </tr>
                <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.connectas2")%> </td><td dir="<%=rtl%>"  valign="top">
-         <select name="CMBCONN2" size="1" id="CMBCONN2" dir="<%=rtl%>" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
+         <select name="CMBCONN2" class="selecthome" size="1" id="CMBCONN2" dir="<%=rtl%>" >
 <option selected value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
 <option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
 <option value="phrase" dir="<%=rtl%>"><%=resource.getString("opac.additional.phrase")%></option>
@@ -391,7 +377,7 @@ else{
      </td>
               </tr>
            <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.connectas3")%></td><td  valign="top">
-          <select name="CMBCONN3" size="1" id="CMBCONN3" dir="<%=rtl%>">
+          <select name="CMBCONN3" class="selecthome" size="1" id="CMBCONN3" dir="<%=rtl%>">
 <option selected value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
 <option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
 <option value="phrase" dir="<%=rtl%>"><%=resource.getString("opac.additional.phrase")%></option>
@@ -399,7 +385,7 @@ else{
      </td>
               </tr>
            <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.connectas4")%> </td><td  valign="top">
-        <select name="CMBCONN4" dir="<%=rtl%>" size="1" id="CMBCONN4" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
+        <select name="CMBCONN4" class="selecthome" dir="<%=rtl%>" size="1" id="CMBCONN4">
 <option selected value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
 <option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
 <option value="phrase" dir="<%=rtl%>"><%=resource.getString("opac.additional.phrase")%></option>
@@ -407,9 +393,9 @@ else{
      </td>
               </tr>
           </table></td></tr>
-  <tr class="header" dir="<%=rtl%>"><td  align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.restrictedby")%></td><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
+  <tr class="header" dir="<%=rtl%>"><td colspan="2" align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.restrictedby")%></td><td align="<%=align%>"  dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
    <tr style="background-color:#e0e8f5;">
-       <td    align="<%=align%>" dir="<%=rtl%>">
+       <td   colspan="2" align="<%=align%>" dir="<%=rtl%>">
            <table   align="<%=align%>" dir="<%=rtl%>">
                <tr>
                    <td  dir="<%=rtl%>">
@@ -417,7 +403,7 @@ else{
                         <tr>   
                             <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%></td>
                             <td dir="<%=rtl%>" align="<%=align%>">
-                                <html:select property="CMBLib" value="<%=lib_id%>"  dir="<%=rtl%>"  tabindex="3"  styleId="CMBLib" onchange="search()">
+                                <html:select styleClass="selecthome" property="CMBLib" value="<%=lib_id%>"  dir="<%=rtl%>"  tabindex="3"  styleId="CMBLib" onchange="search()">
                                      <html:option value="all">All</html:option>
                                         <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
                                   </html:select>
@@ -426,7 +412,7 @@ else{
                         <tr>
                             <td dir="<%=rtl%>"><%=resource.getString("opac.additional.database")%></td>
                             <td>
-                                <select name="CMBDB"  dir="<%=rtl%>" size="1" id="CMBDB">
+                                <select name="CMBDB" class="selecthome" dir="<%=rtl%>" size="1" id="CMBDB">
                                      <option selected value="combined" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.combnd")%></option>
                                      <option value="book" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.books")%></option>
                                      <option value="cd" dir="<%=rtl%>">CDs</option>
@@ -439,7 +425,7 @@ else{
                        <table align="<%=align%>" dir="<%=rtl%>">
                            <tr>
                                <td align="<%=align%>" colspan="3" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>
-                       <html:select property="CMBSUBLib" dir="<%=rtl%>"  value="<%=sublib_id%>" styleId="SubLibary" >
+                       <html:select property="CMBSUBLib" styleClass="selecthome" dir="<%=rtl%>"  value="<%=sublib_id%>" styleId="SubLibary" >
                            <%--<html:option value="all">All</html:option>
                            <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />--%>
                        </html:select>
@@ -449,7 +435,7 @@ else{
                                <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.pubyear")%></td>
                                <td rowspan="4" dir="<%=rtl%>"></td>
                                <td>
-                                   <select name="CMBYR" onChange="f()" dir="<%=rtl%>" size="1" id="CMBYR" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
+                                   <select name="CMBYR" class="selecthome" onChange="f()" dir="<%=rtl%>" size="1" id="CMBYR">
                                     <option selected value="all" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.allyear")%></option>
                                     <option value="between" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.between")%></option>
                                     <option value="upto" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.upto")%></option>
@@ -465,10 +451,10 @@ else{
  </table>
                        </table>
                    </td>
-                     <td>
+                   <td valign="top" align="middle">
                              <table align="<%=align%>" dir="<%=rtl%>">
                            <tr>
-                               <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.field1")%></td><td> <select name="CMBSORT" size="1" dir="<%=rtl%>" id="CMBSORT">
+                               <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.field1")%></td><td> <select class="selecthome" name="CMBSORT" size="1" dir="<%=rtl%>" id="CMBSORT">
 <option  value="mainEntry" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
 <option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
 <option value="isbn10" dir="<%=rtl%>">ISBN</option>
@@ -476,14 +462,21 @@ else{
 </select></td>
                            </tr></table>
        </td>
-               </tr></table>
+               </tr>
+
+               <tr  dir="<%=rtl%>"><td  align="<%=align%>" dir="<%=rtl%>" colspan="3">
+                   <input type="submit" class="buttonhome" id="Button1"  dir="<%=rtl%>" name="" value="<%=resource.getString("opac.simplesearch.find")%>">
+<input type="reset" id="Button2"  class="buttonhome" dir="<%=rtl%>" name="" value="<%=resource.getString("opac.browse.clear")%>">
+                   </td></tr>
+
+
+           </table>
        </td>
    </tr>
   <tr dir="<%=rtl%>"><td  dir="<%=rtl%>">
-<input type="submit" id="Button1" class="btn" dir="<%=rtl%>" name="" value="<%=resource.getString("opac.simplesearch.find")%>">
-<input type="reset" id="Button2" class="btn" dir="<%=rtl%>" name="" value="<%=resource.getString("opac.browse.clear")%>">
+
       </td></tr>
-      <tr class="header"  dir="<%=rtl%>">
+   <%--   <tr class="header"  dir="<%=rtl%>">
                                <td colspan="2" dir="<%=rtl%>">
                             <a name="tips" dir="<%=rtl%>">&nbsp;<%=resource.getString("opac.simplesearch.searchtip")%></a>
                             <table class="datagrid" dir="<%=rtl%>" style="background-color:#e0e8f5;color:black" halign="right" border="0" cellpadding="2" cellspacing="0" width="100%" frame="hspaces" height="38" rules="rows">
@@ -582,7 +575,7 @@ else{
     		<%=resource.getString("opac.additional.t2")%>
     	</td>
    </tr></tbody></table>
-                               </td></tr>
+                               </td></tr>--%>
        </table>
 </html:form>
 </body>

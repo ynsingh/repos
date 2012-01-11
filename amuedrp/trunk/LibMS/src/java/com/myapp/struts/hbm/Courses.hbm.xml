@@ -18,11 +18,7 @@
                 <column name="faculty_id" length="20" />
             </key-property>
         </composite-id>
-        <many-to-one name="department" class="com.myapp.struts.hbm.Department" update="false" insert="false" fetch="select">
-            <column name="library_id" length="20" not-null="true" />
-            <column name="faculty_id" length="20" not-null="true" />
-            <column name="dept_id" length="20" not-null="true" />
-        </many-to-one>
+       
         <many-to-one name="library" class="com.myapp.struts.hbm.Library" update="false" insert="false" fetch="select">
             <column name="library_id" length="20" not-null="true" />
         </many-to-one>

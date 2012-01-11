@@ -6,27 +6,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*,java.io.*,java.net.*"%>
 <html><head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="Faraz Hasan" content="MCA,AMU">
+
 <title>Search by Accession Number...</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
-<style type="text/css">
-body
-{
-   background-color: #FFFFFF;
-   color: #000000;
-}
-th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white;border: solid 1px blue; }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold;border: solid 1px blue; }
-     .alternaterows { background-color: #efefef; }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold;text-decoration: none;padding-left: 10px; }
-
-     .datagrid      {  font-family: arial; font-size: 9pt;
-	    font-weight: normal;}
-     .item{ padding-left: 10px;}
-</style>
 <script language="javascript" type="text/javascript">
 /*
 * Returns an new XMLHttpRequest object, or false if the browser
@@ -145,13 +128,7 @@ newOpt.text = ndValue1;
 
 </script>
 <script language="javascript">
-function fun()
-{
-document.Form1.action="/accession.do";
-document.Form1.method="post";
-document.Form1.target="f1";
-document.Form1.submit();
-}
+
 function funcSearch()
 {
     document.Form1.action="accession.do";
@@ -192,15 +169,15 @@ session.setAttribute("page_name", "accessionno");
 
 
 
-    </head><body onload="search();">
+    </head><body style="background-color:#e0e8f5;margin: 0px 0px 0px 0px" onload="search();">
   
 
 
     <html:form  method="post" action="/OPAC/accession" target="f1" styleId="Form1" >
-        <table align="<%=align%>" dir="<%=rtl%>" width="1200x" class="datagrid" height="400px"  style="border:solid 1px #e0e8f5;" >
+        <table align="center" dir="<%=rtl%>" width="80%" class="datagrid" height="400px"  style="border:solid 1px black;" >
 
 
-  <tr class="header"><td  width="800px" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
+  <tr class="header"><td  width="80%" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
 
 
 		<%=resource.getString("opac.accessionno.accessionno")%>
@@ -211,11 +188,17 @@ session.setAttribute("page_name", "accessionno");
         </td></tr>
    <tr style="background-color:#e0e8f5;"><td width="800px" rowspan="2" dir="<%=rtl%>">
           <table>
-              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.accessionno.enteraccessionno")%></td><td>
+              <tr><td dir="<%=rtl%>" valign="top"><%=resource.getString("opac.accessionno.enteraccessionno")%><br/>
+                </td><td valign="top">
                       <input id="TXTKEY" name="TXTKEY" dir="<%=rtl%>" type="text" onfocus="statwords('Enter Accession Number')" onblur="loadHelp()">
                      *Case Sensentive
 <input id="TXTPAGE" value="accessionno" name="TXTPAGE" type="hidden">
 
+<input type="submit" id="Button1" name="go" dir="<%=rtl%>" value="<%=resource.getString("opac.accessionno.go")%>" class="buttonhome" />
+
+<input type="reset" id="Button2" name="" value="<%=resource.getString("opac.browse.clear")%>" class="buttonhome">
+
+  
 <td align="<%=align%>" dir="<%=rtl%>">
 
                   
@@ -234,43 +217,25 @@ session.setAttribute("page_name", "accessionno");
 
     </tr>
     <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
-          <td    align="<%=align%>" dir="<%=rtl%>">
-          <table>
+          <td    align="<%=align%>" dir="<%=rtl%>" style="border: solid 1px black;">
+              <table >
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.accessionno.library")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-<html:select property="CMBLib" dir="<%=rtl%>" tabindex="3"  value="<%=lib_id%>" styleId="CMBLib" onchange="search()">
+                      <html:select property="CMBLib" dir="<%=rtl%>" tabindex="3" styleClass="selecthome" value="<%=lib_id%>" styleId="CMBLib" onchange="search()">
     <html:option value="all">All</html:option>
     <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
  </html:select>
 
      </td></tr><tr><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <html:select property="CMBSUBLib"  dir="<%=rtl%>" value="<%=sublib_id%>"  styleId="SubLibrary" >
+                      <html:select property="CMBSUBLib" styleClass="selecthome" dir="<%=rtl%>" value="<%=sublib_id%>"  styleId="SubLibrary" >
                            </html:select></td>
 
 
               </tr></table></td>
 
-    </tr>
-
-    <tr><td>
-
-
-<input type="submit" id="Button1" name="go" dir="<%=rtl%>" value="<%=resource.getString("opac.accessionno.go")%>" class="btn" />
-
-<input type="reset" id="Button2" name="" value="<%=resource.getString("opac.browse.clear")%>" class="btn">
-
-
-<script>
-    function back()
-    {
-        window.location="<%=request.getContextPath()%>/OPAC/OPACmain.jsp";
-
-    }
-    </script>
-      </td></tr>
- <tr style="background-color:#e0e8f5;"><td dir="<%=rtl%>"  height="400px" valign="top" colspan="2" >
-
-             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="400px" width="1200px" scrolling="no"  id="f1"></IFRAME>
+    <tr ><td dir="<%=rtl%>"  height="500px" valign="top" colspan="2" >
+<hr/>
+             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="100%" width="100%" scrolling="no"  id="f1"></IFRAME>
 
 
       </td></tr>

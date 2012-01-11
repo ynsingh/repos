@@ -6,6 +6,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib uri="/WEB-INF/struts-layout.tld" prefix="layout" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
@@ -23,18 +24,20 @@
     </head>
     <script type="text/javascript"  >
         function vcheck(){
-        var str=document.getElementById("title").value;
+
+        var str=document.getElementsById("title").value;
+       alert(str);
         var str1=document.getElementById("isbn").value;
 
-alert("hi")
-         if (str ==null||str==""||str.search(/[^a-zA-Z \-]/g) != -1 ) {
-            alert("Special Symbols, null And digits Are Not Allowed in TITLE OF BOOK!");
 
-            return false;
-        }
+     // //   if (str.value=="") {
+        //    alert("Special Symbols, null And digits Are Not Allowed in TITLE OF BOOK!");
 
-         if (str1 ==null||str1==""||str1.search(/[^a-zA-Z \-]/g) == -1 ) {
-            alert("ISBN CONTAINS ONLY DIGITS !");
+         //   return false;
+       // }
+
+         if (str1=="") {
+            alert("ISBN Cann't be Blank !");
 
             return false;
         }
@@ -50,15 +53,19 @@ alert("hi")
         
         <table border="1" cellspacing="0"  class="table" width="500"  style="position: absolute; top: 20%; left: 20%" >
             
-            <html:form action="/biblio" method="post" onsubmit="return vcheck(); " >
+            <html:form action="/biblio" method="post">
                 <tr><td colspan="2" align="center" class="headerStyle" bgcolor="#E0E8F5" height="30px;" ><b>Machine Readable Cataloging</b></td></tr>
                 <tr><td>
                 <table border="0" cellspacing="8" cellpadding="1" align="center">
                 <tr><td width="60"></td></tr>
-                <tr><td width="60">Title</td></tr>
-                <tr><td width="60"><input type="text" value="" name="title"/></td></tr>
-                <tr><td width="60">ISBN </td></tr>
-                <tr><td width="60"><input type="text" value="" name="isbn"/></td></tr>
+
+                <tr><td width="60">
+
+<layout:suggest suggestAction="/getTitleSuggestions"   isRequired="false"  key="*Title" styleId="title" property="title" suggestCount="8"/>
+                    </td>
+                </tr>
+                <tr></tr>
+<!--                <tr><td width="60">*ISBN </td><td width="60"><input type="text" value="" id="isbn" name="isbn"/></td></tr>-->
                 <tr><td width="60"></td></tr>
 
                 </table></td>
@@ -77,16 +84,21 @@ alert("hi")
                   out.println(request.getAttribute("msg"));
 
         }
-        %></font></td></tr>
-        </table>
-        
-                  <%  if(request.getAttribute("del")!=null){
+        %>
+                               
+                               
+                               </font>
+        <p class="mess"> 
+                            <%  if(request.getAttribute("del")!=null){
                         out.println(request.getAttribute("del"));
                         %>
 
-<!--                        alert(""+<%--=request.getAttribute("del") --%>);-->
-                <% }
-        else{}
-                %>
+        
+                <% } %>
+</p>
+                           </td></tr>
+        </table>
+        
+                 
     </body>
 </html>

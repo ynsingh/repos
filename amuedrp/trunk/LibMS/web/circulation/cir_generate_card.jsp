@@ -36,7 +36,7 @@ locale1=(String)session.getAttribute("locale");
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-<%if(msg!=null){%><script>alert("<%=msg%>")</script><%}%>
+
 
 <html>
 <head>
@@ -79,12 +79,12 @@ locale1=(String)session.getAttribute("locale");
                             <html:text property="TXTMEMID" value="" /><br/>
                          
 
-                        </td><td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn"  id="button1"  value="Card" onclick="return Register();" /></td></tr>
-                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="button2"  value="" class="btn" onclick="return View();"  /></td></tr>
-                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="button3" class="btn"  value="" onclick="return Update();"  /></td></tr>
+                        </td><td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn2width"   id="button1"  value="Generate Card" onclick="return Register('Generate Card');" /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="button2" class="btn2width"  value="Lost Card" onclick="return Register('Lost Card');"  /></td></tr>
+                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="button3" class="btn2width"  value="Duplicate Card" onclick="return Register('Duplicate Card');"  /></td></tr>
 
- <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="button4" value="" class="btn" onclick="return Delete();" /></td></tr>
- <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="button" id="button5"  value="<%=resource.getString("circulation.cir_member_reg.back")%>" class="btn" onclick="return quit()"/></td></tr>
+ 
+ <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="button" id="button5"  value="<%=resource.getString("circulation.cir_member_reg.back")%>" class="btn2width" onclick="return quit()"/></td></tr>
 
 
 
@@ -136,9 +136,9 @@ locale1=(String)session.getAttribute("locale");
 <script language="javascript" type="text/javascript">
 
 
- function Register()
+ function Register(x)
 {
-    var buttonvalue="Card";
+    var buttonvalue=x;
     document.getElementById("button").setAttribute("value", buttonvalue);
     return true;
 }

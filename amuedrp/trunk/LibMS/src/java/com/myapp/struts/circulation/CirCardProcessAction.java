@@ -5,7 +5,7 @@
 
 package com.myapp.struts.circulation;
 
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
 import com.myapp.struts.hbm.*;
 import java.awt.Color;
 import java.io.*;
@@ -48,6 +48,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.HumanReadablePlacement;
+import com.myapp.struts.utility.DateCalculation;
 
 /**
  *
@@ -88,11 +89,14 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         course_id=cirmemobj.getCourseId();
         dept_id=cirmemobj.getDeptId();
         faculty_id=cirmemobj.getFacultyId();
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+course_id);
+    //    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+course_id);
         CirMemberDetail memobj=CirculationDAO.searchCirMemDetails(library_id, memid);
-        Courses course=CirculationDAO.LoadCourseName(library_id, course_id, dept_id, faculty_id);
-        course_name=course.getCourseName();
+        Courses course=null;
+        if(faculty_id!=null && dept_id!=null & course_id!=null)
+        { course=CirculationDAO.LoadCourseName(library_id, course_id, dept_id, faculty_id);
 
+        course_name=course.getCourseName();
+        }
         String path = servlet.getServletContext().getRealPath("/");
 
 
@@ -778,7 +782,14 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         try
         {
           System.out.println("Compiling report...");
+           String os=(String)System.getProperty("os.name");
+   System.out.println("OS----------->"+os);
+   if(os.startsWith("Linux"))
+   {
           JasperCompileManager.compileReportToFile(jasperDesign,path + "/membercard2.jasper");
+   }else{
+          JasperCompileManager.compileReportToFile(jasperDesign,path + "\\membercard2.jasper");
+   }
           System.out.println("Done!");
 
 
@@ -799,15 +810,29 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
 //          map.put("add2",checkbox7);
 
           System.out.println("Filling report...");
+           if(os.startsWith("Linux"))
+   {
           JasperFillManager.fillReportToFile(path+"/membercard2.jasper",map, dataSource);
+           }else{
+            JasperFillManager.fillReportToFile(path+"\\membercard2.jasper",map, dataSource);
+           }
           System.out.println("Done!");
-
-
-          File file = new File(path + "/" +"/membercard2.jrprint");
+File file;
+           if(os.startsWith("Linux"))
+   {
+          file = new File(path + "/" +"/membercard2.jrprint");
+           }else{
+          file = new File(path + "\\" +"\\membercard2.jrprint");
+           }
           JasperPrint jasperPrint = (JasperPrint)JRLoader.loadObject(file);
           JRPdfExporter pdfExporter = new JRPdfExporter();
           pdfExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+     if(os.startsWith("Linux"))
+   {
 	  pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,path + "/" + "membercard2.pdf");
+     }else{
+       pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,path + "\\" + "membercard2.pdf");
+     }
 	  System.out.println("Exporting report...");
           pdfExporter.exportReport();
           System.out.println("Done!");
@@ -815,6 +840,12 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
            exporter = new JRHtmlExporter();
            JasperExportManager.exportReportToPdfStream(jasperPrint, ouputStream);
 
+
+
+
+           cirmemobj.setCardStatus("Issued");
+           cirmemobj.setCardIssueDate(DateCalculation.now());
+           CirculationDAO.update2(cirmemobj);
 
 
 

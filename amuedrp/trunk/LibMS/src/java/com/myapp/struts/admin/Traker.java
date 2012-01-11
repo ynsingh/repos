@@ -35,6 +35,7 @@ public class Traker {
  ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
 String t="";
+if(id!=null){
 int x=Integer.parseInt(id);
 
 switch(x){
@@ -963,9 +964,13 @@ switch(x){
       break;
 
 
+
 }
+
+}
+ if(id!=null)
 return t;
-}
-
-
+ else
+     return "";
+    }
 }

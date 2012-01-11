@@ -5,11 +5,6 @@
 
 package com.myapp.struts.marc;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
 
 /**
  *
@@ -28,6 +23,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn2101(Character in2101) {
+       
         this.in2101 = in2101;
     }
 
@@ -36,6 +32,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn2102(Character in2102) {
+       
         this.in2102 = in2102;
     }
 
@@ -44,14 +41,18 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn2451(Character in2451) {
+
+
         this.in2451 = in2451;
     }
 
     public Character getIn2452() {
+         if(in2452==null) return null;
         return in2452;
     }
 
     public void setIn2452(Character in2452) {
+        
         this.in2452 = in2452;
     }
 
@@ -60,6 +61,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn2501(Character in2501) {
+        
         this.in2501 = in2501;
     }
 
@@ -68,6 +70,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn2502(Character in2502) {
+        
         this.in2502 = in2502;
     }
 
@@ -76,6 +79,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn2561(Character in2561) {
+        
         this.in2561 = in2561;
     }
 
@@ -84,6 +88,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn2562(Character in2562) {
+        
         this.in2562 = in2562;
     }
 
@@ -92,6 +97,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn2601(Character in2601) {
+        
         this.in2601 = in2601;
     }
 
@@ -100,6 +106,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn2602(Character in2602) {
+        
         this.in2602 = in2602;
     }
 
@@ -108,6 +115,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn2631(Character in2631) {
+        
         this.in2631 = in2631;
     }
 
@@ -116,6 +124,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setIn2632(Character in2632) {
+        
         this.in2632 = in2632;
     }
 
@@ -124,6 +133,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ2102(String z2102) {
+        
         this.z2102 = z2102;
     }
 
@@ -132,6 +142,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ210a(String z210a) {
+        
         this.z210a = z210a;
     }
 
@@ -140,6 +151,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ210b(String z210b) {
+        
         this.z210b = z210b;
     }
 
@@ -148,6 +160,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ245a(String z245a) {
+        
         this.z245a = z245a;
     }
 
@@ -156,6 +169,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ245b(String z245b) {
+        
         this.z245b = z245b;
     }
 
@@ -164,6 +178,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ245c(String z245c) {
+        
         this.z245c = z245c;
     }
 
@@ -172,6 +187,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ245k(String z245k) {
+        
         this.z245k = z245k;
     }
 
@@ -180,6 +196,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ245n(String z245n) {
+        
         this.z245n = z245n;
     }
 
@@ -188,6 +205,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ250a(String z250a) {
+        
         this.z250a = z250a;
     }
 
@@ -196,6 +214,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ250b(String z250b) {
+        
         this.z250b = z250b;
     }
 
@@ -204,6 +223,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ256a(String z256a) {
+        
         this.z256a = z256a;
     }
 
@@ -212,6 +232,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ260a(String z260a) {
+        
         this.z260a = z260a;
     }
 
@@ -220,6 +241,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ260b(String z260b) {
+        
         this.z260b = z260b;
     }
 
@@ -228,6 +250,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ260c(String z260c) {
+        
         this.z260c = z260c;
     }
 
@@ -236,6 +259,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ260e(String z260e) {
+        
         this.z260e = z260e;
     }
 
@@ -244,6 +268,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ260f(String z260f) {
+        
         this.z260f = z260f;
     }
 
@@ -252,6 +277,7 @@ public class CatActionForm2 extends org.apache.struts.action.ActionForm {
     }
 
     public void setZ263a(String z263a) {
+        
         this.z263a = z263a;
     }
 

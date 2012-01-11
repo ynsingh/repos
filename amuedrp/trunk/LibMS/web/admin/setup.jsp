@@ -12,10 +12,10 @@ String sublibrary_id=(String)session.getAttribute("sublibrary_name");
     String user_name=(String) request.getAttribute("user_name");
     String staff_id=(String) request.getAttribute("staff_id");
     String staff_name=(String) request.getAttribute("staff_name");
-    String location=(String)session.getAttribute("location");
-    String member=(String)session.getAttribute("member");
-    String submember=(String)session.getAttribute("submember");
-    String doc=(String)session.getAttribute("document");
+    String location=(String)session.getAttribute("location1");
+    String member=(String)session.getAttribute("member1");
+    String submember=(String)session.getAttribute("submember1");
+    String doc=(String)session.getAttribute("document1");
 
 
             request.setAttribute("login_id", login_id);

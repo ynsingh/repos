@@ -5,12 +5,6 @@
 
 package com.myapp.struts.circulation;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-
 /**
  *
  * @author edrp01
@@ -21,6 +15,8 @@ public class CirViewAll1ActionForm extends org.apache.struts.action.ActionForm {
     
     
     private String TXTTITLE;
+
+    
     private String CMBSORT;
     private String CMBLib;
     private String CMBSUBLib;

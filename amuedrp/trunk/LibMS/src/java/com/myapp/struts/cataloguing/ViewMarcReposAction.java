@@ -55,7 +55,7 @@ public class ViewMarcReposAction extends org.apache.struts.action.Action {
         for(int g=0;g<rst.size();g++){
         bib=new BibliographicDetails();
         bibid=new BibliographicDetailsId();
-         bib_id=rst.get(g);
+        bib_id=rst.get(g);
         bibid.setBiblioId(bib_id);
         bibid.setLibraryId(library_id);
         bibid.setSublibraryId(sub_library_id);

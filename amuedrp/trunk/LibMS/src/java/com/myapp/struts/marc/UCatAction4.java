@@ -12,6 +12,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -73,12 +74,21 @@ public class UCatAction4 extends org.apache.struts.action.Action {
             biblioid.setLibraryId(library_id);
             biblio.setSublibraryId(sub_library_id);
             biblioid.setMarctag("490");
+            if(caf4.getIn4901()!=null)
+            if(StringUtils.isNotBlank(in4901.toString())&&StringUtils.isNotEmpty(in4901.toString()))
             biblio.setIndicator1(in4901);
+           if(caf4.getIn4902()!=null)
+            if(StringUtils.isNotBlank(in4902.toString())&&StringUtils.isNotEmpty(in4902.toString()))
             biblio.setIndicator2(in4902);
-                biblio.set$a(z490a);
+           if(StringUtils.isNotBlank(z490a)&&StringUtils.isNotEmpty(z490a))
+            biblio.set$a(z490a);
+           if(StringUtils.isNotBlank(z490v)&&StringUtils.isNotEmpty(z490v))
                 biblio.set$v(z490v);
-                biblio.set$x(z490x);
-                biblio.set$3(z4903);
+           if(StringUtils.isNotBlank(z490x)&&StringUtils.isNotEmpty(z490x))
+            biblio.set$x(z490x);
+          if(StringUtils.isNotBlank(z4903)&&StringUtils.isNotEmpty(z4903))
+            biblio.set$3(z4903);
+
 
               biblioid.setBibId(bibid);
                    biblio.setId(biblioid);
@@ -90,10 +100,11 @@ if(hm1.containsKey("19")){
  hm1.put("19", biblio);
 
 String bib_id=(String)session.getAttribute("biblio_id") ;
+   List<Biblio> biblist= marchib.getdataforupdate(bib_id, library_id, sub_library_id);
         //code for mapping forwards......
          if(t.equals("0"))
         {
-             List<Biblio> biblist= marchib.getdataforupdate1(bib_id,"082");
+         
 System.out.println("BBBBGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+biblist.size());
 
             for(int i=0;biblist.size()>i;i++)
@@ -125,7 +136,7 @@ System.out.println("BBBBGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+biblist.size());
         }
         else if(t.equals("1"))
         {
-                List<Biblio> biblist= marchib.getdataforupdate2(bib_id);
+   
 System.out.println("1111111111111111111111   "+biblist.size());
 
             for(int i=0;biblist.size()>i;i++)
@@ -148,7 +159,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
         }
         else if(t.equals("2"))
         {
-            List<Biblio> biblist = marchib.getdataforupdate3(bib_id);
+    
                 System.out.println("22222222222222    "+biblist.size());
                 for(int i=0;biblist.size()>i;i++)
             {
@@ -181,7 +192,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
         }
         else if(t.equals("3"))
         {
-             List<Biblio> biblist = marchib.getdataforupdate4(bib_id);
+       
                 System.out.println("3333333333333    "+biblist.size());
                 for(int i=0;biblist.size()>i;i++)
             {
@@ -203,7 +214,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
         }
         else if(t.equals("5"))
         {
-                 List<Biblio> biblist = marchib.getdataforupdate5(bib_id);
+    
                 System.out.println("555555555555    "+biblist.size());
                 for(int i=0;biblist.size()>i;i++)
             {
@@ -236,7 +247,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
         }
         else if(t.equals("6"))
         {
-                 List<Biblio> biblist = marchib.getdataforupdate6(bib_id);
+     
                 System.out.println("66666666666666    "+biblist.size());
                 for(int i=0;biblist.size()>i;i++)
             {
@@ -255,7 +266,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
 
         else if(t.equals("7"))
         {
-                List<Biblio> biblist = marchib.getdataforupdate7(bib_id);
+       
                         System.out.println("77777777777    "+biblist.size());
                         for(int i=0;biblist.size()>i;i++)
                     {
@@ -273,7 +284,7 @@ System.out.println("1111111111111111111111   "+biblist.size());
 
         else if(t.equals("8"))
         {
-                List<Biblio> biblist = marchib.getdataforupdate8(bib_id);
+
                         System.out.println("888888888888    "+biblist.size());
                         for(int i=0;biblist.size()>i;i++)
                          {
@@ -310,8 +321,41 @@ System.out.println("1111111111111111111111   "+biblist.size());
         {
                 return mapping.findForward("forward9");
         }
+ else if(t.equals("10"))
+        {
+ 
+System.out.println("1111111111111111111111   "+biblist.size());
 
-            List<Biblio> biblist = marchib.getdataforupdate44(bib_id);
+            for(int i=0;biblist.size()>i;i++)
+            {
+                   if(biblist.get(i).getId().getMarctag().equals("Leader")){
+
+                     request.setAttribute("Leader", biblist.get(i));
+                    }
+                   if(biblist.get(i).getId().getMarctag().equals("001")){
+
+                     request.setAttribute("001", biblist.get(i));
+                    }
+                   if(biblist.get(i).getId().getMarctag().equals("003")){
+                      // System.out.println("^^^^^^^^^^^^^ "+biblist.get(i).get$a());
+                     request.setAttribute("003", biblist.get(i));
+                    }
+                 if(biblist.get(i).getId().getMarctag().equals("005")){
+                      // System.out.println("^^^^^^^^^^^^^ "+biblist.get(i).get$a());
+                     request.setAttribute("005", biblist.get(i));
+                    }
+                      if(biblist.get(i).getId().getMarctag().equals("007")){
+                      // System.out.println("^^^^^^^^^^^^^ "+biblist.get(i).get$a());
+                     request.setAttribute("007", biblist.get(i));
+                    }
+                     if(biblist.get(i).getId().getMarctag().equals("008")){
+                      // System.out.println("^^^^^^^^^^^^^ "+biblist.get(i).get$a());
+                     request.setAttribute("008", biblist.get(i));
+                    }
+            }
+            return mapping.findForward("forward10");
+        }
+
                 System.out.println("44444444444    "+biblist.size());
                 for(int i=0;biblist.size()>i;i++)
             {

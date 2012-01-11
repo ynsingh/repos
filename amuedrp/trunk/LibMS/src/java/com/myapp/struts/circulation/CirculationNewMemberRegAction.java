@@ -9,19 +9,16 @@ package com.myapp.struts.circulation;
 
 
 import com.myapp.struts.systemsetupDAO.*;
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
 import javax.servlet.http.*;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.hbm.*;
-import java.io.File;
-import java.io.FileReader;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javax.imageio.ImageReader;
 import org.apache.struts.upload.FormFile;
 
 
@@ -127,7 +124,12 @@ public class CirculationNewMemberRegAction extends org.apache.struts.action.Acti
             cmd.setPin2(cmdf.getTXTPIN2());
             cmd.setFax(cmdf.getTXTFAX());
             cmd.setCreatedBy((String)session1.getAttribute("sublibrary_id"));
-
+            System.out.println(cmdf.getTempreg()+".........................");
+            if(cmdf.getTempreg()!=null){
+            cmd.setCollege(cmdf.getCollege());
+            cmd.setCollAddress(cmdf.getColladd());
+            cmd.setTempStatus("Y");
+            }
 
          if (cmdf.getImg()!=null)
             cmd.setImage(cmdf.getImg().getFileData());

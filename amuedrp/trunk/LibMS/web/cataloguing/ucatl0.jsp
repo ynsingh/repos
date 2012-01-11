@@ -4,7 +4,7 @@
     Author     : zeeshan
 --%>
 
-<%@page import="com.myapp.struts.hbm.Biblio"%>
+<%@page import="com.myapp.struts.hbm.Biblio,java.util.HashMap"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
@@ -95,7 +95,7 @@ description[17]='Number of the edition of the Dewey classification schedules.ex-
 </script>
 
 </head>
-
+<link rel="StyleSheet" href="<%=request.getContextPath()%>/css/page.css"/>
     <body>
         <layer name="nsviewer" bgcolor="#FDF5E6" style="border-width:thin;z-index:1"></layer>
 <script type="text/javascript">
@@ -117,7 +117,7 @@ function func1(t){
     }
 
 function func2(t){
-    alert(t);
+   // alert(t);
     if(t.value!=0){
 
         document.getElementById("ucat0").submit();
@@ -130,6 +130,7 @@ function func2(t){
 
 <div id="ddtabs3" class="solidblockmenu">
 <ul>
+    <li><a href="<%=request.getContextPath()%>/cataloguing/updatecatlcontrol.jsp" onclick="func1(10)"  rel="sb10">Control Fields</a></li>
     <li><a href="<%=request.getContextPath()%>/cataloguing/ucatl0.jsp" onclick="func1(0)"  rel="sb0">0 (01X-09X)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/ucatl1.jsp" onclick="func1(1)" rel="sb1">1 (1XX)</a></li>
 <li><a href="<%=request.getContextPath()%>/cataloguing/ucatl2.jsp" onclick="func1(2)" rel="sb2">2 (20X-28X)</a></li>
@@ -200,12 +201,37 @@ Go BACK to Manage MARC Bibliography.
 </DIV>
 
                                       <!-- Marc entries Starts from here . -->
-  <%! Biblio marc20=new Biblio();
+  <%! HashMap hm1 = new HashMap();
+  Biblio marc20=new Biblio();
   Biblio marc22=new Biblio();
   Biblio marc41=new Biblio();
   Biblio marc43=new Biblio();
   Biblio marc82 =new Biblio();   %>
   <%
+  
+  String msg1=(String)request.getAttribute("msg1");
+  
+   hm1 = (HashMap)session.getAttribute("hsmp");
+           System.out.println(hm1.isEmpty());
+  //if(!hm1.isEmpty()){
+
+  if(hm1.containsKey("1")){
+       marc20=(Biblio)hm1.get("1");
+        }
+   if(hm1.containsKey("2")){
+       marc22=(Biblio)hm1.get("2");
+        }
+   if(hm1.containsKey("3")){
+       marc41=(Biblio)hm1.get("3");
+        }
+   if(hm1.containsKey("4")){
+       marc43=(Biblio)hm1.get("4");
+        }
+   if(hm1.containsKey("5")){
+       marc82=(Biblio)hm1.get("5");
+        }
+  // }else{
+       System.out.println(request.getAttribute("020")+".......................");
      if(request.getAttribute("020")!=null){
              marc20=(Biblio)request.getAttribute("020");}
      if(request.getAttribute("022")!=null){
@@ -216,92 +242,93 @@ Go BACK to Manage MARC Bibliography.
              marc43=(Biblio)request.getAttribute("043");}
       if(request.getAttribute("082")!=null){
              marc82=(Biblio)request.getAttribute("082");}
+ //  }
 
-     %>
+%>
 
-<div style="position:absolute;left:80%;top:18%;">
-                                         <table>
-                                     <tr><td></td><td align="right"><a href="<%=request.getContextPath() %>/marccommit.do"><input type="submit" value="Commit Data" /></a></td></tr>
-                                     </table>
-                                     </div>
 <div style="position:absolute;left:5%;top:25%;width:90%;border:1px #C0C0C0 solid;background: #f5fffa;">
 <html:form styleId="ucat0" action="/ucatl0.do" method="post">
 <table width="100%"  cellspacing="5"  >
     <tr><input type="hidden" value="" name="zclick" id="zclick" /></tr><tr>
-<td>International Standard Book Number (020) : <a href="javascript:animatedcollapse.toggle('020')">ind</a> <div id="020" style="width: 150px; display:none" >ind1<input type="text" value="<%=marc20.getIndicator1() %>" name="in0201" maxlength="1" size="1" /> ind2<input type="text" value="<%=marc20.getIndicator2() %>" name="in0202"  maxlength="1" size="1"  /></div></td>
+<td>International Standard Book Number (020) : <a href="javascript:animatedcollapse.toggle('020')">ind</a> <div id="020" style="width: 150px; display:none" >ind1<input type="text" value="<%=marc20.getIndicator1()==null?"":marc20.getIndicator1()%>" name="in0201" maxlength="1" size="1" /> ind2<input type="text" value="<%=marc20.getIndicator2()==null?"":marc20.getIndicator2()%>" name="in0202"  maxlength="1" size="1"  /></div></td>
 <td>
 
-$a ISBN (NR) <input type="text" value="<%=marc20.get$a() %>" name="z020" id="020" onFocus="setObj(description[1],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+$a ISBN (NR) <input type="text" value="<%=marc20.get$a()==null?"":marc20.get$a()%>" name="z020" id="020" onFocus="setObj(description[1],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('020c')">$c </a>
 
 <div id="020c" style=" background: #FDF5E6; display:none">
-Term of Availability(NR) <input type="text" value="<%=marc20.get$c() %>" name="z020c" id="020c" onFocus="setObj(description[2],'override',750,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Term of Availability(NR) <input type="text" value="<%=marc20.get$c()==null?"":marc20.get$c() %>" name="z020c" id="020c" onFocus="setObj(description[2],'override',750,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('020z')">$z </a>
 <div id="020z" style=" background: #FDF5E6; display:none">
-Canceled or Invalid number(R) <input type="text" value="<%=marc20.get$z() %>" name="z020z" id="020z" onFocus="setObj(description[3],'override',750,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Canceled or Invalid number(R) <input type="text" value="<%=marc20.get$z()==null?"":marc20.get$z() %>" name="z020z" id="020z" onFocus="setObj(description[3],'override',750,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 </font>
 </td></tr>
 
 <tr><td colspan="2"><hr width="90%" size="2" color="green"/></td></tr>
 <tr>
-    <td>International Stnadard  Serial Number(022) : <a href="javascript:animatedcollapse.toggle('022')">ind</a> <div id="022" style="width: 150px; display:none" >ind1<input type="text" value="<%=marc22.getIndicator1() %>" name="in0221" maxlength="1" size="1" /> ind2<input type="text" value="#" name="in0222" maxlength="1" size="1" onFocus="setObj(description[4],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+    <td>International Stnadard  Serial Number(022) : <a href="javascript:animatedcollapse.toggle('022')">ind</a> <div id="022" style="width: 150px; display:none" >ind1<input type="text" value="<%=marc22.getIndicator1()==null?"":marc22.getIndicator1() %>" name="in0221" maxlength="1" size="1" /> ind2<input type="text" value="#" name="in0222" maxlength="1" size="1" onFocus="setObj(description[4],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
 <td>
-$a ISSN (NR)<input type="text" value="<%=marc22.get$a() %>" name="z022" id="022" onFocus="setObj(description[5],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+$a ISSN (NR)<input type="text" value="<%=marc22.get$a()==null?"":marc22.get$a()%>" name="z022" id="022" onFocus="setObj(description[5],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('022y')">$y</a>
 <div id="022y" style=" background: #FDF5E6; display:none">
-Incorrect ISSN(R) <input type="text" value="<%=marc22.get$y() %>" name="z022y" id="022y" onFocus="setObj(description[6],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Incorrect ISSN(R) <input type="text" value="<%=marc22.get$y()==null?"":marc22.get$y() %>" name="z022y" id="022y" onFocus="setObj(description[6],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('022z')"> $z</a>
 <div id="022z" style=" background: #FDF5E6; display:none">
-canceled ISSN(R) <input type="text" value="<%=marc22.get$z() %>" name="z022z" id="022z" onFocus="setObj(description[7],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+canceled ISSN(R) <input type="text" value="<%=marc22.get$z()==null?"":marc22.get$z() %>" name="z022z" id="022z" onFocus="setObj(description[7],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 </font>
 </td></tr>
 
 <tr><td colspan="2"><hr width="90%" size="2" color="green"/></td></tr>
-<tr><td>Language Code (NR)(041) : <a href="javascript:animatedcollapse.toggle('041')">ind</a> <div id="041" style="width: 150px; display:none" >ind1<input type="text" value="<%=marc41.getIndicator1() %>" maxlength="1" name="in0411" id="041i2" size="1" /> ind2<input type="text" value="<%=marc41.getIndicator2() %>" maxlength="1" name="in0412" id="041i2" size="1" /></div></td>
+<tr><td>Language Code (NR)(041) : <a href="javascript:animatedcollapse.toggle('041')">ind</a> <div id="041" style="width: 150px; display:none" >ind1<input type="text" value="<%=marc41.getIndicator1()==null?"":marc41.getIndicator1() %>" maxlength="1" name="in0411" id="041i2" size="1" /> ind2<input type="text" value="<%=marc41.getIndicator2()==null?"":marc41.getIndicator2() %>" maxlength="1" name="in0412" id="041i2" size="1" /></div></td>
 <td>
 $a Language code of text/sound track or
-separate title(NR)<input type="text" value="<%=marc41.get$a() %>" name="z041" id="041" onFocus="setObj(description[8],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+separate title(NR)<input type="text" value="<%=marc41.get$a()==null?"":marc41.get$a() %>" name="z041" id="041" onFocus="setObj(description[8],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('041b')">$b</a>
 
 <div id="041b" style=" background: #FDF5E6; display:none">
 Language code of summary or abstract/overprinted
 title or subtitle
-(NR) <input type="text" value="<%=marc41.get$b() %>" name="z041b" id="041b" onFocus="setObj(description[9],'override',750,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+(NR) <input type="text" value="<%=marc41.get$b()==null?"":marc41.get$b() %>" name="z041b" id="041b" onFocus="setObj(description[9],'override',750,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('041d')"> $d</a>
 <div id="041d" style=" background: #FDF5E6; display:none">
-Language code of sung or spoken text (NR) <input type="text" value="<%=marc41.get$d() %>" name="z041d" id="041d" onFocus="setObj(description[10],'override',750,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Language code of sung or spoken text (NR) <input type="text" value="<%=marc41.get$d()==null?"":marc41.get$d() %>" name="z041d" id="041d" onFocus="setObj(description[10],'override',750,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 </font>
 </td></tr>
 
 <tr><td colspan="2"><hr width="90%" size="2" color="green"/></td></tr>
 <tr><td>Geographic Area Code(NR) (043) : <a href="javascript:animatedcollapse.toggle('043')">ind</a> <div id="043" style="width: 150px; display:none" >ind1<input type="text" value="#" name="in0431" maxlength="1"  size="1" onFocus="setObj(description[11],'override',750,30)" onBlur="clearTimeout(openTimer);stopIt()"  /> ind2<input type="text" value="#" name="in0432" id="in0432" maxlength="1" size="1" onFocus="setObj(description[11],'override',750,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
-<td>$a Geographic Area Code(R)<input type="text" value="<%=marc43.get$a() %>" name="z043" id="043" onFocus="setObj(description[12],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+<td>$a Geographic Area Code(R)<input type="text" value="<%=marc43.get$a()==null?"":marc43.get$a() %>" name="z043" id="043" onFocus="setObj(description[12],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </td></tr>
 
 <tr><td colspan="2"><hr width="90%" size="2" color="green"/></td></tr>
 
-<tr><td>Dewey Decimal Classification Number(R)(082) : <a href="javascript:animatedcollapse.toggle('082')">ind</a> <div id="082" style="width: 150px; display:none" >ind1<input type="text" value="<%=marc82.getIndicator1() %>" name="in0821" maxlength="1"  size="1" onFocus="setObj(description[13],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" value="<%=marc82.getIndicator2() %>" name="in0822" maxlength="1" size="1" onFocus="setObj(description[14],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
-<td>$a Classification number(R)<input type="text" value="<%=marc82.get$a() %>" name="z082" id="082" onFocus="setObj(description[15],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()"  />
+<tr><td>Dewey Decimal Classification Number(R)(082) : <a href="javascript:animatedcollapse.toggle('082')">ind</a> <div id="082" style="width: 150px; display:none" >ind1<input type="text" value="<%=marc82.getIndicator1()==null?"":marc82.getIndicator1() %>" name="in0821" maxlength="1"  size="1" onFocus="setObj(description[13],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" value="<%=marc82.getIndicator2()==null?"":marc82.getIndicator2() %>" name="in0822" maxlength="1" size="1" onFocus="setObj(description[14],'override',650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+<td>$a *Classification number(R)<input type="text" value="<%=marc82.get$a()==null?"":marc82.get$a() %>" name="z082" id="082" onFocus="setObj(description[15],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()"  />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('082b')">$b</a>
 <div id="082b" style=" background: #FDF5E6; display:none">
-Item number (NR) <input type="text" value="<%=marc82.get$b() %>" name="z082b" id="082b" onFocus="setObj(description[16],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Item number (NR) <input type="text" value="<%=marc82.get$b()==null?"":marc82.get$b() %>" name="z082b" id="082b" onFocus="setObj(description[16],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 <a href="javascript:animatedcollapse.toggle('0822')"> $2</a>
 <div id="0822" style=" background: #FDF5E6; display:none">
-Edition number (NR) <input type="text" value="<%=marc82.get$2() %>" name="z0822" id="0822" onFocus="setObj(description[17],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" />
+Edition number (NR) <input type="text" value="<%=marc82.get$2()==null?"":marc82.get$2() %>" name="z0822" id="0822" onFocus="setObj(description[17],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 </div>
 </font>
 </td></tr>
+<tr><td><%
+if(msg1!=null)
+       {%>
+       <p class="err"><%=msg1%></p><%}
+%></td></tr>
 </table>
 </html:form>
 </div>

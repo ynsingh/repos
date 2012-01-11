@@ -36,7 +36,7 @@ public class ManageDepartmentAction extends org.apache.struts.action.Action {
    list1=(List)FacultyDAO.searchFaculty(library_id);
    
    
-  if(list1.isEmpty()){
+  if(list1.isEmpty()==true && list1==null){
   String msg="You need to set Faculty";
   request.setAttribute("msg1", msg);
     return mapping.findForward("success"); 

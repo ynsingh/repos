@@ -5,7 +5,7 @@
 
 package com.myapp.struts.systemsetup;
 
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
 import com.myapp.struts.hbm.*;
 
 import com.myapp.struts.systemsetupDAO.*;

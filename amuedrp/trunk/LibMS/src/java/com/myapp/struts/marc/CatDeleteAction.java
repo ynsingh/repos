@@ -35,7 +35,7 @@ public class CatDeleteAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         NewMarcActionForm nmaf= (NewMarcActionForm)form;
-       int tag=nmaf.getTagnumber();
+       int tag[]=nmaf.getTagnumber();
 
        String btn=nmaf.getBtn();
         if(btn.equals("Delete")){

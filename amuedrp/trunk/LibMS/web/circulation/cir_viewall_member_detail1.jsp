@@ -24,22 +24,7 @@
     String rtl="ltr";
     String align="left";
 %>
-<style type="text/css">
-body
-{
-   background-color: #FFFFFF;
-   color: #000000;
-}
-  .rows          { background-color: white;border: solid 1px blue; }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold;border: solid 1px blue; }
-     .alternaterows { background-color: #efefef; }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-family:Tahoma;font-size: 12px;font-weight: bold;text-decoration: none;padding-left: 10px; }
 
-     .datagrid      {  font-family: arial; font-size: 9pt;
-	    font-weight: normal;}
-     .item{ padding-left: 10px;}
-
-</style>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/acquisition/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css" media="screen"/>
 <script type="text/javascript" src="<%=request.getContextPath()%>/acquisition/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js"></script>
@@ -445,6 +430,18 @@ $(document).ready(function()
 
 
 <script language="javascript">
+function check(){
+   
+    if(document.getElementById('reqfromopac')!=null)
+{
+    
+            document.getElementById('status').disabled=false;
+    
+    document.getElementById('reqfromopac').checked=false;
+    document.getElementById('data').innerHTML='Registration Date from';
+
+}
+       }
 function fun()
 {
 search();
@@ -453,22 +450,11 @@ document.getElementById("Form1").method="post";
 document.getElementById("Form1").target="f1";
 document.getElementById("Form1").submit();
 }
-function disableStatus()
-{
 
 
-}
-<%--function print()
-{
-
-    document.getElementById("Form1").action = "<%=request.getContextPath()%>/cir_viewalldetail.do"
-    document.getElementById("Form1").method="post";
-    document.getElementById("Form1").target="";
-    document.getElementById("Form1").submit();
-}--%>
 </script>
     </head>
-    <body >
+    <body onload="check()">
 
     <html:form action="/cir_viewalldetail"  styleId="Form1" target="f1"  acceptCharset="utf-8">
 
@@ -480,35 +466,32 @@ function disableStatus()
 
       visibility: show;"
       >
-   <table  align="<%=align%>" dir="<%=rtl%>" width="800px" class="datagrid" style="border:solid 1px #e0e8f5;">
+   <table  align="center" dir="<%=rtl%>" width="80%" class="table" style="border:solid 1px black;">
 
 
 
-  <tr  class="header"><td  width="1000px" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
+  <tr  class="headerStyle"><td  width="80%" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
 
 
-	<%--<%=resource.getString("opac.browse.browsesearch")%>--%>Search Member Record
+	Search Member Record
 
 
 
 
         </td></tr>
-    <tr dir="<%=rtl%>"><td>
-    <div id='translControl'>
-      <%--<input type="checkbox" id="checkboxId" onclick="">--%>
-      <html:checkbox property="checkbox" styleId="reqfromopac" name="CirViewAll1ActionForm" onclick="status.disabled=this.checked"/>
+  <tr dir="<%=rtl%>"><td >
+   <%-- <div id='translControl'>
+     
+     &nbsp;&nbsp;&nbsp; <html:checkbox property="checkbox" styleId="reqfromopac" name="CirViewAll1ActionForm" onclick="status.disabled=this.checked;if(this.checked){document.getElementById('data').innerHTML='Request Date from';}else{document.getElementById('data').innerHTML='Registration Date from';}"/>
       <strong> Request From Opac</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-     <%-- <input type="checkbox" id="checkboxId" onclick="">--%>
-    <%-- <html:checkbox property="checkbox1" styleId="tempreg" name="CirViewAll1ActionForm"/>
-      <strong>Temporary Registration</strong>
---%>
+    
 
 
-    </div>
+    </div>--%>
       </td></tr>
-  <tr style="background-color:#e0e8f5;"><td width="800px" dir="<%=rtl%>" >
+  <tr  style="background-color:#e0e8f5;border:solid 1px black"><td width="80%" height="35px" dir="<%=rtl%>" align="center" >
           <table>
-              <tr><td dir="<%=rtl%>">Member Id</td><td><input  name="TXTTITLE" onblur="fun()" id="TXTTITLE" class="keyboardInput" type="text" dir="<%=rtl%>" onkeyup=""></td>
+              <tr><td dir="<%=rtl%>">Member Id</td><td><input  name="TXTTITLE" onblur="fun()" id="TXTTITLE" class="keyboardInput" type="text" size="20" dir="<%=rtl%>" onkeyup=""></td>
                  <td dir="<%=rtl%>">Faculty</td><td>
                      <html:select  property="TXTFACULTY" styleId="TXTFACULTY" onchange="fun()" style="width:160px" value=""  onclick="return search1()" tabindex="21">
                   <html:option value="Select"><%=resource.getString("circulation.cir_newmember.select")%></html:option>
@@ -534,13 +517,14 @@ function disableStatus()
               </tr>
           </table>
       </td>
-      <td dir="<%=rtl%>"   align="<%=align%>" valign="top">
+      <td dir="<%=rtl%>"   align="center" valign="middle" >
           <table >
               <tr><td dir="<%=rtl%>"> Status </td><td rowspan="2" dir="<%=rtl%>" valign="top">
 
 
 <select dir="<%=rtl%>" name="status" id="status" onChange="fun()" size="1">
-<option value="Registered" selected dir="<%=rtl%>">Registered</option>
+    <option value="All" selected dir="<%=rtl%>">All</option>
+<option value="Registered"  dir="<%=rtl%>">Registered</option>
 <option value="Active" dir="<%=rtl%>">Active</option>
 <option value="Blocked" dir="<%=rtl%>">Blocked</option>
 <option value="Expired" dir="<%=rtl%>">Expired</option>
@@ -548,29 +532,15 @@ function disableStatus()
      </td>
 
               </tr></table></td></tr>
-  <tr><td class="header" width="1000px" dir="<%=rtl%>"  align="<%=align%>" ><%=resource.getString("opac.simplesearch.restrictedby")%></td><td class="header" align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
-   <tr style="background-color:#e0e8f5;" dir="<%=rtl%>"> <td width="800px" dir="<%=rtl%>"  align="<%=align%>">
-           <table  width="800px" dir="<%=rtl%>"><tr><td align="<%=align%>" dir="<%=rtl%>">
-          <table>
+  <tr><td class="headerStyle"  width="80%" dir="<%=rtl%>"  align="<%=align%>" ><%=resource.getString("opac.simplesearch.restrictedby")%></td><td class="headerStyle" align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
+   <tr style="background-color:#e0e8f5;border:solid 1px black;" height="35px" dir="<%=rtl%>"> <td width="80%" dir="<%=rtl%>"  align="<%=align%>">
+           <table   width="100%" dir="<%=rtl%>"><tr><td align="<%=align%>" dir="<%=rtl%>">
+          <table >
               <tr>
-                  <%--<td dir="<%=rtl%>"><%=resource.getString("opac.browse.database")%></td><td>
-                    <select name="CMBDB" dir="<%=rtl%>" onChange="fun1()" size="1">
-<option selected value="combined" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.combnd")%></option>
-    <option value="book" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.books")%></option>
-     <option value="cd" dir="<%=rtl%>">CDs</option>
+                 
 
-
-</select>
-                  </td>--%>
-
-                  <%--<td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%></td>--%>
-                  <td>
-                     <%-- <html:select property="CMBLib" dir="<%=rtl%>"  tabindex="3" value="<%=library_id%>"  styleId="CMBLib" onchange="fun()">
-                           <html:option value="all">All</html:option>
-                            <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
-                      </html:select>--%>
-                  </td>
-                  <td align="left" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>
+                  
+                  <td align="center" width="300px"  valign="middle" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>
 
                       <%
 
@@ -589,12 +559,13 @@ function disableStatus()
 
                           <%}%>
 
-               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <td dir="<%=rtl%>" align="<%=align%>"><strong>RegistrationDate&nbsp;&nbsp;&nbsp;&nbsp;From</strong></td>
-         <td dir="<%=rtl%>" ><html:text property="registrationdate"  styleId="registrationdate"   onblur="fun()" styleClass="textBoxWidth"/>&nbsp;&nbsp;
-          <div class="err" align="<%=align%>" id="searchResult1" ></div>
+                  </td> <td valign="middle" dir="<%=rtl%>">
+                          <div id="data"></div></td>
+         <td dir="<%=rtl%>" valign="middle"><html:text property="registrationdate"  styleId="registrationdate"   onblur="fun()" styleClass="textBoxWidth"/>&nbsp;&nbsp;
+          <div class="err" align="<%=align%>" valign="middle" id="searchResult1" ></div>
 
-         <td dir="<%=rtl%>" align="<%=align%>"><strong>To</strong></td>
-         <td dir="<%=rtl%>" ><html:text property="registrationdatefrom" styleId="expirydate"   onblur="fun()" styleClass="textBoxWidth"/>
+         <td dir="<%=rtl%>" valign="middle" align="<%=align%>"><strong>To</strong></td>
+         <td dir="<%=rtl%>" valign="middle"><html:text property="registrationdatefrom" styleId="expirydate"   onblur="fun()" styleClass="textBoxWidth"/>
            <div class="err" align="<%=align%>" id="searchResult2" ></div>
 </tr>
 
@@ -604,12 +575,6 @@ function disableStatus()
 
 
           </table>
-                   </td><td align="<%=align%>" dir="<%=rtl%>">
-
-
-
-
-
                    </td></tr></table>
       </td>
       <td align="<%=align%>" dir="<%=rtl%>">
@@ -644,7 +609,7 @@ function disableStatus()
 
   <tr>
       <td>
-          <table>
+         <%-- <table>
               <tr><td dir="<%=rtl%>" align="<%=align%>"><strong>RequestDate&nbsp;&nbsp;From</strong></td>
                   <td dir="<%=rtl%>" ><html:text property="requestdate"  styleId="requestdateto"   onblur="fun()" styleClass="textBoxWidth"/>&nbsp;&nbsp;
           <div class="err" align="<%=align%>" id="searchResult3" ></div>
@@ -654,10 +619,10 @@ function disableStatus()
            <div class="err" align="<%=align%>" id="searchResult4" ></div>
         
 
-      </td></tr></table></td></tr>
- <tr><td  height="400px" valign="top" colspan="2"  dir="<%=rtl%>">
+      </td></tr></table>--%></td></tr>
+  <tr><td  height="300px" valign="top" align="center" colspan="2"  dir="<%=rtl%>">
 
-             <IFRAME  name="f1"  src="#" frameborder=1 height="1200px" width="1400px" scrolling="no"  id="f1"></IFRAME>
+         <IFRAME  name="f1"  src="#" frameborder=0  width="100%" height="300px" scrolling="no"  id="f1"></IFRAME>
 
 
       </td></tr>

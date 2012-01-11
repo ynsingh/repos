@@ -61,12 +61,13 @@ function send1()
 
 <div
    style="  top:200px;
-   left:5px;
+   left:200px;
    right:5px;
       position: absolute;
 
       visibility: show;">
-<%!  ArrayList opacList;
+     <iframe scrolling="no" src="./acq_approved.do"  frameborder="0" height="200px" width="800px"/>
+<%--<%!  ArrayList opacList;
    int fromIndex, toIndex;
 %>
 <%
@@ -183,11 +184,11 @@ else
                  </td></tr>
 <tr>
     <td style="padding-left:12px;">
-        <iframe scrolling="no" src="./acq_approved.do"  frameborder="0" height="200px" width="800px"/>
+--%>       
 
-    </td>
+    <%--</td>
 </tr>
-</table>
+</table>--%>
 </div>
 </body>
 </html>

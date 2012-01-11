@@ -48,5 +48,8 @@
         <property name="lostItemId" type="string">
             <column name="lost_item_id" length="25" />
         </property>
+         <property name="issueDate" type="string">
+            <column name="issue_date" length="50" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -2,20 +2,30 @@
 
 package com.myapp.struts;
 
-import  com.myapp.struts.hbm.*;
+
 import  com.myapp.struts.AdminDAO.*;
+import com.myapp.struts.hbm.AcqPrivilege;
+import com.myapp.struts.hbm.AdminRegistration;
+import com.myapp.struts.hbm.CatPrivilege;
+import com.myapp.struts.hbm.CirPrivilege;
+import com.myapp.struts.hbm.Library;
+import com.myapp.struts.hbm.Login;
+import com.myapp.struts.hbm.Privilege;
+import com.myapp.struts.hbm.SerPrivilege;
+import com.myapp.struts.hbm.SubLibrary;
 import com.myapp.struts.systemsetupDAO.FacultyDAO;
 import com.myapp.struts.systemsetupDAO.MemberCategoryDAO;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import java.util.*;
+
 import javax.servlet.http.*;
 import  com.myapp.struts.utility.PasswordEncruptionUtility;
 import  com.myapp.struts.utility.DateCalculation;
 import java.sql.Connection;
+import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
-
 
 /**
  * Developed By : Kedar Kumar
@@ -24,7 +34,7 @@ import java.util.ResourceBundle;
  */
 public class LoginAction extends org.apache.struts.action.Action {
 
-//private static Logger systemlog = Logger.getLogger(LoginAction.class);
+
     String login_id;
     String username;
     String password;
@@ -36,6 +46,7 @@ public class LoginAction extends org.apache.struts.action.Action {
     String library_id;
     String button;
  Connection con;
+ LoginDAO logindao=new LoginDAO();
     String sublibrary_id;
     String main_library;
 List list1,list2;
@@ -56,7 +67,7 @@ List list1,list2;
             throws Exception
     {
 
-     
+     //   DOMConfigurator.configure("log4j.xml");
 
 
 
@@ -82,8 +93,9 @@ time=String.valueOf(System.currentTimeMillis());
 
 
 
-    try
-    {
+  
+
+
 
  
 
@@ -102,13 +114,18 @@ time=String.valueOf(System.currentTimeMillis());
 
 
        
-           con=MyConnection.getMyConnection();
-         if(con==null)
-            {
-             request.setAttribute("msg1","Database Connectivity is Closed,Please Contact WebAdmin");
-             return mapping.findForward("failure");
-           }
 
+
+try{
+
+//     con= MyConnection.getMyConnection();
+//
+//            if(con==null)
+//             {
+//                request.setAttribute("msg1","Database Connectivity is Closed");
+//                return mapping.findForward("failure");
+//             }
+//
 
 
 
@@ -117,7 +134,7 @@ time=String.valueOf(System.currentTimeMillis());
 
 
 
-              Login tempobj=(Login)LoginDAO.searchUser(login_id,password);
+              Login tempobj=(Login)logindao.searchUser(login_id,password);
 
 
 
@@ -126,7 +143,6 @@ time=String.valueOf(System.currentTimeMillis());
               /*  If the Entered User and Password in Valid */
               if(tempobj!=null)
               {
-
                 list=(List)SubLibraryDAO.getAllSubLibrary( tempobj.getId().getLibraryId());
                    list1=(List)MemberCategoryDAO.searchEmpType( tempobj.getId().getLibraryId());
          
@@ -142,9 +158,10 @@ time=String.valueOf(System.currentTimeMillis());
                           session.setAttribute("staff_id",tempobj.getId().getStaffId());
                           session.setAttribute("login_role",tempobj.getRole());
                         session.setAttribute("login_id",tempobj.getLoginId());
-                AdminRegistration admin=AdminRegistrationDAO.searchInstituteAdmin((String)session.getAttribute("login_id"));
-                session.setAttribute("AdminDetail",admin);
 
+
+                         AdminRegistration admin=AdminRegistrationDAO.searchInstituteAdmin((String)session.getAttribute("login_id"));
+session.setAttribute("AdminDetail",admin);
 
                     String lib_id=tempobj.getId().getLibraryId();
                     String sublib_id=tempobj.getSublibraryId();
@@ -157,7 +174,7 @@ time=String.valueOf(System.currentTimeMillis());
                           if(sub1!=null)
                               session.setAttribute("mainsublibrary",sub1.getId().getSublibraryId());
 
-                          System.out.println(sub1.getId().getSublibraryId()+"..........111.");
+                        
 
                           staff_id=tempobj.getId().getStaffId();
                           library_id=tempobj.getId().getLibraryId();
@@ -181,7 +198,7 @@ time=String.valueOf(System.currentTimeMillis());
                               
                             session.setAttribute("user_id",login_id);
 
-                          //  systemlog.info(login_id+","+library_id+","+sublibrary_id);
+                         
                            
 
                                 return mapping.findForward("superadmin");
@@ -200,7 +217,7 @@ time=String.valueOf(System.currentTimeMillis());
               Library libobj=(Library)LibraryDAO.searchBlockLibrary(library_id);
               if(libobj!=null)
               {
-               //   systemlog.info(login_id+","+library_id+","+sublibrary_id);
+            
                   
                   //  request.setAttribute("msg1","Library is Blocked, Contact Admin.");
                     request.setAttribute("msg1",resource.getString("admin.LoginAction.error1"));
@@ -218,7 +235,7 @@ time=String.valueOf(System.currentTimeMillis());
       *
       *
       */
-                            Login logobj=LoginDAO.searchFirstLogin(staff_id,library_id,sublibrary_id,login_id);
+                            Login logobj=logindao.searchFirstLogin(staff_id,library_id,sublibrary_id,login_id);
 
                             if(logobj!=null)
                             {
@@ -242,8 +259,8 @@ time=String.valueOf(System.currentTimeMillis());
 
                             SerPrivilege ser_priv=SerPrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("ser_privilege_resultset", ser_priv);
-                            System.out.println(".......................");
-                       //     systemlog.info(login_id+","+library_id+","+sublibrary_id);
+                           
+                     
                              
                               return mapping.findForward("firstlogin");
 
@@ -275,12 +292,12 @@ time=String.valueOf(System.currentTimeMillis());
 
                             if(tempobj.getRole().contains("admin") || tempobj.getRole().contains("Admin"))
                             {
-                              //  systemlog.info(login_id+","+library_id+","+sublibrary_id);
+                           
                                 
                             return mapping.findForward("success");
                             }
                             else
-                            { //systemlog.info(login_id+","+library_id+","+sublibrary_id);
+                            {
                              
                                 return mapping.findForward("success1");}
 
@@ -296,7 +313,7 @@ time=String.valueOf(System.currentTimeMillis());
         }/*End of User Library IF-ELSE*/
         else
         {
-               //  systemlog.info(login_id+","+library_id+","+sublibrary_id);
+              
                  
                 //request.setAttribute("msg1","Invalid user Name or Password");
                  request.setAttribute("msg1",resource.getString("admin.LoginAction.error2"));
@@ -315,7 +332,7 @@ time=String.valueOf(System.currentTimeMillis());
             /* Check Weather the Question is Assigned for the User or Not */
                // stmt=con.prepareStatement("select * from login where login_id=? and question is not null");
                /// stmt.setString(1, login_id);
-               Login obj=LoginDAO.searchForgetPassword(login_id);
+               Login obj=logindao.searchForgetPassword(login_id);
                 if(obj!=null)
                 {
                 session.setAttribute("pass","t");
@@ -344,8 +361,9 @@ time=String.valueOf(System.currentTimeMillis());
     }
     catch(Exception e)
     {
-    System.out.println(e);
-
+    e.printStackTrace();
+      request.setAttribute("msg","Data Connectivity Problem,Contact WebAdmin");
+                    return mapping.findForward("failure");
     }
 
 

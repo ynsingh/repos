@@ -1,10 +1,6 @@
-<%--
-    Document   : Account Details.jsp
-    Created on : Jun 15, 2010, 1:15:37 PM
-    Author     : Mayank Saxena
---%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="com.myapp.struts.hbm.*,com.myapp.struts.CirculationDAO.*"%>
+<%@page import="com.myapp.struts.hbm.*,com.myapp.struts.CirDAO.*"%>
 <%@ page import="java.util.*, java.lang.*,java.text.*,java.util.Calendar"%>
 
 <html>
@@ -12,24 +8,7 @@
      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 <title>Account Details..</title>
-<style type="text/css">
 
-body
-{
-   background-color: #FFFFFF;
-   color: #000000;
-}
-th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white;border: solid 1px blue; }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold;border: solid 1px blue; }
-     .alternaterows { background-color: #efefef; }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold;text-decoration: none;padding-left: 10px; }
-
-     .datagrid      {  font-family: arial; font-size: 9pt;
-	    font-weight: normal;}
-     .item{ padding-left: 10px;}
-</style>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <%!
     Locale locale=null;
@@ -189,13 +168,17 @@ System.out.println(year+"-"+month+"-"+day);
                 <tr><td dir="<%=rtl%>" colspan="2" align="<%=align%>"><br><br><br>
             <%
     String message=(String)request.getAttribute("msg");
+    if(message==null)
+        message=(String)session.getAttribute("msg");
+
+   
+    session.removeAttribute("msg");
     String type = (String)session.getAttribute("type");
     if(message!=null){
-       %> <br>
-	           <TABLE style="background-color: #E3E4FA;"
-                    border="1" align="center">
-		      <tr><th dir="<%=rtl%>"><%=message%></th></tr>
-		   </TABLE>
+       %> 
+	 <script type="text/javascript">
+		alert("<%=message%>");
+         </script>
 
    <% }else
         message="";

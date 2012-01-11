@@ -10,8 +10,6 @@ import com.myapp.struts.hbm.HibernateUtil;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
 import org.hibernate.Query;
-import org.hibernate.transform.ResultTransformer;
-import org.hibernate.transform.Transformers;
 
 /**
  * Developed By : Kedar Kumar
@@ -22,24 +20,28 @@ public class CourseDAO {
 
 public static List<SubLibrary> searchSubLib(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List<SubLibrary> obj=null;
         try {
             session.beginTransaction();
             Query query1 = session.createQuery("FROM  SubLibrary  WHERE id.sublibraryId != :sublibrary_id and id.libraryId= :library_id");
             query1.setString("library_id", library_id);
             query1.setString("sublibrary_id", sublibrary_id);
 
-            return (List<SubLibrary>) query1.list();
+            obj=(List<SubLibrary>) query1.list();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
            session.close();
         }
+        return obj;
 
 }
 
 public static Courses searchCourseByName(String library_id,String faculty_id,String dept_id,String name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Courses obj=null;
         try {
                
             session.beginTransaction();
@@ -49,23 +51,21 @@ public static Courses searchCourseByName(String library_id,String faculty_id,Str
             query1.setString("dept_id",dept_id);
             query1.setString("course_id",name);
            
-            return (Courses) query1.uniqueResult();
+            obj= (Courses) query1.uniqueResult();
         }
-        catch (RuntimeException e) {
-                System.out.println("FacultyDAO.Delete():*****"+e);
-             //   tx.rollback();
-                return null;
-
+       catch(Exception e){
+        e.printStackTrace();
         }
         finally {
            session.close();
         }
+        return obj;
 
 }
 
   public static Courses searchCourseName(String library_id,String faculty_id,String dept_id,String course_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Courses obj=null;
         try {
                
             session.beginTransaction();
@@ -75,17 +75,15 @@ public static Courses searchCourseByName(String library_id,String faculty_id,Str
             query1.setString("dept_id",dept_id);
             query1.setString("course_id",course_id);
            
-            return (Courses) query1.uniqueResult();
+            obj= (Courses) query1.uniqueResult();
         }
-        catch (RuntimeException e) {
-                System.out.println("FacultyDAO.Delete():*****"+e);
-             //   tx.rollback();
-                return null;
-
+       catch(Exception e){
+        e.printStackTrace();
         }
         finally {
            session.close();
         }
+        return obj;
 
 }
 public static  boolean update(Department obj)
@@ -98,17 +96,17 @@ public static  boolean update(Department obj)
             session.update(obj);
             tx.commit();
         }
-        catch (RuntimeException e) {
-
-                tx.rollback();
-                return false;
-
+       catch(Exception e){
+        e.printStackTrace();
+        tx.rollback();
+        return false;
         }
-
-   return true;
+        finally {
+           session.close();
+        }
+        return true;
 
 }
-
 public static  boolean update1(Courses obj)
 {
          Session session = HibernateUtil.getSessionFactory().openSession();
@@ -119,14 +117,15 @@ public static  boolean update1(Courses obj)
             session.update(obj);
             tx.commit();
         }
-        catch (RuntimeException e) {
-
-                tx.rollback();
-                return false;
-
+       catch(Exception e){
+        e.printStackTrace();
+        tx.rollback();
+        return false;
         }
-
-   return true;
+        finally {
+           session.close();
+        }
+        return true;
 
 }
 
@@ -141,14 +140,15 @@ public static  boolean Delete(Courses obj)
             session.delete(obj);
             tx.commit();
         }
-        catch (RuntimeException e) {
-
-                tx.rollback();
-                return false;
-
+       catch(Exception e){
+        e.printStackTrace();
+        tx.rollback();
+        return false;
         }
-
-   return true;
+        finally {
+           session.close();
+        }
+        return true;
 
 }
 
@@ -172,9 +172,11 @@ public static  boolean insert(Courses obj)
         }
         catch (Exception ex)
         {
-             return false;
+        ex.printStackTrace();
+        tx.rollback();
+            return false;
 
-       //  System.out.println(ex.toString());
+         
 
         }
         finally
@@ -189,17 +191,20 @@ public static  boolean insert(Courses obj)
  public static List getMaxCourseRecordIdNo(String library_id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction tx = null;
+        List obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("SELECT Max(id.courseId)FROM Courses where id.libraryId = :library_id ");
             query.setString("library_id",library_id );
-            return  query.list();
+            obj=query.list();
+        }
+      catch(Exception e){
+        e.printStackTrace();
         }
         finally {
-            session.close();
+           session.close();
         }
-
-
+        return obj;
 
 }
 
@@ -207,46 +212,50 @@ public static  boolean insert(Courses obj)
 
   public static Department getDeptRecordIdNo(String library_id,String dept_id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = null;
+       Department obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM Department where id.libraryId = :libraryId and id.deptId = :deptId ");
             query.setString("libraryId",library_id );
             query.setString("deptId",dept_id );
-            Department dept=(Department)query.uniqueResult();
-            return dept;
+           obj=(Department)query.uniqueResult();
+            
+        }
+     catch(Exception e){
+        e.printStackTrace();
         }
         finally {
-            session.close();
+           session.close();
         }
-
-
+        return obj;
 
 }
 public static List<Courses> getCourse(String library_id,String faculty_id,String dept_id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = null;
+        List<Courses> obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM Courses where id.libraryId = :libraryId and id.deptId = :deptId and id.facultyId=:faculty_id ");
             query.setString("libraryId",library_id );
             query.setString("deptId",dept_id );
             query.setString("faculty_id",faculty_id );
-           return (List<Courses>)query.list();
+          obj=(List<Courses>)query.list();
 
+        }
+       catch(Exception e){
+        e.printStackTrace();
         }
         finally {
-            session.close();
+           session.close();
         }
-
-
+        return obj;
 
 }
 
 
 public static List<Courses> getCourse(String library_id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = null;
+        List<Courses> obj=null;
         try {
             session.beginTransaction();
             Query query ;
@@ -261,14 +270,16 @@ public static List<Courses> getCourse(String library_id) {
             }
 
             
-           return query.list();
+           obj= query.list();
 
+        }
+       catch(Exception e){
+        e.printStackTrace();
         }
         finally {
-            session.close();
+           session.close();
         }
-
-
+        return obj;
 
 }
 }

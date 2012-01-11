@@ -7,6 +7,15 @@
 
 <struts-config>
     <form-beans>
+        <!-- Serial Form Naming-->
+        <form-bean name="SerLanguageActionForm" type="com.myapp.struts.Serial.SerLanguageActionForm"/>
+        <form-bean name="SerAddLanguageActionForm" type="com.myapp.struts.Serial.SerAddLanguageActionForm"/>
+        <form-bean name="SerBiblioActionForm" type="com.myapp.struts.Serial.SerBiblioActionForm"/>
+        <form-bean name="SerPublisherActionForm" type="com.myapp.struts.Serial.SerPublisherActionForm"/>
+  <!--End Serial Form Naming-->
+
+
+
   <!--AcquisitionFormBean-->
 
         <form-bean name="AcqBiblioActionForm" type="com.myapp.struts.Acquisition.AcqBiblioActionForm"/>
@@ -82,6 +91,8 @@
 
         
       <!-- Circulation Form Naming-->
+        <form-bean name="ActivityActionForm" type="com.myapp.struts.circulation.ActivityActionForm"/>
+        <form-bean name="ActivityActionForm1" type="com.myapp.struts.circulation.ActivityActionForm1"/>
        <form-bean name="GenerateCardActionForm" type="com.myapp.struts.circulation.GenerateCardActionForm"/>
  <form-bean name="CardInformationActionForm" type="com.myapp.struts.circulation.CardInformationActionForm"/>
  <form-bean name="CirCardProcessActionForm" type="com.myapp.struts.circulation.CirCardProcessActionForm"/>
@@ -140,11 +151,11 @@
         <form-bean name="BibliographicDetailEntryActionForm" type="com.myapp.struts.cataloguing.BibliographicDetailEntryActionForm"/>
 <form-bean name="BibliographicDetailEntryActionForm1" type="com.myapp.struts.cataloguing.BibliographicDetailEntryActionForm1"/>
           <form-bean name="StrutsUploadForm" type="com.myapp.struts.cataloguing.StrutsUploadForm"/>
-    <!-- Marc -->
+      <!-- Marc -->
             <form-bean name="CatControlActionForm" type="com.myapp.struts.marc.CatControlActionForm"/>
         <form-bean name="ViewMarcActionForm" type="com.myapp.struts.marc.ViewMarcActionForm"/>
 
-        <form-bean name="updateMarcActionForm" type="com.myapp.struts.marc.updateMarcActionForm"/>
+        <form-bean name="UpdateMarcActionForm" type="com.myapp.struts.marc.UpdateMarcActionForm"/>
         <form-bean name="CustomMarcActionForm" type="com.myapp.struts.marc.CustomMarcActionForm"/>
 
         <form-bean name="CatActionForm8" type="com.myapp.struts.marc.CatActionForm8"/>
@@ -160,12 +171,12 @@
 
         <form-bean name="NewMarcActionForm" type="com.myapp.struts.marc.NewMarcActionForm" />
         <form-bean name="NewStrutsActionForm" type="com.myapp.struts.marc.NewStrutsActionForm" />
+        <form-bean name="EditMarcActionForm" type="com.myapp.struts.marc.EditMarcActionForm" />
     <!--End Cataloguing Form Naming-->
-
 
     </form-beans>
 
-    <global-exceptions>
+   <!-- <global-exceptions>
 
     <exception-type>java.lang.Exception</exception-type>
   <exception-location>/error.jsp</exception-location>
@@ -174,14 +185,49 @@
    </global-exceptions>
     <global-forwards>
         <forward name="out"  path="/login.jsp"/>
-    </global-forwards>
+    </global-forwards>-->
 
    
 
-    <action-mappings>
-        <!--Log Mapping-->
-           <action  path="/log/print" scope="request"   type="com.myapp.struts.admin.LogReportAction"/>
 
+
+
+
+    <action-mappings>
+
+        <!--Serial Action Setting-->
+   <action path="/ser_lang" input="/serial/ser_language.jsp" scope="request" name="SerLanguageActionForm" type="com.myapp.struts.Serial.SerLanguageAction">
+       <forward name="add" path="/serial/ser_addlanguage.jsp"/>
+       <forward name="duplicate" path="/serial/ser_language.jsp"/>
+   </action>
+   <action path="/add_lang" input="/serial/ser_addlanguage.jsp" scope="request" name="SerAddLanguageActionForm" type="com.myapp.struts.Serial.SerAddLanguageAction">
+       <forward name="success" path="/serial/ser_language.jsp"/>
+   </action>
+
+   <action path="/ser_pub" input="/serial/ser_publisher.jsp" scope="request" name="SerPublisherActionForm" type="com.myapp.struts.Serial.SerPublisherAction">
+       <forward name="add" path="/serial/ser_addpublisher.jsp"/>
+       <forward name="duplicate" path="/serial/ser_publisher.jsp"/>
+   </action>
+    <action path="/add_pub" input="/serial/ser_addpublisher.jsp" scope="request" name="SerPublisherActionForm" type="com.myapp.struts.Serial.SerAddPublisherAction">
+       <forward name="success" path="/serial/ser_publisher.jsp"/>
+   </action>
+  <!--End Serial Action Setting-->
+  
+
+<!--Insti-logo-->
+   <action path="/admin/instilogo" input="/admin/main.jsp" name="ImageUploadActionForm" scope="session" type="com.myapp.struts.admin.InstiLogo">
+    <forward name="success" path="/admin/changelogo.jsp"/>
+    <forward name="failure" path="/admin/changelogo.jsp"/>
+</action>
+
+<!--Email Check -->
+ <action  path="/admin/mailcheck" scope="request"   type="com.myapp.struts.admin.LogReportAction"/>
+        <!--Log Mapping-->
+
+           <action  path="/log/print" scope="request"   type="com.myapp.struts.admin.LogReportAction"/>
+            <action input="/logs/search_log.jsp" name="SearchInstituteActionForm" path="/logs/search_log" scope="request" type="com.myapp.struts.admin.LogInstituteAction">
+                        <forward name="institute_search"  path="/logs/search_admin_grid1.jsp"/>
+               </action>
 
         <!--Acquisition Action Mapping-->
      <action  path="/print1" scope="request"   type="com.myapp.struts.Acquisition.ReportAction"/>
@@ -311,7 +357,7 @@
 
 
                      <action  path="/acq_firmorder1" scope="request"  type="com.myapp.struts.Acquisition.AcqFirmOrderAction">
-                      <forward name="listApproval" path="/acquisition/acq_list_approval_all.jsp" />
+                      <forward name="listApproval" path="/acquisition/acq_firmorder.jsp" />
                      </action>
 
               <action  path="/acqlistApproval" scope="request" input="/acquisition/acq_list_approval.jsp"  type="com.myapp.struts.Acquisition.AcqViewApprovalListAction">
@@ -477,7 +523,7 @@
               </action>
 
 <!--Cataloguing Action Mapping-->
-
+<action  path="/getTitleSuggestions" type="com.myapp.struts.cataloguing.SuggestTitleAction"/>
 <action  path="/cataloguing/viewAllBiblio" scope="request" name="BibliographicDetailEntryActionForm1"  type="com.myapp.struts.cataloguing.ViewAllBiblioAction">
                       <forward name="all" path="/cataloguing/cat_viewAll_biblio.jsp" />
                     </action>
@@ -571,14 +617,14 @@
                     </action>
 <!-- Export/Import -->
 
- <action input="/cataloguing/cat_data_import_read.jsp" name="StrutsUploadForm" path="/uploadExcel" scope="session" type="com.myapp.struts.cataloguing.Uploadaction">
+         <action path="/uploadExcel" name="StrutsUploadForm" input="/cataloguing/cat_data_import_read.jsp"   scope="session" type="com.myapp.struts.cataloguing.Uploadaction">
             <forward name="success" path="/cataloguing/cat_data_import_map_table.jsp"/>
             <forward name="Back" path="/cataloguing/cat_data_import_read.jsp"/>
             <forward name="ExportDatabaseToExcell" path="/cataloguing/cat_exportDatabaseToExcell.jsp"/>
-            <action path="insert" forward="/cataloguing/cat_data_import_map_table.jsp"/>
+           
         </action>
         <action input="/cataloguing/cat_data_import_map_table.jsp" name="StrutsUploadForm" path="/insert" scope="session" type="com.myapp.struts.cataloguing.ExeltoDatabaseAction" validate="false">
-            <forward name="success" path="/cataloguing/cat_Import_Tables.jsp"/>
+            <forward name="success" path="/cataloguing/cat_data_import_read.jsp"/>
             <forward name="Back" path="/cataloguing/cat_data_import_read.jsp"/>
         </action>
 
@@ -586,22 +632,11 @@
             <forward name="success" path="/cataloguing/cat_exportDatabaseToExcell.jsp"/>
             <forward name="Back" path="/cataloguing/cat_data_import_read.jsp"/>
         </action>
-        <action input="/cataloguing/cat_Import_Tables.jsp" name="StrutsUploadForm" path="/TempToDatabase" scope="request" type="com.myapp.struts.cataloguing.TempToDatabase">
+      <!--  <action input="/cataloguing/cat_Import_Tables.jsp" name="StrutsUploadForm" path="/TempToDatabase1" scope="request" type="com.myapp.struts.cataloguing.TempToDatabase">
             <forward name="success" path="/cataloguing/cat_data_import_read.jsp"/>
             <forward name="failure" path="/cataloguing/cat_Import_Tables.jsp"/>
-        </action>
+        </action>-->
 
-
-
- <action input="/cat_data_import_txtfile_read" name="StrutsUploadForm" path="/ImportTextFileReadAction" scope="session" type="com.myapp.struts.cataloguing.ImportTextFileReadAction">
-            <forward name="success" path="/cataloguing/cat_data_import_read.jsp"/>
-            <forward name="cancle" path="/cataloguing/cat_data_import_read.jsp"/>
-        </action>
-
-   <action input="/cataloguing/cat_exportDatabaseToExcell.jsp" name="StrutsUploadForm" path="/ExportDatabaseToTextAction" scope="session" type="com.myapp.struts.cataloguing.ExportDatabaseToTextAction">
-     <forward name="success" path="/cataloguing/cat_exportDatabaseToExcell.jsp"/>
-            <forward name="Back" path=""/>
-        </action>
 
      <action   path="/uploadmarc" input="/cataloguing/cat_data_import_read.jsp" scope="request" name="StrutsUploadForm" type="com.myapp.struts.cataloguing.MarcUploadAction">
          <forward name="success" path="/cataloguing/cat_data_import_read.jsp"/>
@@ -619,13 +654,19 @@
 <action   path="/exportMarc" scope="request" type="com.myapp.struts.cataloguing.ExportMarcAction">
          <forward name="success" path="/cataloguing/view_marc_repos_1.jsp"/>
      </action>
-    <action   path="/cataloguing/showMarcDetails" scope="request"  type="com.myapp.struts.cataloguing.ShowMarcDetailsAction">
+<action   path="/cataloguing/showMarcDetails" scope="request"  type="com.myapp.struts.cataloguing.ShowMarcDetailsAction">
          <forward name="success" path="/cataloguing/view_marc_details.jsp"/>
      </action>
 <action   path="/cataloguing/showMarcDetails1" scope="request"  type="com.myapp.struts.cataloguing.ShowMarcDetailsAction1">
          <forward name="success" path="/cataloguing/view_marc_details.jsp"/>
+        
      </action>
-
+<action   path="/cataloguing/showMarcDetails2" scope="request"  type="com.myapp.struts.cataloguing.ShowMarcDetailsAction1">
+         <forward name="success" path="/cataloguing/view_marc_details2.jsp"/>
+     </action>
+<action   path="/cataloguing/updateExistMarc" scope="request" input="/cataloguing/view_marc_details2.jsp" name="EditMarcActionForm"  type="com.myapp.struts.marc.UpdateSimpleMarcAction">
+         <forward name="success" path="/cataloguing/cat_update_marc1.jsp"/>
+     </action>
 <!-- End Export/Import -->
 
 <!--    ****************************************************************************************************************************    -->
@@ -635,10 +676,17 @@
     <action input="/cataloguing/cat_new_MARC.jsp" path="/biblio" name="BiblioActionForm" scope="session" type="com.myapp.struts.marc.BiblioStrutsAction" >
             <forward name="success" path="/cataloguing/catlcontrol.jsp"/>
             <forward name="failure" path="/cataloguing/cat_new_MARC.jsp"/>
-            <forward name="update" path="/cataloguing/cat_update_marc.jsp"/>
-            <forward name="view" path="/cataloguing/cat_view_marc.jsp"/>
+            <forward name="update" path="/cataloguing/cat_update_marc1.jsp"/>
+            <forward name="update1" path="/cataloguing/cat_update_marc2.jsp"/>
+            <forward name="duplicate" path="/cataloguing/cat_dup_marc.jsp"/>
     </action>
-    <!--       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   |   MARC entry Fixed  |    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      -->
+    <action input="/cataloguing/cat_dup_marc.jsp" path="/cataloguing/duplicatemarc" name="BiblioActionForm" scope="session" type="com.myapp.struts.marc.DuplicateMarcAction" >
+            <forward name="success" path="/cataloguing/catlcontrol.jsp"/>
+    </action>
+    <action path="/cataloguing/marchome" scope="session" type="com.myapp.struts.marc.MarcHomeAction" >
+            <forward name="success" path="/cataloguing/cat_new_MARC.jsp"/>
+    </action>
+  <!--       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   |   MARC entry Fixed  |    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      -->
      <action input="/cataloguing/catl0.jsp" name="BiblioActionForm" path="/catl0" scope="session" type="com.myapp.struts.marc.Catl0Action">
             <forward name="forward0" path="/cataloguing/catl0.jsp"/>
             <forward name="forward1" path="/cataloguing/catl1.jsp"/>
@@ -779,8 +827,8 @@
        </action>
 <!--      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      END of MARC entry fixed       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      -->
 <!--      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      MARC biblio update fixed      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      -->
-                <action input="/cataloguing/cat_update_marc.jsp" name="updateMarcActionForm" path="/cataloguing/updateMarc" scope="session" type="com.myapp.struts.marc.UpdateMarcAction">
-                    <forward name="success" path="/cataloguing/ucatl0.jsp"/>
+                <action input="/cataloguing/cat_update_marc.jsp" name="UpdateMarcActionForm" path="/cataloguing/updateMarc" scope="session" type="com.myapp.struts.marc.UpdateMarcAction">
+                    <forward name="success" path="/cataloguing/updatecatlcontrol.jsp"/>
                     <forward name="failure" path="/cataloguing/cat_update_marc.jsp"/>
                 </action>
                   <action input="/cataloguing/ucatl0.jsp" name="BiblioActionForm" path="/ucatl0" scope="request" type="com.myapp.struts.marc.UCatAction">
@@ -794,6 +842,7 @@
                         <forward name="forward7" path="/cataloguing/ucatl7.jsp"/>
                         <forward name="forward8" path="/cataloguing/ucatl8.jsp"/>
                         <forward name="forward9" path="/cataloguing/ucatl9.jsp"/>
+                        <forward name="forward10" path="/cataloguing/updatecatlcontrol.jsp"/>
                   </action>
                    <action input="/cataloguing/ucatl1.jsp" name="CatActionForm1" path="/ucataction1" scope="session" type="com.myapp.struts.marc.UCatAction1">
                         <forward name="forward0" path="/cataloguing/ucatl0.jsp"/>
@@ -806,6 +855,7 @@
                         <forward name="forward7" path="/cataloguing/ucatl7.jsp"/>
                         <forward name="forward8" path="/cataloguing/ucatl8.jsp"/>
                         <forward name="forward9" path="/cataloguing/ucatl9.jsp"/>
+                        <forward name="forward10" path="/cataloguing/updatecatlcontrol.jsp"/>
                   </action>
                   <action input="/cataloguing/ucatl2.jsp" name="CatActionForm2" path="/ucataction2" scope="session" type="com.myapp.struts.marc.UCatAction2">
                         <forward name="forward0" path="/cataloguing/ucatl0.jsp"/>
@@ -818,6 +868,7 @@
                         <forward name="forward7" path="/cataloguing/ucatl7.jsp"/>
                         <forward name="forward8" path="/cataloguing/ucatl8.jsp"/>
                         <forward name="forward9" path="/cataloguing/ucatl9.jsp"/>
+                        <forward name="forward10" path="/cataloguing/updatecatlcontrol.jsp"/>
                   </action>
                   <action input="/cataloguing/ucatl3.jsp" name="CatActionForm3" path="/ucataction3" scope="session" type="com.myapp.struts.marc.UCatAction3">
                         <forward name="forward0" path="/cataloguing/ucatl0.jsp"/>
@@ -830,6 +881,7 @@
                         <forward name="forward7" path="/cataloguing/ucatl7.jsp"/>
                         <forward name="forward8" path="/cataloguing/ucatl8.jsp"/>
                         <forward name="forward9" path="/cataloguing/ucatl9.jsp"/>
+                        <forward name="forward10" path="/cataloguing/updatecatlcontrol.jsp"/>
                   </action>
                   <action input="/cataloguing/ucatl4.jsp" name="CatActionForm4" path="/ucataction4" scope="session" type="com.myapp.struts.marc.UCatAction4">
                         <forward name="forward0" path="/cataloguing/ucatl0.jsp"/>
@@ -842,6 +894,7 @@
                         <forward name="forward7" path="/cataloguing/ucatl7.jsp"/>
                         <forward name="forward8" path="/cataloguing/ucatl8.jsp"/>
                         <forward name="forward9" path="/cataloguing/ucatl9.jsp"/>
+                        <forward name="forward10" path="/cataloguing/updatecatlcontrol.jsp"/>
                   </action>
                   <action input="/cataloguing/ucatl6.jsp" name="CatActionForm6" path="/ucataction6" scope="session" type="com.myapp.struts.marc.UCatAction6">
                          <forward name="forward0" path="/cataloguing/ucatl0.jsp"/>
@@ -854,6 +907,7 @@
                         <forward name="forward7" path="/cataloguing/ucatl7.jsp"/>
                         <forward name="forward8" path="/cataloguing/ucatl8.jsp"/>
                         <forward name="forward9" path="/cataloguing/ucatl9.jsp"/>
+                        <forward name="forward10" path="/cataloguing/updatecatlcontrol.jsp"/>
                   </action>
                 <action input="/cataloguing/ucatl5.jsp" name="CatActionForm5" path="/ucataction5" scope="session" type="com.myapp.struts.marc.UCatAction5">
                         <forward name="forward0" path="/cataloguing/ucatl0.jsp"/>
@@ -866,6 +920,7 @@
                         <forward name="forward7" path="/cataloguing/ucatl7.jsp"/>
                         <forward name="forward8" path="/cataloguing/ucatl8.jsp"/>
                         <forward name="forward9" path="/cataloguing/ucatl9.jsp"/>
+                        <forward name="forward10" path="/cataloguing/updatecatlcontrol.jsp"/>
                   </action>
                   <action input="/cataloguing/ucatl7.jsp" name="CatActionForm7" path="/ucataction7" scope="session" type="com.myapp.struts.marc.UCatAction7">
                         <forward name="forward0" path="/cataloguing/ucatl0.jsp"/>
@@ -878,6 +933,7 @@
                         <forward name="forward7" path="/cataloguing/ucatl7.jsp"/>
                         <forward name="forward8" path="/cataloguing/ucatl8.jsp"/>
                         <forward name="forward9" path="/cataloguing/ucatl9.jsp"/>
+                        <forward name="forward10" path="/cataloguing/updatecatlcontrol.jsp"/>
                       </action>
                  <action input="/cataloguing/ucatl8.jsp" name="CatActionForm8" path="/ucataction8" scope="session" type="com.myapp.struts.marc.UCatAction8">
                         <forward name="forward0" path="/cataloguing/ucatl0.jsp"/>
@@ -890,8 +946,21 @@
                         <forward name="forward7" path="/cataloguing/ucatl7.jsp"/>
                         <forward name="forward8" path="/cataloguing/ucatl8.jsp"/>
                         <forward name="forward9" path="/cataloguing/ucatl9.jsp"/>
+                        <forward name="forward10" path="/cataloguing/updatecatlcontrol.jsp"/>
                  </action>
-
+<action input="/cataloguing/updatecatlcontrol.jsp" name="CatControlActionForm" path="/ucatcontrolaction" scope="request" type="com.myapp.struts.marc.UpdateCatControlAction" validate="false">
+                <forward name="forward0" path="/cataloguing/ucatl0.jsp"/>
+                <forward name="forward1" path="/cataloguing/ucatl1.jsp"/>
+                <forward name="forward2" path="/cataloguing/ucatl2.jsp"/>
+                <forward name="forward3" path="/cataloguing/ucatl3.jsp"/>
+                <forward name="forward4" path="/cataloguing/ucatl4.jsp"/>
+                <forward name="forward5" path="/cataloguing/ucatl5.jsp"/>
+                <forward name="forward6" path="/cataloguing/ucatl6.jsp"/>
+                <forward name="forward7" path="/cataloguing/ucatl7.jsp"/>
+                <forward name="forward8" path="/cataloguing/ucatl8.jsp"/>
+                <forward name="forward9" path="/cataloguing/ucatl9.jsp"/>
+                <forward name="forward10" path="/cataloguing/updatecatlcontrol.jsp"/>
+       </action>
 <!--       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    End of MARC biblio update fixed    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%     -->
 
 <!-- *************************     MARC Biblio View and Delete    ************************* -->
@@ -918,6 +987,27 @@
                     </action>
                     <action  path="/marccommit" scope="session" type="com.myapp.struts.marc.MarcCommitAction">
                         <forward name="success" path="/cataloguing/cat_new_MARC.jsp"/>
+                        <forward name="forward2" path="/cataloguing/ucatl2.jsp"/>
+                        <forward name="forward0" path="/cataloguing/ucatl0.jsp"/>
+                        <forward name="forward1" path="/cataloguing/ucatl1.jsp"/>
+                        <forward name="forward3" path="/cataloguing/ucatl3.jsp"/>
+                        <forward name="forward4" path="/cataloguing/ucatl4.jsp"/>
+                        <forward name="forward5" path="/cataloguing/ucatl5.jsp"/>
+                        <forward name="forward6" path="/cataloguing/ucatl6.jsp"/>
+                        <forward name="forward7" path="/cataloguing/ucatl7.jsp"/>
+                        <forward name="forward8" path="/cataloguing/ucatl8.jsp"/>
+                    </action>
+                    <action  path="/marccommit1" scope="session" type="com.myapp.struts.marc.MarcCommitAction1">
+                        <forward name="success" path="/cataloguing/cat_new_MARC.jsp"/>
+                        <forward name="forward2" path="/cataloguing/catl2.jsp"/>
+                        <forward name="forward0" path="/cataloguing/catl0.jsp"/>
+                        <forward name="forward1" path="/cataloguing/catl1.jsp"/>
+                        <forward name="forward3" path="/cataloguing/catl3.jsp"/>
+                        <forward name="forward4" path="/cataloguing/catl4.jsp"/>
+                        <forward name="forward5" path="/cataloguing/catl5.jsp"/>
+                        <forward name="forward6" path="/cataloguing/catl6.jsp"/>
+                        <forward name="forward7" path="/cataloguing/catl7.jsp"/>
+                        <forward name="forward8" path="/cataloguing/catl8.jsp"/>
                     </action>
 
 
@@ -1062,10 +1152,6 @@
              <forward name="forward8" path="/cataloguing/cust_marc_entry8.jsp"/>
              <forward name="forward9" path="/cataloguing/cust_marc_entry9.jsp"/>
          </action>
-
-
-
-
        <!-- ^^^^^^^^^^^^^^^^^^^^^^^^  End of Customized MARC bibliographhy management   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^  -->
 
     <!--  **                                End of MARC Bibliography                                                                     **  -->
@@ -1079,12 +1165,43 @@
 <!--Circulation Action Mapping-->
 <!--Circulation Action Mapping-->
 
+<action input="/circulation/add_activity.jsp" name="ActivityActionForm" path="/addAct" scope="session" type="com.myapp.struts.circulation.ActivityAdd1Action" validate="false">
+            <forward name="success" path="/circulation/add_activity.jsp"/>
+        </action>
+
+   <action input="/circulation/viewall_delenq_reason.jsp" name="ActivityActionForm1" path="/DelUpdate" scope="session" type="com.myapp.struts.circulation.DelinqUpdateAction" validate="false">
+            <forward name="success" path="/circulation/viewallDel.do"/>
+        </action>
+
+        <action  path="/circulation/viewallDel"  scope="request"   type="com.myapp.struts.circulation.ViewAllDeliquency">
+            <forward name="success" path="/circulation/viewall_delenq_reason.jsp"/>
+            </action>
+
+
+
+
+  <action input="/circulation/add_cancelreason.jsp" name="ActivityActionForm" path="/addCancel" scope="session" type="com.myapp.struts.circulation.CancelReasonAddAction" validate="false">
+            <forward name="success" path="/circulation/add_cancelreason.jsp"/>
+        </action>
+
+   <action input="/circulation/viewall_cancel_reason.jsp" name="ActivityActionForm1" path="/DelUpdate1" scope="session" type="com.myapp.struts.circulation.CancellationUpdateAction" validate="false">
+            <forward name="success" path="/circulation/viewallCancel.do"/>
+        </action>
+
+        <action  path="/circulation/viewallCancel"  scope="request"   type="com.myapp.struts.circulation.ViewAllCancellationReason">
+            <forward name="success" path="/circulation/viewall_cancel_reason.jsp"/>
+            </action>
+
+
+
 
 <action  path="/membercard" input="/circulation/cir_generate_card.jsp" name="GenerateCardActionForm"   scope="request" type="com.myapp.struts.circulation.GenerateCardAction">
                       <forward name="success" path="/circulation/cir_view_carddetails.jsp"/>
+                      <forward name="fail" path="/circulation/cir_generate_card.jsp"/>
  </action>
- <action  path="/card_inf" input="/circulation/cir_view_carddetails.jsp" name="CardInformationActionForm"   scope="request" type="com.myapp.struts.circulation.CardInformationAction">
+ <action  path="/card_inf" input="/circulation/cir_view_carddetails.jsp" name="GenerateCardActionForm"    scope="request" type="com.myapp.struts.circulation.CardInformationAction">
                       <forward name="success" path="/circulation/cir_member_card.jsp"/>
+                       <forward name="success1" path="/circulation/cir_generate_card.jsp"/>
  </action>
   <action  path="/card_process" input="/circulation/cir_member_card.jsp" name="CirCardProcessActionForm"   scope="request" type="com.myapp.struts.circulation.CirCardProcessAction">
                       <forward name="success" path="/circulation/cir_member_card.jsp"/>
@@ -1096,13 +1213,19 @@
 
               </action>
 
+              <!--Action Mapping of Circulation Enquires->Statatics-->
+  <action path="/circulation/statistics"      scope="request" type="com.myapp.struts.circulation.CirStatistics">
+                       <forward name="success" path="/circulation/cir_viewall_memberstatistics.jsp"/>
+
+              </action>
+
                <action path="/cir_viewalldetail" input="/circulation/cir_viewall_member_detail1.jsp"  name="CirViewAll1ActionForm"   scope="request" type="com.myapp.struts.circulation.CirViewAllMemberDetailAction">
                        <forward name="success" path="/circulation/cir_viewall_member_detail.jsp"/>
                        <forward name="success1" path="/circulation/cir_viewall_member_detail_opac.jsp"/>
               </action>
               
 <action  path="/checkoutReport" input="/circulation/cir_checkout_report.jsp" name="CirCheckOutViewAllActionForm"    scope="request" type="com.myapp.struts.circulation.CirCheckOutViewAllAction">
-                      <forward name="success" path="/circulation/cir_view_checkoutreport.jsp"/>
+                      <forward name="success" path="/circulation/view_memcheckoutdetails.jsp"/>
 </action>
 
 <action  path="/checkoutReportPrint" input="/circulation/cir_checkout_report.jsp" name="CirCheckOutViewAllActionForm"    scope="request" type="com.myapp.struts.circulation.ReportAction1">
@@ -1166,6 +1289,11 @@
  <action  path="/cir_chk" input="/circulation/cir_checkout.jsp" name="CirculationCheckoutActionForm"   scope="request" type="com.myapp.struts.circulation.CirculationCheckoutAction">
                       <forward name="failure" path="/circulation/cir_checkout.jsp"/>
                       <forward name="success" path="/circulation/view_for_member.jsp"/>
+                       
+   </action>
+   <action  path="/cir_chk1" input="/circulation/cir_enquirymember.jsp" name="CirculationCheckoutActionForm"   scope="request" type="com.myapp.struts.circulation.CirculationCheckoutAction1">
+                      <forward name="failure" path="/circulation/cir_enquirymember.jsp"/>
+                      <forward name="success" path="/circulation/view_for_member1.jsp"/>
    </action>
    <action  path="/cir_view_member" input="/circulation/view_for_member.jsp" name="CirCheckoutActionForm"   scope="request" type="com.myapp.struts.circulation.CirCheckoutAction">
                       <forward name="success" path="/circulation/cir_callno_view.jsp"/>
@@ -1179,7 +1307,7 @@
 
    <action path="/showbook"  scope="request"  type="com.myapp.struts.circulation.ShowBookAction">
                      <forward name="success" path="/circulation/cir_view_book.jsp"/>
-                     <forward name="failure" path="/circulation/cir_checkout.jsp"/>
+                     <forward name="failure" path="/circulation/cir_callno_view.jsp"/>
 
    </action>
    <action path="/showbook1"  scope="request"  type="com.myapp.struts.circulation.ShowBookAction">
@@ -1200,7 +1328,7 @@
    </action>
 
 
-<action  path="/cir_memcheckout_details"    scope="request" type="com.myapp.struts.circulation.cirMemCheckoutDetails">
+<action  path="/circulation/cir_memcheckout_details"    scope="request" type="com.myapp.struts.circulation.cirMemCheckoutDetails">
                       <forward name="success" path="/circulation/view_memcheckoutdetails.jsp"/>
 
    </action>
@@ -1256,7 +1384,7 @@
                        <action path="/dept1" scope="request" type="com.myapp.struts.circulation.FacultyAction"/>
                    <action path="/course1" scope="request" type="com.myapp.struts.circulation.CourseAction"/>
 
-           <action path="/requestfromopac"   scope="request" type="com.myapp.struts.circulation.CirRequestOpacAction">
+           <action path="/circulation/requestfromopac"   scope="request" type="com.myapp.struts.circulation.CirRequestOpacAction">
                      <forward name="viewgrid" path="/circulation/cir_requestfrom_opac.jsp"/>
                      </action>
 
@@ -1288,6 +1416,13 @@
  <action  path="/circulation/showMemberReport"   scope="request" type="com.myapp.struts.circulation.CirShowSingleMemberReportAction">
                       <forward name="success" path="/circulation/cir_viewall_singlememberreport.jsp"/>
 </action>
+
+
+
+<action  path="/circulation/cir_viewallcancel"   scope="request" type="com.myapp.struts.circulation.CirViewAllCancelAccountAction">
+                      <forward name="success" path="/circulation/member_account_viewall1.jsp"/>
+ </action>
+
 
 
 
@@ -1341,6 +1476,14 @@
 
 
       <!--login Action Setting-->
+
+
+      <action path="/admin/instilogo" input="/admin/main.jsp" name="ImageUploadActionForm" scope="session" type="com.myapp.struts.admin.InstiLogo">
+    <forward name="success" path="/admin/changelogo.jsp"/>
+    <forward name="failure" path="/admin/changelogo.jsp"/>
+</action>
+
+
    <action attribute="LoginActionForm" input="/login.jsp" name="LoginActionForm" path="/login" scope="request" type="com.myapp.struts.LoginAction" validate="true">
                         <forward name="success" path="/checksystemsetup.do"/>
                         <forward name="success1" path="/loginsucess.do"/>
@@ -1350,7 +1493,7 @@
                         <forward name="fail" path="/login.jsp"/>
                         <forward name="forgetpassword" path="/forget.jsp"/>
                         <forward name="login" path = "/login.jsp"/>
-                        <forward name="logout" path = "/logout.do"/>
+                        
            </action>
            <action path="/superadmin" type="com.myapp.struts.superadminModuleAction">
                               <forward name="success" path="/admin/admin_home.jsp"/>
@@ -1618,8 +1761,8 @@
 
                <action input="/admin/createaccount1.jsp" name="CreateAccountActionForm" path="/createaccount" scope="request" type="com.myapp.struts.admin.CreateAccountAction">
                        <forward name="success" path="/admin/staffaccount.jsp"/>
-                        <forward name="error" path="/admin/error.jsp"/>
-                         <forward name="duplicate" path="/admin/duplicate_message.jsp"/>
+                        <forward name="error" path="/admin/createaccount1.jsp"/>
+                         <forward name="duplicate" path="/admin/createaccount1.jsp"/>
                </action>
 
 
@@ -1671,7 +1814,7 @@
 
    </action>
    <action path="/OPAC/AccessionRecord" type="com.myapp.struts.opac.DocumentDetailAction2" scope="request">
-                        <forward name="success" path="/OPAC/newjsp2.jsp"/>
+                        <forward name="success" path="/OPAC/newjsp.jsp"/>
 
                      </action>
 

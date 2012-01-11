@@ -12,7 +12,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.HttpSession;
 import com.myapp.struts.hbm.*;
-import com.myapp.struts.CirculationDAO.CirculationDAO;
+import com.myapp.struts.CirDAO.CirculationDAO;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Locale;

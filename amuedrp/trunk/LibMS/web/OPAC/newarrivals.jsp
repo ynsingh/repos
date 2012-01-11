@@ -14,21 +14,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
    
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
-<script language="javascript" >
-function b1click()
-{
-location.href="<%=request.getContextPath()%>/OPAC/OPACmain.jsp";
-}
-function b2click()
-{
-f.action="<%=request.getContextPath()%>/admin/main.jsp";
-f.method="post";
-f.target="_self";
-f.submit();
-}
 
-</script>
+
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <%!
     Locale locale=null;
@@ -68,7 +55,7 @@ String pub_name=resource.getString("cataloguing.catoldtitleentry1.publishername"
 </head>
 
 
-<body>
+<body style="background-color:#e0e8f5;">
  <table  width="100%" align="center">
 
 
@@ -119,7 +106,7 @@ String pub_name=resource.getString("cataloguing.catoldtitleentry1.publishername"
 <%}
 else
 {%>
-
+ <i>NewArrials Search>> <%=tcount%> records found</i>
 
 <ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
 
@@ -182,10 +169,7 @@ else
   <%}%>
   <br><br><br>
   </td></tr>
-  <tr><td align="center" width="400px">
-
-
-      </td></tr></table>
+ </table>
 
 
     </body>

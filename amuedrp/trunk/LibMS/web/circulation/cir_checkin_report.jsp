@@ -18,7 +18,7 @@ This Page is to Enter Library Details
     String locale1="en";
     String rtl="ltr";
     String align="left";
-    boolean page=true;
+    
 %>
 
 <%
@@ -35,8 +35,8 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";page=true;}
-    else{ rtl="RTL";align="right";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
     %>
 
@@ -228,30 +228,30 @@ function print()
       visibility: show;">
 
      <html:form  action="/cir_chkinreport" method="post" target="f1" styleId="form1" >
-         <table dir="<%=rtl%>" class="table" width="800px" height="300px" align="center">
+         <table dir="<%=rtl%>" class="table" width="50%" height="300px" align="center" cellpadding="5px">
 
 
                 <tr><td dir="<%=rtl%>" align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("circulation.cir_checkin_report.chekinreport")%></td></tr>
                 <tr><td dir="<%=rtl%>" valign="top" align="center">
-                        <table dir="<%=rtl%>" cellspacing="10px" width="100%">
+                        <table dir="<%=rtl%>" cellspacing="10px" width="100%" cellpadding="10px">
 
 
   
 
   <tr>
 
-    <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("circulation.cir_newmember.memberid")%> :</strong></td>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong>&nbsp;<%=resource.getString("circulation.cir_newmember.memberid")%> :</strong></td>
     <td dir="<%=rtl%>" ><html:text property="memid" styleId="memid"  onblur="fun()"  styleClass="textBoxWidth"/>
 
     </td>
   </tr>
     <tr>
-     <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("circulation.cir_checkin_report.startdate")%><a class="star">*</a> :</strong></td>
+     <td dir="<%=rtl%>" align="<%=align%>"><strong>&nbsp;Return Date from <a class="star"></a> :</strong></td>
      <td dir="<%=rtl%>" ><html:text property="starting_date" styleId="start_date"   onblur="fun()"  styleClass="textBoxWidth"/>
          <div class="err" align="<%=align%>" id="searchResult1" ></div>
          </td>
 
-         <td dir="<%=rtl%>" align="<%=align%>"><strong><%=resource.getString("circulation.cir_checkin_report.enddate")%><a class="star">*</a> :</strong></td>
+         <td dir="<%=rtl%>" align="<%=align%>"><strong>to <a class="star"></a> :</strong></td>
          <td dir="<%=rtl%>" ><html:text property="end_date" styleId="end_date"   onblur="fun()" styleClass="textBoxWidth"/>&nbsp;&nbsp;
              <input type="submit"  value="<%=resource.getString("opac.simplesearch.find")%>"  onClick="return validation();"/>
 

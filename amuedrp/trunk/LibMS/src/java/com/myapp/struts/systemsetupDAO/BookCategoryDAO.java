@@ -24,75 +24,70 @@ public class BookCategoryDAO {
 
 public static Integer returnIssueLimit(String library_id,String document_category,String mem_type,String submem_type) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
+       Integer maxbiblio=null;
         try {
+             session.beginTransaction();
             Criteria criteria = session.createCriteria(BookCategory.class)
             .add(Restrictions.eq("id.libraryId", library_id))
 
             .add(Restrictions.eq("id.bookType", document_category))
             .add(Restrictions.eq("id.subEmptypeId", submem_type))
             .add(Restrictions.eq("id.emptypeId",mem_type));
-            Integer maxbiblio = (Integer) criteria.setProjection(Projections.property("issueDaysLimit")).uniqueResult();
-            return maxbiblio;
-        } finally {
-            session.close();
+            maxbiblio = (Integer) criteria.setProjection(Projections.property("issueDaysLimit")).uniqueResult();
+          
+        }   catch(Exception e){
+        e.printStackTrace();
         }
+        finally {
+           session.close();
+        }
+        return maxbiblio;
 
-    }
+}
 
  public static List bookList(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(BookCategory.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id)));
-            return  criteria.list();
+           obj=  criteria.list();
 
-        } finally {
-            session.close();
+        }   catch(Exception e){
+        e.printStackTrace();
         }
-    }
+        finally {
+           session.close();
+        }
+        return obj;
+
+}
    
  public static List<BookCategory> ListbookType(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
+       List<BookCategory>  obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("Select id.bookType,fine,issueDaysLimit,id.emptypeId,id.subEmptypeId From  BookCategory where id.libraryId =:library_id");
             query.setString("library_id", library_id);
             query.setResultTransformer(Transformers.TO_LIST);
-            return (List<BookCategory>)  query.list();
+            obj= (List<BookCategory>)  query.list();
 
-        //    List results = session.createCriteria(Cat.class).setProjection(Projections.projectionList().add(Projections.rowCount()).add(Projections.avg("weight")).add(Projections.max("weight")).add(Projections.groupProperty("color"))).list();
-
-
-         /*   Criteria criteria = session.createCriteria(BookCategory.class)
-                    .add(Restrictions.eq("id.libraryId", library_id))
-                    .setProjection(Projections.projectionList())
-                    .add(Projections.distinct(Property.forName("id.bookType"))
-                    .add(Projections.distinct(Property.forName("detail")));*/
-            //   criteria.setProjection(projList);
-
-/*Criteria criteria=session.createCriteria(BookCategory.class)
-        .add(Restrictions.eq("id.libraryId", library_id));
-
-ProjectionList p=Projections.projectionList();
-p.add(Projections.property("id.bookType"));
-p.add(Projections.property("detail"));
-criteria.setProjection(Projections.distinct(p));*/
-
-            // .add(Restrictions.conjunction()
-
-            // List<BookCategory> doclist =  criteria.setProjection(Projections.groupProperty("detail")).list();
-         //   return (List<BookCategory>) criteria.list();
-        } finally {
-            session.close();
+       
+        }  catch(Exception e){
+        e.printStackTrace();
         }
-    }
+        finally {
+           session.close();
+        }
+        return obj;
 
+}
   public static List<FineDetailGrid> ListbookType1(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
+       List<FineDetailGrid> obj=null;
         try {
             session.beginTransaction();
             Query query = session.createSQLQuery("select *  from document_category dc, book_category bc, employee_type et, sub_employee_type st where dc.library_id=bc.library_id and dc.library_id = et.library_id and dc.library_id = st.library_id and dc.document_category_id = bc.book_type and bc.emptype_id = et.emptype_id and bc.sub_emptype_id = st.sub_emptype_id and dc.library_id=:library_id")
@@ -102,40 +97,23 @@ criteria.setProjection(Projections.distinct(p));*/
                     .addEntity(SubEmployeeType.class);
             query.setString("library_id", library_id);
             query.setResultTransformer(Transformers.aliasToBean(FineDetailGrid.class));
-            return (List<FineDetailGrid>)  query.list();
+           obj=(List<FineDetailGrid>)  query.list();
 
-        //    List results = session.createCriteria(Cat.class).setProjection(Projections.projectionList().add(Projections.rowCount()).add(Projections.avg("weight")).add(Projections.max("weight")).add(Projections.groupProperty("color"))).list();
-
-
-         /*   Criteria criteria = session.createCriteria(BookCategory.class)
-                    .add(Restrictions.eq("id.libraryId", library_id))
-                    .setProjection(Projections.projectionList())
-                    .add(Projections.distinct(Property.forName("id.bookType"))
-                    .add(Projections.distinct(Property.forName("detail")));*/
-            //   criteria.setProjection(projList);
-
-/*Criteria criteria=session.createCriteria(BookCategory.class)
-        .add(Restrictions.eq("id.libraryId", library_id));
-
-ProjectionList p=Projections.projectionList();
-p.add(Projections.property("id.bookType"));
-p.add(Projections.property("detail"));
-criteria.setProjection(Projections.distinct(p));*/
-
-            // .add(Restrictions.conjunction()
-
-            // List<BookCategory> doclist =  criteria.setProjection(Projections.groupProperty("detail")).list();
-         //   return (List<BookCategory>) criteria.list();
-        } finally {
-            session.close();
         }
-    }
+        catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
+           session.close();
+        }
+        return obj;
 
+}
 
     public static  BookCategory searchBookTypeDetails(String library_id,String emptype_id,String subemptype_id,String book_type)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+BookCategory obj=null;
         try
         {
             session.beginTransaction();
@@ -145,20 +123,24 @@ criteria.setProjection(Projections.distinct(p));*/
                     .add(Restrictions.eq("id.emptypeId", emptype_id))
                     .add(Restrictions.eq("id.subEmptypeId", subemptype_id))
                     .add(Restrictions.eq("id.bookType", book_type)));
-            return (BookCategory) criteria.uniqueResult();
+           obj= (BookCategory) criteria.uniqueResult();
 
 
         }
-        finally
-        {
+         catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
            session.close();
         }
+        return obj;
+
 }
 
   public static  EmployeeType searchMemTypeId(String library_id,String emptype_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+ EmployeeType obj=null;
         try
         {
             session.beginTransaction();
@@ -166,19 +148,23 @@ criteria.setProjection(Projections.distinct(p));*/
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.emptypeId", emptype_id)));
-            return (EmployeeType) criteria.uniqueResult();
+            obj= (EmployeeType) criteria.uniqueResult();
 
 
         }
-        finally
-        {
+         catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
            session.close();
         }
+        return obj;
+
 }
    public static  SubEmployeeType searchSubMemTypeId(String library_id,String emp_id,String subemptype_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+SubEmployeeType obj=null;
         try
         {
             session.beginTransaction();
@@ -187,23 +173,26 @@ criteria.setProjection(Projections.distinct(p));*/
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.emptypeId", emp_id))
                     .add(Restrictions.eq("id.subEmptypeId",subemptype_id)));
-            return (SubEmployeeType) criteria.uniqueResult();
+            obj= (SubEmployeeType) criteria.uniqueResult();
 
 
         }
-        finally
-        {
+        catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
            session.close();
         }
-}
+        return obj;
 
+}
   
 
 
    public static  List<BookCategory> searchBookCategoryBySubMemberId(String library_id,String emptype_id,String subemptype_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+List<BookCategory> obj=null;
         try
         {
             session.beginTransaction();
@@ -212,14 +201,18 @@ criteria.setProjection(Projections.distinct(p));*/
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.emptypeId", emptype_id))
                     .add(Restrictions.eq("id.subEmptypeId",subemptype_id)));
-            return (List<BookCategory>) criteria.list();
+            obj= (List<BookCategory>) criteria.list();
 
 
         }
-        finally
-        {
+          catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
            session.close();
         }
+        return obj;
+
 }
 
 
@@ -239,21 +232,17 @@ public static  boolean insert(BookCategory obj)
 
 
         }
-        catch (Exception ex)
-        {
-             return false;
-
-       //  System.out.println(ex.toString());
-
+         catch(Exception e){
+             tx.rollback();
+        e.printStackTrace();
+        return false;
         }
-        finally
-        {
-          //session.close();
+        finally {
+           session.close();
         }
-   return true;
+      return true;
 
 }
-
 
 public static  boolean update(BookCategory obj)
 {
@@ -265,17 +254,17 @@ public static  boolean update(BookCategory obj)
             session.update(obj);
             tx.commit();
         }
-        catch (RuntimeException e) {
-
-                tx.rollback();
-                return false;
-
+        catch(Exception e){
+            tx.rollback();
+        e.printStackTrace();
+        return false;
         }
-
-   return true;
+        finally {
+           session.close();
+        }
+        return true;
 
 }
-
 
 public static boolean DeleteBook(String library_id,String emptype_id,String subemptype_id,String book_type) {
       Session session = HibernateUtil.getSessionFactory().openSession();
@@ -299,20 +288,15 @@ public static boolean DeleteBook(String library_id,String emptype_id,String sube
 
 
         }
-        catch (Exception ex)
-        {
-            System.out.println(ex);
-             return false;
-
-       //  System.out.println(ex.toString());
-
+          catch(Exception e){
+        e.printStackTrace();
+        tx.rollback();
+        return false;
         }
-        finally
-        {
-        // session.close();
+        finally {
+           session.close();
         }
-   return true;
-
+        return true;
 
 }
 

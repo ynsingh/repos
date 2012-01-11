@@ -10,22 +10,6 @@
 
 <html><head>
 <title>Search by Call Number...</title>
-<style type="text/css">
-body
-{
-   background-color: #FFFFFF;
-   color: #000000;
-}
-.rows          { background-color: white;border: solid 1px blue; }
-     .hiliterows    { background-color: pink; color: #000000; border: solid 1px blue; }
-     .alternaterows { background-color: #efefef; }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-family:Tahoma;font-size: 12px;text-decoration: none;padding-left: 10px; }
-  .header1        { font-family:Tahoma;font-size: 12px;text-decoration: none;padding-left: 10px; }
-     .datagrid      {
-    font-weight: normal;
-	  }
-     .item{ padding-left: 10px;}
-</style>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
  <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
  <script language="javascript" type="text/javascript">
@@ -115,6 +99,7 @@ req.send("getSubLibrary_Id="+keyValue);
 
 }
 return true;
+
 }
 }
 
@@ -139,17 +124,20 @@ newOpt.text = ndValue1;
 
 
 }
-
+fun();
 }
 
 </script>
 <script language="javascript">
 function fun()
 {
-document.Form1.action="/OPAC/SearchByCallNo.do";
-document.Form1.method="post";
-document.Form1.target="f1";
-document.Form1.submit();
+    document.getElementById("Form1").action="SearchByCallNo.do";
+document.getElementById("Form1").method="post";
+document.getElementById("Form1").target="f1";
+document.getElementById("Form1").submit();
+
+
+
 }
 
 </script>
@@ -305,53 +293,17 @@ else{
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
 </head>
-<body onload="checkboxClickHandler();search();fun();">
+<body onload="checkboxClickHandler();search();fun();" style="background-color:#e0e8f5;margin: 0px 0px 0px 0px">
     <html:form  method="post" action="/OPAC/SearchByCallNo" target="f1" styleId="Form1">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </head><body >
-    <%--<%if(page.equals(true)){%>--%>
+  
+    <table width="100%" >
+
+        <td valign="top" width="15%">
+            <table align="center" dir="<%=rtl%>" width="100%" class="datagrid" height="400px"  style="border:solid 1px black;">
 
 
-    <table align="<%=align%>" dir="<%=rtl%>" width="1200x" class="datagrid" height="400px"  style="border:solid 1px #e0e8f5;">
-
-
-  <tr class="header" dir="<%=rtl%>"><td  width="800px" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
+  <tr class="header" dir="<%=rtl%>"><td   dir="<%=rtl%>"  height="28px" align="center" colspan="2">
 
 
           <b dir="<%=rtl%>"><%=resource.getString("opac.callno.callno")%></b>
@@ -360,13 +312,12 @@ else{
 
 
         </td></tr>
-   <tr style="background-color:#e0e8f5;" dir="<%=rtl%>"><td width="800px" rowspan="2" dir="<%=rtl%>">
-          <table>
-               <tr><td dir="<%=rtl%>" colspan="2">
+   <tr style="background-color:#e0e8f5;" dir="<%=rtl%>"><td dir="<%=rtl%>">
+           <%=resource.getString("cataloguing.catbiblioentry.selectlang")%></td><td>
                        <div id='translControl'>
       <input type="checkbox" id="checkboxId" onclick="javascript:checkboxClickHandler();javascript:DisBox();javascript:languageChangeHandler()">
       <html:hidden property="checkbox" styleId="checkbox" name="CallNoSearchActionForm"/>
-      <%=resource.getString("cataloguing.catbiblioentry.selectlang")%><select id="languageDropDown" onchange="javascript:languageChangeHandler()"></select>
+      <select id="languageDropDown" class="selecthome" onchange="javascript:languageChangeHandler()"></select>
       <html:hidden property="language" styleId="language" name="CallNoSearchActionForm"/>
     </div>
                    </td>
@@ -383,25 +334,23 @@ else{
 
 
 
-          </table>
-       </td><td class="header" dir="<%=rtl%>">
+    
+<tr><td class="header" dir="<%=rtl%>" colspan="2">
            <%=resource.getString("opac.simplesearch.restrictedby")%>
 
        </td>
-
     </tr>
-    <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
-          <td    align="<%=align%>" dir="<%=rtl%>">
-          <table>
-              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%> </td><td>
 
-<html:select property="CMBLib" dir="<%=rtl%>"  tabindex="3"  value="<%=lib_id%>" styleId="CMBLib" onchange="search()">
+                      <html:select property="CMBLib" dir="<%=rtl%>"  styleClass="selecthome" tabindex="3"  value="<%=lib_id%>" styleId="CMBLib" onchange="search()">
      <html:option value="all">All</html:option>
     <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
  </html:select>
 
-     </td></tr><tr><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <html:select property="CMBSUBLib"  styleId="SubLibrary" value="<%=sublib_id%>">
+     </td></tr>
+              <tr><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%></td><td>
+                      <html:select property="CMBSUBLib" styleClass="selecthome"  styleId="SubLibrary" value="<%=sublib_id%>" onchange="fun();">
                          <%--  <html:option value="all">All</html:option>
                               <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
               --%>         </html:select></td>
@@ -409,36 +358,28 @@ else{
 
 
 
-     </tr></table></td>
-
-    </tr>
-
-    <tr><td dir="<%=rtl%>">
+     </tr>
+     <tr><td dir="<%=rtl%>" colspan="2">
 
 
-<input type="submit" class="btn" dir="<%=rtl%>" id="Button1" name="go" value="<%=resource.getString("opac.callno.go")%>" >
+<input type="submit" class="buttonhome" dir="<%=rtl%>" id="Button1" name="go" value="<%=resource.getString("opac.callno.go")%>" >
 
-<input type="reset" class="btn" id="Button2" dir="<%=rtl%>" name="" value="<%=resource.getString("opac.browse.clear")%>">
-
-
-<script>
-    function back()
-    {
-        window.location="<%=request.getContextPath()%>/OPAC/OPACmain.jsp";
-
-    }
-    </script>
-      </td></tr>
-  <tr style="background-color:#e0e8f5;"><td  dir="<%=rtl%>" height="400px" valign="top" colspan="2" >
-
-             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="400px" width="1200px" scrolling="no"  id="f1"></IFRAME>
+<input type="reset" class="buttonhome" id="Button2" dir="<%=rtl%>" name="" value="<%=resource.getString("opac.browse.clear")%>">
 
 
       </td></tr>
+  
 
         </table>
 
+        </td>
+        <td  dir="<%=rtl%>" height="700px" valign="top"  >
 
+             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="100%" width="100%" scrolling="yes"  id="f1"></IFRAME>
+
+
+      </td>
+    </table>
 </html:form>
 
 

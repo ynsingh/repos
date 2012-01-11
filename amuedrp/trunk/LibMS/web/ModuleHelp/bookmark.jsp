@@ -54,9 +54,9 @@ hza.style.display = state;
 </script>
         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
- <body bgcolor="cyan" style="text-decoration: none;">
+ <body  style="text-decoration: none;">
     
-            
+     <h5>Table of Content</h5>
  <ol type="1" class="opac_table_textbox">
 <li><a href="AdminHelp.html#admin" target="c">
         <a href="#" onClick="showhide('div1');" >Administrator/Admin Module</a>
@@ -308,7 +308,132 @@ hza.style.display = state;
     </div>
     </li>
 
+ <li> <a href="#" onclick="showhide('div5');">Circulation Module</a>
+     <div id="div5" style="display: none;">
+<i>
+<ol type="a">
+<li><a href="helpCir.html#" target="c">Member Management</a></li>
+   	<ol type="1">
+	<li><a href="helpCir.html#register" target="c">Member Details</a></li>
+		<ol type="i">
+			<li><a href="helpCir.html#register" target="c">Register</a></li>
+			<li><a href="helpCir.html#update" target="c">Update</a></li>
+			<li><a href="helpCir.html#delete" target="c">Delete</a></li>
+			<li><a href="helpCir.html#view" target="c">View</a></li>
+			<li><a href="helpCir.html#viewAll" target="c">View All</a></li>
+		</ol>
+	<li><a href="helpCir.html#create" target="c">Member Account</a></li>
+		<ol type="i">
+			<li><a href="helpCir.html#create" target="c">Create</a></li>
+			<li><a href="helpCir.html#aUpdate" target="c">Update</a></li>
+			<li><a href="helpCir.html#aDelete" target="c">Delete</a></li>
+			<li><a href="helpCir.html#aView" target="c">View</a></li>
+			<li><a href="helpCir.html#aviewAll" target="c">View All</a></li>
+		</ol>
 
+	<li><a href="helpCir.html#" target="c">Registration Request From OPAC</a></li>
+	<li><a href="helpCir.html#" target="c">Temporary Registration</a></li>
+	<li><a href="helpCir.html#" target="c">Modify Record</a></li>
+	<li><a href="helpCir.html#" target="c">Cancellation</a></li>
+	<li><a href="helpCir.html#" target="c">Renewal</a></li>
+	<li><a href="helpCir.html#delinquentMember" target="c">Delinquent Member</a></li>
+	<li><a href="helpCir.html#" target="c">Memeber Statistics</a></li>
+	<li><a href="helpCir.html#" target="c">Institute Member</a></li>
+		<ol type="i">
+			<li><a href="helpCir.html#" target="c">Member Set</a></li>
+			<li><a href="helpCir.html#" target="c">Daily</a></li>
+			<li><a href="helpCir.html#" target="c">By Group</a></li>
+			<li><a href="helpCir.html#" target="c">General</a></li>
+		</ol>
+	<li><a href="helpCir.html#" target="c">Scheme Allocation</a></li>
+	</ol>
+
+<li><a href="helpCir.html#" target="c">Member Directory</a></li>
+<li><a href="helpCir.html#" target="c" >Membership Card Management</a></li>
+		<ol type="i">
+			<li><a href="helpCir.html#" target="c">Generate Card</a></li>
+			<li><a href="helpCir.html#" target="c">Lost/Found Card</a></li>
+			<li><a href="helpCir.html#" target="c">Duplicate Card</a></li>
+			<li><a href="helpCir.html#" target="c">View</a></li>
+			<li><a href="helpCir.html#" target="c">Remove Card</a></li>
+		</ol>
+<li><a href="helpCir.html#issue" target="c" >Check Out(Issue)</a></li>
+<li><a href="helpCir.html#return" target="c" >Check In(Return)</a></li>
+<li><a href="helpCir.html#" target="c" >File Management</a></li>
+			<ol type="i">
+			<li><a href="helpCir.html#" target="c">Fine Collection</a></li>
+			<li><a href="helpCir.html#" target="c">Update Fine Detail</a></li>
+			<li><a href="helpCir.html#" target="c">Fine Notes</a></li>
+			</ol>
+<li><a href="helpCir.html#" target="c" >Collection Management</a></li>
+		<ol type="i">
+			<li><a href="helpCir.html#" target="c">Titles on ShowCase/Display</a></li>
+			<li><a href="helpCir.html#" target="c">Missing Document</a></li>
+			<li><a href="helpCir.html#" target="c">Damaged Document</a></li>
+			<li><a href="helpCir.html#" target="c">Withdrawn Document</a></li>
+			<li><a href="helpCir.html#" target="c">Written Off Document</a></li>
+		</ol>
+<li><a href="helpCir.html#" target="c" >Binding Management</a></li>
+		<ol type="i">
+			<li><a href="helpCir.html#" target="c">Prepare List for Binding</a></li>
+			<li><a href="helpCir.html#" target="c">Sent to Binder</a></li>
+			<li><a href="helpCir.html#" target="c">Update Binding Status</a></li>
+			<li><a href="helpCir.html#" target="c">Recieved Binded Titles</a></li>
+			<li><a href="helpCir.html#" target="c">Written Off Document</a></li>
+		</ol>
+<li><a href="helpCir.html#" target="c" >Document Reservation</a></li>
+		<ol type="i">
+			<li><a href="helpCir.html#" target="c">Reserve Document</a></li>
+			<li><a href="helpCir.html#" target="c">Cancel Reservation</a></li>
+			<li><a href="helpCir.html#" target="c">Change Resevation Sequence</a></li>
+		</ol>
+<li><a href="helpCir.html#" target="c" >Circulation Enquiries</a></li>
+		<ol type="i">
+			<li><a href="helpCir.html#" target="c">Member</a></li>
+			<li><a href="helpCir.html#" target="c"> Collection </a></li>
+			<li><a href="helpCir.html#" target="c">Transaction Log</a></li>
+			<li><a href="helpCir.html#" target="c">Seria Based</li>
+			<li><a href="helpCir.html#" target="c">Statistics</a></li>
+		</ol>
+<li><a href="helpCir.html#checkOut" target="c" >Circulation Report</a></li>
+		<ol type="i">
+			<li><a href="helpCir.html#checkOut" target="c">CheckOut Report</a></li>
+			<li><a href="helpCir.html#checkIn" target="c"> CheckIn Report</a></li>
+			<li><a href="helpCir.html#" target="c">Reminder</a></li>
+			<li><a href="helpCir.html#" target="c">Management Reporting</li>
+			<li><a href="helpCir.html#" target="c">Written Off Document</a></li>
+		</ol>
+<li><a href="helpCir.html#" target="c" >System Setup</a></li>
+		<ol type="i">
+			<li><a href="helpCir.html#" target="c">Member Related Parameters</a></li>
+			<li><a href="helpCir.html#" target="c">Delinquency Reasons</a></li>
+			<li><a href="helpCir.html#" target="c">Cancellation Reasons</a></li>
+			<li><a href="helpCir.html#" target="c">Fine Categories</li>
+			<li><a href="helpCir.html#" target="c">Text of Notices for Members</a></li>
+			<li><a href="helpCir.html#" target="c">Parameters for Slips</a></li>
+		</ol>
+<li><a href="helpCir.html#" target="c" >House Keeping</a></li>
+		<ol type="i">
+			<li><a href="helpCir.html#" target="c">Remove Transaction Log</a></li>
+			<li><a href="helpCir.html#" target="c">Remove Expired Records</a></li>
+		</ol>
+<li><a href="helpCir.html#" target="c" >Inter Library Loan</a></li>
+		<ol type="i">
+			<li><a href="helpCir.html#" target="c">Record Keeping </a></li>
+			<li><a href="helpCir.html#" target="c"> Circulation</a></li>
+			<li><a href="helpCir.html#" target="c"> Enquiries</a></li>
+			<li><a href="helpCir.html#" target="c">  Reports</a></li>
+		</ol>
+<li><a href="helpCir.html#" target="c" >Serial Circulation</a></li>
+</ol>
+</i>
+
+     </div>
+ </li>
+
+ <br>Help<br/>
+ <a href="<%=request.getContextPath()%>/ModuleHelp/UserManual.odt">ODT Help</a><br/>
+<a href="<%=request.getContextPath()%>/ModuleHelp/UserManual.pdf">PDF Help</a>
 
 
 </ol>

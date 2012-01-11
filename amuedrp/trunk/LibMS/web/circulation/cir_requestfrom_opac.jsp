@@ -68,7 +68,7 @@ String sublibrary_id=(String)session.getAttribute("sublibrary_id");
 
 
         <body onload="set()">
-       <form method="post" action="/requestfromopac"  id="Form1">
+       <form method="post" action="/circulation/requestfromopac"  id="Form1">
            <table dir="<%=rtl%>" class="table" width="800px">
                <tr><td dir="<%=rtl%>" class="headerStyle" align="center"><%=resource.getString("circulation.cir_reqfromopac.memreqfromopac")%><br/></td></tr>
              <tr>

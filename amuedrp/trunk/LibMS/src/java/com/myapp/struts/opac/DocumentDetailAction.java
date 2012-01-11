@@ -32,7 +32,7 @@ public class DocumentDetailAction extends org.apache.struts.action.Action {
 HttpSession session = request.getSession();
  session.removeAttribute("documentDetail");
        session.removeAttribute("documentDetail1");
-
+session.removeAttribute("MLIdocumentDetail");
         int document_id = Integer.parseInt(request.getParameter("doc_id"));
         String library_id = (String)request.getParameter("library_id");
         String sublibrary_id = (String)request.getParameter("sublibrary_id");

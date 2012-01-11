@@ -37,9 +37,11 @@ public class ReservationListDAO {
         }
         catch (Exception ex)
         {
+            ex.printStackTrace();
+            tx.rollback();
              return false;
 
-       //  System.out.println(ex.toString());
+       
 
         }
         finally
@@ -54,7 +56,7 @@ public class ReservationListDAO {
        
        public static Reservationlist getRequestDetail(String library_id,String sublibrary_id,String mem_id,String accession_no,String status) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = null;
+        Reservationlist obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM Reservationlist where id.libraryId = :library_id and id.sublibraryId=:sublibrary_id and id.memid=:mem_id and accessionNo=:accession_no and status=:status");
@@ -64,12 +66,16 @@ public class ReservationListDAO {
             query.setString("mem_id",mem_id);
             query.setString("accession_no",accession_no);
             query.setString("status",status);
-            return  (Reservationlist)query.uniqueResult();
+            obj=  (Reservationlist)query.uniqueResult();
+        }
+        catch(Exception ex){
+        ex.printStackTrace();
+
         }
         finally {
             session.close();
         }
-
+return obj;
 
 
 }
@@ -78,7 +84,7 @@ public class ReservationListDAO {
 
      public static List<Reservationlist> getMemberDetail(String library_id,String sublibrary_id,String memid) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction tx = null;
+        List<Reservationlist>  obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM Reservationlist where id.libraryId = :library_id and id.sublibraryId=:sublibrary_id and id.memid=:mem_id");
@@ -87,12 +93,15 @@ public class ReservationListDAO {
             query.setString("mem_id",memid);
 
 
-            return  (List<Reservationlist>)query.list();
+            obj=  (List<Reservationlist>)query.list();
+        }
+        catch(Exception e){
+        e.printStackTrace();
         }
         finally {
-
+        session.close();
         }
-
+    return obj;
      }
 
 

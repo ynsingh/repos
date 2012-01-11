@@ -1,46 +1,30 @@
 
  
-    <%@page import="com.myapp.struts.opac.ReservationDoc,com.myapp.struts.hbm.*,com.myapp.struts.opacDAO.*"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+    <%@page import="com.myapp.struts.opac.ReservationDoc,com.myapp.struts.systemsetupDAO.BookCategoryDAO,com.myapp.struts.utility.DateCalculation,com.myapp.struts.hbm.*,com.myapp.struts.opacDAO.*"%>
     <%@ page import="java.util.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridTag"%>
     <%@ page import="java.sql.*"%>
     <%@ page import="java.io.*"   %>
-    <jsp:include page="/admin/header.jsp"/>
+    
     <%@ taglib uri="http://jakarta.apache.org/taglibs/datagrid-1.0" prefix="ui" %>
     <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
     <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
-    <title>View Reservation Detail</title>
-
-<script language="javascript" >
-function b1click()
-{
-location.href="<%=request.getContextPath()%>/circulation/view_for_member.jsp";
-}
-
-</script>
+  
 
 </head>
 
 <body>
-    <div
-   style="  top:130px;
-   left:350px;
-   right:5px;
-      position: absolute;
-
-      visibility: show;">
+   
 
      <%!
     Locale locale=null;
     String locale1="en";
     String rtl="ltr";
-    boolean page=true;
+  
 %>
 <%
 try{
@@ -53,13 +37,16 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;}
-    else{ rtl="RTL";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";}
+    else{ rtl="RTL";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
 
   <%
+  String Title="Title";
+pageContext.setAttribute("Title", Title);
+
 String Status=resource.getString("circulation.cirviewall.status");
 pageContext.setAttribute("Status", Status);
 String DocumentId=resource.getString("circulation.cir_viewmem_chkoutreport.docid");
@@ -88,16 +75,53 @@ pageContext.setAttribute("Edition",Edition);
 %>
  <%
  
- String name=(String)session.getAttribute("mem_name");
-  List<CheckoutDeocumentDetails>  requestList=(List<CheckoutDeocumentDetails>)session.getAttribute("membercheckoutDetail");
+ //String name=(String)session.getAttribute("mem_name");
+  List<CheckoutDeocumentDetails>  requestList1=(List<CheckoutDeocumentDetails>)session.getAttribute("membercheckoutDetail");
+  List<CheckoutDeocumentDetails>  requestList=new ArrayList<CheckoutDeocumentDetails>();
 
-   //requestList = new ArrayList ();
+   Iterator is=requestList1.iterator();
+  int i=0;
+
+  while(is.hasNext()){
+      CheckoutDeocumentDetails doc=requestList1.get(i++);
+      if(doc.getCirCheckout().getStatus().equalsIgnoreCase("issued")){
+     if(DateCalculation.getDifference( DateCalculation.now(),doc.getCirCheckout().getDueDate())>0){
+
+           String document_category= doc.getDocumentDetails().getBookType();
+           //  System.out.println(document_category);
+           CirMemberAccount cma=com.myapp.struts.CirDAO.CirculationDAO.getAccount(doc.getCirCheckout().getId().getLibraryId(),doc.getCirCheckout().getId().getSublibraryId(), doc.getCirCheckout().getMemid());
+
+            String mem_type=cma.getMemType();
+        String submem_type=cma.getSubMemberType();
+        
+
+      BookCategory bookobj=BookCategoryDAO.searchBookTypeDetails(doc.getCirCheckout().getId().getLibraryId(), mem_type, submem_type, document_category);
+//System.out.println(bookobj.getFine().toString());
+
+long f=(long)(bookobj.getFine()*DateCalculation.getDifference( DateCalculation.now(),doc.getCirCheckout().getDueDate()));
+//System.out.println(bookobj.getFine().toString()+f);
+         Integer ob=new Integer(String.valueOf(f));
+
+ //System.out.println("Fine"+ob);
+doc.setFine(ob);
+     }
+}else{
+         // System.out.println("Fine"+0);
+     doc.setFine(0);
+}
+
+ requestList.add(doc);
+  
+  is.next();
+  }
+
+
+
    int tcount =requestList.size();
-   int perpage=4;
-   int tpage=0;
+   
  
 
-
+//System.out.println("Si"+tcount );
 
 %>
        
@@ -109,11 +133,8 @@ pageContext.setAttribute("Edition",Edition);
    pageContext.setAttribute("tCount", tcount);
 %>
 <br>
- <%if(page.equals(true))
-    {
-
-%>
-<table dir="<%=rtl%>" class="table" width="400px" style="height: 200px">
+ 
+<table dir="<%=rtl%>" class="table" width="100%" height="300px">
     <tr><td dir="<%=rtl%>" class="headerStyle" valign="top" align="center" height="25px"><%=resource.getString("circulation.viewformember.memberchkoutdetail")%></td></tr>
   <tr><td dir="<%=rtl%>" valign="top"><br>
 
@@ -123,46 +144,53 @@ pageContext.setAttribute("Edition",Edition);
 <p class="err" style="font-size:12px"><%=resource.getString("circulation.cir_viewall_mem_detail.norecfond")%></p>
 <%}
 else
-{%>
+{
+    System.out.println("here");
+    %>
+
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="2" cellSpacing="0" styleClass="datagrid">
     
   <columns>
-      
-    <column width="10">
-      <header value="" hAlign="left" styleClass="admingridheader"/>
+      <column width="15%">
+      <header value="MemberID" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.cirCheckout.memid}"  hAlign="left"    styleClass="item"/>
+    </column>
+    
+
+    <column width="15%">
+      <header value="${Title}" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.documentDetails.title}"  hAlign="left"    styleClass="item"/>
     </column>
 
-    <column width="100">
-      <header value="${DocumentId}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.documentDetails.id.documentId}"  hAlign="left"    styleClass="item"/>
-    </column>
-
-    <column width="200">
+    <column width="10%">
       <header value="${Author}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.documentDetails.mainEntry}" hAlign="left"   styleClass="item"/>
     </column>
 
-    <column width="200">
+    <column width="10%">
       <header value="${CallNo}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.documentDetails.callNo}"   hAlign="left" styleClass="item"/>
     </column>
-   
-      <column width="100">
+    <column width="15%">
+      <header value="AccessionNo" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.documentDetails.accessionNo}"   hAlign="left" styleClass="item"/>
+    </column>
+      <column width="10%">
       <header value="${IssueDate}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.cirCheckout.issueDate}" hAlign="left" styleClass="item"/>
     </column>
 
-    <column width="100">
+    <column width="10%">
       <header value="${DueDate}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.cirCheckout.dueDate}" hAlign="left" styleClass="item"/>
     </column>
-       <column width="100">
+       <column width="15%">
       <header value="${Edition}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.documentDetails.edition}"   hAlign="left" styleClass="item"/>
     </column>
-        <column width="100">
-      <header value="${Status}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.cirCheckout.status}"   hAlign="left" styleClass="item"/>
+      <column width="15%">
+      <header value="Fine" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.fine}"   hAlign="left" styleClass="item"/>
     </column>
  </columns>
 
@@ -176,7 +204,7 @@ else
 <table width="600px" style="font-family: arial; font-size: 10pt" border=0>
 <tr>
 <td align="left" width="150px">
-     <a href="<%=request.getContextPath()%>/circulation/view_for_member.jsp" > <%=resource.getString("opac.accountdetails.back")%></a>&nbsp;&nbsp;
+     
 <c:if test="${previous != null}">
 <a href="<c:out value="${previous}"/>"><%=resource.getString("opac.accountdetails.previous")%></a>
 </c:if>&nbsp;
@@ -211,13 +239,11 @@ else
 
 </td></tr>
   <tr><td align="center">
-  <input type="button" onclick="b1click()" value="Back"/></td></tr>
+ </td></tr>
 </table>
 
-<%}
-requestList=null;
-   %>
-    </div>
+
+  
     </body>
 
 </html>

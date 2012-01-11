@@ -14,8 +14,8 @@ import com.myapp.struts.hbm.*;
 import com.myapp.struts.AcquisitionDao.AcquisitionDao;
 import com.myapp.struts.AcquisitionDao.BudgetDAO;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.StringUtils;
 import com.myapp.struts.utility.DateCalculation;
-import java.util.*;
 /**
  *
  * @author EdRP-04
@@ -30,10 +30,6 @@ public class AcqInitiateAcquisitionProcessAction1 extends org.apache.struts.acti
     AcqBibliographyId acqbibdtailid=new AcqBibliographyId();
     AcquisitionDao acqdao=new AcquisitionDao();
       float total;
-Locale locale=null;
-   String locale1="en";
-   String rtl="ltr";
-   String align="left";
 
     
     @Override
@@ -56,24 +52,6 @@ Locale locale=null;
         String sub_author=acqbib.getSub_author();
         String gg=String.valueOf(acqbib.getNo_of_copies());
         System.out.println("NOOOOOOOOOOO of CCCCCCCCCCCC"+gg);
-
-
-         try{
-
-        locale1=(String)session.getAttribute("locale");
-    if(session.getAttribute("locale")!=null)
-    {
-        locale1 = (String)session.getAttribute("locale");
-        System.out.println("locale="+locale1);
-    }
-    else locale1="en";
-}catch(Exception e){locale1="en";}
-     locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
-    else{ rtl="RTL";align="right";}
-    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
-
-
 
 int title_id=(Integer)session.getAttribute("titleid");
 System.out.println("TTTTTTTITTTTTTTTll         "+title_id);
@@ -146,8 +124,7 @@ if(acq1!=null)
 
         bal=Float.parseFloat(allocation.getTotalAmount())-bal;
        if(bal<=0){
-      // request.setAttribute("msg1", "Budget is not Sufficient");
-        request.setAttribute("msg1",resource.getString("acquisition.AcqInitiateAcqusitionProcessAction1.msg1"));
+       request.setAttribute("msg1", "Budget is not Sufficient");
        return mapping.findForward("fail");
 
        }
@@ -164,8 +141,7 @@ if(acq1!=null)
         total=unitprice*noc;
        float bal=Float.parseFloat(allocation.getTotalAmount())-total;
         if(bal<=0){
-    //   request.setAttribute("msg1", "Budget is not Sufficient");
-               request.setAttribute("msg1", resource.getString("acquisition.AcqInitiateAcqusitionProcessAction1.msg1"));
+       request.setAttribute("msg1", "Budget is not Sufficient");
        return mapping.findForward("fail");
 
        }
@@ -190,8 +166,7 @@ if(acq1!=null)
 
 
         acqdao.insert1(acqbibdtail1);
-        //String msg="Record is inserted successfully with control no :"+control_no;
-        String msg=resource.getString("acquisition.AcqInitiateAcqusitionProcessAction1.msg2")+control_no;
+        String msg="Record is inserted successfully with control no :"+control_no;
         request.setAttribute("msg2", msg);
         acqbib.setDocument_type("");
         acqbib.setTitle("");

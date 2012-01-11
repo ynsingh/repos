@@ -13,6 +13,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.AcquisitionDao.AcquisitionDao;
+import com.myapp.struts.AcquisitionDao.VendorDAO;
 import java.util.List;
 
 /**
@@ -28,15 +29,7 @@ public class AcqFirmOrderAction extends org.apache.struts.action.Action {
     AcqApprovalHeader acqaph=new AcqApprovalHeader();
     AcqApprovalHeaderId  acqaphid=new AcqApprovalHeaderId();
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -49,7 +42,7 @@ public class AcqFirmOrderAction extends org.apache.struts.action.Action {
         List<AcqBibliographyDetails> aa=acqdao.searchDoc3(library_id, sub_library_id);
        
         
-        session.setAttribute("opacList", aa);
+        session.setAttribute("firmorder", aa);
         return mapping.findForward("listApproval");
 
       
