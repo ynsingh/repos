@@ -159,6 +159,12 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
                         	{
                         		for(int i=0;i<list.size();i++)
                                 	{
+						
+						int instid=((CourseUserDetail) list.elementAt(i)).getInstId();
+						String instituteId=Integer.toString(instid);
+
+						if(instituteId.equals(instituteid))
+						{
 						String gname=((CourseUserDetail) list.elementAt(i)).getGroupName();
 						String cname=((CourseUserDetail) list.elementAt(i)).getCourseName();
 			              		String uname=((CourseUserDetail) list.elementAt(i)).getLoginName();
@@ -175,6 +181,7 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
                                                 dbDetail.setMsgID(fname);
                                        	        dbDetail.setPermission(lname);
                                         	entry.addElement(dbDetail);
+						}
 					}
 				}
 				else{

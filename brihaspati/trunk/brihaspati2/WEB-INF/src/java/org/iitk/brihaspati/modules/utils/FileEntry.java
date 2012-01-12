@@ -87,7 +87,7 @@ public class FileEntry
 //-----------------------------OLES
 	private String Difflevel;
         private String Description;
-
+	private String InstId;
 	public void setemailId(String emailId)
         {
                 this.emailId=emailId;
@@ -411,6 +411,15 @@ public class FileEntry
         public String  getDescription()
         {
                 return Description;
+        }
+        public void setInstituteId(String InstId)
+        {
+                this.InstId=InstId;
+        }
+        public String getInstituteId()
+        {
+                int index=InstId.lastIndexOf('/'); // truncate the relative path from the this.name
+                return InstId.substring(index+1);  // to retrieve the user name.
         }
 
 		

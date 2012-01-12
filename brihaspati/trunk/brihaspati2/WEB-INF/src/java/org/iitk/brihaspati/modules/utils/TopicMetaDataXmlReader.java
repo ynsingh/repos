@@ -526,7 +526,7 @@ public class TopicMetaDataXmlReader
                 {
                         Vector v=new Vector();
                         Attributes ats;
-                        String gname,cname,uname,orgtn,email,fname,lname,registerationDate;
+                        String gname,cname,uname,orgtn,email,fname,lname,registerationDate,instid;
                         for(int j=0;j<file.length;j++)
                         {
 
@@ -541,7 +541,8 @@ public class TopicMetaDataXmlReader
                                 fname=ats.getValue("fname");
                                 lname=ats.getValue("lname");
                                 registerationDate=ats.getValue("registerationDate");
-
+				instid=ats.getValue("instituteid");
+				int InstId=Integer.parseInt(instid);
                                 fileEntry.setGroupName(gname);
                                 fileEntry.setCourseName(cname);
                                 fileEntry.setLoginName(uname);
@@ -550,6 +551,8 @@ public class TopicMetaDataXmlReader
                                 fileEntry.setInstructorName(fname);
                                 fileEntry.setUserName(lname);
 				fileEntry.setCreateDate(registerationDate);
+				fileEntry.setUserName(lname);
+				fileEntry.setInstId(InstId);
                                 v.addElement(fileEntry);
                         }
                         return v;

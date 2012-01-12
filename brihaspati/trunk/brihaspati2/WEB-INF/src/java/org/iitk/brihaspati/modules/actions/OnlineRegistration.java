@@ -63,6 +63,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
@@ -324,6 +325,9 @@ public class OnlineRegistration extends VelocitySecureAction
 		crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,instname);
 		List ialist=InstituteAdminRegistrationPeer.doSelect(crit);
 		int instituteid=((InstituteAdminRegistration)ialist.get(0)).getInstituteId();
+		String InstituteId=Integer.toString(instituteid);
+		//InstituteIdUtil Instid=new InstituteIdUtil();
+		//int instid =Instid.getIst_Id(instname);
                 gname=pp.getString("COURSEID","").toUpperCase();
                 String cname=pp.getString("CNAME","");
                 String dept=pp.getString("DEPT","");
@@ -364,8 +368,8 @@ public class OnlineRegistration extends VelocitySecureAction
 		 * Getting Random Group name if Given Group Name for same User already  exist in database
 		 * @param vc is vector having list of Random Group name 
 		 */	
-
-		doesNotExists = courseMgmt.CheckCourseExist(gname+uname,LangFile);
+		String coursename=gname+uname+"_"+instituteid;
+		doesNotExists = courseMgmt.CheckCourseExist(coursename,LangFile);
                 if(doesNotExists==false)
                 {
 		 	/** Again checking Random Group name if Given Group Name for same User in database **/
@@ -428,7 +432,7 @@ public class OnlineRegistration extends VelocitySecureAction
         	                	srvrPort= TurbineServlet.getServerPort();
 					indexList = sendMail_MoreThanSevenDays(courselist, MsgForExpireTime, gName, server_name, srvrPort, LangFile);
 					xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
-	        	        	TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate);
+	        	        	TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId);
 	        		        xmlWriter.writeXmlFile();
 					sendMailToApproval("fromCourse",LangFile,uname, cname,instituteid);
 				} //else inner
@@ -437,7 +441,7 @@ public class OnlineRegistration extends VelocitySecureAction
 			{
 				indexList.add(-1);
                 		xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
-		                TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate);
+		                TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId);
 
         		        xmlWriter.writeXmlFile();
 				sendMailToApproval("fromCourse",LangFile,uname, cname,instituteid);
