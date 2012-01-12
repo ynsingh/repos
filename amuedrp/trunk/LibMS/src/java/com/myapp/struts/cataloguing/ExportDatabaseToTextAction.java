@@ -50,9 +50,9 @@ public class ExportDatabaseToTextAction extends org.apache.struts.action.Action 
 
      
         
-            delimiter = (uploadForm.getDelimiter()).concat(uploadForm.getCombo_delimiter()+" ");
-        System.out.println("Delimiter:::::::::::::::::::::::::::::"+delimiter.toString());
-        fileType = uploadForm.getFileType();
+         //   delimiter = (uploadForm.getDelimiter()).concat(uploadForm.getCombo_delimiter()+" ");
+      //  System.out.println("Delimiter:::::::::::::::::::::::::::::"+delimiter.toString());
+       // fileType = uploadForm.getFileType();
              if (uploadForm.getButton().equals("Back")){
                  return mapping.findForward("Back");
              }

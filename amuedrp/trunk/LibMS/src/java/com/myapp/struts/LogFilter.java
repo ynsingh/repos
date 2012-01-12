@@ -3,7 +3,7 @@ package com.myapp.struts;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import com.myapp.struts.utility.DateCalculation;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import com.myapp.struts.utility.writeLog;
 
 
@@ -23,7 +23,7 @@ public class LogFilter implements Filter  {
                  FilterChain chain) 
                  throws java.io.IOException, ServletException {
 
-        Logger systemlog = Logger.getLogger(LoginAction.class);
+      //  Logger systemlog = Logger.getLogger(LoginAction.class);
 
 
        // Get the IP address of client machine.
@@ -49,7 +49,7 @@ System.out.println("************************************************************
 
 
 //Log Data in Log File on Apache Server
-    systemlog.info("Request for URL="+ req.getRequestURI() +" By UserName="+((String)session.getAttribute("username"))+" From Libraary="+((String)session.getAttribute("library_id"))+ " SubLibrary="+((String)session.getAttribute("sublibrary_id"))+" LoginID="+((String)session.getAttribute("login_id"))+" Having Role="+ ((String)session.getAttribute("login_role")+" At "+DateCalculation.dateTime().toString()));
+   // systemlog.info("Request for URL="+ req.getRequestURI() +" By UserName="+((String)session.getAttribute("username"))+" From Libraary="+((String)session.getAttribute("library_id"))+ " SubLibrary="+((String)session.getAttribute("sublibrary_id"))+" LoginID="+((String)session.getAttribute("login_id"))+" Having Role="+ ((String)session.getAttribute("login_role")+" At "+DateCalculation.dateTime().toString()));
 
 // Logs obj=new Logs();
   //        obj.setUrl(req.getRequestURI());
