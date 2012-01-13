@@ -245,65 +245,65 @@ $!data.getMessage()
       </tr>
       #end
         <tr width=100% bgcolor="$ui.menuColor">
-                <img src="$content.getURI("/images/hand.gif")"><font color="red">Please make sure you do not have <b>'+' and ','</b> characters in the filenames of the files you are uploading !! </font>
+                <img src="$content.getURI("/images/hand.gif")"><font color="red">$brih_UploadMsg</font>
         </tr>
 	
 	#if($user_role == "instructor")
       <tr width=100% bgcolor="$ui.tableColor">
          <td colspan=4>
          <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
-        <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>Existing Topic
+        <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
         <SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
           <option></option>
         #foreach($topic in $allTopics)
                 <option>$topic</option>
           #end
         </SELECT>
-	<input type="RADIO" name=topicExisting value="NEWTOPIC" >New Topic
+	<input type="RADIO" name=topicExisting value="NEWTOPIC" >$brih_new $brih_topic
         </td>
         ##</tr>
         ##<tr>
         <td>
-        <INPUT TYPE="CHECKBOX" name="publish" value="Publish"> <b>Publish</b>
+        <INPUT TYPE="CHECKBOX" name="publish" value="Publish"> <b>$brih_publish</b>
         </td>
         </tr>
 	#else
 	<tr width=100% bgcolor="$ui.tableColor">
          <td colspan=6>
          <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
-        <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>Existing Topic
+        <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
         <SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
           <option></option>
         #foreach($topic in $allTopics)
                 <option>$topic</option>
           #end
         </SELECT>
-        <input type="RADIO" name=topicExisting value="NEWTOPIC" >New Topic
+        <input type="RADIO" name=topicExisting value="NEWTOPIC" >$brih_new $brih_topic
         </td>
 	</tr>	
 	#end
       <tr bgcolor="$ui.menuColor" width=100%>
         ##formCell ("Topic Name" "contentTopic" "")
         <td>
-        <b><font face="$ui.sansSerifFonts">Topic #if($lang=="hindi")  #end Name</font> </b>
+        <b><font face="$ui.sansSerifFonts">$brih_topic #if($lang=="hindi")  #end Name</font> </b>
         </td>
         <td colspan=4>
         <input type="text" name=contentTopic onFocus=checkRadio() size=20>
         </td>
       <tr bgcolor="$ui.tableColor">
-              #fileUpload ("1. &nbsp; Attach File " "file1")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("6.&nbsp; Attach File  &nbsp;" "file6")
+              #fileUpload ("1. &nbsp; $brih_at_file " "file1")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("6.&nbsp; $brih_at_file  &nbsp;" "file6")
       </tr>
       <tr bgcolor="$ui.menuColor">
-              #fileUpload ("2. &nbsp; Attach File " "file2")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("7.&nbsp; Attach File  &nbsp;" "file7")
+              #fileUpload ("2. &nbsp; $brih_at_file " "file2")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("7.&nbsp; $brih_at_file  &nbsp;" "file7")
       </tr>
       <tr bgcolor="$ui.tableColor">
-              #fileUpload ("3. &nbsp; Attach File " "file3")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("8.&nbsp; Attach File  &nbsp;" "file8")
+              #fileUpload ("3. &nbsp; $brih_at_file " "file3")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("8.&nbsp; $brih_at_file  &nbsp;" "file8")
       </tr>
       <tr bgcolor="$ui.menuColor">
-              #fileUpload ("4. &nbsp; Attach File " "file4")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("9.&nbsp; Attach File  &nbsp;" "file9")
+              #fileUpload ("4. &nbsp; $brih_at_file " "file4")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("9.&nbsp; $brih_at_file  &nbsp;" "file9")
         </tr>
 	<tr bgcolor="$ui.tableColor">
-              #fileUpload ("5. &nbsp; Attach File " "file5")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("10.&nbsp; Attach File  &nbsp;" "file10")
+              #fileUpload ("5. &nbsp; $brih_at_file " "file5")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("10.&nbsp; $brih_at_file  &nbsp;" "file10")
       </tr>
 
 #*      <tr>
@@ -332,7 +332,7 @@ $!data.getMessage()
           *#
 	<font face="$ui.sansSerifFonts">
 
-          <input type="button" name="eventSubmit_doUpload" value="Upload" onClick="validate(document.uploadform,this);"/>&nbsp;
+          <input type="button" name="eventSubmit_doUpload" value="$brih_upload" onClick="validate(document.uploadform,this);"/>&nbsp;
         <input type="hidden" name="actionName" value="">
         <input type="hidden" name="count" value="$tdcolor">
 
@@ -341,7 +341,6 @@ $!data.getMessage()
       </tr>
     </table>
 </form>
-
 
 ############################
 <SCRIPT language="JavaScript">
