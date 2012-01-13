@@ -103,7 +103,7 @@ public class Chat extends SecureScreen
 		{
 			cid = data.getParameters().getString("grpName","");
                 	//context.put("mode",mode1);
-                	context.put("mode2",mode2);
+                	context.put("mode",mode2);
 			context.put("grpName",cid);
 			
 		}

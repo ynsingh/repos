@@ -180,7 +180,7 @@ $!data.getMessage()
 #if($lang == "hindi" || $lang == "gujarati") $brih_all $brih_usr $RemoteShow #else $RemoteShow $brih_all $brih_usr #end 
 </td><br></tr>
 <tr><td  bgcolor="$ui.tableColor"><input type="CHECKBOX"  name="grouptype" value="showinstitute" onClick="selecionatudo(true,2)"> 
-#if($lang == "hindi" || $lang == "gujarati") $RemoteShow $brih_all $RemoteInstitute #else $brih_all $brih_Institute $RemoteShow #end <br></td></tr>
+#if($lang == "hindi" || $lang == "gujarati")$brih_all $brih_Institute $RemoteShow #else $RemoteShow $brih_all $RemoteInstitute #end <br></td></tr>
 <tr><td  bgcolor="$ui.menuColor"><input type="CHECKBOX"  name="grouptype" value="showcourse" onClick="selecionatudo(true,2)"> 
 	#if($lang == "hindi" || $lang == "gujarati") 
 		$brih_all $brih_courses $RemoteShow 

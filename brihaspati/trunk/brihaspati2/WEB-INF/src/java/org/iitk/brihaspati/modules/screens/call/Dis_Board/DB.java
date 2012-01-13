@@ -91,6 +91,8 @@ public class DB extends SecureScreen
                         * stats and mode2 use for general and institute wise discussion group
                         */
 			String stats=data.getParameters().getString("stats","");
+			String grpName=data.getParameters().getString("grpname","");
+	                context.put("grpName",grpName);
 	                context.put("stats",stats);
 			String mode2=data.getParameters().getString("mode2","");
                         context.put("mode2",mode2);

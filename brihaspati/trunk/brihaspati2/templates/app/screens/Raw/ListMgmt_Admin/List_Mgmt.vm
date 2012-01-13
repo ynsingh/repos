@@ -109,7 +109,7 @@ $!data.getMessage()
 	#if($lang == "hindi")
 		#set($headings = ["","$brih_course $brih_Of1 $brih_ID","$brih_course $brih_Of1 $brih_name","$brih_dept","$brih_desc","$brih_creation $brih_Da","$brih_status",""] )
 	#else
-		#set($headings = ["","$brih_course $brih_ID","$brih_course $brih_name","$brih_dep","$brih_desc","$brih_creation $brih_Da","$brih_status",""] )
+		#set($headings = ["","$brih_course $brih_ID","$brih_course $brih_name","$brih_dept","$brih_desc","$brih_creation $brih_Da","$brih_status",""] )
 	#end
 <table bgcolor="$ui.tableColor" align="left" width="100%">
   <tr><td>

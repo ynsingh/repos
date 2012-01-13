@@ -58,6 +58,8 @@ public class changePassword extends SecureScreen{
 		String stat=data.getParameters().getString("status","");
 		String mode2=data.getParameters().getString("mode2","");
 		context.put("mode",data.getParameters().getString("mode",""));
+		if(!mode2.equals("") && mode2.equals("instituteWise"))
+		        context.put("grpName",data.getParameters().getString("grpname",""));
 		context.put("status",stat);
 		context.put("mode2",mode2);
 		context.put("uName",userName);

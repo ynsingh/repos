@@ -71,7 +71,7 @@ $!data.getMessage()
 	<tr>
 		<td>
 		<font face="$ui.sansSerifFonts"><b>
-		#if(( $mode == "general") || ($mode2 == "instituteWise"))
+		#if(( $mode == "general") || ($mode == "instituteWise"))
 			<a href=$link.setPage("Index.vm")>$brih_home</a> |
 		#else
 			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
@@ -96,19 +96,19 @@ $!data.getMessage()
         	<td bgcolor="#AFDCEC">
 	#end
                 <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
-#elseif($mode2 == "instituteWise")
+#elseif($mode == "instituteWise")
 		#if($tdcolor!="4")
                         <td width="50%">
                 #elseif($tdcolor == "4")
                         <td width="50%" bgcolor="#AFDCEC">
                 #end
-			<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","4") style=text-decoration:none>$RemoteInstitute $brih_wise $DiscussionBoard</a></td>
+			<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","4").addPathInfo("grpName",$grpName) style=text-decoration:none>$RemoteInstitute $brih_wise $DiscussionBoard</a></td>
 		#if($tdcolor!="2")
                         <td width="50%">
                 #elseif($tdcolor == "2")
                         <td width="50%" bgcolor="#AFDCEC">
                 #end
-			<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode2","instituteWise")>$brih_chat</a></td>
+			<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode2","instituteWise").addPathInfo("grpName",$grpName)>$brih_chat</a></td>
 #elseif($mode == "general")
 		#if($tdcolor!="2")
         	        <td width="50%">
@@ -179,8 +179,8 @@ $!data.getMessage()
 	$brih_chatMsg1
 	#if($mode=="general")
 		<a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("mode","general")>$brih_changePassword</a>
-        #elseif($mode2=="instituteWise")
-        	<a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("mode2","instituteWise")>$brih_changePassword</a>
+        #elseif($mode=="instituteWise")
+        	<a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("mode2","instituteWise").addPathInfo("grpName",$grpName)>$brih_changePassword</a>
         #else
 		<a href=$link.setPage("call,UserMgmt_User,changePassword.vm")>$brih_changePassword</a>
 	#end
@@ -189,7 +189,6 @@ $!data.getMessage()
         <blink> <img src="$content.getURI("/images/hand.gif")"> </blink>
                 $brih_chatMsg2  <a href="/brihaspati/docs/ChatDocToSavePlay.html">$brih_here</a><br>
 </td></tr>
-
 </table>
 <applet archive="babylon.jar" code="babylon.babylonApplet.class" codebase=$codeBase width="0" height="0">
 	#if($mode == "general")
@@ -212,6 +211,7 @@ $!data.getMessage()
 	<param name="babylonPath" value=$babylonPath>
         <param name="fullfile" value=$fullfile>
 	<param name="role" value=$role>
+	<param name="mode" value=$mode>
 </applet>
 #end
 
