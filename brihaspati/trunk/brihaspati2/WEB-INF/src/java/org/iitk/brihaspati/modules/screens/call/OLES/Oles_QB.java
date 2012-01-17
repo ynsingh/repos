@@ -101,7 +101,7 @@ public class Oles_QB extends SecureScreen{
                         return;
                         if(allTopics.size()!=0)
                         {
-				String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+instid+"Admin.properties";
+				String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir"+"/"+instid+"Admin.properties";
                                 String AdminConf = AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
                                 context.put("userConf",new Integer(AdminConf));
                                 context.put("userConf_string",AdminConf);
