@@ -9,7 +9,7 @@
 function  checkField(frm,fld) {
 var reason = "";
     reason += validateEmail(frm.EMAIL);
-
+    reason += validateRollNo(frm.rollno);
 if (reason != "") {
         alert("Some fields need correction:\n\n" + reason);
         return false;
@@ -47,6 +47,19 @@ function validateEmail(fld) {
         }
         return error;
 }
+function validateRollNo(fld){
+        var error="";
+        if((fld.value.length == 0)&&(fld.disabled==false)){
+		fld.style.background = 'Yellow';
+                error="* you havn't entered User's Roll No.\n";
+        }
+	else
+        {
+                fld.style.background = 'White';
+        }
+
+        return error;
+}
 
 /**
 * This function is used for enable and disable the Roll No textbox if program selected by user.
@@ -63,7 +76,6 @@ function ChkPrg(frm,field)
         else
         {
         	frm.rollno.disabled=false;
-                alert("Please insert roll no !!");
 		frm.rollno.style.background='Yellow';
 	}
 }

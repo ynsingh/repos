@@ -240,4 +240,12 @@ function validatePaswd(fld){
         }
         return error;
 }
+/**
+ * This java script is used for open the popup window for help document. 
+ * @see template InstUserRegistrationManagement.vm,RegisterationManagement.vm
+ */
 
+function popupWin(url,popupName)
+{
+        Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
+}

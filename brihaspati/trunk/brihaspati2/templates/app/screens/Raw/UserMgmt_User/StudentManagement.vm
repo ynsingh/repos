@@ -77,34 +77,36 @@ $!data.getMessage()
                 #formCell("$brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
 	<td colspan=3></td>	
         </tr>
-	<tr>
-		<td>$brih_rollno</td>
-                <td><input type="text" name="rollno" value="" disabled="true"/></td>
-        <td colspan=3></td>
-        <tr bgcolor="$ui.menuColor">
+        <tr>
                 #formPasswordCell ("$brih_pwd" "PASSWD" "")
 	<td colspan=3></td>	
         </tr>
-        <tr>
+        <tr bgcolor="$ui.menuColor">
                 #formCell ("$brih_first $brih_name" "FNAME" "")
 	<td colspan=3></td>	
         </tr>
-        <tr bgcolor="$ui.menuColor">
+        <tr>
                 #formCell("$brih_last $brih_name" "LNAME" "")
 	<td colspan=3></td>	
         </tr>
         #*<tr bgcolor="$ui.menuColor">
                 #formCell("$brih_email $brih_ID" "EMAIL" "")
 	<td colspan=3></td>*#	
-	<tr>
+	<tr bgcolor="$ui.menuColor">
 	        <td>$brih_program</td>
-         	<td colspan=3><select name="prg" size=1 onChange="ChkPrg(document.frm,this);"/>
+         	<td><select name="prg" size=1 onChange="ChkPrg(document.frm,this);"/>
 			<option value="Select Program"> #if($lang=="hindi"  || $lang == "gujarati" ) $brih_program $brih_select #else $brih_select $brih_program #end</option>
 			#foreach($progname in $PrgDetail)
 				<option value="$progname.getPrgCode()">$progname.getPrgName() </option>
 			#end
 		</select></td>
+	  	<td colspan=3></td>
 	</tr>
+	 <tr>
+                <td>$brih_rollno</td>
+                <td><input type="text" name="rollno" value="" disabled="true"/></td>
+        <td colspan=3></td>
+
         <tr bgcolor="$ui.menuColor">
         <td align="left" colspan=5>
                 <input type="hidden" name="actionName">
