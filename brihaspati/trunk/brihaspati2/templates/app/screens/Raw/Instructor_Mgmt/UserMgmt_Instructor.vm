@@ -13,6 +13,7 @@ $page.setBgColor("bgcolor")
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/StudentManagement.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/Instructor_Mgmt.js")"></script>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #if($institudeName != "ListAll")
 <table bgcolor="$ui.tableColor" width=100%>
@@ -232,45 +233,28 @@ $!data.getMessage()
 </form>
 </table>
  #end
-<SCRIPT LANGUAGE="javascript">
-                if(field.checked){
-	                frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";
-			
-                }
-                else{
-                        var rmFile,index,actualString,preString,postString;
-                        actualString=frm.deleteFileNames.value;
-                        index=actualString.indexOf(field.name+"^",0);
-                        preString=actualString.substring(0,index);
-                        postString=actualString.substring(index+field.name.length+1);
-                        actualString=preString+postString;
-                        frm.deleteFileNames.value=actualString;
-                }
-        }
-	function DeleteField(frm,field) {
-                frm.actionName.value=field.name;
-                frm.submit();
-        }
 
-	function selectAll(field)
-	{
+<SCRIPT LANGUAGE="javascript">
+
+        function selectAll(field)
+        {
                 if(field.checked)
-		{
+                {
                         var rmFile,index,actualString,pre=0,next=0;
                         actualString=document.frm.deleteFileNames.value="$count";
                         while( ( pre=actualString.indexOf("^",next) ) >=0 )
-			{
+                        {
                                 var temp=actualString.substring(next,pre);
                                 next=pre+1;
                                 rmFile=document.frm.elements[temp].checked=true;
                         }
                 }
                 else
-		{
+                {
                         var rmFile,index,actualString,pre=0,next=0;
                         actualString=document.frm.deleteFileNames.value="$count";
                         while( ( pre=actualString.indexOf("^",next) ) >=0 )
-			{
+                        {
                                 var temp=actualString.substring(next,pre);
                                 next=pre+1;
                                 rmFile=document.frm.elements[temp].checked=false;
@@ -278,13 +262,6 @@ $!data.getMessage()
                         document.frm.deleteFileNames.value="";
                 }
         }
-	function popupWin(url,popupName)
-        {
-                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
-        }
-	function popupWin(urlName,popupName)
-        {
-                window.open(urlName,popupName,"toolbar=yes,scrollbars=yes");
-        }
 
 </SCRIPT>
+
