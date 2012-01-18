@@ -101,6 +101,7 @@ $!data.getMessage()
          <td bgcolor="#AFDCEC">
          #end
 	 <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1")> #if($lang == "english") $brih_course $brih_content #else $brih_course $brih_content #end </a></td>
+	#if($data.getUser().getUserName() != "guest")
 	#if($tdcolor != "0")
         <td>
         #elseif($tdcolor == "0")
@@ -113,7 +114,7 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2")> #if($lang !="english") $brih_content $brih_upload #else $brih_upload $brih_course $brih_content #end </a></td>
-
+	#end
 #end
 </tr>
 </table>

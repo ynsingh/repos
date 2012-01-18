@@ -421,12 +421,13 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0 valign="top">
 							<tr><td align=center>
-	   				<a href=$link.setPage("call,CourseMgmt_User,Communication.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
+	   				##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
+	   				<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
   				   				##<a href=$link.setPage("call,Local_Mail,Mail.vm")><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-				<a href=$link.setPage("call,CourseMgmt_User,Communication.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a><br>
+				<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a><br>
      								##<a href=$link.setPage("call,Local_Mail,Mail.vm")>$brih_communication</a><br>
 							</td></tr>
 						</table>

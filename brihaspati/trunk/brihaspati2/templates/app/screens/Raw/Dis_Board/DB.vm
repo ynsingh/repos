@@ -32,6 +32,7 @@ $!data.getMessage()
 </table>
 <table bgcolor="$ui.tableColor" width=100%>
 <tr>
+	#if($data.getUser().getUserName() != "guest")
 	#if(($stats != "fromIndex") && ($mode2 != "instituteWise"))
                 #if($tdcolor!="4")
                         <td>
@@ -57,6 +58,7 @@ $!data.getMessage()
                         #elseif($tdcolor=="3")
                                 <td bgcolor="#AFDCEC">
                         #end
+                #end
                 #end
 		#if($data.getUser().getTemp("role") == "student")	
         		<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2")>$Notice_NoticeContent_msg1</td>
@@ -117,9 +119,11 @@ $!data.getMessage()
                         <td><a href=$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("course_id",$courseid).addPathInfo("count","$tdcolor")><b>$brih_arch</b></a></td>
                         <td colspan="3"><a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("check","more").addPathInfo("course_id",$courseid).addPathInfo("count","4")><b>$LocalMail_MailContent_msg1</b></a></td>
 		#else
+			#if($data.getUser().getUserName() != "guest")
 			##<td><a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("course_id",$courseid).addPathInfo("count","$tdcolor")><b>$LocalMail_Mail_msg2</b></a></td>
                         <td><a href=$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("course_id",$courseid).addPathInfo("count","$tdcolor")><b>$brih_arch</b></a></td>
                         <td colspan="2"><a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("check","first").addPathInfo("course_id",$courseid).addPathInfo("count","4")><b>$LocalMail_MailContent_msg1</b></a></td>
+			#end
 		#end
 	#end
 	</tr>	

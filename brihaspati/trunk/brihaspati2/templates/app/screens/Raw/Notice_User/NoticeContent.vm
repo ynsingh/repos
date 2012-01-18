@@ -55,6 +55,7 @@ $!data.getMessage()
 </table>
 <table width=100% bgcolor="$ui.tableColor">
 <tr>
+	#if($data.getUser().getUserName() != "guest")
 	#if($tdcolor != "1")
 	        <td>
         #elseif($tdcolor=="1")
@@ -71,6 +72,7 @@ $!data.getMessage()
         	<td>
         #elseif($tdcolor=="3")
        		<td bgcolor="#AFDCEC">
+        #end
         #end
         #if($user_role == "student")
                 ##<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3") style=text-decoration:none>
