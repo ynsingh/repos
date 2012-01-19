@@ -70,7 +70,7 @@ public class Buffer {
 	
 	public synchronized void removeRange(int fromIndex, int endIndex) {
 		if(buffer.size() > endIndex){
-			for(int j=fromIndex;j<=endIndex;j++){
+			for(int j=fromIndex;j<endIndex;j++){
 				buffer.removeElementAt(0);
 				data.removeElementAt(0);
 			}
