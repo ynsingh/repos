@@ -69,7 +69,7 @@ $!data.getMessage()
 
 #set ( $headings = ["$brih_usr $brih_name","$brih_name", "$brih_email $brih_ID", "$brih_availableAction "] )
 ##<form name=frm method="post" action="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("status","ForallUser")">
-<form name=frm method="post" action="$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").setAction("UserAction_InstituteAdmin").addPathInfo("status","ForallUser")">
+<form name=frm method="post" action="$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").setAction("UserAction_InstituteAdmin")">
 <table width=100% align=left bgcolor="$ui.menuColor">
         <tr>
                 <td>$brih_searchBy </td>
@@ -87,7 +87,8 @@ $!data.getMessage()
                 </td>
                 <td>
                         <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
-                        <input type="hidden" name="mode" value="Search">
+			<input type="hidden" name="mode" value="$mode">
+                       ## <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="count" value="$tdcolor">
                         <input type="hidden" name="actionName" >
                 </td>
@@ -220,8 +221,9 @@ $!data.getMessage()
 	<td><input type="button" name="eventSubmit_doExpire" Value=$brih_delete onClick="checkField(document.frm,this);"></td>
 </tr>
 		<input type="hidden" name="Process" value="delete">
-		<input type="hidden" name="mode" value="All">
-		<input type="hidden" name="actionName">
+		##<input type="hidden" name="mode" value="All">
+		<input type="hidden" name="mode" value="$mode">
+		##<input type="hidden" name="actionName">
         	<input type="hidden" name="deleteFileNames" VALUE="">
         	<input type="hidden" name="count" VALUE="$tdcolor">
 #end    
