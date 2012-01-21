@@ -93,10 +93,7 @@ public class InstituteDetailsManagement
 	public static String getInsId(String cName){
 		String insId="";
 		try{
-			String spcn[]=cName.split("@");
-			String lPart=spcn[1];
-			String iid[]=lPart.split("_");
-			insId=iid[1];
+			insId=org.apache.commons.lang.StringUtils.substringAfterLast(cName, "_");
 		}
 		catch(Exception e){
                 ErrorDumpUtil.ErrorLog("The error in getInsId() - InstituteDetailsManagement class !!"+e);
@@ -152,6 +149,7 @@ public class InstituteDetailsManagement
 			Criteria crit=new Criteria();
                         crit.addGroupByColumn(CoursesPeer.GROUP_NAME);
 			List v=CoursesPeer.doSelect(crit);
+ErrorDumpUtil.ErrorLog("The error in get()"+v.toString());
 			/**
  			*Get GroupName,CourseName,GroupAlias,etc 
  			*/ 
@@ -172,15 +170,9 @@ public class InstituteDetailsManagement
                                 	Date CDate=((Courses)v.get(i)).getCreationdate();
                                 	String CrDate=CDate.toString();
                                 	CourseUserDetail cuDetail=new CourseUserDetail();
-					int index=gAlias.length();
-                                	String loginName=GName.substring(index);
-					String []brkloginName=loginName.split("@");
-                                	String oldloginName=brkloginName[0];
-					String dmnWIid=brkloginName[1];
-					String stri[]=dmnWIid.split("_");
-					String dname=stri[0];
-					oldloginName=oldloginName+"@"+dname;
-                                	int UId=UserUtil.getUID(oldloginName);
+					String insId=org.apache.commons.lang.StringUtils.substringAfterLast(GName, "_");
+					String loginName=org.apache.commons.lang.StringUtils.substringBetween(GName, gAlias,"_"+insId);
+                                	int UId=UserUtil.getUID(loginName);
 					String uID=Integer.toString(UId);
                                 	List userDetails=UserManagement.getUserDetail(uID);
                                 	TurbineUser element=(TurbineUser)userDetails.get(0);
@@ -189,7 +181,7 @@ public class InstituteDetailsManagement
                                 	String email=element.getEmail().toString();
                                 	String userName=firstName+lastName;
                                 	if(org.apache.commons.lang.StringUtils.isBlank(userName)){
-                                		userName=oldloginName;
+                                		userName=loginName;
                                 	}
 					/**
  					*Set the value in CourseUserDetail for using in templates.		

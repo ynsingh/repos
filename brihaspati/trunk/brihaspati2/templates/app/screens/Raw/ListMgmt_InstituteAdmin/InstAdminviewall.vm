@@ -90,7 +90,7 @@ $!data.getMessage()
 		##	<input type="hidden" name="mode" value="$mode">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="count" value="$tdcolor">
-                        <input type="hidden" name="actionName" >
+                        <input type="hidden" name="actionName" value="Search" >
                 </td>
 		<td>
 			<b><a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_listUsr</a></b>
