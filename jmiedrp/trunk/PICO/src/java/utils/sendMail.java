@@ -39,7 +39,6 @@ Address address1 = new InternetAddress(user, from);
 
 		Transport transport = mailSession.getTransport("smtp");
 	        transport.connect(host,user, pass);
-              // transport.connect("smtp.gmail.com", "kazim.jmi@gmail.com", "skn123");
 
 		try {
 			transport.sendMessage(msg, msg.getAllRecipients());

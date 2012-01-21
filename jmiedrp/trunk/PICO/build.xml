@@ -13,7 +13,7 @@
     <import file="nbproject/profiler-build-impl.xml"/>
 
 
-<property name="libs.CopyLibs.classpath" value="org-netbeans-modules-java-j2seproject-copylibstask.jar"/>
+<property name="libs.CopyLibs.classpath" value="copylibstask.jar"/>
 
 
 

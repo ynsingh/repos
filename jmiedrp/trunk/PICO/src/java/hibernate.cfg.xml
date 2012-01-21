@@ -4,10 +4,10 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/erppico</property>
-    <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.connection.password">root</property>
-    <property name="hibernate.default_catalog">erppico</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/pico</property>
+    <property name="hibernate.connection.username">dbusername</property>
+    <property name="hibernate.connection.password">dbpassword</property>
+    <property name="hibernate.default_catalog">pico</property>
     <mapping resource="pojo/hibernate/Erpmuserprofile.hbm.xml"/>
     <mapping resource="pojo/hibernate/Institutionuserroles.hbm.xml"/>
     <mapping resource="pojo/hibernate/ErpmGenMaster.hbm.xml"/>
