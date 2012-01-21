@@ -87,8 +87,8 @@ $!data.getMessage()
                 </td>
                 <td>
                         <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
-			<input type="hidden" name="mode" value="$mode">
-                       ## <input type="hidden" name="mode" value="Search">
+		##	<input type="hidden" name="mode" value="$mode">
+                        <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="count" value="$tdcolor">
                         <input type="hidden" name="actionName" >
                 </td>
