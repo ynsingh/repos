@@ -115,6 +115,7 @@ public class RolePermissionMap extends SecureAction_Admin{
                         crit.addAscendingOrderByColumn(TurbinePermissionPeer.PERMISSION_ID);
                         List rcord=TurbinePermissionPeer.doSelect(crit);
                         int size=rcord.size();
+			size=size+1;
                         crit =new Criteria();
                         crit.add(TurbinePermissionPeer.PERMISSION_ID,size);
                         crit.add(TurbinePermissionPeer.PERMISSION_NAME,pName);

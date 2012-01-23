@@ -58,12 +58,12 @@ $!data.getMessage()
 </td></tr>
 </table>
 
-<form name="frm" method="Post" action="$link.setPage("call,Notice_User,DeletePostedAdmin.vm").setAction("Notice_Send_Delete")">
+<form name="frm" method="Post" action="$link.setPage("call,Notice_User,InstDeletePostedAdmin.vm").setAction("Notice_Send_Delete")">
 #if($Mas_size!="0")
 <table align="left" width=100% bgcolor="$ui.tableColor">
 <tr>
-	<td>$Notice_Subject</td>
-	<td>$brih_Da</td>
+	<td><b>$Notice_Subject</b></td>
+	<td><b>$brih_Da</b></td>
 </tr>
 ##tr for description
 <tr>
@@ -75,7 +75,7 @@ $!data.getMessage()
 		#end
 		<td>
                 	<INPUT TYPE="CHECKBOX" NAME="$detail.getMsgId()" onClick="addDeleteList(this,document.frm);">
-		<a href="$link.setPage("call,Notice_User,DeletePostedAdmin.vm").addPathInfo("notice_id",$detail.getMsgId()).addPathInfo("desc","Notice_Des").addPathInfo("count","2")">$detail.getMsgSubject()</a></td>
+		<a href="$link.setPage("call,Notice_User,InstDeletePostedAdmin.vm").addPathInfo("notice_id",$detail.getMsgId()).addPathInfo("desc","Notice_Des").addPathInfo("count","2")">$detail.getMsgSubject()</a></td>
 		<td>$detail.getPostTime()</td>
 		</tr>
 	#end
