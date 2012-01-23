@@ -1,0 +1,35 @@
+*************************************************************************************************************
+Copyright 2012 ERP Mission, IIT Kanpur
+Contributions by:- Nagendra Kumar Singh
+Last modified on 23 January 2012
+*************************************************************************************************************
+This document describes procedure to install LibMS(New) on any Linux machine.
+Step for Installation of Library Management System
+
+1. You must install tomcat application server version 6.0 onwards, 
+	download from http://tomcat.apache.org/
+2. You must install ant 1.6 onwards, 
+	download from http://ant.apache.org/
+3. You must install mysql 5 or onwards,
+	download from http://dev.mysql.com/downloads/
+4. Download source code from sourceforge.net or our svn repository, 
+	download from http://sourceforge.net/projects/brihaspati 
+	or 
+	svn co http://brihsvn.iitk.ernet.in/repos/amuedrp/trunk/LibMS
+5. Change the database name  and password in properties file
+	libms.properties at your home dir
+		driverClass=com.mysql.jdbc.Driver
+		username=xxxxx
+		password=xxxxx
+		url=jdbc:mysql://localhost:3306/libms?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8
+		webadmin=email address
+		webpass=email password
+
+6. Run sql script in mysql database for creating database
+7. run ant command in side LiBMS dir
+	This will generate war file
+8. Start application server and deploy this war file on server
+9. Access application via this URL
+	http://servername:portname/LibMS
+
+
