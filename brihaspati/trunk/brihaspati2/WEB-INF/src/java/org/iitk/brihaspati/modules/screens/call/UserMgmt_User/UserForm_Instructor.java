@@ -57,6 +57,9 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 /**
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
@@ -81,6 +84,17 @@ public class UserForm_Instructor extends SecureScreen_Instructor{
 		int usrid=UserUtil.getUID(userName);
 		Vector InsDetail = new Vector();
                 Vector PrgDetail = new Vector();
+		String Role = (String)user.getTemp("role");
+		/**
+                 *Time calculaion for how long user use this page.
+                 */
+                 int uid=UserUtil.getUID(userName);
+                 if((Role.equals("student")) || (Role.equals("instructor")))
+                 {
+	                 CourseTimeUtil.getCalculation(uid);
+        	         ModuleTimeUtil.getModuleCalculation(uid);
+                 }
+
 		/**
  		 * get list of registered institute for Instructor 
  		 */
@@ -191,6 +205,7 @@ public class UserForm_Instructor extends SecureScreen_Instructor{
 		context.put("stat",status);
 		context.put("user_details",details);
 		context.put("username",username);
+		
 		}
 		catch(Exception ex)
 		{

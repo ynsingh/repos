@@ -71,7 +71,8 @@ import org.iitk.brihaspati.modules.utils.DbDetail;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.om.QuizPeer;
 import org.iitk.brihaspati.om.Quiz;
-
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  *   This class contains code for quiz attempt part from student login
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
@@ -252,7 +253,17 @@ public class Student_Score extends SecureScreen
 //						data.setMessage(MultilingualUtil.ConvertedString("brih_noquizannounced",LangFile));
 				}
 				}
-//			}            		
+//			}          
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+                         int userid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(userid);
+                                ModuleTimeUtil.getModuleCalculation(userid);
+                         }
+  		
 		}catch(Exception e)
 		{
 			ErrorDumpUtil.ErrorLog("The exception in student_quiz ::"+e);

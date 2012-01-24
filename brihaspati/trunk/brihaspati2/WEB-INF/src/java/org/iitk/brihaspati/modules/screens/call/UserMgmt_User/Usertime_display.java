@@ -44,6 +44,10 @@ import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil; 
 import java.util.List;
+
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 /**
  * This class responsible for user login time display
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
@@ -55,12 +59,23 @@ public class Usertime_display extends SecureScreen_Instructor
     public void doBuildTemplate( RunData data, Context context )
     {
 	try
-        {
+        {	
 		String LangFile =(String)data.getUser().getTemp("LangFile");  
 		String course_name=(String)data.getUser().getTemp("course_name");
                 context.put("course",course_name);
 		String Username=data.getParameters().getString("username");
                 int uid=UserUtil.getUID(Username);
+		String Role = (String)data.getUser()
+.getTemp("role");
+		/**
+                 *Time calculaion for how long user use this page.
+                 */
+                 if((Role.equals("student")) || (Role.equals("instructor")))
+                 {
+ 	                CourseTimeUtil.getCalculation(uid);
+        	         ModuleTimeUtil.getModuleCalculation(uid);
+                }
+
                 Criteria crit=new Criteria();
                 crit.add(UsageDetailsPeer.USER_ID,uid);
                 List v=UsageDetailsPeer.doSelect(crit);
@@ -80,6 +95,7 @@ public class Usertime_display extends SecureScreen_Instructor
 
                         context.put("status","Blank");
                 }
+
         }
         catch(Exception e)
         {

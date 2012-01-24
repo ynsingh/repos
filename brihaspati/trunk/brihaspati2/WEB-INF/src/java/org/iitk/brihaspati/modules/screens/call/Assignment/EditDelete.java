@@ -67,6 +67,10 @@ import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 	/**
 	 *   This class contains code for disply all assignment
 	 *   only instructor and do update/delete
@@ -86,6 +90,18 @@ public class EditDelete extends  SecureScreen
 			User user=data.getUser();
                         String UserName=data.getUser().getName();
                         ParameterParser pp=data.getParameters();
+			/**
+			 *Get User Role
+			 */
+			 String Role = (String)user.getTemp("role");
+			 int uid=UserUtil.getUID(UserName);
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
+
 			/**
 			* Get Course Name
 			*/

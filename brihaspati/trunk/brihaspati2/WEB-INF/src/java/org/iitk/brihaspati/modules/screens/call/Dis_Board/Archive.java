@@ -49,7 +49,9 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.AssignmentDetail;
-
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.apache.turbine.om.security.User;
 /**
  *   This class contains code for all discussions in workgroup
  *   Archive Message with listing
@@ -103,7 +105,6 @@ public class Archive extends SecureScreen
                         int t_size=0;
 			context.put("cname",(String)data.getUser().getTemp("course_name"));
                         context.put("course_id",course_id);
-
                        	String path2="";
                        	String path3="";
 			if(!topicDir.exists())
@@ -196,6 +197,22 @@ public class Archive extends SecureScreen
 				}
 				context.put("t_size",t_size);
  			}
+			 /*
+                         *method for how much time user spend in this page.
+                         */
+			if((!course_id.equals("instituteWise")) || (!course_id.equals("general")) || (!course_id.equals(" ")))
+			{
+				User user=data.getUser();
+				String Role = (String)user.getTemp("role");
+                        	String username=user.getName();
+                        	int uid=UserUtil.getUID(username);
+                        	if((Role.equals("student")) || (Role.equals("instructor")))
+                        	{	
+                                	CourseTimeUtil.getCalculation(uid);
+                                	ModuleTimeUtil.getModuleCalculation(uid);
+                        	}
+
+			}
 		}
                 catch(Exception e) { ErrorDumpUtil.ErrorLog("Error in Archive.java");    }
         }

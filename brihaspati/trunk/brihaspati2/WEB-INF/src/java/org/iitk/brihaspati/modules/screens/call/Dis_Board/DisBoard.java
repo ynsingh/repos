@@ -54,6 +54,8 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  * This class contains code for input message for sending and reply in Workgroup 
  * Grab all the records in a table using a Peer, and
@@ -195,6 +197,18 @@ public class DisBoard extends SecureScreen
                  		context.put("rep_msg",rep_msg);
 		 		context.put("retrive_date",retrive_date);
 			}//(if mode reply)
+			 /*
+                         *method for how much time user spend in this page.
+                         */
+			 
+			 /*String Role = (String)user.getTemp("role");
+			 String username=user.getName();
+                        int uid=UserUtil.getUID(username);
+                        if((Role.equals("student")) || (Role.equals("instructor")))
+                        {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                        }*/
 		}//try
                 catch(Exception e){data.setMessage("Error in the Disboard screen !! "+e);}
 	}//method

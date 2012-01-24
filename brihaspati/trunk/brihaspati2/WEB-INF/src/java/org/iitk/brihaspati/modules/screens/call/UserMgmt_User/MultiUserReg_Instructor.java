@@ -38,6 +38,11 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
+
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 /**
  * This class loads the vm file and checks for the access rights of the user if he can access this page 
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a> 
@@ -55,6 +60,16 @@ public class MultiUserReg_Instructor extends SecureScreen_Instructor
 		User user=data.getUser();
 		String CName=(String)user.getTemp("course_name");
 	 	context.put("course",CName);
-    	}
+		String Role = (String)user.getTemp("role");
+		 /**
+                  *Time calculaion for how long user use this page.
+                  */
+                  int uid=UserUtil.getUID(user.getName());
+                  if((Role.equals("student")) || (Role.equals("instructor")))
+                  {
+                         CourseTimeUtil.getCalculation(uid);
+                         ModuleTimeUtil.getModuleCalculation(uid);
+                  }
 
+	}
 }

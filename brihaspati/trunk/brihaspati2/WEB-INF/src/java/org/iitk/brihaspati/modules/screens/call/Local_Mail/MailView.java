@@ -58,7 +58,9 @@ import org.iitk.brihaspati.om.MailSendPeer;
 import org.iitk.brihaspati.om.MailSend;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
 /**
  * This class contains code for display message with details
  *
@@ -82,6 +84,19 @@ public class MailView extends SecureScreen{
 		AccessControlList acl=data.getACL();
                 String mode=data.getParameters().getString("mod","");
 		context.put("mode",mode);
+		/*
+                 *method for how much time user spend in this page.
+                 */
+		 String Role = (String)user.getTemp("role");
+                 //String =user.getName();
+                 int uid=UserUtil.getUID(user_name);
+                 if((Role.equals("student")) || (Role.equals("instructor")))
+                 {
+	                 CourseTimeUtil.getCalculation(uid);
+        	         ModuleTimeUtil.getModuleCalculation(uid);
+                 }
+
+
 		/**
 		 * Retrive the CourseName and CourseId from Temp variables
 		*/ 
@@ -204,6 +219,7 @@ public class MailView extends SecureScreen{
                                   context.put("retrive_user",username);
                                   context.put("retrive_date",retrive_date);
 			 }
+			
 		}
 		catch(Exception e)
 		{

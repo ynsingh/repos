@@ -61,6 +61,9 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 
 import java.util.Vector;
 import java.util.StringTokenizer;
@@ -166,6 +169,17 @@ public class Activitygroup extends SecureScreen
                                 context.put("studentlist",studentlist);
                                 context.put("nolist","yeslist");
                         }
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+			 String Role = (String)user.getTemp("role");
+			 int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 		}//try
                    catch(Exception e){
                                       ErrorDumpUtil.ErrorLog("Error in Screen:Activitygroup"+e);

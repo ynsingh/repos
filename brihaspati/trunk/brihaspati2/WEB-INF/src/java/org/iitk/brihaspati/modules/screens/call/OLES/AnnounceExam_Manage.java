@@ -51,6 +51,10 @@ import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
 * This class displays the list of quizzes to announce/update that quiz
 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi Sr</a>
@@ -76,7 +80,17 @@ public class AnnounceExam_Manage extends SecureScreen{
         	String courseid=(String)user.getTemp("course_id");        	
         	String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
 	        String quizPath="Quiz.xml";
-            
+		String Role = (String)user.getTemp("role");
+            	/**
+                 *Time calculaion for how long user use this page.
+                 */
+                 int uid=UserUtil.getUID(user.getName());
+                 if((Role.equals("student")) || (Role.equals("instructor")))
+                 {
+                         CourseTimeUtil.getCalculation(uid);
+                         ModuleTimeUtil.getModuleCalculation(uid);
+                  }
+
             File file=new File(filePath+"/"+quizPath);
 			Vector quizList=new Vector();
 			Vector finalQuizList=new Vector();

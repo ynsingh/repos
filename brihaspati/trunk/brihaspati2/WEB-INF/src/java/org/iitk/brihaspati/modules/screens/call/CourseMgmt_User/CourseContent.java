@@ -57,6 +57,9 @@ import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.xml.sax.helpers.AttributesImpl;
 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 
 
 /**
@@ -64,6 +67,7 @@ import org.xml.sax.helpers.AttributesImpl;
 * @author <a href="mailto:ammuamit@hotmail.com">Amit Joshi</a>
 * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
 * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+* @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
 */
 
 public class CourseContent extends VelocitySecureScreen{
@@ -92,6 +96,15 @@ public class CourseContent extends VelocitySecureScreen{
 			String filePath1=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content"+"/Permission";
 	
 			File f=new File(filePath1+"/permissionReceive__des.xml");
+			 /**
+                         *Time calculaion for how long user use this page.
+                         */
+                         int uid=UserUtil.getUID(user.getName());
+                         if((role.equals("student")) || (role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
 
 			if( acl.hasRole("instructor",group))
 			{
@@ -128,6 +141,7 @@ public class CourseContent extends VelocitySecureScreen{
                                 ReadR=permissionReadR.getDetails();
                                 context.put("readR",ReadR);
                         }
+
 
 
 		}//try

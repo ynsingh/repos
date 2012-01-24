@@ -50,6 +50,11 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 /**
 * This class manages the creation of quiz in online examination system 
 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
@@ -67,6 +72,17 @@ public class Create_Quiz extends SecureScreen{
         try{
         	User user=data.getUser();
         	String uname=user.getName();
+		String Role = (String)user.getTemp("role");
+		 /**
+                  *Time calculaion for how long user use this page.
+                  */
+                  int uid=UserUtil.getUID(uname);
+                  if((Role.equals("student")) || (Role.equals("instructor")))
+                  {
+                          CourseTimeUtil.getCalculation(uid);
+                          ModuleTimeUtil.getModuleCalculation(uid);
+                  }
+
         	String mode =pp.getString("mode"," ");
         	String type = pp.getString("type","");
         	String courseid=(String)user.getTemp("course_id");

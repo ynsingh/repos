@@ -39,7 +39,10 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
-
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.apache.turbine.om.security.User;
 /**
  * This class contains code for all record of News
  * Grab all the records in a table using a Peer, and
@@ -108,6 +111,19 @@ public class News_Add extends SecureScreen
 			}
 
 			context.put("year_list",year_list);
+			 /*
+                         *method for how much time user spend in this page.
+                         */
+			User user=data.getUser();
+			String Role = (String)user.getTemp("role");
+                        String username=user.getName();
+                        int uid=UserUtil.getUID(username);
+                        if((Role.equals("student")) || (Role.equals("instructor")))
+                        {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                        }
+
 
 		}
 		catch(Exception e)

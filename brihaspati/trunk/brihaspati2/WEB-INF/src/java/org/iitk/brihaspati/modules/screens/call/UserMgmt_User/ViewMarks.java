@@ -49,6 +49,11 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen_Student;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.StudentRollno;
+
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
  /** 
   * In this class, View Marks from Marks file uploading by group instructor
   * @author <a href="mailto:ammu_india@yahoo.com">Amit Joshi</a>
@@ -67,6 +72,17 @@ public class ViewMarks extends SecureScreen_Student
 		{	
 			User user=data.getUser();
 			String checkUser=user.getName();
+			String Role = (String)user.getTemp("role");
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+                         int uid=UserUtil.getUID(checkUser);
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 			/**
 			 * Get rollno from table 
 			 */
@@ -140,6 +156,7 @@ public class ViewMarks extends SecureScreen_Student
 						ErrorDumpUtil.ErrorLog("The Error in View marks Part "+e);
 				}
 			}
+
 		}
 		catch(IOException e)
 		{

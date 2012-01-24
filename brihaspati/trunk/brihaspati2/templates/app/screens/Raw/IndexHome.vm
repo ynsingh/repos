@@ -161,7 +161,8 @@ $!data.getMessage()
 						<td></td>
 						<td align=center>
 						<font face="$ui.sansSerifFonts">
-						<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("courseId",$instructor.getGroupName()) style=text-decoration:none>$instructor.getCAlias()-$instructor.getCourseName()</a>
+						##<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("courseId",$instructor.getGroupName()) style=text-decoration:none>$instructor.getCAlias()-$instructor.getCourseName()</a>
+						<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("courseId",$instructor.getGroupName()).addPathInfo("actionName","eventSubmit_doCourseInsert").setAction("CourseLogin") style=text-decoration:none>$instructor.getCAlias()-$instructor.getCourseName()</a>
 						</td>
                        				<td align="center">
 						#if($instructor.getActive()=="1")
@@ -234,7 +235,9 @@ $!data.getMessage()
 							#if($count1 == $count2) 
 							<td align=center>
 							##if($studentstts.getStatus() == "ENABLE") 
-							<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("courseId",$student.getGroupName()) style=text-decoration:none>$student.getCAlias() - $student.getCourseName()</a>
+							##<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("courseId",$student.getGroupName()) style=text-decoration:none>$student.getCAlias() - $student.getCourseName()</a>
+							<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("courseId",$student.getGroupName()).addPathInfo("actionName","eventSubmit_doCourseInsert").setAction("CourseLogin") style=text-decoration:none>$student.getCAlias() - $student.getCourseName()</a>
+
 							##else
 							##<font color="red">* $student.getCAlias() - $student.getCourseName() - $brih_expired</font>
 							##end

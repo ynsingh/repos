@@ -58,6 +58,10 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.actions.RemoteCoursesAction;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 public class View extends VelocitySecureScreen{
 	/**
 	 * This is the default method that builds the template page
@@ -79,6 +83,20 @@ public class View extends VelocitySecureScreen{
 		String username=data.getParameters().getString("uname","");
 		String cName=data.getParameters().getString("cName","");
 		context.put("tdcolor",data.getParameters().getString("count",""));
+		/**
+		 * Get User Role
+		 */
+		 String Role = (String)user.getTemp("role");
+		/**
+                 *Time calculaion for how long user use this page.
+                 */
+                 int uid=UserUtil.getUID(user.getName());
+                 if((Role.equals("student")) || (Role.equals("instructor")))
+                 {
+               		  CourseTimeUtil.getCalculation(uid);
+                 	 ModuleTimeUtil.getModuleCalculation(uid);
+                }
+
 		/**
 		 * Check if the user is an admin or not
 		 */

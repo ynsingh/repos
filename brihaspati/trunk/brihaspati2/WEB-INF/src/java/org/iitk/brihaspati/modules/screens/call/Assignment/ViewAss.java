@@ -66,10 +66,14 @@ import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 	/**
 	 *   This class contains code for all discussions in workgroup
 	 *   Compose a discussion and reply.
 	 *   @author  <a href="arvindjss17@yahoo.co.in">Arvind Pal</a>
+	 *   @author  <a href="smita37uiet@gmail.com">smita Pal</a>
 	*/
 
 
@@ -95,7 +99,16 @@ public class ViewAss extends  SecureScreen
                         if(Role.equals(""))
                                 Role=(String)user.getTemp("role");
 		        context.put("user_role",Role);
-                        
+			/*
+                         *Time calculaion for how long user use this page.
+                         */
+                         int userid=UserUtil.getUID(UserName);
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(userid);
+                                ModuleTimeUtil.getModuleCalculation(userid);
+                         }
+
 			Criteria crit=new Criteria();
                         crit.add(AssignmentPeer.GROUP_NAME,courseid);
                         List u=AssignmentPeer.doSelect(crit);

@@ -59,12 +59,14 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
-
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  *   This class contains code for all discussions in workgroup
  *   Compose a discussion and reply.
  *   @author  <a href="arvindjss17@yahoo.co.in">Arvind Pal</a>
  *   @author  <a href="sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
+ *   @author  <a href="smita37uiet@gmail.com">Smita Pal</a>
  */
 
 public class  ASS_subm  extends  SecureScreen
@@ -105,6 +107,16 @@ public class  ASS_subm  extends  SecureScreen
                         context.put("tdcolor",pp.getString("count",""));
 			//topic
                         String Asmt_topic=pp.getString("topicAsmt","");
+			/**
+			 *Time calculaion for how long user use this page.
+			 */
+			 int uid=UserUtil.getUID(user.getName());
+			 if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 			/**
                         * Select all the information according to GroupName
                         * from the Assignment table

@@ -50,7 +50,9 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.util.parser.ParameterParser;  
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen; 
-
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
 public class Insert_Multiple extends SecureScreen
 {
     
@@ -129,6 +131,17 @@ public class Insert_Multiple extends SecureScreen
                                 	}
                         	}
 			}
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+			 String Role = (String)user.getTemp("role");
+			 int userid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(userid);
+                                ModuleTimeUtil.getModuleCalculation(userid);
+                         }
+
 		}//try
                 catch(Exception e){
                                    ErrorDumpUtil.ErrorLog("Error in screen[Insert_Multiple] !!"+e);

@@ -55,6 +55,9 @@ import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.NotInclude;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.om.DbSendPeer;
 import org.iitk.brihaspati.om.DbSend;
 import org.apache.torque.util.Criteria;
@@ -169,7 +172,6 @@ public class Edit extends SecureScreen
 			String mgid =pp.getString("msgid");
 			context.put("mgid",mgid);
                         
-                         
                 	/**
 	                * Retrive the UserId from Turbine_User table
         	        * @see UserUtil
@@ -240,6 +242,16 @@ public class Edit extends SecureScreen
                                                                
                         context.put("dirContent",content);
 			context.put("cname",(String)data.getUser().getTemp("course_name"));
+			/*
+                         *method for how much time user spend in this page.
+                         */
+			String Role = (String)data.getUser().getTemp("role");
+			if((Role.equals("student")) || (Role.equals("instructor")))
+                        {
+                                CourseTimeUtil.getCalculation(user_id);
+                                ModuleTimeUtil.getModuleCalculation(user_id);
+                        }
+
 	}
 	catch(Exception ex){data.setMessage("Error in the Edit screen in doBuildTemplate  method !! "+ex);}	
 	}

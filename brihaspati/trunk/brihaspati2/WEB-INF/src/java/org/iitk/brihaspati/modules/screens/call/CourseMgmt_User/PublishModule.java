@@ -48,6 +48,10 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**
  * This class contains code for Publishing files
  * @author <a href="mailto:ammuamit@hotmail.com">Amit Joshi</a>
@@ -78,6 +82,20 @@ public class PublishModule extends SecureScreen_Instructor{
 			group=dir=(String)user.getTemp("course_id");
 			context.put("course",(String)user.getTemp("course_name"));
 			context.put("tdcolor",pp.getString("count",""));
+			/**
+			 * Get User Role
+			 */
+			 String Role = (String)user.getTemp("role");
+			 /**
+                         *Time calculaion for how long user use this page.
+                         */
+                         int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 			/**
 			*These parameter are retrive from the template for Repository case
 			* checking the Status (Repositry / Course / Remote)
@@ -254,6 +272,8 @@ public class PublishModule extends SecureScreen_Instructor{
 			context.put("visibleContent",visible);
 			context.put("accessibleContent",accessible);
 			context.put("unpubContent",unpublished);
+			
+
 		}//try
 		catch(Exception ex)
 		{

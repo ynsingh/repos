@@ -50,6 +50,8 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.om.UserConfiguration;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 
 
 /**
@@ -83,6 +85,17 @@ public class RemoveStudents extends SecureScreen_Instructor{
 			int current_user_id=UserUtil.getUID(user.getName());
 			
 			String courseName=(String)user.getTemp("course_name");
+			String Role = (String)user.getTemp("role");
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+                       
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(current_user_id);
+                                ModuleTimeUtil.getModuleCalculation(current_user_id);
+                         }
+
 			/**
                           * Get all the user ids having the specified role in the
                           * group selected
@@ -167,6 +180,7 @@ public class RemoveStudents extends SecureScreen_Instructor{
 			}
 			context.put("course",courseName);
 			context.put("status",status);
+
 		}
 		catch(Exception e){
 			data.setMessage("The exception is :- "+e);

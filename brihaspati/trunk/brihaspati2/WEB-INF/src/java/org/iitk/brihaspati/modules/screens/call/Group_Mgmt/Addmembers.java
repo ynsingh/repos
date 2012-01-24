@@ -63,7 +63,9 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 
-
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 
 public class Addmembers extends SecureScreen
 {
@@ -250,6 +252,17 @@ public class Addmembers extends SecureScreen
                                         context.put("type",gtype);
                         	}
 			}
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+			 String Role = (String)user.getTemp("role");
+			 int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 		}//try
                   catch(Exception e){
                                    ErrorDumpUtil.ErrorLog("Error in Screen:Addmembers !!"+e);

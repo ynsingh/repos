@@ -42,6 +42,9 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
 /**
  * For Instructor Interface
  * Helps the instructor to add a new student
@@ -57,6 +60,18 @@ public class addStudent extends SecureScreen_Instructor
 	try{
 		String courseName=data.getUser().getTemp("course_name").toString();
 		context.put("course",courseName);
+		/*
+		 *code for timeCalcultion in this page.
+		 */
+		String Role = (String)data.getUser().getTemp("role");
+		String username=data.getUser().getName();
+                int uid=UserUtil.getUID(username);
+                if((Role.equals("student")) || (Role.equals("instructor")))
+                {
+	                CourseTimeUtil.getCalculation(uid);
+                        ModuleTimeUtil.getModuleCalculation(uid);
+                }
+
 	}catch(Exception ex){data.setMessage("The Exception in addStudent java"+ex);}	
     }
 

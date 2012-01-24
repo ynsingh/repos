@@ -64,6 +64,9 @@ import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a> 
  */
@@ -78,6 +81,16 @@ public class Evaluate extends  SecureScreen{
 			String uid=Integer.toString(UserUtil.getUID(uname));
 			context.put("uid",uid);			
 			String courseid=(String)user.getTemp("course_id");
+			String Role = (String)user.getTemp("role");
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+                         int userid=UserUtil.getUID(uname);
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(userid);
+                                ModuleTimeUtil.getModuleCalculation(userid);
+                         }
 			
 			String count = pp.getString("count","4");			
 			context.put("tdcolor",count);

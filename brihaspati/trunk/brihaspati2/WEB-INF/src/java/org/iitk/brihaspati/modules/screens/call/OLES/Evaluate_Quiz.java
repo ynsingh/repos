@@ -52,6 +52,9 @@ import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 /**
  *   This class is used to show score of student after attempting the quiz
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
@@ -140,7 +143,19 @@ public class Evaluate_Quiz extends SecureScreen{
 //						finalResult="Fail";
 //					context.put("finalResult",finalResult);
 				}				
-			}											
+			}					
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+			
+			String Role = (String)user.getTemp("role");	
+			int userid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(userid);
+                                ModuleTimeUtil.getModuleCalculation(userid);
+                         }
+
 		}	
 		catch(Exception ex){
 			ErrorDumpUtil.ErrorLog("The exception in detail Score Quiz file!!"+ex); 

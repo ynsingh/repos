@@ -52,8 +52,10 @@ import org.iitk.brihaspati.om.UsageDetails;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-
-
+import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.
 /**
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  **/
@@ -90,7 +92,7 @@ public class myLogout extends VelocityAction{
 				if (!(username.equals("guest"))){	
 		/* Get user id for this user  */
 					int uid=UserUtil.getUID(username);
-		/* Set logout time in usage details */
+		/* Set logout time in usage details */ 
 					Date date=new Date();
         			        int least_entry=0,count=0;
                 			int eid=0,uid3=0;
@@ -111,6 +113,24 @@ public class myLogout extends VelocityAction{
 			                UsageDetailsPeer.doUpdate(crit);
 		/* Set has logged in false */
 					user.setHasLoggedIn(new Boolean(false));
+		/*
+                 *check for Course_Time table update
+		 *This check add by Smita.
+                 */
+                                	/*entry id fron USAGE_DETAILS*/
+                                	int eid1=UsageDetailsUtil.getentryId(uid);
+                                	/*entry id from COURSE_TIME */
+                                	int eid2=CourseTimeUtil.getentryid(uid);
+                                	if(eid1==eid2)
+                                	{
+                                        	CourseTimeUtil.getCalculation(uid);
+    					 	Date CreTime=CourseTimeUtil.getDatetime(uid);                                      			      	 	     Date mreTime=ModuleTimeUtil.getMrecenttime(uid);
+   						if(mreTime!=null)
+                                  			if(CreTime.getTime()<mreTime.getTime())
+                                           		 	ModuleTimeUtil.getModuleCalculation(uid);
+	                               	CourseTimeUtil.getchangeStatus(eid2);
+                        		}
+
                 		}
 		/*  Invalidate session */
 				data.setACL(null);

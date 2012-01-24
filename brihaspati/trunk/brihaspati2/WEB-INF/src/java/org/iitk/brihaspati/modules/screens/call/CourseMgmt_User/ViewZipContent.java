@@ -58,6 +58,10 @@ import org.iitk.brihaspati.modules.utils.GetUnzip;
 import org.iitk.brihaspati.modules.utils.NotInclude;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
 
 public class ViewZipContent extends SecureScreen_Instructor{
@@ -114,6 +118,17 @@ public class ViewZipContent extends SecureScreen_Instructor{
 		context.put("visibleContent",visible);
 		context.put("accessibleContent",accessible);*/
 		context.put("zipFileView",zipFileView);
+		/*
+                 *method for how much time user spend in this page.               
+                 */
+			String Role = (String)user.getTemp("role");
+                        int uid=UserUtil.getUID(userLoginName);
+                        if((Role.equals("student")) || (Role.equals("instructor")))
+                        {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                        }
+
 		}
 		catch(Exception ex)
 		{
@@ -127,6 +142,7 @@ public class ViewZipContent extends SecureScreen_Instructor{
 		{
 			if(list[i].isDirectory())
 			{
+
 				zipFileView.addElement(list[i]);
 				recursiveDirectoryTrace(list[i],zipFileView);
 			}

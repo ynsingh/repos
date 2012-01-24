@@ -59,6 +59,8 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  * @author <a href="mailto:singhnk@iitk.ac.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
@@ -254,6 +256,14 @@ public class Calendar_Display extends SecureScreen{
 			int gid=1;
 			if(!(course_id.equals(""))){
 				gid=GroupUtil.getGID(course_id);
+				//For Time calculation on this page.
+                                String Role = (String)user.getTemp("role");
+                                if((Role.equals("student")) || (Role.equals("instructor")))
+                                {
+                                        CourseTimeUtil.getCalculation(user_id);
+                                        ModuleTimeUtil.getModuleCalculation(user_id);
+                                }
+
 			}	
 			String course_name=(String)user.getTemp("course_name");
 			context.put("course",course_name);

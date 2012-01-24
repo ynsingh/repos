@@ -50,6 +50,8 @@ import com.workingdogs.village.Record;
 import org.iitk.brihaspati.modules.utils.UserUtil; 
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil; 
 import org.iitk.brihaspati.om.MailReceivePeer;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  *   This class contains code for all Messages in a local mail account.
  *   
@@ -172,7 +174,18 @@ public class Mail extends SecureScreen
 			context.put("Uname",user_name);
 			context.put("Fname",F_name);
 			context.put("cname",coursename);
+			 /*
+                         *method for how much time user spend in this page.
+                         */
+			String Role = (String)user.getTemp("role");
+			if((Role.equals("student")) || (Role.equals("instructor")))
+                        {
+                                CourseTimeUtil.getCalculation(user_id);
+                                ModuleTimeUtil.getModuleCalculation(user_id);
+                        }
+
 		}
+			
 	catch(Exception ex)
 	{
 		data.setMessage("The error in Mail Home !! "+ex);

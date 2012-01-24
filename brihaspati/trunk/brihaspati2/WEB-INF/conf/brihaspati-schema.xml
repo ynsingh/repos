@@ -436,10 +436,6 @@
 	<column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
 	<column name="PROGRAM_CODE" required="true" type="VARCHAR" size="255"/>
 	<column name="INSTITUTE_ID" required="true" type="INTEGER"/>
-	<unique>
-		<unique-column name="PROGRAM_CODE"/>
-		<unique-column name="INSTITUTE_ID"/>
-	</unique>
 </table>
 
 <table name="STUDENT_EXPIRY" idMethod="idbroker">
@@ -487,7 +483,6 @@
 </table>
 
 <!-- ==============================DIRECTORY SCHEMA============================================ -->
-
 <table name="TELEPHONE_DIRECTORY" idMethod="idbroker" description="Contact No Information">
         <column name="ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
         <column name="USER_ID" required="true" type="INTEGER"/>
@@ -503,5 +498,43 @@
         <column name="STATE" Type="VARCHAR" size="255"/>
         <column name="COUNTRY" Type="VARCHAR" size="255"/>
 </table>
+
+<!-- ===============================COURSETIME MANAGEMENT SCHEMA==================================== -->
+<table name="COURSE_TIME" description="coursetime Info">
+        <column name="CT_ID"  required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
+	<column name="ENTRY_ID" required="true"  type="INTEGER"/>
+        <column name="USER_ID" required="true"  type="INTEGER"/>
+        <column name="COURSE_ID" required="true" size="255" type="VARCHAR"/>
+        <column name="CLOGIN_DATE" required="true" type="TIMESTAMP" />
+        <column name="COURSE_TIME"  type="INTEGER"/>
+	<column name="COUNT_COURSELOGIN" required="true" type="INTEGER"/>
+	<column name="STATUS" required="true"  type="INTEGER" size="1"/>
+  </table>
+
+<table name="COURSE_TIMEDAY" description="coursetimedays Info">
+	<column name="CTD_ID"  required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
+        <column name="USER_ID" required="true"  type="INTEGER"/>
+        <column name="COURSE_ID" required="true" size="255" type="VARCHAR"/>
+        <column name="PRIVIOUS_DATE" required="true" type="DATE" />
+        <column name="COURSE_TIMEDAY"  type="INTEGER"/>
+	 <column name="COUNT_LOGINDAY" required="true" type="INTEGER"/>
+  </table>
+
+<table name="COURSE_MONTH" description="coursetimemonth Info">
+	<column name="ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
+        <column name="USER_ID" required="true"  type="INTEGER"/>
+        <column name="COURSE_ID" required="true" size="255" type="VARCHAR"/>
+        <column name="MONTH_YEAR" required="true" size="255" type="VARCHAR"/>
+        <column name="COURSE_TIMEMONTH" type="INTEGER"/>
+	<column name="COUNT_LOGINMONTH" required="true" type="INTEGER"/>
+  </table>
+<table name="MODULE_TIME" description="moduletime Info">
+        <column name="MID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+	<column name="USER_ID" required="true"  type="INTEGER"/>
+	<column name="COURSE_ID" required="true" size="255" type="VARCHAR"/>
+        <column name="MNAME" required="true" size="255" type="VARCHAR"/>
+        <column name="MLOGIN_DATETIME" required="true" type="TIMESTAMP" />
+        <column name="MTIME" type="INTEGER"/>
+  </table>
 
 </database>

@@ -53,6 +53,9 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 /**
 * This class manage all online examination system 
 * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
@@ -119,6 +122,17 @@ public class View_QB extends SecureScreen{
                                	checkstatus="blank";
                        	}
 			context.put("checkstatus",checkstatus);
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+			 String Role = (String)user.getTemp("role");
+                         int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 		}//try
 		catch(Exception ex)
 		{

@@ -54,9 +54,13 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.parser.ParameterParser;
 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 	/** 
 	* This class contains code of Post Answer to the Assignment
 	* @author<a href="arvindjss17@yahoo.co.in">Arvind Pal</a>
+	* @author<a href="smita37uiet@gmail.com">Smita Pal</a>
 	*/
  
 public class PostAns extends  SecureScreen
@@ -73,13 +77,24 @@ public class PostAns extends  SecureScreen
         {
                 try
                 {
- 			User user=data.getUser();             
-			context.put("user_role",data.getUser().getTemp("role"));    
+ 			User user=data.getUser(); 
+			String Role = (String)user.getTemp("role");
+			context.put("user_role",Role);            
 			context.put("coursename",(String)user.getTemp("course_name"));
 			context.put("Ans","Ans");
 			context.put("tdcolor",data.getParameters().getString("count",""));
 			Date curDate=new Date();
                         long longCurDate= curDate.getTime();
+			/*
+                         *Time calculaion for how long user use this page.
+                         */
+                         int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 			Vector v=new Vector();
                         Vector w=new Vector();
 			Criteria crit=new Criteria();
@@ -111,7 +126,6 @@ public class PostAns extends  SecureScreen
 			/**  get Instructor or Student */
 			u=null;
 			w=null;v=null;
-			String Role=(String)user.getTemp("role");
 			if(Role.equals("instructor")) {
 				
 				ParameterParser pp=data.getParameters();

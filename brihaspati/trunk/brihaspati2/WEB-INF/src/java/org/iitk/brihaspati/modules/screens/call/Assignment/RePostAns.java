@@ -55,10 +55,14 @@ import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 
 	/** 
 	* This class contains code of Repost Answer to the Assignment
 	* @author<a href="arvindjss17@yahoo.co.in">Arvind Pal</a>
+	* @author<a href="smita37uiet@gmail.com">Smita Pal</a>
 	*/
 
 public class RePostAns extends  SecureScreen
@@ -75,7 +79,18 @@ public class RePostAns extends  SecureScreen
                         context.put("coursename",(String)user.getTemp("course_name"));
                         context.put("tdcolor",data.getParameters().getString("count","")); 
 			String courseid=(String)user.getTemp("course_id");
+			String Role = (String)user.getTemp("role");
 			
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+                         int uid=UserUtil.getUID(UserName);
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 			Date curdate=new Date();
                         long longCurDate = curdate.getTime();
                        	int curdate1=Integer.parseInt(ExpiryUtil.getCurrentDate(""));

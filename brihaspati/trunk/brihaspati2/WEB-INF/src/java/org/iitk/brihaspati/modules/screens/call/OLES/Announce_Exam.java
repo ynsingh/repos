@@ -57,6 +57,9 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 /**
 * This class announce a quiz
 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi Sr</a>
@@ -239,6 +242,17 @@ public class Announce_Exam extends SecureScreen{
         	context.put("eDate",eDate);
         	context.put("eHour",eHour);
         	context.put("eMinute",eMinute);
+		/**
+                  *Time calculaion for how long user use this page.
+                  */
+		String Role = (String)user.getTemp("role");
+		int uid=UserUtil.getUID(user.getName());
+                if((Role.equals("student")) || (Role.equals("instructor")))
+                {
+                	CourseTimeUtil.getCalculation(uid);
+                	ModuleTimeUtil.getModuleCalculation(uid);
+                }
+
         }catch(Exception e) {
         	ErrorDumpUtil.ErrorLog("The exception in Announce_Exam screen::"+e);
 		data.setMessage(MultilingualUtil.ConvertedString("brih_exception",LangFile));

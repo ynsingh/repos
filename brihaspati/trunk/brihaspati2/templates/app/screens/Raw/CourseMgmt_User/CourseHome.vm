@@ -79,12 +79,15 @@ $!data.getMessage()
 					<td align="center" valign="top">
 						<table valign="top">
                                             	<tr><td align=center>
-                                                   <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style=text-decoration:none>
+                                                   ##<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style=text-decoration:none>
+						     <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","assignment").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>
+
                                                    <img border=0 src="$content.getURI("/images/assignment.jpg")" width="50" height="50" >  </a>
                                             	</td></tr>
                                             	<tr><td align=center>
                                                     <font face="$ui.sansSerifFonts">
-                                                    <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style=text-decoration:none> $brih_assignment </a>
+                                                    ##<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style=text-decoration:none> $brih_assignment </a>
+						    <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","assinement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none> $brih_assignment </a>
                                             	</td></tr>
                                           	</table>
 					</td>
@@ -107,13 +110,15 @@ $!data.getMessage()
 						<table border=0 valign="top">
 							<tr><td align=center>
 				##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm").addPathInfo("count","1")><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
-				<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
+				##<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
+				<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","communication").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a> 
   				   				##<a href=$link.setPage("call,Local_Mail,Mail.vm")><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
      						##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm").addPathInfo("count","1")>$brih_communication</a><br>
-     						<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a><br>
+     						##<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a><br>
+						  <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","communication").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_communication</a><br>
      								##<a href=$link.setPage("call,Local_Mail,Mail.vm")>$brih_communication</a><br>
 							</td></tr>
 						</table>
@@ -127,11 +132,15 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0>
 							<tr><td align=center>
-								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/CourseCalendar.gif")"></a>
+								##<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/CourseCalendar.gif")"></a>
+								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","calendar").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/CourseCalendar.gif")"></a>
+
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("count","1") style=text-decoration:none>$brih_course #if($lang!="english") $brih_Of1 #end $brih_calendar</a><br>
+								##<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("count","1") style=text-decoration:none>$brih_course #if($lang!="english") $brih_Of1 #end $brih_calendar</a><br>
+								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","calender").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_course #if($lang!="english") $brih_Of1 #end $brih_calendar</a><br>
+
 							</td></tr>
 						</table>
 					</td>
@@ -141,13 +150,15 @@ $!data.getMessage()
 						<table border=0 valign="top">
 							<tr><td align="center" valign="top">
 									 ##<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","1") style=text-decoration:none>
-									 <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>
+									 ##<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>
+									<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","coursemanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>
 									<img border=0 src="$content.getURI("/images/book.gif")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
 									##<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a><br>
-									<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a><br>
+									##<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a><br>
+									 <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","coursemanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_course $brih_mgmt</a><br>
 							</td></tr>
 						</table>
 					</td>
@@ -156,11 +167,15 @@ $!data.getMessage()
                                         <td align=center>
                                                 <table border=0>
 							<tr><td align=center>
-                                                    <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/groupimages.jpg")"></a>
+                                                    ##<a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/groupimages.jpg")"></a>
+							 <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","groupmanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/groupimages.jpg")"></a>
+
                                                </td></tr>
                                                <tr><td align=center>
                                                    <font face="$ui.sansSerifFonts">
-                                                  <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1") style=text-decoration:none>$brih_grp$brih_mgmt</a>
+                                                  ##<a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1") style=text-decoration:none>$brih_grp$brih_mgmt</a>
+						    <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","groupmanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_grp$brih_mgmt</a>
+
                                                      </td></tr>
                                                 </table>
                                         </td>
@@ -173,12 +188,15 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0>
 							<tr><td align=center>
-								<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>
+								##<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>
+								<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","oles").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>
                                                 <img border=0 src="$content.getURI("/images/olexam.jpg")" width="50" height="50" ></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-									<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$online_online $brih_examat $brih_system</a>
+									##<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$online_online $brih_examat $brih_system</a>
+									 <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","oles").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$online_online $brih_examat $brih_system</a><br>
+
 							</td></tr>
 						</table>
 					</td> 
@@ -187,11 +205,15 @@ $!data.getMessage()
                                         <td align=center>
                                                 <table border=0>
                                                         <tr><td align=center>
-								<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none><img border=0 src="$content.getURI("/images/Instructor.png")"></a>
+								##<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none><img border=0 src="$content.getURI("/images/Instructor.png")"></a>
+					<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete").addPathInfo("cname",$groupName).addPathInfo("mname","instructormanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/Instructor.png")"></a>
+
                                                         </td></tr>
                                                         <tr><td align=center>
                                                                 <font face="$ui.sansSerifFonts">
-									<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none>$brih_ins $brih_mgmt</a><br>
+									##<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none>$brih_ins $brih_mgmt</a><br>
+								<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete")).addPathInfo("cname",$groupName).addPathInfo("mname","instructormanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_ins $brih_mgmt</a><br>
+
                                                         </td></tr>
                                                 </table>
                                         </td>
@@ -200,11 +222,15 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0>
 							<tr><td align=center>
-								<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("courseid",$user_role).addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/images.jpg")"></a>
+								##<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("courseid",$user_role).addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/images.jpg")"></a>
+								 <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("courseid",$user_role).addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","studentmanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/images.jpg")"></a>
+
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-     								<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_student $brih_mgmt</a><br>
+     								##<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_student $brih_mgmt</a><br>
+								<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","studentmanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_student $brih_mgmt</a><br>
+
 							</td></tr>
 						</table>
 					</td>
@@ -218,15 +244,18 @@ $!data.getMessage()
 					<td align=center>
 					<table border=0>
 						<tr><td align=center>
-     							<a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/marks.png")"></a>
+     							##<a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/marks.png")"></a>
+							<a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","uploadmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/marks.png")"></a>
 						</td></tr>
 						<tr><td align=center>
 							<font face="$ui.sansSerifFonts">
 						#if($lang != "english")
 
-     							<a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm")/addPathInfo("count","1") style=text-decoration:none>$brih_marks $brih_upload</a><br>
+     							##<a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm")/addPathInfo("count","1") style=text-decoration:none>$brih_marks $brih_upload</a><br>
+							 <a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm")/addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","uploadmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_marks $brih_upload</a><br>
 						#else
-     							<a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("count","1") style=text-decoration:none>$brih_upload $brih_marks</a><br>
+     							##<a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("count","1") style=text-decoration:none>$brih_upload $brih_marks</a><br>
+							  <a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm")/addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","uploadmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_marks $brih_upload</a><br>
 						#end
 						</td></tr>
 					</table>
@@ -266,12 +295,15 @@ $!data.getMessage()
 					<td align="center" valign="top">
 						<table border=0 valign="top">
                                             	<tr><td align=center>
-                                                   <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style=text-decoration:none>
+                                                   ##<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style=text-decoration:none>
+						     <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","assignement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>
+
                                                    <img border=0 src="$content.getURI("/images/assignment.jpg")" width="50" height="50" >  </a>
                                             	</td></tr>
                                             	<tr><td align=center>
                                                     <font face="$ui.sansSerifFonts">
-                                                    <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style=text-decoration:none> $brih_assignment </a>
+                                                    ##<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style=text-decoration:none> $brih_assignment </a>
+						      <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","assignment").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none> $brih_assignment </a>
                                             	</td></tr>
                                           	</table>
 					</td>
@@ -281,13 +313,15 @@ $!data.getMessage()
 						<table border=0 valign="top">
 							<tr><td align=center>
 	   				##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm").addPathInfo("count","1")><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
-	   				<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
+	   				##<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
+					 <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","communication").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
   				   				##<a href=$link.setPage("call,Local_Mail,Mail.vm")><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
 					##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm").addPathInfo("count","1")>$brih_communication</a><br>
-					<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a><br>
+					##<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a><br>
+					  <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","communication").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_communication</a><br>
      								##<a href=$link.setPage("call,Local_Mail,Mail.vm")>$brih_communication</a><br>
 							</td></tr>
 						</table>
@@ -297,11 +331,15 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0>
 							<tr><td align=center>
-								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse") style=text-decoration:none><img border=0 src="$content.getURI("/images/CourseCalendar.gif")"></a>
+								##<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse") style=text-decoration:none><img border=0 src="$content.getURI("/images/CourseCalendar.gif")"></a>
+								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("cname",$groupName).addPathInfo("mname","calender").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/CourseCalendar.gif")"></a>
+
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse") style=text-decoration:none>$brih_course #if($lang!="english") $brih_Of1 #end $brih_calendar</a><br>
+								##<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse") style=text-decoration:none>$brih_course #if($lang!="english") $brih_Of1 #end $brih_calendar</a><br>
+								 <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("cname",$groupName).addPathInfo("mname","calender").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_course #if($lang!="english") $brih_Of1 #end $brih_calendar</a><br>
+
 							</td></tr>
 						</table>
 					</td>
@@ -314,12 +352,14 @@ $!data.getMessage()
 					<td align="center" valign="top">
 						<table border=0 valign="top">
 							<tr><td align="center" valign="top">
-						 	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>
+						 	##<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>
+							  <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","coursecontent").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>
 									<img border=0 src="$content.getURI("/images/book.gif")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-						<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi") $brih_content #else $brih_course $brih_content #end </a><br>
+						##<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi") $brih_content #else $brih_course $brih_content #end </a><br>
+						 <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","coursecontent").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none> #if($lang =="hindi") $brih_content #else $brih_course $brih_content #end </a><br>
 							</td></tr>
 						</table>
 					</td>
@@ -328,11 +368,14 @@ $!data.getMessage()
                                         <td align=center>
                                                 <table border=0>
 							<tr><td align=center>
-                                                    <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/groupimages.jpg")"></a>
+                                                    ##<a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/groupimages.jpg")"></a>
+						    <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","groupmanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/groupimages.jpg")"></a>
+
                                                </td></tr>
                                                <tr><td align=center>
                                                    <font face="$ui.sansSerifFonts">
-                                                  <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1") style=text-decoration:none>$brih_grp $brih_mgmt</a>
+                                                  ##<a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1") style=text-decoration:none>$brih_grp $brih_mgmt</a>
+					           <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","groupmanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_grp $brih_mgmt</a>
                                                      </td></tr>
                                                 </table>
                                         </td>
@@ -341,13 +384,15 @@ $!data.getMessage()
                                         <td align=center>
                                                 <table border=0>
                                                         <tr><td align=center>
-								<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/exam.jpg")"></a>
+								##<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/exam.jpg")"></a>
+								<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","oles").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/exam.jpg")"></a>
 
                                                         </td></tr>
                                                         <tr><td align=center>
                                                                 <font face="$ui.sansSerifFonts">
-									<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1") style=text-decoration:none>
-                                                        $brih_exam </a><br>
+									##<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1") style=text-decoration:none>$brih_exam </a><br>
+									<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1")..addPathInfo("cname",$groupName).addPathInfo("mname","oles").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_exam </a><br>
+
                                                         </td></tr>
                                                 </table>
                                         </td>
@@ -361,11 +406,14 @@ $!data.getMessage()
 
 					<table border=0>
 						<tr><td align=center>
-	     						<a href=$link.setPage("call,UserMgmt_User,ViewMarks.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/marks.png")"></a>
+	     						##<a href=$link.setPage("call,UserMgmt_User,ViewMarks.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/marks.png")"></a>
+							<a href=$link.setPage("call,UserMgmt_User,ViewMarks.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","viewmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/marks.png")"></a>
 						</td></tr>
 						<tr><td align=center>
 							<font face="$ui.sansSerifFonts">
-		     					<a href=$link.setPage("call,UserMgmt_User,ViewMarks.vm").addPathInfo("count","1") style=text-decoration:none>
+		     					##<a href=$link.setPage("call,UserMgmt_User,ViewMarks.vm").addPathInfo("count","1") style=text-decoration:none>
+							<a href=$link.setPage("call,UserMgmt_User,ViewMarks.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","viewmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>
+
 							#if($lang!="english") 
 								$brih_marks $brih_view </a><br>
 							#else
@@ -391,10 +439,14 @@ $!data.getMessage()
                                  <td align=center>
                           <table border=0>
                           <tr><td align=center>
-                          <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1")><img border=0 src="$content.getURI("/images/ScormPlayer.jpg")"></a></td></tr>
+                          ##<a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1")><img border=0 src="$content.getURI("/images/ScormPlayer.jpg")"></a></td></tr>
+			   <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","wiki").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin")><img border=0 src="$content.getURI("/images/ScormPlayer.jpg")"></a></td></tr>
+
                            <tr><td align=center>
                            <font face="$ui.sansSerifFonts">
-                           <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1")>$brih_scorm $Repo_Player</a></td></tr>
+                           ##<a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1")>$brih_scorm $Repo_Player</a></td></tr>
+				<a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","wiki").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin")>$brih_scorm $Repo_Player</a></td></tr>
+
                                 </table>
                                 </td>
 				</tr>
@@ -553,6 +605,28 @@ $news.getNews_Subject()
 				                </table>	
 			                </td></tr>
 		                </table>
+					#if($guest_login == "false")
+					 <div style="overflow:auto;  height:180px;">
+                                                <table  bgcolor="$ui.tableColor" width="98%"  align="left">
+                                                        <tr>
+                                                                <td colspan="1" align="center" bgcolor="$ui.menuColor"><b>$brih_course $brih_active $brih_usr #if($lang== "hindi") $brih_Of #end $brih_list &nbsp;&nbsp;($uList.size())</b></td></tr></b>
+                                                                </td>
+                                                        </tr>
+
+                                                                #foreach($element in $uList)
+                                                                        #if($velocityCount%2==0)
+                                                                        <tr bgcolor="$ui.menuColor">
+                                                                        #else
+                                                                        <tr bgcolor="$ui.tableColor">
+                                                                        #end
+
+                                                                <td> $element </td>
+                                                        </tr>
+                                                                #end
+                                                </table>
+                                        </div>
+					#end
+
 
 			</td>
 		##main column 2 close

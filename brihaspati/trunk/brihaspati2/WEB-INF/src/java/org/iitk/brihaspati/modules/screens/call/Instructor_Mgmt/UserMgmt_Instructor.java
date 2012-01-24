@@ -55,6 +55,8 @@ import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.om.InstructorPermissionsPeer;
 import org.iitk.brihaspati.om.InstructorPermissions;
 
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  *   This class contains code for listing of all Instructor's
  *   List of Instructor for Institute admin and Instructor.
@@ -80,6 +82,17 @@ public class UserMgmt_Instructor extends SecureScreen{
 		context.put("course1",(String)user.getTemp("course_name"));
         	LangFile=(String)user.getTemp("LangFile");
         	String loginname=user.getName();
+		String Role = (String)user.getTemp("role");
+		/**
+                 *Time calculaion for how long user use this page.
+                 */
+                 int userid=UserUtil.getUID(loginname);
+                 if((Role.equals("student")) || (Role.equals("instructor")))
+                 {
+                         CourseTimeUtil.getCalculation(userid);
+                         ModuleTimeUtil.getModuleCalculation(userid);
+                 }
+
 		String CourseList="";
 		if(institudeName.equals("ListAll")){
 			CourseList=data.getParameters().getString("cName","");	
@@ -261,6 +274,7 @@ public class UserMgmt_Instructor extends SecureScreen{
                   	}
 			context.put("course",courseName);
                         context.put("status",status);
+
                 }
                 catch(Exception e){
                         data.setMessage("The exception is :- "+e);

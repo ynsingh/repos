@@ -60,7 +60,8 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
-
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 
 public class Notices extends SecureScreen
 {
@@ -153,10 +154,19 @@ public class Notices extends SecureScreen
 				user.setTemp("course_name",C_Name);
 			}
 			context.put("courseId",courseid);
-                        //String C_Name=(String)(user.getTemp("course_name"));
+	               //String C_Name=(String)(user.getTemp("course_name"));
                         context.put("course",C_Name);
                         context.put("courselist",courselist);
                         context.put("groupIdList",groupIdList);
+		/*
+		 *method for how much time user spend in this page.
+		 */
+		String Role=(String)data.getUser().getTemp("role");
+		if((Role.equals("instructor"))||(Role.equals("student")))
+		{
+			CourseTimeUtil.getCalculation(user_id);
+        	        ModuleTimeUtil.getModuleCalculation(user_id);
+		}
                 }
                 catch(Exception e){data.setMessage("the error in notice send java---->"+e);}
 

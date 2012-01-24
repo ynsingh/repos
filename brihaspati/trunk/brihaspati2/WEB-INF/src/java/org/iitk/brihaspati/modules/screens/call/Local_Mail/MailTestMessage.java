@@ -52,7 +52,8 @@ import org.apache.turbine.modules.screens.VelocitySecureScreen;
 import org.apache.turbine.util.security.AccessControlList;
 import org.iitk.brihaspati.om.MailSend;
 import org.iitk.brihaspati.om.MailSendPeer;
-
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
      
  * @author  <a href="mailto:chitvesh@yahoo.com">chitvesh dutta</a>
@@ -78,6 +79,8 @@ public class MailTestMessage extends VelocitySecureScreen
 		{
 		AccessControlList acl=data.getACL();
 		User user=data.getUser();
+		String username=user.getName();
+                int uid=UserUtil.getUID(username);
 		String g=user.getTemp("course_id").toString();
 
 		 /**
@@ -87,12 +90,15 @@ public class MailTestMessage extends VelocitySecureScreen
 		   if(g!=null && acl.hasRole("instructor",g) || acl.hasRole("student",g))
 		{
 			authorised=true;
+			CourseTimeUtil.getCalculation(uid);
+                        ModuleTimeUtil.getModuleCalculation(uid);
 		}
 		else
 		{
 			data.setScreenTemplate(Turbine.getConfiguration().getString("template.login"));
 			authorised=false;
-		}	
+		}
+			
 		}
 		catch(Exception e){}
 		return authorised;

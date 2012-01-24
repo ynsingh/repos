@@ -51,6 +51,9 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil; 
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen; 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 
 public class Insert_TF extends SecureScreen
 {
@@ -118,6 +121,17 @@ public class Insert_TF extends SecureScreen
                                 	}
                         	}
 			}
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+			String Role = (String)user.getTemp("role");
+			int userid=UserUtil.getUID(user.getName());
+                        if((Role.equals("student")) || (Role.equals("instructor")))
+                        {
+                                CourseTimeUtil.getCalculation(userid);
+                                ModuleTimeUtil.getModuleCalculation(userid);
+                        }
+
                 }//try
                 catch(Exception e){
                                    ErrorDumpUtil.ErrorLog("Error in screen[Insert_TF] !!"+e);

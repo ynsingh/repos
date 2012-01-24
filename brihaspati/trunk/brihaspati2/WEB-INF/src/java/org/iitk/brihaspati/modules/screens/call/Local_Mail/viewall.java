@@ -63,7 +63,8 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
-
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 
 /**
  *   This class contains code for sending message to any particular user if exists.
@@ -193,6 +194,19 @@ public class viewall extends SecureScreen{
 				status="empty";
 				}
                         context.put("status",status);
+			 /*
+                         *method for how much time user spend in this page.
+                         */
+
+			String Role = (String)user.getTemp("role");
+			 String username=user.getName();
+                        int uid=UserUtil.getUID(username);
+                        if((Role.equals("student")) || (Role.equals("instructor")))
+                        {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                        }
+
                 }
                 catch(Exception e)
                 {

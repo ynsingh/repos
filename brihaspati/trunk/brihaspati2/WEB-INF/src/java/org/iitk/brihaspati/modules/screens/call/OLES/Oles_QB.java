@@ -53,6 +53,11 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 /**
 * This class manage all online examination system 
 * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
@@ -75,6 +80,17 @@ public class Oles_QB extends SecureScreen{
 			context.put("mode",mode);
 			String topic=pp.getString("topic","");
 			context.put("topic",topic);
+			String Role = (String)user.getTemp("role");
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+                         int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 			String instid=(String)user.getTemp("Institute_id");
 			String checkstatus=pp.getString("checkstatus","");
 			String filePath=data.getServletContext().getRealPath("/QuestionBank"+"/"+username+"/"+crsId);

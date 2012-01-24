@@ -51,6 +51,10 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 /**
 * This class displays the list of quizzes for preview in online examination system 
 * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
@@ -126,6 +130,17 @@ public class Preview_Quiz extends SecureScreen{
 //			}
 //			else
 //				context.put("isFile","");
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+			 String Role = (String)user.getTemp("role");
+			 int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 	    }
         catch(Exception e) {
         	ErrorDumpUtil.ErrorLog("The exception in Preview_Quiz screen::"+e);

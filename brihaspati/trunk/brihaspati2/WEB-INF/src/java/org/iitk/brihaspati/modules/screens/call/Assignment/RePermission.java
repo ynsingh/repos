@@ -71,6 +71,9 @@ import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;         
 import org.iitk.brihaspati.modules.utils.YearListUtil;
 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 	/**
         *  This class contains code of Post Answer to the Assignment
         *  @author<a href="arvindjss17@yahoo.co.in">Arvind Pal</a>
@@ -97,6 +100,17 @@ public class RePermission  extends  SecureScreen
                         String courseid=(String)user.getTemp("course_id");
                         context.put("tdcolor",pp.getString("count","")); 
 			String Assign=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Assignment");
+			String Role = (String)user.getTemp("role");
+			/*
+                        *Time calculaion for how long user use this page.
+                        */
+                        int uid=UserUtil.getUID(user.getName());
+                        if((Role.equals("student")) || (Role.equals("instructor")))
+                        {
+                               CourseTimeUtil.getCalculation(uid);
+                               ModuleTimeUtil.getModuleCalculation(uid);
+                        }
+
                         //String DB_subject1=pp.getString("topicList");
                         //context.put("topicList",DB_subject1);
                         

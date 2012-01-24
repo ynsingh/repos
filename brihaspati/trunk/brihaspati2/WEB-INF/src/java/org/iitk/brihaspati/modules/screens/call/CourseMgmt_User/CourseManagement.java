@@ -55,6 +55,9 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.Courses;
 
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 /**
  * This class Upload file for course Content
  * @author <a href="mailto:ammuamit@hotmail.com">Amit Joshi</a>
@@ -74,6 +77,16 @@ public class CourseManagement extends SecureScreen
                 String uName=user.getName();
                 int uid=UserUtil.getUID(uName);
                 ParameterParser pp=data.getParameters();
+		 /*
+                 *Time calculaion for how long user use this page.
+                 */
+		 String Role = (String)user.getTemp("role");
+                 if((Role.equals("student")) || (Role.equals("instructor")))
+                 {
+	                 CourseTimeUtil.getCalculation(uid);
+        	         ModuleTimeUtil.getModuleCalculation(uid);
+                 }
+
                 String dir=(String)user.getTemp("course_id");
                 context.put("course",(String)user.getTemp("course_name"));
 		String counter=pp.getString("count","");
@@ -128,6 +141,7 @@ public class CourseManagement extends SecureScreen
                 long remlmt=tlmt-unpdir;
                 context.put("aSize",(remlmt));
 		ErrorDumpUtil.ErrorLog("asize at line 112=="+remlmt);
+
 	}
 	catch(Exception e)
 	{

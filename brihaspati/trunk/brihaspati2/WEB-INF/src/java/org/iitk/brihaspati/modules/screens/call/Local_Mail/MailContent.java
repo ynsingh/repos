@@ -55,8 +55,8 @@ import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
-
-
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 /** 
  * This class contains code to show Messages in specific user's Mailbox 
  *  
@@ -98,7 +98,15 @@ public class MailContent extends SecureScreen
 	    		*/
 			String Username=user.getName();
 			int user_id=UserUtil.getUID(Username);
-	    
+	    		/*
+                         *method for how much time user spend in this page.
+                         */
+			String Role = (String)user.getTemp("role");
+			if((Role.equals("student")) || (Role.equals("instructor")))
+                        {
+	                        CourseTimeUtil.getCalculation(user_id);
+        	                ModuleTimeUtil.getModuleCalculation(user_id);
+                        }
 	    		/** 
 	     		* Select all the messagesid according to the ReceiverId
 	     		* from the MAIL_RECEIVE table
@@ -190,6 +198,11 @@ public class MailContent extends SecureScreen
 		context.put("username",Username);
 		context.put("CName",cname);
 		context.put("workgroup",group);
+		/*
+                 *method for how much time user spend in this page
+                 */
+		
+
 	}
 	catch(Exception e){data.setMessage("The error in Mail Content !!"+e);}
     }

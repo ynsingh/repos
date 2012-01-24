@@ -47,6 +47,10 @@ import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.turbine.om.security.User; 
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+
 public class changePassword extends SecureScreen{
 	/**
 	 * Loads the template page
@@ -55,6 +59,7 @@ public class changePassword extends SecureScreen{
 	{
 		User user=data.getUser();
 		String userName=user.getName();
+		String course_id=(String)user.getTemp("course_id");
 		String stat=data.getParameters().getString("status","");
 		String mode2=data.getParameters().getString("mode2","");
 		context.put("mode",data.getParameters().getString("mode",""));
@@ -63,6 +68,19 @@ public class changePassword extends SecureScreen{
 		context.put("status",stat);
 		context.put("mode2",mode2);
 		context.put("uName",userName);
+		 /*
+                 *Code for timeCalcultion in this page.
+                 */
+		if(course_id.equals(" ")){
+		
+                	String Role = (String)data.getUser().getTemp("role");
+                	int uid=UserUtil.getUID(userName);
+                	if((Role.equals("student")) || (Role.equals("instructor")))
+                	{
+                        	CourseTimeUtil.getCalculation(uid);
+                        	ModuleTimeUtil.getModuleCalculation(uid);
+                	}
+		}
 	}
 }
 

@@ -44,7 +44,12 @@ import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils. ErrorDumpUtil;
 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  * This class for Editing course contents 
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
@@ -79,6 +84,19 @@ public class Edit extends SecureScreen{
 			context.put("status",status);
 			context.put("tdcolor",data.getParameters().getString("count",""));
 			AccessControlList acl=data.getACL();
+			/**
+			 * Get User Role
+			 */
+			 String Role = (String)user.getTemp("role");
+			 /**
+                         *Time calculaion for how long user use this page.
+                         */
+                         int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
 
 			/**
 		 	* Retreive the course id and course name from the
@@ -143,6 +161,7 @@ public class Edit extends SecureScreen{
 					context.put("Mode","Blank");
 				}
 				context.put("courseid",group);
+
 		}catch(Exception e)
 		{
 			data.setMessage("The error in Editing in Course Contents "+e);

@@ -59,6 +59,9 @@ import org.iitk.brihaspati.modules.utils.ManifestParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 
 public class Launchcontent extends SecureScreen
 {
@@ -113,6 +116,16 @@ public class Launchcontent extends SecureScreen
                 report.add(item);
                 }
                 context.put("report",report);
+		 /*
+                  *method for how much time user spend in this page.
+                  */
+ 		int uid=UserUtil.getUID(uname);
+                if((role.equals("student")) || (role.equals("instructor")))
+                {
+                           CourseTimeUtil.getCalculation(uid);
+                           ModuleTimeUtil.getModuleCalculation(uid);
+                }
+
 		}
 	catch(Exception ex)
 	{

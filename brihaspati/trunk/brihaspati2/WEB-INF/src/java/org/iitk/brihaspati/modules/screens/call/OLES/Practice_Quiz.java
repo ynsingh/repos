@@ -50,6 +50,10 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 /**
 * This class is used to create quiz randomly 
 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
@@ -131,6 +135,17 @@ public class Practice_Quiz extends SecureScreen{
 			context.put("noQuestions",noQuestions);
 			String allowPractice = temp[3];
 			context.put("allowPractice",allowPractice);
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+			String Role = (String)user.getTemp("role");
+			int uid=UserUtil.getUID(user.getName());
+                        if((Role.equals("student")) || (Role.equals("instructor")))
+                        {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                        }
+			
         }
         catch(Exception e) {
         	ErrorDumpUtil.ErrorLog("The exception in Random_Quiz screen::"+e);

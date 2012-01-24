@@ -51,7 +51,8 @@ import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
-
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 /**
  *   This class contains code for displaying list of all active quiz 
  *   (active quiz=quizes which are already created)
@@ -135,6 +136,18 @@ public class Quiz_Detail extends SecureScreen{
 				checkstatus="blank";
             }
 			context.put("checkstatus",checkstatus);
+			/**
+              		  *Time calculaion for how long user use this page.
+                          */
+			  String Role = (String)user.getTemp("role");
+			  //int userid=UserUtil.getUID(user.getName());
+                          if((Role.equals("student")) || (Role.equals("instructor")))
+                          {
+                                CourseTimeUtil.getCalculation(userid);
+                                ModuleTimeUtil.getModuleCalculation(userid);
+                           }
+
+ 
 		}		        
 		catch(Exception ex){
 			ErrorDumpUtil.ErrorLog("The exception in detail quiz file!!"+ex);

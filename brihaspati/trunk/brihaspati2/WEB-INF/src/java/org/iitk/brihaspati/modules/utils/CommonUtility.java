@@ -38,6 +38,7 @@ import java.io.FileWriter;
 import java.io.BufferedReader;
 
 import java.util.List;
+import java.util.Calendar;
 import java.util.Vector;
 import java.lang.reflect.Array;
 import java.util.StringTokenizer;
@@ -114,7 +115,8 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  * This class is used for call the method in mylogin 
  * like Create index for Search, Clean the system 
@@ -208,6 +210,15 @@ public class CommonUtility{
                         	boolean Expiry_Success=ExpiryUtil.Expiry();
 				UpdateInfoMail.checknWriteXml();
 				String  Update_Mail = UpdateInfoMail.getUpdationMail();
+				 /*method for day wiseCourseTime in database*/
+                                CourseTimeUtil.CourseDay();
+				CourseTimeUtil.deleteSameDateEntry();
+				Calendar cal = Calendar.getInstance();
+        		        int tdate=cal.get(Calendar.DAY_OF_MONTH);
+	                	if(tdate==1){
+                                        CourseTimeUtil.UpdateCourseMonth();
+					ModuleTimeUtil.deleteLastmonthentry();
+				}
                                // if(Expiry_Success=true){//3 if
 	                               // this code moved to upside
                                // }//end of if 3 loop

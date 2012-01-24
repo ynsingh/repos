@@ -54,7 +54,8 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 //import org.iitk.brihaspati.modules.utils.CourseUtil; 
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.om.DbReceivePeer;
-
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  *   This class contains code for all discussions in workgroup
  *   Compose a discussion and reply.
@@ -186,6 +187,18 @@ public class DB extends SecureScreen
 			context.put("total",totalMsg);
 			context.put("courseid",dir);
 			context.put("cname",(String)user.getTemp("course_name"));
+			 /*
+                         *method for how much time user spend in this page.
+                         */
+			if((!dir.equals("instituteWise")) || (!dir.equals("general")) || (!dir.equals(" ")))
+			{
+				String Role = (String)user.getTemp("role");
+				if((Role.equals("student")) || (Role.equals("instructor")))
+                        	{
+                                	CourseTimeUtil.getCalculation(user_id);
+                                	ModuleTimeUtil.getModuleCalculation(user_id);
+                        	}
+			}
 		}//try
 		catch(Exception e){data.setMessage("The error in DB screen"+e);}
     	}//method

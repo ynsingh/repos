@@ -60,7 +60,8 @@ import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 
 
 /** 
@@ -266,6 +267,19 @@ public class DBContent extends SecureScreen
 			context.put("username",Username);
 			context.put("cname",(String)data.getUser().getTemp("course_name"));
 			context.put("workgroup",group);
+			/*
+                         *method for how much time user spend in this page.
+                         */
+			if((!group.equals("instituteWise")) || (!group.equals("general")) || (!group.equals(" ")))
+			{
+				String Role = (String)data.getUser().getTemp("role");
+				if((Role.equals("student")) || (Role.equals("instructor")))
+                	        {
+                        	        CourseTimeUtil.getCalculation(user_id);
+                            	         ModuleTimeUtil.getModuleCalculation(user_id);
+                      		}
+			}
+			
 		}//try
 		catch(Exception e){data.setMessage("Exception screens [Dis_Board,DBContent.java]" + e);}
     	}//method

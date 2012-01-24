@@ -50,6 +50,9 @@ import org.iitk.brihaspati.om.CalInformationPeer;
 import org.iitk.brihaspati.om.CalInformation;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  * @author <a href="mailto:singhnk@iitk.ac.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
@@ -67,6 +70,7 @@ public class Calendar_Insert extends SecureScreen
 	private static Time etime;
 	public void doBuildTemplate( RunData data, Context context )
 	{
+		User user=data.getUser();
 		ParameterParser pp=data.getParameters();
 		String username=pp.getString("uname","");
 		context.put("name",username);
@@ -85,7 +89,17 @@ public class Calendar_Insert extends SecureScreen
 
 		String path=pp.getString("path");
 		context.put("path",path);
-
+		if(path.equals("course"))
+		{
+			String Role = (String)user.getTemp("role");
+			int uid=UserUtil.getUID(username);
+			if((Role.equals("student")) || (Role.equals("instructor")))
+			{
+				CourseTimeUtil.getCalculation(uid);
+        	                ModuleTimeUtil.getModuleCalculation(uid);
+	
+			}
+		}
 		/**
 		 * Obtain a list of the hours in a day and put it in
 		 * context for display in the drop down list
@@ -102,7 +116,7 @@ public class Calendar_Insert extends SecureScreen
 				hour.add(hr_string);
 		}
 		context.put("hour",hour);
-		User user=data.getUser();
+		//User user=data.getUser();
 		/**
 		 * Put the course name in context if the user is in
 		 * course calendar. Also put the day, month number,

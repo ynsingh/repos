@@ -54,8 +54,11 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.ListManagement;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
-
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
  public class ScormPlayerList extends SecureScreen 
   {
   
@@ -79,6 +82,16 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
                 	context.put("mode",mode);
                 	String type=pp.getString("type","");
                 	context.put("type",type);
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+                         int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 			String Mode=new String();
                         File scormDir=new File(TurbineServlet.getRealPath("/Courses")+"/"+course_id+"/Scormpackage/");
                         if(!scormDir.exists())
@@ -138,6 +151,7 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
                                 else
                                 Mode="Blank";
                                 context.put("Mode",Mode);
+
 		}
 		catch(Exception e)
 		{

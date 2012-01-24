@@ -40,6 +40,8 @@ import java.io.File;
 import java.util.Vector;
 import java.util.List;
 import java.util.Date;
+import java.util.Collection;
+import java.util.Iterator;
 //import java.util.Calendar;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
@@ -65,13 +67,17 @@ import org.iitk.brihaspati.om.SurveyQuestionPeer;
 import org.iitk.brihaspati.om.SurveyStudentPeer;
 import org.iitk.brihaspati.om.SurveyResultPeer;
 import org.iitk.brihaspati.om.SurveyQuestion;
-
+import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import org.apache.turbine.services.session.TurbineSession;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  * This Class manage all functionality of Course
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:ammu_india@yahoo.com">Amit Joshi</a>
  * @author <a href="mailto:nagendrakumarpal@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
+ *@author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
  */
 
 public class CourseHome extends SecureScreen{
@@ -173,6 +179,7 @@ public class CourseHome extends SecureScreen{
 			* Latest Course news from database for particuler course 
 			* which user logged in
 			*/
+			String groupName=(String)user.getTemp("course_id");
 			int gid=GroupUtil.getGID((String)user.getTemp("course_id"));
 			Vector newsd=NewsHeadlinesUtil.getNews(gid);
                 	context.put("sample",newsd);
@@ -278,8 +285,22 @@ public class CourseHome extends SecureScreen{
                         List lst=SurveyResultPeer.doSelect(cri);
                         context.put("ldetail",lst);
 
-		}
-		catch(Exception e)
+		         /*
+                         *Time calculaion for how long user use this page.
+                         */
+                        if((Role.equals("student")) || (Role.equals("instructor")))
+                        {
+                               CourseTimeUtil.getCalculation(userid);
+                         }
+			 /*
+                        *method for how much time user spend in this page.
+                        *These lines add by Smita
+                        */
+                        Vector userList=CourseTimeUtil.getCourseActiveList(gid,groupName);
+                        context.put("uList",userList);
+
+
+		}catch(Exception e)
 		{
 			data.addMessage("The error in Course Home page :-"+e);
 		}

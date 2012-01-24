@@ -22,7 +22,9 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import java.util.Vector;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
 
-
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  * This class Upload file for course Content
  *
@@ -41,6 +43,20 @@ public class UploadImage extends SecureScreen_Instructor {
 			context.put("course",Courseid);
 			context.put("mode",mode);
 			context.put("tdcolor",pp.getString("count",""));
+			/**
+			 * Get User Role
+			 */
+			 String Role = (String)user.getTemp("role");
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+                         int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 			if(!mode.equals("UploadImage")) {
 				ErrorDumpUtil.ErrorLog(" da Upload Image in GRade");
 				String path=TurbineServlet.getRealPath("/Courses"+"/"+courseid);

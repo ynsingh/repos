@@ -54,6 +54,9 @@ import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import java.util.Vector;
 import java.util.StringTokenizer;
 import java.io.File;
@@ -82,6 +85,7 @@ public class  Grp_View_Delete extends SecureScreen
 			String courseid=(String)user.getTemp("course_id");
 			context.put("courseid",courseid);
 			context.put("tdcolor",pp.getString("count",""));
+			String Role = (String)user.getTemp("role");
 
                         //Get the path where the GroupList and groupname xml are there
                         String groupPath=data.getServletContext().getRealPath("/Courses"+"/"+courseid+"/GroupManagement");
@@ -149,6 +153,16 @@ public class  Grp_View_Delete extends SecureScreen
 				else
 				context.put("Mode","Blank"); 
 			}//if exists
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+                         int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 		}//try
                 catch(Exception e){
                                    	ErrorDumpUtil.ErrorLog("Error in Screen:Grp_View_Delete !!"+e);

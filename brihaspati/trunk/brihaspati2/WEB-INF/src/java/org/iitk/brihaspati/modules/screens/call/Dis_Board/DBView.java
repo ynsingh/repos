@@ -60,7 +60,9 @@ import org.iitk.brihaspati.om.DbSendPeer;
 import org.iitk.brihaspati.om.DbSend;
 import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
-//import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  * This class contains code for display message
  * @author  <a href="aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
@@ -83,6 +85,7 @@ public class DBView extends SecureScreen
 			User user=data.getUser();
 			ParameterParser pp=data.getParameters();
 			String topic=pp.getString("topic","");
+			String course_id=(String)data.getUser().getTemp("course_id");
 			context.put("topic",topic);
 			AccessControlList acl=data.getACL();
 			int msg_id=data.getParameters().getInt("msgid");
@@ -155,6 +158,20 @@ public class DBView extends SecureScreen
 				for(int j=start+1;j<stop;j++)
 				{
 					topicDesc=topicDesc+ "\n"+str[j];
+				}
+				/*
+        	                 *method for how much time user spend in this page.
+	                         */
+				if((!course_id.equals("instituteWise")) || (!course_id.equals("general")) || (!course_id.equals(" ")))
+				{
+					String Role = (String)user.getTemp("role");
+        	        	        String username=user.getName();
+                	        	int uid=UserUtil.getUID(username);
+                        		if((Role.equals("student")) || (Role.equals("instructor")))
+                        		{
+                                		CourseTimeUtil.getCalculation(uid);
+                            		    	ModuleTimeUtil.getModuleCalculation(uid);
+                        		}
 				}
 			}
 			catch(Exception e) {data.setMessage("The error in DBView Screens !!"+e);}

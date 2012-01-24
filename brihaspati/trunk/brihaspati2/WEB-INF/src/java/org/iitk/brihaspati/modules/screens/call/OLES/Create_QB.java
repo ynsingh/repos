@@ -45,6 +45,10 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.turbine.modules.screens.VelocityScreen;
 import org.apache.commons.fileupload.FileItem;
 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 /**
 * This class manage all online examination system 
 * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
@@ -74,6 +78,17 @@ public class Create_QB extends SecureScreen{
                 	context.put("status",status);
 			String addques=pp.getString("addques","");
                 	context.put("addques",addques);
+			String Role = (String)user.getTemp("role");
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+                         int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 			//ErrorDumpUtil.ErrorLog("\n screenQuestype======"+addques+"\ntopic====="+topic);
 		}//try
 		catch(Exception ex)

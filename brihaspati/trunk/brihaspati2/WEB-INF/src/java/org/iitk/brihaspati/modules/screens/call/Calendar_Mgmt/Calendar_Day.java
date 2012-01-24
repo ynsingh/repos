@@ -54,11 +54,13 @@ import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-//import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CalendarUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.apache.velocity.context.Context;
 
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  * @author <a href="mailto:singhnk@iitk.ac.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
@@ -81,6 +83,7 @@ public class Calendar_Day extends SecureScreen
 			User user=data.getUser();
 			String instituteId=(String)user.getTemp("Institute_id","");
 			String LangFile =(String)user.getTemp("LangFile");
+			String Role = (String)user.getTemp("role");
 			/**
 			* Set InstituteId if it is not found from temp
 			* @user role as admin 
@@ -106,6 +109,18 @@ public class Calendar_Day extends SecureScreen
 			String uName=user.getName();
 			String uid_user=Integer.toString(UserUtil.getUID(uName));		
 			context.put("current_userid",uid_user);
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+			 if(path.equals("course"))
+			 {
+                        	int user_id=Integer.parseInt(uid_user);
+                         	if((Role.equals("student")) || (Role.equals("instructor")))
+                         	{
+                                	CourseTimeUtil.getCalculation(user_id);
+                                	ModuleTimeUtil.getModuleCalculation(user_id);
+                         	}
+			}
 
 			/**
 			 * Set the course id for the event depending

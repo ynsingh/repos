@@ -65,6 +65,11 @@ import java.io.IOException;
 import java.io.FileReader;
 import java.util.StringTokenizer;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
+
 public class NoticeContent extends SecureScreen{
 	public void doBuildTemplate( RunData data, Context context ){
 		try{
@@ -217,6 +222,7 @@ public class NoticeContent extends SecureScreen{
                                 * here comes the code to view attachment with the message
                                 */
                                 context.put("message",topicDesc);
+
                         }
 
 			/**
@@ -315,6 +321,16 @@ public class NoticeContent extends SecureScreen{
                                 data.setMessage(msg);
 			}
 			context.put("Rec_size",Integer.toString(noticeSentRec.size()));
+			 /*
+                          *Method for how much time user spend in this page.
+                          */
+                          String Role=(String)data.getUser().getTemp("role");
+                          if((Role.equals("student")) || (Role.equals("instructor")))
+                          {
+                                   CourseTimeUtil.getCalculation(user_id);
+                                   ModuleTimeUtil.getModuleCalculation(user_id);
+                           }
+
 		}
 		catch(Exception e){data.setMessage("The error in Read Notice"+e);}
 	}

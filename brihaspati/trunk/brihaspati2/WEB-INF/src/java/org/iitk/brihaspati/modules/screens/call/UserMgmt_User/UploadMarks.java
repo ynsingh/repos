@@ -48,6 +48,11 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
  /** 
   * In this class, We upload marks in particuler course by instructor 
   * if before upload marks then show and download marks list by Instructor
@@ -67,6 +72,17 @@ public class UploadMarks extends SecureScreen_Instructor
 			 *@param user Getting User object
 			 */
 			User user=data.getUser();
+			String Role = (String)user.getTemp("role");
+			 /**
+                         *Time calculaion for how long user use this page.
+                         */
+                         int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 			/**
                          *@param pp instance of ParameterParser
                          */
@@ -191,6 +207,7 @@ public class UploadMarks extends SecureScreen_Instructor
 	                        context.put("formulaDetail",substrg);
 				}// end of 6 if
 			}// end of 5 if
+
 		}// end of try
 	catch(Exception ex)
 		{

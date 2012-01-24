@@ -48,6 +48,10 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.DbDetail;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 /**
  * @author <a href="mailto:ynsingh@iitk.ac.in">Dr. Y. N. Singh </a>	
  * @author  <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
@@ -135,8 +139,18 @@ public class ViewOnlineRegistrationInstructor extends SecureScreen_Instructor {
                        //	data.setMessage("Sorry, No User Registration till now !!");
                 }
 			context.put("entry",entry);
-               	
+		/**
+                 *Time calculaion for how long user use this page.
+                 */
+		String Role = (String)user.getTemp("role");
+                 int uid=UserUtil.getUID(user.getName());
+                if((Role.equals("student")) || (Role.equals("instructor")))
+                {
+                         CourseTimeUtil.getCalculation(uid);
+                         ModuleTimeUtil.getModuleCalculation(uid);
+                }
 
+		
 	}//try end
 	catch(Exception e) { 
 		ErrorDumpUtil.ErrorLog("The error in Online registartion reading file" +e);

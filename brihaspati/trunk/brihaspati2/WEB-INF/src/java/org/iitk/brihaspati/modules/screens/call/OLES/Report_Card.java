@@ -57,6 +57,8 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  *   This class is used to show report card of student after attempting the quiz
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
@@ -186,7 +188,18 @@ public class Report_Card extends SecureScreen{
 						finalResult="Fail";
 					context.put("finalResult",finalResult);
 				}				
-			}											
+			}				
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+			 String Role = (String)user.getTemp("role");
+			 int userid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(userid);
+                                ModuleTimeUtil.getModuleCalculation(userid);
+                         }
+							
 		}	
 		catch(Exception ex){
 			ErrorDumpUtil.ErrorLog("The exception in report card file!!"+ex); 

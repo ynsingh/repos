@@ -54,9 +54,12 @@ import org.iitk.brihaspati.om.RemoteCoursesPeer;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.apache.turbine.util.security.AccessControlList;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.Courses;
+
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 
 /**
  *
@@ -76,6 +79,17 @@ public class Configuration extends SecureScreen_Instructor
 			String serial = pp.getString("serial","");
  	                context.put("serial",serial);
 			context.put("tdcolor",pp.getString("count",""));
+			 /**
+                         *Time calculaion for how long user use this page.
+                         */
+			 String Role = (String)user.getTemp("role");
+                         int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 			/**
 			* Put the list start index in context
 			*/
@@ -175,7 +189,7 @@ public class Configuration extends SecureScreen_Instructor
 			* Call Guest 
 			*/
 			Guest(data,context);
-        
+
                      }//try
                  catch(Exception e)
   	         {        

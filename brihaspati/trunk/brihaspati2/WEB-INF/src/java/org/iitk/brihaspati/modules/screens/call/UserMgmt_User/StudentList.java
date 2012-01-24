@@ -62,6 +62,11 @@ import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 /**
   * This class contains code for listing of all user without admin and guest
   * Grab all the records in a table using a Peer, and
@@ -105,6 +110,16 @@ public class StudentList extends SecureScreen_Instructor{
 			String query="";
 			String valueString="";
                         String Mode=data.getParameters().getString("mode");
+			 /**
+                         *Time calculaion for how long user use this page.
+                         */
+			 String Role = (String)user.getTemp("role");
+                         int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
 
 			/**
 			 * Getting list of user rollno record 
@@ -235,6 +250,7 @@ public class StudentList extends SecureScreen_Instructor{
 				status="empty";
                         }
                         context.put("status",status);
+
 		}
 		catch(Exception e)
 		{

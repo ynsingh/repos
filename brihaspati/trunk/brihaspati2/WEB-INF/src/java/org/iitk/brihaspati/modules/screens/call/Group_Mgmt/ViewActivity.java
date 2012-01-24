@@ -57,6 +57,10 @@ import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
 import java.util.Vector;
 import java.util.StringTokenizer;
 import java.io.File;
@@ -234,6 +238,17 @@ public class ViewActivity extends SecureScreen
 						context.put("name",name);
 				}
 			}
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+			 String Role = (String)user.getTemp("role");
+                         int uid=UserUtil.getUID(user.getName());
+                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 		}//try
 		catch(Exception e){
                                         ErrorDumpUtil.ErrorLog("Error in Screen:ViewActivity !!"+e);

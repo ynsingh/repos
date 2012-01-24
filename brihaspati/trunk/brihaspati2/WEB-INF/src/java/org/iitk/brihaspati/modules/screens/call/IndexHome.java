@@ -35,7 +35,8 @@ package org.iitk.brihaspati.modules.screens.call;
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
  * 
  */
-
+import java.util.*;
+import java.text.*;
 import java.util.Vector;
 import java.util.List;
 import java.util.Date;
@@ -64,7 +65,10 @@ import org.iitk.brihaspati.om.CalInformation;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
-
+import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kuamr Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kuamr Singh</a>
@@ -304,6 +308,23 @@ public class IndexHome extends SecureScreen{
                                 return;
                                 if(topicList.size()!=0)
 					context.put("allTopics",topicList);
+			}
+			/*
+                         *check for Course_time table update
+                         */
+                        /*entry id fron USAGE_DETAILS*/
+                        int eid1=UsageDetailsUtil.getentryId(u_id);
+                        /*entry id from COURSE_TIME */
+                        int eid2=CourseTimeUtil.getentryid(u_id);
+                        if(eid1==eid2)
+                        {
+                        		CourseTimeUtil.getCalculation(u_id);
+					Date CreTime=CourseTimeUtil.getDatetime(u_id);
+                                        Date mreTime=ModuleTimeUtil.getMrecenttime(u_id);
+					if(mreTime!=null)
+                                        	if(CreTime.getTime()<mreTime.getTime())
+                                                	ModuleTimeUtil.getModuleCalculation(u_id);
+					CourseTimeUtil.getchangeStatus(eid2);
 			}
 		}
 		catch(Exception e){data.setMessage("The error in IndexHome !!"+e);}

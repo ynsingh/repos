@@ -49,7 +49,9 @@ import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.om.InstituteProgramPeer;
 import org.iitk.brihaspati.om.InstituteProgram;
-
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 
 /**
  * This class responsible manage student management 
@@ -81,7 +83,18 @@ public class StudentManagement extends SecureScreen_Instructor
 			user.setTemp("course_id",C_ID);
 		}
 
-		String Role=data.getParameters().getString("role");
+		String Role=data.getParameters().getString("role");	
+		String Role1 = (String)user.getTemp("role");
+		/**
+                  *Time calculaion for how long user use this page.
+                  */
+                 int uid=UserUtil.getUID(user.getName());
+                 if((Role1.equals("student")) || (Role1.equals("instructor")))
+                 {
+                           CourseTimeUtil.getCalculation(uid);
+                           ModuleTimeUtil.getModuleCalculation(uid);
+                 }
+
 		if(((String)user.getTemp("role")).equals("")){
 			user.setTemp("role",Role);
 		}

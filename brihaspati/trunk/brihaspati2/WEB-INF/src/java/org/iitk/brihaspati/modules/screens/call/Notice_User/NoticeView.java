@@ -57,7 +57,8 @@ import org.iitk.brihaspati.om.NoticeReceivePeer;
 import org.iitk.brihaspati.om.NoticeSendPeer;
 import org.iitk.brihaspati.om.NoticeSend;
 import org.apache.torque.util.Criteria;
-
+import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 /**
  * This class contains code for display Notice with details
  *
@@ -203,6 +204,9 @@ public class NoticeView extends VelocitySecureScreen{
 		{
 		AccessControlList acl=data.getACL();
 		User user=data.getUser();
+		String user_name = user.getName();
+		int userid=UserUtil.getUID(user_name);
+		//int uid=user.getUserId();
 		String g=user.getTemp("course_id").toString();
 
 		 /**
@@ -212,6 +216,10 @@ public class NoticeView extends VelocitySecureScreen{
 		   if(g!=null && acl.hasRole("instructor",g) || acl.hasRole("student",g))
 		{
 			authorised=true;
+			/*courseTime ModuleTime method*/
+			CourseTimeUtil.getCalculation(userid);
+			 ModuleTimeUtil.getModuleCalculation(userid);
+			
 		}
 		else
 		{
