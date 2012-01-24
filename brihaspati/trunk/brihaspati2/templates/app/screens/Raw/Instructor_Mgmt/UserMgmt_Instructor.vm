@@ -12,7 +12,7 @@ $page.setTitle("brih_home | $course1 | $brih_ins $brih_mgmt")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
-<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/StudentManagement.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/RegisterationManagement.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/Instructor_Mgmt.js")"></script>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #if($institudeName != "ListAll")
@@ -95,7 +95,7 @@ $!data.getMessage()
 </tr>
 <tr>
 	<td colspan=5 align="left">
-	<input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
+	<input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkFieldInst(document.frm,this);"/>
         <input type="hidden" name="actionName">
         <input type="Reset" name="Reset" Value="$brih_clear"/>
         <input type="hidden" name="count" Value="$tdcolor"/>

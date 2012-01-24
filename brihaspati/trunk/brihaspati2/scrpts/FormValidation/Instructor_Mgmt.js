@@ -5,6 +5,50 @@
  * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
  * @Created Date: 18-01-2012
  */
+		
+	
+function  checkFieldInst(frm,fld) {
+var reason = "";
+    reason += validateEmail(frm.EMAIL);
+	if (reason != "") {
+        alert("Some fields need correction:\n\n" + reason);
+        return false;
+}
+        frm.actionName.value=fld.name;
+        frm.submit();
+}
+
+function trim(s){
+        return s.replace(/^\s+|\s+$/, '');
+}
+function validateEmail(fld) {
+        var error="";
+        var tfld = trim(fld.value);                        // value of field with whitespace trimmed off
+        var emailFilter = /^[^@]+@[^@.]+\.[^@]*\w\w$/ ;
+        var illegalChars= /[\(\)\<\>\,\;\:\\\"\[\]]/ ;
+        if (fld.value == "")
+        {
+                fld.style.background = 'Yellow';
+                error = "You havn't entered valid  email address.\n";
+        }
+        else if (!emailFilter.test(tfld))
+        {
+                fld.style.background = 'Yellow';
+                error = "Please enter a valid email address.\n";
+        }
+        else if (fld.value.match(illegalChars))
+        {
+                fld.style.background = 'Yellow';
+                error = "The email address contains illegal characters.\n";
+        }
+        else
+        {
+                fld.style.background = 'White';
+        }
+	 return error;
+}
+
+
 	function addDeleteList(field,frm)
         {
                 if(field.checked){
@@ -34,19 +78,5 @@
         }
 		
 
-	/**
- 	 * This java script is used for open the popup window for help document. 
-	 * @see template InstUserRegistrationManagement.vm, UserMgmt_Instructor.vm.
-	 */
-
-	
-        function popupWin(url,popupName)
-        {
-                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
-        }
-        function popupWin(urlName,popupName)
-        {
-                window.open(urlName,popupName,"toolbar=yes,scrollbars=yes");
-        }
 
 
