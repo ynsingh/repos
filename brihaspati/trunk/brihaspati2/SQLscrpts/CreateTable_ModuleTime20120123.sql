@@ -13,5 +13,5 @@ CREATE TABLE MODULE_TIME
                             PRIMARY KEY(MID)
 );
 
-insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (154, 'MODULE_TIME', 1000, 10);
+insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (156, 'MODULE_TIME', 100, 1);
 

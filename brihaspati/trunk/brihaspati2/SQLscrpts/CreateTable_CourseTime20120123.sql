@@ -41,6 +41,6 @@ CREATE TABLE COURSE_MONTH
 			     PRIMARY KEY(ID)
 );
 
-insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (155, 'COURSE_TIME', 1000, 10);
-insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (156, 'COURSE_TIMEDAY', 1000, 10);
-insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (157, 'COURSE_MONTH', 1000, 10);
+insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (153, 'COURSE_TIME', 100, 1);
+insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (154, 'COURSE_TIMEDAY', 100, 1);
+insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (155, 'COURSE_MONTH', 100, 1);
