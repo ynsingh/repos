@@ -34,6 +34,7 @@ package org.iitk.brihaspati.modules.utils;
 //java
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Vector;
 import javax.servlet.http.HttpSession ;
 import java.util.Collection;
@@ -49,6 +50,8 @@ import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.util.security.TurbineSecurityException;
 import java.security.NoSuchAlgorithmException;
+import org.iitk.brihaspati.om.UserPrefPeer;
+import org.iitk.brihaspati.om.UserPref;
 import org.iitk.brihaspati.om.TurbineUserPeer;
 import org.iitk.brihaspati.om.TurbineUser;
 import org.apache.commons.logging.Log;
@@ -115,46 +118,51 @@ public class LoginUtils{
 		String page=new String();
 		Criteria crit = null;
 		 try{
+			if(StringUtils.isBlank(username)) {
+                        	username = data.getMessage();
+                        }
 			List vec=null;
-	//		String str=new String();
 			int uid=UserUtil.getUID(username);
 			try{
                        		crit= new Criteria();
 	                       	crit.add(TurbineUserPeer.USER_ID,uid);
-        	               	crit.addGroupByColumn(TurbineUserPeer.USER_LANG);
                 	       	vec=TurbineUserPeer.doSelect(crit);
 			}
 			catch(Exception e){
 				ErrorDumpUtil.ErrorLog("This Exception comes (in side First try) in the Login Utils-SetUserData Facility"+e);
                         }
-
-                       TurbineUser element=(TurbineUser)vec.get(0);
-
-			// Authenticate with local database of that user and get the object.
-			if(StringUtils.isNotBlank(password)){
-				password=EncryptionUtil.createDigest("MD5",password);
-			}
-			else{
-				password=element.getPasswordValue().toString();
-			}
-                        user=TurbineSecurity.getAuthenticatedUser(username, password );
-			// Store the user object.
-			data.setUser(user);
-			// Mark the user as being logged in.
-			user.setHasLoggedIn(new Boolean(true));
-                        Date date=new Date();
-			try{
-				// Set the last_login date in the database.
-				user.updateLastLogin();
-                                crit = null;
-                                userLanguage=element.getUserLang().toString();
-                                if(vec != null){
+			if(vec.size() != 0) {
+                       		TurbineUser element=(TurbineUser)vec.get(0);
+			
+				// Authenticate with local database of that user and get the object.
+				if(StringUtils.isNotBlank(password)){
+					password=EncryptionUtil.createDigest("MD5",password);
+				}
+				else{
+					password=element.getPasswordValue().toString();
+				}
+	                        user=TurbineSecurity.getAuthenticatedUser(username, password );
+				// Store the user object.
+				data.setUser(user);
+				// Mark the user as being logged in.
+				user.setHasLoggedIn(new Boolean(true));
+        	                Date date=new Date();
+				try{
+					// Set the last_login date in the database.
+					user.updateLastLogin();
+					crit = new Criteria();
+					crit.add(UserPrefPeer.USER_ID,uid);
+					List llst=UserPrefPeer.doSelect(crit);
+					UserPref lelement=(UserPref)llst.get(0);
+//	                                crit = null;
+        	                        userLanguage=lelement.getUserLang().toString();
+                                //if(vec != null){
                                         if((userLanguage.equals("")))
                                         {
                                                 crit = new Criteria();
-                                                crit.add(TurbineUserPeer.USER_ID,uid);
-                                                crit.add(TurbineUserPeer.USER_LANG, lang);
-                                                TurbineUserPeer.doUpdate(crit);
+                                                crit.add(UserPrefPeer.USER_ID,uid);
+                                                crit.add(UserPrefPeer.USER_LANG, lang);
+                                                UserPrefPeer.doUpdate(crit);
                                                 user.setTemp("lang",lang);
                                                 user.setTemp("LangFile", MultilingualUtil.LanguageSelectionForScreenMessage(lang));
                                             //    context.put("lang",lang);
@@ -162,9 +170,9 @@ public class LoginUtils{
                                                 if((!userLanguage.equals(lang)) && (!username.equals("guest"))){
                                                         if(flag.equals("false")) {
                                                                 crit = new Criteria();
-                                                                crit.add(TurbineUserPeer.USER_ID,uid);
-                                                                crit.and(TurbineUserPeer.USER_LANG,lang);
-                                                                TurbineUserPeer.doUpdate(crit);
+                                                                crit.add(UserPrefPeer.USER_ID,uid);
+                                                                crit.and(UserPrefPeer.USER_LANG,lang);
+                                                                UserPrefPeer.doUpdate(crit);
                                                                 userLanguage=lang;
                                                         }
 							user.setTemp("lang",userLanguage);
@@ -177,21 +185,22 @@ public class LoginUtils{
                                                         user.setTemp("LangFile", MultilingualUtil.LanguageSelectionForScreenMessage(lang));
                                                 }
                                         }
-				}
-				else
-                                {
+			//	}
+			//	else
+                          //      {
                                        // context.put("lang",lang);
-					data.setMessage(MultilingualUtil.ConvertedString("brih_langMsg", MultilingualUtil.LanguageSelectionForScreenMessage(lang)));
-                                        data.setScreenTemplate("BrihaspatiLogin.vm");
-				}	
-			}
-			catch(Exception e){
-                                data.setMessage("Cannot Login !! The error is :- "+e);
-                                page=Turbine.getConfiguration().getString("BrihaspatiLogin.vm");
-                                data.setScreen(page);
+			//		data.setMessage(MultilingualUtil.ConvertedString("brih_langMsg", MultilingualUtil.LanguageSelectionForScreenMessage(lang)));
+                          //              data.setScreenTemplate("BrihaspatiLogin.vm");
+			//	}	
+				}
+				catch(Exception e){
+                	                data.setMessage("Cannot Login !! The error is :- "+e);
+        	                        page=Turbine.getConfiguration().getString("BrihaspatiLogin.vm");
+	                                data.setScreen(page);
  //                               log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility");
-                                ErrorDumpUtil.ErrorLog("This Exception comes in the Login Utils-SetUserData Facility"+e);
-                        }
+                                	ErrorDumpUtil.ErrorLog("This Exception comes in the Login Utils-SetUserData Facility"+e);
+                        	}
+			}//end if
 		}
 
 		catch ( TurbineSecurityException e ){

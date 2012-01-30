@@ -551,4 +551,14 @@
         	<reference local="STUDENT_ID" foreign="ID"/>
         </foreign-key>
 </table>
+<table name="USER_PREF" idMethod="idbroker"  description="User preference information">
+	<column name="USER_ID" required="true" primaryKey="true" type="INTEGER"/>
+	<column name="USER_LANG" required="true" size="32" type="VARCHAR" default="english"/>
+	<unique>
+        	<unique-column name="USER_ID"/>
+	</unique>
+<!--	<foreign-key foreignTable="TURBINE_USER">
+	      <reference local="USER_ID" foreign="USER_ID"/>
+	</foreign-key>-->
+</table>
 </database>

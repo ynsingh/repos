@@ -94,12 +94,13 @@ import org.iitk.brihaspati.modules.utils.UpdateMailthread;
  */
 
 public class myLogin extends VelocityAction{
-		private Log log = LogFactory.getLog(this.getClass());
-/**
- * This method is invoked upon when user logging in
- * @param data RunData instance
- * @param context Context instance
- */
+	private Log log = LogFactory.getLog(this.getClass());
+		
+	/**
+	 * This method is invoked upon when user logging in
+	 * @param data RunData instance
+	 * @param context Context instance
+	 */
 	
 	public void doPerform( RunData data, Context context )
 	{
@@ -113,7 +114,7 @@ public class myLogin extends VelocityAction{
 
                 String flag=data.getParameters().getString("flag");
                 //String LangFile =data.getParameters().getString("Langfile","");
-                String lang=data.getParameters().getString("lang","english");
+                String lang=data.getParameters().getString("lang","");
 
 		String username = data.getParameters().getString("username", "" );
 		if(StringUtil.checkString(username) != -1) username="";
@@ -122,258 +123,68 @@ public class myLogin extends VelocityAction{
 			data.setScreenTemplate("BrihaspatiLogin.vm");
 		}
 		else{
-		User user=null;
-			/** 
-			 *  Get the session if exist then remove and create new session
-			 **/
-			LoginUtils.CheckSession(username);
-			ErrorDumpUtil.ErrorLog("After checking the session");
-/*
-			try{
-                                Vector ve=new Vector();
-                                Collection aul=TurbineSession.getActiveUsers();
-                                Iterator it=aul.iterator();
-                                while(it.hasNext()){
-                                       String ss=it.next().toString();
-                                       ve.add(ss.substring(0,(ss.length()-3)));
-                                }
-                                if(!username.equals("guest"))
-                                {
-                                if(ve.contains(username)){
-                                        //User u=TurbineSecurity.getUser(username);
-                                         user=TurbineSecurity.getUser(username);
-
-                                        Collection au=TurbineSession.getSessionsForUser(user);
-                                        for(Iterator i=au.iterator();i.hasNext();)
-                                        {
-                                               HttpSession session=(HttpSession) i.next();
-                                                session.invalidate();
-
-                                       }
-
-                                }
-                        }// try for single session
-                        }catch(Exception ev){
-                                ErrorDumpUtil.ErrorLog("This error comes from Single session in myLogin Action "+ev.getMessage());
-                        }
-*/
-		user = null;
-		String page=new String();
-		// Provide a logger with the class name as category. This
-		// is recommended because you can split your log files
-		// by packages in the Log4j.properties. You can provide
-		// any other category name here, though.
-
-		log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility");//
-		Date date=new Date();
-		//lang=LoginUtils.SetUserData(username, password, flag, lang, data);
-		//ErrorDumpUtil.ErrorLog("lang at line 163==="+lang);
-		//LoginUtils.SetUserData(data,context);
-		ModifyTUTable mtut=new ModifyTUTable();
-		mtut.doPerform(data,context);
-		context.put("lang",lang);
-		ErrorDumpUtil.ErrorLog("After setting User data");
-/*
-		try{//(1)
-			String str=new String();
-			// Authenticate the user and get the object.
-			password=EncryptionUtil.createDigest("MD5",password);
-			user=TurbineSecurity.getAuthenticatedUser(username, password );
-
-			// Store the user object.
-			data.setUser(user);
-			
-			// Mark the user as being logged in.
-			user.setHasLoggedIn(new Boolean(true));
-			// get User ID 
 			int uid=UserUtil.getUID(username);
-			Date date=new Date();
-			try{//(2)
-				// Set the last_login date in the database.
- 		
-				user.updateLastLogin();
-				List vec=null;
-				crit= new Criteria();
-                                crit.add(TurbineUserPeer.USER_ID,uid);
-                                crit.addGroupByColumn(TurbineUserPeer.USER_LANG);
-                                vec=TurbineUserPeer.doSelect(crit);
-				crit = null;
-                                TurbineUser element=(TurbineUser)vec.get(0);
-       	                        userLanguage=element.getUserLang().toString();
-				if(vec != null){
-					if((userLanguage.equals("")))
-					{
-                        	                crit = new Criteria();
-                                	        crit.add(TurbineUserPeer.USER_ID,uid);
-                                       		crit.add(TurbineUserPeer.USER_LANG, lang);
-	                                        TurbineUserPeer.doUpdate(crit);
-	                                	user.setTemp("lang",lang);
-						user.setTemp("LangFile", MultilingualUtil.LanguageSelectionForScreenMessage(lang));
-        	                               	context.put("lang",lang);
-                	                }else {
-						if((!userLanguage.equals(lang)) && (!username.equals("guest"))){
-							if(flag.equals("false")) {
-        		                                        crit = new Criteria();
-                		                                crit.add(TurbineUserPeer.USER_ID,uid);
-                        		                        crit.and(TurbineUserPeer.USER_LANG,lang);
-                                		                TurbineUserPeer.doUpdate(crit);
-								userLanguage=lang;
-							}
-							user.setTemp("lang",userLanguage);
-     							context.put("lang",userLanguage);
-							user.setTemp("LangFile", MultilingualUtil.LanguageSelectionForScreenMessage(userLanguage));
-	                                        }
-						else{
-        	        	                	// Store the LangFile & lang object in Temporary Variable.
-		                        	        //user.setTemp("LangFile",LangFile);
-               	                                	user.setTemp("lang",lang);
-							context.put("lang",lang);
-							user.setTemp("LangFile", MultilingualUtil.LanguageSelectionForScreenMessage(lang));
-						}
-                                	}
-				} //vec close
-				else
-				{
-                                        context.put("lang",lang);
-					//LangFile =data.getParameters().getString("Langfile");
-					data.setMessage(MultilingualUtil.ConvertedString("brih_langMsg", MultilingualUtil.LanguageSelectionForScreenMessage(lang)));
-					data.setScreenTemplate("BrihaspatiLogin.vm");
-					
+			if(uid != -1){
+				/** 
+				 *  Get the session if exist then remove and create new session
+				 **/
+				User user=null;
+				LoginUtils.CheckSession(username);
+				ErrorDumpUtil.ErrorLog("After checking the session");
 
-				}	
-*/
+				// Provide a logger with the class name as category. This
+				// is recommended because you can split your log files
+				// by packages in the Log4j.properties. You can provide
+				// any other category name here, though.
+				log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility");
+
+				user = null;
+				lang=LoginUtils.SetUserData(username, password, flag, lang, data);
+				context.put("lang",lang);
+				ErrorDumpUtil.ErrorLog("After setting User data");
+
 				userLanguage = null;
-
 				crit = null;
-				int uid=UserUtil.getUID(username);
 				LoginUtils.UpdateUsageData(uid);
 				ErrorDumpUtil.ErrorLog("After updating usage data");
-/*
-				int least_entry=0,count=0;
 
-				//code for usage details starts here
-				crit=new Criteria();
-				crit.add(UsageDetailsPeer.USER_ID,uid);
-				List entry=UsageDetailsPeer.doSelect(crit);
-				count=entry.size();
-				String find_minimum="SELECT MIN(ENTRY_ID) FROM USAGE_DETAILS WHERE USER_ID="+uid;
-			//	ErrorDumpUtil.ErrorLog("fm from usage details=="+find_minimum);
-				if(count >= 10)
-				{
-					List v=UsageDetailsPeer.executeQuery(find_minimum);
-					for(Iterator j=v.iterator();j.hasNext();)
-					{
-						Record item2=(Record)j.next();
-						least_entry=item2.getValue("MIN(ENTRY_ID)").asInt();
-					//	ErrorDumpUtil.ErrorLog("least_entry from usage details=="+least_entry);
+				//If there is an error redirect to login page with a message"Cannot Login"
+				try{
+					AccessControlList acl = data.getACL();
+					if( acl == null ){
+						acl = TurbineSecurity.getACL( data.getUser() );
+						ErrorDumpUtil.ErrorLog("If ACL null");
+						data.getSession().setAttribute( AccessControlList.SESSION_KEY,(Object)acl );
 					}
-					crit=new Criteria();
-					crit.add(UsageDetailsPeer.ENTRY_ID,Integer.toString(least_entry));
-					UsageDetailsPeer.doDelete(crit);
-				} //end of 'if'
-
-				crit=new Criteria();
-				crit.add(UsageDetailsPeer.USER_ID,Integer.toString(uid));
-				crit.add(UsageDetailsPeer.LOGIN_TIME,date);
-				crit.add(UsageDetailsPeer.LOGOUT_TIME,date);
-				UsageDetailsPeer.doInsert(crit);
-				
-			}//try(2)
-			catch(Exception e){
-				data.setMessage("Cannot Login !! The error is :- "+e);
-				page=Turbine.getConfiguration().getString("BrihaspatiLogin.vm");
-				data.setScreen(page);
-				
-				log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility");
-			}
-*/
-
-			//If there is an error redirect to login page with a message"Cannot Login"
-			try{
-			AccessControlList acl = data.getACL();
-			if( acl == null ){
-				acl = TurbineSecurity.getACL( data.getUser() );
-				ErrorDumpUtil.ErrorLog("If ACL null");
-				data.getSession().setAttribute( AccessControlList.SESSION_KEY,(Object)acl );
-			}
-			data.setACL(acl);
-			data.save();
-			}
-			catch(Exception ex){
-				ErrorDumpUtil.ErrorLog("Error in setting Access rules :- "+ex +" The account '' does not exist Or password is incorrect");
-				data.setMessage("The account does not exist Or password is incorrect");
-			}
-			ErrorDumpUtil.ErrorLog("After setting the ACL");
+					data.setACL(acl);
+					data.save();
+				}
+				catch(Exception ex){
+					ErrorDumpUtil.ErrorLog("Error in setting Access rules :- "+ex +" The account '' does not exist Or password is incorrect");
+					data.setMessage("The account does not exist Or password is incorrect");
+				}
+				ErrorDumpUtil.ErrorLog("After setting the ACL");
 			
-					/*boolean CL=CommonUtility.CleanSystem();
-					if(!CL)
-						data.addMessage("The Error in Clean System: see Common Utility");*/
-					/*calling UpdateMailThread Util*/
-					 UpdateMailthread.getController().UpdateMailSystem();
+				/*calling UpdateMailThread Util*/
+				UpdateMailthread.getController().UpdateMailSystem();
+				Date date=new Date();
+				boolean AB=CommonUtility.IFLoginEntry(uid,date);
 
-					boolean AB=CommonUtility.IFLoginEntry(uid,date);
-
-			/**
-                          *Check the user for hint question when login at the first time.
-                          */
-			LoginUtils.SetHintQues(uid, data);
-			ErrorDumpUtil.ErrorLog("After checking hint question");
-/*
-                        try
-			{
-                                /**
-                                *Check for the admin and the guest.
-                                *
-                                if(uid!=0 && uid!=1)
-                                {
-                                        crit=new Criteria();
-                                        crit.add(UserConfigurationPeer.USER_ID,uid);
-                                        crit.add(UserConfigurationPeer.QUESTION_ID,0);
-                                        List check=UserConfigurationPeer.doSelect(crit);
-                                        if((check.size()!=0))
-                                        {
-                                                setTemplate(data,"call,SelectHintQuestion.vm");
-                                        }//end of 'if'
-                                }//end of 'if'
-                        }
-                        catch(Exception e)
-			{
-				data.setMessage("Error in selecting hint question.Exception is :- "+e);
+				/**
+        	                  *Check the user for hint question when login at the first time.
+                	          */
+				LoginUtils.SetHintQues(uid, data);
+				ErrorDumpUtil.ErrorLog("After checking hint question");
+				/**
+	 			* Called the method from utils for Insert record when user (Student) already exist
+ 				* in Turbine User Table
+ 				*/
+				System.gc();
+			}//if for uid (-1)
+			else{
+				data.setMessage("User does not exist.");
+                                data.setScreenTemplate("BrihaspatiLogin.vm");
 			}
-			/**
- 			* Called the method from utils for Insert record when user (Student) already exist
- 			* in Turbine User Table
- 			*
-//			CommonUtility.InsertStuExpRecord();
-		}//end try1		
-		
-	         /** In case of an error, get the appropriate error message from
-	          *  TurbineResources.properties  
-		  *
-	 	catch ( TurbineSecurityException e ){
-			//LangFile =data.getParameters().getString("Langfile");
-			String msg1=MultilingualUtil.ConvertedString("t_msg",MultilingualUtil.LanguageSelectionForScreenMessage(lang));
-			//page=Turbine.getConfiguration().getString("login.error");
-			data.setMessage(msg1);
-			data.setScreenTemplate("BrihaspatiLogin.vm");
-			log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility"+e);
-		}
-		catch (NoSuchAlgorithmException e){
-			data.setMessage("Could not find the required implementation");
-			page=Turbine.getConfiguration().getString("screen.login");
-			data.setScreenTemplate(page);
-		}
-*/
-			/**
- 			* Called the method from utils for Insert record when user (Student) already exist
- 			* in Turbine User Table
- 			*/
-//			CommonUtility.InsertStuExpRecord();
-		System.gc();
-                //----------------code for the groupmanagement--------//
-          //  CommonUtility.grpLeader();
-        //----------------code for the groupmanagement--------//
-
-       }//end else of password check
-}
+       		}//end else of password check
+	}
 }

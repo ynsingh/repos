@@ -74,6 +74,7 @@ import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.iitk.brihaspati.om.StudentExpiry;
 import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.iitk.brihaspati.om.UserPrefPeer;
 import org.iitk.brihaspati.om.CourseProgram;
 import org.iitk.brihaspati.om.CourseProgramPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
@@ -463,7 +464,13 @@ public class UserManagement
                                  		* The code below does not executes if the user already exists in 
 						* turbine database
                                  		*/
-
+						/**
+                                 		* Here we set the user preference ( Lang) 
+                                 		*/
+						crit=new Criteria();
+						crit.add(UserPrefPeer.USER_ID,u1);
+						crit.add(UserPrefPeer.USER_LANG,"english");
+						UserPrefPeer.doInsert(crit);
                                 		/**
                                  		* The password sent as the parameter in encryptPassword() method of
                                  		* babylonPasswordEncryptor() is in encrypted form. Hence, the babylon

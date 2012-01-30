@@ -71,12 +71,24 @@ function validateEmail(fld) {
          * @see template UserMgmt_Instructor.vm, RemoveStudent.vm.
          */
 
-	
-        function DeleteField(frm,field) {
+	function DeleteField(frm,field) {
+                if(frm.deleteFileNames.value!="")
+                {
                 frm.actionName.value=field.name;
                 frm.submit();
+                }else
+                alert("Please select checkbox !!");
         }
-		
+
+	function checkNull(frm,field){
+                if(frm.valueString.value!=""){
+                        frm.actionName.value=field.name;
+                        frm.submit();
+                }
+                else{
+                        alert("The 'Match String' text box can not be NULL");
+                }
+        }
 
 
 
