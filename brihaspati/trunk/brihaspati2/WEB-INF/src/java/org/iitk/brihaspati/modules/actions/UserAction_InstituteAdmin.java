@@ -193,9 +193,10 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
                                 data.addMessage(MultilingualUtil.ConvertedString("ProxyuserMsg3",LangFile));
                                return;
                         }
-                       String Studsrid = pp.getString("Srid"+k,"");
-                       msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,PrgCode,Instid,Studsrid);
-		       /**
+                       	String Studsrid = pp.getString("Srid"+k,"");
+                       	String CId = pp.getString("group"+k,"");
+                       	msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,PrgCode,Instid,Studsrid,CId);
+		       	/**
  			* If msg is equal to true, it shows error in updating profile
  			* then show message.	 
  			*/ 	
@@ -488,6 +489,10 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
         }
 
 
+        public void doSearch(RunData data, Context context)
+        {
+		setTemplate(data,"call,ListMgmt_InstituteAdmin,InstAdminviewall.vm");
+	}
 	 /**
           * ActionEvent responsible if no method found in this action i.e. Default Method
           * @param data RunData
@@ -514,11 +519,8 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
 			doUploadMultiUserPhoto(data,context);
 		else if(action.equals("eventSubmit_doUploadLogo"))
 			doUploadLogo(data,context);
-		/* This check is put for action "search" becoz at time of search it shows the msg.
- 		 * for removing msg, if action is "Search" then set screen.
- 		 */ 	
-		else if(action.equals("Search"))
-			setTemplate(data,"call,ListMgmt_InstituteAdmin,InstAdminviewall.vm");
+		else if(action.equals("eventSubmit_doSearch"))
+			doSearch(data,context);
 		else
 		{
 			 /**

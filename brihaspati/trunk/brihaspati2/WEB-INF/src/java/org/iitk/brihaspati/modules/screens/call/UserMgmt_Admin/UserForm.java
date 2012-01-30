@@ -41,6 +41,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
 import org.iitk.brihaspati.modules.utils.UserManagement;
+import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**
@@ -72,7 +73,7 @@ public class UserForm extends SecureScreen_Admin{
 			context.put("tdcolor",counter);
 			int uid=UserUtil.getUID(userName);
 			List userList=UserManagement.getUserDetail(Integer.toString(uid));
-			List userRollNo=UserManagement.getUserRollNo(userName);
+			List userRollNo=CourseProgramUtil.getUserRollNo(userName);
 			//ErrorDumpUtil.ErrorLog("rollno list in user form screen---------->"+userRollNo);
 			context.put("udetail",userList);
 			context.put("urollno",userRollNo);

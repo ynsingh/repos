@@ -39,19 +39,32 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
  * @author  <a href="awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author  <a href="sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author  <a href="richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date:28-12-2011(Richa)
  */
 
 import java.util.Vector;
 import java.util.List;
+import java.util.ListIterator;
+import com.workingdogs.village.Record;
 import org.apache.velocity.context.Context;
+import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.util.RunData;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.om.InstituteProgramPeer;
+import org.iitk.brihaspati.om.InstituteProgram;
+import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 
 /**
@@ -86,6 +99,7 @@ public class InstStudentCourseList extends SecureScreen_Institute_Admin{
 			String counter=data.getParameters().getString("count","");
 			context.put("tdcolor",counter);
 			int uid=UserUtil.getUID(uname);
+			String instituteId=data.getUser().getTemp("Institute_id").toString();
 	 		/**
 			 * Find all groupId according userid and roleid
 			 * @see UserGroupRoleUtil in utils
@@ -100,13 +114,15 @@ public class InstStudentCourseList extends SecureScreen_Institute_Admin{
 			 	  */
 				String group_id=(String)(gid.elementAt(j));
 				String gname=GroupUtil.getGroupName(Integer.parseInt(group_id));
-              			g.add(gname);
+				String grpInsId = StringUtils.substringAfter(gname,"_");
+				//Below check is put by Richa to get institute wise grpname
+				if(instituteId.equals(grpInsId))
+	              			g.add(gname);
              		}
 	 		/**
 			  * Find all groupname
 			  * @see ListManagement in utils
 			  */
-			String instituteId=data.getUser().getTemp("Institute_id").toString();
 			//List courseList=CourseManagement.getInstituteCourseNUserDetails("All",instituteId);
 			Vector courseList=InstituteDetailsManagement.getInstituteCourseDetails(instituteId);  
 			if(g.size()!=0)
@@ -117,7 +133,57 @@ public class InstStudentCourseList extends SecureScreen_Institute_Admin{
 			}
 			else
 			{
+				context.put("CourseList",courseList);
 				setTemplate(data,"call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm");
+			}
+			crit=new Criteria();
+                        crit.add(InstituteProgramPeer.INSTITUTE_ID,Integer.parseInt(instituteId));
+                        List Instplist= InstituteProgramPeer.doSelect(crit);
+                        Vector PrgDetail = new Vector();
+                        for(int i=0;i<Instplist.size();i++)
+                        {
+                                InstituteProgram element = (InstituteProgram)Instplist.get(i);
+                                String PrgCode = element.getProgramCode();
+                                String prgName = InstituteIdUtil.getPrgName(PrgCode);
+                                CourseUserDetail cDetails=new CourseUserDetail();
+                                cDetails.setPrgName(prgName);
+                                cDetails.setPrgCode(PrgCode);
+                                PrgDetail.add(cDetails);
+                                context.put("PrgDetail",PrgDetail);
+                        }
+                        List userRollNo=CourseProgramUtil.getUserRollNo(uname);
+                        int rlsize = userRollNo.size();
+                        Vector UsDetail = new Vector();
+                        String rlprgcode="",rl="",pgname="", pgcode="",cId="",CrsName="",CrsAlias="",CrsInstrName="";
+                        for(int j=0;j<userRollNo.size();j++)
+                        {
+                                StudentRollno element = (StudentRollno)userRollNo.get(j);
+                                CourseUserDetail cDetails=new CourseUserDetail();
+                                int sturlid = element.getId();
+				String Instid = element.getInstituteId();
+				if(Instid.equals(instituteId)){
+	                                List Crslist = CourseProgramUtil.getCourseRollnoDetail(sturlid);
+        	                        for(ListIterator k = Crslist.listIterator();k.hasNext();)
+                	                {
+                        	                Record item = (Record)k.next();
+	                                        rl = item.getValue ("ROLL_NO").asString();
+	                                        //ErrorDumpUtil.ErrorLog("return value from execute query  :- "+rl);
+	                                        cId = item.getValue ("COURSE_ID").asString();
+	                                        //ErrorDumpUtil.ErrorLog("return value cid from execute query  :- "+cId);
+	                                        String Insid = item.getValue ("INSTITUTE_ID").asString();
+	                                        //ErrorDumpUtil.ErrorLog("return value Insid from execute query  :- "+Insid);
+	                                        pgcode= item.getValue ("PROGRAM").asString();
+	                                        //ErrorDumpUtil.ErrorLog("return value pgr from execute query  :- "+pgcode);
+	                                        pgname = InstituteIdUtil.getPrgName(pgcode);
+	                                        //ErrorDumpUtil.ErrorLog("pgname from util :- "+pgname);
+						String tmp = rl+":"+cId+":"+pgcode+":"+pgname;
+	                                        CrsName = CourseUtil.getCourseName(cId);
+	                                        CrsAlias = CourseUtil.getCourseAlias(cId);
+	                                        CrsInstrName= CourseProgramUtil.getCourseInstructorName(cId);
+	                                	UsDetail.addElement(tmp);
+        	                        }
+                	                context.put("UDetail",UsDetail);
+				}
 			}
 		}
 		catch (Exception e)

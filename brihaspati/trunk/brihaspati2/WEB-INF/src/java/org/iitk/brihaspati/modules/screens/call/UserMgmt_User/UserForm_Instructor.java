@@ -55,7 +55,7 @@ import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.UserManagement;
+import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
 
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
@@ -163,7 +163,7 @@ public class UserForm_Instructor extends SecureScreen_Instructor{
 		 */
 		String InstId = (String)data.getUser().getTemp("Institute_id");
                 //List rlrecord=UserManagement.getUserPrgRollNo(username,Prgcode,InstId);
-                List rlrecord=UserManagement.getUserRollNo(username);
+                List rlrecord=CourseProgramUtil.getUserRollNo(username);
                 int rlsize = rlrecord.size();
                 Vector UsDetail = new Vector();
 		int rlinstid=0;

@@ -262,7 +262,7 @@ function checkField(frm,field)
                                	{
 					if(($UDetail.size()==1)&&(document.frm.type.value!="more"))
 					{
-						if(document.frm.prg1.value!="" && document.frm.instName1.value!="0")
+						if(document.frm.prg1.value!="Select Program" && document.frm.instName1.value!="0")
                                                 {
 	                                        	frm.actionName.value=field.name;
 		                                        frm.submit();
@@ -281,7 +281,7 @@ function checkField(frm,field)
                         	                        {
 								if($UDetail.size()==1)
 								{
-									if(document.frm.prg1.value!="" && document.frm.instName1.value!="0")
+									if(document.frm.prg1.value!="Select Program" && document.frm.instName1.value!="0")
                                                                         {
 		                                                        	frm.actionName.value=field.name;
 			                                                        frm.submit();
@@ -403,7 +403,7 @@ function checkField(frm,field)
                         {
                                 if(document.frm.rollno2.value=="")
                                 {
-					if(document.frm.prg1.value!="" && document.frm.instName1.value!="0")
+					if(document.frm.prg1.value!="Select Program" && document.frm.instName1.value!="0")
 					{
 	                                        frm.actionName.value=field.name;
 	                                        frm.submit();
@@ -440,7 +440,7 @@ function checkField(frm,field)
                 }
                 else
                 {
-			if(document.frm.prg1.value!="" && document.frm.instName1.value!="0")
+			if(document.frm.prg1.value!="Select Program" && document.frm.instName1.value!="0")
 			{
 	                        frm.actionName.value=field.name;
 	                        frm.submit();

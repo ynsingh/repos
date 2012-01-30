@@ -45,20 +45,20 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
 
 import java.util.Vector;
 import java.util.List;
-import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
 import org.iitk.brihaspati.modules.utils.ListManagement;
-import org.iitk.brihaspati.modules.utils.UserManagement;
+import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
+import org.iitk.brihaspati.om.CourseProgramPeer;
 import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
@@ -124,7 +124,7 @@ public class StudentList extends SecureScreen_Instructor{
 			/**
 			 * Getting list of user rollno record 
 			 */
-			rusrlist=UserManagement.getListOfRollNo(g_id,3);
+			rusrlist=CourseProgramUtil.getListOfRollNo(g_id,3);
                         context.put("rollnolist",rusrlist);
 			/**
  			 * getting the list of student expiry in this course
@@ -162,19 +162,34 @@ public class StudentList extends SecureScreen_Instructor{
                                 str="LOGIN_NAME";
                         else if(query.equals("Email"))
                                 str="EMAIL";
+			else if(query.equals("RollNo"))
+                                str="ROLL_NO";
 
                         /**
                           * Checks for Matching Records
                           */
-
-			crit=new Criteria();
-			crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
-			crit.add("TURBINE_USER",str,(Object)(valueString+"%"),crit.LIKE);
-			crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
-			crit.add(TurbineUserGroupRolePeer.GROUP_ID,g_id);
-			crit.setDistinct();			
-			List v=TurbineUserPeer.doSelect(crit);
-			userList=ListManagement.getDetails(v,"User"); 
+			if(query.equals("RollNo"))
+                        {
+                                crit = new Criteria();
+				crit.addJoin(StudentRollnoPeer.ID,CourseProgramPeer.STUDENT_ID);
+                                crit.add("STUDENT_ROLLNO",str,(Object)("%"+valueString+"%"),crit.LIKE);
+                                crit.add(CourseProgramPeer.COURSE_ID,course_id);
+				crit.addAscendingOrderByColumn(StudentRollnoPeer.ROLL_NO);
+                                List v=StudentRollnoPeer.doSelect(crit);
+				ErrorDumpUtil.ErrorLog("List after search from screen file=="+v);
+				userList=ListManagement.getDetails(v,"RollNo");
+                        }
+			else
+			{
+				crit=new Criteria();
+				crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
+				crit.add("TURBINE_USER",str,(Object)(valueString+"%"),crit.LIKE);
+				crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
+				crit.add(TurbineUserGroupRolePeer.GROUP_ID,g_id);
+				crit.setDistinct();			
+				List v=TurbineUserPeer.doSelect(crit);
+				userList=ListManagement.getDetails(v,"User"); 
+			}
 			}
 			
 			String ConfParam=(String)user.getTemp("confParam");

@@ -6,7 +6,7 @@
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date: 20-10-2010, 05-08-2011
+ * @modified date: 20-10-2010, 05-08-2011, 28-12-2011(Richa)
  *#
 
 $page.setBgColor($ui.bgcolor)
@@ -134,22 +134,59 @@ $!data.getMessage()
       #foreach($i in $udetail)
       <tr bgcolor="$ui.tableColor">
 		#entry1Cell("$brih_usr $brih_name" $!i.UserName)
+		<td colspan=3></td>
       </tr>
       #if($Process=="modify")
       <tr bgcolor="$ui.menuColor">
         	#formCell ("$brih_first $brih_name" "firstname" $!i.FirstName)
+		<td colspan=3></td>
       </tr>
       <tr bgcolor="$ui.tableColor">
         	#formCell ("$brih_last $brih_name" "lastname" $!i.LastName)
+		<td colspan=3></td>
       </tr>
       <tr bgcolor="$ui.menuColor">
         	#formCell ("$brih_email $brih_ID" "email" $!i.Email)
+		<td colspan=3></td>
       </tr>
+	#if($counter>=0)
       <tr>
-      		<td>$brih_program $brih_name</td><td colspan=3>$brih_rollno</td>
+      		<td>$brih_listCourse1</td><td>$brih_program $brih_name</td><td colspan=3>$brih_rollno</td>
       </tr>
-      <tr bgcolor="$ui.menuColor">
+	#end
 	#set($flag=true)
+        #set($temp=0)
+        #set($rlno="")
+        #set($grpname="")
+        #set($pgcode="")
+        #set($pgname="")
+        #set($crsnm="")
+        #set($crsals="")
+        #set($crsInst="")
+        #set($studsrid="")
+        #set($num=1)
+        	##If value of Crscount is zero,it shows user does not have rollno,prg and Course
+        	##then show default row for rollno,prg and Course list 
+	        #set($temp1=0)
+	        #if(($Crscount==0)||($sizecount==0)||($counter==0))
+	        <tr bgcolor="$ui.menuColor">
+                <td><select name="group1" size=1>
+                        <option value="Select Course">$brih_select $brih_course </option>
+			#foreach($name in $CourseList)
+				<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()- $name.getUserName() </option>
+			#end
+		</td>
+                <td><select name="prg1" size=1>
+			<option value="Select Program">$brih_select $brih_program </iption>
+			#foreach($instplist in $PrgDetail)
+	                        <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
+	                #end
+	        </td>
+                <td>
+                        <input type="text" name="rollno1" value="">
+                </td>
+                </tr>
+                #end
         ## If counter value is less than 1 then it set to be 1 for display blank field of program and rollno
         ## after this check type, if it is "more", then set counter to 2 for display one more entry of program and rollno
         ## for the student.
@@ -158,69 +195,84 @@ $!data.getMessage()
         #elseif($type=="more")
                 #set($counter=2)
         #end
-        #set($temp=0)
-        ##loop for display program and rollno
-        #foreach($num in [1..$counter])
-        	#if($num==2)
-	        	<tr>
-        	#end
-	        <td><select name="prg$num" size=1>
-		#set($temp1=0)
-		## get one record from the list
-		## get program list from record
-		## display in drop down list
-	        #foreach($st in $UDetail)
-		        #if($temp == $temp1)
-		        #set($tmpPrg = $!st.getPrgName())
-			        <option value="$st.getPrgCode()">$!st.getPrgName() </option>
-	                #end
-		        #set($temp1=$temp1+1)
-	        #end
-	        ## check value of sizecount,if it is zero this shows user does not have any program
-	        ## or type is "more" and num value is 2 this shows add new row with blank field of program and rollno 
-	        ## else show registered program name of that user
-	        	#if((($flag==false)&&($num==2)&&($type=="more"))||($sizecount==0))
-		               <option value="Select Program">$brih_select $brih_program </option>
-			                #foreach($instplist in $PrgDetail)
-				                <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
+                ##all details of user concatenate with ":" then first split it and get values 
+	 	        #foreach($st in $UDetail)
+	 	        	#foreach($lst in $st.split(":"))
+	 	        		#if($rlno=="")
+	                                        #set($rlno=$lst)
+                                        #elseif($grpname=="")
+    	                                    #set($grpname=$lst)
+                                        #elseif($pgcode=="")
+	                                        #set($pgcode=$lst)
+	                                #elseif($pgname=="")
+	                                       #set($pgname=$lst)
+	                                #elseif($crsnm=="")
+                                               #set($crsnm=$lst)
+                                        #elseif($crsals=="")
+	                                        #set($crsals=$lst)
+	                                #elseif($crsInst=="")
+	                                       #set($crsInst=$lst)
+	                                #else
+                                               #set($studsrid=$lst)
+	                               #end
+	                        #end
+	                        #if($velocityCount%2==0)
+	                                <tr bgcolor="$ui.tableColor">
+	                        #else
+	                                <tr bgcolor="$ui.menuColor">
+	                        #end
+				#if($temp == $temp1)
+                	        #set($tmpCourse = $grpname)
+               	        <td><select name="group$num" size=1 id="$num">
+					<option value="$grpname">$crsals: $crsnm - $crsInst </option>
+        	                #end
+		                #foreach($name in $CourseList)
+		                	#if($tmpCourse!=$name.getGroupName())
+    	        				<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()- $name.getUserName() </option>
 			                #end
-	                #else
-	        	        #foreach($instplist in $PrgDetail)
-		        	        #if($tmpPrg!=$instplist.getPrgName())
-			        	        <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
-				        #end
-	        	        #end
-		       #end
+			        #end
+                </select></td>
+	        <td><select name="prg$num" size=1 id="pg$num">
+		## get another record from the list
+		## display in drop down list
+		        #if($temp == $temp1)
+		        #set($tmpPrg = $pgname)
+				<option value="$pgcode">$pgname </option>
+	                #end
+        	        #foreach($instplist in $PrgDetail)
+	        	        #if($tmpPrg!=$instplist.getPrgName())
+		        	        <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
+			        #end
+        	        #end
 		 </select></td>
 	        <td colspan=3>
 		## get rollno from record
-	        #set($temp1=0)
-		#foreach($st in $UDetail)
 	        	#if($temp == $temp1)
-	 	               <input type="text" name="rollno$num" value="$!st.getRollNo()" >
-	                       <input type="hidden" name="Srid$num" value="$!st.getStudsrid()" >
+				<input type="text" name="rollno$num" value="$rlno" id="rl$num">
+	                       	<input type="hidden" name="Srid$num" value="$studsrid">
 				#set($flag=false)
 	                #end
 	        #set($temp1=$temp1+1)
-	        #end
-
-	        ## check value of sizecount,if it is zero this shows user does not have any rollno
-	        ## else show rollno of that user
-
-	        #if((($flag==false)&&($num==2)&&($type=="more"))||($sizecount==0))
-        	        <input type="text" name="rollno$num" value="" >
-	        #end
 	        #set($temp=$temp+1)
-	        ## Display more link
-	        #if(($UDetail.size()!=0)&&($counter!=2))
+	      #*  ## Display more link
+	        #if(($UDetail.size()!=0)&&($counter!=2)&&($Crscount==0))
 	        	#if($from=="usermgmt")
                                <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("Process","modify").addPathInfo("username",$i.UserName).addPathInfo("count","2").addPathInfo("type","more").addPathInfo("mode","sclist").addPathInfo("from","usermgmt") style=text-decoration:none>$brih_more</a>
 	                #else
 	               <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("Process","modify").addPathInfo("username",$i.UserName).addPathInfo("count","1").addPathInfo("type","more").addPathInfo("mode","All") style=text-decoration:none>$brih_more</a>
 			#end
-	        #end
+	        #end*#
         	</td></tr>
-        #end
+		<input type="hidden" name="num" value="$num">
+	        		#set($rlno="")
+			        #set($grpname="")
+			        #set($pgcode="")
+			        #set($pgname="")
+			        #set($crsnm="")
+			        #set($crsals="")
+			        #set($crsInst="")
+			        #set($num=$num+1)
+			#end
       #else
       <tr>
         <td><b>$brih_first $brih_name</b></td>
@@ -253,10 +305,10 @@ $!data.getMessage()
 	<input type=hidden name="type" value="$type">
        #end
          ##</table> 
-     #if($counter==2)
+     #if($counter%2==0)
      	<tr bgcolor="$ui.menuColor">
      #end
-        <td align="left" colspan ="2">
+        <td align="left" colspan ="5">
           #*
             Check for a mode, the update and delete buttons
             shouldn't appear when inserting a new user.
@@ -297,161 +349,65 @@ face="$ui.sansSerifFonts">$type</font>
 <SCRIPT LANGUAGE="javascript">
 function checkField(frm,field)
 {
-	#set($flag=false)
-        #foreach($st in $UDetail)
-        var prgcode = "$st.getPrgCode()";
-        var rlno = "$st.getRollNo()";
-        if($flag==false)
+        var count=0;
+        var tmpgrp,tmpprg,tmprl;
+        var tmpgrp1,tmpprg1,tmprl1;
+        if($counter>1){
+        for(var i=1;i<=$counter;i++){
+                var grpid = document.getElementById(i);
+                var grpval = grpid.value;
+                //alert("inside script document.frm.group1.value\n"+grpval);
+                var pgid = document.getElementById("pg"+i);
+                var pgval = pgid.value;
+                //alert("inside script document.frm.prg1.value\n"+pgval);
+                var rlid = document.getElementById("rl"+i);
+                var rlval = rlid.value;
+                //alert("inside script document.frm.rollno1.value\n"+rlval);
+        if(count==0)
         {
-		if(document.frm.prg1.value==prgcode)
+                tmpgrp=grpval;
+                tmpprg = pgval;
+                tmprl = rlval;
+                count=1;
+        }
+        else
+        {
+                tmpgrp1 = grpval;
+                tmpprg1 = pgval;
+                tmprl1 = rlval;
+                count=0;
+        }
+                if(i>1)
                 {
-        		if(document.frm.rollno1.value==rlno)
+                        if(tmpgrp!=tmpgrp1)
                         {
-                		if(($UDetail.size()==1)&&(document.frm.type.value!="more"))
+                                if(tmpprg1==tmpprg)
                                 {
-					if(document.frm.prg1.value!="")
+                                        if(tmprl1!=tmprl)
                                         {
-	                        		frm.actionName.value=field.name;
-        	                                frm.submit();
-					}
-					else
-	                                        alert("Please select program name");
-                                }
-                         }
-                         else
-                         {	
-				if(document.frm.rollno1.value!="")
-                                {
-	                         	var x = confirm("Do you want to change rollno.");
-        	                        {
-	                                	if(x)
-	                                        {
-	                                        	if($UDetail.size()==1)
-	                                                {
-								if(document.frm.prg1.value!="")
-                                                                {
-		                                                	frm.actionName.value=field.name;
-		                                                        frm.submit();
-								}
-								else
-                                                                        alert("Please select program");
-	                                                }
-	                                        }
-	                                }
-				}
-				else
-                                {
-                                        var x = confirm("Do you want to change profile without rollno");
-                                        {
-                                                if(x)
-                                                {
-                                                        if($UDetail.size()==1)
-                                                        {
-                                                                frm.actionName.value=field.name;
-                                                                frm.submit();
-                                                        }
-                                                }
+                                                alert("If you want to change rollno,Please change all rollno for same program.");
+                                                return;
                                         }
                                 }
-			}
-		}
-                else
-                {
-			if(document.frm.prg1.value=="")
-                        	alert("Please select program name");
+                        }
                         else
                         {
-	                	var x = confirm("Do you want to change program ");
-        	                {
-	                           	if(x)
-	                                {
-	                                       	if($UDetail.size()==1)
-	                                        {
-							if(document.frm.rollno1.value!="")
-							{
-		                                             	frm.actionName.value=field.name;
-		                                                frm.submit();
-							}
-							else
-								alert("Please fill rollno field");
-	                                        }
-	                                 }
-	                        }
-			}
+                                alert("Selected course should be different");
+                                return;
+                        }
+		}
+                if(i==$counter)
+                {
+                        frm.actionName.value=field.name;
+                        frm.submit();
                 }
-	}
-        if($flag)
-        {
-        	if(document.frm.prg2.value==prgcode)
-                {
-                	if(document.frm.rollno2.value==rlno)
-                        {
-                        	frm.actionName.value=field.name;
-                                frm.submit();
-                        }
-                        else
-                        {
-	                         var x = confirm("Do you want to change second rollno.");
-                                 {
-        	                          if(x)
-                                          {
-                	                          frm.actionName.value=field.name;
-                                                  frm.submit();
-                                          }
-                                 }
-                        }
-		}
-                else
-                {
-                	var x = confirm("Do you want to change second program");
-                        {
-                        	if(x)
-                                {
-                                	frm.actionName.value=field.name;
-                                        frm.submit();
-                                }
-                        }
-		}
         }
-	#set($flag=true)
-        #end
-        if(document.frm.type.value=="more")
+}
+if($counter==1)
+{
+	if(document.frm.group1.value=="Select Course")
         {
-		if(document.frm.prg2.value=="Select Program")
-                {
-                        if(document.frm.rollno2.value=="")
-                        {
-				if(document.frm.prg1.value!="")
-                                {
-	                                frm.actionName.value=field.name;
-        	                        frm.submit();
-				}
-				else
-                                        alert("Please select first prgram");
-                        }
-                        else
-                        {
-                                alert("Please select second program name");
-                        }
-                }
-                else if(document.frm.rollno2.value=="")
-                {
-                        alert("Please fill second rollno field");
-                }
-                else
-                {
-			if(document.frm.prg1.value!="")
-                        {
-	                        frm.actionName.value=field.name;
-        	                frm.submit();
-			}
-			else
-                                alert("Please select first program");
-                }
-	}
-       else if($sizecount==0)
-       {
-       		if(document.frm.prg1.value=="Select Program")
+        	if(document.frm.prg1.value=="Select Program")
                 {
                 	if(document.frm.rollno1.value=="")
                         {
@@ -460,19 +416,36 @@ function checkField(frm,field)
                         }
                         else
                         {
-	                        alert("Please select program name");
+                                alert("Please select program name");
                         }
-        	}
+                }
+                else if(document.frm.group1.value=="Select Course")
+                {
+  	               alert("Please select course");
+                }
                 else if(document.frm.rollno1.value=="")
                 {
-                	alert("Please fill rollno field");
+                       alert("Please fill rollno field");
                 }
                 else
                 {
-	                frm.actionName.value=field.name;
-                        frm.submit();
+                       frm.actionName.value=field.name;
+                       frm.submit();
                 }
-       }
-
+        }
+        else if(document.frm.prg1.value=="Select Program")
+	{
+        	alert("Please select program name");
+        }
+        else if(document.frm.rollno1.value=="")
+        {
+                alert("Please fill rollno field");
+        }
+        else
+        {
+                frm.actionName.value=field.name;
+                frm.submit();
+        }
+}	
 }
 </script>

@@ -37,10 +37,12 @@ package org.iitk.brihaspati.modules.utils;
 
 import java.util.Vector;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.ListIterator;
 import com.workingdogs.village.Record;
 import com.workingdogs.village.Value;
 import org.apache.turbine.util.parser.ParameterParser;
+import org.apache.commons.lang.StringUtils;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.UserManagement;
@@ -54,11 +56,15 @@ import org.apache.turbine.services.security.torque.om.TurbineGroup;
 import org.apache.turbine.services.security.torque.om.TurbineGroupPeer;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.Courses;
+import org.iitk.brihaspati.om.StudentRollnoPeer;
+import org.iitk.brihaspati.om.StudentRollno;
+import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
+import org.iitk.brihaspati.om.TurbineUserGroupRole;
+import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 import java.io.FileOutputStream;
 import java.io.File;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
-import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 
 /**
  * This class contains methods for listing
@@ -87,8 +93,9 @@ public class ListManagement
 		Vector userDetails=new Vector();
 		try{
 			List user1=UserManagement.getUserDetail1("All",Institute_Id);
-//			ErrorDumpUtil.ErrorLog("User in ListMgmt getInstituteUserList Method======>"+user1);
-			userDetails=getInstituteUDetails(user1,"User");
+//	ErrorDumpUtil.ErrorLog("User in ListMgmt getInstituteUserList Method======>"+user1+"size of vector==>"+user1.size());
+			if(user1.size()>0)
+				userDetails=getDetails(user1,"User");
 		}
 		catch(Exception e)
 		{}
@@ -110,41 +117,76 @@ public class ListManagement
        * Deatils of all the registered courses or Users
        * @param list List
        * @param type String
+       * @param Istituteid String
        * @return Vector
        */
-	public static Vector getInstituteUDetails(List list,String type)
+	public static Vector getInstituteUDetails(List list,String type,String Instituteid)
 	{
 		Vector Details=new Vector();
+		Vector lnamelist=new Vector();
 		try
 		{
 			/**
-			 * Add the details of each detail in a vector
+			 * Add the detail of institute wise user in a vector
 			 * and put the same in context for use in template
 			 */
 			if(type.equals("User"))
 			{
-			for( int i=0;i<list.size();i++)
-			{
-				TurbineUser element=(TurbineUser)(list.get(i));
-				//org.iitk.brihaspati.om.TurbineUser element=(org.iitk.brihaspati.om.TurbineUser)(list.get(i));
-				String loginName=(element.getUserName()).toString();
-				//String loginName=(element.getLoginName()).toString();
-				String firstName=(element.getFirstName()).toString();
-				String lastName=(element.getLastName()).toString();
-				//modified on 24-12-2010 by sharad
-				String email=null;
-				try{
-				//String email=(element.getEmail()).toString();
-				email=(element.getEmail()).toString();
-				}
-				catch(Exception e1){}
-				String userName=firstName+" "+lastName;
-				CourseUserDetail cuDetail=new CourseUserDetail();
-				cuDetail.setLoginName(loginName);
-				cuDetail.setUserName(userName);
-				cuDetail.setEmail(email);
-				Details.add(cuDetail);
+				for(int i=0;i<list.size();i++)
+                                {
+                                	TurbineUser element=(TurbineUser)(list.get(i));
+                                        String loginName=(element.getUserName()).toString();
+                                        //ErrorDumpUtil.ErrorLog("Login name after search=="+loginName);
+                                        int uid = UserUtil.getUID(loginName);
+					Vector GrpList = UserGroupRoleUtil.getGID(uid,3);
+                                        //ErrorDumpUtil.ErrorLog("grplist return from util=="+GrpList);
+                                        for(int j=0;j<GrpList.size();j++)
+                                        {
+						String gId=(String)(GrpList.elementAt(j));
+                                                //ErrorDumpUtil.ErrorLog("grpid in util file=="+gId);
+                                                String gname = GroupUtil.getGroupName(Integer.parseInt(gId));
+                                                //ErrorDumpUtil.ErrorLog("grpname in util file=="+gname);
+                                                String Instid = StringUtils.substringAfter(gname,"_");
+                                                //ErrorDumpUtil.ErrorLog("instid after split in util file=="+Instid);
+                                                if(Instid.equals(Instituteid)&&!lnamelist.contains(loginName))
+                                                {
+                                 	                String firstName=(element.getFirstName()).toString();
+                                                        String lastName=(element.getLastName()).toString();
+					                String email=null;
+					                try{
+						                   email=(element.getEmail()).toString();
+						            }
+							catch(Exception e1){}
+                                                        String userName=firstName+" "+lastName;
+                                                        CourseUserDetail cuDetail=new CourseUserDetail();
+                                                        cuDetail.setLoginName(loginName);
+                                                        cuDetail.setUserName(userName);
+                                                        cuDetail.setEmail(email);
+                                                        Details.add(cuDetail);
+                                                        lnamelist.add(loginName);
+                                                }
+                              		}
+                             	}
 			}
+			else if(type.equals("RollNo"))
+			{
+				for(int i=0;i<list.size();i++)
+        	                {
+	                                String rollno=((StudentRollno)list.get(i)).getRollNo();
+					//ErrorDumpUtil.ErrorLog("rollno inside util=="+rollno);
+	                                String loginname=((StudentRollno)list.get(i)).getEmailId();
+	                                String Instid=((StudentRollno)list.get(i)).getInstituteId();
+					if(Instid.equals(Instituteid) && !lnamelist.contains(loginname)){
+		                                int uid = UserUtil.getUID(loginname);
+	        	                        String fullname = UserUtil.getFullName(uid);
+		                                CourseUserDetail cuDetail=new CourseUserDetail();
+		                                cuDetail.setRollNo(rollno);
+		                                cuDetail.setLoginName(loginname);
+		                                cuDetail.setUserName(fullname);
+		                                Details.add(cuDetail);
+					 	lnamelist.add(loginname);
+					}
+	                        }
 			}
 			else
 			{
@@ -195,21 +237,46 @@ public class ListManagement
 			 */
 			if(type.equals("User"))
 			{
-			for(int i=0;i<list.size();i++)
-			{
-				TurbineUser element=(TurbineUser)(list.get(i));
-				String loginName=(element.getUserName()).toString();
-				String firstName=(element.getFirstName()).toString();
-				String lastName=(element.getLastName()).toString();
-				String email=(element.getEmail()).toString();
-				String userName=firstName+" "+lastName;
-				CourseUserDetail cuDetail=new CourseUserDetail();
-				cuDetail.setLoginName(loginName);
-				cuDetail.setUserName(userName);
-				cuDetail.setEmail(email);
-				Details.add(cuDetail);
+				for(int i=0;i<list.size();i++)
+				{
+					TurbineUser element=(TurbineUser)(list.get(i));
+					String loginName=(element.getUserName()).toString();
+					String firstName=(element.getFirstName()).toString();
+					String lastName=(element.getLastName()).toString();
+					String email=null;
+	                                try{
+		                                email=(element.getEmail()).toString();
+	                                }
+	                                catch(Exception e1){}
+					String userName=firstName+" "+lastName;
+					CourseUserDetail cuDetail=new CourseUserDetail();
+					cuDetail.setLoginName(loginName);
+					cuDetail.setUserName(userName);
+					cuDetail.setEmail(email);
+					Details.add(cuDetail);
+				}
 			}
-			}
+			else if(type.equals("RollNo"))
+               	        {
+	                       Vector lnamelist= new Vector();
+        	                for(int i=0;i<list.size();i++)
+                	        {
+	                                String rollno=((StudentRollno)list.get(i)).getRollNo();
+	                                //ErrorDumpUtil.ErrorLog("rollno inside util=="+rollno);
+        	                        String loginname=((StudentRollno)list.get(i)).getEmailId();
+                	                if(!lnamelist.contains(loginname)){
+	                                        int uid = UserUtil.getUID(loginname);
+	                                        String fullname = UserUtil.getFullName(uid);
+						//ErrorDumpUtil.ErrorLog("fullname after search in util=="+fullname);
+	                                        CourseUserDetail cuDetail=new CourseUserDetail();
+	                                        cuDetail.setRollNo(rollno);
+	                                        cuDetail.setLoginName(loginname);
+	                                        cuDetail.setUserName(fullname);
+	                                        Details.add(cuDetail);
+        	                        }
+                	                 lnamelist.add(loginname);
+	                        }
+                        }
 			else
 			{
 			for(int i=0;i<list.size();i++)
@@ -308,6 +375,7 @@ public class ListManagement
 	{
 		MultilingualUtil m_u=new MultilingualUtil();
 		Vector Details=new Vector();
+		Vector lnamelist=new Vector();
 		try{
 			Criteria crit=new Criteria();
 			if(Type.equals("CourseWise"))
@@ -364,15 +432,95 @@ public class ListManagement
 					str="LOGIN_NAME";
 				else if(query.equals("Email"))
 					str="EMAIL";
+				else if(query.equals("RollNo"))
+					str="ROLL_NO";
 				/**
 				 * Checks for Matching Records
 				 */
-				int noUid[]={0,1};
-				String table="TURBINE_USER";
-				crit.addNotIn(TurbineUserPeer.USER_ID,noUid);
-				crit.add(table,str,(Object)("%"+searchString+"%"),crit.LIKE);
-				List v=TurbineUserPeer.doSelect(crit);
-				Details=getDetails(v,"User");
+				if (query.equals("RollNo"))
+				{
+					crit = new Criteria();
+					crit.add("STUDENT_ROLLNO",str,(Object)("%"+searchString+"%"),crit.LIKE);
+                	                crit.addAscendingOrderByColumn(StudentRollnoPeer.ROLL_NO);
+                        	        List v=StudentRollnoPeer.doSelect(crit);
+					//ErrorDumpUtil.ErrorLog("list return from util==\n"+v);
+					for(int i=0;i<v.size();i++)
+					{
+						String rollno=((StudentRollno)v.get(i)).getRollNo();
+						String loginname=((StudentRollno)v.get(i)).getEmailId();
+						String Instid=((StudentRollno)v.get(i)).getInstituteId();
+						//ErrorDumpUtil.ErrorLog("login name list after adding=="+lnamelist);
+						if(Instid.equals(instituteId) && !lnamelist.contains(loginname)){
+							int uid = UserUtil.getUID(loginname);
+							String fullname = UserUtil.getFullName(uid);
+							CourseUserDetail cuDetail=new CourseUserDetail();
+							cuDetail.setRollNo(rollno);
+							cuDetail.setLoginName(loginname);
+							cuDetail.setUserName(fullname);
+							Details.add(cuDetail);	
+							lnamelist.add(loginname);
+						}
+					}
+				}
+				/**
+ 				 * Code for search user institute wise done by Richa. 	
+ 				 * Get list of all user after search in a vector
+ 				 * get one user from vector and his uid,
+ 				 * from uid get list of groupid for that user
+ 				 * get one gid from list then its groupname from that id and from groupname get institute id.
+ 				 * match this institute id with given id, if match then add into vector and so on.  
+ 				 */ 	
+				else
+				{
+					int noUid[]={0,1};
+					String table="TURBINE_USER";
+					crit.addNotIn(TurbineUserPeer.USER_ID,noUid);
+					crit.add(table,str,(Object)("%"+searchString+"%"),crit.LIKE);
+					List v=TurbineUserPeer.doSelect(crit);
+					for(int i=0;i<v.size();i++)
+		                        {
+		                                TurbineUser element=(TurbineUser)(v.get(i));
+	        	                        String loginName=(element.getUserName()).toString();
+						//ErrorDumpUtil.ErrorLog("Login name after search=="+loginName);
+						int uid = UserUtil.getUID(loginName);
+						List GrpList=UserUtil.getAllGrpId(uid);
+						//ErrorDumpUtil.ErrorLog("grplist return from util=="+GrpList);
+						for(int j=0;j<GrpList.size();j++)
+						{
+							int gid = ((TurbineUserGroupRole)GrpList.get(j)).getGroupId();
+							//ErrorDumpUtil.ErrorLog("grpid in util file=="+gid);
+							String gname = GroupUtil.getGroupName(gid);
+							//ErrorDumpUtil.ErrorLog("grpname in util file=="+gname);
+							List InsAdmin=new ArrayList();
+							String Instid="";
+							if((gid==3)&&(GrpList.size()>1))
+							{
+								crit = new Criteria();
+								crit.add(InstituteAdminUserPeer.ADMIN_EMAIL,loginName);
+								crit.and(InstituteAdminUserPeer.INSTITUTE_ID,instituteId);
+								InsAdmin = InstituteAdminUserPeer.doSelect(crit);
+								//ErrorDumpUtil.ErrorLog("InsAdmin return from mysql==="+InsAdmin);
+							}
+							else{
+							Instid = StringUtils.substringAfter(gname,"_");
+							//ErrorDumpUtil.ErrorLog("instid after split in util file=="+Instid);
+							}
+							if((Instid.equals(instituteId)&&!lnamelist.contains(loginName))||(InsAdmin.size()!=0))
+							{
+		        	        	                String firstName=(element.getFirstName()).toString();
+				                                String lastName=(element.getLastName()).toString();
+				                                String email=(element.getEmail()).toString();
+				                                String userName=firstName+" "+lastName;
+				                                CourseUserDetail cuDetail=new CourseUserDetail();
+				                                cuDetail.setLoginName(loginName);
+				                                cuDetail.setUserName(userName);
+				                                cuDetail.setEmail(email);
+				                                Details.add(cuDetail);
+								lnamelist.add(loginName);
+							}
+						}
+                		        }		
+				}
 			}
 		}
 		catch(Exception e)
@@ -381,6 +529,7 @@ public class ListManagement
 			Details.add(searchMsg);
 			
 		}
+		//ErrorDumpUtil.ErrorLog("vector size after return=="+Details.size());
 		return Details;
 	}
 

@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 /*
  * @(#) UserUtil.java 
- *  Copyright (c) 2004-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2006,2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -38,6 +38,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
+import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
 import org.apache.commons.lang.StringUtils;
 
 
@@ -46,6 +47,7 @@ import org.apache.commons.lang.StringUtils;
  * This utils class have all details of User
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  */
 
 
@@ -146,6 +148,27 @@ public class UserUtil
 		}
 		return TurbineSecurity.getUser(LoginName);	
 	}
-				
+	/**
+ 	 * This method gives all registered groupid for given userid 
+ 	 * @param uid Integer user id of the user		//Richa
+ 	 * @return List  
+ 	 */ 
+	
+	public static List getAllGrpId(int uid)throws Exception
+	{
+		List v=null;
+		int nogid[]={1,4,5};
+		try{
+			Criteria crit = new Criteria();
+			crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
+			crit.addNotIn(TurbineUserGroupRolePeer.GROUP_ID,nogid);
+			v=TurbineUserGroupRolePeer.doSelect(crit);
+		}
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Exception inside getAllGrpId() UserUtil.java!!"+e);
+		}
+	return v;
+	
+	}			
 
 }

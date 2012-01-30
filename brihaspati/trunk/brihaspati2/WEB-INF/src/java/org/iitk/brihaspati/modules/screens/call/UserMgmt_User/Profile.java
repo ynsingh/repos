@@ -57,7 +57,7 @@ import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.om.UserConfiguration;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.UserManagement;
+import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
@@ -199,7 +199,7 @@ public class Profile extends SecureScreen
 	 */
 	//Vector InstId = InstituteIdUtil.getAllInstId(uid);
 	//List rlrecord=UserManagement.getUserPrgRollNo(username,Prgcode,InstId);
-	List rlrecord=UserManagement.getUserRollNo(username);
+	List rlrecord=CourseProgramUtil.getUserRollNo(username);
 	int rlsize = rlrecord.size();
 	Vector UsDetail = new Vector();
 	/**

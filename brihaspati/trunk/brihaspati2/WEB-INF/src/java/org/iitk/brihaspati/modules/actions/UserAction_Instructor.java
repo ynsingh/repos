@@ -413,6 +413,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
 		try{
 		String msg=""; 
                 LangFile=(String)data.getUser().getTemp("LangFile"); 
+		String CId = (String)data.getUser().getTemp("course_id");
                 ParameterParser pp=data.getParameters();
                 String uname=pp.getString("username");
 		/* Counter tells in how many institute the user is registered*/
@@ -445,7 +446,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
                                return;
                         }
                         String Studsrid = pp.getString("Srid"+k,"");
-                	msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,PrgCode,Instid,Studsrid);
+                	msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,PrgCode,Instid,Studsrid,CId);
 			/**
                          * If msg is equal to true, it shows error in updating profile
                          * then show message.     

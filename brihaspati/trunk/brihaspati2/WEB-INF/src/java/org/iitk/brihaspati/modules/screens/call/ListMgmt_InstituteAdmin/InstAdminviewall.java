@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.ListMgmt_InstituteAdmin;
 /*
  * @(#)InstAdminviewall.java	
  *
- *  Copyright (c) 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -38,10 +38,13 @@ package org.iitk.brihaspati.modules.screens.call.ListMgmt_InstituteAdmin;
 /**
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad  Singh</a> 
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
+ * @modified date:13-01-2012
  */
 
 import java.util.Vector;
 import java.util.List;
+import java.util.regex.Pattern;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
@@ -54,6 +57,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil; 
 import org.iitk.brihaspati.modules.utils.CourseManagement; 
 import org.iitk.brihaspati.modules.utils.UserManagement; 
+import org.iitk.brihaspati.modules.utils.CourseProgramUtil; 
+import org.iitk.brihaspati.modules.utils.CourseUserDetail; 
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.Courses;
@@ -62,6 +67,7 @@ import org.iitk.brihaspati.om.TurbineUserGroupRole;
 import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.om.TurbineRole;
 import org.iitk.brihaspati.om.TurbineRolePeer;
+import org.iitk.brihaspati.om.StudentRollnoPeer;
 
 /**
   * This class contains code for listing of all user without admin and guest
@@ -94,10 +100,14 @@ public class InstAdminviewall extends SecureScreen_Institute_Admin{
 		        context.put("stat",stat);
 			String query="";
 			String valueString="";
+			Criteria crit=new Criteria();
+			List rusrlist;
                         String Mode=pp.getString("mode");
                         String counter=pp.getString("count","");
 			context.put("tdcolor",counter);
 			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+			rusrlist=CourseProgramUtil.getInstituteUserRollnoList(instituteId);
+                        context.put("rollnolist",rusrlist);
 			if(Mode.equals("All"))
 			{
 				//userList=ListManagement.getUserList();
@@ -124,6 +134,7 @@ public class InstAdminviewall extends SecureScreen_Institute_Admin{
 		//			valueString=data.getParameters().getString("valueString");
                         	context.put("query",query);
                         	context.put("valueString",valueString);
+				
                         	//userList=ListManagement.getListBySearchString("UserWise",query,valueString);
                         	//userList=ListManagement.getListBySearchString("UserWise",query,valueString,instituteId);
                         	userList=ListManagement.getInstituteListBySearchString("UserWise",query,valueString,instituteId);
@@ -192,7 +203,7 @@ public class InstAdminviewall extends SecureScreen_Institute_Admin{
                         Vector Act=new Vector();
 			if(rName.equals("instructor"))
 			{
-				Criteria crit=new Criteria();
+				crit=new Criteria();
 				crit.addGroupByColumn(CoursesPeer.GROUP_NAME);
                         	List lst=CoursesPeer.doSelect(crit);
                         	for(int k=0;k<lst.size();k++)

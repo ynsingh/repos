@@ -215,8 +215,14 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
                   */      
 		LangFile=(String)data.getUser().getTemp("LangFile");
                 MultilingualUtil m_u=new MultilingualUtil(); 
-		String usrMsg=m_u.ConvertedString("usr_prof2",LangFile);
-		data.setMessage(usrMsg);
+		String action=data.getParameters().getString("actionName","");
+                //context.put("action",action);
+                if(action.equals("eventSubmit_doRegister"))
+                        doRegister(data,context);
+		else{
+			String usrMsg=m_u.ConvertedString("usr_prof2",LangFile);
+			data.setMessage(usrMsg);
+		}
 	}
 }
 

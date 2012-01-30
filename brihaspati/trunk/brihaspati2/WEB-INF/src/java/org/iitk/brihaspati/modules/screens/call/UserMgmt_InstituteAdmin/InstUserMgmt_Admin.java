@@ -60,10 +60,11 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
-import org.iitk.brihaspati.modules.utils.CourseManagement;
+import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
 import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
 import org.iitk.brihaspati.om.InstituteProgramPeer;
 import org.iitk.brihaspati.om.InstituteProgram;
+import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 
@@ -95,6 +96,7 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 	try{
 		if((mode.equals(""))||(mode.equals("AddMUser"))||(mode.equals("userdelete"))){	
 			Vector CourseList=InstituteDetailsManagement.getInstituteCourseDetails(instituteId);
+			//ErrorDumpUtil.ErrorLog("Course List in screen file [InstUserMgmt_Admin.java]======="+CourseList);
         		context.put("courseList",CourseList);
 		}
 		if(mode.equals("userdelete")){
@@ -144,6 +146,8 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
                 context.put("stat",stat);
 		String mode1=data.getParameters().getString("mode1","");
 		context.put("mode1",mode1);
+		Vector userList=new Vector();
+		List v=null;
 		if(mode1.equals("list")){
 		try{
 			String file=null;
@@ -171,6 +175,7 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
                         context.put("query",query);
                         context.put("value",valueString);
                         String str=null;
+			List rusrlist;
 
 			/*set the feild as in TURBINE_USER table 
 			 *according to search string set by user.
@@ -184,13 +189,29 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
                                 str="LOGIN_NAME";
                         else if(query.equals("Email"))
                                 str="EMAIL";
-			Criteria crit=new Criteria();
-                        crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
-                        crit.add("TURBINE_USER",str,(Object)(valueString+"%"),crit.LIKE);
-                        crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
-                        crit.setDistinct();
-                        //List v=null;
-                        List v=TurbineUserPeer.doSelect(crit);
+                        else if(query.equals("RollNo"))
+                                str="ROLL_NO";
+			if(query.equals("RollNo"))
+			{
+				Criteria crit = new Criteria();
+                                crit.add("STUDENT_ROLLNO",str,(Object)("%"+valueString+"%"),crit.LIKE);
+                                crit.addAscendingOrderByColumn(StudentRollnoPeer.ROLL_NO);
+                                v=StudentRollnoPeer.doSelect(crit);
+				//ErrorDumpUtil.ErrorLog("List return from screen after search======"+v);
+				rusrlist=CourseProgramUtil.getInstituteUserRollnoList(instituteId);
+	                        context.put("rollnolist",rusrlist);
+			}
+			else
+			{
+				Criteria crit=new Criteria();
+	                        crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
+	                        crit.add("TURBINE_USER",str,(Object)(valueString+"%"),crit.LIKE);
+	                        crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
+	                        crit.setDistinct();
+	                        //List v=null;
+	                        v=TurbineUserPeer.doSelect(crit);
+				//ErrorDumpUtil.ErrorLog("List return from database===\n"+v);
+			}
 
                         /**
                          * if list not empty then get the User details
@@ -201,7 +222,21 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
                         if(v.size()!=0)
                                 {
                                 //Vector userList=ListManagement.getDetails(v,"User");
-                                Vector userList=ListManagement.getInstituteUDetails(v,"User");
+                                if(query.equals("RollNo"))
+					userList=ListManagement.getInstituteUDetails(v,"RollNo",instituteId);
+				else
+	                                userList=ListManagement.getInstituteUDetails(v,"User",instituteId);
+				/**
+ 				 * if vector size is zero this shows no user exist with match string in this institute
+				 * then show message. 
+ 				 */ 
+				if(userList.size()==0){
+				String usrWith=m_u.ConvertedString("usrWith",file);
+                                String notExist=m_u.ConvertedString("notExist",file);
+                                if(((String)data.getUser().getTemp("lang")).equals("hindi"))
+                                        data.setMessage(usrWith+" "+query+" "+"'"+ valueString+"'"+" "+notExist );
+                                else
+                                        data.setMessage(usrWith+" "+query+" "+"'"+ valueString+"'"+" "+notExist );}
                                 String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
                                 int AdminConf=10;
                                 AdminConf = Integer.parseInt(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));

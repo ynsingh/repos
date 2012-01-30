@@ -74,6 +74,8 @@ import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.iitk.brihaspati.om.StudentExpiry;
 import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.iitk.brihaspati.om.CourseProgram;
+import org.iitk.brihaspati.om.CourseProgramPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
@@ -118,6 +120,7 @@ public class UserManagement
 		 * @param GroupName String The group in which the user has to be registered	   
 		 * @param Role String The role of the new user 
 		 * @param RollNo String The rollno of the new user 
+		 * @param Program String The program of the new user 
 		 * @return String
 		 */
 	public static String CreateUserProfile(String UName,String Passwd,String FName,String LName,String i_name,String Email,String GroupName,String Role,String serverName,String serverPort,String file,String RollNo,String Program)
@@ -232,7 +235,7 @@ public class UserManagement
 						{
 							String actgname[]=GroupName.split("_");
                                                         String InsId=actgname[1];
-							Rollno_msg = InsertPrgRollNo(UName,RollNo,Program,InsId,file);
+							Rollno_msg = CourseProgramUtil.InsertPrgRollNo(UName,RollNo,Program,InsId,file,GroupName);
 						}
 						User existingUser=TurbineSecurity.getUser(UName);
 						TurbineSecurity.grant(existingUser,user_group,user_role);
@@ -490,7 +493,7 @@ public class UserManagement
 						{
 							String actgname[]=GroupName.split("_");
                                                         String InsId=actgname[1];
-                                                        Rollno_msg = InsertPrgRollNo(UName,RollNo,Program,InsId,file);
+                                                        Rollno_msg = CourseProgramUtil.InsertPrgRollNo(UName,RollNo,Program,InsId,file,GroupName);
                                                 }
 
 						/** set student expiry */
@@ -751,80 +754,6 @@ public class UserManagement
 		return roleExist;
 	}
 	/**
-	 * In this method,Insert Roll No in table
-	 * 
-	 * @param uname String The userid of the user
-	 * @param Rollno String The rollno of the user 
-	 */
-
-	public static String InsertRollNo(String uname,String Rollno,String File)
-        {
-			String Msg ="";
-                try
-                {
-                        Criteria crit=new Criteria();
-			crit.add(StudentRollnoPeer.ROLL_NO,Rollno);
-			List v=StudentRollnoPeer.doSelect(crit);
-			if((v.size())!=0)
-			{
-				String Msg1 =MultilingualUtil.ConvertedString("rollno",File);
-				String Msg2 =MultilingualUtil.ConvertedString("Wikiaction6",File);
-				Msg = Msg1+" "+Msg2;
-			}
-			else
-			{
-				Criteria crit1 = new Criteria();
-                        	crit1.add(StudentRollnoPeer.EMAIL_ID,uname);
-                        	crit1.add(StudentRollnoPeer.ROLL_NO,Rollno);
-				StudentRollnoPeer.doInsert(crit1);
-				Msg = "";
-			}
-                }
-                catch(Exception e){
-                        ErrorDumpUtil.ErrorLog("This is the exception in Insert Roll No :--utils(UserManagement) "+e);
-                }
-		return Msg;
-        }
-	/**
-	 * In this method,Insert Roll No with program and institute id in table
-	 * 
-	 * @param uname String The userid of the user
-	 * @param Rollno String The rollno of the user 
-	 * @param Prg String The program of the user
-	 * @param Instid String the institute id of the user
-	 */
-	public static String InsertPrgRollNo(String uname,String Rollno,String Prg,String Instid,String File)
-        {
-			String Msg ="";
-                        Criteria crit=new Criteria();
-                try
-                {
-			crit.add(StudentRollnoPeer.ROLL_NO,Rollno);
-			crit.add(StudentRollnoPeer.PROGRAM,Prg);
-			crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
-			List v=StudentRollnoPeer.doSelect(crit);
-			if((v.size())!=0)
-			{
-				Msg =MultilingualUtil.ConvertedString("rollno_msg",File);
-			}
-			else
-			{
-				crit = new Criteria();
-                        	crit.add(StudentRollnoPeer.EMAIL_ID,uname);
-                        	crit.add(StudentRollnoPeer.ROLL_NO,Rollno);
-                        	crit.add(StudentRollnoPeer.PROGRAM,Prg);
-                        	crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
-				StudentRollnoPeer.doInsert(crit);
-				Msg = "";
-			}
-                }
-                catch(Exception e){
-                        ErrorDumpUtil.ErrorLog("This is the exception in Insert Roll No :--utils(UserManagement) "+e);
-                }
-		return Msg;
-        }
-
-	/**
 	 * In this method,get all role of user in particular group
 	 * 
 	 * @param uid Integer The userid of the user
@@ -885,117 +814,6 @@ public class UserManagement
 		}
 	//	ErrorDumpUtil.ErrorLog("Total User====>"+v);
 		return v;
-	}
-	/**
-	 * In this method, get roll no of specific user
-	 * 
-	 * @param uid String The userid of the user
-	 * @return List 
-	 */
-
-	public static List getUserRollNo(String uid)
-	{
-		List v=null;
-		try
-		{
-			Criteria crit=new Criteria();
-			crit.add(StudentRollnoPeer.EMAIL_ID,uid);
-			v=StudentRollnoPeer.doSelect(crit);
-		}
-		catch(Exception e)
-		{
-                        ErrorDumpUtil.ErrorLog("This is the exception in get Roll No of specific user -utils(UserManagement)  :- "+e);
-					
-		}
-		return v;
-	}
-	/**
-	 * In this method, get roll no with program of specific user
-	 * 
-	 * @param uid String The userid of the user
-	 * @param prg String Program of the user
-	 * @param Instid String Institute id of the user
-	 * @return List 
-	 */
-	public static List getUserPrgRollNo(String uid,String prg,String Instid)
-	{
-		List v=null;
-		try
-		{
-			Criteria crit=new Criteria();
-			crit.add(StudentRollnoPeer.EMAIL_ID,uid);
-			crit.add(StudentRollnoPeer.PROGRAM,prg);
-			crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
-			v=StudentRollnoPeer.doSelect(crit);
-		}
-		catch(Exception e)
-		{
-                        ErrorDumpUtil.ErrorLog("This is the exception in get Roll No acoording to program of specific user -utils(UserManagement)  :- "+e);
-					
-		}
-		return v;
-	}
-	/**
-	 * In this method, get list of roll no of all user
-	 * 
-	 * @param gid Integer The groupid of the user
-	 * @param roleid Integer The roleid of the user
-	 * @return List 
-	 */
-	public static List getListOfRollNo(int gid,int roleid)
-	{
-		Vector ulist = new Vector();
-		Vector urlist = new Vector();
-		String progm="";
-		String prgname="";
-		try
-		{
-			/**
-			 * Getting record of students & then take email
-			 * from email get user rollnorecord from rollno table 
-			 */
-			List rollrecord = new Vector();
-			ulist=UserGroupRoleUtil.getUDetail(gid,3);
-			for(int i=0;i<ulist.size();i++)
-			{
-				CourseUserDetail element=(CourseUserDetail)ulist.get(i);
-				String email = element.getLoginName();
-				rollrecord = getUserRollNo(email);
-				//ErrorDumpUtil.ErrorLog("Rollrecord in get list of rollno inside utils----------->"+rollrecord);
-				/**
-				 * If Rollrecord is zero it shows user have not rollno
-				 */
-				if(rollrecord.size()!=0)
-				{
-					for(int j=0;j<rollrecord.size();j++)
-					{
-						StudentRollno element1 = (StudentRollno)rollrecord.get(j);
-						String Rollno = element1.getRollNo();
-						progm = element1.getProgram();
-						if(progm.equals("NULL")||progm.equals("")||progm.equals(null))
-						{
-							progm="";
-							prgname="";
-						}
-						else
-						{
-							prgname = InstituteIdUtil.getPrgName(progm);
-						}
-						CourseUserDetail cDetails=new CourseUserDetail();
-		                                cDetails.setEmail(email);
-		                                cDetails.setRollNo(Rollno);
-		                                cDetails.setPrgName(prgname);
-		                                urlist.add(cDetails);
-					}
-				}
-			}
-		}
-		catch(Exception e)
-		{
-                        ErrorDumpUtil.ErrorLog("This is the exception in getting list of Roll No  -utils(UserManagement)  :- "+e);
-					
-		}
-		return urlist;
 	}
 	/*Modified for getting User according to Institute wise.
           Call in getUserListMethod inListManagement Util.
@@ -1096,12 +914,14 @@ public class UserManagement
 	 * @param Program String The Program of the user 
 	 * @param Instid String The institute id of the user 
 	 * @param StudSrid String The serial id of the user 
+	 * @param CourseId String The course id of the user 
 	 *
 	 * @return String
 	 */
-	public static String updateUserDetails(String userName,String fName,String lName,String eMail,String file,String RollNo,String Program, String Instid, String StudSrid)
+	public static String updateUserDetails(String userName,String fName,String lName,String eMail,String file,String RollNo,String Program,String Instid,String StudSrid,String CourseId)
 	{
 		String msg=new String();
+		Criteria crit=new Criteria();
 		String flag = "false";
 		try
 		{
@@ -1119,23 +939,38 @@ public class UserManagement
 
                 	TurbineSecurity.saveUser(user);
 			int uid=UserUtil.getUID(userName);
-	
 			/** 
  			 * if student serial id is not null it shows student have information in StudentRollNo table
  			 * then update information
  			 */ 
-			if(!RollNo.equals("")&&!StudSrid.equals("")&&!Program.equals("")&&!Instid.equals("0"))
+			if(!RollNo.equals("")&&!StudSrid.equals("")&&!Program.equals("Select Program")&&!Instid.equals("0")&&!CourseId.equals("Select Course"))
 			{
 				/**
  				 * set flag inside catch block to get an error, if occured  
  				 */ 
 				try{
-				Criteria crit=new Criteria();
 				crit.add(StudentRollnoPeer.ID,StudSrid);
 	                        crit.add(StudentRollnoPeer.ROLL_NO,RollNo);
 				crit.add(StudentRollnoPeer.PROGRAM,Program);
 				crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
 				StudentRollnoPeer.doUpdate(crit);
+
+				List CrsList = CourseProgramUtil.getUserCourseProgram(Integer.parseInt(StudSrid),CourseId,Program);
+				//ErrorDumpUtil.ErrorLog("CrsList in updateUserDetail--"+CrsList);
+                                if(CrsList.size()==0 && !CourseId.equals("Select Course")){
+                                        CourseProgramUtil.InsertCourseProgram(Integer.parseInt(StudSrid),CourseId,Program);
+                                }
+                                else
+                                {
+                                        CourseProgram element = (CourseProgram)CrsList.get(0);
+                                        int Id = element.getId();
+                                        crit = new Criteria();
+                                        crit.add(CourseProgramPeer.ID,Id);
+                                        crit.add(CourseProgramPeer.STUDENT_ID,Integer.parseInt(StudSrid));
+                                        crit.add(CourseProgramPeer.COURSE_ID,CourseId);
+                                        crit.add(CourseProgramPeer.PROGRAM,Program);
+                                        CourseProgramPeer.doUpdate(crit);
+                                }
 				}
 				catch(Exception ex){
 					ErrorDumpUtil.ErrorLog("Error in UpdateUserDetail method while updating profile[UserManagement.java]--\n"+ex);
@@ -1148,7 +983,7 @@ public class UserManagement
 			 */
 			else if(!RollNo.equals("")&&!Program.equals("")&&!Instid.equals("0"))
 			{
-                                rollmsg=InsertPrgRollNo(userName,RollNo,Program,Instid,file);
+                                rollmsg=CourseProgramUtil.InsertPrgRollNo(userName,RollNo,Program,Instid,file,CourseId);
                         }
 			/**
  			 * this below check is put, if any how any value is null. 
@@ -1233,6 +1068,7 @@ public class UserManagement
                         try{
 				this.flag=new Boolean(false);
                                 TurbineSecurity.revoke(user,user_group,user_role);
+				CourseProgramUtil.DeleteCoursePrg(userName,group_name);
 				this.flag=new Boolean(false);
 
                                 String usr_role=MultilingualUtil.ConvertedString("usr's_role",file);
@@ -1285,6 +1121,7 @@ public class UserManagement
 						crit = new Criteria();
                                                 crit.add(StudentRollnoPeer.EMAIL_ID,userName);
                                                 StudentRollnoPeer.doDelete(crit);
+						CourseProgramUtil.DeleteCoursePrg(userName,group_name);
                                                	/**
                        				* Delete the repository from the server for
                        				* this User

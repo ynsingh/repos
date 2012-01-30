@@ -53,7 +53,7 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
-import org.iitk.brihaspati.modules.utils.UserManagement;
+import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
 import org.iitk.brihaspati.om.StudentRollno;
 /**
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kuamr Singh</a>
@@ -82,7 +82,7 @@ public class getBackup_Students extends SecureScreen
  				 * then check if program is not null then get its name and 
  				 * add program, rollno in vector to write in file. 	
  				 */ 	
-				List rollrecord = UserManagement.getUserRollNo(lN);
+				List rollrecord = CourseProgramUtil.getUserRollNo(lN);
 				String progm="",prgname="", Rollno="";
 				Vector tmpvec=new Vector();
 				if(rollrecord.size()!=0){

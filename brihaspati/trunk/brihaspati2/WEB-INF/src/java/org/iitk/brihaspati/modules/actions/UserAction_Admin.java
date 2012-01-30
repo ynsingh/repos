@@ -161,7 +161,8 @@ public class UserAction_Admin extends SecureAction_Admin{
      	  */
 	public void doUpdate(RunData data, Context context)
 	{
-		LangFile=(String)data.getUser().getTemp("LangFile");	
+		LangFile=(String)data.getUser().getTemp("LangFile");
+		String CId = (String)data.getUser().getTemp("course_id");	
 	 	ParameterParser pp=data.getParameters();
                 String uname=pp.getString("username");
 		if(StringUtil.checkString(uname) != -1)
@@ -188,7 +189,7 @@ public class UserAction_Admin extends SecureAction_Admin{
 		String insid=pp.getString("InstName","");
 		String Studsrid=pp.getString("Studsrid","");
                 //ErrorDumpUtil.ErrorLog("value of program in user action admin\n"+program);
-		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program,insid,Studsrid);
+		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program,insid,Studsrid,CId);
 	 	data.setMessage(msg);
 	}
     	/**

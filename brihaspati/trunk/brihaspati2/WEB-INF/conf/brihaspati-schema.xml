@@ -481,7 +481,6 @@
         <column name="COURSE_TYPE" required="true" size="10" type="VARCHAR"/>
         <column name="PROJECTOR" required="true" type="TINYINT"/>
 </table>
-
 <!-- ==============================DIRECTORY SCHEMA============================================ -->
 <table name="TELEPHONE_DIRECTORY" idMethod="idbroker" description="Contact No Information">
         <column name="ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
@@ -536,5 +535,20 @@
         <column name="MLOGIN_DATETIME" required="true" type="TIMESTAMP" />
         <column name="MTIME" type="INTEGER"/>
   </table>
-
+	
+<!-- ===============================COURSE PROGRAM SCHEMA==================================== -->
+<table name="COURSE_PROGRAM" idMethod="idbroker">
+        <column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+        <column name="STUDENT_ID" required="true" type="INTEGER"/>
+        <column name="COURSE_ID" required="true" type="VARCHAR" size="255"/>
+        <column name="PROGRAM" required="true" type="VARCHAR" size="255"/>
+        <unique>
+	        <unique-column name="STUDENT_ID"/>
+                <unique-column name="COURSE_ID"/>
+                <unique-column name="PROGRAM"/>
+        </unique>
+        <foreign-key foreignTable="STUDENT_ROLLNO">
+        	<reference local="STUDENT_ID" foreign="ID"/>
+        </foreign-key>
+</table>
 </database>

@@ -124,6 +124,7 @@ $!data.getMessage()
                                 <option value="FirstName">$brih_first $brih_name</option>
                                 <option value="LastName">$brih_last $brih_name</option>
                                 <option value="Email">$brih_email $brih_ID</option>
+				<option value="RollNo">$brih_rollno </option>
                         </select>
                 </td>
                 <td><b>$brih_match_str</b></td>

@@ -57,7 +57,7 @@ import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
 
 import org.iitk.brihaspati.om.UserConfigurationPeer; 
 import org.iitk.brihaspati.modules.utils.UserUtil;  
-import org.iitk.brihaspati.modules.utils.UserManagement;  
+import org.iitk.brihaspati.modules.utils.CourseProgramUtil;  
 import org.iitk.brihaspati.modules.utils.StringUtil;  
 import org.iitk.brihaspati.modules.actions.SecureAction;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
@@ -237,16 +237,16 @@ public class ProfileUser extends SecureAction
 					
 					List Rlrecord = new Vector();
 	                                String RlNo ="";
-	                                Rlrecord = UserManagement.getUserRollNo(loginName);	
-					//Rollno = UserManagement.getUserPrgRollNo(loginName,PrgName,InstName);
+	                                Rlrecord = CourseProgramUtil.getUserRollNo(loginName);	
+					//Rollno = CourseProgramUtil.getUserPrgRollNo(loginName,PrgName,InstName);
 	                                if((Rlrecord.size()>0)&&(!rollno.equals(""))){
         	                                StudentRollno element = (StudentRollno)Rlrecord.get(0);
                 	                        int id = element.getId();
                         	                RlNo = element.getRollNo();
 					}
 					if(!rollno.equals(RlNo)){
-                        	                //rollmsg=UserManagement.InsertRollNo(loginName,rollno,LangFile);
-                        	                rollmsg=UserManagement.InsertPrgRollNo(loginName,rollno,PrgName,InstName,LangFile);
+                        	                //rollmsg=CourseProgramUtil.InsertRollNo(loginName,rollno,LangFile);
+                        	                //rollmsg=CourseProgramUtil.InsertPrgRollNo(loginName,rollno,PrgName,InstName,LangFile);
                                 	}
 					}
 					
@@ -389,8 +389,8 @@ public class ProfileUser extends SecureAction
  				 */ 		
 				List Rlrecord = new Vector();
 				String RlNo ="";
-                                Rlrecord = UserManagement.getUserRollNo(loginName);
-				//Rollno = UserManagement.getUserPrgRollNo(loginName,PrgName,InstName);
+                                Rlrecord = CourseProgramUtil.getUserRollNo(loginName);
+				//Rollno = CourseProgarmUtil.getUserPrgRollNo(loginName,PrgName,InstName);
 				//ErrorDumpUtil.ErrorLog("Rollno record in action file------>"+Rlrecord);
 				if((Rlrecord.size()>0)&&(!rollno.equals(""))){
                		                StudentRollno element = (StudentRollno)Rlrecord.get(0);
@@ -407,8 +407,8 @@ public class ProfileUser extends SecureAction
  				 * then insert value in database
  				 */ 		
 				if(!rollno.equals(RlNo)){
-					//rollmsg=UserManagement.InsertRollNo(loginName,rollno,LangFile);
-					rollmsg=UserManagement.InsertPrgRollNo(loginName,rollno,PrgName,InstName,LangFile);
+					//rollmsg=CourseProgramUtil.InsertRollNo(loginName,rollno,LangFile);
+					//rollmsg=CourseProgramUtil.InsertPrgRollNo(loginName,rollno,PrgName,InstName,LangFile);
 				}
 				}
 				msg1=MultilingualUtil.ConvertedString("Profile_PhotoMsg3",LangFile);
