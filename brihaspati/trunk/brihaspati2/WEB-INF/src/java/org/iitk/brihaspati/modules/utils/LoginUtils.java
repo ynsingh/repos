@@ -129,7 +129,7 @@ public class LoginUtils{
                 	       	vec=TurbineUserPeer.doSelect(crit);
 			}
 			catch(Exception e){
-				ErrorDumpUtil.ErrorLog("This Exception comes (in side First try) in the Login Utils-SetUserData Facility"+e);
+				ErrorDumpUtil.ErrorLog("This Exception comes (in side First try) in the Login Utils-SetUserData Facility"+e+"\n");
                         }
 			if(vec.size() != 0) {
                        		TurbineUser element=(TurbineUser)vec.get(0);
