@@ -307,8 +307,8 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 JLabel duration=new JLabel(Language.getController().getLangValue("UpdateSessionPanel.LectureDuration"));
                 durationBox=new JComboBox();
                 for(int i=1;i<=24;i++)
-                        durationBox.addItem(Integer.toString(i)+Language.getController().getLangValue("UpdateSessionPanel.LectureHour"));
-
+//                        durationBox.addItem(Integer.toString(i)+Language.getController().getLangValue("UpdateSessionPanel.LectureHour"));
+			 durationBox.addItem(Integer.toString(i)+":Hour");
                 JLabel repeat=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("UpdateSessionPanel.LectureRepeat")+"</font></html>");
                 repeatBox=new JComboBox();
                 repeat_for_timeBox=new JComboBox();
