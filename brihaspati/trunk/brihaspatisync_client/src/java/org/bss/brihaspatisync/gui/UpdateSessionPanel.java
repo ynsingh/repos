@@ -154,15 +154,11 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 updatemailid=str1.nextElement().toString();
                 updatemailidarry=updatemailid.split("-");
 
-                //yearBox.setSelectedItem(updatemailidarry[0]);
-                //monthBox.setSelectedItem(updatemailidarry[1]);
-                //dayBox.setSelectedItem(updatemailidarry[2]);
-
                 updatemailid=str1.nextElement().toString();//Session Time
                 updatemailidarry=updatemailid.split(":");
-                //hourBox.setSelectedItem(updatemailidarry[0]);
-                //minBox.setSelectedItem(updatemailidarry[1]);
-                durationBox.setSelectedItem(str1.nextElement().toString());	
+		String durationtime=str1.nextElement().toString();
+		durationtime=durationtime.substring(0,durationtime.indexOf(":"));
+                durationBox.setSelectedItem(durationtime+Language.getController().getLangValue("UpdateSessionPanel.LectureHour"));	
 		
 	}	
 
@@ -292,10 +288,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 center_Panel.add(dateEntryPanel);
                 center_Panel.add(time);
                 center_Panel.add(timeEntryPanel);
-                //center_Panel.add(email);
-                //center_Panel.add(mailPanel);
-
-		 return center_Panel;
+		return center_Panel;
 	}
 
 	private JPanel createSouthPanel(){
@@ -307,8 +300,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 JLabel duration=new JLabel(Language.getController().getLangValue("UpdateSessionPanel.LectureDuration"));
                 durationBox=new JComboBox();
                 for(int i=1;i<=24;i++)
-//                        durationBox.addItem(Integer.toString(i)+Language.getController().getLangValue("UpdateSessionPanel.LectureHour"));
-			 durationBox.addItem(Integer.toString(i)+":Hour");
+        		durationBox.addItem(Integer.toString(i)+Language.getController().getLangValue("UpdateSessionPanel.LectureHour"));
                 JLabel repeat=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("UpdateSessionPanel.LectureRepeat")+"</font></html>");
                 repeatBox=new JComboBox();
                 repeat_for_timeBox=new JComboBox();
@@ -342,7 +334,6 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 		
 		ClassLoader clr= this.getClass().getClassLoader();	
 		closeLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/close.jpg")));
-		//closeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 closeLabel.addMouseListener(this);
                 closeLabel.setName("closeLabel.Action");
                 closeLabel.addMouseListener(this);
@@ -407,8 +398,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                         return lectValue;
                                 }
 				
-				String st_duration=(String)durationBox.getSelectedItem();
-				StringTokenizer st=new StringTokenizer(st_duration,":");
+				String st_duration=Integer.toString(durationBox.getSelectedIndex()+1)+":Hour";
 				String vedeo="";					
                        	       	if(video.isSelected()==true){
 					vedeo="1";

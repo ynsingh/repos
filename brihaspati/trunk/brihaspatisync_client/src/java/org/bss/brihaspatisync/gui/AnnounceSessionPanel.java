@@ -252,7 +252,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                 JLabel duration=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("AnnounceSessionPanel.LectureDuration")+"</font><font color=blue>*</font>");
                 durationBox=new JComboBox();
                 for(int i=1;i<=24;i++)
-                        durationBox.addItem(Integer.toString(i)+":Hour");
+			durationBox.addItem(Integer.toString(i)+Language.getController().getLangValue("UpdateSessionPanel.LectureHour"));
 
                 JLabel repeat=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("AnnounceSessionPanel.LectureRepeat")+"</font>");
                 repeatBox=new JComboBox();
@@ -343,8 +343,8 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                                         lectValue=null;  
 					return lectValue;  
 				}
-	              		String st_duration=(String)durationBox.getSelectedItem();
-				
+	              		//String st_duration=(String)durationBox.getSelectedItem();
+				String st_duration=Integer.toString(durationBox.getSelectedIndex()+1)+":Hour";	
 				if(!((client_obj.getCourseForAnnounce()).equals("")))
 					courseName=client_obj.getCourseForAnnounce();
 				if(courseName.equals("--Show All--")){
