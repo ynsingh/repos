@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
 /*
  * @(#)InstStudentList.java	
  *
- *  Copyright (c) 2005-2006,2009,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006,2009,2010,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -36,6 +36,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
 /**
  * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author  <a href="sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author  <a href="richa.tandon1@gmail.com">Richa Tandon</a>
  */
 
 import java.util.Vector;
@@ -51,6 +52,8 @@ import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil; 
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
+import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 import org.apache.torque.util.Criteria;
 
@@ -74,6 +77,8 @@ public class InstStudentList extends SecureScreen_Institute_Admin
 			String file=null;
                 	MultilingualUtil m_u=new MultilingualUtil();
 	                file=(String)data.getUser().getTemp("LangFile"); 
+			String instituteId=data.getUser().getTemp("Institute_id").toString();
+			List v=null;
 			/**
 			 * Get the search criteria and the search string
 			 * from the screen
@@ -96,6 +101,8 @@ public class InstStudentList extends SecureScreen_Institute_Admin
 			context.put("query",query);
 			context.put("value",valueString);
 			String str=null;
+			Vector userList=new Vector();
+			List rusrlist;
 
 			if(query.equals("First Name"))
 				str="FIRST_NAME";
@@ -105,27 +112,43 @@ public class InstStudentList extends SecureScreen_Institute_Admin
 				str="LOGIN_NAME";
 			else if(query.equals("Email"))
 				str="EMAIL";
-
+			else if(query.equals("RollNo"))
+				str="ROLL_NO";
 		    	/**
 			  * Checks for Matching Records
 			  */
-
-			Criteria crit=new Criteria();
-			crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
-			crit.add("TURBINE_USER",str,(Object)(valueString+"%"),crit.LIKE);
-			crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
-			crit.setDistinct();
-			List v=null;
-			v=TurbineUserPeer.doSelect(crit);
+			if(query.equals("RollNo"))
+                        {
+                                Criteria crit = new Criteria();
+                                crit.add("STUDENT_ROLLNO",str,(Object)("%"+valueString+"%"),crit.LIKE);
+                                crit.addAscendingOrderByColumn(StudentRollnoPeer.ROLL_NO);
+                                v=StudentRollnoPeer.doSelect(crit);
+                                //ErrorDumpUtil.ErrorLog("List return from screen after search======"+v);
+                                rusrlist=CourseProgramUtil.getInstituteUserRollnoList(instituteId);
+                                context.put("rollnolist",rusrlist);
+                        }
+                       	else
+			{
+				Criteria crit=new Criteria();
+				crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
+				crit.add("TURBINE_USER",str,(Object)(valueString+"%"),crit.LIKE);
+				crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
+				crit.setDistinct();
+				v=TurbineUserPeer.doSelect(crit);
+			}
 			/**
 			 * Add the details of each detail in a vector
 			 * and put the same in context for use in
 			 * template
 			 */
 			if(v.size()!=0)
-                        	{
-				Vector userList=ListManagement.getDetails(v,"User");
-                                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                       	{
+				if(query.equals("RollNo"))
+                                        userList=ListManagement.getInstituteUDetails(v,"RollNo",instituteId);
+                                else
+                                        userList=ListManagement.getInstituteUDetails(v,"User",instituteId);
+				//Vector userList=ListManagement.getDetails(v,"User");
+				String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
 				int AdminConf=10;
                                 AdminConf = Integer.parseInt(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
                                 context.put("AdminConf",new Integer(AdminConf));
@@ -159,7 +182,6 @@ public class InstStudentList extends SecureScreen_Institute_Admin
 
                                 int check_last=value[5];
                                 context.put("check_last",String.valueOf(check_last));
-
                                 context.put("startIndex",String.valueOf(eI));
                                 Vector splitlist=ListManagement.listDivide(userList,startIndex,AdminConf);
                                 context.put("ListUser",splitlist);
