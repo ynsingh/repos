@@ -2105,7 +2105,7 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `login` WRITE;
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
-INSERT INTO `login` VALUES ('libms','libms','superadmin','admin.libms','superadmin',NULL,NULL,'superadmin','cb1410590d830d574e61fd941c4c43e1');
+INSERT INTO `login` VALUES ('libms','libms','superadmin','admin.libms','superadmin',NULL,NULL,'superadmin',MD5('superadmin'));
 /*!40000 ALTER TABLE `login` ENABLE KEYS */;
 UNLOCK TABLES;
 
