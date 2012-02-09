@@ -1,0 +1,63 @@
+1. Your PMS's default superadmin userid and password is 
+	superadmin@gmail.com
+password: superadmin
+
+2. Whatever your superadmin's userid and password of PMS, make the Bugzilla's administrator email id and password the same.
+
+3. command to set the bugzilla admin id and password is
+	./checksetup.pl --make-admin=username@domain.com
+	./checksetup.pl --reset-password=username@domain.com
+
+4.There are five files listed below in bugzilla--
+
+	a. Login-small.html.tmpl
+  
+	   	 Path: Installed location of bugzilla >bugzilla >template >en > default > account > auth
+   	b. Common-links.html.tmpl
+      
+		Path : Installed location of bugzilla >bugzilla >template >en > default > global
+   
+	c. Userdata.html.tmpl
+     
+		Path : Installed location of bugzilla >bugzilla >template >en > default > admin > users
+   	   
+	d. Editusers.cgi
+      
+		Path :  Installed location of bugzilla >bugzilla
+   
+	e. Global.js
+      
+		Path : Installed location of bugzilla >bugzilla >js 
+
+
+5. Replace all these five files with the provided one in the same folder.
+
+6. Open the replaced file Common-links.html.tmpl.Go to line number 28
+
+7.Change URL to PMS according to your system's PMS URL.
+
+8. There is another file named --
+	a. Constants.pm
+      
+		Path : Installed location of bugzilla >bugzilla >Bugzilla
+
+	
+	open this file and search for the string "use constant USER_PASSWORD_MIN_LENGTH
+"
+
+	the complete line will be "use constant USER_PASSWORD_MIN_LENGTH => 6";
+
+	change it to "use constant USER_PASSWORD_MIN_LENGTH => 0;
+
+	now save the file.
+
+9. restart the apache service.
+
+10. login in PMS through superadmin and pass the URL to bugzilla.
+
+11. Login in the bugzilla through PMS menu link. If login successfull then bugzilla is integrated successfully.
+
+12. Add user in the bugzilla through add user menu link of PMS.
+
+13.If Login screen comes again then just enter your PMS login id and it will proceed smoother.
+

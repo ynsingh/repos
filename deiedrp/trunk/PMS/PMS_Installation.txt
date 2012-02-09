@@ -94,11 +94,10 @@ ii) Go into conf folder of apache-tomcat and paste these bold lines into the con
 
 <Context>
 
-<Resource name="jdbc/mydb" auth="Container" type="javax.sql.DataSource"
+<Resource name="jdbc/myBugzillaDB" auth="Container" type="javax.sql.DataSource"
 maxActive="100" maxIdle="10" maxWait="10"
-username="pmsuser" password="pmspasswd" driverClassName="com.mysql.jdbc.Driver"
-url="jdbc:mysql://localhost/pms?autoReconnect=true"/>
-
+username="bugs" password="bugs" driverClassName="com.mysql.jdbc.Driver"
+url="jdbc:mysql://localhost/bugs?autoReconnect=true"/>
 </Context>
 
 iii) Go into webapps\PMS\WEB-INF\build folder and modify these two lines of build.properties file
