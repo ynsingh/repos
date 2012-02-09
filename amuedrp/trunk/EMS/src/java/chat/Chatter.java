@@ -4,7 +4,6 @@ package chat;
 /**
 * This class represents a chatter in the chat room.
 * For each Chatter object a name, age and login time is required.
-* @author Sukhwinder Singh
 */
 public class Chatter
 {

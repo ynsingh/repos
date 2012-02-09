@@ -1,90 +1,97 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 27 May, 2011 7:47:14 PM by Hibernate Tools 3.2.1.GA -->
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 2, 2012 11:01:17 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class  name="com.myapp.struts.hbm.VoterRegistration" table="voter_registration">
-    <composite-id class="com.myapp.struts.hbm.VoterRegistrationId" name="id">
-      <key-property name="enrollment" type="string">
-        <column length="20" name="enrollment"/>
-      </key-property>
-      <key-property name="instituteId" type="string">
-        <column length="50" name="institute_id"/>
-      </key-property>
-    </composite-id>
-    <property name="department" type="string">
-      <column length="50" name="department"/>
-    </property>
-    <property name="course" type="string">
-      <column length="20" name="course"/>
-    </property>
-    <property name="year" type="string">
-      <column name="year"/>
-    </property>
-    <property name="courseDuration" type="string">
-      <column name="course_duration"/>
-    </property>
-    <property name="currentSession" type="string">
-      <column name="current_session"/>
-    </property>
-    <property name="joiningDate" type="string">
-      <column length="10" name="joining_date"/>
-    </property>
-    <property name="voterName" type="string">
-      <column length="50" name="voter_name"/>
-    </property>
-    <property name="gender" type="string">
-      <column length="20" name="gender"/>
-    </property>
-    <property name="birthdate" type="string">
-      <column length="10" name="birthdate"/>
-    </property>
-    <property name="FName" type="string">
-      <column length="30" name="f_name"/>
-    </property>
-    <property name="MName" type="string">
-      <column length="30" name="m_name"/>
-    </property>
-    <property name="mobileNumber" type="string">
-      <column length="50" name="mobile_number"/>
-    </property>
-    <property name="CAddress" type="string">
-      <column length="50" name="c_address"/>
-    </property>
-    <property name="city" type="string">
-      <column length="30" name="city"/>
-    </property>
-    <property name="state" type="string">
-      <column length="20" name="state"/>
-    </property>
-    <property name="zipCode" type="string">
-      <column name="zip_code"/>
-    </property>
-    <property name="country" type="string">
-      <column length="30" name="country"/>
-    </property>
-    <property name="PAddress" type="string">
-      <column length="50" name="p_address"/>
-    </property>
-    <property name="city1" type="string">
-      <column length="20" name="city1"/>
-    </property>
-    <property name="state1" type="string">
-      <column length="20" name="state1"/>
-    </property>
-    <property name="zipCode1" type="string">
-      <column name="zip_code1"/>
-    </property>
-    <property name="country1" type="string">
-      <column length="20" name="country1"/>
-    </property>
-    <property name="email" type="string">
-      <column length="50" name="email"/>
-    </property>
-    <property name="status" type="string">
-      <column length="50" name="status"/>
-    </property>
-    <property name="image" type="binary">
-      <column name="image"/>
-    </property>
-  </class>
+    <class name="com.myapp.struts.hbm.VoterRegistration" table="voter_registration" catalog="emsiitk">
+        <composite-id name="id" class="com.myapp.struts.hbm.VoterRegistrationId">
+            <key-property name="enrollment" type="string">
+                <column name="enrollment" length="20" />
+            </key-property>
+            <key-property name="instituteId" type="string">
+                <column name="institute_id" length="20" />
+            </key-property>
+        </composite-id>
+        <property name="department" type="string">
+            <column name="department" length="50" />
+        </property>
+        <property name="course" type="string">
+            <column name="course" length="100" />
+        </property>
+        <property name="year" type="string">
+            <column name="year" length="20" />
+        </property>
+        <property name="courseDuration" type="string">
+            <column name="course_duration" length="20" />
+        </property>
+        <property name="currentSession" type="string">
+            <column name="current_session" length="40" />
+        </property>
+        <property name="joiningDate" type="string">
+            <column name="joining_date" length="50" />
+        </property>
+        <property name="voterName" type="string">
+            <column name="voter_name" />
+        </property>
+        <property name="gender" type="string">
+            <column name="gender" length="20" />
+        </property>
+        <property name="birthdate" type="string">
+            <column name="birthdate" length="50" />
+        </property>
+        <property name="mobileNumber" type="string">
+            <column name="mobile_number" length="50" />
+        </property>
+        <property name="CAddress" type="string">
+            <column name="c_address" />
+        </property>
+        <property name="city" type="string">
+            <column name="city" length="100" />
+        </property>
+        <property name="state" type="string">
+            <column name="state" length="100" />
+        </property>
+        <property name="zipCode" type="string">
+            <column name="zip_code" length="20" />
+        </property>
+        <property name="country" type="string">
+            <column name="country" length="100" />
+        </property>
+        <property name="PAddress" type="string">
+            <column name="p_address" />
+        </property>
+        <property name="city1" type="string">
+            <column name="city1" length="100" />
+        </property>
+        <property name="state1" type="string">
+            <column name="state1" length="100" />
+        </property>
+        <property name="zipCode1" type="string">
+            <column name="zip_code1" length="20" />
+        </property>
+        <property name="country1" type="string">
+            <column name="country1" length="100" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" />
+        </property>
+         <property name="alternateMail" type="string">
+            <column name="alternate_mail" />
+        </property>
+        <property name="image" type="binary">
+            <column name="image" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="50" />
+        </property>
+        <property name="FName" type="string">
+            <column name="f_name" length="200" />
+        </property>
+        <property name="MName" type="string">
+            <column name="m_name" length="200" />
+        </property>
+        <property name="setVoter" type="string">
+            <column name="setVoter" length="1" />
+        </property>
+    </class>
 </hibernate-mapping>

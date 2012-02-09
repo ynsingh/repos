@@ -5,12 +5,6 @@
 
 package com.myapp.struts.admin;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-
 public class ChangeWorkingStatusActionForm extends org.apache.struts.action.ActionForm {
     
     private String working_status;

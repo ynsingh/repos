@@ -85,6 +85,13 @@ String instituteName=(String)session.getAttribute("institute_name");
          return true;
       }
 
+function send1()
+      {
+          //alert(document.getElementById("img").value);
+
+         window.location="<%=request.getContextPath()%>/election_manager/search_candidate.jsp";
+        // return true;
+      }
 </script>
 
 <head>
@@ -124,6 +131,7 @@ String instituteName=(String)session.getAttribute("institute_name");
                 String file = (String) request.getAttribute("filename");
                 String position=(String)request.getAttribute("position");
                 String election=(String)request.getAttribute("election");
+                String alternateemail=(String)request.getAttribute("alternateemail");
                 String institute_id=(String)session.getAttribute("institute_id");
     %>
 
@@ -590,7 +598,8 @@ String instituteName=(String)session.getAttribute("institute_name");
                                     <tr>    <td align="left"><%=resource.getString("state")%></td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="state1" value="<%=state1%>" styleId="state21"/></td></tr>
                                     <tr> <td align="left"><%=resource.getString("pin")%></td><td><html:text  readonly="<%=read%>" name="CandidateRegActionForm" property="zipcode1"  value="<%=zcode1%>" styleId="zcode21"/></td><td colspan="2"></tr>
                                     <tr><td align="left"><%=resource.getString("country")%></td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country1" value="<%=country1%>" styleId="country21"/></td></tr>
-               </table>
+                                     <tr><td align="left">Alternate Email</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="alternateemail" value="<%=alternateemail%>" styleId="alternateemail"/></td></tr>
+                                            </table>
 
 
                                         </td>
@@ -728,7 +737,7 @@ String instituteName=(String)session.getAttribute("institute_name");
                     <input id="button1"  name="button" type="submit" value="<%=resource.getString("accept")%>" class="txt1" />
            
            <%} else if(status.equals("R")==false){%>
-                   <input name="button" type="submit" value="<%=resource.getString("print")%>"  class="txt1"/>
+           <input name="button" type="button" value="Back"  onclick="return send1()" class="txt1"/>
                    <%}%>
                     <input name="button" type="button" value="<%=resource.getString("cancel")%>" onclick="return send()" class="txt1"/>
                     

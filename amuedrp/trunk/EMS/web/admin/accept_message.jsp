@@ -48,9 +48,12 @@ String msg3=(String)request.getAttribute("accept_msg3");
      
 
  <link rel="stylesheet" href="/EMS/css/page.css"/>
-
-
-    <table width="400px" height="400px" class="txt2"  valign="top" align="left" id="tab1">
+<table width="400px" height="400px" class="txt2"  valign="top" align="left" id="tab1">
+<%
+String req=(String)request.getAttribute("reject");
+if(req==null){
+%>
+    
         <tr>
             <td   width="400px" height="600px" valign="top" style="" align="left" class="mess">
                
@@ -59,7 +62,8 @@ String msg3=(String)request.getAttribute("accept_msg3");
                     <p align="left" ><%=resource.getString("instituteid")%>  :<b><%=msg1%></b></p>
                   <!-- <p align="left"> Library Name  :<b><%=msg2%></b></p>   -->
                     <p align="left" ><%=resource.getString("institutename")%>:<b><%=msg3%></b></p>
-                    <p align="left" ><%=resource.getString("institute_isregistered")%></p>
+                    <%}%>
+                    <p align="left" > <%=msg%></p>
 
 
 

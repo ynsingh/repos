@@ -26,15 +26,7 @@ public class AddNewRoomAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     ChatRoomList rooms = new ChatRoomList();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -45,8 +37,10 @@ public class AddNewRoomAction extends org.apache.struts.action.Action {
    String roomName =anr.getRn();
    String roomDescr=anr.getRd();
     Properties props = new Properties();
-  String home=System.getProperty("user.home");
-  System.out.println(System.getProperty("user.home"));
+    String path = servlet.getServletContext().getRealPath("/");
+
+  String home=path;
+  System.out.println(home);
 
 //  FileInputStream in = new FileInputStream(home+"/Chatroom.properties");
 //

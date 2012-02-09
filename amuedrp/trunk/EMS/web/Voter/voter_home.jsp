@@ -3,15 +3,15 @@
 <%-- 
     Document   : voter_home
     Created on : Jun 16, 2011, 1:27:11 AM
-    Author     : faraz
+   
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.*,com.myapp.struts.hbm.Election" %>
+<%@page import="java.util.*,com.myapp.struts.hbm.Election,com.myapp.struts.hbm.*" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<%--<jsp:include page="../Voter/login.jsp"/>--%>
+
 
 <%!
     Locale locale=null;
@@ -20,8 +20,10 @@
     boolean page=true;
     String align="left";
     String regid="";
+    
 %>
 <%
+String contextPath = request.getContextPath();
 try{
 locale1=(String)session.getAttribute("locale");
 
@@ -44,9 +46,43 @@ locale1=(String)session.getAttribute("locale");
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Election Management System</title>
        <script type="text/javascript" language="javascript">
-var olddoc;
-var olddoc1;
+var olddoc="";
+var olddoc1="";
 var loadcount;
+var election_id;
+
+function castVote(id) {
+    election_id=id;
+   
+   // alert(document.getElementById("position").style.display);
+
+    var req = newXMLHttpRequest();
+
+req.onreadystatechange = getReadyStateHandler(req, updateCast);
+
+req.open("POST","<%=request.getContextPath()%>/VoteCast.do", true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send("id="+election_id);
+return true;
+}
+function updateCast(cartXML)
+{
+   var em = cartXML.getElementsByTagName("cast")[0];
+var em1 = em.getElementsByTagName("message");
+var text=em1[0].firstChild.nodeValue;
+if(text=="Voter Already voted for this election!"){
+    alert(text);
+}
+    else
+{windload();}
+}
+
+
+
+
+
+
 
 function checkElection()
 {
@@ -54,18 +90,55 @@ function checkElection()
 List<Election> lstelec = (List<Election>)session.getAttribute("electionList");
 if(lstelec!=null && !lstelec.isEmpty()){
 %>
-        if(loadcount==0 || loadcount==null)
+     <%--   if(loadcount==0 || loadcount==null)
         {var choice = confirm("Voting for election '<%=lstelec.get(0).getElectionName()%>' is going on. Do you want to vote now?");
         if(choice==true)
             {
                 windload();
-            }}<%}%>
+            }}--%>
+  var divtag = document.createElement("div");
+                divtag.id = "overbody";
+                //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserWrite");
+                window.scrollbars.visible = false;
+                    divtag.style.width = "100%";
+                divtag.style.height = "100%";
+                divtag.style.top = "0px";
+                divtag.style.zIndex = "1500";
+                divtag.style.position = "absolute";
+                divtag.style.overflow = "hidden";
+                divtag.style.backgroundColor = "gray";
+                divtag.style.opacity = 0.97;
+                var doc = document.getElementById("electionResults3");
+                if(doc.innerHTML=="") doc.innerHTML = olddoc1;
+                var divtag1 = document.createElement("div");
+                divtag1.id = "electionResults";
+                divtag1.style.display = "block";
+                divtag1.style.border = "2px solid teal";
+                divtag1.style.backgroundColor = "white";
+                divtag1.style.height = "100px";
+                divtag1.style.width = "450px";
+                divtag1.style.marginLeft = "450px";
+                divtag1.style.position = "absolute";
+                divtag1.style.top = "40%";
+                divtag1.innerHTML = doc.innerHTML;
+                divtag.appendChild(divtag1);
+                document.getElementById("bod").appendChild(divtag);
+                olddoc1 = doc.innerHTML;
+                doc.innerHTML = "";
+                  
+
+<%}%>
+
 }
 
 
 
 function windload()
 {
+     election_id=document.getElementById("election4").value;
+
+    
+    deleteBod();
     var divtag = document.createElement("div");
                 divtag.id = "electionPass";
                 window.scrollbars.visible = false;
@@ -94,7 +167,7 @@ function getPass()
 {
     var val = document.getElementById("pass").value;
     if(val!=undefined && val!="")
-        checkPassword(val);
+        checkPassword(val,election_id);
     var child = document.getElementById("electionPass");
     document.getElementById("bod").removeChild(child);
 }
@@ -105,10 +178,10 @@ List<Election> lstcurelection = (List<Election>)session.getAttribute("currentele
 
 %>
 
-function viewelections()
+<%--function viewelections()
             {
-              //  alert("<%=lstelection.isEmpty() %>");
-                 <%if(lstelection.isEmpty()==true){%>
+             
+                 <%if(lstelection.isEmpty()==true && lstelection==null){%>
                          alert("No Election is in Process");
                          return true;
                          <%}%>
@@ -116,7 +189,7 @@ function viewelections()
                 var divtag = document.createElement("div");
                 divtag.id = "overbody";
                 //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserWrite");
-                window.scrollbars.visible = false;
+                windlow.scrollbars.visible = false;
                 divtag.style.width = "100%";
                 divtag.style.height = "100%";
                 divtag.style.top = "0px";
@@ -147,7 +220,7 @@ function viewelections()
                 olddoc = doc.innerHTML;
                 doc.innerHTML = "";
 
-            }
+            }--%>
             function elections()
             {
                 var divtag = document.createElement("div");
@@ -224,8 +297,8 @@ function viewelections()
             }
             function currentElections()
             {
-               
-               loadElections();
+             window.location.href="<%=request.getContextPath()%>/Voter/send_candi_request.jsp";
+              // loadElections();
             }
             function fun(index,node){
                 var id = "block"+index;
@@ -289,8 +362,7 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 function loadelectionview()
 {
-   <%-- alert("fff");
-    alert(document.getElementById('election2').value);--%>
+   
             if(document.getElementById('electionv2').selectedIndex<0){return false;}
     var electVal = document.getElementById('electionv2').options[document.getElementById('electionv2').selectedIndex].value;
    //alert(electVal);
@@ -320,11 +392,11 @@ function loadelectionview()
 }
 function loadvoting()
 {
-   <%-- alert("fff");
-    alert(document.getElementById('election2').value);--%>
-            if(document.getElementById('election2').selectedIndex<0){return false;}
-    var electVal = document.getElementById('election2').options[document.getElementById('election2').selectedIndex].value;
-   //alert(electVal);
+ 
+    
+           // if(document.getElementById('election3').selectedIndex<0){return false;}
+    var electVal = election_id;//document.getElementById('election4').options[document.getElementById('election4').selectedIndex].value;
+   
     if(electVal==undefined) return false;
     deleteBod();
     var divtag = document.createElement("div");
@@ -433,10 +505,12 @@ document.getElementById("electionResult1").style.height = hei+10+'px';
 IFRAMEref = null;
 return heigh;
 }
+var p,e;
 function candiReq(pos,election) {
     //alert("index="+index+" current="+current);
    // alert(document.getElementById("position").style.display);
-
+p=pos;
+e=election;
     var req = newXMLHttpRequest();
 
 req.onreadystatechange = getReadyStateHandler(req, responseRequest);
@@ -451,9 +525,13 @@ function responseRequest(cartXML)
 {
     var em = cartXML.getElementsByTagName("messages")[0];
 var em1 = em.getElementsByTagName("message");
-alert(em1[0].firstChild.nodeValue);
+var t=em1[0].firstChild.nodeValue;
+
+
+location.href="<%=request.getContextPath()%>/applyCandidature.do?position="+p+"&election="+e+"&report=true";
+alert(t);
 }
-function checkPassword(pass) {
+function checkPassword(pass,election) {
     //alert("index="+index+" current="+current);
    // alert(document.getElementById("position").style.display);
 
@@ -461,7 +539,7 @@ function checkPassword(pass) {
 
 req.onreadystatechange = getReadyStateHandler(req, confirmPass);
 
-req.open("POST","<%=request.getContextPath()%>/checkPass.do?pass="+pass, true);
+req.open("POST","<%=request.getContextPath()%>/checkPass.do?election="+election+"&pass="+pass, true);
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 req.send();
@@ -487,7 +565,7 @@ else
 }
 
 function loadElections() {
-    //alert("index="+index+" current="+current);
+    
    // alert(document.getElementById("position").style.display);
 
     var req = newXMLHttpRequest();
@@ -714,6 +792,8 @@ String instituteName=(String)session.getAttribute("institute_name");
    
     </head>
     <body style="margin:  0px;height: 90%; " id="bod" >
+        <%String x=(String)request.getParameter("g");
+        if(x==null){%>
         <table align="center" style="" dir="<%=rtl%>" width="100%">
 
         <tr>
@@ -723,23 +803,30 @@ String instituteName=(String)session.getAttribute("institute_name");
             <tr><td valign="bottom"  align="<%=align%>">
             <img src="<%=request.getContextPath()%>/images/logo.bmp" alt="banner space"  border="0" align="top" id="Image1">
             </td>
-            <td style="color: maroon;font-size: 12px;font-weight: bold;" align="center"><%=instituteName%><br>&nbsp; Role&nbsp;[<%=role%>]</td>
-            <td align="right" valign="top" dir="<%=rtl%>"><span style="font-family:arial;color:brown;font-size:12px;" dir="<%=rtl%>"><b dir="<%=rtl%>">Welcome 
+            <td dir="<%=rtl%>" align="center" valign="middle" width="50%"><span dir="<%=rtl%>"><b><%=instituteName%><br>&nbsp; Role[<%=role%>]</b></span></td>
+             <td  align="right"   valign="top" style="font:8pt Verdana;text-decoration:none;">
+
+<table width="100%" border="0px"><tr>
+<td>
+<html:img src="/EMS/images/logo.png" width="150px" height="60px"  />
+</td>
+<td align="right"  valign="top"><%=resource.getString("login.hello")%>,&nbsp;
+
                         
-                        <%--<%=session.getAttribute("username")%> &nbsp;|<a href="<%=request.getContextPath()%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a>--%>
+                      
                       <script type="text/javascript" language="javascript">
 document.write("<span " );
-document.write('style="height:10px;border:0px solid black;font:bold 10pt Verdana;"');
+document.write('style="height:10px;border:0px solid black;font:bold 11px Verdana;"');
 document.write(' onclick="toggle_menu(1);');
 document.write('event.cancelBubble=1" ><span style="cursor:hand;">');
-document.write('<%=(String)session.getAttribute("username")%> <img width=10 height=10 src="<%=request.getContextPath()%>/images/down.gif"></span>| &nbsp;<a href="<%=request.getContextPath()%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></b>');
+document.write('<%=(String)session.getAttribute("username")%> <img width=10 height=10 src="<%=request.getContextPath()%>/images/down.gif"></span>');
 document.write('<div id="ddmenu" style="');
-document.write('height:45px;border:0px solid black;width:200px;text-align: left;');
+document.write('height:45px;border:0px solid black;background-color:white;text-decoration:none;text-align: right;padding-right:2px');
 document.write('visibility:hidden;">');
-add_item("<%=resource.getString("view_profile")%>","<%=request.getContextPath()%>/newregistration2.do?id=<%=session.getAttribute("voter_id")%>");
-add_item("<%=resource.getString("login.managesuperadminaccount.changepassword")%>","<%=request.getContextPath()%>/change_password.do");
+add_item("<%=resource.getString("view_profile")%>","<%=request.getContextPath()%>/newregistration2.do?id=<%=session.getAttribute("voter_id")%>&amp;page=voter");
+add_item("<%=resource.getString("login.managesuperadminaccount.changepassword")%>","<%=request.getContextPath()%>/change_password.do?page=voter");
 function add_item(linkname,dest){
-  document.write('<a  href="'+dest+'"  onclick="return pageload(3);">'+linkname+'</a><br>');
+  document.write('<a  href="'+dest+'" target="ff"  <%--onclick="return pageload(3);"--%>>'+linkname+'</a><br>');
 }
 
 function toggle_menu(state){
@@ -759,7 +846,20 @@ document.write('</div></span>');
 </script>
 
 
-                    </b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td align="left" valign="top" width="20%">
+|<a href="<%=request.getContextPath()%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a>
+
+</td>
+    <%
+
+%>
+
+
+
+    </tr>
+</table>
+
+
              </td></tr>
             </table><br>
             </td>
@@ -799,10 +899,52 @@ document.write('</div></span>');
                                 <li><a href="#" style="font-size: 13px;font-weight: bold;z-index:1000" onclick="electionsResults()">Election&nbsp;Results</a></li>
                             </ul>--%>
                         
-                        <a href="#" style="font-size: 13px;text-decoration: none;" onclick="viewelections();"><%=resource.getString("view_elction")%></a>&nbsp;|&nbsp;
+                       <%-- <a href="#" style="font-size: 13px;text-decoration: none;" onclick="viewelections();"><%=resource.getString("view_elction")%></a>&nbsp;|&nbsp;--%>
 
-                   <a href="<%=request.getContextPath()%>/listrooms.do" style="font-size: 13px;text-decoration: none;" onclick="">Chat</a>
-                    </td></tr>
+                   <%--<a href="<%=request.getContextPath()%>/listrooms.do" style="font-size: 13px;text-decoration: none;" onclick="">Chat</a>--%>
+                    </td>
+                            <%
+                            Login login=(Login)session.getAttribute("login");
+                            InstituteDAO institutedao=new InstituteDAO();
+  List<Candidate1> obj1=(List<Candidate1>) institutedao.getCandidatePosition(login.getStaffDetail().getId().getInstituteId(),login.getStaffDetail().getId().getStaffId());
+
+if(!obj1.isEmpty()){
+
+%>
+<td colspan="3">
+
+
+
+    <a href="<%=contextPath%>/nominationList1.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><b>Current Nomination&nbsp;List</b></a>|
+    <%--<a href="<%=contextPath%>/withdrawal.do" target="_self" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
+      <b style="color:white" dir="<%=rtl%>">Send Withdrawal Request</b></a>|--%>
+       <%-- <a href="<%=contextPath%>/finalnominationList.do"  onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
+      <b style="color:white" dir="<%=rtl%>"> Final List</b></a>|--%>
+     <%-- <a href="<%=contextPath%>/Candidate/upload_menifesto.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
+        <b style="color:white" dir="<%=rtl%>">Upload Menifesto</b> </a>--%>
+         <%--<li><a href="<%=contextPath%>/catchroom1.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
+        <b style="color:white" dir="<%=rtl%>">Chat</b> </a>
+         </li>--%>
+      <%--<li><a href="<%=contextPath%>/admin/view_all.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
+      <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.viewall")%></b></a></li>--%>
+
+
+
+
+<%--<li><a href="<%=contextPath%>/admin/update_admin.jsp" onclick="window.setTimeout('winresize()', 1000);" target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
+      <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.modifyinstituterecord")%></b></a></li>
+<li><a href="<%=contextPath%>/admin/search_admin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
+      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.searchinstitute")%>  </b></a></li>
+<li><a href="<%=contextPath%>/manage_superadmin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
+      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.managesuperadminaccount")%></b></a></li>
+<li><a href="<%=contextPath%>/admin/view_blocked_institute.jsp" onclick="window.setTimeout('winresize()', 1000);"  target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
+    <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.changeworkingstatus")%> </b></a></li>--%>
+
+
+                   
+<%}%>
+
+         </td>                    </tr>
                             
                         </table>
                         
@@ -810,11 +952,7 @@ document.write('</div></span>');
 
                         
                 </div>
-<br/><br/>                        <div style="float: left;color: black;">
-
-                           <%          if(lstelection!=null && !lstelection.isEmpty()){%>
-                    Current Running Election is : <%=lstelec.get(0).getElectionName()%>    <a href="#" style="font-size: 13px;text-decoration: none;" <%--onclick="elections();"--%> onclick="checkElection();">Please Vote</a>
-                        <%}%></div>
+<br/><br/>                   
             </div>
             <div id="header" style="width: 100%;height: 5%;margin: 0px;">
                 
@@ -822,30 +960,20 @@ document.write('</div></span>');
             </div>
             <div id="middle" style="width: 100%;height: 70%; position: relative;margin-top: 30px;">
                 <div id="ballot"></div>
-                <%if(lstelection!=null && !lstelection.isEmpty()){%>
-                <div id="electionDetails1" style="border: 2px solid teal;background-color: white;height: 100px; width: 450px;margin-left: 450px; position: absolute;top: 40%;display: none">
-                <div style="background-color: teal;width: 100%;position: relative">&nbsp;<span style="float: right;"><a href="#" title="Close this window" onclick="deleteBod();">[X]</a></span></div>
+               
+<!--Show Vote -->
+                    <%if(lstelec!=null && !lstelec.isEmpty()){%>
+                <div id="electionResults3" style="display: none">
+                    <div style="background-color: teal;width: 100%;position: relative">&nbsp;<span style="float: right;"><a href="#" title="Close this window" onclick="deleteBod();">[X]</a></span></div>
                 <div style="position: relative;">
-                   <html:form action="/election" styleId="election1" target="f1"><table style="width:100%"><tr><td style="text-align:center"><%=resource.getString("selectanelection")%>:
-                                   <html:select property="election" styleId="election2"  style="width: 150px">
-                                        <html:options collection="electionList" property="id.electionId" labelProperty="electionName" />
-                       </html:select></td></tr><tr><td style="text-align:center">
-                       <input value="<%=resource.getString("select")%>" type="button" onclick="loadvoting();" id="electionsubmit"/>
+                    <html:form action="/electionResult" styleId="f2" target="f1">
+                        Select an Election: <html:select property="election" styleId="election4" >
+              <html:options collection="electionList" property="id.electionId" labelProperty="electionName" />
+                        </html:select><input type="button" value="Vote Now" onclick="castVote(document.getElementById('election4').value);"  id="electionsubmit"/>
+                    </html:form>
+                </div></div> <%}%>
 
-                                           </td></tr></table>
-                   </html:form></div></div>
-                <div id="electionView1" style="border: 2px solid teal;background-color: white;height: 100px; width: 450px;margin-left: 450px; position: absolute;top: 40%;display: none">
-                <div style="background-color: teal;width: 100%;position: relative">&nbsp;<span style="float: right;"><a href="#" title="Close this window" onclick="deleteBod();">[X]</a></span></div>
-                <div style="position: relative;">
-                   <html:form action="/election" styleId="electionv" target="f1">
-                       <table style="width:100%">
-                           <tr><td style="text-align:center"><%=resource.getString("selectanelection")%>:<html:select property="election" styleId="electionv2"  style="width: 150px">
-                                       <html:options collection="electionList" property="id.electionId" labelProperty="electionName" />
-                                   </html:select></td></tr>
-                           <tr><td style="text-align:center"><input value="<%=resource.getString("select")%>" type="button" onclick="loadelectionview();" id="electionsubmit"/></td></tr>
-                       </table>
-                   </html:form></div></div>
-                    <%}%>
+
                    <%if(lstclosedelection!=null && !lstclosedelection.isEmpty()){%>
                 <div id="electionResults2" style="display: none">
                     <div style="background-color: teal;width: 100%;position: relative">&nbsp;<span style="float: right;"><a href="#" title="Close this window" onclick="deleteBod();">[X]</a></span></div>
@@ -857,8 +985,6 @@ document.write('</div></span>');
                     </html:form>
                 </div></div> <%}%>
 
-                <%--<div id="middleleft" style="display: none;position: relative; width: 30%;float: left" >&nbsp;</div>
-                <div id="middleright" style="display: block;position: relative; width: 30%;float: right" >&nbsp;</div>--%>
                 <div id="currentElections" style="display: none;position: absolute;margin-left: 250px; width: 40%;float: left;">
 
                     
@@ -866,5 +992,13 @@ document.write('</div></span>');
             </div>
             <div id="footer" style="width: 100%;height: 15%; position: relative;"></div>
         </div>
-    </body>
+           <%}%>
+           <%String x1=(String)request.getAttribute("msg1");
+
+        if(x1!=null){%><script>
+           alert("<%=x1%>");</script>
+            <%}%>
+                <iframe frameborder="0" name="ff" id="ff" src="<%=request.getContextPath()%>/get_elections1.do" width="100%" height="400px"/>
+      
+           </body>
 </html>

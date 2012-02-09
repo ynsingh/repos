@@ -12,7 +12,7 @@
 <head>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Election Management System</title>
+
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <%!
     Locale locale=null;
@@ -71,7 +71,7 @@ if (req.status == 200) {
 responseXmlHandler(req.responseXML);
 } else {
 // An HTTP problem has occurred
-alert("HTTP error "+req.status+": "+req.statusText);
+//alert("HTTP error "+req.status+": "+req.statusText);
 }
 }
 }
@@ -157,6 +157,23 @@ availableSelectList.innerHTML += ndValue+"\n";
 
 
 </script>
+
+<script type='text/javascript'>
+//<![CDATA[
+msg = "Election Managment System";
+msg = "............................................" + msg;pos = 0;
+function scrollMSG() {
+document.title = msg.substring(pos, msg.length) + msg.substring(0, pos);
+
+pos++;
+
+if (pos > msg.length) pos = 0
+window.setTimeout("scrollMSG()",200);
+}
+scrollMSG();
+//]]>
+</script> 
+
 </head>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 

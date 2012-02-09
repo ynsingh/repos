@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.hibernate.Session;
 import  com.myapp.struts.utility.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,6 +39,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
     String rtl="ltr";
     boolean page=true;
     String align="left";
+    private String button;
     
     
     /**
@@ -59,9 +59,10 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
         AdminViewActionForm admin=(AdminViewActionForm)form;
         registration_request_id=admin.getRegistration_request_id();
         institute_id=admin.getInstitute_id();
-        System.out.println("Registration_Id="+ registration_request_id +" Institute ID="+institute_id);
+        button=admin.getButton();
+        System.out.println("Registration_Id="+ registration_request_id +" Institute ID="+institute_id+button);
         staff_id="admin."+institute_id;
-
+System.out.println("button"+button);
         HttpSession session=request.getSession();
 
             try{
@@ -100,6 +101,9 @@ if (institute_id!=null)
       // System.out.println("user_id="+institute_id+library_name);
   try
    {
+
+      
+      if(button.equalsIgnoreCase("accept")){
         System.out.println("Institute Id="+institute_id);
         boolean b=DuplicateEntry.checkDuplicateEntry("institute","institute_id",institute_id);
         boolean b1=DuplicateEntry.checkDuplicateEntry("login","staff_id",staff_id,institute_id);
@@ -142,6 +146,7 @@ if (institute_id!=null)
             staffDetail.setEmailId(adminReg.getAdminEmail());
             staffDetail.setFirstName(adminReg.getAdminFname());
             staffDetail.setLastName(adminReg.getAdminLname());
+            staffDetail.setEnrollment(adminReg.getEnrollment());
             String user_id = adminReg.getUserId();
             System.out.println("user_id = "+user_id);
             login.setUserId(user_id);
@@ -171,8 +176,14 @@ if (institute_id!=null)
             String msg=resource.getString("request_accepted_instituteid");
             request.setAttribute("msg", msg +institute_id);
            
+List<AdminRegistration> admin1=(List<AdminRegistration>)admindao.getAdminDeatilsByUserId(user_id);
+if(admin1.isEmpty()==false && admin1!=null)
+{
+    AdminRegistration x=admin1.get(0);
+     x.setInstituteId(institute_id);
+     admindao.update(x);
 
-            
+}
                       
          String path = servlet.getServletContext().getRealPath("/");
             obj=new Email(path,adminReg.getAdminEmail(),admin_password,"Registration Accepted Successfully from EMS","User Id="+adminReg.getUserId()+" Your Password for EMS Login is="+admin_password);
@@ -184,8 +195,39 @@ if (institute_id!=null)
             });
 
 
-        
-return mapping.findForward("success");
+      
+return mapping.findForward("success");}
+      else{
+      if(button.equalsIgnoreCase("Reject")){
+           List adminList = (List)admindao.getAdminDeatilsById(registration_request_id);
+           adminReg = (AdminRegistration)adminList.get(0);
+System.out.println("button"+button);
+//adminReg.setRegistrationId(registration_request_id);
+//adminReg.setAbbreviatedName(admin.getAbbreviated_name());
+//adminReg.setAdminDesignation(admin.getAdmin_designation());
+//adminReg.setAdminEmail(admin.get);
+
+     adminReg.setStatus("Rejected");
+     // adminReg.setWorkingStatus("OK");
+      admindao.update(adminReg);
+request.setAttribute("reject","Request for Institute Registration is rejected");
+request.setAttribute("msg","Request for Institute Registration is rejected");
+
+String path = servlet.getServletContext().getRealPath("/");
+      obj=new Email(path,admin.getAdmin_email(),admin_password,"Approval of Institute Registration Request","Dear "+admin.getAdmin_fname()+" "+admin.getAdmin_lname()+"\n Sorry, Your request for Institute registration had not been Approved."+" ,\nWith Regards\nWebAdmin\nEMS");
+//obj=new Email(path,adminReg.getAdminEmail(),"admin_password"," request for Institute Registration","Sorry, Your request for Institute registration had not been Approved .\n" ,"\n\nDear "+adminReg.getAdminFname()+" "+adminReg.getAdminLname()+",\n","With Regards\nWebAdmin\nEMS");
+         executor.submit(new Runnable() {
+
+                public void run() {
+                    obj.send();
+                }
+            });
+             return mapping.findForward("success");
+      }
+
+      }
+
+
     }
         catch(Exception e2)
         {
@@ -196,4 +238,6 @@ return mapping.findForward("success");
 }
         return mapping.findForward("failure");
     }
+
+
 }

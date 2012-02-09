@@ -92,10 +92,7 @@ pageContext.setAttribute("Edit",Edit);
     <body dir="<%=rtl%>" >
 
 
-        <font color="blue" size="-1" dir="<%=rtl%>" style="position: absolute;top: 100px">
-               <%=resource.getString("voterreq")%>(<%=count%>) &nbsp;<a href="<%=contextPath%>/election_manager/pending_voter.jsp"><%=resource.getString("voter")%> </a>
-            </font>
-
+       
 
        <%!
 
@@ -123,14 +120,14 @@ pageContext.setAttribute("Edit",Edit);
    requestList = new ArrayList();
 //requestList = (ArrayList)session.getAttribute("resultset");
    int tcount =0;
-   int perpage=5;
+   int perpage=10;
    int tpage=0;
  /*Create a connection by using getConnection() method
    that takes parameters of string type connection url,
    user name and password to connect to database.*/
 if(rs!=null){
   Iterator it = rs.iterator();
-System.out.println("it="+(tcount));
+System.out.println("it="+(tcount)+rs.size());
 //requestList = (Login)rs.get(0);
 
    while (it.hasNext()) {
@@ -177,7 +174,7 @@ it.next();
 System.out.println("tcount="+tcount);
 
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex+5) >= requestList.size ())
+   if ((toIndex = fromIndex+10) >= requestList.size ())
    toIndex = requestList.size();
    request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
@@ -190,15 +187,18 @@ String msg1=(String)request.getAttribute("msg1");
   %>
 
 
-<br><br>
 
+ <font color="blue" size="-1" dir="<%=rtl%>">
+               <%=resource.getString("voterreq")%>(<%=count%>) &nbsp;<a href="<%=contextPath%>/election_manager/pending_voter.jsp"><%=resource.getString("voter")%> </a>
+            </font>
+<br>
 <%if(tcount==0)
 {%>
 <p class="err" style="font-size:12px"><%=resource.getString("no_record_found")%></p>
 <%}
 else
 {%>
-<table align="<%=align%>" dir="<%=rtl%>" width="80%" style="top:140px;position: absolute;z-index: 30 ">
+<table align="<%=align%>" dir="<%=rtl%>" width="80%" style="top:150px;position: absolute;z-index: 30 ">
     <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
@@ -206,12 +206,12 @@ else
 
     <column width="10%">
       <header value="${Election_Id}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.election_id}" hyperLink="${path}/electionview1.do?id=${doc.election_id}"  hAlign="left"    styleClass="item"/>
+      <item   value="${doc.election_id}"   hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="10%">
       <header value="${Election_Name}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.election_name}" hAlign="left" hyperLink="${path}/electionview1.do?id=${doc.election_id}"  styleClass="item"/>
+      <item   value="${doc.election_name}"  styleClass="item"/>
     </column>
 
 
@@ -223,17 +223,41 @@ else
 
       <column width="10%">
       <header value="${Status}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.status}" hyperLink="${path}/electionview1.do?id=${doc.election_id}"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.status}"   hAlign="left" styleClass="item"/>
+    </column>
+<column width="10%">
+      <header value="Action" hAlign="left" styleClass="header"/>
+      <item   value="Update" hyperLink="${path}/electionview1.do?id=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
 
+<column width="10%">
+      <header value="Action" hAlign="left" styleClass="header"/>
+      <item   value="View" hyperLink="${path}/electionview.do?id=${doc.election_id}&amp;st='y'"  hAlign="left" styleClass="item"/>
+    </column>
+    <column width="10%">
+      <header value="Action" hAlign="left" styleClass="header"/>
+      <item   value="Results" hyperLink="${path}/Voter/result.jsp?election=${doc.election_id}&amp;"  hAlign="left" styleClass="item"/>
+    </column>
+<column width="10%">
+<header value="Action" hAlign="left" styleClass="header"/>
+
+   
+      <item   value="Cast Vote" hyperLink="${path}/voting.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
 
 
+  </column>
+      
+
+      <column width="10%">
+      <header value="Action" hAlign="left" styleClass="header"/>
+      <item   value="Preview Ballot" hyperLink="${path}/electionview.do?id=${doc.election_id}"  hAlign="left" styleClass="item"/>
+    </column>
  </columns>
 
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
   <alternateRows styleClass="alternaterows"/>
 
-  <paging size="5" count="${tCount}" custom="true" nextUrlVar="next"
+  <paging size="10" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>
@@ -241,6 +265,8 @@ else
   <table width="500" style="font-family: arial; font-size: 10pt" border=0>
 <tr>
 <td align="left" width="100px">
+    
+
 <c:if test="${previous != null}">
 <a href="<c:out value="${previous}"/>"><%=resource.getString("previous")%></a>
 </c:if>&nbsp;
@@ -263,8 +289,10 @@ else
 </td>
 
 </tr>
-<%--<tr><td>
-        <%
+
+      
+</table>
+  <%
 
 String msg=(String)request.getAttribute("msg");
 if(msg!=null)
@@ -273,9 +301,15 @@ if(msg!=null)
 
 
 <%}%>
+  <%
 
-</td></tr>--%>
-</table>
+msg=(String)request.getAttribute("msgerr");
+if(msg!=null)
+    {%>
+    <p class="err" style="font-size:12px"><%=msg%></p>
+
+
+<%}%>
 
   <%}%></td></tr>
 </table>

@@ -23,37 +23,23 @@ public class NominationListAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         NominationListActionForm frm1 = (NominationListActionForm)form;
         HttpSession session = request.getSession();
-        String user_id = (String)session.getAttribute("user_id");
+        
         String institute_id = (String)session.getAttribute("institute_id");
-        String staff_id = (String)session.getAttribute("staff_id");
-        //ArrayList<CandidateRegLoginDetails> lstcandi1 = new ArrayList<CandidateRegLoginDetails>();
-        List<CandidateRegLoginDetails> lstcandi = (List<CandidateRegLoginDetails>)CandidateRegistrationDAO.searchCandidate(staff_id, institute_id);
+        String staff_id = (String)session.getAttribute("user_id");
+
+        List<CandidateRegLoginDetails> lstcandi = (List<CandidateRegLoginDetails>)CandidateRegistrationDAO.searchCandidate1(staff_id, institute_id);
+      System.out.println(lstcandi.size()+"..............."+staff_id);
         if(lstcandi!=null)
         {
-            System.out.println(lstcandi.size());
-//            Iterator it = lstcandi.iterator();
-//            int i=0;
-//            while(it.hasNext())
-//            {
-//            CandidateQuery cand = (CandidateQuery)it.next();
-//            CandidateRegLoginDetails candi = cand.getRow();
-//            lstcandi1.add(candi);
-//            }
+
+
             request.setAttribute("nominationList", lstcandi);
             session.setAttribute("nominationList", lstcandi);
         }

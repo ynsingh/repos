@@ -43,15 +43,7 @@ static int c=0;
   int i=0,j=0;
     private static final String SUCCESS = "success";
      public static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -71,7 +63,7 @@ static int c=0;
   String date = formatter.format(currentDate.getTime());
 
             String sendmsg  =request.getParameter("msg");
-          
+      String path = servlet.getServletContext().getRealPath("/");
        
 
             System.out.println(sendmsg+"....................");
@@ -79,8 +71,8 @@ static int c=0;
 
 if(sendmsg!=null){
 
-
-         home=System.getProperty("user.home");
+ 
+         home=path;
                        FileInputStream in1 = new FileInputStream(home+"/chat.properties");
 
                
@@ -144,7 +136,7 @@ else
   String radio =craf.getRn();
   
   System.out.println("radio:"+radio + "button:"+button+Name+candidate);
-  home=System.getProperty("user.home");
+  home=path;
 
 
 

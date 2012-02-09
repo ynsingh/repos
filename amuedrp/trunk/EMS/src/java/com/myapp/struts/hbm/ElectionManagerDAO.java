@@ -36,11 +36,12 @@ public void insert(ElectionManager electionmanager)
     catch(RuntimeException e){
         if(electionmanager!=null)
             tx.rollback();
+        e.printStackTrace();
         throw e;
     }
 
     finally{
-     //   session.close();
+      session.close();
     }
 
 }
@@ -55,10 +56,13 @@ session.update(electionmanager);
 tx.commit();
 }
 catch(RuntimeException e){
+    e.printStackTrace();
     tx.rollback();
     throw e;
     
-}
+}finally{
+      session.close();
+    }
 
 }
 public void delete(){
@@ -67,7 +71,7 @@ public void delete(){
 public List<Election_Manager_StaffDetail> GetManagerDetails(String ElectionManagerId,String instituteId)
     {
     Session session =null;
-    Transaction tx = null;
+    List<Election_Manager_StaffDetail> tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -86,17 +90,22 @@ public List<Election_Manager_StaffDetail> GetManagerDetails(String ElectionManag
                     .setResultTransformer(Transformers.aliasToBean(Election_Manager_StaffDetail.class));
           query.setString("manager_id", ElectionManagerId);
           query.setString("institute_id", instituteId);
-            return (List<Election_Manager_StaffDetail>)query.list();
+            tx= (List<Election_Manager_StaffDetail>)query.list();
+            session.getTransaction().commit();
         }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
     finally {
             session.close();
         }
+    return tx;
 }
 
 public List<Election_Manager_StaffDetail> GetManagers(String institute_id,String paraField,String paraVal,String status)
     {
     Session session =null;
-    Transaction tx = null;
+    List<Election_Manager_StaffDetail> tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -139,67 +148,87 @@ public List<Election_Manager_StaffDetail> GetManagers(String institute_id,String
             }else if(paraField.equals("lastName")) {
             query.setString("lastName", paraVal);
             }
-            return (List<Election_Manager_StaffDetail>) query.list();
+            tx= (List<Election_Manager_StaffDetail>) query.list();
+            session.getTransaction().commit();
         }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
     finally {
             session.close();
         }
+    return tx;
 }
 
 
 public List getStaffDetails(String staffId,String instituteId){
  Session session =null;
-    Transaction tx = null;
+    List tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM ElectionManager where staffId=:staffId and id.instituteId=:instituteId");
              query.setString("staffId", staffId);
              query.setString("instituteId", instituteId);
-            return query.list();
+           tx= query.list();
+           session.getTransaction().commit();
         }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
         finally {
             session.close();
         }
+        return tx;
 }
 
 public List getUserId(String user_id){
  Session session =null;
-    Transaction tx = null;
+    List tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
                 session.beginTransaction();
                 Query query = session.createQuery("FROM ElectionManager  where userId = :userId");
                 query.setString("userId",user_id );
-                return query.list();
+                tx= query.list();
+                session.getTransaction().commit();
         }
+        catch(RuntimeException e){
+    e.printStackTrace();
+    }
         finally {
             session.close();
         }
+        return tx;
 }
 
 
 public List ManagerDeatils(String managerId,String instituteId)
 {
 Session session =null;
-    Transaction tx = null;
+    List tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
                 session.beginTransaction();
                 Query query = session.createQuery("FROM ElectionManager  where id.managerId = :managerId and  id.instituteId=:instituteId");
                 query.setString("managerId",managerId );
                query.setString("instituteId",instituteId);
-                return query.list();
+                tx= query.list();
+                session.getTransaction().commit();
         }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
         finally {
             session.close();
         }
+        return tx;
 }
 
 public List Report(String enrollment)
     {
     Session session =null;
-    Transaction tx = null;
+    List tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -222,17 +251,22 @@ public List Report(String enrollment)
                   .setResultTransformer(Transformers.aliasToBean(CandidateReg.class));
 
           query.setString("enrollment", enrollment);
-            return  query.list();
+            tx=  query.list();
+            session.getTransaction().commit();
         }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
     finally {
             session.close();
         }
+    return tx;
 }
 
 public List NominationReport(String institueid)
     {
     Session session =null;
-    Transaction tx = null;
+    List tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -250,18 +284,23 @@ public List NominationReport(String institueid)
 
 
           query.setString("instituteId",institueid);
-            return  query.list();
+            tx=  query.list();
+            session.getTransaction().commit();
         }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
     finally {
             session.close();
         }
+    return tx;
 }
 
 
 public List VoterList(String institueid)
     {
     Session session =null;
-    Transaction tx = null;
+    List tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -279,17 +318,23 @@ public List VoterList(String institueid)
 
 
           query.setString("instituteId",institueid);
-            return  query.list();
+            tx=  query.list();
+            session.getTransaction().commit();
         }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
     finally {
             session.close();
         }
+    return tx;
+    
 }
 
 public List RejectedReport(String institueid)
     {
     Session session =null;
-    Transaction tx = null;
+    List tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -307,18 +352,24 @@ public List RejectedReport(String institueid)
 
 
           query.setString("instituteId",institueid);
-            return  query.list();
+            tx=  query.list();
+            session.getTransaction().commit();
         }
+
+        catch(RuntimeException e){
+    e.printStackTrace();
+    }
     finally {
             session.close();
         }
+    return tx;
 }
 
 
 public List WithdrawlReport(String institueid)
     {
     Session session =null;
-    Transaction tx = null;
+    List tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -336,18 +387,23 @@ public List WithdrawlReport(String institueid)
 
 
           query.setString("instituteId",institueid);
-            return  query.list();
+            tx=  query.list();
+            session.getTransaction().commit();
         }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
     finally {
             session.close();
         }
+    return tx;
 }
 
 
 public List AllCandiReport(String institueid)
     {
     Session session =null;
-    Transaction tx = null;
+    List tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -365,17 +421,22 @@ public List AllCandiReport(String institueid)
 
 
           query.setString("instituteId",institueid);
-            return  query.list();
+            tx=  query.list();
+            session.getTransaction().commit();
         }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
     finally {
             session.close();
         }
+    return tx;
 }
 
 public List ElectionDetail(String institueid,String electionid)
     {
     Session session =null;
-    Transaction tx = null;
+    List tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -394,18 +455,24 @@ public List ElectionDetail(String institueid,String electionid)
 
           query.setString("instituteId",institueid);
           query.setString("electionId",electionid);
-            return  query.list();
+           tx=  query.list();
+           session.getTransaction().commit();
         }
+
+        catch(RuntimeException e){
+    e.printStackTrace();
+    }
     finally {
             session.close();
         }
+    return tx;
 }
 
 //select e.*,p.position_name from election e,position1 p where e.election_id=p.election_id and e.institute_id=p.institute_id and e.institute_id='JMI' and e.election_id=1
 public List PositionDetail(String institueid,String electionid)
     {
     Session session =null;
-    Transaction tx = null;
+   List tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -424,11 +491,16 @@ public List PositionDetail(String institueid,String electionid)
 
           query.setString("instituteId",institueid);
           query.setString("electionId",electionid);
-            return  query.list();
+            tx=  query.list();
+            session.getTransaction().commit();
         }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
     finally {
             session.close();
         }
+    return tx;
 }
 
 

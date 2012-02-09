@@ -25,39 +25,34 @@ public class NominationWithdrawalAction extends org.apache.struts.action.Action 
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        //NominationListActionForm frm1 = (NominationListActionForm)form;
+       
         HttpSession session = request.getSession();
         String user_id = (String)session.getAttribute("user_id");
         String institute_id = (String)session.getAttribute("institute_id");
+
         String staff_id = (String)session.getAttribute("staff_id");
         System.out.println("staff_id="+staff_id);
-        //ArrayList<CandidateRegLoginDetails> lstcandi1 = new ArrayList<CandidateRegLoginDetails>();
-        List<CandidateRegLoginDetails> lstcandi = (List<CandidateRegLoginDetails>)CandidateRegistrationDAO.searchCandidate(staff_id, institute_id);
-        List <CandidateRegistration>stat=CandidateRegistrationDAO.getCandidateDetails(institute_id, staff_id);
-
-        if(lstcandi!=null && !lstcandi.isEmpty())
+       String election_id=(String)request.getParameter("id");
+       String position_id=(String)request.getParameter("pos_id");
+       CandidateRegLoginDetails lstcandi = (CandidateRegLoginDetails)CandidateRegistrationDAO.searchCandidateElection(user_id, institute_id,election_id,position_id);
+        CandidateRegistration stat=CandidateRegistrationDAO.getCandidateDetails1(institute_id, staff_id,election_id,position_id);
+System.out.println(lstcandi+""+stat);
+        if(lstcandi!=null && stat!=null)
         {
-            Election e = lstcandi.get(0).getElection();
+           
+            Election e = lstcandi.getElection();
             Calendar cal = Calendar.getInstance();
             Date d = cal.getTime();
             if(e.getWithdrawlDate().before(d) && e.getWithdrawlEndDate().after(d))
             {
-           //CandidateRegistration cand = lstcandi.get(0).getCandidateRegistration();
-                CandidateRegistration cand =stat.get(0);
-           System.out.println("Check"+stat.get(0));
+         
+                CandidateRegistration cand =stat;
+           
 
             cand.setStatus("Withdraw");
             
@@ -67,7 +62,8 @@ public class NominationWithdrawalAction extends org.apache.struts.action.Action 
             }
             else
             {
-                request.setAttribute("msg", "You can only withdraw ur candidature between "+ e.getWithdrawlDate() +" to "+e.getWithdrawlEndDate());
+                request.setAttribute("msg1", "You can only withdraw ur candidature between "+ e.getWithdrawlDate() +" to "+e.getWithdrawlEndDate());
+                
             }
         }
         return mapping.findForward("success");

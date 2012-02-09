@@ -13,8 +13,11 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.hbm.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -34,15 +37,7 @@ ElectionId empid=new ElectionId ();
 
 
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -125,6 +120,8 @@ BallotId ballotid=new BallotId();
             election.setScrutnyEndDate(lf.getScrutnyEndDate());
             election.setWithdrawlDate(lf.getWithdrawlDate());
             election.setWithdrawlEndDate(lf.getWithdrawlEndDate());
+            election.setResultDeclarationDate(lf.getResultDeclarationDate());
+            
              election.setStatus("under-process");
             
         election.setId(empid);
@@ -185,7 +182,18 @@ BallotId ballotid=new BallotId();
             election.setWithdrawlEndDate(lf.getWithdrawlEndDate());
             election.setNstart(lf.getNominationStart());
             election.setNend(lf.getNominationEnd());
-            election.setStatus("under-process");
+            election.setResultDeclarationDate(lf.getResultDeclarationDate());
+
+
+               Calendar cal1 = Calendar.getInstance();
+           Date d = cal1.getTime();
+           if(lf.getResultDeclarationDate().before(d))
+            {
+                election.setStatus("closed");
+           }else if(lf.getStartdate().before(d) && lf.getEnddate().after(d))
+              election.setStatus("started");
+           else
+                election.setStatus("under-process");
 
         election.setId(empid);
 electionruleid.setElectionId(lf.getElectionId());
@@ -219,7 +227,32 @@ ob.setBallot(ballot);
         ere.update(ob);
         session.setAttribute("election_id",lf.getElectionId());
          request.setAttribute("msg1", "record updated successfully");
-        return mapping.findForward("add");
+      
+//        ArrayList underprocessList=new ArrayList();
+//
+//        List<Election> election1 = ElectionDAO.Elections(institute_id);
+//        Iterator ite = election1.iterator();
+//        while(ite.hasNext())
+//        {
+//
+//             cal1 = Calendar.getInstance();
+//            d = cal1.getTime();
+//            Election elec = (Election)ite.next();
+//
+//             if(elec.getNstart().before(d) && elec.getWithdrawlEndDate().after(d))
+//            {
+//               underprocessList.add(elec);
+//
+//            }
+//
+//
+//
+//        }
+//  session.removeAttribute("underprocessList");
+//System.out.println(underprocessList.size());
+//        session.setAttribute("underprocessList", underprocessList);
+         return mapping.findForward("add");
+
        }
 
          if(button.equals("Block"))

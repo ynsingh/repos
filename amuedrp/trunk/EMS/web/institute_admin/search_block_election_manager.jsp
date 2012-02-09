@@ -7,7 +7,7 @@
 
 
 <%@page import="java.util.*,java.io.*,java.net.*"%>
-
+<jsp:include page="adminheader.jsp"/>
 <%!
     Locale locale=null;
     String locale1="en";

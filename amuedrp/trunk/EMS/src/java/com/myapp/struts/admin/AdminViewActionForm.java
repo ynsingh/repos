@@ -38,7 +38,15 @@ private String courtesy;
 private String gender;
 private String user_id;
 private String password;
+private String button;
 
+    public String getButton() {
+        return button;
+    }
+
+    public void setButton(String button) {
+        this.button = button;
+    }
  
 /**
      *
@@ -384,13 +392,7 @@ private String password;
         this.password = password;
     }
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param request The HTTP Request we are processing.
    
-     */
-     
    
 
 }

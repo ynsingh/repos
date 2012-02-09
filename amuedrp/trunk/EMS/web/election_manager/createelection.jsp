@@ -19,7 +19,7 @@ if(msg!=null)
     </script>
 <%}%>
 
-<jsp:include page="/election_manager/login.jsp"/>
+
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -61,7 +61,17 @@ locale1=(String)session.getAttribute("locale");
 }
 </style>
 
+<%
+String role=(String)session.getAttribute("login_role");
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
 
+<%}else if(role.equalsIgnoreCase("Election Manager")|| role.equalsIgnoreCase("Election Manager,voter")){%>
+<jsp:include page="/election_manager/login.jsp"/>
+<%}else{%>
+
+<%}%>
 <script language="javascript">
 
 
@@ -114,12 +124,12 @@ var divtag = document.createElement("div");
      divtag.style.width = "930px";
      divtag.style.align = "center";
      divtag.style.marginLeft = "0px";
-     divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%>*&nbsp;&nbsp;<input type="text" Id="position_name'+i+''+j +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%>*<input type="text" Id="numberofchoice'+i+''+ j +'" size="25px"/></td><td><input type="button" id="but0'+ j +'" value="Save" onclick="search('+ j +');"/></td></tr><tr><td colspan="2"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';
-    // var tagbr = document.createElement("html");
+     divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%>*&nbsp;&nbsp;<input type="text" Id="position_name'+i+''+j +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%>*<input type="text" onkeypress="return isNumberKey(event)" Id="numberofchoice'+i+''+ j +'" size="25px"/></td><td><input type="button" id="but0'+ j +'" value="Save" onclick="search('+ j +');"/></td></tr><tr><td colspan="2"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" readonly="true" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';
+   
 
-     //document.getElementById("position").appendChild(tagbr);
+     
 document.getElementById("position").appendChild(divtag);
-       // current.parentNode.appendChild('<div id="position1" style="position: relative;">Position Id *<br><input name="BallotActionForm" property="position_id" styleId="position_id" size="40px"/><br><br>Position Name *<br><input name="BallotActionForm" property="position" styleId="position" size="40px"/><br><br><div id="candidate"><div id="0">Candidate Name *<br><input name="BallotActionForm" property="candidate" styleId="candidate" size="40px"/><br><br>Number of choice *<br><t name="BallotActionForm" property="numberofchoice" styleId="numberofchoice" size="40px"/><br><br></div><input type="button" name="add candidate" style="border: transparent" onclick="create(this);" value="Add More Candidate" size="50px"></div></div>');
+    
 
 }
 
@@ -178,6 +188,9 @@ function search(current) {
     var position_name = document.getElementById(position).value;
     var noofchoice = document.getElementById(numberofchoice).value;
     var instruct = document.getElementById(posinstruct).value;
+    instruct="You can choose "+noofchoice+" Candidate for this Position";
+    document.getElementById(posinstruct).value=instruct;
+
     var electionId = document.getElementById("electionId").value;
     position_name = position_name.replace(/^\s*|\s*$/g,"");
     noofchoice = noofchoice.replace(/^\s*|\s*$/g,"");
@@ -230,7 +243,7 @@ alert(em1[i].firstChild.nodeValue);
     }
 }
 function deletePosition(current) {
-    //alert("index="+index+" current="+current);
+   
     var req = newXMLHttpRequest();
  var electionId = document.getElementById("electionId").value;
  var posId = "position_id0"+current;
@@ -277,7 +290,7 @@ for(iii=0;iii<em1.length;iii++)
                 divtag.style.marginTop = "5px";
                 divtag.style.marginLeft = "3px";
                 <%if(!button.equals("View") && !button.equals("Block")){%>
-                            divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%> *&nbsp;&nbsp;<input type="text" Id="position_name0'+iii +'" size="25px"/><input type="hidden" Id="position_id0'+iii +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%> *&nbsp;&nbsp;<input type="text" Id="numberofchoice0'+ iii +'" size="25px"/></td><td><input type="button" id="but0'+ iii +'" value="<%=resource.getString("update")%>" onclick="search('+ iii +');"/></td>&nbsp;&nbsp;<td><input type="button" value="<%=resource.getString("delete")%>" onclick="deletePosition('+ iii +');"/></td></tr><tr><td colspan="3"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ iii+'" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';<%}else{%>
+                            divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%> *&nbsp;&nbsp;<input type="text" Id="position_name0'+iii +'" size="25px"/><input type="hidden" Id="position_id0'+iii +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%> *&nbsp;&nbsp;<input type="text" Id="numberofchoice0'+ iii +'" size="25px"/></td><td><input type="button" id="but0'+ iii +'" value="<%=resource.getString("update")%>" onclick="search('+ iii +');"/></td>&nbsp;&nbsp;<td><input type="button" value="<%=resource.getString("delete")%>" onclick="deletePosition('+ iii +');"/></td></tr><tr><td colspan="3"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ iii+'" readonly="true" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';<%}else{%>
                            divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%> *&nbsp;&nbsp;<input type="text" Id="position_name0'+iii +'" size="25px"/><input type="hidden" Id="position_id0'+iii +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%> *&nbsp;&nbsp;<input type="text" Id="numberofchoice0'+ iii +'" size="25px"/></td></tr><tr><td colspan="3"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ iii+'" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';<%}%>
                         document.getElementById("position").appendChild(divtag);
         //end of block
@@ -297,37 +310,6 @@ document.getElementById(posiId).value = positionname;
 document.getElementById(nochoice).value = noofchoice;
 document.getElementById(posid).value = positionid;
 document.getElementById(inst).value = instrucT;
-//var ca = em1[iii].getElementsByTagName("candidate");
-/*for(jj=0;jj<ca.length;jj++)
-    {
-        var candidatename1 = ca[jj].getElementsByTagName("candidatename");
-        var candidatename;
-            if(candidatename1[0].firstChild!=null) candidatename = candidatename1[0].firstChild.nodeValue;
-            else candidatename = "";
-        var candidateid1 = ca[jj].getElementsByTagName("candidateid");
-        var candidateid = candidateid1[0].firstChild.nodeValue;
-        //creating candidate block
-            var divtag = document.createElement("div");
-            divtag.id = iii+''+jj;
-            divtag.style.position = "relative";
-            divtag.style.backgroundColor = "#F2F2F2";
-            divtag.style.border = "3px solid #F2F5A9";
-            divtag.style.display = "block";
-            divtag.style.width = "475px";
-            divtag.style.marginTop = "5px";
-            divtag.style.marginLeft = "55px";
-            divtag.style.overflow = "hidden";
-            if(jj+1==ca.length) divtag.style.marginBottom = "5px";
-            var id = "candidate0"+iii;
-            divtag.innerHTML = candidateid + '    Candidate Name * <input type="text"   value="'+ candidatename +'" Id="candidate_name'+ iii +''+jj +'" size="40px"/>&nbsp;&nbsp;<input type="button" value="Save" onclick="search1('+iii+','+jj+');"/>' ;
-            document.getElementById(id).appendChild(divtag);
-         //end of creation
-i=jj;
-    }
-   var idadd = "add0"+iii;
-document.getElementById(idadd).attributes.onclick.value = "create("+jj+","+iii+",this)";*/
-//alert("create("+jj+","+iii+",this);");
-//alert(document.getElementById(idadd).attributes.onclick.value);
 }
 
 j=iii-1;
@@ -336,43 +318,124 @@ if(j<0)j=0;
 //alert(i+" "+j);
 }
 
-function check1()
+function send()
 {
-    if(document.getElementById('electionid').value=="")
-    {
-        alert("Enter Election ID");
+  <%
+ role=(String)session.getAttribute("login_role");
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+top.window.location="<%=request.getContextPath()%>/institute_admin/search_election_details.jsp";
+<%}else if(role.equalsIgnoreCase("Election Manager")|| role.equalsIgnoreCase("Election Manager,voter")){%>
+ window.location="<%=request.getContextPath()%>/electionmanager.do";
+<%}else{%>
+top.window.location="<%=request.getContextPath()%>/Voter/voter_home.jsp";
+<%}%>
+   
+    return false;
+}
+function matchDate(f1,f2)
+{
 
-        document.getElementById('electionid').focus();
 
-        return false;
-    }
-    if(document.getElementById('electionname').value=="")
+var split = f1.split(' ');
+
+var x = split[0];
+var y = split[1];
+var d1=new Date(x);
+var t1=y;
+
+
+
+var split1 = f2.split(' ');
+
+ var a = split1[0];
+ var b = split1[1];
+
+var d2=new Date(a);
+var t2=b;
+
+
+<%--
+var startTime =t1;
+var endTime = t2;
+var regExp = /(\d{1,2})\:(\d{1,2})\:(\d{1,2})/;
+if(parseInt(endTime .replace(regExp, "$1$2$3")) > parseInt(startTime .replace(regExp, "$1$2$3")))
+{
+time=0;
+}
+--%>
+        
+
+ 
+    if(d1.getYear()==d2.getYear() &&  d1.getMonth()==d2.getMonth() &&  d1.getDate()==d2.getDate())
+                            {
+                                if(t1==t2)
+                                    return true;
+                                else
+                                {
+                                    
+                                     if(t1>t2)
+                                        return true;
+                                    else
+                                    {    return false;
+                                    
+                                    }
+                                }
+                            }
+                    else{
+                            var startDateValue = new Date(d1);
+                            var startDateValuecmp = startDateValue.getTime();
+                            var endDateValue = new Date(d2);
+                            var endDateValuecmp = endDateValue.getTime();
+                            if( startDateValuecmp > endDateValuecmp )
+                                return true;
+                            else
+                                    return false;
+                    }
+                         
+           
+}
+document.onkeyup = keyHit
+function keyHit(event) {
+
+  if (event.keyCode == 13) {
+  changerec();
+
+    event.stopPropagation()
+    event.preventDefault()
+  }
+}
+
+function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
+
+function status1(){
+       
+    document.getElementById('status').value=document.getElementById('block').value;
+    alert(document.getElementById('status').value);
+    return true;
+}
+function checkdates()
+{
+
+       if(document.getElementById('electionname').value=="")
         {
             alert ("Please Name Your Election");
-           
+
             document.getElementById('electionname').focus();
 
 
             return false;
         }
 
-        if(document.getElementById('start_date').value=="")
-        {
-            alert ("Please Define Election Start Date");
-            document.getElementById('start_date').focus();
-            return false;
-        }
-
-
-
-        if(document.getElementById('end_date').value=="")
-        {
-            alert ("Please Define Election End Date");
-            document.getElementById('end_date').focus();
-            return false;
-        }
-
-
+  
         if(document.getElementById('Nstart_date').value=="")
         {
             alert ("Please Define Nomination Start Date");
@@ -389,6 +452,27 @@ function check1()
             document.getElementById('Nend_date').focus();
             return false;
         }
+        var nstart= document.getElementById("Nstart_date");
+        var nend = document.getElementById("Nend_date");
+
+            if(nstart.value!=undefined && nend.value!=undefined)
+            {
+                
+      
+                if(matchDate(nstart.value,nend.value))
+                  {
+                      alert("Nomination Start Date should be lesser than nomination End Date");
+                      nstart.focus();
+                      return false;
+                  }
+            }
+
+
+
+
+
+
+
 
         if(document.getElementById('Scr_date').value=="")
         {
@@ -397,12 +481,65 @@ function check1()
             return false;
         }
 
-         if(document.getElementById('Scrend_date').value=="")
+    
+
+
+
+
+
+        var sstart = document.getElementById("Scr_date");
+       
+
+
+        //check Scrutny date less than both nomination end date
+
+         
+
+                   
+
+
+
+      
+
+                        if(matchDate(nend.value,sstart.value))
+                        {
+                        alert("Scrutny Start Date should be greater than Nomination End Date");
+                        sstart.focus();
+                        return false;
+                        }
+
+             
+
+ 
+     if(document.getElementById('Scrend_date').value=="")
         {
             alert ("Please Define Scrutny End Date");
             document.getElementById('Scrend_date').focus();
             return false;
         }
+
+
+        //check Scrutny start date> Scrutny start date
+        
+var send = document.getElementById("Scrend_date");
+
+
+
+
+
+              if(sstart.value!=undefined && send.value!=undefined)
+                {
+
+                        if(matchDate(sstart.value,send.value))
+                        {
+                        alert("Scrutny Start Date should be lesser than Scrutny End Date");
+                        sstart.focus();
+                        return false;
+                        }
+
+                }
+
+
 
 
         if(document.getElementById('wtd_date').value=="")
@@ -411,7 +548,17 @@ function check1()
             document.getElementById('wtd_date').focus();
             return false;
         }
+         var wstart = document.getElementById("wtd_date");
+                      if(wstart.value!=undefined)
+                        {
 
+                            if(matchDate(send.value,wstart.value))
+                            {
+                            alert("Withdrawal Start Date should be lesser than Scruty End Date");
+                            wstart.focus();
+                            return false;
+                            }
+                        }
 
         if(document.getElementById('wtdend_date').value=="")
         {
@@ -420,240 +567,116 @@ function check1()
             return false;
         }
 
-        if(document.getElementById('cri').value=="")
+
+
+    var wend = document.getElementById("wtdend_date");
+
+                     if(wstart.value!=undefined && wend.value!=undefined)
+                        {
+
+                            if(matchDate(wstart.value,wend.value))
+                            {
+                            alert("Withdrawal Start Date should be lesser than Withdrawal End Date");
+                            wstart.focus();
+                            return false;
+                            }
+                        }
+
+
+ if(document.getElementById('start_date').value=="")
+        {
+            alert ("Please Define Election Start Date");
+            document.getElementById('start_date').focus();
+            return false;
+        }
+
+
+
+                if(wstart.value!=undefined && wend.value!=undefined)
+                        {
+
+                            if(matchDate(wstart.value,wend.value))
+                            {
+                            alert("Withdrawal Start Date should be lesser than Withdrawal End Date");
+                            wstart.focus();
+                            return false;
+                            }
+                        }
+
+ var start = document.getElementById("start_date");
+
+   if(start.value!=undefined)
+                        {
+
+                            if(matchDate(wend.value,start.value))
+                            {
+                            alert("Election Start  should be greater than Withdrawal End Date");
+                            start.focus();
+                            return false;
+                            }
+                        }
+
+
+
+
+
+
+
+   if(document.getElementById('end_date').value=="")
+        {
+            alert ("Please Define Election End Date");
+            document.getElementById('end_date').focus();
+            return false;
+        }
+  
+    var end = document.getElementById("end_date");
+
+             if(start.value!=undefined && end.value!=undefined)
+                            {  
+                                if(matchDate(start.value,end.value))
+                                {
+                                alert("Election Start Date should be lesser than Election End Date");
+                                start.focus();
+                                return false;
+                                }
+                            }
+
+
+
+   if(document.getElementById('result_DeclarationDate').value=="")
+        {
+            alert ("Please Define Election Result Declaration Date");
+            document.getElementById('result_DeclarationDate').focus();
+            return false;
+        }
+
+    var result_declare_date = document.getElementById("result_DeclarationDate");
+
+             if(result_declare_date.value!=undefined && end.value!=undefined)
+                            {
+                                if(matchDate(end.value,result_declare_date.value))
+                                {
+                                alert("Election Result Declaration Date should be greater than Election End Date");
+                                result_declare_date.focus();
+                                return false;
+                                }
+                            }
+       
+
+
+
+
+
+
+
+
+       <%-- if(document.getElementById('cri').value=="")
         {
             alert ("Please set critaria for Nomination");
             document.getElementById('cri').focus();
             return false;
-        }
-  }
-
-
-  function datecheck()
-  {
-
-
-
-
-
-      var diff;
-      var tempo = document.getElementById('Nstart_date').value;
-      alert(tempo);
-      var nominationEndDate=document.getElementById('Nend_date').value;
-alert("yes");
-temp=new Date(tempo);
-     d = temp.getDate();
-       month = temp.getMonth();
-       yr = temp.getYear();
-alert("yes");
-       h = temp.getHours();
-
-
-       alert( "jghsdjhsdh"+ "" + h);
-         m = temp.getMinutes();
-         s = temp.getSeconds();
-         mm = temp.getMilliseconds();
-alert("yes");
-         d1 = new Date(yr,month,d,h,m,s,mm);
-
-              temp1=new Date(nominationEndDate);
-              de=temp1.getDate();
-              me=temp1.getMonth();
-              yre=temp1.getYear();
-              he=temp1.getHours();
-              mie=temp1.getMinutes();
-              se=temp1.getSeconds();
-              mme=temp1.getMilliseconds();
-
-              d2=new Date(yre, me, de, he, mie, se, mme);
-
-
-alert(d1.getTime());
-              t=new Date(temp);
-       alert(t);
-       d=new Date(nominationEndDate);
-      diff= Math.floor((d2.getTime() - d1.getTime())/(1000*60*60*24));
-      
-     // alert(diff);
-     // var newdat=new Date(t);
-  // Date
-      if(diff>0)
-          alert("change nomination date");
-return false;
-
-      //alert("hiiii"+t);
-     
-
-                var nominationEndDate=document.getElementById('Nend_date').value;
-                nominationEndDate.timeStamp;
-      alert("nominationEndDate =" +nominationEndDate);
-      var scrutnyDate=documnet.getElementById('Scr_date').value;
-      var scrutnyEndDate=document.getElementById('Scrend_date').value;
-      var timediff=nominationEndDate-temp;
-      timediff.timeStamp;
-      alert("gggggggggggg"+timediff.timeStamp);
-      if(timediff<=0)
-          alert("Change Nomination time Accordingly");
-      document.getElementById('Nend_date').focus();
-      return false;
-  }
-
-function send()
-{
-    window.location="<%=request.getContextPath()%>/manageElection.do";
-    return false;
-}
-function matchDate(d1,d2)
-{
-    if(d1.getYear()==d2.getYear())
-            if(d1.getMonth()==d2.getMonth())
-                    if(d1.getDay()==d2.getDay())
-                            if(d1.getHours()==d2.getHours())
-                                    if(d1.getMinutes()==d2.getMinutes())
-                                            if(d1.getSeconds()==d2.getSeconds())
-                                                     return true;
-                                            else{
-                                                if(d1.getSeconds()>d2.getSeconds())
-                                                return true;
-                                                else return false;}
-                                    else{
-                                        if(d1.getMinutes()>d2.getMinutes())
-                                            return true;
-                                            else return false;}
-                             else{
-                                 if(d1.getHours()>d2.getHours())
-                                    return true;
-                                    else return false;}
-                    else{
-                        if(d1.getDay()>d2.getDay())
-                                    return true;
-                                    else return false;}
-           else{
-               if(d1.getMonth()>d2.getMonth())
-                    return true;
-                    else return false;}
-    else
-        if(d1.getYear()>d2.getYear())
-        return true;
-        else return false;
-}
-function status1(){
-       
-    document.getElementById('status').value=document.getElementById('block').value;
-    alert(document.getElementById('status').value);
-    return true;
-}
-function checkdates()
-{
-    var nstart= document.getElementById("Nstart_date");
-    var nend = document.getElementById("Nend_date");
-    var sstart = document.getElementById("Scr_date");
-    var send = document.getElementById("Scrend_date");
-    var wstart = document.getElementById("wtd_date");
-    var wend = document.getElementById("wtdend_date");
-    var start = document.getElementById("start_date");
-    var end = document.getElementById("end_date");
-
-        if(nstart!=undefined && nend!=undefined)
-            {
-                var d1 = new Date(nstart.value);
-                var d2 = new Date(nend.value);
-                if(matchDate(d1,d2))
-                  {
-                      alert("Nomination Start Date should be lesser than nomination End Date");
-                      nstart.focus();
-                      return false;
-                  }
-                  else if(sstart!=undefined && send!=undefined)
-            {
-                var d1 = new Date(sstart.value);
-                var d2 = new Date(send.value);
-              if(matchDate(d1,d2))
-                  {
-                      alert("Scrutny Start Date should be lesser than Scrutny End Date");
-                      sstart.focus();
-                      return false;
-                  }
-                  else if(wstart!=undefined && wend!=undefined)
-            {
-                var d1 = new Date(wstart.value);
-                var d2 = new Date(wend.value);
-              if(matchDate(d1,d2))
-                  {
-                      alert("Withdrawal Start Date should be lesser than Withdrawal End Date");
-                      wstart.focus();
-                      return false;
-                  }
-                  else if(start!=undefined && end!=undefined)
-            {   var d1 = new Date(start.value);
-                var d2 = new Date(end.value);
-              if(matchDate(d1,d2))
-                  {
-                      alert("Election Start Date should be lesser than Election End Date");
-                      start.focus();
-                      return false;
-                  }
-              else{
-                  var sdate = new Date(start.value);
-                  var wdate = new Date(wend.value);
-                  var wsdate = new Date(wstart.value);
-                  var sendDate = new Date(send.value);
-                  var sstartdate = new Date(sstart.value);
-                  var nenddate = new Date(nend.value);
-                  if(matchDate(wdate,sdate))
-                      if(matchDate(sendDate,wsdate))
-                          if(matchDate(nenddate,sstartdate))
-                            return true;
-                          else{
-                                    alert("order of nomination,scrutny, widthdrawal and election date are not proper");
-                                    nend.focus();
-                                    return false;
-                                }
-                      else{
-                                    alert("order of nomination,scrutny, widthdrawal and election date are not proper");
-                                    send.focus();
-                                    return false;
-                          }
-                  else{
-                                    alert(wdate+" "+ sdate+"order of nomination,scrutny, widthdrawal and election date are not proper");
-                                    start.focus();
-                                    return false;
-                                }
-                      <%--else{
-                          alert("order of nomination,scrutny, widthdrawal and election date are not proper");
-                  send.focus();
-                  return false;
-                      }
-              else{
-                  alert("order of nomination,scrutny, widthdrawal and election date are not proper");
-                  alert(start.value + " " + wend.value);
-                  start.focus();
-                  return false;}--%>
-              }
-            }
-            else{
-                alert("Please enter election date");
-                start.focus();
-                return false;
-            }
-            }
-            else{
-                alert("Please enter nomination Withdrawal date");
-                wstart.focus();
-                return false;
-            }
-            }
-            else{
-                alert("Please enter Scrutny date");
-                sstart.focus();
-                return false;
-            }
-            }
-            else{
-                alert("Please enter nomination date");
-                nstart.focus();
-                return false;
-            }
+        }--%>
+  
 }
 </script>
     <% String institute_id=(String)session.getAttribute("institute_id");%>
@@ -676,7 +699,9 @@ function checkdates()
     </head>
     <body onload="funconLoad()" dir="<%=rtl%>" >
    <%if(msg1!=null){%>   <span style=" position:absolute; top: 120px; font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>  <%}%>
-   <html:form method="post" action="/createelection" onsubmit="return check1()" style="top: 100px;position: absolute">
+
+
+   <html:form method="post" action="/createelection" onsubmit="return checkdates()">
        <table align="center" width="80%" valign="top" dir="<%=rtl%>">
            <tr><td width="70%" align="left" valign="top" style="border: solid #ECF1EF 5px;" dir="<%=rtl%>">
                    <table><tr><td colspan="2" style="border: 2px solid teal"><div style="background-color: teal;width: 100%;color: white"><%=resource.getString("electiondetail")%> </div>
@@ -698,15 +723,22 @@ function checkdates()
              </span
              <table style="margin-left: 20px;" dir="<%=rtl%>">
 
-                 <tr><td dir="<%=rtl%>"> <span style="font-size: 14px;font-weight: 600"><%=resource.getString("nominationstart")%>: </span><br><span style="font-size: 12px"><%=resource.getString("nomi")%>*</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="nominationStart"    styleId="Nstart_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Nstart_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td>
-             <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("nominationend")%>:</span><br><span style="font-size: 12px"><%=resource.getString("nomic")%> *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="nominationEnd"    styleId="Nend_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Nend_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td></tr>
-         <tr><td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("scrutnystart")%>: </span><br><span style="font-size: 12px">  *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="scrutnyDate"    styleId="Scr_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Scr_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td>
-             <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("scrutnyend")%>:</span><br><span style="font-size: 12px"> *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="scrutnyEndDate"    styleId="Scrend_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Scrend_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td></tr>
-        <tr><td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("withdrawstrat")%> </span><br><span style="font-size: 12px">  *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="withdrawlDate"    styleId="wtd_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('wtd_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td>
-             <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("withdrawend")%>:</span><br><span style="font-size: 12px"> *</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="withdrawlEndDate"    styleId="wtdend_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('wtdend_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td></tr>
+                 <tr><td dir="<%=rtl%>"> <span style="font-size: 14px;font-weight: 600"><%=resource.getString("nominationstart")%>: </span><br><span style="font-size: 12px"><%=resource.getString("nomi")%>*</span><br><html:text readonly="true" name="DepActionForm" property="nominationStart"    styleId="Nstart_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Nstart_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td>
+             <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("nominationend")%>:</span><br><span style="font-size: 12px"><%=resource.getString("nomic")%> *</span><br><html:text readonly="true" name="DepActionForm" property="nominationEnd"    styleId="Nend_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Nend_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td></tr>
+         <tr><td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("scrutnystart")%>: </span><br><span style="font-size: 12px">  *</span><br><html:text readonly="true" name="DepActionForm" property="scrutnyDate"    styleId="Scr_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Scr_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td>
+             <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("scrutnyend")%>:</span><br><span style="font-size: 12px"> *</span><br><html:text readonly="true" name="DepActionForm" property="scrutnyEndDate"    styleId="Scrend_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('Scrend_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td></tr>
+        <tr><td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("withdrawstrat")%> </span><br><span style="font-size: 12px">  *</span><br><html:text readonly="true" name="DepActionForm" property="withdrawlDate"    styleId="wtd_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('wtd_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td>
+             <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("withdrawend")%>:</span><br><span style="font-size: 12px"> *</span><br><html:text readonly="true" name="DepActionForm" property="withdrawlEndDate"    styleId="wtdend_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('wtdend_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="19" alt="Pick a date"/></a><%}%></td></tr>
         <tr><td style="vertical-align: top" dir="<%=rtl%>">
-                 <span style="font-size: 14px;font-weight: 600"><%=resource.getString("electionstart")%>: </span><br><span style="font-size: 12px"><%=resource.getString("votingopens")%>*</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="startdate"    styleId="start_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('start_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" hieght="19" alt="Pick a date"/></a><%}%></td>
-             <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("electionend")%>: </span><br><span style="font-size: 12px; azimuth: right"><%=resource.getString("votingend")%>*</span><br><html:text readonly="<%=read %>" name="DepActionForm" property="enddate"    styleId="end_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('end_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" hieght="19" alt="Pick a date"/></a><%}%></td></tr>
+                 <span style="font-size: 14px;font-weight: 600"><%=resource.getString("electionstart")%>: </span><br><span style="font-size: 12px"><%=resource.getString("votingopens")%>*</span><br><html:text readonly="true" name="DepActionForm" property="startdate"    styleId="start_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('start_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" hieght="19" alt="Pick a date"/></a><%}%></td>
+             <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("electionend")%>: </span><br><span style="font-size: 12px; azimuth: right"><%=resource.getString("votingend")%>*</span><br><html:text readonly="true" name="DepActionForm" property="enddate"    styleId="end_date"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('end_date','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" hieght="19" alt="Pick a date"/></a><%}%></td></tr>
+
+         <tr>
+             <td style="vertical-align: top" dir="<%=rtl%>">
+             <span style="font-size: 14px;font-weight: 600">Result declaration date and time: </span><br><span style="font-size: 12px">(After voting result will be displayed)*</span><br><html:text readonly="true" name="DepActionForm" property="resultDeclarationDate"    styleId="result_DeclarationDate"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('result_DeclarationDate','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" hieght="19" alt="Pick a date"/></a><%}%></td>
+
+        </tr>
+
              </table>
          </div></td></tr>
          <tr><td colspan="2" dir="<%=rtl%>" style="border: 2px solid teal"><div style="background-color: teal;width: 100%;color: white"><%=resource.getString("position")%></div>
@@ -748,16 +780,16 @@ function checkdates()
          <tr>
              <td dir="<%=rtl%>">
     <%if(button.equals("Update")){%>
-    <input id="button1"  name="button" type="submit" onclick="<%--return checkdates();--%>" value="<%=button%>" class="txt1" />
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="<%=resource.getString("cancel")%>" onclick="return send()"  class="txt1"/>
+    <input id="button1"  name="button" type="submit" onclick="return checkdates();"  value="<%=button%>" class="txt1" />
+    &nbsp;&nbsp;&nbsp;<input name="button" type="button" value="<%=resource.getString("cancel")%>" onclick="return send()"  class="txt1"/>
     <%}else if(button.equals("Delete")){%>
     <input id="button1"  name="button" type="submit" value="<%=button%>" class="txt1" />
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" onclick="return send()"  value="<%=resource.getString("cancel")%>" class="txt1"/>
+    &nbsp;&nbsp;&nbsp;<input name="button" type="button" onclick="return send()"  value="<%=resource.getString("cancel")%>" class="txt1"/>
    <%}else if(button.equals("Add")){%>
-   <input id="button1"  name="button" type="submit" onclick="<%--return checkdates();--%>" value="Submit" class="txt1"  />
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="<%=resource.getString("cancel")%>" onclick="return send()" class="txt1"/>
+   <input id="button1"  name="button" type="submit" onclick="return checkdates();"  value="Submit" class="txt1"  />
+    &nbsp;&nbsp;&nbsp;<input name="button" type="button" value="<%=resource.getString("cancel")%>" onclick="return send()" class="txt1"/>
     <%}else if(button.equalsIgnoreCase("Block")){%>
-    <input id="button1"  name="button" type="submit" onclick="<%--return checkdates();--%>" value="Block" class="txt1"  />
+    <input id="button1"  name="button" type="submit"  value="Block" class="txt1"  />
     <input  name="button" type="button" value="<%=resource.getString("back")%>" class="txt1" onclick="return send();"/>
     
     <%}else{%>

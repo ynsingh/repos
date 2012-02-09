@@ -79,7 +79,7 @@ body
 </style>
 </head>
 <body>
-    <html:form  action="/confirm" method="post"  onsubmit="return validation();">
+    <html:form  action="/confirm" method="post">
          <table align="center"  class="txt" width="80%" style="font-family: arial;font-weight: bold;color:brown;font-size:13px" dir="<%=rtl%>" align="<%=align%>">
 
 
@@ -275,7 +275,7 @@ body
 
               </tr>
 <tr><td colspan="4" align="center"><br><br>
-        <input type="submit" class="txt2"  id="submit" name="submit" value="<%=resource.getString("accept")%>"><input type="button" class="txt2"    name="cancel" value="<%=resource.getString("back")%>" onclick="quit();">
+        <input type="submit" class="txt2"  id="submit" name="button" value="<%=resource.getString("accept")%>" onclick="return validation();"><input type="submit"  class="txt2"  id="submit" name="button" value="Reject"><input type="button" class="txt2"    name="cancel" value="<%=resource.getString("back")%>" onclick="quit();">
 </td></tr>
 <%}%>
         </table>

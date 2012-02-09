@@ -19,7 +19,70 @@ public class CandidateRegistration  implements java.io.Serializable {
      private String position;
      private String status;
      private String elections;
+     private String requestDate;
+     private String rejectedDate;
+     private String acceptedDate;
+     private String proposedBy;
+     private String secondedBy;
+     private String positionAccepted;
+     private String rejectedReason;
 
+    public String getRejectedReason() {
+        return rejectedReason;
+    }
+
+    public void setRejectedReason(String rejectedReason) {
+        this.rejectedReason = rejectedReason;
+    }
+
+
+    public String getAcceptedDate() {
+        return acceptedDate;
+    }
+
+    public void setAcceptedDate(String acceptedDate) {
+        this.acceptedDate = acceptedDate;
+    }
+
+    public String getPositionAccepted() {
+        return positionAccepted;
+    }
+
+    public void setPositionAccepted(String positionAccepted) {
+        this.positionAccepted = positionAccepted;
+    }
+
+    public String getProposedBy() {
+        return proposedBy;
+    }
+
+    public void setProposedBy(String proposedBy) {
+        this.proposedBy = proposedBy;
+    }
+
+    public String getRejectedDate() {
+        return rejectedDate;
+    }
+
+    public void setRejectedDate(String rejectedDate) {
+        this.rejectedDate = rejectedDate;
+    }
+
+    public String getRequestDate() {
+        return requestDate;
+    }
+
+    public void setRequestDate(String requestDate) {
+        this.requestDate = requestDate;
+    }
+
+    public String getSecondedBy() {
+        return secondedBy;
+    }
+
+    public void setSecondedBy(String secondedBy) {
+        this.secondedBy = secondedBy;
+    }
     public CandidateRegistration() {
     }
 
@@ -27,7 +90,7 @@ public class CandidateRegistration  implements java.io.Serializable {
     public CandidateRegistration(CandidateRegistrationId id) {
         this.id = id;
     }
-    public CandidateRegistration(CandidateRegistrationId id, String enrolledIn, String PMarks, String PAttendence, String backlog, String criminal, String indisc, String position, String status) {
+    public CandidateRegistration(CandidateRegistrationId id, String enrolledIn, String PMarks, String PAttendence, String backlog, String criminal, String indisc, String position, String status, String requestDate,String rejectedDate, String acceptedDate, String proposedBy,String secondedBy,String positionAccepted,String rejectedReason) {
        this.id = id;
        this.enrolledIn = enrolledIn;
        this.PMarks = PMarks;
@@ -37,6 +100,13 @@ public class CandidateRegistration  implements java.io.Serializable {
        this.indisc = indisc;
        this.position = position;
        this.status = status;
+       this.rejectedDate=rejectedDate;
+       this.requestDate=requestDate;
+       this.positionAccepted=positionAccepted;
+       this.proposedBy=proposedBy;
+       this.secondedBy=secondedBy;
+       this.acceptedDate=acceptedDate;
+       this.rejectedReason=rejectedReason;
     }
    
     public CandidateRegistrationId getId() {

@@ -114,25 +114,25 @@ request.setAttribute("button", "Change Status");
    requestList = new ArrayList();
 //requestList = (ArrayList)session.getAttribute("resultset");
    int tcount =0;
-   int perpage=5;
+   int perpage=100;
    int tpage=0;
  /*Create a connection by using getConnection() method
    that takes parameters of string type connection url,
    user name and password to connect to database.*/
-   if(request.getParameter("pageSize")!=null && request.getParameter("pageSize")!="")
-    perpage = Integer.parseInt((String)request.getParameter("pageSize"));
+   //if(request.getParameter("pageSize")!=null && request.getParameter("pageSize")!="")
+   // perpage = Integer.parseInt((String)request.getParameter("pageSize"));
 
 if(rs!=null){
   Iterator it = rs.iterator();
-System.out.println("it="+(tcount));
+//System.out.println("it="+(tcount));
 //requestList = (Login)rs.get(0);
 
    while (it.hasNext()) {
 
-	System.out.println("it="+(tcount));
+	
         voter = (VoterRegistration)rs.get(tcount);
        // staffdetail = (StaffDetail)rs.get(tcount).getStaffDetail();
-
+System.out.println(voter.getId().getEnrollment());
         Ob = new StaffDoc ();
         //ems=new Election_Manager_StaffDetail();
 
@@ -165,23 +165,95 @@ it.next();
    //System.out.println("tcount="+tcount);
 		     }
 
-System.out.println("tcount="+tcount);
+//System.out.println("tcount="+tcount);
 
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex+perpage) >= requestList.size ())
-   toIndex = requestList.size();
+   if ((toIndex = fromIndex+perpage) >= tcount)
+   toIndex = tcount;
    request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
+
+
+
+  //   String page1 = (String)request.getParameter("pagesize");
+     //System.out.println("page1="+page1);
+  // if (page1!=null) pagesize = Integer.parseInt(page1);
+  // fromIndex = (int)DataGridParameters.getDataGridPageIndex(request, "datagrid1");
+
+  // if ((toIndex = fromIndex+(int)perpage) >= tcount)
+ //  toIndex = tcount;
+   //System.out.println("opacList="+opacList.size()+" tcount="+tcount);
+  // if(opacList!=null)request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
+
+
+
    pageContext.setAttribute("rec",perpage);
    status = "&status="+status;
     pageContext.setAttribute("status",status);
+     pageContext.setAttribute("tCount", tcount);
+   pageContext.setAttribute("pagesize", perpage);
+   pageContext.setAttribute("fromIndex", fromIndex);
+   pageContext.setAttribute("fromIndex1", fromIndex+1);
+pageContext.setAttribute("toIndex1", toIndex);
    }
 
 String path=request.getContextPath();
 pageContext.setAttribute("path", path);
   %>
   <script type="text/javascript" language="javascript">
-  function changerec(){
+function send(){
+   // alert("ok");
+     <%
+     int pageNumber=1;
+     if(request.getParameter("page") != null) {
+       session.setAttribute("page", request.getParameter("page"));
+       pageNumber = Integer.parseInt(request.getParameter("page"));
+     } else {
+       session.setAttribute("page", "1");
+     }
+     String nextPage = (pageNumber +1) + "";%>
+var loc="/EMS/votersetup.do?page="+<%=nextPage%>;
+//alert(loc);
+location.href= loc;
+
+<%
+
+    
+   //  System.out.println(((java.util.List)session.getAttribute("EmpList")).size());
+     String myUrl = "/EMS/votersetup.do?page="+nextPage;
+   //  System.out.println(myUrl);
+
+     pageContext.setAttribute("myUrl", myUrl);
+     %>
+ 
+}
+
+function sendprevious(){
+  //  alert("ok");
+     <%String previousPage ="";
+if(pageNumber>=1)
+   previousPage = (pageNumber -1) + "";
+else
+  previousPage = 0 + "";
+%>
+var loc="/EMS/votersetup.do?page="+<%=previousPage%>;
+//alert(loc);
+location.href= loc;
+
+<%
+
+
+   //  System.out.println(((java.util.List)session.getAttribute("EmpList")).size());
+   //  String myUrl = "/EMS/votersetup.do?page="+nextPage;
+   //  System.out.println(myUrl);
+
+     pageContext.setAttribute("myUrl", myUrl);
+     %>
+
+}
+
+
+ <%-- function changerec(){
         var x=document.getElementById('rec').value;
     var loc = window.location;
     loc = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/election_manager/voter_setup.jsp";
@@ -210,7 +282,7 @@ function isNumberKey(evt)
             return false;
 
          return true;
-      }
+      }--%>
       function funload()
       {
           location.href = "#top";
@@ -243,7 +315,15 @@ function isNumberKey(evt)
 else
 {%>
 <table align="" dir="" width="100%" style="padding-left: 10%;padding-right: 10%">
-    <tr><td colspan="2" align="right">View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></td></tr>
+    <%--<tr><td colspan="2" align="right">View Next&nbsp;onblur="changerec()" style="width:50px"/>
+        <select id="rec" onchange="changerec()" style="width:100px">
+             <option value="10">Select</option>
+           <option value="15">15</option>
+            <option value="20">20</option>
+             <option value="30">30</option>
+       </select>
+
+        </td></tr>--%>
     <tr dir=""><td dir="">
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
@@ -287,48 +367,17 @@ else
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
   <alternateRows styleClass="alternaterows"/>
 
-  <paging size="${rec}" count="${tCount}" custom="true" nextUrlVar="next"
+  
+ <paging size="${pagesize}" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
-  <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>
+</td></tr>
 
-  <table width="500" style="font-family: arial; font-size: 10pt" border=0>
-<tr>
-<td align="left" width="100px">
-<c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>"><%=resource.getString("previous")%></a>
-</c:if>&nbsp;
-<c:if test="${next != null}">
-    <a href="<c:out value="${next}"/>"><%=resource.getString("next")%></a>
-</c:if>
+ <input type="button" onclick="send()" value="nextPage"/>
+  <input type="button" onclick="sendprevious()" value="previous"/>
 
-</td><td width="400px" align="center">
-
-<c:forEach items="${pages}" var="page">
-<c:choose>
-  <c:when test="${page.current}">
-    <b><a href="<c:out value="${page.url}"/>"><c:out value="${page.index}"/></a></b>
-  </c:when>
-  <c:otherwise>
-    <a href="<c:out value="${page.url}"/>"><c:out value="${page.index}"/></a>
-  </c:otherwise>
-</c:choose>
-</c:forEach>
-</td>
-<td align="right" width="200px"><a href="<%=path%>/voterlist.do">Print Voter List</a></td>
-</tr>
-<%--<tr><td>
-        <%
-
-String msg=(String)request.getAttribute("msg");
-if(msg!=null)
-    {%>
-    <p class="err" style="font-size:12px"><%=msg%></p>
-
-
-<%}%>
-
-</td></tr>--%>
+   
+   
 </table>
 
   <%}%>
@@ -339,8 +388,7 @@ if(msg!=null)
     out.println(msg);
 %>
 
-  </td></tr>
-</table>
+ 
     </body>
 
 </html>

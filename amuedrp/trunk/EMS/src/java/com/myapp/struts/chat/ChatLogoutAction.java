@@ -43,15 +43,7 @@ static int c=0;
   int i=0,j=0;
     private static final String SUCCESS = "success";
      public static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -69,9 +61,9 @@ static int c=0;
                 // Check User Login after Room Selection
 
 
+String path = servlet.getServletContext().getRealPath("/");
 
-
-  home=System.getProperty("user.home");
+  home=path;
 
 
 

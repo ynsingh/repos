@@ -4,8 +4,15 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-
+<%
+String role=(String)session.getAttribute("login_role");
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+<jsp:include page="/institute_admin/adminheader.jsp"/>
+<%}else{%>
 <jsp:include page="/election_manager/login.jsp"/>
+<%}%>
 <%@page import="java.util.*,java.io.*,java.net.*"%>
 
 <%!
@@ -71,7 +78,7 @@ function fun()
   <%if(status!=null){%>
     document.Form1.status.value = "<%=status%>";
     <%}%>
-document.Form1.action="/EMS/votersetup.do";
+document.Form1.action="/EMS/votersetup.do?page=0";
 document.Form1.method="post";
 document.Form1.target="f1";
 document.Form1.submit();
@@ -144,8 +151,8 @@ document.Form1.submit();
           <table >
               <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.infield")%> </td><td rowspan="2" valign="top">
  <select name="search_by" onChange="fun()" id="search_by" size="1">
+     <option selected value="id.enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
 <option value="voterName">Voter Name<%--<%=resource.getString("managername")%>--%></option>
-<option value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
 <option value="department">Department<%--<%=resource.getString("managerid")%>--%></option>
 <option value="course">Course</option>
 <%--<option value="city"><%=resource.getString("city")%></option>--%>
@@ -162,8 +169,8 @@ document.Form1.submit();
        <td align="left" colspan="2">
            <table>
   <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.field")%></td><td><select name="sort_by" id="sort_by" size="1" onChange="fun()" id="">
+<option selected value="id.enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
 <option value="voterName">Voter Name<%--<%=resource.getString("managername")%>--%></option>
-<option value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
 <option value="department">Department<%--<%=resource.getString("managerid")%>--%></option>
 <option value="course">Course</option>
 </select></td>
@@ -173,7 +180,7 @@ document.Form1.submit();
       </td>
 
   </tr>
-  <tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="/EMS/votersetup.do" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
+  <tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="/EMS/votersetup.do?page=0" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
      
   <tr><td><input type="hidden" id="hidHigh"/></td></tr>
        </table>

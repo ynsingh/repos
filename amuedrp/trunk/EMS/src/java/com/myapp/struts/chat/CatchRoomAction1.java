@@ -5,22 +5,14 @@
 
 package com.myapp.struts.chat;
 
-import chat.ChatRoom;
-import chat.ChatRoomList;
 import chat.Chatter;
 import chat.Message;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -43,15 +35,7 @@ static int c=0;
   int i=0,j=0;
     private static final String SUCCESS = "success";
      public static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -69,9 +53,9 @@ static int c=0;
                 // Check User Login after Room Selection
                 
  
-  
+  String path = servlet.getServletContext().getRealPath("/");
  
-  home=System.getProperty("user.home");
+  home=path;
 
 
 

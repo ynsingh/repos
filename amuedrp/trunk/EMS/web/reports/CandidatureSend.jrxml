@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CandidatureSend" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="132"/>
+	<field name="voterRegistration.voterName" class="java.lang.String"/>
+	<field name="position1.positionName" class="java.lang.String"/>
+	<field name="election.electionName" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="171" splitType="Stretch">
+			<staticText>
+				<reportElement x="58" y="6" width="285" height="20"/>
+				<textElement/>
+				<text><![CDATA[Your Candidature Request For the Post is as below:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="34" width="104" height="20"/>
+				<textElement/>
+				<text><![CDATA[Candidate Name:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="63" y="56" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Position:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="63" y="78" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Election:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="163" y="35" width="234" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{voterRegistration.voterName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="164" y="56" width="206" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{position1.positionName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="77" width="203" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{election.electionName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

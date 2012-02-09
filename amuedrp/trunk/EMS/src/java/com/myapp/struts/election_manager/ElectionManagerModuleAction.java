@@ -25,15 +25,7 @@ public class ElectionManagerModuleAction extends org.apache.struts.action.Action
     private static final String SUCCESS = "success";
 
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -43,7 +35,7 @@ public class ElectionManagerModuleAction extends org.apache.struts.action.Action
         String institute_id=(String)session.getAttribute("institute_id");
         String manager_id=(String)session.getAttribute("user_id");
 
-
+System.out.println("dsfsdfsdfsdf");
         VoterRegistrationDAO admindao=new VoterRegistrationDAO();
         ElectionDAO electiondao=new ElectionDAO();
                     session.removeAttribute("resultset");

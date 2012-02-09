@@ -7,7 +7,7 @@ public class Message
 {
 	/**
 	* String used to store the name of a chatter
-	*@author Sukhwinder Singh(ssruprai@hotmail.com)
+	
 	*/
 	private String chatterName = null;
 	/**

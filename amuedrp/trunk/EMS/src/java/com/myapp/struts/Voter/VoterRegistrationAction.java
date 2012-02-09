@@ -111,6 +111,7 @@ VoterRegistrationId empid=new VoterRegistrationId ();
              ob.setZipCode(lf.getZipcode());
              ob.setZipCode1(lf.getZipcode1());
              ob.setStatus("NOT REGISTERED");
+             ob.setAlternateMail(lf.getAlternateemail());
              ob.setId(empid);
             if (lf.getImg()!=null)
             ob.setImage(lf.getImg().getFileData());
@@ -198,7 +199,7 @@ System.out.println("Accept is wporking");
 System.out.println(admin_password1);
 
  userid=ob.getId().getEnrollment()+""+ob.getId().getInstituteId();
-                login.setUserId(ob.getId().getEnrollment()+""+ob.getId().getInstituteId());
+login.setUserId(ob.getEmail());
 login.setPassword(admin_password1);
 login.setRole("voter");
 login.setUserName(ob.getVoterName());

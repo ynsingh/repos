@@ -52,6 +52,7 @@ public class ElectionruleeligibilityDAO {
         }
         catch (RuntimeException e) {
           //  if(bibDetails != null)
+            e.printStackTrace();
                 tx.rollback();
             throw e;
         }

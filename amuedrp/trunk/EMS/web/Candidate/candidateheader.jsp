@@ -58,7 +58,7 @@ String user_name=   (String) session.getAttribute("username");
    String contextPath = request.getContextPath();
 %>
 
-<table width="100%" height="50px;" border="0px"  style="margin:0px 0px 0px 0px;" dir="<%=rtl%>">
+<table width="100%" height="50px;" border="2px"  style="margin:0px 0px 0px 0px;" dir="<%=rtl%>">
 
     <tr dir="<%=rtl%>" valign="top"><td valign="top" dir="<%=rtl%>" width="550px">
 

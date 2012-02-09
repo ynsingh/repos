@@ -10,6 +10,7 @@ import com.myapp.struts.Voter.VoterRegistrationDAO;
 import com.myapp.struts.hbm.Login;
 import com.myapp.struts.hbm.LoginDAO;
 import com.myapp.struts.hbm.StaffDetail;
+import com.myapp.struts.hbm.StaffDetailDAO;
 import com.myapp.struts.hbm.StaffDetailId;
 import com.myapp.struts.hbm.VoterRegistrationId;
 import com.myapp.struts.hbm.VoterRegistration;
@@ -21,6 +22,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import  com.myapp.struts.utility.*;
+import java.io.FileInputStream;
+import java.util.Enumeration;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -79,6 +83,80 @@ System.out.println(button+".................. "+id+st);
 
        }
 
+              StaffDetail obj2=StaffDetailDAO.searchStaffId(id,instituteid);
+       if(obj2!=null){
+
+
+           //Add CEO/EO as Voter
+           admin_password= RandomPassword.getRandomString(10);
+                
+                
+
+login=logindao.getStaffDetails1(obj2.getEnrollment(), instituteid);
+                if(login!=null){
+                    System.out.println(login.getRole().endsWith("voter")+".........................");
+                if(login.getRole().endsWith("voter")==false)
+                {   login.setRole(login.getRole()+",voter");
+                     logindao.update(login);
+
+
+                String path = servlet.getServletContext().getRealPath("/");
+
+                 FileInputStream in = new FileInputStream(path+"/mail.properties");
+  			Properties	pro = new Properties();
+                                 pro.load(in);
+
+
+				Enumeration keys = pro.keys();
+                                int i=0;
+                                String mailbody="";
+				while (keys.hasMoreElements())
+				{
+                                       String key=(String)keys.nextElement();
+
+                                       if(key.equalsIgnoreCase(userid+"em")){
+                                       mailbody=(String)pro.get(key);
+                                       }
+
+
+
+
+                                   i++;
+				}
+				in.close();
+
+
+if(mailbody=="")
+       mailbody="\n You are Registered as a Voter \nWith Regards\nElection Manager\n";
+                obj=new Email(path,lf.getEmail(),"","Registration Accepted Successfully from EMS","+mailbody+"+session.getAttribute("institute_name"));
+                executor.submit(new Runnable() {
+
+                public void run() {
+                    obj.send();
+                }
+            });
+                request.setAttribute("msg", "Voter Successfully Added");
+                 return mapping.findForward("success1");
+
+                }
+                else
+                {
+                  request.setAttribute("msgerr", "Sorry Entered User Already Registered As a Voter");
+                    return mapping.findForward("success1");
+                }
+                }
+
+
+           
+
+
+       
+
+
+
+       }
+
+
          empid.setEnrollment(id);
 
 System.out.println(id+" "+instituteid);
@@ -102,6 +180,9 @@ System.out.println(id+" "+instituteid);
 
              ob.setJoiningDate(lf.getJ_date());
              ob.setMName(lf.getM_name());
+             if(lf.getM_number().isEmpty()==true)
+                  ob.setMobileNumber("0");
+             else
              ob.setMobileNumber(lf.getM_number());
              ob.setPAddress(lf.getP_add());
              ob.setState(lf.getState());
@@ -112,6 +193,7 @@ System.out.println(id+" "+instituteid);
              ob.setZipCode1(lf.getZipcode1());
              ob.setStatus("REGISTERED");
              ob.setId(empid);
+             ob.setAlternateMail(lf.getAlternateemail());
             if (lf.getImg()!=null)
             ob.setImage(lf.getImg().getFileData());
          else
@@ -125,7 +207,7 @@ System.out.println(id+" "+instituteid);
 System.out.println(admin_password1);
 
 
-                login.setUserId(userid);
+                login.setUserId(lf.getEmail());
 login.setPassword(admin_password1);
 login.setRole("voter");
 login.setUserName(lf.getV_name());
@@ -141,7 +223,12 @@ VoterRegistrationDAO.insert(ob);
 logindao.insert(login, userid);
 request.setAttribute("msg", "Voter Successfully Added");
 String path = servlet.getServletContext().getRealPath("/");
-        obj=new Email(path,lf.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+lf.getV_name()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for EMS Login ="+admin_password+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+  String mailbody="";
+ if(mailbody=="")
+       mailbody="\n You are Registered as a Voter with given User Id=";
+
+
+        obj=new Email(path,lf.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+lf.getV_name()+"+mailbody+"+userid +" , Password for EMS Login ="+admin_password+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
          executor.submit(new Runnable() {
 
                 public void run() {

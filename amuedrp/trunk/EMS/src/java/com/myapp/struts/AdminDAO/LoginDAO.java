@@ -10,7 +10,6 @@ import org.hibernate.Transaction;
 import org.hibernate.Session;
 import org.hibernate.Query;
 import java.util.*;
-import org.hibernate.transform.Transformers;
 
 /**
  * Developed By : Kedar Kumar
@@ -50,12 +49,12 @@ public void update(Login loginDetails) {
             tx.commit();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
+          e.printStackTrace();
                 tx.rollback();
             throw e;
         }
         finally {
-           //session.close();
+           session.close();
         }
     }
 
@@ -73,14 +72,14 @@ public boolean updateadmin(Login loginDetails) {
 
         }
         catch (RuntimeException e) {
-
+e.printStackTrace();
                 tx.rollback();
                 return false;
 
 
         }
         finally {
-           //session.close();
+           session.close();
         }
         return true;
     }
@@ -94,12 +93,12 @@ public void updateByStaffId(Login loginDetails) {
             tx.commit();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
+         e.printStackTrace();
                 tx.rollback();
             throw e;
         }
         finally {
-           //session.close();
+           session.close();
         }
     }
 public void delete(String user_id) {
@@ -108,24 +107,29 @@ public void delete(String user_id) {
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
-            //acqdocentry = session.load(BibliographicDetails.class, id);
+           
             Query query = session.createQuery("DELETE FROM Login  WHERE  id.userId = :userId ");
 
             query.setString("userId",user_id );
-            //query.setString("instituteId",institute_id );
+          
             query.executeUpdate();
             tx.commit();
-            //return (BibliographicDetails) query.uniqueResult();
+          
         }
-
+catch (RuntimeException e) {
+         e.printStackTrace();
+                tx.rollback();
+            throw e;
+        }
         finally {
-            //session.close();
+            session.close();
         }
     }
 
 public List getLoginDetails(String user_id,String password){
  Session session =null;
-    Transaction tx = null;
+    
+    List obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -133,17 +137,24 @@ public List getLoginDetails(String user_id,String password){
              query.setString("userId",user_id );
              query.setString("password",password);
              System.out.println("user_id="+user_id+ "  Passwoord="+password);
-            return query.list();
+            obj= query.list();
+            session.getTransaction().commit();
+        }
+    catch (RuntimeException e) {
+         e.printStackTrace();
+throw e;
+            
         }
         finally {
             session.close();
         }
-
+return obj;
 }
 public static Login getSuperAdminLoginDetails(String user_id,String password,String role)
 {
  Session session =null;
-    Transaction tx = null;
+    Login obj=null;
+
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -151,51 +162,93 @@ public static Login getSuperAdminLoginDetails(String user_id,String password,Str
              query.setString("userId",user_id );
              query.setString("password",password);
              query.setString("role",role);
-          return (Login)query.uniqueResult();
+          obj= (Login)query.uniqueResult();
+ session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+         e.printStackTrace();
+
 
         }
         finally {
             session.close();
         }
+return obj;
 
 }
 
 
 public List getLoginDetailsbyRole(String role){
  Session session =null;
-    Transaction tx = null;
+    List obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM Login where role = :role");
              query.setString("role",role );
-            // query.setString("password",password.trim() );
-            return query.list();
+            
+      obj= query.list();
+       session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+         e.printStackTrace();
+
+
         }
         finally {
             session.close();
         }
+return obj;
 }
 
-public List getUser(String user_id){
+
+public Login getUser1(String user_id){
  Session session =null;
-    Transaction tx = null;
+    Login obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
                 session.beginTransaction();
-                Query query = session.createQuery("FROM Login where loginId = :userId");
+                Query query = session.createQuery("FROM Login where userId = :userId");
                 query.setString("userId",user_id );
-                return query.list();
+                obj=(Login) query.uniqueResult();
+                 session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+         e.printStackTrace();
+
+
         }
         finally {
             session.close();
         }
+return obj;
+}
+public List getUser(String user_id){
+ Session session =null;
+    List obj=null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+                session.beginTransaction();
+                Query query = session.createQuery("FROM Login where userId = :userId");
+                query.setString("userId",user_id );
+                obj=query.list();
+                 session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+         e.printStackTrace();
+throw e;
+
+        }
+        finally {
+            session.close();
+        }
+return obj;
 }
 
 
 public static Login searchAns(String staff_id,String institute_id,String ans1) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Login obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  Login  WHERE institute_id =:institute_id  and staff_id=:staff_id and ans=:ans1");
@@ -203,92 +256,134 @@ public static Login searchAns(String staff_id,String institute_id,String ans1) {
             query.setString("institute_id",institute_id );
             query.setString("ans1",ans1 );
 
-            return ( Login) query.uniqueResult();
+            obj= ( Login) query.uniqueResult();
+             session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+         e.printStackTrace();
+
+
         }
         finally {
-          //  session.close();
+            session.close();
         }
+return obj;
 
 }
 
 public static Login searchLoginID(String login_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Login obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  Login  WHERE loginId =:login_id  ");
+            Query query = session.createQuery("FROM  Login  WHERE userId =:login_id  ");
             query.setString("login_id", login_id);
 
-            return ( Login) query.uniqueResult();
+            obj= ( Login) query.uniqueResult();
+             session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+         e.printStackTrace();
+
+
         }
         finally {
-          //  session.close();
+            session.close();
         }
+return obj;
 
 }
 
 public static Login searchAllStaffAccount(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Login obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  Login  WHERE id.libraryId =:library_id  ");
             query.setString("login_id", library_id);
 
-            return ( Login) query.uniqueResult();
+            obj= ( Login) query.uniqueResult();
+             session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+         e.printStackTrace();
+
+
         }
         finally {
-         //   session.close();
+            session.close();
         }
+return obj;
 
 }
 public static Login searchAllStaffAccount(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Login obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  Login  WHERE id.libraryId =:library_id  and sublibraryId=:sublibrary_id ");
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
-            return (Login) query.uniqueResult();
+            obj= (Login) query.uniqueResult();
+             session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+         e.printStackTrace();
+
+
         }
         finally {
-           // session.close();
+            session.close();
         }
+return obj;
 
 }
 
 
 public static Login searchStaffLogin(String staff_id,String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Login obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  Login  WHERE id.staffId =:staff_id and id.libraryId=:library_id and sublibraryId=:sublibrary_id");
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
-            return ( Login) query.uniqueResult();
+            obj= ( Login) query.uniqueResult();
+             session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+         e.printStackTrace();
+
+
         }
         finally {
-          //  session.close();
+            session.close();
         }
+return obj;
 
 }
 public static Login searchStaffLogin(String staff_id,String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Login obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  Login  WHERE id.staffId =:staff_id and id.libraryId=:library_id");
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
 
-            return ( Login) query.uniqueResult();
+            obj= ( Login) query.uniqueResult();
+             session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+         e.printStackTrace();
+
+
         }
         finally {
-          //  session.close();
+            session.close();
         }
+return obj;
 
 }
 
@@ -308,17 +403,15 @@ public static  boolean update1(Login obj)
 
 
         }
-        catch (Exception ex)
-        {
-         System.out.println(ex.toString());
-             return false;
-
-
+        catch (RuntimeException e) {
+         e.printStackTrace();
+                tx.rollback();
+                return false;
+            
 
         }
-        finally
-        {
-          //session.close();
+        finally {
+           session.close();
         }
    return true;
 
@@ -327,24 +420,31 @@ public static  boolean update1(Login obj)
 
 public static Login searchStaffId(String staff_id,String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Login obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  Login  where id.libraryId =:library_id and id.staffId =:staff_id");
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
            
-            return ( Login) query.uniqueResult();
+            obj= ( Login) query.uniqueResult();
+            session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+         e.printStackTrace();
+
+
         }
         finally {
-          //  session.close();
+            session.close();
         }
+return obj;
 
 }
 
 public static Login searchRole(String staff_id,String institute_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+        Login obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  Login  where institute_id =:institute_id and staff_id =:staff_id");
@@ -352,11 +452,18 @@ public static Login searchRole(String staff_id,String institute_id) {
             query.setString("institute_id", institute_id);
            
 
-            return ( Login) query.uniqueResult();
+            obj= ( Login) query.uniqueResult();
+            session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+         e.printStackTrace();
+
+
         }
         finally {
-         //   session.close();
+            session.close();
         }
+return obj;
 
 }
 public static boolean DeleteLogin(String staff_id,String library_id,String sublibrary_id) {
@@ -380,14 +487,16 @@ public static boolean DeleteLogin(String staff_id,String library_id,String subli
         }
         catch (Exception ex)
         {
+            ex.printStackTrace();
+            tx.rollback();
              return false;
 
-       //  System.out.println(ex.toString());
+      
 
         }
         finally
         {
-          //session.close();
+          session.close();
         }
    return true;
 
@@ -414,9 +523,10 @@ public static boolean DeleteLogin(String staff_id,String library_id) {
         }
         catch (Exception ex)
         {
+            ex.printStackTrace();
+            tx.rollback();
              return false;
 
-       //  System.out.println(ex.toString());
 
         }
         finally
@@ -429,24 +539,31 @@ public static boolean DeleteLogin(String staff_id,String library_id) {
 }
 public static Login searchForgetPassword(String login_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+Login obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  Login  WHERE loginId =:login_id and question!=:ques");
             query.setString("login_id", login_id);
             query.setString("ques", "@");
 
-            return ( Login) query.uniqueResult();
+            obj= ( Login) query.uniqueResult();
+            session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+         e.printStackTrace();
+
+
         }
         finally {
-           // session.close();
+            session.close();
         }
+return obj;
 
 }
 
 public static Login searchFirstLogin(String staff_id,String library_id,String sublibrary_id,String login) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+        Login obj=null;
         try {
             session.beginTransaction();
 
@@ -461,29 +578,42 @@ public static Login searchFirstLogin(String staff_id,String library_id,String su
             query.setString("login_id", login);
          
            
-            return (Login) query.uniqueResult();
+            obj= (Login) query.uniqueResult();
+            session.getTransaction().commit();
+            
+            
+        }
+        catch (RuntimeException e) {
+         e.printStackTrace();
 
-            
-            
+
         }
         finally {
-         //   session.close();
+            session.close();
         }
+return obj;
 
 }
 public static Login searchUser(String login_id,String password) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+        Login obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM  Login  WHERE loginId =:login_id and password =:password");
             query.setString("login_id", login_id);
             query.setString("password", password);
-            return (Login) query.uniqueResult();
+            obj= (Login) query.uniqueResult();
+            session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+         e.printStackTrace();
+
+
         }
         finally {
-          //  session.close();
+            session.close();
         }
+return obj;
 
 }
 public static  boolean insert1(Login obj)
@@ -504,14 +634,16 @@ public static  boolean insert1(Login obj)
         }
         catch (Exception ex)
         {
+            ex.printStackTrace();
+            tx.rollback();
              return false;
 
-       //  System.out.println(ex.toString());
+       
 
         }
         finally
         {
-          //session.close();
+          session.close();
         }
    return true;
 

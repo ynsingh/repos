@@ -32,11 +32,6 @@ public class CandidateMenifestoActionForm extends org.apache.struts.action.Actio
         // TODO Auto-generated constructor stub
     }
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param request The HTTP Request we are processing.
-     * @return
-     */
+   
    
 }

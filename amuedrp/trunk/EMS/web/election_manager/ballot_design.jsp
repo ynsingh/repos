@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:include page="/election_manager/login.jsp"/>
+
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -7,7 +7,19 @@
 <link type="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
+<%
+List ls =(List)session.getAttribute("CandidateList");
 
+String role=(String)session.getAttribute("login_role");
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+
+<%}else if(role.equalsIgnoreCase("Election Manager")|| role.equalsIgnoreCase("Election Manager,voter"))
+   {
+%>
+<jsp:include page="/election_manager/login.jsp"/>
+<%}%>
 <html>
     <head>
         <meta http-equiv="Content-Type"  content="text/html; charset=UTF-8">
@@ -19,6 +31,22 @@
 
         </style>
         <script type="text/javascript" language="javascript">
+
+function send()
+{
+  <%  if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+top.location.href="<%=request.getContextPath()%>/institute_admin/search_election_details.jsp";
+<%}else if(role.equalsIgnoreCase("Election Manager")|| role.equalsIgnoreCase("Election Manager,voter"))
+   {
+%>
+window.location="<%=request.getContextPath()%>/electionmanager.do";
+<%}else{%>
+    top.location.href="<%=request.getContextPath()%>/Voter/voter_home.jsp";
+    <%}%>
+    return false;
+}
             function clearme()
 {
 
@@ -357,8 +385,12 @@ function previewBallot() {
     var req = newXMLHttpRequest();
 document.getElementById("ballot").style.display="block";
 req.onreadystatechange = getReadyStateHandler(req, designBallot);
-
-                    req.open("POST","<%=request.getContextPath()%>/getPosition.do?getElectionId=<%=request.getParameter("electionId")%>", true);
+<% String x=(String)request.getParameter("electionId");
+if(x==null)
+    x=(String)request.getParameter("id");
+%>
+       
+ req.open("POST","<%=request.getContextPath()%>/getPosition.do?getElectionId=<%=x%>", true);
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 req.send();
@@ -366,11 +398,26 @@ return true;
 }
 function designBallot(cartXML)
 {
+
+
 var htm="";
 document.getElementById("ballot").innerHTML="";
 var em = cartXML.getElementsByTagName("positions")[0];
 var em1 = em.getElementsByTagName("position");
-//var em = cartXML.firstChild.value;
+
+ <%if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+if(em1.length==0){
+    alert("No Poisition Defined in the Selected Election");
+    top.window.location="/EMS/institute_admin/search_election_details.jsp";
+<%}else{%>
+if(em1.length==0){
+    alert("No Poisition Defined in the Selected Election");
+    top.window.location="/EMS/electionmanager.do";
+<%}%>
+    return true;
+}
 for(iii=0;iii<em1.length;iii++)
     {
         //position block creation
@@ -391,52 +438,78 @@ for(iii=0;iii<em1.length;iii++)
         //end of block
 var positionname1 = em1[iii].getElementsByTagName("positionname");
 var positionname = positionname1[0].firstChild.nodeValue;
+var positionid1 = em1[iii].getElementsByTagName("positionId");
+var positionid = positionid1[0].firstChild.nodeValue;
 var noofchoice1 = em1[iii].getElementsByTagName("noofchoice");
 var noofchoice = noofchoice1[0].firstChild.nodeValue;
 var instruct = em1[iii].getElementsByTagName("instruction");
 var instrucT = instruct[0].firstChild.nodeValue;
 var instruct1;
 var instruct2;
-if(instrucT!=undefined)
+<%--if(instrucT!=undefined)
     if(instrucT.lastIndexOf(noofchoice)!=-1)
         {instruct1 = instrucT.substr(0, instrucT.lastIndexOf(noofchoice)-1);
-        instruct2 = instrucT.substr(instrucT.lastIndexOf(noofchoice)+1,instrucT.length);}
-htm = '<div class="building_block" >Position: <strong>'+positionname+'</strong><br><strong >'+ instruct1 +' <span style="color: red">'+noofchoice+'</span>'+ instruct2 +'</strong>';
+        instruct2 = instrucT.substr(instrucT.lastIndexOf(noofchoice)+2,instrucT.length);}--%>
+htm = ' <div class="building_block" >Position: <strong>'+positionname+'</strong><br><strong >'+ instrucT +' <span style="color: red"></span></strong>';
 <%--if(noofchoice>1) htm=htm + ' candidates';
 else htm=htm + ' candidate';--%>
-htm = htm +'<table class="ballot"><tbody><tr><th style="text-align: left;">Candidate Name</th><th>Selection</th></tr>';
+htm = htm +'<table class="ballot"><tbody><tr><th style="text-align: left;">Candidate ID</th><th style="text-align: left;">Candidate Name</th><th>Selection</th></tr>';
 
 var ca = em1[iii].getElementsByTagName("candidate");
+
 for(jj=0;jj<ca.length;jj++)
     {
+           var e1 = ca[jj].getElementsByTagName("candidateenroll");
+        var e;
+            if(e1[0].firstChild!=null) e = e1[0].firstChild.nodeValue;
+            else e = "";
+
+
         var candidatename1 = ca[jj].getElementsByTagName("candidatename");
         var candidatename;
             if(candidatename1[0].firstChild!=null) candidatename = candidatename1[0].firstChild.nodeValue;
             else candidatename = "";
-       htm = htm +'<tr><td style="text-align: left;"><label for="entry'+iii+'">'+candidatename+'</label></td>';
+       htm = htm +'<tr><td style="text-align: left;"><label for="entry'+iii+'">'+e+'</label><td style="text-align: left;"><label for="entry'+iii+'">'+candidatename+'</label></td>';
 if(noofchoice>1)
        {
-               htm = htm +'<td><input type="checkbox" value="'+jj+'" onclick="checkCandidateLimit('+iii+')" name="entry'+iii+'" id="entry'+iii+'" ></td></tr>';
+               htm = htm +'<td><input type="checkbox" value="'+jj+'" onclick="checkCandidateLimit('+iii+')" name="entry'+iii+'" id="entry'+iii+'" ><a href="/Candidate/viewmenifesto.jsp?id=<%=x%>&amp;pos_id='+positionid+'&amp;candi='+e+'">view ballot</a></td></tr>';
        }
        else
            {
-               htm = htm +'<td><input type="radio" value="'+jj+'"  name="entry'+iii+'" id="entry'+iii+'" ></td></tr>';
+               htm = htm +'<td><input type="radio" value="'+jj+'"  name="entry'+iii+'" id="entry'+iii+'" ><a href="/EMS/Candidate/viewmenifesto.jsp?id=<%=x%>&amp;pos_id='+positionid+'&amp;candi='+e+'">view ballot</a></td></tr>';
            }
 
     }
-  htm = htm + '</tbody></table></div>';
+  htm = htm + ' </tbody></table></div>';
 //alert("create("+jj+","+iii+",this);");
 //alert(document.getElementById(idadd).attributes.onclick.value);
 divtag.innerHTML =htm;
 document.getElementById("ballot").appendChild(divtag);
+   var divtag1 = document.createElement("div");
+                divtag1.id = "position"+iii;
+                divtag1.style.backgroundColor = "#D8CEF6";
+                divtag1.style.border = "solid 5px #F2F5A9";
+                divtag1.style.borderTopLeftRadius = "15px";
+                divtag1.style.borderTopRightRadius = "15px";
+                divtag1.style.borderBottomLeftRadius = "15px";
+                divtag1.style.borderBottomRightRadius = "15px";
+                divtag1.style.width = "590px";
+                divtag1.style.align = "center";
+                divtag1.style.marginTop = "5px";
+                divtag1.style.height = document.height;
+divtag1.innerHTML ='<input type="button" value="Close" onclick="send()"/>';
+     document.getElementById("ballot").appendChild(divtag1);
+
 //document.getElementById("position").style.display = "none";
 //document.getElementById("add Position").style.display = "none";
 document.getElementById("ballot").style.display="inline";
-document.getElementById("previewtext").textContent = "Close Preview";
+//document.getElementById("ballot").textContent = "Ballot Preview";
 }
 
 
 }
+
+
 
 <%--function block()
             {
@@ -454,10 +527,14 @@ document.getElementById("previewtext").textContent = "Close Preview";
     </head>
     <body onload="previewBallot();">
 
-
+      <div id="ballot">
     
-              <div id="ballotpreview" style="display: block;overflow: hidden; margin-left: 350px; text-align: center; background-color: gray; width: 600px"><label onclick="previewBallot()" id="previewtext">Preview Ballot</label><br/><div id="ballot" style="display: block"></div>
-              </div>
+</div>
+    
+             <%-- <div id="ballotpreview" style="display: block;overflow: hidden;  text-align: center; width: 600px"><label onclick="previewBallot()" id="previewtext"></label><br/>
+            
+              </div>--%>
+       
 
     </body>
 </html>

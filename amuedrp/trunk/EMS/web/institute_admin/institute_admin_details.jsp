@@ -13,6 +13,14 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%
+String role=(String)session.getAttribute("login_role");
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+<jsp:include page="/institute_admin/adminheader.jsp"/>
+<%}
+%>
 
 
 

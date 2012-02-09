@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 15, 2011 5:46:40 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class  name="com.myapp.struts.hbm.ElectionManager" table="election_manager">
+  <class name="com.myapp.struts.hbm.ElectionManager" table="election_manager">
     <composite-id class="com.myapp.struts.hbm.ElectionManagerId" name="id">
       <key-property name="managerId" type="string">
         <column length="100" name="manager_id"/>

@@ -17,10 +17,7 @@ import javax.servlet.http.HttpSession;
 import com.myapp.struts.utility.PasswordEncruptionUtility;
 
 
-/**
- *
- * @author Dushyant
- */
+
 public class LoginAction extends org.apache.struts.action.Action {
 
     String user_id;
@@ -39,28 +36,21 @@ public class LoginAction extends org.apache.struts.action.Action {
     boolean page = true;
     Hashtable hashtable;
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
         HttpSession session = request.getSession();
-        
+          String path = servlet.getServletContext().getRealPath("/");
+        session.setAttribute("apppath", path);
         if(session.isNew())
         {
             return mapping.findForward("out");
         }
         session_id = session.getId();
-        System.out.println(session.getId());
+     
         try {
             locale1 = (String) session.getAttribute("locale");
 
@@ -70,7 +60,7 @@ public class LoginAction extends org.apache.struts.action.Action {
 
             if (session.getAttribute("locale") != null) {
                 locale1 = (String) session.getAttribute("locale");
-                // System.out.println("locale="+locale1);
+               
             } else {
                 locale1 = "en";
             }
@@ -91,41 +81,17 @@ public class LoginAction extends org.apache.struts.action.Action {
 LoginActionForm loginActionForm;
 loginActionForm = (LoginActionForm) form;
 
-        //if(loginActionForm.getButton1()!=null){
+   
         user_id = loginActionForm.getUsername();
         password = loginActionForm.getPassword();
         button = loginActionForm.getButton1();
-        //loginActionForm.setButton1(null);
-            //session.setAttribute("LoginActionForm", loginActionForm);
-        //}
-        //else{
-        /*if(session.getAttribute("staff_id")!=null){
-        user_id = (String)session.getAttribute("staff_id");
-        password = (String)session.getAttribute("password");
-        button = "Log In";
-        }
-        else
-        {
-            user_id="";
-            password="";
-            button="Log In";
-        }*/
-            //loginActionForm = (LoginActionForm)session.getAttribute("LoginActionForm");
-        //}
+       
         
-session.setAttribute("staff_id", user_id);
 
 
 
-        System.out.println(user_id+"....."+password+"......"+button+"......");
 
-//con=MyConnection.getMyConnection();
-//            if(con==null)
-//            {
-//             request.setAttribute("msg1","Database Connectivity is Closed");
-//             return mapping.findForward("failure");
-//            }
-
+    
 
         if (button.equals("Log In")) {
            if((user_id!=null && password!=null) && !(user_id.equals("") || password.equals("")))
@@ -133,25 +99,25 @@ session.setAttribute("staff_id", user_id);
 
             String password1 = PasswordEncruptionUtility.password_encrupt(password);
 
-            //loginActionForm.setButton("");
+          
             LoginDAO dao = new LoginDAO();
            
             try{
-                System.out.println("password="+password);
+          
             rst = dao.getLoginDetails(user_id, password);
-            System.out.println("password="+password);
+          
             rst1 = (List)dao.getLoginDetails(user_id, password1);
             }catch(Exception e)
         {
              request.setAttribute("msg1", "Database Not Connected! Please Contact Web Admin");
-             System.out.println("Error:"+e.getMessage());
+          //   System.out.println("Error:"+e.getMessage());
              return mapping.findForward("failure");
         }
 
             Login login=new Login();
             if (!rst.isEmpty()||!rst1.isEmpty()) //record found
             {
-            //System.out.println("ResultSet"+rst.get(0));
+           
             
                 if (rst.isEmpty()){
                 login = (Login) rst1.get(0);}
@@ -159,24 +125,8 @@ session.setAttribute("staff_id", user_id);
                 login = (Login) rst.get(0);
             }
 
-                //session.setMaxInactiveInterval(60 * 1);
-
-                /*  Cookie cookie = new Cookie ("library_id",rst.getString("library_id"));
-                Cookie cookie1 = new Cookie ("staff_id",rst.getString("staff_id"));
-
-
-                response.addCookie(cookie);
-                response.addCookie(cookie1);
-                 */
-                String staffId = (String)session.getAttribute("staff_id");
+             
                
-          /*      if(login.getStatus().equalsIgnoreCase("login")){
-                    if(login.getRole().equalsIgnoreCase("superadmin")){
-                       return mapping.findForward("superadmin");
-                    }
-                }*/
-
-             //   if(login.getStatus().equalsIgnoreCase("logout") && button!=null){
                 InstituteDAO  obj=new InstituteDAO();
             Institute x= obj.getInstituteDetails(login.getStaffDetail().getId().getInstituteId());
 if(x!=null)
@@ -195,27 +145,22 @@ if(x!=null)
                 session.setAttribute("password", login.getPassword());
                
 
-               // login.setStatus("login");
-                //dao.update(login);
-                //loginActionForm.setButton1(null);
-               /* loginTempDAO logintempdao = new loginTempDAO();
-                logintempdao.delete(user_id);
-                logintempdao.insert(user_id);
-*/
+          
                 staff_id = login.getStaffDetail().getId().getStaffId();
                 institute_id =login.getStaffDetail().getId().getInstituteId();
 
 
        List<Election> election = ElectionDAO.Elections(institute_id);
         Iterator ite = election.iterator();
-        //System.out.println("Election List Size="+election.size());
+        
         ArrayList electionList=new ArrayList();
         ArrayList currentelectionList=new ArrayList();
        ArrayList ClosedelectionList=new ArrayList();
+       ArrayList underprocessList=new ArrayList();
        InstituteDAO insti= new InstituteDAO();
         String status="OK";
         List Institute = insti.getInstituteNameByStatus(status);
-        System.out.println( "InstituteList"+""+Institute.size());
+      
         session.setAttribute("Institute",Institute);
         while(ite.hasNext())
         {
@@ -228,6 +173,11 @@ if(x!=null)
                currentelectionList.add(elec);
 
             }
+             if(elec.getNstart().before(d) && elec.getWithdrawlEndDate().after(d))
+            {
+               underprocessList.add(elec);
+
+            }
             if(elec.getStartDate().before(d) && elec.getEndDate().after(d))
             {
 
@@ -238,7 +188,7 @@ if(x!=null)
                     
 
             }
-            else if(elec.getEndDate().before(d))
+            else if(elec.getResultDeclarationDate().before(d))
             {
                 elec.setStatus("closed");
                  ElectionDAO.update(elec);
@@ -246,15 +196,12 @@ if(x!=null)
             }
         session.setAttribute("electionList", electionList);
         session.setAttribute("currentelectionList", currentelectionList);
+        session.setAttribute("underprocessList", underprocessList);
         session.setAttribute("ClosedelectionList", ClosedelectionList);
         }
                 if(login.getRole()==null) login.setRole(" ");
                 if (login.getRole().equalsIgnoreCase("superadmin")) //superadmin
                 {
-                    //pending
-                    /*con = MyConnection.getMyConnection();
-                    stmt = con.prepareStatement("select * from admin_registration where status = 'NotRegistered'");
-                    */
                    
                     return mapping.findForward("superadmin");
                 }
@@ -297,6 +244,16 @@ if(x!=null)
                         }
                     return mapping.findForward("instituteadmin");
                 }
+                      else if(login.getRole().equalsIgnoreCase("insti-admin,voter"))
+                {
+                    Institute rs1 = institutedao.getInstituteDetails(institute_id);
+
+                        if (rs1!=null) {
+
+                            session.setAttribute("institute_name", rs1.getInstituteName());
+                        }
+                    return mapping.findForward("instituteadmin");
+                }
 
                  else if(login.getRole().equalsIgnoreCase("Election Manager"))  {
 
@@ -309,7 +266,48 @@ if(x!=null)
 
                        ElectionManager electionmanager=   institutedao.getElectionManagerDetails(login.getUserId(),institute_id);
 
-                       System.out.println(electionmanager.getId().getManagerId().toString()+"..........");
+      
+                          if(electionmanager!=null)
+                          {
+
+                             session.setAttribute("manager_id",electionmanager.getId().getManagerId().toString());
+
+                          }
+
+
+                        rs1 = institutedao.getInstituteDetails(institute_id);
+
+                        if (rs1!=null) {
+
+
+
+                          session.setAttribute("voter_id",login.getStaffDetail().getId().getStaffId());
+                        session.setAttribute("user_id", login.getUserId());
+
+                        session.setAttribute("login", login);
+
+                            session.setAttribute("institute_name", rs1.getInstituteName());
+                        }
+
+
+
+
+
+
+                     return mapping.findForward("electionmanager");
+                 }
+                     else if(login.getRole().equalsIgnoreCase("Election Manager,voter"))  {
+
+                     Institute rs1 = institutedao.getInstituteDetails(institute_id);
+
+                        if (rs1!=null) {
+
+                            session.setAttribute("institute_name", rs1.getInstituteName());
+                        }
+
+                       ElectionManager electionmanager=   institutedao.getElectionManagerDetails(login.getUserId(),institute_id);
+
+
                           if(electionmanager!=null)
                           {
 
@@ -334,43 +332,43 @@ if(x!=null)
 
                            
                           session.setAttribute("voter_id",login.getStaffDetail().getId().getStaffId());
-
-                          System.out.println("StaffIddddddddddddddddddd"+login.getStaffDetail().getId().getStaffId());
-
+                        session.setAttribute("user_id", login.getUserId());
+      
+                        session.setAttribute("login", login);
 
                             session.setAttribute("institute_name", rs1.getInstituteName());
                         }
                      return mapping.findForward("voter");
                  }
 
-                    else if(login.getRole().equalsIgnoreCase("candidate"))  {
-
-                        Institute rs1 = institutedao.getInstituteDetails(institute_id);
-
-                        if (rs1!=null) {
-
-
-                            session.setAttribute("candidate_id",login.getStaffDetail().getId().getStaffId());
-
-                            Candidate1 obj1= institutedao.getCandidatePosition(login.getStaffDetail().getId().getInstituteId(),login.getStaffDetail().getId().getStaffId());
-
-                            session.setAttribute("position_id",obj1.getId().getPositionId());
-
-                            session.setAttribute("institute_name", rs1.getInstituteName());
-                            session.setAttribute("user_name", login.getUserName());
-
-                               Position1 pos=institutedao.getCandidatePositionName(login.getStaffDetail().getId().getInstituteId(),obj1.getId().getElectionId(),String.valueOf(obj1.getId().getPositionId()));
-                            session.setAttribute("positionname", pos.getPositionName());
-
-                            Election elec=ElectionDAO.searchElection(pos.getId().getElectionId(), login.getStaffDetail().getId().getInstituteId());
-
-                             session.setAttribute("electionname", elec.getElectionName());
-
-
-
-                        }
-                     return mapping.findForward("candidate");
-                 }
+//                    else if(login.getRole().equalsIgnoreCase("votercandidate"))  {
+//
+//                        Institute rs1 = institutedao.getInstituteDetails(institute_id);
+//
+//                        if (rs1!=null) {
+//
+//
+//                            session.setAttribute("candidate_id",login.getStaffDetail().getId().getStaffId());
+//
+//                      //      List<Candidate1> obj1=(List<Candidate1>) institutedao.getCandidatePosition(login.getStaffDetail().getId().getInstituteId(),login.getStaffDetail().getId().getStaffId());
+//
+//                          //  session.setAttribute("position_id",obj1.getId().getPositionId());
+//
+//                          //  session.setAttribute("institute_name", rs1.getInstituteName());
+//                         //   session.setAttribute("user_name", login.getUserName());
+//
+//                          //     Position1 pos=institutedao.getCandidatePositionName(login.getStaffDetail().getId().getInstituteId(),obj1.getId().getElectionId(),String.valueOf(obj1.getId().getPositionId()));
+//                         //   session.setAttribute("positionname", pos.getPositionName());
+//
+//                         //   Election elec=ElectionDAO.searchElection(pos.getId().getElectionId(), login.getStaffDetail().getId().getInstituteId());
+//
+//                          //   session.setAttribute("electionname", elec.getElectionName());
+//
+//
+//
+//                        }
+//                     return mapping.findForward("candidate");
+//                 }
 
                 }
 

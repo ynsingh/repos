@@ -6,7 +6,21 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
+<%
+String role=(String)session.getAttribute("login_role");
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
 
+<%}else if(role.equalsIgnoreCase("Election Manager")|| role.equalsIgnoreCase("Election Manager,voter"))
+   {
+    String c=(String)request.getParameter("compute");
+    System.out.println(c+"...................");
+    if(c==null){
+%>
+
+<jsp:include page="/election_manager/login.jsp"/>
+<%}}%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -131,6 +145,23 @@ req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 req.send("cast="+positionSel);
 return true;
 }
+function send()
+{
+
+
+  <%if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+top.location.href="<%=request.getContextPath()%>/institute_admin/search_election_details.jsp";
+<%}else if(role.equalsIgnoreCase("Election Manager")|| role.equalsIgnoreCase("Election Manager,voter"))
+   {%>
+ window.location="<%=request.getContextPath()%>/electionmanager.do";
+<%}else{%>
+
+ top.location.href="<%=request.getContextPath()%>/Voter/voter_home.jsp";
+    <%}%>
+    return false;
+}
 function updateCast(cartXML)
 {
    var em = cartXML.getElementsByTagName("cast")[0];
@@ -161,7 +192,9 @@ var htm="";
 var ival = 0;
 document.getElementById("ballot").innerHTML="";
 var em = cartXML.getElementsByTagName("positions")[0];
-var el = em.getElementsByTagName("election");
+if(em!=undefined)
+{var el = em.getElementsByTagName("election");
+
 var em1 = em.getElementsByTagName("position");
 var elec = el[0].firstChild.nodeValue;
 //var em = cartXML.firstChild.value;
@@ -178,7 +211,7 @@ var divtag1 = document.createElement("div");
                 divtag1.style.align = "center";
                 divtag1.style.marginTop = "5px";
                 divtag1.style.height = "20px";
-               var htm1 = '<span style="margin-left: 45%">'+ elec +'</span>';
+               var htm1 = '<span style="text-align:center">'+ elec +'</span><a href="<%=request.getContextPath()%>/electionResult.do?election=<%=election%>&amp;report=true">Show PDF Report</a><input type="button" value="close" onclick="send()"/>';
                divtag1.innerHTML = htm1;
             document.getElementById("ballot").appendChild(divtag1);
 
@@ -207,15 +240,25 @@ var noofchoice1 = em1[iii].getElementsByTagName("noofchoice");
 var noofchoice = noofchoice1[0].firstChild.nodeValue;
 posXml[iii]=positionname;
 htm = '<div class="building_block" style="margin-left: 15px">Position: <strong>'+positionname+'</strong><div style="float:right;margin-right: 250px">No of Choice: '+noofchoice+'</div>';
-htm = htm +'<table class="ballot"><tbody><tr><th style="text-align: left;width:250px">Candidate Name</th><th>Number of Votes</th></tr>';
+htm = htm +'<table class="ballot"><tbody><tr><th style="text-align: left;">Candidate ID/EnrollmentNo</th><th style="text-align: left;width:250px">Candidate Name</th><th>Number of Votes</th></tr>';
 
 var ca = em1[iii].getElementsByTagName("candidate");
 
 choice[iii]=noofchoice;
 var ch =0;
-
-for(jj=0;jj<ca.length;jj++)
+var max=0;
+var n="";
+//if(ca.length>1){
+    for(jj=0;jj<ca.length;jj++)
     {
+         var e1 = ca[jj].getElementsByTagName("candidateenroll");
+        var e;
+            if(e1[0].firstChild!=null) e = e1[0].firstChild.nodeValue;
+            else e = "";
+
+
+var tie=0;
+
         var candidatename1 = ca[jj].getElementsByTagName("candidatename");
         var votes1 = ca[jj].getElementsByTagName("votes");
         var candidatename;
@@ -224,15 +267,37 @@ for(jj=0;jj<ca.length;jj++)
             else candidatename = "";
             if(votes1[0].firstChild!=null) votes = votes1[0].firstChild.nodeValue;
             else votes = "0";
+            var v=votes;
+            if(max<v)
+          { max=v;n=e;
+          }
+          if(max==v && max!=0)
+              {
+                tie=1;
+              }
             var elect = "";
             if(ch++<choice[iii]) elect="Elected";
             else elect="";
-       htm = htm +'<tr><td style="text-align: left;width:250px"><label for="entry'+iii+'">'+candidatename+'</label></td>';
-       htm = htm +'<td style="text-align: center;"><label for="entry'+iii+'">'+votes+'</label></td><td style="text-align:right">'+elect+'</td></tr>';
+       htm = htm +'<tr><td style="text-align: left;width:250px"><label for="entry'+iii+'">'+e+'</label></td><td style="text-align: left;width:250px"><label for="entry'+iii+'">'+candidatename+'</label></td>';
+       htm = htm +'<td style="text-align: center;"><label for="entry'+iii+'">'+votes+'</label></td></tr>';
        
 ival = iii;
     }
-  htm = htm + '</tbody></table></div>';
+   // }
+  //  if(ca.length==1){
+      //   htm = htm + '<tr><td colspan=2 style="text-align:right">1 candidate is there in Ballot, Contact EM</td></tr></tbody></table></div>';
+
+   // }
+  //  else{
+    if(max==0)
+        htm = htm + '<tr><td colspan=2 style="text-align:right">Voting Not Made</td></tr></tbody></table></div>';
+else if(tie==1 && ca.length>1)
+  htm = htm + '<tr><td colspan=2 style="text-align:right">Voting Tie Contact EM</td></tr></tbody></table></div>';
+else if(ca.length==1)
+    htm = htm + '<tr><td colspan=2 style="text-align:right"><b>Candidate Enroll is'+n +' is elected with '+ max+'no of votes</b></td></tr></tbody></table></div>';
+else
+     htm = htm + '<tr><td colspan=2 style="text-align:right"><b>Candidate Enroll is'+n +' is elected with '+ max+'no of votes</b></td></tr></tbody></table></div>';
+  //  }
 //alert("create("+jj+","+iii+",this);");
 //alert(document.getElementById(idadd).attributes.onclick.value);
 divtag.innerHTML =htm;
@@ -255,19 +320,56 @@ var divtag2 = document.createElement("div");
                 divtag2.style.align = "center";
                 divtag2.style.marginTop = "5px";
                 divtag2.style.height = document.height;
-                var sql = '<input type="button" value="Close" onclick="deleteBod();" style="margin-left: 45%;"/>';
-divtag2.innerHTML = sql;
+                <%--var sql = '<input type="button" value="Close" onclick="deleteBod();" style="margin-left: 45%;"/>';
+divtag2.innerHTML = sql;--%>
 document.getElementById("ballot").appendChild(divtag2);
 var s = 'fn()';
 window.setTimeout('fn()', 400);
 //if(document.parentNode!=undefined)
+}
+else
+    {
 
+   
+     <%
+role=(String)session.getAttribute("login_role");
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+             alert("Sorry Election Result is not Declared");
+top.location.href="/EMS/institute_admin/search_election_details.jsp";
+<%}else if(role.equalsIgnoreCase("Election Manager")|| role.equalsIgnoreCase("Election Manager,voter"))
+   {%>
+  alert("Sorry Election Result is not Declared");
+  location.href="/EMS/electionmanager.do";
+<%}else{%>
+
+     //top.window.document.getElementById('msg').value="Sorry Election Result is not Declared";
+   alert("Sorry Election Result is not Declared");
+ top.location.href="/EMS/Voter/voter_home.jsp";
+  //top.document.alert("Sorry Election Result is not Declared");
+    <%}%>
+   
+ 
+ 
+    }
 //document.referrer.getElementById("overbody").style.height=h;
 }
 function deleteBod()
             {
-                var child = parent.document.getElementById("overbody");
-               parent.document.getElementById("bod").removeChild(child);
+               // var child = parent.document.getElementById("overbody");
+            //   parent.document.getElementById("bod").removeChild(child);
+
+             <%
+
+                         if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+top.location.href="<%=request.getContextPath()%>/institute_admin/search_election_details.jsp";
+<%}else{%>
+window.location="<%=request.getContextPath()%>/manageElection.do";
+<%}%>
+
 
             }
 function Validate(index,ch,posxm)

@@ -55,6 +55,7 @@ function back()
 
     <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type= "text/javascript" src = "/EMS/js/countries.js"></script>
 <title>EMS</title>
 <link href="/css/Style1.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
@@ -118,23 +119,23 @@ function check3()
 
         return false;
     }
-      if(document.getElementById('dep1').value=="")
+      <%--if(document.getElementById('dep1').value=="")
     {
         alert("Enter department Name");
 
         document.getElementById('dep1').focus();
 
         return false;
-    }
+    }--%>
 
-     if(document.getElementById('cour1').value=="")
+  <%--   if(document.getElementById('cour1').value=="")
     {
         alert("Enter Course ");
 
         document.getElementById('cour1').focus();
 
         return false;
-    }
+    }--%>
 
      if(document.getElementById('vname1').value=="")
     {
@@ -160,30 +161,30 @@ function check3()
 
         return false;
     }
-     if(document.getElementById('fname1').value=="")
+    <%-- if(document.getElementById('fname1').value=="")
     {
         alert("Enter Father's Name");
 
         document.getElementById('fname1').focus();
 
         return false;
-    }
-     if(document.getElementById('mname1').value=="")
+    }--%>
+    <%-- if(document.getElementById('mname1').value=="")
     {
         alert("Enter Mother's Name");
 
         document.getElementById('mname1').focus();
 
         return false;
-    }
-     if(document.getElementById('mnumb1').value=="")
+    }--%>
+     <%--if(document.getElementById('mnumb1').value=="")
     {
         alert("Enter Mobile Number");
 
         document.getElementById('mnumb1').focus();
 
         return false;
-    }
+    }--%>
      if(document.getElementById('email1').value=="")
     {
         alert("Enter Email ID");
@@ -192,14 +193,14 @@ function check3()
 
         return false;
     }
-     if(document.getElementById('country1').value=="")
+    <%-- if(document.getElementById('country1').value=="")
     {
         alert("Enter Country");
 
         document.getElementById('country1').focus();
 
         return false;
-    }
+    }--%>
 
    return true;
 
@@ -414,31 +415,42 @@ function check3()
     </td>
 </tr>
 <tr>
-<td align="left">Department*:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="dep1" property="department"  value="<%=dep%>" /></td>
+<td align="left">Department:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="dep1" property="department"  value="<%=dep%>" /></td>
 
 </tr>
 
 <tr>
-<td align="left">Course*:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cour1" property="course" value="<%=cour%>"/></td>
+<td align="left">Course:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cour1" property="course" value="<%=cour%>"/></td>
          <td align="left">Corresponding Address:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cadd1" property="c_add" value="<%=cadd%>"/></td>
 </tr>
 
 <tr>
     <td align="left">Year:</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="year1" property="year" value="<%=yr%>"/></td>
-    <td align="left">City:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="city"  value="<%=city%>" styleId="city1"/></td>
+    <td align="left">Country:</td><td>
+
+        <html:select name="VoterRegActionForm" onchange="print_state('state1',this.selectedIndex);" style="width:200px" styleId="country1" property="country">
+            
+            </html:select><%--<html:text readonly="<%=read %>" name="VoterRegActionForm" property="country"  value="<%=country%>" styleId="country1"/>--%></td>
+<script language="javascript">print_country("country1");</script>
+
 </tr>
 
 <tr>
  <td  width="30%">Duration of course:</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="dur1" value="<%=dur%>" property="duration" /> </td>
-<td align="left">State:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="state" value="<%=state%>" styleId="state1"/></td>
+<td align="left">State:</td><td>
+    <html:select  name="VoterRegActionForm" property="state" value="<%=state%>" styleId="state1" style="width:150px">
+    <html:option value="">Select</html:option>
+    </html:select>
+    <%--<html:text readonly="<%=read %>" name="VoterRegActionForm" property="state" value="<%=state%>" styleId="state1"/>--%></td>
 </tr>
 <tr>
 <td align="left">Current Session:</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="sess1" value="<%=sess%>" property="session"  /></td>
-<td align="left">Zip Code:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="zipcode"  value="<%=zcode%>" styleId="zcode1"/></td>
+<td align="left">City:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="city"  value="<%=city%>" styleId="city1"/></td>
+
 </tr>
 <tr><td width="15%">Date of Joining<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="1" property="j_date" value="<%=jdate%>" />
 <a href="javascript:NewCal('1','ddmmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></td>
-<td align="left">Country:*</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="country"  value="<%=country%>" styleId="country1"/></td>
+    <td align="left">Zip Code:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="zipcode"  value="<%=zcode%>" styleId="zcode1"/></td>
 </tr>
 
 
@@ -462,8 +474,8 @@ function check3()
         <html:select property="gender" styleId="gen1"  name="VoterRegActionForm"  tabindex="10">
 
             <html:option  value="Select"> Select </html:option>
-                                <html:option  value="male">Male</html:option>
-                                <html:option value="female">Female</html:option>
+            <html:option  value="male">Male</html:option>
+            <html:option value="female">Female</html:option>
                                
 </html:select>
     </td>
@@ -476,15 +488,15 @@ function check3()
       </tr>
 
 
-<tr> <td>Father's Name*</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="fname1"  value="<%=fname%>"  property="f_name"/></td>
+<tr> <td>Father's Name</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="fname1"  value="<%=fname%>"  property="f_name"/></td>
   <td align="left">State</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="state1" value="<%=state1%>" styleId="state21"/></td>
 </tr>
-  <tr> <td>Mother's Name*</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mname1" value="<%=mname%>" property="m_name"/></td>
+  <tr> <td>Mother's Name</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mname1" value="<%=mname%>" property="m_name"/></td>
   <td align="left">ZIP Code</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" property="zipcode1"  value="<%=zcode1%>" styleId="zcode21"/></td>
   </tr>
 
 <tr>
-<td align="left">Mobile No*:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mnumb1" value="<%=mnumb%>" property="m_number" /></td>
+<td align="left">Mobile No:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mnumb1" value="<%=mnumb%>" property="m_number" /></td>
 <td align="left">Country</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="country1" value="<%=country1%>" styleId="country21"/></td>
 </tr>
   <tr>
@@ -495,6 +507,11 @@ function check3()
 <tr>
 
     <td align="left" colspan="2">email*:<html:text readonly="<%=read%>" name="VoterRegActionForm"   value="<%=email%>" styleId="email1" property="email"/></td>
+
+</tr>
+<tr>
+
+    <td align="left" colspan="2">Alternate Email:<html:text readonly="<%=read%>" name="VoterRegActionForm"   value="<%=email%>" styleId="alternateemail" property="alternateemail"/></td>
 
 </tr>
 

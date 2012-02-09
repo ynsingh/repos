@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 10, 2011 10:00:02 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class  name="com.myapp.struts.hbm.AdminRegistration" table="admin_registration">
+  <class name="com.myapp.struts.hbm.AdminRegistration" table="admin_registration">
     <id name="registrationId" type="int">
       <column name="registration_id"/>
       <generator class="assigned"/>
@@ -71,7 +71,13 @@
       <column length="50" name="working_status" not-null="true"/>
     </property>
     <property name="userId" type="string">
-      <column length="20" name="user_id"/>
+      <column length="200" name="user_id"/>
     </property>
+    <property name="enrollment" type="string">
+      <column length="20" name="enrollment"/>
+    </property>
+      <property name="instituteId" type="string">
+        <column length="20" name="institute_id"/>
+      </property>
   </class>
 </hibernate-mapping>

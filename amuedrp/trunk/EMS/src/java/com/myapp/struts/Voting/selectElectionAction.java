@@ -23,24 +23,63 @@ public class selectElectionAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+
+
+
         String election =(String) request.getParameter("election");
         System.out.println("election="+election);
         if(election==null || election.isEmpty())
             election = (String)request.getAttribute("election");
         System.out.println("election="+election);
+
+        String compute =(String) request.getParameter("compute");
+        String agm =(String) request.getParameter("agm");
+
+
+if(agm!=null){
+
+
+
+        if(election!=null && !election.isEmpty())
+        {
+            HttpSession session = request.getSession();
+            String institute_id = (String)session.getAttribute("institute_id");
+            Election elec = ElectionDAO.searchElection(election.trim(),institute_id);
+            session.setAttribute("election_id", election);
+
+               session.setAttribute("electionName", elec.getElectionName());
+        }
+         return mapping.findForward("success2");
+
+        }
+
+
+
+
+
+
+        if(compute!=null){
+
+          
+
+        if(election!=null && !election.isEmpty())
+        {
+            HttpSession session = request.getSession();
+            String institute_id = (String)session.getAttribute("institute_id");
+            Election elec = ElectionDAO.searchElection(election.trim(),institute_id);
+            session.setAttribute("election_id", election);
+
+               session.setAttribute("electionName", elec.getElectionName());
+        }
+         return mapping.findForward("success1");
+
+        }
+
         if(election!=null && !election.isEmpty())
         {
             HttpSession session = request.getSession();

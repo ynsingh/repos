@@ -3,6 +3,17 @@ package com.myapp.struts.admin;
 
 
 public class StaffDoc {
+    protected String menifesto;
+
+    public String getMenifesto() {
+        return menifesto;
+    }
+
+    public void setMenifesto(String menifesto) {
+        this.menifesto = menifesto;
+    }
+
+    
         protected String staff_id;
         protected String first_name;
 	protected String last_name;

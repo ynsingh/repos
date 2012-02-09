@@ -11,8 +11,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.hbm.*;
-import java.util.List;
-import java.util.Set;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
@@ -34,13 +32,12 @@ public class Update_ManagerAction extends org.apache.struts.action.Action {
     private String contact_no;
     private String mobile_no;
     private String department;
-    private String staff_id;
+   
     private String manager_id;
     private String institute_id;
-    private String user_id;
-    private String password;
+   
     private String zip1;
-    private String repassword;
+    
     private String email_id;
     Locale locale=null;
     String locale1="en";
@@ -52,15 +49,7 @@ public class Update_ManagerAction extends org.apache.struts.action.Action {
 
     private static final String SUCCESS = "success";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -89,30 +78,30 @@ locale1=(String)session.getAttribute("locale");
 
 
         first_name=electionManagerForm.getFirst_name();
-        //System.out.println("hey there first name");
+      
         last_name=electionManagerForm.getLast_name();
-       // System.out.println("hey there last name");
+     
         address1=electionManagerForm.getAddress1();
-       // System.out.println("hey there address");
+     
         city1=electionManagerForm.getCity1();
-       // System.out.println("hey there city");
+     
         state1=electionManagerForm.getState1();
-       // System.out.println("hey there state");
+       
         zip1=electionManagerForm.getZip1();
-       // System.out.println("hey there zip");
+      
         country1=electionManagerForm.getCountry1();
-       // System.out.println("hey there country");
+      
         gender=electionManagerForm.getGender();
-        //System.out.println("hey there gender");
+    
         contact_no=electionManagerForm.getContact_no();
-        //System.out.println("hey there contact no");
+      
         mobile_no=electionManagerForm.getMobile_no();
-       // System.out.println("hey there mobile no");
+     
         department=electionManagerForm.getDepartment();
-        staff_id=electionManagerForm.getStaff_id();
+     String   staff_id=electionManagerForm.getStaff_id();
         manager_id=electionManagerForm.getManager_id();
         institute_id=electionManagerForm.getInstitute_id();
-        user_id=electionManagerForm.getUser_id();
+     String   user_id=electionManagerForm.getUser_id();
         email_id=electionManagerForm.getEmail_id();
 
 
@@ -157,38 +146,18 @@ locale1=(String)session.getAttribute("locale");
         }
  catch(Exception e)
  {
-     //e.getMessage();
+     
      request.setAttribute("msg", e.getMessage());
  
-
-       
-
-
-
-
-
-
-//if(request.getAttribute("msg")==null)
-//request.setAttribute("msg", "record not updated successfully");
-
-        return mapping.findForward(SUCCESS);}
+         return mapping.findForward(SUCCESS);
+ }
         catch(ExceptionInInitializerError e)
  {
-     //e.getMessage();
+     
      request.setAttribute("msg", e.getMessage());
 
-
-
-
-
-
-
-
-
-//if(request.getAttribute("msg")==null)
-//request.setAttribute("msg", "record not updated successfully");
-
-        return mapping.findForward("failure");}
+        return mapping.findForward("failure");
+ }
         return mapping.findForward("success");
     }
     

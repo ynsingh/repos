@@ -1,10 +1,4 @@
-<%--
-    Document   : Simple.jsp
-    Created on : Jun 18, 2010, 7:46:24 AM
-    Author     : Mayank Saxena
-<jsp:include page="adminheader.jsp" flush="true" />
---%>
- 
+
     <%@page import="com.myapp.struts.admin.RequestDoc,com.myapp.struts.hbm.*"%>
     <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
@@ -147,7 +141,7 @@ if (rs!=null){
 
    requestList = new ArrayList();
    int tcount =0;
-   int perpage=4;
+   int perpage=10;
    int tpage=0;
  /*Create a connection by using getConnection() method
    that takes parameters of string type connection url,
@@ -202,6 +196,7 @@ pageContext.setAttribute("rec",perpage);
     pageContext.setAttribute("path", request.getContextPath());
 %>
 <br><br>
+Modify Institute Details
 <%if(tcount==0)
 {%>
 <p class="err" style="font-size:12px"><%=resource.getString("no_record_found")%></p>
@@ -209,7 +204,15 @@ pageContext.setAttribute("rec",perpage);
 else
 {%>
 <table align="<%=align%>" dir="<%=rtl%>" width="700px">
-    <tr><td colspan="2" align="right">View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></td></tr>
+    <tr><td colspan="2" align="right">View Next&nbsp;
+           <%-- <input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>--%>
+        <select id="rec" onchange="changerec()" style="width:50px">
+           <option value="10">10</option>
+            <option value="20">20</option>
+             <option value="30">30</option>
+       </select>
+
+        </td></tr>
     <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
     

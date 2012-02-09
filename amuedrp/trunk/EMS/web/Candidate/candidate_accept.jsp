@@ -124,7 +124,11 @@ String instituteName=(String)session.getAttribute("institute_name");
                 String file = (String) request.getAttribute("filename");
                 String position=(String)request.getAttribute("position");
                 String election=(String)request.getAttribute("election");
+                String alternateemail=(String)request.getAttribute("alternateemail");
                 String institute_id=(String)session.getAttribute("institute_id");
+                String proposedby=(String)session.getAttribute("proposedby");
+                String secondedby=(String)session.getAttribute("secondedby");
+                String positionaccepted=(String)session.getAttribute("positionaccepted");
     %>
 
 
@@ -582,6 +586,7 @@ String instituteName=(String)session.getAttribute("institute_name");
                                         <td align="left"><%=resource.getString("country")%>:*</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country"  value="<%=country%>" styleId="country1"/></td>
 
                                     </tr>
+                                     
                                     <tr>
                                         <td colspan="2"><input type="checkbox" id="Checkbox1" name="check" value="off" tabindex="17" onclick="return copy();" >&nbsp;&nbsp;<b>Click Here</b>&nbsp;(If permanent address is same as corresponding address)</td>
                                     </tr>
@@ -590,7 +595,10 @@ String instituteName=(String)session.getAttribute("institute_name");
                                     <tr>    <td align="left"><%=resource.getString("state")%></td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="state1" value="<%=state1%>" styleId="state21"/></td></tr>
                                     <tr> <td align="left"><%=resource.getString("pin")%></td><td><html:text  readonly="<%=read%>" name="CandidateRegActionForm" property="zipcode1"  value="<%=zcode1%>" styleId="zcode21"/></td><td colspan="2"></tr>
                                     <tr><td align="left"><%=resource.getString("country")%></td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country1" value="<%=country1%>" styleId="country21"/></td></tr>
-               </table>
+                                     <tr><td align="left">Alternate Email</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="alternateemail" value="<%=alternateemail%>" styleId="alternateemail"/></td></tr>
+
+                                    
+                                            </table>
 
 
                                         </td>
@@ -611,6 +619,7 @@ String instituteName=(String)session.getAttribute("institute_name");
 
                                     <tr>
                                         <td align="left"><%=resource.getString("course")%>*:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="cour1" property="course" value="<%=cour%>"/></td>
+
                                     </tr>
 
                                     <tr>
@@ -629,7 +638,7 @@ String instituteName=(String)session.getAttribute("institute_name");
                                     <tr>
                                         <td align="left"><%=resource.getString("candidatename")%>*</td>
                                         <td>
-                                            <table><tr><td>
+                                            <table ><tr><td>
                                                         <select name="courtesy" size="1" id="courtesy" tabindex="2" style="align:right" disabled="<%=read%>">
 
                                                             <option selected value="Select">Select</option>
@@ -668,12 +677,19 @@ String instituteName=(String)session.getAttribute("institute_name");
                                         <td colspan="2"><%=resource.getString("important")%>! <%=resource.getString("workingemail")%>:</td>
 
                         </tr>
+                        
+
+
+
+
+
 
                         <tr>
 
                             <td align="left" ><%=resource.getString("emailid")%>*:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm"   value="<%=email%>" styleId="email1" property="email"/></td>
 
                         </tr>
+                        
 
                         <tr><td align="center" height="10px;" colspan="3" bgcolor="cyan">Academic Detail</td></tr>
                         <tr><td align=""><%=resource.getString("department")%>*
@@ -684,7 +700,7 @@ String instituteName=(String)session.getAttribute("institute_name");
                                     <html:option value="pg">Post Graduate</html:option>
                                     <html:option value="other">Others</html:option>
 
-                                </html:select>
+                                </html:select>                        
                         </tr>
                         <tr>
                             <td align="left"><%=resource.getString("marks")%> %*:</td><td><html:text  name="CandidateRegActionForm" styleId="mark" property="p_marks" readonly="<%=read%>" /></td>
@@ -695,17 +711,20 @@ String instituteName=(String)session.getAttribute("institute_name");
               
 
             <tr><td align="left" ><%=resource.getString("backlog")%>*
-                    </td><td><html:radio name="CandidateRegActionForm" property="backlog" value="yes" disabled="<%=read%>"/>Yes<html:radio name="CandidateRegActionForm" property="backlog" styleId="backlog" value="no" disabled="<%=read%>"/>N0 </td></tr>
+                    </td><td><html:radio name="CandidateRegActionForm" property="backlog" value="yes" disabled="<%=read%>"/>Yes<html:radio name="CandidateRegActionForm" property="backlog" styleId="backlog" value="no" disabled="<%=read%>"/>N0 </td>
+            </tr>
              <tr><td align="left"><%=resource.getString("crimi")%>*</td><td><html:radio name="CandidateRegActionForm" property="criminal"  value="yes" disabled="<%=read%>"/>Yes<html:radio  name="CandidateRegActionForm" property="criminal"  styleId="criminal" value="no" disabled="<%=read%>"/>No</td></tr>
             <tr><td><%=resource.getString("indisc")%>* </td><td><html:radio name="CandidateRegActionForm" property="indisc" value="yes" disabled="<%=read%>"/>Yes<html:radio name="CandidateRegActionForm" property="indisc"  value="no" disabled="<%=read%>"/>No</td></tr>
       
             <tr><td><%=resource.getString("electionname")%>* </td><td><html:text name="CandidateRegActionForm" styleId="elections1" property="elections" value="<%=election%>" readonly="<%=read%>"/>
-                </td></tr>
+                </td>
+            </tr>
             
             <tr><td><%=resource.getString("positionname")%>* </td><td><html:text name="CandidateRegActionForm" styleId="position1" property="position" value="<%=position%>" readonly="<%=read%>"/>
-                </td></tr>
+                </td>
+            </tr>
 
-
+                                   
 
 
            
@@ -728,16 +747,22 @@ String instituteName=(String)session.getAttribute("institute_name");
                     <input id="button1"  name="button" type="submit" value="<%=resource.getString("accept")%>" class="txt1" />
            
            <%} else if(status.equals("R")==false){%>
-                   <input name="button" type="submit" value="<%=resource.getString("print")%>"  class="txt1"/>
+           <input name="button" type="button" value="back" onclick="return send()"  class="txt1"/>
                    <%}%>
-                    <input name="button" type="button" value="<%=resource.getString("cancel")%>" onclick="return send()" class="txt1"/>
-                    
-                </td>
-            </tr>
 
+                  <%-- <input name="button" type="button" value="<%=resource.getString("cancel")%>" onclick="return send()" class="txt1"/>
+                   --%>
+              
+                </td>
+                
+               
+          
+
+            </tr>
+           
               
 
-                                </table>
+    </table>
                             
          
                        

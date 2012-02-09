@@ -16,7 +16,7 @@ This Page is to Enter Staff ID
         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-        <title>ELECTION MANAGER </title>
+       
         <script language="javascript" type="text/javascript">
 
 

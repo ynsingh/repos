@@ -152,7 +152,7 @@ function isNumberKey(evt)
 
   // requestList = new List();
    int tcount =0;
-   int perpage=4;
+   int perpage=10;
    int tpage=0;
  /*Create a connection by using getConnection() method
    that takes parameters of string type connection url,
@@ -217,8 +217,16 @@ pageContext.setAttribute("rec",perpage);
 <%}
 else
 {%>
+View ALL Block Institute Details
 <table align="<%=align%>" dir="<%=rtl%>" width="700px">
-    <tr><td colspan="2" align="right">View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></td></tr>
+    <tr><td colspan="2" align="right">View Next&nbsp;
+           <%-- <input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>--%>
+        <select id="rec" onchange="changerec()" style="width:50px">
+           <option value="10">10</option>
+            <option value="20">20</option>
+             <option value="30">30</option>
+       </select>
+        </td></tr>
     <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
 
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">

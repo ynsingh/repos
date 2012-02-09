@@ -28,6 +28,7 @@ public class BallotPositionCandiDAO {
         catch (RuntimeException e) {
             if(bpc != null)
                 tx.rollback();
+            e.printStackTrace();
             throw e;
         }
         finally {
@@ -48,7 +49,7 @@ public class BallotPositionCandiDAO {
             tx.commit();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
+          e.printStackTrace();
                 tx.rollback();
             throw e;
         }
@@ -59,17 +60,22 @@ finally {
 
     public List getPositionID(int positionId,String instituteId){
  Session session =null;
-    Transaction tx = null;
+    List tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM Position1 where id.positionId=:positionId and id.instituteId=:instituteId");
              query.setInteger("positionId", positionId);
              query.setString("instituteId", instituteId);
-            return query.list();
+            tx= query.list();
+            session.getTransaction().commit();
         }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
         finally {
             session.close();
         }
+        return tx;
 }
 }

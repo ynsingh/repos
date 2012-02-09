@@ -43,7 +43,7 @@ locale1=(String)session.getAttribute("locale");
 <title>Institute Registration</title>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
-
+<script type= "text/javascript" src = "/EMS/js/countries.js"></script>
 <script language="javascript" type="text/javascript">
     function quit()
     {
@@ -55,8 +55,8 @@ locale1=(String)session.getAttribute("locale");
 <body dir="<%=rtl%>">
   
         <div
-   style="  top:60px;
-   left:350px;
+   style="  top:85px;
+   left:150px;
    right:5px;
       position: absolute;
 
@@ -66,16 +66,16 @@ locale1=(String)session.getAttribute("locale");
 
             <html:form  method="post" action="/instituteregistration" onsubmit="return checkPassword();" >
 
-                <table  width="1000px" align="center">
+                <table   align="center">
 
 
 
 
      
-           <tr><td valign="top" width="700px" >
+           <tr><td valign="top" width="70%" >
             
           
-                   <table align="center" width="700px" class="btn3"  style="" dir="<%=rtl%>" >
+                   <table align="center"  class="btn3"  style="" dir="<%=rtl%>" >
   <tr><td align="center" colspan="2" style="background-color: #7697BC; height:5px;color:white;border:solid 1px  #7697BC; margin:0px 0px 0px 0px;font-family:Tahoma;">
           <b dir="<%=rtl%>"><%=resource.getString("login.href.institute.registration")%></b></td><td dir="<%=rtl%>" align="<%=align%>"><b class="mess"><%=resource.getString("(*)")%></b></td></tr>
      <tr><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("institutename")%>*</td><td width="150px"><html:text property="institute_name" name="AdminRegistrationActionForm" />
@@ -94,18 +94,24 @@ locale1=(String)session.getAttribute("locale");
 
 			</html:messages>
          </td></tr>
-             <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("city")%>*</td><td><html:text  property="city"/></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="city">
-				<%=resource.getString("city_cannotbe_blank")%>
+             
+             
+             <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("country")%>*</td><td><select onchange="print_state('state',this.selectedIndex);" id="country" name ="country" style="width:180px"></select></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="country">
+				<%=resource.getString("country_cannotbe_blank")%>
 
-			</html:messages>
+			</html:messages><script language="javascript">print_country("country");</script>
          </td></tr>
-             <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("state")%>*</td><td><html:text  property="state"/></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="state">
+             <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("state")%>*</td><td><select name ="state" style="width:180px" id="state">
+                         <option value="">Select</option>
+
+                     </select></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="state">
 				<%=resource.getString("state_cannotbe_blank")%>
 
 			</html:messages>
          </td></tr>
-             <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("country")%>*</td><td><html:text  property="country" /></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="country">
-				<%=resource.getString("country_cannotbe_blank")%>
+
+             <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("city")%>*</td><td><html:text  property="city"/></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="city">
+				<%=resource.getString("city_cannotbe_blank")%>
 
 			</html:messages>
          </td></tr>
@@ -114,6 +120,12 @@ locale1=(String)session.getAttribute("locale");
 
 			</html:messages>
          </td></tr>
+             <tr><td dir="<%=rtl%>" align="<%=align%>">StaffID/Enrollment*</td><td><html:text  property="enrollment" /></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="enrollment">
+				Enrollment/StaffID cannot be blank
+
+			</html:messages>
+         </td></tr>
+
               <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("courtesy")%></td><td>
  <html:text property="courtesy"/>
 

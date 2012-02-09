@@ -66,6 +66,7 @@ locale1=(String)session.getAttribute("locale");
         <link rel="stylesheet" href="<%=contextPath%>/css/page.css"/>
         <title></title>
     </head>
+    <jsp:include page="adminheader.jsp"/>
     <body>
         <html:form action="/manager_registration" method="post" onsubmit="return checkPassLog();" >
             <table width="100%" class="txt" dir="<%=rtl%>">

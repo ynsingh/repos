@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  * @author Edrp-04
  */
 public class View_Manager_DetailAction extends org.apache.struts.action.Action {
-    
+
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     //private String manager_id;
@@ -27,16 +27,8 @@ public class View_Manager_DetailAction extends org.apache.struts.action.Action {
     //private String last_name;
     //private String staff_id;
     List<Election_Manager_StaffDetail> rst;
+
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -44,6 +36,10 @@ public class View_Manager_DetailAction extends org.apache.struts.action.Action {
             HttpSession session = request.getSession();
         String  ElectionManagerId="id";
        ElectionManagerId=request.getParameter(ElectionManagerId);
+
+       if(ElectionManagerId==null)
+           ElectionManagerId=(String)session.getAttribute("manager_id");
+
        String instituteId = (String)session.getAttribute("institute_id");
 
      ElectionManager electionmanager=new ElectionManager();
@@ -56,14 +52,16 @@ public class View_Manager_DetailAction extends org.apache.struts.action.Action {
         //rst=stmt.executeQuery();
         rst = (List<Election_Manager_StaffDetail>) electionmanagerdao.GetManagerDetails(ElectionManagerId,instituteId);
             request.setAttribute("resultset", rst);
+        if(session.getAttribute("manager_id")!=null)
+        return mapping.findForward("success1");
+else
         return mapping.findForward("success");
         }
         catch(Exception e)
         {
         e.getMessage();
         }
+return null;
 
-
-        return mapping.findForward(SUCCESS);
     }
 }

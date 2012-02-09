@@ -29,15 +29,7 @@ public class ElectionViewAction1 extends org.apache.struts.action.Action {
     private Election ob=new Election();
 
 private ElectionId elid=new ElectionId();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -81,7 +73,13 @@ private ElectionId elid=new ElectionId();
         {
 
             if(!l.isEmpty()){
+
                  ere= (ElectionRuleEligiblity1)l.get(0);
+             System.out.println(ere.getElection().getStatus());
+                 if(ere.getElection().getStatus().equalsIgnoreCase("started")||ere.getElection().getStatus().equalsIgnoreCase("closed") )
+                 {   request.setAttribute("msg2", "Sorry Cannot Update Election already started/closed");
+                      return mapping.findForward("duplicate");
+                 }
              employeeform.setCreatedby(ere.getElection().getCreatedBy());
               employeeform.setEnddate(ere.getElection().getEndDate());
                employeeform.setStartdate(ere.getElection().getStartDate());
@@ -97,7 +95,7 @@ private ElectionId elid=new ElectionId();
             employeeform.setElectionId(ere.getElection().getId().getElectionId());
             employeeform.setInstituteId(ere.getElection().getId().getInstituteId());
 
-
+employeeform.setResultDeclarationDate(ere.getElection().getResultDeclarationDate());
             employeeform.setCritaria(ere.getElectionrule().getCriteria());
             employeeform.setAttendence(ere.getEligibility().getAttendence());
             employeeform.setBacklog(ere.getEligibility().getBacklog());

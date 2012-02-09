@@ -84,6 +84,13 @@ String instituteName=(String)session.getAttribute("institute_name");
          window.location="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=U";
          return true;
       }
+      function send1()
+      {
+          //alert(document.getElementById("img").value);
+
+         top.location="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=U";
+         return true;
+      }
 
 </script>
 
@@ -124,6 +131,7 @@ String instituteName=(String)session.getAttribute("institute_name");
                 String file = (String) request.getAttribute("filename");
                 String position=(String)request.getAttribute("position");
                 String election=(String)request.getAttribute("election");
+                String alternateemail=(String)request.getAttribute("alternateemail");
                 String institute_id=(String)session.getAttribute("institute_id");
     %>
 
@@ -580,7 +588,7 @@ String instituteName=(String)session.getAttribute("institute_name");
                                     </tr>
                                     <tr>
                                         <td align="left"><%=resource.getString("country")%>:*</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country"  value="<%=country%>" styleId="country1"/></td>
-
+                                       
                                     </tr>
                                     <tr>
                                         <td colspan="2"><input type="checkbox" id="Checkbox1" name="check" value="off" tabindex="17" onclick="return copy();" >&nbsp;&nbsp;<b>Click Here</b>&nbsp;(If permanent address is same as corresponding address)</td>
@@ -590,7 +598,9 @@ String instituteName=(String)session.getAttribute("institute_name");
                                     <tr>    <td align="left"><%=resource.getString("state")%></td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="state1" value="<%=state1%>" styleId="state21"/></td></tr>
                                     <tr> <td align="left"><%=resource.getString("pin")%></td><td><html:text  readonly="<%=read%>" name="CandidateRegActionForm" property="zipcode1"  value="<%=zcode1%>" styleId="zcode21"/></td><td colspan="2"></tr>
                                     <tr><td align="left"><%=resource.getString("country")%></td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country1" value="<%=country1%>" styleId="country21"/></td></tr>
-               </table>
+                                    <tr><td>Alternate Email </td><td><html:text name="CandidateRegActionForm" styleId="alternateemail" property="alternateemail" value="<%=alternateemail%>" readonly="<%=read%>"/>
+                                    </td></tr>
+                                   </table>
 
 
                                         </td>
@@ -703,8 +713,9 @@ String instituteName=(String)session.getAttribute("institute_name");
                 </td></tr>
             
             <tr><td><%=resource.getString("positionname")%>* </td><td><html:text name="CandidateRegActionForm" styleId="position1" property="position" value="<%=position%>" readonly="<%=read%>"/>
-                </td></tr>
-
+                </td>
+            </tr>
+             
 
 
 
@@ -728,10 +739,18 @@ String instituteName=(String)session.getAttribute("institute_name");
                     <input id="button1"  name="button" type="submit" value="<%=resource.getString("accept")%>" class="txt1" />
            
            <%} else if(status.equals("R")==false){%>
-                   <input name="button" type="submit" value="<%=resource.getString("print")%>"  class="txt1"/>
+           <input name="button" type="button" value="Back" onclick="return send1()"  class="txt1"/>
                    <%}%>
-                    <input name="button" type="button" value="<%=resource.getString("cancel")%>" onclick="return send()" class="txt1"/>
-                    
+                    <%
+ role=(String)session.getAttribute("login_role");
+                         if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+
+<%}else{%>
+ <input name="button" type="button" value="Cancel" onclick="return send()" class="txt1"/>
+
+<%}%>
                 </td>
             </tr>
 

@@ -169,7 +169,7 @@ if(session.getAttribute("username")==null)
 </head>
 
 <div
-   style="  top:55px;
+   style="  top:85px;
    left:5px;
    right:5px;
       position: absolute;
@@ -187,8 +187,10 @@ if(session.getAttribute("username")==null)
         <li><a href="<%=contextPath%>/admin/view_approved.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
       <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.viewapprovedlist")%></b></a></li>
       <li><a href="<%=contextPath%>/admin/block_admin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-        <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.delinquentinstitutelist")%></b> </a></li>
-      <li><a href="<%=contextPath%>/admin/view_all.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
+        <b style="color:white" dir="<%=rtl%>">Deliquent Institute</b> </a></li>
+      <li><a href="<%=contextPath%>/admin/rejected.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
+      <b style="color:white" dir="<%=rtl%>"> Rejected Institute List</b></a></li>
+        <li><a href="<%=contextPath%>/admin/view_all.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
       <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.viewall")%></b></a></li>
   
 
@@ -202,8 +204,8 @@ if(session.getAttribute("username")==null)
       <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.managesuperadminaccount")%></b></a></li>
 <li><a href="<%=contextPath%>/admin/view_blocked_institute.jsp" onclick="window.setTimeout('winresize()', 1000);"  target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
     <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.changeworkingstatus")%> </b></a></li>
-<%--<li><a href="<%=contextPath%>/admin/email_setup.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-    <b style="color:white" dir="<%=rtl%>"><%=resource.getString("email_setup")%> </b></a></li>--%>
+<li><a href="<%=contextPath%>/reset_password.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
+    <b style="color:white" dir="<%=rtl%>">Reset Password </b></a></li>
 </ul>
 
 
@@ -243,7 +245,7 @@ if(session.getAttribute("username")==null)
 
       </td></tr>
   <tr dir="<%=rtl%>"><td id="ifr3" align="left" rowspan="2" style=" padding-left:200px;" dir="<%=rtl%>">
-          <IFRAME  name="f3" src="#" frameborder=0 scrolling="no" width="100%" style="color:deepskyblue;height:100%;visibility:true;" id="f3" dir="<%=rtl%>"></IFRAME>
+          <IFRAME  name="f3" src="admin/view_pending.jsp" frameborder=0 scrolling="no" width="100%" style="color:deepskyblue;height:100%;visibility:true;" id="f3" dir="<%=rtl%>"></IFRAME>
 
 
       </td></tr>
@@ -252,7 +254,7 @@ if(session.getAttribute("username")==null)
        
       
 </table>
-
+         
     </div>
         </body>
    </html>

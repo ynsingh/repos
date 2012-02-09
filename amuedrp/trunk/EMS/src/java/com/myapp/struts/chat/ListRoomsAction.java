@@ -7,12 +7,8 @@ package com.myapp.struts.chat;
 
 import chat.ChatRoom;
 import chat.ChatRoomList;
-import chat.Chatter;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,15 +30,7 @@ public class ListRoomsAction extends org.apache.struts.action.Action {
     String name,home;
 
     String pos;
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -57,7 +45,8 @@ public class ListRoomsAction extends org.apache.struts.action.Action {
  
 
  String t=(String)session.getAttribute("x");
-home=System.getProperty("user.home");
+ String path = servlet.getServletContext().getRealPath("/");
+home=path;
 
 
 

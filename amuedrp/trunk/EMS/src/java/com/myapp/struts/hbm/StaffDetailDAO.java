@@ -15,19 +15,23 @@ import org.hibernate.*;
 public class StaffDetailDAO {
 public static StaffDetail searchStaffId(String staff_id,String institute_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+        StaffDetail tx=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  StaffDetail  WHERE institute_id =:institute_id and  staff_id=:staff_id ");
+            Query query = session.createQuery("FROM  StaffDetail  WHERE institute_id =:institute_id and  enrollment=:staff_id ");
             query.setString("institute_id", institute_id);
 
             query.setString("staff_id", staff_id);
-            return ( StaffDetail) query.uniqueResult();
+            tx= ( StaffDetail) query.uniqueResult();
+            session.getTransaction().commit();
+        }
+        catch(RuntimeException e){
+        e.printStackTrace();
         }
         finally {
             session.close();
         }
-
+return tx;
 }
      public void insert(StaffDetail staffDetails){
     Session session =null;
@@ -41,6 +45,7 @@ public static StaffDetail searchStaffId(String staff_id,String institute_id) {
         catch (RuntimeException e) {
             if(staffDetails != null)
                 tx.rollback();
+            e.printStackTrace();
             throw e;
         }
         finally {
@@ -57,12 +62,13 @@ public void update(StaffDetail staffDetails) {
             tx.commit();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
+        
+            e.printStackTrace();
                 tx.rollback();
             throw e;
         }
         finally {
-           //session.close();
+           session.close();
         }
     }
 public void delete(int user_id,String institute_id) {
@@ -71,64 +77,82 @@ public void delete(int user_id,String institute_id) {
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
-            //acqdocentry = session.load(BibliographicDetails.class, id);
+           
             Query query = session.createQuery("DELETE FROM StaffDetail  WHERE  id.staff = :userId and id.institute_id=:instituteId");
             query.setInteger("userId",user_id );
             query.setString("instituteId",institute_id );
             query.executeUpdate();
             tx.commit();
-            //return (BibliographicDetails) query.uniqueResult();
+         
         }
-
+catch(RuntimeException e){
+e.printStackTrace();
+}
         finally {
-            //session.close();
+            session.close();
         }
     }
 
 public List getStaffDetails(){
   Session session =null;
-    Transaction tx = null;
+    List tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM StaffDetail");
              
-            return query.list();
+           tx= query.list();
+           session.getTransaction().commit();
         }
+    catch(RuntimeException e){
+e.printStackTrace();
+}
         finally {
             session.close();
         }
+        return tx;
 }
 
 public List getStaffDetails(String staffId,String instituteId){
  Session session =null;
-    Transaction tx = null;
+    List tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM StaffDetail where id.staffId=:staffId and id.instituteId=:instituteId");
              query.setString("staffId", staffId);
              query.setString("instituteId", instituteId);
-            return query.list();
+            tx= query.list();
+            session.getTransaction().commit();
         }
+    catch(RuntimeException e){
+e.printStackTrace();
+}
         finally {
             session.close();
         }
+        return tx;
 }
 public StaffDetail getStaffDetails1(String staffId,String instituteId){
  Session session =null;
-    Transaction tx = null;
+    StaffDetail tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM StaffDetail where id.staffId=:staffId and id.instituteId=:instituteId");
              query.setString("staffId", staffId);
              query.setString("instituteId", instituteId);
-            return (StaffDetail)query.uniqueResult();
+           tx= (StaffDetail)query.uniqueResult();
+           session.getTransaction().commit();
         }
+
+    catch(RuntimeException e){
+e.printStackTrace();
+}
         finally {
             session.close();
         }
+        return tx;
 }
 
 }

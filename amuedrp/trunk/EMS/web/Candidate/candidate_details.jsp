@@ -15,7 +15,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <%! boolean read = true;%>
-
+<jsp:include page="/Voter/voter_home.jsp"/>
 <script type="text/javascript">
 
     
@@ -54,7 +54,7 @@
 
     <%
         String id = request.getParameter("id");
-         List<CandidateRegLoginDetails> lstcand = (List<CandidateRegLoginDetails>)session.getAttribute("nominationList");
+         List<CandidateRegLoginDetails> lstcand = (List<CandidateRegLoginDetails>)session.getAttribute("CandidateList");
          CandidateRegLoginDetails cand = lstcand.get(Integer.parseInt(id));
          if(cand!=null){
          VoterRegistration voter = (VoterRegistration)cand.getVoterRegistration();
@@ -231,6 +231,8 @@
             <tr><td>Election*</td><td> <html:text name="CandidateRegActionForm" property="elections" value="<%=election%>" readonly="<%=read%>"/>
                 </td>
             <td>Position*</td><td><html:text name="CandidateRegActionForm" property="position" value="<%=position%>" readonly="<%=read%>"/>
+                </td>
+               <td>Alternate Email</td><td><html:text name="CandidateRegActionForm" property="alternateemail" value="<%=position%>" readonly="<%=read%>"/>
                 </td>
             </tr>
              <tr>

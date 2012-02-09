@@ -16,12 +16,39 @@ import java.text.DateFormat;
  * @author akhtar
  */
 public class DepActionForm extends  org.apache.struts.action.ActionForm {
+
+    public String getElection() {
+        return election;
+    }
+
+    public void setElection(String election) {
+        this.election = election;
+    }
+    private String election;
     DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG,DateFormat.LONG);
     private String electionId,instituteId,  electionname,description,status,createdby,button;
-    private String critaria,deaprtment,marks,attendence,backlog,criminal,indiscipline;
-private Timestamp startdate,enddate,nominationStart,nominationEnd,scrutnyDate,scrutnyEndDate,withdrawlDate,withdrawlEndDate;
 
-    public Timestamp getEnddate() {
+    public String getList() {
+        return list;
+    }
+
+    public void setList(String list) {
+        this.list = list;
+    }
+    private String list;
+    private String critaria,deaprtment,marks,attendence,backlog,criminal,indiscipline;
+private Timestamp startdate,enddate,nominationStart,nominationEnd,scrutnyDate,scrutnyEndDate,withdrawlDate,withdrawlEndDate,resultDeclarationDate;
+
+ public Timestamp getResultDeclarationDate() {
+        return resultDeclarationDate;
+    }
+
+    public void setResultDeclarationDate(Timestamp resultDeclarationDate) {
+        this.resultDeclarationDate = resultDeclarationDate;
+    }
+
+
+public Timestamp getEnddate() {
         return enddate;
     }
 
@@ -79,7 +106,7 @@ private Timestamp startdate,enddate,nominationStart,nominationEnd,scrutnyDate,sc
         this.electionname = electionname;
     }
 
-    
+
     public String getInstituteId() {
         return instituteId;
     }
@@ -88,7 +115,7 @@ private Timestamp startdate,enddate,nominationStart,nominationEnd,scrutnyDate,sc
         this.instituteId = instituteId;
     }
 
-    
+
     public String getStatus() {
         return status;
     }
@@ -279,5 +306,5 @@ private Timestamp startdate,enddate,nominationStart,nominationEnd,scrutnyDate,sc
         this.withdrawlEndDate = withdrawlEndDate;
     }
 
-  
+
 }

@@ -13,7 +13,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import="java.util.*,java.io.*,java.net.*"%>
-
+<jsp:include page="adminheader.jsp"/>
 
 
 <%
@@ -78,8 +78,7 @@ if (!rst.isEmpty()){
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Election_Manager_Details</title>
     </head>
-    <body onload="funload();">
-
+    <body>
         <html:form action="/manager_registration" method="post">
         <table width="100%" dir="<%=rtl%>">
              <br>
@@ -199,7 +198,7 @@ if (!rst.isEmpty()){
                      <td align="<%=align%>" dir="<%=rtl%>"><html:password property="password" value="<%=password%>" styleId="pass" readonly="true" name="Election_Manager_RegistrationActionForm" /></td>
                      
                 <tr>
-                     <td align="<%=align%>" dir="<%=rtl%>"><br><br><br><br><br><br></td>
+                     <td align="<%=align%>" dir="<%=rtl%>"><br><br><br></td>
                      <td align="<%=align%>" dir="<%=rtl%>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="back" class="txt2" value="<%=resource.getString("back")%>" onclick="quit()"/></td>
                 </tr>
 
@@ -215,21 +214,11 @@ if (!rst.isEmpty()){
     function quit()
 {
     //top.location="/EMS-Struts/institute_admin/institute_admin_home.jsp";
-    parent.document.getElementById("pagetab").height = prevheight;
-    location.href="<%=request.getContextPath()%>/view_managers.do";
+   // parent.document.getElementById("pagetab").height = prevheight;
+    location.href="<%=request.getContextPath()%>/instituteadmin.do";
 }
 
 
 
-function funload()
-{
-  // alert("yes its working");
-   var parloc = parent.document.getElementById("pagetab");
-    var pagheight = document.height!=undefined?document.height:(document.body!=undefined?document.body.height:document.scrollHeight);
-   prevheight = parloc.height;
-   //alert(pagheight);
-   if(pagheight!=undefined)pagheight+=30;
-    parloc.height = pagheight!=undefined?pagheight:650;
-    //alert("yes its working");
-}
+
 </script>

@@ -41,7 +41,13 @@
             </field>
         </form>
         <form name="AdminRegistrationActionForm">
-            <field
+
+           <field
+                property="enrollment"
+                depends="required">
+                    <arg key="AdminRegistrationActionForm.enrollment"/>
+            </field>
+          <field
                 property="institute_name"
                 depends="required">
                     <arg key="AdminRegistrationActionForm.institute_name"/>
@@ -170,8 +176,7 @@
 
 <form name="AdminViewActionForm">
     <field property="password" depends="required">
-        <arg key="AdminViewActionForm.password">
-        </arg>
+        <arg key="AdminViewActionForm.password"></arg>
     </field>
 </form>
 
@@ -180,8 +185,7 @@
            
             
             <field property="electionname" depends="required">
-                <arg key="DepActionForm.electionname">
-                </arg>
+                <arg key="DepActionForm.electionname"></arg>
             </field>
         </form>
 

@@ -27,21 +27,14 @@ public class Candidatesetup1Action extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+      
          List rst;
-        HttpSession session = request.getSession();
+         HttpSession session = request.getSession();
         String institute_id=(String)session.getAttribute("institute_id");
         String manager_id=(String)session.getAttribute("user_id");
 
@@ -51,7 +44,7 @@ public class Candidatesetup1Action extends org.apache.struts.action.Action {
         CandidateRegistrationDAO candidatedao= new CandidateRegistrationDAO();
 
 
-       // ElectionDAO electiondao=new ElectionDAO();
+     
         String status= (String)request.getParameter("status");
         String searchby = request.getParameter("search_by");
        String searchkeyword = request.getParameter("search_keyword");
@@ -65,7 +58,7 @@ else if(status.equalsIgnoreCase("U")) status="REGISTERED";
 }
 if(sortby==null)
     sortby="voter_name";
-       //  rst = admindao.getVoterDetailsByStatus(institute_id,"REGISTERED");
+   
    System.out.println(searchkeyword+".......................");
       List<VoterCandidate>     rst1=null;
       if(searchkeyword!=null)
@@ -76,7 +69,9 @@ if(sortby==null)
       {
       rst1=candidatedao.GetDetails2(institute_id,status,null,null,sortby);
       }
-//System.out.println("VOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"+rst1.get(0).getVoterRegistration().getStatus());
+
+
+
                    // session.setAttribute("resultset", rst);
                     session.setAttribute("resultset1", rst1);
             

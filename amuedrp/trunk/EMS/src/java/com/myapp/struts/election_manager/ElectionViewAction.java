@@ -5,6 +5,7 @@
 
 package com.myapp.struts.election_manager;
 
+import com.myapp.struts.Candidate.CandidateRegistrationDAO;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.hbm.ElectionId;
 import java.util.Iterator;
@@ -29,31 +30,79 @@ public class ElectionViewAction extends org.apache.struts.action.Action {
     private Election ob=new Election();
 
 private ElectionId elid=new ElectionId();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception
                  {
+         String button="Update";
         HttpSession session = request.getSession();
         DepActionForm employeeform=(DepActionForm)form;
-         String button=employeeform.getButton();
-         System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDD"+button);
-          String id=employeeform.getElectionId();
+          ElectionRuleEligiblity1 ere=new ElectionRuleEligiblity1();
+        List<ElectionRuleEligiblity1> l;
+        // System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDD"+button);
           String Eid=employeeform.getInstituteId();
           if (Eid==null) Eid = (String)session.getAttribute("institute_id");
-          System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR  "+id + " EID= " + Eid);
+        String req=(String)request.getParameter("id");
+         String req1=(String)request.getParameter("st");
+        if(req!=null && req1==null){
+        session.setAttribute("ele", req);
+        return mapping.findForward("preview");
+
+
+        }
+       
+        if(req!=null && req1!=null){
+
+ button="View";
+ 
+       l=(List<ElectionRuleEligiblity1>)ElectionDAO.GetElectionDetails(Eid,req);
+          System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+l);
+             if(!l.isEmpty()){
+
+   ere= (ElectionRuleEligiblity1)l.get(0);
+
+
+             employeeform.setCreatedby(ere.getElection().getCreatedBy());
+              employeeform.setEnddate(ere.getElection().getEndDate());
+               employeeform.setStartdate(ere.getElection().getStartDate());
+               employeeform.setNominationStart(ere.getElection().getNstart());
+               employeeform.setNominationEnd(ere.getElection().getNend());
+               employeeform.setScrutnyDate(ere.getElection().getScrutnyDate());
+               employeeform.setScrutnyEndDate(ere.getElection().getScrutnyEndDate());
+               employeeform.setWithdrawlDate(ere.getElection().getWithdrawlDate());
+               employeeform.setWithdrawlEndDate(ere.getElection().getWithdrawlEndDate());
+               employeeform.setResultDeclarationDate(ere.getElection().getResultDeclarationDate());
+                employeeform.setElectionname(ere.getElection().getElectionName());
+                 employeeform.setStatus(ere.getElection().getStatus());
+                 employeeform.setDescription(ere.getElection().getDescription());
+            employeeform.setElectionId(ere.getElection().getId().getElectionId());
+            employeeform.setInstituteId(ere.getElection().getId().getInstituteId());
+
+
+            employeeform.setCritaria(ere.getElectionrule().getCriteria());
+            employeeform.setAttendence(ere.getEligibility().getAttendence());
+            employeeform.setBacklog(ere.getEligibility().getBacklog());
+            employeeform.setCriminal(ere.getEligibility().getCriminallog());
+            employeeform.setDeaprtment(ere.getEligibility().getDepartment());
+            employeeform.setMarks(ere.getEligibility().getMarks());
+            employeeform.setIndiscipline(ere.getEligibility().getIndiscipline());
+
+            request.setAttribute("button", button);
+
+             }
+          request.setAttribute("back", "back");
+          return mapping.findForward("add");
+
+        }
+        
+          String id=employeeform.getElectionId();
+        
+          //System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR  "+id + " EID= " + Eid);
        // Election l=ElectionDAO.searchElection(id);
-          ElectionRuleEligiblity1 ere=new ElectionRuleEligiblity1();
-       List<ElectionRuleEligiblity1> l;
+        
+       //List<ElectionRuleEligiblity1> l;
        l=(List<ElectionRuleEligiblity1>)ElectionDAO.GetElectionDetails(Eid,id);
           System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+l);
         if(button.equals("Add"))
@@ -87,6 +136,7 @@ private ElectionId elid=new ElectionId();
                employeeform.setScrutnyEndDate(ere.getElection().getScrutnyEndDate());
                employeeform.setWithdrawlDate(ere.getElection().getWithdrawlDate());
                employeeform.setWithdrawlEndDate(ere.getElection().getWithdrawlEndDate());
+               employeeform.setResultDeclarationDate(ere.getElection().getResultDeclarationDate());
                 employeeform.setElectionname(ere.getElection().getElectionName());
                  employeeform.setStatus(ere.getElection().getStatus());
                  employeeform.setDescription(ere.getElection().getDescription());
@@ -129,6 +179,7 @@ private ElectionId elid=new ElectionId();
                employeeform.setScrutnyEndDate(ere.getElection().getScrutnyEndDate());
                employeeform.setWithdrawlDate(ere.getElection().getWithdrawlDate());
                employeeform.setWithdrawlEndDate(ere.getElection().getWithdrawlEndDate());
+               employeeform.setResultDeclarationDate(ere.getElection().getResultDeclarationDate());
                 employeeform.setElectionname(ere.getElection().getElectionName());
                  employeeform.setStatus(ere.getElection().getStatus());
                  employeeform.setDescription(ere.getElection().getDescription());
@@ -177,8 +228,20 @@ private ElectionId elid=new ElectionId();
 
 if(button.equals("Preview"))
 return mapping.findForward("preview");
+           String institute_id = (String)session.getAttribute("institute_id");
+        String staff_id = (String)session.getAttribute("user_id");
+List<CandidateRegLoginDetails> lstcandi = (List<CandidateRegLoginDetails>)CandidateRegistrationDAO.searchCandidate1(staff_id, institute_id);
 
+        if(lstcandi!=null)
+        {
+
+
+
+
+             session.setAttribute("CandidateList", lstcandi);
+        }
 
            return mapping.findForward("failure");
     }
+    
 }

@@ -7,7 +7,9 @@ package com.myapp.struts.Voter;
 
 import com.myapp.struts.hbm.AdminRegistration;
 import com.myapp.struts.hbm.HibernateUtil;
+import com.myapp.struts.hbm.SetVoter;
 import com.myapp.struts.hbm.VoterRegistration;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -22,6 +24,31 @@ import org.hibernate.criterion.Restrictions;
  * @author akhtar
  */
 public class VoterRegistrationDAO {
+    public static void setVoter(SetVoter obj) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+
+        try {
+            tx = (Transaction) session.beginTransaction();
+
+            session.saveOrUpdate(obj);
+            tx.commit();
+
+
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            tx.rollback();
+        } finally {
+            session.close();
+        }
+     //   return true;
+
+
+}
+
 public static void insert(VoterRegistration obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -36,12 +63,11 @@ public static void insert(VoterRegistration obj) {
 
 
         } catch (Exception ex) {
-        //    return false;
-
-            //  System.out.println(ex.toString());
-
+        
+            ex.printStackTrace();
+            tx.rollback();
         } finally {
-            //session.close();
+            session.close();
         }
      //   return true;
 
@@ -56,10 +82,13 @@ public static boolean update(VoterRegistration obj) {
             session.update(obj);
             tx.commit();
         } catch (RuntimeException e) {
-
+            e.printStackTrace();
             tx.rollback();
             return false;
 
+        }
+        finally{
+        session.close();
         }
 
         return true;
@@ -82,20 +111,23 @@ public static boolean update(VoterRegistration obj) {
 
 
         } catch (Exception ex) {
+
+            ex.printStackTrace();
+            tx.rollback();
             System.out.println(ex);
        //     return false;
 
             //  System.out.println(ex.toString());
 
         } finally {
-            // session.close();
+            session.close();
         }
       //  return true;
 
     }
     public static VoterRegistration searchVoterRegistration(String instituteid,String Enrollment) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+        VoterRegistration obj=null;
         try {
             session.beginTransaction();
             Criteria criteria = session.createCriteria(VoterRegistration.class)
@@ -103,19 +135,26 @@ public static boolean update(VoterRegistration obj) {
                     .add(Restrictions.eq("id.enrollment", Enrollment))
                     .add(Restrictions.eq("id.instituteId", instituteid)));
 
-            return (VoterRegistration) criteria.uniqueResult();
+            obj= (VoterRegistration) criteria.uniqueResult();
+            session.getTransaction().commit();
 
 
-        } finally {
+        }
+        catch(RuntimeException e){
+        e.printStackTrace();
+        }
+        finally {
             session.close();
         }
+        return obj;
     }
-
-    public List getVoterDetailsByStatus(String instituteid,String status,String field,String fieldvalue,String sort){
+   public List getVoterDetailsByStatus(String instituteid,String status,String field,String fieldvalue,String sort, int pageNumber){
   Session session =null;
-    Transaction tx = null;
+    List obj=null;
+    List finalResult = new ArrayList();
     try {
         session= HibernateUtil.getSessionFactory().openSession();
+
             session.beginTransaction();
             String query1 = "FROM VoterRegistration where id.instituteId=:instituteId";
 if(status==null){
@@ -124,6 +163,9 @@ if(status==null){
 
    query1=query1+" order by "+sort;
 System.out.println(query1);
+
+
+
 
 }
 else{
@@ -140,7 +182,7 @@ query1=query1+" order by "+sort;
 }
 
             Query query = session.createQuery(query1);
-            
+
             if(fieldvalue!=null)
             {query.setString("infield", fieldvalue);
 
@@ -151,17 +193,64 @@ query1=query1+" order by "+sort;
                 query.setString("status",status );
              query.setString("instituteId",instituteid );
 
-            return query.list();
+
+System.out.println(query1);
+if(pageNumber==0){
+
+            query = query.setFirstResult(0);
+              query.setMaxResults(100);
+              obj=query.list();
+}
+else{             PagingAction o=new PagingAction(query,pageNumber,100);
+
+ obj= o.getList();
+ System.out.println("Size of Record"+obj.size()+".........................."+pageNumber);
+}
+//            //code for paging
+//
+//            int setMaxRecords = startLimit + noOfRecords + 1;
+//            List result = obj;
+//
+//int count = result.size()-startLimit;
+//if( count < noOfRecords) {
+//noOfRecords = count;
+//}
+//int i=0;
+////logger.info("Start Count "+startLimit + ".Records Accessed "+noOfRecords);
+//while (noOfRecords > i) {
+////logger.info("Start Count "+startLimit+i+",Rdcord "+result.get(startLimit+i));
+//finalResult.add(result.get(startLimit+i));
+//i++;
+//}
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+            session.getTransaction().commit();
         }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
+
         finally {
             session.close();
         }
+       return obj;
 }
 
 public List getVoterDetailsByStatus(String instituteid,String status){
   Session session =null;
    Query query;
-    Transaction tx = null;
+    List obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -196,51 +285,68 @@ public List getVoterDetailsByStatus(String instituteid,String status){
 
                 query.setString("instituteId",instituteid );
 
-            return query.list();
+            obj= query.list();
+            session.getTransaction().commit();
         }
+
+    catch(RuntimeException r){
+    r.printStackTrace();
+    }
         finally {
             session.close();
         }
+        return obj;
 }
 
      public List<VoterRegistration> getVoterDetailsByStatus1(String instituteid){
   Session session =null;
-    Transaction tx = null;
+    List<VoterRegistration> obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
+         
             Query query = session.createQuery("FROM VoterRegistration where status = :status and id.instituteId=:instituteId");
              query.setString("status","NOT REGISTERED" );
              query.setString("instituteId",instituteid );
 
-            return (List<VoterRegistration>) query.list();
+            obj= (List<VoterRegistration>) query.list();
+            session.getTransaction().commit();
         }
+    catch(RuntimeException s){
+    s.printStackTrace();
+    }
+
         finally {
             session.close();
         }
+        return obj;
 }
 
    public Integer getVoterRequestCount(String instituteid,String status){
         Session session =null;
-    Transaction tx = null;
+    Integer obj=null;
     try {
 
         session = HibernateUtil.getSessionFactory().openSession();
-        //Transaction tx = null;
+          session.beginTransaction();
         Criteria criteria = session.createCriteria(VoterRegistration.class)
                  .setProjection(Projections.count("id.instituteId"));
         criteria.add(Restrictions.eq("status",status ));
          criteria.add(Restrictions.eq("id.instituteId",instituteid ));
             Integer countrequest = (Integer)criteria.uniqueResult();
 
-    //Session session = HibernateUtil.getSessionFactory().openSession();
-
-
-            return countrequest;
+           obj= countrequest;
+         session.getTransaction().commit();
         }
+    catch(RuntimeException d){
+    d.printStackTrace();
+
+    }
         finally {
+             
             session.close();
         }
+         
+        return obj;
 }
 }
 

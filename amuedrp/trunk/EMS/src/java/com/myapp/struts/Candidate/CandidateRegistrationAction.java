@@ -20,8 +20,6 @@ import com.myapp.struts.hbm.StaffDetail;
 import com.myapp.struts.hbm.StaffDetailId;
 import com.myapp.struts.hbm.VoterRegistration;
 import com.myapp.struts.utility.Email;
-import com.myapp.struts.utility.PasswordEncruptionUtility;
-import com.myapp.struts.utility.RandomPassword;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -30,9 +28,12 @@ import org.apache.struts.action.ActionMapping;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
 
@@ -67,7 +68,7 @@ public class CandidateRegistrationAction extends org.apache.struts.action.Action
             PositionDAO positiondao = new PositionDAO();
 
             private String admin_password;
-    private String admin_password1;
+    
     String userid;
      private final ExecutorService executor=Executors.newFixedThreadPool(1);
     Email obj;
@@ -158,7 +159,7 @@ String reason = lf.getReason();
              CandidateRegistrationDAO voterdao=new CandidateRegistrationDAO();
              Election e = ElectionDAO.searchElectionByName(election, eid);
           List vr=voterdao.getCandidateDetailsByStatus1(lf.getInstitute_id(),e.getId().getElectionId());
-          List ve=voterdao.getEmail(lf.getEnrollment());
+          List ve=voterdao.getEmail(eid,lf.getEnrollment());
 //
 //          System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+vr+lf.getInstitute_id());
           if(!vr.isEmpty())
@@ -193,7 +194,38 @@ String reason = lf.getReason();
  ob.setStatus("Rejected");
 CandidateRegistrationDAO.update(ob);
 String path = servlet.getServletContext().getRealPath("/");
-          obj=new Email(path,ab.getEmail(),admin_password,"Candidature Request Rejected from EMS","Dear "+lf.getV_name()+"\nCandidature Request Rejected by Election Manager \n Reason:"+reason+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+ FileInputStream in = new FileInputStream(path+"/mail.properties");
+  			Properties	pro = new Properties();
+                                 pro.load(in);
+
+
+				Enumeration keys = pro.keys();
+                                int i=0;
+                                String mailbody="";
+				while (keys.hasMoreElements())
+				{
+                                       String key=(String)keys.nextElement();
+
+                                       if(key.equalsIgnoreCase(userid+"em")){
+                                       mailbody=(String)pro.get(key);
+                                       }
+
+
+
+
+                                   i++;
+				}
+				in.close();
+
+
+if(mailbody=="")
+mailbody="\nCandidature Request Rejected by Election Manager \n Reason:";
+
+
+
+
+
+          obj=new Email(path,ab.getEmail(),admin_password,"Candidature Request Rejected from EMS","Dear "+lf.getV_name()+"+mailbody+"+reason+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
          executor.submit(new Runnable() {
 
                 public void run() {
@@ -211,7 +243,7 @@ System.out.println("Accept is working");
              Election e = ElectionDAO.searchElectionByName(election, eid);
                
           List vr=voterdao.getCandidateDetailsByStatus1(eid,e.getId().getElectionId(),lf.getEnrollment());
-          List ve=voterdao.getEmail(lf.getEnrollment());
+          List ve=voterdao.getEmail(eid,lf.getEnrollment());
 
        
           if(!vr.isEmpty())
@@ -225,39 +257,40 @@ Candidate1 c1 = new Candidate1();
 Candidate1Id c1Id = new Candidate1Id();
 c1Id.setElectionId(ob.getId().getElectionId());
 c1Id.setInstituteId(ob.getId().getInstituteId());
-c1Id.setPositionId(Integer.valueOf(ob.getPosition()));
+c1Id.setPositionId(Integer.valueOf(ob.getId().getPosition()));
 c1.setId(c1Id);
 c1.setCandidateName(ab.getVoterName());
 c1.setEnrollment(ob.getId().getEnrollment());
-            admin_password= RandomPassword.getRandomString(10);
-                 System.out.println(admin_password);
-                admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
 
-System.out.println(admin_password1);
+//userid=ob.getId().getEnrollment()+""+ob.getId().getInstituteId();
 
-String can="can";
+//login=(Login)logindao.getUser1(userid);
+//login.setUserId(userid);
+//login.setPassword(admin_password1);
+//login.setUserName(ab.getVoterName());
+//System.out.println("User ID="+login+userid);
 
-userid=ob.getId().getEnrollment()+""+ob.getId().getInstituteId()+""+ob.getId().getEnrollment();
+//login.setRole("votercandidate");
+//System.out.println(userid);
 
-login.setUserId(userid);
-login.setPassword(admin_password1);
-login.setUserName(ab.getVoterName());
-login.setRole("candidate");
-System.out.println(userid);
-//login.getStaffDetail().getId().setInstituteId(ob.getId().getInstituteId());
-staffid.setInstituteId(lf.getInstitute_id());
-staffid.setStaffId(lf.getEnrollment());
-staffd.setId(staffid);
+//staffid.setInstituteId(lf.getInstitute_id());
+//staffid.setStaffId(lf.getEnrollment());
+//staffd.setId(staffid);
 
-login.setStaffDetail(staffd);
+//login.setStaffDetail(staffd);
 
-Position1 pos = positiondao.searchPosition(Integer.parseInt(ob.getPosition()));
+Position1 pos = positiondao.searchPosition(Integer.parseInt(ob.getId().getPosition()));
  ob.setStatus("REGISTERED");
  try{
-CandidateRegistrationDAO.updateCandidature(login,ob,c1);
+CandidateRegistrationDAO.updateCandidature(ob,c1);
 String path = servlet.getServletContext().getRealPath("/");
 request.setAttribute("msg", "Registration Accepted Successfully");
-obj=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Mr. "+ c1.getCandidateName() +"\n"+ (ab.getPAddress()!=null?ab.getPAddress():(ab.getCAddress()!=null?ab.getCAddress():"Address"))+" \n Your request of candidature for the post of "+ pos.getPositionName() +" has been accepted with User Id="+userid +" and your Password for EMS Login is="+admin_password+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+ 
+ obj=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Mr. "+ c1.getCandidateName() +"\n"+ (ab.getPAddress()!=null?ab.getPAddress():(ab.getCAddress()!=null?ab.getCAddress():"Address"))+" \n Your request of candidature for the post of "+ pos.getPositionName() +" has been accepted.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+ String mailbody="";
+ if(mailbody!=null)
+    //mailbody="\n You are Registered as a Voter with given User Id=";
+ obj=new Email(path,ab.getEmail(),admin_password,"+mailbody+","Mr. "+ c1.getCandidateName() +"\n"+ (ab.getPAddress()!=null?ab.getPAddress():(ab.getCAddress()!=null?ab.getCAddress():"Address"))+" \n Your request of candidature for the post of "+ pos.getPositionName() +" has been accepted.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
          executor.submit(new Runnable() {
 
                 public void run() {

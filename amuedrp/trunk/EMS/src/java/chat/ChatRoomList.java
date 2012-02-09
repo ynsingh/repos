@@ -9,7 +9,7 @@ import java.util.Iterator;
 * This class is used to manipulate and store ChatRoom objects.
 * It provides methods to store and retrieve ChatRoom objects
 * in this <code>ChatRoomList</code>.
-*@author Sukhwinder Singh(ssruprai@hotmail.com)
+
 */
 public class ChatRoomList
 {
@@ -80,7 +80,7 @@ public class ChatRoomList
 	}
 	
 	/** returns an array containing all ChatRoom objects
-	* @return sukhwinder.chat.ChatRoom[]
+	
 	*/
 	public ChatRoom[] getRoomListArray()
 	{

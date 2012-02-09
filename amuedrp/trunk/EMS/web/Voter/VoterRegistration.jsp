@@ -24,6 +24,7 @@ status = voter.getStatus();
 %>
 <script type="text/javascript">
 
+
     <%--function check2()
 {
     if(document.getElementById('enrollment').value=="")
@@ -59,6 +60,8 @@ function send()
 <%--<link href="<%=request.getContextPath()%>/css/Style1.css" rel="stylesheet" type="text/css" />--%>
 
  <%
+
+ String userId=(String)request.getAttribute("UserID");
 String institute_id = (String)session.getAttribute("institute_id");
 String enrollment=(String)request.getAttribute("enrollment");
 String instituteid=(String)request.getAttribute("instituteid");
@@ -119,14 +122,14 @@ function check3()
         return false;
     }
 
-     if(document.getElementById('cour1').value=="")
+   <%--  if(document.getElementById('cour1').value=="")
     {
         alert("Enter Course ");
 
         document.getElementById('cour1').focus();
 
         return false;
-    }
+    }--%>
 
      if(document.getElementById('vname1').value=="")
     {
@@ -393,30 +396,31 @@ send();
             <tr><td >
                     <table class="txtStyle">
               <tr>
-                  <td >Enrollment Number*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>"  name="VoterRegActionForm"  styleId="enrollment1" property="enrollment" onfocus="statwords('Please enter enrollment number')" onblur="return status()"  value="<%=enrollment%>" /></td><td>
+                  <td >Enrollment Number*:</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm"  styleId="enrollment1" property="enrollment" onfocus="statwords('Please enter enrollment number')" onblur="return status()"  value="<%=enrollment%>" /></td><td>
 <td></td>
 </tr>
-<tr><td align="left">Institute Name*</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<% if(userId!=null){%>
+              <tr>
+                  <td >User ID:</td><td><%=userId%></td><td><td></td></tr>
+<%}%>
+<tr><td align="left">Institute Name*</td><td>
         <html:select property="institute_id" value="<%=institute_id%>" disabled="true"  styleId="ins1"  name="VoterRegActionForm"  tabindex="10">
             <html:option  value="Select"> Select </html:option>
             <html:options collection="instituteList"  property="instituteId"  labelProperty="instituteName"/>
-                                <%--<html:option  value="amu">Aligarh muslim university</html:option>
-                                <html:option value="jmi">Jamia Millia islamia</html:option>
-                               <html:option value="du">Delhi University</html:option>
-                               <html:option value="jnu">JNU</html:option>--%>
+                               
 </html:select>
             <html:hidden property="institute_id" value="<%=institute_id%>"  />
       </tr>
 <tr>
-<td align="left">Department*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="dep1" property="department"  value="<%=dep%>" onfocus="statwords('Please enter department name')" onblur="return status()" /></td>
+<td align="left">Department*:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="dep1" property="department"  value="<%=dep%>" onfocus="statwords('Please enter department name')" onblur="return status()" /></td>
 <td>
 </td>
 </tr>
 <tr>
-<td align="left">Course*:</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cour1" property="course" value="<%=cour%>" onfocus="statwords('Please enter course name')" onblur="return status()"/></td>
+<td align="left">Course*:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cour1" property="course" value="<%=cour%>" onfocus="statwords('Please enter course name')" onblur="return status()"/></td>
 </tr>
 <tr>
-    <td align="left">Year :</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="year1" property="year" value="<%=yr%>" onfocus="statwords('Please enter current academic year')" onblur="return status()"/></td>
+    <td align="left">Year :</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="year1" property="year" value="<%=yr%>" onfocus="statwords('Please enter current academic year')" onblur="return status()"/></td>
                                                <%-- <td>Upload Photo:</td><td><html:file property="image"/></td>--%>
 </tr>
                     </table>
@@ -472,6 +476,9 @@ send();
 <tr>
     <td align="left">email*:</td><td><html:text  name="VoterRegActionForm"   styleId="email1" property="email" readonly="<%=read%>" onfocus="statwords('Please enter active email id')" onblur="return status()"/></td>
 </tr>
+<tr>
+    <td align="left">Alternate Email:</td><td><html:text  name="VoterRegActionForm"   styleId="alternateemail" property="alternateemail" readonly="<%=read%>" /></td>
+</tr>
                         </table>   </td>
                 <td>
  <table class="txtStyle"> <tr>
@@ -526,18 +533,7 @@ function status()
                 </table>
             </td>
             </tr>
-                      <tr>
-          <td colspan="2"><b>Important! </b>Please provide a working email address:
-            <%if(btn.equals("Block")){%>
-            <html:select property="status">
-                <html:option value="Block">Block</html:option>
-                
-            </html:select>
-            <%}%>
-
-          </td>
-
-        </tr>
+                   
 <tr><td colspan="3" height="5px" align="right"><a class="star">*</a>indicated fields are mandatory</td></tr>
 <tr>
 <td align="center" colspan="5">
@@ -552,15 +548,15 @@ function status()
     <input id="button1"  name="button" type="submit" value="Submit" class="txt1" />
     &nbsp;&nbsp;&nbsp;<input name="button" type="button" value="Cancel" onclick="return send()" class="txt1"/>
     <%}else if(status!=null && status.equalsIgnoreCase("Block")&& btn.equalsIgnoreCase("Block1")){%>
+<%--
 
 
-
-   <input id="button1"  name="button" type="submit" value="UnBlock"  class="txt1" />
+   <input id="button1"  name="button" type="submit" value="UnBlock"  class="txt1" />--%>
 
    <html:hidden  property="status" value="Registered" name="VoterRegActionForm"></html:hidden>
 
     <%}else if(status!=null && status.equalsIgnoreCase("REGISTERED")&& btn.equalsIgnoreCase("Block")){%>
-    <input id="button1"  name="button" type="submit" value="Change Status"  class="txt1" />
+   <%-- <input id="button1"  name="button" type="submit" value="Change Status"  class="txt1" />--%>
 
     <%}}%>
     

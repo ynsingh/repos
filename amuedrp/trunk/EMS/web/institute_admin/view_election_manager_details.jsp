@@ -20,7 +20,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
-
 <%
 try{
 if(session.getAttribute("institute_id")!=null){
@@ -37,7 +36,12 @@ else{
 
 %>
 
-
+<%
+String request1=(String)request.getParameter("status");
+if(request1!=null){
+%>
+<jsp:include page="adminheader.jsp"/>
+<%}%>
 <%!
     Locale locale=null;
     String locale1="en";
@@ -174,7 +178,7 @@ pageContext.setAttribute("path", path);
 %>
 
 
-<br><br>
+<br><br>View All Election Managers
 
 <%if(tcount==0)
 {%>
@@ -192,28 +196,35 @@ else
 
     <column width="10%">
       <header value="${Manager_ID}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.manager_id}" hyperLink="${path}/manager_details.do?id=${doc.manager_id}"  hAlign="left"    styleClass="item"/>
+      <item   value="${doc.manager_id}"   hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="15%">
       <header value="${First_Name}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.first_name}" hAlign="left" hyperLink="${path}/manager_details.do?id=${doc.manager_id}"  styleClass="item"/>
+      <item   value="${doc.first_name}" hAlign="left" styleClass="item"/>
     </column>
     <column width="10%">
       <header value="${Last_Name}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.last_name}" hAlign="left" hyperLink="${path}/manager_details.do?id=${doc.manager_id}"  styleClass="item"/>
+      <item   value="${doc.last_name}" hAlign="left"   styleClass="item"/>
     </column>
 
     <column width="10%">
       <header value="${Staff_id}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.staff_id}" hyperLink="${path}/manager_details.do?id=${doc.manager_id}"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.staff_id}"   hAlign="left" styleClass="item"/>
     </column>
 
       <column width="10%">
       <header value="${Status}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.status}" hyperLink="${path}/manager_details.do?id=${doc.manager_id}"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.status}"  hAlign="left" styleClass="item"/>
     </column>
-
+<column width="10%">
+      <header value="Action" hAlign="left" styleClass="header"/>
+      <item   value="View" hyperLink="${path}/manager_details.do?id=${doc.manager_id}" hyperLinkTarget="_parent" hAlign="left" styleClass="item"/>
+    </column>
+      <column width="10%">
+      <header value="Action" hAlign="left" styleClass="header"/>
+      <item   value="Update" hyperLink="${path}/update_manager_details.do?id=${doc.manager_id}&amp;status='y'" hyperLinkTarget="_parent" hAlign="left" styleClass="item"/>
+    </column>
  </columns>
 
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>

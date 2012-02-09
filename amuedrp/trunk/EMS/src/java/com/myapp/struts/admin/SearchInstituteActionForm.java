@@ -84,8 +84,5 @@ public class SearchInstituteActionForm extends org.apache.struts.action.ActionFo
         this.search_keyword = search_keyword;
     }
 
-    /**
-     * @return the search_keyword
-     */
     
 }

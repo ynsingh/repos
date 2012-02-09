@@ -10,9 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.myapp.struts.utility.PasswordEncruptionUtility;
 import com.myapp.struts.hbm.*;
-import org.hibernate.HibernateException;
 import javax.servlet.http.HttpSession;
 /**
  *
@@ -27,15 +25,7 @@ public class EmailSetupAction extends org.apache.struts.action.Action {
     private String institute_id;
    // private String pass;
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -60,7 +50,7 @@ public class EmailSetupAction extends org.apache.struts.action.Action {
          emailsetup.setEmailId(emailid);
          emailsetup.setInstituteId(institute_id);
          emailsetup.setPassword(password);
-         emailsetupdao.insert(emailsetup);
+       
 
 System.out.println("hiiiiii");
 

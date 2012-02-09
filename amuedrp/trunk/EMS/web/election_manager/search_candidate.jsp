@@ -5,8 +5,16 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
-<jsp:include page="../election_manager/login.jsp"/>
-<%@page import="java.util.*,java.io.*,java.net.*"%>
+
+<%@page import="java.util.*,java.io.*,java.net.*"%><%
+String role=(String)session.getAttribute("login_role");
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+<jsp:include page="/institute_admin/adminheader.jsp"/>
+<%}else{%>
+<jsp:include page="/election_manager/login.jsp"/>
+<%}%>
 
 <%!
     Locale locale=null;
@@ -176,7 +184,7 @@ window.setTimeout('winresize()', 100);
       </td>
 
   </tr>
-  <tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="#" frameborder=0  id="f1" width="90%" height="700px" ></IFRAME></td></tr>
+  <tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="<%=request.getContextPath()%>/candidatesetup1.do" frameborder=0  id="f1" width="90%" height="700px" ></IFRAME></td></tr>
      
   <tr><td><input type="hidden" id="hidHigh"/></td></tr>
        </table>

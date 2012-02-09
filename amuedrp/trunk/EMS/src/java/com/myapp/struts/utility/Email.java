@@ -33,7 +33,7 @@ private String text;
 String userid;
 String host;
 String path;
-StringBuffer buffer;
+String buffer;
 //
 
 
@@ -41,7 +41,7 @@ public Email(String path,String to,String password,String subject,String body){t
 
 public void send(){
  host = "smtp.gmail.com";
- userid = "amuedrp@gmail.com";
+
  
 
 
@@ -49,26 +49,36 @@ public void send(){
 
 try
 {
-System.out.println(path);
+
+
+
+  String os=(String)System.getProperty("os.name");
+   System.out.println("OS----------->"+os);
+    Properties libmspro = new Properties();
+
+   if(os.startsWith("Linux"))
+   {
+    path=System.getProperty("user.home");
+     libmspro.load(new FileInputStream(path+"/libms.properties"));
+   }
+   else
+   {
+       path="c:\\";
+        libmspro.load(new FileInputStream(path+"\\libms.properties"));
+   }
+
+
+
+            
+
+
+        String     userid = libmspro.getProperty("webadmin");
+        buffer = libmspro.getProperty("webpass");
 
 
 
 
-  // Open the file that is the first
-  // command line parameter
-  FileInputStream fstream = new FileInputStream(path+"/admin/mail.txt");
-  InputStreamReader isr = new InputStreamReader(fstream,"UTF8");
- buffer= new StringBuffer();
- Reader in = new BufferedReader(isr);
-	int ch;
-	while ((ch = in.read()) > -1) {
-		buffer.append((char)ch);
-	}
-	in.close();
 
-
-
-  System.out.println(buffer);
   
  
 
@@ -79,7 +89,7 @@ props.put("mail.smtp.host", host);
 props.setProperty("mail.transport.protocol", "smtp");
 props.put("mail.smtp.user", userid);
 props.put("mail.smtp.password",buffer);
-props.put("mail.smtp.port", "587");
+props.put("mail.smtp.port", "465");
 props.put("mail.smtp.auth", "true");
 Session session = Session.getDefaultInstance(props, null);
 MimeMessage message = new MimeMessage(session);

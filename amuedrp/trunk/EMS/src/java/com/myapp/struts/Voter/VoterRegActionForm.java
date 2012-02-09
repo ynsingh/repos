@@ -41,6 +41,15 @@ private String m_number;
 private String zipcode;
 private String zipcode1;
 private String page;
+private String alternateemail;
+
+    public String getAlternateemail() {
+        return alternateemail;
+    }
+
+    public void setAlternateemail(String alternateemail) {
+        this.alternateemail = alternateemail;
+    }
 
     public String getStatus() {
         return status;

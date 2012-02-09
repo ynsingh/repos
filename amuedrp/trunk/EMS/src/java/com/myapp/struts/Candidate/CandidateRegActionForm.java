@@ -40,9 +40,73 @@ private String m_number;
 private String zipcode;
 private String zipcode1;
 private String reason;
+private String rejectedReason;
+private String requestDate;
+private String acceptedDate;
+private String proposedBy;
+private String secondedBy;
+private String positionAccepted;
+
+    public String getPositionAccepted() {
+        return positionAccepted;
+    }
+
+    public void setPositionAccepted(String positionAccepted) {
+        this.positionAccepted = positionAccepted;
+    }
+
+    public String getAcceptedDate() {
+        return acceptedDate;
+    }
+
+    public void setAcceptedDate(String acceptedDate) {
+        this.acceptedDate = acceptedDate;
+    }
+
+    public String getProposedBy() {
+        return proposedBy;
+    }
+
+    public void setProposedBy(String proposedBy) {
+        this.proposedBy = proposedBy;
+    }
+
+    public String getRejectedReason() {
+        return rejectedReason;
+    }
+
+    public void setRejectedReason(String rejectedReason) {
+        this.rejectedReason = rejectedReason;
+    }
+
+    public String getRequestDate() {
+        return requestDate;
+    }
+
+    public void setRequestDate(String requestDate) {
+        this.requestDate = requestDate;
+    }
+
+    public String getSecondedBy() {
+        return secondedBy;
+    }
+
+    public void setSecondedBy(String secondedBy) {
+        this.secondedBy = secondedBy;
+    }
+
   private byte[] uploadedFile;
     private FormFile img;
     private String filename;
+    private String alternateemail;
+
+    public String getAlternateemail() {
+        return alternateemail;
+    }
+
+    public void setAlternateemail(String alternateemail) {
+        this.alternateemail = alternateemail;
+    }
 
 
     public String getReason() {

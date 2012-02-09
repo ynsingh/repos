@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 19 May, 2011 1:05:46 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class  name="com.myapp.struts.hbm.Election" table="election">
+  <class name="com.myapp.struts.hbm.Election" table="election">
     <composite-id class="com.myapp.struts.hbm.ElectionId" name="id">
       <key-property name="electionId" type="string">
         <column length="20" name="election_id"/>
@@ -41,11 +41,14 @@
     <property name="withdrawlEndDate" type="timestamp">
       <column length="19" name="withdrawlEndDate"/>
     </property>
+    <property name="resultDeclarationDate" type="timestamp">
+      <column length="19" name="result_declaration_date"/>
+    </property>
     <property name="status" type="string">
       <column length="20" name="status"/>
     </property>
     <property name="createdBy" type="string">
-      <column length="20" name="created_by"/>
+      <column length="200" name="created_by"/>
     </property>
   </class>
 </hibernate-mapping>

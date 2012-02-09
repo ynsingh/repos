@@ -28,31 +28,25 @@
 %>
 <script type="text/javascript">
 
-    <%--function check2()
-{
-    if(document.getElementById('enrollment').value=="")
-    {
-        alert("Enter Enrollment");
-
-        document.getElementById('enrollment').focus();
-
-        return false;
-    }
-
-  }--%>
+   
       function submit()
       {
-          //alert(document.getElementById("img").value);
+         
 
           document.getElementsById("filename").value=document.getElementById("img").value;
-          //alert(document.getElementsById("filename").value);
+        
       }
 
       function send()
       {
+         
           window.location="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=NR";
-          return false;
+
+
+
+         return false;
       }
+    
 </script>
 
 <head>
@@ -91,7 +85,10 @@
                 String file = (String) request.getAttribute("filename");
                 String position=(String)request.getAttribute("position");
                 String election=(String)request.getAttribute("election");
-
+                String alternateemail=(String)request.getAttribute("alternateemail");
+                String proposedby=(String)request.getAttribute("proposedby");
+                String secondedby=(String)request.getAttribute("secondedby");
+                String positionaccepted=(String)request.getAttribute("positionaccepted");
                 System.out.println("position@@@@@@@@@"+position+"  "+election+dep);
 
 
@@ -593,6 +590,9 @@
                                         <td align="left">Country:*</td><td>&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country"  value="<%=country%>" styleId="country1"/></td>
 
                                     </tr>
+                                    
+                                    
+
                                     <tr>
                                         <td colspan="2"><input type="checkbox" id="Checkbox1" name="check" value="off" tabindex="17" onclick="return copy();" >&nbsp;&nbsp;<b>Click Here</b>&nbsp;(If permanent address is same as corresponding address)</td>
                                     </tr>
@@ -601,6 +601,8 @@
                                     <tr>    <td align="left">State</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="state1" value="<%=state1%>" styleId="state21"/></td></tr>
                                     <tr> <td align="left">ZIP Code</td><td><html:text  readonly="<%=read%>" name="CandidateRegActionForm" property="zipcode1"  value="<%=zcode1%>" styleId="zcode21"/></td><td colspan="2"></tr>
                                     <tr><td align="left">Country</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country1" value="<%=country1%>" styleId="country21"/></td></tr>
+
+                               <tr><td align="left">Alternate Email</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="alternateemail" value="<%=alternateemail%>" styleId="alternateemail"/></td></tr>
                                 </table>
 
                             </td>
@@ -701,8 +703,18 @@
 
                     <input name="button" type="submit" value="Reject" onclick="return checkReason();" class="txt1"/>
                     <input name="button" type="submit" value="Accept"  class="txt1"/>
-                   <input name="button" type="submit" value="Print"  class="txt1"/>
-                    <input name="button" type="submit" value="Cancel" onclick="return send()" class="txt1"/>
+                    <input name="button" type="button" value="Back" onclick="return send();"  class="txt1"/>
+
+         <%
+String role=(String)session.getAttribute("login_role");
+                         if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+
+<%}else{%>
+ <input name="button" type="button" value="Cancel" onclick="return send()" class="txt1"/>
+
+<%}%>
 
                 </td>
             </tr><tr><td colspan="5" height="5px"></td>

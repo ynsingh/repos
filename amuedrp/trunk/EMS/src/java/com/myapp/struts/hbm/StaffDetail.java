@@ -37,6 +37,15 @@ public class StaffDetail  implements java.io.Serializable {
      private String zip2;
      private Set logins = new HashSet(0);
 
+    public String getEnrollment() {
+        return enrollment;
+    }
+
+    public void setEnrollment(String enrollment) {
+        this.enrollment = enrollment;
+    }
+     private String enrollment;
+
     public StaffDetail() {
     }
 

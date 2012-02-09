@@ -23,6 +23,15 @@ public class Result implements  Serializable {
        private String election_id;
         private String institute_id;
         private String votes;
+          private String enrolment;
+
+    public String getEnrolment() {
+        return enrolment;
+    }
+
+    public void setEnrolment(String enrollment) {
+        this.enrolment = enrollment;
+    }
 
     public String getVotes() {
         return votes;

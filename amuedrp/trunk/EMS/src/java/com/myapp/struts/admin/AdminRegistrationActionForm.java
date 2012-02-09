@@ -36,6 +36,15 @@ private String library_name;
 private String courtesy;
 private String gender;
 private String userId;
+private String enrollment;
+
+    public String getEnrollment() {
+        return enrollment;
+    }
+
+    public void setEnrollment(String enrollment) {
+        this.enrollment = enrollment;
+    }
 
 
 

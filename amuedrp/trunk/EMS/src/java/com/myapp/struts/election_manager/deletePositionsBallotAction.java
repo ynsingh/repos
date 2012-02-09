@@ -5,8 +5,11 @@
 
 package com.myapp.struts.election_manager;
 
+import com.myapp.struts.hbm.Candidate1;
+import com.myapp.struts.hbm.ElectionDAO;
 import com.myapp.struts.hbm.Position1;
 import com.myapp.struts.hbm.PositionDAO;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,15 +26,7 @@ public class deletePositionsBallotAction extends org.apache.struts.action.Action
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -46,11 +41,21 @@ public class deletePositionsBallotAction extends org.apache.struts.action.Action
         Position1 position = emailDAO.searchPosition1(Integer.parseInt(positionId), electionid, instituteId);
         if(position!=null)
         {
+            PositionDAO pos=new PositionDAO();
+            List<Candidate1> obj=(List<Candidate1>)pos.getCandidate(position.getId().getPositionId(),position.getId().getElectionId(),instituteId);
+            if(obj.isEmpty()==false && obj!=null){
             emailDAO.deletePosition(position);
             positions+="<email_ids><message>Position Deleted Successfully</message></email_ids>";
             response.setContentType("application/xml");
             response.getWriter().write(positions);
             return null;
+            }else{
+            positions+="<email_ids><message>Sorry Position Cannot be Deleted because Candidature request are there in this position </message></email_ids>";
+            response.setContentType("application/xml");
+            response.getWriter().write(positions);
+            return null;
+
+            }
         }
         else
         {

@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 /** This class represents a chat room in the Chat System
-*@author Sukhwinder Singh(ssruprai@hotmail.com)
+
 */
 public class ChatRoom
 {
@@ -95,7 +95,7 @@ public class ChatRoom
 	/**
 	* returns a Chatter object from chatters list.
 	* @param chatterName name of the chatter
-	* @return sukhwinder.chat.Chatter
+	
 	*/
 	public Chatter getChatter(String chatterName)
 	{
@@ -132,7 +132,7 @@ public class ChatRoom
 	}
 	
 	/** returns an array containing all Chatter objects
-	* @return sukhwinder.chat.Chatter[]
+	
 	*/
 	public Chatter[] getChattersArray()
 	{

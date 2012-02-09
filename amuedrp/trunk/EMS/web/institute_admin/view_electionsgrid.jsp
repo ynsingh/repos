@@ -123,7 +123,7 @@ pageContext.setAttribute("Change_Status",Change_Status);
    requestList = new ArrayList();
 //requestList = (ArrayList)session.getAttribute("resultset");
    int tcount =0;
-   int perpage=4;
+   int perpage=10;
    int tpage=0;
 
    if(request.getParameter("pageSize")!=null && request.getParameter("pageSize")!="")
@@ -246,7 +246,15 @@ function isNumberKey(evt)
 else
 {%>
 <table align="<%=align%>" dir="<%=rtl%>" width="90%">
-    <tr><td colspan="2" align="right">View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></td></tr>
+    <tr><td colspan="2" align="right">View Next&nbsp;
+            <%--<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>
+        --%>
+        <select id="rec" onchange="changerec()" style="width:50px">
+           <option value="10">10</option>
+            <option value="20">20</option>
+             <option value="30">30</option>
+       </select>
+        </td></tr>
     <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
             <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" style="margin-left: 30px" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
@@ -254,29 +262,42 @@ else
 
     <column width="10%">
       <header value="Election_Id" hAlign="left" styleClass="header"/>
-      <item   value="${doc.election_id}" hyperLink="${path}/electionshow.do?id=${doc.manager_id}${amp}electionId=${doc.election_id}"  hAlign="left" hyperlinkTarget="_mainframe"    styleClass="item"/>
+      <item   value="${doc.election_id}"  hAlign="left" hyperlinkTarget="_mainframe"    styleClass="item"/>
     </column>
 
    
     <column width="10%">
       <header value="Election Name" hAlign="left" styleClass="header"/>
-      <item   value="${doc.election_name}" hAlign="left" hyperLink="${path}/electionshow.do?id=${doc.manager_id}${amp}electionId=${doc.election_id}"  styleClass="item"/>
+      <item   value="${doc.election_name}" hAlign="left"   styleClass="item"/>
     </column>
 
     <column width="10%">
       <header value="Created By" hAlign="left" styleClass="header"/>
-      <item   value="${doc.manager_id}" hyperLink="${path}/electionshow.do?id=${doc.manager_id}${amp}electionId=${doc.election_id}"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.manager_id}"   hAlign="left" styleClass="item"/>
     </column>
 
 
        <column width="10%">
       <header value="Election Status" hAlign="left" styleClass="header"/>
-      <item   value="${doc.status}" hyperLink="${path}/electionshow.do?id=${doc.manager_id}${amp}electionId=${doc.election_id}"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.status}"   hAlign="left" styleClass="item"/>
     </column>
 
-
-      
-
+<column width="10%">
+      <header value="Action" hAlign="left" styleClass="header"/>
+      <item   value="View" hyperLink="${path}/electionview.do?id=${doc.election_id}&amp;st='y'"  hAlign="left" styleClass="item"/>
+    </column>
+    <column width="10%">
+      <header value="" hAlign="left" styleClass="header"/>
+      <item   value="Results" hyperLink="${path}/Voter/result.jsp?election=${doc.election_id}&amp;"  hAlign="left" styleClass="item"/>
+    </column>
+<column width="10%">
+      <header value="" hAlign="left" styleClass="header"/>
+      <item   value="Cast Vote" hyperLink="${path}/voting.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
+    </column>
+      <column width="10%">
+      <header value="" hAlign="left" styleClass="header"/>
+      <item   value="Preview Ballot" hyperLink="${path}/electionview.do?id=${doc.election_id}"  hAlign="left" styleClass="item"/>
+    </column>
  </columns>
 
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
@@ -312,6 +333,10 @@ else
 </td>
 
 </tr>
+ 
+
+
+
 <%--<tr><td>
         <%
 
@@ -332,6 +357,8 @@ if(msg!=null)
 
 </html>
 <%
+String msgerr=(String)request.getAttribute("msgerr");
+
 String msg1=(String)request.getAttribute("msg");
 if(msg1==null){msg1=(String)request.getAttribute("msg");}
 if(msg1!=null)
@@ -339,5 +366,12 @@ if(msg1!=null)
     %>
     <script>
         alert("<%=msg1%>"+  " <%=resource.getString("mail_sent_successfully")%>");
+    </script>
+<%}
+if(msgerr!=null)
+    {
+    %>
+    <script>
+        alert("<%=msgerr%>");
     </script>
 <%}%>

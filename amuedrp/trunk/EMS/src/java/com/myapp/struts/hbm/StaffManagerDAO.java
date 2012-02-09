@@ -34,6 +34,7 @@ public class StaffManagerDAO {
         catch (RuntimeException e) {
             if(staffmanager != null)
                 tx.rollback();
+            e.printStackTrace();
             throw e;
         }
         finally {
@@ -55,8 +56,9 @@ public class StaffManagerDAO {
             tx.commit();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
+         
                 tx.rollback();
+                e.printStackTrace();
             throw e;
         }
 finally {

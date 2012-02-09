@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class CandidateRegLoginDetails implements Serializable {
     private Login login;
     private Candidate1 candidate1;
-    //private StaffDetail staffDetail;
+
     private CandidateRegistration candidateRegistration;
     private VoterRegistration voterRegistration;
     

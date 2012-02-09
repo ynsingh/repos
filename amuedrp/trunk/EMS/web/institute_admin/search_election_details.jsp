@@ -5,7 +5,17 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
+<%
+String role=(String)session.getAttribute("login_role");
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+<jsp:include page="/institute_admin/adminheader.jsp"/>
+<%}else if(role.equalsIgnoreCase("Election Manager")|| role.equalsIgnoreCase("Election Manager,voter")){%>
+<jsp:include page="/election_manager/login.jsp"/>
+<%}else{%>
 
+<%}%>
 <%@page import="java.util.*,java.io.*,java.net.*"%>
 
 <%!
@@ -65,11 +75,11 @@ body
 <script language="javascript">
 function fun()
 {
-document.Form1.action="../get_elections.do";
+document.Form1.action="<%=request.getContextPath()%>/get_elections.do";
 document.Form1.method="post";
 document.Form1.target="f1";
 document.Form1.submit();
-window.setInterval('winresize()', 100);
+//window.setInterval('winresize()', 100);
 }
 
  function winresize()
@@ -102,7 +112,7 @@ window.setInterval('winresize()', 100);
 <body onload="fun()" class="datagrid">
    
 
-    <form name="Form1" id="form1" action="../get_elections.do" style="" >
+    <form name="Form1" id="form1" action="<%=request.getContextPath()%>/get_elections.do" style="" >
       <table  align="left" width="100%"  class="datagrid"  style="border:solid 1px #e0e8f5;" dir="<%=rtl%>" align="<%=align%>">
 
 
@@ -166,7 +176,7 @@ window.setInterval('winresize()', 100);
       </td>
 
   </tr>
-  <tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="#" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
+  <tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="<%=request.getContextPath()%>/get_elections.do" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
      
   <tr><td><input type="hidden" id="hidHigh"/></td></tr>
        </table>

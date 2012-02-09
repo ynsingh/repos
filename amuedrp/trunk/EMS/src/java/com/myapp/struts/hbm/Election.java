@@ -27,6 +27,15 @@ public class Election  implements java.io.Serializable {
         private Timestamp scrutnyEndDate;
          private Timestamp withdrawlDate;
        private Timestamp withdrawlEndDate;
+       private Timestamp resultDeclarationDate;
+
+    public Timestamp getResultDeclarationDate() {
+        return resultDeclarationDate;
+    }
+
+    public void setResultDeclarationDate(Timestamp resultDeclarationDate) {
+        this.resultDeclarationDate = resultDeclarationDate;
+    }
      
      private String status;
      private String createdBy;

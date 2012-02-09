@@ -133,6 +133,7 @@ function isNumberKey(evt)
       position: absolute;
       width: 610px;
       visibility: show;">
+     Approved List
 <%!
    
    
@@ -149,7 +150,7 @@ if(rs!=null){
 
    requestList = new ArrayList ();
    int tcount =0;
-   int perpage=4;
+   int perpage=10;
    int tpage=0;
  /*Create a connection by using getConnection() method
    that takes parameters of string type connection url,
@@ -204,8 +205,15 @@ else
 {%>
 
 <table align="<%=align%>" dir="<%=rtl%>" width="600px">
-   <tr><td colspan="2" align="right">View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></td></tr>
-    <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
+   <tr><td colspan="2" align="right">View Next&nbsp;
+          <%-- <input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></td></tr>
+    --%>
+   <select id="rec" onchange="changerec()" style="width:50px">
+           <option value="10">10</option>
+            <option value="20">20</option>
+             <option value="30">30</option>
+       </select>
+   <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
 
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
     

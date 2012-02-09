@@ -64,6 +64,7 @@ function send()
 
     <head>
          <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
+         <script type= "text/javascript" src = "<%=request.getContextPath()%>/js/countries.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>EMS</title>
 <%--<link href="<%=request.getContextPath()%>/css/Style1.css" rel="stylesheet" type="text/css" />--%>
@@ -120,23 +121,23 @@ function check3()
 
         return false;
     }
-      if(document.getElementById('dep1').value=="")
+      <%--if(document.getElementById('dep1').value=="")
     {
         alert("Enter department Name");
 
         document.getElementById('dep1').focus();
 
         return false;
-    }
+    }--%>
 
-     if(document.getElementById('cour1').value=="")
+    <%-- if(document.getElementById('cour1').value=="")
     {
         alert("Enter Course ");
 
         document.getElementById('cour1').focus();
 
         return false;
-    }
+    }--%>
 
      if(document.getElementById('vname1').value=="")
     {
@@ -162,30 +163,30 @@ function check3()
 
         return false;
     }
-     if(document.getElementById('fname1').value=="")
+     <%--if(document.getElementById('fname1').value=="")
     {
         alert("Enter Father's Name");
 
         document.getElementById('fname1').focus();
 
         return false;
-    }
-     if(document.getElementById('mname1').value=="")
+    }--%>
+    <%-- if(document.getElementById('mname1').value=="")
     {
         alert("Enter Mother's Name");
 
         document.getElementById('mname1').focus();
 
         return false;
-    }
-     if(document.getElementById('mnumb1').value=="")
+    }--%>
+    <%-- if(document.getElementById('mnumb1').value=="")
     {
         alert("Enter Mobile Number");
 
         document.getElementById('mnumb1').focus();
 
         return false;
-    }
+    }--%>
      if(document.getElementById('email1').value=="")
     {
         alert("Enter Email ID");
@@ -194,14 +195,14 @@ function check3()
 
         return false;
     }
-     if(document.getElementById('country1').value=="")
+    <%-- if(document.getElementById('country1').value=="")
     {
         alert("Enter Country");
 
         document.getElementById('country1').focus();
 
         return false;
-    }
+    }--%>
 
    return true;
 
@@ -416,12 +417,12 @@ function check3()
 
       </tr>
 <tr>
-<td align="left">Department*:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="dep1" property="department"  value="<%=dep%>" onfocus="statwords('Please enter department name')" onblur="return status()" /></td>
+<td align="left">Department:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="dep1" property="department"  value="<%=dep%>" onfocus="statwords('Please enter department name')" onblur="return status()" /></td>
 <td>
 </td>
 </tr>
 <tr>
-<td align="left">Course*:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cour1" property="course" value="<%=cour%>" onfocus="statwords('Please enter course name')" onblur="return status()"/></td>
+<td align="left">Course:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cour1" property="course" value="<%=cour%>" onfocus="statwords('Please enter course name')" onblur="return status()"/></td>
 </tr>
 <tr>
     <td align="left">Year :</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="year1" property="year" value="<%=yr%>" onfocus="statwords('Please enter current academic year')" onblur="return status()"/></td>
@@ -465,33 +466,46 @@ function check3()
       <td>Date of Birth*<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm"  property="b_date"  value="<%=bdate%>" styleId="3" onfocus="statwords('Please enter birth date')" onblur="return status()"/>
 <a href="javascript:NewCal('3','ddmmmyyyy')"><img src="<%=request.getContextPath()%>/images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></td>
 </tr>
-<tr> <td>Father's Name*</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="fname1"  value="<%=fname%>"  property="f_name" onfocus="statwords('Please enter father's name')" onblur="return status()"/></td></tr>
-  <tr> <td>Mother's Name*</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mname1" value="<%=mname%>" property="m_name" onfocus="statwords('Please enter mother's name')" onblur="return status()"/></td>
+<tr> <td>Father's Name</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="fname1"  value="<%=fname%>"  property="f_name" onfocus="statwords('Please enter father's name')" onblur="return status()"/></td></tr>
+  <tr> <td>Mother's Name</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mname1" value="<%=mname%>" property="m_name" onfocus="statwords('Please enter mother's name')" onblur="return status()"/></td>
                                   </tr>
 <tr>
-<td align="left">Mobile No*:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mnumb1" value="<%=mnumb%>" property="m_number" onfocus="statwords('Please enter valid mobile number')" onblur="return status()" /></td>
+<td align="left">Mobile No:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mnumb1" value="<%=mnumb%>" property="m_number" onfocus="statwords('Please enter valid mobile number')" onblur="return status()" /></td>
 </tr>
 <tr><td></td></tr>
 <tr>
     <td align="left">email*:</td><td><html:text  name="VoterRegActionForm"   styleId="email1" property="email" readonly="<%=read%>" onfocus="statwords('Please enter active email id')" onblur="return status()"/></td>
+</tr>
+<tr>
+    <td align="left">Alternate Email:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="alternateemail"  value="<%=zcode%>" styleId="alternateemail" /></td>
 </tr>
                         </table>   </td>
                 <td>
  <table> <tr>
          <td align="left">Corresponding Address:</td> <td> <html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cadd1" property="c_add" value="<%=cadd%>" onfocus="statwords('Please enter corresponding address')" onblur="return status()" /></td>
 </tr>
+
+ <tr>
+     <td align="left">Country:</td><td><html:select name="VoterRegActionForm" onchange="print_state('state1',this.selectedIndex);" style="width:200px" styleId="country1" property="country"></html:select><%--<html:text readonly="<%=read %>" name="VoterRegActionForm" property="country"  value="<%=country%>" styleId="country1" onfocus="statwords('Please enter country name')" onblur="return status()"/>--%></td>
+<script language="javascript">print_country("country1");</script>
+
+</tr>
+<tr>
+    <td align="left">State:</td><td><html:select  name="VoterRegActionForm" property="state" value="<%=state%>" styleId="state1" style="width:200px">
+        <html:option value="">Select</html:option>
+        </html:select>
+
+        <%--<html:text readonly="<%=read %>" name="VoterRegActionForm" property="state" value="<%=state%>" styleId="state1" onfocus="statwords('Please enter state name')" onblur="return status()"/>--%></td>
+
+</tr>
 <tr>
     <td align="left">City:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="city"  value="<%=city%>" styleId="city1" onfocus="statwords('Please enter city name')" onblur="return status()"/></td>
 </tr>
- <tr>
-<td align="left">State:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="state" value="<%=state%>" styleId="state1" onfocus="statwords('Please enter state name')" onblur="return status()"/></td>
-</tr>
+
 <tr>
-<td align="left">Zip Code:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="zipcode"  value="<%=zcode%>" styleId="zcode1" onfocus="statwords('Please enter zip code')" onblur="return status()"/></td>
+    <td align="left">Zip Code:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="zipcode"  value="<%=zcode%>" styleId="zcode1" onfocus="statwords('Please enter zip code')" onblur="return status()"/></td>
 </tr>
-<tr>
-<td align="left">Country:*</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="country"  value="<%=country%>" styleId="country1" onfocus="statwords('Please enter country name')" onblur="return status()"/></td>
-</tr>
+
 <tr>
        <td colspan="2"><input type="checkbox" id="Checkbox1" name="check" value="off" tabindex="17" onclick="return copy();" >&nbsp;&nbsp;<b>Click Here</b>&nbsp;(If permanent address is same as corresponding address)</td>
         </tr>
@@ -551,9 +565,13 @@ function status()
     <%}else if(status!=null && status.equalsIgnoreCase("REGISTERED")&& btn.equalsIgnoreCase("Block")){%>
     <input id="button1"  name="button" type="submit" value="Block"  class="txt1" />
     <%}}%>
+    <%
+    String voter1=(String)request.getAttribute("page");
+    if(voter1==null){%>
+     <input  name="button1" type="button" value="Back" onclick="return send();" class="txt1" />
 
-    <input  name="button1" type="button" value="Back" onclick="return send();" class="txt1" />
-
+            <%}%>
+   
 
 
 

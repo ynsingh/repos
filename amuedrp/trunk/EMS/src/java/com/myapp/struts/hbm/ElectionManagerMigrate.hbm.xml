@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 3, 2012 11:38:44 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.ElectionManagerMigrate" table="election_manager_migrate" catalog="emsiitk">
+        <composite-id name="id" class="com.myapp.struts.hbm.ElectionManagerMigrateId">
+            <key-property name="electionId" type="string">
+                <column name="election_id" length="20" />
+            </key-property>
+            <key-property name="instituteId" type="string">
+                <column name="institute_id" length="20" />
+            </key-property>
+        </composite-id>
+        <property name="electionName" type="string">
+            <column name="election_name" length="300" />
+        </property>
+        <property name="oldEm" type="string">
+            <column name="old_em" length="20" />
+        </property>
+        <property name="newEm" type="string">
+            <column name="new_em" length="20" />
+        </property>
+        <property name="date" type="string">
+            <column name="date" length="20" />
+        </property>
+    </class>
+</hibernate-mapping>

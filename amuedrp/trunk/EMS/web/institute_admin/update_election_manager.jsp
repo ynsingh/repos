@@ -30,8 +30,13 @@ else{
     }
 
 %>
+<%
+String request1=(String)request.getParameter("status");
+if(request1!=null){
 
-
+%>
+<jsp:include page="adminheader.jsp"/>
+<%}%>
 <%!
     Locale locale=null;
     String locale1="en";
@@ -79,7 +84,7 @@ if (!rst.isEmpty()){
     <body onload="funload();">
 
         <html:form action="/confirm_update_manager" method="post" onsubmit="return validation();">
-        <table width="100%" class="txt"  dir="<%=rtl%>">
+            <table width="100%" class="txt"  dir="<%=rtl%>">
              <br>
             <tr><td style="text-decoration: underline;" align="center"  dir="<%=rtl%>"><%=resource.getString("electionmanagerdetail")%></td></tr>
 
@@ -245,8 +250,8 @@ var prevheight;
     //top.location="/EMS-Struts/institute_admin/institute_admin_home.jsp";
      //location.href="<%=request.getContextPath()%>/institute_admin/update_election_managergrid_details.jsp";
 
-     window.top.document.getElementById("pagetab").height = prevheight;
-     location.href="<%=request.getContextPath()%>/update_managers.do";
+   //  window.top.document.getElementById("pagetab").height = prevheight;
+     location.href="<%=request.getContextPath()%>/instituteadmin.do";
      
 }
 

@@ -63,6 +63,7 @@ session.setAttribute("Institute",Institute);
            String eid=(String)session.getAttribute("institute_id");
            
           System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR  "+id+eid+position);
+
         VoterRegistration r=CandidateRegistrationDAO.searchVoterRegistration(eid,id);
         CandidateRegistration c=CandidateRegistrationDAO.searchCandidateRegistration(eid,id,position);
 Candidate1 candi=new Candidate1();
@@ -70,8 +71,8 @@ Candidate1 candi=new Candidate1();
         
         //Position1 p= p1.searchPosition(Integer.parseInt(c.getPosition()));
 
-System.out.println(c.getPosition());
-List<Candidate1> c1=p1.ElectionId(Integer.parseInt(c.getPosition()), eid)   ;
+
+List<Candidate1> c1=p1.ElectionId(Integer.parseInt(c.getId().getPosition()), eid)   ;
 
 
 
@@ -84,12 +85,12 @@ if(e!=null)
 
 
 
-        Position1 p=p1.searchPosition1(Integer.parseInt(c.getPosition()),electionid, eid);
+        Position1 p=p1.searchPosition1(Integer.parseInt(c.getId().getPosition()),electionid, eid);
 
 
         
 
-        System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+c.getPosition()+electionid+" "+eid);
+        System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+c.getId().getPosition()+electionid+" "+eid);
         if(button.equals("add"))
         {
             /* if(l!=null){
@@ -132,7 +133,10 @@ System.out.println("View Page");
             employeeform.setJ_date(r.getJoiningDate());
                  employeeform.setM_name(r.getMName());
                  employeeform.setM_number(r.getMobileNumber());
-
+employeeform.setSecondedBy(c.getSecondedBy());
+employeeform.setProposedBy(c.getProposedBy());
+employeeform.setPositionAccepted(c.getPositionAccepted());
+employeeform.setRequestDate(c.getRequestDate());
                 employeeform.setP_add(r.getPAddress());
             employeeform.setState(r.getState());
                  employeeform.setState1(r.getState1());
@@ -145,6 +149,10 @@ System.out.println("View Page");
 
              employeeform.setEnrollment(r.getId().getEnrollment());
             employeeform.setInstitute_id(r.getId().getInstituteId());
+            employeeform.setAlternateemail(r.getAlternateMail());
+            employeeform.setPositionAccepted(c.getPositionAccepted());
+            employeeform.setProposedBy(c.getProposedBy());
+            employeeform.setSecondedBy(c.getSecondedBy());
 
 //            employeeform.setEnrolled_in(c.getEnrolledIn());
 //            employeeform.setP_marks(c.getPMarks());

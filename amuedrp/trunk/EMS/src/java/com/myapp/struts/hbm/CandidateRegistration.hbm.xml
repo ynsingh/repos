@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 21 Jun, 2011 6:59:44 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class  name="com.myapp.struts.hbm.CandidateRegistration" table="candidate_registration">
+  <class name="com.myapp.struts.hbm.CandidateRegistration" table="candidate_registration">
     <composite-id class="com.myapp.struts.hbm.CandidateRegistrationId" name="id">
       <key-property name="enrollment" type="string">
         <column length="30" name="enrollment"/>
@@ -12,6 +12,9 @@
       </key-property>
       <key-property name="electionId" type="string">
         <column length="30" name="election_id"/>
+      </key-property>
+      <key-property name="position" type="string">
+        <column length="50" name="position"/>
       </key-property>
     </composite-id>
     <property name="enrolledIn" type="string">
@@ -32,11 +35,27 @@
     <property name="indisc" type="string">
       <column length="50" name="indisc"/>
     </property>
-    <property name="position" type="string">
-      <column length="50" name="position"/>
-    </property>
     <property name="status" type="string">
       <column length="50" name="status1"/>
     </property>
+    <property name="rejectedReason" type="string">
+      <column length="255" name="rejected_reason"/>
+    </property>
+    <property name="requestDate" type="string">
+      <column length="20" name="request_date"/>
+    </property>
+    <property name="acceptedDate" type="string">
+      <column length="20" name="accepted_date"/>
+    </property>
+    <property name="proposedBy" type="string">
+      <column length="20" name="proposed_by"/>
+    </property>
+    <property name="secondedBy" type="string">
+      <column length="20" name="seconded_by"/>
+    </property>
+    <property name="positionAccepted" type="string">
+      <column length="20" name="position_accepted"/>
+    </property>
+
   </class>
 </hibernate-mapping>

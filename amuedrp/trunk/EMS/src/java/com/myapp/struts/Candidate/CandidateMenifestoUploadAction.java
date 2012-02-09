@@ -23,15 +23,7 @@ public class CandidateMenifestoUploadAction extends org.apache.struts.action.Act
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -42,11 +34,14 @@ public class CandidateMenifestoUploadAction extends org.apache.struts.action.Act
         String user_id = (String)session.getAttribute("user_id");
         String staff_id = (String)session.getAttribute("staff_id");
         String institute_id = (String)session.getAttribute("institute_id");
-
-        List<Candidate1> cand = (List<Candidate1>)CandidateRegistrationDAO.searchcandidate(institute_id,staff_id);
-        if(cand!=null && !cand.isEmpty())
+String election_id=(String)session.getAttribute("election_id");
+String position_id=(String)session.getAttribute("position_id");
+System.out.println(election_id+position_id);
+        Candidate1 cand = (Candidate1)CandidateRegistrationDAO.searchcandidateMenifesto(institute_id,staff_id,election_id,position_id);
+       System.out.println(cand);
+        if(cand!=null )
         {
-            Candidate1 candidate = cand.get(0);
+            Candidate1 candidate = cand;
             candidate.setMenifesto(form1.getMenifesto().getFileData());
             CandidateRegistrationDAO.updateCandidate1(candidate);
             request.setAttribute("msg", "menifesto Successfully uploaded");

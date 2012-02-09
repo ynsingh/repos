@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.hibernate.HibernateException;
 import  com.myapp.struts.utility.*;
+import java.io.FileInputStream;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -61,15 +62,7 @@ public class Election_Manager_RegistrationAction extends org.apache.struts.actio
     boolean page=true;
     String align="left";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -227,6 +220,7 @@ String msg1=resource.getString("duplicate_user_id");
         staffdetail.setContactNo(contact_no);
         staffdetail.setMobileNo(mobile_no);
         staffdetail.setEmailId(email_id);
+        staffdetail.setEnrollment(staff_id);
 
         staffdetail.setId(staffdetailprimary);
 
@@ -261,9 +255,38 @@ String msg1=resource.getString("duplicate_user_id");
         logindao.insert(login, user_id);
          electionmanagerdao.insert(electionmanager);
          String msg=resource.getString("record_inserted_successfully");
-request.setAttribute("msg",msg);
+         request.setAttribute("msg",msg);
        String path = servlet.getServletContext().getRealPath("/");
-         obj=new Email(path,email_id,admin_password,"Registration Accepted Successfully from EMS"," Dear "+login.getUserName()+"\n You are Registered as a Election Manager with given User Id="+user_id +" , Password for EMS Login ="+admin_password+".\nWith Regards\nInstitute Admin\n"+session.getAttribute("institute_name")+"\nElectionMS");
+
+       FileInputStream in = new FileInputStream(path+"/mail.properties");
+  			Properties	pro = new Properties();
+                                 pro.load(in);
+
+
+				Enumeration keys = pro.keys();
+                                int i=0;
+                                String mailbody="";
+				while (keys.hasMoreElements())
+				{
+                                       String key=(String)keys.nextElement();
+
+                                       if(key.equalsIgnoreCase(user_id+"em")){
+                                       mailbody=(String)pro.get(key);
+                                       }
+
+
+
+
+                                   i++;
+				}
+				in.close();
+
+
+
+       if(mailbody=="")
+       mailbody="\n You are Registered as a Election Manager with given following details\n";
+
+         obj=new Email(path,email_id,admin_password,"Registration Accepted Successfully from EMS"," Dear "+login.getUserName()+mailbody+"user_id="+user_id +" , Password for EMS Login ="+admin_password+".\nWith Regards\nInstitute Admin\n"+session.getAttribute("institute_name")+"\nElectionMS");
          System.out.println(email_id+institute_id+admin_password);
          executor.submit(new Runnable() {
 

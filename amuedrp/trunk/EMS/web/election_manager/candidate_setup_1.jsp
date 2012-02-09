@@ -94,10 +94,7 @@ pageContext.setAttribute("Edit",Edit);
    VoterRegistration voter;
    CandidateRegistration candiadte;
    VoterCandidate voter1;
-  // Election_Manager_StaffDetail ems;
-  // AdminRegistration adminReg;
-   //ElectionManager electionmanager;
-   //StaffDetail staffdetail;
+
 
    ArrayList requestList;
    int fromIndex=0, toIndex;
@@ -108,52 +105,43 @@ pageContext.setAttribute("Edit",Edit);
 
  <%
 
- //List rs = (List)session.getAttribute("resultset");
+ 
  List<VoterCandidate> rs = (List<VoterCandidate>)session.getAttribute("resultset1");
 
 
    requestList = new ArrayList();
-//requestList = (ArrayList)session.getAttribute("resultset");
+
    int tcount =0;
-   int perpage=5;
+   int perpage=10;
    int tpage=0;
    tcount=0;
 
 
    if(request.getParameter("pageSize")!=null && request.getParameter("pageSize")!="")
     perpage = Integer.parseInt((String)request.getParameter("pageSize"));
- /*Create a connection by using getConnection() method
-   that takes parameters of string type connection url,
-   user name and password to connect to database.*/
+ 
 if(rs!=null){
   Iterator it = rs.iterator();
 System.out.println("it="+(tcount));
-//requestList = (Login)rs.get(0);
+
 String status = "&status="+request.getParameter("status");
    while (it.hasNext()) {
 
 	System.out.println("it="+(tcount));
         voter1 = (VoterCandidate)rs.get(tcount);
-       // staffdetail = (StaffDetail)rs.get(tcount).getStaffDetail();
+      
        candiadte = (CandidateRegistration)voter1.getCandidateRegistration();
         Ob = new StaffDoc ();
-        //ems=new Election_Manager_StaffDetail();
-
-       // Ob.setmanager_id(electionmanager.getId().getManagerId());
-        //Ob.setinstitute_id(electionmanager.getId().getInstituteId());
-        //Ob.setfirst_name(staffdetail.getFirstName());
-        //Ob.setlast_name(staffdetail.getLastName());
-        //Ob.setStaff_id(electionmanager.getStaffId());
-        //Ob.setUser_id(electionmanager.getUserId());
-        //Ob.setStatus(electionmanager.getStatus());
-        Ob.setPosition_id(candiadte.getPosition());
+       
+       System.out.println(candiadte.getId().getPosition());
+        Ob.setPosition_id(candiadte.getId().getPosition());
         Ob.setEnrollment(voter1.getVoterRegistration().getId().getEnrollment());
         Ob.setVoter_name(voter1.getVoterRegistration().getVoterName());
         Ob.setDepartment(voter1.getVoterRegistration().getDepartment());
         Ob.setCourse(voter1.getVoterRegistration().getCourse());
         Ob.setYear(voter1.getVoterRegistration().getYear());
         Ob.setStatus(voter1.getCandidateRegistration().getStatus());
-        //ems.getElectionManager().setStatus(ems.getElectionManager().getStatus());
+      
 
 
 
@@ -166,7 +154,7 @@ String status = "&status="+request.getParameter("status");
    requestList.add(Ob);
    tcount++;
 it.next();
-   //System.out.println("tcount="+tcount);
+ 
 		     }
 
 System.out.println("tcount="+tcount);
@@ -244,7 +232,14 @@ function isNumberKey(evt)
 else
 {%>
 <table id="grid" dir="" width="100%" style="padding-left: 5%;padding-right: 5%">
-   <tr><td>Candidate Approval Page</td><td align="right">View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></td></tr>
+   <tr><td>Candidate Approval Page</td><td align="right">View Next&nbsp;
+           <%--<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>--%>
+       <select id="rec" onchange="changerec()" style="width:50px">
+           <option value="10">10</option>
+            <option value="20">20</option>
+             <option value="30">30</option>
+       </select>
+       </td></tr>
     <tr dir=""><td dir="">
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 

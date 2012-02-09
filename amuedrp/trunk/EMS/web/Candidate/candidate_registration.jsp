@@ -813,6 +813,11 @@ radio_choice = false;
 
 
 </td></tr>
+            <tr><td> Alternate Email &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </td>
+
+        <td align="left"><html:text  name="CandidateRegActionForm" styleId="alternateemail" property="alternateemail" /></td>
+
+</tr>
 
 
 

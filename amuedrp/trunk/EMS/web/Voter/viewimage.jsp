@@ -19,7 +19,7 @@ System.out.println("Image Length1="+voter.getImage().length);
 }
 else
 {
-    File file = new File(application.getRealPath("image")+"/no-image.jpg");
+    File file = new File(application.getRealPath("images")+"/no-image.jpg");
 
       
     try{

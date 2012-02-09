@@ -21,7 +21,31 @@ import org.hibernate.transform.Transformers;
  * @author Edrp-04
  */
 public class PositionDAO {
+public Candidate1 getCandidateDetailById(String enroll,int positionId,String electionId, String instituteId) {
+        Session session =null;
+    Candidate1 obj=null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM Candidate1 where id.positionId=:positionId and id.electionId = :electionId and id.instituteId=:instituteId and enrollment=:candidateId");
+            query.setInteger("positionId", positionId);
+            query.setString("electionId",electionId );
+             query.setString("instituteId", instituteId);
+              query.setString("candidateId", enroll);
+            obj= (Candidate1)query.uniqueResult();
+            session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+          e.printStackTrace();
+          throw e;
 
+
+        }
+    finally{
+    session.close();
+    }
+        return obj;
+    }
      public void insert(Position1 position){
     Session session =null;
     Transaction tx = null;
@@ -42,10 +66,11 @@ public class PositionDAO {
         catch (RuntimeException e) {
             if(position != null)
                 tx.rollback();
+            e.printStackTrace();
             throw e;
         }
         finally {
-          
+          session.close();
         }
     }
      public void updatePosition(Position1 position) {
@@ -58,12 +83,13 @@ public class PositionDAO {
             tx.commit();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
+          
                 tx.rollback();
+                e.printStackTrace();
             throw e;
         }
         finally {
-          // session.close();
+           session.close();
         }
     }
      public void deletePosition(Position1 position) {
@@ -76,12 +102,12 @@ public class PositionDAO {
             tx.commit();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
+         e.printStackTrace();
                 tx.rollback();
             throw e;
         }
         finally {
-          // session.close();
+           session.close();
         }
     }
       public void insertcandidate(Candidate1 candidate){
@@ -110,10 +136,11 @@ public class PositionDAO {
         catch (RuntimeException e) {
             if(candidate != null)
                 tx.rollback();
+         e.printStackTrace();
             throw e;
         }
         finally {
-          //session.close();
+         session.close();
         }
     }
 public void updateCandidate(Candidate1 candiadte) {
@@ -126,210 +153,275 @@ public void updateCandidate(Candidate1 candiadte) {
             tx.commit();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
+          e.printStackTrace();
                 tx.rollback();
             throw e;
         }
         finally {
-          // session.close();
+           session.close();
         }
     }
 
 public Position1 getPositionByName(String positionName,String electionId, String instituteId) {
         Session session =null;
-    Transaction tx = null;
+    
+    Position1 obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
-            tx = session.beginTransaction();
+            session.beginTransaction();
             Query query = session.createQuery("FROM Position1 where id.electionId = :electionId and id.instituteId=:instituteId and positionName=:positionName");
              query.setString("electionId",electionId );
              query.setString("instituteId", instituteId);
              query.setString("positionName", positionName);
-            return (Position1)query.uniqueResult();
+         obj= (Position1)query.uniqueResult();
+         session.getTransaction().commit();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
+          e.printStackTrace();
+          throw e;
 
 
         }
-        return null;
+    finally{
+    session.close();
+    }
+        return obj;
     }
 public List<PositionWithCandidature> getPositionWithCandidature(String electionId, String instituteId) {
         Session session =null;
-    Transaction tx = null;
+
+    List<PositionWithCandidature> obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
-            tx = session.beginTransaction();
+            session.beginTransaction();
             Query query = session.createSQLQuery("select p.position_id,p.position_name,(select count(*) from candidate_registration cr where cr.`position`=p.position_id and cr.institute_id=p.institute_id and cr.status1='REGISTERED') candidature from position1 p where p.election_id = :electionId and p.institute_id=:instituteId");
              query.setString("electionId",electionId );
              query.setString("instituteId", instituteId);
              query.setResultTransformer(Transformers.aliasToBean(PositionWithCandidature.class));
              System.out.println(query.getQueryString()+" electionId="+electionId+" instituteId="+instituteId);
-            return (List<PositionWithCandidature>)query.list();
+          obj=(List<PositionWithCandidature>)query.list();
+          session.getTransaction().commit();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
-System.out.println(e);
+            e.printStackTrace();
+            throw e;
+
 
         }
     finally{
-        session=null;
+        session.close();
     }
-        return null;
+        return obj;
     }
 public List<Position1> getPosition(String electionId, String instituteId) {
         Session session =null;
-    Transaction tx = null;
+    List<Position1> obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
-            tx = session.beginTransaction();
+            session.beginTransaction();
             Query query = session.createQuery("FROM Position1 where id.electionId = :electionId and id.instituteId=:instituteId");
              query.setString("electionId",electionId );
              query.setString("instituteId", instituteId);
-            return (List<Position1>)query.list();
+           obj= (List<Position1>)query.list();
+           session.getTransaction().commit();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
+          e.printStackTrace();
+          throw e;
 
             
         }
     finally{
-        session=null;
+        session.close();
     }
-        return null;
+        return obj;
     }
 public List<Candidate1> getCandidate(int positionId,String electionId, String instituteId) {
         Session session =null;
-    Transaction tx = null;
+   List<Candidate1> cand=null;
     try {
+        System.out.println(positionId+"   "+electionId+"  "+instituteId);
         session= HibernateUtil.getSessionFactory().openSession();
-            tx = session.beginTransaction();
-            Query query = session.createQuery("SELECT c1 FROM Candidate1 c1,CandidateRegistration cr where c1.id.electionId=cr.id.electionId and c1.id.instituteId=cr.id.instituteId and c1.id.positionId=:positionId and c1.id.electionId = :electionId and c1.id.instituteId=:instituteId and cr.id.enrollment=c1.enrollment and cr.status = 'REGISTERED'");
-            query.setInteger("positionId", positionId);
+            session.beginTransaction();
+            Query query = session.createQuery("SELECT c1 FROM Candidate1 c1,CandidateRegistration cr where c1.id.electionId=cr.id.electionId and c1.id.instituteId=cr.id.instituteId and c1.id.positionId=cr.id.position and c1.id.electionId =:electionId and c1.id.instituteId=:instituteId and c1.enrollment=cr.id.enrollment and cr.status = 'REGISTERED' and c1.id.positionId=:positionId");
+            query.setString("positionId", String.valueOf(positionId));
             query.setString("electionId",electionId );
              query.setString("instituteId", instituteId);
-            return (List<Candidate1>)query.list();
+          cand= (List<Candidate1>)query.list();
+          session.getTransaction().commit();
         }
         catch (RuntimeException e) {
          System.out.println("Candidate Query Error:"+e.getStackTrace().toString());
          throw e;
 
         }
-        //return null;
+   finally{
+   session.close();
+   }
+        return cand;
     }
 public Candidate1 getCandidateDetailByName(String candidateName,int positionId,String electionId, String instituteId) {
         Session session =null;
-    Transaction tx = null;
+    Candidate1 obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
-            tx = session.beginTransaction();
+            session.beginTransaction();
             Query query = session.createQuery("FROM Candidate1 where id.positionId=:positionId and id.electionId = :electionId and id.instituteId=:instituteId and candidateName=:candidateId");
             query.setInteger("positionId", positionId);
             query.setString("electionId",electionId );
              query.setString("instituteId", instituteId);
               query.setString("candidateId", candidateName);
-            return (Candidate1)query.uniqueResult();
+            obj= (Candidate1)query.uniqueResult();
+            session.getTransaction().commit();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
+          e.printStackTrace();
+          throw e;
 
 
         }
-        return null;
+    finally{
+    session.close();
+    }
+        return obj;
     }
 public Candidate1 getCandidateByName(String candidateId,int positionId,String electionId, String instituteId) {
         Session session =null;
-    Transaction tx = null;
+   Candidate1 obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
-            tx = session.beginTransaction();
+            session.beginTransaction();
             Query query = session.createQuery("FROM Candidate1 where id.positionId=:positionId and id.electionId = :electionId and id.instituteId=:instituteId and id.candidateId=:candidateId");
             query.setInteger("positionId", positionId);
             query.setString("electionId",electionId );
              query.setString("instituteId", instituteId);
               query.setString("candidateId", candidateId);
-            return (Candidate1)query.uniqueResult();
+            obj= (Candidate1)query.uniqueResult();
+            session.getTransaction().commit();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
+          
+          e.printStackTrace();
+          throw e;
 
 
         }
-        return null;
+    finally{
+    session.close();
+    }
+        return obj;
     }
 public Candidate1 checkCandidateByName(String candidateName,String candidateId,int positionId,String electionId, String instituteId) {
         Session session =null;
-    Transaction tx = null;
+   Candidate1 obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
-            tx = session.beginTransaction();
+             session.beginTransaction();
             Query query = session.createQuery("FROM Candidate1 where id.positionId=:positionId and id.electionId = :electionId and id.instituteId=:instituteId and candidateName=:candidateName and id.candidateId!=:candidateId");
             query.setInteger("positionId", positionId);
             query.setString("electionId",electionId );
              query.setString("instituteId", instituteId);
               query.setString("candidateName", candidateName);
               query.setString("candidateId", candidateId);
-            return (Candidate1)query.uniqueResult();
+            obj= (Candidate1)query.uniqueResult();
+         session.getTransaction().commit();
         }
         catch (RuntimeException e) {
-          //  if(bibDetails != null)
+
+          e.printStackTrace();
+          throw e;
 
 
         }
-        return null;
+    finally{
+    session.close();
+    }
+        return obj;
     }
 
  public  Position1 searchPosition(Integer PositionID) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-
+        Session session =null;
+Position1 obj=null;
         try {
+            session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Criteria criteria = session.createCriteria(Position1.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.positionId", PositionID)));
-            return (Position1) criteria.uniqueResult();
+            obj= (Position1) criteria.uniqueResult();
 
 
-        } finally {
-            session.close();
+        session.getTransaction().commit();
         }
+        catch (RuntimeException e) {
+
+          e.printStackTrace();
+          throw e;
+
+
+        }
+    finally{
+    session.close();
+    }
+        return obj;
     }
 
-
   public  Position1 searchPosition1(Integer PositionID,String electionid,String instituteid) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-
+        Session session =null;
+Position1 obj=null;
         try {
+            session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Criteria criteria = session.createCriteria(Position1.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.positionId", PositionID)))
                     .add(Restrictions.eq("id.electionId", electionid))
                     .add(Restrictions.eq("id.instituteId",instituteid));
-            return (Position1) criteria.uniqueResult();
+            obj= (Position1) criteria.uniqueResult();
 
 
-        } finally {
-            session.close();
+        session.getTransaction().commit();
         }
+        catch (RuntimeException e) {
+
+          e.printStackTrace();
+          throw e;
+
+
+        }
+    finally{
+    session.close();
+    }
+        return obj;
     }
 
 
    public  List<Candidate1> ElectionId(Integer PositionID,String instituteid) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-
+        Session session = null;
+        List<Candidate1> obj=null;
         try {
+            session=HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Criteria criteria = session.createCriteria(Candidate1.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.positionId", PositionID)))
                     .add(Restrictions.eq("id.instituteId", instituteid));
-            return (List<Candidate1>) criteria.list();
+        obj= (List<Candidate1>) criteria.list();
 
 
-        } finally {
-            session.close();
+        session.getTransaction().commit();
         }
+        catch (RuntimeException e) {
+
+          e.printStackTrace();
+          throw e;
+
+
+        }
+    finally{
+    session.close();
+    }
+        return obj;
     }
 
 

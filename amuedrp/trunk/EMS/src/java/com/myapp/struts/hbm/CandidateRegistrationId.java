@@ -12,6 +12,15 @@ public class CandidateRegistrationId  implements java.io.Serializable {
      private String enrollment;
      private String instituteId;
      private String electionId;
+     private String position;
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
 
     public String getElectionId() {
         return electionId;
@@ -25,10 +34,11 @@ public class CandidateRegistrationId  implements java.io.Serializable {
     public CandidateRegistrationId() {
     }
 
-    public CandidateRegistrationId(String enrollment, String instituteId, String electionId) {
+    public CandidateRegistrationId(String enrollment, String instituteId, String electionId,String position) {
        this.enrollment = enrollment;
        this.instituteId = instituteId;
        this.electionId = electionId;
+       this.position=position;
     }
    
     public String getEnrollment() {

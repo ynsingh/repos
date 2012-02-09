@@ -124,6 +124,7 @@ System.out.println(status+"rrrrrrrrrrrrrr");
                 String file = (String) request.getAttribute("filename");
                 String position=(String)request.getAttribute("position");
                 String election=(String)request.getAttribute("election");
+                String alternateemail=(String)request.getAttribute("alternateemail");
                 String institute_id=(String)session.getAttribute("institute_id");
 
 
@@ -583,6 +584,7 @@ System.out.println(status+"rrrrrrrrrrrrrr");
                                         <td align="left"><%=resource.getString("country")%>:*</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country"  value="<%=country%>" styleId="country1"/></td>
 
                                     </tr>
+                                    
                                     <tr>
                                         <td colspan="2"><input type="checkbox" id="Checkbox1" name="check" value="off" tabindex="17" onclick="return copy();" >&nbsp;&nbsp;<b>Click Here</b>&nbsp;(If permanent address is same as corresponding address)</td>
                                     </tr>
@@ -591,6 +593,9 @@ System.out.println(status+"rrrrrrrrrrrrrr");
                                     <tr>    <td align="left"><%=resource.getString("state")%></td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="state1" value="<%=state1%>" styleId="state21"/></td></tr>
                                     <tr> <td align="left"><%=resource.getString("pin")%></td><td><html:text  readonly="<%=read%>" name="CandidateRegActionForm" property="zipcode1"  value="<%=zcode1%>" styleId="zcode21"/></td><td colspan="2"></tr>
                                     <tr><td align="left"><%=resource.getString("country")%></td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country1" value="<%=country1%>" styleId="country21"/></td></tr>
+                                    <tr>
+                                           <td align="left">Alternate Email:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="alternateemail" value="<%=alternateemail%>" property="alternateemail" /></td>
+                                    </tr>
                </table>
 
 
@@ -664,6 +669,7 @@ System.out.println(status+"rrrrrrrrrrrrrr");
 
                                     <tr>
                                         <td align="left"><%=resource.getString("mobileno")%>*:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="mnumb1" value="<%=mnumb%>" property="m_number" /></td>
+                                      
                                     </tr>
                                     <tr>
                                         <td colspan="2"><%=resource.getString("important")%>! <%=resource.getString("workingemail")%>:</td>
@@ -729,7 +735,7 @@ System.out.println(status+"rrrrrrrrrrrrrr");
                     <input id="button1"  name="button" type="submit" value="<%=resource.getString("accept")%>" class="txt1" />
            
                     <%} else if(status.equalsIgnoreCase("withdraw")==false && status.equalsIgnoreCase("not registered")==false && status.equalsIgnoreCase("Rejected")==false){%>
-                   <input name="button" type="submit" value="<%=resource.getString("print")%>"  class="txt1"/>
+                    <%--<input name="button" type="button" value="Back" onclick="return send()"  class="txt1"/>--%>
                    <%}%>
                     <input name="button" type="button" value="<%=resource.getString("cancel")%>" onclick="return send()" class="txt1"/>
                     

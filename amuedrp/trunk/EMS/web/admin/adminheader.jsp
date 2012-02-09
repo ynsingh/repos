@@ -58,12 +58,21 @@ String user_name=   (String) session.getAttribute("username");
 
 <table width="100%" height="50px;" border="0px" style="margin:0px 0px 0px 0px" dir="<%=rtl%>">
 
-    <tr dir="<%=rtl%>"><td valign="top" dir="<%=rtl%>">
+    <tr dir="<%=rtl%>"><td valign="bottom" dir="<%=rtl%>">
 
-                        <p align="<%=align%>"  style="font-family:Arial;color:brown;font-size:22px;" dir="<%=rtl%>">&nbsp;&nbsp;<%=resource.getString("electionmanagement")%><br/><br></td>
-                    <td dir="<%=rtl%>"><p align="center"  style="font-family:Tempus Sans ITC;color:brown;font-size:20px;" dir="<%=rtl%>"><span dir="<%=rtl%>"><b> </b></span></td>
+          <%--  <span align="<%=align%>"  style="font-family:Arial;font-weight: bold;font-size:22px;" dir="<%=rtl%>">&nbsp;&nbsp;<%=resource.getString("electionmanagement")%></span>--%>
+           <img src="<%=request.getContextPath()%>/images/logo.bmp" alt="banner space"  border="0" align="top" id="Image1">
+        </td>
+                    <td dir="<%=rtl%>"><p align="center"  style="font-family:Tempus Sans ITC;color:brown;font-size:20px;" dir="<%=rtl%>"><span dir="<%=rtl%>"><b> SuperAdmin Module</b></span></td>
 
-                    <td align="right" width="250px" valign="top" dir="<%=rtl%>"><span style="font-family:arial;color:brown;font-size:12px;" dir="<%=rtl%>"><b dir="<%=rtl%>"><%=resource.getString("login.hello")%> [<%=user%>]&nbsp;|<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <td align="right" width="250px" valign="top" dir="<%=rtl%>">
+                        
+                        <%--<span style="font-family:arial;color:brown;font-size:12px;" dir="<%=rtl%>"><b dir="<%=rtl%>"><%=resource.getString("login.hello")%> [<%=user%>]&nbsp;|<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
+
+                            <span  dir="<%=rtl%>" style="font:8pt Verdana;"><%=resource.getString("login.hello")%> [<%=user%>]&nbsp;|<a href="<%=request.getContextPath()%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></span>
+                        <br>
+
+                         <img src="<%=request.getContextPath()%>/images/logo.png" alt="" height="65px" width="160px" border="0" align="top" id="Image1" style="">
                                 
                      </td>
                 </tr>

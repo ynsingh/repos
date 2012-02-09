@@ -32,6 +32,23 @@ public class AdminRegistration  implements java.io.Serializable {
      private String gender;
      private String workingStatus;
      private String userId;
+     private String enrollment;
+
+    public String getInstituteId() {
+        return instituteId;
+    }
+
+    public void setInstituteId(String instituteId) {
+        this.instituteId = instituteId;
+    }
+  private String instituteId;
+    public String getEnrollment() {
+        return enrollment;
+    }
+
+    public void setEnrollment(String enrollment) {
+        this.enrollment = enrollment;
+    }
 
     public AdminRegistration() {
     }

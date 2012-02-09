@@ -71,9 +71,7 @@ String user=(String)session.getAttribute("username");
 String pass=(String)session.getAttribute("pass");
  session.setAttribute("pass","t");
    user_id=   (String)session.getAttribute("user_id");
-String user_name=   (String) session.getAttribute("username");
-  String question=  (String)request.getAttribute("question");
-   String staff_id=  (String) request.getAttribute("staff_id");
+
    String instituteName=  (String) session.getAttribute("institute_name");
    String role=  (String) session.getAttribute("login_role");
 
@@ -174,25 +172,40 @@ if(request.getAttribute("msg")!=null)
     <body leftmargin="0" topmargin="0" marginwidth="0" onload="fn();" marginheight="0" dir="<%=rtl%>">
  <table width="100%"   border="0px"  style="margin:0px 0px 0px 0px;" dir="<%=rtl%>">
 
-    <tr dir="<%=rtl%>" valign="top"><td valign="top" dir="<%=rtl%>" width="550px">
+    <tr dir="<%=rtl%>" valign="top">
+        <td valign="bottom" dir="<%=rtl%>">
 
-                        <p align="<%=align%>"  style="font-family:Arial;color:brown;font-size:22px; " dir="<%=rtl%>">&nbsp;&nbsp;<%=resource.getString("electionmanagement")%><br/><br></td>
-                    <td dir="<%=rtl%>" valign="top"><p align="left"   style="font-family:Arial;color:brown;font-size:16px;margin-top: 0px;" dir="<%=rtl%>"><span dir="<%=rtl%>"><b><%=instituteName%><br>&nbsp; Role[<%=role%>]</b></span></td>
+                  <%--      <p align="<%=align%>"  style="font-family:Arial;color:brown;font-size:22px; " dir="<%=rtl%>">&nbsp;&nbsp;<%=resource.getString("electionmanagement")%><br/><br>--%>
 
-                    <td align="right" width="250px" valign="top" dir="<%=rtl%>"><span style="font-family:arial;color:brown;font-size:12px;" dir="<%=rtl%>"><b dir="<%=rtl%>"><%=resource.getString("login.hello")%>
+           <img src="<%=request.getContextPath()%>/images/logo.bmp" alt="banner space"  border="0" align="top" id="Image1">
 
-                                <%--[<%=user%>]&nbsp;|<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a>--%>
+        </td>
+                    <td dir="<%=rtl%>" align="center" valign="middle" width="50%"><span dir="<%=rtl%>"><b><%=instituteName%><br>&nbsp; Role[<%=role%>]</b></span></td>
+
+                    <td align="right"  valign="top" dir="<%=rtl%>" style="font:8pt Verdana;text-decoration:none;">
+
+
+<table width="100%" border="0px"><tr>
+<td>
+<html:img src="/EMS/images/logo.png" width="150px" height="60px"  />
+</td>
+<td align="right"  valign="top"><%=resource.getString("login.hello")%>,&nbsp;
+
+
+
+
+                              
                         
   <script type="text/javascript" language="javascript">
 document.write("<span " );
-document.write('style="height:10px;border:0px solid black;font:bold 10pt Verdana;"');
+document.write('style="height:10px;border:0px solid black;font:bold 11px Verdana;"');
 document.write(' onclick="toggle_menu(1);');
 document.write('event.cancelBubble=1" ><span style="cursor:hand;">');
-document.write('<%=user%> <img width=10 height=10 src="<%=request.getContextPath()%>/images/down.gif"></span>| &nbsp;<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></b>');
+document.write('<%=user%> <img width=10 height=10 src="<%=request.getContextPath()%>/images/down.gif"></span>');
 document.write('<div id="ddmenu" style="');
-document.write('height:45px;border:0px solid black;width:200px;text-align: left;');
+document.write('height:45px;border:0px solid black;background-color:white;text-decoration:none;text-align: right;padding-right:2px');
 document.write('visibility:hidden;">');
-add_item("<%=resource.getString("view_profile")%>","<%=request.getContextPath()%>/candidate1.do?id=<%=session.getAttribute("candidate_id")%>&pos=<%=session.getAttribute("position_id")%>&status=");
+add_item("<%=resource.getString("view_profile")%>","<%=request.getContextPath()%>/newregistration2.do?id=<%=session.getAttribute("voter_id")%>");
 add_item("<%=resource.getString("login.managesuperadminaccount.changepassword")%>","<%=request.getContextPath()%>/change_password.do");
 function add_item(linkname,dest){
   document.write('<a target="f3" href="'+dest+'">'+linkname+'</a><br>');
@@ -216,8 +229,13 @@ document.write('</div></span>');
 
 </script>
 
+</td><td align="left" valign="top" width="20%">
+|&nbsp;<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a>
 
-                            </b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td></tr>
+</table>
+
+                          
 
                      </td>
                 </tr>
