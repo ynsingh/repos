@@ -68,6 +68,7 @@ public class Election_Manager_RegistrationAction extends org.apache.struts.actio
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         Election_Manager_RegistrationActionForm ManagerRegistrationForm=(Election_Manager_RegistrationActionForm)form;
+        HttpSession session = request.getSession();
         first_name=ManagerRegistrationForm.getFirst_name();
         last_name=ManagerRegistrationForm.getLast_name();
         address1=ManagerRegistrationForm.getAddress1();
@@ -78,17 +79,30 @@ public class Election_Manager_RegistrationAction extends org.apache.struts.actio
         contact_no=ManagerRegistrationForm.getContact_no();
         mobile_no=ManagerRegistrationForm.getMobile_no();
         department=ManagerRegistrationForm.getDepartment();
-        staff_id=ManagerRegistrationForm.getStaff_id();
-        manager_id=ManagerRegistrationForm.getManager_id();
-        institute_id=ManagerRegistrationForm.getInstitute_id();
-        user_id=ManagerRegistrationForm.getUser_id();
+       // staff_id=ManagerRegistrationForm.getStaff_id();
+       // manager_id=ManagerRegistrationForm.getManager_id();
+
+        //auto generated Manager ID & Staff ID
+
+        staff_id=(String)ElectionDAO.returnMaxElectionManagerId(institute_id);
+        manager_id=staff_id;
+
+
+        System.out.println(staff_id+manager_id);
+
+        //institute_id=ManagerRegistrationForm.getInstitute_id();
+
+        institute_id=(String)session.getAttribute("institute_id");
+
+
+        //user_id=ManagerRegistrationForm.getUser_id();
        // password=ManagerRegistrationForm.getPassword();
         zip1=ManagerRegistrationForm.getZip1();
         //repassword=ManagerRegistrationForm.getRepassword();
         email_id=ManagerRegistrationForm.getEmail_id();
-        
+        user_id=email_id;
         try{
-            HttpSession session=request.getSession();
+          //  HttpSession session=request.getSession();
 
             try{
 locale1=(String)session.getAttribute("locale");

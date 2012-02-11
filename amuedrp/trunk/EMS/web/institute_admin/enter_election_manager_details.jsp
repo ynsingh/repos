@@ -144,37 +144,37 @@ locale1=(String)session.getAttribute("locale");
                      <td align="<%=align%>" dir="<%=rtl%>"><html:text property="department" styleId="department" name="Election_Manager_RegistrationActionForm"/></td>
                 </tr>
 
-                <tr>
+               <%-- <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("staffid")%>*</td>
                      <td align="<%=align%>" dir="<%=rtl%>"><html:text property="staff_id" styleId="staff_id" name="Election_Manager_RegistrationActionForm"/></td>
                     <td width="300px" class="err" dir="<%=rtl%>" align="<%=align%>"> <html:messages id="err_name"  property="staff_id">
             <%=resource.getString("staffid_cannotbe_blank")%>
                         </html:messages></td>
-                </tr>
+                </tr>--%>
 
-                <tr>
+                <%--<tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("managerid")%>*</td>
                      <td align="<%=align%>" dir="<%=rtl%>"><html:text property="manager_id" styleId="manager_id" name="Election_Manager_RegistrationActionForm"/></td>
                     <td width="300px" class="err" dir="<%=rtl%>" align="<%=align%>"> <html:messages id="err_name"  property="manager_id">
             <%=resource.getString("managerid_cannotbe_blank")%>
                         </html:messages></td>
-                </tr>
+                </tr>--%>
 
-                <tr>
+               <%-- <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("instituteid")%></td>
                      <td align="<%=align%>" dir="<%=rtl%>"><html:text property="institute_id" value="<%=institute_id%>" styleId="institute_id" name="Election_Manager_RegistrationActionForm" readonly="true"/></td>
                     <td width="300px" class="err" dir="<%=rtl%>" align="<%=align%>"> <html:messages id="err_name"  property="institute_id">
                             <bean:write name="err_name" />
              </html:messages></td>
-                </tr>
+                </tr>--%>
 
-                <tr>
+             <%--   <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("userid")%>*</td>
                      <td align="<%=align%>" dir="<%=rtl%>"><html:text property="user_id" styleId="user_id" name="Election_Manager_RegistrationActionForm"/></td>
                     <td width="300px" class="err" dir="<%=rtl%>" align="<%=align%>"> <html:messages id="err_name"  property="user_id">
-                            <%=resource.getString("userid_cannotbe_blank")%><%--<bean:write name="err_name" />--%>
+                            <%=resource.getString("userid_cannotbe_blank")%><bean:write name="err_name" />
              </html:messages></td>
-                </tr>
+                </tr>--%>
 
               <%--  <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("password")%>*</td>

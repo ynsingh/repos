@@ -104,6 +104,9 @@
                         
 
            </action>
+           <action  path="/blockvoter" name="DepActionForm" input="/election_manager/block_voter.jsp" scope="request" type="com.myapp.struts.election_manager.BlockVoterAction">
+               <forward name="success" path="/election_manager/voter_setup.jsp"/>
+           </action>
 <action path="/searchelection" scope="request" type="com.myapp.struts.institute_admin.SearchElectionAction"/>
 <action path="/searchelectionmanager" scope="request" type="com.myapp.struts.institute_admin.SearchElectionManagerAction"/>
 

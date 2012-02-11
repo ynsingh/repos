@@ -24,6 +24,32 @@ import org.hibernate.criterion.Restrictions;
  * @author akhtar
  */
 public class VoterRegistrationDAO {
+
+public static SetVoter searchVoterList(String instituteid,String electionId,String Enrollment) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        SetVoter obj=null;
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(SetVoter.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.enrollment", Enrollment))
+                    .add(Restrictions.eq("id.electionId", electionId))
+                    .add(Restrictions.eq("id.instituteId", instituteid)));
+
+            obj= (SetVoter) criteria.uniqueResult();
+            session.getTransaction().commit();
+
+
+        }
+        catch(RuntimeException e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+        return obj;
+    }
+    
     public static void setVoter(SetVoter obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;

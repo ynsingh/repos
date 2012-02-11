@@ -102,7 +102,7 @@ function clearme()
                 <tr><td dir="<%=rtl%>" style="background-color: #7697BC;color:white;" colspan="2" class="btn1" height="30px"><b>Reset Password </b> </td></tr>
                 <tr><td width="50%" class="btn3" dir="<%=rtl%>" align="right">User Id</td><td><html:text styleId="user_id1" style="width: 200px" property="user_id1" value=""/></td></tr>
            
-           <tr><td width="50%" class="btn3" dir="<%=rtl%>" align="right">Password</td><td><html:text styleId="password" style="width: 200px" property="password1" value=""/></td></tr>
+           <tr><td width="50%" class="btn3" dir="<%=rtl%>" align="right">Password</td><td><html:password styleId="password" style="width: 200px" property="password1" value=""/></td></tr>
 
            
                

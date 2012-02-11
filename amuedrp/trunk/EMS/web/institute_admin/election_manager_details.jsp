@@ -170,7 +170,7 @@ if (!rst.isEmpty()){
                      <td align="<%=align%>" dir="<%=rtl%>"><html:text property="department" value="<%=department%>" readonly="true" /></td>
                 </tr>
 
-                <tr>
+             <%--   <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("staffid")%></td>
                     <td align="<%=align%>" dir="<%=rtl%>"><html:text property="staff_id" value="<%=staff_id%>" readonly="true"/></td>
                 </tr>
@@ -180,25 +180,25 @@ if (!rst.isEmpty()){
                     <td align="<%=align%>" dir="<%=rtl%>"><html:text property="manager_id" value="<%=manager_id%>" readonly="true"/></td>
                     
                 </tr>
-
-                <tr>
+--%>
+             <%--   <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("instituteid")%></td>
                     <td align="<%=align%>" dir="<%=rtl%>"><html:text property="institute_id" value="<%=institute_id%>" readonly="true" /></td>
                     
-                </tr>
+                </tr>--%>
 
-                <tr>
+            <%--    <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("userid")%></td>
                     <td align="<%=align%>" dir="<%=rtl%>"><html:text property="user_id" value="<%=user_id%>" readonly="true" /></td>
-                </tr>
+                </tr>--%>
 
-
+<%--
                  <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("password")%></td>
                      <td align="<%=align%>" dir="<%=rtl%>"><html:password property="password" value="<%=password%>" styleId="pass" readonly="true" name="Election_Manager_RegistrationActionForm" /></td>
                      
-                <tr>
-                     <td align="<%=align%>" dir="<%=rtl%>"><br><br><br></td>
+                <tr>--%>
+                     <td align="<%=align%>" dir="<%=rtl%>"><br><br><br><br><br><br></td>
                      <td align="<%=align%>" dir="<%=rtl%>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="back" class="txt2" value="<%=resource.getString("back")%>" onclick="quit()"/></td>
                 </tr>
 

@@ -194,29 +194,22 @@ if (!rst.isEmpty()){
                      <td align="<%=align%>" dir="<%=rtl%>"><html:text property="department" value="<%=department%>"  /></td>
                 </tr>
 
-                <tr>
-                     <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("staffid")%>*</td>
-                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="staff_id" value="<%=staff_id%>" readonly="true"/></td>
-                </tr>
+             
+             
+             <html:hidden  property="staff_id" value="<%=staff_id%>"/>
+                
 
-                <tr>
-                     <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("managerid")%>*</td>
-                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="manager_id" value="<%=manager_id%>" readonly="true"/></td>
+                
+                <html:hidden property="manager_id" value="<%=manager_id%>" />
 
-                </tr>
+                
 
-                <tr>
-                     <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("instituteid")%>*</td>
-                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="institute_id" value="<%=institute_id%>" readonly="true" /></td>
+                <html:hidden property="institute_id" value="<%=institute_id%>"  />
 
-                </tr>
+                
 
-                <tr>
-                     <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("userid")%>*</td>
-                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="user_id" value="<%=user_id%>" readonly="true" /></td>
-                    <td width="300px" class="err" dir="<%=rtl%>" align="<%=align%>"></td>
-                </tr>
-
+                <html:hidden property="user_id" value="<%=user_id%>"/>
+                    
                 <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("password")%>*</td>
                      <td align="<%=align%>" dir="<%=rtl%>"><html:password property="password" value="<%=password%>" styleId="pass" readonly="true" name="Election_Manager_RegistrationActionForm" /></td>

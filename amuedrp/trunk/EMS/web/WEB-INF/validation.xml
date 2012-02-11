@@ -103,11 +103,11 @@
 
 
             </field>
-             <field
+            <!-- <field
                 property="userId"
                 depends="required">
                     <arg key="AdminRegistrationActionForm.userId"/>
-            </field>
+            </field>-->
 
           <!--  <field
                 property="admin_password"

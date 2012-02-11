@@ -11,6 +11,15 @@ public class SetVoter  implements java.io.Serializable {
 
      private SetVoterId id;
      private String password;
+     private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public SetVoter() {
     }

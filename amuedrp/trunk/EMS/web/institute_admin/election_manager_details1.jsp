@@ -200,7 +200,7 @@ if (!rst.isEmpty()){
                      
                 <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><br><br><br><br><br><br></td>
-                    <%-- <td align="<%=align%>" dir="<%=rtl%>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="back" class="txt2" value="<%=resource.getString("back")%>" onclick="quit()"/></td>--%>
+                     <%--<td align="<%=align%>" dir="<%=rtl%>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="back" class="txt2" value="<%=resource.getString("back")%>" onclick="quit()"/></td>--%>
                 </tr>
 
             </table>
@@ -215,8 +215,8 @@ if (!rst.isEmpty()){
     function quit()
 {
     //top.location="/EMS-Struts/institute_admin/institute_admin_home.jsp";
-   // parent.document.getElementById("pagetab").height = prevheight;
-    window.location.href="<%=request.getContextPath()%>/manager_details.do";
+    parent.document.getElementById("pagetab").height = prevheight;
+    location.href="<%=request.getContextPath()%>/view_managers.do";
 }
 
 

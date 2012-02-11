@@ -577,7 +577,7 @@ if(em!=undefined){
 var em1 = em.getElementsByTagName("message");
 
 var em2 = em1[0].firstChild.nodeValue;
-//alert(em2);
+alert(em2);
 if(em2=="pass")
  {
      loadvoting();

@@ -403,10 +403,10 @@ CREATE TABLE `set_voter` (
   `institute_id` varchar(20) NOT NULL,
   `enrollment` varchar(100) NOT NULL,
   `password` varchar(100) DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`election_id`,`institute_id`,`enrollment`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 --
 -- Dumping data for table `set_voter`
 --

@@ -200,11 +200,11 @@ locale1=(String)session.getAttribute("locale");
 
 			</html:messages>
          </td></tr>
-             <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("userid")%>*</td><td><html:text  property="userId" styleId="user_id"/></td><td  class="err" dir="<%=rtl%>" align="<%=align%>" >   <html:messages id="err_name" property="userId">
+          <%--   <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("userid")%>*</td><td><html:text  property="userId" styleId="user_id"/></td><td  class="err" dir="<%=rtl%>" align="<%=align%>" >   <html:messages id="err_name" property="userId">
 				<%=resource.getString("userid_cannotbe_blank")%>
 
 			</html:messages>
-         </td></tr>
+         </td></tr>--%>
 <%--<tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("password")%>*</td><td><html:password  property="admin_password" styleId="pass" style="width: 143px"/></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="admin_password">
 				<bean:write name="err_name" />
 
@@ -252,7 +252,7 @@ locale1=(String)session.getAttribute("locale");
 
 			</html:messages>
          </td></tr>
-              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("institutedomain")%></td><td><html:select property="institute_domain" style="width:146px" >
+              <%--<tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("institutedomain")%></td><td><html:select property="institute_domain" style="width:146px" >
 
 
 
@@ -268,7 +268,7 @@ locale1=(String)session.getAttribute("locale");
 
 			</html:messages>
          </td></tr>
-
+--%>
               <tr><td></td><td colspan="2" dir="<%=rtl%>" align="<%=align%>"><input type="submit"  id="submit" name="submit" value=" <%=resource.getString("register")%>" class="txt2" onclick="return checkPassLog();">&nbsp;<input type="button"   name="cancel" value="<%=resource.getString("cancel")%>" class="txt2" onclick="quit()"><br></td></tr>
         </table><br><br>
           </td></tr>

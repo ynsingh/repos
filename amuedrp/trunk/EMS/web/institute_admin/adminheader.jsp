@@ -1022,6 +1022,9 @@ document.write('</div></span>');
  <li>
                 <a href="<%=request.getContextPath()%>/election_manager/search_voter.jsp"  onclick="return pageload(4);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><b style="color:white" dir="<%=rtl%>">View All Voters</b><%--<%=resource.getString("view_electiondetails")%>--%></a>
                 </li>
+                 <li>
+                    <a href="<%=request.getContextPath()%>/election_manager/block_voter.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Block Voter</a>
+                </li>
                 <li>
                 <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp"  onclick="return pageload(4);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><b style="color:white" dir="<%=rtl%>">View All Candidate</b><%--<%=resource.getString("view_electiondetails")%>--%></a>
                 </li>

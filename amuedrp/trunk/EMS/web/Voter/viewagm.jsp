@@ -211,7 +211,7 @@ var divtag1 = document.createElement("div");
                 divtag1.style.align = "center";
                 divtag1.style.marginTop = "5px";
                 divtag1.style.height = "20px";
-               var htm1 = '<span style="text-align:center">'+ elec +'</span><%--<a href="<%=request.getContextPath()%>/electionResult.do?election=<%=election%>&amp;report=true">Show PDF Report</a><input type="button" value="close" onclick="send()"/>--%>';
+               var htm1 = '<span style="text-align:center">'+ elec +'</span><a href="<%=request.getContextPath()%>/electionResult.do?election=<%=election%>&amp;report=true">Show PDF Report</a><input type="button" value="close" onclick="send()"/>';
                divtag1.innerHTML = htm1;
             document.getElementById("ballot").appendChild(divtag1);
 

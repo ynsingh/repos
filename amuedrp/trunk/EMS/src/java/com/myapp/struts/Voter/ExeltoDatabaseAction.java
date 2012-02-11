@@ -48,7 +48,7 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
   private StaffDetail staffd =new StaffDetail();
       private StaffDetailId staffid =new StaffDetailId();
       private final ExecutorService executor=Executors.newFixedThreadPool(1);
-   // Email mail;
+    Email mail;
     private String admin_password;
     private String admin_password1;
     String userid;
@@ -402,9 +402,9 @@ session.removeAttribute("log");
                                             {
                                             //for(int i=1;i<pmail.length;i++)
                                                 //alternatemail.append(pmail[i].trim());
-                                            System.out.println(mail.substring(mail.indexOf(",")+1,mail.length())+"......////"+pmail[0].toString());
+                                          //  System.out.println(mail.substring(mail.indexOf(",")+1,mail.length())+"......////"+pmail[0].toString());
                                              genericobj.setEmail(pmail[0].toString());
-                                            genericobj.setAlternateMail(mail.substring(mail.indexOf(",")+1,mail.length()).toString());
+                                         //   genericobj.setAlternateMail(mail.substring(mail.indexOf(",")+1,mail.length()).toString());
 
                                             }else 
                                             {genericobj.setEmail(cellvalue.trim());}
@@ -423,6 +423,12 @@ session.removeAttribute("log");
                                             }
 
                                         }   
+                                        if (map_table[column_index].equals("alternate_mail")) {
+
+                                             genericobj.setAlternateMail(cellvalue.trim());
+
+                                        }
+
 
 
                                 
@@ -502,11 +508,11 @@ login.setStaffDetail(staffd);
 logindao.insert(login, userid);
 
   String path = servlet.getServletContext().getRealPath("/");
-//           mail=new Email(path,x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for EMS Login ="+admin_password+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+           //mail=new Email(path,x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for EMS Login ="+admin_password+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
 
 
 
-  //                  mail.send();
+             //       mail.send();
 
                       }
 
@@ -537,9 +543,9 @@ logindao.insert(login, userid);
   
 
   String path = servlet.getServletContext().getRealPath("/");
-         //  mail=new Email(path,x1.getAdminEmail(),"","Voter Registration Accepted Successfully from EMS","Dear "+x1.getAdminFname()+" "+x1.getAdminLname()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+           //mail=new Email(path,x1.getAdminEmail(),"","Voter Registration Accepted Successfully from EMS","Dear "+x1.getAdminFname()+" "+x1.getAdminLname()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
       
-               //     mail.send();
+             //       mail.send();
            
 
 
@@ -569,9 +575,9 @@ else if(staff!=null){
    logindao.update(temp);
 
   String path = servlet.getServletContext().getRealPath("/");
-    //       mail=new Email(path,staff.getEmailId(),"","Voter Registration Accepted Successfully from EMS","Dear "+staff.getFirstName()+" "+staff.getLastName()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+           //mail=new Email(path,staff.getEmailId(),"","Voter Registration Accepted Successfully from EMS","Dear "+staff.getFirstName()+" "+staff.getLastName()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
       
-                //    mail.send();
+                //   mail.send();
            
  
 }

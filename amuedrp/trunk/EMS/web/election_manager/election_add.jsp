@@ -172,7 +172,7 @@ function keyHit(event) {
 }
 
 function isNumberKey(evt)
-      {alert("dfsdf");
+      {
          var charCode = (evt.which) ? evt.which : event.keyCode
          if (charCode > 31 && (charCode < 48 || charCode > 57))
             return false;
@@ -211,7 +211,7 @@ function search(current) {
     var noofchoice = document.getElementById(numberofchoice).value;
     var instruct = document.getElementById(posinstruct).value;
     instruct="You can choose "+noofchoice+" Candidate for this Position";
-    document.getElementById(posinstruct).value=instruct;
+  
     var electionId = document.getElementById("electionId").value;
     position_name = position_name.replace(/^\s*|\s*$/g,"");
     noofchoice = noofchoice.replace(/^\s*|\s*$/g,"");
@@ -230,7 +230,7 @@ if(position_name!="" && position_name!=null && noofchoice!="" && noofchoice!=nul
 {
     var req = newXMLHttpRequest();
 
-
+  document.getElementById(posinstruct).value=instruct;
 req.onreadystatechange = getReadyStateHandler(req, update1);
 
 req.open("POST","<%=request.getContextPath()%>/AddPosition.do?setPosition="+position_name+"&setChoice="+noofchoice+"&setElectionId="+electionId+"&setposId="+PositionId+"&setposInstruction="+instruct, true);

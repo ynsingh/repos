@@ -527,9 +527,14 @@ function responseRequest(cartXML)
 var em1 = em.getElementsByTagName("message");
 var t=em1[0].firstChild.nodeValue;
 
-
-location.href="<%=request.getContextPath()%>/applyCandidature.do?position="+p+"&election="+e+"&report=true";
 alert(t);
+<%
+String report=(String)request.getAttribute("report");
+System.out.println("report"+report);
+if(report!=null){
+%>
+top.location.href="<%=request.getContextPath()%>/applyCandidature.do?position="+p+"&election="+e+"&report=true";
+<%}%>
 }
 function checkPassword(pass,election) {
     //alert("index="+index+" current="+current);

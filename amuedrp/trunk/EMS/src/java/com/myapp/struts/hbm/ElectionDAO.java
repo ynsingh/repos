@@ -55,6 +55,39 @@ String id="";
         }
  return id;
     }
+     public static String returnMaxElectionManagerId(String institute_id) {
+
+
+String id="";
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(ElectionManager.class);
+            Criterion a = Restrictions.eq("id.managerId", institute_id);
+
+           // LogicalExpression le = Restrictions.and(a, b);
+            Integer maxbiblio = criteria.add(a).setProjection(Projections.count("id.managerId")).uniqueResult()==null?0:Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.managerId")).uniqueResult().toString());
+           System.out.println(maxbiblio);
+
+            if (maxbiblio == null) {
+                maxbiblio = 1;
+            } else {
+                maxbiblio++;
+            }
+
+           id=String.valueOf(maxbiblio);
+            session.getTransaction().commit();
+        }
+        catch(Exception e){
+        e.printStackTrace();
+
+        }
+        finally {
+            session.close();
+        }
+ return id;
+    }
 
     
        public static SetVoter searchVoter(String Election_id,String institue_id,String enrollment) {

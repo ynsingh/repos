@@ -139,7 +139,8 @@ String nameOfTextFile = userid+"log.txt";
 String path=(String)session.getAttribute("apppath");
 path=path.substring(0,path.lastIndexOf("/"));
 path=path.substring(0,path.lastIndexOf("/"));
-
+path=path.substring(0,path.lastIndexOf("/"));
+System.out.println(path+"..........................");
 try {
     PrintWriter pw = new PrintWriter(new FileOutputStream(path+"/web/"+nameOfTextFile));
 //System.out.println(pw);

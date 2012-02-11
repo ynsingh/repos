@@ -18,5 +18,8 @@
         <property name="password" type="string">
             <column name="password" length="100" />
         </property>
+          <property name="status" type="string">
+            <column name="status" length="20" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -1008,7 +1008,9 @@ document.write('</div></span>');
                     <li>
                         <a href="<%=request.getContextPath()%>/Voter/cat_data_import_read.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Import Data</a>
                     </li>
-
+                     <li>
+                    <a href="<%=request.getContextPath()%>/election_manager/block_voter.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Block Voter</a>
+                </li>
                 </ul>
                 </li>
 
