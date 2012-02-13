@@ -74,7 +74,7 @@ int i=0;
         admin_lname=adminRegistrationActionForm.getAdmin_lname();
         admin_designation=adminRegistrationActionForm.getAdmin_designation();
         admin_email=adminRegistrationActionForm.getAdmin_email();
-        user_id=adminRegistrationActionForm.getUserId();
+        user_id=admin_email;
       
         enrollment=adminRegistrationActionForm.getEnrollment();
         courtesy=adminRegistrationActionForm.getCourtesy();
@@ -160,7 +160,7 @@ System.out.println("institute_name="+institute_name);
                 System.out.println("Gender");
                 adminReg.setStatus("NotRegistered");
                 adminReg.setWorkingStatus("OK");
-                adminReg.setUserId(user_id);
+                adminReg.setUserId(admin_email);
                 System.out.println("UserId");
                 
                 registration_id = admindao.insert(adminReg);

@@ -133,6 +133,8 @@ String instituteName=(String)session.getAttribute("institute_name");
                 String election=(String)request.getAttribute("election");
                 String alternateemail=(String)request.getAttribute("alternateemail");
                 String institute_id=(String)session.getAttribute("institute_id");
+                String proposed_by=(String)request.getAttribute("proposed_by");
+                String seconded_by=(String)request.getAttribute("seconded_by");
     %>
 
 
@@ -694,7 +696,7 @@ String instituteName=(String)session.getAttribute("institute_name");
                                     <html:option value="pg">Post Graduate</html:option>
                                     <html:option value="other">Others</html:option>
 
-                                </html:select>
+                                </html:select></td>
                         </tr>
                         <tr>
                             <td align="left"><%=resource.getString("marks")%> %*:</td><td><html:text  name="CandidateRegActionForm" styleId="mark" property="p_marks" readonly="<%=read%>" /></td>

@@ -4,6 +4,7 @@
  */
 
 package com.myapp.struts.hbm;
+import com.myapp.struts.Voter.PagingAction;
 import com.myapp.struts.admin.AdminReg_Institute;
 import java.util.List;
 import org.hibernate.Session;
@@ -197,8 +198,42 @@ public List getAdminDetailsByStatus(String status){
             session.beginTransaction();
             Query query = session.createQuery("FROM AdminRegistration where status = :status");
              query.setString("status",status );
+             obj= query.list();
+            session.getTransaction().commit();
+        }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
+        finally {
+            session.close();
+        }
+        return obj;
+}
+public List getAdminDetailsByStatus(String status,int pageNumber){
+  Session session =null;
+    List obj=null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM AdminRegistration where status = :status");
+             query.setString("status",status );
 
-            obj= query.list();
+
+             if(pageNumber==0){
+
+            query = query.setFirstResult(0);
+              query.setMaxResults(100);
+              obj=query.list();
+}
+else{             PagingAction o=new PagingAction(query,pageNumber,100);
+
+ obj= o.getList();
+ System.out.println("Size of Record"+obj.size()+".........................."+pageNumber);
+}
+
+
+
+           // obj= query.list();
             session.getTransaction().commit();
         }
     catch(RuntimeException e){

@@ -24,5 +24,6 @@
     <mapping resource="com/myapp/struts/hbm/VotingProcess.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/SetVoter.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/ElectionManagerMigrate.hbm.xml"/>
+
   </session-factory>
 </hibernate-configuration>

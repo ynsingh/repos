@@ -78,9 +78,23 @@ function getQuery(id)
 }
 
     function changerec(){
-        var x=document.getElementById('rec').value;
-        if(x=="")
-            x='10';
+       // var x=document.getElementById('rec').value;
+
+
+   var combo1 = document.getElementById('rec');
+   var x = combo1.options[combo1.selectedIndex].value;
+   alert(x);
+
+if(x=="0")
+{
+    x="0";
+
+}
+
+
+   //     alert(x);
+        //if(x=="")
+          //  x='0';
        
     var loc = window.location;
     loc = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/admin/view_pending.jsp";
@@ -88,28 +102,64 @@ function getQuery(id)
    
             loc = loc + "?pageSize="+x;
     window.location = loc;
+    <%
+   System.out.println((String)request.getParameter("pageSize"));
+%>
 
     }
+function send(){
+   // alert("ok");
+     <%
+     int pageNumber=1;
+     if(request.getParameter("page") != null) {
+       session.setAttribute("page", request.getParameter("page"));
+       pageNumber = Integer.parseInt(request.getParameter("page"));
+     } else {
+       session.setAttribute("page", "1");
+     }
+     String nextPage = (pageNumber +1) + "";%>
+var loc="/EMS/votersetup.do?page="+<%=nextPage%>;
+//alert(loc);
+location.href= loc;
 
-   document.onkeyup = keyHit
-function keyHit(event) {
-      
-  if (event.keyCode == 13) {
-  changerec();
+<%
 
-    event.stopPropagation()
-    event.preventDefault()
-  }
+
+   //  System.out.println(((java.util.List)session.getAttribute("EmpList")).size());
+     String myUrl = "/EMS/votersetup.do?page="+nextPage;
+   //  System.out.println(myUrl);
+
+     pageContext.setAttribute("myUrl", myUrl);
+     %>
+
 }
 
-function isNumberKey(evt)
-      {
-         var charCode = (evt.which) ? evt.which : event.keyCode
-         if (charCode > 31 && (charCode < 48 || charCode > 57))
-            return false;
+function sendprevious(){
+  //  alert("ok");
+     <%String previousPage ="";
+if(pageNumber>=1)
+   previousPage = (pageNumber -1) + "";
+else
+  previousPage = 0 + "";
+%>
+var loc="/EMS/votersetup.do?page="+<%=previousPage%>;
+//alert(loc);
+location.href= loc;
 
-         return true;
-      }
+<%
+
+
+   //  System.out.println(((java.util.List)session.getAttribute("EmpList")).size());
+   //  String myUrl = "/EMS/votersetup.do?page="+nextPage;
+   //  System.out.println(myUrl);
+
+     pageContext.setAttribute("myUrl", myUrl);
+     %>
+
+}
+
+
+
 
 </script>
  <style>
@@ -125,7 +175,7 @@ function isNumberKey(evt)
 </style>
 </head>
 
-<body style="width: 720px">
+<body style="width: 720px" onload="show();">
  <div
    style="  top:0px;
    left:5px;
@@ -150,7 +200,7 @@ function isNumberKey(evt)
 
    requestList = new ArrayList();
    int tcount =0;
-   int perpage=10;
+   int perpage=100;
    int tpage=0;
  /*Create a connection by using getConnection() method
    that takes parameters of string type connection url,
@@ -184,7 +234,12 @@ it.next();
 System.out.println("tcount="+tcount);
 
 %>
-       
+<script>
+     function show(){
+     document.getElementById('rec').value="<%=perpage%>";
+
+ }
+</script>
 <%
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
    if ((toIndex = fromIndex+perpage) >= requestList.size ())
@@ -216,15 +271,16 @@ else
 {%>
 
 <table align="<%=align%>" dir="<%=rtl%>" width="700px" >
-    <tr><td colspan="2" align="right">View Next&nbsp;
-       <%--<input type="textbox" id="rec"   onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>
-       --%><select id="rec" onchange="changerec()" style="width:50px">
-           <option value="10">10</option>
-            <option value="20">20</option>
-             <option value="30">30</option>
+  <%--  <tr><td colspan="2" align="right">View Next&nbsp;
+       <input type="textbox" id="rec"   onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>
+       <select id="rec" onchange="changerec()" style="width:50px" value="<%=perpage%>">
+           <option value="0">Select</option>
+           <option value="20">20</option>
+            <option value="50">50</option>
+             <option value="100">100</option>
        </select>
 
-        </td></tr>
+        </td></tr>--%>
     <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
 
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
@@ -288,6 +344,9 @@ else
 
 </tr>
 </table>
+ <input type="button" onclick="send()" value="nextPage"/>
+  <input type="button" onclick="sendprevious()" value="previous"/>
+
 <%}}else{
 request.setAttribute("msg", "Your Session Expired: Please Login Again");
     %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%

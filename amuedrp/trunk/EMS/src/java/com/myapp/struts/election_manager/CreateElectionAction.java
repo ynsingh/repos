@@ -155,6 +155,32 @@ ob.setBallot(ballot);
 session.setAttribute("election_id",lf.getElectionId());
 
         ere.insert(ob);
+
+            ArrayList underprocessList=new ArrayList();
+  Calendar cal1 = Calendar.getInstance();
+    Date d = cal1.getTime();
+        List<Election> election1 = ElectionDAO.Elections(institute_id);
+        Iterator ite = election1.iterator();
+        while(ite.hasNext())
+        {
+
+             cal1 = Calendar.getInstance();
+            d = cal1.getTime();
+            Election elec = (Election)ite.next();
+
+             if(elec.getNstart().before(d) && elec.getWithdrawlEndDate().after(d))
+            {
+               underprocessList.add(elec);
+
+            }
+
+
+
+        }
+  session.removeAttribute("underprocessList");
+System.out.println(underprocessList.size());
+        session.setAttribute("underprocessList", underprocessList);
+
          request.setAttribute("msg1", "record inserted succsessfully");
         return mapping.findForward("add");
        }
@@ -228,29 +254,29 @@ ob.setBallot(ballot);
         session.setAttribute("election_id",lf.getElectionId());
          request.setAttribute("msg1", "record updated successfully");
       
-//        ArrayList underprocessList=new ArrayList();
-//
-//        List<Election> election1 = ElectionDAO.Elections(institute_id);
-//        Iterator ite = election1.iterator();
-//        while(ite.hasNext())
-//        {
-//
-//             cal1 = Calendar.getInstance();
-//            d = cal1.getTime();
-//            Election elec = (Election)ite.next();
-//
-//             if(elec.getNstart().before(d) && elec.getWithdrawlEndDate().after(d))
-//            {
-//               underprocessList.add(elec);
-//
-//            }
-//
-//
-//
-//        }
-//  session.removeAttribute("underprocessList");
-//System.out.println(underprocessList.size());
-//        session.setAttribute("underprocessList", underprocessList);
+        ArrayList underprocessList=new ArrayList();
+
+        List<Election> election1 = ElectionDAO.Elections(institute_id);
+        Iterator ite = election1.iterator();
+        while(ite.hasNext())
+        {
+
+             cal1 = Calendar.getInstance();
+            d = cal1.getTime();
+            Election elec = (Election)ite.next();
+
+             if(elec.getNstart().before(d) && elec.getWithdrawlEndDate().after(d))
+            {
+               underprocessList.add(elec);
+
+            }
+
+
+
+        }
+  session.removeAttribute("underprocessList");
+System.out.println(underprocessList.size());
+        session.setAttribute("underprocessList", underprocessList);
          return mapping.findForward("add");
 
        }

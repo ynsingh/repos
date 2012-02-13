@@ -5,7 +5,6 @@
 
 package com.myapp.struts.Voter;
 
-import com.myapp.struts.hbm.AdminRegistration;
 import com.myapp.struts.hbm.HibernateUtil;
 import com.myapp.struts.hbm.SetVoter;
 import com.myapp.struts.hbm.VoterRegistration;
@@ -174,6 +173,31 @@ public static boolean update(VoterRegistration obj) {
         }
         return obj;
     }
+  /*  public static SetVoter searchVoterList(String instituteid,String electionId,String Enrollment) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        SetVoter obj=null;
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(SetVoter.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.enrollment", Enrollment))
+                    .add(Restrictions.eq("id.electionId", electionId))
+                    .add(Restrictions.eq("id.instituteId", instituteid)));
+
+            obj= (SetVoter) criteria.uniqueResult();
+            session.getTransaction().commit();
+
+
+        }
+        catch(RuntimeException e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+        return obj;
+    }
+   */ 
    public List getVoterDetailsByStatus(String instituteid,String status,String field,String fieldvalue,String sort, int pageNumber){
   Session session =null;
     List obj=null;
@@ -220,7 +244,7 @@ query1=query1+" order by "+sort;
              query.setString("instituteId",instituteid );
 
 
-System.out.println(query1);
+//System.out.println(query1);
 if(pageNumber==0){
 
             query = query.setFirstResult(0);
@@ -230,7 +254,7 @@ if(pageNumber==0){
 else{             PagingAction o=new PagingAction(query,pageNumber,100);
 
  obj= o.getList();
- System.out.println("Size of Record"+obj.size()+".........................."+pageNumber);
+// System.out.println("Size of Record"+obj.size()+".........................."+pageNumber);
 }
 //            //code for paging
 //

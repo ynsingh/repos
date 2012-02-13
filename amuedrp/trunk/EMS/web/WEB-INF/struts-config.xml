@@ -363,6 +363,9 @@
 <action  path="/setvoter" name="DepActionForm" input="/election_manager/voter.jsp" scope="request" type="com.myapp.struts.election_manager.VotersetAction">
                <forward name="success" path="/election_manager/voter_setup.jsp"/>
            </action>
+           <action  path="/blockvoter" name="DepActionForm" input="/election_manager/block_voter.jsp" scope="request" type="com.myapp.struts.election_manager.BlockVoterAction">
+               <forward name="success" path="/election_manager/voter_setup.jsp"/>
+           </action>
 <action path="/manageElection" type="com.myapp.struts.election_manager.ManageElectionAction">
     <forward name="success" path="/election_manager/manage_election.jsp"/>
 </action>

@@ -5,6 +5,7 @@
 
 package com.myapp.struts.Voter;
 
+import com.myapp.struts.Voting.VoterElectionActionForm;
 import com.myapp.struts.hbm.Election;
 import com.myapp.struts.hbm.ElectionDAO;
 import com.myapp.struts.hbm.SetVoter;
@@ -44,13 +45,35 @@ Election obj=(Election)e.Electionname(inst,election);
 
 if(obj!=null && obj.getStatus().equalsIgnoreCase("started"))
 {
+    String staff_id=(String)session.getAttribute("staff_id");
+    SetVoter o=VoterRegistrationDAO.searchVoterList(inst,election,staff_id);
+    if(o!=null && o.getStatus().equalsIgnoreCase("Blocked")){
+        request.setAttribute("msgerr", "Sorry You are not a valid Voter for this Election");
+
+String role=(String)session.getAttribute("login_role");
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+return mapping.findForward("success1");
+}else if(role.equalsIgnoreCase("Election Manager")|| role.equalsIgnoreCase("Election Manager,voter"))
+   {
+return mapping.findForward("success2");
+}else{
+    request.setAttribute("msg1",  "Sorry In Selected Election Voting Activity is not in-process");
+return mapping.findForward("success3");
+}
+
+
+    }
+
+
+
 session.setAttribute("election", obj.getId().getElectionId());
     return mapping.findForward("success");
 }
 else
 {
     request.setAttribute("msgerr", "Sorry In Selected Election Voting Activity is not in-process");
-System.out.println("hghghgf");
+
 String role=(String)session.getAttribute("login_role");
 if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
    {

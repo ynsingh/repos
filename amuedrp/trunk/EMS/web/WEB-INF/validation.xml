@@ -131,13 +131,13 @@
 
 
  <form name="Election_Manager_RegistrationActionForm">
-     <field property="manager_id" depends="required">
+   <!--  <field property="manager_id" depends="required">
          <arg key="Election_Manager_RegistrationActionForm.manager_id"/>
-     </field>
+     </field>-->
 
-     <field property="institute_id" depends="required">
+    <!-- <field property="institute_id" depends="required">
          <arg key="Election_Manager_RegistrationActionForm.institute_id"/>
-     </field>
+     </field>-->
 
 <field property="first_name" depends="required">
          <arg key="Election_Manager_RegistrationActionForm.first_name"/>
@@ -160,13 +160,13 @@
          <arg key="Election_Manager_RegistrationActionForm.email_id"/>
      </field>
 
-     <field property="staff_id" depends="required">
+  <!--   <field property="staff_id" depends="required">
          <arg key="Election_Manager_RegistrationActionForm.staff_id"/>
-     </field>
+     </field>-->
 
-     <field property="user_id" depends="required">
+    <!-- <field property="user_id" depends="required">
          <arg key="Election_Manager_RegistrationActionForm.user_id"/>
-     </field>
+     </field>-->
 
    <!-- <field property="password" depends="required">
          <arg key="Election_Manager_RegistrationActionForm.password"/>

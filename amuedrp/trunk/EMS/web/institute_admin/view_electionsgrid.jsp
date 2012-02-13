@@ -246,15 +246,15 @@ function isNumberKey(evt)
 else
 {%>
 <table align="<%=align%>" dir="<%=rtl%>" width="90%">
-    <tr><td colspan="2" align="right">View Next&nbsp;
-            <%--<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>
-        --%>
+  <%--  <tr><td colspan="2" align="right">View Next&nbsp;
+            <input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>
+        
         <select id="rec" onchange="changerec()" style="width:50px">
            <option value="10">10</option>
             <option value="20">20</option>
              <option value="30">30</option>
        </select>
-        </td></tr>
+        </td></tr>--%>
     <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
             <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" style="margin-left: 30px" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
