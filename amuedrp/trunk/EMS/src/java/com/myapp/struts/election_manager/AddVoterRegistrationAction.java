@@ -220,7 +220,7 @@ login.setStaffDetail(staffd);
 
 
 VoterRegistrationDAO.insert(ob);
-logindao.insert(login, userid);
+logindao.insert(login);
 request.setAttribute("msg", "Voter Successfully Added");
 String path = servlet.getServletContext().getRealPath("/");
   String mailbody="";

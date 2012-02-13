@@ -58,7 +58,7 @@ public class LoginDAO {
         }
         return obj;
 }
- public void insert(Login loginDetails,String userId){
+ public void insert(Login loginDetails){
     Session session =null;
     Transaction tx = null;
     try {

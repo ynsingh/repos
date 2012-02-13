@@ -458,7 +458,7 @@ session.removeAttribute("log");
                       StaffDetail staff=StaffDetailDAO.searchStaffId(voterid.getEnrollment(), institute_id);
                       if(x!=null && x.getEmail().equalsIgnoreCase(genericobj.getEmail())){
                      //  request.setAttribute("msg1", "Voter with Enrollment No"+x.getId().getEnrollment()+" Already Exist , Import Terminates");
-                       log.add("Voter with Enrollment No"+x.getId().getEnrollment()+" Already Exist cannot Import at record no="+row_no);
+                       log.add("Voter with given Email ID "+x.getId().getEnrollment()+" Already Exist cannot Import at record no="+row_no);
                        session.setAttribute("log",log);//   return mapping.findForward(SUCCESS);
                       continue begin;
                       }
@@ -485,7 +485,7 @@ session.removeAttribute("log");
 
 //System.out.println(voterid.getEnrollment()+"....................");
 //serach Record Inserted
-  x=VoterRegistrationDAO.searchVoterRegistration(institute_id, voterid.getEnrollment());
+  x=VoterRegistrationDAO.searchVoterRegistration(institute_id, genericobj.getId().getEnrollment());
                       if(x==null){
                       // request.setAttribute("msg1", "Voter with Enrollment No"+x.getId().getEnrollment()+" Cannot be Inserted , Import Terminates");
                         log.add("Voter with Enrollment No"+x.getId().getEnrollment()+" Cannot be Inserted  AT ROW NO"+row_no);
@@ -494,25 +494,25 @@ session.removeAttribute("log");
 
                       }
                       else{
-   userid=voterid.getEnrollment()+""+voterid.getInstituteId();
-                login.setUserId(userid);
+   
+                login.setUserId(genericobj.getEmail().trim());
 login.setPassword(admin_password1);
 login.setRole("voter");
 login.setUserName(x.getVoterName());
 
 staffid.setInstituteId(institute_id);
-staffid.setStaffId(voterid.getEnrollment());
+staffid.setStaffId(genericobj.getId().getEnrollment());
 staffd.setId(staffid);
 
 login.setStaffDetail(staffd);
-logindao.insert(login, userid);
+logindao.insert(login);
 
   String path = servlet.getServletContext().getRealPath("/");
-           //mail=new Email(path,x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for EMS Login ="+admin_password+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+           mail=new Email(path,x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for EMS Login ="+admin_password+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
 
 
 
-             //       mail.send();
+                    mail.send();
 
                       }
 
@@ -543,9 +543,9 @@ logindao.insert(login, userid);
   
 
   String path = servlet.getServletContext().getRealPath("/");
-           //mail=new Email(path,x1.getAdminEmail(),"","Voter Registration Accepted Successfully from EMS","Dear "+x1.getAdminFname()+" "+x1.getAdminLname()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+           mail=new Email(path,x1.getAdminEmail(),"","Voter Registration Accepted Successfully from EMS","Dear "+x1.getAdminFname()+" "+x1.getAdminLname()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
       
-             //       mail.send();
+                    mail.send();
            
 
 
@@ -575,9 +575,9 @@ else if(staff!=null){
    logindao.update(temp);
 
   String path = servlet.getServletContext().getRealPath("/");
-           //mail=new Email(path,staff.getEmailId(),"","Voter Registration Accepted Successfully from EMS","Dear "+staff.getFirstName()+" "+staff.getLastName()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+           mail=new Email(path,staff.getEmailId(),"","Voter Registration Accepted Successfully from EMS","Dear "+staff.getFirstName()+" "+staff.getLastName()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
       
-                //   mail.send();
+                   mail.send();
            
  
 }

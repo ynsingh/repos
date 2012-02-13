@@ -691,7 +691,9 @@ System.out.println(status+"rrrrrrrrrrrrrr");
                                     <html:option value="pg">Post Graduate</html:option>
                                     <html:option value="other">Others</html:option>
 
-                                </html:select>
+                                </html:select></td><td>Proposed By<html:text readonly="<%=read%>" name="CandidateRegActionForm"    styleId="proposedBy" property="proposedBy"/><br>
+                            Seconded By<html:text readonly="<%=read%>" name="CandidateRegActionForm"    styleId="secondedBy" property="secondedBy"/><br>
+                            </td>
                         </tr>
                         <tr>
                             <td align="left"><%=resource.getString("marks")%> %*:</td><td><html:text  name="CandidateRegActionForm" styleId="mark" property="p_marks" readonly="<%=read%>" /></td>

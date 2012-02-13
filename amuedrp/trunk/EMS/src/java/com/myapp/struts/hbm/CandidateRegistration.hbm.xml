@@ -48,10 +48,10 @@
       <column length="20" name="accepted_date"/>
     </property>
     <property name="proposedBy" type="string">
-      <column length="20" name="proposed_by"/>
+      <column length="200" name="proposed_by"/>
     </property>
     <property name="secondedBy" type="string">
-      <column length="20" name="seconded_by"/>
+      <column length="200" name="seconded_by"/>
     </property>
     <property name="positionAccepted" type="string">
       <column length="20" name="position_accepted"/>

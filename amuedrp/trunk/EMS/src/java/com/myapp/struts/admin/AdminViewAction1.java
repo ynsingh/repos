@@ -167,7 +167,7 @@ if (institute_id!=null)
 
             institutedao.insert(institute);
             staffDetaildao.insert(staffDetail);
-            logindao.insert(login,(String)admin.getUser_id());
+            logindao.insert(login);
             
             adminReg.setStatus("Registered");
             admindao.update(adminReg);

@@ -5,7 +5,16 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
+<%
+String role=(String)session.getAttribute("login_role");
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+<jsp:include page="/institute_admin/adminheader.jsp"/>
+<%}else{%>
 <jsp:include page="/election_manager/login.jsp"/>
+<%}%>
+
 <%@page import="java.util.*,java.io.*,com.myapp.struts.hbm.Election"%>
 
 <%!

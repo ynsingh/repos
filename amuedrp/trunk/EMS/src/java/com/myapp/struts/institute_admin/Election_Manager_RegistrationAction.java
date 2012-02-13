@@ -266,7 +266,7 @@ String msg1=resource.getString("duplicate_user_id");
         //staffmanagerdao.insert(ems);
 
         staffdetaildao.insert(staffdetail);
-        logindao.insert(login, user_id);
+        logindao.insert(login);
          electionmanagerdao.insert(electionmanager);
          String msg=resource.getString("record_inserted_successfully");
          request.setAttribute("msg",msg);

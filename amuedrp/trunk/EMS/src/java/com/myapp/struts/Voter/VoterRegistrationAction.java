@@ -209,7 +209,7 @@ staffid.setStaffId(lf.getEnrollment());
 staffd.setId(staffid);
 
 login.setStaffDetail(staffd);
-logindao.insert(login, ob.getId().getEnrollment()+""+ob.getId().getInstituteId());
+logindao.insert(login);
 
  ob.setStatus("REGISTERED");
 VoterRegistrationDAO.update(ob);

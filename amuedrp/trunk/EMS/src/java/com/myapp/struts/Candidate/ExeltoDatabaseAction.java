@@ -209,7 +209,7 @@ session.removeAttribute("clog");
 
                                                }
 
-                                               VoterRegistration v=(VoterRegistration)VoterRegistrationDAO.searchVoterRegistration(institute_id, cellvalue);
+                                               VoterRegistration v=(VoterRegistration)VoterRegistrationDAO.searchVoterRegistration(institute_id, cellvalue.trim());
                                                if(v==null){
                                                request.setAttribute("msg1", "Sorry Candidate EnrollMent is not in a Voter List, cannot impprt");
                                               log.add("Sorry Candidate EnrollMent is not in a Voter List, cannot impprt for record No"+row_no);session.setAttribute("clog",log);
@@ -217,10 +217,10 @@ session.removeAttribute("clog");
 
 
                                                }
-                                               List<CandidateRegistration> o=( List<CandidateRegistration>)CandidateRegistrationDAO.getCandidateDetails(institute_id, cellvalue);
+                                               List<CandidateRegistration> o=( List<CandidateRegistration>)CandidateRegistrationDAO.getCandidateDetails(institute_id, cellvalue.trim());
                                                if(o!=null && o.isEmpty()==false){
                                              request.setAttribute("msg1", "EnrollMent No Already Found");
-                                              log.add("EnrollMent No Cannot Blank for record No"+row_no);session.setAttribute("clog",log);
+                                              log.add("EnrollMent No Already Found for record No"+row_no);session.setAttribute("clog",log);
                                               continue begin;
 
 
@@ -298,8 +298,8 @@ session.removeAttribute("clog");
 
 
                                         }
-                                          if (map_table[column_index].equals("requestdate")) {
-                                              System.out.println(cellvalue.trim()+"////////////////");
+                                          if (map_table[column_index].equals("request_date")) {
+                                             // System.out.println(cellvalue.trim()+"////////////////");
 
                                             genericobj.setRequestDate(cellvalue.trim());
                                                if(genericobj.getRequestDate().isEmpty()){
@@ -320,6 +320,14 @@ session.removeAttribute("clog");
 
                                                genericobj.setAcceptedDate(cellvalue.trim());
 
+                                               if(genericobj.getAcceptedDate().isEmpty()){
+                                              request.setAttribute("msg1", "Accepted Date cannot be blank cannot import");
+                                              log.add("Accepted Date cannot be blank cannot import for record No"+row_no);session.setAttribute("clog",log);
+                                              continue begin;
+
+
+
+                                            }
 
 
                                         }
@@ -332,8 +340,8 @@ session.removeAttribute("clog");
 
                                                  election_name=cellvalue.trim();
                                                   if( election_name.isEmpty()){
-                                              request.setAttribute("msg1", "Election name Cannot be Blank ,cannot import");
-                                              log.add( "Election name Cannot be Blank ,cannot import At Record No ="+row_no);session.setAttribute("clog",log);
+                                              request.setAttribute("msg1", "Election id Cannot be Blank ,cannot import");
+                                              log.add( "Election id Cannot be Blank ,cannot import At Record No ="+row_no);session.setAttribute("clog",log);
                                              continue begin;
 
 
@@ -345,14 +353,14 @@ session.removeAttribute("clog");
                                                 if(election_name!=null){
 
                                                   ElectionDAO dao= new ElectionDAO();
-                                                   obj1=dao.searchElectionByName(election_name, institute_id);
+                                                   obj1=dao.searchElection(election_name, institute_id);
                                                 }
                                                 if(obj1!=null)
                                             voterid.setElectionId(obj1.getId().getElectionId());
 // System.out.println("Election Id======"+obj1.getId().getElectionId());
-                                              if( voterid==null){
-                                              request.setAttribute("msg1", "VoterName Cannot Blank , Import Terminates");
-                                              log.add( "VoterName Cannot Blank At Record No ="+row_no);session.setAttribute("clog",log);
+                                              if( obj1==null){
+                                              request.setAttribute("msg1", "Election id not Found Cannot Import");
+                                              log.add( "Election id not Found Cannot Import At Record No ="+row_no);session.setAttribute("clog",log);
                                              continue begin;
 
 
@@ -376,7 +384,7 @@ session.removeAttribute("clog");
 
 
                                                 Position1 pos=null;
-                                                 Election obj1=null;
+                                               //  Election obj1=null;
 
                                                 if(position_name!=null){
 
@@ -388,9 +396,9 @@ session.removeAttribute("clog");
                                                  
                                                 if(pos!=null)
                                             voterid.setPosition(String.valueOf(pos.getId().getPositionId()));
-                                              if(voterid==null){
-                                              request.setAttribute("msg1", "PositionName Cannot Blank , Import Terminates");
-                                              log.add( "PositionName Cannot Blank At Record No ="+row_no);session.setAttribute("clog",log);
+                                              if(pos==null){
+                                              request.setAttribute("msg1", "PositionName not found in the given election");
+                                              log.add( "PositionName not found in the given election At Record No ="+row_no);session.setAttribute("clog",log);
                                              continue begin;
 
 
@@ -400,7 +408,7 @@ session.removeAttribute("clog");
 
 
                                         }
-                                            if (map_table[column_index].equals("proposed by")) {
+                                            if (map_table[column_index].equals("proposed_by")) {
 
                                                 if(cellvalue.isEmpty()){
                                                request.setAttribute("msg1", "Proposed By Field Cannot Blank , Import Terminates");
@@ -414,7 +422,7 @@ session.removeAttribute("clog");
                                                 Login vo=logindao.getUserId(cellvalue.trim());
                                                  if(vo!=null)
                                                  {
-                                                     if(vo.getRole().startsWith("voter"))
+                                                     if(vo.getRole().equalsIgnoreCase("voter"))
                                                      genericobj.setProposedBy(cellvalue.trim());
                                                      else{
                                                       request.setAttribute("msg1", "Proposed By Field cannot be blank  , Import Terminates");
@@ -434,7 +442,7 @@ session.removeAttribute("clog");
 
                                         }
 
-                                                if (map_table[column_index].equals("seconded by")) {
+                                                if (map_table[column_index].equals("seconded_by")) {
 
                                                     if(cellvalue.isEmpty()){
                                                request.setAttribute("msg1", "Seconded by Cannot Blank , Import Terminates");
@@ -448,28 +456,41 @@ session.removeAttribute("clog");
                                                 Login vo=logindao.getUserId(cellvalue.trim());
                                                  if(vo!=null)
                                                  {
-                                                     if(vo.getRole().startsWith("voter"))
+                                                     if(vo.getRole().equalsIgnoreCase("voter"))
                                                          genericobj.setSecondedBy(cellvalue.trim());
                                                      else{
-                                                      request.setAttribute("msg1", "BirthDate Cannot Blank , Import Terminates");
-                                               log.add("BirthDate Cannot Blank at Record No="+row_no);session.setAttribute("clog",log);
+                                                      request.setAttribute("msg1", "Seconded by not found Import Terminates");
+                                               log.add("Seconded by not found  at Record No="+row_no);session.setAttribute("clog",log);
                                                continue begin;
                                                      }
 
                                                  }
                                                if(genericobj.getSecondedBy().isEmpty()){
-                                               request.setAttribute("msg1", "BirthDate Cannot Blank , Import Terminates");
-                                               log.add("BirthDate Cannot Blank at Record No="+row_no);session.setAttribute("clog",log);
+                                              request.setAttribute("msg1", "Seconded by not found Import Terminates");
+                                               log.add("Seconded by not found  at Record No="+row_no);session.setAttribute("clog",log);
                                                continue begin;
 
 
 
                                             }
 
+                                                if(genericobj.getProposedBy().equalsIgnoreCase(genericobj.getSecondedBy())){
+                                                request.setAttribute("msg1", "Proposed By & Seconded By Person Should not be same");
+                                               log.add("Proposed By & Seconded By Person Should not be same CANNOT Import at Record No="+row_no);session.setAttribute("clog",log);
+                                               continue begin;
+
+
+                    }
+
+
 
                                         }
 
                                      if (map_table[column_index].equals("position_accepted")) {
+
+
+
+
                                           if(cellvalue.isEmpty()){
                                                request.setAttribute("msg1", "Position Accepted Cannot Blank , Import Terminates");
                                                log.add("Position Accepted Cannot Blank at Record No="+row_no);session.setAttribute("clog",log);
@@ -478,31 +499,19 @@ session.removeAttribute("clog");
 
 
                                             }
+                                                if(cellvalue.trim().equalsIgnoreCase("Yes") || cellvalue.trim().equalsIgnoreCase("No")){
+                                                 genericobj.setPositionAccepted(cellvalue.trim());
 
-
-                                               Login vo=logindao.getUserId(cellvalue.trim());
-                                                 if(vo!=null)
-                                                 {
-                                                     if(vo.getRole().startsWith("voter"))
-                                                         genericobj.setPositionAccepted(cellvalue.trim());
-                                                     else
-                                                     {
-                                                      request.setAttribute("msg1", "Position Accepted Cannot Blank , Import Terminates");
-                                               log.add("Position Accepted Cannot Blank at Record No="+row_no);session.setAttribute("clog",log);
+                                                }else{
+                                                      request.setAttribute("msg1", "Invalid date in Position Accepted Cannot Import");
+                                               log.add("Invalid date in Position Accepted Cannot Import at Record No="+row_no);session.setAttribute("clog",log);
                                                continue begin;
+                                                }
+
+                                                
                                                      }
-                                                 }
-                                               if(genericobj==null){
-                                               request.setAttribute("msg1", "Position Accepted Cannot Blank or Not Found , Import Terminates");
-                                               log.add("Position Accepted Cannot Blank or Not Found at Record No="+row_no);session.setAttribute("clog",log);
-                                               continue begin;
-
-
-
-                                            }
-
-
-                                        }
+                                               
+                                        
 
 
  
@@ -550,8 +559,13 @@ session.removeAttribute("clog");
 
                       if(x1==null && staff==null){
 
-*/  
+*/
+                        if(genericobj.getPositionAccepted().equalsIgnoreCase("No")){
+                        genericobj.setStatus("Rejected");
 
+                        }
+
+                    
 
                    boolean result=DAO.insertgenericc(genericobj);
                    if(result==false){
@@ -566,7 +580,7 @@ session.removeAttribute("clog");
              CandidateRegistrationDAO voterdao=new CandidateRegistrationDAO();
 
              // System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+eid);
-             Election e = ElectionDAO.searchElectionByName(election_name, institute_id);
+             Election e = ElectionDAO.searchElection(election_name, institute_id);
 //System.out.println(e+"gdfgdfgdfgfd");
           List vr=voterdao.getCandidateDetailsByStatus1(institute_id,e.getId().getElectionId(),voterid.getEnrollment());
          // List ve=voterdao.getEmail(institute_id,genericobj.getId().getEnrollment());
@@ -576,8 +590,8 @@ VoterRegistration ab=new VoterRegistration();
           if(!vr.isEmpty())
 
           {    ob=(CandidateRegistration)vr.get(0);}
-//if(ve!=null)
-   //       ab=(VoterRegistration)ve.get(0);
+
+ab=VoterRegistrationDAO.searchVoterRegistration(institute_id, voterid.getEnrollment());
 
 
 
@@ -591,8 +605,11 @@ c1.setCandidateName(ab.getVoterName());
 c1.setEnrollment(voterid.getEnrollment());
 PositionDAO positiondao=new PositionDAO();
 Position1 pos = positiondao.searchPosition(Integer.parseInt(voterid.getPosition()));
+if(genericobj.getPositionAccepted().equalsIgnoreCase("yes"))
      genericobj.setStatus("REGISTERED");
- try{
+else
+     genericobj.setStatus("Rejected");
+ 
 CandidateRegistrationDAO.updateCandidature(genericobj,c1);
 //String path = servlet.getServletContext().getRealPath("/");
 request.setAttribute("msg", "Registration Accepted Successfully");
@@ -603,8 +620,8 @@ request.setAttribute("msg", "Registration Accepted Successfully");
 //                    obj.send();
 //                }
 //            });
-            }catch(Exception e2){e2.printStackTrace();}
-             return mapping.findForward(SUCCESS);
+            
+             //return mapping.findForward(SUCCESS);
 
 
           
@@ -631,7 +648,7 @@ request.setAttribute("msg", "Registration Accepted Successfully");
 
         
                         System.out.println("++++++++++++++++++++++++++insert funcion is  called");
-                        request.setAttribute("msg", "data has been successfully added");
+                        request.setAttribute("msg", "Import Process in completed");
                         return mapping.findForward(SUCCESS);
 
 
