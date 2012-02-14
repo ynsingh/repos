@@ -10,7 +10,7 @@
 	<field name="v_course" class="java.lang.String"/>
 	<field name="v_department" class="java.lang.String"/>
 	<field name="v_enrollment" class="java.lang.String"/>
-	<field name="v_year" class="java.lang.String"/>
+	<field name="v_gender" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -70,7 +70,7 @@
 			<staticText>
 				<reportElement x="10" y="103" width="135" height="15"/>
 				<textElement/>
-				<text><![CDATA[Current Academic Year]]></text>
+				<text><![CDATA[Gender]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="10" y="126" width="135" height="15"/>
@@ -142,7 +142,7 @@
 			<textField>
 				<reportElement x="220" y="103" width="135" height="15"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{v_year}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{v_gender}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="220" y="126" width="160" height="15"/>

@@ -252,6 +252,17 @@ else
       <header value="Action" hAlign="left" styleClass="header"/>
       <item   value="Preview Ballot" hyperLink="${path}/electionview.do?id=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
+
+       <column width="10%">
+      <header value="Action" hAlign="left" styleClass="header"/>
+      <item   value="Candidate List" hyperLink="${path}/AllCandiList.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
+    </column>
+
+      <column width="10%">
+      <header value="Action" hAlign="left" styleClass="header"/>
+      <item   value="Voter List" hyperLink="${path}/voterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
+    </column>
+
  </columns>
 
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>

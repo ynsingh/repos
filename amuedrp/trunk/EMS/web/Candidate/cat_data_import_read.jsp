@@ -106,7 +106,7 @@
    
 --%>
                       <tr><td colspan="3">
-                  <p class="err">
+                 <%-- <p class="err">
                     
 
                    
@@ -114,7 +114,7 @@
                                         out.println(request.getAttribute("msg1"));
                                     }
                         %>
-                  </p>
+                  </p>--%>
                 <p class="mess">
 
                         <%if (request.getAttribute("msg") != null) {
@@ -138,12 +138,12 @@ StringBuffer str = new StringBuffer();
 String userid=(String)session.getAttribute("user_id");
 String nameOfTextFile =userid+ "candilog.txt";
 String path=(String)session.getAttribute("apppath");
-path=path.substring(0,path.lastIndexOf("/"));
-path=path.substring(0,path.lastIndexOf("/"));
-path=path.substring(0,path.lastIndexOf("/"));
+//path=path.substring(0,path.lastIndexOf("/"));
+//path=path.substring(0,path.lastIndexOf("/"));
+//path=path.substring(0,path.lastIndexOf("/"));
 System.out.println(path);
 try {
-    PrintWriter pw = new PrintWriter(new FileOutputStream(path+"/web/"+nameOfTextFile));
+    PrintWriter pw = new PrintWriter(new FileOutputStream(path+"/EMSLOG/"+nameOfTextFile));
 //System.out.println(pw);
     for(int i=0;i<obj.size();i++)
         str.append(obj.get(i)+"\n");
@@ -153,7 +153,7 @@ try {
 } catch(IOException e) {
    out.println(e.getMessage());
 }
-%>   <a href="/EMS/<%=nameOfTextFile%>" target="_blank">View Log</a><%
+%>   <a href="<%="/EMS/EMSLOG/"+nameOfTextFile%>" target="_blank">View Log</a><%
 }
 
                     %>

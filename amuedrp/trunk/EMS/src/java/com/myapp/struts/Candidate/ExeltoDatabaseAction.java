@@ -225,6 +225,25 @@ session.removeAttribute("clog");
 
 
                                                }
+
+
+                                            AdminRegistration x1=AdminRegistrationDAO.searchVoterRegistration(institute_id, cellvalue.trim().toString());
+                                            StaffDetail staff=StaffDetailDAO.searchStaffId(cellvalue.trim().toString(), institute_id);
+                                            if(x1!=null || staff!=null){
+                                              request.setAttribute("msg1", "EnrollMent No Already Assigned to CEO or EO  , Import Terminates");
+                                              log.add("EnrollMent No Already Assigned to Some One Else for record No"+row_no);session.setAttribute("log",log);
+                                              continue begin;
+
+
+                                            }
+
+
+
+
+
+
+
+
                                                voterid.setEnrollment(cellvalue.trim());
 
                                             if(voterid.getEnrollment().isEmpty() || voterid==null){
@@ -425,14 +444,14 @@ session.removeAttribute("clog");
                                                      if(vo.getRole().equalsIgnoreCase("voter"))
                                                      genericobj.setProposedBy(cellvalue.trim());
                                                      else{
-                                                      request.setAttribute("msg1", "Proposed By Field cannot be blank  , Import Terminates");
-                                               log.add("Proposed By Field cannot be blank at Record No="+row_no);session.setAttribute("clog",log);
+                                                      request.setAttribute("msg1", "Proposed By Field cannot found as a voter , Import Terminates");
+                                               log.add("Proposed By Field cannot found as a voter at Record No="+row_no);session.setAttribute("clog",log);
                                                continue begin;
                                                      }
                                                  }
-                                               if(genericobj.getProposedBy().isEmpty()){
-                                               request.setAttribute("msg1", "Proposed By Field cannot be blank , Import Terminates");
-                                               log.add("Proposed By Field cannot be blank at Record No="+row_no);session.setAttribute("clog",log);
+                                               if(genericobj.getProposedBy()==null || genericobj.getProposedBy().isEmpty()){
+                                               request.setAttribute("msg1", "Proposed By Field cannot found as a voter, Import Terminates");
+                                               log.add("Proposed By Field cannot found as a voter at Record No="+row_no);session.setAttribute("clog",log);
                                                continue begin;
 
 
@@ -465,7 +484,7 @@ session.removeAttribute("clog");
                                                      }
 
                                                  }
-                                               if(genericobj.getSecondedBy().isEmpty()){
+                                               if(genericobj.getSecondedBy()==null || genericobj.getSecondedBy().isEmpty()){
                                               request.setAttribute("msg1", "Seconded by not found Import Terminates");
                                                log.add("Seconded by not found  at Record No="+row_no);session.setAttribute("clog",log);
                                                continue begin;
@@ -609,7 +628,11 @@ if(genericobj.getPositionAccepted().equalsIgnoreCase("yes"))
      genericobj.setStatus("REGISTERED");
 else
      genericobj.setStatus("Rejected");
- 
+
+
+
+
+
 CandidateRegistrationDAO.updateCandidature(genericobj,c1);
 //String path = servlet.getServletContext().getRealPath("/");
 request.setAttribute("msg", "Registration Accepted Successfully");

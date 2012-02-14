@@ -140,8 +140,8 @@ CREATE TABLE `candidate_registration` (
   `rejected_reason` varchar(255) DEFAULT NULL,
   `request_date` varchar(20) DEFAULT NULL,
   `accepted_date` varchar(20) DEFAULT NULL,
-  `proposed_by` varchar(20) DEFAULT NULL,
-  `seconded_by` varchar(20) DEFAULT NULL,
+  `proposed_by` varchar(200) DEFAULT NULL,
+  `seconded_by` varchar(200) DEFAULT NULL,
   `position_accepted` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`enrollment`,`institute_id`,`election_id`,`position`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -571,7 +571,7 @@ DROP TABLE IF EXISTS `votingprocess`;
 CREATE TABLE `votingprocess` (
   `institute_id` varchar(20) NOT NULL DEFAULT '',
   `election_id` varchar(20) NOT NULL DEFAULT '',
-  `voter_id` varchar(20) NOT NULL DEFAULT '',
+  `voter_id` varchar(255) NOT NULL DEFAULT '',
   `status` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`institute_id`,`election_id`,`voter_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

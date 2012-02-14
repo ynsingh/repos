@@ -14,6 +14,25 @@ import org.hibernate.Query;
  * @author Client
  */
 public class LoginDAO {
+     public void insert(Login loginDetails,String userId){
+    Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            session.save(loginDetails);
+            tx.commit();
+        }
+        catch (Exception e) {
+              tx.rollback();
+            e.printStackTrace();
+           
+        }
+        finally {
+          session.close();
+        }
+    }
+
     public Login getUserId(String user_id){
  Session session =null;
  Login x=new Login();

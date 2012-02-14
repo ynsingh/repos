@@ -47,7 +47,7 @@ CandidateRegistrationDAO candi=new CandidateRegistrationDAO();
    String institute_id=(String)session.getAttribute("institute_id");
       v=candi.GetVoterList(institute_id);
      
-session.setAttribute("VoterList", v);
+session.setAttribute("resultset", v);
  return mapping.findForward("success1");
 
         }
@@ -66,6 +66,9 @@ session.setAttribute("VoterList", v);
        else if(status.equalsIgnoreCase("A")) status1 = "REGISTERED";
        else if(status.equalsIgnoreCase("B")) status1 = "Block";
        else if(status.equalsIgnoreCase("AB")) status1 = "REGISTERED";
+       if(sortby==null)
+           sortby="id.enrollment";
+
        if(searchkeyword!=null && searchkeyword.isEmpty()==false)
        rst = admindao.getVoterDetailsByStatus(institute_id,status1,searchby,searchkeyword,sortby,pageno);
        else

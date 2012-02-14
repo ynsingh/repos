@@ -35,7 +35,8 @@ public class ElectionManagerModuleAction extends org.apache.struts.action.Action
         String institute_id=(String)session.getAttribute("institute_id");
         String manager_id=(String)session.getAttribute("user_id");
 
-System.out.println("dsfsdfsdfsdf");
+ int pageno=Integer.parseInt((String)(request.getParameter("page")==null || request.getParameter("page")=="" ?"0":request.getParameter("page")));
+       System.out.println("Page No"+pageno);
         VoterRegistrationDAO admindao=new VoterRegistrationDAO();
         ElectionDAO electiondao=new ElectionDAO();
                     session.removeAttribute("resultset");
@@ -48,7 +49,7 @@ System.out.println("dsfsdfsdfsdf");
                     session.setAttribute("count", count);
 
 
-                    rst1= electiondao.GetElectionDetails1(institute_id,manager_id);
+                    rst1= electiondao.GetElectionDetails1(institute_id,manager_id,pageno);
                      session.setAttribute("resultset1", rst1);
 
         return mapping.findForward(SUCCESS);

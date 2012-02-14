@@ -88,7 +88,7 @@ public class Election_Manager_RegistrationAction extends org.apache.struts.actio
         manager_id=staff_id;
 
 
-        System.out.println(staff_id+manager_id);
+        System.out.println(staff_id+"   "+manager_id);
 
         //institute_id=ManagerRegistrationForm.getInstitute_id();
 

@@ -39,15 +39,19 @@ session.removeAttribute("election_id");
 
       String inst = (String)session.getAttribute("institute_id");
       ElectionDAO e=new ElectionDAO();
-      System.out.println(election+"..................."+inst);
+      
 
 Election obj=(Election)e.Electionname(inst,election);
 
 if(obj!=null && obj.getStatus().equalsIgnoreCase("started"))
 {
     String staff_id=(String)session.getAttribute("staff_id");
+
     SetVoter o=VoterRegistrationDAO.searchVoterList(inst,election,staff_id);
-    if(o!=null && o.getStatus().equalsIgnoreCase("Blocked")){
+  //  System.out.println(election+"..................."+inst+o.getPassword());
+
+    if(o!=null){
+        if(o.getStatus()!=null){
         request.setAttribute("msgerr", "Sorry You are not a valid Voter for this Election");
 
 String role=(String)session.getAttribute("login_role");
@@ -62,13 +66,19 @@ return mapping.findForward("success2");
 return mapping.findForward("success3");
 }
 
+        }else{
+        session.setAttribute("election", obj.getId().getElectionId());
+    return mapping.findForward("success");
+        }
+    }
+    else{
+     session.setAttribute("election", obj.getId().getElectionId());
+    return mapping.findForward("success");
 
     }
 
 
 
-session.setAttribute("election", obj.getId().getElectionId());
-    return mapping.findForward("success");
 }
 else
 {

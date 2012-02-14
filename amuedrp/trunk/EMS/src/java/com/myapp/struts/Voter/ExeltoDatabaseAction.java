@@ -508,14 +508,12 @@ login.setStaffDetail(staffd);
 logindao.insert(login);
 
   String path = servlet.getServletContext().getRealPath("/");
-           mail=new Email(path,x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for EMS Login ="+admin_password+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
 
+//           mail=new Email(path,x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for EMS Login ="+admin_password+".\nFor Voting you will receive separate one time password.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
 
-
-                    mail.send();
+  //                  mail.send();
 
                       }
-
                       }
    //if Voter list has record of CEO
                       else if(x1!=null){
@@ -529,8 +527,6 @@ logindao.insert(login);
 
                    }
 
-
-
     Login temp=logindao.getStaffDetails1("admin."+institute_id, institute_id);
    // System.out.println("IMport Bug..............."+voterid.getEnrollment()+institute_id+" "+"admin."+institute_id+temp);
     if(temp!=null)
@@ -543,14 +539,9 @@ logindao.insert(login);
   
 
   String path = servlet.getServletContext().getRealPath("/");
-           mail=new Email(path,x1.getAdminEmail(),"","Voter Registration Accepted Successfully from EMS","Dear "+x1.getAdminFname()+" "+x1.getAdminLname()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+    //       mail=new Email(path,x1.getAdminEmail(),"","Voter Registration Accepted Successfully from EMS","Dear "+x1.getAdminFname()+" "+x1.getAdminLname()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
       
-                    mail.send();
-           
-
-
- 
-
+      //              mail.send();
  }
                       //if voter list has record of Any Election Manager
 else if(staff!=null){
@@ -575,9 +566,9 @@ else if(staff!=null){
    logindao.update(temp);
 
   String path = servlet.getServletContext().getRealPath("/");
-           mail=new Email(path,staff.getEmailId(),"","Voter Registration Accepted Successfully from EMS","Dear "+staff.getFirstName()+" "+staff.getLastName()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+        //   mail=new Email(path,staff.getEmailId(),"","Voter Registration Accepted Successfully from EMS","Dear "+staff.getFirstName()+" "+staff.getLastName()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
       
-                   mail.send();
+          //         mail.send();
            
  
 }
@@ -606,10 +597,6 @@ else if(staff!=null){
                         System.out.println("++++++++++++++++++++++++++insert funcion is  called");
                         request.setAttribute("msg", "data has been successfully added");
                         return mapping.findForward(SUCCESS);
-
-
-
-
 
 
     }

@@ -14,13 +14,13 @@
                 <tr><td colspan="3" align="center" class="headerStyle">Upload Excel File</td></tr>
             <tr>
                <td align="left" style="padding:10px">
-                   <p class="mess"><b>Note</b>:You Need to Import Voter Registration Details data in XLS Format. </p><br/>   Select Microsoft Excel File : <br><html:file  property="excelFile" name="StrutsUploadForm1"/>
+                  <b>Note</b>:You Need to Import Voter Registration Details data in XLS Format. &nbsp;&nbsp;<a href="ImportHelpFile.html" target="_blank">Help</a><br/>   Select Microsoft Excel File : <br><html:file  property="excelFile" name="StrutsUploadForm1"/>
                     <br> <html:submit>Upload File</html:submit><br>
                     <div style="visibility: hidden">
                           <html:select   style="color:blue;text-align: center;font: bold;text-transform: uppercase"   property="combo_table_name" name="StrutsUploadForm1" >
                       <html:option value="bibliographic_details">bibliographic_details</html:option>
                     </html:select>
-                    </div><a href="ImportHelpFile.html" target="_blank">Help</a>
+                    </div>
                     <%--<br><a href="<%=request.getContextPath()%>/cataloguing/Import.pdf">Help of Excel File</a>
                     <a href="<%=request.getContextPath()%>/cataloguing/CatalogImport.xls">Excel File</a>--%>
                 </td>            
@@ -106,7 +106,7 @@
    
 --%>
                       <tr><td colspan="3">
-                  <p class="err">
+                  <%--<p class="err">
                     
 
                    
@@ -114,7 +114,7 @@
                                         out.println(request.getAttribute("msg1")+"\n");
                                     }
                         %>
-                  </p>
+                  </p>--%>
                 <p class="mess">
 
                         <%if (request.getAttribute("msg") != null) {
@@ -137,12 +137,12 @@ StringBuffer str = new StringBuffer();
 String userid=(String)session.getAttribute("user_id");
 String nameOfTextFile = userid+"log.txt";
 String path=(String)session.getAttribute("apppath");
-path=path.substring(0,path.lastIndexOf("/"));
-path=path.substring(0,path.lastIndexOf("/"));
-path=path.substring(0,path.lastIndexOf("/"));
+//path=path.substring(0,path.lastIndexOf("/"));
+//path=path.substring(0,path.lastIndexOf("/"));
+//path=path.substring(0,path.lastIndexOf("/"));
 System.out.println(path+"..........................");
 try {
-    PrintWriter pw = new PrintWriter(new FileOutputStream(path+"/web/"+nameOfTextFile));
+    PrintWriter pw = new PrintWriter(new FileOutputStream(path+"/EMSLOG/"+nameOfTextFile));
 //System.out.println(pw);
     for(int i=0;i<obj.size();i++)
         str.append(obj.get(i)+"\n");
@@ -152,7 +152,7 @@ try {
 } catch(IOException e) {
    out.println(e.getMessage());
 }
-%>   <a href="/EMS/<%=nameOfTextFile%>" target="_blank">View Log</a><%
+%>   <a href="<%="/EMS/EMSLOG/"+nameOfTextFile%>" target="_blank">View Log</a><%
 }
 
                     %>

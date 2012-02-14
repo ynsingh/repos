@@ -81,7 +81,7 @@ document.DepActionForm.submit();
 }
 
 function validate()
-{
+{    document.getElementById('election').value=document.getElementById('election_id').value;
 document.DepActionForm.action="/EMS/setvoter.do";
 document.DepActionForm.method="post";
 document.DepActionForm.submit();
@@ -160,8 +160,8 @@ if(msg!=null){
           <table >
               <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.infield")%> </td><td rowspan="2" valign="top">
  <select name="search_by" onChange="fun()" id="search_by" size="1">
+<option selected value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
 <option value="voterName">Voter Name<%--<%=resource.getString("managername")%>--%></option>
-<option value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
 <option value="department">Department<%--<%=resource.getString("managerid")%>--%></option>
 <option value="course">Course</option>
 <%--<option value="city"><%=resource.getString("city")%></option>--%>
@@ -178,8 +178,8 @@ if(msg!=null){
        <td align="left" colspan="2">
            <table>
   <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.field")%></td><td><select name="sort_by" id="sort_by" size="1" onChange="fun()" id="">
+<option selected value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
 <option value="voterName">Voter Name<%--<%=resource.getString("managername")%>--%></option>
-<option value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
 <option value="department">Department<%--<%=resource.getString("managerid")%>--%></option>
 <option value="course">Course</option>
 </select></td>
@@ -195,15 +195,22 @@ if(msg!=null){
 
           <b>Select Election </b>
          <%if(election.size()>0){%>
-          <select name="electionId" id="election_id">
+         <select name="electionId" id="election_id" size="1">
                 <%
 
 for(int i=0;i<election.size();i++){
 %>
      <option value="<%=election.get(i).getId().getElectionId()%>"><%=election.get(i).getElectionName() %></option>
-     <input type="hidden" name="election" value="<%=election.get(i).getElectionName() %>"/>
+ 
      <%}%>
-   </select>
+   </select  <input type="hidden" name="election" id="election"/>
+     <%
+
+for(int i=0;i<election.size();i++){
+%>
+
+     
+     <%}%>
 
 <%}else{%>No Election<%}%>
 

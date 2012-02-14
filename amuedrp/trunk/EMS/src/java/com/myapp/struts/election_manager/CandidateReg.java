@@ -23,6 +23,15 @@ private String e_description;
 private Timestamp e_nomistart;
 private Timestamp e_nomiend;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+private String status;
+
     public Timestamp getE_end() {
         return e_end;
     }

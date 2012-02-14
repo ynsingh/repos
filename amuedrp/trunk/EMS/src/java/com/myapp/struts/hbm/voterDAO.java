@@ -147,7 +147,7 @@ public String InsertVote(ArrayList E)
         }
         catch (RuntimeException e) {
           
-            System.out.println("voterDAo InsertVote:"+e.getMessage());
+            System.out.println("voterDAo InsertVote:");e.printStackTrace();
             tx.rollback();
           obj="Vote not Saved!";
         }

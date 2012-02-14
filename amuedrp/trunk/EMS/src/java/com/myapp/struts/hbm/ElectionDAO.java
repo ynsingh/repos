@@ -5,6 +5,7 @@
 
 package com.myapp.struts.hbm;
 
+import com.myapp.struts.Voter.PagingAction;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -378,7 +379,7 @@ Session session =null;
         return obj;
 }
 
-    public static List <ElectionRuleEligiblity1> GetElectionDetails1(String institute_id,String managerid)
+    public static List <ElectionRuleEligiblity1> GetElectionDetails1(String institute_id,String managerid,int pageNumber)
     {
     Session session =null;
     List <ElectionRuleEligiblity1> obj = null;
@@ -400,7 +401,23 @@ Session session =null;
                     .setResultTransformer(Transformers.aliasToBean(ElectionRuleEligiblity1.class));
           query.setString("institute_id", institute_id);
           query.setString("created_by", managerid);
-            obj= (List<ElectionRuleEligiblity1>) query.list();
+
+
+          //System.out.println(query1);
+if(pageNumber==0){
+
+            query = query.setFirstResult(0);
+              query.setMaxResults(100);
+             obj= (List<ElectionRuleEligiblity1>) query.list();
+}
+else{             PagingAction o=new PagingAction(query,pageNumber,100);
+
+obj= (List<ElectionRuleEligiblity1>) query.list();
+// System.out.println("Size of Record"+obj.size()+".........................."+pageNumber);
+}
+
+
+            
             session.getTransaction().commit();
         }
     catch(RuntimeException e){

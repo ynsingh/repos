@@ -83,7 +83,7 @@
                         <forward name="logout" path = "/logout.do"/>
                         <forward name="instituteadmin" path = "/instituteadmin.do"/>
                         <forward name="electionmanager" path="/electionmanager.do"/>
-                         <forward name="voter" path="/voter.do"/>
+                         <forward name="voter" path="/Voter/voter_home.jsp"/>
                          <forward name="candidate" path="/Candidate/home.jsp"/>
 
            </action>
@@ -143,7 +143,7 @@
                         <forward name="success" path="/instituteadmin.do"/>
                         <forward name="failure" path="/login.jsp"/>
                         <forward name="electionmanager" path="/election_manager/login.jsp"/>
-                        <forward name="voter" path="/voter.do"/>
+                        <forward name="voter" path="/Voter/voter_home.jsp"/>
                         <forward name="candidate" path="/Candidate/home.jsp"/>
                     </action>
 
@@ -491,7 +491,7 @@
 
          </action>
          <action path="/VoteCast" scope="request" type="com.myapp.struts.Voting.CastVote"/>
-<action path="/newenrollment" scope="request" type="com.myapp.struts.Voter.newenrollment">
+            <action path="/newenrollment" scope="request" type="com.myapp.struts.Voter.newenrollment">
               <forward name="success" path="/Voter/enrollment.jsp"/>
               </action>
               <action path="/voting" scope="request" type="com.myapp.struts.Voter.CheckElection">

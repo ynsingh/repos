@@ -232,14 +232,14 @@ function isNumberKey(evt)
 else
 {%>
 <table id="grid" dir="" width="100%" style="padding-left: 5%;padding-right: 5%">
-   <tr><td>Candidate Approval Page</td><td align="right">View Next&nbsp;
-           <%--<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>--%>
+   <tr><td>Candidate Approval Page</td><%--<td align="right">View Next&nbsp;
+           <input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>
        <select id="rec" onchange="changerec()" style="width:50px">
            <option value="10">10</option>
             <option value="20">20</option>
              <option value="30">30</option>
        </select>
-       </td></tr>
+       </td>--%></tr>
     <tr dir=""><td dir="">
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 

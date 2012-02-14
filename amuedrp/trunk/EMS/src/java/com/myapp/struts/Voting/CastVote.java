@@ -271,7 +271,7 @@ System.out.println(cast[i]);
             vp.setStatus("Voted");
             casting.add(vp);
 
-            System.out.println("cast Length="+cast.length);
+            System.out.println("cast Length="+cast.length+cast[0]);
 
             String maxVoterid = voterdao.getMaxVoterBallotId(electionId, instituteId);
             Integer vbId;
@@ -321,6 +321,7 @@ System.out.println(cast[i]);
             
         }
         casting.add(posCol);
+        System.out.println(casting.size());
         String msg=new String();
         if(!casting.isEmpty()|| casting!=null)
         {

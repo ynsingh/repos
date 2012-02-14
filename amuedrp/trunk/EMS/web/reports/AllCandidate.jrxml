@@ -7,7 +7,7 @@
 	<field name="i_institute_name" class="java.lang.String"/>
 	<field name="v_email" class="java.lang.String"/>
 	<field name="image" class="java.awt.Image"/>
-	<field name="v_course" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
 	<field name="v_department" class="java.lang.String"/>
 	<field name="v_enrollment" class="java.lang.String"/>
 	<field name="v_year" class="java.lang.String"/>
@@ -67,7 +67,7 @@
 			<staticText>
 				<reportElement x="10" y="122" width="135" height="15"/>
 				<textElement/>
-				<text><![CDATA[Course]]></text>
+				<text><![CDATA[Status]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="10" y="145" width="135" height="15"/>
@@ -131,7 +131,7 @@
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{v_voter_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField >
 				<reportElement x="220" y="99" width="135" height="15"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{v_department}]]></textFieldExpression>
@@ -139,14 +139,14 @@
 			<textField>
 				<reportElement x="220" y="122" width="135" height="15"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{v_course}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{status}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="220" y="145" width="135" height="15"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{v_year}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField >
 				<reportElement x="220" y="168" width="160" height="15"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{v_email}]]></textFieldExpression>

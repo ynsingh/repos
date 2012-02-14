@@ -53,12 +53,14 @@ public class PrintVoterList extends org.apache.struts.action.Action {
          JasperCompileManager.compileReportToFile(path+"/reports/VoterList.jrxml");
 
          String institute_id=(String)session.getAttribute("institute_id");
+         String election_id=request.getParameter("election");
 
          String status="REGISTERED";
 
-         List     list=dao.VoterList(institute_id);
+         List     list=dao.VoterList1(institute_id,election_id);
 
          System.out.println(list.size());
+System.out.println(election_id);
 
          JRBeanCollectionDataSource data=new  JRBeanCollectionDataSource(list);
 

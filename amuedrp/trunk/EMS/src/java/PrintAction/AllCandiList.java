@@ -49,7 +49,9 @@ public class AllCandiList extends org.apache.struts.action.Action {
          JasperCompileManager.compileReportToFile(path+"/reports/AllCandidate.jrxml");
  String institute_id=(String)session.getAttribute("institute_id");
  String status="Withdraw";
-         List     list=dao.AllCandiReport(institute_id);
+ String election_id=request.getParameter("election");
+ System.out.println(election_id);
+         List     list=dao.AllCandiReport(institute_id,election_id);
 
          System.out.println(list.size());
          JRBeanCollectionDataSource data=new  JRBeanCollectionDataSource(list);

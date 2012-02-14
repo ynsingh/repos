@@ -30,8 +30,12 @@ public class superadminModuleAction extends org.apache.struts.action.Action {
         List rst;
         HttpSession session = request.getSession();
          AdminRegistrationDAO admindao = new AdminRegistrationDAO();
+
+          int pageno=Integer.parseInt((String)(request.getParameter("page")==null || request.getParameter("page")=="" ?"0":request.getParameter("page")));
+       System.out.println("Page No"+pageno);
+
                     session.removeAttribute("resultset");
-                    rst = admindao.getAdminDetailsByStatus("NotRegistered");
+                    rst = admindao.getAdminDetailsByStatus("NotRegistered",pageno);
                    
                     session.setAttribute("resultset", rst);
                    
@@ -42,7 +46,7 @@ public class superadminModuleAction extends org.apache.struts.action.Action {
                     session.setAttribute("count", count);
 
                       // get List of Rejected Library
-                 rst = admindao.getAdminDetailsByStatus("Rejected");
+                 rst = admindao.getAdminDetailsByStatus("Rejected",pageno);
                       session.setAttribute("rejected", rst);
 
 
@@ -50,7 +54,7 @@ public class superadminModuleAction extends org.apache.struts.action.Action {
 
                     //registered
                   
-                    rst = admindao.getAdminDetailsByStatus("Registered");
+                    rst = admindao.getAdminDetailsByStatus("Registered",pageno);
 
                     session.setAttribute("resultset1", rst);
 

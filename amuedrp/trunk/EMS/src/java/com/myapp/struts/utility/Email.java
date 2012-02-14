@@ -32,25 +32,17 @@ private String password;
 private String text;
 String userid;
 String host;
+String port;
 String path;
 String buffer;
 //
-
-
 public Email(String path,String to,String password,String subject,String body){this.to = to; this.password = password;this.subject=subject;this.text=body;this.path=path;}
 
 public void send(){
- host = "smtp.gmail.com";
-
- 
-
-
-
+// host = "smtp.gmail.com";
 
 try
 {
-
-
 
   String os=(String)System.getProperty("os.name");
    System.out.println("OS----------->"+os);
@@ -59,29 +51,17 @@ try
    if(os.startsWith("Linux"))
    {
     path=System.getProperty("user.home");
-     libmspro.load(new FileInputStream(path+"/libms.properties"));
+     libmspro.load(new FileInputStream(path+"/ems.properties"));
    }
    else
    {
        path="c:\\";
-        libmspro.load(new FileInputStream(path+"\\libms.properties"));
+        libmspro.load(new FileInputStream(path+"\\ems.properties"));
    }
-
-
-
-            
-
-
         String     userid = libmspro.getProperty("webadmin");
         buffer = libmspro.getProperty("webpass");
-
-
-
-
-
-  
- 
-
+        host = libmspro.getProperty("host");
+        port = libmspro.getProperty("port");
 
 Properties props = System.getProperties();
 props.put("mail.smtp.starttls.enable", "true");
@@ -89,7 +69,7 @@ props.put("mail.smtp.host", host);
 props.setProperty("mail.transport.protocol", "smtp");
 props.put("mail.smtp.user", userid);
 props.put("mail.smtp.password",buffer);
-props.put("mail.smtp.port", "465");
+props.put("mail.smtp.port", port);
 props.put("mail.smtp.auth", "true");
 Session session = Session.getDefaultInstance(props, null);
 MimeMessage message = new MimeMessage(session);
@@ -135,11 +115,7 @@ message.setSubject("Create Account Successfully from EMS");
       // set the Date: header
    //   message.setSentDate(new Date());
 
-
 }
-
-
-
 
 //SMTPSSLTransport transport =(SMTPSSLTransport)session.getTransport("smtp");
 String pass=buffer.toString();

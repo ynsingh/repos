@@ -216,25 +216,25 @@ if(x!=null)
 
                 } else {
 
-                    if (rst!= null && login.getQuestion()==null) {
-                       Institute rs1 = institutedao.getInstituteDetails(institute_id);
-
-                        if (rs1!=null) {
-                            
-                            session.setAttribute("institute_name", rs1.getInstituteName());
-                        }
-
-
-                        return mapping.findForward("firstlogin");
-
-
-                    }
+//                    if (rst!= null && login.getQuestion()==null) {
+//                       Institute rs1 = institutedao.getInstituteDetails(institute_id);
+//
+//                        if (rs1!=null) {
+//
+//                            session.setAttribute("institute_name", rs1.getInstituteName());
+//                        }
+//
+//
+//                        return mapping.findForward("firstlogin");
+//
+//
+//                    }
 
 
 
                    
 
-                else if(login.getRole().equalsIgnoreCase("insti-admin"))
+                 if(login.getRole().equalsIgnoreCase("insti-admin"))
                 {
                     Institute rs1 = institutedao.getInstituteDetails(institute_id);
 
