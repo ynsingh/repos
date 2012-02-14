@@ -191,7 +191,7 @@ if(msg!=null){
   </tr>
     <tr><td colspan="4"   height="25px" width="50px" align="center">
 
-
+<% System.out.println("The size of election is"+election.size());%>
 
           <b>Select Election </b>
          <%if(election.size()>0){%>
@@ -202,8 +202,9 @@ for(int i=0;i<election.size();i++){
 %>
      <option value="<%=election.get(i).getId().getElectionId()%>"><%=election.get(i).getElectionName() %></option>
  
+<% System.out.println("The size of election is"+election.get(i).getElectionName());%>
      <%}%>
-   </select  <input type="hidden" name="election" id="election"/>
+   </select>  <input type="hidden" name="election" id="election"/>
      <%
 
 for(int i=0;i<election.size();i++){

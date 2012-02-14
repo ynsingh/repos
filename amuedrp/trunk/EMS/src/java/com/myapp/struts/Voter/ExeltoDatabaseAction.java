@@ -206,6 +206,23 @@ session.removeAttribute("log");
                                            if (map_table[column_index].equals("enrollment")) {
                                             voterid.setEnrollment(cellvalue.trim());
 
+
+                                            VoterRegistration x=VoterRegistrationDAO.searchVoterRegistration(institute_id, voterid.getEnrollment());
+                                            AdminRegistration x1=AdminRegistrationDAO.searchVoterRegistration(institute_id, voterid.getEnrollment());
+                                            StaffDetail staff=StaffDetailDAO.searchStaffId(voterid.getEnrollment(), institute_id);
+                                            if(x1!=null || staff!=null || x!=null){
+                                              request.setAttribute("msg1", "EnrollMent No Already Assigned to Some One Else , Import Terminates");
+                                              log.add("EnrollMent No Already Assigned to Some One Else for record No"+row_no);session.setAttribute("log",log);
+                                              continue begin;
+
+
+                                            }
+
+
+
+
+
+
                                             if(voterid.getEnrollment().isEmpty()){
                                               request.setAttribute("msg1", "EnrollMent No Cannot Blank , Import Terminates");
                                               log.add("EnrollMent No Cannot Blank for record No"+row_no);session.setAttribute("log",log);
@@ -456,6 +473,7 @@ session.removeAttribute("log");
                       VoterRegistration x=VoterRegistrationDAO.searchVoterRegistration(institute_id, voterid.getEnrollment());
                       AdminRegistration x1=AdminRegistrationDAO.searchVoterRegistration(institute_id, voterid.getEnrollment());
                       StaffDetail staff=StaffDetailDAO.searchStaffId(voterid.getEnrollment(), institute_id);
+
                       if(x!=null && x.getEmail().equalsIgnoreCase(genericobj.getEmail())){
                      //  request.setAttribute("msg1", "Voter with Enrollment No"+x.getId().getEnrollment()+" Already Exist , Import Terminates");
                        log.add("Voter with given Email ID "+x.getId().getEnrollment()+" Already Exist cannot Import at record no="+row_no);
@@ -494,6 +512,7 @@ session.removeAttribute("log");
 
                       }
                       else{
+      login=new Login();
    
                 login.setUserId(genericobj.getEmail().trim());
 login.setPassword(admin_password1);
@@ -505,13 +524,16 @@ staffid.setStaffId(genericobj.getId().getEnrollment());
 staffd.setId(staffid);
 
 login.setStaffDetail(staffd);
-logindao.insert(login);
+logindao.insert(login, userid);
+System.out.println(login.getUserId());
 
   String path = servlet.getServletContext().getRealPath("/");
 
-//           mail=new Email(path,x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for EMS Login ="+admin_password+".\nFor Voting you will receive separate one time password.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
 
-  //                  mail.send();
+           mail=new Email(path,x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for EMS Login ="+admin_password+".\nFor Voting you will receive separate one time password.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+
+                    mail.send();
+
 
                       }
                       }
@@ -539,9 +561,15 @@ logindao.insert(login);
   
 
   String path = servlet.getServletContext().getRealPath("/");
-    //       mail=new Email(path,x1.getAdminEmail(),"","Voter Registration Accepted Successfully from EMS","Dear "+x1.getAdminFname()+" "+x1.getAdminLname()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
-      
-      //              mail.send();
+
+           mail=new Email(path,x1.getAdminEmail(),"","Voter Registration Accepted Successfully from EMS","Dear "+x1.getAdminFname()+" "+x1.getAdminLname()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+
+                    mail.send();
+           
+
+
+ 
+
  }
                       //if voter list has record of Any Election Manager
 else if(staff!=null){
@@ -566,9 +594,12 @@ else if(staff!=null){
    logindao.update(temp);
 
   String path = servlet.getServletContext().getRealPath("/");
-        //   mail=new Email(path,staff.getEmailId(),"","Voter Registration Accepted Successfully from EMS","Dear "+staff.getFirstName()+" "+staff.getLastName()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
-      
-          //         mail.send();
+
+         mail=new Email(path,staff.getEmailId(),"","Voter Registration Accepted Successfully from EMS","Dear "+staff.getFirstName()+" "+staff.getLastName()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+
+
+                   mail.send();
+
            
  
 }
@@ -595,7 +626,7 @@ else if(staff!=null){
 
         
                         System.out.println("++++++++++++++++++++++++++insert funcion is  called");
-                        request.setAttribute("msg", "data has been successfully added");
+                        request.setAttribute("msg", "Import Process Completed");
                         return mapping.findForward(SUCCESS);
 
 

@@ -1003,7 +1003,7 @@ if(!obj1.isEmpty()){
         if(x1!=null){%><script>
            alert("<%=x1%>");</script>
             <%}%>
-                <iframe frameborder="0" name="ff" id="ff" src="<%=request.getContextPath()%>/get_elections1.do" width="100%" height="400px"/>
+                <iframe frameborder="0" name="ff" id="ff" src="<%=request.getContextPath()%>/get_elections1.do" width="100%" height="700px"/>
       
            </body>
 </html>

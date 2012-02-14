@@ -87,12 +87,12 @@ for(int i=0;i<obj.size();i++){
 
          String path = servlet.getServletContext().getRealPath("/");
             x=new Email(path,obj1.getEmail(),admin_password,"You Are Registrated As a Valid Voter for Election : "+election,"You Password for Voting Process for This Election Only is="+admin_password);
-         executor.submit(new Runnable() {
+//         executor.submit(new Runnable() {
 
-                public void run() {
+  //              public void run() {
                    x.send();
-                }
-            });
+    //            }
+      //      });
 
 
 

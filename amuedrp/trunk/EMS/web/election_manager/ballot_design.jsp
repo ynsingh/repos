@@ -472,11 +472,11 @@ for(jj=0;jj<ca.length;jj++)
        htm = htm +'<tr><td style="text-align: left;"><label for="entry'+iii+'">'+e+'</label><td style="text-align: left;"><label for="entry'+iii+'">'+candidatename+'</label></td>';
 if(noofchoice>1)
        {
-               htm = htm +'<td><input type="checkbox" value="'+jj+'" onclick="checkCandidateLimit('+iii+')" name="entry'+iii+'" id="entry'+iii+'" ><a href="/Candidate/viewmenifesto.jsp?id=<%=x%>&amp;pos_id='+positionid+'&amp;candi='+e+'">view ballot</a></td></tr>';
+               htm = htm +'<td><input type="checkbox" value="'+jj+'" onclick="checkCandidateLimit('+iii+')" name="entry'+iii+'" id="entry'+iii+'" ><a href="/Candidate/viewmenifesto.jsp?id=<%=x%>&amp;pos_id='+positionid+'&amp;candi='+e+'">view Menifesto</a></td></tr>';
        }
        else
            {
-               htm = htm +'<td><input type="radio" value="'+jj+'"  name="entry'+iii+'" id="entry'+iii+'" ><a href="/EMS/Candidate/viewmenifesto.jsp?id=<%=x%>&amp;pos_id='+positionid+'&amp;candi='+e+'">view ballot</a></td></tr>';
+               htm = htm +'<td><input type="radio" value="'+jj+'"  name="entry'+iii+'" id="entry'+iii+'" ><a href="/EMS/Candidate/viewmenifesto.jsp?id=<%=x%>&amp;pos_id='+positionid+'&amp;candi='+e+'">view Menifesto</a></td></tr>';
            }
 
     }
