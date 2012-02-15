@@ -325,6 +325,7 @@
             <forward name="add" path="/election_manager/createelection.jsp"/>
             <forward name="duplicate" path="/election_manager/login.jsp"/>
             <forward name="success" path="/election_manager/login.jsp"/>
+            <forward name="fail" path="/election_manager/Election_List.jsp"/>
              </action>
 
 <action  input="/manage_election.jsp" path="/electionRegistration" scope="request" name="ManageElectionActionForm" type="com.myapp.struts.election_manager.manageElectionRequest" >
@@ -347,6 +348,7 @@
 <action path="/electionmanager" type="com.myapp.struts.election_manager.ElectionManagerModuleAction">
                               <forward name="success"  path="/election_manager/Election_List.jsp"/>
            </action>
+           <action path="/printballot" scope="request" type="PrintAction.PrintBallot"> </action>
            <action path="/AddPosition" type="com.myapp.struts.election_manager.addPositionBallotDesign"/>
             <action path="/AddCandidate" type="com.myapp.struts.election_manager.addCandidateBallotDesign"/>
             <action path="/getPosition" type="com.myapp.struts.election_manager.getPositionsBallotAction"/>

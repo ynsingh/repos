@@ -46,7 +46,10 @@ private ElectionId elid=new ElectionId();
           String id="id";
           id=request.getParameter(id);
  session.setAttribute("electionid",id);
-          System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR  "+id + " EID= " + Eid);
+
+ String publish=(String)request.getParameter("publish");
+
+          System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR  "+id + " EID= " + Eid+publish);
        // Election l=ElectionDAO.searchElection(id);
           ElectionRuleEligiblity1 ere=new ElectionRuleEligiblity1();
        List<ElectionRuleEligiblity1> l;
@@ -68,6 +71,39 @@ private ElectionId elid=new ElectionId();
             return mapping.findForward("add");
                 }
         }*/
+
+
+        if(publish!=null){
+              Election ele=ElectionDAO.searchElection(id,Eid);
+              System.out.println(ele.getStatus());
+              if(ele!=null){
+
+              if(ele.getStatus().equalsIgnoreCase("closed")){
+
+              ele.setPublish("yes");
+              ElectionDAO.update(ele);
+
+                request.setAttribute("msg", "Result Published for Public Access");
+                return mapping.findForward("fail");
+              }
+                 else{
+                request.setAttribute("msg", "Sorry Election is under-process");
+                return mapping.findForward("fail");
+
+              }
+              }
+             else{
+            request.setAttribute("msg", "electionid doesn't exists");
+            return mapping.findForward("fail");
+                }
+
+
+
+        }
+
+
+
+
 
         if(button.equals("Update"))
         {

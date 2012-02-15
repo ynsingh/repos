@@ -224,6 +224,8 @@ var ca = em1[iii].getElementsByTagName("candidate");
 //alert(ca.length);
  noofchoice1= ca.length;
 choice[iii]=ca.length;
+if(ca.length>1)
+{
 for(jj=0;jj<ca.length;jj++)
     {
           var e1 = ca[jj].getElementsByTagName("candidateenroll");
@@ -249,6 +251,7 @@ if(noofchoice1>1)
            }
 ival = iii;
     }
+}
   htm = htm + '</tbody></table></div>';
 //alert("create("+jj+","+iii+",this);");
 //alert(document.getElementById(idadd).attributes.onclick.value);

@@ -65,9 +65,9 @@ String id="";
         session.beginTransaction();
         try {
             Criteria criteria = session.createCriteria(ElectionManager.class);
-            Criterion a = Restrictions.eq("id.managerId", institute_id);
+            Criterion a = Restrictions.eq("id.instituteId", institute_id);
 
-           // LogicalExpression le = Restrictions.and(a, b);
+           
             Integer maxbiblio = criteria.add(a).setProjection(Projections.count("id.managerId")).uniqueResult()==null?0:Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.managerId")).uniqueResult().toString());
            System.out.println(maxbiblio);
 

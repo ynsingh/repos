@@ -18,6 +18,8 @@ import  com.myapp.struts.utility.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import com.myapp.struts.Voter.VoterRegistrationDAO;
+import com.myapp.struts.hbm.Election;
+import com.myapp.struts.hbm.ElectionDAO;
 import com.myapp.struts.hbm.SetVoterId;
 import com.myapp.struts.hbm.VoterRegistration;
 import java.util.List;
@@ -55,6 +57,9 @@ List obj= (List)session.getAttribute("resultset");
 System.out.println("ddvsdfsfgs");
 
 String institute_id=(String)session.getAttribute("institute_id");
+
+Election e=ElectionDAO.searchElection(election, institute_id);
+
 for(int i=0;i<obj.size();i++){
 
     
@@ -86,9 +91,11 @@ for(int i=0;i<obj.size();i++){
             VoterRegistrationDAO.setVoter(o);
             
 
-	 Election e=ElectionDAO.searchElection(election, institute_id);
+	
          String path = servlet.getServletContext().getRealPath("/");
+
             x=new Email(path,obj1.getEmail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for Voting Process for "+e.getElectionName()+" Election Only is= "+admin_password);
+
 //         executor.submit(new Runnable() {
 
   //              public void run() {

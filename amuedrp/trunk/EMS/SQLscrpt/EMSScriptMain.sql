@@ -179,6 +179,7 @@ CREATE TABLE `election` (
   `withdrawlEndDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `result_declaration_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` varchar(200) DEFAULT NULL,
+`publish` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`election_id`,`institute_id`),
   KEY `institute_id` (`institute_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;

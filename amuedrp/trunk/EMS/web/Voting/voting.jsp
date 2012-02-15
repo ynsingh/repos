@@ -13,6 +13,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <script type="text/javascript">
+            <%
+ String   electionid = (String)session.getAttribute("election_id");
+%>
    //var heigh;
    function fn() {
 
@@ -217,6 +220,8 @@ htm = htm +'<table class="ballot"><tbody><tr><th style="text-align: left;">Candi
 
 var ca = em1[iii].getElementsByTagName("candidate");
 choice[iii]=noofchoice;
+if(ca.length>1)
+{
 for(jj=0;jj<ca.length;jj++)
     {
         var candidatename1 = ca[jj].getElementsByTagName("candidatename");
@@ -236,6 +241,8 @@ if(noofchoice>1)
            }
 ival = iii;
     }
+}
+ htm = htm +'<td><a href="/EMS/printballot.do?id=<%=electionid%>">Print Ballot</a></td></tr>';
   htm = htm + '</tbody></table></div>';
 //alert("create("+jj+","+iii+",this);");
 //alert(document.getElementById(idadd).attributes.onclick.value);

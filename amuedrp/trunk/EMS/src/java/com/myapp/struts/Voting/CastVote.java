@@ -274,11 +274,14 @@ System.out.println(cast[i]);
             System.out.println("cast Length="+cast.length+cast[0]);
 
             String maxVoterid = voterdao.getMaxVoterBallotId(electionId, instituteId);
+            System.out.println(maxVoterid+"......................"+"Voting Result");
             Integer vbId;
-            if(maxVoterid!=null)
-                vbId= (Integer.parseInt(maxVoterid)) + 1;
-            else
-                vbId = 1;
+
+                vbId= Integer.parseInt(maxVoterid); 
+         
+
+
+ 
             Voting vot = new Voting();
             VotingId votId = new VotingId();
             votId.setElectionId(electionId);

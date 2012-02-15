@@ -15,4 +15,4 @@ if(msg!=null){
 
 out.println(msg);
 }%>
-                      <IFRAME  name="f3" src="/EMS/view_managers.do" frameborder=0 scrolling="no" width="100%" style="color:deepskyblue;height:100%;visibility:true;" id="f3" ></IFRAME>
+<IFRAME  name="f3" src="/EMS/view_managers.do" frameborder=1 scrolling="yes" width="100%" height="700px" style="color:deepskyblue;visibility:true;" id="f3" ></IFRAME>

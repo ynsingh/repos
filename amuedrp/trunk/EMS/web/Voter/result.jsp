@@ -294,7 +294,7 @@ ival = iii;
 else if(tie==1 && ca.length>1)
   htm = htm + '<tr><td colspan=2 style="text-align:right">Voting Tie Contact EM</td></tr></tbody></table></div>';
 else if(ca.length==1)
-    htm = htm + '<tr><td colspan=2 style="text-align:right"><b>Candidate Enroll is'+n +' is elected with '+ max+'no of votes</b></td></tr></tbody></table></div>';
+    htm = htm + '<tr><td colspan=2 style="text-align:right"><b>Candidate Enroll is'+n +' is elected'+'</b></td></tr></tbody></table></div>';
 else
      htm = htm + '<tr><td colspan=2 style="text-align:right"><b>Candidate Enroll is'+n +' is elected with '+ max+'no of votes</b></td></tr></tbody></table></div>';
   //  }

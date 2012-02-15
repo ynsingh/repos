@@ -126,7 +126,7 @@ if(!list.isEmpty()){
         {
 
             Election elec = ElectionDAO.searchElection(election,institute_id);
-            if(elec!=null && elec.getStatus().equalsIgnoreCase("closed"))
+            if(elec!=null && elec.getStatus().equalsIgnoreCase("closed") && elec.getPublish()!=null)
             {
             VotingDAO votingdao= new VotingDAO();
 

@@ -23,6 +23,15 @@ private String e_description;
 private Timestamp e_nomistart;
 private Timestamp e_nomiend;
 
+    public String getNoc() {
+        return noc;
+    }
+
+    public void setNoc(String noc) {
+        this.noc = noc;
+    }
+private String noc;
+
     public String getStatus() {
         return status;
     }

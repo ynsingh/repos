@@ -248,7 +248,7 @@ choice[iii]=noofchoice;
 var ch =0;
 var max=0;
 var n="";
-//if(ca.length>1){
+if(ca.length>1){
     for(jj=0;jj<ca.length;jj++)
     {
          var e1 = ca[jj].getElementsByTagName("candidateenroll");
@@ -283,7 +283,7 @@ var tie=0;
        
 ival = iii;
     }
-   // }
+    }
   //  if(ca.length==1){
       //   htm = htm + '<tr><td colspan=2 style="text-align:right">1 candidate is there in Ballot, Contact EM</td></tr></tbody></table></div>';
 

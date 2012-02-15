@@ -155,6 +155,13 @@ System.out.println("it="+(tcount)+rs.size());
         Ob.setElection_id(election.getId().getElectionId());
         Ob.setElection_name(election.getElectionName());
         Ob.setStatus(election.getStatus());
+        if(Ob.getStatus().equalsIgnoreCase("under-process"))
+            pageContext.setAttribute("votingStatus", "Not-Started");
+        else if(Ob.getStatus().equalsIgnoreCase("started"))
+            pageContext.setAttribute("votingStatus", "Started");
+        else
+            pageContext.setAttribute("votingStatus", "Closed");
+
         //ems.getElectionManager().setStatus(ems.getElectionManager().getStatus());
 
 
@@ -218,7 +225,10 @@ else
 
 
 
-
+ <column width="10%">
+      <header value="Voting Status" hAlign="left" styleClass="header"/>
+      <item   value="${votingStatus}"   hAlign="left" styleClass="item"/>
+    </column>
 
 
       <column width="10%">
@@ -231,15 +241,15 @@ else
     </column>
 
 <column width="10%">
-      <header value="Action" hAlign="left" styleClass="header"/>
+      <header value="" hAlign="left" styleClass="header"/>
       <item   value="View" hyperLink="${path}/electionview.do?id=${doc.election_id}&amp;st='y'"  hAlign="left" styleClass="item"/>
     </column>
     <column width="10%">
-      <header value="Action" hAlign="left" styleClass="header"/>
+      <header value="" hAlign="left" styleClass="header"/>
       <item   value="Results" hyperLink="${path}/Voter/result.jsp?election=${doc.election_id}&amp;"  hAlign="left" styleClass="item"/>
     </column>
 <column width="10%">
-<header value="Action" hAlign="left" styleClass="header"/>
+<header value="" hAlign="left" styleClass="header"/>
 
    
       <item   value="Cast Vote" hyperLink="${path}/voting.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
@@ -249,20 +259,23 @@ else
       
 
       <column width="10%">
-      <header value="Action" hAlign="left" styleClass="header"/>
+      <header value="" hAlign="left" styleClass="header"/>
       <item   value="Preview Ballot" hyperLink="${path}/electionview.do?id=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
 
        <column width="10%">
-      <header value="Action" hAlign="left" styleClass="header"/>
+      <header value="" hAlign="left" styleClass="header"/>
       <item   value="Candidate List" hyperLink="${path}/AllCandiList.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
 
       <column width="10%">
-      <header value="Action" hAlign="left" styleClass="header"/>
+      <header value="" hAlign="left" styleClass="header"/>
       <item   value="Voter List" hyperLink="${path}/voterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
-
+ <column width="10%">
+      <header value="" hAlign="left" styleClass="header"/>
+      <item   value="Publish Election" hyperLink="${path}/electionview1.do?id=${doc.election_id}&amp;publish='y'"  hAlign="left" styleClass="item"/>
+    </column>
  </columns>
 
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>

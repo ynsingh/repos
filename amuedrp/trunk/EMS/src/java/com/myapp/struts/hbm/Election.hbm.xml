@@ -50,5 +50,8 @@
     <property name="createdBy" type="string">
       <column length="200" name="created_by"/>
     </property>
+    <property name="publish" type="string">
+      <column length="20" name="publish"/>
+    </property>
   </class>
 </hibernate-mapping>

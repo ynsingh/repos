@@ -28,6 +28,15 @@ public class Election  implements java.io.Serializable {
          private Timestamp withdrawlDate;
        private Timestamp withdrawlEndDate;
        private Timestamp resultDeclarationDate;
+       private String publish;
+
+    public String getPublish() {
+        return publish;
+    }
+
+    public void setPublish(String publish) {
+        this.publish = publish;
+    }
 
     public Timestamp getResultDeclarationDate() {
         return resultDeclarationDate;
