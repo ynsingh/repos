@@ -11,7 +11,7 @@
         <column length="20" name="election_id"/>
       </key-property>
       <key-property name="voterId" type="string">
-        <column length="20" name="voter_id"/>
+        <column length="255" name="voter_id"/>
       </key-property>
     </composite-id>
     <property name="Status" type="string">

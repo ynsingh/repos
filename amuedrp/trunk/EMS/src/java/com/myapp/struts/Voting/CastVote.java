@@ -276,7 +276,7 @@ System.out.println(cast[i]);
             String maxVoterid = voterdao.getMaxVoterBallotId(electionId, instituteId);
             Integer vbId;
             if(maxVoterid!=null)
-                vbId= Integer.parseInt(maxVoterid) + 1;
+                vbId= (Integer.parseInt(maxVoterid)) + 1;
             else
                 vbId = 1;
             Voting vot = new Voting();

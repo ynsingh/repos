@@ -637,7 +637,7 @@ else
 CandidateRegistrationDAO.updateCandidature(genericobj,c1);
 String path = servlet.getServletContext().getRealPath("/");
 request.setAttribute("msg", "Registration Accepted Successfully");
-Email mail=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Mr. "+ c1.getCandidateName() +"\n"+ (ab.getPAddress()!=null?ab.getPAddress():(ab.getCAddress()!=null?ab.getCAddress():"Address"))+" \n Your request of candidature for the post of "+ pos.getPositionName() +" has been accepted.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+Email mail=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear. "+ c1.getCandidateName() +"\n"+ (ab.getPAddress()!=null?ab.getPAddress():(ab.getCAddress()!=null?ab.getCAddress():"Address"))+" \n Your request of candidature for the post of "+ pos.getPositionName() +" has been accepted.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
 
 mail.send();
          //executor.submit(new Runnable() {

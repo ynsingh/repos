@@ -21,6 +21,8 @@ import com.myapp.struts.Voter.VoterRegistrationDAO;
 import com.myapp.struts.hbm.SetVoterId;
 import com.myapp.struts.hbm.VoterRegistration;
 import java.util.List;
+import com.myapp.struts.hbm.Election;
+import com.myapp.struts.hbm.ElectionDAO;
 
 public class VotersetAction extends org.apache.struts.action.Action {
     
@@ -84,9 +86,9 @@ for(int i=0;i<obj.size();i++){
             VoterRegistrationDAO.setVoter(o);
             
 
-
+	 Election e=ElectionDAO.searchElection(election, institute_id);
          String path = servlet.getServletContext().getRealPath("/");
-            x=new Email(path,obj1.getEmail(),admin_password,"You Are Registrated As a Valid Voter for Election : "+election,"You Password for Voting Process for This Election Only is="+admin_password);
+            x=new Email(path,obj1.getEmail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for Voting Process for "+e.getElectionName()+" Election Only is= "+admin_password);
 //         executor.submit(new Runnable() {
 
   //              public void run() {

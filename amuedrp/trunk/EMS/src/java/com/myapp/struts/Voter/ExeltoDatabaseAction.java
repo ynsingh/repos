@@ -514,7 +514,8 @@ session.removeAttribute("log");
                       else{
       login=new Login();
    
-                login.setUserId(genericobj.getEmail().trim());
+login.setUserId(genericobj.getEmail().trim());
+userid=genericobj.getEmail().trim();
 login.setPassword(admin_password1);
 login.setRole("voter");
 login.setUserName(x.getVoterName());
@@ -530,7 +531,7 @@ System.out.println(login.getUserId());
   String path = servlet.getServletContext().getRealPath("/");
 
 
-           mail=new Email(path,x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for EMS Login ="+admin_password+".\nFor Voting you will receive separate one time password.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+           mail=new Email(path,x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for EMS Login ="+admin_password+"\nFor Voting you will receive separate one time password.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
 
                     mail.send();
 
