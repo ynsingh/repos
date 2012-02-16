@@ -27,28 +27,20 @@ public class voterDAO {
     Transaction tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
-
-
-
-
-
-
-int i=0;
+	int i=0;
            while(i<E.size())
            {
-                    tx = session.beginTransaction();
                Candidate1 vot1 = (Candidate1)E.get(i);
             session.update(vot1);
             System.out.println(vot1);
             if ( session.isDirty()) { //20, same as the JDBC batch size
 //flush a batch of inserts and release memory:
-session.flush();
-session.clear();
-}
-
-
-  tx.commit();
-   i++;
+		session.flush();
+		session.clear();
+		}
+                    tx = session.beginTransaction();
+	  tx.commit();
+	   i++;
            }
 
             obj= (String)"Record Updated Successfully";
@@ -74,30 +66,6 @@ public String getMaxVoterBallotId(String electionId,String instituteId)
     String obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
-           session.beginTransaction();
-   /* Session session =null;
-    String obj=null;
-    try {
-        session= HibernateUtil.getSessionFactory().openSession();
-           session.beginTransaction();
-            Query query = session.createQuery("Select Max(id.voterBallotId) FROM Voting where  id.electionId = :electionId and id.instituteId=:instituteId");
-
-            query.setString("electionId",electionId );
-             query.setString("instituteId", instituteId);
-
-           obj=(String)query.uniqueResult();
-           session.getTransaction().commit();
-        }
-
-        catch (RuntimeException e) {
-        e.printStackTrace();
-
-
-        }
-    finally{
-    session.close();
-    }
-        return obj;*/
 
      Criteria criteria = session.createCriteria(Voting.class);
             Criterion a = Restrictions.eq("id.electionId", electionId);
@@ -110,13 +78,11 @@ public String getMaxVoterBallotId(String electionId,String instituteId)
                 maxbiblio++;
             }
  obj=String.valueOf(maxbiblio);
+           session.beginTransaction();
            session.getTransaction().commit();
         }
-
         catch (RuntimeException e) {
         e.printStackTrace();
-
-
         }
     finally{
     session.close();
@@ -124,43 +90,6 @@ public String getMaxVoterBallotId(String electionId,String instituteId)
         return obj;
 }
 
-
- /*   String id="";
-
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        try {
-            Criteria criteria = session.createCriteria(ElectionManager.class);
-            Criterion a = Restrictions.eq("id.instituteId", instituteId);
-
-
-
-           // LogicalExpression le = Restrictions.and(a, b);
-            Integer maxbiblio = criteria.add(a).setProjection(Projections.count("id.managerId")).uniqueResult()==null?0:Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.managerId")).uniqueResult().toString());
-           System.out.println(maxbiblio);
-
-            if (maxbiblio == null) {
-                maxbiblio = 1;
-            } else {
-                maxbiblio++;
-            }
-
-           id=String.valueOf(maxbiblio);
-
-
-
-            session.getTransaction().commit();
-        }
-        catch(Exception e){
-        e.printStackTrace();
-
-        }
-        finally {
-            session.close();
-        }
- return id;
-
-}*/
 public String InsertVote(ArrayList E)
 {
     Session session =null;
@@ -253,7 +182,6 @@ public VotingProcess getVoter(String institute_id,String election_id,String vote
     VotingProcess obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
             Query query = session.createQuery("FROM VotingProcess where id.voterId=:voterId and id.electionId = :electionId and id.instituteId=:instituteId");
 
             query.setString("voterId",voter_id);
@@ -261,6 +189,7 @@ public VotingProcess getVoter(String institute_id,String election_id,String vote
             query.setString("instituteId", institute_id);
 
             obj= (VotingProcess)query.uniqueResult();
+            session.beginTransaction();
             session.getTransaction().commit();
         }
         catch (RuntimeException e) {
