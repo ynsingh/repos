@@ -168,7 +168,6 @@ public String InsertVote(ArrayList E)
     Transaction tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
-            tx = session.beginTransaction();
            Iterator it = E.iterator();
            System.out.println("its working"+E);
            
@@ -214,7 +213,20 @@ public String InsertVote(ArrayList E)
                itcol = null;
                col=null;
            }
-           tx.commit();
+	    boolean flg1;
+	do{
+	    flg1=true;	    
+	    wait1(1000);
+            tx = session.beginTransaction();
+            tx.commit();
+  		if(!(tx.wasCommitted())){
+			tx.rollback();
+			flg1=false;
+		}
+
+	}
+	while(!(flg1));
+//	    tx.wasCommitted(); 
             obj= (String)"Your Vote Successfully Casted";
         }
         catch (RuntimeException e) {
@@ -229,6 +241,12 @@ public String InsertVote(ArrayList E)
     return obj;
         
 }
+	private void wait1(int k){
+		do{
+		k--;
+		}
+		while(k>0);
+	}
 public VotingProcess getVoter(String institute_id,String election_id,String voter_id)
 {
     Session session =null;

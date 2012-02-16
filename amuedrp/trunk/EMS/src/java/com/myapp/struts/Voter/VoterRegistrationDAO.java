@@ -248,10 +248,10 @@ query1=query1+" order by "+sort;
 if(pageNumber==0){
 
             query = query.setFirstResult(0);
-              query.setMaxResults(100);
+              query.setMaxResults(20000);
               obj=query.list();
 }
-else{             PagingAction o=new PagingAction(query,pageNumber,100);
+else{             PagingAction o=new PagingAction(query,pageNumber,20000);
 
  obj= o.getList();
 // System.out.println("Size of Record"+obj.size()+".........................."+pageNumber);

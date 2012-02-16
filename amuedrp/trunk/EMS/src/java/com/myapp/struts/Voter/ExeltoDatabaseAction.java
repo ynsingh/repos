@@ -252,14 +252,14 @@ session.removeAttribute("log");
                                             if (map_table[column_index].equals("birthdate")) {
                                             genericobj.setBirthdate(cellvalue.trim());
 
-                                               if(genericobj.getBirthdate().isEmpty()){
-                                               request.setAttribute("msg1", "BirthDate Cannot Blank , Import Terminates");
-                                               log.add("BirthDate Cannot Blank at Record No="+row_no);session.setAttribute("log",log);
-                                               continue begin;
+                     //                          if(genericobj.getBirthdate().isEmpty()){
+                       //                        request.setAttribute("msg1", "BirthDate Cannot Blank , Import Terminates");
+                         //                      log.add("BirthDate Cannot Blank at Record No="+row_no);session.setAttribute("log",log);
+                           //                    continue begin;
 
 
 
-                                            }
+                             //               }
 
 
                                         }
@@ -531,11 +531,12 @@ System.out.println(login.getUserId());
   String path = servlet.getServletContext().getRealPath("/");
 
 
-           mail=new Email(path,x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for EMS Login ="+admin_password+"\nFor Voting you will receive separate one time password.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+
+           mail=new Email(path,x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for Election Management System (EMS) Login ="+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
 
                     mail.send();
-
-
+			log.add( "\nMail has been send successfully to= "+userid);
+			session.setAttribute("log",log);
                       }
                       }
    //if Voter list has record of CEO

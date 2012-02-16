@@ -289,14 +289,14 @@ ival = iii;
 
    // }
   //  else{
-    if(max==0)
-        htm = htm + '<tr><td colspan=2 style="text-align:right">Voting Not Made</td></tr></tbody></table></div>';
-else if(tie==1 && ca.length>1)
-  htm = htm + '<tr><td colspan=2 style="text-align:right">Voting Tie Contact EM</td></tr></tbody></table></div>';
-else if(ca.length==1)
-    htm = htm + '<tr><td colspan=2 style="text-align:right"><b>Candidate Enroll is'+n +' is elected'+'</b></td></tr></tbody></table></div>';
-else
-     htm = htm + '<tr><td colspan=2 style="text-align:right"><b>Candidate Enroll is'+n +' is elected with '+ max+'no of votes</b></td></tr></tbody></table></div>';
+  //  if(max==0)
+  //      htm = htm + '<tr><td colspan=2 style="text-align:right">Voting Not Made</td></tr></tbody></table></div>';
+//else if(tie==1 && ca.length>1)
+//  htm = htm + '<tr><td colspan=2 style="text-align:right">Voting Tie Contact EM</td></tr></tbody></table></div>';
+//else if(ca.length==1)
+//    htm = htm + '<tr><td colspan=2 style="text-align:right"><b>Candidate Enroll is'+n +' is elected'+'</b></td></tr></tbody></table></div>';
+//else
+     htm = htm + '</tbody></table></div>';
   //  }
 //alert("create("+jj+","+iii+",this);");
 //alert(document.getElementById(idadd).attributes.onclick.value);

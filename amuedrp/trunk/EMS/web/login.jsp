@@ -333,7 +333,7 @@ if(str!=null)
                     </td>
                     
 
-                    </tr><tr><td width="250px" colspan="2"> <a href="<%=request.getContextPath()%>/newenrollment.do">  <%=resource.getString("Voter_Registration")%></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td></tr>
+                    </tr><tr><td width="250px" colspan="2"> <!--<a href="<%=request.getContextPath()%>/newenrollment.do">  <%=resource.getString("Voter_Registration")%></a>-->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td></tr>
 
 
                     </table>

@@ -218,14 +218,14 @@ session.removeAttribute("clog");
 
 
                                                }
-                                               List<CandidateRegistration> o=( List<CandidateRegistration>)CandidateRegistrationDAO.getCandidateDetails(institute_id, cellvalue.trim());
-                                               if(o!=null && o.isEmpty()==false){
-                                             request.setAttribute("msg1", "EnrollMent No Already Found");
-                                              log.add("EnrollMent No Already Found for record No"+row_no);session.setAttribute("clog",log);
-                                              continue begin;
-
-
-                                               }
+                                              // List<CandidateRegistration> o=( List<CandidateRegistration>)CandidateRegistrationDAO.getCandidateDetails(institute_id, cellvalue.trim());
+//                                               if(o!=null && o.isEmpty()==false){
+  //                                           request.setAttribute("msg1", "EnrollMent No Already Found");
+    //                                          log.add("EnrollMent No Already Found for record No"+row_no);session.setAttribute("clog",log);
+      //                                        continue begin;
+//
+//
+  //                                             }
 
 
                                             AdminRegistration x1=AdminRegistrationDAO.searchVoterRegistration(institute_id, cellvalue.trim().toString());

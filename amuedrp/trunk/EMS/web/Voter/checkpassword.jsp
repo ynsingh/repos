@@ -159,7 +159,7 @@ function windload()
                 divtag1.style.marginLeft = "450px";
                 divtag1.style.position = "absolute";
                 divtag1.style.top = "40%";
-                divtag1.innerHTML = '<table><tr><td colspan="2">Enter Valid Password</td></tr><tr><td><input type="password" id="pass" /><br><input type="button" value="Submit" onClick="getPass();"/><input type="button" value="Cancel" onClick="send();"/></td></tr></table> ';
+                divtag1.innerHTML = '<table><tr><td colspan="2">One Time Key</td></tr><tr><td><input type="password" id="pass" /><br><input type="button" value="Submit" onClick="getPass();"/><input type="button" value="Cancel" onClick="send();"/></td></tr></table> ';
                 divtag.appendChild(divtag1);
                 document.getElementById("bod").appendChild(divtag);
 }

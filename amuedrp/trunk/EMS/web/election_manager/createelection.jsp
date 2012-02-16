@@ -735,7 +735,7 @@ var send = document.getElementById("Scrend_date");
 
          <tr>
              <td style="vertical-align: top" dir="<%=rtl%>">
-             <span style="font-size: 14px;font-weight: 600">Result declaration date and time: </span><br><span style="font-size: 12px">(After voting result will be displayed)*</span><br><html:text readonly="true" name="DepActionForm" property="resultDeclarationDate"    styleId="result_DeclarationDate"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('result_DeclarationDate','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" hieght="19" alt="Pick a date"/></a><%}%></td>
+             <span style="font-size: 14px;font-weight: 600">Result can be declared by Election Officer after this date and time: </span><br><span style="font-size: 12px">(After voting result will be displayed)*</span><br><html:text readonly="true" name="DepActionForm" property="resultDeclarationDate"    styleId="result_DeclarationDate"/><%if(!(request.getAttribute("button").equals("View") || request.getAttribute("button").equals("Block"))){%><a href="javascript:NewCal('result_DeclarationDate','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" hieght="19" alt="Pick a date"/></a><%}%></td>
 
         </tr>
 

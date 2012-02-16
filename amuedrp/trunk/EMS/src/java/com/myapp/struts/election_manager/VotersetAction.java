@@ -22,9 +22,12 @@ import com.myapp.struts.hbm.Election;
 import com.myapp.struts.hbm.ElectionDAO;
 import com.myapp.struts.hbm.SetVoterId;
 import com.myapp.struts.hbm.VoterRegistration;
-import java.util.List;
+//import java.util.List;
+import java.util.*;
+
 import com.myapp.struts.hbm.Election;
 import com.myapp.struts.hbm.ElectionDAO;
+import java.io.*;
 
 public class VotersetAction extends org.apache.struts.action.Action {
     
@@ -100,8 +103,34 @@ for(int i=0;i<obj.size();i++){
 
   //              public void run() {
                    x.send();
-    //            }
-      //      });
+		
+		List log=new ArrayList();
+		log.add( "\nOne time key has been send successfully to= "+obj1.getEmail());
+	//	if(obj!=null){
+			StringBuffer str = new StringBuffer();
+//always give the path from root. This way it almost always works.
+			//String userid=(String)session.getAttribute("user_id");
+			String nameOfTextFile = "OneTimeKeylog.txt";
+			String path1=(String)session.getAttribute("apppath");
+			//path=path.substring(0,path.lastIndexOf("/"));
+			//path=path.substring(0,path.lastIndexOf("/"));
+			//path=path.substring(0,path.lastIndexOf("/"));
+//System.out.println(path+"..........................");
+			try {
+			    PrintWriter pw = new PrintWriter(new FileOutputStream(path1+"/EMSLOG/"+nameOfTextFile,true));
+//    //System.out.println(pw);
+			        for(int ii=0;ii<log.size();ii++)
+		                str.append(log.get(ii)+"\n");
+      			        pw.println(str+"\n");
+                        //clean up
+                            pw.close();
+                            } catch(IOException ex) {
+                               System.out.println(ex.getMessage());
+                               }
+
+                        session.setAttribute("log",log);
+             //   }
+           // });
 
 
 
