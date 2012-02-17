@@ -17,46 +17,56 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import com.myapp.struts.utility.UserLog;
 
 
 public class voterDAO {
-    public String InsertVote1(List E)
-{
-    Session session =null;
-    String obj=null;
-    Transaction tx = null;
-    try {
-        session= HibernateUtil.getSessionFactory().openSession();
-	int i=0;
-           while(i<E.size())
-           {
-               Candidate1 vot1 = (Candidate1)E.get(i);
-            session.update(vot1);
-            System.out.println(vot1);
-            if ( session.isDirty()) { //20, same as the JDBC batch size
+	public String InsertVote1(List E)
+	{
+		Session session =null;
+		String obj=null;
+		Transaction tx = null;
+		try {
+        		session= HibernateUtil.getSessionFactory().openSession();
+			int i=0;
+        		while(i<E.size())
+			{
+	               		Candidate1 vot1 = (Candidate1)E.get(i);
+				session.update(vot1);
+			        System.out.println(vot1);
+				if ( session.isDirty()) { //20, same as the JDBC batch size
 //flush a batch of inserts and release memory:
-		session.flush();
-		session.clear();
+					session.flush();
+					session.clear();
+				}
+				boolean flg1;
+			        do{
+					flg1=true;
+				        wait1(1000);
+				        tx = session.beginTransaction();
+				        tx.commit();
+			                if(!(tx.wasCommitted())){
+			                        tx.rollback();
+			                        flg1=false;
+			                }
+			        }
+			        while(!(flg1));
+			i++;
+			}
+		//	String path = servlet.getRealPath("/EMSLOG");
+			
+			obj= (String)"Record Updated Successfully";
 		}
-                    tx = session.beginTransaction();
-	  tx.commit();
-	   i++;
-           }
-
-            obj= (String)"Record Updated Successfully";
-        }
-        catch (RuntimeException e) {
-
-            System.out.println("voterDAo InsertVote1:"+e.getMessage());
-            tx.rollback();
-          obj="Record not Updated Successfull";
-        }
-    finally{
-    session.close();
-    }
-    return obj;
-
-}
+	        catch (RuntimeException e) {
+			System.out.println("voterDAo InsertVote1:"+e.getMessage());
+		        tx.rollback();
+			obj="Record not Updated Successfull";
+	        }
+		finally{
+			session.close();
+		}
+		return obj;
+	}
 
 
 
@@ -64,9 +74,11 @@ public String getMaxVoterBallotId(String electionId,String instituteId)
 {
      Session session =null;
     String obj=null;
+	Transaction tx = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
 
+           session.beginTransaction();
      Criteria criteria = session.createCriteria(Voting.class);
             Criterion a = Restrictions.eq("id.electionId", electionId);
             Criterion b = Restrictions.eq("id.instituteId", instituteId);
@@ -78,7 +90,6 @@ public String getMaxVoterBallotId(String electionId,String instituteId)
                 maxbiblio++;
             }
  obj=String.valueOf(maxbiblio);
-           session.beginTransaction();
            session.getTransaction().commit();
         }
         catch (RuntimeException e) {
@@ -90,27 +101,28 @@ public String getMaxVoterBallotId(String electionId,String instituteId)
         return obj;
 }
 
-public String InsertVote(ArrayList E)
+public String InsertVote(ArrayList E, String path)
 {
     Session session =null;
     String obj=null;
     Transaction tx = null;
+	StringBuffer  st=new StringBuffer();     
     try {
         session= HibernateUtil.getSessionFactory().openSession();
            Iterator it = E.iterator();
-           System.out.println("its working"+E);
+          // System.out.println("its working"+E);
            
            VotingProcess vot1 = (VotingProcess)it.next();
             session.save(vot1);
-
+		st.append("Voting Process (Institue ID, Election Id,Voter Id)==>"+vot1.getId().getInstituteId()+"|"+vot1.getId().getElectionId()+"|"+vot1.getId().getVoterId()+"\n");
            Voting vot = (Voting)it.next();
             session.save(vot);
-
+		st.append("Voting (Election id, Institue Id, voter ballot id)==> "+vot.getId().getElectionId()+"|"+vot.getId().getInstituteId()+"|"+vot.getId().getVoterBallotId()+"\n");
            while(it.hasNext())
            {
                ArrayList col = (ArrayList)it.next();
                Iterator itcol = col.iterator();
-               System.out.println("its working1"+col);
+            //   System.out.println("its working1"+col);
                ArrayList<VotingBallot> l = (ArrayList<VotingBallot>) E.get(2);
               Iterator it1 = l.iterator();
                while(it1.hasNext())
@@ -118,34 +130,16 @@ public String InsertVote(ArrayList E)
                   VotingBallot vb = new VotingBallot();
                    vb = (VotingBallot)it1.next();
                    session.save(vb);
-                   
+                   st.append("Voting Ballot (Voter Ballot id,Position id,candidate id)==>"+vb.getId().getVoterBallotId()+"|"+vb.getId().getPositionId()+"|"+vb.getId().getCandidateId()+"\n");
 
                }
-               
-             /*  while(itcol.hasNext())
-               {
-                   Object i = itcol.next();
-                   if(i.getClass().getName().equalsIgnoreCase("com.myapp.struts.hbm.Voting"))
-                   {
-                        Voting vot = (Voting)i;
-                        session.save(vot);
-                        vot = null;
-                   }
-                   else if(i.getClass().getName().equalsIgnoreCase("com.myapp.struts.hbm.VotingBallot"))
-                   {
-                        VotingBallot votBal = (VotingBallot)i;
-                        session.save(votBal);
-                        votBal=null;
-                   }
-                   System.out.println("its working2");
-               }*/
                itcol = null;
                col=null;
            }
 	    boolean flg1;
 	do{
 	    flg1=true;	    
-	    wait1(1000);
+	    wait1(100000);
             tx = session.beginTransaction();
             tx.commit();
   		if(!(tx.wasCommitted())){
@@ -155,14 +149,15 @@ public String InsertVote(ArrayList E)
 
 	}
 	while(!(flg1));
-//	    tx.wasCommitted(); 
+		UserLog.ErrorLog(st.toString(),path);		
             obj= (String)"Your Vote Successfully Casted";
         }
         catch (RuntimeException e) {
           
-            System.out.println("voterDAo InsertVote:");e.printStackTrace();
+            System.out.println(" I am in catch voterDAo InsertVote:");e.printStackTrace();
             tx.rollback();
           obj="Vote not Saved!";
+	UserLog.ErrorLog(st.toString()+"\n"+ obj,path);
         }
     finally{
     session.close();
@@ -182,6 +177,7 @@ public VotingProcess getVoter(String institute_id,String election_id,String vote
     VotingProcess obj=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
             Query query = session.createQuery("FROM VotingProcess where id.voterId=:voterId and id.electionId = :electionId and id.instituteId=:instituteId");
 
             query.setString("voterId",voter_id);
@@ -189,7 +185,6 @@ public VotingProcess getVoter(String institute_id,String election_id,String vote
             query.setString("instituteId", institute_id);
 
             obj= (VotingProcess)query.uniqueResult();
-            session.beginTransaction();
             session.getTransaction().commit();
         }
         catch (RuntimeException e) {

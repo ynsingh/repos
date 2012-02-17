@@ -35,10 +35,13 @@ String host;
 String port;
 String path;
 String buffer;
+String frmAdd;
 //
-public Email(String path,String to,String password,String subject,String body){this.to = to; this.password = password;this.subject=subject;this.text=body;this.path=path;}
+	public Email(String path,String to,String password,String subject,String body){
+		this.to = to; this.password = password;this.subject=subject;this.text=body;this.path=path;
+	}
 
-public void send(){
+	public void send(){
 // host = "smtp.gmail.com";
 
 try
@@ -58,51 +61,52 @@ try
        path="c:\\";
         libmspro.load(new FileInputStream(path+"\\ems.properties"));
    }
-        String     userid = libmspro.getProperty("webadmin");
+        userid = libmspro.getProperty("webadmin");
         buffer = libmspro.getProperty("webpass");
         host = libmspro.getProperty("host");
         port = libmspro.getProperty("port");
+        frmAdd = libmspro.getProperty("faddress");
 
-Properties props = System.getProperties();
-props.put("mail.smtp.starttls.enable", "true");
-props.put("mail.smtp.host", host);
-props.setProperty("mail.transport.protocol", "smtp");
-props.put("mail.smtp.user", userid);
-props.put("mail.smtp.password",buffer);
-props.put("mail.smtp.port", port);
-props.put("mail.smtp.auth", "true");
-Session session = Session.getDefaultInstance(props, null);
-MimeMessage message = new MimeMessage(session);
-InternetAddress fromAddress = null;
-InternetAddress toAddress = null;
+	Properties props = System.getProperties();
+	props.put("mail.smtp.starttls.enable", "true");
+	props.put("mail.smtp.host", host);
+	props.setProperty("mail.transport.protocol", "smtp");
+	props.put("mail.smtp.user", userid);
+	props.put("mail.smtp.password",buffer);
+	props.put("mail.smtp.port", port);
+	props.put("mail.smtp.auth", "true");
+	Session session = Session.getDefaultInstance(props, null);
+	MimeMessage message = new MimeMessage(session);
+	InternetAddress fromAddress = null;
+	InternetAddress toAddress = null;
 
-try {
-fromAddress = new InternetAddress(userid);
-toAddress = new InternetAddress(to);
-} catch (AddressException e) {
+	try {
+		fromAddress = new InternetAddress(frmAdd);
+		toAddress = new InternetAddress(to);
+	} catch (AddressException e) {
 
-e.printStackTrace();
-}
-message.setFrom(fromAddress);
-message.setRecipient(RecipientType.TO, toAddress);
-message.setSubject(subject);
-message.setText(text);
+		e.printStackTrace();
+	}
+	message.setFrom(fromAddress);
+	message.setRecipient(RecipientType.TO, toAddress);
+	message.setSubject(subject);
+	message.setText(text);
 
 
-if(subject.startsWith("accept"))
-{
-message.setSubject("Create Account Successfully from EMS");
+	if(subject.startsWith("accept"))
+	{
+	message.setSubject("Create Account Successfully from EMS");
  // create and fill the first message part
-      MimeBodyPart mbp1 = new MimeBodyPart();
-      mbp1.setText("Instant User Manual As Attachment "+text);
+      	MimeBodyPart mbp1 = new MimeBodyPart();
+      	mbp1.setText("Instant User Manual As Attachment "+text);
 
       // create the second message part
-      MimeBodyPart mbp2 = new MimeBodyPart();
+     	MimeBodyPart mbp2 = new MimeBodyPart();
 
             // attach the file to the message
-         FileDataSource fds = new FileDataSource(path+"/help/help.doc");
-      mbp2.setDataHandler(new DataHandler(fds));
-      mbp2.setFileName(fds.getName());
+        FileDataSource fds = new FileDataSource(path+"/help/help.doc");
+      	mbp2.setDataHandler(new DataHandler(fds));
+      	mbp2.setFileName(fds.getName());
 
       // create the Multipart and add its parts to it
       Multipart mp = new MimeMultipart();
@@ -110,21 +114,21 @@ message.setSubject("Create Account Successfully from EMS");
       mp.addBodyPart(mbp2);
 
       // add the Multipart to the message
-      message.setContent(mp);
+      		message.setContent(mp);
 
       // set the Date: header
    //   message.setSentDate(new Date());
 
-}
+		}
 
 //SMTPSSLTransport transport =(SMTPSSLTransport)session.getTransport("smtp");
-String pass=buffer.toString();
-Transport transport = session.getTransport("smtp");
-transport.connect(host, userid, pass);
-transport.sendMessage(message, message.getAllRecipients());
-transport.close();
-} catch (Exception e) {
-e.printStackTrace();
-}
-}
+		String pass=buffer.toString();
+		Transport transport = session.getTransport("smtp");
+		transport.connect(host, userid, pass);
+		transport.sendMessage(message, message.getAllRecipients());
+		transport.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

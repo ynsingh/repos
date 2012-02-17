@@ -161,6 +161,7 @@ if(msg!=null){
               <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.infield")%> </td><td rowspan="2" valign="top">
  <select name="search_by" onChange="fun()" id="search_by" size="1">
 <option selected value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
+<option value="email">User ID<%--<%=resource.getString("managername")%>--%></option>
 <option value="voterName">Voter Name<%--<%=resource.getString("managername")%>--%></option>
 <option value="department">Department<%--<%=resource.getString("managerid")%>--%></option>
 <option value="course">Course</option>

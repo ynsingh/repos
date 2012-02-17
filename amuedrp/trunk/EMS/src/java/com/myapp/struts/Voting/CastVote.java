@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import com.myapp.struts.utility.UserLog;
 
 /**
  *
@@ -25,151 +26,81 @@ import org.apache.struts.action.ActionMapping;
 public class CastVote extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
+	private static final String SUCCESS = "success";
     
    
     @Override
-    public ActionForward execute(ActionMapping mapping, ActionForm form,
+    	public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
      
-        HttpSession session = request.getSession();
-        String instituteId = (String)session.getAttribute("institute_id");
-        String electionId = (String)session.getAttribute("election_id");
-        if(electionId==null)
-            electionId=(String)request.getParameter("id");
-        String voterId = (String)session.getAttribute("user_id");
-ArrayList casting = new ArrayList();
-        List casting1 = new ArrayList<Candidate1>();
-        voterDAO voterdao = new voterDAO();
+        	HttpSession session = request.getSession();
+        	String instituteId = (String)session.getAttribute("institute_id");
+        	String electionId = (String)session.getAttribute("election_id");
+        	if(electionId==null)
+            		electionId=(String)request.getParameter("id");
+        		String voterId = (String)session.getAttribute("user_id");
+			ArrayList casting = new ArrayList();
+        		List casting1 = new ArrayList<Candidate1>();
+        		voterDAO voterdao = new voterDAO();
 
-            String compute=(String)request.getParameter("compute");
-             String agm=(String)request.getParameter("agm");
+        		String compute=(String)request.getParameter("compute");
+        		String agm=(String)request.getParameter("agm");
+        		//System.out.println(compute);
+			if(agm!=null){
 
+	        		String vote = request.getParameter("cast");
+                		String[] cast = vote.split(",;");
+        			//System.out.println("Cast"+cast.length+cast[0]);
 
+	        		for(int i=0;i<cast.length;i++){
+					//System.out.println(cast[i]);
+		        		int flag = 0;
+					String[] positions = cast[i].split(",");
+		        		//System.out.println("its working1"+positions);
+		        		String positionName = positions[0];
+            				PositionDAO posDAO = new PositionDAO();
+            				//System.out.println("position Name="+positions[0]);
+            				Position1 pos = posDAO.getPositionByName(positionName.trim(), electionId, instituteId);
+            				if(pos!=null){
+            					for(int j=1;j<positions.length;j++){
+                					String candidateName = positions[j].substring(0,positions[j].lastIndexOf("."));
+                					String votes = positions[j].substring(positions[j].lastIndexOf(".")+1,positions[j].length());
+                					//System.out.println(candidateName+"  "+votes);
+                					if(candidateName!=null && !candidateName.isEmpty()){
+                    						Candidate1 cand = posDAO.getCandidateDetailById(candidateName,pos.getId().getPositionId(), electionId, instituteId);
 
-            System.out.println(compute);
+                    						if(cand!=null){
 
+                        						cand.setAgm(Integer.parseInt(votes));
+                        						casting1.add(cand);
+                        						flag=1;
+                    						}
+                					}
+           					}
+            				}else{
+                				System.out.println("Position not Exist"+cast[i]);
+            				}
+       				}
 
-
-                        if(agm!=null)
-            {
-
-               String vote = request.getParameter("cast");
-                String[] cast = vote.split(",;");
-            System.out.println("Cast"+cast.length+cast[0]);
-//        vp = new VotingProcess();
-//        VotingProcessId vpId = new VotingProcessId(electionId, instituteId, voterId);
-//            vp.setId(vpId);
-//            vp.setStatus("Voted");
-
-
-
-          //  casting.add(vp);
-//
-//            System.out.println("cast Length="+cast.length);
-//
-//            String maxVoterid = voterdao.getMaxVoterBallotId(electionId, instituteId);
-//            Integer vbId;
-//            if(maxVoterid!=null)
-//                vbId= Integer.parseInt(maxVoterid) + 1;
-//            else
-//                vbId = 1;
-//            Voting vot = new Voting();
-//            VotingId votId = new VotingId();
-//            votId.setElectionId(electionId);
-//            votId.setInstituteId(instituteId);
-//            votId.setVoterBallotId(vbId.toString());
-//            vot.setId(votId);
-//            casting.add(vot);
-
-        for(int i=0;i<cast.length;i++)
-        {
-System.out.println(cast[i]);
-            int flag = 0;
-            String[] positions = cast[i].split(",");
-            System.out.println("its working1"+positions);
-            String positionName = positions[0];
-            PositionDAO posDAO = new PositionDAO();
-            System.out.println("position Name="+positions[0]);
-            Position1 pos = posDAO.getPositionByName(positionName.trim(), electionId, instituteId);
-            if(pos!=null)
-            {
-            for(int j=1;j<positions.length;j++)
-            {
-                String candidateName = positions[j].substring(0,positions[j].lastIndexOf("."));
-                String votes = positions[j].substring(positions[j].lastIndexOf(".")+1,positions[j].length());
-                System.out.println(candidateName+"  "+votes);
-                if(candidateName!=null && !candidateName.isEmpty())
-                {
-                    Candidate1 cand = posDAO.getCandidateDetailById(candidateName,pos.getId().getPositionId(), electionId, instituteId);
-
-                    if(cand!=null)
-                    {
-
-                        cand.setAgm(Integer.parseInt(votes));
-                        casting1.add(cand);
-                        flag=1;
-                    }
-                }
-           }
-            }
-            else{
-                System.out.println("Position not Exist"+cast[i]);
-            }
-
-       }
-
-        String msg=new String();
-        if(!casting1.isEmpty()|| casting1!=null)
-        {
-            msg = (String)voterdao.InsertVote1(casting1);
-            request.setAttribute("msg", msg);
-        }
-        response.setContentType("application/xml");
-        StringBuffer emails=new StringBuffer();
-        emails.append("<cast>");
-            emails.append("<message>"+msg+"</message></cast>");
-            response.getWriter().write(emails.toString());
-            return null;
-        }
-
-
-
-
-
-
+        			String msg=new String();
+        			if(!casting1.isEmpty()|| casting1!=null){
+            				msg = (String)voterdao.InsertVote1(casting1);
+            				request.setAttribute("msg", msg);
+        			}
+        			response.setContentType("application/xml");
+        			StringBuffer emails=new StringBuffer();
+        			emails.append("<cast>");
+            			emails.append("<message>"+msg+"</message></cast>");
+            			response.getWriter().write(emails.toString());
+            			return null;
+        		}
            
-            if(compute!=null)
-            {
+            		if(compute!=null){
 
                String vote = request.getParameter("cast");
                 String[] cast = vote.split(",;");
             System.out.println("Cast"+cast.length+cast[0]);
-//        vp = new VotingProcess();
-//        VotingProcessId vpId = new VotingProcessId(electionId, instituteId, voterId);
-//            vp.setId(vpId);
-//            vp.setStatus("Voted");
-
-
-
-          //  casting.add(vp);
-//
-//            System.out.println("cast Length="+cast.length);
-//
-//            String maxVoterid = voterdao.getMaxVoterBallotId(electionId, instituteId);
-//            Integer vbId;
-//            if(maxVoterid!=null)
-//                vbId= Integer.parseInt(maxVoterid) + 1;
-//            else
-//                vbId = 1;
-//            Voting vot = new Voting();
-//            VotingId votId = new VotingId();
-//            votId.setElectionId(electionId);
-//            votId.setInstituteId(instituteId);
-//            votId.setVoterBallotId(vbId.toString());
-//            vot.setId(votId);
-//            casting.add(vot);
            
         for(int i=0;i<cast.length;i++)
         {
@@ -221,13 +152,6 @@ System.out.println(cast[i]);
             response.getWriter().write(emails.toString());
             return null;
         }
-     
-
-
-
-
-
-         
 
         VotingProcess vp = voterdao.getVoter(instituteId, electionId, voterId);
         System.out.println("sdvfgsdgsdgs"+electionId);
@@ -254,6 +178,9 @@ System.out.println(cast[i]);
        
         }else{
         String vote = request.getParameter("cast");
+	if(vote.startsWith(";"))
+   		vote=vote.substring(1,vote.length());
+	UserLog.ErrorLog(vote,(String)session.getAttribute("apppath"));
         String[] cast = vote.split(",;");
         if(vp!=null)
         {
@@ -263,7 +190,6 @@ System.out.println(cast[i]);
             emails.append("<message>Voter Already voted for this election!</message></cast>");
             response.getWriter().write(emails.toString());
             return null;
-
         }
         vp = new VotingProcess();
         VotingProcessId vpId = new VotingProcessId(electionId, instituteId, voterId);
@@ -278,10 +204,6 @@ System.out.println(cast[i]);
             Integer vbId;
 
                 vbId= Integer.parseInt(maxVoterid); 
-         
-
-
- 
             Voting vot = new Voting();
             VotingId votId = new VotingId();
             votId.setElectionId(electionId);
@@ -292,13 +214,13 @@ System.out.println(cast[i]);
             ArrayList posCol = new ArrayList();
         for(int i=0;i<cast.length;i++)
         {
-            
             int flag = 0;
             String[] positions = cast[i].split(",");
-            System.out.println("its working1"+positions);
+           // System.out.println("its working1"+positions);
             String positionName = positions[0];
             PositionDAO posDAO = new PositionDAO();
             System.out.println("position Name="+positions[0]);
+		UserLog.ErrorLog(positions[0]+"||"+positions[1],(String)session.getAttribute("apppath"));
             Position1 pos = posDAO.getPositionByName(positionName.trim(), electionId, instituteId);
             if(pos!=null)
             {
@@ -328,7 +250,8 @@ System.out.println(cast[i]);
         String msg=new String();
         if(!casting.isEmpty()|| casting!=null)
         {
-            msg = (String)voterdao.InsertVote(casting);
+		String rpath=(String)session.getAttribute("apppath");
+            msg = (String)voterdao.InsertVote(casting,rpath);
             request.setAttribute("msg", msg);
         }
         response.setContentType("application/xml");

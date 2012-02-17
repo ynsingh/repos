@@ -18,7 +18,28 @@ import org.hibernate.transform.Transformers;
  * @author Edrp-04
  */
 public class VotingDAO {
-
+	public VotingProcess GetVoteStatus(String institute_id,String election_id,String enroll)
+    	{
+    		Session session =null;
+    		VotingProcess obj=null;
+    		try {
+        		session= HibernateUtil.getSessionFactory().openSession();
+            		session.beginTransaction();
+               		Query query = session.createQuery("FROM VotingProcess where id.instituteId = :institute_id and id.electionId=:election_id and id.voterId=:user_id");
+                	query.setString("user_id",enroll );
+                   	query.setString("institute_id",institute_id );
+                      	query.setString("election_id",election_id );
+               		obj=(VotingProcess)query.uniqueResult();
+            		session.getTransaction().commit();
+        	}
+    		catch(RuntimeException e){
+    			e.printStackTrace();
+    		}
+    		finally {
+            		session.close();
+        	}
+    	return obj;
+	}
 
 
     public List<Result> GetResult(String institute_id,String election_id)

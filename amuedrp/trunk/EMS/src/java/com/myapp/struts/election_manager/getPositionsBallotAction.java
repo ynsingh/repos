@@ -78,7 +78,7 @@ public class getPositionsBallotAction extends org.apache.struts.action.Action {
     }
         positions+="</positions>";
        session.setAttribute("position", position);
-        System.out.println("XML ="+positions);
+//        System.out.println("XML ="+positions);
         response.setContentType("application/xml");
         response.getWriter().write(positions);
         return null;

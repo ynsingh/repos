@@ -157,6 +157,7 @@ if(x!=null)
         ArrayList currentelectionList=new ArrayList();
        ArrayList ClosedelectionList=new ArrayList();
        ArrayList underprocessList=new ArrayList();
+       ArrayList setVoter=new ArrayList();
        InstituteDAO insti= new InstituteDAO();
         String status="OK";
         List Institute = insti.getInstituteNameByStatus(status);
@@ -171,12 +172,12 @@ if(x!=null)
             if(elec.getNstart().before(d) && elec.getNend().after(d))
             {
                currentelectionList.add(elec);
-
+		setVoter.add(elec);
             }
              if(elec.getNstart().before(d) && elec.getWithdrawlEndDate().after(d))
             {
                underprocessList.add(elec);
-
+		setVoter.add(elec);
             }
             if(elec.getStartDate().before(d) && elec.getEndDate().after(d))
             {
@@ -184,7 +185,7 @@ if(x!=null)
                 elec.setStatus("started");
                     ElectionDAO.update(elec);
                 electionList.add(elec);
-                
+                setVoter.add(elec);
                     
 
             }
@@ -198,6 +199,7 @@ if(x!=null)
         session.setAttribute("currentelectionList", currentelectionList);
         session.setAttribute("underprocessList", underprocessList);
         session.setAttribute("ClosedelectionList", ClosedelectionList);
+        session.setAttribute("SetVoterList", setVoter);
         }
                 if(login.getRole()==null) login.setRole(" ");
                 if (login.getRole().equalsIgnoreCase("superadmin")) //superadmin

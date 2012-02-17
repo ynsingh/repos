@@ -12,6 +12,21 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+<%
+	try{
+		if(session.getAttribute("institute_id")!=null){
+//			System.out.println("institute_id"+session.getAttribute("institute_id"));
+		}
+		else{
+			session.invalidate();
+		    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+	    %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
+        	}
+	 }catch(Exception e){
+         	request.setAttribute("msg", "Your Session Expired: Please Login Again");
+                %>session.invalidate();<%
+         }
+    %>                
         <script type="text/javascript">
             <%
  String   electionid = (String)session.getAttribute("election_id");
@@ -276,22 +291,16 @@ window.setTimeout('fn()', 400);
 }
 function Validate(index,ch,posxm)
 {
-   var flag=0; 
-   for(var i=0;i<index;i++){
+   for(var i=0;i<=index;i++){
         //alert("count1["+i+"]="+count1[i]+" ch["+i+"]="+choice[i]);
         if(count1[i]!=choice[i] || count1[i]==undefined){
-            var position = " " + posXml[i].toString();
-            var msg = 'choose candidate properly for position ' + position;
-            alert(msg);
-	    flag=1;
-	javascript:location.reload(true);
-	return false;
+            	var position = " " + posXml[i].toString();
+            	var msg = 'choose candidate properly for position ' + position;
+            	alert(msg);
+		javascript:location.reload(true);
         }
    }
-   //alert("success to submit");
-   //alert(positionSel);
-   if(flag==0) castVote();
-
+	castVote();
 }
 var count1=new Array;
 var selectedcandi = new Array;

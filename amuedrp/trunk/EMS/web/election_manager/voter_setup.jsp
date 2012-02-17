@@ -106,7 +106,7 @@ pageContext.setAttribute("Edit",Edit);
 
  List rs = (List)session.getAttribute("resultset");
 String status = (String)request.getParameter("status");
-System.out.println(status+".................");
+out.println("Number of Voter +"rs.size());
 if(status!=null && status.equalsIgnoreCase("B")){
 request.setAttribute("button", "Change Status");
 }
