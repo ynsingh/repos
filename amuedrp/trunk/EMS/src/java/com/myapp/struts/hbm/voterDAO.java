@@ -149,8 +149,8 @@ public String InsertVote(ArrayList E, String path)
 
 	}
 	while(!(flg1));
-		UserLog.ErrorLog(st.toString(),path);		
             obj= (String)"Your Vote Successfully Casted";
+		UserLog.ErrorLog(st.toString()+" "+obj,path);		
         }
         catch (RuntimeException e) {
           

@@ -60,8 +60,8 @@ else{
     %><script>parent.location = "<%=request.getContextPath()%>"+"/logout.do?session=\"expired\"";</script><%
     }
 }catch(Exception e){
-    request.setAttribute("msg", "Your Session Expired: Please Login Again");
-    %>sessionout();<%
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");session.invalidate();
+    %><%
     }
 
 List<Election> election=(List<Election>)session.getAttribute("SetVoterList");
@@ -93,14 +93,24 @@ function validate()
 {
     
     
-        document.getElementById('election').value=document.getElementById('election_id').value;
-       // alert(document.getElementById('election').value);
+       document.getElementById('election').value=document.getElementById('election_id').value;
+    var x=document.getElementById('election').value;
+  //  alert(x);
+    if(x=="Select")
+        {
+            alert("Please Select any Election");
+            return false;
+         }
 
+else{
 document.DepActionForm.action="/EMS/blockvoter.do";
 document.DepActionForm.method="post";
 document.DepActionForm.submit();
+return true;
 }
+       
 
+}
  function winresize()
 {
     //alert(document.width);
@@ -130,15 +140,11 @@ document.DepActionForm.submit();
 
 </head>
 <link rel="stylesheet" href="/EMS/css/page.css"/>
-<%
-String msg=(String)request.getAttribute("msg");
-if(msg!=null){
-%>
-<body  class="datagrid">
-<script>alert("<%=msg%>");</script>
-<%}else{%>
+
+
+
 <body onload="fun();" class="datagrid">
-    <%}%>
+
    
 
     <form name="DepActionForm" id="f1" onsubmit="validate();">
@@ -210,7 +216,8 @@ if(msg!=null){
 
           <b>Select Election </b>
          <%if(election.size()>0){%>
-         <select name="electionId" id="election_id" onchange="validate();">
+         <select name="electionId" id="election_id" >
+             <option selected value="Select">Select<%--<%=resource.getString("managername")%>--%></option>
                 <%
 
 for(int i=0;i<election.size();i++){
@@ -228,28 +235,15 @@ for(int i=0;i<election.size();i++){
 <%}else{%>No Election<%}%>
 
         </td></tr>
-     <tr><td><input type="submit" name="button" value="Block Voter" />
+    <tr><td><input type="button" onclick="return validate();" id="block" name="button" value="Block Voter" />
+      
     <input type="button" name="button" value="Back" onclick="return quit()"/>
       </td></tr>
   <tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="/EMS/votersetup.do" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
-     
- 
- 
        </table>
-
-
-
-   
-
-
 <input  name="status" type="hidden" id="status"/>
 
- 
- 
-
 </form>
-
-    
 
 </body>
 </html>

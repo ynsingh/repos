@@ -23,6 +23,28 @@ import org.hibernate.criterion.Restrictions;
  * @author akhtar
  */
 public class VoterRegistrationDAO {
+	public List<VoterRegistration> getVoterDetails(String instituteid){
+  Session session =null;
+    List<VoterRegistration> obj=null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+         session.beginTransaction();
+            Query query = session.createQuery("FROM VoterRegistration where id.instituteId=:instituteId");
+           
+             query.setString("instituteId",instituteid );
+
+            obj= (List<VoterRegistration>) query.list();
+            session.getTransaction().commit();
+        }
+    catch(RuntimeException s){
+    s.printStackTrace();
+    }
+
+        finally {
+            session.close();
+        }
+        return obj;
+}
 
 public static SetVoter searchVoterList(String instituteid,String electionId,String Enrollment) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -55,25 +77,35 @@ public static SetVoter searchVoterList(String instituteid,String electionId,Stri
 
 
         try {
-            tx = (Transaction) session.beginTransaction();
-
-            session.saveOrUpdate(obj);
-            tx.commit();
-
-
-
+		session.saveOrUpdate(obj);
+		boolean flg1;
+	        do{
+        		flg1=true;
+            		wait1(1000);
+            		tx = session.beginTransaction();
+            		tx.commit();
+                	if(!(tx.wasCommitted())){
+                        	tx.rollback();
+                        	flg1=false;
+                	}
+        	}
+        	while(!(flg1));
+           // session.saveOrUpdate(obj);
+         //   tx = (Transaction) session.beginTransaction();
+         //  tx.commit();
         } catch (Exception ex) {
-
             ex.printStackTrace();
             tx.rollback();
         } finally {
             session.close();
         }
-     //   return true;
-
-
 }
-
+	private static void wait1(int k){
+                do{
+       			k--;
+                }
+                while(k>0);
+        }
 public static void insert(VoterRegistration obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -81,7 +113,6 @@ public static void insert(VoterRegistration obj) {
 
         try {
             tx = (Transaction) session.beginTransaction();
-
             session.save(obj);
             tx.commit();
 
@@ -198,6 +229,66 @@ public static boolean update(VoterRegistration obj) {
         return obj;
     }
    */ 
+ public List getVoterList(String instituteid,String status,String field,String fieldvalue,String sort, int pageNumber){
+  Session session =null;
+    List obj=null;
+    List finalResult = new ArrayList();
+    try {
+                session= HibernateUtil.getSessionFactory().openSession();
+                session.beginTransaction();
+                String query1 = "FROM VoterRegistration where id.instituteId=:instituteId";
+            if(status==null){
+            if(fieldvalue!=null)
+                query1 = query1 + "  and "+field+"=:infield";
+
+   query1=query1+" order by "+sort;
+System.out.println(query1);
+
+}
+else{
+            if(status!=null && !status.equalsIgnoreCase("AB") && fieldvalue!=null)
+                query1 = query1 + " and status = :status and "+field+"=:infield ";
+            else if(status!=null && !status.equalsIgnoreCase("AB"))
+                query1 = query1 + " and status = :status ";
+
+            if(status!=null && status.equalsIgnoreCase("AB"))
+                    query1 = query1 + " and (status like 'Block' or status like 'Registered'";
+           
+query1=query1+" order by "+sort;
+}
+
+            Query query = session.createQuery(query1);
+
+            if(fieldvalue!=null)
+            {query.setString("infield", fieldvalue);
+
+            }
+            if(status!=null && !status.equalsIgnoreCase("AB"))
+                query.setString("status",status );
+             query.setString("instituteId",instituteid );
+if(pageNumber==0){
+
+            query = query.setFirstResult(0);
+              query.setMaxResults(30);
+              obj=query.list();
+}
+else{             PagingAction o=new PagingAction(query,pageNumber,30);
+
+ obj= o.getList();
+
+}
+            session.getTransaction().commit();
+        }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
+
+        finally {
+            session.close();
+        }
+       return obj;
+}
+
    public List getVoterDetailsByStatus(String instituteid,String status,String field,String fieldvalue,String sort, int pageNumber){
   Session session =null;
     List obj=null;
@@ -248,10 +339,10 @@ query1=query1+" order by "+sort;
 if(pageNumber==0){
 
             query = query.setFirstResult(0);
-              query.setMaxResults(20000);
+              query.setMaxResults(100);
               obj=query.list();
 }
-else{             PagingAction o=new PagingAction(query,pageNumber,20000);
+else{             PagingAction o=new PagingAction(query,pageNumber,100);
 
  obj= o.getList();
 // System.out.println("Size of Record"+obj.size()+".........................."+pageNumber);

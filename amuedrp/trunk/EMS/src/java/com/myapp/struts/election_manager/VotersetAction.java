@@ -49,38 +49,73 @@ public class VotersetAction extends org.apache.struts.action.Action {
 		String election=loginActionForm.getElection();
 
 		List obj= (List)session.getAttribute("resultset");
-		List log=new ArrayList();
-		System.out.println("ddvsdfsfgs");
+		ArrayList log=new ArrayList();
+	//	System.out.println("ddvsdfsfgs");
 
 		String institute_id=(String)session.getAttribute("institute_id");
 		Election e=ElectionDAO.searchElection(election, institute_id);
+		String action=loginActionForm.getAction();
+	 	if(action.equalsIgnoreCase("All")){
+     			institute_id=(String)session.getAttribute("institute_id");
+    			VoterRegistrationDAO voter=new VoterRegistrationDAO();
+     			List<VoterRegistration> rst = (List<VoterRegistration>)voter.getVoterDetails(institute_id);
+			for(int i=0;i<rst.size();i++){
+		    		VoterRegistration obj1=(VoterRegistration)rst.get(i);
 
-		for(int i=0;i<obj.size();i++){
-	     		VoterRegistration obj1=(VoterRegistration)obj.get(i);
-			VotingDAO v=new VotingDAO();
-			VotingProcess voting=(VotingProcess)v.GetVoteStatus(institute_id, election_id,obj1.getEmail());
-			if(voting==null){
-				SetVoter o=new SetVoter();
-	    			SetVoterId oi=new SetVoterId();
-	    			oi.setInstituteId(institute_id);
-	    			oi.setElectionId(election_id);
-	    			oi.setEnrollment(obj1.getId().getEnrollment());
-	    			o.setId(oi);
-				/*Admin Password Generate*/
-                 		admin_password= RandomPassword.getRandomString(10);
-                		admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
-            			o.setPassword(admin_password1);
-            			VoterRegistrationDAO.setVoter(o);
-	
-         			String path = servlet.getServletContext().getRealPath("/");
+ 				//check the Voter already cast vote for this election or not.
+ 				VotingDAO v=new VotingDAO();
+    				VotingProcess voting=(VotingProcess)v.GetVoteStatus(institute_id, election_id,obj1.getEmail());
+				if(voting==null){
+    					SetVoter o=new SetVoter();
+    					SetVoterId oi=new SetVoterId();
+    					oi.setInstituteId(institute_id);
+    					oi.setElectionId(election_id);
+    					oi.setEnrollment(obj1.getId().getEnrollment());
+    					o.setId(oi);
+					 /*Admin Password Generate*/
+                 			admin_password= RandomPassword.getRandomString(10);
+					log.add( "\nOne time key is  "+admin_password);
+              				//       System.out.println(admin_password);
+                              		admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
+ 					o.setPassword(admin_password1);
 
-            			x=new Email(path,obj1.getEmail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for Voting Process for "+e.getElectionName()+" Election Only is= "+admin_password);
-                   		x.send();
-		
-				log.add( "\nOne time key has been send successfully to= "+obj1.getEmail());
-			}else{
-				log.add( "\nOne time key not Set for EMail = "+obj1.getEmail()+ " because Voter already cast their vote");
-
+            				VoterRegistrationDAO.setVoter(o);
+         				String path = servlet.getServletContext().getRealPath("/");
+					System.out.println(path+obj1.getEmail()+admin_password+"One time key for voting for  : "+e.getElectionName()+" election"+"Your one time key for Voting Process for "+e.getElectionName()+" Election Only is= "+admin_password);
+            				x=new Email(path,obj1.getEmail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for casting your ballot for "+e.getElectionName()+" Election is "+admin_password);
+                   			x.send();
+                			log.add( "\nOne time key has been send successfully to= "+obj1.getEmail()+"\n");
+        
+				}else{
+					log.add( "\nOne time key has not been send to = "+obj1.getEmail()+ " because Voter already cast their vote"+"\n");
+				}
+			}
+		}
+		else{
+			for(int i=0;i<obj.size();i++){
+	     			VoterRegistration obj1=(VoterRegistration)obj.get(i);
+				VotingDAO v=new VotingDAO();
+				VotingProcess voting=(VotingProcess)v.GetVoteStatus(institute_id, election_id,obj1.getEmail());
+				if(voting==null){
+					SetVoter o=new SetVoter();
+	    				SetVoterId oi=new SetVoterId();
+	    				oi.setInstituteId(institute_id);
+	    				oi.setElectionId(election_id);
+	    				oi.setEnrollment(obj1.getId().getEnrollment());
+	    				o.setId(oi);
+					/*Admin Password Generate*/
+                 			admin_password= RandomPassword.getRandomString(10);
+					log.add( "\nOne time key is  "+admin_password);
+                			admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
+            				o.setPassword(admin_password1);
+            				VoterRegistrationDAO.setVoter(o);
+	         			String path = servlet.getServletContext().getRealPath("/");
+            				x=new Email(path,obj1.getEmail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+admin_password+"\n");
+                   			x.send();
+					log.add( "\nOne time key has been send successfully to= "+obj1.getEmail());
+				}else{
+					log.add( "\nOne time key has not been send to = "+obj1.getEmail()+ " because Voter already cast their vote");
+				}
 			}
 		}
 		StringBuffer str = new StringBuffer();
@@ -91,13 +126,13 @@ public class VotersetAction extends org.apache.struts.action.Action {
 			PrintWriter pw = new PrintWriter(new FileOutputStream(path1+"/EMSLOG/"+nameOfTextFile,true));
 			for(int ii=0;ii<log.size();ii++)
 				str.append(log.get(ii)+"\n");
-		      		pw.println(str+"\n");
+		      	pw.println(str+"\n");
                         //clean up
-                		pw.close();
+                	pw.close();
 	        } catch(IOException ex) {
        			System.out.println(ex.getMessage());
         	}
-	request.setAttribute("msg", log);
-	return mapping.findForward("success");
+		request.setAttribute("msg", log);
+		return mapping.findForward("success");
     	}
 }

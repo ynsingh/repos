@@ -25,6 +25,16 @@ public class DepActionForm extends  org.apache.struts.action.ActionForm {
         this.election = election;
     }
     private String election;
+
+	public String getAction() {
+        	return action;
+    	}
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+    private String action;
+
     DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG,DateFormat.LONG);
     private String electionId,instituteId,  electionname,description,status,createdby,button;
 

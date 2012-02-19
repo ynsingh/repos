@@ -106,7 +106,7 @@ pageContext.setAttribute("Edit",Edit);
 
  List rs = (List)session.getAttribute("resultset");
 String status = (String)request.getParameter("status");
-out.println("Number of Voter +"rs.size());
+out.println("Number of Voter "+rs.size());
 if(status!=null && status.equalsIgnoreCase("B")){
 request.setAttribute("button", "Change Status");
 }
@@ -149,6 +149,7 @@ System.out.println(voter.getId().getEnrollment());
         Ob.setCourse(voter.getCourse());
         Ob.setYear(voter.getYear());
         Ob.setStatus(voter.getStatus());
+        Ob.setemail_id(voter.getEmail());
         //ems.getElectionManager().setStatus(ems.getElectionManager().getStatus());
 
 
@@ -204,7 +205,7 @@ pageContext.setAttribute("path", path);
 function send(){
    // alert("ok");
      <%
-     int pageNumber=1;
+     int pageNumber=0;
      if(request.getParameter("page") != null) {
        session.setAttribute("page", request.getParameter("page"));
        pageNumber = Integer.parseInt(request.getParameter("page"));
@@ -220,10 +221,10 @@ location.href= loc;
 
     
    //  System.out.println(((java.util.List)session.getAttribute("EmpList")).size());
-     String myUrl = "/EMS/votersetup.do?page="+nextPage;
+    // String myUrl = "/EMS/votersetup.do?page="+nextPage;
    //  System.out.println(myUrl);
 
-     pageContext.setAttribute("myUrl", myUrl);
+    // pageContext.setAttribute("myUrl", myUrl);
      %>
  
 }
@@ -247,7 +248,7 @@ location.href= loc;
    //  String myUrl = "/EMS/votersetup.do?page="+nextPage;
    //  System.out.println(myUrl);
 
-     pageContext.setAttribute("myUrl", myUrl);
+ //    pageContext.setAttribute("myUrl", myUrl);
      %>
 
 }
@@ -339,8 +340,8 @@ else
       <item   value="${doc.voter_name}" hAlign="left" hyperLink="${path}/newregistration2.do?id=${doc.enrollment}${status}"  styleClass="item"/>
     </column>
     <column width="10%">
-      <header value="${Department}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.department}" hAlign="left" hyperLink="${path}/newregistration2.do?id=${doc.enrollment}${status}"  styleClass="item"/>
+      <header value="Email" hAlign="left" styleClass="header"/>
+      <item   value="${doc.email_id}" hAlign="left" hyperLink="${path}/newregistration2.do?id=${doc.enrollment}${status}"  styleClass="item"/>
     </column>
 
     <column width="10%">
@@ -383,9 +384,14 @@ else
   <%}%>
 
   <%
-String msg=(String)request.getAttribute("msg");
-if(msg!=null)
-    out.println(msg);
+List msg=(List)request.getAttribute("msg");
+if(msg!=null){
+	if(msg.isEmpty()==false ){
+		for(int i=0;i<msg.size(); i++)
+	    		out.println(msg.get(i)+"\n");
+	}
+}
+
 %>
 
  

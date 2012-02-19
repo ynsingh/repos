@@ -58,7 +58,7 @@
 <%
    }
 
-   List<Election> election=(List<Election>)session.getAttribute("underprocessList");
+	List<Election> election=(List<Election>)session.getAttribute("SetVoterList");
 %>
 
       <style type="text/css">
@@ -87,13 +87,19 @@
 
          }
 
-         function validate()
-         {
-            document.getElementById('election').value=document.getElementById('election_id').value;
-            document.DepActionForm.action="/EMS/setvoter.do";
-            document.DepActionForm.method="post";
-            document.DepActionForm.submit();
-         }
+function validate()
+{    document.getElementById('election').value=document.getElementById('election_id').value;
+var x=document.getElementById('election').value;
+if(x=="Select"){
+	alert("Please select the election");
+	return false;
+}else{
+document.DepActionForm.action="/EMS/setvoter.do";
+document.DepActionForm.method="post";
+document.DepActionForm.submit();
+return true;
+}
+}
 
          function winresize()
          {
@@ -147,9 +153,8 @@
                   Search Voter
 <%--<%=resource.getString("login.searchinstitute.institutesearch")%>--%>
 
-
-
-
+    <form name="DepActionForm" id="f1" onsubmit="return validate();">
+      <table  align="left" width="100%"  class="datagrid"  style="border:solid 1px #e0e8f5;" dir="<%=rtl%>" align="<%=align%>">
         </td></tr>
   <tr style="background-color:#e0e8f5;"><td width="800px"  >
           <table dir="<%=rtl%>" align="<%=align%>">
@@ -194,7 +199,19 @@
 <option value="course">Course</option>
 </select></td>
                            </tr></table>
+ <table>
+  <tr><td dir="<%=rtl%>" align="<%=align%>">Action</td><td><select   size="1" name="action" onChange="fun()" id="action">
 
+<option selected value="Select">Current Page<%--<%=resource.getString("managername")%>--%></option>
+<option  value="All">All<%--<%=resource.getString("managername")%>--%></option>
+
+
+
+</select></td>
+                           </tr>
+
+
+           </table>
 
       </td>
 
@@ -206,6 +223,7 @@
           <b>Select Election </b>
          <%if(election.size()>0){%>
          <select name="electionId" id="election_id" size="1">
+	<option value="Select">Select</option>
                 <%
 
 for(int i=0;i<election.size();i++){
@@ -226,7 +244,7 @@ for(int i=0;i<election.size();i++){
 <%}else{%>No Election<%}%>
 
         </td></tr>
-     <tr><td><input type="submit" name="button" value="Set Voter" />
+     <tr><td><input type="button" onclick="return validate();" name="button" value="Set Voter" />
     <input type="button" name="button" value="Back" onclick="return quit()"/>
       </td></tr>
   <tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="/EMS/votersetup.do" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>

@@ -298,6 +298,7 @@ function Validate(index,ch,posxm)
             	var msg = 'choose candidate properly for position ' + position;
             	alert(msg);
 		javascript:location.reload(true);
+		return false;
         }
    }
 	castVote();

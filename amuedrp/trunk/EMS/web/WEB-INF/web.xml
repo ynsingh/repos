@@ -70,7 +70,7 @@
         </servlet-mapping>
     <session-config>
         <session-timeout>
-            5
+            20
         </session-timeout>
     </session-config>
     <welcome-file-list>
@@ -103,4 +103,13 @@
          </taglib>
 
     </jsp-config>
+	<security-constraint>
+    		<web-resource-collection>
+      			<web-resource-name>EMS Internals</web-resource-name>
+      			<url-pattern>/EMSLOG/*</url-pattern>
+   		</web-resource-collection>
+    	<auth-constraint>
+      		<role-name>superadmin</role-name>
+    	</auth-constraint>
+  	</security-constraint>
 </web-app>
