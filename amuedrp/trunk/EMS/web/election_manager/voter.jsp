@@ -9,134 +9,143 @@
 <%@page import="java.util.*,java.io.*,com.myapp.struts.hbm.Election"%>
 
 <%!
-    Locale locale=null;
-    String locale1="en";
-    String rtl="ltr";
-    boolean page=true;
-    String align="left";
-    String status;
+   Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   boolean page=true;
+   String align="left";
+   String status;
 %>
 <%
-status = request.getParameter("status");
-try{
-locale1=(String)session.getAttribute("locale");
+   status = request.getParameter("status");
+   try {
+      locale1=(String)session.getAttribute("locale");
 
-    if(session.getAttribute("locale")!=null)
-    {
-        locale1 = (String)session.getAttribute("locale");
+       if(session.getAttribute("locale")!=null){
+          locale1 = (String)session.getAttribute("locale");
        // System.out.println("locale="+locale1);
-    }
-    else locale1="en";
-}catch(Exception e){locale1="en";}
-     locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
-    else{ rtl="RTL";page=false;align="right";}
-    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+       } else locale1="en";
+   } catch(Exception e) {locale1="en";}
+   locale = new Locale(locale1);
+   if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+   else{ rtl="RTL";page=false;align="right";}
+   ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+%>
 
-    %>
+<html>
+   <head>
+      <title>Search Voter</title>
 
+<%
+   try {
+      if(session.getAttribute("institute_id")!=null){
+         System.out.println("institute_id"+session.getAttribute("institute_id"));
+      } else{
+         request.setAttribute("msg", "Your Session Expired: Please Login Again");
+%>
 
+<script>parent.location = "<%=request.getContextPath()%>"+"/logout.do?session=\"expired\"";</script>
 
-<html><head>
-<title>Search Voter.....</title>
+<%
+      }
+   } catch(Exception e){
+      request.setAttribute("msg", "Your Session Expired: Please Login Again");
+      session.invalidate();
+
+%>
 
 
 <%
-try{
-if(session.getAttribute("institute_id")!=null){
-System.out.println("institute_id"+session.getAttribute("institute_id"));
-}
-else{
-    request.setAttribute("msg", "Your Session Expired: Please Login Again");
-    %><script>parent.location = "<%=request.getContextPath()%>"+"/logout.do?session=\"expired\"";</script><%
-    }
-}catch(Exception e){
-    request.setAttribute("msg", "Your Session Expired: Please Login Again");
-    %>sessionout();<%
-    }
+   }
 
-List<Election> election=(List<Election>)session.getAttribute("underprocessList");
+   List<Election> election=(List<Election>)session.getAttribute("underprocessList");
 %>
 
-<style type="text/css">
-body
-{
-   background-color: #FFFFFF;
-   color: #000000;
-}
-</style>
-<script language="javascript">
-function fun()
-{
+      <style type="text/css">
+         body {
+            background-color: #FFFFFF;
+            color: #000000;
+         }
+      </style>
+
+      <script language="javascript">
+         function fun()
+         {
     
-  <%if(status!=null){%>
-    document.DepActionForm.status.value = "<%=status%>";
-    <%}%>
-document.DepActionForm.action="/EMS/votersetup.do";
-document.DepActionForm.method="post";
-document.DepActionForm.target="f1";
-document.DepActionForm.submit();
-  window.setTimeout('winresize()', 100);
-
-}
-
-function validate()
-{    document.getElementById('election').value=document.getElementById('election_id').value;
-document.DepActionForm.action="/EMS/setvoter.do";
-document.DepActionForm.method="post";
-document.DepActionForm.submit();
-}
-
- function winresize()
-{
-    //alert(document.width);
-  
-   var winwidth = document.width;
-    var IFRAMERef = frames['f1'];
-   // alert(IFRAMERef);
-    var frmwidth = IFRAMERef.document.width;
-    var windiff=200;
-    var frmheight;
-        if(IFRAMERef.document!=undefined)
-        frmheight= IFRAMERef.document.height;
-        else
-            if(IFRAMERef.document.getElementById("form3")!=undefined)
-        frmheight= IFRAMERef.document.getElementById("form3").height;
-        else
-            frmheight = 500+"px";
-    //alert("frmheight="+frmheight);
-    if(winwidth!=undefined && frmwidth!=undefined)
-        windiff= winwidth - frmwidth;
-    document.getElementById("ifr3").style.paddingLeft = windiff*0.5+"px";
-    document.getElementById("ifr3").style.paddingRight = windiff*0.5+"px";
-    document.getElementById("ifr3").style.height = frmheight;
-   
-}
-</script>
-
-</head>
-<link rel="stylesheet" href="/EMS/css/page.css"/>
 <%
-String msg=(String)request.getAttribute("msg");
-if(msg!=null){
+   if(status!=null){
 %>
-<body  class="datagrid">
-<script>alert("<%=msg%>");</script>
-<%}else{%>
-<body onload="fun();" class="datagrid">
-    <%}%>
+            document.DepActionForm.status.value = "<%=status%>";
+<%
+   }
+%>
+            document.DepActionForm.action="/EMS/votersetup.do";
+            document.DepActionForm.method="post";
+            document.DepActionForm.target="f1";
+            document.DepActionForm.submit();
+            window.setTimeout('winresize()', 100);
+
+         }
+
+         function validate()
+         {
+            document.getElementById('election').value=document.getElementById('election_id').value;
+            document.DepActionForm.action="/EMS/setvoter.do";
+            document.DepActionForm.method="post";
+            document.DepActionForm.submit();
+         }
+
+         function winresize()
+         {
+          //alert(document.width);
+  
+            var winwidth = document.width;
+            var IFRAMERef = frames['f1'];
+         // alert(IFRAMERef);
+            var frmwidth = IFRAMERef.document.width;
+            var windiff=200;
+            var frmheight;
+            if(IFRAMERef.document!=undefined)
+               frmheight= IFRAMERef.document.height;
+            else
+               if(IFRAMERef.document.getElementById("form3")!=undefined)
+                  frmheight= IFRAMERef.document.getElementById("form3").height;
+               else
+                  frmheight = 500+"px";
+             //alert("frmheight="+frmheight);
+            if(winwidth!=undefined && frmwidth!=undefined)
+               windiff= winwidth - frmwidth;
+            document.getElementById("ifr3").style.paddingLeft = windiff*0.5+"px";
+            document.getElementById("ifr3").style.paddingRight = windiff*0.5+"px";
+            document.getElementById("ifr3").style.height = frmheight;
    
+         }
+      </script>
+   </head>
 
-    <form name="DepActionForm" id="f1" onsubmit="validate();">
-      <table  align="left" width="100%"  class="datagrid"  style="border:solid 1px #e0e8f5;" dir="<%=rtl%>" align="<%=align%>">
+   <link rel="stylesheet" href="/EMS/css/page.css"/>
 
+<%
+   String msg=(String)request.getAttribute("msg");
+   if(msg!=null){
+%>
+   <body  class="datagrid">
+      <script>alert("<%=msg%>");</script>
+<%
+   }else{
+%>
 
-
-          <tr class="header"><td  width="100%"   align="center" colspan="2" dir="<%=rtl%>">
-
-
-                 Search Voter
-                  <%--<%=resource.getString("login.searchinstitute.institutesearch")%>--%>
+   <body onload="fun();" class="datagrid">
+<%
+   }
+%>
+   
+      <form name="DepActionForm" id="f1" onsubmit="validate();">
+         <table align="left" width="100%" class="datagrid" style="border:solid 1px #e0e8f5;" dir="<%=rtl%>" align="<%=align%>">
+            <tr class="header">
+               <td  width="100%" align="center" colspan="2" dir="<%=rtl%>">
+                  Search Voter
+<%--<%=resource.getString("login.searchinstitute.institutesearch")%>--%>
 
 
 
