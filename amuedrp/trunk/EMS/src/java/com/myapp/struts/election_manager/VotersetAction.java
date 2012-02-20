@@ -14,7 +14,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import  com.myapp.struts.utility.*;
-import  com.myapp.struts.utility.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import com.myapp.struts.Voter.VoterRegistrationDAO;
@@ -74,7 +73,7 @@ public class VotersetAction extends org.apache.struts.action.Action {
     					o.setId(oi);
 					 /*Admin Password Generate*/
                  			admin_password= RandomPassword.getRandomString(10);
-					log.add( "\nOne time key is  "+admin_password);
+				//	log.add( "\nOne time key is  "+admin_password);
               				//       System.out.println(admin_password);
                               		admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
  					o.setPassword(admin_password1);
@@ -105,8 +104,11 @@ public class VotersetAction extends org.apache.struts.action.Action {
 	    				o.setId(oi);
 					/*Admin Password Generate*/
                  			admin_password= RandomPassword.getRandomString(10);
-					log.add( "\nOne time key is  "+admin_password);
+					//log.add( "\nOne time key is  "+admin_password);
                 			admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
+					//log.add( "\nOne time key MD5  "+admin_password1);//
+					//String admin_password2=PasswordEncruptionUtility.password_encrupt(admin_password1);
+					//log.add( "\nOne time key MD5 MD5  "+admin_password2);//
             				o.setPassword(admin_password1);
             				VoterRegistrationDAO.setVoter(o);
 	         			String path = servlet.getServletContext().getRealPath("/");

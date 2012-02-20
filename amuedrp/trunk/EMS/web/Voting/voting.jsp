@@ -211,7 +211,7 @@ for(iii=0;iii<em1.length;iii++)
                 divtag.style.width = "590px";
                 divtag.style.align = "center";
                 divtag.style.marginTop = "5px";
-                divtag.style.height = document.height;
+   //             divtag.style.height = document.height;
                 //divtag.innerHTML ='Position Name *<br><input type="text" Id="position_name0'+iii +'" size="40px"/><br>Number of choice *<br><input type="text" Id="numberofchoice0'+ iii +'" size="40px"/><br><br><div id="candidate0'+iii+'" style="position: relative;background-color: #D8CEF6; border: 3px solid #F2F5A9;display: block;width: 595px"></div><input type="button" name="add candidate" style="" id="add0'+iii+'" onclick="create(0,'+iii+',this);" value="Add Candidate" size="50px"><br>';
                 //document.getElementById("position").appendChild(divtag);
         //end of block
@@ -280,7 +280,7 @@ var divtag2 = document.createElement("div");
                 divtag2.style.width = "590px";
                 divtag2.style.align = "center";
                 divtag2.style.marginTop = "5px";
-                divtag2.style.height = document.height;
+     //           divtag2.style.height = document.height;
                 var sql = '<input type="button" value="Vote Now" onclick="Validate('+ ival +','+ choice +',posXml)" style="margin-left: 45%;"/>';
 divtag2.innerHTML = sql;
 document.getElementById("ballot").appendChild(divtag2);

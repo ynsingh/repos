@@ -42,75 +42,66 @@ locale1=(String)session.getAttribute("locale");
     System.out.println("Reg id="+regid);
     %>
 <html>
-    <head>
+    	<head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Election Management System</title>
-       <script type="text/javascript" language="javascript">
-var olddoc="";
-var olddoc1="";
-var loadcount;
-var election_id;
+	<script type="text/javascript" language="javascript">
+		var olddoc="";
+		var olddoc1="";
+		var loadcount;
+		var election_id;
 
-function castVote(id) {
-    election_id=id;
+		function castVote(id) {
+    			election_id=id;
    
    // alert(document.getElementById("position").style.display);
-
-    var req = newXMLHttpRequest();
-
-req.onreadystatechange = getReadyStateHandler(req, updateCast);
-
-req.open("POST","<%=request.getContextPath()%>/VoteCast.do", true);
-
-req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-req.send("id="+election_id);
-return true;
-}
-function updateCast(cartXML)
-{
-   var em = cartXML.getElementsByTagName("cast")[0];
-var em1 = em.getElementsByTagName("message");
-var text=em1[0].firstChild.nodeValue;
-if(text=="Voter Already voted for this election!"){
-    alert(text);
-}
-    else
-{windload();}
-}
-
-
-
-
-
-
-
-function checkElection()
-{
+    			var req = newXMLHttpRequest();
+			req.onreadystatechange = getReadyStateHandler(req, updateCast);
+			req.open("POST","<%=request.getContextPath()%>/VoteCast.do", true);
+			req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			req.send("id="+election_id);
+			return true;
+		}
+		function updateCast(cartXML)
+		{
+   			var em = cartXML.getElementsByTagName("cast")[0];
+			var em1 = em.getElementsByTagName("message");
+			var text=em1[0].firstChild.nodeValue;
+			if(text=="Voter Already voted for this election!"){
+    				alert(text);
+			}else{
+				windload();
+			}
+		}
+		function checkElection()
+		{
 <%
-List<Election> lstelec = (List<Election>)session.getAttribute("electionList");
-if(lstelec!=null && !lstelec.isEmpty()){
+			List<Election> lstelec = (List<Election>)session.getAttribute("electionList");
+			if(lstelec!=null && !lstelec.isEmpty()){
 %>
-     <%--   if(loadcount==0 || loadcount==null)
-        {var choice = confirm("Voting for election '<%=lstelec.get(0).getElectionName()%>' is going on. Do you want to vote now?");
-        if(choice==true)
-            {
-                windload();
-            }}--%>
-  var divtag = document.createElement("div");
-                divtag.id = "overbody";
-                //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserWrite");
-                window.scrollbars.visible = false;
-                    divtag.style.width = "100%";
-                divtag.style.height = "100%";
-                divtag.style.top = "0px";
-                divtag.style.zIndex = "1500";
-                divtag.style.position = "absolute";
-                divtag.style.overflow = "hidden";
-                divtag.style.backgroundColor = "gray";
-                divtag.style.opacity = 0.97;
-                var doc = document.getElementById("electionResults3");
-                if(doc.innerHTML=="") doc.innerHTML = olddoc1;
-                var divtag1 = document.createElement("div");
+<%--   				if(loadcount==0 || loadcount==null)
+        				{var choice = confirm("Voting for election '<%=lstelec.get(0).getElectionName()%>' is going on. Do you want to vote now?");
+        				if(choice==true)
+            				{
+                				windload();
+            				}
+				}
+--%>
+  				var divtag = document.createElement("div");
+                		divtag.id = "overbody";
+               			 //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserWrite");
+                	//	window.scrollbars.visible = false;
+                    		divtag.style.width = "100%";
+                		divtag.style.height = "100%";
+                		divtag.style.top = "0px";
+                		divtag.style.zIndex = "1500";
+                		divtag.style.position = "absolute";
+                		divtag.style.overflow = "hidden";
+                		divtag.style.backgroundColor = "gray";
+                		divtag.style.opacity = 0.97;
+                		var doc = document.getElementById("electionResults3");
+                		if(doc.innerHTML=="") doc.innerHTML = olddoc1;
+                		var divtag1 = document.createElement("div");
                 divtag1.id = "electionResults";
                 divtag1.style.display = "block";
                 divtag1.style.border = "2px solid teal";
@@ -141,7 +132,7 @@ function windload()
    
     var divtag = document.createElement("div");
                 divtag.id = "electionPass";
-                window.scrollbars.visible = false;
+               // window.scrollbars.visible = false;
                 divtag.style.width = "100%";
                 divtag.style.height = "100%";
                 divtag.style.top = "0px";
@@ -185,7 +176,7 @@ function getPass()
 {
     var val = document.getElementById("pass").value;
     if(val=="")
-      {  alert("Please Enter Password");
+      {  alert("Please Enter One time key");
     return;}
     if(val!=undefined && val!="")
         checkPassword(val,election_id);
@@ -247,7 +238,7 @@ List<Election> lstcurelection = (List<Election>)session.getAttribute("currentele
                 var divtag = document.createElement("div");
                 divtag.id = "overbody";
                 //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserWrite");
-                window.scrollbars.visible = false;
+               // window.scrollbars.visible = false;
                     divtag.style.width = "100%";
                 divtag.style.height = "100%";
                 divtag.style.zIndex = "1500";
@@ -288,7 +279,7 @@ List<Election> lstcurelection = (List<Election>)session.getAttribute("currentele
                 var divtag = document.createElement("div");
                 divtag.id = "overbody";
                 //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserWrite");
-                window.scrollbars.visible = false;
+               // window.scrollbars.visible = false;
                     divtag.style.width = "100%";
                 divtag.style.height = "100%";
                 divtag.style.top = "0px";

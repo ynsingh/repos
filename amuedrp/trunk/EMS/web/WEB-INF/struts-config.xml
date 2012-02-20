@@ -99,10 +99,6 @@
 
            <action  input="/reset_password.jsp" name="SuperAdminActionForm" path="/reset_password" scope="request" type="com.myapp.struts.ResetPasswordAction" validate="true">
                         <forward name="success" path="/reset_password.jsp"/>
-                         
-
-                        
-
            </action>
            <action  path="/blockvoter" name="DepActionForm" input="/election_manager/block_voter.jsp" scope="request" type="com.myapp.struts.election_manager.BlockVoterAction">
                <forward name="success" path="/election_manager/voter_setup.jsp"/>
