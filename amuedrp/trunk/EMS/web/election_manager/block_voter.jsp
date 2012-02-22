@@ -197,22 +197,14 @@ return true;
   <tr class="header"><td dir="<%=rtl%>" align="left" colspan="2"><%=resource.getString("login.searchinstitute.sortby")%></td></tr>
    <tr style="background-color:#e0e8f5;">
        <td align="left" colspan="2">
-           <table>
+           <table width="100%">
   <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.field")%></td><td><select name="sort_by" id="sort_by" size="1" onChange="fun()" id="">
 <option selected value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
 <option value="voterName">Voter Name<%--<%=resource.getString("managername")%>--%></option>
-<option value="department">Department<%--<%=resource.getString("managerid")%>--%></option>
+<option value="email">User ID<%--<%=resource.getString("managerid")%>--%></option>
 <option value="course">Course</option>
 </select></td>
-                           </tr></table>
-
-
-      </td>
-
-  </tr>
-    <tr><td colspan="4"   height="25px" width="50px" align="center">
-
-
+      <td align="center">
 
           <b>Select Election </b>
          <%if(election.size()>0){%>
@@ -234,11 +226,9 @@ for(int i=0;i<election.size();i++){
 
 <%}else{%>No Election<%}%>
 
-        </td></tr>
-    <tr><td><input type="button" onclick="return validate();" id="block" name="button" value="Block Voter" />
-      
-    <input type="button" name="button" value="Back" onclick="return quit()"/>
-      </td></tr>
+    <input type="button" onclick="return validate();" id="block" name="button" value="Block Voter" />
+      </td></tr></table>
+</td></tr>
   <tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="/EMS/votersetup.do" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
        </table>
 <input  name="status" type="hidden" id="status"/>

@@ -36,15 +36,11 @@ private VoterRegistrationId elid=new VoterRegistrationId();
          HttpSession session=request.getSession();
         VoterRegActionForm employeeform=(VoterRegActionForm)form;
          String button="View";
-   
-
-
-
-     
-
 
         String id="id";
          id=request.getParameter(id);
+	if(id==null)
+		id=(String)session.getAttribute("voter_id");
           String institute_id=(String)session.getAttribute("institute_id");
         
         VoterRegistration l=VoterRegistrationDAO.searchVoterRegistration(institute_id,id);

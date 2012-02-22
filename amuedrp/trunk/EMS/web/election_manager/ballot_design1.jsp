@@ -24,6 +24,7 @@ if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,vot
     <head>
         <meta http-equiv="Content-Type"  content="text/html; charset=UTF-8">
         <title>Ballot Design</title>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
         
         <script type="text/javascript" language="javascript">
 
@@ -42,6 +43,10 @@ window.location="<%=request.getContextPath()%>/electionmanager.do";
     <%}%>
     return false;
 }
+
+       
+        
+
 
 function newXMLHttpRequest() {
 var xmlreq = false;
@@ -89,13 +94,19 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 }
 }
-<link type="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+
+
+
+
+
+
 function previewBallot() {
-   //alert("index="+index+" current="+current);
-   // alert(document.getElementById("ballot").style.display);
+   
   if(document.getElementById("ballot").style.display=="inline")
         {
             <%--document.getElementById("ballot").style.display="none";
+            //document.getElementById("position").style.display="block";
+           // document.getElementById("add Position").style.display = "block";
             document.getElementById("previewtext").textContent = "Preview Ballot";
             return false;--%>
                         window.location = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/manageElection.do";
@@ -116,6 +127,8 @@ return true;
 }
 function designBallot(cartXML)
 {
+
+
 var htm="";
 document.getElementById("ballot").innerHTML="";
 var em = cartXML.getElementsByTagName("positions")[0];
@@ -148,6 +161,9 @@ for(iii=0;iii<em1.length;iii++)
                 divtag.style.width = "590px";
                 divtag.style.align = "center";
                 divtag.style.marginTop = "5px";
+               // divtag.style.height = document.height;
+                //divtag.innerHTML ='Position Name *<br><input type="text" Id="position_name0'+iii +'" size="40px"/><br>Number of choice *<br><input type="text" Id="numberofchoice0'+ iii +'" size="40px"/><br><br><div id="candidate0'+iii+'" style="position: relative;background-color: #D8CEF6; border: 3px solid #F2F5A9;display: block;width: 595px"></div><input type="button" name="add candidate" style="" id="add0'+iii+'" onclick="create(0,'+iii+',this);" value="Add Candidate" size="50px"><br>';
+                //document.getElementById("position").appendChild(divtag);
         //end of block
 var positionname1 = em1[iii].getElementsByTagName("positionname");
 var positionname = positionname1[0].firstChild.nodeValue;
@@ -159,7 +175,13 @@ var instruct = em1[iii].getElementsByTagName("instruction");
 var instrucT = instruct[0].firstChild.nodeValue;
 var instruct1;
 var instruct2;
+<%--if(instrucT!=undefined)
+    if(instrucT.lastIndexOf(noofchoice)!=-1)
+        {instruct1 = instrucT.substr(0, instrucT.lastIndexOf(noofchoice)-1);
+        instruct2 = instrucT.substr(instrucT.lastIndexOf(noofchoice)+2,instrucT.length);}--%>
 htm = ' <div class="datagrid" align="center" >Position: <strong>'+positionname+'</strong><br><strong >'+ instrucT +' <span style="color: red"></span></strong>';
+<%--if(noofchoice>1) htm=htm + ' candidates';
+else htm=htm + ' candidate';--%>
 htm = htm +'<table class="datagrid" width="100%"><tbody><tr><th style="text-align: left;">Candidate ID</th><th style="text-align: left;">Candidate Name</th><th>Selection</th></tr>';
 
 var ca = em1[iii].getElementsByTagName("candidate");
@@ -170,43 +192,61 @@ for(jj=0;jj<ca.length;jj++)
         var e;
             if(e1[0].firstChild!=null) e = e1[0].firstChild.nodeValue;
             else e = "";
-//if candidate menifesto not uploded
-var mn1 = ca[jj].getElementByTagname("candidatemn");
-var mn;
-if (mn1[0].firstChild!=null)mn = mn1[0].firstChild.nodeValue;
-	else mn="";
+
+
+       // if candidate menifesto not uploaded
+var mn1 = ca[jj].getElementsByTagName("candidatemn");
+ var mn;
+            if(mn1[0].firstChild!=null) mn = mn1[0].firstChild.nodeValue;
+            else mn = "";
+
 
         var candidatename1 = ca[jj].getElementsByTagName("candidatename");
         var candidatename;
             if(candidatename1[0].firstChild!=null) candidatename = candidatename1[0].firstChild.nodeValue;
             else candidatename = "";
        htm = htm +'<tr><td style="text-align: left;"><label for="entry'+iii+'">'+e+'</label><td style="text-align: left;"><label for="entry'+iii+'">'+candidatename+'</label></td>';
+
 if(mn=="1"){
 if(noofchoice>1)
        {
-               htm = htm +'<td><input type="checkbox" value="'+jj+'" onclick="checkCandidateLimit('+iii+')" name="entry'+iii+'" id="entry'+iii+'" ><a href="/Candidate/viewmenifesto.jsp?id=<%=x%>&amp;pos_id='+positionid+'&amp;candi='+e+'">view Menifesto</a></td></tr>';
+               htm = htm +'<td><input type="checkbox" value="'+jj+'" onclick="checkCandidateLimit('+iii+')" name="entry'+iii+'" id="entry'+iii+'" ><a href="/Candidate/viewmenifesto.jsp?id=<%=x%>&amp;pos_id='+positionid+'&amp;candi='+e+'">view ballot</a></td></tr>';
        }
        else
            {
-               htm = htm +'<td><a href="/EMS/Candidate/viewmenifesto.jsp?id=<%=x%>&amp;pos_id='+positionid+'&amp;candi='+e+'">view Menifesto</a></td></tr>';
+               htm = htm +'<td class="login" align="center"><a href="/EMS/Candidate/viewmenifesto.jsp?id=<%=x%>&amp;pos_id='+positionid+'&amp;candi='+e+'">View Menifesto</a></td></tr>';
            }
-}else{
-	htm=htm+'<td align="center">Menifesto not Uploadded</td></tr>';
-	}
+
+        }else{
+               htm = htm +'<td align="center">Menifesto Not Uploaded</td></tr>';
+        
+        }
+
+
     }
   htm = htm + ' </tbody></table></div>';
-//alert("create("+jj+","+iii+",this);");
-//alert(document.getElementById(idadd).attributes.onclick.value);
+
 divtag.innerHTML =htm;
+
 document.getElementById("ballot").appendChild(divtag);
 document.getElementById("ballot").style.display="inline";
+
 }
+
+
 }
+
+
             </script>
     </head>
     <body onload="previewBallot();">
+
       <div id="ballot">
+    
 </div>
-<input type="button" value="Close" onclick="send()"/>
+<input type="button" value="Back" onclick="send()"/>
+            
+       
+
     </body>
 </html>

@@ -62,7 +62,7 @@ return mapping.findForward("success1");
    {
 return mapping.findForward("success2");
 }else{
-    request.setAttribute("msg1",  "Sorry In Selected Election Voting Activity is not in-process");
+    request.setAttribute("msg1",  "Sorry you are not a valid voter for this Election");
 return mapping.findForward("success3");
 }
 

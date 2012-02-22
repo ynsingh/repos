@@ -66,6 +66,11 @@ public class getPositionsBallotAction extends org.apache.struts.action.Action {
                     positions+="<candidateenroll>"+can.getEnrollment()+"</candidateenroll>";
                     positions+="<candidatename>"+can.getCandidateName()+"</candidatename>";
                     positions+="<candidateid>"+can.getId().getCandidateId()+"</candidateid>";
+			if(can.getMenifesto()==null)
+				positions+="<candidatemn>0</candidatemn>";
+			else
+				positions+="<candidatemn>0</candidatemn>"
+;
                 positions+="</candidate>";
                 }
                 

@@ -828,7 +828,7 @@ document.write('<%=(String)session.getAttribute("username")%> <img width=10 heig
 document.write('<div id="ddmenu" style="');
 document.write('height:45px;border:0px solid black;background-color:white;text-decoration:none;text-align: right;padding-right:2px');
 document.write('visibility:hidden;">');
-add_item("<%=resource.getString("view_profile")%>","<%=request.getContextPath()%>/newregistration2.do?id=<%=session.getAttribute("voter_id")%>&amp;page=voter");
+add_item("<%=resource.getString("view_profile")%>","<%=request.getContextPath()%>/newregistration2.do");
 add_item("<%=resource.getString("login.managesuperadminaccount.changepassword")%>","<%=request.getContextPath()%>/change_password.do?page=voter");
 function add_item(linkname,dest){
   document.write('<a  href="'+dest+'" target="ff"  <%--onclick="return pageload(3);"--%>>'+linkname+'</a><br>');

@@ -37,7 +37,7 @@
 	    font-weight: normal }
 </style>
     </head>
-    <body onload="funload();">
+    <body onload="funload();" style="margin: 0px 0px 0px 0px;">
 
         <%!
 
@@ -106,7 +106,7 @@ pageContext.setAttribute("Edit",Edit);
 
  List rs = (List)session.getAttribute("resultset");
 String status = (String)request.getParameter("status");
-out.println("Number of Voter "+rs.size());
+//out.println("Number of Voter "+rs.size());
 if(status!=null && status.equalsIgnoreCase("B")){
 request.setAttribute("button", "Change Status");
 }
@@ -307,7 +307,6 @@ function isNumberKey(evt)
       },200);}
   </script>
 
-<br><br>
 
 <%if(tcount==0)
 {%>
@@ -315,7 +314,7 @@ function isNumberKey(evt)
 <%}
 else
 {%>
-<table align="" dir="" width="100%" style="padding-left: 10%;padding-right: 10%">
+<table align="" width="100%" style="padding-left: 10%;padding-right: 10%">
     <%--<tr><td colspan="2" align="right">View Next&nbsp;onblur="changerec()" style="width:50px"/>
         <select id="rec" onchange="changerec()" style="width:100px">
              <option value="10">Select</option>
@@ -325,7 +324,7 @@ else
        </select>
 
         </td></tr>--%>
-    <tr dir=""><td dir="">
+    <tr dir=""><td dir="" colspan="2">
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
   <columns>
@@ -373,10 +372,10 @@ else
        previousUrlVar="previous" pagesVar="pages"/>
 </ui:dataGrid>
 </td></tr>
-
- <input type="button" onclick="send()" value="nextPage"/>
-  <input type="button" onclick="sendprevious()" value="previous"/>
-
+<tr><td>
+ <input type="button" onclick="send()" value="next" class="datagrid"/>
+  <input type="button" onclick="sendprevious()" value="previous" class="datagrid"/>
+<input type="text" class="datagrid" size="50" readonly value="Total number of voters per page: <%=rs.size() %> </td></tr>
    
    
 </table>

@@ -71,7 +71,7 @@
       <script language="javascript">
          function fun()
          {
-    
+		disable();    
 <%
    if(status!=null){
 %>
@@ -88,19 +88,43 @@
          }
 
 function validate()
-{    document.getElementById('election').value=document.getElementById('election_id').value;
-var x=document.getElementById('election').value;
-if(x=="Select"){
-	alert("Please select the election");
-	return false;
-}else{
-document.DepActionForm.action="/EMS/setvoter.do";
-document.DepActionForm.method="post";
-document.DepActionForm.submit();
-return true;
+{    
+	document.getElementById('election').value=document.getElementById('election_id').value;
+	var x=document.getElementById('election').value;
+	var action=document.getElementById("action");
+	if (action.disabled==true){
+	
+		if(x=="Select"){
+			alert("Please select the election");
+			return false;
+		}else{
+			document.DepActionForm.action="/EMS/setvoter.do";
+			document.DepActionForm.method="post";
+			document.DepActionForm.submit();
+			return true;
+		}
+	}else{
+		if(x=="Select"){
+        		alert("Please select the election");
+		        return false;
+		}else{
+			document.DepActionForm.action="/EMS/setvoter.do";
+			document.DepActionForm.method="post";
+			document.DepActionForm.submit();
+			return true;
+		}
+	}
 }
+function disable(){
+	var t=document.getelementById('search_keyword').value;
+	if(t.length>0){
+		var x=document.getElementByid("acttion");
+		x.disabled=true;
+	}else{
+		var x=document.getElementByid("acttion");
+                x.disabled=false;
+	}
 }
-
          function winresize()
          {
           //alert(document.width);
@@ -150,11 +174,7 @@ return true;
          <table align="left" width="100%" class="datagrid" style="border:solid 1px #e0e8f5;" dir="<%=rtl%>" align="<%=align%>">
             <tr class="header">
                <td  width="100%" align="center" colspan="2" dir="<%=rtl%>">
-                  Search Voter
-<%--<%=resource.getString("login.searchinstitute.institutesearch")%>--%>
-
-    <form name="DepActionForm" id="f1" onsubmit="return validate();">
-      <table  align="left" width="100%"  class="datagrid"  style="border:solid 1px #e0e8f5;" dir="<%=rtl%>" align="<%=align%>">
+                  Set Voter Interface
         </td></tr>
   <tr style="background-color:#e0e8f5;"><td width="800px"  >
           <table dir="<%=rtl%>" align="<%=align%>">
@@ -177,95 +197,46 @@ return true;
 <option selected value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
 <option value="email">User ID<%--<%=resource.getString("managername")%>--%></option>
 <option value="voterName">Voter Name<%--<%=resource.getString("managername")%>--%></option>
-<option value="department">Department<%--<%=resource.getString("managerid")%>--%></option>
-<option value="course">Course</option>
-<%--<option value="city"><%=resource.getString("city")%></option>--%>
-
-
 </select>
-
-          
      </td>
-
               </tr></table></td></tr>
   <tr class="header"><td dir="<%=rtl%>" align="left" colspan="2"><%=resource.getString("login.searchinstitute.sortby")%></td></tr>
    <tr style="background-color:#e0e8f5;">
        <td align="left" colspan="2">
-           <table>
+           <table width="100%">
   <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.field")%></td><td><select name="sort_by" id="sort_by" size="1" onChange="fun()" id="">
 <option selected value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
 <option value="voterName">Voter Name<%--<%=resource.getString("managername")%>--%></option>
-<option value="department">Department<%--<%=resource.getString("managerid")%>--%></option>
-<option value="course">Course</option>
+<option value="email">User Id<%--<%=resource.getString("managername")%>--%></option>
 </select></td>
-                           </tr></table>
- <table>
-  <tr><td dir="<%=rtl%>" align="<%=align%>">Action</td><td><select   size="1" name="action" onChange="fun()" id="action">
-
-<option selected value="Select">Current Page<%--<%=resource.getString("managername")%>--%></option>
-<option  value="All">All<%--<%=resource.getString("managername")%>--%></option>
-
-
-
-</select></td>
+<td   height="25px"  align="center" class="btn2">
+                      Select Election
+                            <select name="electionId" class="btn2" id="election_id" size="1">
+                             <option value="Select">Select</option>
+                            <%if(election.size()>0){%>
+                             <%
+                            for(int i=0;i<election.size();i++)
+                            {
+                            %>
+                            <option value="<%=election.get(i).getId().getElectionId()%>"><%=election.get(i).getElectionName() %></option>
+                            <%}%>
+                            <%}%>                                                                                    
+   </select>&nbsp;&nbsp;&nbsp;
+  <input type="hidden" name="election" id="election"/>
+Action<select   size="1" name="action" class="btn2" onChange="fun()" id="action">
+                            <option selected value="Select">Current Page<%--<%=resource.getString("managername")%>--%></option>
+                            <option  value="All">All<%--<%=resource.getString("managername")%>--%></option>
+                            </select>&nbsp;&nbsp;&nbsp;<input type="button" onclick="return validate();" class="btn2" name="button" value="Set Voter" />
+&nbsp;&nbsp;&nbsp;
+</td>
                            </tr>
+                       </table>
 
-
-           </table>
-
-      </td>
-
-  </tr>
-    <tr><td colspan="4"   height="25px" width="50px" align="center">
-
-<% System.out.println("The size of election is"+election.size());%>
-
-          <b>Select Election </b>
-         <%if(election.size()>0){%>
-         <select name="electionId" id="election_id" size="1">
-	<option value="Select">Select</option>
-                <%
-
-for(int i=0;i<election.size();i++){
-%>
-     <option value="<%=election.get(i).getId().getElectionId()%>"><%=election.get(i).getElectionName() %></option>
- 
-<% System.out.println("The size of election is"+election.get(i).getElectionName());%>
-     <%}%>
-   </select>  <input type="hidden" name="election" id="election"/>
-     <%
-
-for(int i=0;i<election.size();i++){
-%>
-
-     
-     <%}%>
-
-<%}else{%>No Election<%}%>
-
-        </td></tr>
-     <tr><td><input type="button" onclick="return validate();" name="button" value="Set Voter" />
-    <input type="button" name="button" value="Back" onclick="return quit()"/>
-      </td></tr>
-  <tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="/EMS/votersetup.do" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
-     
- 
- 
+                        </td>
+            </tr>
+<tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="/EMS/votersetup.do" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
        </table>
-
-
-
-   
-
-
 <input  name="status" type="hidden" id="status"/>
-
- 
- 
-
 </form>
-
-    
-
 </body>
 </html>
