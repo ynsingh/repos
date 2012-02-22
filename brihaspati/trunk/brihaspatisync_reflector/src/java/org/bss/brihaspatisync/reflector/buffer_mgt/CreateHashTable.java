@@ -3,7 +3,7 @@ package org.bss.brihaspatisync.reflector.buffer_mgt;
 /**
  * CreateHashTable.java
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG,IIT Kanpur.
+ * Copyright (c) 2012 ETRG,IIT Kanpur.
  */
  
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class  CreateHashTable {
         * resetPointer method is used to reset the values stored in hashtable after packets has deleted from queue.
         *
         */ 
-        public synchronized void resetPointer(int decreasepointer,String type){
+        public void resetPointer(int decreasepointer,String type){
                 try{
 			Hashtable ht=setPointertoHashtable(type);
                         ArrayList myArrayList=new ArrayList(ht.entrySet());
@@ -87,7 +87,7 @@ public class  CreateHashTable {
          *
          */ 
 	     	
-        public synchronized void setPointer(String ip,int pointer ,String type){
+        public void setPointer(String ip,int pointer ,String type){
 		Hashtable ht=setPointertoHashtable(type);
                 try {
                         ht.put(ip,pointer);
@@ -107,7 +107,7 @@ public class  CreateHashTable {
 		}catch(Exception e){System.out.println("Error in setPointer Method in CreateHashTable class ");}
         }
     
-	public synchronized Vector getPointer() throws Exception {
+	public Vector getPointer() throws Exception {
   		return this.vector;
         }
 
@@ -115,7 +115,7 @@ public class  CreateHashTable {
          * To get the pointer value of given ip.
          */
 	
-	public synchronized int getValue(String ip,String type) {
+	public int getValue(String ip,String type) {
 		Hashtable ht=setPointertoHashtable(type);
                 try {
 			if(ht.containsKey(ip)){

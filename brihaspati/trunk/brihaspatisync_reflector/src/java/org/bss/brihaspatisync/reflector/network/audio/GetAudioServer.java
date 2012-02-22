@@ -3,7 +3,7 @@ package org.bss.brihaspatisync.reflector.network.audio;
  * GetAudioServer.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG, IIT Kanpur
+ * Copyright (c) 2012 ETRG, IIT Kanpur
  */
 
 import java.io.IOException;
@@ -32,6 +32,7 @@ import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on dec2011
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Modify the transmit thread.
  */
 
 public class GetAudioServer {
@@ -39,7 +40,7 @@ public class GetAudioServer {
 	private static GetAudioServer getAudio=null;
    	private HttpServer server =null;
 	private int server_port = RuntimeDataObject.getController().getAudioGetPort();
-
+	
 	public static GetAudioServer getController() throws Exception {
     		if(getAudio==null)
         		getAudio=new GetAudioServer();
@@ -70,28 +71,31 @@ public class GetAudioServer {
 
 class GetRequestHandler implements HttpHandler {
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
-  	public void handle(HttpExchange exchange) throws IOException {
+	
+  	public synchronized void handle(HttpExchange exchange) throws IOException {
   		try{
 			String requestMethod = exchange.getRequestMethod();
 			if (requestMethod.equalsIgnoreCase("GET")) {
 		      		Headers responseHeaders = exchange.getResponseHeaders();
-            			responseHeaders.set("Content-Type", "application/octet-stream");
+            			responseHeaders.set("Content-Type", "text/plain");
             			exchange.sendResponseHeaders(200, 0);
 				Headers responseHeader = exchange.getRequestHeaders();
                                 String lecture_id=responseHeader.get("session").toString();
-					
-            			OutputStream responseBody = exchange.getResponseBody();
 				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
+            			OutputStream responseBody = exchange.getResponseBody();
 				try {
 					MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
 	                                BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
-        	                        AudioInputStream input=(AudioInputStream)(buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id));
-                	                if(input!=null) {
-						AudioSystem.write(input,AudioFileFormat.Type.WAVE,responseBody);
+        	                        String input=(String)(buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id));
+                	                if(input!=null) {	
+						File f=new File(lecture_id+"/"+input+".wav");	
+						AudioInputStream ais =AudioSystem.getAudioInputStream(new FileInputStream(f.getAbsolutePath()));
+						AudioSystem.write(ais,AudioFileFormat.Type.WAVE,responseBody);
 					}
                                 }catch(Exception e){}
 				responseBody.flush();
 				responseBody.close();
+				exchange.notify();
            		}
 		}catch(Exception exe){}
 	}

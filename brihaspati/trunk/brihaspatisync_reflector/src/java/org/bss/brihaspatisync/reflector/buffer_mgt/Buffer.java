@@ -4,11 +4,12 @@ package org.bss.brihaspatisync.reflector.buffer_mgt;
  * Buffer.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG,IIT Kanpur.
+ * Copyright (c) 2012 ETRG,IIT Kanpur.
  */
 
 
 import java.util.Vector; 
+import java.io.File; 
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal  </a> 
@@ -55,29 +56,37 @@ public class Buffer {
         }
 	 
 	/**
-         * Remove an Object from buffer
-         */
-     	public synchronized void remove() {
-                if((buffer.size() > 0) && (data.size() > 0)){
-			buffer.removeElementAt(0);
-			data.removeElementAt(0);
-                }
-        }
-	
-	/**
 	 * remove element from buffer 
 	 */
 	
-	public synchronized void removeRange(int fromIndex, int endIndex) {
+	public synchronized void removeRange(int fromIndex, int endIndex,String type) {
 		if(buffer.size() > endIndex){
 			for(int j=fromIndex;j<endIndex;j++){
 				buffer.removeElementAt(0);
 				data.removeElementAt(0);
+				if(type.startsWith("Audio_Post")){
+					renameFileName(type);
+				}
 			}
 		}
    	}
 		
-
+	private void renameFileName(String type){
+		try {	
+			for(int i=0;i<data.size();i++){
+				int old_filePrefix=Integer.parseInt(getObject(i).toString());
+				int new_filePrefix=old_filePrefix-1;
+				data.setElementAt(Integer.toString(kk),i);
+				{
+					String str=type.replace("Audio_Post","");
+                                        File oldfile=new File(str+"/"+Integer.toString(new_filePrefix)+".wav"); //0
+					oldfile.delete();
+                                        File newfile=new File(str+"/"+Integer.toString(old_filePrefix)+".wav");//1
+					newfile.renameTo(oldfile);
+				}
+			}
+		}catch(Exception e){System.out.println(e.getMessage());}
+	}	
 	/**
          * Return <b>true</b> if the buffer is empty.
          */
