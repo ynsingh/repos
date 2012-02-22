@@ -76,7 +76,7 @@ public class Buffer {
 			for(int i=0;i<data.size();i++){
 				int old_filePrefix=Integer.parseInt(getObject(i).toString());
 				int new_filePrefix=old_filePrefix-1;
-				data.setElementAt(Integer.toString(kk),i);
+				data.setElementAt(Integer.toString(new_filePrefix),i);
 				{
 					String str=type.replace("Audio_Post","");
                                         File oldfile=new File(str+"/"+Integer.toString(new_filePrefix)+".wav"); //0
