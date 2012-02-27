@@ -41,6 +41,7 @@ import java.util.Vector;
 import java.util.StringTokenizer;
 //Turbine Classes
 import org.apache.torque.util.Criteria;
+import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineGroup;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
@@ -57,6 +58,7 @@ import org.iitk.brihaspati.modules.utils.CourseUserDetail;
  *  @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
+ *  @modified Date: 27-02-2012(jaivir,seema,kishore)
  */
 
 public class StudentInstructorMAP
@@ -105,17 +107,17 @@ public class StudentInstructorMAP
 						insName=insName+" "+element2.getLastName();
                                 		String loginname=element2.getUserName();
 						String groupName=GroupUtil.getGroupName(gid);
-						StringTokenizer mdgroupName=new StringTokenizer(groupName,"_");
+						/*StringTokenizer mdgroupName=new StringTokenizer(groupName,"_");
 						String oldgroupName="";
-						String addIid="";
+						String addIid=st[1];
                                 		while(mdgroupName.hasMoreTokens())
                                 		{
                                         		oldgroupName=mdgroupName.nextToken();
                                         		addIid=mdgroupName.nextToken();
-                                		}
-						ErrorDumpUtil.ErrorLog("inst Id from grpname=="+addIid);
+                                		}*/
 						///////
 						//add institute id in loginname as loginname_instituteid 
+						String addIid=StringUtils.substringAfterLast(groupName,"_");
 						loginname=loginname+"_"+addIid;
 						///////////////////	
 						boolean checkuser=groupName.endsWith(loginname);

@@ -40,6 +40,7 @@ import java.util.Collections;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.StringTokenizer;
+import org.apache.commons.lang.StringUtils;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
@@ -63,7 +64,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
- * @modify date:23-12-2010,10-02-2011,05-08-2011(Richa)
+ * @modify date:23-12-2010,10-02-2011,05-08-2011(Richa),27-02-2012(jaivir,seema,kishore)
  */
 public class InstituteIdUtil
 {
@@ -195,13 +196,9 @@ public class InstituteIdUtil
 					instidlist.add(e);
 				} else {
                                         String gname=GroupUtil.getGroupName(s);
-                                        StringTokenizer st=new  StringTokenizer(gname,"_");
-                                        for(int j=0;st.hasMoreTokens();j++){
-                                                String instid=st.nextToken();
-                                                e=st.nextToken();
-                                                instidlist.add(e);
-					}
-                                }
+					e=StringUtils.substringAfterLast(gname,"_");
+                                        instidlist.add(e);
+                                	}
                         }
                 }catch(Exception ex){ErrorDumpUtil.ErrorLog("Exception in getting all institute id according to  user id --[InstituteIdUtil]"+ex);}
                 return instidlist;
@@ -380,8 +377,7 @@ public class InstituteIdUtil
                                 TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(k);
                                 int s=(element.getGroupId());
                                 String gname=GroupUtil.getGroupName(s);
-                                String actgname[]=gname.split("_");
-                                String InsId=actgname[1];
+                                String InsId=StringUtils.substringAfterLast(gname,"_");
                                 if(!instidlist.contains(InsId))
                                         instidlist.add(InsId);
                         }
