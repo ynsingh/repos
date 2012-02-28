@@ -28,18 +28,12 @@ import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 public class GetAudioStream implements Runnable {
 
-	private Thread runner=null;
-	private Thread playThread=null;
 	private boolean flag=false;
+	private Thread runner=null;
 	private static GetAudioStream get_audio=null;
-	private SourceDataLine sourceDataLine;
-	private InputStream is;
 	private AudioFormat audioFormat;
-	private byte audioBytes[]=null;
-	private AudioInputStream ais=null;
 	private ClientObject clientObject=ClientObject.getController();
         private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
-	private Vector audioVector=new Vector();
 
 	
 	/**
@@ -85,25 +79,43 @@ public class GetAudioStream implements Runnable {
 			org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
                         h.setName("session");
                         h.setValue(clientObject.getLectureID());
+			audioFormat=getAudioFormat();
 		 	while(flag) {
 				try {
                                 	HttpClient client = new HttpClient();
-	                                GetMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":2001");
+	                                GetMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":2002");
         	                        client.setConnectionTimeout(20000);
 					method.setRequestHeader(h);
+					// Http Proxy Handler	
+					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
+                                                HostConfiguration config = client.getHostConfiguration();
+                                                config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
+                                                Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
+                                                AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
+                                                client.getState().setProxyCredentials(authScope, credentials);
+                                        }
+									
                         	        int statusCode = client.executeMethod(method);
         		        	byte audioBytes[]=method.getResponseBody();
         	        		method.releaseConnection();
-					
-					AudioInputStream ais=javax.sound.sampled.AudioSystem.getAudioInputStream(new ByteArrayInputStream(audioBytes));
+					AudioInputStream ais = new AudioInputStream(new ByteArrayInputStream(audioBytes),audioFormat, audioBytes.length / getAudioFormat().getFrameSize());
 					if((ais != null) && (audioBytes.length > 70))
                               			AudioPlayer.getController().putAudioStream(ais);
 					ais.close();
 				}catch(Exception we){}
-				
                			try { runner.sleep(5000); runner.yield(); }catch(Exception ex){}
                         }
-		}catch(Exception exe){try { runner.sleep(100); runner.yield(); }catch(Exception ex){}System.out.println("Error on get stream in GetAudioStream  "+exe.getMessage());}
+		}catch(Exception exe){try { runner.sleep(5000); runner.yield(); }catch(Exception ex){}System.out.println("Error on get stream in GetAudioStream  "+exe.getMessage());}
 	}
+	
+	private AudioFormat getAudioFormat(){
+                    float sampleRate = 8000;//8000,11025,16000,22050,44100
+                    int sampleSizeInBits = 16;  //8,16
+                    int channels = 1;   //1,2
+                    boolean signed = true; //true,false
+                    boolean bigEndian =true; //true,false
+                    return new AudioFormat(sampleRate,sampleSizeInBits,channels,signed,bigEndian);
+        }
+
 
 }

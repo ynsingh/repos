@@ -7,9 +7,14 @@ package org.bss.brihaspatisync.tools.audio;
  * Copyright (c) 2012 ETRG,IIT Kanpur.
  */
 
-import javax.sound.sampled.*;
-import java.io.*;
 import java.util.Vector;
+
+import javax.sound.sampled.Mixer;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.AudioInputStream;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on Jan2012.
@@ -125,13 +130,11 @@ public class AudioPlayer implements Runnable {
 				if(audioVector.size() > 1){
 					AudioInputStream input=(AudioInputStream)audioVector.get(0);
 					audioVector.remove(0);
-					startSourceLine();
 					if(input != null ) {	
 						byte buffer[] = new byte[bufferSize];
 						try {
         			                        int count;
                 			                while ((count = input.read(buffer, 0, buffer.length)) != -1) {
-								System.out.println("count     "+count+" bufferSize "+bufferSize);
 								if(count>0)
                                 					sourceDataLine.write(buffer, 0, count);
 			                                }
@@ -140,11 +143,9 @@ public class AudioPlayer implements Runnable {
 						}
 					}
 					try {
-						stopSourceLine();
 						input.reset();
 						input.close();
 						input=null;
-						try {runner.sleep(50);runner.yield();}catch(Exception e){}	
 					}catch(Exception ew){} 
 				}//end of if
 			}catch(Exception ex){System.out.println("Error in AudioPlayer run() "+ex.getMessage());}

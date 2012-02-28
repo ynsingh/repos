@@ -81,11 +81,11 @@ public class LocalServer implements Runnable {
 		        try {
 				HttpClient client = new HttpClient();
 				HttpMethod method=null;
-				if(runtime_object.getVideoServer().equals(""))
+				if(runtime_object.getVideoServer().equals("127.0.0.1"))
 					method = new GetMethod("http://localhost:8090");
 				else
 					method = new GetMethod("http://"+runtime_object.getVideoServer()+":"+runtime_object.getVideoServerPort());
-		                client.setConnectionTimeout(800);
+		                client.setConnectionTimeout(80000);
                                 method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
 				// Http Proxy Handler
 				if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
@@ -106,8 +106,6 @@ public class LocalServer implements Runnable {
 						if((clientObject.getUserRole()).equals("instructor")){
 							VideoPanel.getController().runInstructorVidio(image);
 						}else {
-							//StudentBufferImage.getController().handleBuffer();
-                                                        //StudentBufferImage.getController().put(image);
                                                         VideoPanel.getController().runStudentVidio(image);
 						}
 					}

@@ -83,7 +83,6 @@ public class PostSharedScreen implements Runnable {
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
-			//Desktop_Sharing.getController().setSclollEnable_Decable(false);
 			System.out.println("PostSharedScreen start successfully !!");
 		}
         }
@@ -97,7 +96,6 @@ public class PostSharedScreen implements Runnable {
 			flag=false;
                         runner.stop();
                         runner = null;
-			//Desktop_Sharing.getController().setSclollEnable_Decable(false);
 			System.out.println("PostSharedScreen stop successfully !!");
                 }
         }
@@ -137,15 +135,17 @@ public class PostSharedScreen implements Runnable {
 					HttpClient client = new HttpClient();
 			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":8884");
 					client.setConnectionTimeout(8000);
-					BufferedImage bimg=captureScreen();
-                                	java.io.FileOutputStream fout = new java.io.FileOutputStream("image.jpeg");
-					JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(fout);
-                        	        JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
-                                	enParam.setQuality(0.25F, true);
-	                                jencoder.setJPEGEncodeParam(enParam);
-        	                        jencoder.encode(bimg);
-                	                fout.close();
-                        	        postMethod.setRequestBody(new FileInputStream("image.jpeg"));
+					try {
+						BufferedImage bimg=captureScreen();
+	                                	java.io.FileOutputStream fout = new java.io.FileOutputStream("image.jpeg");
+						JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(fout);
+                	        	        JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
+                        	        	enParam.setQuality(0.25F, true);
+	                                	jencoder.setJPEGEncodeParam(enParam);
+        	                	        jencoder.encode(bimg);
+	                	                fout.close();
+					}catch(Exception ew){}
+       	                	        postMethod.setRequestBody(new FileInputStream("image.jpeg"));
 	               			postMethod.setRequestHeader(h);
 					
 					// Http Proxy Handler
@@ -160,10 +160,7 @@ public class PostSharedScreen implements Runnable {
         	               		int statusCode1 = client.executeMethod(postMethod);
                 	       		postMethod.getStatusLine();
                        			postMethod.releaseConnection();
-                       			try {
-	                               		runner.sleep(100);
-        	                       		runner.yield();
-                	               	}catch(Exception ex){}
+                       			try {	runner.sleep(100); runner.yield(); }catch(Exception ex){}
 					StatusPanel.getController().setdestopClient("yes");
 				}catch(Exception e){    StatusPanel.getController().setdestopClient("no"); }
 			}

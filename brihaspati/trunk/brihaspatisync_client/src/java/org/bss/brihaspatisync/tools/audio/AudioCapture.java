@@ -107,7 +107,6 @@ public class AudioCapture {
 		targetDataLine.drain();
 	        targetDataLine.close();
 		System.out.println("stopping audio capture successfull");
-		
         }
 
 	/**

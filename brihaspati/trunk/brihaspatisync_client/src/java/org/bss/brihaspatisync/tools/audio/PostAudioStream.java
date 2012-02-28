@@ -13,17 +13,9 @@ import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import java.net.URLEncoder;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.Mixer;
-import javax.sound.sampled.TargetDataLine;
-import java.io.IOException;
-import java.io.InputStream;
+
 import java.io.File;
+
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 
@@ -40,7 +32,8 @@ public class PostAudioStream implements Runnable {
 	private boolean flag=false;
 	private static PostAudioStream post_audio=null;
 	private ClientObject clientObject=ClientObject.getController();
-
+	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
+	
 	/**
  	 * Controller for the class.
  	 */
@@ -93,6 +86,14 @@ public class PostAudioStream implements Runnable {
                                 if((new File(filename)).exists()) {
                                         postMethod.setRequestBody(new java.io.FileInputStream(filename));
 					postMethod.setRequestHeader(h);
+					// Http Proxy Handler	
+					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
+                                                HostConfiguration config = client.getHostConfiguration();
+                                                config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
+                                                Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
+                                                AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
+                                                client.getState().setProxyCredentials(authScope, credentials);
+                                        }
                                 	int statusCode1 = client.executeMethod(postMethod);
 				}
                                 postMethod.getStatusLine();

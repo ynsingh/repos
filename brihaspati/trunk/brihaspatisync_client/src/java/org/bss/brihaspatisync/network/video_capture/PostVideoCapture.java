@@ -111,8 +111,9 @@ public class PostVideoCapture implements Runnable {
 					HttpClient client = new HttpClient();
 			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":8091");
 					client.setConnectionTimeout(800000);
-					
+						
 					BufferedImage bimg=BufferImage.getController().get(0);
+					BufferImage.getController().remove();
                                         java.io.FileOutputStream fout = new java.io.FileOutputStream("image1.jpeg");
                                         JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(fout);
                                         JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
@@ -135,15 +136,14 @@ public class PostVideoCapture implements Runnable {
         	               		int statusCode1 = client.executeMethod(postMethod);
                 	       		postMethod.getStatusLine();
                        			postMethod.releaseConnection();
-					BufferImage.getController().remove();
                        			try {
 	                               		runner.sleep(100);runner.yield();
         	                       	}catch(Exception ex){}
 				}else {
-					try { runner.sleep(1000);runner.yield();}catch(Exception ex){}
+					try { runner.sleep(100);runner.yield();}catch(Exception ex){}
 				}	
 			}catch(Exception e){	
-				try { runner.sleep(1000);runner.yield();}catch(Exception ex){}
+				try { runner.sleep(100);runner.yield();}catch(Exception ex){}
 				System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());
 			}	
 		}
