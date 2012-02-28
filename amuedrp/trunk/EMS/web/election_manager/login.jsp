@@ -1008,9 +1008,7 @@ document.write('</div></span>');
                     <li>
                         <a href="<%=request.getContextPath()%>/Voter/cat_data_import_read.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Import Data</a>
                     </li>
-                     <li>
-                    <a href="<%=request.getContextPath()%>/election_manager/block_voter.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Block Voter</a>
-                </li>
+                     
                 </ul>
                 </li>
 
@@ -1029,8 +1027,18 @@ document.write('</div></span>');
                     </ul>
                 </li>
                 <li>
+                    <a href="<%=request.getContextPath()%>/election_manager/block_voter.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Block Voter</a>
+                </li>
+                <li>
                     <a href="<%=request.getContextPath()%>/election_manager/voter.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Set Voter List</a>
                 </li>
+                     <li>
+                    <a href="<%=request.getContextPath()%>/election_manager/voter1.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Set Login Password</a>
+                </li>
+		<li>
+                    <a href="<%=request.getContextPath()%>/election_manager/SetVoterMail.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Set Voter Alternate Mail</a>
+                </li>
+
             </ul>
         </li>
             <li>

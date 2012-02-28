@@ -6,15 +6,11 @@
 package com.myapp.struts.utility;
 
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
-import javax.mail.MessagingException;
+import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.Message.RecipientType;
@@ -131,4 +127,67 @@ try
 			e.printStackTrace();
 		}
 	}
+
+    public void sendAlternatemail(){
+// host = "smtp.gmail.com";
+try
+{
+  String os=(String)System.getProperty("os.name");
+   //System.out.println("OS----------->"+os);
+    Properties libmspro = new Properties();
+
+   if(os.startsWith("Linux"))
+   {
+    path=System.getProperty("user.home");
+     libmspro.load(new FileInputStream(path+"/ems.properties"));
+   }
+   else
+   {
+       path="c:\\";
+        libmspro.load(new FileInputStream(path+"\\ems.properties"));
+   }
+
+        userid = libmspro.getProperty("webadmin");
+        buffer = libmspro.getProperty("webpass");
+	host = libmspro.getProperty("host");
+        port = libmspro.getProperty("port");
+        frmAdd = libmspro.getProperty("faddress");
+
+Properties props = System.getProperties();
+props.put("mail.smtp.starttls.enable", "true");
+props.put("mail.smtp.host", host);
+props.setProperty("mail.transport.protocol", "smtp");
+props.put("mail.smtp.user", userid);
+props.put("mail.smtp.password",buffer);
+props.put("mail.smtp.port", port);
+props.put("mail.smtp.auth", "true");
+Session session = Session.getDefaultInstance(props, null);
+MimeMessage message = new MimeMessage(session);
+InternetAddress fromAddress = null;
+ InternetAddress[] toAddress =null;
+
+try {
+fromAddress = new InternetAddress(frmAdd);
+toAddress =  InternetAddress.parse(to);
+} catch (AddressException e) {
+
+e.printStackTrace();
+}
+message.setFrom(fromAddress);
+ message.setRecipients(Message.RecipientType.TO, toAddress);
+message.setSubject(subject);
+message.setText(text);
+
+
+//SMTPSSLTransport transport =(SMTPSSLTransport)session.getTransport("smtp");
+String pass=buffer.toString();
+Transport transport = session.getTransport("smtp");
+transport.connect(host, userid, pass);
+transport.sendMessage(message, message.getAllRecipients());
+transport.close();
+} catch (Exception e) {
+e.printStackTrace();
+}
+}
+
 }

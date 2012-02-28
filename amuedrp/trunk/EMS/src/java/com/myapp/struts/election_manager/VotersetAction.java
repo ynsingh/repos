@@ -54,6 +54,8 @@ public class VotersetAction extends org.apache.struts.action.Action {
 		String institute_id=(String)session.getAttribute("institute_id");
 		Election e=ElectionDAO.searchElection(election, institute_id);
 		String action=loginActionForm.getAction();
+                if(action==null)
+                    action="Current";
 	 	if(action.equalsIgnoreCase("All")){
      			institute_id=(String)session.getAttribute("institute_id");
     			VoterRegistrationDAO voter=new VoterRegistrationDAO();
@@ -80,10 +82,14 @@ public class VotersetAction extends org.apache.struts.action.Action {
 
             				VoterRegistrationDAO.setVoter(o);
          				String path = servlet.getServletContext().getRealPath("/");
-					System.out.println(path+obj1.getEmail()+admin_password+"One time key for voting for  : "+e.getElectionName()+" election"+"Your one time key for Voting Process for "+e.getElectionName()+" Election Only is= "+admin_password);
+		//			System.out.println(path+obj1.getEmail()+admin_password+"One time key for voting for  : "+e.getElectionName()+" election"+"Your one time key for Voting Process for "+e.getElectionName()+" Election Only is= "+admin_password);
             				x=new Email(path,obj1.getEmail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for casting your ballot for "+e.getElectionName()+" Election is "+admin_password);
                    			x.send();
                 			log.add( "\nOne time key has been send successfully to= "+obj1.getEmail()+"\n");
+                                        if(obj1.getAlternateMail()!=null)
+                                        mailSend1(path,obj1.getAlternateMail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+admin_password+"\n");
+
+                                        log.add( "\nOne time key has been send successfully to Alternate Mail= "+obj1.getAlternateMail());
         
 				}else{
 					log.add( "\nOne time key has not been send to = "+obj1.getEmail()+ " because Voter already cast their vote"+"\n");
@@ -112,9 +118,13 @@ public class VotersetAction extends org.apache.struts.action.Action {
             				o.setPassword(admin_password1);
             				VoterRegistrationDAO.setVoter(o);
 	         			String path = servlet.getServletContext().getRealPath("/");
-            				x=new Email(path,obj1.getEmail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+admin_password+"\n");
-                   			x.send();
+            				mailSend(path,obj1.getEmail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+admin_password+"\n");
+                   			if(obj1.getAlternateMail()!=null)
+                                        mailSend1(path,obj1.getAlternateMail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+admin_password+"\n");
+
 					log.add( "\nOne time key has been send successfully to= "+obj1.getEmail());
+                                        log.add( "\nOne time key has been send successfully to Alternate Mail= "+obj1.getAlternateMail());
+
 				}else{
 					log.add( "\nOne time key has not been send to = "+obj1.getEmail()+ " because Voter already cast their vote");
 				}
@@ -137,4 +147,16 @@ public class VotersetAction extends org.apache.struts.action.Action {
 		request.setAttribute("msg", log);
 		return mapping.findForward("success");
     	}
+         public void mailSend(String path,String to,String admin_password,String subject,String body){
+            x=new Email(path,to,admin_password,subject,body);
+            x.send();
+
+
+    }
+      public void mailSend1(String path,String to,String admin_password,String subject,String body){
+            x=new Email(path,to,admin_password,subject,body);
+            x.sendAlternatemail();
+
+
+    }
 }

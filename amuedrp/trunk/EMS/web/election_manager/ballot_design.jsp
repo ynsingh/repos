@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -24,7 +23,7 @@ if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,vot
     <head>
         <meta http-equiv="Content-Type"  content="text/html; charset=UTF-8">
         <title>Ballot Design</title>
-        
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
         <script type="text/javascript" language="javascript">
 
 function send()
@@ -42,7 +41,7 @@ window.location="<%=request.getContextPath()%>/electionmanager.do";
     <%}%>
     return false;
 }
-
+   
 function newXMLHttpRequest() {
 var xmlreq = false;
 // Create XMLHttpRequest object in non-Microsoft browsers
@@ -89,16 +88,11 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 }
 }
-<link type="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 function previewBallot() {
-   //alert("index="+index+" current="+current);
-   // alert(document.getElementById("ballot").style.display);
+   
   if(document.getElementById("ballot").style.display=="inline")
         {
-            <%--document.getElementById("ballot").style.display="none";
-            document.getElementById("previewtext").textContent = "Preview Ballot";
-            return false;--%>
-                        window.location = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/manageElection.do";
+             window.location = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/manageElection.do";
         }
     var req = newXMLHttpRequest();
 document.getElementById("ballot").style.display="block";
@@ -107,7 +101,7 @@ req.onreadystatechange = getReadyStateHandler(req, designBallot);
 if(x==null)
     x=(String)request.getParameter("id");
 %>
-       
+
  req.open("POST","<%=request.getContextPath()%>/getPosition.do?getElectionId=<%=x%>", true);
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -116,6 +110,8 @@ return true;
 }
 function designBallot(cartXML)
 {
+
+
 var htm="";
 document.getElementById("ballot").innerHTML="";
 var em = cartXML.getElementsByTagName("positions")[0];
@@ -148,7 +144,6 @@ for(iii=0;iii<em1.length;iii++)
                 divtag.style.width = "590px";
                 divtag.style.align = "center";
                 divtag.style.marginTop = "5px";
-        //end of block
 var positionname1 = em1[iii].getElementsByTagName("positionname");
 var positionname = positionname1[0].firstChild.nodeValue;
 var positionid1 = em1[iii].getElementsByTagName("positionId");
@@ -160,7 +155,7 @@ var instrucT = instruct[0].firstChild.nodeValue;
 var instruct1;
 var instruct2;
 htm = ' <div class="datagrid" align="center" >Position: <strong>'+positionname+'</strong><br><strong >'+ instrucT +' <span style="color: red"></span></strong>';
-htm = htm +'<table class="datagrid" width="100%"><tbody><tr><th style="text-align: left;">Candidate ID</th><th style="text-align: left;">Candidate Name</th><th>Selection</th></tr>';
+htm = htm +'<table class="datagrid" width="100%"><tbody><tr><th style="text-align: left;">Candidate ID</th><th style="text-align: left;">Candidate Name</th><th></th></tr>';
 
 var ca = em1[iii].getElementsByTagName("candidate");
 
@@ -170,11 +165,11 @@ for(jj=0;jj<ca.length;jj++)
         var e;
             if(e1[0].firstChild!=null) e = e1[0].firstChild.nodeValue;
             else e = "";
-//if candidate menifesto not uploded
-var mn1 = ca[jj].getElementByTagname("candidatemn");
-var mn;
-if (mn1[0].firstChild!=null)mn = mn1[0].firstChild.nodeValue;
-	else mn="";
+       // if candidate menifesto not uploaded
+var mn1 = ca[jj].getElementsByTagName("candidatemn");
+ var mn;
+            if(mn1[0].firstChild!=null) mn = mn1[0].firstChild.nodeValue;
+            else mn = "";
 
         var candidatename1 = ca[jj].getElementsByTagName("candidatename");
         var candidatename;
@@ -184,19 +179,21 @@ if (mn1[0].firstChild!=null)mn = mn1[0].firstChild.nodeValue;
 if(mn=="1"){
 if(noofchoice>1)
        {
-               htm = htm +'<td><input type="checkbox" value="'+jj+'" onclick="checkCandidateLimit('+iii+')" name="entry'+iii+'" id="entry'+iii+'" ><a href="/Candidate/viewmenifesto.jsp?id=<%=x%>&amp;pos_id='+positionid+'&amp;candi='+e+'">view Menifesto</a></td></tr>';
+               htm = htm +'<td><input type="checkbox" value="'+jj+'" onclick="checkCandidateLimit('+iii+')" name="entry'+iii+'" id="entry'+iii+'" ><a href="/Candidate/viewmenifesto.jsp?id=<%=x%>&amp;pos_id='+positionid+'&amp;candi='+e+'">View Menifesto</a></td></tr>';
        }
        else
            {
-               htm = htm +'<td><a href="/EMS/Candidate/viewmenifesto.jsp?id=<%=x%>&amp;pos_id='+positionid+'&amp;candi='+e+'">view Menifesto</a></td></tr>';
+               htm = htm +'<td align="center" class="login"><a href="/EMS/Candidate/viewmenifesto.jsp?id=<%=x%>&amp;pos_id='+positionid+'&amp;candi='+e+'">View Menifesto</a></td></tr>';
            }
-}else{
-	htm=htm+'<td align="center">Menifesto not Uploadded</td></tr>';
-	}
+
+        }else{
+               htm = htm +'<td align="center"> </td></tr>';
+
+        }
+
+
     }
   htm = htm + ' </tbody></table></div>';
-//alert("create("+jj+","+iii+",this);");
-//alert(document.getElementById(idadd).attributes.onclick.value);
 divtag.innerHTML =htm;
 document.getElementById("ballot").appendChild(divtag);
 document.getElementById("ballot").style.display="inline";

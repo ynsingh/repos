@@ -71,14 +71,8 @@
       <script language="javascript">
          function fun()
          {
-		disable();    
-<%
-   if(status!=null){
-%>
-            document.DepActionForm.status.value = "<%=status%>";
-<%
-   }
-%>
+             
+        disable();
             document.DepActionForm.action="/EMS/votersetup.do";
             document.DepActionForm.method="post";
             document.DepActionForm.target="f1";
@@ -116,12 +110,14 @@ function validate()
 	}
 }
 function disable(){
-	var t=document.getelementById('search_keyword').value;
+    
+	var t=document.getElementById('search_keyword').value;
+        
 	if(t.length>0){
-		var x=document.getElementByid("acttion");
+            var x=document.getElementById("action");
 		x.disabled=true;
 	}else{
-		var x=document.getElementByid("acttion");
+		var x=document.getElementById("action");
                 x.disabled=false;
 	}
 }
@@ -178,7 +174,7 @@ function disable(){
         </td></tr>
   <tr style="background-color:#e0e8f5;"><td width="800px"  >
           <table dir="<%=rtl%>" align="<%=align%>">
-              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("enterstartingkeyword")%></td><td><input  name="search_keyword" type="text" id="search_keyword" onkeyup="fun()"></td>
+              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("enterstartingkeyword")%></td><td><input  name="search_keyword" type="text" id="search_keyword" onkeyup="fun();"></td>
               <td>
 
 
@@ -196,6 +192,7 @@ function disable(){
  <select name="search_by" onChange="fun()" id="search_by" size="1">
 <option selected value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
 <option value="email">User ID<%--<%=resource.getString("managername")%>--%></option>
+<option value="alternateMail">Alternate Email<%--<%=resource.getString("managername")%>--%></option>
 <option value="voterName">Voter Name<%--<%=resource.getString("managername")%>--%></option>
 </select>
      </td>
@@ -223,7 +220,7 @@ function disable(){
                             <%}%>                                                                                    
    </select>&nbsp;&nbsp;&nbsp;
   <input type="hidden" name="election" id="election"/>
-Action<select   size="1" name="action" class="btn2" onChange="fun()" id="action">
+Action<select   size="1" name="action" class="btn2"  id="action">
                             <option selected value="Select">Current Page<%--<%=resource.getString("managername")%>--%></option>
                             <option  value="All">All<%--<%=resource.getString("managername")%>--%></option>
                             </select>&nbsp;&nbsp;&nbsp;<input type="button" onclick="return validate();" class="btn2" name="button" value="Set Voter" />

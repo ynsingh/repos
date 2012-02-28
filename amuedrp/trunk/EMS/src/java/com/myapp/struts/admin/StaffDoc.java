@@ -42,6 +42,15 @@ public class StaffDoc {
         protected String candidate_id;
         protected String candidateName;
         private String index;
+        private String alternatemail;
+
+    public String getAlternatemail() {
+        return alternatemail;
+    }
+
+    public void setAlternatemail(String alternatemail) {
+        this.alternatemail = alternatemail;
+    }
 
     public String getCandidateName() {
         return candidateName;

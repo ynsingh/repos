@@ -118,7 +118,9 @@
   <action path="/adminpass" scope="request" type="com.myapp.struts.admin.PasswordAction"/>
  <action path="/institute_email" scope="request" type="com.myapp.struts.admin.InstiRegId"/>
 
-
+<action  path="/setvotermail" name="DepActionForm" input="/election_manager/voter.jsp" scope="request" type="com.myapp.struts.election_manager.VotersetAction2">
+               <forward name="success" path="/election_manager/voter_setup.jsp"/>
+           </action>
 
 
        <!--====================================Admin Action Setting===============================================-->
@@ -361,6 +363,11 @@
 <action  path="/setvoter" name="DepActionForm" input="/election_manager/voter.jsp" scope="request" type="com.myapp.struts.election_manager.VotersetAction">
                <forward name="success" path="/election_manager/voter_setup.jsp"/>
            </action>
+                         <action  path="/setvoter1" name="DepActionForm" input="/election_manager/voter1.jsp" scope="request" type="com.myapp.struts.election_manager.VotersetAction1">
+               <forward name="success" path="/election_manager/voter_setup.jsp"/>
+           </action>
+
+
            <action  path="/blockvoter" name="DepActionForm" input="/election_manager/block_voter.jsp" scope="request" type="com.myapp.struts.election_manager.BlockVoterAction">
                <forward name="success" path="/election_manager/voter_setup.jsp"/>
            </action>

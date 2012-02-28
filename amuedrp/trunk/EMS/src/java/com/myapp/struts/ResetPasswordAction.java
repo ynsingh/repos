@@ -53,28 +53,17 @@ try
         SuperAdminActionForm admin=(SuperAdminActionForm)form;
         Login login= new Login();
         user_id1=admin.getUser_id1().trim();
-        
-        
 
         HttpSession session=request.getSession();
         String institute_id=(String)session.getAttribute("institute_id");
-      
-
-
-
 String role=(String)session.getAttribute("login_role");
 
 if(role.equalsIgnoreCase("Superadmin"))
 {
 
     LoginDAO logindao= new LoginDAO();
-
     System.out.println("user_id= "+user_id1);
-
     Login rs = (Login)logindao.getUserId(user_id1);
-
-
-
     if(rs!=null)
         {
     
@@ -96,18 +85,13 @@ if(role.equalsIgnoreCase("Superadmin"))
         String path = servlet.getServletContext().getRealPath("/");
        
 
-            obj1=new Email(path,voter.getEmail(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id="+rs.getUserId()+" Your Password for EMS Login is="+password);
+            obj1=new Email(path,voter.getEmail(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id "+rs.getUserId()+" Your Password for EMS Login is "+password);
          executor.submit(new Runnable() {
 
                 public void run() {
                     obj1.send();
                 }
             });
-
-
-
-
-
       request.setAttribute("msg","Password Succesfully Updated & Mail Sent Successfully");
       return mapping.findForward("success");
         }
@@ -122,7 +106,7 @@ if(role.equalsIgnoreCase("Superadmin"))
 
  
         String path = servlet.getServletContext().getRealPath("/");
-            obj1=new Email(path,staff.getEmailId(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id="+rs.getUserId()+" Your Password for EMS Login is="+password);
+            obj1=new Email(path,staff.getEmailId(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id "+rs.getUserId()+" Your Password for EMS Login is "+password);
          executor.submit(new Runnable() {
 
                 public void run() {
@@ -130,13 +114,8 @@ if(role.equalsIgnoreCase("Superadmin"))
                 }
             });
 
-
-
-
-
       request.setAttribute("msg","Password Succesfully Updated & Mail Sent Successfully");
       return mapping.findForward("success");
-
 
         }
         else{
@@ -149,9 +128,6 @@ if(role.equalsIgnoreCase("Superadmin"))
       return mapping.findForward("success");
 
 }
-   
-
-   
    }
    else if (role.equalsIgnoreCase("Election Manager") || role.equalsIgnoreCase("Election Manager,voter"))
    {
@@ -181,7 +157,7 @@ if(rs.getRole().equalsIgnoreCase("voter"))
         String path = servlet.getServletContext().getRealPath("/");
 
 
-            obj1=new Email(path,voter.getEmail(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id="+rs.getUserId()+" Your Password for EMS Login is="+password);
+            obj1=new Email(path,voter.getEmail(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id "+rs.getUserId()+" Your Password for EMS Login is "+password);
          executor.submit(new Runnable() {
 
                 public void run() {
@@ -191,38 +167,21 @@ if(rs.getRole().equalsIgnoreCase("voter"))
 
  request.setAttribute("msg","Password Succesfully Updated & Mail Sent Successfully");
       return mapping.findForward("success");
-
-
 }
-
-
    }
 else{
 
   request.setAttribute("msg1","As a ElectionManager You Can Reset Voter Password Only");
   return mapping.findForward("success");
-
 }
-
 }
 else{
-
   request.setAttribute("msg1","User ID Not Found");
   return mapping.findForward("success");
-
 }
-
-
-
-
-
-
    }
    else if(role.equalsIgnoreCase("Insti-Admin") ||role.equalsIgnoreCase("Insti-Admin,voter")  )
    {
-
-
-
     LoginDAO logindao= new LoginDAO();
 
 System.out.println("user_id= "+user_id1);
@@ -247,7 +206,7 @@ if(rs.getRole().equalsIgnoreCase("Election Manager")|| rs.getRole().equalsIgnore
 
 
         String path = servlet.getServletContext().getRealPath("/");
-            obj1=new Email(path,staff.getEmailId(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id="+rs.getUserId()+" Your Password for EMS Login is="+password);
+            obj1=new Email(path,staff.getEmailId(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id "+rs.getUserId()+" Your Password for EMS Login is "+password);
          executor.submit(new Runnable() {
 
                 public void run() {
@@ -257,20 +216,12 @@ if(rs.getRole().equalsIgnoreCase("Election Manager")|| rs.getRole().equalsIgnore
 
  request.setAttribute("msg","Password Succesfully Updated & Mail Sent Successfully");
       return mapping.findForward("success");
-
-
-
 }
-
-
    }
 else{
-
   request.setAttribute("msg1","As a Institute Admin You Can Reset Election Manager Password Only");
   return mapping.findForward("success");
-
 }
-
 }
 else{
 
@@ -278,28 +229,7 @@ else{
   return mapping.findForward("success");
 
 }
-
-
-
-
-
    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
      }catch(Exception e)
      {
          e.printStackTrace();
@@ -310,5 +240,4 @@ else{
 return null;
      
           }
-      
 }
