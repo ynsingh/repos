@@ -88,8 +88,7 @@ class GetRequestHandler implements HttpHandler {
 	                                BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
         	                        String input=(String)(buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id));
                 	                if(input!=null) {	
-						File f=new File(lecture_id+"/"+input+".wav");	
-						AudioInputStream ais =AudioSystem.getAudioInputStream(new FileInputStream(f.getAbsolutePath()));
+						AudioInputStream ais =AudioSystem.getAudioInputStream(new FileInputStream(lecture_id+"/"+input+".wav"));
 						AudioSystem.write(ais,AudioFileFormat.Type.WAVE,responseBody);
 					}
                                 }catch(Exception e){}

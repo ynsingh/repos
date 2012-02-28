@@ -61,7 +61,6 @@ public class  BufferMgt {
                                         ip=ip.trim();
                                         if(!(str1.startsWith(ip))){
 						str=buffer.getObject(curpointer);
-						System.out.println("while ke under curpointer---> "+curpointer+" object "+str+" ip "+ip);
                                                 curpointer++;
                                                 setPointer(ip,curpointer,type);
                                                 break;
@@ -69,7 +68,6 @@ public class  BufferMgt {
                                         curpointer++;
                                         setPointer(ip,curpointer,type);
 				}
-				System.out.println("curpointer---> "+curpointer+" object "+str+" ip "+ip);
 				removeBufferAndSetPointer(type);
 				return str;
 			}  
@@ -86,14 +84,15 @@ public class  BufferMgt {
 		try {
 			if(type.startsWith("Audio_Post")){	
 				Buffer buffer=createhashtable.set_getBuffer(type);
-				if(type.startsWith("Audio_Post")){
-					String str=type.replace("Audio_Post","");
-					File f=new File(str);
-					if(!f.exists())
-						f.mkdir();
-					int bytesWritten = AudioSystem.write((AudioInputStream)data,AudioFileFormat.Type.WAVE,new File(str+"/"+Integer.toString(buffer.size())+".wav"));
-					System.out.println("bytes size --->  "+bytesWritten);
-				}
+				try {
+					if(type.startsWith("Audio_Post")){
+						String str=type.replace("Audio_Post","");
+						File f=new File(str);
+						if(!f.exists())
+							f.mkdir();
+						int bytesWritten = AudioSystem.write((AudioInputStream)data,AudioFileFormat.Type.WAVE,new File(str+"/"+Integer.toString(buffer.size())+".wav"));
+					}
+				}catch(Exception ex){}
 				buffer.putObject(Integer.toString(buffer.size()));
 				buffer.put(current_ip);
 			}else {
