@@ -72,14 +72,14 @@ public class MainWindow  extends JFrame implements ActionListener{
                 content.setBackground(new Color(24,116,205));
                 setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
 		setIconImage(new ImageIcon(clr.getResource("resources/images/mainwindow.gif")).getImage());
-                setJMenuBar(createJMenuBar());
+                //setJMenuBar(createJMenuBar());
 
 		desktop = new JDesktopPane();
                 desktop.setBackground(new Color(220,220,220));
 
-                north_Panel=new JPanel();
-                north_Panel.setBackground(new Color(24,116,205));
-                content.add(north_Panel,BorderLayout.NORTH);
+                //north_Panel=new JPanel();
+                //north_Panel.setBackground(new Color(24,116,205));
+                content.add(createJMenuBar(),BorderLayout.NORTH);
 
                 south_Panel=StatusPanel.getController();
                 south_Panel.setBackground(new Color(24,116,205));
@@ -110,7 +110,7 @@ public class MainWindow  extends JFrame implements ActionListener{
 	}
 
 	//Create JmenuBar for Mainwindow frame.
-	private JMenuBar createJMenuBar(){
+	private JPanel createJMenuBar(){
 	        menuBar = new JMenuBar();
 
                 menu1 = new JMenu(Language.getController().getLangValue("MainWindow.menu1"));
@@ -155,8 +155,26 @@ public class MainWindow  extends JFrame implements ActionListener{
                 menuBar.add(menu1);
                 menuBar.add(menu2);
                 menuBar.add(menu3);
+		
+                JPanel sub_EastPanel = new JPanel();
+		sub_EastPanel.setLayout(new BorderLayout());
+		
+		JPanel share_pane = new JPanel();
+                share_pane.setLayout(new BorderLayout());
+		
+		share_pane.add(ShareScreenAndPPT.getController().createGUI(),BorderLayout.EAST);
+		
+                sub_EastPanel.add(menuBar,BorderLayout.WEST);
+               	sub_EastPanel.add(share_pane,BorderLayout.CENTER);
+			
+                north_Panel=new JPanel();
+		north_Panel.setBackground(new Color(24,116,205));
 
-		return menuBar;	
+		JPanel main_EastPanel = new JPanel();
+                main_EastPanel.setLayout(new BorderLayout());
+                main_EastPanel.add(sub_EastPanel,BorderLayout.NORTH);
+                main_EastPanel.add(north_Panel,BorderLayout.SOUTH);	
+		return main_EastPanel;	
 	}
   
 

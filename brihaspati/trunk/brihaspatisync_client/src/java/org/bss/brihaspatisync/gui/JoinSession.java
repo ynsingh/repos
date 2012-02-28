@@ -144,6 +144,7 @@ public class JoinSession {
 			if((client_obj.getUserRole()).equals("instructor")){
                         	org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();
 				org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start();
+				ShareScreenAndPPT.getController().setEnable_Decable();
 			}else {
 				org.bss.brihaspatisync.network.video_capture.GetVideo.getController().start();
 			}

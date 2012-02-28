@@ -58,8 +58,6 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 	private  JButton filledovalButton;
 	private  JButton filledroundrectButton;
 	private  JButton texter;
-	private JButton desk_share=null;
-	private JButton desk_ppt=null;
 	private  JLabel bold;
 	private  JLabel italic;
 	private  JLabel unline;
@@ -165,14 +163,15 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 			eraser.setEnabled(false);		
                 toolBar.add(eraser);
                 toolBar.addSeparator();
-		
+		/*
 		color=new JButton(new ImageIcon(clr.getResource("resources/images/wb/color.png")));
                 color.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.ChooseColourToolTip"));
                 color.setActionCommand("10");
                 color.addActionListener(this);
                 toolBar.add(color);
                 toolBar.addSeparator();
-
+		*/
+		
 		JComboBox colChoice = new JComboBox();
                 //colChoice.setToolTipText("Color");
                 colChoice.addItem(new ImageIcon(clr.getResource("resources/images/wb/color/black")));
@@ -184,22 +183,7 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
                 colChoice.addItem(new ImageIcon(clr.getResource("resources/images/wb/color/yellow")));
                 colChoice.addItem(new ImageIcon(clr.getResource("resources/images/wb/color/white")));
 		toolBar.add(colChoice);
-
-		desk_share=new JButton("Share Screen",new ImageIcon(clr.getResource("resources/images/user/getscreen.jpeg")));
-		desk_share.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopDesktopSharing"));
-		desk_share.setActionCommand("Share-Screen");
-		desk_share.addActionListener(this);
-
-		desk_ppt=new JButton("Share PPT",new ImageIcon(clr.getResource("resources/images/user/getscreen.jpeg")));
-                desk_ppt.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopPPTSharing"));
-                desk_ppt.setActionCommand("Instructor_Allow-PPT");
-                desk_ppt.addActionListener(this);
 		
-		if(role.equals("instructor")) {
-			toolBar.add(desk_share);
-			toolBar.add(desk_ppt);
-		}
-
 		mainPanel.add(toolBar,BorderLayout.PAGE_START);
 		mainPanel.add(WhiteBoardDraw.getController(),BorderLayout.CENTER);
 		JToolBar texttool = new JToolBar("TextToolbar");
@@ -248,9 +232,8 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
             				});
 		
 		texttool.add(f_Name);
-
-		mainPanel.add(texttool,BorderLayout.SOUTH);
-
+		//mainPanel.add(texttool,BorderLayout.SOUTH);
+		toolBar.add(texttool);
 		WhiteBoardDraw.getController().setColorChoice(colChoice);
                 WhiteBoardDraw.getController().setTextChoice(f_Name);
                 WhiteBoardDraw.getController().setSizeChoice(fontsize);
@@ -261,45 +244,8 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 	
 	public void actionPerformed(ActionEvent ae) {
 		String cmd=ae.getActionCommand();
-	 	if(cmd.equals("Share-Screen")) {
-                        HandRaiseAction.getController().actionONRequest("Share-Screen");
-			desk_share.setText("Stop Screen Share");
-			desk_share.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopDesktopSharing"));
-			desk_share.setIcon(new ImageIcon(clr.getResource("resources/images/user/allowscreen.jpeg")));
-			desk_share.setActionCommand("Stop-Share-Screen");
-                }
-
-		if(cmd.equals("Stop-Share-Screen")){
-                        HandRaiseAction.getController().actionONRequest("Instructor_Stop_Allow");
-                        desk_share.setText("Screen Share");
-			desk_share.setIcon(new ImageIcon(clr.getResource("resources/images/user/getscreen.jpeg")));
-			desk_share.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StartDesktopSharing"));
-                        desk_share.setActionCommand("Share-Screen");
-
-		}
-
-		if(cmd.equals("Instructor_Allow-PPT")) {
-                        HandRaiseAction.getController().actionONRequest("Instructor_Allow-PPT");
-                        desk_ppt.setText("Stop PPT Share");
-                        desk_ppt.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopPPTSharing"));
-                        desk_ppt.setIcon(new ImageIcon(clr.getResource("resources/images/user/allowscreen.jpeg")));
-                        desk_ppt.setActionCommand("Stop-Allow-PPT");
-                }
-
-                if(cmd.equals("Stop-Allow-PPT")) {
-                        HandRaiseAction.getController().actionONRequest("Instructor_Stop_Allow");//available");
-                        desk_ppt.setText("PPT Share");
-                        desk_ppt.setIcon(new ImageIcon(clr.getResource("resources/images/user/getscreen.jpeg")));
-                        desk_ppt.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StartPPTSharing"));
-                        desk_ppt.setActionCommand("Instructor_Allow-PPT");
-                }
-		
-		
-		if( (!(cmd.equals("Stop-Allow-PPT"))) && (!(cmd.equals("Instructor_Allow-PPT"))) && (!(cmd.equals("Share-Screen"))) && (!(cmd.equals("Stop-Share-Screen")))){		
-			button_value=Integer.parseInt(cmd);
-                	WhiteBoardDraw.getController().setFigure(button_value);
-		}
-
+		button_value=Integer.parseInt(cmd);
+                WhiteBoardDraw.getController().setFigure(button_value);
         }
 
 	public void mouseClicked(MouseEvent e) { }
