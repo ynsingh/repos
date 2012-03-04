@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.network;
  * ReceiveQueueHandler.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG, IIT Kanpur.
+ * Copyright (c) 2007-2008,2012 ETRG, IIT Kanpur.
  */
 
 import java.io.IOException;
@@ -60,7 +60,7 @@ public class ReceiveQueueHandler implements Runnable{
 		if (runner == null) {
                         runner = new Thread(this);
 			runner.start();
-			System.out.println("ReceiveQueueHandler is Start");
+			System.out.println("ReceiveQueueHandler has started.");
                 }
         }
 
@@ -74,7 +74,7 @@ public class ReceiveQueueHandler implements Runnable{
                 if (runner != null) {
                         runner.stop();
 			runner = null;
-			System.out.println("ReceiveQueueHandler is Stop");
+			System.out.println("ReceiveQueueHandler has stopped.");
              	}
         }
 

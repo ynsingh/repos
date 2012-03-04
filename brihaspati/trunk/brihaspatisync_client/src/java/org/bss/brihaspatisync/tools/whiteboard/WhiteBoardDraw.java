@@ -129,7 +129,7 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
 		if (runner == null) {
                         runner = new Thread(this);
                        	runner.start();
-			System.out.println("WB_Student_Thread start");
+			System.out.println("WB_Student_Thread started.");
 		}
         }
 
@@ -140,7 +140,7 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
                 if (runner != null) {
                 	runner.stop();
                        	runner = null;
-			System.out.println("WB_Student_Thread stop");
+			System.out.println("WB_Student_Thread stopped.");
                 }
         }
 
