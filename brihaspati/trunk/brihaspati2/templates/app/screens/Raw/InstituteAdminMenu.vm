@@ -12,17 +12,17 @@
  *#
 
 
-<table width="100%" bgcolor="$ui.MenuColor">
+<table width="100%" bgcolor="#AFDCEC">
 
 #set($lang=$data.getUser().getTemp("lang").toString())
 #set($instId=$data.getUser().getTemp("Institute_id"))
-<tr> <td>
+<tr> <td><b>
 #if($lang == "hindi")
         $brih_Institute $brih_Of2 $brih_ad $brih_Of $brih_menu
 #else
         $RemoteInstitute $brih_ad $brih_menu
 #end 
-</td></tr>
+</b></td></tr>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
  <tr>

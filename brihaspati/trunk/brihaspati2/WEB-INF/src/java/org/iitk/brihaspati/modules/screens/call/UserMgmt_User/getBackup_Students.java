@@ -47,13 +47,14 @@ import java.util.Vector;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
-
+import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.om.StudentRollno;
 /**
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kuamr Singh</a>
@@ -91,7 +92,7 @@ public class getBackup_Students extends SecureScreen
                                                 StudentRollno element = (StudentRollno)rollrecord.get(j);
                                                 Rollno = element.getRollNo();
                                                 progm = element.getProgram();
-                                                if(progm.equals("NULL")||progm.equals("")||progm==null)
+						if(StringUtils.isBlank(progm))
                                                 {
                                                         progm="null";
                                                         prgname="null";
