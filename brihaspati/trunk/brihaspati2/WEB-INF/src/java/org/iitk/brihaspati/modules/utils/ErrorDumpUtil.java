@@ -71,6 +71,31 @@ public class ErrorDumpUtil
 		{
 		}
     	}
+	/**
+	* In this method, Dump error message in logfile
+	* @param msg String
+	*/
+	public static void ErrorLog(String msg, String path) 
+	{
+		try
+		{
+			Date Errordate=new Date();
+	//		String LogfilePath=TurbineServlet.getRealPath("/logs")+"/ExceptionLog.txt";
+			File existingFile=new File(path);
+			if(existingFile.length() >= 10048576 )
+			{
+				boolean success=existingFile.delete();
+			}
+			else{
+				FileOutputStream log=new FileOutputStream(path,true);
+				log.write((Errordate+"---"+msg+"\n").getBytes());
+				log.close();
+			}
+		}//try
+                catch(Exception e)
+                {
+                }
+	}
 }
 
 
