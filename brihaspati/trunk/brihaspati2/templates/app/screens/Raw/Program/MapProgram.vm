@@ -55,7 +55,7 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor">
         <td width=5%>$brih_select
         </td>
-        <td colspan=2><b>$brih_program $brih_name<b></td>
+        <td colspan=2><b>$brih_program $brih_name ( $brih_program $brih_code)<b></td>
         </tr>
 	#set($flag=false)
 	#set( $count = "" )
@@ -78,11 +78,11 @@ $!data.getMessage()
 		##If flag true then disable that check box 
 		#if($flag)
 			<td><INPUT TYPE="CHECKBOX" NAME=$!program.getProgramCode() onClick="addSelectedList(this,document.frm);" DISABLED></td>
-		        <td colspan=2>$program.getProgramName()</td>
+		        <td colspan=2>$program.getProgramName()  ($program.ProgramCode )</td>
 			#set($flag=false)
 		#else
 			<td><INPUT TYPE="CHECKBOX" NAME=$!program.getProgramCode() onClick="addSelectedList(this,document.frm);" ></td>
-                        <td colspan=2>$program.getProgramName()</td>
+                        <td colspan=2>$program.getProgramName() ( $program.ProgramCode )</td>
 		#end
 	#end
 	#set ( $count = "$count$!program.getProgramCode()^"  )
