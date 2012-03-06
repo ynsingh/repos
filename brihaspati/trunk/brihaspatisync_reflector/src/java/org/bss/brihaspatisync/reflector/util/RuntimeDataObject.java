@@ -167,6 +167,25 @@ public class RuntimeDataObject {
                 return Integer.parseInt(prop.getProperty("ref_video_port"));
         }
 
+	/******************************/
+	public int get_inspostVideoPort(){
+                return Integer.parseInt(prop.getProperty("ref_inspostvideo_port"));
+        }
+	
+	public int get_insgetVideoPort(){
+                return Integer.parseInt(prop.getProperty("ref_insgetvideo_port"));
+        }
+	
+	public int get_stdpostVideoPort(){
+                return Integer.parseInt(prop.getProperty("ref_stdpostvideo_port"));
+        }
+	
+	public int get_stdgetVideoPort(){
+                return Integer.parseInt(prop.getProperty("ref_stdgetvideo_port"));
+        }		
+
+	/*****************************/
+
 	public Vector getCourseid_IP(String course_id){
                 Vector v=new Vector();
                 for(int i=0;i<vector.size();i++) {

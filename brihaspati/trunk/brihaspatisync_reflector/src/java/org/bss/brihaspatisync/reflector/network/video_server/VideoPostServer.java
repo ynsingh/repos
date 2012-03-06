@@ -44,7 +44,7 @@ public class VideoPostServer {
 
         private HttpServer server =null;
 	
-	private int server_port = 8091;
+	private int server_port = RuntimeDataObject.getController().get_inspostVideoPort();//8091;
 	
 	public static VideoPostServer getController() throws Exception {
                 if(httppostserver==null)

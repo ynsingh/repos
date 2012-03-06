@@ -43,7 +43,7 @@ public class StudentPostServer {
 
         private HttpServer server =null;
 	
-	private int server_port = 8093;
+	private int server_port = RuntimeDataObject.getController().get_stdpostVideoPort();//8093;
 	
 	public static StudentPostServer getController() throws Exception {
                 if(httppostserver==null)
