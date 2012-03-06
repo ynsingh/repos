@@ -68,7 +68,7 @@ public class VotersetAction2 extends org.apache.struts.action.Action {
 				//if(voting==null){
 
                                 VoterRegistrationDAO.update(obj1);
-                                log.add( "\nAlternate Email Set  to= "+obj1.getEmail());
+                                log.add( obj1.getEmail()+" has been set alternate Email is = "+obj1.getAlternateMail());
                               //  }
                               //  else
                                // {

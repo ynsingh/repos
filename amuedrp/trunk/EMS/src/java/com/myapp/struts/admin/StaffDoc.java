@@ -43,6 +43,15 @@ public class StaffDoc {
         protected String candidateName;
         private String index;
         private String alternatemail;
+        private String totalvoted;
+
+    public String getTotalvoted() {
+        return totalvoted;
+    }
+
+    public void setTotalvoted(String totalvoted) {
+        this.totalvoted = totalvoted;
+    }
 
     public String getAlternatemail() {
         return alternatemail;

@@ -121,7 +121,7 @@
 <action  path="/setvotermail" name="DepActionForm" input="/election_manager/voter.jsp" scope="request" type="com.myapp.struts.election_manager.VotersetAction2">
                <forward name="success" path="/election_manager/voter_setup.jsp"/>
            </action>
-
+<action   path="/votedvoterlist" scope="request" type="PrintAction.PrintVotedVoterList"> </action>
 
        <!--====================================Admin Action Setting===============================================-->
 

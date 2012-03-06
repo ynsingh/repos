@@ -44,7 +44,6 @@ public class VotersetAction1 extends org.apache.struts.action.Action {
 	private String bodymessRP3=" and  Password is ";
 	private String bodymessRP4=" \n\n Use this to login into the system at http://202.141.40.218:8080/EMS or https://202.141.40.218:8443/EMS .\n\n Click on 'cast vote'. Now enter the key sent in the email with subject \"One time key.... \", now choose the candidates for various posts and click on vote now.\n\n YOU NEED NOT TO DO ANYTHING ELSE. OTHER FUNCTIONALITIES ARE BEING DISABLED/USELESS AS OF NOW.\n\n Sorry for inconvenience. Your feedback can be sent on ynsingh@iitk.ac.in, brihspti@iitk.ac.in or alumni@iitk.ac.in \n\nynsingh \nEO, IITKAA Elections 2012\n";
 
-//private String bodymessRP="Dear Mr/Ms."+obj1.getVoterName()+"\n There are two emails. If there are more than one of each type, please use latest ones.\nFor this check the timeof the email.\n Your login is "+obj1.getEmail() +" and  Password is "+admin_password+"\n Use this login into the system at http://202.141.40.218:8080/EMS or https://202.141.40.218:8443/EMS .\n Click on 'cast vote'. Now enter the key sent in the email with subject\"One time key.... \", now choose the candidates for various posts and click on vote now.\n YOU NEED NOT TO DO ANYTHING ELSE. OTHER FUNCTIONALITIES ARE BEING DISABLED/USELESS AS OF NOW.\n Sorry for inconvenience. Your feedback can be sent on ynsingh@iitk.ac.in, brihspti@iitk.ac.in or alumni@iitk.ac.in \n\nynsingh \nEO, IITKAA Elections 2012"+session.getAttribute("institute_name");
 
 /*
 Dear Mr.XXXX,

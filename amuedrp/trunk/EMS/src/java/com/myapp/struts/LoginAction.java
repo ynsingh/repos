@@ -189,6 +189,11 @@ if(x!=null)
                     
 
             }
+            else if(elec.getEndDate().before(d)&& elec.getResultDeclarationDate().after(d)){
+                elec.setStatus("result-wait");
+                    ElectionDAO.update(elec);
+            electionList.add(elec);
+            }
             else if(elec.getResultDeclarationDate().before(d))
             {
                 elec.setStatus("closed");

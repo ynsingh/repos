@@ -127,12 +127,12 @@ pageContext.setAttribute("Edit",Edit);
    user name and password to connect to database.*/
 if(rs!=null){
   Iterator it = rs.iterator();
-System.out.println("it="+(tcount)+rs.size());
+
 //requestList = (Login)rs.get(0);
 
    while (it.hasNext()) {
 
-	System.out.println("it="+(tcount));
+	
         election = (Election)rs.get(tcount).getElection();
        // staffdetail = (StaffDetail)rs.get(tcount).getStaffDetail();
 
@@ -162,10 +162,17 @@ System.out.println("it="+(tcount)+rs.size());
         else
             pageContext.setAttribute("votingStatus", "Closed");
 
-        //ems.getElectionManager().setStatus(ems.getElectionManager().getStatus());
+
+        String institute_id=(String)session.getAttribute("institute_id");
+
+            ElectionManagerDAO dao=new ElectionManagerDAO();
 
 
-
+         List     list=dao.VotedVoterList(institute_id,election.getId().getElectionId());
+if(list!=null)
+         Ob.setTotalvoted(String.valueOf(list.size()));
+         else
+Ob.setTotalvoted("0");
 
 
 
@@ -175,17 +182,18 @@ System.out.println("it="+(tcount)+rs.size());
    requestList.add(Ob);
    tcount++;
 it.next();
-   //System.out.println("tcount="+tcount);
+   
 		     }
 
-System.out.println("tcount="+tcount);
+
 
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
    if ((toIndex = fromIndex+10) >= requestList.size ())
    toIndex = requestList.size();
    request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
-   }
+
+     }
 
 String path=request.getContextPath();
 pageContext.setAttribute("path", path);
@@ -272,9 +280,14 @@ else
       <header value="" hAlign="left" styleClass="header"/>
       <item   value="Voter List" hyperLink="${path}/voterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
+
  <column width="10%">
       <header value="" hAlign="left" styleClass="header"/>
       <item   value="Publish Election" hyperLink="${path}/electionview1.do?id=${doc.election_id}&amp;publish='y'"  hAlign="left" styleClass="item"/>
+    </column>
+        <column width="100px">
+      <header value="Vote Cast Till Date" hAlign="left" styleClass="header"/>
+      <item   value="${doc.totalvoted}" hyperLink="${path}/votedvoterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
 
