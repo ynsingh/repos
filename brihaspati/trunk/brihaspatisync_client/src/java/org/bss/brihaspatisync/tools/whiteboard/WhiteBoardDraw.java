@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.tools.whiteboard;
  * WhiteBoardDraw.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG, IIT kanpur.
+ * Copyright (c) 2012 ETRG, IIT kanpur.
  */
 
 import java.awt.Color;
@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.network.Log;
 
 /**
@@ -145,7 +146,7 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
         }
 
 	public void run(){
-		while(wb_Flag){
+		while(wb_Flag && ThreadController.getController().getThreadFlag()){
 			while(draw_vector.size() !=0 ){
 				wbSize_Flag=true;
 				for(int i=0;i<draw_vector.size();i++){

@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.network.video_capture;
  * GetVideoCapture.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011, ETRG, IIT Kanpur.
+ * Copyright (c) 2012, ETRG, IIT Kanpur.
  */
 
 import org.apache.commons.httpclient.HttpClient;
@@ -17,7 +17,7 @@ import java.awt.image.BufferedImage;
 
 import org.bss.brihaspatisync.gui.Desktop_Sharing;
 import org.bss.brihaspatisync.util.ClientObject;
-
+import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 import org.apache.commons.httpclient.auth.AuthScope;
@@ -80,7 +80,7 @@ public class GetVideo implements Runnable {
 		org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
   		h.setName("session");
                 h.setValue(clientObject.getLectureID());
-		while(flag) {
+		while(flag && ThreadController.getController().getThreadFlag()) {
 		        try {
 				HttpClient client = new HttpClient();
 				HttpMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":8092");

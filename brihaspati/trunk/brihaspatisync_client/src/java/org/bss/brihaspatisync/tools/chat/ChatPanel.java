@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.tools.chat;
  * ChatPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 20011 ETRG,IIT Kanpur
+ * Copyright (c) 2012 ETRG,IIT Kanpur
  */
 
 import java.awt.*;
@@ -40,11 +40,10 @@ import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.File;
 import org.bss.brihaspatisync.util.Language;
+import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.util.UtilObject;
 import org.bss.brihaspatisync.network.Log;
-
-
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -164,7 +163,7 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
 				public void run(){
 					if(flag==false)
 						flag=true;
-					while(flag){
+					while(flag && ThreadController.getController().getThreadFlag()){
 						try{
 							if((i%2)==0){
 								toolbar.setBackground(new Color(255,228,225));//Color.red);

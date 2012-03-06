@@ -8,6 +8,7 @@ package org.bss.brihaspatisync.gui;
  */
 
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.network.desktop_sharing.GetSharedScreen;
 import org.bss.brihaspatisync.network.desktop_sharing.PostSharedScreen;
 import org.bss.brihaspatisync.tools.audio_video.AVTransmitReceiveHandler;
@@ -91,7 +92,7 @@ public class HandRaiseThreadController implements Runnable{
         }
 
 	public void run(){
-		while(rec_Flag){
+		while(rec_Flag && ThreadController.getController().getThreadFlag()){
 			try{
 				//Start audio handraise controll for student
 				if(starthraudioflag){

@@ -17,6 +17,7 @@ import java.util.Vector;
 import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.ThreadController;
 
 import org.bss.brihaspatisync.network.ReceiveQueueHandler;
 import org.bss.brihaspatisync.network.http.HTTPClient;
@@ -36,7 +37,6 @@ public class JoinSession {
         private Timer UL_Timer;
 	private Timer ref_Timer;
         private String status="available";
-	private boolean join_Flag=false;
 	private static JoinSession js=null;
 	private ClientObject client_obj=ClientObject.getController();
 	private Log log=Log.getController();
@@ -102,8 +102,11 @@ public class JoinSession {
 	 * which start all transmit and receive (local client's Network_Controller).
 	 */
 	protected void startGUIThread(){
-		if(!join_Flag)
-			join_Flag=true;
+		// set flag for controle all threads of application.
+		if(!(ThreadController.getController().getThreadFlag()))
+			ThreadController.getController().setThreadFlag(true);
+
+		//remove CourseSessionWindow and add gui for view all tools activities.
 		CourseSessionWindow.getController().setVisible(false);
                 MainWindow.getController().getContainer().remove(MainWindow.getController().getDesktop());
                 MainWindow.getController().getContainer().add(JoinSessionPanel.getController().createGUI(),BorderLayout.CENTER);
@@ -157,7 +160,4 @@ public class JoinSession {
                 return UL_Timer;
         }
 
-        protected boolean getJoin_Flag(){
-                return join_Flag;
-        }
 }

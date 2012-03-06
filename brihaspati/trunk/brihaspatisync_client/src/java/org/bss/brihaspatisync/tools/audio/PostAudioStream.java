@@ -17,6 +17,7 @@ import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import java.io.File;
 
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 
@@ -76,7 +77,7 @@ public class PostAudioStream implements Runnable {
 			org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
                        	h.setName("session");
                         h.setValue(clientObject.getLectureID());
-			while(flag) {
+			while(flag && ThreadController.getController().getThreadFlag()) {
 				try {
 				String filename="audio.wav";
 				AudioCapture.getController().stopCapture();

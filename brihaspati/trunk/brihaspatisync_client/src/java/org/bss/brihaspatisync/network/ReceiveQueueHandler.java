@@ -13,6 +13,7 @@ import java.util.StringTokenizer;
 import org.bss.brihaspatisync.network.util.Queue;
 import org.bss.brihaspatisync.network.util.UtilObject;
 import org.bss.brihaspatisync.util.Recorder;
+import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.tools.chat.ChatPanel;
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;
 
@@ -82,7 +83,7 @@ public class ReceiveQueueHandler implements Runnable{
          * Get Entry from Receive Queue and send it to appropriate tool for performing Action on GUI. 
          */
 	public void run(){
-		while(rec_Flag){
+		while(rec_Flag && ThreadController.getController().getThreadFlag()){
 			try{
 				synchronized(utilobject){
 					while(utilobject.getRecQueueSize() != 0){

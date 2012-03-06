@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.awt.image.BufferedImage;
 
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.ThreadController;
 
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 
@@ -76,7 +77,7 @@ public class GetPPTScreen implements Runnable {
         }
 
 	public void run() {
-		while(flag) {
+		while(flag && ThreadController.getController().getThreadFlag()) {
 		        try {
 				HttpClient client = new HttpClient();
 				HttpMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":5271");

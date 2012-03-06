@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.network.desktop_sharing;
  * PostSharedScreen.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011, ETRG, IIT Kanpur.
+ * Copyright (c) 2012, ETRG, IIT Kanpur.
  */
 
 import java.io.File;
@@ -34,7 +34,7 @@ import org.bss.brihaspatisync.gui.Desktop_Sharing;
 import org.bss.brihaspatisync.gui.StatusPanel;
 
 import org.bss.brihaspatisync.util.ClientObject;
-
+import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 import org.apache.commons.httpclient.auth.AuthScope;
@@ -130,7 +130,7 @@ public class PostSharedScreen implements Runnable {
 			org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
                         h.setName("session");
                         h.setValue(clientObject.getLectureID());
-			while(flag) {
+			while(flag &&ThreadController.getController().getThreadFlag()) {
 				try {
 					HttpClient client = new HttpClient();
 			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":8884");

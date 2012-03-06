@@ -18,6 +18,7 @@ import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import javax.sound.sampled.*;
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 /**
@@ -80,7 +81,7 @@ public class GetAudioStream implements Runnable {
                         h.setName("session");
                         h.setValue(clientObject.getLectureID());
 			audioFormat=getAudioFormat();
-		 	while(flag) {
+		 	while(flag && ThreadController.getController().getThreadFlag()) {
 				try {
                                 	HttpClient client = new HttpClient();
 	                                GetMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":2002");

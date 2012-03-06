@@ -19,6 +19,7 @@ import org.bss.brihaspatisync.gui.VideoPanel;
 import org.bss.brihaspatisync.gui.JoinSessionPanel;
 
 import org.bss.brihaspatisync.util.RuntimeDataObject;
+import org.bss.brihaspatisync.util.ThreadController;
 
 import org.apache.commons.httpclient.auth.AuthScope;
 
@@ -77,7 +78,7 @@ public class LocalServer implements Runnable {
         }
 
 	public void run() {
-		while(flag) {
+		while(flag && ThreadController.getController().getThreadFlag()) {
 		        try {
 				HttpClient client = new HttpClient();
 				HttpMethod method=null;

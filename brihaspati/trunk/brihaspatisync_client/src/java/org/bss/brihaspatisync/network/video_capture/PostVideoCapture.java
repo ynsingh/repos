@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.network.video_capture;
  * PostVideoCapture.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011, ETRG, IIT Kanpur.
+ * Copyright (c) 2012, ETRG, IIT Kanpur.
  */
 
 import java.io.File;
@@ -34,6 +34,7 @@ import org.bss.brihaspatisync.gui.StatusPanel;
 import org.bss.brihaspatisync.gui.VideoPanel;
 
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.ThreadController;
 
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 
@@ -105,7 +106,7 @@ public class PostVideoCapture implements Runnable {
 		org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
                 h.setName("session");
                 h.setValue(clientObject.getLectureID());
-		while(flag) {
+		while(flag && ThreadController.getController().getThreadFlag()) {
 			try {
 				if(BufferImage.getController().bufferSize()>0) {
 					HttpClient client = new HttpClient();

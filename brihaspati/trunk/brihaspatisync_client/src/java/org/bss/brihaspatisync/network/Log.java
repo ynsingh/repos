@@ -9,6 +9,7 @@ package org.bss.brihaspatisync.network;
 
 import java.util.Vector;
 import org.bss.brihaspatisync.util.ClientLog;
+import org.bss.brihaspatisync.util.ThreadController;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a> 
@@ -65,7 +66,7 @@ public class Log implements Runnable{
          */
 	public void run(){
 		try {
-			while(ml_Flag) {	
+			while(ml_Flag && ThreadController.getController().getThreadFlag()) {	
 				if(vector.size()>0){
 					ClientLog.getController().Log(vector.get(0).toString());	
 					vector.remove(0);

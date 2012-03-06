@@ -56,7 +56,6 @@ public class RuntimeDataObject {
                 return videoServer;
         }
 	
-	
 	public void setProxyHost(String value){
 		proxy_host=value;
 	}
@@ -88,7 +87,6 @@ public class RuntimeDataObject {
 	public String getProxyPass(){
 		return proxy_pass;
         }
-
 
 	public String getMasterUrl(){
 		return prop.getProperty("MasterServerURL");

@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.network.http;
  * HTTPClient.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 20011, ETRG, IIT Kanpur.
+ * Copyright (c) 2012, ETRG, IIT Kanpur.
  */
 
 import java.awt.Frame;
@@ -17,6 +17,7 @@ import java.io.BufferedInputStream;
 import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
+import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.Client;
 import org.bss.brihaspatisync.network.Log;
 import org.bss.brihaspatisync.network.ReceiveQueueHandler;
@@ -62,7 +63,7 @@ public class HTTPClient extends Thread {
 			org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
                         h.setName("session");
                         h.setValue(this.lect_id);
-			while(true){
+			while(ThreadController.getController().getThreadFlag()){
                         	try {
 				
 					String datastr="nodata";
