@@ -53,7 +53,7 @@ public class PostPPTScreen {
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	private static PostPPTScreen post_ppt=null;
-
+	private int port=runtime_object.getPPTPort();
 	/**
  	 * Controller for the class.
  	 */ 
@@ -68,7 +68,7 @@ public class PostPPTScreen {
 	public void start_to_sendppt(int pptnumber) throws Exception {
 		try {
 			HttpClient client = new HttpClient();
-		        PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":5271");
+		        PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);//5271");
 			client.setConnectionTimeout(8000);
                        	postMethod.setRequestBody(new FileInputStream("temp/"+"image"+(pptnumber)+".jpeg"));
                		postMethod.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");

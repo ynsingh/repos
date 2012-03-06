@@ -41,7 +41,7 @@ public class GetPPTScreen implements Runnable {
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	private static GetPPTScreen get_ppt=null;
-
+	private int port=runtime_object.getPPTPort();
 	public static GetPPTScreen getController(){
                 if(get_ppt==null)
                         get_ppt=new GetPPTScreen();
@@ -80,7 +80,7 @@ public class GetPPTScreen implements Runnable {
 		while(flag && ThreadController.getController().getThreadFlag()) {
 		        try {
 				HttpClient client = new HttpClient();
-				HttpMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":5271");
+				HttpMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":"+port);//5271");
 		                client.setConnectionTimeout(8000);
                                 method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
 				// Http Proxy Handler

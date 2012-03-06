@@ -105,12 +105,37 @@ public class RuntimeDataObject {
         }
 
         public int getAudioPort(){
-		return Integer.parseInt(prop.getProperty("client_audio_port"));
+		return Integer.parseInt(prop.getProperty("client_postaudio_port"));
         }
-
-        public int getVedioPort(){
-		return Integer.parseInt(prop.getProperty("client_video_port"));
+	
+	public int client_getaudio_port(){
+		return Integer.parseInt(prop.getProperty("client_getaudio_port"));
+	}
+        
+	public int client_inspostvedio_port(){
+		return Integer.parseInt(prop.getProperty("client_inspostvedio_port"));
         }
+	
+	public int client_insgetvedio_port(){
+                return Integer.parseInt(prop.getProperty("client_insgetvedio_port"));
+        }
+	
+	public int client_stdpostvedio_port(){
+                return Integer.parseInt(prop.getProperty("client_stdpostvedio_port"));
+        }
+	
+	public int client_stdgetvedio_port(){
+                return Integer.parseInt(prop.getProperty("client_stdgetvedio_port"));
+        }
+	
+	public int client_postsharescreen_port(){
+                return Integer.parseInt(prop.getProperty("client_postsharescreen_port"));
+        }
+	
+	public int client_getsharescreen_port(){
+                return Integer.parseInt(prop.getProperty("client_getsharescreen_port"));
+        }
+		
 	
 	public int getAudioHandraisePort() {
                 return Integer.parseInt(prop.getProperty("audio_handraise_port"));

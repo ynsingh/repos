@@ -106,11 +106,12 @@ public class PostVideoCapture implements Runnable {
 		org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
                 h.setName("session");
                 h.setValue(clientObject.getLectureID());
+		int port =runtime_object.client_inspostvedio_port();
 		while(flag && ThreadController.getController().getThreadFlag()) {
 			try {
 				if(BufferImage.getController().bufferSize()>0) {
 					HttpClient client = new HttpClient();
-			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":8091");
+			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);//.8091");
 					client.setConnectionTimeout(800000);
 						
 					BufferedImage bimg=BufferImage.getController().get(0);
@@ -146,7 +147,8 @@ public class PostVideoCapture implements Runnable {
 			}catch(Exception e){	
 				try { runner.sleep(100);runner.yield();}catch(Exception ex){}
 				System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());
-			}	
+			}
+			System.gc();	
 		}
 	}
 }

@@ -130,10 +130,11 @@ public class PostSharedScreen implements Runnable {
 			org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
                         h.setName("session");
                         h.setValue(clientObject.getLectureID());
+			int port=runtime_object.client_postsharescreen_port(); 
 			while(flag &&ThreadController.getController().getThreadFlag()) {
 				try {
 					HttpClient client = new HttpClient();
-			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":8884");
+			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);
 					client.setConnectionTimeout(8000);
 					try {
 						BufferedImage bimg=captureScreen();
@@ -163,6 +164,7 @@ public class PostSharedScreen implements Runnable {
                        			try {	runner.sleep(100); runner.yield(); }catch(Exception ex){}
 					StatusPanel.getController().setdestopClient("yes");
 				}catch(Exception e){    StatusPanel.getController().setdestopClient("no"); }
+				System.gc();
 			}
 		}catch(Exception e){
 			System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());

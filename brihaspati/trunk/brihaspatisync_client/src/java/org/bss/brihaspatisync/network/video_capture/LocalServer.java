@@ -114,7 +114,7 @@ public class LocalServer implements Runnable {
 				try {
                                 	runner.sleep(100);runner.yield();
 				}catch(Exception ex){}
-
+				System.gc();
 			} catch(Exception e){ 
 				try {   runner.sleep(1000); runner.yield();}catch(Exception ep){}
 				System.out.println("Error in GetMethod of Video Captureing : "+e.getMessage()); 

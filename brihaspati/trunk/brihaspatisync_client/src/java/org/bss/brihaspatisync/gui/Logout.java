@@ -60,7 +60,7 @@ public class Logout{
 						JoinSession.getController().getUL_Timer().cancel(); 
 				}
 			}catch(Exception e){}
-			
+			org.bss.brihaspatisync.util.ThreadController.getController().setThreadFlag(false);	
 			log.setLog("Sending Request for Logout");
 			String ref_addr=client_obj.getReflectorIP();
 			String username="",lectID="";

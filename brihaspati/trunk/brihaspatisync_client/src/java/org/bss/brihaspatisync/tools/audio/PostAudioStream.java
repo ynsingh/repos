@@ -52,6 +52,7 @@ public class PostAudioStream implements Runnable {
 			flag=true;
             		runner = new Thread(this);
             		runner.start();
+			AudioCapture.getController().startCapture();
 			System.out.println("PostAudioStream start successfully !!");
 		}
        }
@@ -64,6 +65,7 @@ public class PostAudioStream implements Runnable {
 			flag=false;
             		runner.stop();
             		runner = null;
+			AudioCapture.getController().stopCapture();
 			System.out.println("PostAudioStream stop successfully !!");
       		}
    	}
@@ -73,7 +75,6 @@ public class PostAudioStream implements Runnable {
  	 */
   	public void run() {
 		try {
-			AudioCapture.getController().startCapture();
 			org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
                        	h.setName("session");
                         h.setValue(clientObject.getLectureID());

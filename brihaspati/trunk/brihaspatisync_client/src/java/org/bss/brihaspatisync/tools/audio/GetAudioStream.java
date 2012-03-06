@@ -35,7 +35,6 @@ public class GetAudioStream implements Runnable {
 	private AudioFormat audioFormat;
 	private ClientObject clientObject=ClientObject.getController();
         private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
-
 	
 	/**
  	 * Controller for this class.
@@ -81,10 +80,11 @@ public class GetAudioStream implements Runnable {
                         h.setName("session");
                         h.setValue(clientObject.getLectureID());
 			audioFormat=getAudioFormat();
+			int port =runtime_object.client_getaudio_port();
 		 	while(flag && ThreadController.getController().getThreadFlag()) {
 				try {
                                 	HttpClient client = new HttpClient();
-	                                GetMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":2002");
+	                                GetMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":"+port);
         	                        client.setConnectionTimeout(20000);
 					method.setRequestHeader(h);
 					// Http Proxy Handler	
@@ -105,6 +105,7 @@ public class GetAudioStream implements Runnable {
 					ais.close();
 				}catch(Exception we){}
                			try { runner.sleep(5000); runner.yield(); }catch(Exception ex){}
+				System.gc();
                         }
 		}catch(Exception exe){try { runner.sleep(5000); runner.yield(); }catch(Exception ex){}System.out.println("Error on get stream in GetAudioStream  "+exe.getMessage());}
 	}

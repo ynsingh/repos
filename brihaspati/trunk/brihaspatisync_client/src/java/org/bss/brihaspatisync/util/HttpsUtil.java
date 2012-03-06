@@ -179,7 +179,7 @@ public class HttpsUtil{
 	                        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         	                String str="";
                 	        try{
-                        	        while((str=in.readLine())!=null){
+                        	        if((str=in.readLine())!=null){
                                 	        if(str.equals("Successfull")){
                                         	        flag=true;
 	                                        }
@@ -258,7 +258,7 @@ public class HttpsUtil{
                                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                                 String str="";
                                 try{
-                                        while((str=in.readLine())!=null){
+                                        if((str=in.readLine())!=null){
                                                 if(!(str.equals(message))){
                                                         return str;
                                                 }
@@ -285,7 +285,7 @@ public class HttpsUtil{
                         	BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                                 String str="";
                                 try{
-					while((str=in.readLine())!=null){
+					if((str=in.readLine())!=null){
 	                                	if(!(str.equals(message))){
         	                                	msgList.addElement(str);
 							System.out.println(msgList);
@@ -318,7 +318,7 @@ public class HttpsUtil{
                 	                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                         	        String str="";
                                 	try{
-                                        	while((str=in.readLine())!=null){
+                                        	if((str=in.readLine())!=null){
                                                 	if(!(str.equals("noLecture"))){
 								java.util.StringTokenizer str1 = new java.util.StringTokenizer(str,"$$");
 								while(str1.hasMoreTokens()) {

@@ -51,7 +51,7 @@ public class VideoReceive implements ReceiveStreamListener, SessionListener {
     	private Object dataSync = new Object();
     	private static VideoReceive av=null;
     	private static DataSource ds=null;
-    	private int port=RuntimeDataObject.getController().getVedioPort();//(ClientObject.getController().getAVPort())+2;
+    	private int port=0;//RuntimeDataObject.getController().getVedioPort();//(ClientObject.getController().getAVPort())+2;
     	private String IPAddress=ClientObject.getController().getReflectorIP(); 
 	private static boolean value;
     	private static RTPControl rtpc=null;

@@ -58,7 +58,6 @@ public class GetSharedScreen implements Runnable {
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
-			//Desktop_Sharing.getController().setSclollEnable_Decable(true);
 			System.out.println("GetSharedScreen start sucessfully !!");
 		}
         }
@@ -71,7 +70,6 @@ public class GetSharedScreen implements Runnable {
 			flag=false;
                         runner.stop();
                         runner = null;
-			//Desktop_Sharing.getController().setSclollEnable_Decable(false);
 			System.out.println("GetSharedScreen stop Successfully !!");
                 }
         }
@@ -80,6 +78,7 @@ public class GetSharedScreen implements Runnable {
 		org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
 		h.setName("session");
                 h.setValue(clientObject.getLectureID());
+		int port=runtime_object.client_getsharescreen_port();
 		while(flag && ThreadController.getController().getThreadFlag()){
 		        try {
 				HttpClient client = new HttpClient();
@@ -109,6 +108,7 @@ public class GetSharedScreen implements Runnable {
 				System.out.println("Error in GetMethod of GetSharedScreen : "+e.getMessage()); 
 				org.bss.brihaspatisync.gui.StatusPanel.getController().setdestopClient("no");
 			}
+			System.gc();
 		}
 	}
 }

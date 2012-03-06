@@ -80,10 +80,11 @@ public class GetVideo implements Runnable {
 		org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
   		h.setName("session");
                 h.setValue(clientObject.getLectureID());
+		int port=runtime_object.client_insgetvedio_port();
 		while(flag && ThreadController.getController().getThreadFlag()) {
 		        try {
 				HttpClient client = new HttpClient();
-				HttpMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":8092");
+				HttpMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":"+port);//8092");
 		                client.setConnectionTimeout(8000);
                                 method.setRequestHeader(h);
 				// Http Proxy Handler
@@ -108,6 +109,7 @@ public class GetVideo implements Runnable {
 				try {   runner.sleep(10);runner.yield(); }catch(Exception ep){}
 				System.out.println("Error in GetMethod of GetVideo : "+e.getMessage()); 
 			}
+			System.gc();
 		}
 	}
 }
