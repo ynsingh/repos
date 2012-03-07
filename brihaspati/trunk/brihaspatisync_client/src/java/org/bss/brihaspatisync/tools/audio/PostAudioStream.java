@@ -49,10 +49,10 @@ public class PostAudioStream implements Runnable {
  	 */
 	public void startThread(){
         	if (runner == null) {
+			AudioCapture.getController().startCapture();
 			flag=true;
             		runner = new Thread(this);
             		runner.start();
-			AudioCapture.getController().startCapture();
 			System.out.println("PostAudioStream start successfully !!");
 		}
        }
@@ -78,12 +78,13 @@ public class PostAudioStream implements Runnable {
 			org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
                        	h.setName("session");
                         h.setValue(clientObject.getLectureID());
+			int port =runtime_object.getAudioPort();
 			while(flag && ThreadController.getController().getThreadFlag()) {
 				try {
 				String filename="audio.wav";
 				AudioCapture.getController().stopCapture();
                                 HttpClient client = new HttpClient();
-                                PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":2000");
+                                PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);
                                 client.setConnectionTimeout(20000);
                                 if((new File(filename)).exists()) {
                                         postMethod.setRequestBody(new java.io.FileInputStream(filename));
