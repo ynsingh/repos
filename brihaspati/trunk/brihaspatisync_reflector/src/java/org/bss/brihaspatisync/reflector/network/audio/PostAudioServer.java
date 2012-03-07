@@ -74,7 +74,7 @@ class MyPostHandler implements HttpHandler {
 	public void handle(HttpExchange exchange) throws IOException {
 		try{
 			String requestMethod = exchange.getRequestMethod();
-			String client_ip="127.0.0.1";//exchange.getRemoteAddress().getAddress().getHostAddress();		
+			String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();		
 			if (requestMethod.equalsIgnoreCase("POST")) {
 				Headers responseHeaders = exchange.getResponseHeaders();
 				responseHeaders.set("Content-Type", "application/octet-stream");
