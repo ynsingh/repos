@@ -63,6 +63,7 @@ public class BlockVoterAction extends org.apache.struts.action.Action {
 
 			if(o==null){
 			        log.add( "Sorry Voter "+ obj1.getEmail() +" is not a Voter for the Election"+e.getElectionName());
+				request.setAttribute("msg", log);
 				return mapping.findForward("success");
 			}
 			if(o.getStatus()!=null)
@@ -73,6 +74,8 @@ public class BlockVoterAction extends org.apache.struts.action.Action {
 			}else{
        				o.setStatus("blocked");
             			VoterRegistrationDAO.setVoter(o);
+				obj1.setStatus("block");
+				VoterRegistrationDAO.update(obj1);
 
 //         			String path = servlet.getServletContext().getRealPath("/");
 //            			x=new Email(path,obj1.getEmail(),admin_password,"You Are Blocked from Election : "+election,"Sorry, You are blocked from Voting Process for The Election ="+admin_password);

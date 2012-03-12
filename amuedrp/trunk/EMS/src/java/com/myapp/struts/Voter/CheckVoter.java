@@ -63,7 +63,7 @@ session.setAttribute("key", "DirectLogin");
                 SetVoter o=VoterRegistrationDAO.searchVoterList(l.getStaffDetail().getId().getInstituteId(),election,staff_id,password1);
   
 
-            if(o!=null)
+            if(o!=null && o.getStatus()==null)
             {
              voterDAO voterdao = new voterDAO();
              System.out.println("ok");
@@ -83,9 +83,15 @@ if(vp!=null){
                 session.setAttribute("electionName",obj.getElectionName() );
               return mapping.findForward("success");
 
+            }else{
+		request.setAttribute("msg", " Sorry Voter is blocked");
+		return mapping.findForward("fail");
             }
-            }
+	}else{
+		request.setAttribute("msg", "Election voting process is not started or is closed");
+		return mapping.findForward("fail");
       }
+	}
       session.invalidate();
       request.setAttribute("msg", "You are Successfully Logout");
       return mapping.findForward("fail");
