@@ -141,7 +141,11 @@ else
     }
 return true;
 }
-
+   window.onload = function () { Clear(); }
+        function Clear() {
+            var Backlen=history.length;
+            if (Backlen > 0) history.go(-Backlen);
+        }
 
 function update(cartXML)
 {
@@ -236,7 +240,7 @@ sessionId = session.getId().toString();
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-<body style="margin:0px 0px 0px 0px" onload="validateSession()" background="<%=request.getContextPath()%>/images/spaces_background-2560x1600.png" >
+<body style="margin:0px 0px 0px 0px"  background="<%=request.getContextPath()%>/images/spaces_background-2560x1600.png" >
     
 
 
@@ -358,9 +362,7 @@ if(str!=null)
 </form>
 
 </body>
-      <script>function validateSession()
-{
-var msg;
+      
 <%String msg1="";
 if (request.getAttribute("msg")==null){
 String msgsession=(String)request.getParameter("session");
@@ -375,25 +377,12 @@ else{
     msg1= (String)request.getAttribute("msg");
 }%>
 
+<%
+if(msg1!=null)
+    out.println(msg1);
+%>
+     
 
-        msg="<%=msg1%>";
-        if (msg!="null"  ){
-            alert(msg);
-        }
-}
 
-
-<%--function help()
-     {
-         window.status='Press F1 for help';
-         var username=document.getElementById("username");
-         var password=document.getElementById("password");
-         if(document.getElementById("username")==username)
-         statwords('Please enter user name');
-     else
-         statwords('Please enter password');
-     }--%>
-
-</script>
 </html>
 

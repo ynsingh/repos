@@ -599,7 +599,7 @@ public static Login searchUser(String login_id,String password) {
         Login obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM  Login  WHERE loginId =:login_id and password =:password");
+            Query query = session.createQuery("FROM  Login  WHERE userId =:login_id and password =:password");
             query.setString("login_id", login_id);
             query.setString("password", password);
             obj= (Login) query.uniqueResult();

@@ -23,6 +23,31 @@ import org.hibernate.criterion.Restrictions;
  * @author akhtar
  */
 public class VoterRegistrationDAO {
+            public static VoterRegistration searchVoterEmail(String instituteid,String user_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        VoterRegistration obj=null;
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(VoterRegistration.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("email",user_id))
+                    .add(Restrictions.eq("id.instituteId", instituteid)));
+
+            obj= (VoterRegistration) criteria.uniqueResult();
+            session.getTransaction().commit();
+
+
+        }
+        catch(RuntimeException e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+        return obj;
+    }
+
+
 	public List<VoterRegistration> getVoterDetails(String instituteid){
   Session session =null;
     List<VoterRegistration> obj=null;
@@ -45,6 +70,32 @@ public class VoterRegistrationDAO {
         }
         return obj;
 }
+    public static SetVoter searchVoterList(String instituteid,String electionId,String Enrollment,String password) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        SetVoter obj=null;
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(SetVoter.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.enrollment", Enrollment))
+                    .add(Restrictions.eq("id.electionId", electionId))
+                            .add(Restrictions.eq("password", password))
+                    .add(Restrictions.eq("id.instituteId", instituteid)));
+
+
+            obj= (SetVoter) criteria.uniqueResult();
+            session.getTransaction().commit();
+
+
+        }
+        catch(RuntimeException e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+        return obj;
+    }
 
 public static SetVoter searchVoterList(String instituteid,String electionId,String Enrollment) {
         Session session = HibernateUtil.getSessionFactory().openSession();

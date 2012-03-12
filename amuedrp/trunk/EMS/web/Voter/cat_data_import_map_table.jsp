@@ -100,7 +100,7 @@
                                     <font color="black" size="2%" style="text-align:left;font-style: oblique"> Field<%=row + 1%></font> : <html:text    style="color:blue;text-align: center;" size="20%" name="StrutsUploadForm1" property="<%=cell.concat(String.valueOf(row))%>" disabled="true"></html:text>
 
                                 </td>
-                                <td style="text-align: center;">1st
+                                <td style="text-align: center;">
                                     <html:select    property="<%=combo.concat(String.valueOf(row))%>" name="StrutsUploadForm1" styleClass="textBoxWidth"  styleId="col1" >
 
                                         <%for (int j = 0; j < size; j++) {

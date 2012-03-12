@@ -81,15 +81,16 @@ document.DepActionForm.action="/EMS/votersetup.do?status=A";
 }
 function validate()
 {
+    
   document.getElementById('election').value=document.getElementById('election_id').value;
 
   var ele=document.getElementById('election').value;
 
-
+//alert(ele);
 
 document.getElementById('action').value=document.getElementById('action').value;
     var x=document.getElementById('action').value;
-    
+  //  alert(x);
     if(x=="Select")
         {
             alert("Please Action Type");
@@ -98,7 +99,7 @@ document.getElementById('action').value=document.getElementById('action').value;
 
 else{
     
-if(x=="2" || x=="3" || x=="5" || x=="6"){
+if(x=="1"){
     
     if(ele=="Select")
             {
@@ -108,7 +109,7 @@ if(x=="2" || x=="3" || x=="5" || x=="6"){
     
 }
 
-document.DepActionForm.action="/EMS/setvoter1.do";
+document.DepActionForm.action="/EMS/setvoter2.do";
 document.DepActionForm.method="post";
 document.DepActionForm.submit();
 return true;
@@ -227,12 +228,8 @@ if(msg!=null){
                         </select>  <input type="hidden" name="election" id="election"/>&nbsp;&nbsp;&nbsp;
                         Action<select   size="1" name="action"  id="action">
 <option selected value="Select">Select<%--<%=resource.getString("managername")%>--%></option>
-<option  value="1">Current Page ( Reset Password)</option>
-<option  value="2">Current Page ( Reset Password &  One Time Key for Voting Process)</option>
-<option  value="3">Current Page ( Reset Password & One Time Key for Voter not Cast there vote yet.)</option>
-<option  value="4">All ( Reset Password )<%--<%=resource.getString("managername")%>--%></option>
-<option  value="5">All ( Reset Password &  One Time Key for Voting Process)<%--<%=resource.getString("managername")%>--%></option>
-<option  value="6">All ( Reset Password & One Time Key for Voter not Cast there vote yet.)</option>
+<option  value="1">Current Page ( Reset Password & Send one Time Key for Voter not Cast there vote yet. )</option>
+<option  value="2">All ( Reset Password & Send one Time Key for Voter not Cast there vote yet )</option>
 
 
 </select><input type="button" onclick="return validate();" name="button" value="Submit" />

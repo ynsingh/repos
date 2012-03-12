@@ -73,7 +73,7 @@
          {
              
         disable();
-            document.DepActionForm.action="/EMS/votersetup.do";
+            document.DepActionForm.action="/EMS/votersetup.do?status=A";
             document.DepActionForm.method="post";
             document.DepActionForm.target="f1";
             document.DepActionForm.submit();
@@ -231,7 +231,7 @@ Action<select   size="1" name="action" class="btn2"  id="action">
 
                         </td>
             </tr>
-<tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="/EMS/votersetup.do" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
+<tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="/EMS/votersetup.do?status=A" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
        </table>
 <input  name="status" type="hidden" id="status"/>
 </form>

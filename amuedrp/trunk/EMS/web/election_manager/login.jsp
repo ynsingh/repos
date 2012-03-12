@@ -1018,9 +1018,9 @@ document.write('</div></span>');
                         <li>
                             <a href="<%=contextPath%>/election_manager/search_voter.jsp?status=A"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%--<%=resource.getString("active")%>--%>Registered</a>
                         </li>
-                        <%--<li>
+                        <li>
                             <a href="<%=contextPath%>/election_manager/search_voter.jsp?status=B"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("block")%></a>
-                        </li>--%>
+                        </li>
                         <li>
                             <a href="<%=contextPath%>/election_manager/search_voter.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("viewall")%></a>
                         </li>
@@ -1033,12 +1033,14 @@ document.write('</div></span>');
                     <a href="<%=request.getContextPath()%>/election_manager/voter.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Set Voter List</a>
                 </li>
                      <li>
-                    <a href="<%=request.getContextPath()%>/election_manager/voter1.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Set Login Password</a>
+                    <a href="<%=request.getContextPath()%>/election_manager/voter1.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Set Login Password & Key</a>
                 </li>
 		<li>
                     <a href="<%=request.getContextPath()%>/election_manager/SetVoterMail.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Set Voter Alternate Mail</a>
                 </li>
-
+<li>
+                    <a href="<%=request.getContextPath()%>/election_manager/voter2.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Set Voter & Send Link</a>
+                </li>
             </ul>
         </li>
             <li>
