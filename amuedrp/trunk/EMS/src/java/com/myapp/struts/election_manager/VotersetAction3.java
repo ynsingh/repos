@@ -40,8 +40,8 @@ public class VotersetAction3 extends org.apache.struts.action.Action {
     private String admin_password;
     private String admin_password1,onetimekey,onetimekey1;
 
-	private String bodymessRPOTKM1="Dear Sir/Madam,\n\nYou have still not casted your ballot in IIT Kanpur AA BoD election. For casting your ballot over web portal, kindly click the following link\n\nhttp://172.26.82.17:8081/EMS/voterlogin.do?email=";
-	private String bodymessRPOTKM2="\n\nYou can also cut and past the above link in a browser to cast your ballot.\n\nFor login into election management system, your login is ";
+	private String bodymessRPOTKM1="Dear Sir/Madam,\n\nYou have still not casted your ballot in IIT Kanpur AA BoD election. For casting your ballot over web portal, you can click the following link\n\nhttp://202.141.40.218:8080/EMS/voterlogin.do?email=";
+	private String bodymessRPOTKM2="\n\nYou can also cut and past the above link in a browser to cast your ballot.\n\nAlternatively, you can login into election management system at http://202.141.40.218:8080/EMS or https://202.141.40.218:8443/EMS for voting, your login is ";
 	private String bodymessRPOTKM3="\n\nYou are requested to use the latest mail for this casting your ballot.\n\n\n\n\nYNSingh\n\nEO, IITKAA 2012";
 	private String subRPOTKM="Your credentials for voting in IITKAA Elections 2012";
 /*
