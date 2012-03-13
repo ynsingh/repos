@@ -88,7 +88,7 @@ import babylon.babylonUserTool;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
  * @author: <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>
- * @modified date:20101020, 20101120, 20110117
+ * @modified date:20101020, 20101120, 20110117, 20120316
 
  */
 
@@ -195,13 +195,27 @@ public class Institute_RootAdmin extends VelocitySecureAction
 					/**
 					 *Set Quota in 'INSTITUTE_QUOTA' table
 					 */
-                                        String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+					String path= "";
+                                        path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                                         String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
                                         String instquota =AdminProperties.getValue(path,"brihaspati.user.iquota.value");
                                         crit = new Criteria();
                                         crit.add(InstituteQuotaPeer.INSTITUTE_ID,instituteid);
                                         crit.add(InstituteQuotaPeer.INSTITUTE_AQUOTA,instquota);
                                         InstituteQuotaPeer.doInsert(crit);
+					 /**
+                                         * Creating default Institute Admin Profile while accepting Institute admin
+                                         * The values are set as a default value because at initial stage no institute profile exist.
+                                        */
+                                        path = "";
+                                        path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteid+"Admin.properties";
+                                        AdminProperties.setValue(path,conf,"brihaspati.admin.listconfiguration.value");
+                                        AdminProperties.setValue(path,"365","brihaspati.admin.courseExpiry");
+                                        AdminProperties.setValue(path,i_domain,"brihaspati.mail.local.domain.name");
+                                        AdminProperties.setValue(path,"500","brihaspati.admin.quota.value");
+                                        AdminProperties.setValue(path,"100","brihaspati.user.quota.value");
+                                        AdminProperties.setValue(path,"45","brihaspati.admin.FaqExpiry");
+                                        AdminProperties.setValue(path,"365","brihaspati.user.expdays.value");
 			
 				}
 			}

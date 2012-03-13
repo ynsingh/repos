@@ -36,12 +36,12 @@ $!data.getMessage()
         #if( $total_size!=0 )
         #if( $endIndex < $total_size )
                 #if( $endIndex < $AdminConf )
-                [$k - $total_size] of $total_size
+                [$k - $total_size] $brih_Of $total_size
                 #else
-                [$k - $endIndex] of $total_size
+                [$k - $endIndex] $brih_Of $total_size
                 #end
         #else
-        [$k - $total_size] of $total_size
+        [$k - $total_size] $brih_Of $total_size
         #end
         #end
         </td>
@@ -51,12 +51,12 @@ $!data.getMessage()
         #if( $total_size!=0 )
         #if( $endIndex < $total_size )
                 #if( $endIndex < $AdminConf )
-                [$k - $total_size] of $total_size
+                [$k - $total_size] $brih_Of $total_size
                 #else
-                [$k - $endIndex] of $total_size
+                [$k - $endIndex] $brih_Of $total_size
                 #end
         #else
-        [$k - $total_size] of $total_size
+        [$k - $total_size] $brih_Of $total_size
         #end
         #end
         </td>
@@ -229,8 +229,8 @@ $!data.getMessage()
 
                 <td align=left>
                         <select name="queryList">
-                                <option value=CourseId>$brih_course $brih_ID</option>
-                                <option value="Course Name">$brih_course $brih_name</option>
+                                <option value=CourseId>$brih_course #if($lang == "hindi" || $lang == "gujarati") $brih_Of1 #end $brih_ID</option>
+                                <option value="Course Name">$brih_course #if($lang == "hindi" || $lang == "gujarati") $brih_Of1 #end $brih_name</option>
                                 <option value=Dept>$brih_dept</option>
                         </select>
                 </td>
@@ -253,8 +253,11 @@ $!data.getMessage()
         </tr>
 </table>
 #if($status == "Noblank" )
-
-#set($headings = ["$brih_course $brih_ID","$brih_course $brih_name","$brih_dept","$brih_desc","$brih_creation $brih_Da","$brih_status",""] )
+#if($lang == "hindi" || $lang == "gujarati")
+	#set($headings = ["$brih_course $brih_Of1 $brih_ID","$brih_course $brih_Of1 $brih_name","$brih_dept","$brih_desc","$brih_creation $brih_Da","$brih_status",""] )
+#else
+	#set($headings = ["$brih_course $brih_ID","$brih_course $brih_name","$brih_dept","$brih_desc","$brih_creation $brih_Da","$brih_status",""] )
+#end
 <table bgcolor="$ui.tableColor" align="left" width=100%>
 ##<table align="left">
   <tr>
