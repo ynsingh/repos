@@ -127,7 +127,7 @@ login=logindao.getStaffDetails1(obj2.getEnrollment(), instituteid);
 
 
 if(mailbody=="")
-       mailbody="\n You are Registered as a Voter \nWith Regards\nElection Manager\n";
+       mailbody="\n\n You are Registered as a Voter \n\nWith Regards\n\nElection Manager\n";
                 obj=new Email(path,lf.getEmail(),"","Registration Accepted Successfully from EMS","+mailbody+"+session.getAttribute("institute_name"));
                 executor.submit(new Runnable() {
 
@@ -225,10 +225,10 @@ request.setAttribute("msg", "Voter Successfully Added");
 String path = servlet.getServletContext().getRealPath("/");
   String mailbody="";
  if(mailbody=="")
-       mailbody="\n You are Registered as a Voter with given User Id=";
+       mailbody="\n\n You are Registered as a Voter with given User Id ";
 
 
-        obj=new Email(path,lf.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+lf.getV_name()+"+mailbody+"+userid +" , Password for EMS Login ="+admin_password+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+        obj=new Email(path,lf.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+lf.getV_name()+"+mailbody+"+userid +" , Password for EMS Login "+admin_password+".\n\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
          executor.submit(new Runnable() {
 
                 public void run() {
@@ -252,7 +252,7 @@ String path = servlet.getServletContext().getRealPath("/");
           request.setAttribute("msg", "Voter With ID"+lf.getEnrollment() +" Successfully "+lf.getStatus());
             VoterRegistrationDAO.update(ob);
             String path = servlet.getServletContext().getRealPath("/");
-        obj=new Email(path,lf.getEmail(),admin_password,"Voter Account Status Changed with "+lf.getStatus(),"User Id="+userid);
+        obj=new Email(path,lf.getEmail(),admin_password,"Voter Account Status Changed with "+lf.getStatus(),"User Id "+userid);
          executor.submit(new Runnable() {
 
                 public void run() {

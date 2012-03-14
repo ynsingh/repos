@@ -48,10 +48,10 @@ String onetimekey = request.getParameter("key");
 
       if(l!=null)
       {
-System.out.println("Login"+election);
-session.setAttribute("election", election);
-session.setAttribute("key", "DirectLogin");
-      VoterRegistration v=VoterRegistrationDAO.searchVoterEmail(l.getStaffDetail().getId().getInstituteId(), user_id);
+	System.out.println("Login"+election);
+	session.setAttribute("election", election);
+	session.setAttribute("key", "DirectLogin");
+      	VoterRegistration v=VoterRegistrationDAO.searchVoterEmail(l.getStaffDetail().getId().getInstituteId(), user_id);
         ElectionDAO e=new ElectionDAO();
 
         Election obj=(Election)e.Electionname(l.getStaffDetail().getId().getInstituteId(),election);
@@ -68,33 +68,39 @@ session.setAttribute("key", "DirectLogin");
              voterDAO voterdao = new voterDAO();
              System.out.println("ok");
                 VotingProcess vp = voterdao.getVoter(l.getStaffDetail().getId().getInstituteId(), election, user_id);
-if(vp!=null){
-    session.invalidate();
-  request.setAttribute("msg", "Sorry You Already Voted for this Election");
-      return mapping.findForward("fail");
+		if(vp!=null){
+		    	session.invalidate();
+		  	request.setAttribute("msg", "Sorry You Already Voted for this Election");
+      			return mapping.findForward("fail");
 
-}
+		}
                 System.out.println("Login Vote");
-                 String path = servlet.getServletContext().getRealPath("/");
+                String path = servlet.getServletContext().getRealPath("/");
         session.setAttribute("apppath", path);
         session.setAttribute("election_id", obj.getId().getElectionId());
         session.setAttribute("user_id",l.getUserId());
-                session.setAttribute("institute_id",l.getStaffDetail().getId().getInstituteId() );
-                session.setAttribute("electionName",obj.getElectionName() );
-              return mapping.findForward("success");
+        session.setAttribute("institute_id",l.getStaffDetail().getId().getInstituteId() );
+        session.setAttribute("electionName",obj.getElectionName() );
+        return mapping.findForward("success");
 
             }else{
 		request.setAttribute("msg", " Sorry Voter is blocked");
+      session.invalidate();
 		return mapping.findForward("fail");
             }
 	}else{
 		request.setAttribute("msg", "Election voting process is not started or is closed");
+      		session.invalidate();
 		return mapping.findForward("fail");
       }
+	}else{
+		request.setAttribute("msg", "You are not a valid voter for this election");
+      		session.invalidate();
+                return mapping.findForward("fail");
 	}
-      session.invalidate();
-      request.setAttribute("msg", "You are Successfully Logout");
-      return mapping.findForward("fail");
+     // session.invalidate();
+      //request.setAttribute("msg", "You are Successfully Logout");
+      //return mapping.findForward("fail");
 
     }
 }

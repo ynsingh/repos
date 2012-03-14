@@ -508,7 +508,6 @@
          <action path="/checkPass" type="com.myapp.struts.Voter.checkPassword"/>
          <action  path="/electionResult" input="/Voter/voter_home.jsp" name="VoterElectionActionForm"  scope="request" type="com.myapp.struts.Voting.VotingAction" >
                 <forward name="success" path="/Voting/electionResult.jsp"/>
-
          </action>
          <action path="/VoteCast" scope="request" type="com.myapp.struts.Voting.CastVote"/>
             <action path="/newenrollment" scope="request" type="com.myapp.struts.Voter.newenrollment">

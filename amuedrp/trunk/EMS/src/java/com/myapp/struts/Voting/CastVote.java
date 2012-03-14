@@ -34,6 +34,7 @@ public class CastVote extends org.apache.struts.action.Action {
             throws Exception {
      
         	HttpSession session = request.getSession();
+		String ClientIPAdd=(String)request.getRemoteAddr();
         	String instituteId = (String)session.getAttribute("institute_id");
         	String electionId = (String)session.getAttribute("election_id");
         	if(electionId==null)
@@ -158,11 +159,12 @@ public class CastVote extends org.apache.struts.action.Action {
             			response.getWriter().write(emails.toString());
             			return null;
         		}
+		
                	}else{
         		String vote = request.getParameter("cast");
 			if(vote.startsWith(";"))
    				vote=vote.substring(1,vote.length());
-				UserLog.ErrorLog(vote,(String)session.getAttribute("apppath"));
+				UserLog.ErrorLog("Voter IP Address"+ClientIPAdd+"\n"+vote,(String)session.getAttribute("apppath"));
         			String[] cast = vote.split(",;");
         			if(vp!=null)
         			{
