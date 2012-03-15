@@ -39,10 +39,12 @@ package org.iitk.brihaspati.modules.screens.call.Backups;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.List;
+import java.util.Vector;
 import java.lang.reflect.Array;
 
 //turbine
 import org.apache.turbine.util.RunData;
+import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
@@ -60,15 +62,18 @@ public class BackupList extends SecureScreen
 	{
 		String LangFile=(String)data.getUser().getTemp("LangFile");
 		context.put("tdcolor",data.getParameters().getString("count",""));
-		try{	
-			File dir=new File(TurbineServlet.getRealPath("/BackupData/"));
+		try{
+			String crsName=(String)data.getUser().getTemp("course_id");
+			String instituteId = StringUtils.substringAfterLast(crsName,"_");
+			//dir=new File(TurbineServlet.getRealPath("/BackupData/"));
+			File dir=new File(TurbineServlet.getRealPath("/BackupData/"+instituteId+"/"));
 			if(dir.exists()){
 				File list[];
 				/**
 				  * @param str[] added by shaista  
 				  */
 				String str[]= new String[100]; 
-				String crsName=(String)data.getUser().getTemp("course_id");
+				Vector tmp=new Vector();
 				String st=data.getParameters().getString("st","");
 				context.put("st",st);
 				list=dir.listFiles();
@@ -80,15 +85,18 @@ public class BackupList extends SecureScreen
 					  */
 					//for(int i=0 ; i < Array.getLength(list) ; i++){
 						FilenameFilter only = new OnlyExt(data.getUser().getTemp("course_id" ).toString());
-						ErrorDumpUtil.ErrorLog("only="+only);
+						//ErrorDumpUtil.ErrorLog("only="+only);
 						str =dir.list(only);  
-						ErrorDumpUtil.ErrorLog("list[]="+str);
+						//ErrorDumpUtil.ErrorLog("list[]="+str);
+						for (int i=0; i < str.length; i++) { 
+							tmp.add(str[i]); 
+						}
 					//}	
 					/**
 					  * Commented by shaista
 					  */
 					//context.put("list",list);
-					context.put("list",str);
+					context.put("list",tmp);
 				}
 				else{
 				//	data.setMessage(MultilingualUtil.ConvertedString("backup_msg4",LangFile));

@@ -71,7 +71,7 @@ $!data.getMessage()
 		<td width=30%> #if($lang!="english") $brih_backup $brih_Of2 $brih_file $brih_Of1 $brih_name #else $brih_name $brih_of $brih_backup $brih_file #end </td>
 		<td colspan=2>$brih_availableAction</td>
 	</tr>
-	#set ($i=1)
+	#set ($i=0)
 	#foreach($lst in $list)
 		#if($st=="ins")
 						## Commented By Shaista 
@@ -86,8 +86,8 @@ $!data.getMessage()
 							## Commented By Shaista 
 			                ##<td>$lst.getName()</td>
 			                ##<td><a href="$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$lst.getName())">$brih_download</a></td>
-			                <td>$lst</td>
-			                <td><a href="$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$lst)">$brih_download</a></td>
+			                <td>$list.get($i)</td>
+			                <td><a href="$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$list.get($i))">$brih_download</a></td>
 			        </tr>
 			##end
 		#else
@@ -100,9 +100,9 @@ $!data.getMessage()
 					## Commented By Shaista
 			##<td>$lst.getName() </td>
 			##<td colspan=2><a href="$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$lst.getName())">$brih_download</a>
-			<td>$lst </td>
-			<td colspan=2><a href="$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$lst)">$brih_download</a>
-			&nbsp;&nbsp;<a href="$link.setAction("BackupAction").addPathInfo("actionName","eventSubmit_doDeletebackup").addPathInfo("fName",$lst.getName()).addPathInfo("count",$tdcolor)">$brih_delete</a></td>
+			<td>$list.get($i) </td>
+			<td colspan=2><a href="$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$list.get($i))">$brih_download</a>
+			&nbsp;&nbsp;<a href="$link.setAction("BackupAction").addPathInfo("actionName","eventSubmit_doDeletebackup").addPathInfo("fName",$list.get($i)).addPathInfo("count",$tdcolor)">$brih_delete</a></td>
 			</tr>
 		#end
 	#set ($i=$i+1)
