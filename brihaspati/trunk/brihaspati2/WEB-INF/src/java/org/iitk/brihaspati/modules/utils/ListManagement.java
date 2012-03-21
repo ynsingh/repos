@@ -183,6 +183,7 @@ public class ListManagement
 		                                cuDetail.setRollNo(rollno);
 		                                cuDetail.setLoginName(loginname);
 		                                cuDetail.setUserName(fullname);
+		                                cuDetail.setEmail(loginname);
 		                                Details.add(cuDetail);
 					 	lnamelist.add(loginname);
 					}
@@ -408,8 +409,15 @@ public class ListManagement
                                 		byte active=((Courses)v.get(i)).getActive();
                                 		String act=Byte.toString(active);
                                 		String crDate=(((Courses)v.get(i)).getCreationdate()).toString();
+						////////////////////////////////////add by Richa to get Instructor name.
+						String nmeml=StringUtils.substringBeforeLast(GName,"_");
+						String pieml=StringUtils.substringAfter(nmeml,gAlias);
+                                        	String insname=UserUtil.getFullName(UserUtil.getUID(pieml));
                                 		CourseUserDetail cuDetail=new CourseUserDetail();
+						cuDetail.setEmail(pieml);
                                 		cuDetail.setGroupName(GName);
+						cuDetail.setInstName(InstituteIdUtil.getIstName(Integer.parseInt(instituteId)));
+						cuDetail.setInstructorName(insname);
                                 		cuDetail.setCourseName(courseName);
                                 		cuDetail.setCAlias(gAlias);
                                 		cuDetail.setDept(dept);

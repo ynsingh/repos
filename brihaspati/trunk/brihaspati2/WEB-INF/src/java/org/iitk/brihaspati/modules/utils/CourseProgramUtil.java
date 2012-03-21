@@ -125,7 +125,7 @@ public class CourseProgramUtil
 				{
                                         StudentRollno sr = (StudentRollno)(UsDetail.get(0));
                                         stdsrid=sr.getId();
-	                                if(!CourseId.equals("Select Course")&& !Prg.equals("Select Program") && stdsrid!=0)
+	                                if(!CourseId.equals("Select Course")&& !Prg.equals("Select Program") && stdsrid!=0 && !CourseId.equals("")&& !Prg.equals(""))
 	                                        InsertCourseProgram(stdsrid,CourseId,Prg);
 					String msg1 =MultilingualUtil.ConvertedString("rollno",File);
 					String msg2 =MultilingualUtil.ConvertedString("Wikiaction6",File);
@@ -149,7 +149,7 @@ public class CourseProgramUtil
 	                                        StudentRollno sr = (StudentRollno)(vlist.get(0));
 	                                        stdsrid=sr.getId();
 	                                }
-	                                if(!CourseId.equals("Select Course")&& !Prg.equals("Select Program") && stdsrid!=0)
+	                                if(!CourseId.equals("Select Course")&& !Prg.equals("Select Program") && stdsrid!=0 && !CourseId.equals("") && !Prg.equals(""))
 	                                        InsertCourseProgram(stdsrid,CourseId,Prg);
 	                        }
 			}

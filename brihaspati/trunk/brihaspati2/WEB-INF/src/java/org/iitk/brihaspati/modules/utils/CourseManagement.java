@@ -40,6 +40,7 @@ import java.util.Vector;
 import java.util.StringTokenizer;
 
 import org.apache.torque.util.Criteria;
+import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.security.TurbineSecurity;
@@ -53,6 +54,7 @@ import org.iitk.brihaspati.om.DbReceivePeer;
 import org.iitk.brihaspati.om.NoticeSendPeer;
 import org.iitk.brihaspati.om.NoticeReceivePeer;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 
 import org.iitk.brihaspati.om.InstructorPermissionsPeer;
 import org.iitk.brihaspati.om.InstructorPermissions;
@@ -304,6 +306,9 @@ public class CourseManagement
 				String act=Byte.toString(active);
 				Date CDate=((Courses)v.get(i)).getCreationdate();
 				String CrDate=CDate.toString();
+				String nmeml=StringUtils.substringBeforeLast(GName,"_");
+				String pieml=StringUtils.substringAfter(nmeml,gAlias);
+				String insname=UserUtil.getFullName(UserUtil.getUID(pieml));
 				CourseUserDetail cuDetail=new CourseUserDetail();
 				
 				if(!groupName.equals("All"))
@@ -336,7 +341,10 @@ public class CourseManagement
 					cuDetail.setUserName(userName);
 					cuDetail.setEmail(email);
 				}
+				cuDetail.setEmail(pieml);
 				cuDetail.setGroupName(GName);
+				cuDetail.setInstName(InstituteIdUtil.getIstName(Integer.parseInt(instituteId)));
+				cuDetail.setInstructorName(insname);
 				cuDetail.setCourseName(courseName);
 				cuDetail.setCAlias(gAlias);
 				cuDetail.setDept(dept);
