@@ -255,7 +255,7 @@ public class StaffProfileServlet extends HttpServlet {
 			Statement st_userdet = connect.createStatement();			
 			ResultSet rs_userdets = st_userdet.executeQuery("SELECT * FROM `staff_profile_masterdetails_v0_values` WHERE userid="+ userRequest.getEntityId());
 			while(rs_userdets.next()) {				
-				userfullname=rs_userdets.getString("user_full_name");				
+				userfullname=rs_userdets.getString("full_name"); // concatenation of title , first name and last name				
 				university=rs_userdets.getString("University");
 				institution=rs_userdets.getString("Institution");
 				department=rs_userdets.getString("Department");
@@ -291,12 +291,15 @@ public class StaffProfileServlet extends HttpServlet {
 			}
 			
 			str.append("<loguser>"+ request.getUserPrincipal().getName() +"</loguser>");
-			str.append("<staffemail>"+staffemail+"</staffemail>");
-			str.append("<userfullname>"+ userfullname +"</userfullname>");
-			str.append("<university>"+university+"</university>");
-			str.append("<institution>"+institution+"</institution>");
-			str.append("<department>"+department+"</department>");
-			str.append("<designation>"+designation+"</designation>");
+			str.append("<staffemail>"+staffemail.replace("&", "&amp;")+"</staffemail>");
+			str.append("<userfullname>"+ userfullname.replace("&", "&amp;") +"</userfullname>");
+			str.append("<university>"+university.replace("&", "&amp;")+"</university>");
+			str.append("<institution>"+institution.replace("&", "&amp;")+"</institution>");
+			str.append("<department>"+department.replace("&", "&amp;")+"</department>");
+			str.append("<designation>"+designation.replace("&", "&amp;")+"</designation>");
+			
+			MultiLanguageString ml=new MultiLanguageString();
+			ml.init(language);
 			
 			//iterate over ArrayList to generate Xml string for the questions.
 			for (int cnt=0; cnt<questionVOsList.size(); cnt++){
@@ -305,9 +308,12 @@ public class StaffProfileServlet extends HttpServlet {
 				str.append("	<number>" + questVO.getNumber() + "</number>\n");
 				str.append("	<description>" + questVO.getDescription() + "</description>\n");
 
-				str.append("	<oioNS:prompt>" + questVO.getPrompt().replace("&", "&amp;") + "</oioNS:prompt>\n");
+				
+				//str.append("	<oioNS:prompt>" + questVO.getPrompt().replace("&", "&amp;") + "</oioNS:prompt>\n");
+				str.append("	<oioNS:prompt>" + ml.getValue(questVO.getName()).replace("&", "&amp;") + "</oioNS:prompt>\n");
+				
+				
 				str.append("	<oioNS:itemtype>" + questVO.getItemtype() + "</oioNS:itemtype>\n");
-
 				str.append("	<oioNS:renderinfo>\n\n" + questVO.getAction() + "\n\n</oioNS:renderinfo>\n");
 				str.append("</" + questVO.getName() + ">\n\n");
 				//as you iterate populate questionNames arrayList also.
@@ -640,3 +646,4 @@ public class StaffProfileServlet extends HttpServlet {
 	}
 	
 }//StaffProfileServlet...
+

@@ -245,26 +245,26 @@
 		font-family: verdana,Helvetica,sans-serif;font-size: 11px;font-weight: bold;			
 		background-color:#A3C9DE;		
 		letter-spacing: 0;		
-		line-height: 20px;
+		//line-height: 20px;
 		text-align:left;
 		/*border-left-width:1px;
 		border-left-style:solid; 
 		border-left-color:#81aec5;*/
 		border: 1px solid #81AEC5;
-		padding:5px;
+		padding:1px;
 	}
 	
 .ListRow {
 	background:#FFFFFF;		
 	border: 1px solid #81AEC5;
-	padding:5px;
+	padding:1px;
 	}
 	
 .ListRownext {
 	
 	background-color:  #E9F4FA;
 	border-left: 1px solid #81AEC5;
-	padding:5px;
+	padding:1px;
 	}
 
 .listdiv{
@@ -299,22 +299,11 @@
 	font-family: Verdana, Helvetica, sans-serif;
 	font-size: 12px;
 	font-weight: bold;		
-	/*background-color:#9dc6d9;*/
-	background:url("../images/tablebg.jpg") repeat-x scroll 0 0 #9dc6d9;
-	color:#174664;
-	border-width: 1px;
-	border-style: solid; 
-	border-color:#999999;
-	text-align:center;
-	border-collapse: collapse;
-	border-top-width: 1px;
-	border-bottom-width: 1px;		
-	border-top-style: solid;
-	border-bottom-style: solid;	
-	border-top-color: #9dc6d9;
-	border-bottom-color: #6C7D87;
-	border-right-color:#9dc6d9;
-	border-left-color: #9dc6d9;
+	background: url("../images/glossyback.gif") repeat-x scroll left bottom #C6E3EF;
+	border-bottom: 1.5px solid #729CB2;
+	color: #104D6B;   
+	text-align:left;
+	padding-left:3px;
 }
 
 
@@ -322,12 +311,13 @@
 	font-family: Verdana, Helvetica, sans-serif;
 	font-size: 11px;
 	font-weight: bold;		
-	background-color:#ffe7ce;/*#d5e5ed*/;	
+	background-color:#ffe7ce;
 	color:red;
 	border-width: 1px;
 	border-style: solid; 
 	border-color:#66CCFF;
-	text-align:center;
+	text-align:left;
+	padding-left:3px;
 }
 
 .errorlogin
@@ -362,7 +352,7 @@ border: 1px #912B46 solid;
 width:auto
 } 
 .textmedium{ 
-width: 200px; font-family: Verdana, Helvetica, sans-serif;  font-size: 13px; padding: 0px; margin: 0 0 5px 0; color: #3a3a3a; font-family: Georgia, serif;}
+width: 200px; font-family: Verdana, Helvetica, sans-serif;  font-size: 12px; padding: 0px; margin: 0 0 5px 0; color: #3a3a3a; font-family: Verdana, Helvetica, sans-serif;}
 
 .hidetd{
 display:none;
@@ -542,7 +532,8 @@ display:none;
       font-size: 0.9em;
       font-weight: bold;
       margin: 5px;
-      padding: 4px 10px;
+      //padding: 4px 10px;
+      padding: 1px;
       text-shadow: 0 -1px 1px #FFFFFF;
 }
 
@@ -552,7 +543,7 @@ display:none;
     background-color: #B9DCEF;
     background-image: url("../images/innerpageheader.jpg");
     background-repeat: no-repeat;
-    height: 116px;
+    height: 146px;
     margin: 0 auto;
     width: 1013px;
 }    
@@ -569,7 +560,7 @@ display:none;
     height: 30px;    
     background-color: white;
     text-align: right;
-    margin: -110px 10px 0 0;
+    margin: -108px 0px;
 }
 .message {
     background: url("../images/information.png") no-repeat scroll 8px 50% #F3F8FC;
@@ -602,6 +593,8 @@ display:none;
 	border-bottom: 1.5px solid #729CB2;
 	color: #104D6B;   
 	font-weight:bold;
+	text-align:left;
+	padding-left:3px;
 }
 
 .profilemenuhover{
@@ -616,6 +609,8 @@ display:none;
 	border-bottom: 1.5px solid #729CB2;
 	color: #104D6B;  
 	font-weight:bold;
+	text-align:left;
+	padding-left:3px;
 }
 
 .mandatory{
@@ -638,7 +633,7 @@ display:none;
 }
 .horizontalTab{
     background-color: #6da5d0;
-    height: 35px;
+    height: 40px;
     list-style: none outside none;
     margin: 0;
     padding: 0;
@@ -647,44 +642,43 @@ display:none;
     color: #174664;
 }
 .horizontalTabli{
-    background-color:#DFEFFC;
+    background-color:#6da5d0;//#DFEFFC;
     float: left;
     text-align: center;
-    padding:10px;
+    padding:9px;
     font-family: Verdana,Helvetica,sans-serif;
     font-size: 11px;
     font-weight: bold;
-    margin-left:2px; 
-    margin-top:4px;
+    margin-left:1px; 
+    margin-top:2px;
     border: 1px solid #C5DBEC;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;    
 }
 .horizontalTabli:hover{
     cursor:pointer;
-    background-color: #D0E5F5;
+    background-color: #AFCDE3;
 }
 .horizontalTabliselected{
     float: left;
     text-align: center;
-    padding:10px;
+    padding:9px;
     font-family: Verdana,Helvetica,sans-serif;
     font-size: 11px;
     font-weight: bold;
     margin-left:2px;
-    margin-top:4px;
-    background-color: #D0E5F5;
-    color: #E17009;
-    text-color: #FFE7CE;
+    margin-top:2px;
+    background-color: #D0E5F5;//:#DFEFFC;//#6da5d0;//#D0E5F5;
+    color: #174664;//#FFFFFF;//#E17009;
+    text-color:#FFE7CE;
     border: 1px solid #C5DBEC;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
 
-.userdetails{ 
+.userdetails{      
        
-       
-        background: url("../images/tablebg.jpg") repeat-x scroll 0 0 #9DC6D9;
+    background: url("../images/tablebg.jpg") repeat-x scroll 0 0 #9DC6D9;
 	font-family:Verdana, Arial, Helvetica, sans-serif;
 	color: #000000;
 	font-size: 13px;
@@ -695,17 +689,28 @@ display:none;
 	line-height:27px;
 	border-color: #e6f3f7;//#81aec5;
 	padding:3px;
-	
-        
+	       
 }
 
-
+.ReportFormatTable{      
+    background: url("../images/tablebg.jpg") repeat-x scroll 0 0 #9DC6D9;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	color: #000000;
+	font-size: 13px;
+	font-weight: bold;
+	border-collapse: collapse;
+	border-width: 2px;	
+	border-style: solid;
+	line-height:27px;
+	border-color:#9dc7dd;	 
+}
 
 #Reports_menu_container
 {
-	margin: 0 0;
-	width: auto;;
-	background:#fff;
+    margin: 0 0;
+    width: auto;
+    background-color:#9dc6d9;
+    background: url("../images/tablebg.jpg") repeat-x scroll 0 0 #9dc6d9;    
 }
 
 #Reports_menu_header
@@ -720,7 +725,8 @@ display:none;
 {
 	float: left;
 	width: 100%;
-	background:#9dc6d9;
+    background-color:#9dc6d9;
+    background: url("../images/tablebg.jpg") repeat-x scroll 0 0 #9dc6d9;    
 }
 
 #Reports_menu_navigation ul
@@ -746,3 +752,4 @@ display:none;
 }
 
 #Reports_menu_navigation li a:hover { background:#b6dbed; }
+

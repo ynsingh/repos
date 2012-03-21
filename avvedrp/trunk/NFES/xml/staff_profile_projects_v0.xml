@@ -45,7 +45,7 @@ function submitform_staff_profile_projects_v0()
 function approve()
 {
     var frmelement=document.getElementById("staff_profile_projects_v0");
-    if (isMandatoryDataExists(frmelement)=="1")
+    if (isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement))
     {		
 	document.forms[0].upload.value=document.forms[1].uploadfiles.value;
 	docHtmlRecordwiseApprove();
@@ -99,17 +99,17 @@ if (document.getElementById('reload_after_save').value!="null"){
 <td colspan="2" class="thead" align="center">Projects Details</td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_status/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_status/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//project_status/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_title/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_title/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//project_title/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//principal_investigator/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//principal_investigator/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//principal_investigator/oioNS:renderinfo" /></td>
 </tr>
 
@@ -119,11 +119,11 @@ if (document.getElementById('reload_after_save').value!="null"){
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//start_date/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//start_date/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//start_date/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//duration/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//duration/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//duration/oioNS:renderinfo" /></td>
 </tr>
 <tr>
@@ -131,7 +131,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//amount/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_center_department/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_center_department/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//project_center_department/oioNS:renderinfo" /></td>
 </tr>
 <tr>
@@ -154,8 +154,8 @@ if (document.getElementById('reload_after_save').value!="null"){
 </div>
 
 <input type="hidden" name="action" value="" />
-<input type="HIDDEN" name="mandatory_fields" value="project_status|project_title|principal_investigator|start_date|duration|project_center_department|abstract" />
-<input type="HIDDEN" name="validation_fields" value="amount-A" />
+<input type="HIDDEN" name="mandatory_fields" value="project_status|project_title|principal_investigator|start_date|duration|project_center_department" />
+<input type="HIDDEN" name="validation_fields" value="amount-A|url-U" />
 </font>
 </form>
 

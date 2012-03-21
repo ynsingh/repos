@@ -792,6 +792,21 @@ function horizontalTab(value)
 	}
 }
 
+function showPublications(table_id){
+	if(table_id=="e_publications"){
+		document.getElementById('tab_e_publications').style.display='block';
+		document.getElementById('tab_journal_papers').style.display='none';
+		document.getElementById('e_publications').className="horizontalTabliselected";
+		document.getElementById('journal_papers').className="horizontalTabli";		
+	}else{
+		document.getElementById('tab_e_publications').style.display='none';
+		document.getElementById('tab_journal_papers').style.display='block';	
+		document.getElementById('e_publications').className="horizontalTabli";
+		document.getElementById('journal_papers').className="horizontalTabliselected";
+	}
+
+}
+
 </script>
 
 
@@ -825,16 +840,6 @@ function horizontalTab(value)
 </tr>
 </table>
 </div>
-
-<script language="javascript">
-if (document.getElementById('reload_after_save').value!="null"){
-	alert(document.getElementById('reload_after_save').value);
-}
-
-/*if(document.getElementById('loginuser').value==document.getElementById('staffemail').value){
-document.getElementById('userdetails').className="hidetd";}
-*/
-</script>
 
 <table width="100%" cellspacing="0" class="bodystyle1">
 
@@ -938,17 +943,22 @@ document.getElementById('userdetails').className="hidetd";}
 <INPUT TYPE="HIDDEN" NAME="loginuser" id="loginuser"><xsl:attribute name="VALUE"><xsl:value-of select="//loguser"/> </xsl:attribute></INPUT>
 <INPUT TYPE="HIDDEN" NAME="staffemail" id="staffemail"><xsl:attribute name="VALUE"><xsl:value-of select="//staffemail"/> </xsl:attribute></INPUT>
 
+<script language="javascript">
+if (document.getElementById('reload_after_save').value!="null"){
+	alert(document.getElementById('reload_after_save').value);
+}
+</script>
 
 <!-- ================================= Brief Profile ======================================-->
 <div id="d1">
 <table width="100%"  >
 
 	<ul class="horizontalTab" id="htab" >
-		<li id="tab1" class="horizontalTabli" onClick="horizontalTab(this.id)">Profile</li>
+		<li id="tab1" class="horizontalTabli" onClick="horizontalTab(this.id)"><xsl:apply-templates select="//personal_details/oioNS:prompt" /></li>
 		<li id="tab2" class="horizontalTabli" onClick="horizontalTab(this.id)"><xsl:apply-templates select="//qualification/oioNS:prompt" /></li>
-		<li id="tab5" class="horizontalTabli" onClick="horizontalTab(this.id)">Personal Details</li>
-		<li id="tab3" class="horizontalTabli" onClick="horizontalTab(this.id)">Contact Details</li>
-		<li id="tab4" class="horizontalTabli" onClick="horizontalTab(this.id)">File Upload</li>
+		<li id="tab5" class="horizontalTabli" onClick="horizontalTab(this.id)"><xsl:apply-templates select="//personal_details_tab_capion/oioNS:prompt" /></li>
+		<li id="tab3" class="horizontalTabli" onClick="horizontalTab(this.id)"><xsl:apply-templates select="//contact_details/oioNS:prompt" /></li>
+		<li id="tab4" class="horizontalTabli" onClick="horizontalTab(this.id)"><xsl:apply-templates select="//file_upload/oioNS:prompt" /></li>
 	</ul>
 
 </table>
@@ -983,30 +993,30 @@ document.getElementById('userdetails').className="hidetd";}
 <div id="dtab3">
 <table width="100%">
 <tr>
-<td width="30%" colspan="4" align="center" class="thead">Contact Details</td>
+<td width="100%" colspan="4" align="center" class="thead"><xsl:apply-templates select="//contact_details/oioNS:prompt" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//office_room_num/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//office_room_num/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//office_room_num/oioNS:prompt" /><span style="color:red">*</span></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//office_room_num/oioNS:renderinfo" /></td>
 <!--</tr>
 <tr>-->
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//office_phone_ext/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//office_phone_ext/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//office_phone_ext/oioNS:prompt" /><span style="color:red">*</span></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//office_phone_ext/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//email_id/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//email_id/oioNS:renderinfo" /> </td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//email_id/oioNS:prompt" /><span style="color:red">*</span></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//email_id/oioNS:renderinfo" /> </td>
 <!--</tr>
 <tr>-->
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//email/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//email/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//email/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//home_phone/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//home_phone/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//home_phone/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//home_phone/oioNS:renderinfo" /></td>
 <!--</tr>
 <tr>-->
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//fax/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//fax/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//fax/oioNS:renderinfo" /></td>
 </tr>
 
@@ -1015,30 +1025,30 @@ document.getElementById('userdetails').className="hidetd";}
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_Address1/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//pmt_Address1/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//pmt_Address1/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_Address2/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//pmt_Address2/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//pmt_Address2/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_City/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//pmt_City/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//pmt_City/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_District/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//pmt_District/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//pmt_District/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_state/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//pmt_state/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//pmt_state/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_country/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//pmt_country/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//pmt_country/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_pincode/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//pmt_pincode/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//pmt_pincode/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_phone/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//pmt_phone/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//pmt_phone/oioNS:renderinfo" /></td>
 </tr>
 
@@ -1050,30 +1060,30 @@ document.getElementById('userdetails').className="hidetd";}
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_Address1/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//comm_Address1/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//comm_Address1/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_Address2/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//comm_Address2/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//comm_Address2/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_City/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//comm_City/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//comm_City/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_District/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//comm_District/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//comm_District/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_state/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//comm_state/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//comm_state/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_country/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//comm_country/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//comm_country/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_pincode/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//comm_pincode/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//comm_pincode/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_phone/oioNS:prompt" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//comm_phone/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//comm_phone/oioNS:renderinfo" /></td>
 </tr>
 </table>
@@ -1082,62 +1092,60 @@ document.getElementById('userdetails').className="hidetd";}
 <div id="dtab5">
 <table width="100%">
 <tr>
-<td width="30%" colspan="4" align="center" class="thead">Personal Details</td>
+<td width="100%" colspan="4" align="center" class="thead"><xsl:apply-templates select="//personal_details_tab_capion/oioNS:prompt" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//personal_title/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//personal_title/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//personal_gender/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//personal_gender/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//personal_nationality/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//personal_nationality/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//personal_gender/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//personal_gender/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//personal_date_of_birth/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//personal_date_of_birth/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//personal_joining_date/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//personal_joining_date/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//personal_date_of_birth/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//personal_date_of_birth/oioNS:renderinfo" /></td>
+<!--<td width="15%" class="tabBG4"><xsl:apply-templates select="//personal_joining_date/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//personal_joining_date/oioNS:renderinfo" /></td>
+-->
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//personal_native_place/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//personal_native_place/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//personal_nationality/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//personal_nationality/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//personal_native_place/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//personal_native_place/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//personal_native_country/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//personal_native_country/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//personal_native_state/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//personal_native_state/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//personal_native_country/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//personal_native_country/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//personal_native_state/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//personal_native_state/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//personal_native_district/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//personal_native_district/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//personal_community/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//personal_community/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//personal_native_district/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//personal_native_district/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//personal_community/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//personal_community/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//personal_religion/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//personal_religion/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//personal_caste/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//personal_caste/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//personal_religion/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//personal_religion/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//personal_caste/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//personal_caste/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//personal_mother_tongue/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//personal_mother_tongue/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//personal_marital_status/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//personal_marital_status/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//personal_mother_tongue/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//personal_mother_tongue/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//personal_marital_status/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//personal_marital_status/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//dept_pan_card_no/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//dept_pan_card_no/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//dept_passport_no/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//dept_passport_no/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//dept_pan_card_no/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//dept_pan_card_no/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//dept_passport_no/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//dept_passport_no/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//account_passport_valid_upto/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//account_passport_valid_upto/oioNS:renderinfo" /></td>
+<td width="15%" class="tabBG4"><xsl:apply-templates select="//health_blood_group/oioNS:prompt" /></td>
+<td width="35%" class="tabBG4"><xsl:apply-templates select="//health_blood_group/oioNS:renderinfo" /></td>
 </tr>
-<tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//account_passport_valid_upto/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//account_passport_valid_upto/oioNS:renderinfo" /></td>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//health_blood_group/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//health_blood_group/oioNS:renderinfo" /></td>
-</tr>
+
 </table>
 </div>
 
@@ -1164,15 +1172,39 @@ document.getElementById('userdetails').className="hidetd";}
 <!--============================= Publications Papers =============================-->
 
 <div id="d3">
+<div>
+<ul class="horizontalTab" id="htab" >
+	<li id="e_publications" class="horizontalTabli" onClick="showPublications(this.id)"><xsl:apply-templates select="//e_publication_links/oioNS:prompt" /></li>
+	<li id="journal_papers" class="horizontalTabli" onClick="showPublications(this.id)"><xsl:apply-templates select="//journal_papers/oioNS:prompt" /></li>
+</ul>
 
-<table width="100%" class="tabBG3">
-<tr>
-<td class="thead" align="center"><xsl:apply-templates select="//journal_papers/oioNS:prompt" /></td>
-</tr>
-<tr>
-<td class="tabBG4"><xsl:apply-templates select="//journal_papers/oioNS:renderinfo" /></td>
-</tr>
-</table>
+</div>
+
+
+<div id="tab_e_publications">
+	<table width="100%">
+	<tr>
+		<td class="thead" align="center"><xsl:apply-templates select="//e_publication_links/oioNS:prompt" /></td>
+	</tr>
+	<tr>
+		<td class="tabBG4"><xsl:apply-templates select="//e_publication_links/oioNS:renderinfo" /></td>
+	</tr>
+	</table>
+</div>
+
+<div id="tab_journal_papers">
+	<table width="100%">
+	<tr>
+		<td class="thead" align="center"><xsl:apply-templates select="//journal_papers/oioNS:prompt" /></td>
+	</tr>
+	<tr>
+		<td class="tabBG4"><xsl:apply-templates select="//journal_papers/oioNS:renderinfo" /></td>
+	</tr>
+	</table>
+</div>
+<script>
+showPublications('e_publications');
+</script>
 </div>
 
 <!--============================= Conference Papers =============================-->

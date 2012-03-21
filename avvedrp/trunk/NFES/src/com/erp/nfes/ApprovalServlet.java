@@ -18,6 +18,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.Locale;
+import java.io.File;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 public class ApprovalServlet extends HttpServlet{
 
@@ -64,13 +74,15 @@ public class ApprovalServlet extends HttpServlet{
 					}
 				}
 			}
-			out.println("</div></form></BODY></HTML>");		
+			out.println("</div>");
+			out.println("</form></BODY></HTML>");		
 	}
 	
 
 	private void initPage(HttpServletRequest request, HttpServletResponse response,MultiLanguageString ml) throws IOException{
 		PrintWriter out = response.getWriter();
-		out.println("<div align=\"center\" class=\"listdiv\">");
+		out.println("<div id=\"approvaldiv\" align=\"center\" class=\"listdiv\">");
+		out.println("<div style='text-align: center; font-size:14px;font-weight: bold;height:8px;'>"+ ml.getValue("approval") +"</div>");
 		out.println("<br>");
 		
 		out.println("<input type=\"HIDDEN\" ID=\"action\" name=\"action\" value=\"\"/>");
@@ -78,22 +90,39 @@ public class ApprovalServlet extends HttpServlet{
 		
 		out.println("<table class=\"search_field_div\" width=98%>");
 		
-		out.println("<tr><td>"+ml.getValue("university_starts_with")+"</td>");
-		
+		out.println("<tr><td>"+ml.getValue("university")+"</td>");		
   	    GetRecordValue getUserDetails=new GetRecordValue();  	    
   	    if (getUserDetails.getRole(request.getUserPrincipal().getName()).equals("ROLE_ADMIN_UNIVERSITY")){
-  	    	out.println("<td><input tye=\"text\" SIZE=\"35\" id=\"university\" name=\"university\" disabled value=\""+ getUserDetails.getUniversity(request.getUserPrincipal().getName()) +"\" ></td></tr>");
+  	    	out.println("<td><input tye=\"text\" SIZE=\"35\" id=\"university\" name=\"university\" disabled value=\""+ getUserDetails.getUniversity(request.getUserPrincipal().getName()) +"\" ></td>");
   	    }else{
-  	    	out.println("<td><input tye=\"text\" SIZE=\"35\" id=\"university\" name=\"university\" ></td></tr>");
-  	    }
+  	    	out.println("<td><input tye=\"text\" SIZE=\"35\" id=\"university\" name=\"university\" ></td>");
+  	    }		
+		out.println("<td>"+ml.getValue("institution")+"</td><td><Input Type=\"text\" SIZE=\"35\" id=\"institution\" name=\"institution\"></td></tr>");		
 		
-		out.println("<tr><td>"+ml.getValue("institution_starts_with")+"</td><td><Input Type=\"text\" SIZE=\"35\" id=\"institution\" name=\"institution\"></td></tr>");
-		
-		out.println("<tr><td>"+ml.getValue("department_starts_with")+"</td><td><Input Type=\"text\" SIZE=\"35\" id=\"department\" name=\"department\"></td></tr>");
-		
-		out.println("<tr><td>"+ml.getValue("faculty_name_starts_with")+"<td><Input Type=\"text\" SIZE=\"35\" id=\"username\" name=\"username\"></td></tr><tr>");
-		
-		
+		out.println("<tr><td>"+ml.getValue("department")+"</td><td><Input Type=\"text\" SIZE=\"35\" id=\"department\" name=\"department\"></td>");							
+		out.println("<td>"+ml.getValue("title")+"</td>");		
+		out.println("<td>");
+		out.println("<Select name=\"searchbytitle\"  id=\"searchbytitle\">");
+		out.println("<option value=\"\" SELECTED>-Select-</option>");
+		try
+			{	
+				ConnectDB conObj=new ConnectDB();		  	
+				Connection conn = conObj.getMysqlConnection();	
+		        PreparedStatement pst=null;
+				pst=conn.prepareStatement("SELECT fld_value FROM `general_master` WHERE category='Title' AND  active_yes_no=1 ORDER BY fld_value");						
+				ResultSet rs=pst.executeQuery();		
+				while(rs.next())		
+				{
+					out.println("<option value="+rs.getString("fld_value")+">"+rs.getString("fld_value")+"</option>");		 			
+				}
+			 }catch (Exception e) {
+				    e.printStackTrace();
+			  }	 			
+			out.println("</select></td></tr>");
+	
+		out.println("<tr><td>"+ml.getValue("first_name")+"<td><Input Type=\"text\" SIZE=\"35\" id=\"username\" name=\"username\"></td>");
+		out.println("<td>"+ml.getValue("last_name")+"<td><Input Type=\"text\" SIZE=\"35\" id=\"last_name\" name=\"last_name\"></td></tr>");
+			
 		out.println("<tr>");
 		//out.println("<td>Category:<label class=\"mandatory\">*</label></td>");
 		out.println("<td>"+ml.getValue("category")+"</td>");
@@ -121,8 +150,8 @@ public class ApprovalServlet extends HttpServlet{
 		out.println("<option value=\"community_service\">Community Service</option>");
 		//out.println("<option value=\"masterdetails\">Faculty Profile</option>");
 		out.println("</select>");
-		out.println("</td></tr>");
-		out.println("<tr><td>"+ml.getValue("filter_by")+"<label class=\"mandatory\">*</label></td>");
+		out.println("</td>");
+		out.println("<td>"+ml.getValue("filter_by")+"<label class=\"mandatory\">*</label></td>");
 		out.println("<td>");
 		out.println("<select id=\"approval_status\" name=\"approval_status\">");
 		//out.println("<option value=\"=''\">-Select-</option>");
@@ -179,12 +208,20 @@ public class ApprovalServlet extends HttpServlet{
 		String department_criteria="";		
 		String entity_criteria="";
 		String approval_status_criteria="";
+		String title_criteria="";
+		String last_name_criteria="";
 		
 		String qryStr="";
 		String rowclass="1";
 		String classname="";
 		String entity_type="";		
 		String searchRec="";
+		
+		String file_entity="";
+		String tabHead="";
+		String query="";
+		String displayed_fields="";
+		
 		int userid;
 		int document_id;
 		long rec_cnt=0;
@@ -201,7 +238,9 @@ public class ApprovalServlet extends HttpServlet{
 			department_criteria=request.getParameter("department");
 			entity_criteria=request.getParameter("category");			
 			approval_status_criteria=request.getParameter("approval_status");
-					
+			title_criteria=request.getParameter("searchbytitle");
+			last_name_criteria=request.getParameter("last_name");
+			
 			PrintWriter out = response.getWriter();
 			
 			/*out.println("username:"+username_criteria );
@@ -218,7 +257,11 @@ public class ApprovalServlet extends HttpServlet{
 			out.println("document.approval.department.value='"+ department_criteria +"';");
 			out.println("document.approval.category.value='"+ entity_criteria +"';");
 			out.println("document.approval.approval_status.value=\"" +approval_status_criteria+"\";");
-			out.println("</script>");			
+			out.println("document.approval.searchbytitle.value=\"" +title_criteria+"\";");
+			out.println("document.approval.last_name.value=\"" +last_name_criteria+"\";");
+			out.println("</script>");	
+			
+			out.println("<table  align=\"left\" ><tr><td><input align=\"left\" type=\"button\" value=\""+ ml.getValue("approve_selected_records") +"\" onclick=\"approve_without_verification();\"/></td></tr></table>");
 			out.println("<table class=\"ListTable\" width=\"98%\" align=\"center\">");
 			//out.println("<tr><td colspan=\"2\"><input align=\"left\" type=\"button\" value=\"Approve Selected Records\" onclick=\"approve_without_verification();\"/></td></tr>");
 			out.println("<TR>");
@@ -233,117 +276,148 @@ public class ApprovalServlet extends HttpServlet{
 			out.println("<TD width=\"20%\" class=\"ListHeader\">"+ml.getValue("col_details")+"</TD>");
 			out.println("<TD class=\"hidetd\">"+ml.getValue("col_aproval_status")+"</TD>");
 			out.println("<TD width=\"10%\" class=\"ListHeader\">"+ml.getValue("approved_by")+"</TD>");
-			//out.println("<TD class=\"ListHeader\">"+"Approved Date"+"</TD>");
-			//out.println("<TD class=\"ListHeader\">View</TD>");
 			out.println("</TR>");
-		
+					
+			File file = new File(getServletContext().getRealPath("/")+"xml/basic_search_settings.xml");				
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docbuilder;
+			try {
+				docbuilder = dbf.newDocumentBuilder();
+				Document doc = docbuilder.parse(file);
+				doc.getDocumentElement().normalize();
+				NodeList nodeLst;
+				if(entity_criteria.equals("%")){					 
+					nodeLst= doc.getElementsByTagName("table");}
+				else{						
+					nodeLst = doc.getElementsByTagName(entity_criteria);	
+				}						
+				stentity_det=conn.createStatement();
+				 for (int s = 0; s < nodeLst.getLength(); s++) {
+					    Node fstNode = nodeLst.item(s);		    
+					    if (fstNode.getNodeType() == Node.ELEMENT_NODE) {						    	 
+					    	  Element rootElmnt = (Element) fstNode;	
+					    	 
+					    	  NodeList fldNameElmntLstentity = rootElmnt.getElementsByTagName("entity");
+						      Element fld_nameElmtentity = (Element) fldNameElmntLstentity.item(0);
+						      NodeList fld_nameentity = fld_nameElmtentity.getChildNodes();
+						      file_entity=((Node) fld_nameentity.item(0)).getNodeValue();
+						      //out.println("entity "  + entity);
+						      if(!file_entity.equals("masterdetails")){		      
+							      NodeList fldCaptionElmntLst = rootElmnt.getElementsByTagName("description");
+							      Element fld_caption_Elmnt = (Element) fldCaptionElmntLst.item(0);
+							      NodeList fld_caption = fld_caption_Elmnt.getChildNodes();
+							      tabHead=((Node) fld_caption.item(0)).getNodeValue();
+							      //out.println("Description: "  + description);
 
-		if(entity_criteria.equals("%")){
-			rsentity=stentity.executeQuery("select * from search_result_fields where entity<>'masterdetails' order by entity");
-		}else {
-			rsentity=stentity.executeQuery("select * from search_result_fields WHERE entity='"+ entity_criteria +"' and entity<>'masterdetails' order by entity");
-		}
-		
-		stentity_det=conn.createStatement();						
+							      NodeList fldNameElmntLst = rootElmnt.getElementsByTagName("query");
+							      Element fld_nameElmt = (Element) fldNameElmntLst.item(0);
+							      NodeList fld_name = fld_nameElmt.getChildNodes();
+								  query=((Node) fld_name.item(0)).getNodeValue();
+								  //out.println("Query :" + query);
 
-		
-		while (rsentity.next()){
 
-			qryStr=rsentity.getString("result_fields");			
-		
-		if (qryStr!=""){
-			
-			
-			GetRecordValue  getUserDetails= new GetRecordValue();		
-			if (getUserDetails.getRole(request.getUserPrincipal().getName()).equals("ROLE_ADMIN_UNIVERSITY")){		  	    
-				qryStr=qryStr+" AND  staff_profile_masterdetails_v0_values.university = '" + getUserDetails.getUniversity(request.getUserPrincipal().getName())+"'";
-				out.println("<script>");			
-				out.println("document.approval.university.value='"+getUserDetails.getUniversity(request.getUserPrincipal().getName())+"';");
-				out.println("</script>");
-			}else{			
-				qryStr=qryStr+" AND  staff_profile_masterdetails_v0_values.university LIKE '"+ university_criteria +"%'";
+							      NodeList fldNameElmntLstfields = rootElmnt.getElementsByTagName("displayed_fields");
+							      Element fld_nameElmtfields = (Element) fldNameElmntLstfields.item(0);
+							      NodeList fld_namefields = fld_nameElmtfields.getChildNodes();
+							      displayed_fields=((Node) fld_namefields.item(0)).getNodeValue();
+							      //out.println("fields "  + displayed_fields);							    
+							    
+							      qryStr=query;   
+							      GetRecordValue  getUserDetails= new GetRecordValue();		
+							      if (getUserDetails.getRole(request.getUserPrincipal().getName()).equals("ROLE_ADMIN_UNIVERSITY")){		  	    
+									qryStr=qryStr+" AND  staff_profile_masterdetails_v0_values.university = '" + getUserDetails.getUniversity(request.getUserPrincipal().getName())+"'";
+									out.println("<script>");			
+									out.println("document.approval.university.value='"+getUserDetails.getUniversity(request.getUserPrincipal().getName())+"';");
+									out.println("</script>");
+							      }else{			
+									qryStr=qryStr+" AND  staff_profile_masterdetails_v0_values.university LIKE '"+ university_criteria +"%'";
+							      }									
+							      qryStr=qryStr+" AND  staff_profile_masterdetails_v0_values.institution LIKE '"+ institution_criteria +"%'";
+							      qryStr=qryStr+" AND  staff_profile_masterdetails_v0_values.department LIKE '"+ department_criteria +"%'";
+							      qryStr=qryStr+" AND  staff_profile_masterdetails_v0_values.user_full_name LIKE '"+ username_criteria +"%'";
+							      qryStr=qryStr+" AND  staff_profile_masterdetails_v0_values.user_title LIKE '"+ title_criteria +"%'";
+							      qryStr=qryStr+" AND  staff_profile_masterdetails_v0_values.last_name LIKE '"+ last_name_criteria +"%'";
+							      qryStr=qryStr+" AND entity_document_master.approved_yesno " + approval_status_criteria ;
+							      qryStr=qryStr+" order by staff_profile_masterdetails_v0_values.university,staff_profile_masterdetails_v0_values.institution,staff_profile_masterdetails_v0_values.department,staff_profile_masterdetails_v0_values.full_name;";							
+							      rsentity_det=stentity_det.executeQuery(qryStr);							      
+							      							      
+							      String[] displayedfields = displayed_fields.split(",");
+							      while(rsentity_det.next()){
+									if (rowclass=="1"){
+										rowclass="0";			
+										classname="ListRow";
+									}
+									else	{
+									rowclass="1";
+									classname="ListRownext";
+									}
+									rec_cnt=rec_cnt+1;			
+									userid=rsentity_det.getInt("idf");
+									document_id=rsentity_det.getInt("document_id");			
+									institution=rsentity_det.getString("institution");				
+									university=rsentity_det.getString("university");
+									username=rsentity_det.getString("full_name");
+									department=rsentity_det.getString("department");
+									String approvalstatus=rsentity_det.getString("approved_yesno");
+									String approved_by=rsentity_det.getString("approved_by");
+									String approved_date=rsentity_det.getString("approved_date");
+									if(approved_by==null){
+										approved_by="";
+										approved_date="";				
+									}else{
+										approved_by=approved_by.replace("@","@ ")+" , "+approved_date;
+									}
+									entity_type=rsentity_det.getString("entity_type");		
+									entity_type = entity_type.toLowerCase();
+									entity_type =entity_type.substring(0,1).toUpperCase()+entity_type.substring(1,entity_type.length());
+									out.println("<tr>");
+									out.println("<td  class=\"hidetd\" id=\"user_"+document_id+ "\"  >"+userid+"</td>");
+									out.println("<td  class=\"hidetd\"  id=\"docid_"+document_id+ "\" >"+document_id+"</td>");
+									if(approvalstatus.equals("1")){
+										classname="approved";		
+										approvalstatus="Yes";
+										out.println("<td width=\"2%\" class=\""+classname+"\"></td>");
+									}else{
+										approvalstatus="No";
+										out.println("<td width=\"2%\" class=\""+classname+"\"><input type=\"checkbox\" value="+document_id+" name=\"select_for_approval\" id=\"select_for_approval\"/></td>");
+									}		
+									out.println("<td width=\"14%\" class=\""+classname+"\">"+username+"</td>");
+									out.println("<td width=\"14%\" class=\""+classname+"\">"+university+"</td>");
+									out.println("<td width=\"14%\" class=\""+classname+"\">"+institution+"</td>");
+									out.println("<td width=\"12%\" class=\""+classname+"\">"+department+"</td>");		
+									out.println("<td width=\"12%\" class=\""+classname+"\">"+entity_type.replace("_"," ")+"</td>");
+									out.println("<TD width=\"20%\" class=\"" +classname +"\"><a href=\"#\" onclick=\"showdetals("+userid+","+document_id+",'"+entity_type+"')\">");		
+
+									for(int col=0;col<displayedfields.length;col++){
+										if(rsentity_det.getString(displayedfields[col])!=null){	    			
+											String details=rsentity_det.getString(displayedfields[col]);
+											 details=details.replace("<b>", "");
+											 details=details.replace("</b>", "");
+											 out.println(details );
+											 if (col!=displayedfields.length){out.println(",");}												
+					    				 } 			           
+							        }
+									out.println("</a></TD>");
+									out.println("<td  class=\"hidetd\">"+approvalstatus+"</TD>");
+									out.println("<td width=\"10%\" class=\""+classname+"\">"+approved_by+"</TD>");
+									out.println("</tr>");									
+								}		  
+						      }  //master details						    	
+					    } //end if
+				 } //end for
+			} catch (ParserConfigurationException e) {
+				e.printStackTrace();
+			} catch (SAXException e) {
+				e.printStackTrace();
 			}
-			
-			qryStr=qryStr+" AND  staff_profile_masterdetails_v0_values.institution LIKE '"+ institution_criteria +"%'";
-			qryStr=qryStr+" AND  staff_profile_masterdetails_v0_values.department LIKE '"+ department_criteria +"%'";
-			qryStr=qryStr+" AND  staff_profile_masterdetails_v0_values.user_full_name LIKE '"+ username_criteria +"%'";
-			qryStr=qryStr+" AND entity_document_master.approved_yesno " + approval_status_criteria ;
-			qryStr=qryStr+" order by staff_profile_masterdetails_v0_values.university,staff_profile_masterdetails_v0_values.institution,staff_profile_masterdetails_v0_values.department,staff_profile_masterdetails_v0_values.user_full_name;";
-		}						
-		//out.println(qryStr);
-		//System.out.println(qryStr);
-		rsentity_det=stentity_det.executeQuery(qryStr);
-		ResultSetMetaData rsMetaData = rsentity_det.getMetaData();
-		int numberOfColumns = rsMetaData.getColumnCount();
-		while(rsentity_det.next()){
-			if (rowclass=="1"){
-				rowclass="0";			
-				classname="ListRow";
-			}
-			else	{
-			rowclass="1";
-			classname="ListRownext";
-			}
-			rec_cnt=rec_cnt+1;			
-			userid=rsentity_det.getInt("idf");
-			document_id=rsentity_det.getInt("document_id");			
-			institution=rsentity_det.getString("institution");				
-			university=rsentity_det.getString("university");
-			username=rsentity_det.getString("user_full_name");
-			department=rsentity_det.getString("department");
-			String approvalstatus=rsentity_det.getString("approved_yesno");
-			String approved_by=rsentity_det.getString("approved_by");
-			String approved_date=rsentity_det.getString("approved_date");
-			
-			if(approved_by==null){
-				approved_by="";
-				approved_date="";				
-			}else{
-				approved_by=approved_by.replace("@","@ ")+" , "+approved_date;
-			}
-			entity_type=rsentity_det.getString("entity_type");		
-			entity_type = entity_type.toLowerCase();
-			entity_type =entity_type.substring(0,1).toUpperCase()+entity_type.substring(1,entity_type.length());
-			out.println("<tr>");
-			out.println("<td  class=\"hidetd\" id=\"user_"+document_id+ "\"  >"+userid+"</td>");
-			out.println("<td  class=\"hidetd\"  id=\"docid_"+document_id+ "\" >"+document_id+"</td>");
-			if(approvalstatus.equals("1")){
-				classname="approved";		
-				approvalstatus="Yes";
-				out.println("<td width=\"2%\" class=\""+classname+"\"></td>");
-			}else{
-				approvalstatus="No";
-				out.println("<td width=\"2%\" class=\""+classname+"\"><input type=\"checkbox\" value="+document_id+" name=\"select_for_approval\" id=\"select_for_approval\"/></td>");
-			}		
-			out.println("<td width=\"14%\" class=\""+classname+"\">"+username+"</td>");
-			out.println("<td width=\"14%\" class=\""+classname+"\">"+university+"</td>");
-			out.println("<td width=\"14%\" class=\""+classname+"\">"+institution+"</td>");
-			out.println("<td width=\"12%\" class=\""+classname+"\">"+department+"</td>");		
-			out.println("<td width=\"12%\" class=\""+classname+"\">"+entity_type.replace("_"," ")+"</td>");
-			out.println("<TD width=\"20%\" class=\"" +classname +"\"><a href=\"#\" onclick=\"showdetals("+userid+","+document_id+",'"+entity_type+"')\">");		
-			 for(int col=15;col<=numberOfColumns;col++){
-				 if(rsentity_det.getString(rsMetaData.getColumnName(col))!=null){
-				 String details=rsentity_det.getString(rsMetaData.getColumnName(col));
-				 details=details.replace("<b>", "");
-				 details=details.replace("</b>", "");
-				 out.println(details );
-				 if (col!=numberOfColumns){out.println(",");}
-				 }
-			 }
-			out.println("</a></TD>");
-			out.println("<td  class=\"hidetd\">"+approvalstatus+"</TD>");
-			out.println("<td width=\"10%\" class=\""+classname+"\">"+approved_by+"</TD>");
-			//out.println("<td class=\""+classname+"\">"+approved_date+"</TD>");
-			
-			out.println("</tr>");	
-			
-		}		
-	}	out.println("<tr><td colspan=\"2\"><input align=\"left\" type=\"button\" value=\""+ ml.getValue("approve_selected_records") +"\" onclick=\"approve_without_verification();\"/></td></tr>");
-		out.println("</table>");
-		out.println("<br/>");
-		out.println("<table class=\"search_field_div\"><tr><td>&nbsp;&nbsp;&nbsp;"+ ml.getValue("summary") + rec_cnt +"&nbsp;&nbsp;&nbsp;</td></tr></table>");
-		out.println("<br/>");		
-		
+	if (rec_cnt>5){
+		out.println("<tr><td colspan=\"2\"><input align=\"left\" type=\"button\" value=\""+ ml.getValue("approve_selected_records") +"\" onclick=\"approve_without_verification();\"/></td></tr>");		
+	}
+	out.println("</table>");
+	out.println("<br/>");
+	out.println("<table  align=\"left\"><tr><td class=\"search_resul_category\">&nbsp;&nbsp;&nbsp;"+ ml.getValue("summary") + rec_cnt +"&nbsp;&nbsp;&nbsp;</td></tr></table>");
+	out.println("<br/>");	
+
 	}finally{
 		try {
 			conn.close();

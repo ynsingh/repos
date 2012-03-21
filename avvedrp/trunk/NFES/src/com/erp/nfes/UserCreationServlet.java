@@ -43,8 +43,8 @@ public class UserCreationServlet extends HttpServlet {
 	public void init() throws ServletException {
 		super.init();
     	try{
-    		properties = new Properties();
-    		properties.load(new FileInputStream("../conf/mail.properties"));
+    		String propFileName = "mail.properties";
+  		    properties = GetPropertiesFile.GetPropertiesFileFromCONF(propFileName);
     	}catch(Exception ex){
     		ex.printStackTrace();
     	}
@@ -153,22 +153,7 @@ public class UserCreationServlet extends HttpServlet {
 
 						
 			//assignDefaultPrivileges(conn, user, "ROLE_PROFILE_CREATION" );//For Profile Creation 03-05-2011
-
-
-
-			/*================ Creating Folder for storing uploaded files 19-02-2011============*/
-			/* Created at the uploading time . So Commented
-			Properties properties = new Properties();
-			properties.load(new FileInputStream("../conf/fileuploadpath.properties"));
-		    String url = properties.getProperty("DESTINATION_DIR_PATH");
-		   	CreateDir createdirobj= new CreateDir();
-			createdirobj.CreateFolder(url,Integer.toString(userid));
-			createdirobj.CreateFolder(url+"/"+Integer.toString(userid), "photo");
-			*/
-			/*============================== End of 19-02-2011 =================================*/
-
-			
-
+	
 			/*String val = "Your Registration Activated Successfully !";
 			response.sendRedirect("jsp/ActivateProfile.jsp?successVal=" + val);*/ //03-05-2011
 			//String val = "Your Registration Activated Successfully !";

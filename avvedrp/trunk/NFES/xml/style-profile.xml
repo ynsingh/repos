@@ -1,0 +1,435 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:output method = "html"/>
+<xsl:template match="/">
+<html>
+<head>
+<script type="text/javascript">
+var selectedTab = "tab1";
+function init(){
+  document.getElementById(selectedTab).className="tab-selected";
+  document.getElementById("tab1-content").style.display='block';
+}
+function change(id){
+  var str = id.split("");
+  if(document.getElementById(id).innerHTML == "-"){
+    document.getElementById(id).title = "Expand";
+    document.getElementById(id).innerHTML = "+";
+    document.getElementById("t"+str[1]).style.display='none';
+  }else if(document.getElementById(id).innerHTML == "+"){
+    document.getElementById(id).title = "Abbreviate"
+    document.getElementById(id).innerHTML = "-";
+    document.getElementById("t"+str[1]).style.display='block';
+  }
+}
+function selectTab(id){
+  document.getElementById(selectedTab).className="tab";
+  document.getElementById(id).className="tab-selected";
+  selectedTab = id;
+  selectTabContent(id);
+}
+function selectTabContent(id){
+  var str = id.split("");
+  var i = 1;
+  for(i=1;i&lt;=3;i++){
+    if(i == str[3]){
+      document.getElementById("tab"+i+"-content").style.display='block';
+    }else{
+      document.getElementById("tab"+i+"-content").style.display='none';
+    }
+  }
+}
+</script>
+<style type="text/css">
+.tab{
+  border:1px solid #ccc;
+  border-radius:7px;
+  padding:5px;
+  text-align:center;
+  cursor:pointer;
+  background-color:#FAFAFA;
+  box-shadow: 0px 1px 4px #777777;
+}
+.tab:hover{
+  border:1px solid black;
+  box-shadow: 0px 1px 4px black;//#777777;
+}
+.tab-selected{
+  border:1px solid #ccc;
+  border-radius:7px;
+  padding:5px;
+  text-align:center;
+  background-color:#D8EAF8;//#FAEEDE;
+}
+.tab-selected-content{
+  display:none;
+}
+.td-bg1{
+   background-color:#FFFFFF;
+   border-bottom:1px solid #81AEC5;
+}
+.td-bg2{
+   background-color:#E9F4FA;
+   border-bottom:1px solid #81AEC5;
+   border-top:1px solid #81AEC5;
+}
+</style>
+<title>Profile of <xsl:apply-templates select="//StaffProfile/name" /></title>
+</head>
+<body onload="init();">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr width="100%"><td width="50%">
+<img alt="Photo" style="width:100px;height:100px;border:1px solid red;float:right;">
+<xsl:attribute name="src">
+<xsl:value-of select="//StaffProfile/staff_profile_report_v0_values/GetPhoto"/>
+</xsl:attribute>
+</img>
+</td>
+<td width="50%">
+<table>
+<tr>
+<td>Name:</td><td><xsl:apply-templates select="//name" /></td>
+</tr>
+<tr>
+<td>Email:</td><td><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/email_id" /></td>
+</tr>
+<tr>
+<td>Phone:</td><td><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/office_phone_ext" /></td>
+</tr>
+<tr>
+<td>Room:</td><td><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/office_room_num" /></td>
+</tr>
+</table>
+</td>
+</tr>
+<xsl:if test="//StaffProfile/staff_profile_conference_papers_v0_values/id &gt; 0">
+<tr><td colspan="2" style="height:10px;"></td></tr>
+<tr>
+<td colspan="2">
+  
+    <div style="width:90%;min-height:25px;border:2px solid #C9E8FC;border-radius:7px;margin:3px auto;padding:7px;box-shadow: 5px 5px 5px #ccc;">
+      <div id="c0" style="float:left;width:3%;text-align:center;border:1px solid #C9E8FC;border-radius:5px;box-shadow: 2px 2px 2px #ccc;cursor:pointer;font-size:19px;" title="Abbreviate" onclick="change(this.id);">-</div>
+      <div style="width:95%;text-align:center;padding-bottom:7px;float:right;"><b>Profile</b></div>
+      <div id="t0" style="width:100%;padding:1px;">
+      <table style="width:100%;padding:3px;border:1px solid #ccc;border-radius:7px;" cellspacing="3">
+        <tr>
+          <td id="tab1" class="tab" onclick="selectTab(this.id);"><b>Personal Details</b></td>
+          <td id="tab2" class="tab" onclick="selectTab(this.id);"><b>Permanent Address</b></td>
+          <td id="tab3" class="tab" onclick="selectTab(this.id);"><b>Communication Address</b></td>
+        </tr>
+        <tr>
+        <td colspan="3">
+        <div id="tab1-content" class="tab-selected-content">
+          <table  width="50%" style="float:left;margin-top:4px;border-right:4px solid #FFFFFF;" cellpadding="3" cellspacing="0">
+            <tr>
+              <td class="td-bg2">Country:</td><td class="td-bg2"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/personal_native_country" /></td>
+            </tr>
+            <tr>
+              <td>State:</td><td><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/personal_native_state" /></td>
+            </tr>
+            <tr>
+              <td class="td-bg2">District:</td><td class="td-bg2"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/personal_native_district" /></td>
+            </tr>
+            <tr>
+              <td class="td-bg1">Mother Tongue:</td><td class="td-bg1"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/personal_mother_tongue" /></td>
+            </tr>
+          </table>
+          <table width="50%" style="float:right;margin-top:4px;" cellpadding="3" cellspacing="0">
+            <tr>
+              <td class="td-bg2">Passport Valid Upto:</td><td class="td-bg2"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/account_passport_valid_upto" /></td>
+            </tr>
+            <tr>
+              <td>Blood Group:</td><td><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/health_blood_group" /></td>
+            </tr>
+            <tr>
+              <td class="td-bg2">Home Phone:</td><td class="td-bg2"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/home_phone" /></td>
+            </tr>
+            <tr>
+              <td class="td-bg1">Fax:</td><td class="td-bg1"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/fax" /></td>
+            </tr>
+          </table>  
+        </div>
+        <div id="tab2-content" class="tab-selected-content">
+          <table  width="50%" style="float:left;margin-top:4px;border-right:4px solid #FFFFFF;" cellpadding="3" cellspacing="0">
+            <tr>
+              <td class="td-bg2">Address1:</td><td class="td-bg2"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/pmt_Address1" /></td>
+            </tr>
+            <tr>
+              <td>City:</td><td><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/pmt_City" /></td>
+            </tr>
+            <tr>
+              <td class="td-bg2">State:</td><td class="td-bg2"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/pmt_state" /></td>
+            </tr>
+            <tr>
+              <td class="td-bg1">Pincode:</td><td class="td-bg1"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/pmt_pincode" /></td>
+            </tr>
+          </table>
+          <table width="50%" style="float:right;margin-top:4px;" cellpadding="3" cellspacing="0">
+            <tr>
+              <td class="td-bg2">Address2:</td><td class="td-bg2"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/pmt_Address2" /></td>
+            </tr>
+            <tr>
+              <td>District:</td><td><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/pmt_District" /></td>
+            </tr>
+            <tr>
+              <td class="td-bg2">Country:</td><td class="td-bg2"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/pmt_country" /></td>
+            </tr>
+            <tr>
+              <td class="td-bg1">Phone:</td><td class="td-bg1"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/pmt_phone" /></td>
+            </tr>
+          </table>  
+        </div>
+        <div id="tab3-content" class="tab-selected-content">
+          <table  width="50%" style="float:left;margin-top:4px;border-right:4px solid #FFFFFF;" cellpadding="3" cellspacing="0">
+            <tr>
+              <td class="td-bg2">Address1:</td><td class="td-bg2"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/comm_Address1" /></td>
+            </tr>
+            <tr>
+              <td>City:</td><td><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/comm_City" /></td>
+            </tr>
+            <tr>
+              <td class="td-bg2">State:</td><td class="td-bg2"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/comm_state" /></td>
+            </tr>
+            <tr>
+              <td class="td-bg1">Pincode:</td><td class="td-bg1"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/comm_pincode" /></td>
+            </tr>
+          </table>
+          <table width="50%" style="float:right;margin-top:4px;" cellpadding="3" cellspacing="0">
+            <tr>
+              <td class="td-bg2">Address2:</td><td class="td-bg2"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/comm_Address2" /></td>
+            </tr>
+            <tr>
+              <td>District:</td><td><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/comm_District" /></td>
+            </tr>
+            <tr>
+              <td class="td-bg2">Country:</td><td class="td-bg2"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/comm_country" /></td>
+            </tr>
+            <tr>
+              <td class="td-bg1">Phone:</td><td class="td-bg1"><xsl:apply-templates select="//StaffProfile/staff_profile_report_v0_values/comm_phone" /></td>
+            </tr>
+          </table>  
+        </div>
+        </td>
+        </tr>
+      </table>
+      </div>  
+    </div>  
+  
+</td>
+</tr>
+</xsl:if>
+
+<xsl:if test="//StaffProfile/staff_profile_personal_details_v0_values/id &gt; 0">
+<tr><td colspan="2" style="height:15px;"></td></tr>
+<tr>
+<td colspan="2">
+  
+    <div style="width:90%;min-height:25px;border:2px solid #C9E8FC;border-radius:7px;margin:3px auto;padding:7px;box-shadow: 5px 5px 5px #ccc;">
+      <div id="c1" style="float:left;width:3%;text-align:center;border:1px solid #C9E8FC;border-radius:5px;box-shadow: 2px 2px 2px #ccc;cursor:pointer;font-size:19px;" title="Abbreviate" onclick="change(this.id);">-</div>
+      <div style="width:95%;text-align:center;padding-bottom:7px;float:right;"><b>Professional Details</b></div>
+      <div id="t1" style="width:100%;padding:3px;">
+      <table width="100%">
+        <tr>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;border-right:1px dotted black;"><b>Focus Area</b></td>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;border-right:1px dotted black;"><b>Research Interests</b></td>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;"><b>Teaching Interests</b></td>
+        </tr>
+        <xsl:for-each select="//StaffProfile/staff_profile_personal_details_v0_values">
+         <xsl:choose>
+          <xsl:when test="id=1">
+           <tr>
+            <td style="width:30%;border-right:1px dotted black"><xsl:value-of select="focus_area"/></td>
+            <td style="width:25%;border-right:1px dotted black;"><xsl:value-of select="research_interests"/></td>
+            <td style="width:25%;"><xsl:value-of select="teaching_interests"/></td>
+           </tr>
+          </xsl:when>
+          <xsl:otherwise>
+	   <tr>
+	    <td style="width:30%;border-top:1px dotted black;border-right:1px dotted black;"><xsl:value-of select="focus_area"/></td>
+	    <td style="width:25%;border-top:1px dotted black;border-right:1px dotted black;"><xsl:value-of select="research_interests"/></td>
+	    <td style="width:25%;border-top:1px dotted black;"><xsl:value-of select="teaching_interests"/></td>
+	   </tr>
+          </xsl:otherwise>
+         </xsl:choose>
+        </xsl:for-each>
+      </table>
+      </div>  
+    </div>  
+  
+</td>
+</tr>
+</xsl:if>
+<xsl:if test="//StaffProfile/staff_profile_qualification_v0_values/id &gt; 0">
+<tr><td colspan="2" style="height:10px;"></td></tr>
+<tr>
+<td colspan="2">
+  
+    <div style="width:90%;min-height:25px;border:2px solid #C9E8FC;border-radius:7px;margin:3px auto;padding:7px;box-shadow: 5px 5px 5px #ccc;">
+      <div id="c2" style="float:left;width:3%;text-align:center;border:1px solid #C9E8FC;border-radius:5px;box-shadow: 2px 2px 2px #ccc;cursor:pointer;font-size:19px;" title="Abbreviate" onclick="change(this.id);">-</div>
+      <div style="width:95%;text-align:center;padding-bottom:7px;float:right;"><b>Qualification</b></div>
+      <div id="t2" style="width:100%;padding:3px;">
+      <table width="100%">
+        <tr>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;border-right:1px dotted black;"><b>Course Name</b></td>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;border-right:1px dotted black;"><b>Institution</b></td>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;border-right:1px dotted black;"><b>Location</b></td>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black"><b>Board</b></td>
+        </tr>
+        <xsl:for-each select="//StaffProfile/staff_profile_qualification_v0_values">
+         <xsl:choose>
+          <xsl:when test="id=1">
+           <tr>
+            <td style="width:30%;border-right:1px dotted black"><xsl:value-of select="course_name"/></td>
+            <td style="width:25%;border-right:1px dotted black;"><xsl:value-of select="institution"/></td>
+            <td style="width:25%;border-right:1px dotted black;"><xsl:value-of select="location"/></td>
+            <td style="width:20%;"><xsl:value-of select="board"/></td>
+           </tr>
+          </xsl:when>
+          <xsl:otherwise>
+	   <tr>
+	    <td style="width:30%;border-top:1px dotted black;border-right:1px dotted black;"><xsl:value-of select="course_name"/></td>
+	    <td style="width:25%;border-top:1px dotted black;border-right:1px dotted black;"><xsl:value-of select="institution"/></td>
+	    <td style="width:25%;border-top:1px dotted black;border-right:1px dotted black;"><xsl:value-of select="location"/></td>
+	    <td style="width:20%;border-top:1px dotted black;"><xsl:value-of select="board"/></td>
+           </tr>
+          </xsl:otherwise>
+         </xsl:choose>
+        </xsl:for-each>
+      </table> 
+      </div> 
+    </div>  
+  
+</td>
+</tr>
+</xsl:if>
+<xsl:if test="//StaffProfile/staff_profile_awards_v0_values/id &gt; 0">
+<tr><td colspan="2" style="height:10px;"></td></tr>
+<tr>
+<td colspan="2">
+  
+    <div style="width:90%;min-height:25px;border:2px solid #C9E8FC;border-radius:7px;margin:3px auto;padding:7px;box-shadow: 5px 5px 5px #ccc;">
+      <div id="c3" style="float:left;width:3%;text-align:center;border:1px solid #C9E8FC;border-radius:5px;box-shadow: 2px 2px 2px #ccc;cursor:pointer;font-size:19px;" title="Abbreviate" onclick="change(this.id);">-</div>
+      <div style="width:95%;text-align:center;padding-bottom:7px;float:right;"><b>Awards</b></div>
+      <div id="t3" style="width:100%;padding:3px;">
+      <table width="100%">
+        <tr>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;border-right:1px dotted black;"><b>Award Name</b></td>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;border-right:1px dotted black;"><b>Receiving Date</b></td>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;"><b>Name Of Agency</b></td>
+        </tr>
+        <xsl:for-each select="//StaffProfile/staff_profile_awards_v0_values">
+         <xsl:choose>
+          <xsl:when test="id=1">
+           <tr>
+            <td style="width:30%;border-right:1px dotted black"><xsl:value-of select="award_name"/></td>
+            <td style="width:25%;border-right:1px dotted black;"><xsl:value-of select="receiving_month_year"/></td>
+            <td style="width:25%;"><xsl:value-of select="agency_name"/></td>
+           </tr>
+          </xsl:when>
+          <xsl:otherwise>
+	   <tr>
+	    <td style="width:30%;border-top:1px dotted black;border-right:1px dotted black;"><xsl:value-of select="award_name"/></td>
+	    <td style="width:25%;border-top:1px dotted black;border-right:1px dotted black;"><xsl:value-of select="receiving_month_year"/></td>
+	    <td style="width:25%;border-top:1px dotted black;"><xsl:value-of select="agency_name"/></td>
+	   </tr>
+          </xsl:otherwise>
+         </xsl:choose>
+        </xsl:for-each>
+      </table>
+      </div>  
+    </div>  
+  
+</td>
+</tr>
+</xsl:if>
+<xsl:if test="//StaffProfile/staff_profile_journal_papers_v0_values/id &gt; 0">
+<tr><td colspan="2" style="height:10px;"></td></tr>
+<tr>
+<td colspan="2">
+  
+    <div style="width:90%;min-height:25px;border:2px solid #C9E8FC;border-radius:7px;margin:3px auto;padding:7px;box-shadow: 5px 5px 5px #ccc;">
+      <div id="c4" style="float:left;width:3%;text-align:center;border:1px solid #C9E8FC;border-radius:5px;box-shadow: 2px 2px 2px #ccc;cursor:pointer;font-size:19px;" title="Abbreviate" onclick="change(this.id);">-</div>
+      <div style="width:95%;text-align:center;padding-bottom:7px;float:right;"><b>Publications</b></div>
+      <div id="t4" style="width:100%;padding:3px;">
+      <table width="100%">
+        <tr>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;border-right:1px dotted black;"><b>Type</b></td>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;border-right:1px dotted black;"><b>Title</b></td>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;border-right:1px dotted black;"><b>Author</b></td>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;"><b>Month and Year</b></td>
+        </tr>
+        <xsl:for-each select="//StaffProfile/staff_profile_journal_papers_v0_values">
+         <xsl:choose>
+          <xsl:when test="id=1">
+           <tr>
+            <td style="width:15%;border-right:1px dotted black"><xsl:value-of select="journal_type"/></td>
+            <td style="width:40%;border-right:1px dotted black;"><xsl:value-of select="paper_title"/></td>
+            <td style="width:25%;border-right:1px dotted black;"><xsl:value-of select="author1"/></td>
+            <td style="width:20%;"><xsl:value-of select="month_year"/></td>
+           </tr>
+          </xsl:when>
+          <xsl:otherwise>
+	   <tr>
+	    <td style="width:15%;border-top:1px dotted black;border-right:1px dotted black;"><xsl:value-of select="journal_type"/></td>
+	    <td style="width:40%;border-top:1px dotted black;border-right:1px dotted black;"><xsl:value-of select="paper_title"/></td>
+	    <td style="width:25%;border-top:1px dotted black;border-right:1px dotted black;"><xsl:value-of select="author1"/></td>
+	    <td style="width:20%;border-top:1px dotted black;"><xsl:value-of select="month_year"/></td>
+	   </tr>
+          </xsl:otherwise>
+         </xsl:choose>
+        </xsl:for-each>
+      </table>
+      </div>  
+    </div>  
+  
+</td>
+</tr>
+</xsl:if>
+<xsl:if test="//StaffProfile/staff_profile_conference_papers_v0_values/id &gt; 0">
+<tr><td colspan="2" style="height:10px;"></td></tr>
+<tr>
+<td colspan="2">
+  
+    <div style="width:90%;min-height:25px;border:2px solid #C9E8FC;border-radius:7px;margin:3px auto;padding:7px;box-shadow: 5px 5px 5px #ccc;">
+      <div id="c5" style="float:left;width:3%;text-align:center;border:1px solid #C9E8FC;border-radius:5px;box-shadow: 2px 2px 2px #ccc;cursor:pointer;font-size:19px;" title="Abbreviate" onclick="change(this.id);">-</div>
+      <div style="width:95%;text-align:center;padding-bottom:7px;float:right;"><b>Conference Papers</b></div>
+      <div id="t5" style="width:100%;padding:3px;">
+      <table width="100%">
+        <tr>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;border-right:1px dotted black;"><b>Type</b></td>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;border-right:1px dotted black;"><b>Title</b></td>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;border-right:1px dotted black;"><b>Author</b></td>
+          <td style="border-top:1px dotted black;border-bottom:1px dotted black;"><b>Month and Year</b></td>
+        </tr>
+        <xsl:for-each select="//StaffProfile/staff_profile_conference_papers_v0_values">
+         <xsl:choose>
+          <xsl:when test="id=1">
+           <tr>
+            <td style="width:15%;border-right:1px dotted black"><xsl:value-of select="conference_type"/></td>
+            <td style="width:40%;border-right:1px dotted black;"><xsl:value-of select="paper_title"/></td>
+            <td style="width:25%;border-right:1px dotted black;"><xsl:value-of select="author1"/></td>
+            <td style="width:20%;"><xsl:value-of select="month_year"/></td>
+           </tr>
+          </xsl:when>
+          <xsl:otherwise>
+	   <tr>
+	    <td style="width:15%;border-top:1px dotted black;border-right:1px dotted black;"><xsl:value-of select="conference_type"/></td>
+	    <td style="width:40%;border-top:1px dotted black;border-right:1px dotted black;"><xsl:value-of select="paper_title"/></td>
+	    <td style="width:25%;border-top:1px dotted black;border-right:1px dotted black;"><xsl:value-of select="author1"/></td>
+	    <td style="width:20%;border-top:1px dotted black;"><xsl:value-of select="month_year"/></td>
+	   </tr>
+          </xsl:otherwise>
+         </xsl:choose>
+        </xsl:for-each>
+      </table>
+      </div>  
+    </div>  
+  
+</td>
+</tr>
+</xsl:if>
+</table>
+</body>
+</html>
+</xsl:template>
+
+</xsl:stylesheet>

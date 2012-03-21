@@ -35,14 +35,14 @@ function upload_file_dirty()
 function submitform_staff_profile_community_service_v0()
 {
 	var frmelement=document.getElementById("staff_profile_community_service_v0");
-	if (isMandatoryDataExists(frmelement)=="1") {
+	if (isMandatoryDataExists(frmelement)=="1"  &amp;&amp; validateForm(frmelement)) {
 		document.myForm.upload_file.value=document.myForm01.upload_filefiles.value
 		docHtmlSave();
 	}
 }
 function approve(){
 	var frmelement=document.getElementById("staff_profile_community_service_v0");
-	if (isMandatoryDataExists(frmelement)=="1") {
+	if (isMandatoryDataExists(frmelement)=="1"  &amp;&amp; validateForm(frmelement)) {
 		document.myForm.upload_file.value=document.myForm01.upload_filefiles.value
 		docHtmlRecordwiseApprove();
 	}
@@ -97,17 +97,17 @@ if (document.getElementById('reload_after_save').value!="null"){
 <td colspan="2" class="thead" align="center">Community Service Details</td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//event_name/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//event_name/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//event_name/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//location/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//location/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//location/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//activity_month_year/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//activity_month_year/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//activity_month_year/oioNS:renderinfo" /></td>
 </tr>
 <tr>
@@ -123,7 +123,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 
 <input type="hidden" name="action" value="" />
 <input type="HIDDEN" name="mandatory_fields" value="event_name|location|activity_month_year" />
-
+<input type="HIDDEN" name="validation_fields" value="url-U" />
 </font>
 </form>
 

@@ -4,15 +4,20 @@
 <property name="src.dir"     value="src"/>
 <property name="build.dir"   value="build"/>
 <property name="classes.dir" value="${build.dir}/classes"/>
-
+    
+    <!-- Cleaning -->
+    
     <target name="clean">
-        <delete dir="${build.dir}"/>
-        <delete dir="nfes"/>
+      <echo> ==== Cleaning ==== </echo>
+      <delete dir="${build.dir}"/>
+      <delete dir="nfes"/>
+      <delete file="nfes.war"/>
     </target>
    
-      <!-- Compile -->
+    <!-- Compiling -->
    
-    <target name="compile">
+    <target name="compile" depends="clean">
+      <echo> ==== Compiling ==== </echo>
         <mkdir dir="${classes.dir}"/>
         <javac srcdir="${src.dir}" destdir="${classes.dir}">
          <classpath>
@@ -23,10 +28,10 @@
         </javac>
     </target>
    
-       <!-- PACKAGE -->
+       <!-- Packaging -->
    
    <target name="package" depends="compile">
-    <echo>=== PACKAGE ===</echo>
+    <echo> ==== Packaging ==== </echo>
     <mkdir dir="nfes/WEB-INF/classes"/>
     <copy todir="nfes/WEB-INF/classes">
      <fileset dir="${classes.dir}">
@@ -34,6 +39,12 @@
      </fileset>
     </copy>
     <copy file="properties/log4j.properties" tofile="nfes/WEB-INF/classes/log4j.properties" overwrite="true" />
+    <copy todir="nfes/WEB-INF/classes">
+              <fileset dir="properties/i18n">
+               <include name="*.properties"/>
+              </fileset>
+    </copy>
+    
     <mkdir dir="nfes/WEB-INF/lib"/>
     <copy todir="nfes/WEB-INF/lib">
      <fileset dir="${lib.dir}">
@@ -42,7 +53,7 @@
      </fileset>
     </copy>
     <copy file="xml/web.xml" tofile="nfes/WEB-INF/web.xml" overwrite="true" />
-    <copy file="xml/applicationContext-security.xml" tofile="nfes/WEB-INF/applicationContext-security.xml" overwrite="true" />
+    <copy file="xml/spring-security.xml" tofile="nfes/WEB-INF/spring-security.xml" overwrite="true" />
     
     <mkdir dir="nfes/xml"/>
     <copy todir="nfes/xml">
@@ -50,6 +61,10 @@
             <include name="staff_profile_*.xml"/>
             <include name="basic_search_items.xml"/>
             <include name="table_relation.xml"/>
+            <include name="basic_search_settings.xml"/>
+            <include name="style-profile.xml"/>
+            <include name="faculty_webpage_settings.xml"/>
+            <include name="faculty_webpage.xml"/>
           </fileset>
     </copy>
     <mkdir dir="nfes/jsp"/>
@@ -88,9 +103,36 @@
       <include name="*.jasper"/>
      </fileset>
     </copy> 
-    
-
+      
+    <mkdir dir="nfes/UserGuides"/>
+        <copy todir="nfes/UserGuides">
+         <fileset dir="UserGuides">
+           <include name="*.*"/>
+         </fileset>
+    </copy>
      
+    
+    <mkdir dir="nfes/UserGuides/NFES_UG_Faculty"/>
+        <copy todir="nfes/UserGuides/NFES_UG_Faculty">
+         <fileset dir="UserGuides/NFES_UG_Faculty">
+           <include name="*.*"/>
+         </fileset>
+    </copy>    
+    
+     <mkdir dir="nfes/UserGuides/NFES_UG_Masters"/>
+      <copy todir="nfes/UserGuides/NFES_UG_Masters">
+             <fileset dir="UserGuides/NFES_UG_Masters">
+               <include name="*.*"/>
+             </fileset>
+    </copy>
+
+     <mkdir dir="nfes/UserGuides/NFES_UG_UniversityAdmin"/>
+      <copy todir="nfes/UserGuides/NFES_UG_UniversityAdmin">
+             <fileset dir="UserGuides/NFES_UG_UniversityAdmin">
+               <include name="*.*"/>
+             </fileset>
+    </copy>
+    
     <!-- the ant war task. with all resources in place, create the war file -->
   
   <war destfile="nfes.war" basedir="nfes" >

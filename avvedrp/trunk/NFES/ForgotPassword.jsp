@@ -1,3 +1,6 @@
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="UTF-8" language="java" import="java.lang.*,java.io.*,java.sql.*,java.util.*" errorPage="" %>
+<jsp:useBean id="ml" class="com.erp.nfes.MultiLanguageString" scope="session"/> 
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
 <HTML lang=en-US dir=ltr xmlns="http://www.w3.org/11001/xhtml"><HEAD 
 profile=http://gmpg.org/xfn/11><TITLE>Forgot Password</TITLE>
@@ -19,7 +22,7 @@ function checkValues(){
 	var frmObj = document.forms['usrForm'];
 	var userName = frmObj.userName.value;	
 	if( userName == ""  ){
-		alert("Email is required !!!");
+		alert("<%=ml.getValue("user_name_input_prompt")%>");
 		return false;
 	}	
 	return true;
@@ -36,17 +39,29 @@ location.href="login.jsp";
 </style>
 
 </HEAD>
-<body class="bodystyle">
-<div class="innnerBanner">
-	<div class="loginLink">
-	<span>
-	<b><a href="login.jsp" STYLE="TEXT-DECORATION: NONE"><img src="./images/home.jpg">Home</a></b></font>
-	</span>
-	</div>
-</div>
 
+<body class="bodystyle">
+<div style="background-color: #FFFFFF; margin: 10px -6px;">
+<table width=100% style="background-color: #FFFFFF; border=1; margin: 0px;">
+<tr>
+<td width=5% rowspan="2"><img src="./images/loginheader_logo.PNG" height="80px"  ></td>
+</tr>	
+
+<tr>
+<td colspan=2 width=95%  align="right" valign="bottom"><img src="./images/loginheader_NFES.PNG" ></td>	
+<td width=10%></td>
+</tr>
+</table>
+<div style="background-image: url('./images/innerpageheaderhr.jpg');repeat-x;scroll 0 0 #ef9e00;">&nbsp;</div>
+<div class="loginLink_header">
+<span><font color="#174664">&nbsp;&nbsp;<img alt="Help" title="Help" onclick="window.open('./UserGuides/UserGuides.html','mywindow','width=1000,height=700,left=0,top=100,screenX=0,screenY=100')" src="/nfes/images/help.gif"><b>&nbsp;&nbsp;|</b></font></span>
+<span><font color="#174664">&nbsp;&nbsp;<img alt="About Us" title="About Us" onclick="window.open('./images/AboutUs_NFES.html','mywindow','width=600,height=300,left=0,top=100,screenX=0,screenY=100')" src="/nfes/images/aboutUs.jpg"><b>&nbsp;&nbsp;|</b></font></span>
+<span class="classLink">&nbsp;<a href='./login.jsp' target="body" title="Home"><font color="#174664"><b><%=ml.getValue("home")%></a>&nbsp;|</b></font></span>
+</div>
+</div>
+</div>
 <form id="usrForm" action="./ResetPasswordController" method="POST">
-<div  class="listdiv" style="margin:2px">
+<div  class="listdiv" style="margin:200px 0px 0px 0px;">
 	<h1></h1>
 	<div style= "margin:10px;background-color:#386890;width:98%;height:25px">&nbsp;<br><br><br>		
 	</div>
@@ -55,18 +70,18 @@ location.href="login.jsp";
 		<%
 					 if ((request.getParameter("invalidUser") != "")&&(request.getParameter("invalidUser") != null)) {%>
 						<div class="message">			
-						Please enter a valid User Name
+						<%=ml.getValue("user_name_validation_message")%>
 						</div>		             
 					<%  } 		 
 		%>
-	<h2>Forgot your password?</h2>
-	<h4>Admin will send password to the email address associated with your account.</h4>
+	<h2><%=ml.getValue("lost_password")%></h2>
+	<h4><%= ml.getValue("forgot_password_info")%>.</h4>
 	</div>		
   	      
   	     <table style="background-color: #d5e5ed;" align="center" width="98%"; >
   			
 		 <TR>  
-		 <td colspan="2"><h4 style="color:#000000">  Please type your <b>User Name<b> below.</h4></td> 
+		 <td colspan="2"><h4 style="color:#000000"> <%=ml.getValue("user_name_input_prompt")%></h4></td> 
 		 </TR>
 			 
 		
@@ -77,8 +92,8 @@ location.href="login.jsp";
                </TR>	
 			   	             
  	        <tr>
-		<td><input type="button"  id="btnUpdateAccount" onClick="updateAccount()" value="Send"/>
-		<input type="button"  value="Cancel"  id="btncancel" onClick="showlogin();"></td>	
+		<td><input type="button"  id="btnUpdateAccount" onClick="updateAccount()" value="<%=ml.getValue("send")%>"/>
+		<input type="button"  value="<%=ml.getValue("cancel")%>"  id="btncancel" onClick="showlogin();"></td>	
 		</tr>         	                        
       	
   	  </table>

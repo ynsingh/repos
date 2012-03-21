@@ -18,14 +18,13 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 public class UploadFiles extends HttpServlet {
-
+	private File resourceDir;
 	private File tmpDir;
 	private File destinationDir;
 	Connection conn = null;
 	String filename="";
 	String controlname="";
 	String userid="";
-	String uploadPath="";
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 				
@@ -35,7 +34,7 @@ public class UploadFiles extends HttpServlet {
 		
 		PrintWriter out = response.getWriter();
 	    response.setContentType("text/html; charset=UTF-8");
-	    out.println("<HTML><HEAD><TITLE>File Uploading</TITLE>");
+	    out.println("<HTML>\n<HEAD>\n<TITLE>File Uploading</TITLE>");
 		
 		DiskFileItemFactory  fileItemFactory = new DiskFileItemFactory ();
 		/*
@@ -50,50 +49,25 @@ public class UploadFiles extends HttpServlet {
 		ServletFileUpload uploadHandler = new ServletFileUpload(fileItemFactory);
 		try {
 			
-		    /*============== Added on 19-02-2011 ========================*/
-			String dir="";
-			
-			
-			/*---------------- Commented on 17-06-11 Rajitha.----------------
-			  
-			 ConnectDB conobj= new ConnectDB();
-			conn = conobj.getMysqlConnection();
-			PreparedStatement pst=conn.prepareStatement("select id from users where username=?");
-		    pst.setString(1,request.getUserPrincipal().getName());
-			ResultSet rs=pst.executeQuery();
-			while(rs.next())
-			{
-				dir=Integer.toString(rs.getInt(1));
-				
-			}	
-			userid=dir;
-			 --------------------------- End ------------------------------*/
-			
-			Properties prop = new Properties();
-			
-			try {
-				prop.load(new FileInputStream("../conf/fileuploadpath.properties"));
-			} catch (FileNotFoundException e) {
-				System.out.println("../conf/fileuploadpath.properties FileNotFoundException");
-				e.printStackTrace();
-			} catch (IOException e) {
-				System.out.println("../conf/fileuploadpath.properties IOException");
-				e.printStackTrace();
+		    String dir = "";
+			String propFileName = "fileuploadpath.properties";
+			Properties prop = GetPropertiesFile.GetPropertiesFileFromCONF(propFileName);
+			String ROOT_DIR_PATH = prop.getProperty("ROOT_DIR_PATH");
+			String RESOURCE_DIR_PATH = prop.getProperty("RESOURCE_DIR_PATH");
+			resourceDir = new File(RESOURCE_DIR_PATH);
+			if(!resourceDir.isDirectory()){
+				CreateDir.CreateFolder(ROOT_DIR_PATH,"resources");
 			}
 			String TMP_DIR_PATH = prop.getProperty("TMP_DIR_PATH");
 			tmpDir = new File(TMP_DIR_PATH);
-			if(!tmpDir.isDirectory()) {
-				throw new ServletException(TMP_DIR_PATH + " is not a directory");
+			if(!tmpDir.isDirectory()){
+				CreateDir.CreateFolder(RESOURCE_DIR_PATH,"temp");
 			}
-		  /*  String DESTINATION_DIR_PATH = prop.getProperty("DESTINATION_DIR_PATH");
-			destinationDir = new File(DESTINATION_DIR_PATH+"/"+dir);
-			if(!destinationDir.isDirectory()) {
-				throw new ServletException(DESTINATION_DIR_PATH+" is not a directory");
-			}*/
-			
-			/*============== End of added on 19-02-2011 ========================*/	
-			
-			
+			String DESTINATION_DIR_PATH = prop.getProperty("DESTINATION_DIR_PATH");
+			destinationDir = new File(DESTINATION_DIR_PATH);
+			if(!destinationDir.isDirectory()){
+				CreateDir.CreateFolder(RESOURCE_DIR_PATH,"nfes_files");
+			}
 			/*
 			 * Parse the request
 			 */			
@@ -112,34 +86,20 @@ public class UploadFiles extends HttpServlet {
 				} 
 				/*------------------------------------*/
 				
-				
 				if((!(item.isFormField())) && isBlank(item.getName())) {
 					String fn= item.getName();					
 			        /*=============== Added on 21-02-2011 ===============*/
-					String DESTINATION_DIR_PATH = prop.getProperty("DESTINATION_DIR_PATH");
 					controlname=item.getFieldName();
 					if(controlname.equals("upload_photo")){
-						destinationDir = new File(DESTINATION_DIR_PATH+"/"+dir+"/photo");
-						uploadPath=DESTINATION_DIR_PATH+"/"+dir+"/photo";		
+						destinationDir = new File(DESTINATION_DIR_PATH+"/"+dir+"/photo");	
 					}
 					else{
 						destinationDir = new File(DESTINATION_DIR_PATH+"/"+dir);
-						uploadPath=DESTINATION_DIR_PATH+"/"+dir;		
 					}
-					
-					/*================ Creating Folder for storing uploaded files 30-07-2011============	*/				
-					if(IsDirectoryNotExists(uploadPath))
-					{
-						//System.out.println("Creating Directory");						
-					    String url = DESTINATION_DIR_PATH;
-					   	CreateDir createdirobj= new CreateDir();
-						createdirobj.CreateFolder(url,dir);
-						createdirobj.CreateFolder(url+"/"+dir, "photo");
-						//System.out.println("Creating Directory:End");
-					}
-					
+															
 					if(!destinationDir.isDirectory()) {
-						throw new ServletException(DESTINATION_DIR_PATH+" is not a directory");
+						CreateDir.CreateFolder(DESTINATION_DIR_PATH,dir);
+					   	CreateDir.CreateFolder(DESTINATION_DIR_PATH+"/"+dir,"photo"); 
 					}    		       
 					
 					if(fn.indexOf("\\")>0)
@@ -158,22 +118,25 @@ public class UploadFiles extends HttpServlet {
 				} 
 				
 			}
-			out.println("<script language=\"javascript\">" +
-			"function init(){window.parent.document.getElementById('upload_status_"+controlname+"').style.color='green';" +
+			out.println("<script language=\"javascript\">\n" +
+			"function init(){\nwindow.parent.document.getElementById('upload_status_"+controlname+"').style.color='green';\n" +
 			"window.parent.document.getElementById('upload_status_"+controlname+"').innerHTML='File uploading completed';");
-			String str="'<li><a href=\"./DownloadFile?filename="+filename+"&amp;userId="+userid+ "&amp;ctrlName="+ controlname + "\" target=\"_blank\">"+filename+"</a></li>'";
+			out.println("var r = confirm(\"Would you like to save uploaded file name now?\");\nif(r==true){");
+		/*	String str="'<li><a href=\"./DownloadFile?filename="+filename+"&amp;userId="+userid+ "&amp;ctrlName="+ controlname + "\" target=\"_blank\">"+filename+"</a></li>'";
 			if(controlname.equals("upload_photo")){
 				out.println("window.parent.document.getElementById('"+controlname+"_filelist').innerHTML="+str+";");
 			}else{
-				out.println("var oldHTML=window.parent.document.getElementById('"+controlname+"_filelist').innerHTML;" +
+				out.println("var oldHTML=window.parent.document.getElementById('"+controlname+"_filelist').innerHTML;\n" +
 				"window.parent.document.getElementById('"+controlname+"_filelist').innerHTML="+str+"+oldHTML;");
-			}
-			out.println("window.parent.document.getElementById('"+controlname+"').value='';");
-			out.println("alert(\"Click Save button to save uploaded file name\")");
-			out.println("window.parent.document.getElementById('upload_status_"+controlname+"').style.color='black';" +
-					"window.parent.document.getElementById('upload_status_"+controlname+"').innerHTML='';");
-			out.println("}</script></HEAD><BODY onload=\"init();\"><form></form>" +
-			"</BODY></HTML>"); 
+			}*/
+			out.println("window.parent.document.getElementById('btsave').focus();\n" +
+			"window.parent.document.getElementById('btsave').click();}else{");
+		    out.println("window.parent.document.getElementById('"+controlname+"').value='';");
+			// out.println("alert(\"Click Save button to save uploaded file name\")");
+			out.println("window.parent.document.getElementById('upload_status_"+controlname+"').style.color='black';\n" +
+			"window.parent.document.getElementById('upload_status_"+controlname+"').innerHTML='';");
+			out.println("}\n}\n</script>\n</HEAD>\n<BODY onload=\"init();\">\n<form></form>\n" +
+			"</BODY>\n</HTML>");
 			out.close();
 		}catch(FileUploadException ex) {
 			log("Error encountered while parsing the request",ex);
@@ -183,7 +146,7 @@ public class UploadFiles extends HttpServlet {
 	
 	}
 
-	private boolean isBlank(String name) {
+	private boolean isBlank(String name){
 		if(name.equals("")||name.equals(" ")||name.equals("null"))
 		{
 			return false;
@@ -192,17 +155,5 @@ public class UploadFiles extends HttpServlet {
 		{
 			return true;
 		}
-	}
-
-	private boolean IsDirectoryNotExists(String directory_path){				
-			  File file=new File(directory_path);
-			  boolean exists = file.exists();
-			  //System.out.println("exists:"+exists);
-			  if (!exists) {
-				  return true ;
-			  
-			  }else{
-				  return false;
-			  }
 	}
 }

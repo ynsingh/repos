@@ -1,41 +1,23 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="UTF-8" language="java" import="java.lang.*,java.io.*,java.sql.*,java.util.*" errorPage="" %>
-
-<jsp:useBean id="db" class="com.erp.nfes.ConnectDB" scope="session"/> 
+<jsp:useBean id="ml" class="com.erp.nfes.MultiLanguageString" scope="session"/> 
 
 <%
-Connection conn=null;
-Statement theStatement=null;
-ResultSet theResult=null;
 String msg1="";String msg2="";String lc="";
 try{
      lc=(String) session.getAttribute("language");
      if(lc==null||lc==""){
             lc="en";
      }
-     conn = db.getMysqlConnection();
-     theStatement = conn.createStatement();
-     theResult = theStatement.executeQuery("select control_name,language_string from language_localisation where active_yes_no=1 and file_code=31 and language_code=\'"+lc+"\'");
-     theResult.last();int len=theResult.getRow();String cn[]=new String[len];String ls[]=new String[len];
-     int i=0;theResult.beforeFirst();
-     while(theResult.next()){
-               cn[i]=theResult.getString("control_name");
-               ls[i]=theResult.getString("language_string");
-               i++;
-     }
-     for(i=0;i<len;i++){
-          	if(cn[i].equals("msg1")){
-          		msg1=ls[i];
-          	}else if(cn[i].equals("msg2")){
-          		msg2=ls[i];
-          	}
-     }
+     ml.init(lc);
      request.setCharacterEncoding("UTF-8");
      response.setContentType("text/html; charset=utf-8");
      Locale locale=new Locale(lc,"");
+     msg1=ml.getValue("msg1");
+     msg2=ml.getValue("msg2");
     }catch(Exception e){
          e.printStackTrace();
 }
-theResult.close();theStatement.close();conn.close();     
+    
 %>    
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
 <HTML lang=en-US dir=ltr xmlns="http://www.w3.org/11001/xhtml">

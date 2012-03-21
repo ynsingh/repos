@@ -1,0 +1,616 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:output method = "html"/>
+<xsl:template match="/">
+<html>
+<head>
+
+<title>Profile of <xsl:apply-templates select="//Name" /></title>
+<link type="text/css" rel="stylesheet">
+<xsl:attribute name="href">
+<xsl:apply-templates select="//app_path"/>/css/webpage.css
+</xsl:attribute>					
+</link> 
+  
+<script type="text/javascript">
+
+var activeTopLinkID="div_publications";
+var activeRightLinkID="div_invited_talks";
+var div_array = new Array("div_publications","div_conference_papers","div_books_chapter","div_projects","div_qualifications","div_awards","div_invited_talks","div_seminars","div_patents","div_media_publications","div_students_project","div_faculty_exchange","div_profession_body","div_consultancy_offered","div_governanace","div_review_committee","div_community_service","div_course_taught");
+
+	function showStaffProfile(){		
+		userId=document.getElementById('entityID').value;
+		documentId=document.getElementById('DocumentId').value;
+		mode="Edit";
+		
+		if(mode=="Edit"){
+			var str="../StaffProfileServlet?action=CDOC-OPEN_A_DOCUMENT&amp;entityId="+userId+"&amp;documentId="+documentId+"&amp;entitytype=staff&amp;formName=staff_profile_report_v0";
+		}else{	
+			var str="../StaffProfileServlet?action=CDOC-OPEN_A_DOCUMENT_FOR_APPROVE&amp;entityId="+userId+"&amp;documentId="+documentId+"&amp;entitytype=staff&amp;formName=staff_profile_report_v0";
+		}	
+		window.document.location.href = str;
+	}
+
+function showHideDiv(divName){	 
+	
+	if(document.getElementById(activeTopLinkID.replace('div','td'))){
+	 	document.getElementById(activeTopLinkID.replace('div','td')).className="top_menu";
+	} 	
+	if(document.getElementById(activeTopLinkID.replace('div','link'))){
+	 document.getElementById(activeTopLinkID.replace('div','link')).className="top_menu_a";	 
+	}
+	
+	if(document.getElementById(activeRightLinkID.replace('div','li'))){
+		document.getElementById(activeRightLinkID.replace('div','li')).className="right_menu_li";
+	}	
+	if(document.getElementById(activeRightLinkID.replace('div','link'))){
+		document.getElementById(activeRightLinkID.replace('div','link')).className="right_menu_a";	 
+	} 
+	
+	if(document.getElementById(divName.replace('div','td'))){
+		document.getElementById(divName.replace('div','td')).className="linkSelected";
+	}	
+	if(document.getElementById(divName.replace('div','link'))){
+		document.getElementById(divName.replace('div','link')).className="top_menu_a_active";	 
+	} 
+	activeTopLinkID=divName;	 
+	for (i=0;i&lt;div_array.length;i++){				
+		if(document.getElementById(div_array[i])){
+			var div_name = document.getElementById(div_array[i]);				
+			div_name.style.display = "none";
+		}			
+	}
+	if(document.getElementById(divName)){
+		var div_name = document.getElementById(divName);	
+		div_name.style.display = "";
+		div_name.className="divclass";
+	}	
+}
+
+function showHideOthDiv(divName){	 
+	
+	if(document.getElementById(activeTopLinkID.replace('div','td'))){
+	 	document.getElementById(activeTopLinkID.replace('div','td')).className="top_menu";
+	} 	
+	if(document.getElementById(activeTopLinkID.replace('div','link'))){
+	 document.getElementById(activeTopLinkID.replace('div','link')).className="top_menu_a";	 
+	}
+
+	if(document.getElementById(activeRightLinkID.replace('div','li'))){
+		document.getElementById(activeRightLinkID.replace('div','li')).className="right_menu_li";
+	}	
+	if(document.getElementById(activeRightLinkID.replace('div','link'))){
+		document.getElementById(activeRightLinkID.replace('div','link')).className="right_menu_a";	 
+	} 
+		
+	if(document.getElementById(divName.replace('div','li'))){
+		document.getElementById(divName.replace('div','li')).className="rightlinkSelected";
+	}	
+	if(document.getElementById(divName.replace('div','link'))){
+		document.getElementById(divName.replace('div','link')).className="right_menu_a_active";	 
+	} 
+				
+	activeRightLinkID=divName;	 
+	for (i=0;i&lt;div_array.length;i++){				
+		if(document.getElementById(div_array[i])){
+			var div_name = document.getElementById(div_array[i]);				
+			div_name.style.display = "none";
+		}			
+	}
+	if(document.getElementById(divName)){
+		var div_name = document.getElementById(divName);	
+		div_name.style.display = "";
+		div_name.className="divclass";
+	}	
+}
+
+</script>
+
+</head>
+<body>
+		<input type="hidden" id="entityID">
+			<xsl:attribute name="value">
+			<xsl:value-of select="//entityID"/>
+			</xsl:attribute>
+		</input>
+		<input type="hidden" id="DocumentId">
+			<xsl:attribute name="value">
+			<xsl:value-of select="//DocumentId"/>
+			</xsl:attribute>
+		</input>		
+  <div id="wrap">
+	<div id="header"> 
+		<table width="100%">
+		<tr>
+		<td width="10%" rowspan="6" align="center" valign="center">
+				<img alt="Photo" style="width:100px;height:100px;border:1px solid #87B7C1;float:left;">
+				<xsl:attribute name="src">
+				<xsl:value-of select="//GetPhoto"/><xsl:value-of select="//photo"/>
+				</xsl:attribute>
+				</img>
+			</td>	
+	<td width="80%" align="left"> <!--  <span class="institution"><xsl:apply-templates select="//Institution"/></span>--></td>		
+	 <td  width="10%" rowspan="6" align="right"><img  style="float:right;" src="/images/web_page/university_logo.png"/></td>
+	</tr>
+	<tr><td align="center"><b><span class="facutyName"><xsl:apply-templates select="//Name"/></span></b></td></tr>
+	<tr><td align="center"><span class="institution"><xsl:apply-templates select="//Designation"/> in <xsl:apply-templates select="//Institution"/>, University of <xsl:apply-templates select="//University"/></span></td></tr>
+	<tr><td align="center">Department : <xsl:apply-templates select="//Department"/></td></tr>
+	<tr><td align="center">Personal Email : <xsl:apply-templates select="//Email"/>,&#160;Phone : <xsl:apply-templates select="//home_phone"/></td></tr>			
+	</table>
+  </div> 
+ 
+  <div id="contactdetails">
+  <xsl:for-each select="FacultyProfile/staff_profile_personaldetails_v0_values">				
+		<table width="100%" valign="center">												
+			<tr>
+			<td><b>Office Details :</b></td>
+			<td>Office Room#: <xsl:value-of select="office_room_num"/></td>
+			<td>Ph.Ext: <xsl:value-of select="office_phone_ext"/></td>				
+			<td>Email: <xsl:value-of select="email_id"/></td>
+			<td>Fax: <xsl:value-of select="fax"/></td>					
+			</tr>
+		</table>	
+  </xsl:for-each>	
+ </div>
+ 
+ <div id="left_sidebar">
+  <span class="professional_det">Focus Area</span><br></br>
+  	<xsl:for-each select="FacultyProfile/staff_profile_personal_details_v0_values">				
+	<xsl:value-of select="focus_area"/>		<br></br>	
+	</xsl:for-each>
+	<p></p>		
+  <span class="professional_det">Research Interests</span><br></br>  
+    <xsl:for-each select="FacultyProfile/staff_profile_personal_details_v0_values">				
+	<xsl:value-of select="research_interests"/><br></br>			
+	</xsl:for-each>
+	<p></p>
+	<span class="professional_det">Teaching Interests</span><br></br>  
+    <xsl:for-each select="FacultyProfile/staff_profile_personal_details_v0_values">				
+	<xsl:value-of select="teaching_interests "/><br></br>			
+	</xsl:for-each>
+	<p></p>
+	<span class="professional_det">Positions Held</span><br></br>  
+    <xsl:for-each select="FacultyProfile/staff_profile_personal_details_v0_values">				
+	<xsl:value-of select="positions_held "/><br></br>			
+	</xsl:for-each>		  		  
+  </div>
+  
+  <div id="main">  	
+	 <table id= "top_menu" width="100%">
+	 <tr>
+	 <td id="td_publications" class="top_menu"><a class="top_menu_a" id="link_publications"  href="#" onclick="showHideDiv('div_publications');">Publications</a></td>
+	 <td  id="td_conference_papers" class="top_menu" ><a class="top_menu_a"  id="link_conference_papers" href="#" onclick="showHideDiv('div_conference_papers');">Conference Papers</a></td>
+	 <td  id="td_books_chapter" class="top_menu"><a class="top_menu_a"  id="link_books_chapter" href="#" onclick="showHideDiv('div_books_chapter');">Books Chapters</a></td>
+	 <td id="td_projects" class="top_menu"><a class="top_menu_a"  id="link_projects" href="#" onclick="showHideDiv('div_projects');">Projects</a></td>
+	 <td id="td_qualifications" class="top_menu"><a class="top_menu_a"  id="link_qualifications"  href="#" onclick="showHideDiv('div_qualifications');">Qualifications</a></td>
+	 <td id="td_course_taught" class="top_menu"><a class="top_menu_a"  id="link_course_taught"  href="#" onclick="showHideDiv('div_course_taught');">Course Taught</a></td>
+	 </tr>
+	 </table>	 		
+ 	
+ 	 <div id="div_publications">  	
+	  	<b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_journal_papers_v0_values_title/title"/></i></b><br></br>
+	  	<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_journal_papers_v0_values">    			
+		<li><b><xsl:value-of select="paper_title "/></b> in 
+					<xsl:value-of select="journal_name "/>								
+					 <xsl:choose>
+					    <xsl:when test="journal_type=1">
+					   	(International Journal)
+					    </xsl:when>
+					 </xsl:choose>
+					 by <xsl:value-of select="author1 "/> 
+					<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>
+		</li>
+		</xsl:for-each>
+		</ul>	
+  	</div>  
+  	
+  	<div id="div_conference_papers">
+  		<b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_conference_papers_v0_values_title/title"/></i></b><br></br>
+	  	<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_conference_papers_v0_values">    			
+		<li><b><xsl:value-of select="paper_title "/></b> 
+					 <xsl:choose>
+					    <xsl:when test="conference_type=1">
+					   	(International Conference)
+					    </xsl:when>
+					 </xsl:choose>
+					 by <xsl:value-of select="author1 "/> 
+					<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>
+		</li>
+		</xsl:for-each>
+		</ul>	
+  	</div>
+  
+  	<div id="div_books_chapter">
+  		<b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_books_chapter_v0_values_title/title"/></i></b><br></br>
+	  	<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_books_chapter_v0_values">    			
+		<li><b><xsl:value-of select="title "/></b>					
+					 , <xsl:value-of select="author1 "/> 
+					<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>
+		</li>
+		</xsl:for-each>
+		</ul>	
+  	</div>
+   
+  	<div id="div_projects">
+  		<b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_projects_v0_values_title/title"/></i></b><br></br>
+	  	<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_projects_v0_values">
+		<li><b><xsl:value-of select="project_title"/></b>,
+		duration <xsl:value-of select="duration "/>,
+		 				<xsl:choose>
+					    <xsl:when test="project_statuse=1">
+					   	( Ongoing )
+					    </xsl:when>	
+					    </xsl:choose>
+					 started on  <xsl:value-of select="start_date "/>					 
+					<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>
+		</li>
+		</xsl:for-each>
+		</ul>   	 
+   	</div>   
+   
+   <div id="div_qualifications">
+      	<b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_qualification_v0_values_title/title"/></i></b><br></br>
+	  	<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_qualification_v0_values">    			
+		<li><b><xsl:value-of select="qualification "/></b>					
+					 from <xsl:value-of select="institution"/>&#160;<xsl:value-of select="location"/>,
+					 <xsl:value-of select="join_year "/>
+		</li>
+		</xsl:for-each>
+		</ul>	
+    </div>
+    
+	<div id="div_course_taught">
+		<b><i><xsl:apply-templates select="//FacultyProfile/course_taught_title/title"/></i></b><br></br>
+		<br></br>	  	    			
+		<table class="tab_course_taught" width="100%" border="1" cellpadding="2">
+		<tr>
+			<th>Academic Term</th> 
+			<th>Class</th>
+			<th>Course</th> 
+			<th>Students Registered</th>
+			<th>% of Pass</th>
+		</tr>
+		<xsl:for-each select="FacultyProfile/course_taught">		
+		<tr>
+		<td align="center"><xsl:value-of select="academic_Term"/></td>
+		<td><xsl:value-of select="class_name"/></td>
+		<td><xsl:value-of select="course_name"/></td>
+		<td align="center"><xsl:value-of select="students_registered"/></td>
+		<td align="center"><xsl:value-of select="percent_of_pass"/></td>
+		</tr>
+		</xsl:for-each>
+		</table>			 
+	</div>    
+	
+	<div id="div_awards">
+		<b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_awards_v0_values_title/title"/></i></b><br></br>
+	  	<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_awards_v0_values">    			
+		<li><b><xsl:value-of select="award_name "/></b>
+						<xsl:choose>
+					    <xsl:when test="agency_name!=''" > 
+					   from&#160;<xsl:value-of select="agency_name"/>
+					    </xsl:when>	
+					    </xsl:choose>
+					on&#160;<xsl:value-of select="receiving_month_year"/>		 			
+		 			<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>					 
+		</li>
+		</xsl:for-each>
+		</ul>	 
+	</div>
+	
+	<div id="div_invited_talks">
+      	<b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_talks_lectures_v0_values_title/title"/></i></b><br></br>
+	  	<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_talks_lectures_v0_values">    			
+		<li><b><xsl:value-of select="event_name "/></b>
+						<xsl:choose>
+					    <xsl:when test="event=1">
+					   	( International)
+					    </xsl:when>	
+					    </xsl:choose>
+					&#160;at&#160;<xsl:value-of select="institution_address "/>
+					&#160;on&#160;<xsl:value-of select="talk_date_time"/>
+		 			&#160;about&#160;<b><xsl:value-of select="lecture_topic "/></b>			
+					<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>	 
+		</li>
+		</xsl:for-each>
+		</ul>	
+	</div>   
+	
+    <div id="div_seminars">
+      	<b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_training_v0_values_title/title"/></i></b><br></br>
+	  	<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_training_v0_values">    			
+		<li><b><xsl:value-of select="training_name "/></b>						
+					&#160;from&#160;<xsl:value-of select="duration_from "/>
+					&#160;to&#160;<xsl:value-of select="duration_to"/>
+		 			&#160;at&#160;<xsl:value-of select="location "/>
+					<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>					 
+		</li>
+		</xsl:for-each>
+		</ul>	      
+    </div>   
+      
+    <div id="div_patents">
+      	<b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_patents_v0_values_title/title"/></i></b><br></br>
+	  	<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_patents_v0_values">    			
+		<li><b><xsl:value-of select="patent_title"/></b>,						
+					&#160;Registation Date:&#160;<xsl:value-of select="registration_month_year"/>
+		 			<xsl:choose>
+					    <xsl:when test="choose_patent=1">
+					   	( International Patent For <xsl:value-of select="country "/> )
+					    </xsl:when>	
+					 </xsl:choose>
+					<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>			 
+		</li>
+		</xsl:for-each>
+		</ul>	      
+    </div>     
+
+    <div id="div_media_publications">
+      	<b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_media_publication_v0_values_title/title"/></i></b><br></br>
+	  	<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_media_publication_v0_values">    			
+		<li><b><xsl:value-of select="title"/></b>,						
+					&#160;in&#160;'<xsl:value-of select="magazine_name"/>'
+					(<xsl:value-of select="media_type"/>)
+					&#160;on&#160;<xsl:value-of select="article_month_year"/>		 			
+					<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>			 
+		</li>
+		</xsl:for-each>
+		</ul>	      
+    </div>    
+     
+    <div id="div_students_project">
+      	<b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_thesis_v0_values_title/title"/></i></b><br></br>
+	  	<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_thesis_v0_values">    			
+		<li>
+				<xsl:choose>
+					    <xsl:when test="choose=0">
+					   	Thesis,&#160;
+					    </xsl:when>
+					    <xsl:otherwise>
+					    Students Project,&#160;
+					    </xsl:otherwise>					    	
+				</xsl:choose>
+				<b><xsl:value-of select="thesis_title"/></b>,
+					&#160;Author:&#160;'<xsl:value-of select="thesis_author"/>'					
+					&#160;in&#160;<xsl:value-of select="thesis_department_institution"/>,		 	
+					&#160;Course:<xsl:value-of select="thesis_course_programe"/>		
+					<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>		 								 
+		</li>
+		</xsl:for-each>
+		</ul>	      
+    </div>    
+     
+    <div id="div_faculty_exchange">
+    	<b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_faculty_exchange_v0_values_title/title"/></i></b><br></br>
+		<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_faculty_exchange_v0_values">    			
+		<li><b><xsl:value-of select="institution_name"/></b>,						
+					&#160;Duration From&#160;<xsl:value-of select="duration_from"/>
+					&#160;To&#160;<xsl:value-of select="duration_to"/>.
+					&#160;Subjects taught :&#160;<xsl:value-of select="subjects_taught"/>		 			
+					<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>				 
+		</li>
+		</xsl:for-each>
+		</ul>	       
+    </div> 
+    
+    <div id="div_profession_body">
+    <b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_professional_body_v0_values_title/title"/></i></b><br></br>
+	<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_professional_body_v0_values">    			
+		<li><b><xsl:value-of select="professional_body_name"/></b>,						
+					&#160;Duration From&#160;<xsl:value-of select="membership_from"/>
+					&#160;To&#160;<xsl:value-of select="membership_to"/>.							 			
+					<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>			 
+		</li>
+		</xsl:for-each>
+	</ul>	       
+    </div>
+     
+    <div id="div_consultancy_offered">
+    	<b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_consultancy_offered_v0_values_title/title"/></i></b><br></br>
+		<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_consultancy_offered_v0_values">    			
+		<li><b><xsl:value-of select="client_name"/></b>,						
+					&#160;Duration From&#160;<xsl:value-of select="duration_from"/>
+					&#160;To&#160;<xsl:value-of select="duration_to"/>.							 			
+					<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>					 
+		</li>
+		</xsl:for-each>
+		</ul>	       
+    </div>
+    
+    <div id="div_governanace">
+    	<b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_governance_v0_values_title/title"/></i></b><br></br>
+		<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_governance_v0_values">    			
+		<li><b><xsl:value-of select="committee_name"/></b>,						
+					&#160;in&#160;<xsl:value-of select="school_name"/>
+					&#160;From&#160;<xsl:value-of select="service_dates_from"/>.
+					&#160;From&#160;<xsl:value-of select="service_dates_to"/>.							 			
+		 			&#160;<xsl:value-of select="url"/>							<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>			 
+		</li>
+		</xsl:for-each>
+		</ul>	     	
+     </div>   
+    
+     <div id="div_review_committee">
+    	 <b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_review_committees_v0_values_title/title"/></i></b><br></br>
+		<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_review_committees_v0_values">    			
+		<li><b><xsl:value-of select="title"/></b>,						
+					&#160;in the role of &#160;<xsl:value-of select="role_played"/>
+					&#160;From &#160;<xsl:value-of select="appointed_month_year"/>.										 			
+					<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>			 
+		</li>
+		</xsl:for-each>
+		</ul>	 
+     </div>
+    
+     <div id="div_community_service">
+		<b><i><xsl:apply-templates select="//FacultyProfile/staff_profile_community_service_v0_values_title/title"/></i></b><br></br>
+		<ul>  
+	    <xsl:for-each select="FacultyProfile/staff_profile_community_service_v0_values">    			
+		<li><b><xsl:value-of select="event_name"/></b>,						
+					&#160;at&#160;<xsl:value-of select="location"/>
+					&#160;on&#160;<xsl:value-of select="activity_month_year"/>.										 			
+					<br></br>
+					<a target="_blank">
+		 			<xsl:attribute name="href">
+					<xsl:value-of select="url"/>
+					</xsl:attribute>
+					<xsl:value-of select="url"/>
+					</a>			 
+		</li>
+		</xsl:for-each>
+		</ul>	      
+     </div>     
+  
+  </div>
+  
+  <div id="right_sidebar">  	
+  	<b>&#160;<span style="color:#A01D20;">Other Details</span></b>
+  	<div id="right_menu">
+  	 <ul>
+  	 <li class="right_menu_li" id="li_awards"><a class="right_menu_a" id="link_awards" href="#" onclick="showHideOthDiv('div_awards')">Awards Received</a></li> 	
+ 	<li class="right_menu_li" id="li_invited_talks"><a class="right_menu_a" id="link_invited_talks" href="#" onclick="showHideOthDiv('div_invited_talks')">InvitedTalks</a></li>
+ 	<li class="right_menu_li" id="li_seminars"><a class="right_menu_a" id="link_seminars" href="#" onclick="showHideOthDiv('div_seminars')">Seminars</a></li> 	
+ 	<li class="right_menu_li" id="li_patents"><a  class="right_menu_a" id="link_patents" href="#" onclick="showHideOthDiv('div_patents')">Patents</a></li>
+ 	<li class="right_menu_li" id="li_media_publications"><a   class="right_menu_a" id="link_media_publications" href="#"  onclick="showHideOthDiv('div_media_publications')">Media Publications</a></li>
+ 	<li class="right_menu_li" id="li_students_project"><a  class="right_menu_a" id="link_students_project" href="#" onclick="showHideOthDiv('div_students_project')">Student Projects</a></li>
+ 	<li class="right_menu_li" id="li_faculty_exchange"><a  class="right_menu_a" id="link_faculty_exchange" href="#" onclick="showHideOthDiv('div_faculty_exchange')">Faculty Excahange</a></li>
+ 	<li class="right_menu_li" id="li_profession_body"><a  class="right_menu_a" id="link_profession_body" href="#" onclick="showHideOthDiv('div_profession_body')">Professional Bodies</a></li>
+ 	<li class="right_menu_li" id="li_consultancy_offered"><a  class="right_menu_a" id="link_consultancy_offered" href="#" onclick="showHideOthDiv('div_consultancy_offered')">Consultancy Offered</a></li>
+ 	<li class="right_menu_li" id="li_governanace"><a  class="right_menu_a" id="link_governanace" href="#" onclick="showHideOthDiv('div_governanace')">Governance</a></li>
+ 	<li class="right_menu_li" id="li_review_committee"><a  class="right_menu_a" id="link_review_committee" href="#" onclick="showHideOthDiv('div_review_committee')">Review Committee</a></li>
+ 	<li class="right_menu_li" id="li_community_service"><a  class="right_menu_a" id="link_community_service" href="#" onclick="showHideOthDiv('div_community_service')">Community Service</a></li>
+ 	</ul> 	
+ 	</div>
+  </div>
+
+  <div id="footer">  
+  <table class="footertable" border="1">
+  <tr>
+	  <xsl:for-each select="//FacultyProfile">
+		 <xsl:choose>		
+	    <xsl:when test="Mode='Edit'">
+	   	  	<td onclick="showStaffProfile();">Edit Profile
+  			<img alt="Edit profile" src="../images/edit.png"/>
+ 	 		</td>
+	    </xsl:when>	
+	     </xsl:choose>
+      </xsl:for-each>	 
+  </tr>
+  </table>
+  <!--  <input type="button" name="edit_profile" value="Edit" onclick="showStaffProfile();"/>-->  
+  </div>
+  
+  </div>
+<script>
+showHideDiv('div_publications');
+</script>
+</body>
+</html>
+</xsl:template>
+
+</xsl:stylesheet>

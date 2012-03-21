@@ -41,7 +41,7 @@ function submitform_staff_profile_faculty_exchange_v0()
     	alert("Duration To cannot be less than Duration From");
     	return false ;
     }
-    if (isMandatoryDataExists(frmelement)=="1")
+    if (isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement))
     {		
 	document.myForm.upload.value=document.myForm01.uploadfiles.value;
 	docHtmlSave();
@@ -51,7 +51,7 @@ function submitform_staff_profile_faculty_exchange_v0()
 function approve()
 {
     var frmelement=document.getElementById("staff_profile_faculty_exchange_v0");
-    if (isMandatoryDataExists(frmelement)=="1")
+    if (isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement))
     {		
 	document.myForm.upload.value=document.myForm01.uploadfiles.value;
 	docHtmlRecordwiseApprove();
@@ -105,19 +105,19 @@ if (document.getElementById('reload_after_save').value!="null"){
 <td colspan="2" class="thead" align="center">Faculty Exchange Program Details</td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//institution_name/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//institution_name/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//institution_name/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//subjects_taught/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//subjects_taught/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//subjects_taught/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//duration_from/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//duration_from/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//duration_from/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//duration_to/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//duration_to/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//duration_to/oioNS:renderinfo" /></td>
 </tr>
 <tr>
@@ -142,7 +142,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 
 <input type="hidden" name="action" value="" />
 <input type="HIDDEN" name="mandatory_fields" value="institution_name|subjects_taught|duration_from|duration_to" />
-
+<input type="HIDDEN" name="validation_fields" value="url-U" />
 </form>
 
 <!--============================= Upload File =============================-->

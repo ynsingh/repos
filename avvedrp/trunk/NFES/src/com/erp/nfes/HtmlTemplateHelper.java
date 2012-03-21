@@ -433,7 +433,7 @@ public class HtmlTemplateHelper implements FacultyProfileConstants {
 										}/* ========== File Upload 07-12-2010===========*/
 										else if(action.equalsIgnoreCase("file_upload") ){
 											UploadFileControl actionObj = new UploadFileControl();
-											htmlString = actionObj.getObjectHtml( name, action, choice, code, valuestring,entityId);
+											htmlString = actionObj.getObjectHtml( name, action, choice, code, valuestring,entityId,number,formName);
 										}/* ========== Detail Form 12-01-2011===========*/
 										else if(action.equalsIgnoreCase("detail_form") ){
 											DetailForm actionObj = new DetailForm();
@@ -638,23 +638,17 @@ public class HtmlTemplateHelper implements FacultyProfileConstants {
 		 */
 		public static String getAimsDisplayStringSql(String formName,String language)   {
 			String SqlState;
-			// Modified on 23-02-2011 By Rajitha, bcoz prompt abbreviation also set in the prompt field separated with '|' symbol
-			/*SqlState = "select name, prompt, number, description, creator, time, itemtype, prioritem, nextitem from " +
-			  formName + "_items order by number";*/
-			/* commented on 23-04-2011 AKHIL R R
-			  SqlState = "select name, SUBSTRING_INDEX(Prompt, '|',1 ) AS Prompt, SUBSTR( prompt,(INSTR(prompt,'|'))-LENGTH(prompt)) AS abbreviation, number, description, creator, time, itemtype, prioritem, nextitem from " +
-			  formName + "_items order by number";
-			  */
+			/* Modified on 23-02-2011 By Rajitha, bcoz prompt abbreviation also set in the prompt field separated with '|' symbol
+			SqlState = "select name, prompt, number, description, creator, time, itemtype, prioritem, nextitem from " +
+			  formName + "_items order by number";*/			
+			SqlState = "select name, SUBSTRING_INDEX(Prompt, '|',1 ) AS Prompt, SUBSTR( prompt,(INSTR(prompt,'|'))-LENGTH(prompt)) AS abbreviation, number, description, creator, time, itemtype, prioritem, nextitem from " +
+			formName + "_items order by number";
 			
-			SqlState = "select name, number, description, creator, time, itemtype, prioritem, nextitem,SUBSTRING_INDEX(language_localisation.language_string, '|',1 ) AS prompt from "+formName+"_items,language_localisation WHERE language_localisation.control_name="+formName+"_items.name AND language_localisation.language_code=\'"+language+"\' AND language_localisation.active_yes_no=1 AND language_localisation.file_code = (SELECT id FROM file_master WHERE active_yes_no=1 AND SUBSTRING_INDEX(NAME, '.',1 ) = \'"+formName+"\') ORDER BY "+formName+"_items.number";
 			
-		//	SELECT NAME, number, description, creator, TIME, itemtype, prioritem, nextitem,SUBSTRING_INDEX(language_localisation.language_string, '|',1 ) AS prompt FROM staff_profile_awards_v0_items,language_localisation WHERE language_localisation.control_name=staff_profile_awards_v0_items.name AND language_localisation.language_code='en' AND language_localisation.active_yes_no=1 AND language_localisation.file_code = (SELECT id FROM file_master WHERE active_yes_no=1 AND SUBSTRING_INDEX(NAME, '.',1 ) = 'staff_profile_awards_v0') ORDER BY staff_profile_awards_v0_items.number
-
-			
-			//System.out.println("*******"+SqlState);
-			//System.out.println("Language: "+language);
+			/* commented on 31-08-2011 For i18n from properties files instead of database table 
+			SqlState = "select name, number, description, creator, time, itemtype, prioritem, nextitem,SUBSTRING_INDEX(language_localisation.language_string, '|',1 ) AS prompt from "+formName+"_items,language_localisation WHERE language_localisation.control_name="+formName+"_items.name AND language_localisation.language_code=\'"+language+"\' AND language_localisation.active_yes_no=1 AND language_localisation.file_code = (SELECT id FROM file_master WHERE active_yes_no=1 AND SUBSTRING_INDEX(NAME, '.',1 ) = \'"+formName+"\') ORDER BY "+formName+"_items.number";			
+			*/
 			return SqlState;
-
 
 		}//end function.
 

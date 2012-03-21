@@ -1,5 +1,9 @@
-<%@ page contentType="text/html; charset=iso-8859-1" language="java" import="javax.sql.DataSource,javax.naming.Context,javax.naming.InitialContext,java.sql.*" errorPage="" %>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="UTF-8" language="java" import="javax.sql.DataSource,javax.naming.Context,javax.naming.InitialContext,java.sql.*,java.util.*,java.io.FileInputStream" errorPage="" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+
+<jsp:useBean id="getUserDetails" class="com.erp.nfes.GetRecordValue" scope="session"/> 
+<jsp:useBean id="db" class="com.erp.nfes.ConnectDB" scope="session"/> 
+<jsp:useBean id="ml" class="com.erp.nfes.MultiLanguageString" scope="session"/> 
 
 <HTML lang=en-US dir=ltr xmlns="http://www.w3.org/11001/xhtml"><HEAD
 profile=http://gmpg.org/xfn/11><TITLE>Change Password</TITLE>
@@ -26,7 +30,9 @@ try
 var ps="";
 function clearall()
 {
-	document.forms['user'].oldpass.value="";
+	if(document.forms['user'].oldpass){
+		document.forms['user'].oldpass.value="";
+	}	
 	document.forms['user'].newpass.value="";
 	document.forms['user'].cnewpass.value="";
 	
@@ -40,15 +46,15 @@ function passwordChanged()
 	var enoughRegex = new RegExp("(?=.{6,}).*", "g");
 	var pwd = document.getElementById("newpass");
 	if (pwd.value.length==0) {
-		strength.innerHTML = 'Type Password';ps="";
+		strength.innerHTML ='<%=ml.getValue("type_password")%>';ps="";
 	} else if (false == enoughRegex.test(pwd.value)) {
-		strength.innerHTML = 'More Characters';ps="MC";
+		strength.innerHTML = '<%=ml.getValue("more_characters")%>';ps="MC";
 	} else if (strongRegex.test(pwd.value)) {
-		strength.innerHTML = '<span style="color:green">Strong</span>';ps="S";
+		strength.innerHTML = '<span style="color:green"><%=ml.getValue("strong")%></span>';ps="S";
 	} else if (mediumRegex.test(pwd.value)) {
-		strength.innerHTML = '<span style="color:orange">Medium</span>';ps="M";
+		strength.innerHTML = '<span style="color:orange"><%=ml.getValue("medium")%></span>';ps="M";
 	} else { 
-		strength.innerHTML = '<span style="color:red">Weak</span>';ps="W";
+		strength.innerHTML = '<span style="color:red"><%=ml.getValue("weak")%></span>';ps="W";
 	}
 }
 function checkval(){	
@@ -84,7 +90,7 @@ function checkval(){
 
 <form id="user" action="../ChangePasswordServlet" method="post" name="user" onSubmit="return checkval()">
 <div class="listdiv">
-<h4>&nbsp;&nbsp;&nbsp;Change Password </h4> 
+<h4>&nbsp;&nbsp;&nbsp;<%=ml.getValue("change_password")%> </h4> 
 <table style="background: none repeat scroll 0 0 #CCE6F3;" align="center" width="98%">  	
 
 <tr>
@@ -95,7 +101,7 @@ if( s != null ){
 if(s.equals("0")){
 	%>
 	<div class="message">			
-		Successfully changed your password.
+		Successfully changed password.
 	</div>	
 	<%
 } else if(s.equals("1")){
@@ -119,23 +125,65 @@ if(s.equals("0")){
 <tr>	 
  <td colspan=2>  </td>
 </tr>
+<%
+
+Connection conn=null;
+Statement theStatement=null;
+ResultSet theResult=null;
+
+if(getUserDetails.getRole(request.getUserPrincipal().getName()).equals("ROLE_PROFILE_CREATION")){%>		
 <tr>
-  <td width="198"><label  class="labeltext">Current Password: </label><label class="mandatory">*</label></td>
-  <td width="265"><input  name="oldpass" class="textmedium" type="password" value="" maxlength="50"/></td>
+  <td width="20%"><input  name="user" class="textmedium" type="HIDDEN" value="<%=request.getUserPrincipal().getName()%>" maxlength="50"/></td>  
+ </tr> 
+<%}
+else{
+try{
+	 String university_name=getUserDetails.getUniversity(request.getUserPrincipal().getName());
+	 String username=request.getUserPrincipal().getName();
+     conn = db.getMysqlConnection();
+     theStatement=conn.createStatement();
+     if(getUserDetails.getRole(request.getUserPrincipal().getName()).equals("ROLE_ADMIN")){
+     	theResult=theStatement.executeQuery("SELECT username FROM authorities WHERE username<>'"+username +"' order by username");
+     }else{
+     	theResult=theStatement.executeQuery("SELECT username FROM `staff_profile_masterdetails_v0_values` WHERE username<>'"+username +"' and university='" + university_name + "' order by username");     
+     }
+%>
+<tr>
+  <td width="20%"><label  class="labeltext"><%=ml.getValue("username")%></label><label class="mandatory">*</label></td>
+   <td width="78%"> <!--<input  name="user" class="textmedium" type="TEXT" value="<%=request.getUserPrincipal().getName()%>" maxlength="50"/>-->
+  <SELECT name="user" style="width:204px">
+ 	<OPTION value=<%=username%>><%=username%></OPTION>
+  <%while(theResult.next()){%>
+  	<OPTION value=<%=theResult.getString("username")%>><%=theResult.getString("username")%></OPTION>
+  <%}%>  
+  </SELECT>
+  </td>  
 </tr>  
+<%}
+catch(Exception e)	{e.printStackTrace();	}
+conn.close();
+}
+
+ if(getUserDetails.getRole(request.getUserPrincipal().getName()).equals("ROLE_PROFILE_CREATION")){
+%>
 <tr>
-  <td><label  class="labeltext">New Password: </label><label class="mandatory">*</label></td>
-  <td> <input  name="newpass" id="newpass" class="textmedium" type="password" value="" maxlength="50" onkeyup="return passwordChanged();"/>
-  <span id="strength" class="labeltext">type password</span>
+  <td width="20%"><label  class="labeltext"><%=ml.getValue("current_password")%> </label><label class="mandatory">*</label></td>
+  <td width="78%"><input  name="oldpass" class="textmedium" type="password" value="" maxlength="50" onCopy="return false"  onPaste="return false"/></td>
+</tr>  
+<%}%>
+<tr>
+  <td><label  class="labeltext"><%=ml.getValue("new_Password")%> </label><label class="mandatory">*</label></td>
+  <td> <input  name="newpass" id="newpass" class="textmedium" type="password" value="" maxlength="50" onkeyup="return passwordChanged();" onCopy="return false"  onPaste="return false"/>
+  <span id="strength" class="labeltext"><%=ml.getValue("type_password")%></span>
   </td>
 </tr>  
 <tr>
-  <td><label  class="labeltext">Confirm New Password: </label><label class="mandatory">*</label>  </td>
-  <td><input  name="cnewpass" class="textmedium" type="password" value="" maxlength="50"/></td>
+  <td><label  class="labeltext"><%=ml.getValue("confirm_new_password")%> </label><label class="mandatory">*</label>  </td>
+  <td><input  name="cnewpass" class="textmedium" type="password" value="" maxlength="50" onCopy="return false"  onPaste="return false"/></td>
 </tr>
 <tr>
       <td></td>
-      <td><input type="submit"  name="Save"  value="Change Password"/><input type="button"  onClick="clearall()"  value="Clear"/>    </td>
+      <td><input type="submit"  name="Save"  value='<%=ml.getValue("change_password")%>'/><input type="button"  onClick="clearall()"  value='<%=ml.getValue("clear")%>'/>    </td>
 </tr> 
 </table>
 <br>

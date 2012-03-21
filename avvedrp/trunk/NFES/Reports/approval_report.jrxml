@@ -1,0 +1,1248 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="approval_report"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Landscape"
+		 pageWidth="842"
+		 pageHeight="595"
+		 columnWidth="828"
+		 columnSpacing="0"
+		 leftMargin="14"
+		 rightMargin="0"
+		 topMargin="0"
+		 bottomMargin="0"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="header_image" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="university" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="institution" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="department" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="fromdate" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="todate" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="facultyname" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["D:\\ireport-1.2.0\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="category" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="usertitle" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="lastname" isForPrompting="true" class="java.lang.String"/>
+	<queryString><![CDATA[select * from users;]]></queryString>
+
+	<field name="username" class="java.lang.String"/>
+	<field name="password" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="enabled" class="java.lang.Boolean"/>
+	<field name="active_yesno" class="java.lang.Integer"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="user_full_name" class="java.lang.String"/>
+
+
+		<group  name="awards" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("awards%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="2"
+						y="1"
+						width="839"
+						height="28"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-1"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="true"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"awards_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="professional_details" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("personal_details%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="1"
+						y="0"
+						width="840"
+						height="30"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-2"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="true"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"professional_details_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="qualifications" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("qualification%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="841"
+						height="30"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-3"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="true"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"qualifications_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="publications" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("journal_papers%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="842"
+						height="30"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-4"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"publications_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="conference_papers" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("conference_papers%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="1"
+						width="842"
+						height="28"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-5"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"conference_papers_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="books_chapters" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("books_chapters%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="842"
+						height="30"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-6"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"books_chapters_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="invited_talks" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("talks_lectures%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="842"
+						height="30"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-7"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"invited_talks_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="seminars" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("training%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="842"
+						height="30"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-8"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"seminars_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="projects" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("projects%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="842"
+						height="30"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-9"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"projects_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="patents" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("patents%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="842"
+						height="30"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-10"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"patents_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="media_publications" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("media_publication%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="842"
+						height="30"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-11"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"media_publications_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="student_project" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("thesis%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="1"
+						width="842"
+						height="29"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-12"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"student_project_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="faculty_exchange" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("faculty_exchange%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="842"
+						height="30"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-13"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"faculty_exchange_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="professional_bodies" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("professional_body%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="842"
+						height="30"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-14"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"professional_bodies_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="consultancy_offered" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("consultancy_offered%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="1"
+						width="842"
+						height="29"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-15"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"consultancy_offered_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="governance" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("governance%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="1"
+						width="842"
+						height="29"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-16"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"governance_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="review_committees" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("review_committees%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="842"
+						height="30"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-17"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"review_committees_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="community_service" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{category}.equals("community_service%")|$P{category}.equals("%")?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				<subreport  isUsingCache="true">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="842"
+						height="29"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="subreport-18"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<subreportParameter  name="university">
+						<subreportParameterExpression><![CDATA[$P{university}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="institution">
+						<subreportParameterExpression><![CDATA[$P{institution}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="department">
+						<subreportParameterExpression><![CDATA[$P{department}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fromdate">
+						<subreportParameterExpression><![CDATA[$P{fromdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="todate">
+						<subreportParameterExpression><![CDATA[$P{todate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="facultyname">
+						<subreportParameterExpression><![CDATA[$P{facultyname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="usertitle">
+						<subreportParameterExpression><![CDATA[$P{usertitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="lastname">
+						<subreportParameterExpression><![CDATA[$P{lastname}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"community_service_approved.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="4"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="119"  isSplitAllowed="true" >
+				<image  scaleImage="RetainShape" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="-3"
+						width="393"
+						height="82"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="image-1"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" 
+/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{header_image}]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="3"
+						y="93"
+						width="131"
+						height="26"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-1"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="18" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Approved List]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="dd-MM-yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="239"
+						y="97"
+						width="103"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="14" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new SimpleDateFormat("yyyy-MM-dd").parse($P{fromdate})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd-MM-yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="407"
+						y="98"
+						width="94"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="14" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new SimpleDateFormat("yyyy-MM-dd").parse($P{todate})]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="197"
+						y="97"
+						width="42"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-2"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="14" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[From:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="383"
+						y="98"
+						width="24"
+						height="17"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-3"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="14" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[To:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="433"
+						y="30"
+						width="382"
+						height="40"
+						forecolor="#244248"
+						backcolor="#FFFFFF"
+						key="staticText-4"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Bottom" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="18" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[National Faculty Expertise System]]></text>
+				</staticText>
+				<rectangle radius="0" >
+					<reportElement
+						mode="Opaque"
+						x="-15"
+						y="84"
+						width="843"
+						height="5"
+						forecolor="#F1A917"
+						backcolor="#F1A917"
+						key="rectangle-1"
+						stretchType="NoStretch"
+						positionType="Float"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</rectangle>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<lastPageFooter>
+			<band height="26"  isSplitAllowed="true" >
+			</band>
+		</lastPageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

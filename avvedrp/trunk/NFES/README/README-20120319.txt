@@ -1,0 +1,37 @@
+
+NATIONAL FACULTY EXPERTISE SYSTEM
+         Version 1.7
+===================================
+
+
+Installation Steps
+--------------------
+
+1.	Apply the patch file (NFES_PATCH_06022012.diff)
+
+2.	Copy the files in the images to the images folder (NFES\images)
+
+3.	Copy the folder 'UserGuides'  to NFES Folder 
+
+4. 	Copy the files in the lib folder to NFES\lib folder
+
+5.	Copy the files in the Reports folder to NFES\Reports folder
+
+6.	Copy the nfes.sql file  in the database folder to NFES\database folder
+
+7. 	Copy fileuploadpath.properties "Tomcat\conf" folder from "NFES\properties" folder and update the file uploading location
+
+8.	Execute the database\updations.txt (to upgrade database version from 1.4 to 1.7).
+
+
+System Requirements & Installation:
+------------------------------------
+System requirements and installation instructions are located  at /NFES_Documents/NFES_Installation_Document.txt
+
+
+
+
+
+
+
+

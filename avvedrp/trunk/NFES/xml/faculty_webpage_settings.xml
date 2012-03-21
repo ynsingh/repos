@@ -1,0 +1,162 @@
+<webPage>
+
+<category>
+	<title>Office Details</title>
+	<table_name>staff_profile_personaldetails_v0_values</table_name>	
+	<query>SELECT  office_room_num,office_phone_ext,email_id,fax,home_phone,photo  FROM  staff_profile_personaldetails_v0_values</query>
+	<field_displayed>office_room_num,office_phone_ext,email_id,fax,home_phone,photo</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Profession Details</title>
+	<table_name>staff_profile_personal_details_v0_values</table_name>	
+	<query>SELECT focus_area,research_interests,teaching_interests,positions_held FROM staff_profile_personal_details_v0_values  INNER JOIN entity_document_master ON staff_profile_personal_details_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='personal_details' AND entity_document_master.number=staff_profile_personal_details_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>focus_area,research_interests,teaching_interests,positions_held</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Publications</title>
+	<table_name>staff_profile_journal_papers_v0_values</table_name>	
+	<query>SELECT  paper_title, fld_value 'journal_name',url,journal_type,author1  FROM staff_profile_journal_papers_v0_values  INNER  JOIN general_master  ON  staff_profile_journal_papers_v0_values.journal_name=general_master.id  AND general_master.category='Journal'   INNER  JOIN entity_document_master ON staff_profile_journal_papers_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='journal_papers'  AND  entity_document_master.number=staff_profile_journal_papers_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>paper_title,journal_name,url,journal_type,author1</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Conference Papers</title>
+	<table_name>staff_profile_conference_papers_v0_values</table_name>	
+	<query>SELECT conference_type,paper_title,author1,url FROM staff_profile_conference_papers_v0_values INNER  JOIN entity_document_master ON staff_profile_conference_papers_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='conference_papers'  AND  entity_document_master.number=staff_profile_conference_papers_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>conference_type,paper_title,author1,url</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Books Chapters</title>
+	<table_name>staff_profile_books_chapter_v0_values</table_name>	
+	<query>SELECT title,author1,url FROM staff_profile_books_chapter_v0_values  INNER  JOIN entity_document_master ON staff_profile_books_chapter_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='books_chapter'  AND  entity_document_master.number=staff_profile_books_chapter_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>title,author1,url</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Project Details</title>
+	<table_name>staff_profile_projects_v0_values</table_name>	
+	<query>SELECT project_status,project_title,start_date,duration,url FROM staff_profile_projects_v0_values INNER  JOIN entity_document_master ON staff_profile_projects_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='projects'  AND  entity_document_master.number=staff_profile_projects_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>project_status,project_title,start_date,duration,url</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Qualification Details</title>
+	<table_name>staff_profile_qualification_v0_values</table_name>	
+	<query>SELECT course_name 'qualification',institution,location,join_year FROM staff_profile_qualification_v0_values INNER  JOIN entity_document_master ON staff_profile_qualification_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='qualification'  AND  entity_document_master.number=staff_profile_qualification_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>qualification,institution,location,join_year</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Awards Received</title>
+	<table_name>staff_profile_awards_v0_values</table_name>	
+	<query>SELECT  award_name,agency_name,receiving_month_year,url FROM staff_profile_awards_v0_values  INNER  JOIN entity_document_master ON staff_profile_awards_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='awards'  AND  entity_document_master.number=staff_profile_awards_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>award_name,agency_name,receiving_month_year,url</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Invited Talks</title>
+	<table_name>staff_profile_talks_lectures_v0_values</table_name>	
+	<query>SELECT EVENT,institution_address,event_name,lecture_topic,talk_date_time,url FROM  staff_profile_talks_lectures_v0_values INNER  JOIN entity_document_master ON staff_profile_talks_lectures_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='talks_lectures'  AND  entity_document_master.number=staff_profile_talks_lectures_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>event,institution_address,event_name,lecture_topic,talk_date_time,url</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Seminars</title>
+	<table_name>staff_profile_training_v0_values</table_name>	
+	<query>SELECT training_name,duration_from,duration_to,location,url FROM  staff_profile_training_v0_values  INNER  JOIN entity_document_master ON staff_profile_training_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='training'  AND  entity_document_master.number=staff_profile_training_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>training_name,duration_from,duration_to,location,url</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Patents</title>
+	<table_name>staff_profile_patents_v0_values</table_name>	
+	<query>SELECT choose_patent,country,patent_title,registration_month_year,url FROM staff_profile_patents_v0_values INNER  JOIN entity_document_master ON staff_profile_patents_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='patents'  AND  entity_document_master.number=staff_profile_patents_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>choose_patent,country,patent_title,registration_month_year,url</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Media Publication</title>
+	<table_name>staff_profile_media_publication_v0_values</table_name>	
+	<query>SELECT title, magazine_name,fld_value AS media_type,article_month_year,url FROM staff_profile_media_publication_v0_values  INNER JOIN general_master  ON general_master.id=staff_profile_media_publication_v0_values.media_type  AND   category="Media"  INNER  JOIN entity_document_master ON staff_profile_media_publication_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='media_publication'  AND  entity_document_master.number=staff_profile_media_publication_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>title,magazine_name,media_type,article_month_year,url</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Students Projects</title>
+	<table_name>staff_profile_thesis_v0_values</table_name>	
+	<query>SELECT choose,thesis_title,thesis_author,thesis_department_institution,thesis_course_programe,thesis_url FROM staff_profile_thesis_v0_values  INNER  JOIN entity_document_master ON staff_profile_thesis_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='thesis'  AND  entity_document_master.number=staff_profile_thesis_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>choose,thesis_title,thesis_author,thesis_department_institution,thesis_course_programe,thesis_url</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Faculty Exchange</title>
+	<table_name>staff_profile_faculty_exchange_v0_values</table_name>	
+	<query>SELECT institution_name,subjects_taught,duration_from,duration_to,url FROM staff_profile_faculty_exchange_v0_values INNER  JOIN entity_document_master ON staff_profile_faculty_exchange_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='faculty_exchange'  AND  entity_document_master.number=staff_profile_faculty_exchange_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>institution_name,subjects_taught,duration_from,duration_to,url</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Professional Bodies</title>
+	<table_name>staff_profile_professional_body_v0_values</table_name>	
+	<query>SELECT fld_value AS professional_body_name,membership_from,membership_to,url FROM staff_profile_professional_body_v0_values   INNER JOIN general_master ON staff_profile_professional_body_v0_values.professional_body_name=general_master.id AND category="Professional_Body_Name" INNER  JOIN entity_document_master ON staff_profile_professional_body_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='professional_body'  AND  entity_document_master.number=staff_profile_professional_body_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>professional_body_name,membership_from,membership_to,url</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+ <category>
+	<title>Consultancy Offered</title>
+	<table_name>staff_profile_consultancy_offered_v0_values</table_name>	
+	<query>SELECT client_name,duration_from,duration_to,url FROM staff_profile_consultancy_offered_v0_values  INNER  JOIN entity_document_master ON staff_profile_consultancy_offered_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='consultancy_offered'  AND  entity_document_master.number=staff_profile_consultancy_offered_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>client_name,duration_from,duration_to,url</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Governance</title>
+	<table_name>staff_profile_governance_v0_values</table_name>	
+	<query>SELECT committee_name,school_name,service_dates_from,service_dates_to,url FROM staff_profile_governance_v0_values INNER  JOIN entity_document_master ON staff_profile_governance_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='governance'  AND  entity_document_master.number=staff_profile_governance_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>committee_name,school_name,service_dates_from,service_dates_to,url</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Review Committees</title>
+	<table_name>staff_profile_review_committees_v0_values</table_name>	
+	<query>SELECT  general_masterA.fld_value AS committee_type,general_masterB.fld_value AS role_played,title,appointed_month_year,url FROM staff_profile_review_committees_v0_values INNER JOIN general_master general_masterA  ON  general_masterA .id=staff_profile_review_committees_v0_values. committee_type AND general_masterA.category="Committee_Type"  INNER JOIN general_master general_masterB ON  general_masterB.id=staff_profile_review_committees_v0_values.role_played  AND  general_masterB.category='Role_Played' INNER  JOIN entity_document_master ON staff_profile_review_committees_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='review_committees'  AND  entity_document_master.number=staff_profile_review_committees_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>committee_type,role_played,title,appointed_month_year,url</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Community Service</title>
+	<table_name>staff_profile_community_service_v0_values</table_name>	
+	<query>SELECT event_name,location, activity_month_year,url FROM staff_profile_community_service_v0_values INNER  JOIN entity_document_master ON staff_profile_community_service_v0_values.idf=entity_document_master.entity_id AND approved_yesno=1 AND entity_type='community_service'  AND  entity_document_master.number=staff_profile_community_service_v0_values.number and entity_document_master.public_record="Y"</query>
+	<field_displayed>event_name,location,activity_month_year,url</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+
+<category>
+	<title>Course Taught Details</title>
+	<table_name>course_taught</table_name>	
+	<query>SELECT fld_value 'academic_Term',class_name,course_name,students_registered,percent_of_pass FROM course_taught INNER JOIN general_master ON general_master.id=course_taught.academic_Term AND category='Academic_Term'</query>
+	<field_displayed>academic_Term,class_name,course_name,students_registered,percent_of_pass</field_displayed>
+	<visibility_status>Y</visibility_status>
+</category>
+</webPage>

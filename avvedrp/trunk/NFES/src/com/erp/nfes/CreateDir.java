@@ -1,18 +1,11 @@
-
- /* Created on Dec 07, 2010
- *
- * To change the template for this generated file go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
 package com.erp.nfes;
-import java.io.File;
 
+import java.io.File;
 
 public class CreateDir {
 	
 //	function to create directory.
-	public void CreateFolder(String url,String dir) {
-		
+	public static void CreateFolder(String url,String dir) {
 		File file=new File(url+"/"+dir);
 		if(file.mkdir())
 		{
@@ -24,6 +17,4 @@ public class CreateDir {
 		}
 		
 	}//end of function.
-
-
 }

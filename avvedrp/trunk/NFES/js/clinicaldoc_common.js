@@ -501,6 +501,11 @@ function validateForm(frm){
 		                      f=false;	
 		                      break;
 		                 } 
+		            }else if(opt[1]=="U"){
+		            	 if(!(validateUrl(frm.elements[j]))){
+		                      f=false;	
+		                      break;
+		                 } 
 		            }
 		       }     
 	          }
@@ -529,19 +534,6 @@ function isYear(field){
 	return check;
 }
 
-function submitform_staff_profile_qualification_v0(){
-     var frmelement=document.getElementById("staff_profile_qualification_v0");     
-     if(isMandatoryDataExists(frmelement)=="1" && validateForm(frmelement)){
-          docHtmlSave();
-     }	
-}
-
-function approveform_staff_profile_qualification_v0(){
-     var frmelement=document.getElementById("staff_profile_qualification_v0");
-     if(isMandatoryDataExists(frmelement)=="1" && validateForm(frmelement)){
-          docHtmlRecordwiseApprove();
-     }	
-}
 
 /*================================ End of added on 01-03-2011 ===================================*/
 
@@ -725,4 +717,25 @@ function ajaxFunctionDelete(documentId,formname){
 	ajaxRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");	
         ajaxRequest.send("documentId="+documentId+"&tablename="+formname);
 		
+}
+/*============================ Added on 15-10-2011[URL Validation] ==========================================*/
+function validateUrl(field){
+	var check = true;
+	var str = field.value;
+	//var re = /http:\/\/[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}/;
+	var re =/(^ftp|^http|^https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+	if(!str.match(re))
+	{
+		check = false;
+	}
+	if(!check)
+	{
+		alert("Please enter a valid URL");
+		field.style.backgroundColor = "#fca9ae";
+	}
+	else
+	{
+		field.style.backgroundColor = "white";
+	}
+	return check;
 }

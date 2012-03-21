@@ -1,47 +1,50 @@
 package com.erp.nfes;
 
-import java.sql.*;
-
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
+		
 public class MultiLanguageString{
-	Connection conn=null;
-	Statement theStatement=null;
-	ResultSet theResult=null;
-	String[][] ls;
-    int length;
-     
+    
+	String language;
+    String country;
+	Locale currentLocale;
+    ResourceBundle messages;
+    String message_caption="";
+    
+    public void init(String languageCode){
+    	language=languageCode;
+    }
+    
     public void init(String fileName,String languageCode){
-    	 try{
-    		 ConnectDB conObj=new ConnectDB();
-    	 	 conn = conObj.getMysqlConnection();
- 		     theStatement=conn.createStatement();
- 		     theResult=theStatement.executeQuery("SELECT control_name,language_string FROM language_localisation WHERE file_code=(SELECT id FROM file_master WHERE NAME=\'"+fileName+"\') AND language_code=\'"+languageCode+"\'");
- 		     theResult.last();
- 		     length=theResult.getRow();
- 		     ls=new String[length][2];
- 		     theResult.beforeFirst();int i=0;
- 		     while(theResult.next()){
- 		          ls[i][0]=theResult.getString("control_name");
- 		          ls[i][1]=theResult.getString("language_string");
- 		          i++;
- 		     }
-            
-    	 }catch(Exception e){
-    	     e.printStackTrace();
-    	 }finally{
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		    }
-     }
-     public String getValue(String arg){
-    	 String str="";
-    	 for(int i=0;i<length;i++){
-    	      if(arg.equals(ls[i][0])){
-    	    	  str=ls[i][1];break;
-    	      }
-    	 }
-    	 return str;	 
-     }
+    	language=languageCode;
+    }
+    public String getValue (String message_code) {  
+    	try {
+    		String language_code=language;//"hi";//Locale.getDefault();
+        	
+        	if(language_code==null){
+        		language="en";    		
+        	}else if(language_code.equals("")){
+        		language="en";    		   		
+        	}else{
+        		language=language_code;
+        	}
+        	country=language_code.toUpperCase();
+        	//System.out.println("language:"+language+"_"+country);
+        	currentLocale = new Locale(language, country);
+            messages = ResourceBundle.getBundle("MessagesBundle",currentLocale);               
+            message_caption=messages.getString(message_code);        
+                    
+            byte bytes[] = message_caption.getBytes("ISO-8859-1");
+            String message_caption_utf = new String(bytes, "UTF-8");        
+            message_caption=message_caption_utf;
+        
+		} catch (Exception e){			
+			return("message."+language+"."+country+"."+message_code);
+		}            
+        return(message_caption);		 
+    }     
+     
 }

@@ -48,14 +48,15 @@ public class DetailForm {
 		String TableStr="";
 		String tab_id="Tab_"+table_name;
 		String SqlStr="";
+		String abbreviation;
 		try  {
 			ConnectDB conObj=new ConnectDB();
 			con=conObj.getMysqlConnection();
 			Statement st = con.createStatement();
-			Statement st1 = con.createStatement();
+			//Statement st1 = con.createStatement();
 			Statement st2 = con.createStatement();
 			Statement st3=con.createStatement();
-			ResultSet rs_items=null;
+			//ResultSet rs_items=null;
 			if(document_Ids.equals("")){
 				document_Ids="-1";
 			}
@@ -77,6 +78,13 @@ public class DetailForm {
 			SqlStr=SqlStr+" AND entmst.document_id IN ("+document_Ids +")";
 			SqlStr=SqlStr+" ORDER BY sp_values.number";
 			*/
+			Statement st4=con.createStatement();
+			ResultSet rs_urlFields = st2.executeQuery("Select name from "+table_name+"_items where name in('"+ listedFields.replace(",","','")+"') AND itemtype='URL'");
+			String urlFields="";
+			while(rs_urlFields.next()) {
+				urlFields=urlFields+rs_urlFields.getString("name")+"|";
+			}		
+			//System.out.println("urlFields:"+urlFields);
 			
 			SqlStr="SELECT  "+ listedFields +",entmst.document_id  FROM ";
 			SqlStr=SqlStr+ table_name +"_values  sp_values";
@@ -85,29 +93,35 @@ public class DetailForm {
 			SqlStr=SqlStr+" WHERE sp_values.idf='"+ entityid + "' AND entity_type='"+ entity_type +"'";
 			SqlStr=SqlStr+" AND sp_values.number=entmst.number";			
 			SqlStr=SqlStr+" ORDER BY sp_values.number";			
-			
-			
+					
 			
 			ResultSet rs_values = st.executeQuery(SqlStr);
 			rs_values.last();
       		recordCount=Integer.toString(rs_values.getRow());
       		rs_values.beforeFirst();
-
-			listedFields="'" + listedFields.replace(",", "','")+"'";
+      		
+      		
+      		String[] listFields=listedFields.split(",");      		
+      		
+			//listedFields="'" + listedFields.replace(",", "','")+"'";
 			
-			//	Tested OK(12-05-2011): SELECT staff_profile_awards_v0_items.name,SUBSTRING_INDEX(language_localisation.language_string, '|',-1 ) AS abbreviation FROM staff_profile_awards_v0_items,language_localisation WHERE language_localisation.control_name=staff_profile_awards_v0_items.name AND language_localisation.language_code='en' AND language_localisation.active_yes_no=1 AND language_localisation.file_code = (SELECT id FROM file_master WHERE active_yes_no=1 AND SUBSTRING_INDEX(NAME, '.',1 ) = 'staff_profile_awards_v0') AND staff_profile_awards_v0_items.name IN('award_name','agency_name','receiving_month_year')
-
 			//rs_items = st1.executeQuery("Select A.*,SUBSTR( prompt,(INSTR(prompt,'|'))-LENGTH(prompt)) AS abbreviation from " + table_name + "_items A where NAME IN(" + listedFields + ")");
 			
-			rs_items = st1.executeQuery("Select "+table_name+"_items.name,SUBSTRING_INDEX(language_localisation.language_string, '|',-1 ) AS abbreviation from "+table_name+"_items,language_localisation WHERE language_localisation.control_name="+table_name+"_items.name AND language_localisation.language_code=\'"+language+"\' AND language_localisation.active_yes_no=1 AND language_localisation.file_code = (SELECT id FROM file_master WHERE active_yes_no=1 AND SUBSTRING_INDEX(NAME, '.',1 ) = \'"+table_name+"\') And "+table_name+"_items.name IN(" + listedFields + ")");
+			//	Tested OK(12-05-2011): SELECT staff_profile_awards_v0_items.name,SUBSTRING_INDEX(language_localisation.language_string, '|',-1 ) AS abbreviation FROM staff_profile_awards_v0_items,language_localisation WHERE language_localisation.control_name=staff_profile_awards_v0_items.name AND language_localisation.language_code='en' AND language_localisation.active_yes_no=1 AND language_localisation.file_code = (SELECT id FROM file_master WHERE active_yes_no=1 AND SUBSTRING_INDEX(NAME, '.',1 ) = 'staff_profile_awards_v0') AND staff_profile_awards_v0_items.name IN('award_name','agency_name','receiving_month_year')
+			//			
+			//rs_items = st1.executeQuery("Select "+table_name+"_items.name,SUBSTRING_INDEX(language_localisation.language_string, '|',-1 ) AS abbreviation from "+table_name+"_items,language_localisation WHERE language_localisation.control_name="+table_name+"_items.name AND language_localisation.language_code=\'"+language+"\' AND language_localisation.active_yes_no=1 AND language_localisation.file_code = (SELECT id FROM file_master WHERE active_yes_no=1 AND SUBSTRING_INDEX(NAME, '.',1 ) = \'"+table_name+"\') And "+table_name+"_items.name IN(" + listedFields + ")");
 			TableStr="<TABLE WIDTH=\"100%\"><tr><td height=\"1px\" ><INPUT TYPE=\"HIDDEN\" VALUE=\""+recordCount+"\" NAME=\"recordcount_"+ table_name + "\" ID=\"recordcount_"+ table_name + "\"/> </td></tr></TABLE>";
 			table_name_count=table_name;
 			TableStr=TableStr +"<TABLE CLASS=\"dataTableRows\" ID='"+ tab_id + "' BORDER=\"1\" WIDTH=\"100%\">";
 			TableStr=TableStr + "<TR CLASS=\"dataTableRowHead\">";
 			TableStr=TableStr + "<TD CLASS=\"dataTableRowHead\" ID=\"TD_"+ tab_id +"\">doc_Id</TD>";
-			while (rs_items.next()){
+			for(int lstind=0;lstind<listFields.length;lstind++){
 				//TableStr=TableStr + "<TD>"+ rs_items.getString("prompt")+ "</TD>";
-				TableStr=TableStr + "<TD CLASS=\"dataTableRowHead\">"+ rs_items.getString("abbreviation").replace("&", "&amp;")+ "</TD>";
+				abbreviation=ml.getValue(listFields[lstind]+"_abbreviation");
+				if((abbreviation.startsWith("message."))&&(abbreviation.endsWith("_abbreviation"))){
+					abbreviation=ml.getValue(listFields[lstind]);	
+				}
+				TableStr=TableStr + "<TD CLASS=\"dataTableRowHead\">"+abbreviation.replace("&", "&amp;")+ "</TD>";
 			}
 			TableStr=TableStr + "<TD CLASS=\"dataTableRowHead\" style=\"text-align:center\" >"+ml.getValue("edit")+"</TD>"; //Edit
 			TableStr=TableStr + "<TD CLASS=\"dataTableRowHead\" style=\"text-align:center\" >"+ml.getValue("delete")+"</TD>"; //Delete
@@ -121,29 +135,27 @@ public class DetailForm {
 					record_approved= rsapprove.getString("approved_yesno");
 				}
 				TableStr=TableStr + "<TR CLASS=\"dataTableRows\" ID=\"TR_"+ document_id +"\">";
-				rs_items.beforeFirst();//rs_items.first();rs_items.previous();
 				TableStr=TableStr + "<TD CLASS=\"dataTableRows\" ID=\"TD_" + document_id + "\">"+ document_id +"</TD>";
-				while (rs_items.next()){
-					//System.out.println("<TD>"+rs_values.getString(rs_items.getString("name"))+"</TD>");
-					TableStr=TableStr + "<TD CLASS=\"dataTableRows\">"+rs_values.getString(rs_items.getString("name")).replace("&","&amp;")+"</TD>";
-				}
-				//System.out.println("docid:"+document_id+","+record_approved);
+				for(int lstind=0;lstind<listFields.length;lstind++){
+					String searchString=listFields[lstind]+"|";	
+					int isUrlField=urlFields.indexOf(searchString);
+					if(isUrlField>=0 && (!rs_values.getString(listFields[lstind]).equals(""))){						
+						TableStr=TableStr + "<TD CLASS=\"dataTableRows\"><a href='"+rs_values.getString(listFields[lstind]).replace("&","&amp;")+"' target=\"blank\">View</a></TD>";						
+					}else{
+						TableStr=TableStr + "<TD CLASS=\"dataTableRows\">"+rs_values.getString(listFields[lstind]).replace("&","&amp;")+"</TD>";
+					}
+				}	
 				if(record_approved.equals("0")){
 					TableStr=TableStr + "<TD CLASS=\"dataTableRows\" style=\"text-align:center\" ><INPUT TYPE=\"BUTTON\" VALUE=\""+ml.getValue("edit")+"\" NAME=\"EDIT"+ document_id + "\" ONCLICK=\"showchildform('"+ table_name  + "','"+ document_id + "','" + entity_type  +"')\"/> </TD>";
 					TableStr=TableStr + "<TD CLASS=\"dataTableRows\" style=\"text-align:center\" ><INPUT TYPE=\"BUTTON\" VALUE=\""+ml.getValue("delete")+"\" NAME=\"DELETE"+ document_id + "\" onclick=\"deleteRow(this.parentNode.parentNode.rowIndex,'"+ tab_id + "')\"/> </TD>";
 				}else{
-					TableStr=TableStr + "<TD CLASS=\"dataTableRows\" style=\"text-align:center\" ><INPUT TYPE=\"BUTTON\" VALUE=\""+ml.getValue("edit")+"\" NAME=\"EDIT"+ document_id + "\" ONCLICK=\"showchildform('"+ table_name  + "','"+ document_id + "','" + entity_type  +"')\"/> </TD>";
-					//System.out.println(TableStr=TableStr + "<TD CLASS=\"dataTableRows\" style=\"text-align:center\" ><INPUT TYPE=\"BUTTON\" disabled=\"disabled\" VALUE=\""+ml.getValue("edit")+"\" NAME=\"EDIT"+ document_id + "\" ONCLICK=\"showchildform('"+ table_name  + "','"+ document_id + "','" + entity_type  +"')\"/> </TD>");
+					TableStr=TableStr + "<TD CLASS=\"dataTableRows\" style=\"text-align:center\" ><INPUT TYPE=\"BUTTON\"  VALUE=\""+ml.getValue("view")+"\" NAME=\"EDIT"+ document_id + "\" ONCLICK=\"showchildform('"+ table_name  + "','"+ document_id + "','" + entity_type  +"')\"/> </TD>";					
 					TableStr=TableStr + "<TD CLASS=\"dataTableRows\" style=\"text-align:center\" ><INPUT TYPE=\"BUTTON\" disabled=\"disabled\" VALUE=\""+ml.getValue("delete")+"\" NAME=\"DELETE"+ document_id + "\" onclick=\"deleteRow(this.parentNode.parentNode.rowIndex,'"+ tab_id + "')\"/> </TD>";					
 				}
 				TableStr=TableStr + "</TR>";
-
 			}
-
-
 			TableStr=TableStr + "</TABLE>";
-			TableStr=TableStr + "<script language=\"javascript\">hideIdColumn('" +tab_id+"')</script>";
-			//System.out.println(TableStr);			
+			TableStr=TableStr + "<script language=\"javascript\">hideIdColumn('" +tab_id+"')</script>";			
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}			
@@ -156,5 +168,9 @@ public class DetailForm {
 		    }
 		return TableStr;
 		}
-
+	
+	private String getItemType(){
+		
+		return "";
+	}
 }

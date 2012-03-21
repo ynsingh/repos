@@ -35,7 +35,7 @@ function file_upload_dirty()
 function submitform_staff_profile_review_committees_v0()
 {
 	var frmelement=document.getElementById("staff_profile_review_committees_v0");
-	if (isMandatoryDataExists(frmelement)=="1") {
+	if (isMandatoryDataExists(frmelement)=="1"  &amp;&amp; validateForm(frmelement)) {
 		document.myForm.file_upload.value=document.myForm01.file_uploadfiles.value;
 		docHtmlSave();
 		
@@ -44,7 +44,7 @@ function submitform_staff_profile_review_committees_v0()
 function approve()
 {
 	var frmelement=document.getElementById("staff_profile_review_committees_v0");
-	if (isMandatoryDataExists(frmelement)=="1") {
+	if (isMandatoryDataExists(frmelement)=="1"  &amp;&amp; validateForm(frmelement)) {
 		document.myForm.file_upload.value=document.myForm01.file_uploadfiles.value;
 		docHtmlRecordwiseApprove();
 		
@@ -100,21 +100,21 @@ if (document.getElementById('reload_after_save').value!="null"){
 <td colspan="2" class="thead" align="center">Review Committees Details</td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//committee_type/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//committee_type/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//committee_type/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//role_played/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//role_played/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//role_played/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//title/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//title/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//title/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//appointed_month_year/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//appointed_month_year/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//appointed_month_year/oioNS:renderinfo" /></td>
 </tr>
 <tr>
@@ -130,7 +130,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 
 <input type="hidden" name="action" value="" />
 <input type="HIDDEN" name="mandatory_fields" value="committee_type|role_played|title|appointed_month_year" />
-
+<input type="HIDDEN" name="validation_fields" value="url-U" />
 </font>
 </form>
 

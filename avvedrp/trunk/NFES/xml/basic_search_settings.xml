@@ -1,0 +1,679 @@
+<?xml version="1.0"?>
+<basic_search>	
+	<table>
+		<masterdetails>
+		<entity>masterdetails</entity>
+		<description>Office Details</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,`staff_profile_masterdetails_v0_values`.user_full_name, 
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			 staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			entity_document_master.public_record,
+			CONCAT('&lt;b&gt;Office Room No:&lt;/b&gt;',office_room_num) as `office_room_num`,
+			CONCAT('&lt;b&gt;Phone Extension :&lt;/b&gt;',office_phone_ext) as office_phone_ext ,
+			CONCAT('&lt;b&gt;E-mail :&lt;/b&gt;',email_id) as Email ,
+			CONCAT('&lt;b&gt;Designation:&lt;/b&gt;',staff_profile_masterdetails_v0_values.Designation) as Designation
+			FROM  staff_profile_masterdetails_v0_values 
+			LEFT JOIN staff_profile_report_v0_values ON `staff_profile_report_v0_values`.idf=staff_profile_masterdetails_v0_values.userid  
+			LEFT JOIN entity_document_master 
+			ON entity_document_master.entity_id=staff_profile_masterdetails_v0_values.idf  
+			AND entity_document_master.number=staff_profile_report_v0_values.number 
+			AND entity_document_master.entity_type='staff' 
+		</query>
+		<displayed_fields>office_room_num,office_phone_ext,Email,Designation</displayed_fields>
+		<public>Yes</public>				
+		</masterdetails>		
+	</table>
+
+
+	<table>
+		<personal_details>
+		<entity>personal_details</entity>
+		<description>Profile Details</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name, 
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			entity_document_master.public_record,
+			CONCAT('&lt;b&gt;Focus Area:&lt;/b&gt; ',focus_area),
+			CONCAT('&lt;b&gt;Research Interests:&lt;/b&gt; ',research_interests) as research_interests,
+			CONCAT('&lt;b&gt;Teaching Interest:&lt;/b&gt; ',teaching_interests) as teaching_interests ,
+			CONCAT('&lt;b&gt;Positions Held: &lt;/b&gt;',positions_held) as positions_held 
+			FROM staff_profile_personal_details_v0_values 
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_personal_details_v0_values`.idf=staff_profile_masterdetails_v0_values.userid   
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_personal_details_v0_values.idf
+			AND entity_document_master.number=staff_profile_personal_details_v0_values.number 
+			AND entity_document_master.`entity_type`='personal_details'     		
+		</query>
+		<displayed_fields>research_interests,teaching_interests,positions_held</displayed_fields>
+		<public>Yes</public>	
+		</personal_details>					
+	</table>
+	
+	
+	<table>
+		<qualification>
+		<entity>qualification</entity>
+		<description>Qualification Details</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name, staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.institution_id ,
+			staff_profile_masterdetails_v0_values.institution  `institution`  ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			entity_document_master.public_record,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			course_name, staff_profile_qualification_v0_values.institution as institution_name,
+			staff_profile_qualification_v0_values.location as location_name
+			FROM staff_profile_qualification_v0_values 
+			INNER JOIN `staff_profile_masterdetails_v0_values` 
+			ON `staff_profile_qualification_v0_values`.idf=staff_profile_masterdetails_v0_values.userid
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_qualification_v0_values.idf
+			AND entity_document_master.number=staff_profile_qualification_v0_values.number 
+			AND entity_document_master.`entity_type`='qualification'   		
+		</query>
+		<displayed_fields>course_name,institution_name,location_name</displayed_fields>		
+		<public>Yes</public>	
+		</qualification>
+	</table>
+	
+	<table>
+		<awards>
+		<entity>awards</entity>
+		<description>Awards Details</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name, 
+			staff_profile_masterdetails_v0_values.full_name,
+			 staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			 staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,entity_document_master.document_id,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.entity_type,
+			entity_document_master.public_record,
+			CONCAT('&lt;b&gt;',award_name,'&lt;/b&gt;') as 'award_name',
+			CONCAT('From ',agency_name) as 'agency_name',
+			receiving_month_year ,
+			IF(staff_profile_awards_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_awards_v0_values.url,''' target=''blank''&gt;',staff_profile_awards_v0_values.url,'&lt;/a&gt;'),"") url
+			FROM staff_profile_awards_v0_values 
+			 INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_awards_v0_values`.idf=staff_profile_masterdetails_v0_values.userid   
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_awards_v0_values.idf
+			AND entity_document_master.number=staff_profile_awards_v0_values.number 
+			AND entity_document_master.`entity_type`='awards'   		
+		</query>
+		<displayed_fields>award_name,agency_name,receiving_month_year,url</displayed_fields>		
+		<public>Yes</public>
+		</awards>				
+	</table>		
+
+	<table>
+		<journal_papers>
+		<entity>journal_papers</entity>
+		<description>National Publications</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name,  
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			 staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.entity_type,
+			entity_document_master.document_id,
+			entity_document_master.public_record,
+			CONCAT('&lt;b&gt;',paper_title,'&lt;/b&gt;') as 'paper_title',
+			general_master.fld_value as 'journal_name',
+			author1,volume,issue_no,month_year,
+			IF(staff_profile_journal_papers_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_journal_papers_v0_values.url,''' target=''blank''&gt;',staff_profile_journal_papers_v0_values.url,'&lt;/a&gt;'),"") url 
+			FROM staff_profile_journal_papers_v0_values 
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_journal_papers_v0_values`.idf=staff_profile_masterdetails_v0_values.userid    AND  journal_type='National' 
+			INNER JOIN general_master ON  general_master.id=staff_profile_journal_papers_v0_values.journal_name AND category='Journal'         
+			INNER JOIN `entity_document_master` ON  
+			entity_document_master.`entity_id`=staff_profile_journal_papers_v0_values.idf
+			AND entity_document_master.number=staff_profile_journal_papers_v0_values.number 
+			AND entity_document_master.`entity_type`='journal_papers'   		
+		</query>
+		<displayed_fields>paper_title,journal_name,author1,volume,issue_no,month_year,url</displayed_fields>		
+		<public>Yes</public>	
+		</journal_papers>					
+	</table>
+
+	<table>
+		<journal_papers>
+		<entity>journal_papers</entity>
+		<description>International Publications</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name,  
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.entity_type,
+			entity_document_master.public_record,
+			entity_document_master.document_id,
+			CONCAT('&lt;b&gt;',paper_title,'&lt;/b&gt;') as 'paper_title',
+			general_master.fld_value as 'journal_name',
+			author1,
+			volume,issue_no,month_year ,
+			IF(staff_profile_journal_papers_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_journal_papers_v0_values.url,''' target=''blank''&gt;',staff_profile_journal_papers_v0_values.url,'&lt;/a&gt;'),"") url 
+			FROM staff_profile_journal_papers_v0_values 
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_journal_papers_v0_values`.idf=staff_profile_masterdetails_v0_values.userid    
+			AND  journal_type='International'
+			INNER JOIN general_master ON  general_master.id=staff_profile_journal_papers_v0_values.journal_name AND category='Journal'        
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_journal_papers_v0_values.idf
+			AND entity_document_master.number=staff_profile_journal_papers_v0_values.number 
+			AND entity_document_master.`entity_type`='journal_papers'   		
+		</query>
+		<displayed_fields>paper_title,journal_name,author1,volume,issue_no,month_year,url</displayed_fields>		
+		<public>Yes</public>						
+		</journal_papers>		
+	</table>		
+
+	<table>
+		<conference_papers>	
+		<entity>conference_papers</entity>
+		<description>National Conference Papers</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name,  staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			entity_document_master.public_record,
+			CONCAT('&lt;b&gt;',paper_title,'&lt;/b&gt;') as 'paper_title',
+			general_master.fld_value as 'conference_name',
+			author1 ,
+			month_year,
+			IF(staff_profile_conference_papers_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_conference_papers_v0_values.url,''' target=''blank''&gt;',staff_profile_conference_papers_v0_values.url,'&lt;/a&gt;'),"") url
+			FROM staff_profile_conference_papers_v0_values 
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_conference_papers_v0_values`.idf=staff_profile_masterdetails_v0_values.userid  AND conference_type='National'
+			INNER JOIN general_master ON  general_master.id=staff_profile_conference_papers_v0_values.conference_name AND category='Conference_Name'  
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_conference_papers_v0_values.idf
+			AND entity_document_master.number=staff_profile_conference_papers_v0_values.number 
+			AND entity_document_master.`entity_type`='conference_papers'   		
+		</query>
+		<displayed_fields>paper_title,conference_name,author1,month_year,url</displayed_fields>		
+		<public>Yes</public>	
+		</conference_papers>
+	</table>
+
+	<table>
+		<conference_papers>	
+		<entity>conference_papers</entity>
+		<description>International Conference Papers</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name,  staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			entity_document_master.public_record,
+			CONCAT('&lt;b&gt;',paper_title,'&lt;/b&gt;') as 'paper_title',
+			general_master.fld_value as 'conference_name',
+			author1 ,
+			month_year,
+			IF(staff_profile_conference_papers_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_conference_papers_v0_values.url,''' target=''blank''&gt;',staff_profile_conference_papers_v0_values.url,'&lt;/a&gt;'),"") url
+			FROM staff_profile_conference_papers_v0_values 
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_conference_papers_v0_values`.idf=staff_profile_masterdetails_v0_values.userid AND  conference_type='International' 
+			INNER JOIN general_master ON  general_master.id=staff_profile_conference_papers_v0_values.conference_name AND category='Conference_Name'  
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_conference_papers_v0_values.idf
+			AND entity_document_master.number=staff_profile_conference_papers_v0_values.number 
+			AND entity_document_master.`entity_type`='conference_papers'    		
+		</query>
+		<displayed_fields>paper_title,conference_name,author1,month_year,url</displayed_fields>		
+		<public>Yes</public>	
+		</conference_papers>							
+	</table>		
+
+	<table>
+		<books_chapter>	
+		<entity>books_chapter</entity>
+		<description>Books/Chapters Details</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name,
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			entity_document_master.public_record,
+			book_chapter,
+			CONCAT('&lt;b&gt;',title,'&lt;/b&gt;') as 'title',
+			author1,
+			publication_month_year ,
+			IF(staff_profile_books_chapter_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_books_chapter_v0_values.url,''' target=''blank''&gt;',staff_profile_books_chapter_v0_values.url,'&lt;/a&gt;'),"") url
+			FROM staff_profile_books_chapter_v0_values 
+			INNER JOIN `staff_profile_masterdetails_v0_values` 
+			ON `staff_profile_books_chapter_v0_values`.idf=staff_profile_masterdetails_v0_values.userid   
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_books_chapter_v0_values.idf
+			AND entity_document_master.number=staff_profile_books_chapter_v0_values.number 
+			AND entity_document_master.`entity_type`='books_chapter'		
+		</query>
+		<displayed_fields>book_chapter,title,author1,publication_month_year,url</displayed_fields>		
+		<public>Yes</public>
+		</books_chapter>									
+	</table>
+
+	<table>
+		<talks_lectures>
+		<entity>talks_lectures</entity>
+		<description>Invited Talks Details</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name,
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			entity_document_master.public_record,
+			CONCAT('&lt;b&gt;',lecture_topic,'&lt;/b&gt;') as 'lecture_topic',
+			CONCAT(' at ', institution_address) as 'institution_address',
+			event_name,
+			talk_date_time ,
+			IF(staff_profile_talks_lectures_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_talks_lectures_v0_values.url,''' target=''blank''&gt;',staff_profile_talks_lectures_v0_values.url,'&lt;/a&gt;'),"") url
+			FROM staff_profile_talks_lectures_v0_values  
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_talks_lectures_v0_values`.idf=staff_profile_masterdetails_v0_values.userid   
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_talks_lectures_v0_values.idf
+			AND entity_document_master.number=staff_profile_talks_lectures_v0_values.number 
+			AND entity_document_master.`entity_type`='talks_lectures'     		
+		</query>
+		<displayed_fields>lecture_topic,institution_address,event_name,talk_date_time,url</displayed_fields>		
+		<public>Yes</public>	
+		</talks_lectures>							
+	</table>		
+
+	<table>
+		<training>	
+		<entity>training</entity>
+		<description>Seminar/Training</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name, 
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   , 
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			entity_document_master.public_record,
+			CONCAT('&lt;b&gt;',training_name,'&lt;/b&gt;') as 'training_name',
+			CONCAT('Period :',duration_from,' to ',duration_to) as 'Period',
+			CONCAT(' at ',staff_profile_training_v0_values.location) as 'location_name' ,
+			IF(staff_profile_training_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_training_v0_values.url,''' target=''blank''&gt;',staff_profile_training_v0_values.url,'&lt;/a&gt;'),"") url
+			FROM staff_profile_training_v0_values 
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_training_v0_values`.idf=staff_profile_masterdetails_v0_values.userid   
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_training_v0_values.idf
+			AND entity_document_master.number=staff_profile_training_v0_values.number 
+			AND entity_document_master.`entity_type`='training'     		
+		</query>
+		<displayed_fields>training_name,Period,location_name,url</displayed_fields>		
+		<public>Yes</public>	
+		</training>							
+	</table>
+	
+	<table>
+		<projects>	
+		<entity>projects</entity>
+		<description>Project Details</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name, 
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution  ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			entity_document_master.public_record,
+			project_status,CONCAT('&lt;b&gt;',project_title,'&lt;/b&gt;') as 'project_title',
+			CONCAT('Start on ',start_date) as 'start_date',
+			CONCAT('for ',duration) as 'duration' ,
+			amount,
+			CONCAT('associated with ',general_master.fld_value) as 'department_name',
+			abstract ,
+			IF(staff_profile_projects_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_projects_v0_values.url,''' target=''blank''&gt;',staff_profile_projects_v0_values.url,'&lt;/a&gt;'),"") url
+			FROM staff_profile_projects_v0_values  
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_projects_v0_values`.idf=staff_profile_masterdetails_v0_values.userid   
+			INNER JOIN `general_master` ON 
+			staff_profile_projects_v0_values.project_center_department =`general_master`.id 
+			AND `general_master`.category='Department'
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_projects_v0_values.idf
+			AND entity_document_master.number=staff_profile_projects_v0_values.number 
+			AND entity_document_master.`entity_type`='projects'   		
+		</query>
+		<displayed_fields>project_status,project_title,start_date,duration,amount,department_name,abstract,url</displayed_fields>		
+		<public>Yes</public>	
+		</projects>								
+	</table>		
+
+	<table>
+		<patents>	
+		<entity>patents</entity>
+		<description>Patent Details</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name,  staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			entity_document_master.public_record,
+			choose_patent,
+			CONCAT('&lt;b&gt;',patent_title,'&lt;/b&gt;') as 'patent_title',
+			registration_month_year ,
+			IF(staff_profile_patents_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_patents_v0_values.url,''' target=''blank''&gt;',staff_profile_patents_v0_values.url,'&lt;/a&gt;'),"") url
+			FROM staff_profile_patents_v0_values  
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_patents_v0_values`.idf=staff_profile_masterdetails_v0_values.userid   
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_patents_v0_values.idf
+			AND entity_document_master.number=staff_profile_patents_v0_values.number 
+			AND entity_document_master.`entity_type`='patents'   		
+		</query>
+		<displayed_fields>choose_patent,patent_title,registration_month_year,url</displayed_fields>		
+		<public>Yes</public>
+		</patents>									
+	</table>
+
+	<table>
+		<media_publication>	
+		<entity>media_publication</entity>
+		<description>Media Publication Details</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name, 
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			entity_document_master.public_record,
+			general_master.fld_value as 'media_type',
+			CONCAT('&lt;b&gt;',title,'&lt;/b&gt;') as 'title',
+			magazine_name,
+			article_month_year ,
+			IF(staff_profile_media_publication_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_media_publication_v0_values.url,''' target=''blank''&gt;',staff_profile_media_publication_v0_values.url,'&lt;/a&gt;'),"") url
+			FROM staff_profile_media_publication_v0_values  
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_media_publication_v0_values`.idf=staff_profile_masterdetails_v0_values.userid   
+			INNER JOIN `general_master` ON `general_master`.id=staff_profile_media_publication_v0_values.media_type AND category='Media'
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_media_publication_v0_values.idf
+			AND entity_document_master.number=staff_profile_media_publication_v0_values.number 
+			AND entity_document_master.`entity_type`='media_publication'   		
+		</query>
+		<displayed_fields>media_type,title,magazine_name,article_month_year,url</displayed_fields>		
+		<public>Yes</public>	
+		</media_publication>							
+	</table>		
+
+	<table>
+		<thesis>	
+		<entity>thesis</entity>
+		<description>Student Project Details</description>
+		<query>
+		SELECT staff_profile_masterdetails_v0_values.idf,user_full_name, 
+		staff_profile_masterdetails_v0_values.full_name,
+		staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+		staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution ,
+		staff_profile_masterdetails_v0_values.department,
+		entity_document_master.number, `entity_document_master`.`approved_yesno`,
+		entity_document_master.`approved_by`,
+		DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+		entity_document_master.document_id,entity_document_master.entity_type,
+		entity_document_master.public_record,
+		choose,
+		CONCAT('&lt;b&gt;',thesis_title,'&lt;/b&gt;','&lt;b&gt;',project_title,'&lt;/b&gt;') as 'title' ,
+		CONCAT(IF(staff_profile_thesis_v0_values.thesis_url!="",CONCAT('&lt;a href=''',staff_profile_thesis_v0_values.thesis_url,''' target=''blank''&gt;',staff_profile_thesis_v0_values.thesis_url,'&lt;/a&gt;'),"")
+		,' ',IF(staff_profile_thesis_v0_values.project_url!="",CONCAT('&lt;a href=''',staff_profile_thesis_v0_values.project_url,''' target=''blank''&gt;',staff_profile_thesis_v0_values.thesis_url,'&lt;/a&gt;'),""))  url
+		FROM staff_profile_thesis_v0_values  
+		INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_thesis_v0_values`.idf=staff_profile_masterdetails_v0_values.userid   
+		INNER JOIN `entity_document_master` ON 
+		entity_document_master.`entity_id`=staff_profile_thesis_v0_values.idf
+		AND entity_document_master.number=staff_profile_thesis_v0_values.number 
+		AND entity_document_master.`entity_type`='thesis'  		
+		</query>
+		<displayed_fields>choose,title,url</displayed_fields>		
+		<public>Yes</public>
+		</thesis>								
+	</table>
+
+	<table>
+		<faculty_exchange>	
+		<entity>faculty_exchange</entity>
+		<description>Faculty Exchange Details</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name,
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   , 
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			entity_document_master.public_record,
+			CONCAT(' taught &lt;b&gt;',subjects_taught,'&lt;/b&gt;') as 'subjects_taught',
+			CONCAT(' from ',duration_from) as 'duration_from',
+			CONCAT(' to ',duration_to) as 'duration_to' ,
+			IF(staff_profile_faculty_exchange_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_faculty_exchange_v0_values.url,''' target=''blank''&gt;',staff_profile_faculty_exchange_v0_values.url,'&lt;/a&gt;'),"") url
+			FROM 
+			staff_profile_faculty_exchange_v0_values  
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_faculty_exchange_v0_values`.idf=staff_profile_masterdetails_v0_values.userid   
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_faculty_exchange_v0_values.idf
+			AND entity_document_master.number=staff_profile_faculty_exchange_v0_values.number 
+			AND entity_document_master.`entity_type`='faculty_exchange'     		
+		</query>
+		<displayed_fields>subjects_taught,duration_from,duration_to,url</displayed_fields>		
+		<public>Yes</public>	
+		</faculty_exchange>							
+	</table>		
+
+	<table>
+		<professional_body>	
+		<entity>professional_body</entity>
+		<description>Professional Bodies Details</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name,
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			entity_document_master.public_record,
+			 CONCAT('&lt;b&gt;',fld_value,'&lt;/b&gt;') as 'professional_body_name',
+			 membership_from,
+			 membership_to ,
+			IF(staff_profile_professional_body_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_professional_body_v0_values.url,''' target=''blank''&gt;',staff_profile_professional_body_v0_values.url,'&lt;/a&gt;'),"") url
+			FROM staff_profile_professional_body_v0_values  
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_professional_body_v0_values`.idf=staff_profile_masterdetails_v0_values.userid   
+			INNER JOIN general_master ON general_master.id= staff_profile_professional_body_v0_values.professional_body_name
+			AND category='Professional_Body_Name'
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_professional_body_v0_values.idf
+			AND entity_document_master.number=staff_profile_professional_body_v0_values.number 
+			AND entity_document_master.`entity_type`='professional_body'   		
+		</query>
+		<displayed_fields>professional_body_name,membership_from,membership_to,url</displayed_fields>		
+		<public>Yes</public>	
+		</professional_body>
+	</table>
+
+	<table>
+		<consultancy_offered>	
+		<entity>consultancy_offered</entity>
+		<description>Consultancy Offered Details</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name, 
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			entity_document_master.public_record,
+			CONCAT('&lt;b&gt;',client_name,'&lt;/b&gt;') as 'client_name',
+			duration_from,duration_to ,
+			IF(staff_profile_consultancy_offered_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_consultancy_offered_v0_values.url,''' target=''blank''&gt;',staff_profile_consultancy_offered_v0_values.url,'&lt;/a&gt;'),"") url
+			FROM staff_profile_consultancy_offered_v0_values  
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_consultancy_offered_v0_values`.idf=staff_profile_masterdetails_v0_values.userid   
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_consultancy_offered_v0_values.idf
+			AND entity_document_master.number=staff_profile_consultancy_offered_v0_values.number 
+			AND entity_document_master.`entity_type`='consultancy_offered'     		
+		</query>
+		<displayed_fields>client_name,duration_from,duration_to,url</displayed_fields>		
+		<public>Yes</public>
+		</consultancy_offered>								
+	</table>		
+
+	<table>
+		<governance>	
+		<entity>governance</entity>
+		<description>Governance Details</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name,
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   , 
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,
+			entity_document_master.entity_type,
+			entity_document_master.public_record,
+			CONCAT('&lt;b&gt;',committee_name,'&lt;/b&gt;') as 'committee_name',
+			school_name,
+			CONCAT(' from ',service_dates_from) as 'service_dates_from',
+			CONCAT(' to ',service_dates_to) as 'service_dates_to',
+			IF(staff_profile_governance_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_governance_v0_values.url,''' target=''blank''&gt;',staff_profile_governance_v0_values.url,'&lt;/a&gt;'),"") url
+			 FROM staff_profile_governance_v0_values  
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_governance_v0_values`.idf=staff_profile_masterdetails_v0_values.userid   
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_governance_v0_values.idf
+			AND entity_document_master.number=staff_profile_governance_v0_values.number 
+			AND entity_document_master.`entity_type`='governance'     		
+		</query>
+		<displayed_fields>committee_name,school_name,service_dates_from,service_dates_to,url</displayed_fields>		
+		<public>Yes</public>						
+		</governance>
+	</table>
+	
+	<table>
+		<review_committees>	
+		<entity>review_committees</entity>
+		<description>Review Committees Details</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name,
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			entity_document_master.public_record,
+			CONCAT(fld_value,' of ') as 'Role',
+			CONCAT('&lt;b&gt;',title,'&lt;/b&gt;') as 'title',
+			CONCAT(' from ',appointed_month_year ) as 'appointed_month_year',
+			IF(staff_profile_review_committees_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_review_committees_v0_values.url,''' target=''blank''&gt;',staff_profile_review_committees_v0_values.url,'&lt;/a&gt;'),"") url
+			FROM staff_profile_review_committees_v0_values 
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_review_committees_v0_values`.idf=staff_profile_masterdetails_v0_values.userid   
+			INNER JOIN `general_master` ON 
+			staff_profile_review_committees_v0_values.role_played =`general_master`.id 
+			AND `general_master`.category='Role_Played'
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_review_committees_v0_values.idf
+			AND entity_document_master.number=staff_profile_review_committees_v0_values.number 
+			AND entity_document_master.`entity_type`='review_committees'   		
+		</query>
+		<displayed_fields>Role,title,appointed_month_year,url</displayed_fields>		
+		<public>Yes</public>	
+		</review_committees>							
+	</table>		
+
+	<table>
+		<community_service>	
+		<entity>community_service</entity>
+		<description>Community Service Details</description>
+		<query>
+			SELECT staff_profile_masterdetails_v0_values.idf,user_full_name, 
+			staff_profile_masterdetails_v0_values.full_name,
+			staff_profile_masterdetails_v0_values.university_id,staff_profile_masterdetails_v0_values.university, 
+			staff_profile_masterdetails_v0_values.institution_id ,staff_profile_masterdetails_v0_values.institution   ,
+			staff_profile_masterdetails_v0_values.department,
+			entity_document_master.number, `entity_document_master`.`approved_yesno`,
+			entity_document_master.`approved_by`,
+			DATE_FORMAT(entity_document_master.`approved_date`,'%d-%m-%Y %H:%i') approved_date,
+			entity_document_master.document_id,entity_document_master.entity_type,
+			entity_document_master.public_record,
+			CONCAT('&lt;b&gt;',event_name,'&lt;/b&gt;') as 'event_name',
+			CONCAT(' at ',staff_profile_community_service_v0_values.location) as 'location_name',
+			CONCAT(' on ',activity_month_year) as 'activity_month_year' ,
+			IF(staff_profile_community_service_v0_values.url!="",CONCAT('&lt;a href=''',staff_profile_community_service_v0_values.url,''' target=''blank''&gt;',staff_profile_community_service_v0_values.url,'&lt;/a&gt;'),"") url  
+			FROM staff_profile_community_service_v0_values 
+			INNER JOIN `staff_profile_masterdetails_v0_values` ON `staff_profile_community_service_v0_values`.idf=staff_profile_masterdetails_v0_values.userid   
+			INNER JOIN `entity_document_master` ON 
+			entity_document_master.`entity_id`=staff_profile_community_service_v0_values.idf
+			AND entity_document_master.number=staff_profile_community_service_v0_values.number 
+			AND entity_document_master.`entity_type`='community_service'   		
+		</query>
+		<displayed_fields>event_name,location_name,activity_month_year,url</displayed_fields>		
+		<public>Yes</public>
+		</community_service>								
+	</table>
+
+	
+</basic_search>

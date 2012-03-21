@@ -8,10 +8,6 @@
 		<field_caption>-Select-</field_caption>
 		<field_name>staff_profile_masterdetails_v0_values.Designation</field_name>				
 	</table>
-	<table>
-		<field_caption>Designation</field_caption>
-		<field_name>staff_profile_masterdetails_v0_values.Designation</field_name>				
-	</table>
 	
 	<table>
 		<field_caption>Research Interests</field_caption>

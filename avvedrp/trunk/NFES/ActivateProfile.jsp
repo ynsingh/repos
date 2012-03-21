@@ -9,29 +9,30 @@ profile=http://gmpg.org/xfn/11><TITLE>Staff Registration Activation</TITLE>
 #footer {position: absolute; bottom: 0; left: 0px; right:0px; width: 100%; } 
 </style>
 </HEAD>
-<div style="height:545px; background-color:#d5e5ed;">
+
 <BODY class="bodystyle">
 
-
-
 <form id="actForm" >
-<table width="100%" style="background-color: #FFFFFF;">
-	<tbody><tr>
+<div style="background-color: #FFFFFF; margin: 10px -6px;">
+<table width=100% style="background-color: #FFFFFF; border=1; margin: 0px;">
+<tr>
+<td width=5% rowspan="2"><img src="./images/loginheader_logo.PNG" height="80px"  ></td>
+</tr>	
 
-		<td rowspan="2" width="5%"><img src="./images/loginheader_logo.PNG"></td>
-		<td width="58%"></td>	
-		<td align="right" width="30%"><font color="#174664"><b><a href="./login.jsp" STYLE="TEXT-DECORATION: NONE">Login</a></b></font></td>
-		<td width="7%"></td>	
-
-	</tr>	
-	<tr>
-		<td colspan="4" width="95%" align="right"><img src="./images/loginheader_NFES.PNG"></td>	
-	</tr>
-	<tr>	
-	<td colspan="6" style="background-color: #9dc6d9;"><hr></td></tr>
-	</tbody>
+<tr>
+<td colspan=2 width=95%  align="right" valign="bottom"><img src="./images/loginheader_NFES.PNG" ></td>	
+<td width=10%></td>
+</tr>
 </table>
-<div  class="listdiv" style="margin:2px">	
+<div style="background-image: url('./images/innerpageheaderhr.jpg');repeat-x;scroll 0 0 #ef9e00;">&nbsp;</div>
+<div class="loginLink_header">
+<span><font color="#174664">&nbsp;&nbsp;<img alt="Help" title="Help" onclick="window.open('./UserGuides/UserGuides.html','mywindow','width=1000,height=700,left=0,top=100,screenX=0,screenY=100')" src="/nfes/images/help.gif"><b>&nbsp;&nbsp;|</b></font></span>
+<span><font color="#174664">&nbsp;&nbsp;<img alt="About Us" title="About Us" onclick="window.open('./images/AboutUs_NFES.html','mywindow','width=600,height=300,left=0,top=100,screenX=0,screenY=100')" src="/nfes/images/aboutUs.jpg"><b>&nbsp;&nbsp;|</b></font></span>
+<span class="classLink">&nbsp;<a href='./login.jsp' target="body" title="Home"><font color="#174664"><b>Login</a>&nbsp;|</b></font></span>
+</div>
+</div>
+</div>
+<div  class="listdiv" style="margin:200px 0px 0px 0px;">	
 
 	<h1></h1>
 	<div style= "margin:10px;background-color:#386890;width:98%;height:25px">&nbsp;<br><br><br>		
@@ -58,14 +59,15 @@ profile=http://gmpg.org/xfn/11><TITLE>Staff Registration Activation</TITLE>
 		<%}%>				
 	</table>  	
 	<br><br>
-</div>	
 <div id="footer">
 <center>
 <div class="footerdiv" > 
 Developed by Amrita University under ERP, NME ICT, MHRD
 </div>
 </center>
-</div> 
+</div> 	
+
+
 </form>
 </BODY>
 

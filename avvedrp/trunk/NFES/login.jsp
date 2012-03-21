@@ -6,7 +6,6 @@
 
 
 
-
 <%
 Connection conn=null;
 Statement theStatement=null;
@@ -27,7 +26,7 @@ try{
      response.setContentType("text/html; charset=utf-8");
      Locale locale=new Locale(lc,"");
      
-      ml.init("login.jsp", lc);  
+      ml.init(lc);  
       
 }catch(Exception e){
      e.printStackTrace();
@@ -180,9 +179,9 @@ background-color: #D5E5ED;
 
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="document.f.j_username.focus();" >
 
-<form name="f" action="<c:url value='j_spring_security_check'/>" method="POST" target="_top">
+<form name="f" action="<c:url value='j_spring_security_check'/>" method="POST" target="_self">
 <%
-if ((request.getParameter("login_error") != "")&&(request.getParameter("login_error") != null)) {%>
+if ((request.getParameter("error_msg") != "")&&(request.getParameter("error_msg") != null)) {%>
 <div id="validation-summary">	
 	 <div class="loginLink">			
 		<div class='login_message'  align="center"><br><%=ml.getValue("error_msg2")%></div>
@@ -194,7 +193,7 @@ if ((request.getParameter("login_error") != "")&&(request.getParameter("login_er
 <!-- Banner Start-->
 <div class="banner"></div>
 <!-- Banner end-->
-<form name="f" action="<c:url value='j_spring_security_check'/>" method="POST">
+<!--<form name="f" action="<c:url value='j_spring_security_check'/>" method="POST">-->
 
 <!-- Login Start-->
 <div class="login">
@@ -204,7 +203,7 @@ if ((request.getParameter("login_error") != "")&&(request.getParameter("login_er
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
 <tr align="left">
-		<th height="40"> <%=ml.getValue("language")%></th>
+		<th height="40"><%=ml.getValue("language")%></th>
 		<th align="left">
 		<select name="language" onchange="combo_change();" ><%
 		theResult=theStatement.executeQuery("select name,code from language_master where active_yes_no=1");
@@ -243,6 +242,10 @@ if ((request.getParameter("login_error") != "")&&(request.getParameter("login_er
 <tr align="left">
 <td ><a onmouseout="this.style.textDecoration='none';" onmouseover="this.style.textDecoration ='underline';" style="font-size: 12px; font-weight: normal; text-decoration: none; color: rgb(125, 5, 63);" href="registerUser.jsp?action=REGISTER_UNIVERSITY"><%=ml.getValue("register")%></a></td>
 <td ><a onmouseout="this.style.textDecoration='none';" onmouseover="this.style.textDecoration ='underline';" style="font-size: 12px; font-weight: normal; text-decoration: none; color: rgb(125, 5, 63);" href="ForgotPassword.jsp"><%=ml.getValue("lost_password")%> </a></td>
+</tr>
+<tr align="left">
+<td colspan="2"><a onmouseout="this.style.textDecoration='none';" onmouseover="this.style.textDecoration ='underline';" style="font-size: 12px; font-weight: normal; text-decoration: none; color: rgb(125, 5, 63);" href="OpenID_login.jsp"><%=ml.getValue("login_with_openId")%>?</a></td>
+</td>
 </tr>
 <tr align="left">
 <th>&nbsp;</th>

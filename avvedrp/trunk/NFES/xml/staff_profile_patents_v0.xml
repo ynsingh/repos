@@ -43,7 +43,7 @@ function submitform_staff_profile_patents_v0()
     document.getElementsByName("mandatory_fields")[0].value="choose_patent|patent_title|registration_month_year";
     }
     var frmelement=document.getElementById("staff_profile_patents_v0");
-    if (isMandatoryDataExists(frmelement)=="1")
+    if (isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement))
     {		
 	document.myForm.upload.value=document.myForm01.uploadfiles.value;
 	docHtmlSave();
@@ -58,7 +58,7 @@ function approve(){
     document.getElementsByName("mandatory_fields")[0].value="choose_patent|patent_title|registration_month_year";
     }
     var frmelement=document.getElementById("staff_profile_patents_v0");
-    if (isMandatoryDataExists(frmelement)=="1")
+    if (isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement))
     {		
 	document.myForm.upload.value=document.myForm01.uploadfiles.value;
 	docHtmlRecordwiseApprove();
@@ -125,7 +125,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 <td colspan="2" class="thead" align="center">Patents Details</td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//choose_patent/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//choose_patent/oioNS:prompt" /><span style="color:red">*</span></td>
 <td onclick="radio_button_validation()" class="tabBG4"><xsl:apply-templates select="//choose_patent/oioNS:renderinfo" /></td>
 </tr>
 
@@ -135,11 +135,11 @@ if (document.getElementById('reload_after_save').value!="null"){
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//patent_title/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//patent_title/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//patent_title/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//registration_month_year/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//registration_month_year/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//registration_month_year/oioNS:renderinfo" /></td>
 </tr>
 <tr>
@@ -167,7 +167,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 
 <input type="hidden" name="action" value="" />
 <input type="HIDDEN" name="mandatory_fields" value="choose_patent|patent_title|registration_month_year" />
-
+<input type="HIDDEN" name="validation_fields" value="url-U" />
 </font>
 </form>
 

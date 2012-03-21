@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:sec="http://www.springframework.org/schema/security"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security 
+                        http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+  <alias name="filterChainProxy" alias="springSecurityFilterChain"/>
+ 
+  <bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
+	<sec:filter-chain-map path-type="ant">
+	<sec:filter-chain pattern="/OpenID_login.jsp" filters="none" />	
+	<sec:filter-chain pattern="/images/**" filters="none" />
+	<sec:filter-chain pattern="/css/**" filters="none" />
+	<sec:filter-chain pattern="/js/**" filters="none" />
+	<sec:filter-chain pattern="/UserGuides/**" filters="none" />      
+	<sec:filter-chain pattern="/index.jsp" filters="none" />
+	<sec:filter-chain pattern="/login.jsp" filters="none" />
+	<sec:filter-chain pattern="/ForgotPassword.jsp" filters="none" />
+	<sec:filter-chain pattern="/ResetPasswordController" filters="none" />
+	<sec:filter-chain pattern="/ForgotPassword.jsp" filters="none" />
+	<sec:filter-chain pattern="/ForgotPwdSuccess.jsp" filters="none" />
+	<sec:filter-chain pattern="/registerUser.jsp" filters="none" />
+	<sec:filter-chain pattern="/GetImageServlet" filters="none" />
+	<sec:filter-chain pattern="/ProfileCreationActivationServlet" filters="none" />
+	<sec:filter-chain pattern="/webpage/**" filters="none" />
+	<sec:filter-chain pattern="/xml/faculty_webpage.xml" filters="none" />
+	<sec:filter-chain pattern="/ActivateProfile.jsp" filters="none" />
+	<sec:filter-chain pattern="/ProfileActivationServlet" filters="none" />
+	<sec:filter-chain pattern="/profile/**" filters="none" />
+    <sec:filter-chain pattern="/**" filters="securityContextFilter, logoutFilter,  openIdAuthenticationFilter, formLoginFilter, requestCacheFilter,
+                 servletApiFilter, anonFilter, sessionMgmtFilter, exceptionTranslator, filterSecurityInterceptor" />
+    </sec:filter-chain-map>
+  </bean>
+
+   <!-- Automatically receives AuthenticationEvent messages -->
+  <bean id="loggerListener" class="org.springframework.security.authentication.event.LoggerListener"/>
+ 
+    
+  <bean id="securityContextFilter" class="org.springframework.security.web.context.SecurityContextPersistenceFilter" >
+    <property name="securityContextRepository" ref="securityContextRepository" />
+  </bean>
+ 
+  <bean id="securityContextRepository"
+        class="org.springframework.security.web.context.HttpSessionSecurityContextRepository" />
+        
+  <bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+    <constructor-arg value="/login.jsp" />
+    <constructor-arg>
+      <list><bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" /></list>
+    </constructor-arg>
+  </bean>
+
+  <bean id="formLoginFilter" 
+        class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+    <property name="authenticationManager" ref="authenticationManager" />
+    <property name="authenticationSuccessHandler">
+      <bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+        <property name="defaultTargetUrl" value="/jsp/index.jsp" />
+      </bean>
+    </property>
+    <property name="authenticationFailureHandler" ref="authenticationFailureHandler" />
+    <property name="sessionAuthenticationStrategy">
+      <bean class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy" />
+    </property>
+  </bean>
+  
+  <bean id="authenticationFailureHandler" 
+        class="org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler" >
+    <property name="exceptionMappings">
+      <props>
+        <prop key="org.springframework.security.authentication.BadCredentialsException">
+                                                                        /login.jsp?error_msg=Bad_Credentials</prop>
+        <prop key="org.springframework.security.web.authentication.session.SessionAuthenticationException">
+                                                                         /login.jsp?error_msg=Invalid_Session</prop>
+        <prop key="org.springframework.security.authentication.DisabledException">
+                                                                        /login.jsp?error_msg=Account_Disabled</prop>
+      </props>
+    </property>
+    <property name="useForward" value="true"/>
+  </bean>
+
+  <bean id="requestCacheFilter" class="org.springframework.security.web.savedrequest.RequestCacheAwareFilter" />
+ 
+  <bean id="servletApiFilter" 
+        class="org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter" />
+ 
+  <bean id="anonFilter" class="org.springframework.security.web.authentication.AnonymousAuthenticationFilter" >
+    <property name="key" value="SomeUniqueKeyForThisApplication" />
+    <property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS" />
+  </bean>
+ 
+  <bean id="sessionMgmtFilter" class="org.springframework.security.web.session.SessionManagementFilter" >
+    <constructor-arg ref="securityContextRepository" />
+  </bean>
+
+  <bean id="exceptionTranslator" class="org.springframework.security.web.access.ExceptionTranslationFilter">
+    <property name="authenticationEntryPoint">
+      <bean class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <property name="loginFormUrl" value="/login.jsp"/>
+      </bean>
+    </property>
+    <property name="accessDeniedHandler">
+      <bean class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+        <property name="errorPage" value="/accessdenied.jsp"/>
+      </bean>
+    </property>
+  </bean>
+ 
+  <bean id="filterSecurityInterceptor" 
+        class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+    <property name="securityMetadataSource" ref="MyFilterInvocationSecurityMetadataSource" />
+    <property name="authenticationManager" ref="authenticationManager" />
+    <property name="accessDecisionManager" ref="accessDecisionManager" />
+  </bean>
+
+  <bean id="MyFilterInvocationSecurityMetadataSource" class="com.erp.nfes.MyFilterInvocationSecurityMetadataSource" />
+ 
+  <bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager">
+    <property name="providers">
+      <list>
+        <ref bean="daoAuthenticationProvider" />                           
+        <ref bean="anonymousProvider" />          
+        <ref bean="openIdAuthenticationProvider"/>              
+      </list>
+    </property>
+  </bean>
+   
+  
+  <bean id="daoAuthenticationProvider" 
+        class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+    <property name="passwordEncoder" ref="passwordEncoderBean" />
+    <property name="saltSource" ref="saltSource"/>
+    <property name="userDetailsService" ref="userDetailsService" />
+  </bean>
+ 
+  <bean id="passwordEncoderBean" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+    <constructor-arg value="256" />
+  </bean>
+ 
+  <bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">  
+    <property name="userPropertyToUse" value="username"/> 
+  </bean>
+  
+  <bean id="userDetailsService" class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
+    <property name="dataSource" ref="dataSource"/>
+  </bean>
+ 
+  <bean id="dbProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <!-- Uncomment line:1 and comment line:2 to run nfes in Eclipse IDE -->
+    <!-- line:1  <property name="location"><value>classpath:db.properties</value></property> -->
+    <!-- line:2 --> <property name="location"><value>file:../conf/db.properties</value></property> 
+  </bean>
+   	 
+  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName"><value>com.mysql.jdbc.Driver</value></property>
+    <property name="url"><value>jdbc:mysql:${dbname}</value></property>
+    <property name="username"><value>${username}</value></property>
+    <property name="password"><value>${password}</value></property>
+  </bean>
+
+  <bean id="anonymousProvider" class="org.springframework.security.authentication.AnonymousAuthenticationProvider">
+    <property name="key" value="SomeUniqueKeyForThisApplication" />
+  </bean>
+
+  <bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+    <property name="decisionVoters">
+      <list>
+        <bean class="org.springframework.security.access.vote.RoleVoter"/>
+        <bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="webPrivilegeEvaluator" 
+        class="org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator">
+    <constructor-arg ref="filterSecurityInterceptor" />
+  </bean>
+
+ <!-- ===================== OPEN ID SUPPORT ==================== -->
+  <bean id="openIdAuthenticationFilter" class="org.springframework.security.openid.OpenIDAuthenticationFilter">
+    <property name="authenticationManager" ref="authenticationManager"/> 
+    <property name="consumer" ref="openIdConsumer"/>
+    <property name="authenticationSuccessHandler" ref="authenticationSuccessHandler"/>
+    <property name="authenticationFailureHandler" ref="openidauthenticationFailureHandler"/>
+  </bean>
+  <bean id="openIdConsumer" class="org.springframework.security.openid.OpenID4JavaConsumer"/>  
+  <bean id="openIdAuthenticationProvider" class="org.springframework.security.openid.OpenIDAuthenticationProvider">
+    <property name="userDetailsService" ref="openIdUserDetailsService"/>
+  </bean>
+  <bean id="openIdUserDetailsService" class="com.erp.nfes.OpenIDUserDetailsService"/>
+  
+   <bean  id="authenticationSuccessHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+    <property name="defaultTargetUrl" value="/jsp/index.jsp" />
+  </bean>
+  <bean id="openidauthenticationFailureHandler"  class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+         <property name="defaultFailureUrl" value="/OpenID_login.jsp?error_msg=true" />
+  </bean>
+ <!-- ===================== OPEN ID SUPPORT ==================== -->
+</beans>
+

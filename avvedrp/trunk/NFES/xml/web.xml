@@ -13,7 +13,7 @@ version="2.5">
          -->
        <context-param>
            <param-name>contextConfigLocation</param-name>
-           <param-value>/WEB-INF/applicationContext-security.xml</param-value>
+           <param-value>/WEB-INF/spring-security.xml</param-value>
        </context-param>
        
        <context-param>
@@ -78,6 +78,15 @@ version="2.5">
 <servlet-mapping>
 <servlet-name>DownloadFile</servlet-name>
 <url-pattern>/DownloadFile</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<servlet-name>DeleteUploadedFile</servlet-name>
+<servlet-class>com.erp.nfes.DeleteUploadedFile</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>DeleteUploadedFile</servlet-name>
+<url-pattern>/DeleteUploadedFile</url-pattern>
 </servlet-mapping>
 
 <servlet>
@@ -194,20 +203,6 @@ version="2.5">
 <servlet>
 <description>
 </description>
-<display-name>FrontController</display-name>
-<servlet-name>FrontController</servlet-name>
-<servlet-class>com.erp.nfes.FrontController</servlet-class>
-</servlet>
-<servlet-mapping>
-<servlet-name>FrontController</servlet-name>
-<url-pattern>/profile/*</url-pattern>
-</servlet-mapping>
-
-
-
-<servlet>
-<description>
-</description>
 <display-name>ProfileCreationActivationServlet</display-name>
 <servlet-name>ProfileCreationActivationServlet</servlet-name>
 <servlet-class>com.erp.nfes.ProfileCreationActivationServlet</servlet-class>
@@ -241,6 +236,77 @@ version="2.5">
 <url-pattern>/AddEventsServlet</url-pattern>
 </servlet-mapping>
 
+
+<servlet>
+    <description></description>
+    <display-name>UserDetailsServlet</display-name>
+    <servlet-name>UserDetailsServlet</servlet-name>
+    <servlet-class>com.erp.nfes.UserDetailsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserDetailsServlet</servlet-name>
+    <url-pattern>/UserDetailsServlet</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <description></description>
+    <display-name>CreateXMLFileServlet</display-name>
+    <servlet-name>CreateXMLFileServlet</servlet-name>
+    <servlet-class>com.erp.nfes.CreateXMLFileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateXMLFileServlet</servlet-name>
+    <url-pattern>/CreateXMLFileServlet</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+<description></description>
+<display-name>GetAjaxResponse</display-name>
+<servlet-name>GetAjaxResponse</servlet-name>
+<servlet-class>com.erp.nfes.GetAjaxResponse</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>GetAjaxResponse</servlet-name>
+<url-pattern>/GetAjaxResponse</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+    <description></description>
+    <display-name>InstitutionTransfer</display-name>
+    <servlet-name>InstitutionTransfer</servlet-name>
+    <servlet-class>com.erp.nfes.InstitutionTransfer</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>InstitutionTransfer</servlet-name>
+    <url-pattern>/InstitutionTransfer</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <description></description>
+    <display-name>CreateWebpageServlet</display-name>
+    <servlet-name>CreateWebpageServlet</servlet-name>
+    <servlet-class>com.erp.nfes.CreateWebpageServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>CreateWebpageServlet</servlet-name>
+    <url-pattern>/CreateWebpageServlet</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+    <description></description>
+    <display-name>URLTranslater</display-name>
+    <servlet-name>URLTranslater</servlet-name>
+    <servlet-class>com.erp.nfes.URLTranslater</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>URLTranslater</servlet-name>
+    <url-pattern>/webpage/*</url-pattern>
+</servlet-mapping>
+  
+
+    
 <welcome-file-list>
   <welcome-file>index.jsp</welcome-file>
 </welcome-file-list>

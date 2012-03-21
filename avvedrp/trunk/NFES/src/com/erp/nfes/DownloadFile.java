@@ -15,11 +15,10 @@ public class DownloadFile  extends HttpServlet
         String filename = request.getParameter("filename");
         String userId=request.getParameter("userId");
         String ctrlName=request.getParameter("ctrlName");
-        
-	    Properties properties = new Properties();
         try
         {
-      		properties.load(new FileInputStream("../conf/fileuploadpath.properties"));
+        	String propFileName = "fileuploadpath.properties";
+  		    Properties properties = GetPropertiesFile.GetPropertiesFileFromCONF(propFileName);      	
 			String path = properties.getProperty("DESTINATION_DIR_PATH")+"/"+userId;
 			if (ctrlName.equals("upload_photo")){
 				path=path + "/photo";

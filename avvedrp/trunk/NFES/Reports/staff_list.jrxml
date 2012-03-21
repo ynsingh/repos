@@ -5,10 +5,10 @@
 		 name="staff_list"
 		 columnCount="1"
 		 printOrder="Vertical"
-		 orientation="Portrait"
-		 pageWidth="595"
-		 pageHeight="842"
-		 columnWidth="535"
+		 orientation="Landscape"
+		 pageWidth="842"
+		 pageHeight="595"
+		 columnWidth="782"
 		 columnSpacing="0"
 		 leftMargin="30"
 		 rightMargin="30"
@@ -26,15 +26,18 @@
 	<parameter name="inst_name" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="univ_name" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="dept_name" isForPrompting="true" class="java.lang.String"/>
-	<parameter name="user_name" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="first_name" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="header_image" isForPrompting="true" class="java.lang.String"/>
-	<queryString><![CDATA[SELECT users.id,`university_master`.name AS `University` , institution_master.`name` AS `Institution` , `general_master`.fld_value AS `Department`, users.`user_full_name`,users.username ,users.`email`, A.fld_value AS `Designation` FROM staff_master INNER JOIN `department_master` ON `department_master`.`id`=`staff_master`.`department_id` INNER JOIN `institution_master` ON `institution_master`.id=`department_master`.`institution_id` and institution_master.name like 
+	<parameter name="title" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="last_name" isForPrompting="true" class="java.lang.String"/>
+	<queryString><![CDATA[SELECT users.id,`university_master`.name AS `University` , institution_master.`name` AS `Institution` , `general_master`.fld_value AS `Department`,TRIM(CONCAT(IFNULL(title,''),user_full_name,' ',IFNULL(LAST_NAME,''))) user_full_name,users.username ,users.`email`, A.fld_value AS `Designation` FROM staff_master INNER JOIN `department_master` ON `department_master`.`id`=`staff_master`.`department_id` INNER JOIN `institution_master` ON `institution_master`.id=`department_master`.`institution_id` and institution_master.name like 
 $P{inst_name} 
 INNER JOIN `university_master` ON `university_master`.id=`institution_master`.`university_id` AND university_master.Name like $P{univ_name} 
 INNER JOIN `general_master` ON `general_master`.id =`department_master`.`department_id` AND category='Department' and fld_value like 
 $P{dept_name} 
-INNER JOIN general_master A ON `A`.id =`staff_master`.`designation_id` AND A.category='Designation' INNER JOIN users ON `staff_master`.userid=users.id and users.enabled=1 AND NOT users.username='admin' AND users.username like 
-$P{user_name}]]></queryString>
+INNER JOIN general_master A ON `A`.id =`staff_master`.`designation_id` AND A.category='Designation' INNER JOIN users ON `staff_master`.userid=users.id and users.enabled=1 AND NOT users.username='admin' AND users.user_full_name like 
+$P{first_name} AND users.title like $P{title} and users.last_name like $P{last_name} AND staff_master.active_yesno=1 
+ORDER BY University,Institution,user_full_name]]></queryString>
 
 	<field name="id" class="java.lang.Integer"/>
 	<field name="University" class="java.lang.String"/>
@@ -45,23 +48,22 @@ $P{user_name}]]></queryString>
 	<field name="email" class="java.lang.String"/>
 	<field name="Designation" class="java.lang.String"/>
 
+	<variable name="slno" class="java.lang.Integer" resetType="Report" calculation="Count">
+		<variableExpression><![CDATA[$F{id}]]></variableExpression>
+	</variable>
 		<background>
 			<band height="1"  isSplitAllowed="true" >
 			</band>
 		</background>
 		<title>
-			<band height="98"  isSplitAllowed="true" >
-			</band>
-		</title>
-		<pageHeader>
-			<band height="6"  isSplitAllowed="true" >
+			<band height="125"  isSplitAllowed="true" >
 				<image  scaleImage="RetainShape" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="3"
-						y="-94"
-						width="529"
-						height="82"
+						x="4"
+						y="5"
+						width="236"
+						height="79"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="image-1"
@@ -76,6 +78,51 @@ $P{user_name}]]></queryString>
 />
 					<imageExpression class="java.lang.String"><![CDATA[$P{header_image}]]></imageExpression>
 				</image>
+				<rectangle radius="0" >
+					<reportElement
+						mode="Opaque"
+						x="-2"
+						y="88"
+						width="782"
+						height="7"
+						forecolor="#F1A917"
+						backcolor="#F1A917"
+						key="rectangle-1"
+						stretchType="NoStretch"
+						positionType="Float"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="393"
+						y="45"
+						width="382"
+						height="40"
+						forecolor="#244248"
+						backcolor="#FFFFFF"
+						key="staticText-7"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Bottom" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="18" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[National Faculty Expertise System]]></text>
+				</staticText>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="6"  isSplitAllowed="true" >
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -83,10 +130,10 @@ $P{user_name}]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="1"
-						y="0"
-						width="100"
-						height="18"
+						x="176"
+						y="2"
+						width="137"
+						height="14"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-1"
@@ -97,7 +144,7 @@ $P{user_name}]]></queryString>
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[University]]></text>
@@ -105,10 +152,10 @@ $P{user_name}]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="104"
-						y="0"
-						width="73"
-						height="15"
+						x="323"
+						y="2"
+						width="140"
+						height="14"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-2"
@@ -119,7 +166,7 @@ $P{user_name}]]></queryString>
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Institution]]></text>
@@ -127,10 +174,10 @@ $P{user_name}]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="190"
-						y="0"
-						width="72"
-						height="16"
+						x="475"
+						y="2"
+						width="102"
+						height="14"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-3"
@@ -141,7 +188,7 @@ $P{user_name}]]></queryString>
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Department]]></text>
@@ -149,10 +196,10 @@ $P{user_name}]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="280"
-						y="0"
-						width="88"
-						height="17"
+						x="31"
+						y="2"
+						width="137"
+						height="14"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-4"
@@ -163,17 +210,17 @@ $P{user_name}]]></queryString>
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Full name]]></text>
+				<text><![CDATA[Faculty Name]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="380"
-						y="0"
-						width="69"
+						x="697"
+						y="2"
+						width="78"
 						height="14"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -193,10 +240,10 @@ $P{user_name}]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="459"
-						y="0"
-						width="71"
-						height="19"
+						x="585"
+						y="2"
+						width="106"
+						height="14"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-6"
@@ -207,7 +254,7 @@ $P{user_name}]]></queryString>
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Email]]></text>
@@ -216,9 +263,9 @@ $P{user_name}]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="3"
-						y="17"
-						width="528"
-						height="1"
+						y="18"
+						width="777"
+						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-1"
@@ -231,16 +278,38 @@ $P{user_name}]]></queryString>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
 />
 				</line>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="6"
+						y="2"
+						width="19"
+						height="14"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-8"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Sl#]]></text>
+				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="28"  isSplitAllowed="true" >
+			<band height="24"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="1"
-						y="2"
-						width="100"
+						x="176"
+						y="5"
+						width="137"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -252,7 +321,7 @@ $P{user_name}]]></queryString>
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{University}]]></textFieldExpression>
@@ -260,9 +329,9 @@ $P{user_name}]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="104"
-						y="0"
-						width="69"
+						x="323"
+						y="3"
+						width="147"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -274,7 +343,7 @@ $P{user_name}]]></queryString>
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{Institution}]]></textFieldExpression>
@@ -282,8 +351,52 @@ $P{user_name}]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="190"
-						y="0"
+						x="475"
+						y="3"
+						width="107"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{Department}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="586"
+						y="3"
+						width="105"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{email}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="697"
+						y="3"
 						width="77"
 						height="18"
 						forecolor="#000000"
@@ -296,51 +409,7 @@ $P{user_name}]]></queryString>
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{Department}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="460"
-						y="0"
-						width="70"
-						height="18"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{email}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="380"
-						y="0"
-						width="68"
-						height="18"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{Designation}]]></textFieldExpression>
@@ -348,9 +417,31 @@ $P{user_name}]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="280"
-						y="1"
-						width="92"
+						x="31"
+						y="5"
+						width="141"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{user_full_name}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="8"
+						y="5"
+						width="20"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -365,7 +456,7 @@ $P{user_name}]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{user_full_name}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{slno}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
@@ -375,9 +466,9 @@ $P{user_name}]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="2"
-						y="5"
-						width="528"
-						height="1"
+						y="6"
+						width="778"
+						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-2"
@@ -393,13 +484,9 @@ $P{user_name}]]></queryString>
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="30"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</pageFooter>
-		<lastPageFooter>
-			<band height="50"  isSplitAllowed="true" >
-			</band>
-		</lastPageFooter>
 		<summary>
 			<band height="50"  isSplitAllowed="true" >
 			</band>

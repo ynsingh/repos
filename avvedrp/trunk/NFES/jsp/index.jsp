@@ -10,10 +10,10 @@ String lc=(String) request.getSession().getAttribute("language");
 <html>
 <title>NFES</title>
 <head>
-<LINK media=screen href="../css/oiostyles.css" type=text/css rel=stylesheet>
+<link rel="stylesheet" type="text/css" href="../css/oiostyles.css" />
 </head>
 <div>
-<frameset  rows="21%,74%,5%"  frameborder="NO"  border="0" style="overflow:hidden">
+<frameset  rows="20%,75%,5%"  frameborder="NO"  border="0" style="overflow:hidden">
 	<frame name="header" src="header.jsp" scrolling="no" noresize="noresize" style="z-index:-1;overflow:hidden; height:100%; width:100%;" >
 	<frame name="body" src="body.jsp">
 	<frame name="footer" src="footer.jsp"scrolling="no" noresize="noresize" style="z-index:-1;overflow:hidden; height:100%; width:100%;" >

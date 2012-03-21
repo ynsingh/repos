@@ -42,9 +42,8 @@ public class ResetPasswordController extends HttpServlet {
 	public void init() throws ServletException {
 		super.init();    	
     	try{    		
-    		properties = new Properties();
-    		//properties.load(this.getClass().getClassLoader().getResourceAsStream("mail.properties"));
-    		properties.load(new FileInputStream("../conf/mail.properties"));    		
+    		String propFileName = "mail.properties";
+  		    properties = GetPropertiesFile.GetPropertiesFileFromCONF(propFileName);   		
     	}catch(Exception ex){
     		ex.printStackTrace();    		
     	}

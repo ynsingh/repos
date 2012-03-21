@@ -87,7 +87,7 @@ function Datepick() {
 		gotoCurrent: false, // True if today link goes back to current selection instead
 		changeMonth: true, // True if month can be selected directly, false if only prev/next
 		changeYear: true, // True if year can be selected directly, false if only prev/next
-		yearRange: 'c-10:c+10', // Range of years to display in drop-down,
+		yearRange: 'c-200:c+500', // Range of years to display in drop-down,
 			// either relative to currently displayed year (c-nn:c+nn), relative to
 			// today's year (-nn:+nn), absolute (nnnn:nnnn), or a combination (nnnn:-nn)
 		changeFirstDay: false, // True to click on day name to change, false to remain as set

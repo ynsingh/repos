@@ -13,6 +13,19 @@
 .noprint {display: none;}
 
 </style>
+
+<script language="javascript">
+var resume=0;
+function load()
+{
+	resume=0;
+}
+function upload_dirty()
+{
+	resume=1;
+}
+</script>
+
 <script language="javascript" src="./js/richtext.js"></script>
 <script language="javascript" src="./js/clinicaldoc_common.js"></script>
 <script language="javascript" src="./js/jquery-1.4.2.min.js"></script>
@@ -24,10 +37,53 @@
 </style>
 
 
+<script language="javascript">
+var resume=0;
+function load()
+{
+	resume=0;
+}
+function upload_file_dirty()
+{
+	resume=1;
+}
+
+function uploadFile(n){
+        n=n.substring(14);
+        if(resume==1 &amp;&amp; document.myForm01.upload.value!=""){
+       	 document.getElementById('upload_status_'+n).style.color='black';	
+	     document.getElementById('upload_status_'+n).innerHTML='uploading...';
+	     resume=0;
+	     document.myForm01.uploadfiles.value=document.myForm01.upload.value +"|"+ document.myForm01.uploadfiles.value;
+	     document.myForm01.submit();
+       	}else{
+	    document.getElementById('upload_status_'+n).style.color='red';
+	    document.getElementById('upload_status_'+n).innerHTML = 'Select a file to upload';	
+	}
+}
+
+function submitform_staff_profile_qualification_v0(){
+     var frmelement=document.getElementById("staff_profile_qualification_v0");     
+     if(isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement)){
+	      document.forms[0].upload.value=document.forms[1].uploadfiles.value;
+          docHtmlSave();
+     }	
+}
+
+function approveform_staff_profile_qualification_v0(){
+     var frmelement=document.getElementById("staff_profile_qualification_v0");
+     if(isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement)){
+   	  	  document.forms[0].upload.value=document.forms[1].uploadfiles.value;
+          docHtmlRecordwiseApprove();
+     }	
+}
+
+</script>
+
 
 </head>
 <body>
-
+<div id="d1" class="childdiv">
 <form method="post" action="./StaffProfileServlet" NAME="myForm" ID="staff_profile_qualification_v0"> 
 <font size="1" face="Verdana, Arial, Helvetica, sans-serif">
 
@@ -40,6 +96,7 @@
 	</xsl:attribute></INPUT>
 <INPUT TYPE="HIDDEN" NAME="entityId"><xsl:attribute name="VALUE"><xsl:value-of select="//entityId"/>
 	</xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="upload" />	
 <INPUT TYPE="HIDDEN" NAME="formName" VALUE="staff_profile_qualification_v0"></INPUT>
 <INPUT TYPE="HIDDEN" NAME="entitytype" VALUE="qualification"></INPUT>
 <INPUT TYPE="HIDDEN" NAME="caction" id="caction"><xsl:attribute name="VALUE"><xsl:value-of select="//action"/> </xsl:attribute></INPUT> 
@@ -51,34 +108,32 @@ if (document.getElementById('reload_after_save').value!="null"){
 }
 </script>
 <!-- ================================= Qualification ======================================-->
-<div id="d1" class="childdiv">
+
 <table width="100%" class="tabBG3">
 <tr>
 <td width="30%" colspan="2" align="center" class="thead">Qualification Details</td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//course_name/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//course_name/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//course_name/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//institution/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//institution/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//institution/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//location/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//location/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//location/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//board/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//board/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//board/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//join_month/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//join_month/oioNS:renderinfo" /></td>
-</tr>
-<tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//join_year/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//join_year/oioNS:renderinfo" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//join_month/oioNS:prompt" /><span style="color:red">*</span></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//join_month/oioNS:renderinfo" />
+<xsl:apply-templates select="//join_year/oioNS:prompt" /><span style="color:red">*</span>
+<xsl:apply-templates select="//join_year/oioNS:renderinfo" /></td>
 </tr>
 <tr>
 <td width="30%" class="tabBG4"><xsl:apply-templates select="//passing_year/oioNS:prompt" /></td>
@@ -93,7 +148,26 @@ if (document.getElementById('reload_after_save').value!="null"){
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//class/oioNS:renderinfo" /></td>
 </tr>
 </table>
-</div>
+ <input type="hidden" name="action" value="" /> 
+<input type="HIDDEN" name="mandatory_fields" value="course_name|institution|location|board|join_month|join_year" />
+ <input type="HIDDEN" name="validation_fields" value="join_month-N|join_year-Y|passing_year-Y|percentage-Per" />
+</font>
+</form>
+
+<!--============================= Upload Image =============================-->
+
+ <div id="fu1">
+  <form method="post" target="upload_target_iframe" action="./UploadFiles" NAME="myForm01" enctype="multipart/form-data">
+  <INPUT TYPE="HIDDEN" NAME="userId"><xsl:attribute name="VALUE"><xsl:value-of select="//entityId"/></xsl:attribute></INPUT>
+  <table width="100%" class="tabBG3">
+  <tr>
+  <td width="30%" class="tabBG4"><xsl:apply-templates select="//upload/oioNS:prompt" /></td>
+  <td width="70%" class="tabBG4"><xsl:apply-templates select="//upload/oioNS:renderinfo" /></td>
+  </tr>
+  </table>
+  </form>
+ </div> 
+
 
 
 
@@ -103,12 +177,9 @@ if (document.getElementById('reload_after_save').value!="null"){
 
 <table width="100%" class="tabBG3">
      <tr ><td align="center" class="thead">
-    <input type="hidden" name="action" value="" /> 
     <input type="button" name="btsave" id="btsave" value="  Save  " onClick="submitform_staff_profile_qualification_v0();" />  
     <input type="button" name="btsapprove" id="btsapprove" value="Save and Approve" onClick="approveform_staff_profile_qualification_v0();" />
     <input type="button" name="btclose" id="btclose" value="Close" onClick="parent.close();" />      
-    <input type="HIDDEN" name="mandatory_fields" value="course_name|institution|location|board|join_month|join_year" />
-     <input type="HIDDEN" name="validation_fields" value="join_month-N|join_year-Y|passing_year-Y|percentage-Per" />
     <script language="javascript">         
 	if (document.getElementById("approved").value==1){                      	
 		document.getElementById("btsave").style.display='none';         	
@@ -124,8 +195,8 @@ if (document.getElementById('reload_after_save').value!="null"){
      </script>  
     </td></tr>
 </table>
-</font>
-</form>
+<iframe id="upload_target_iframe" name="upload_target_iframe" src="" style="width:0;height:0;border:0px;display:none;"></iframe>
+</div>
 </body>
 </html>
 </xsl:template>

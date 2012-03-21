@@ -12,11 +12,15 @@ public class PickOneMaster {
 				StringBuffer html = new StringBuffer (1000);
 				String colstr, rowstr, selected;
 
-				//split the choice option with the comma oparator.
+				//split the choice option with the comma oparator.				
 
-				choice=getTableData(choice);
-				code=getTableData(code);
-
+				if (choice.contains("DUAL")){
+					choice=getTableData(choice);
+					code=getTableData(code);
+				}else{
+				choice=getTableData("SELECT '-Select-' FROM DUAL UNION select * from ("+choice+")A1");
+				code=getTableData("SELECT '' FROM DUAL UNION select * from ("+code+")A1");
+				}	
 				//System.out.println("Choice :"+choice);
 				//System.out.println("Code :"+code);
 
@@ -34,7 +38,7 @@ public class PickOneMaster {
 				int cnt = 0;
 
 				//get the html code for render.
-				//html.append("		<INPUT TYPE=\"HIDDEN\" VALUE=\"\" NAME=\"" + name + "\"></INPUT>\n");
+				//html.append("		<INPUT TYPE=\"HIDDEN\" VALUE=\"\" NAME=\"" + name + "\" style=\"WIDTH: 265px\"></INPUT>\n");
 				html.append("		<SELECT NAME=\"" + name + "\">\n");
 				//put the options with splited columns and rows.
 				while (cnt < iter){
@@ -51,7 +55,7 @@ public class PickOneMaster {
 				//return the html string to render.
 				return html;
 	}//end of function.
-	
+
 	public StringBuffer getObjectHtml01(String name, String action, String choice, String code, String valueString,String entityId) {
 		StringBuffer html = new StringBuffer (1000);
 		String colstr, rowstr, selected;
@@ -60,7 +64,7 @@ public class PickOneMaster {
         //choice=field name, code=table name
 		String choice_temp=choice;
 		choice=getTableData("SELECT '-Select-' FROM DUAL UNION select "+choice_temp+" from "+code+" where idf="+entityId);
-		
+
 		//code=choice;Commented on 21-06-11 Anish
 		code=getTableData("SELECT '' FROM DUAL UNION select "+choice_temp+" from "+code+" where idf="+entityId);
 
@@ -79,12 +83,12 @@ public class PickOneMaster {
 		//get the minimum value for the iteration.
 		int iter = (iter1 >= iter2 ? iter2 : iter1);
 		int cnt = 0;
-		
-		
+
+
 		//get the html code for render.
 		//html.append("		<INPUT TYPE=\"HIDDEN\" VALUE=\"\" NAME=\"" + name + "\"></INPUT>\n");
 		html.append("		<SELECT NAME=\"" + name + "\">\n");
-		//put the options with splited columns and rows.		
+		//put the options with splited columns and rows.
 		while (cnt < iter){
 			colstr = cols[cnt];
 			rowstr = rows[cnt];
@@ -95,10 +99,10 @@ public class PickOneMaster {
 			cnt++;
 		}//end if while.
 		html.append("		</SELECT>\n");
-	
+
 		//return the html string to render.
-	
-		return html;		
+
+		return html;
 }//end of if.
 
 
@@ -125,6 +129,7 @@ public class PickOneMaster {
 		Connection con =  null;
 		String dataArray="";
 		try  {
+			//System.out.println(qry);
 			ConnectDB conObj=new ConnectDB();
 			con=conObj.getMysqlConnection();
 			Statement st = con.createStatement();

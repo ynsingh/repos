@@ -36,7 +36,7 @@ function upload_image_dirty()
 function submitform_staff_profile_awards_v0()
 {
 	var frmelement=document.getElementById("staff_profile_awards_v0");
-	if (isMandatoryDataExists(frmelement)=="1") {
+	if (isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement)) {
              document.myForm.upload_image.value=document.myForm01.upload_imagefiles.value; 
              docHtmlSave();
         }     
@@ -45,7 +45,7 @@ function submitform_staff_profile_awards_v0()
 function approve()
 {		
 	var frmelement=document.getElementById("staff_profile_awards_v0");
-	if (isMandatoryDataExists(frmelement)=="1") {
+	if (isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement)) {
              document.myForm.upload_image.value=document.myForm01.upload_imagefiles.value; 
 	     docHtmlRecordwiseApprove();	
    	}
@@ -102,7 +102,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//award_name/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//award_name/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//award_name/oioNS:renderinfo" /></td>
 </tr>
 
@@ -112,7 +112,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//receiving_month_year/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//receiving_month_year/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//receiving_month_year/oioNS:renderinfo" /></td>
 </tr>
 <tr>
@@ -126,6 +126,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 </table>
 
 <input type="HIDDEN" name="mandatory_fields" value="award_name|receiving_month_year" />
+<input type="HIDDEN" name="validation_fields" value="url-U" />
 <input type="hidden" name="action" value="" />
 </font>
 </form>

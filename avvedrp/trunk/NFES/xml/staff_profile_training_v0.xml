@@ -106,21 +106,21 @@ if (document.getElementById('reload_after_save').value!="null"){
 <td colspan="2" class="thead" align="center">Seminars / Conferences / Workshops / Training Attended Details</td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//training_name/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//training_name/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//training_name/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//duration_from/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//duration_from/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//duration_from/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//duration_to/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//duration_to/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//duration_to/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//location/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//location/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//location/oioNS:renderinfo" /></td>
 </tr>
 
@@ -170,7 +170,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 
 <input type="hidden" name="action" value="" />
 <input type="HIDDEN" name="mandatory_fields" value="training_name|duration_from|duration_to|location" />
-<input type="HIDDEN" name="validation_fields" value="funded_amount-A" />
+<input type="HIDDEN" name="validation_fields" value="funded_amount-A|url-U" />
 </font>
 </form>
 

@@ -43,7 +43,6 @@ public class GetRecordValue{
 	public String getUniversityID(String userName){
 		String answer="";
 	   	 try{
-
 			     theStatement=conn.createStatement();
 			     theResult=theStatement.executeQuery("SELECT university_id FROM `staff_profile_masterdetails_v0_values` WHERE username='"+ userName +"'");
 			     while(theResult.next()){
@@ -54,5 +53,19 @@ public class GetRecordValue{
 		 }
 		return answer;
 		}
+	
+	public String getDesignation(String userId){
+		String answer="";
+	   	 try{
+			     theStatement=conn.createStatement();
+			     theResult=theStatement.executeQuery("SELECT designation FROM `staff_profile_masterdetails_v0_values` WHERE userid="+ userId);
+			     while(theResult.next()){
+			    	 answer= theResult.getString("designation");
+			     } 
+		 }catch(Exception e){
+		     e.printStackTrace();
+		 }
+		return answer;		
+	}
 	
 }

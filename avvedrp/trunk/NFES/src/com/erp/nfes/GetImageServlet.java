@@ -4,7 +4,6 @@ import java.io.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import java.util.Properties;
 
@@ -13,11 +12,12 @@ public class GetImageServlet extends HttpServlet{
 
 	  public void doGet(HttpServletRequest  request, HttpServletResponse response)
 	     throws ServletException, IOException{
-
-		  Properties properties = new Properties();
-		  properties.load(new FileInputStream("../conf/fileuploadpath.properties"));
-		  String path = properties.getProperty("DESTINATION_DIR_PATH");
+		  
+		  String propFileName = "fileuploadpath.properties";
+		  Properties properties = GetPropertiesFile.GetPropertiesFileFromCONF(propFileName);
+		  String path = properties.getProperty("DESTINATION_DIR_PATH");		  
 		  String filename =path+"/"+ request.getParameter("filename");
+		  //System.out.println("File Name:"+filename);
 		  File file = new File(filename);
       try{
     	 OutputStream os 			= response.getOutputStream();

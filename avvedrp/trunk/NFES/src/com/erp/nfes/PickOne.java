@@ -21,19 +21,19 @@ public class PickOne {
 
 				//get the html code for render.
 				//html.append("		<INPUT TYPE=\"HIDDEN\" VALUE=\"\" NAME=\"" + name + "\"></INPUT>\n");
-				html.append("		<SELECT NAME=\"" + name + "\" ID=\"" + name + "\">\n");				
+				html.append("		<SELECT NAME=\"" + name + "\" ID=\"" + name + "\" style=\"WIDTH: 265px\">\n");
 				//put the options with splited columns and rows.
 				while (cnt < iter){
 					colstr = cols[cnt];
 					rowstr = rows[cnt];
 					//put the value of the row as the selected in the pickone box.
 					selected = (rowstr.trim().equals(valueString) || colstr.trim().equals(valueString) ? "SELECTED=\"SELECTED\"" : "");
-					html.append("			<OPTION VALUE=\"" + colstr + "\" " + selected + ">" + rowstr + "</OPTION>\n");					
+					html.append("			<OPTION VALUE=\"" + colstr + "\" " + selected + ">" + rowstr + "</OPTION>\n");
 					//increment the count by one.
 					cnt++;
 				}//end if while.
 				html.append("		</SELECT>\n");
-				
+
 				//return the html string to render.
 				return html;
 	}//end of if.
@@ -44,7 +44,7 @@ public class PickOne {
 
 
 /**
- * 
+ *
  * @param name
  * @param action
  * @param choice
@@ -54,7 +54,7 @@ public class PickOne {
  */
 	public StringBuffer getObjectValueString(String name, String action, String choice, String code, String valueString) {
 		StringBuffer valuesString = new StringBuffer(1500);
-		
+
 		return valuesString;
 	}
 

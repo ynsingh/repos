@@ -1,49 +1,29 @@
 
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="UTF-8" language="java" import="javax.sql.DataSource,javax.naming.Context,javax.naming.InitialContext,java.sql.*,java.util.*,java.io.FileInputStream" errorPage="" %>
 <jsp:useBean id="db" class="com.erp.nfes.ConnectDB" scope="session"/> 
+<jsp:useBean id="ml" class="com.erp.nfes.MultiLanguageString" scope="session"/> 
+
 <%
 Connection conn=null;
 Statement theStatement=null;
 ResultSet theResult=null;
-String gm="";String pim="";String ctm="";String um="";String im="";String lc="";String idm="";
+String lc="";
+String tab = "";String universityId="";String institutionId="";
 try{
      lc=(String) session.getAttribute("language");
-     conn = db.getMysqlConnection();
-     theStatement=conn.createStatement();
-     theResult=theStatement.executeQuery("select control_name,language_string from language_localisation where active_yes_no=1 and file_code=26 and language_code=\'"+lc+"\'");
-     theResult.last();int len=theResult.getRow();String cn[]=new String[len];String ls[]=new String[len];
-     int i=0;theResult.beforeFirst();
-     while(theResult.next()){
-          cn[i]=theResult.getString("control_name");
-          ls[i]=theResult.getString("language_string");
-          i++;
-     }
-     
-     for(i=0;i<len;i++){
-     	if(cn[i].equals("general_master")){
-     		gm=ls[i];
-     	}else if(cn[i].equals("principal_investigator_master")){
-     		pim=ls[i];
-     	}else if(cn[i].equals("courses_taught_master")){
-     		ctm=ls[i];
-     	}else if(cn[i].equals("university_master")){
-     		um=ls[i];
-     	}else if(cn[i].equals("intitution_master")){
-     		im=ls[i];
-     	}else if(cn[i].equals("intitution_department_master")){
-     		idm=ls[i];
-     	}
-     	
-     }
-     
-     
+     ml.init(lc);  
      request.setCharacterEncoding("UTF-8");
      response.setContentType("text/html; charset=utf-8");
      Locale locale=new Locale(lc,"");
+          
+     tab=request.getParameter("tab"); 
+     universityId=request.getParameter("university_id");
+     institutionId=request.getParameter("institution_id");
+     
 }catch(Exception e){
      e.printStackTrace();
 }
-theResult.close();theStatement.close();conn.close();	
+
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -57,19 +37,38 @@ theResult.close();theStatement.close();conn.close();
 <script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="../js/jquery-ui-1.8.4.custom.min.js"></script>
 <script type="text/javascript">
- var pi="0";var ct="0";var u="0";var i="0";var dm="0";
+ var g="0";var pi="0";var ct="0";var u="0";var i="0";var dm="0";
 $(function() {
 $("#tabs").tabs();
 });
 
 
-
 function load()
-{       
-     document.getElementById("if01").src="../MasterTables?tab_name=general_master&action=show_general_master&category=";
-   
+{  
+     var tab = <%=tab%>;
+     if(tab == "5"){
+         if(i=="0"){
+     	 document.getElementById("if05").src="../MasterTables?tab_name=institution_master&action=show_institution_master&university_id="+'<%=universityId%>';
+     	 i="1";
+     	}
+     }
+     else if(tab == "6"){
+     if(dm=="0"){
+     	 document.getElementById("if06").src="../MasterTables?tab_name=institution_department_master&action=show_institution_department_master&institution_id="+'<%=institutionId%>';
+     	 dm="1";
+     	 tab="";
+     	}
+     }
+     else{
+     gm();
+     }
 }
-
+function gm(){
+     if(g=="0"){
+     	  document.getElementById("if01").src="../MasterTables?tab_name=general_master&action=show_general_master&category=";
+         g="1";
+     }
+}
 function pim(){
      if(pi=="0"){
           document.getElementById("if02").src="../MasterTables?tab_name=principal_investigator_master&action=show_principal_investigator_master";
@@ -113,12 +112,12 @@ function idm(){
 
  <div id="tabs">
      <ul>
-     <li><a href="#tabs-1"><%=gm%></a></li>
-     <li><a href="#tabs-2" onclick="pim();" ><%=pim%></a></li>
-     <li><a href="#tabs-3"onclick="ctm();" ><%=ctm%></a></li>
-     <li><a href="#tabs-4"onclick="um();" ><%=um%></a></li>
-     <li><a href="#tabs-5"onclick="im();" ><%=im%></a></li>
-     <li><a href="#tabs-6"onclick="idm();" ><%=idm%></a></li>
+     <li class="horizontalTabli"><a href="#tabs-1" onclick="gm();"><%=ml.getValue("general_master")%></a></li>
+     <li class="horizontalTabli"><a href="#tabs-2" onclick="pim();" ><%=ml.getValue("principal_investigator_master")%></a></li>
+     <li class="horizontalTabli"><a href="#tabs-3"onclick="ctm();" ><%=ml.getValue("courses_taught_master")%></a></li>
+     <li class="horizontalTabli"><a href="#tabs-4"onclick="um();" ><%=ml.getValue("university_master")%></a></li>
+     <li class="horizontalTabli"><a href="#tabs-5"onclick="im();" ><%=ml.getValue("intitution_master")%></a></li>
+     <li class="horizontalTabli"><a href="#tabs-6"onclick="idm();" ><%=ml.getValue("intitution_department_master")%></a></li>
      </ul>
      <div id="tabs-1" align="center">
      <iframe name="General_Master" id="if01" src="" width="99%" height="330px" frameborder="0" >

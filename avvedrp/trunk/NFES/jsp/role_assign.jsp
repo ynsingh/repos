@@ -5,54 +5,19 @@
 
 <jsp:useBean id="db" class="com.erp.nfes.ConnectDB" scope="session"/> 
 <jsp:useBean id="getUserDetails" class="com.erp.nfes.GetRecordValue" scope="session"/> 
-
+<jsp:useBean id="ml" class="com.erp.nfes.MultiLanguageString" scope="session"/> 
 <%
 String msg = request.getParameter("value");
-Connection conn=null;
-Statement theStatement=null;
-ResultSet theResult=null;
 String uname="";String prole="";String nrole="";String arole="";String smsg=""; String lc="";
-try{
-    
+try{    
      lc=(String) session.getAttribute("language");
-     conn = db.getMysqlConnection();
-     theStatement=conn.createStatement();
-     theResult=theStatement.executeQuery("select control_name,language_string from language_localisation where active_yes_no=1 and file_code=25 and language_code=\'"+lc+"\'");
-     theResult.last();int len=theResult.getRow();String cn[]=new String[len];String ls[]=new String[len];
-     int i=0;theResult.beforeFirst();
-     while(theResult.next()){
-          cn[i]=theResult.getString("control_name");
-          ls[i]=theResult.getString("language_string");
-          i++;
-     }
-     
-          
-     for(i=0;i<len;i++){
-     	
-     	if(cn[i].equals("user_name")){
-     		uname=ls[i];
-     	}else if(cn[i].equals("present_role")){
-     		prole=ls[i];
-     	}else if(cn[i].equals("new_role")){
-     		nrole=ls[i];
-     	}else if(cn[i].equals("assign_role")){
-     		arole=ls[i];
-     	}else if(cn[i].equals("success_msg")){
-     		smsg=ls[i];
-     	}
-     	
-     }
-     
-     
+      ml.init(lc);      
      request.setCharacterEncoding("UTF-8");
      response.setContentType("text/html; charset=utf-8");
      Locale locale=new Locale(lc,"");
 }catch(Exception e){
      e.printStackTrace();
 }
-theResult.close();
-theStatement.close();
-conn.close();
 %>
 
 
@@ -84,13 +49,14 @@ conn.close();
 
 <form name="role_assign" method="post" action="../RoleAssignServlet">
 <div class="listdiv">
+<div style="text-align: center; font-size:14px;font-weight: bold;height:8px;"> <%=ml.getValue("role_assign")%> </div>
 
 <%
 if( msg!=null ){
 	%>	
 	<br>
 	<div class="message">			
-		<%=smsg%>		
+		<%=ml.getValue("success_msg")%>		
 	</div>				
 	<%
 }%>
@@ -98,7 +64,7 @@ if( msg!=null ){
 <p>
 <table class="search_field_div" align="center" width="98%">
 <tr>
-<td><label  class="labeltext"><%=uname%><label  class="mandatory">*</label> </td>
+<td><label  class="labeltext"><%=ml.getValue("user_name")%><label  class="mandatory">*</label> </td>
 <td><select name="userName" onchange="getPresentRoll();">
 
 <%    		
@@ -135,11 +101,11 @@ try
 	</tr>
 	<tr>
 	<tr>
-	<td><label class="labeltext"><%=prole%><label  class="mandatory">*</label></td>
+	<td><label class="labeltext"><%=ml.getValue("present_role")%><label  class="mandatory">*</label></td>
 	<td><input class="textmedium" type=text name="present_role" value="" disabled="disabled"/>
 	<script>getPresentRoll();</script>
 	</tr>
-	<td><label class="labeltext"><%=nrole%><label  class="mandatory">*</label></td> 	
+	<td><label class="labeltext"><%=ml.getValue("new_role")%><label  class="mandatory">*</label></td> 	
 	<td><select name="role">
 	<%
 	conn1 = db.getMysqlConnection();
@@ -167,8 +133,8 @@ conn1.close();
 </td>
 </tr>
 </select>
-<td><img src="../images/role.png"></td>
-<td><input type="submit"  name="Save"  value="<%=arole%>"/></td>
+<td></td>
+<td><input type="submit"  name="Save"  value="<%=ml.getValue("assign_role")%>"/></td>
 
 </table>
 <br/>

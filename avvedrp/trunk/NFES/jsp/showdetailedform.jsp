@@ -113,15 +113,51 @@ for (i=0;i<tabledata.length;i++){
 		}		
 	  }
 	}  
-	else{
-		tableSplitdata=tableSplitdata+ifr.contentWindow.document.getElementsByName(tabledata[i])[0].value;		  
+	else{		
+		var urlFields=document.getElementById('URLFields').value;
+		var srchField=tabledata[i]+"~";
+		if((urlFields.indexOf(srchField)>=0) && ((ifr.contentWindow.document.getElementsByName(tabledata[i])[0].value)!="")){
+			tableSplitdata=tableSplitdata+"<a href='"+ifr.contentWindow.document.getElementsByName(tabledata[i])[0].value+"' target='blank'>View</a>";		  		
+		}else{
+			tableSplitdata=tableSplitdata+ifr.contentWindow.document.getElementsByName(tabledata[i])[0].value;		  		
+		}		
 	}	
 }
 return(tableSplitdata);
 }
 
 
+function getURLFields(){
+	var tablename=document.getElementById("formname").value;
+	var url = '../GetAjaxResponse?action=GET_URL_FIELDS&tablename='+tablename;
+    if (window.ActiveXObject){
+        httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+    }else if (window.XMLHttpRequest){
+        httpRequest = new XMLHttpRequest();
+    }        
+    httpRequest.open("GET", url, true);
+    httpRequest.onreadystatechange = function() {getURLFieldName(); } ;
+    httpRequest.send(null); 	
+}
 
+function getURLFieldName(){
+		if (httpRequest.readyState == 4){
+            if(httpRequest.status == 200) {
+                var URLFieldXML = httpRequest.responseXML.getElementsByTagName("reponseXML")[0];
+                var URLFieldDets="";
+                if(URLFieldXML.childNodes[0]){
+	               URLFieldDets = URLFieldXML.childNodes[0].nodeValue;             
+					if(URLFieldDets=="null"){
+   						document.getElementById('URLFields').value="";
+					}else{
+						document.getElementById('URLFields').value=URLFieldDets;
+					}
+                }                                            	
+           }else{
+                alert("Error loading page\n"+ httpRequest.status +":"+ httpRequest.statusText);
+            }         		
+          }  
+}
 </script>
 
 
@@ -160,7 +196,7 @@ String message=request.getParameter("message");
 <input type="HIDDEN" id="formname" value=<%=formname%>></input>
 <input type="HIDDEN" id="entitytype" value=<%=entitytype%>></input>
 <input type="HIDDEN" id="tabledata" name="tabledata" value=<%=tabledata%>></input>
-
+<input type="HIDDEN" id="URLFields" name="URLFields" value=""></input>
 <!--<table width=101% style="background-color: #FFFFFF; border=1;margin: 0px -5px">
 	<tr>
 	<td width=5% rowspan="2"><img src="../images/loginheader_logo.PNG" ></td>
@@ -185,6 +221,7 @@ String message=request.getParameter("message");
 
 
 <script language="javascript">
+getURLFields();
 window.onunload = function(){
  var tabledata=document.getElementById('tabledata').value;    
   if(tabledata!="null"){  	

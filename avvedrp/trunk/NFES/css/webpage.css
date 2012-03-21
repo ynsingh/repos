@@ -1,0 +1,208 @@
+
+body{
+	background:url("../images/glossyback2.gif") repeat-x scroll 0 0 transparent;
+} 
+
+.professional_det{
+	font-weight:bold;
+	color:#A01D20;
+}
+
+.top_menu{
+	background: url("../images/glossyback2.gif") repeat-x scroll 0 0 transparent;
+	text-align:center;
+	font: bold 12px Verdana;
+	padding:5px;
+	color:white;
+}
+.top_menu_a{
+	color:white;
+	text-decoration:none; 
+}
+
+.top_menu_a_active{
+	color:white;
+	text-decoration:none;
+}
+table#top_menu a:hover{
+	color: yellow; 
+	text-decoration:none;
+}
+
+.tab_course_taught{
+	border-collapse:collapse;
+	border-color:#000;
+}
+
+.linkSelected{
+	color:yellow;
+	background: #437AA1;	
+	text-align:center;
+	font: bold 12px Verdana;
+	padding:5px;	
+}
+
+.rightlinkSelected{
+	color:yellow;
+	background: #437AA1;	
+	text-align:left;
+	font: bold 12px Verdana;	
+}
+
+.divclass{
+	background: url("../images/webpage_div_bg.gif") repeat-x scroll 0 0 #FFFFFF;
+	padding:25px 10px;
+	border:1px solid #D5E4E3;
+	border-top-color:#437AA1;
+	border-top-width:2px;  
+	height:270px;
+	margin:-2px 0px;
+	overflow:auto;
+}
+
+#wrap {
+    width:100%;//980px;
+    margin:0 auto;
+    background: url("../images/webpage_header.jpg") repeat-x scroll 0 0 #D5E4E3;    
+    align:center;
+    vertical-align:middle;  
+    height:100%;
+    border: 1px solid #8CBEDE;   
+}    
+
+#header{
+    background: url("../images/webpage_header.jpg") repeat-x scroll 0 0 #FFF;        
+    height:auto;
+    margin: 0 auto;
+    position: relative;
+    text-align: left;
+    width: auto;
+    color:#A01D20;
+}
+
+#nav{
+	 padding:5px 10px;
+	 background:#fff;
+ }
+
+#main {
+	float:left;
+	width:64.5%;//617px;
+	padding:10px 5px
+	height:335px;
+	background:#E3EEF0;	
+ }
+
+#left_sidebar { 
+	float:left;
+	width:18%;//189px;
+	padding:10px;
+	background:none repeat scroll 0 0 #F6F9F9;
+	text-align:center;
+	height:327px;
+	margin:1px 1px 0px;
+	overflow:auto;
+}
+ #right_sidebar {
+	 float:right;
+	 width:15%;//150px;
+	 padding:10px 0px;
+	 height:327px;
+	 background:none repeat scroll 0 0 #F6F9F9;
+	 margin:1px 1px; 
+ }
+ #footer {
+	 clear:both;
+	 padding:2px;
+	 background: url("../images/webpage_header.jpg") repeat scroll 0 0 #FFF;    
+	 border-color:#6B7783;
+}
+
+#nav ul {
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+#nav li {
+    display:inline;
+    margin:0;
+    padding:0;
+}
+
+.institution{
+	font-size: 13px;
+	font-weight: bold;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color:#104D6B;
+	letter-spacing: 1px;
+	margin: 0px 0px 0px 10px;
+}	
+.facutyName{
+	font-size: 15px;
+	font-weight: bold;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color:#A01D20;
+	margin: 0px 0px 0px 10px;
+	letter-spacing: 2px;
+}
+
+#contactdetails{
+	padding:15px 1px 9px 4px;
+	background: url("../images/webpage_shade.gif") repeat scroll 0 0 #DCE4E7;
+}
+
+#right_menu {
+	font: bold 11px Verdana; 
+	width:150px;
+	float:left;
+}
+
+#right_menu ul {
+	margin:0px; 
+	padding:0px;
+}
+.right_menu_li {
+	list-style: none;
+ 	border-color: #D9E5ED;
+ 	border-top: 1px dashed #D9E5ED;
+ 	border-width: 1px;
+ }
+
+.right_menu_a {
+ color: #4B7FA4;
+ cursor: pointer;
+ display:block;
+ height:25px;
+ line-height: 25px;
+ text-indent: 10px;                   
+ //text-decoration:none;
+ width:100%;
+}
+
+.right_menu_a_active {
+	 color: white;
+	 cursor: pointer;
+	 display:block;
+	 height:22px;
+	 line-height: 23px;
+	 text-indent: 10px;                   
+	 text-decoration:none;
+	 width:100%;
+}
+
+#right_menu a:hover{ 
+ color:yellow;;
+ background:url("../images/glossyback2.gif") repeat-x scroll 0 0 transparent;
+}
+
+ul 
+{
+list-style-image:url('../images/box.gif');
+}
+
+.footertable{
+border-collapse:collapse;
+border-color:#F6F9F9;
+cursor:pointer;
+}

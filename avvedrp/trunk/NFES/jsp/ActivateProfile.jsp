@@ -1,3 +1,24 @@
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="UTF-8" language="java" import="javax.sql.DataSource,javax.naming.Context,javax.naming.InitialContext,java.sql.*,java.util.*,java.io.FileInputStream" errorPage="" %>
+<jsp:useBean id="db" class="com.erp.nfes.ConnectDB" scope="session"/> 
+<jsp:useBean id="getUserDetails" class="com.erp.nfes.GetRecordValue" scope="session"/> 
+<jsp:useBean id="ml" class="com.erp.nfes.MultiLanguageString" scope="session"/> 
+
+
+
+<%
+String lc = "";String action = "";
+try{     
+     lc=(String) session.getAttribute("language");
+     action = request.getParameter("action");
+     ml.init(lc);  
+     request.setCharacterEncoding("UTF-8");
+     response.setContentType("text/html; charset=utf-8");
+     Locale locale=new Locale(lc,"");
+}catch(Exception e){
+     e.printStackTrace();
+}
+%>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
 <HTML lang=en-US dir=ltr xmlns="http://www.w3.org/11001/xhtml"><HEAD 
 profile=http://gmpg.org/xfn/11><TITLE>Staff Registration Activation</TITLE>
@@ -28,7 +49,7 @@ profile=http://gmpg.org/xfn/11><TITLE>Staff Registration Activation</TITLE>
 			if( request.getParameter("successVal") != null) {
 			%>
 			<h2>
-			   <%= request.getParameter("successVal") %>       
+			   <%= ml.getValue(request.getParameter("successVal"))%>       
 			</h2>
 		</form>	
 		</td>     

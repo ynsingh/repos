@@ -35,7 +35,7 @@ function upload_dirty()
 function submitform_staff_profile_books_chapter_v0()
 {
     var frmelement=document.getElementById("staff_profile_books_chapter_v0");
-    if (isMandatoryDataExists(frmelement)=="1")
+    if (isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement))
     {		
 	document.myForm.upload.value=document.myForm01.uploadfiles.value;
 	docHtmlSave();
@@ -45,7 +45,7 @@ function submitform_staff_profile_books_chapter_v0()
 function approve()
 {
     var frmelement=document.getElementById("staff_profile_books_chapter_v0");
-    if (isMandatoryDataExists(frmelement)=="1")
+    if (isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement))
     {		
 	document.myForm.upload.value=document.myForm01.uploadfiles.value;
 	docHtmlRecordwiseApprove();
@@ -99,7 +99,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 <td colspan="2" class="thead" align="center">Books/Chapter Details</td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//book_chapter/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//book_chapter/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//book_chapter/oioNS:renderinfo" /></td>
 </tr>
 
@@ -109,11 +109,11 @@ if (document.getElementById('reload_after_save').value!="null"){
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//title/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//title/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//title/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//author1/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//author1/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//author1/oioNS:renderinfo" /></td>
 </tr>
 <tr>
@@ -129,7 +129,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//isbn/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//publication_month_year/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//publication_month_year/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//publication_month_year/oioNS:renderinfo" /></td>
 </tr>
 <tr>
@@ -158,6 +158,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 
 <input type="hidden" name="action" value="" />
 <input type="HIDDEN" name="mandatory_fields" value="book_chapter|title|author1|publication_month_year" />
+<input type="HIDDEN" name="validation_fields" value="url-U" />
 
 </form>
 

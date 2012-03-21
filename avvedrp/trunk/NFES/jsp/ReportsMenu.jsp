@@ -24,20 +24,30 @@ try{
 <head>
 <LINK media=screen href="../css/oiostyles.css" type=text/css rel=stylesheet>
 <title>NFES</title>
-<style type="text/css">
 
-</style>
+<script type="text/javascript">
+function ShowRreport(optvalue){
+parent.Reportscontent.location=optvalue;
+}
+</script>
 
 </head>
-<body class="bodystyle">
+<body class="bodystyle1">
 
-<div id="Reports_menu_container">
-	<div id="Reports_menu_navigation">
-		<ul>
+<!--<div id="Reports_menu_container">
+	 <div id="Reports_menu_navigation"> -->
+		<!-- <ul>
 			<li><a href="StaffReport.jsp" target="Reportscontent"><%=ml.getValue("faculty_list")%></a></li>
-			<!--<li><a href="#" target="Reportscontent">Seminars</a></li>-->			
 		</ul>
-	</div>	
-</div>
+		-->
+		<label><b><%=ml.getValue("select_report")%></b></label> 
+		<Select onchange="ShowRreport(this.value);">
+		<option value="StaffReport.jsp">Faculty List</option>
+		<option value="ApprovalReport.jsp">Approval List</option>
+		<option value="InstitutionTransferReport.jsp">Institution Transfer List</option>
+		</Select>
+		
+	<!-- </div>	
+</div>-->
 </body>
 </html>

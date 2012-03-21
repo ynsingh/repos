@@ -44,8 +44,8 @@ public class ChangePasswordServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//String user = request.getParameter("user");
-		String user = request.getUserPrincipal().getName();
+		String user = request.getParameter("user");
+		//String user = request.getUserPrincipal().getName();
 		String newPwd = request.getParameter("newpass");
 		String currentPwd = request.getParameter("oldpass");
 		String contextPath = request.getContextPath();		
@@ -54,15 +54,19 @@ public class ChangePasswordServlet extends HttpServlet {
 			ConnectDB conObj=new ConnectDB(); 
 			conn = conObj.getMysqlConnection();	
 			
-			String encOldPwd = getUserEncodedPassword( currentPwd, user );
+			String encOldPwd = getUserEncodedPassword( currentPwd, user );			
 			String encNewPwd = getUserEncodedPassword( newPwd, user );
 			
 			String actualPwd = getCurrentPassword( user, conn );
 			
-			if( !encOldPwd.equals( actualPwd ) ){//Current password entered is not correct
-				response.sendRedirect( contextPath + "/jsp/Myaccount.jsp?value=1" );
-				return;
-			}
+			GetRecordValue getUserDetails=new GetRecordValue();
+			String userName = request.getUserPrincipal().getName();
+			if (getUserDetails.getRole(userName).equals("ROLE_PROFILE_CREATION")){
+				if( !encOldPwd.equals( actualPwd ) ){//Current password entered is not correct
+					response.sendRedirect( contextPath + "/jsp/Myaccount.jsp?value=1" );
+					return;
+				}				
+			}			
 			if( encOldPwd.equals( encNewPwd ) ){//Current and new passwords are same
 				response.sendRedirect( contextPath + "/jsp/Myaccount.jsp?value=2" );
 				return;

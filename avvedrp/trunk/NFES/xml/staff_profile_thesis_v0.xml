@@ -77,7 +77,7 @@ function submitform_staff_profile_thesis_v0()
     	alert("Completion month\year  cannot be less than Registration month\year");
     	return false ;
     }    
-   if (isMandatoryDataExists(frmelement)=="1") 
+   if (isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement)) 
    { 
      	document.myForm.thesis_upload.value=document.myForm01.thesis_uploadfiles.value;
      	document.myForm.project_upload.value=document.myForm02.project_uploadfiles.value;     	
@@ -129,7 +129,7 @@ function uploadFile(n){
 function approve()
 {
    var frmelement=document.getElementById("staff_profile_thesis_v0");
-   if (isMandatoryDataExists(frmelement)=="1") 
+   if (isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement)) 
    { 
      	document.myForm.thesis_upload.value=document.myForm01.thesis_uploadfiles.value;
      	document.myForm.project_upload.value=document.myForm02.project_uploadfiles.value;
@@ -157,6 +157,7 @@ function approve()
 <INPUT TYPE="HIDDEN" NAME="project_upload" />
 <INPUT TYPE="HIDDEN" NAME="entitytype" VALUE="thesis"></INPUT>
 <input type="HIDDEN" id="mf01" name="mandatory_fields" value="" />
+<input type="HIDDEN" name="validation_fields" value="thesis_url-U" />
 <INPUT TYPE="HIDDEN" NAME="caction" id="caction"><xsl:attribute name="VALUE"><xsl:value-of select="//action"/> </xsl:attribute></INPUT> 
 <INPUT TYPE="HIDDEN" NAME="approved" id="approved"><xsl:attribute name="VALUE"><xsl:value-of select="//approved"/> </xsl:attribute></INPUT>
 
@@ -173,7 +174,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 <td class="thead" align="center" colspan="2">Thesis/Student Project Details</td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4" ><xsl:apply-templates select="//choose/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4" ><xsl:apply-templates select="//choose/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//choose/oioNS:renderinfo"/> </td>
 </tr>
 </table>
@@ -185,27 +186,27 @@ if (document.getElementById('reload_after_save').value!="null"){
 <td class="thead" align="center" colspan="2">Thesis</td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_title/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_title/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//thesis_title/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_author/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_author/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//thesis_author/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_department_institution/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_department_institution/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//thesis_department_institution/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_course_programe/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_course_programe/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//thesis_course_programe/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_external_internal/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_external_internal/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//thesis_external_internal/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_registration_month_year/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_registration_month_year/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//thesis_registration_month_year/oioNS:renderinfo" /></td>
 </tr>
 <tr>

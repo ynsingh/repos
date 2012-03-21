@@ -44,7 +44,7 @@ function submitform_staff_profile_journal_papers_v0()
    }
     
     var frmelement=document.getElementById("staff_profile_journal_papers_v0");
-    if (isMandatoryDataExists(frmelement)=="1")
+    if (isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement))
     {
 	document.myForm.upload_paper.value=document.myForm01.upload_paperfiles.value
 	docHtmlSave();
@@ -60,7 +60,7 @@ function approve()
     document.getElementsByName("mandatory_fields")[0].value="journal_type|research_expertise_area|paper_associated_project|paper_title|author1|journal_name|volume|issue_no|month_year";
    }	
     var frmelement=document.getElementById("staff_profile_journal_papers_v0");
-    if (isMandatoryDataExists(frmelement)=="1")
+    if (isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement))
     {
 	document.myForm.upload_paper.value=document.myForm01.upload_paperfiles.value
 	docHtmlRecordwiseApprove();
@@ -127,16 +127,16 @@ if (document.getElementById('reload_after_save').value!="null"){
 <td colspan="2" class="thead" align="center">Publications</td>
 </tr>
 <tr>
-<td  class="tabBG4"><xsl:apply-templates select="//journal_type/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//journal_type/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//journal_type/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td  class="tabBG4"><xsl:apply-templates select="//research_expertise_area/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//research_expertise_area/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//research_expertise_area/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td  class="tabBG4"><xsl:apply-templates select="//paper_associated_project/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//paper_associated_project/oioNS:prompt" /><span style="color:red">*</span></td>
 <td onclick="radio_button_validation()" class="tabBG4"><xsl:apply-templates select="//paper_associated_project/oioNS:renderinfo" /></td>
 </tr>
 <tr>
@@ -144,13 +144,13 @@ if (document.getElementById('reload_after_save').value!="null"){
 <td  class="tabBG4"><xsl:apply-templates select="//project_name/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td  class="tabBG4"><xsl:apply-templates select="//paper_title/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//paper_title/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//paper_title/oioNS:renderinfo" /></td>
 </tr>
 
 
 <tr>
-<td  class="tabBG4"><xsl:apply-templates select="//author1/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//author1/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//author1/oioNS:renderinfo" /></td>
 </tr>
 <tr>
@@ -159,21 +159,21 @@ if (document.getElementById('reload_after_save').value!="null"){
 </tr>
 
 <tr>
-<td  class="tabBG4"><xsl:apply-templates select="//journal_name/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//journal_name/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//journal_name/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td  class="tabBG4"><xsl:apply-templates select="//volume/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//volume/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//volume/oioNS:renderinfo" /></td>
 </tr>
 
 
 <tr>
-<td  class="tabBG4"><xsl:apply-templates select="//issue_no/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//issue_no/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//issue_no/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td  class="tabBG4"><xsl:apply-templates select="//month_year/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//month_year/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//month_year/oioNS:renderinfo" /></td>
 </tr>
 
@@ -223,6 +223,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 </div>
 <input type="hidden" name="action" value="" />
 <input type="HIDDEN" name="mandatory_fields" value="journal_type|research_expertise_area|paper_associated_project|paper_title|author1|journal_name|volume|issue_no|month_year" />
+<input type="HIDDEN" name="validation_fields" value="url-U" />
 </font>
 </form>
 

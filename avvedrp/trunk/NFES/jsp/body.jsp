@@ -44,7 +44,7 @@ String Roll="";
 try
 {
 	userName = request.getUserPrincipal().getName();
-
+	session.setAttribute("userName",userName);
         conn1 = db.getMysqlConnection();
 	//PreparedStatement pst=conn1.prepareStatement("SELECT users.id,email,user_full_name,institution_master.name instname,university_master.name universitynmae FROM users INNER JOIN institution_master ON institution_master.ID=users.`institution_id` and  username=? INNER JOIN university_master ON institution_master.id=university_master.id ");
 	PreparedStatement pst=conn1.prepareStatement("SELECT users.id,email,user_full_name FROM users where  username=?  ");
@@ -100,7 +100,8 @@ try
 }
 
 if(Roll==""){
-   str="'../StaffProfileServlet?action=CDOC-OPEN_A_DOCUMENT&entityId="+userId+"&documentId="+documentId+"&entitytype=staff&formName=staff_profile_report_v0'";
+   //str="'../StaffProfileServlet?action=CDOC-OPEN_A_DOCUMENT&entityId="+userId+"&documentId="+documentId+"&entitytype=staff&formName=staff_profile_report_v0'";   
+   str="'../webpage/"+userId+"'";
 }
 else{
   str="'./main.jsp'";  

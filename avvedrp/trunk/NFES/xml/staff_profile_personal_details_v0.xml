@@ -72,14 +72,14 @@ if (document.getElementById('reload_after_save').value!="null"){
 <div id="d1" class="childdiv">
 <table width="100%" class="tabBG3">
 <tr>
-<td width="30%" colspan="2" align="center" class="thead">Personal Details</td>
+<td width="30%" colspan="2" align="center" class="thead">Professional Details</td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//focus_area/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//focus_area/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//focus_area/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//research_interests/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//research_interests/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//research_interests/oioNS:renderinfo" /></td>
 </tr>
 <tr>

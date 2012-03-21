@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Properties;
 
 import javax.naming.Context;
@@ -43,8 +44,8 @@ public class ProfileCreationActivationServlet extends HttpServlet {
 	public void init() throws ServletException {
 		super.init();
     	try{
-    		properties = new Properties();
-    		properties.load(new FileInputStream("../conf/mail.properties"));
+    		String propFileName = "mail.properties";
+  		    properties = GetPropertiesFile.GetPropertiesFileFromCONF(propFileName);
     	}catch(Exception ex){
     		ex.printStackTrace();
     	}
@@ -58,9 +59,12 @@ public class ProfileCreationActivationServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Connection conn = null;
     	String user = "";
+    	String userFullName = "";
     	String pwd = "";
     	String mail = "";
-    	String userFullName="";    	
+    	String title="";
+    	//String firstName="";
+    	String lastName="";
     	String Instid="";
     	String department_id="";
     	String designation_id="";
@@ -70,8 +74,18 @@ public class ProfileCreationActivationServlet extends HttpServlet {
     	String address = "";
     	String location = "";
     	String param = "";
+    	String role = "";
+    	String joining_date="";
+    	String openId="";
     	int status=0;
+    	String language="";//(String) request.getSession().getAttribute("language");
+    	MultiLanguageString ml=new MultiLanguageString();
+
 		try {
+			language=(String) request.getSession().getAttribute("language");
+			response.setContentType("text/html; charset=UTF-8");
+			Locale locale = new Locale(language, "");
+			ml.init(language);
 
 			Context initCtx = new InitialContext();
 			//  DataSource ds = (DataSource) initCtx.lookup("java:/PortalDS");
@@ -80,22 +94,30 @@ public class ProfileCreationActivationServlet extends HttpServlet {
 				user = request.getParameter("username");
 				pwd  = request.getParameter("password");
 				mail = request.getParameter("email");
+				title = request.getParameter("title");
 				userFullName = request.getParameter("name");
+				lastName = request.getParameter("lastname");
 				universityName = request.getParameter("universityname");
 				shortName = request.getParameter("shortname");
 				address = request.getParameter("address");
 				location = request.getParameter("location");
-				param = "name="+userFullName+"&username="+user+"&password="+pwd+"&confirmpassword="+pwd+
+				openId=request.getParameter("openId");
+				param = "title="+title+"&name="+userFullName+"&lastname="+lastName+"&username="+user+"&password="+pwd+"&confirmpassword="+pwd+
 				"&email="+mail+"&universityname="+universityName+"&shortname="+shortName+"&address="+address+
-				"&location="+location;
+				"&location="+location+"&openId="+openId;
 			}else{
 			  user = request.getParameter("userName");
 			  pwd  = request.getParameter("userPassword");
 			  mail = request.getParameter("emailId");
-			  userFullName=request.getParameter("userFullName");
+			  title = request.getParameter("title");
+			  userFullName = request.getParameter("firstName");
+			  lastName = request.getParameter("lastName");
 			  Instid=request.getParameter("institution");
 			  department_id=request.getParameter("department");
 			  designation_id=request.getParameter("designation");
+			  role = request.getParameter("role");
+			  joining_date=request.getParameter("joining_date");
+			  openId=request.getParameter("openId");
 			}
 			//patient_status=request.getParameter("hcheck");
 			//status=Integer.parseInt(patient_status);
@@ -118,8 +140,8 @@ public class ProfileCreationActivationServlet extends HttpServlet {
 	        if( existsUserRecord( criteria, conn ) ){
 	        	if(action.equals("REGISTER_UNIVERSITY")){
 	        		response.sendRedirect("./registerUser.jsp?action=ERROR_MESSAGE&code=1&"+param);
-	        	}else{  
-	        	  response.sendRedirect("jsp/Account.jsp?userExists=1");
+	        	}else{
+	        	  response.sendRedirect("jsp/Account.jsp?action=CREATE_USER&userExists=1");
 	        	}
 	        	conn.close();
 				return;
@@ -128,11 +150,20 @@ public class ProfileCreationActivationServlet extends HttpServlet {
 	        if( existsUserRecord( criteria, conn ) ){
 	          if(action.equals("REGISTER_UNIVERSITY")){
 	            response.sendRedirect("./registerUser.jsp?action=ERROR_MESSAGE&code=2&"+param);
-	          }else{  	
-	            response.sendRedirect("jsp/Account.jsp?emailExists=1");
-	          }	
+	          }else{
+	            response.sendRedirect("jsp/Account.jsp?action=CREATE_USER&emailExists=1");
+	          }
 	            conn.close();
 	            return;
+	        }
+	        if(isOpenIdExsts(conn, openId)){
+	        	if(action.equals("REGISTER_UNIVERSITY")){
+	        		response.sendRedirect("./registerUser.jsp?action=ERROR_MESSAGE&code=4&"+param);
+	        	}else{
+	        		response.sendRedirect("jsp/Account.jsp?action=CREATE_USER&openIdExists=1");
+	        	}	
+	        	conn.close();
+	        	return;
 	        }
 	        if(action.equals("REGISTER_UNIVERSITY")&&isUniversityExists(conn,universityName)){
 	        	response.sendRedirect("./registerUser.jsp?action=ERROR_MESSAGE&code=3&"+param);
@@ -153,9 +184,9 @@ public class ProfileCreationActivationServlet extends HttpServlet {
 	        /*==========================================================*/
 			String qry = "";
 			if(action.equals("REGISTER_UNIVERSITY")){
-			  qry = "INSERT INTO users( username, password, email,user_full_name,id,enabled) VALUES ( ?, ?, ?, ?,?,0)";
+			  qry = "INSERT INTO users( username, password, email,user_full_name,id,enabled,title,last_name) VALUES ( ?, ?, ?, ?,?,0,?,?)";
 			}else{
-			  qry = "INSERT INTO users( username, password, email,user_full_name,id,enabled) VALUES ( ?, ?, ?, ?,?,1)";	
+			  qry = "INSERT INTO users( username, password, email,user_full_name,id,enabled,title,last_name) VALUES ( ?, ?, ?, ?,?,1,?,?)";
 			}
 			PreparedStatement insertStmt = conn.prepareStatement( qry );
 			insertStmt.setString( 1, user );
@@ -163,6 +194,8 @@ public class ProfileCreationActivationServlet extends HttpServlet {
 			insertStmt.setString( 3, mail );
 			insertStmt.setString(4, userFullName);
 			insertStmt.setInt(5,userid);
+			insertStmt.setString(6,title);
+			insertStmt.setString(7,lastName);
 			insertStmt.executeUpdate();
 			insertStmt.close();
 			if(action.equals("REGISTER_UNIVERSITY")){
@@ -178,48 +211,45 @@ public class ProfileCreationActivationServlet extends HttpServlet {
 			  department_id = institutionDepartmentId;
 			  designation_id = designationId;
 			}
-			qry = "INSERT INTO staff_master(userid,department_id,designation_id) VALUES ( ?, ?, ?)";
+			qry = "INSERT INTO staff_master(userid,department_id,designation_id,join_date,active_yesno) VALUES ( ?, ?, ?,?,1)";
 			insertStmt = conn.prepareStatement( qry );
-			insertStmt.setInt(1,userid);			
+			insertStmt.setInt(1,userid);
 			insertStmt.setString(2,department_id);
 			insertStmt.setString(3,designation_id);
+			insertStmt.setString(4,joining_date);
 			insertStmt.executeUpdate();
-			
+			System.out.println("openId :"+openId);
+			if(!openId.equals("")){
+				PreparedStatement openIdInstStmt=conn.prepareStatement("INSERT INTO user_openID_map(user_id,openId) VALUES(" + userid + ",'" + openId + "')");
+				openIdInstStmt.executeUpdate();
+				openIdInstStmt.close();				
+			}
 			/*========= Temporarily Commented the account activation using Mail Sending Procedure =========*/
 			sendemail( request, mail, user, pwd, action );
 			//response.sendRedirect("jsp/Accountconfirmation.jsp");
 			/*==========================================================================*/
 
-			
+
 			if(action.equals("REGISTER_UNIVERSITY")){
 				assignDefaultPrivileges(conn, user, "ROLE_ADMIN_UNIVERSITY" );
-				
+
 			}else{
-			  /*============================Roll Creation =======================*/			
-			  assignDefaultPrivileges(conn, user, "ROLE_PROFILE_CREATION" );//For Profile Creation 03-05-2011
-			
-			  /*================ Creating Folder for storing uploaded files 19-02-2011============*/
-			  Properties properties = new Properties();
-			  properties.load(new FileInputStream("../conf/fileuploadpath.properties"));
-		      String url = properties.getProperty("DESTINATION_DIR_PATH");
-		   	  CreateDir createdirobj= new CreateDir();
-			  createdirobj.CreateFolder(url,Integer.toString(userid));
-			  createdirobj.CreateFolder(url+"/"+Integer.toString(userid), "photo");
-			  /*============= End of Creating Folder for storing uploaded files 19-02-2011 ===================*/
+			  /*============================Roll Creation =======================*/
+			  assignDefaultPrivileges(conn, user, role );//For Profile Creation 03-05-2011
 			}
-			
+
 			/*==============================Account Creation Information============================================*/
 			String conPath = request.getContextPath();
 			if(action.equals("REGISTER_UNIVERSITY")){
-				 response.sendRedirect("./registerUser.jsp?action=SUCCESS_MESSAGE&code=1");  
+				 response.sendRedirect("./registerUser.jsp?action=SUCCESS_MESSAGE&code=1");
 			}else{
-			  String val = "You have Succesfully created an account. Account Information details sent to the user's email.";			
-			  response.sendRedirect(conPath + "/jsp/ActivateProfile.jsp?successVal=" + val);
-			}
-
+			  String val =ml.getValue("account_creation_info"); // "You have Succesfully created an account. Account Information details sent to the user's email.";
+			  response.sendRedirect(conPath + "/jsp/ActivateProfile.jsp?successVal=account_creation_info");
+			}		
 		}catch(Exception e)	{
 			System.out.println("error "+e.toString());
-		} finally{
+		} 
+		finally{
 			try {
 				conn.close();
 			} catch (SQLException e) {
@@ -296,12 +326,12 @@ public class ProfileCreationActivationServlet extends HttpServlet {
     		email.setHostName( hostIp );
     		email.setSmtpPort( port );
     		email.setAuthentication(userId, emailpwd);
-    		email.addTo( emailAddr, emailAddr );    		
+    		email.addTo( emailAddr, emailAddr );
     		email.setSubject("NFES Staff Registration Activation");
     		String scheme = request.getScheme();
     		String serverName = request.getServerName();
     		int portNumber = request.getServerPort();
-    		String contextPath = request.getContextPath();    		
+    		String contextPath = request.getContextPath();
     		String activationUrl = scheme + "://" + serverName + ":" + portNumber + contextPath;
     		String actKey = generateActivationKey( login );
     		StringBuffer msg = new StringBuffer();
@@ -311,14 +341,14 @@ public class ProfileCreationActivationServlet extends HttpServlet {
         		.append("<p>To complete the process, please click the link below:\n </p>")
         		.append("<a href=\""+ activationUrl + "/ProfileActivationServlet?userKey=" + actKey+"\">"+ activationUrl + "/ProfileActivationServlet?userKey=" + actKey+"</a>")
         		.append("<br>\n\n(Please note: If this doesn't appear as a link, no stress, just copy and paste it into your browser and press enter. Please make sure you get the entire link when you do this!)</br>");
-    		}else{	
+    		}else{
     		  msg.append("<html><body><p>Hello!\n</p>")
     		  .append("<p>This is an automatic message from NFES. Your NFES account is scuccessfully created.</p>")
     		  .append("<p>Application URL :"+activationUrl+" </p>");
     		}
-    		msg.append("<br>\n\n** ACCOUNT INFORMATION ** </br>")    		
+    		msg.append("<br>\n\n** ACCOUNT INFORMATION ** </br>")
     		.append("<br>\n\nUser name : " + login + "</br>")
-    		.append("\n\nPassword  :" + passWd + "\n\n")    		
+    		.append("\n\nPassword  :" + passWd + "\n\n")
     		.append("<p><br>Administrator</br>")
     		.append("\nNFES </body></html>\n");
     		email.setHtmlMsg( msg.toString() );
@@ -368,12 +398,12 @@ private void assignDefaultPrivileges( Connection conn, String userLogin, String 
 	 }
      rs.close();
 	 theStatement.close();//Close statement
-   }catch(Exception e){	    	
-     e.printStackTrace();			    
-   }	
+   }catch(Exception e){
+     e.printStackTrace();
+   }
    return id;
  }
- 
+
  private boolean isUniversityExists(Connection conn,String universityName){
 	 boolean res = false;
 	 try{
@@ -384,14 +414,14 @@ private void assignDefaultPrivileges( Connection conn, String userLogin, String 
 			}
 		rs.close();
 		theStatement.close();
-	 }catch(Exception e){	    	
-	     e.printStackTrace();			    
-	 }	
+	 }catch(Exception e){
+	     e.printStackTrace();
+	 }
 	 return res;
  }
 
  private String createInstitution(Connection conn,String institutionName,String address,String shortName,String location,String universityId){
-	 String id = "";  
+	 String id = "";
 	 try{
 	     Statement theStatement=conn.createStatement();
 		 theStatement.executeUpdate("insert into institution_master(name,address,short_name,location,university_id,active_yes_no)" +
@@ -402,9 +432,9 @@ private void assignDefaultPrivileges( Connection conn, String userLogin, String 
 		 }
 	     rs.close();
 		 theStatement.close();//Close statement
-	   }catch(Exception e){	    	
-	     e.printStackTrace();			    
-	   }	   
+	   }catch(Exception e){
+	     e.printStackTrace();
+	   }
 	   return id;
  }
  private String createInstitutionDepartment(Connection conn,String institutionId,String departmentId){
@@ -419,9 +449,9 @@ private void assignDefaultPrivileges( Connection conn, String userLogin, String 
 	   }
 	   rs.close();
 	   theStatement.close();//Close statement
-   }catch(Exception e){	    	
-	     e.printStackTrace();			    
-   }	
+   }catch(Exception e){
+	     e.printStackTrace();
+   }
    return id;
  }
  private String getMasterId(Connection conn,String category,String value){
@@ -434,9 +464,27 @@ private void assignDefaultPrivileges( Connection conn, String userLogin, String 
 	  }
 	  rs.close();
 	  theStatement.close();//Close statement
-	}catch(Exception e){	    	
-		     e.printStackTrace();			    
-	}	
+	}catch(Exception e){
+		     e.printStackTrace();
+	}
 	return id;
  }
+
+ private boolean isOpenIdExsts(Connection conn,String openId){	
+	 	boolean openidxists;
+		openidxists=false;
+		try{
+		  Statement theStatement=conn.createStatement();
+		  ResultSet rs = theStatement.executeQuery("SELECT * from user_openID_map where openid='"+openId+"'");
+		  while( rs.next() ){
+			  openidxists=true;
+		  }
+		  rs.close();
+		  theStatement.close();//Close statement
+		  return openidxists;
+		}catch(Exception e){
+			     e.printStackTrace();
+		}
+		return openidxists;		
+	 } 
 }

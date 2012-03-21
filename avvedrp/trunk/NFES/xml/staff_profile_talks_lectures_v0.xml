@@ -41,7 +41,7 @@ function submitform_staff_profile_talks_lectures_v0()
     	alert("To date cannot be less than From Date ");
     	return false ;
     }
-    if (isMandatoryDataExists(frmelement)=="1")
+    if (isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement))
     {			
 	document.myForm.upload.value=document.myForm01.uploadfiles.value;
 	docHtmlSave();
@@ -50,7 +50,7 @@ function submitform_staff_profile_talks_lectures_v0()
 function approve()
 {
      var frmelement=document.getElementById("staff_profile_talks_lectures_v0");
-    if (isMandatoryDataExists(frmelement)=="1")
+    if (isMandatoryDataExists(frmelement)=="1" &amp;&amp; validateForm(frmelement))
     {			
 	document.myForm.upload.value=document.myForm01.uploadfiles.value;
 	docHtmlRecordwiseApprove();
@@ -110,20 +110,20 @@ if (document.getElementById('reload_after_save').value!="null"){
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//institution_address/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//institution_address/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//institution_address/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//event_name/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//event_name/oioNS:prompt" /><span style="color:red">*</span></td>
 <td  class="tabBG4"><xsl:apply-templates select="//event_name/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//lecture_topic/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//lecture_topic/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//lecture_topic/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//talk_date_time/oioNS:prompt" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//talk_date_time/oioNS:prompt" /><span style="color:red">*</span></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//talk_date_time/oioNS:renderinfo" /></td>
 </tr>
 <tr>
@@ -156,7 +156,7 @@ if (document.getElementById('reload_after_save').value!="null"){
 
 <input type="hidden" name="action" value="" />
 <input type="HIDDEN" name="mandatory_fields" value="institution_address|event_name|lecture_topic|talk_date_time" />
-
+<input type="HIDDEN" name="validation_fields" value="url-U" />
 </form>
 
 <!--============================= Upload File =============================-->
