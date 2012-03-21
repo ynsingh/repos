@@ -210,15 +210,23 @@ class ProposalApprovalController {
     	GrailsHttpSession gh=getSession()
     	def proposalApplicationInstanceList=[]
     	def proposalApplicationInstance
+    	def proposalInstanceList=[]
+    	def proposalInstance
     	def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByReviewer(gh.getValue("UserId"),'PreProposal')
+    	for(int i=0;i<proposalApprovalAuthorityMapInstance.size();i++)
+	    {
+		  
+    		proposalInstance = Proposal.find("from Proposal P where P.id="+proposalApprovalAuthorityMapInstance[i].proposalId)
+    		 proposalInstanceList.add(proposalInstance)
+	    }
     	def ProposalApprovalValueInstance=proposalApprovalDetailService.getProposalApprovalDetailsByUserAndProposalType(gh.getValue("UserId"),'PreProposal')
-       	for(int i=0;i<ProposalApprovalValueInstance.size();i++)
+    	for(int i=0;i<ProposalApprovalValueInstance.size();i++)
 	    {
 		     proposalApplicationInstance = ProposalApplication.find("from ProposalApplication PA where PA.proposal.id="+ProposalApprovalValueInstance[i].proposalApproval.proposalApprovalAuthorityMap.proposalId)
 		     if(proposalApplicationInstance)
 		     proposalApplicationInstanceList.add(proposalApplicationInstance)
 	    }
-    	 [proposalApprovalInstance:proposalApprovalInstance,ProposalApprovalValueInstance:ProposalApprovalValueInstance,proposalApplicationInstanceList:proposalApplicationInstanceList]
+    	 [proposalApprovalInstance:proposalApprovalInstance,proposalInstanceList:proposalInstanceList,ProposalApprovalValueInstance:ProposalApprovalValueInstance,proposalApplicationInstanceList:proposalApplicationInstanceList]
     	 
     }
     def fullProposalReview = {
@@ -226,7 +234,16 @@ class ProposalApprovalController {
     	GrailsHttpSession gh=getSession()
     	def proposalApplicationInstanceList=[]
     	def proposalApplicationInstance
+    	def proposalInstanceList=[]
+    	def proposalInstance
     	def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByReviewer(gh.getValue("UserId"),'FullProposal')
+    	for(int i=0;i<proposalApprovalAuthorityMapInstance.size();i++)
+	    {
+		  
+    		proposalInstance = Proposal.find("from Proposal P where P.id="+proposalApprovalAuthorityMapInstance[i].proposalId)
+    		 proposalInstanceList.add(proposalInstance)
+	    }
+    	
     	def ProposalApprovalValueInstance=proposalApprovalDetailService.getProposalApprovalDetailsByUserAndProposalType(gh.getValue("UserId"),'FullProposal')
     	for(int i=0;i<ProposalApprovalValueInstance.size();i++)
 	    {
@@ -234,7 +251,7 @@ class ProposalApprovalController {
 		     if(proposalApplicationInstance)
 		     proposalApplicationInstanceList.add(proposalApplicationInstance)
 	    }
-    	 [proposalApprovalInstance:proposalApprovalInstance,ProposalApprovalValueInstance:ProposalApprovalValueInstance,proposalApplicationInstanceList:proposalApplicationInstanceList]
+    	 [proposalApprovalInstance:proposalApprovalInstance,ProposalApprovalValueInstance:ProposalApprovalValueInstance,proposalApplicationInstanceList:proposalApplicationInstanceList,proposalInstanceList:proposalInstanceList]
     	 
     }
 }

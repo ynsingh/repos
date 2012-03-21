@@ -1,4 +1,6 @@
 import java.text.SimpleDateFormat
+import java.text.*;
+import java.util.*;
 
 class GrantExpenseService {
 	
@@ -332,6 +334,140 @@ class GrantExpenseService {
 		 def accountHeadsExpenseTotal = GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.projects.id="+projectsId)
 		 return accountHeadsExpenseTotal
 	 }
+	 
+	 /*
+	  * Getting the Advance Fund List by grant allocation
+	  */
+	  
+	  public List getAdvanceFundListByGrantAllocation(def grantAllocationInstanceList)
+	 {
+		 def advanceFundInstanceList = []
+		 def formatter = new SimpleDateFormat("dd/MM/yy")
+		 def numformatter = new DecimalFormat("#0.00")
+		 for(grantAllocationInstance in grantAllocationInstanceList)
+ 		{
+			 def advanceFundList = FundAdvance.findAll("from FundAdvance FA where FA.grantAllocation.id="+grantAllocationInstance.id)
+			 for(fundAdvance in advanceFundList)
+			 {
+				String s = formatter.format(grantAllocationInstance.DateOfAllocation)
+				fundAdvance.grntAlln = s+"-"+numformatter.format(grantAllocationInstance.amountAllocated)
+				def fundAdvanceInstance = getBalanceAmount(fundAdvance)
+				advanceFundInstanceList.add(fundAdvanceInstance)
+			 }
+ 		}
+		 return advanceFundInstanceList
+	 }
+	 
+	 /*
+	  * Getting Advance fund Balance against one fund Advance
+	  */
+	  public FundAdvance getBalanceAmount(def fundAdvanceInstance)
+	 {
+		def totalExpense = getTotalExpense(fundAdvanceInstance.fundAdvanceCode)
+		if(fundAdvanceInstance.status == "Closed")
+		{
+		fundAdvanceInstance.balanceAmount = 0.00
+		}
+		else{
+			fundAdvanceInstance.balanceAmount = (fundAdvanceInstance.advanceAmount-totalExpense)
+		}
+		return fundAdvanceInstance
+	 }
+
+	  /*
+	  * Getting Total Expense against one fund Advance
+	  */
+	  public getTotalExpense(def fundAdvanceCode)
+	 {
+		def totalExpense = GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.fundAdvanceCode='"+fundAdvanceCode+"'")
+  		if(totalExpense[0] == null)
+  		{
+  			totalExpense[0] = 0.00
+  		}
+		return totalExpense[0]
+	 }
+	  
+	  /*
+	   * Getting Total Expense against one grant allocation split id
+	   */
+		  public getTotalExpenseForAnAccthd(def grantAllocationSplitInstance)
+		 {
+			  def totalExpenseForAnAccthd = GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.grantAllocationSplit.id="+grantAllocationSplitInstance.id)
+	  		if(totalExpenseForAnAccthd[0] == null)
+	  		{
+	  			totalExpenseForAnAccthd[0] = 0.00
+	  		}
+			return totalExpenseForAnAccthd[0]
+		 }
+		  
+	 
+	  /*
+	  * Getting expense list against one fund Advance
+	  */
+
+	  public getExpenseListAgainstFundAdvance(def fundAdvanceInstance)
+		 {
+			def grantExpenseInstanceList = GrantExpense.findAll("from GrantExpense GE where GE.fundAdvanceCode='"+fundAdvanceInstance.fundAdvanceCode+"'")
+	  		return grantExpenseInstanceList
+		 }
+
+	  /*
+	  * Getting FundAdvanceInstance against one grantReceipt
+	  */
+
+	  public getFundAdvanceByCode(def grantExpenseInstance)
+		 {
+			def fundAdvanceInstance = FundAdvance.find("from FundAdvance FA where FA.fundAdvanceCode='"+grantExpenseInstance.fundAdvanceCode+"'")
+	  		return fundAdvanceInstance
+		 }
+	  /*
+		  * Getting FundAdvanceCode from grantExpense
+		  */
+	 public getGrantExpenseByAdvanseCode(def fundAdvanceInstance)
+	  {
+		  def advanceExpenseEntry = GrantExpense.find("from GrantExpense GE where GE.fundAdvanceCode='"+fundAdvanceInstance.fundAdvanceCode+"'")
+		  return advanceExpenseEntry
+	  }
+
+	 /**
+	 * Get sum of Expense for a grant Allocation 
+	 */
+	 public double getTotalExpenseByGrantAllocation(def grantAllocationInstance){
+		 double totalExpense = 0.0
+		 def sumAmt = GrantExpense.executeQuery("select sum(GE.expenseAmount) as total from GrantExpense GE where GE.grantAllocation.id= "+grantAllocationInstance.id+" group by GE.grantAllocation");
+		 if(sumAmt[0]!=null)
+			 totalExpense = new Double(sumAmt[0]).doubleValue()
+		 return totalExpense
+	}
+	 
+	 /**
+	 * Get sum of Advance for a grant Allocation 
+	 */
+	 public double getTotalAdvanceByGrantAllocation(def grantAllocationInstance){
+		 double totalAdvance = 0.0
+		 def sumAmt = FundAdvance.executeQuery("select sum(FA.advanceAmount) as total from FundAdvance FA where  FA.grantAllocation.id= "+grantAllocationInstance.id+" group by FA.grantAllocation");
+		 if(sumAmt[0]!=null)
+			 totalAdvance = new Double(sumAmt[0]).doubleValue()
+		 return totalAdvance
+	}
+	 
+	 /*
+	 	 * Method To list All GrantAllocation By project Id That Grant AllocationAlso in ExternalFundAllocation 
+	 	 */
+	 	public List getgrantAllocationByProjectIdInExternalFundAllocation(def params)
+	 	{
+	 		def grantAllocationInstanceInExternalFundList = GrantAllocation.findAll("from GrantAllocation GA where GA.projects.id='"+params.id+"' and GA.id IN (SELECT EF.grantAllocation.id from ExternalFundAllocation EF)")
+		 	return grantAllocationInstanceInExternalFundList
+	 	}
+	 
+	 	/*
+	 	 * Method To sum of receivedAmount By GrantAllocation Id In External Fund
+	 	 */
+	 	public  getsumReceivedAmountByGrantAllotId(grantAllocationInstanceInExternalFundList)
+	 	{
+	 		def grantReceiptSumAmountInstance = GrantReceipt.executeQuery("select SUM(GR.amount)as total from GrantReceipt GR where GR.grantAllocation="+grantAllocationInstanceInExternalFundList+" group by GR.grantAllocation")
+		 	return grantReceiptSumAmountInstance
+	 	}
 }
 
 

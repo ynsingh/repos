@@ -86,7 +86,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" action="update" onClick="return validateMaster()" value="${message(code: 'default.button.update.label', default: 'Update')}" /></span>
+                    <span class="button"><g:actionSubmit class="save" action="update" onClick="return validateMaster()"  value="${message(code: 'default.Update.button')}" /></span>
                 </div>
             </g:form>
         </div>

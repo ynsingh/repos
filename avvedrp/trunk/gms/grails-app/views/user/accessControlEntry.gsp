@@ -26,6 +26,7 @@
                             <tr class="prop">
                                 <td valign="top" class="name">
                                 <label for="controllerName"><g:message code="default.UserName.label"/>:</label>
+                                <label for="controllerName" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td>
                                 <g:select from="${userMapInstance.user}" name="user.id" id="user.id" optionValue="username" optionKey="id"

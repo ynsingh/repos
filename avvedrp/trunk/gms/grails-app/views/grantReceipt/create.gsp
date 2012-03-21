@@ -20,7 +20,7 @@
                                   
                       <td valign="top" >
                           <label for="party"><g:message code="default.Institution.label"/>:</label>
-                          <strong>  ${fieldValue(bean:grantReceiptInstance.grantAllocation.party,field:'code')} </strong>
+                          <strong>  ${fieldValue(bean:grantReceiptInstance.grantAllocation?.party,field:'code')} </strong>
                       </td>
                             
                       <td valign="top" >
@@ -82,7 +82,7 @@
                                     </label>:
                                 </td>
                                 <td valign="top" class="value ${hasErrors(grantReceiptInstance,field:'grantAllocation','errors')}">
-                                    <g:select optionKey="id" optionValue="grantCode" from="${grantAllocationInstanceList}" name="grantAllocation.id" value="${grantReceiptInstance?.grantAllocation?.id}" noSelection="['null':'-Select-']"></g:select>
+                                    <g:select optionKey="id" optionValue="grantCode" from="${grantAllocationInstanceList}" name="grantAllocation.id"  noSelection="['null':'-Select-']"></g:select>
                                 </td>
                                 <td valign="top" class="name">
                                     <label for="fundTransfer">
@@ -133,7 +133,7 @@
                                             <label for="modeOfPayment" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'modeOfPayment','errors')}">
-                                            <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  
+                                            <g:select name="modeOfPayment" from="${['DD','Cheque','Bank Transfer','Cash']}"  
                                             onchange="${remoteFunction(controller:'grantExpense',action:'updateModeOfPayment',update:'fieldSelect',  params:'\'modeOfPayment=\' + this.value' )}"
                                             onFocus="${remoteFunction(controller:'grantExpense',action:'updateModeOfPayment',update:'fieldSelect',  params:'\'modeOfPayment=\' + this.value' )}"
                                             value="${fieldValue(bean:grantReceiptInstance,field:'modeOfPayment')}" noSelection="['null':'-Select-']"></g:select>
@@ -213,10 +213,7 @@
                    	        <g:sortableColumn property="referenceId" title="${message(code: 'default.FundsReceivedOrderNo.label')}" />
                    	        <g:sortableColumn property="amount" title="${message(code: 'default.Amount.label')}" />
                    	        <g:sortableColumn property="modeOfPayment" title="${message(code: 'default.ModeOfPayment.label')}" />
-                   	        <g:sortableColumn property="ddNo" title="${message(code: 'default.DD/ChequeNo.label')}" />
-                   	        <g:sortableColumn property="ddDate" title="${message(code: 'default.DD/ChequeDate.label')}" />
-                   	        <g:sortableColumn property="bankName" title="${message(code: 'default.BankName.label')}" />
-                   	        <g:sortableColumn property="ddBranch" title="${message(code: 'default.Branch.label')}" />
+                   	        <th><g:message code="default.refundGrant.label"/></th>
                    	        <th><g:message code="default.Edit.label"/></th>
                    	        
                        </tr>
@@ -226,17 +223,19 @@
                     <g:each in="${grantReceiptInstanceList}" status="i" var="grantReceiptListInstance" >
                       <% j++ %>
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                 
                             <td>${j}</td>
                             <td><g:formatDate format="dd/MM/yyyy" date="${grantReceiptListInstance.dateOfReceipt}"/></td>
                             <td>${fieldValue(bean:grantReceiptListInstance, field:'grantAllocationSplit.accountHead.code')}</td>                                               
                             <td>${fieldValue(bean:grantReceiptListInstance, field:'referenceId')}</td>                                               
                             <td>${currencyFormat.ConvertToIndainRS(grantReceiptListInstance.amount)}</td>
                             <td>${fieldValue(bean:grantReceiptListInstance, field:'modeOfPayment')}</td>
-                            <td>${fieldValue(bean:grantReceiptListInstance, field:'ddNo')}</td>
-                            <td><g:formatDate format="dd/MM/yyyy" date="${grantReceiptListInstance.ddDate}"/></td> 
-                            <td>${fieldValue(bean:grantReceiptListInstance, field:'bankName')}</td>
-                            <td>${fieldValue(bean:grantReceiptListInstance, field:'ddBranch')}</td>
+                            <%def externalFundInstanceCheck = ExternalFundAllocation.find("from ExternalFundAllocation EF where EF.grantAllocation.id="+grantReceiptListInstance.grantAllocation?.id)%>
+                             	<g:if test="${externalFundInstanceCheck}">
+	                        		<td><g:link controller="externalFundRefund" action="create" id="${fieldValue(bean:grantReceiptListInstance.grantAllocation, field:'id')}"><g:message code="default.refundGrant.label"/></g:link></td>
+								</g:if>
+								<g:else>
+			                		<td></td>
+                            	</g:else> 
                             <td><g:link action="edit" id="${grantReceiptListInstance.id}"><g:message code="default.Edit.label"/></g:link></td>
                         
                         </tr>

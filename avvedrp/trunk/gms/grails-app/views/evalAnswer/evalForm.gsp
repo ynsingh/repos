@@ -40,7 +40,8 @@
             <g:form name="evalForm" method="post" >
                	<g:hiddenField name="proposalId" value="${proposalId}" />	 
             	<g:hiddenField name="notificationId" value="${notificationId}" />	
-            	
+            	<input type="hidden" id="personStatus" name="personStatus" value="${personStatus}"/>
+            	<input type="hidden" id="reviewalStatus" name="reviewalStatus" value="${reviewalStatus}"/>
             	 <div id="proposalDiv" class="contentDiv">
                 <g:render template="proposalApplicationData" model="['proposalApplicationExtInstance':proposalApplicationExtInstance,'proposalApplicationInstance':proposalApplicationInstance,'attachmentsInstanceGetCV':attachmentsInstanceGetCV,'attachmentsInstanceGetDPR':attachmentsInstanceGetDPR]" />
                 </div>
@@ -83,7 +84,7 @@
                 <input type="button" id="remaxmin" onClick="changeCssClass('reviewDiv','remaxmin')"  value="${message(code: 'default.Maximize.button')}"/>
                 </div>
                
-                <g:if test="${proposalInstance.proposalStatus == 'Submitted'}">
+             
                 <div align="left">
                 
                     <g:if test="${evalAnswerInstanceList}">
@@ -94,7 +95,7 @@
                     </g:else>
                     <span class="button"><g:actionSubmit class="inputbutton" action="submitResult" value="${message(code: 'default.Submit.button')}" onClick="return validateEvalForm(${evalItemInstanceList.size()});"/></span>
 				</div>
-            	</g:if>
+            	
             	
               </g:if> 
                 <g:else>

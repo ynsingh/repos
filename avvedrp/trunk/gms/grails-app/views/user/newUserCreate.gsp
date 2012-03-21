@@ -45,6 +45,7 @@
 						</td>
 						<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
 							<input type="text" id="email" name="email" value="${person?.user?.email?.encodeAsHTML()}"/>
+							<label for="userId" style="color:blue;font-weight:bold"> <g:message code="default.register.userId.label"/></label>
 						</td>
 					</tr>    
 					<tr class="prop">
@@ -87,7 +88,30 @@
 						<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
 							<input type="text" id="userSurName" name="userSurName" value="${person?.user?.userSurName?.encodeAsHTML()}"/>
 						</td>
-					</tr>     
+					</tr>  
+					
+					<tr class="prop">
+
+						<td valign="top" class="name">
+						<label for="userDesignation"><g:message code="default.UserDesignation.label"/>:</label>
+						</td>
+
+						<td valign="top" class="value ${hasErrors(bean:person,field:'userDesignation','errors')}">
+							<input type="text" id="userDesignation" name="userDesignation" value="${person?.user?.userDesignation?.encodeAsHTML()}"/>
+						</td>
+					</tr>   
+					
+					<tr class="prop">
+
+						<td valign="top" class="name">
+						<label for="phNumber"><g:message code="default.ContactNo.label"/>:</label>
+						</td>
+
+						<td valign="top" class="value ${hasErrors(bean:person,field:'phNumber','errors')}">
+							<input type="text" id="phNumber" name="phNumber" value="${person?.user?.phNumber?.encodeAsHTML()}"/>
+						</td>
+					</tr>    
+					  
 	                <tr class="prop">
 	                        <td valign="top" class="name">
 	                            <label for="party"><g:message code="default.InstitutionCode.label"/>:</label>

@@ -13,9 +13,23 @@ class InvestigatorService {
 	}
 	
 	public List getInvestigatorsWithParty(def partyId)
-	{	   
+	{	
+		def invertigatrList = []
 		def investigatorList=Investigator.findAll("from Investigator I where I.party.id="+partyId+"and I.activeYesNo='Y'")
-		return investigatorList
+		for(investigator in investigatorList)
+		 {
+			if(investigator.userSurName == null)
+			{
+				investigator.fullName = investigator.name
+				invertigatrList.add(investigator)
+			}
+			else{
+				investigator.fullName = investigator.name+" "+investigator.userSurName
+				invertigatrList.add(investigator)
+			}
+		
+		 }
+		return invertigatrList
 	}
    
    /**
@@ -106,4 +120,29 @@ class InvestigatorService {
   		def investigatorInstance = Investigator.find("from Investigator I where I.email='"+email+"'")
 		return investigatorInstance
   	 }
+  	
+  	/*
+  	 * Getting All Investigator List
+  	 */
+  	 
+  	public List getAllInvestigators()
+ 	{  
+  		def invertigatrList = []
+ 		def investigatorInstanceList=Investigator.findAll("from Investigator I where I.activeYesNo='Y'")
+ 		for(investigator in investigatorInstanceList)
+		 {
+ 			if(investigator.userSurName == null)
+			{
+ 				investigator.fullName = investigator.name
+ 				invertigatrList.add(investigator)
+			}
+			else{
+				investigator.fullName = investigator.name+" "+investigator.userSurName
+				invertigatrList.add(investigator)
+			}
+			
+		
+		 }
+		return invertigatrList
+ 	}
 }

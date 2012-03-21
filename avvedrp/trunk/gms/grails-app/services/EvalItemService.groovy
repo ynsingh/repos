@@ -350,7 +350,7 @@ class EvalItemService {
          */
        public def getEvalScore(def proposalValInstance)
        {
-        def evalScoreInstance = EvalScore.find("from EvalScore ES where ES.proposal.id ="+proposalValInstance.id)
+        def evalScoreInstance = EvalScore.find("from EvalScore ES where ES.proposal.id ="+proposalValInstance.id+" and ES.activeYesNo ='Y'")
         return evalScoreInstance
        }
      

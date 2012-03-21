@@ -171,7 +171,6 @@ class GrantReceiptController extends GmsController {
     }
 
     def create = {
-			println "params="+params
 		def grantReceiptService = new GrantReceiptService();
 		def grantAllocationService = new GrantAllocationService()
     	def grantAllocationSplitService=new GrantAllocationSplitService()	
@@ -219,7 +218,7 @@ class GrantReceiptController extends GmsController {
         
 		if(params.id ==null)
         {
-        	grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.projectId)
+			grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.projectId)
         	fundTransferInstanceList= fundTransferService.getFundTransferDetailsByProject(params.projectId)
         	
         }
@@ -266,9 +265,8 @@ class GrantReceiptController extends GmsController {
         NumberFormat formatter = new DecimalFormat("#0.00") 
         grantReceiptInstance.balanceAmt = projectsInstance.totAllAmount - totalAmountReceived
         println "grantAllocationInstanceList"+grantAllocationInstanceList.size()
-        grantReceiptInstance.grantAllocation = grantAllocationInstanceList[0]
-        
-        
+        //grantReceiptInstance.grantAllocation = grantAllocationInstanceList[0]
+        //println"------- grantReceiptInstance.grantAllocation----------------"+ grantReceiptInstance.grantAllocation
         ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
         return ['grantReceiptInstance':grantReceiptInstance,
                 'grantReceiptInstanceList':grantReceiptList,
@@ -282,8 +280,7 @@ class GrantReceiptController extends GmsController {
     }
 
     def save = {
-    	println params
-		def grantReceiptService = new GrantReceiptService();
+    	def grantReceiptService = new GrantReceiptService();
     	def grantAllocationService = new GrantAllocationService()
         def grantReceiptInstance = new GrantReceipt(params)
         def fundTransferInstance = new FundTransfer()

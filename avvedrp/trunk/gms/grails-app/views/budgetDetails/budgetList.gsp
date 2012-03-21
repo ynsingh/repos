@@ -1,23 +1,21 @@
+
+
 <html>
-	<head>
+    <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title><g:message code="default.assignedBudgetDetail.label"/></title>
-    </head>
+     </head>
     <body>
-     
     <g:javascript library="application"/>
-     <g:if test="${budgetModMapInstance.moduleType[0]=='Notification'}">
-            <g:subMenuNotification/>
-     </g:if>
-     <g:if test="${budgetModMapInstance.moduleType[0]=='Projects'}">
-            <g:subMenuList/>
-     </g:if>
+    <modalbox:modalIncludes/>
     <div class="wrapper">
-     <div class="dialog">
-       <div class="body">
-           <h1><g:message code="default.assignedBudgetDetail.label" args="[entityName]" /></h1>
-       	 <div class="list">
+     
+      <div class="body">
+            <g:if test="${flash.message}">
+            <div class="message">${flash.message}</div>
+            </g:if>
+            <div class="dialog">
+            <h1><g:message code="default.assignedBudgetDetail.label"/><h1>
         	<g:if test="${budgetMasterInstanceList}">
         	   <table>
                  <thead>

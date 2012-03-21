@@ -347,5 +347,64 @@ class NotificationsEmailsService {
         transport.close();*/
         return true;
     }
+    
+    /*
+     * Function to send mail to Site Admin
+     */
+    
+    public boolean sendConfirmation(def emailId,def mailSubject,def mailMessage,def contentType)
+    {
+    	def mailServerStatus = true
+    	String host = gmsSettingsService.getGmsSettingsValue("MailHost")
+        String username = gmsSettingsService.getGmsSettingsValue("MailUserName") 
+        String password = gmsSettingsService.getGmsSettingsValue("MailPassword")
+        String port = gmsSettingsService.getGmsSettingsValue("MailPort")
+        String from = gmsSettingsService.getGmsSettingsValue("MailFrom")
+        String isSSL = gmsSettingsService.getGmsSettingsValue("isSSL")
+         
+	    String[] to={emailId};
+		Properties props = new Properties();
+		props.put("mail.smtp.user", username);
+		props.put("mail.smtp.host", host);
+		if(!"".equals(port))
+		props.put("mail.smtp.port", port);
+		if(!"false".equals(isSSL))
+		{
+		System.out.println("SSL");
+		  props.put("mail.smtp.starttls.enable","true");  
+		  props.put("mail.smtp.socketFactory.port", port);
+		  props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+		  props.put("mail.smtp.socketFactory.fallback", "false");
+		}
+		props.put("mail.smtp.auth", "true");
+		if(true){
+			props.put("mail.smtp.debug", "true");
+		}else{
+			props.put("mail.smtp.debug", "false");          
+		}
+		 try
+		{
+	    	Session session = Session.getDefaultInstance(props, null);
+		    session.setDebug(true); 
+		    MimeMessage msg = new MimeMessage(session);
+	        msg.setContent(mailMessage, contentType);
+		    msg.setSubject(mailSubject);
+	        msg.setFrom(new InternetAddress(from));
+		    for(int i=0;i<to.length;i++){
+		         msg.addRecipient(Message.RecipientType.TO, new InternetAddress(emailId));
+		    }
+		    Transport transport = session.getTransport("smtp");
+		    transport.connect(host, username, password);
+		    transport.sendMessage(msg, msg.getAllRecipients());
+		    transport.close();
+		    return true;
+		  }
+		  catch (Exception mex)
+		  {
+			  mex.printStackTrace();
+		      return false;
+	      } 
+	      return mailServerStatus;
+    }
    
 }

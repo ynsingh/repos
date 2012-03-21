@@ -19,6 +19,8 @@
 			</g:hasErrors>
 			<g:form>
 				<input type="hidden" name="id" value="${person.id}" />
+				<input type="hidden" name="party.id" value="${party.id}" />
+				<input type="hidden" name="authority" value="${authorityPersonInstance}" />
 				<input type="hidden" name="version" value="${person.version}" />
 				<div class="dialog">
 					<table>
@@ -55,6 +57,27 @@
 								<input type="text" id="userSurName" name="userSurName" value="${person.userSurName?.encodeAsHTML()}"/>
 							</td>
 						</tr>
+						
+						<tr class="prop">
+							<td valign="top" class="name">
+							<label for="userDesignation"><g:message code="default.UserDesignation.label"/>:</label>
+							</td>
+	
+							<td valign="top" class="value ${hasErrors(bean:person,field:'userDesignation','errors')}">
+								<input type="text" id="userDesignation" name="userDesignation" value="${person?.userDesignation?.encodeAsHTML()}"/>
+							</td>
+						</tr>   
+					
+						<tr class="prop">
+							<td valign="top" class="name">
+							<label for="phNumber"><g:message code="default.ContactNo.label"/>:</label>
+							</td>
+	
+							<td valign="top" class="value ${hasErrors(bean:person,field:'phNumber','errors')}">
+								<input type="text" id="phNumber" name="phNumber" value="${person?.phNumber?.encodeAsHTML()}"/>
+							</td>
+						</tr>
+						
 					<g:if test="${personRoleInstance.authority == 'ROLE_SUPERADMIN'}">
 					    <tr class="prop">	
 							<td valign="top" class="name">
@@ -103,9 +126,15 @@
 						</tbody>
 					</table>
 				</div>
-	
 				<div class="buttons">
-					<span class="button"><g:actionSubmit class="save" action="update" onclick="return validateEditUser();" value="${message(code: 'default.Update.button')}" /></span>				
+				   <span class="button"><g:actionSubmit class="save" action="update" onclick="return validateEditUser();" value="${message(code: 'default.Update.button')}" /></span>				
+				     <g:if test="${personRoleInstance.authority == 'ROLE_SUPERADMIN'}">	
+				        <g:if test="${authorityPersonInstance.authority == 'ROLE_SUPERADMIN'}">
+					    </g:if>
+				        <g:else>
+				          <span class="button"><g:actionSubmit class="delete" action="deleteUser" value="${message(code: 'default.Delete.button')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/></span>
+				        </g:else>
+				    </g:if>
 				</div>
 			</g:form>
 		</div>

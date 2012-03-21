@@ -461,6 +461,13 @@ class ProposalController {
 	        	proposalInstance.properties = params
 	            proposalInstance.lockedYN='N'
 	            proposalInstance.proposalStatus = "Submitted"
+	            def evalScoreInstance = EvalScore.findAll("from EvalScore ES where ES.proposal.id="+proposalInstance.id)
+	            if(evalScoreInstance)
+	            {
+	            	println"evalScoreInstance------"+evalScoreInstance
+	            	evalScoreInstance[0].activeYesNo = 'N'
+	            	evalScoreInstance[0].noOfReviewers = 0
+	            }
 	            def aprovalAuthorityDetailInstance = approvalAuthorityDetailService.getDefaultApprovalAuthorityDetailsByParty(proposalInstance.notification.party.id)
 	            def proposalInstanceSave =proposalService.updateProposal(proposalInstance)
 	            /*methhod to get all submitted proposal of the notification*/
@@ -1265,7 +1272,7 @@ class ProposalController {
      */
 
     def preProposalList = {
-        def proposalInstance = Proposal.get(params.id)
+    	def proposalInstance = Proposal.get(params.id)
 	    def proposalApplicationInstanceList = []
     	GrailsHttpSession gh=getSession()
     	def proposalInstanceList = proposalService.getUserInstance(gh.getValue("UserId"))
@@ -1275,7 +1282,6 @@ class ProposalController {
     			def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(proposalInstanceList[i].id)
         		 proposalApplicationInstanceList.add(proposalApplicationInstance)
     	 }
-    	
     	 [proposalInstanceList: proposalInstanceList,proposalApplicationInstanceList: proposalApplicationInstanceList]
     }
 
@@ -1348,8 +1354,9 @@ class ProposalController {
     			  proposalInstance = proposalService.updatePreProposal(params,proposalInstance)
     			 if( proposalInstance.saveMode.equals( "Updated")) 
     			  {
-    		   		 def proposalApplicationInstance = proposalService.getProposalApplicationByProposalId(proposalInstance.id)
-    	    		 proposalApplicationInstance.projectTitle=params.projectTitle
+    				 def proposalApplicationInstance = proposalService.getProposalApplicationByProposalId(proposalInstance.id)
+    		   		 proposalApplicationInstance.projectTitle=params.projectTitle
+    	    		 proposalApplicationInstance.properties = params
     				 proposalApplicationInstance.save()
     			     flash.message = "${message(code: 'default.updated.message', args: [message(code: 'preProposal.label', default: 'PreProposal'), proposalInstance.id])}"
     			     redirect(action: "preProposalApplication", id: proposalInstance.id)

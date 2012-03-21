@@ -64,7 +64,7 @@
         					</g:else>
                             <td><g:link action="proposalList" controller='proposal' id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.View.label"/></g:link></td>
                             
-                             <td><g:link action="budgetList" controller='budgetDetails' id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.View.label"/></g:link></td>
+                             <td><g:link action="assignedBudget" controller='budgetDetails' id="${fieldValue(bean:notificationInstance, field:'id')}" params="[moduleType:'Notification']"><g:message code="default.View.label"/></g:link></td>
                             
                             <td><g:link action="notificationAuthorityMap" controller='notification' id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.AssignNotification.label"/></g:link></td>
                             

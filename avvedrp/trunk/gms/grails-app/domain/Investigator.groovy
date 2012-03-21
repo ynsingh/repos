@@ -11,9 +11,11 @@ class Investigator
 	static constraints = 
 	{
 		
-		department(nullable:true,blank:false)
+		department(nullable:true)
 		name(nullable:false,blank:false)
 		userSurName(nullable:false,blank:false)
 		email(email:true,blank:false,unique: true)
     }
+	String fullName
+    static transients = [ "fullName" ]
 }

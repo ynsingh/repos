@@ -22,12 +22,10 @@
                         <tr>
                         	<g:sortableColumn property="id" title="${message(code: 'default.SINo.label', default: 'Id')}" />
                             
-                            <th><g:message code="default.Institution.label"  /></th>
-                         
                             <g:sortableColumn property="projectTitle" title="${message(code: 'default.ProposalTitle.label')}" />
                         
-                            <th><g:message code="default.Investigator.label"  /></th>
-                        
+                            <th><g:message code="default.ProposalCategory.label"  /></th>
+                         
                             <g:sortableColumn property="preProposalStatus" title="${message(code: 'default.PreProposalStatus.label')}" />
                             
                             <th><g:message code="default.Edit.label"/></th>
@@ -39,35 +37,32 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
                              <td>${i+1}</td> 
-                             <td>${fieldValue(bean: proposalInstance, field: "party.code")}</td>
-                             <td>${proposalApplicationInstanceList[i].projectTitle}</td> 
-                             <td>${fieldValue(bean: proposalInstance, field: "person.username")}</td>
+                             <td>${proposalApplicationInstanceList[i].projectTitle}</td>
+                               
+                             <td>${proposalApplicationInstanceList[i].proposalCategory.name}</td>
                               
-                            <g:if test ="${proposalInstance.proposalStatus == 'Submitted'}">
-                              
-                            
-                            <td><g:link action="preProposalReviewalStatus" controller = "proposal" id="${fieldValue(bean:proposalInstance, field:'id')}"><g:message code="default.Reviewing.label"/></g:link></td>
-                            </g:if>
-                        <g:else>
-                           <g:if test = "${proposalInstance.proposalStatus =='Approved'}">
-                           <td><g:link action="preProposalReviewalStatus" controller = "proposal" id="${fieldValue(bean:proposalInstance, field:'id')}" >${proposalInstance.proposalStatus}</g:link></td>
-                           </g:if>
-                           <g:else>
-                           <g:if test = "${proposalInstance.proposalStatus =='NeedMoreInfo'}">
-                           <td><g:link action="preProposalReviewalStatus" controller = "proposal" id="${fieldValue(bean:proposalInstance, field:'id')}" >${proposalInstance.proposalStatus}</g:link></td>
-                           </g:if>
-                          
-                           <g:else>
-                           <td>${proposalInstance.proposalStatus}</td>
-                           </g:else>
-                           </g:else>
-                           </g:else>
-                           <g:if test = "${proposalInstance.proposalStatus =='NeedMoreInfo' || proposalInstance.proposalStatus =='Submitted' || proposalInstance.proposalStatus =='Saved'}">
-                           <td><g:link action="preProposalEdit" id="${fieldValue(bean:proposalInstance, field:'id')}"><g:message code="default.Edit.label"/></g:link></td>
-                           </g:if>
-                           <g:else>
-                           <td></td>
-                           </g:else>
+                             <g:if test ="${proposalInstance.proposalStatus == 'Submitted'}">
+                              <td><g:link action="preProposalReviewalStatus" controller = "proposal" id="${fieldValue(bean:proposalInstance, field:'id')}"><g:message code="default.Reviewing.label"/></g:link></td>
+                             </g:if>
+                          	 <g:else>
+	                           <g:if test = "${proposalInstance.proposalStatus =='Approved'}">
+	                            <td><g:link action="preProposalReviewalStatus" controller = "proposal" id="${fieldValue(bean:proposalInstance, field:'id')}" >${proposalInstance.proposalStatus}</g:link></td>
+	                           </g:if>
+	                           <g:else>
+	                           <g:if test = "${proposalInstance.proposalStatus =='NeedMoreInfo'}">
+	                            <td><g:link action="preProposalReviewalStatus" controller = "proposal" id="${fieldValue(bean:proposalInstance, field:'id')}" >${proposalInstance.proposalStatus}</g:link></td>
+	                           </g:if>
+	                      	 <g:else>
+                             <td>${proposalInstance.proposalStatus}</td>
+                             </g:else>
+                             </g:else>
+                             </g:else>
+                             <g:if test = "${proposalInstance.proposalStatus =='NeedMoreInfo' || proposalInstance.proposalStatus =='Submitted' || proposalInstance.proposalStatus =='Saved'}">
+                              <td><g:link action="preProposalEdit" id="${fieldValue(bean:proposalInstance, field:'id')}"><g:message code="default.Edit.label"/></g:link></td>
+                             </g:if>
+                             <g:else>
+                             <td></td>
+                             </g:else>
                            
                         </tr>
                     </g:each>

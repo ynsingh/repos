@@ -29,28 +29,28 @@
 	<parameter name="periodID" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="reportDate" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="reportDateTo" isForPrompting="false" class="java.lang.String"/>
-	<queryString><![CDATA[SELECT p.id,ga.id,ga.amount_allocated,p.code ProjectCode ,p.name ProjectName,pa.code Instituion,
+	<queryString><![CDATA[SELECT p.id,gat.id,gat.amount_allocated,p.code ProjectCode ,p.name ProjectName,pa.code Instituion,
 pa1.code GrandAgency,
 
 (SELECT  IF(SUM(gr1.amount) IS NULL,0,SUM(gr1.amount)) FROM grant_allocation ga1 LEFT JOIN grant_receipt gr1
-ON (  gr1.grant_allocation_id=ga1.id  ) WHERE ga1.id=ga.id AND DATE(gr1.date_of_receipt) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y') 
+ON (  gr1.grant_allocation_id=ga1.id  ) WHERE ga1.id=gat.id AND DATE(gr1.date_of_receipt) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y') 
 GROUP BY ga1.id) AS FuntAmt,
 (SELECT IF(SUM(FT.amount) IS NULL,0,SUM(FT.amount)) FROM grant_allocation GA LEFT JOIN 
          fund_transfer FT  ON(GA.id=FT.grant_allocation_id)
-         WHERE GA.id=ga.id AND DATE(FT.date_of_transfer) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y') GROUP BY GA.id) AS FundTransfd,
+         WHERE GA.id=gat.id AND DATE(FT.date_of_transfer) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y') GROUP BY GA.id) AS FundTransfd,
 
 (SELECT  IF(SUM(gr2.expense_amount) IS NULL,0,SUM(gr2.expense_amount)) 
 FROM grant_allocation ga2
 LEFT JOIN grant_expense gr2
  ON  (  gr2.grant_allocation_id=ga2.id  )
-WHERE ga2.id=ga.id AND DATE(gr2.date_of_expense) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y') 
+WHERE ga2.id=gat.id AND DATE(gr2.date_of_expense) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y') 
 GROUP BY ga2.id) AS FuntExp
 
-FROM grant_allocation ga,
+FROM grant_allocation gat,
 projects p ,party pa ,party pa1
 WHERE 
- p.id=ga.projects_id AND
-pa.id=ga.party_id AND pa1.id=ga.granter_id  
+ p.id=gat.projects_id AND
+pa.id=gat.party_id AND pa1.id=gat.granter_id  
 AND pa1.id =$P{partyID}
 ORDER BY pa.id]]></queryString>
 
@@ -417,28 +417,6 @@ ORDER BY pa.id]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ProjectName}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="3"
-						y="4"
-						width="36"
-						height="15"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField-4"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
-				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
@@ -592,6 +570,28 @@ ORDER BY pa.id]]></queryString>
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{FuntExp}!=null?new Double(($F{FuntExp}!=null?$F{FuntExp}:new Double(0)).doubleValue()/($F{FuntAmt}!=null?$F{FuntAmt}:new Double(0)).doubleValue()):($F{FuntAmt}!=null?$F{FuntAmt}:new Double(0))]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="5"
+						y="4"
+						width="25"
+						height="27"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

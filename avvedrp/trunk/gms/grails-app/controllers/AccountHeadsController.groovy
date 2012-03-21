@@ -40,7 +40,7 @@ class AccountHeadsController
 
     def save = 
     {
-        def accountHeadsInstance = new AccountHeads(params)
+       def accountHeadsInstance = new AccountHeads(params)
         def accountHeadsService = new AccountHeadsService()
         if(!accountHeadsInstance.hasErrors() ) 
         {
@@ -164,13 +164,11 @@ class AccountHeadsController
 	 
     def delete = 
     {
-			 println"-------------------params--------------"+params
-    		def accountHeadsInstance = new AccountHeads()
+			def accountHeadsInstance = new AccountHeads()
     		def accountHeadsService = new AccountHeadsService()
             accountHeadsInstance.properties = params
             Integer accountHeadId = null
             def accountHeadInBudgetDetail =BudgetDetails.find("from BudgetDetails BD where BD.accountHeads.id="+params.id)
-			println"-----------accountHeadInBudgetDetail-------------"+accountHeadInBudgetDetail
 			if(accountHeadInBudgetDetail)
 			{
 				flash.message = "${message(code: 'default.usedinAllocated.label')}"

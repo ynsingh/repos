@@ -43,7 +43,13 @@
                             
                             
                         </tr>
-                    
+                       <tr class="prop">
+                            <td valign="top" class="name"><g:message code="default.BudgetDetails.label"/></td>
+                            <td>
+                           	<modalbox:createLink controller="budgetDetails" action="budgetList" id="${fieldValue(bean:notificationsInstance, field:'id')}" title="${message(code: 'default.BudgetDetails.label')}" width="900" params="[moduleType:'Notification']" ><g:message code="${message(code: 'default.View.label')}"/></modalbox:createLink>
+                           	</td>
+                            
+                        </tr>
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="default.Description.label"/></td>
                             

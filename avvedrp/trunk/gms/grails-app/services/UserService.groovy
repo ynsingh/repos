@@ -11,7 +11,7 @@ class UserService{
 	 * Function to get all user map with active party
 	 */
 	public List getAllUserMapWithActiveParty(){
-		def userMapInstanceList =UserMap.findAll("from UserMap P  where P.party.id in (select PA.id from Party PA where PA.activeYesNo='Y')")
+		def userMapInstanceList =UserMap.findAll("from UserMap P  where P.party.id in (select PA.id from Party PA where PA.activeYesNo='Y') and P.user.id in(select PR.id from Person PR where PR.activeYesNo='Y') order by P.party.id")
 		return userMapInstanceList
 	}
 	
@@ -114,7 +114,7 @@ class UserService{
 	 */
 	public List getAllUsersFromSite(def party,String subQuery){
 		
-		def userMapList = UserMap.findAll("from UserMap UM where  UM.party = "+party+subQuery)
+		def userMapList = UserMap.findAll("from UserMap UM where UM.user.id in(select PR.id from Person PR where PR.activeYesNo='Y') and UM.party = "+party+subQuery)
 		return userMapList
 	}
 	
@@ -299,7 +299,7 @@ class UserService{
 		def userMap=new UserMap()
 		userMap.user=person
 			
-			if(params.role == 'ROLE_SUPERADMIN')
+			if(params.institutions)
 				 party=  Party.find("from Party  PA  where PA.id= "+params.institutions)
 			else
 				 party=  Party.find("from Party  PA  where PA.id= "+params.get("party.id"))
@@ -393,7 +393,7 @@ class UserService{
 	 */
 	public Integer getUserByUserName(String userName){
 		Integer userId = null;
-		def person  = Person.find("from Person U where U.username='"+userName+"'");
+		def person  = Person.find("from Person U where U.username='"+userName+"' and U.activeYesNo='Y'");
 		if(person)
 			userId = person.id
 		return userId
@@ -456,12 +456,10 @@ class UserService{
 		
 		  if(!authorityInstance.hasErrors() && authorityInstance.save()) 
 					{
-						println"true....."
 						authorityInstanceSave=true
 					}
 					else
 					{
-						println "false++++++++++++++++"
 						authorityInstanceSave=false
 					}
 				return authorityInstanceSave
@@ -490,12 +488,10 @@ class UserService{
 		authorityInstance.properties = params
 			if(!authorityInstance.hasErrors() && authorityInstance.save()) 
 			{
-				println"true....."
 				authorityInstanceUpdate=true
 			}
 			else
 			{
-				println "false++++++++++++++++"
 				authorityInstanceUpdate=false
 			}
 		return authorityInstanceUpdate
@@ -557,7 +553,7 @@ class UserService{
 	  */
 	 public getAuthoritiesExceptSiteAdminPiAndSuperAdmin()
 		 {
-		     def authorityInstance =  Authority.findAll("from Authority R where R.activeYesNo='Y' and  authority NOT IN ('ROLE_SITEADMIN', 'ROLE_SUPERADMIN','ROLE_PI')")
+		       def authorityInstance =  Authority.findAll("from Authority R where R.activeYesNo='Y' and  authority NOT IN ('ROLE_SUPERADMIN')")
 			 return authorityInstance
 		 }
 	 /*
@@ -646,12 +642,33 @@ class UserService{
 	  }
      
 	   /*
-		   * Function to get Authority List Excluded ROLE_SITEADMIN &ROLE_SUPERADMIN
-		   */
-		   public getAuthorityListExRoles(def userId)
+		* Function to get Authority List Excluded ROLE_SITEADMIN &ROLE_SUPERADMIN
+		*/
+		 public getAuthorityListExRoles(def userId)
 		  {
 			   def authorityList = Authority.findAll("from Authority R where R.activeYesNo='Y' and not authority in('ROLE_SITEADMIN','ROLE_SUPERADMIN')")
 			   return authorityList
 		  }
-     
+     /*
+      * Function to get SiteAdmin of a party 
+      */
+      public getSiteAdminOfReceiver(def userMapList,def authorityInstance)
+     {
+    	 for(userInstance in userMapList){
+    		 
+    		def userRoleInstance = UserRole.executeQuery("select UR.user from UserRole UR where UR.user.id="+userInstance.user.id+ "and UR.role.id ="+authorityInstance.id)
+    		if(userRoleInstance){
+    			return userRoleInstance
+    		}
+    	 }
+    	  return
+     }
+     /*
+      * Function to get Super Admin 
+      */
+     public getSuperAdminUser(def partyId)
+      {
+    	 def userMapInstance = UserMap.executeQuery("select UM.party.id from UserMap UM where party.id='"+partyId+"'AND UM.user.id IN(select UR.user.id from UserRole UR where UR.role.id IN(select A.id from Authority A where A.authority='ROLE_SUPERADMIN'))")
+    	 return userMapInstance
+      }
 }

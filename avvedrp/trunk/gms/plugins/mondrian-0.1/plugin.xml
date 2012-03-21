@@ -1,0 +1,4 @@
+<plugin name='mondrian' version='0.1'>
+  <author>Tom Dallaway</author>
+  <title>This plugin installs Pentaho Mondrian into your Grails application.</title>
+</plugin>

@@ -25,11 +25,9 @@
                         
                             <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
                         
-                            <th><g:message code="default.Institution.label"  /></th>
-                        
                             <th><g:message code="default.ProposalTitle.label"/></th>
                            
-                            <th><g:message code="default.Investigator.label"/></th>
+                            <th><g:message code="default.SubmittedBy.label"/></th>
                             
                             <th><g:message code="default.FullProposalStatus.label"/></th>
                             <th><g:message code="default.ApprovalAuthority.label"  /></th>
@@ -42,12 +40,11 @@
                     <g:each in="${fullProposalApprovalInstanceList}" status="i" var="proposalInstance" >
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                             <td>${i+1}</td>
-                            <td>${proposalInstance.party.code}</td>
                             <td>${proposalApplicationList[i].projectTitle}</td>
                             <td>${proposalInstance.person.username}</td>
                             <td>${proposalInstance.proposalStatus}</td>
                             <td>${proposalApprovalAuthorityMapInstanceList[i].approvalAuthority.name}</td>
-                            <td><g:link action="budgetList" controller='budgetDetails' id="${fieldValue(bean:proposalInstance, field:'id')}"><g:message code="default.View.label"/></g:link></td>
+                            <td><g:link action="budgetList" controller='budgetDetails' id="${fieldValue(bean:proposalInstance, field:'id')}"  params="[moduleType:'FullProposal']"><g:message code="default.View.label"/></g:link></td>
                             <td>
                       		  <g:if test="${proposalApprovalAuthorityMapInstanceList[i].viewAll!='Y'}">
                          		<g:link controller="proposalApprovalDetail" action="fullProposalReview" id="${proposalInstance.id}" params="['id':proposalInstance.id,'proposalApprovalAuthorityMap.id':proposalApprovalAuthorityMapInstanceList[i].id]" id="${proposalInstance.id}"><g:message code="default.Approve/Reject.label" /></g:link>

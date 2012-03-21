@@ -29,6 +29,12 @@
 	            		${currencyFormat.ConvertToIndainRS(grantExpenseInstance.currentBalance)}
             		</strong>
         		</td>
+        	<td><g:message code="default.ExternalAmountReceived.label"/>:</td>
+             <td ><strong>
+	            		<g:message code="default.Rs.label" />
+	            		${sum}
+            		</strong>
+        		</td>
               </tr>
       	   </table> 
       	 </div>  
@@ -110,9 +116,8 @@
                                             <label for="modeOfPayment" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'modeOfPayment','errors')}">
-                                            <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  
+                                            <g:select name="modeOfPayment" from="${['DD','Cheque','Bank Transfer','Cash']}"  
                                             onchange="${remoteFunction(controller:'grantExpense',action:'updateModeOfPayment',update:'fieldSelect',  params:'\'modeOfPayment=\' + this.value' )}"
-                                            onFocus="${remoteFunction(controller:'grantExpense',action:'updateModeOfPayment',update:'fieldSelect',  params:'\'modeOfPayment=\' + this.value' )}"
                                             value="${fieldValue(bean:grantExpenseInstance,field:'modeOfPayment')}" noSelection="['null':'-Select-']"></g:select>
                                          </td>
                                     </tr>      
@@ -216,73 +221,85 @@
                   <tr>
                      <td>
                        <g:if test="${grantExpenseInstanceList}">
-                            <div id="ss" class="list" style="overflow:auto ;height:150px; width:100%">
-                             <table width="100%" height="" cellspacing="0">
-                               <thead>
-                               
-                                  <tr> 
-                                     <th><g:message code="default.SINo.label"/></th>
-                   	                 <th><g:message code="default.ExpenseDate.label"/></th>
-               	                     <th><g:message code="default.AccountHeads.label"/></th>
-                                     <th><g:message code="default.ExpenseAmount(Rs).label"/></th>
-                                     <th><g:message code="default.Description.label"/></th>
-                                     <th><g:message code="default.Edit.label"/></th>
-                                  </tr>
-                                  
-                               </thead>
-                               <tbody>
-                                  <% int j=0 %>
-                                  <g:each in="${grantExpenseInstanceList}" status="i" var="grantExpenseInstance"> 
-                                     <% j++ %>
-                                     <tr class="${(i % 2) == 0 ? 'odd' : 'even'}"> 
-                                         <td>${j}</td>
-                                         <td><g:formatDate format="dd/MM/yyyy" date="${grantExpenseInstance.dateOfExpense}"/></td>
-                                         <td>${fieldValue(bean:grantExpenseInstance, field:'grantAllocationSplit.accountHead.code')}</td>
-                                         <td>${currencyFormat.ConvertToIndainRS(grantExpenseInstance.expenseAmount)}</td>
-                                         <td>${fieldValue(bean:grantExpenseInstance, field:'description')}</td>
-                                         <td><g:link action="edit" id="${fieldValue(bean:grantExpenseInstance, field:'id')}"><g:message code="default.Edit.label"/></g:link></td>
-                                     </tr>
-                                  </g:each> 
-                               </tbody>
-                             </table>
-                            </div>
+                       <g:form action="export" method="post" > 
+	                            <div id="ss" class="list" style="overflow:auto ;height:150px; width:100%">
+	                             <table width="100%" height="" cellspacing="0">
+	                               <thead>
+	                               
+	                                  <tr> 
+	                                     <th><g:message code="default.SINo.label"/></th>
+	                   	                 <th><g:message code="default.ExpenseDate.label"/></th>
+	               	                     <th><g:message code="default.AccountHeads.label"/></th>
+	                                     <th><g:message code="default.ExpenseAmount(Rs).label"/></th>
+	                                     <th><g:message code="default.Description.label"/></th>
+	                                     <th><g:message code="default.Edit.label"/></th>
+	                                  </tr>
+	                                  
+	                               </thead>
+	                               <tbody>
+	                                  <% int j=0 %>
+	                                  <g:each in="${grantExpenseInstanceList}" status="i" var="grantExpenseInstance"> 
+	                                     <% j++ %>
+	                                     <tr class="${(i % 2) == 0 ? 'odd' : 'even'}"> 
+	                                         <td>${j}</td>
+	                                         <td><g:formatDate format="dd/MM/yyyy" date="${grantExpenseInstance.dateOfExpense}"/></td>
+	                                         <td>${fieldValue(bean:grantExpenseInstance, field:'grantAllocationSplit.accountHead.code')}</td>
+	                                         <td>${currencyFormat.ConvertToIndainRS(grantExpenseInstance.expenseAmount)}</td>
+	                                         <td>${fieldValue(bean:grantExpenseInstance, field:'description')}</td>
+	                                         <td><g:link action="edit" id="${fieldValue(bean:grantExpenseInstance, field:'id')}"><g:message code="default.Edit.label"/></g:link></td>
+	                                     </tr>
+	                                  </g:each> 
+	                               </tbody>
+	                             </table>
+	                             <div class="buttons" align="left">
+			                         <input type=hidden id="dateFrom" name="dateFrom" value="${dateFrom}" >
+				    			     <input type=hidden id="dateTo" name="dateTo" value="${dateTo}" >
+				    			     <input type=hidden id="grantExpenseId" name="grantExpenseId" value="${grantExpenseId}">
+				    			     <input type=hidden id="projectsID" name="projectsID" value="${projectsInstance?.id}">
+				    			 </div> 
+	                            </div>
+                          </g:form> 
                        </g:if>
                      </td>
                   </tr>
                   <tr> 
                      <td height="200" colspan="2"> 
-                      <div class="list" align="center"> 
-                       <h1><g:message code="default.GrantExpense.AccountHeadWiseExpenseSummary.head"/></h1>
-                       <table width="100%" cellspacing="0" >
-                        <g:if test="${grantExpenseSummaryList}">
-                         <thead>
-                            <tr> 
-                               <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" /> 
-                               <g:sortableColumn property="grantAllocationSplit.accountHead.code" title="${message(code: 'default.AccountHeads.label')}" /> 
-                               <g:sortableColumn property="expenseAmount" title="${message(code: 'default.AllocatedAmount.label')}" /> 
-                               <g:sortableColumn property="expenseAmount" title="${message(code: 'default.ExpenseAmount(Rs).label')}" /> 
-                               <g:sortableColumn property="balanceAmount" title="${message(code: 'default.BalanceAmount.label')}" /> 
-                            </tr>
-                         </thead>
-                         <tbody>
-                           <% int j=0 %>
-                           <g:each in="${grantExpenseSummaryList}" status="i" var="grantExpenseInstance"> 
-                            <% j++ %>
-                            <tr class="${(i % 2) == 0 ? 'odd' : 'even'}"> 
-                              <td>${j}</td>
-                              <td>${grantExpenseInstance.accountHeadCode}</td>
-                              <td>${currencyFormat.ConvertToIndainRS((grantExpenseInstance.expenseAmount)+(grantExpenseInstance.balanceAmount))}</td>
-                              <td>${currencyFormat.ConvertToIndainRS(grantExpenseInstance.expenseAmount)}</td>
-                              <td>${currencyFormat.ConvertToIndainRS(grantExpenseInstance.balanceAmount)}</td>
-                            </tr>
-                           </g:each> 
-                         </tbody>
-                        </g:if>
-                        <g:else>
-                          <br><g:message code="default.NoRecordsAvailable.label"/></br>
-                        </g:else>
-                       </table>
-                      </div>
+                         
+	                      <div class="list" align="center"> 
+	                       
+		                       <h1><g:message code="default.GrantExpense.AccountHeadWiseExpenseSummary.head"/></h1>
+		                       <table width="100%" cellspacing="0" >
+		                        <g:if test="${grantExpenseSummaryList}">
+		                         <thead>
+		                            <tr> 
+		                               <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" /> 
+		                               <g:sortableColumn property="grantAllocationSplit.accountHead.code" title="${message(code: 'default.AccountHeads.label')}" /> 
+		                               <g:sortableColumn property="expenseAmount" title="${message(code: 'default.AllocatedAmount.label')}" /> 
+		                               <g:sortableColumn property="expenseAmount" title="${message(code: 'default.ExpenseAmount(Rs).label')}" /> 
+		                               <g:sortableColumn property="balanceAmount" title="${message(code: 'default.BalanceAmount.label')}" /> 
+		                            </tr>
+		                         </thead>
+		                         <tbody>
+		                           <% int j=0 %>
+		                           <g:each in="${grantExpenseSummaryList}" status="i" var="grantExpenseInstance"> 
+		                            <% j++ %>
+		                            <tr class="${(i % 2) == 0 ? 'odd' : 'even'}"> 
+		                              <td>${j}</td>
+		                              <td>${grantExpenseInstance.accountHeadCode}</td>
+		                              <td>${currencyFormat.ConvertToIndainRS((grantExpenseInstance.expenseAmount)+(grantExpenseInstance.balanceAmount))}</td>
+		                              <td>${currencyFormat.ConvertToIndainRS(grantExpenseInstance.expenseAmount)}</td>
+		                              <td>${currencyFormat.ConvertToIndainRS(grantExpenseInstance.balanceAmount)}</td>
+		                            </tr>
+		                           </g:each> 
+		                         </tbody>
+		                        </g:if>
+		                        <g:else>
+		                          <br><g:message code="default.NoRecordsAvailable.label"/></br>
+		                        </g:else>
+		                       </table>
+		                       
+	                     </div>  
+                   
                      </td>
                   </tr>
                 </table>

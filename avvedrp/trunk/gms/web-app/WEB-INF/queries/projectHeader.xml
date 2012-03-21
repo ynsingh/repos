@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+ <Schema name="ProjectHeader">
+ <Cube name="ProjectHeader">
+ <Table name="project_header"/> 
+ 	 
+ 	 <Dimension name="Parent Project" hasAll="true">
+            <Hierarchy hasAll="true" >
+            	<Level name="Parent" column="Parent_project" type="String" uniqueMembers="false"/> 
+                              
+    		</Hierarchy>
+     </Dimension>
+     
+     <Dimension name="Project" hasAll="true">
+            <Hierarchy hasAll="true">
+            			<Level name="Project ID" column="project_code" type="String" uniqueMembers="false"/> 
+                      <Level name="ProjectName" column="project_name" type="String" uniqueMembers="false"/> 
+                               
+            </Hierarchy>
+     </Dimension>
+     <Dimension name="Fund Agency" hasAll="false">
+                 <Hierarchy hasAll="true" >
+                 	<Level name="FundAgency"  column="fund_agency" type="String" uniqueMembers="false"/>
+                            
+         		</Hierarchy>
+     </Dimension>
+     <Dimension name="Project Institute" hasAll="false">
+            <Hierarchy hasAll="true" >
+            	<Level name="ProjectInstitute"  column="project_institute" type="String" uniqueMembers="false"/>
+                       
+    		</Hierarchy>
+     </Dimension>
+     <Dimension name="PIName" hasAll="false">
+            <Hierarchy hasAll="true" >
+            	<Level name="PIName"  column="PI_name" type="String" uniqueMembers="false"/>
+                       
+    		</Hierarchy>
+     </Dimension>
+     <Dimension name="Duration" hasAll="false">
+                 <Hierarchy hasAll="true" >
+                 	<Level name="Duration"  column="duration" type="String" uniqueMembers="false"/>
+                            
+         		</Hierarchy>
+     </Dimension>
+     <Dimension name="Start Date" hasAll="false">
+                 <Hierarchy hasAll="true" >
+                 	<Level name="StartDate"  column="Start_date" type="String" uniqueMembers="false"/>
+                            
+         		</Hierarchy>
+     </Dimension>
+     <Dimension name="End Date" hasAll="false">
+                 <Hierarchy hasAll="true" >
+                 	<Level name="EndDate"  column="End_date" type="String" uniqueMembers="false"/>
+                            
+         		</Hierarchy>
+     </Dimension>
+     
+    
+         <Measure name="Amount Allocated" column="amt_allocated" aggregator="sum" formatString="#,###"/>
+         <Measure name="Amount Recieved" column="amt_recieved" aggregator="sum" formatString="#,###"/>
+         <Measure name="Amount Utilized" column="amt_utilized" aggregator="sum" formatString="#,###"/>
+         
+         <Measure name="Amount On Hand" column="amt_on_hand" aggregator="sum" formatString="#,###"/>
+         <Measure name="Amount Pending" column="amt_pending" aggregator="sum" formatString="#,###"/>
+       
+    </Cube>
+    </Schema>

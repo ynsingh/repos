@@ -98,13 +98,13 @@
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'investigator','errors')}">
                                 <g:if test="${projectsInstance.parent}">
                                      <strong>
-                                     ${projectsInstance?.investigator?.name}
+                                     ${projectsInstance?.investigator?.name}&nbsp;${projectsInstance?.investigator?.userSurName}
                                      </strong>
                                      <input type="hidden" name="investigator.id" value="${projectsInstance?.investigator?.id}" />
                                      </td>
                            		</g:if>
                            		<g:else>
-                           		<g:select optionKey="id" optionValue="name" from="${investigatorList}" name="investigator.id" value="${projectsInstance?.investigator?.id}" ></g:select> 
+                           		<g:select optionKey="id" optionValue="fullName" from="${investigatorList}" name="investigator.id" value="${projectsInstance?.investigator?.id}" ></g:select> 
                            		</g:else>
                             </tr> 
                           

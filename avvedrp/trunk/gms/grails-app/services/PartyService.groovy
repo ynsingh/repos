@@ -297,4 +297,60 @@ class PartyService{
 		def mainmenuList = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+ "and MRM.menu.parentId=-1 and MRM.activeYesNo='Y' group by MRM.menu.id order by MRM.menu.menuOrder asc")
 		return mainmenuList
 	}
+	
+	/**
+	 * Get All Sub menu for a parent id
+	 */
+	public getAllSubMenu(def menuId)
+	{
+		def subMenuInstanceList = Menu.findAll("from Menu M where M.activeYesNo='Y' and M.lockedYN='N'and M.parentId="+menuId)
+		return subMenuInstanceList
+	}
+	/*
+	 * Get All Parent Menu
+	 */
+	 public getAllParentMenu()
+	{
+		 def parentList = Menu.findAll("from Menu M where M.activeYesNo='Y' and M.lockedYN='N' and M.parentId=-1 order by M.menuOrder asc")
+		 return parentList
+	}
+	
+	 /*
+	  * Method to get All Active Universities
+	  */
+		public  getAllUniversityMaster()
+		{
+			 def universityMasterInstanceList = UniversityMaster.findAll("from UniversityMaster UM where UM.activeYesNo = 'Y'")			
+			 return universityMasterInstanceList
+		}
+	 
+		/*
+		 * Check Duplicate University
+		 */
+		 public checkDuplicateUniversity(def params)
+		{
+			 def chkUniversityInstance = UniversityMaster.find("from UniversityMaster UM where UM.nameOfUniversity= '"+params.nameOfUniversity+"' and UM.code= '"+params.code+"' and UM.activeYesNo='Y'")
+			 return chkUniversityInstance
+		}
+		
+		 /*
+		  * Method to get All Active Universitiy Institution Map
+		  */
+			public  getAllUniversityInstitutionMap()
+			{
+				 def universityInstitutionInstanceList = UniversityInstitutionMap.findAll("from UniversityInstitutionMap UIM where UIM.activeYesNo = 'Y'")			
+				 return universityInstitutionInstanceList
+			}
+			
+			/*
+		 * Check Duplicate InstitutionMap
+		 */
+		 public checkDuplicateInstitutioMap(def params)
+		{
+			 def chkUniversityInstitutioMapInstance = UniversityInstitutionMap.find("from UniversityInstitutionMap UIM where UIM.party= '"+params.party.id+"' and UIM.universityMaster.id= '"+params.university.id+"' and UIM.activeYesNo='Y'")
+			 return chkUniversityInstitutioMapInstance
+		}
+			
+		 
+		
 }

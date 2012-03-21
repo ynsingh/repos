@@ -8,7 +8,7 @@ import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.codehaus.groovy.grails.commons.ControllerArtefactHandler
 import org.springframework.beans.BeanWrapper
 import org.springframework.beans.PropertyAccessorFactory
-
+import grails.converters.JSON
 class ProjectsController extends GmsController
 {
 	def index = { redirect(action:list,params:params) }
@@ -19,10 +19,10 @@ class ProjectsController extends GmsController
 	def partyService
     def grantAllocationService
     def projectsService
-    def investigatorService    
+    def investigatorService 
     def list = 
     {
-		GrailsHttpSession gh=getSession()
+    	GrailsHttpSession gh=getSession()
 		
 		def grantAllocationWithprojectsInstanceList
 		def grandAllocationList
@@ -153,7 +153,7 @@ class ProjectsController extends GmsController
     
     def edit = 
     {
-		def projectsService = new ProjectsService()
+    	def projectsService = new ProjectsService()
 		def dataSecurityService = new DataSecurityService()
 		
 		GrailsHttpSession gh=getSession()
@@ -164,8 +164,9 @@ class ProjectsController extends GmsController
 		{
 			def projectsPIMapInstance = projectsService.checkPIofProject(projectsInstance.id)
 			if(projectsPIMapInstance)
-				projectsInstance.investigator = projectsPIMapInstance.investigator
+			{	projectsInstance.investigator = projectsPIMapInstance.investigator
 				
+				}
 	    }
 		
 		def projectid=projectsInstance.id
@@ -346,13 +347,11 @@ class ProjectsController extends GmsController
 
     def create = 
     {
-		println "params = "+params
 			def projectsInstance = new Projects()
 		projectsInstance.properties = params['Projects']
 		def projectsService = new ProjectsService()
 		GrailsHttpSession gh=getSession()
 		gh.putValue("Help","New_Projects.htm")//putting help pages in session
-		println "session ............" +gh 
 		def investigatorService = new InvestigatorService()
         def investigatorList=[]
     	investigatorList=investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"))
@@ -391,7 +390,7 @@ class ProjectsController extends GmsController
     	{
     		if(projectsInstance.saveMode.equals("Saved"))
     		{
-    			flash.message = "${message(code: 'default.created.label')}"
+    			flash.message = "${message(code: 'default.createdProject.message')}"
     			gh.putValue("ProjectId",projectsInstance.id)
     			redirect(action:list )
     		}
@@ -553,8 +552,9 @@ class ProjectsController extends GmsController
     }
 	def advancedSearchProjects = 
     {
-			
-			render(view:'advancedSearch')  
+			def investigatorService=new InvestigatorService()
+			def investigatorInstanceList = investigatorService.getAllInvestigators()
+			render(view:'advancedSearch',model:['investigatorInstanceList':investigatorInstanceList])  
 			
     }
     def grantSearch = 
@@ -590,4 +590,42 @@ class ProjectsController extends GmsController
 	{
 			
 	}
+	 def getalert= 
+	 {
+	 	  	GrailsHttpSession gh = getSession()
+			def fundTransferInstanceList=[]
+			def receivedInstanceList=[]
+			def fundTransferInstance
+			def receivedInstance
+			def fundTansInstance
+			def partyInstance = Party.get(gh.getValue("Party")) 
+			def loginInstance =gh.getValue("LoggedIn")
+			def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id="+partyInstance.id)
+	    	for(int i=0;i<grantAllocationInstanceList.size();i++)
+			{
+				fundTransferInstance=FundTransfer.findAll("from FundTransfer FT where FT.grantAllocation.id = "+grantAllocationInstanceList[i].id)
+				if(fundTransferInstance)
+				{
+					for(int j=0;j<fundTransferInstance.size();j++)
+					{
+						fundTansInstance = fundTransferInstance[j]
+						fundTransferInstanceList.add(fundTansInstance)
+					}
+				}
+			}
+			for(int j=0;j<fundTransferInstanceList.size();j++)
+			{
+				receivedInstance = GrantReceipt.find("from GrantReceipt GR where GR.fundTransfer.id="+fundTransferInstanceList[j].id)
+				if(!receivedInstance)
+					receivedInstanceList.add(fundTransferInstanceList[j])
+			}
+			if(fundTransferInstanceList)
+			{
+				if(loginInstance=='login')
+				{
+					 gh.putValue("LoggedIn",params.controller)
+					 render receivedInstanceList as JSON
+				}
+			}
+   }
 }

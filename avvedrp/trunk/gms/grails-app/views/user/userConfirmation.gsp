@@ -40,7 +40,7 @@
 				<tr><td align="center">
        <b><g:message code='default.successfullyactivatedaccount.message'/></td></tr>
                     <tr><td>
-       <b><g:message code='default.accessyourAccount.message'/><g:link action="auth" controller="login" ><g:message code="default.login.label"/></g:link></b>
+       <b><g:message code='default.accessyourAccount.message'/>&nbsp;&nbsp;<g:link action="auth" controller="login" ><g:message code="default.login.label"/></g:link></b>
                            </td></tr>
                   <tr><td><g:message code='default.canupdateInstitutioninformation.message'/>.</td></tr>
                   <tr><td><HR></td></tr>

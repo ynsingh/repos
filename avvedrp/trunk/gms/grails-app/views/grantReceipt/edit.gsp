@@ -90,7 +90,7 @@
                                 <label for="modeOfPayment" style="color:red;font-weight:bold"> * </label>
                               </td>
                               <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'modeOfPayment','errors')}">
-                                <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  
+                                <g:select name="modeOfPayment" from="${['DD','Cheque','Bank Transfer','Cash']}"  
                                 onchange="${remoteFunction(controller:'grantExpense',action:'updateModeOfPayment',update:'fieldSelect',  params:'\'modeOfPayment=\' + this.value' )}"
                                 onFocus="${remoteFunction(controller:'grantExpense',action:'updateModeOfPayment',update:'fieldSelect',  params:'\'modeOfPayment=\' + this.value' )}"
                                 value="${fieldValue(bean:grantReceiptInstance,field:'modeOfPayment')}"></g:select>
@@ -108,13 +108,14 @@
                             </tr> 
                    
                            <tr class="prop">
-				               <g:if test="${grantReceiptInstance.modeOfPayment=='BankTransfer'}">
-	                           <td valign="top" class="name">
+				             <g:if test="${(grantReceiptInstance.modeOfPayment=='Bank Transfer' || grantReceiptInstance.modeOfPayment=='Cash')}">
+                          
+			               	    <td valign="top" class="name">
 	                                <label for="ddNo"><g:message code="default.DD/ChequeNo.label"/></label>:
 	                                <label for="ddNo" style="color:red;font-weight:bold"> * </label>
 				                </td>
 				                <td id="fieldSelect" valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'ddNo','errors')}">
-				             	 <input type="text" id="ddNo" name="ddNo" value="" disabled="true" />
+				             	 <input type="text" id="ddNo" name="ddNo" value=""  disabled="true" />
 	                           </td>
 							  </g:if>
 							  

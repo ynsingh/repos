@@ -28,7 +28,7 @@
 	<parameter name="Path" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT 
       P.name AS ProjectTitle,
-      (SELECT I.name FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=P.id AND PMAP.role='PI' GROUP BY P.id) AS PI,
+      (SELECT (CONCAT(I.name," ",I.user_sur_name)) FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=P.id AND PMAP.role='PI' GROUP BY P.id) AS PI,
       PD.department_code AS Department,
       PRT.type AS ProjectType,
       (SELECT PY.name_of_the_institution FROM party PY,grant_allocation G WHERE PY.id=G.granter_id AND G.projects_id=GA.projects_id AND P.id=G.projects_id GROUP BY G.projects_id)AS FundingAgency,

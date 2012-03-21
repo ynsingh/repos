@@ -115,11 +115,8 @@
 	                            	<label for="party" style="color:red;font-weight:bold"> * </label>
 	                        	</label>
 	                        </td>
-	                        <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'party','errors')}">
-	                            <g:select optionKey="id" optionValue="code" from="${Party.list()}" id="recipient" name="party.id" 
-	                            	value="${grantAllocationInstance?.party?.id}" disabled="true">
-	                            	
-	                        	</g:select>
+	                         <td>
+                            	<strong>${grantAllocationInstance?.party?.code}</strong>
 	                        </td>
                     	</tr> 
                             
@@ -129,8 +126,8 @@
                                     <label for="investigator" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'investigator','errors')}">
-                                    <g:select id="investigator.id" optionKey="id" optionValue="name" from="${Investigator.findAll('from Investigator I where I.activeYesNo=\'Y\' ')}" name="investigator.id" value="${projectsInstance?.investigator?.id}" noSelection="['null':'select']"></g:select>
-                                </td>
+                                 <g:select id="investigator.id" optionKey="id" optionValue="fullName" from="${investigatorInstanceList}" name="investigator.id" value="${projectsInstance?.investigator?.id}"></g:select>
+	                            </td>
                          	</tr>    
                             
                         <tr class="prop">

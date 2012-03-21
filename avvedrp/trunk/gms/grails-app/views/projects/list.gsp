@@ -72,11 +72,11 @@
 	                           		<td>${fieldValue(bean:grantAllocationInstance, field:'granter.code')}</td>
 	                           	</g:if>
 	                           	<g:else>
-	                          		<td>Self</td>
+	                          		<td>${fieldValue(bean:grantAllocationInstance, field:'party.code')}</td>
 	                           </g:else>
 	                           <td><g:if test="${pIMapList[i]!=null}">
 	                         
-	                           ${pIMapList[i].investigator.name}
+	                           ${pIMapList[i].investigator.name}&nbsp;${pIMapList[i].investigator.userSurName}
 	                           </g:if>
 	                           </td>                           
 	                           <td><g:if test="${Attachments.findByDomainId(grantAllocationInstance.projects.id)}">
@@ -91,6 +91,9 @@
 		                        	<g:if test="${(grantAllocationInstance.projects.status == 'Closed')}">   
 		                       			<g:message code="default.Closed.label"/>
 		                       		</g:if>
+		                       		<g:else>
+	                          		 <g:message code="default.Active.label"/>
+	                           </g:else>
 	                       		</td>
 	                        </tr>
 	                        
@@ -110,3 +113,4 @@
         
     </body>
 </html>
+

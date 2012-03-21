@@ -1,4 +1,5 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+import grails.converters.deep.JSON
 class ProposalApprovalDetailController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -263,5 +264,12 @@ class ProposalApprovalDetailController {
     def preProposalReviewStatus =
     {
     	def proposalApprovalDetailInstance = new ProposalApprovalDetail()
+    }
+    
+    def commentDetails = 
+    {
+    	def proposalApprovalDetailInstance = ProposalApprovalDetail.get(params.id)
+    	if(proposalApprovalDetailInstance)
+ 	       render proposalApprovalDetailInstance as JSON
     }
 }

@@ -19,6 +19,7 @@ class GrantExpense {
 	
 	double balanceAmount
 	String expenseRequestCode
+	String fundAdvanceCode
 	
 	static constraints={
 		grantAllocation(nullable:true)
@@ -29,7 +30,7 @@ class GrantExpense {
 		modifiedDate(nullable:true)
 		ddNo(nullable:true)
 		expenseRequestCode(nullable:true)
-		
+		fundAdvanceCode(nullable:true)
 	}
 	
 	Date dateFrom

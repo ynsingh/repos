@@ -185,6 +185,16 @@ class GrantAllocationService {
 		 return totalAmt
 	}
 	
+	public double getSumOfAmountAllocatedForProjectOnly(def projectId){
+		
+		double totalAmt = 0.0
+		 def sumAmt = GrantAllocation.executeQuery("select sum(GA.amountAllocated) as total from GrantAllocation  GA where   GA.projects= "+projectId+" group by GA.projects");
+		 if(sumAmt[0]!=null)
+			 totalAmt = new Double(sumAmt[0]).doubleValue()
+			 
+		 return totalAmt
+		
+	}
 	/**
 	 * Function to get sub grant allocations
 	 */
@@ -230,14 +240,7 @@ class GrantAllocationService {
 		def grantAllocation=getGrantAllocationsByProject(projectId)
 		
 		 def grantAllocationInstanceList = []
-		 def grantAllocationInstanceInitialList=GrantAllocation.findAll("from GrantAllocation  GA where  GA.granter= "+grantorID+" and GA.projects.parent="+projectId+""+subQuery);
-		 println grantAllocationInstanceInitialList
-		/* Check the grant allocation status in grant allocation tracking */
-		for(grantAllocationInitialInstance in grantAllocationInstanceInitialList){
-			def grantAllocationTrackingList = GrantAllocationTracking.findAllByGrantAllocationAndGrantAllocationStatusNotEqual(grantAllocationInitialInstance,"Open")
-			if(!grantAllocationTrackingList)
-				grantAllocationInstanceList.add(grantAllocationInitialInstance)
-		}
+		 grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation  GA where  GA.granter= "+grantorID+" and GA.projects.parent="+projectId+""+subQuery);
 		 
 		 return grantAllocationInstanceList
 	}
@@ -327,15 +330,13 @@ class GrantAllocationService {
 	 */
 	public GrantAllocation saveSubGrantAllocation(def grantAllocationInstance){
 		
-		def chkhdallocinstance=GrantAllocationSplit.findAll("from GrantAllocationSplit GS where GS.projects="+grantAllocationInstance.projects.parent.id)
-		println"*********chkhdallocinstance***********"+chkhdallocinstance[0]
-		if(chkhdallocinstance[0])
-		{
+		
 		
 		grantAllocationInstance.save()
 	    return grantAllocationInstance    
 		
-	}
+	
+		
 	}
 	public GrantAllocation subGrantSaveExt(def grantAllocationInstance){
 		Integer fundAllotId = null
@@ -452,7 +453,7 @@ class GrantAllocationService {
 	 */
 	@PostFilter("hasPermission(filterObject, 'read') or hasPermission(filterObject, admin)")
 	public GrantAllocation[] getGrantAllocationGroupByProjects(def partyID){
-		 def grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation GA where GA.projects.activeYesNo='Y' GROUP BY GA.projects");
+		 def grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation GA where GA.projects.activeYesNo='Y' GROUP BY GA.projects ORDER BY GA.projects.createdDate DESC");
 		 return grantAllocationInstanceList
 	}
 	/**
@@ -541,6 +542,232 @@ class GrantAllocationService {
 		return grantAllocationInstance
 		}
 	
-	
-	
+	 /*
+	  * method to get ExternalFund Allocation By grant allocation of a project
+	  */
+	   public getExternalFundAllocationByGrantAllocation(def grantAllocationId)
+	 {
+		 def externalFundAllocationInstance = ExternalFundAllocation.find("from ExternalFundAllocation EFA where EFA.grantAllocation.id ="+grantAllocationId)
+		 return externalFundAllocationInstance
+	 }
+	 /*
+	  * method to get RefundList By grant allocation of a project
+	  */
+     public getRefundListBygrantAllocationInstance(grantAllocationInstance)
+	 {
+		 def refundList = []
+    	 def externalFundAllocationInstance = getExternalFundAllocationByGrantAllocation(grantAllocationInstance.id)
+    	 if(externalFundAllocationInstance)
+    	 {
+    		 refundList = ExternalFundRefund.findAll("from ExternalFundRefund EFR where EFR.externalFundAllocation ="+externalFundAllocationInstance.id)
+    	 }
+		 return refundList
+	 }
+	 
+     /**
+ 	 * Get sum of ReFund for a grant Allocation 
+ 	 */
+ 	 public double getSumOfTotalRefund(def externalFundAllocationId){
+ 		 double totalRefund = 0.0
+ 		 def sumAmt = ExternalFundRefund.executeQuery("select sum(EFR.refundAmount) as total from ExternalFundRefund EFR where  EFR.externalFundAllocation.id= "+externalFundAllocationId+" group by EFR.externalFundAllocation");
+ 		 if(sumAmt[0]!=null)
+ 			totalRefund = new Double(sumAmt[0]).doubleValue()
+ 		 return totalRefund
+ 	}
+     
+ 	/**
+ 	 * Get the list of all External Fund Allocations
+ 	 */
+ 	public List getexternalFundAllocationList()
+ 	{
+ 		def grantAllocationInstance = ExternalFundAllocation.findAll("from ExternalFundAllocation EF")			
+ 		return grantAllocationInstance
+ 	}
+ 	/*
+ 	 * Method To list All GrantAllocation By Grantor Id And GrantAllocation Id
+ 	 */
+ 	public List getgrantAllocationListByGranterId(def granterInstance,def externalFundAllocationInst)
+ 	{
+ 		def grantAllocationList = GrantAllocation.findAll ("from GrantAllocation GA where GA.granter="+granterInstance.id+" and GA.id="+externalFundAllocationInst)
+ 		return grantAllocationList
+ 	}
+ 	
+ 	/*
+ 	 * Method To list All GrantAllocation By Grantor Id And GrantAllocation Id
+ 	 */
+ 	public List getgrantAllocationListByPartyTypeGA(def projectInstance,def granterInstance,def externalFundAllocationInst)
+ 	{
+ 		def grantAllocationInstList =GrantAllocation.findAll ("from GrantAllocation GA where GA.party.id="+granterInstance.id+" and GA.projects.id="+projectInstance.id+" and GA.granter.id IN (SELECT P.id from Party P where P.partyType='GA') and GA.id="+externalFundAllocationInst)
+ 		return grantAllocationInstList
+ 	}
+ 	/*
+ 	 * Method To list All GrantAllocation By Party Id 
+ 	 */
+ 	public List getgrantAllocationListByPartyId(grantAllocationInstance)
+ 	{
+ 		def projectList =  GrantAllocation.findAll("from GrantAllocation GA where GA.party="+grantAllocationInstance.party.id)
+ 		return projectList
+ 	}
+ 	/*
+ 	 * Method To list All ExternalFundAllocation By GrantAllocation Id
+ 	 */
+ 	public  getexternalFundAllocationByGrantAllocationId(grantAllocationInstance)
+ 	{
+	 	def externalFundAllocationInst = ExternalFundAllocation.find("from ExternalFundAllocation EF where EF.grantAllocation="+grantAllocationInstance.id)
+	 	return externalFundAllocationInst
+ 	}
+ 	/*
+ 	 * Method To list All GrantAllocation By GrantAllocation Id in external Fund Allocation
+ 	 */
+ 	public  getgrantAllocationByGrantAllocationId(externalFundAllocationInstance)
+ 	{
+ 		def grantAllocationInstance = GrantAllocation.find("from GrantAllocation GA where GA.id="+externalFundAllocationInstance.grantAllocation.id)
+ 		return grantAllocationInstance
+ 	}
+ 	/*
+ 	 * Method To list All FundTransfer By GrantAllocation Id 
+ 	 */
+ 	public List getfundTransferListByGrantAllocationId(grantAllocationInstance)
+ 	{
+	 	def fundTransferInstanceList= FundTransfer.findAll("from FundTransfer FT where FT.grantAllocation.id="+grantAllocationInstance.id)
+	 	return fundTransferInstanceList
+ 	}
+ 	/*
+ 	 * Method To list All ExternalFundAllocation By GrantAllocation Id 
+ 	 */
+ 	public  getexternalFundAllocationByGrantAllotId(def params)
+ 	{
+	 	def externalFundAllocationInstance = ExternalFundAllocation.find("from ExternalFundAllocation EF where EF.grantAllocation="+params.grantAllotId)
+	 	return externalFundAllocationInstance
+ 	}
+ 	/*
+ 	 * Method To Sum of AmountTranfered By GrantAllocation Id 
+ 	 */
+ 	public  getsumAmountofFundTransferByGrantAllotId(def params)
+ 	{
+	 	def transferInstance = FundTransfer.executeQuery("select SUM(FT.amount) from FundTransfer FT where FT.grantAllocation.id="+params.grantAllotId+" group by FT.grantAllocation.id")
+	 	return transferInstance
+ 	}
+ 	/*
+ 	 * Method To sum of allocatedAmount By GrantAllocation Id 
+ 	 */
+ 	public  getsumAllocatedAmountByGrantAllotId(grantAllocationInstance)
+ 	{
+	 	def totalAmountInstance = GrantAllocation.executeQuery("select SUM(GA.amountAllocated) from GrantAllocation GA where GA.id="+grantAllocationInstance.id+" group by GA.id")
+	 	return totalAmountInstance
+ 	}
+ 	/*
+ 	 * Method To get Projects By Params 
+ 	 */
+ 	public  getprojectsByParamsValue(def params)
+ 	{
+ 		def projectInstance = Projects.find("from Projects P where P.id="+params.projects)
+ 		return projectInstance
+ 	}
+ 	/*
+ 	 * Method To get Party By Params 
+ 	 */
+ 	public  getpartyByParamsValue(def params)
+ 	{
+ 		def partyInstance = Party.find("from Party P where P.id="+params.granter)
+ 		return partyInstance
+ 	}
+ 	/*
+ 	 * Method To list All GrantAllocation That Also in ExternalFundAllocation 
+ 	 */
+ 	public List getallGrantAllocationByProjectIdThatsInExternalFundAllocation(def params)
+ 	{
+	 	def grantAllocationInstance = GrantAllocation.findAll("from GrantAllocation GA where GA.projects.id='"+params.id+"' and GA.id IN (SELECT EF.grantAllocation.id from ExternalFundAllocation EF)")
+	 	return grantAllocationInstance
+ 	}
+ 	/*
+ 	 * Method To list All FundTranfer By GrantAllocation Id
+ 	 */
+ 	public List getfundTransferByGrantAllocation(def params)
+ 	{
+	 	def fundTransferInstanceList = FundTransfer.findAll("from FundTransfer FT where FT.grantAllocation="+params.id)
+	 	return fundTransferInstanceList
+ 	}
+ 	/*
+ 	 * Method To list All GrantAllocationSplit By Project Id
+ 	 */
+ 	public List getgrantAllocationSplitByprojectId(def params)
+ 	{
+	 	def accountHeadList=GrantAllocationSplit.findAll("from GrantAllocationSplit GS where GS.projects.id="+params.projectId+"  order by GS.accountHead.code asc")
+	 	return accountHeadList
+ 	}
+ 	/*
+ 	 * Method To list All GrantAllocation That Also in ExternalFundAllocation 
+ 	 */
+ 	public List getgrantAllocationByIdInExternalFundAllocation(def params)
+ 	{
+	 	def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.id='"+params.id+"' and GA.id IN (SELECT EF.grantAllocation.id from ExternalFundAllocation EF)")
+	 	return grantAllocationInstanceList
+ 	}
+ 	/*
+ 	 * Method To list All GrantReceipt By GrantAllocation Id and Project Id 
+ 	 */
+ 	public List getgrantReceiptByGrantAllocationIdAndProjectId(def params)
+ 	{
+	 	def grantReceiptInstanceList = GrantReceipt.findAll("from GrantReceipt GR where GR.grantAllocation="+params.id+" and GR.projects.id="+params.projectId)
+	 	return grantReceiptInstanceList
+ 	}
+ 	/*
+ 	 * Method To list All GrantReceipt By FundTransfer Id
+ 	 */
+ 	public getgrantReceiptByFundTransferId(def params)
+ 	{
+	 	def grantReceiptInstanceCheck = GrantReceipt.find("from GrantReceipt where fundTransfer.id="+params.fundTransfer.id)
+	 	return grantReceiptInstanceCheck
+ 	}
+ 	/*
+ 	 * Method To list All FundTransfer By GrantAllocation Id 
+ 	 */
+ 	public getfundTransferGrantAllocationId(def params)
+ 	{
+	 	def fundTransferInstanceList = FundTransfer.findAll("from FundTransfer FT where FT.grantAllocation="+params.grantAllocation.id)
+	 	return fundTransferInstanceList
+ 	}
+ 	/*
+ 	 * Method To list All FundTransfer By GrantAllocation Id 
+ 	 */
+ 	public getfundTransferGrantAllocation(def params)
+ 	{
+	 	def fundTransferInstanceList = FundTransfer.findAll("from FundTransfer FT where FT.grantAllocation="+params.grantAllotId)
+	 	return fundTransferInstanceList
+ 	}
+ 	/*
+ 	 * Method To list All  GrantAllocation that Also in ExternalFundAllocation 
+ 	 */
+ 	public getgrantAllocationIdInExtrnalFundAllocation(def params)
+ 	{
+	 	def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.id='"+params.grantAllotId+"' and GA.id IN (SELECT EF.grantAllocation.id from ExternalFundAllocation EF)")
+	 	return grantAllocationInstanceList
+ 	}
+ 	/*
+ 	 * Method To list All  GrantExpense By GrantAllocation Id 
+ 	 */
+ 	public List getgrantExpenseByGrantAllocationId(def params)
+ 	{
+	 	def grantExpenseInstanceList = GrantExpense.findAll("from GrantExpense GE where GE.grantAllocation.id="+params.id)
+	 	return grantExpenseInstanceList
+ 	}
+ 	/*
+ 	 * Method To list All  GrantExpense By Party Id 
+ 	 */
+ 	public List getgrantAllocationPartyId(def params)
+ 	{
+	 	def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id="+params.party+" group by projects.id ")
+	 	return grantAllocationInstanceList
+ 	}
+ 	
+ 	/*
+     * method to get Projects By Id
+     */
+     public getprojectsByGrantAllocationInstanceList(def projectId)
+ 	{
+     	def projectsInstance = Projects.find("from Projects P where P.id="+projectId)
+     	return projectsInstance
+ 	}
+ 	
 }

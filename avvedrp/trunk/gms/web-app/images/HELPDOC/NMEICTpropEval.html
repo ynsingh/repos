@@ -3,14 +3,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Untitled Document</title>
+<style type="text/css">
+<!--
+.style1 {font-family: "Times New Roman", Times, serif}
+-->
+</style>
 </head>
 
 <body>
-<h2><a name="_Toc285816213" id="_Toc285816213">NME ICT - Final Proposal Evaluation</a></h2>
-<p>&nbsp;<br />
+<h2 class="style1"><a name="_Toc285816213" id="_Toc285816213">NME ICT - Final Proposal Evaluation</a></h2>
+<p class="style1">&nbsp;<br />
   Currently, the final proposal evaluation is based on the NMEICT model of evaluation. </p>
-<p>Proposal  evaluation<strong> </strong>includes the following  features<strong>:</strong></p>
-<ol start="1" type="1">
+<p class="style1">Proposal  evaluation includes the following  features<strong>:</strong></p>
+<ol start="1" type="1" class="style1">
   <li>Calculation by which the average score is arrived at,       for each proposal and the score display. </li>
   <li>A proposal may be resubmitted any number of times and       a parameter V&lt;x&gt; will indicate the corresponding version number (x=       0, 1, 2, 3 etc). The reviewer can review the latest proposal in the system.</li>
   <li>On final submission of proposal, an alert       e-mail is sent to all members of the default approval authority (of the       sponsoring institution) </li>
@@ -19,41 +24,41 @@
   <li>&nbsp;Proposal       status request&ndash; user is prompted to enter the control number, once the       submit button is clicked, the complete details of the submitted proposal        is displayed.</li>
   <li>Option is provided for the Site administrator &amp;  Proposal administrator in which each reviewer&rsquo;s score for every question  in the evaluation questionnaire is displayed. </li>
 </ol>
-<h3><a name="_Toc285816214" id="_Toc285816214">Initial  Administrative Functions</a></h3>
-<a name="_Toc285816215" id="_Toc285816215"><strong>Site  Admin: Add New Role &ndash; ROLE_PROPOSALADMIN</strong></a>
-<p>If not already  saved in the application, this role needs to be saved and assigned to the user  who needs to receive all evaluations from all the reviewers. Only a single  person in an institute may be assigned this role. (In future the role may be  assigned to each grant scheme for which proposals are called.). </p>
-<a name="_Toc285816216" id="_Toc285816216"><strong>Site  Admin &ndash; Default approval authority</strong></a>
-<p>Default approval authority must be  assigned for the institution. In this way, proposals submitted for all  notifications will be directly sent for review to the members of the default  approval authority. There can be only one default authority per institution.</p>
-<p>On the left menu panel, the  administrator clicks on <strong><em>Approval Authority</em></strong> menu. It expands  to display the sub menu &ndash; <strong><em>Add Approval Authority</em></strong> <br />
+<h3 class="style1"><a name="_Toc285816214" id="_Toc285816214">Initial  Administrative Functions</a></h3>
+<span class="style1"><a name="_Toc285816215" id="_Toc285816215"><strong>Site  Admin: Add New Role &ndash; ROLE_PROPOSALADMIN</strong></a></span>
+<p class="style1">If not already  saved in the application, this role needs to be saved and assigned to the user  who needs to receive all evaluations from all the reviewers. Only a single  person in an institute may be assigned this role. (In future the role may be  assigned to each grant scheme for which proposals are called.). </p>
+<span class="style1"><a name="_Toc285816216" id="_Toc285816216"><strong>Site  Admin &ndash; Default approval authority</strong></a></span>
+<p class="style1">Default approval authority must be  assigned for the institution. In this way, proposals submitted for all  notifications will be directly sent for review to the members of the default  approval authority. There can be only one default authority per institution.</p>
+<p class="style1">On the left menu panel, the  administrator clicks on <strong><em>Approval Authority</em></strong> menu. It expands  to display the sub menu &ndash; <strong><em>Add Approval Authority</em></strong> <br />
 On clicking <strong><em>Add Approval Authority</em></strong>,  the page below opens up. Here each group of approving persons at the  institution is registered. Further, for each approval authority, the members  are also added.</p>
-<p>The personal details are: <strong>Name</strong> of the group, group <strong>e-mail ID</strong> and Institution. Further, the <strong>Approve Mandatory</strong> field decides if  the particular group&rsquo;s approval is mandatory and it is set to &ldquo;Y&rdquo; (Yes) by  default. <strong>View All</strong> is set to &ldquo;Y&rdquo;  (Yes) by default which indicates that the members of this group are privileged  to view all proposals even if they don&rsquo;t get to review them. <br />
+<p class="style1">The personal details are: <strong>Name</strong> of the group, group <strong>e-mail ID</strong> and Institution. Further, the <strong>Approve Mandatory</strong> field decides if  the particular group&rsquo;s approval is mandatory and it is set to &ldquo;Y&rdquo; (Yes) by  default. <strong>View All</strong> is set to &ldquo;Y&rdquo;  (Yes) by default which indicates that the members of this group are privileged  to view all proposals even if they don&rsquo;t get to review them. <br />
 When <strong>Default Authority</strong> field is set &ldquo;Y&rdquo;,&nbsp;&nbsp; it  means that all proposals submitted for all notifications in that institution  will be sent for review to the members of that approval authority. Each  proposal is not separately assigned.&nbsp; &nbsp;Currently when a default approval authority  already exists, a different approval authority cannot also be made default for  the same institution.<br />
 In the Approval Authority List, for  each line item (approval authority) , clicking on <strong><em>Add</em></strong><em> <strong>Members</strong></em> opens the page  below, where members can be added to/removed from each Approval authority. The  existing users are displayed in the table on the right &nbsp;from which selection can be made. In the Approval Authority List, for  each line item (approval authority), clicking on <strong><em>Edit</em></strong>, opens the page  where any modification can be made. </p>
-<a name="_Toc285816217" id="_Toc285816217"><strong>Site Admin &ndash; Notification creation for a grant  scheme</strong></a>
-<p>In <em><strong>Call for Proposal</strong></em> sub menu of <em><strong>Projects </strong></em>Menu, the site administrator creates a new notification. Please note that  in this document we are explaining the process for publically solicited  proposals. So the notifications created are assigned the attribute &ldquo;Public &ndash;  Yes&rdquo;. This means that the notification gets displayed in a Notification List  made available outside the MGMS application as well. </p>
-<h2><a name="_Toc285816218" id="_Toc285816218">Proposal  Admin - Proposal evaluation Pre-settings</a></h2>
-<p>As mentioned  before, the proposal administrator is in charge of various managing the  evaluation process. For each grant notification created and published by an  institution, the proposal admin assigns the specific evaluation parameters; ratings  required and prepare the questionnaire for use by the reviewers. </p>
-<p>After  logging in, the user clicks on menu <em><strong>Proposal  evaluation &ndash; pre settings</strong>,</em> and sub menu <em><strong>Evaluation scale</strong></em>. Here the user can create a new evaluation scale as well  as view all the scales created in this institution till now. <strong>Edit</strong> option is also provided to modify  any existing scale&rsquo;s name </p>
-<p>After naming the  scale, the user clicks <em><strong>Evaluation Scale  Options</strong></em> where the standard scores can be listed. For e.g. if the reviewer  selects the option &ldquo;Good&rdquo; as per the Likert scale, for  a particular answer , then the asnswer has scored 3 marks.&nbsp; <br />
+<span class="style1"><a name="_Toc285816217" id="_Toc285816217"><strong>Site Admin &ndash; Notification creation for a grant  scheme</strong></a></span>
+<p class="style1">In <em><strong>Call for Proposal</strong></em> sub menu of <em><strong>Projects </strong></em>Menu, the site administrator creates a new notification. Please note that  in this document we are explaining the process for publically solicited  proposals. So the notifications created are assigned the attribute &ldquo;Public &ndash;  Yes&rdquo;. This means that the notification gets displayed in a Notification List  made available outside the MGMS application as well. </p>
+<h2 class="style1"><a name="_Toc285816218" id="_Toc285816218">Proposal  Admin - Proposal evaluation Pre-settings</a></h2>
+<p class="style1">As mentioned  before, the proposal administrator is in charge of various managing the  evaluation process. For each grant notification created and published by an  institution, the proposal admin assigns the specific evaluation parameters; ratings  required and prepare the questionnaire for use by the reviewers. </p>
+<p class="style1">After  logging in, the user clicks on menu <em><strong>Proposal  evaluation &ndash; pre settings</strong>,</em> and sub menu <em><strong>Evaluation scale</strong></em>. Here the user can create a new evaluation scale as well  as view all the scales created in this institution till now. <strong>Edit</strong> option is also provided to modify  any existing scale&rsquo;s name </p>
+<p class="style1">After naming the  scale, the user clicks <em><strong>Evaluation Scale  Options</strong></em> where the standard scores can be listed. For e.g. if the reviewer  selects the option &ldquo;Good&rdquo; as per the Likert scale, for  a particular answer , then the asnswer has scored 3 marks.&nbsp; <br />
 In case the user  wants to score in number format, a new scale can be defined where <strong>Scale option</strong> &ldquo;10&rdquo; can be assigned <strong>Scale option index</strong> &ldquo;10&rdquo; . </p>
-<p>Once the scoring pattern is decided, the user clicks  on <em><strong>Evaluation Question</strong></em>, to view the  criteria or questions that are already saved for the institution in the  application, with associated scoring pattern. The user may add any further  question to this list for judging the proposals submitted for a particular  notification. <br />
+<p class="style1">Once the scoring pattern is decided, the user clicks  on <em><strong>Evaluation Question</strong></em>, to view the  criteria or questions that are already saved for the institution in the  application, with associated scoring pattern. The user may add any further  question to this list for judging the proposals submitted for a particular  notification. <br />
 </p>
-<p>The user clicks on sub menu <em><strong>Assign Evaluation Questions for  Notification</strong></em>. Here, for a selected  notification, any number of questions from the existing list can be added to  the review questionnaire. </p>
-<h3>Applying against the notification </h3>
-<p>An applicant applies for the particular scheme by  clicking &ldquo;Apply&rdquo; for the notification published in the Notification List. Currently, the same 7 page form  of IGNOU Sakshat has been made available for all institutions and  notifications. </p>
-<p>On final  submission of the proposal, it is available for evaluating in the log-ins of  all reviewers who are part of the institution&rsquo;s default approval authority. </p>
-<h3><a name="_Toc285816220" id="_Toc285816220">Reviewer  &ndash; Proposal List</a></h3>
-The  reviewers who belong to the default approval authority can see the proposal as  a line item in their <strong>Proposal List</strong>. 
-On clicking <strong>View</strong>,  the preview page of the proposal is opened up.
-<p>On clicking <strong>Review Proposal</strong>  for a  particular proposal, the  screen opens up where both the proposal as well as the review form are displayed. Top portion of  the screen displays the entire proposal in the preview format, and the bottom  half displays the questionnaire to be used for evaluation of the proposal. <strong>Maximize</strong> button has been provided for  both sections in case the user wishes to view the complete sections separately. <br />
+<p class="style1">The user clicks on sub menu <em><strong>Assign Evaluation Questions for  Notification</strong></em>. Here, for a selected  notification, any number of questions from the existing list can be added to  the review questionnaire. </p>
+<h3 class="style1">Applying against the notification </h3>
+<p class="style1">An applicant applies for the particular scheme by  clicking &ldquo;Apply&rdquo; for the notification published in the Notification List. Currently, the same 7 page form  of IGNOU Sakshat has been made available for all institutions and  notifications. </p>
+<p class="style1">On final  submission of the proposal, it is available for evaluating in the log-ins of  all reviewers who are part of the institution&rsquo;s default approval authority. </p>
+<h3 class="style1"><a name="_Toc285816220" id="_Toc285816220">Reviewer  &ndash; Proposal List</a></h3>
+<span class="style1">The  reviewers who belong to the default approval authority can see the proposal as  a line item in their <strong>Proposal List</strong>. 
+On clicking <strong>View</strong>,  the preview page of the proposal is opened up.</span>
+<p class="style1">On clicking <strong>Review Proposal</strong>  for a  particular proposal, the  screen opens up where both the proposal as well as the review form are displayed. Top portion of  the screen displays the entire proposal in the preview format, and the bottom  half displays the questionnaire to be used for evaluation of the proposal. <strong>Maximize</strong> button has been provided for  both sections in case the user wishes to view the complete sections separately. <br />
 </p>
-<p>The  questionnaire displayed here is the one which was created by the Proposal Administrator initially (Proposal  evaluation &ndash; pre settings). <br />
+<p class="style1">The  questionnaire displayed here is the one which was created by the Proposal Administrator initially (Proposal  evaluation &ndash; pre settings). <br />
   Please note that  there maybe n number of reviewers and so at any point of time, a score will be  displayed averaging the scores that have been assigned till then by one or more  reviewers. </p>
-<p>Each reviewer puts the score as deemed fit for the  particular proposal and may enter any comments. It is mandatory that all  questions be answered. Clicking <strong>Save</strong> will just save the details as draft. On clicking <strong>Submit</strong>, the scores are officially submitted into the system for  calculation of the final score for the proposal.</p>
-<p>The final rating of the proposal is  calculated as the average score. Currently, all reviewers can see the final  score and the number of votes cast which resulted in that final score. &ldquo;<strong>Votes cast</strong>&rdquo; is the number of reviewers  who have reviewed the proposal. <br />
+<p class="style1">Each reviewer puts the score as deemed fit for the  particular proposal and may enter any comments. It is mandatory that all  questions be answered. Clicking <strong>Save</strong> will just save the details as draft. On clicking <strong>Submit</strong>, the scores are officially submitted into the system for  calculation of the final score for the proposal.</p>
+<p class="style1">The final rating of the proposal is  calculated as the average score. Currently, all reviewers can see the final  score and the number of votes cast which resulted in that final score. &ldquo;<strong>Votes cast</strong>&rdquo; is the number of reviewers  who have reviewed the proposal. <br />
 The Proposal administrator and Site administrator  can also view the same list of scored proposals in the <em><strong>Projects</strong></em> menu - <em><strong>Call for  proposal</strong></em> sub-menu. In the <strong>Notification  List</strong>, clicking <strong>View</strong> in <strong>Proposals Received </strong>column for a particular notification will open the page displaying the  proposals that were submitted against the notification and their final scores  at any point of time. </p>
-<p>Option is  provided for the Site admin &amp; Proposal admin to view the review scores/details  entered by each reviewer against proposals. 
+<p class="style1">Option is  provided for the Site admin &amp; Proposal admin to view the review scores/details  entered by each reviewer against proposals. 
 Clicking on <em><strong>Proposal Review</strong></em> link for a proposal,  will open a screen where each reviewer&rsquo;s score for every question in the  evaluation questionnaire is displayed. Mouse roll-over the question number will  display the question as a tooltip. </p>
-<p>&nbsp;</p>
+<p class="style1">&nbsp;</p>
 </body>
 </html>

@@ -1,9 +1,13 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 import java.text.*;
 import java.util.*;
-
+import org.apache.commons.validator.EmailValidator
 import grails.converters.*
+
 class FundTransferController {
+	def notificationsEmailsService
+	def gmsSettingsService
+	
 	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -17,12 +21,11 @@ class FundTransferController {
     }
 
     def create = {
-    	println "params.id" +params.id
+    	
     	def grantAllocationInstance = GrantAllocation.get(params.id)
         def fundTransferInstance = new FundTransfer()
         def fundTransferService=new FundTransferService();
         fundTransferInstance.properties = params
-        println "params" +params
         def fundTransferInstanceList= fundTransferService.getFundTransferDetailsByProject(grantAllocationInstance.projects.id)
         
         return [fundTransferInstance: fundTransferInstance,
@@ -33,9 +36,8 @@ class FundTransferController {
 
     def save = 
     {
-    	println "params" +params
-        def fundTransferInstance = new FundTransfer(params.id)
-    	
+    	def fundTransferInstance = new FundTransfer(params.id)
+    	def userService = new UserService()
         def grantAllocationInstance = GrantAllocation.get(params.grantAllocationId)
         def fundTransferService=new FundTransferService();
         def fundTransferInstanceList= fundTransferService.getFundTransferDetailsByProject(grantAllocationInstance.projects.id)
@@ -45,29 +47,24 @@ class FundTransferController {
     	
     	def grantReceiptService=new GrantReceiptService()
         def grantAllocationParentInstance=fundTransferService.getGrantAllocationByProjects(fundTransferInstance)
-        println"grantAllocationParentInstance"+grantAllocationParentInstance[0].granter
         def chkgrantReceiptInstance=grantReceiptService.chkgrantReceiptInstanceForParent( fundTransferInstance)
         if(grantAllocationParentInstance[0].granter && !chkgrantReceiptInstance[0] )
         {
-          print"testing......"
-    		flash.message = "Fund can be transfered only if the grant has been received"
+        	flash.message = "Fund can be transfered only if the grant has been received"
     		redirect(action: "create",id:grantAllocationInstance.id , params:[subMenu:params.subMenu])
     		
     	 }
        
          else
           {
-        	  println"fundTransferInstance.amount"+fundTransferInstance.amount
         	  def chkFundTransferAmnt=fundTransferService.chkAmntValidation(fundTransferInstance)
-        	  println"chkFundTransferAmnt"+chkFundTransferAmnt[0].amountAllocated
-        
         	  def totFundTransfered = FundTransfer.executeQuery("select sum(FT.amount) from FundTransfer FT where FT.grantAllocation.id="+fundTransferInstance.grantAllocationId)
        
         	  double totalFund
         	  if(totFundTransfered[0]!=null)
         	  {
         		  totalFund = new Double(totFundTransfered[0]).doubleValue() + fundTransferInstance.amount
-        		  println"totalFundtransfer"+totalFund
+        		 
         	  }
         	  else
         	  {
@@ -81,8 +78,41 @@ class FundTransferController {
         	  }
         	  else
         	  {
+        	   def grantAllocationTackingInstance = GrantAllocationTracking.find("from GrantAllocationTracking GT where GT.grantAllocation="+grantAllocationInstance.id)
+        	   if(grantAllocationTackingInstance)
+        	   {
+	        	   if(grantAllocationTackingInstance.grantAllocationStatus=='Closed')
+	        	   {
+	        	   		flash.message = "${message(code: 'default.Canttranferfundfromthisprojectasitisalreadyclosed.label')}"
+	    		  		redirect(action: "create",id:grantAllocationInstance.id , params:[subMenu:params.subMenu])
+	        	   }
+	           }
+        	   else
+        	   {
         		  if (fundTransferInstance.save(flush: true)) 
         		  {
+        			  def numformatter = new DecimalFormat("#0.00");
+        			  ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+      				  def authorityInstance = Authority.find("from Authority A where A.authority = 'ROLE_SITEADMIN'")
+        			  def userMapList = userService.getAllUsersByPartyID(params.Recepient)
+        			  def userInstance = userService.getSiteAdminOfReceiver(userMapList,authorityInstance)
+        			  EmailValidator emailValidator = EmailValidator.getInstance()
+        			  if (emailValidator.isValid(userInstance.email))
+        			  {
+        				  def mailSubject="GMS Fund Transfer Information Against Project "+params.project;
+        				  def mailFooter=gmsSettingsService.getGmsSettingsValue("MailFooter")
+        				  String mailMessage="";
+        				  mailMessage="Dear "+userInstance[0].userRealName+" "+userInstance[0].userSurName+", \n";
+        				  mailMessage+="\nAn amount of Rs."+currencyFormatter.ConvertToIndainRS(fundTransferInstance.amount)+" /-";
+          			      mailMessage+=" has been transferred from "+params.grantor;
+          			      mailMessage+=" for the project entitled "+params.project;
+        				  mailMessage+=" on "+params.dateOfTransfer_value+".";
+        				  mailMessage+=" \nKindly acknowledge receipt of the fund in GMS. ";
+        			      mailMessage=mailMessage+" \n\n\n" 
+        			      mailMessage+=mailFooter
+        			      notificationsEmailsService.sendConfirmation(userInstance[0].email,mailSubject,mailMessage,"text/plain")
+        				}
+        			  
         			  flash.message = "${message(code: 'default.created.label')}"
         			  redirect(action: "create", id: grantAllocationInstance.id,params:[subMenu:params.subMenu,currencyFormat:currencyFormatter])
         		  }
@@ -95,6 +125,7 @@ class FundTransferController {
         		  }
         	  }
           }
+        }
         
     }
 
@@ -110,15 +141,10 @@ class FundTransferController {
     }
 
     def edit = {
-    	 println"params"+params
-        def fundTransferInstance = FundTransfer.get(params.id)
-        println"fundTransferInstance"+fundTransferInstance
-        //def grantAllocationInstance = GrantAllocation.get(params.grantAllocationId)
-        def grantAllocationInstance = GrantAllocation.get(fundTransferInstance.grantAllocationId)
+    	 def fundTransferInstance = FundTransfer.get(params.id)
+       def grantAllocationInstance = GrantAllocation.get(fundTransferInstance.grantAllocationId)
        
-        //println"grantAllocationInstance"+grantAllocationInstance
-        println"fundTransferInstance.grantAllocation"+fundTransferInstance.grantAllocation.id
-        if (!fundTransferInstance) {
+         if (!fundTransferInstance) {
             flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "create",params:[subMenu:params.subMenu,currencyFormat:currencyFormatter])
         }
@@ -132,8 +158,8 @@ class FundTransferController {
     }
 
     def update = {
+    	def userService = new UserService()
         def fundTransfer = FundTransfer.get(params.id)
-        println " params.grantAllocationId " + params.grantAllocationId
         def grantAllocationInstance = GrantAllocation.get(params.grantAllocationId)
         def fundTransferService=new FundTransferService();
         if (fundTransfer) 
@@ -143,27 +169,20 @@ class FundTransferController {
             fundTransferInstance.properties = params
             
             def chkFundTransferAmnt=fundTransferService.chkAmntValidation(fundTransfer)
-            println"chkFundTransferAmnt"+chkFundTransferAmnt[0].amountAllocated
-            
             def totFundTransfered = FundTransfer.executeQuery("select sum(FT.amount) from FundTransfer FT where FT.grantAllocation.id="+fundTransfer.grantAllocationId)
            
             double totalFund
             if(totFundTransfered[0]!=null)
             {
             totalFund = new Double(totFundTransfered[0]).doubleValue() + fundTransferInstance.amount-actualAmt
-            println"totalFundtransfer*******************"+totalFund
             }
             else
             {
             	totalFund = fundTransferInstance.amount 
             }
             
-            println"chkFundTransferAmnt[0].amountAllocated"+chkFundTransferAmnt[0].amountAllocated
-            println "totalFund[0].amountAllocated"+totalFund
             def grantReceiptService = new GrantReceiptService()
-            println"fundTransferInstance.id"+fundTransfer
             def chkReceiveFund=grantReceiptService.chkReceiveFundTransfer(fundTransfer)
-            println"chkReceiveFund"+chkReceiveFund
             if(!chkReceiveFund)
             {
            if(chkFundTransferAmnt[0].amountAllocated < totalFund)
@@ -175,13 +194,30 @@ class FundTransferController {
            }
            else
            {
-        	   println "fundTransferInstance"+fundTransferInstance.dateOfTransfer
-        	   
         	   fundTransfer.amount=fundTransferInstance.amount 
         	   fundTransfer.dateOfTransfer=fundTransferInstance.dateOfTransfer 
             if (fundTransfer.save()) {
+            	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();	
+            	def authorityInstance = Authority.find("from Authority A where A.authority = 'ROLE_SITEADMIN'")
+  			  def userMapList = userService.getAllUsersByPartyID(params.Recepient)
+  			  def userInstance = userService.getSiteAdminOfReceiver(userMapList,authorityInstance)
+  			  EmailValidator emailValidator = EmailValidator.getInstance()
+  			  if (emailValidator.isValid(userInstance.email))
+  			  {
+  				  def mailSubject="GMS Fund Transfer Information Against Project "+params.project;
+  				  def mailFooter=gmsSettingsService.getGmsSettingsValue("MailFooter")
+  				  String mailMessage="";
+  				  mailMessage="Dear "+userInstance[0].userRealName+" "+userInstance[0].userSurName+", \n\n ";
+  			      mailMessage+="\n\nAn amount of Rs."+currencyFormatter.ConvertToIndainRS(fundTransferInstance.amount)+" /-";
+  			      mailMessage+="has been transferred from "+params.grantor;
+				  mailMessage+=" for the project entitled "+params.project;	
+				  mailMessage+=" on "+params.dateOfTransfer_value+".";
+				  mailMessage+=" \nKindly acknowledge receipt of the fund in GMS. ";	
+  			      mailMessage=mailMessage+" \n\n" 
+			     mailMessage+=mailFooter
+  			     notificationsEmailsService.sendConfirmation(userInstance[0].email,mailSubject,mailMessage,"text/plain")
+  				}
                 flash.message = "${message(code: 'default.updated.label')}"
-                	  println "Updated Succesfully"
                 redirect(action: "create", id: grantAllocationInstance.id, params:[subMenu:params.subMenu])
 
             }

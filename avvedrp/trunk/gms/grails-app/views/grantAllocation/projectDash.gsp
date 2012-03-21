@@ -16,7 +16,12 @@
     	<g:if test="${projectInstance.status=='Closed'}">
     	</g:if>
     	<g:else>
-    		<g:subMenuList/>
+    	<%@ page import="org.springframework.security.acls.domain.BasePermission" %>
+    	<sec:notPermitted className='Projects' id='${projectInstance.id}' permission='${BasePermission.WRITE}'>
+<g:subMenuList/>
+
+</sec:notPermitted>
+    		
     	</g:else>
     	
         	
@@ -24,12 +29,12 @@
  <!-- Prodetials Start-->	
 				<table width="100%" align="center" border="0" cellspacing="5" cellpadding="5">
          			<tr>
-           				<td>
+           				<td width="60%" >
  		 					<table width="100%"  border="0" cellspacing="0" cellpadding="0">
  			  					<tr>
  									<td>
 					<!-- info Start-->	
-										<table width=75%"  border="0" cellspacing="0" cellpadding="0">
+										<table width="50%"  border="0" cellspacing="0" cellpadding="0">
 											<tr>
 												<td>
 			 										<div class="prjInfo">
@@ -89,7 +94,7 @@
 						    	       		</tr>
 						    	        </table>
 					    	       	 </td>
-							    	 <td>
+							    	 <td width="40%">
 						    	       	<table width="100%"  border="0" cellspacing="0" cellpadding="0">
 						    	       		<tr>
 							    	       		<td>
@@ -156,15 +161,24 @@
 	    										margin: 5px; border-right: none;" 
 	    										width="33%" align="left">
  							<!-- piechart Start-->	
+ 							    	
 											<br>
 											<br>
 											<br>
 											<img src ="${resultPiechart}" align="middle" />	
+											<br>
+											<br>
+											<br>
+											<br>
+											<br>
+											<br>
+											<br>
  							<!-- piechart End--> 				
 							  			 </td>
 							  			 <td  style="background-color: #cbe2f0; border: solid #FFFFFF 1px; 
 								  			 		border-left: none; margin: 5px;" width="34%" align="right">
 						<!-- Linechart Start-->	
+											
 	 								  	 	<img src ="${resultLinechart}" align="right" />
  						<!-- Linechart End --> 	
 										 </td>

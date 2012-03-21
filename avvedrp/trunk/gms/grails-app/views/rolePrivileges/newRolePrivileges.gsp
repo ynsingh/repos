@@ -22,7 +22,8 @@
 		<table>
 		<tbody>
 			<tr class="prop">
-				<td valign="top" class="name"><label for="authority"><g:message code="default.AuthorityName.label"/>:</label></td>
+				<td valign="top" class="name"><label for="authority"><g:message code="default.AuthorityName.label"/>:</label>
+				<label for="authority" style="color:red;font-weight:bold"> * </label></td>
 				<td valign="top" class="value ${hasErrors(bean:authority,field:'authority','errors')}">
 					 <g:select optionKey="id" optionValue="authority" from="${authorityInstanceList}" name="authority" value="${rolePrivilegesInstance?.role?.id}" noSelection="['null':'-Select-']"></g:select>
 				</td>

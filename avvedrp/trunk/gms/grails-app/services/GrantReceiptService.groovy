@@ -191,4 +191,16 @@ class GrantReceiptService{
 		def chkgrantReceiptInstance=GrantReceipt.findAll("from GrantReceipt GR where GR.projects="+fundTransferInstance.grantAllocation.projects.parent.id)
 		return chkgrantReceiptInstance
 	}
+	
+	/**
+	 * Function to get total amount recieved for a Grant Allocation.
+	 */
+	public double getSumOfAmountReceivedForGrantAllocation(def grantAllocationId){
+		 double totalAmt = 0.0
+		 def sumAmt = GrantReceipt.executeQuery("select sum(GR.amount) as total from GrantReceipt  GR where   GR.grantAllocation= "+grantAllocationId+" group by GR.grantAllocation");
+		 if(sumAmt[0]!=null)
+			 totalAmt = new Double(sumAmt[0]).doubleValue()
+			 
+		 return totalAmt
+	}
 }

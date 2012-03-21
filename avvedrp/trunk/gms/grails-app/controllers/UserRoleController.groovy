@@ -13,9 +13,9 @@ class UserRoleController {
     }
 
     def create = {
-     	def userRoleInstanceList =  userService.getUserRoleByUserId(params.id)
+    	def userRoleInstanceList =  userService.getUserRoleByUserId(params.id)
       	def personMapInstance = userService.getAllUserMapByUserId(params.id)
-     	def roleList = userService.getAuthoritiesExceptSiteAdminPiAndSuperAdmin()
+      	def roleList = userService.getAuthoritiesExceptSiteAdminPiAndSuperAdmin()
     	roleList.removeAll(userRoleInstanceList)
      	return ['roleList': roleList , 'userRoleInstanceList' : userRoleInstanceList,'personMapInstance':personMapInstance]
     }
@@ -31,7 +31,9 @@ class UserRoleController {
 	 
     def assignRolesToUser =
 	{
-     	def userRoleInstanceList = []
+    	GrailsHttpSession gh=getSession()
+    	def partyInstance = Party.get(gh.getValue("Party"))
+    	def userRoleInstanceList = []
      	def userRoleInstance
     	userRoleInstanceList = params.roleId
         def userRoleList = params.roleId.toString()
@@ -50,7 +52,23 @@ class UserRoleController {
     		    userRoleInstance.role = roleInstance
     		    def personInstance = Person.get(params.personMapInstance.user.id)
     		    userRoleInstance.user = personInstance
-    		    userRoleInstance.save()
+	    		   if(roleInstance.authority == 'ROLE_PI')
+		    		   {
+		    			   def investigatorInstance = new Investigator()
+		    			   investigatorInstance.email = personInstance.username
+		    			   investigatorInstance.name = personInstance.userRealName
+		    			   investigatorInstance.userSurName = personInstance.userSurName
+		    			   investigatorInstance.activeYesNo = "Y" 
+		    			   investigatorInstance.party = partyInstance
+		    			   investigatorInstance.address = ""
+		    			   investigatorInstance.Designation = ""
+		    			   investigatorInstance.save()
+		    			   userRoleInstance.save()
+		    	      }
+	    		  else
+	    		  {
+	    			  userRoleInstance.save()
+	    		  }
     	}
      	redirect(action: "getUserRole", id: userRoleInstance.user.id)
 	}
@@ -107,7 +125,7 @@ class UserRoleController {
 			    	}
     	}
     }
-  
+ 
     def show = {
         def userRoleInstance = UserRole.get(params.id)
         if (!userRoleInstance) {
@@ -176,3 +194,5 @@ class UserRoleController {
         }
     }
 }
+
+    

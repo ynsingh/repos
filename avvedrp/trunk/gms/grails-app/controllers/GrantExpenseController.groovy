@@ -36,11 +36,11 @@ class GrantExpenseController extends GmsController {
     }
 
     def delete = {
-		def grantExpenseService = new GrantExpenseService()
+    	def grantExpenseService = new GrantExpenseService()
 		def grantExpenseInstance =  grantExpenseService.getGrantExpenseById(new Integer(params.id))
 		def utilizationInstance = Utilization.findAll("from Utilization U where U.projects="+grantExpenseInstance.projects.id)
- 			  if(utilizationInstance)
- 			   {
+ 		if(utilizationInstance)
+ 		{
  				   Date temp;
  				   Date attr;
  				   for(int i=0;i<utilizationInstance.size(); i++)
@@ -76,45 +76,54 @@ class GrantExpenseController extends GmsController {
  				          Date endingDate = df.parse(edDate)
  				          Date expenseDate = df.parse(params.dateOfExpense_value)
  				       if(( expenseDate >= strtingDate) && (endingDate >= expenseDate) )
- 				   {
+ 				   	   {
  						  flash.message="${message(code: 'default.expenseDeleteUtilizationCertificate.label')}"
  							 redirect(action:edit,id:params.id)
- 				   }
- 				          
- 				
-    		else
-    		{
-		Integer grantAllocationId = grantExpenseService.deleteGrantExpense(new Integer(params.id))
+ 				   	   }
+ 					else
+    				{
+						Integer grantAllocationId = grantExpenseService.deleteGrantExpense(new Integer(params.id))
 		
-		if(grantAllocationId != null)
-		{
-			if(grantAllocationId > 0)
-			{
-				flash.message = "${message(code: 'default.deleted.label')}"
+						if(grantAllocationId != null)
+						{
+							if(grantAllocationId > 0)
+							{
+								flash.message = "${message(code: 'default.deleted.label')}"
+								redirect(action:create,id:grantExpenseInstance.projects.id)
+							}
+						}
+						else{
+							flash.message = "${message(code: 'default.notfond.label')}"
+				            redirect(action:list)
+						}
+    				}
+    	  }
+ 		  else
+ 		  {
+ 		   def fundAdvaneClosure = FundAdvance.find("from FundAdvance FA where FA.fundAdvanceCode='"+params.code+"' and FA.grantAllocation.id="+params.grantAllocation.id)
+ 		  	if(fundAdvaneClosure.status=='Closed')
+ 		  	{
+ 		  		flash.message = "${message(code: 'default.AdvanceFundisAlreadyclosedsocantdeleteenteredExpense.label')}"
 				redirect(action:create,id:grantExpenseInstance.projects.id)
-			}
-		}
-		else{
-			flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:list)
-		}
-    		}
-    }
- 			   else
- 			   {
- 				  Integer grantAllocationId = grantExpenseService.deleteGrantExpense(new Integer(params.id))
- 					
- 					if(grantAllocationId != null){
- 						if(grantAllocationId > 0){
- 							flash.message = "${message(code: 'default.deleted.label')}"
- 							redirect(action:create,id:grantExpenseInstance.projects.id)
- 						}
- 					}
- 					else{
- 						flash.message = "${message(code: 'default.notfond.label')}"
- 			            redirect(action:list)
- 					}
- 			   }
+ 		  	}
+ 		  	else
+ 		  	{
+	 			 Integer grantAllocationId = grantExpenseService.deleteGrantExpense(new Integer(params.id))
+	 			 if(grantAllocationId != null)
+	 			 {
+					 if(grantAllocationId > 0)
+					 {
+						 flash.message = "${message(code: 'default.deleted.label')}"
+						 redirect(action:create,id:grantExpenseInstance.projects.id)
+					 }
+				 }
+	 			 else
+	 			 {
+	 				 flash.message = "${message(code: 'default.notfond.label')}"
+	 			     redirect(action:list)
+	 			 }
+	 		}
+	 	 }
     }
     def edit = {
 		def grantExpenseService = new GrantExpenseService()
@@ -290,6 +299,14 @@ class GrantExpenseController extends GmsController {
         }
  			  else
  	    		{
+ 	    	def fundAdvaneClosure = FundAdvance.find("from FundAdvance FA where FA.fundAdvanceCode='"+params.code+"' and FA.grantAllocation.id="+params.grantAllocation.id)
+ 		  	if(fundAdvaneClosure.status=='Closed')
+ 		  	{
+ 		  	 	flash.message = "${message(code: 'default.AdvanceFundisAlreadyclosedsocantupdateenteredExpense.label')}"
+				redirect(action:create,id:grantExpenseInstance.projects.id)
+ 		  	}
+ 		  	else
+ 		  	{
  	    			grantExpenseInstance = grantExpenseService.updateGrantExpense(params)
  	    			if(grantExpenseInstance.isSaved)
  	    			{	
@@ -301,6 +318,7 @@ class GrantExpenseController extends GmsController {
  	    			{
  	                render(view:'edit',model:[grantExpenseInstance:grantExpenseInstance])
  	            	}
+ 	    		}
  	    		}
  		   }
     			}
@@ -316,7 +334,7 @@ class GrantExpenseController extends GmsController {
 
     def create = 
     {
-		def grantExpenseService = new GrantExpenseService()
+    	def grantExpenseService = new GrantExpenseService()
 		def grantAllocationService = new GrantAllocationService()
 		def grantAllocationSplitService=new GrantAllocationSplitService()
 		def grantReceiptService = new GrantReceiptService()
@@ -340,7 +358,7 @@ class GrantExpenseController extends GmsController {
 		{
     	 projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
    	     double receivedAmount = grantReceiptService.getSumOfAmountReceivedForProject(projectsInstance.id)
-   	  	 def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.id)
+   	     def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.id)
     	 
     	/* Get already allocated expenses */
     	def sdf = new SimpleDateFormat('dd/MM/yyyy')
@@ -387,22 +405,35 @@ class GrantExpenseController extends GmsController {
         def fundTransferService = new FundTransferService()
         def fundTransferAmnt = fundTransferService.getFundTransferTotal(grantExpenseInstance)
         def expenseTotal= grantExpenseService.getTotalExpenseAmnt(grantExpenseInstance)
-         if(expenseTotal[0] && fundTransferAmnt[0])
+        double totalAdvanceBal = 0.00
+        def advanceFundList = grantExpenseService.getAdvanceFundListByGrantAllocation(grantAllocationInstanceList)
+        for(advanceFundInstance in advanceFundList){
+        	totalAdvanceBal = totalAdvanceBal+advanceFundInstance.balanceAmount
+        }
+        def grantAllocationInstanceInExternalFundList = grantExpenseService.getgrantAllocationByProjectIdInExternalFundAllocation(params)
+        def grantReceiptSumAmountInstance
+        double sum =0;
+        for(int i=0;i<grantAllocationInstanceInExternalFundList.size();i++ )
+ 	    {
+        	grantReceiptSumAmountInstance = grantExpenseService.getsumReceivedAmountByGrantAllotId(grantAllocationInstanceInExternalFundList[i].id)
+        	if(grantReceiptSumAmountInstance)
+            sum =sum + grantReceiptSumAmountInstance[0];
+ 	    }
+        if(expenseTotal[0] && fundTransferAmnt[0])
      	  {
-        	
-        	 grantExpenseInstance.currentBalance = receivedAmount - (expenseTotal[0]+ fundTransferAmnt[0])
+        	 grantExpenseInstance.currentBalance = receivedAmount - (expenseTotal[0]+ fundTransferAmnt[0]+totalAdvanceBal)
      	  }
          else if(expenseTotal[0])
          {
-        	 grantExpenseInstance.currentBalance = receivedAmount - expenseTotal[0]
+        	 grantExpenseInstance.currentBalance = receivedAmount - (expenseTotal[0]+totalAdvanceBal)
          }
          else if(fundTransferAmnt[0])
          {
-        	 grantExpenseInstance.currentBalance = receivedAmount - fundTransferAmnt[0]
+        	 grantExpenseInstance.currentBalance = receivedAmount - (fundTransferAmnt[0]+totalAdvanceBal)
          }
          else
          {
-        	 grantExpenseInstance.currentBalance = receivedAmount
+        	 grantExpenseInstance.currentBalance = receivedAmount-totalAdvanceBal
          }
         ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
         NumberFormat formatter = new DecimalFormat("#0.00");
@@ -411,7 +442,7 @@ class GrantExpenseController extends GmsController {
                  'grantExpenseSummaryList':grantExpenseSummaryList,
                  'grantAllocationInstanceList':grantAllocationInstanceList,
                  'currencyFormat':currencyFormatter,'accountHeadList':accountHeadList,
-                 'amount':formatter.format(grantExpenseInstance.expenseAmount)]
+                 'amount':formatter.format(grantExpenseInstance.expenseAmount),'sum':formatter.format(sum)]
 		}
     	}
     	else {    			
@@ -429,6 +460,8 @@ class GrantExpenseController extends GmsController {
 		def allocatedAmount=grantAllocationService.getSumOfAmountAllocatedForProject(gh.getValue("ProjectID"),getUserPartyID())
 		def expenseTotal=GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.projects="+grantExpenseInstance.projects.id)
 	    double balanceAmnt
+	    def projectsInstance = Projects.get(new Integer(gh.getValue("ProjectID")))
+	    ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
 		if(expenseTotal[0])
 		{
 			balanceAmnt= allocatedAmount- expenseTotal[0]
@@ -567,7 +600,7 @@ class GrantExpenseController extends GmsController {
 	    		}
 	    		else 
 	    		{
-	    			render(view:'create',model:[grantExpenseInstance:grantExpenseInstance])
+	    			render(view:'create',model:[grantExpenseInstance:grantExpenseInstance,'currencyFormat':currencyFormatter,projectsInstance:projectsInstance])
 	    		}
 	    	} 
 		   }

@@ -1035,4 +1035,13 @@ class ProjectsService{
 	    def projectInstanceList = Projects.findAll("from Projects P where P.activeYesNo='Y' and DATE_FORMAT(P.projectEndDate, '%Y-%m-%d')>='"+currentDate+"'")
 	    return projectInstanceList
 	 }
+	 /*
+	  * Get project Instance by code.
+	  */
+	 public getProjectInstanceByCode(def code)
+	 {
+		 def projectsInstance =Projects.find("from Projects P where P.code ='"+code+"'")
+		 return projectsInstance
+	 }
+	 
 }

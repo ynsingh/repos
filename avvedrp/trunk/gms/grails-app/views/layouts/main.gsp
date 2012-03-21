@@ -131,6 +131,10 @@ else if(eval('typeof(document.frmreport)') != 'undefined')
       document.InstitutionWiseGrandAgencyReport.projectID.value=document.frmreport.projects.value;
       document.InstitutionWiseGrandAgencyReport.partyID.value=document.frmreport.party.value;
       document.ProjectAssosiate.partyID.value=document.frmreport.party.value;
+      
+      document.FundAdvance.projectID.value=document.frmreport.projects.value;
+      document.FundAdvanceExpenseDetails.projectID.value=document.frmreport.projects.value;
+      
          
       var day;
 	  var month;
@@ -147,6 +151,8 @@ else if(eval('typeof(document.frmreport)') != 'undefined')
 	  document.InstitutionWiseGrandAgencyReport.reportDate.value = day+"/"+month+"/"+year;
 	  document.ProjectAssosiate.reportDate.value = day+"/"+month+"/"+year;
 	  document.ProjectWiseExpendture.reportDate.value = day+"/"+month+"/"+year;
+	  document.FundAdvance.reportDate.value= day+"/"+month+"/"+year;
+	  document.FundAdvanceExpenseDetails.reportDate.value= day+"/"+month+"/"+year;
 	  
 	  var today;
 	  var tomonth;
@@ -163,6 +169,8 @@ else if(eval('typeof(document.frmreport)') != 'undefined')
       document.InstitutionWiseGrandAgencyReport.reportDateTo.value = today+"/"+tomonth+"/"+toyear;	
       document.ProjectAssosiate.reportDateTo.value = today+"/"+tomonth+"/"+toyear;
       document.ProjectWiseExpendture.reportDateTo.value = today+"/"+tomonth+"/"+toyear; 
+      document.FundAdvance.reportDateTo.value= today+"/"+tomonth+"/"+toyear;
+      document.FundAdvanceExpenseDetails.reportDateTo.value= today+"/"+tomonth+"/"+toyear;
 }
 else if(eval('typeof(document.frmGrantTrackingReport)') != 'undefined')
 {
@@ -230,8 +238,12 @@ document.AuditLogReport.partyID.value = document.auditLoggingReport.party.value;
 		 //document.StatementOfAccounts.reportDateTo.value = day+"/"+month+"/"+year;
 	  
 	 }
+	 else if(eval('typeof(document.grntdProjts)') != 'undefined')
+	{
+	  document.ProjectsDetails.granteeID.value=document.grntdProjts.grantee.value;
+	}
 
-    }
+ }
     
     
     

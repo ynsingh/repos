@@ -13,55 +13,61 @@ class GrantAllocationSplitController extends GmsController  {
     		def grantAllocationSplitService = new GrantAllocationSplitService()
     		def grantAllocationService = new GrantAllocationService()
             def grantAllocationSplitInstance = new GrantAllocationSplit()
+    		def grantorInstance
     		GrailsHttpSession gh=getSession()
     		gh.removeValue("Help")
 			//putting help pages in session
 			gh.putValue("Help","Headwise_Allocation.htm")
-    		
-    		
+			def partyInstance = Party.get(gh.getValue("Party"))
             def projectsInstance = Projects.get(new Integer(params.id))
-            
-              def dataSecurityService = new DataSecurityService()
-    		//checking  whether the user has access to the given projects
-    		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectsInstance.id,new Integer(getUserPartyID()))==0)
-    		{
-    			
-    					
+            def dataSecurityService = new DataSecurityService()
+    		
+    		if(projectsInstance.parent)
+    		  grantorInstance = GrantAllocation.find("from GrantAllocation GA where GA.projects.id = "+projectsInstance.parent.id+""); 
+    		/* checking  whether the user has access to the given projects
+		    		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectsInstance.id,new Integer(getUserPartyID()))==0)
+		    		{
     					 redirect uri:'/invalidAccess.gsp'
-
-    		}
+             		}
     		else
-    		{
+    		{ */
     			
-    		def grantAllocationSplitDetailsList=[]
-            projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
-    		def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.id)
-            for(int i=0;i<grantAllocationInstanceList.size();i++)
-            {
-            	grantAllocationSplitDetailsList.add(grantAllocationSplitService.getGrantAllocationSplitDetailsByGrantAllocation(grantAllocationInstanceList[i].id))
-            }
-    		def grantAllocationSplitList=grantAllocationSplitService.getGrantAllocationSplitDetailsByProject(params.id)
-            grantAllocationSplitInstance.properties = params
-            grantAllocationSplitInstance.projects=projectsInstance;
-    		grantAllocationSplitInstance.grantAllocation=grantAllocationInstanceList[0]
-    		def subAllocatedAmount = grantAllocationSplitService.getSubAllocatedAmountByProjectId(projectsInstance)
-    		if(subAllocatedAmount)
-    		{
-    			ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
-        		return ['grantAllocationSplitInstance':grantAllocationSplitInstance,
-                        'grantAllocationInstanceList':grantAllocationInstanceList,
-                        'grantAllocationSplitDetailsList':grantAllocationSplitDetailsList,
-                        'currencyFormat':currencyFormatter,'subAllocatedAmount':subAllocatedAmount[0]]
-    		}
-    		else
-    		{
-    		ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
-    		return ['grantAllocationSplitInstance':grantAllocationSplitInstance,
-                    'grantAllocationInstanceList':grantAllocationInstanceList,
-                    'grantAllocationSplitDetailsList':grantAllocationSplitDetailsList,
-                    'currencyFormat':currencyFormatter]
-    		}
-    }
+	    		def grantAllocationSplitDetailsList=[]
+	    		
+    		    if(projectsInstance.parent != null)
+	    			 projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProjectOnly(projectsInstance.id)
+	       	    else
+	                 projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
+	    		
+	            def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.id)
+	            for(int i=0;i<grantAllocationInstanceList.size();i++)
+	            {
+	            	grantAllocationSplitDetailsList.add(grantAllocationSplitService.getGrantAllocationSplitDetailsByGrantAllocation(grantAllocationInstanceList[i].id))
+	            }
+	    		def grantAllocationSplitList=grantAllocationSplitService.getGrantAllocationSplitDetailsByProject(params.id)
+	            grantAllocationSplitInstance.properties = params
+	            grantAllocationSplitInstance.projects=projectsInstance;
+	    		grantAllocationSplitInstance.grantAllocation=grantAllocationInstanceList[0]
+	    		def subAllocatedAmount = grantAllocationSplitService.getSubAllocatedAmountByProjectId(projectsInstance)
+	    		if(subAllocatedAmount)
+	    		{
+	    			ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+	        		return ['grantAllocationSplitInstance':grantAllocationSplitInstance,
+	                        'grantAllocationInstanceList':grantAllocationInstanceList,
+	                        'grantAllocationSplitDetailsList':grantAllocationSplitDetailsList,
+	                        'currencyFormat':currencyFormatter,'subAllocatedAmount':subAllocatedAmount[0],
+	                        'projectsInstance':projectsInstance,'grantorInstance':grantorInstance,'partyInstance':partyInstance]
+	    		}
+	    		else
+	    		{
+	    		ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+	    		return ['grantAllocationSplitInstance':grantAllocationSplitInstance,
+	                    'grantAllocationInstanceList':grantAllocationInstanceList,
+	                    'grantAllocationSplitDetailsList':grantAllocationSplitDetailsList,
+	                    'currencyFormat':currencyFormatter,'projectsInstance':projectsInstance,
+	                    'grantorInstance':grantorInstance,'partyInstance':partyInstance]
+	    		}
+       //}
     }
     def show = {
 		def grantAllocationSplitService = new GrantAllocationSplitService()
@@ -126,47 +132,44 @@ class GrantAllocationSplitController extends GmsController  {
 
         def subAllocatedAmount = GrantAllocation.executeQuery("select sum(GA.amountAllocated) from GrantAllocation GA where GA.projects.parent.id="+projectsInstance.id)
 
-		if(dataSecurityService.checkForAuthorisedAcsessInProjects(grantAllocationSplitInstance.projects.id,new Integer(getUserPartyID()))==0)
-		{
-			
-					
-					 redirect uri:'/invalidAccess.gsp'
-
-		}
+		/*if(dataSecurityService.checkForAuthorisedAcsessInProjects(grantAllocationSplitInstance.projects.id,new Integer(getUserPartyID()))==0)
+		   {
+				 redirect uri:'/invalidAccess.gsp'
+       	   }
 		else
-		{
-			projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
-			
-	        if(!grantAllocationSplitInstance) 
-	        {
-	            flash.message = "${message(code: 'default.notfond.label')}"
-	            redirect(action:list)
-	        }
-	        else 
-	        {
-	    		// check whether the accounthead id is exists
-	    		if(grantAllocationSplitInstance.accountHead)
-	            {
-	    			/**
-	        		 * 1. Check  whether the account head is sub account head)
-	        		 * 2. If its sub find the main account head)
-	        		 */
-	        		if(grantAllocationSplitInstance.accountHead.parent) //if null its main accounthead.
-	    			{
-	    				def subAccHead =  grantAllocationSplitInstance.accountHead
-	    				grantAllocationSplitInstance.subAccHead = subAccHead
-	    				def accountHead = accountHeadsService.getParentAccountHead(grantAllocationSplitInstance.subAccHead)
-	    				grantAllocationSplitInstance.accHead = accountHead
-	    				accountHeadInstanceList = accountHeadsService.getSubAccountHeads(new Integer(accountHead.id.toString()))
-	    				
-	    			}
-	    			else
-	    			{
-	    				accountHeadInstanceList = accountHeadsService.getSubAccountHeads(new Integer(grantAllocationSplitInstance.accountHead.id.toString()))
-	    			}
-	    		 }
-	          }
-			}
+         { */
+				projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
+				
+		        if(!grantAllocationSplitInstance) 
+		        {
+		            flash.message = "${message(code: 'default.notfond.label')}"
+		            redirect(action:list)
+		        }
+		        else 
+		        {
+		    		// check whether the accounthead id is exists
+		    		if(grantAllocationSplitInstance.accountHead)
+		            {
+		    			/**
+		        		 * 1. Check  whether the account head is sub account head)
+		        		 * 2. If its sub find the main account head)
+		        		 */
+		        		if(grantAllocationSplitInstance.accountHead.parent) //if null its main accounthead.
+		    			{
+		    				def subAccHead =  grantAllocationSplitInstance.accountHead
+		    				grantAllocationSplitInstance.subAccHead = subAccHead
+		    				def accountHead = accountHeadsService.getParentAccountHead(grantAllocationSplitInstance.subAccHead)
+		    				grantAllocationSplitInstance.accHead = accountHead
+		    				accountHeadInstanceList = accountHeadsService.getSubAccountHeads(new Integer(accountHead.id.toString()))
+		    				
+		    			}
+		    			else
+		    			{
+		    				accountHeadInstanceList = accountHeadsService.getSubAccountHeads(new Integer(grantAllocationSplitInstance.accountHead.id.toString()))
+		    			}
+		    		 }
+		          }
+		//}
 			if(params.UnAll)
 			{
 			
@@ -266,50 +269,52 @@ class GrantAllocationSplitController extends GmsController  {
 
         def dataSecurityService = new DataSecurityService()
 		//checking  whether the user has access to the given projects
-		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectsInstance.id,new Integer(getUserPartyID()))==0)
-		{
-			
-					
-					 redirect uri:'/invalidAccess.gsp'
-
-		}
+		/*if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectsInstance.id,new Integer(getUserPartyID()))==0)
+	     {
+			 redirect uri:'/invalidAccess.gsp'
+ 		 }
 		else
-		{
-         projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
-		def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.id)
-    
-        def grantAllocationSplitList=grantAllocationSplitService.getGrantAllocationSplitByProjects(params.id)
-        grantAllocationSplitInstance.properties = params
+        {*/
         
-        grantAllocationSplitInstance.projects=projectsInstance;
-        grantAllocationSplitInstance.grantAllocation=grantAllocationInstance;
-        def balanceAmount
-        def headAllocatedAmount = grantAllocationSplitService.getAllocatedAmountByProjectId(params.id)//sum of headwise allocated amount
-        def subAllocatedAmount = grantAllocationSplitService.getSubAllocatedAmountByProjectId(projectsInstance)
-        if(headAllocatedAmount[0])
-			{
-				balanceAmount = projectsInstance.totAllAmount - headAllocatedAmount[0]
-					if(subAllocatedAmount[0])
-						balanceAmount = projectsInstance.totAllAmount - (headAllocatedAmount[0]+subAllocatedAmount[0])
-			}
-			else
-			{
-				if(subAllocatedAmount[0])
-					balanceAmount = projectsInstance.totAllAmount - subAllocatedAmount[0]
+			 if(projectsInstance.parent != null)
+			   projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProjectOnly(projectsInstance.id)
+	 	     else
+	 		   projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
+	     	 	
+		    def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.id)
+	    
+	        def grantAllocationSplitList=grantAllocationSplitService.getGrantAllocationSplitByProjects(params.id)
+	        grantAllocationSplitInstance.properties = params
+	        
+	        grantAllocationSplitInstance.projects=projectsInstance;
+	        grantAllocationSplitInstance.grantAllocation=grantAllocationInstance;
+	        def balanceAmount
+	        def headAllocatedAmount = grantAllocationSplitService.getAllocatedAmountByProjectId(params.id)//sum of headwise allocated amount
+	        def subAllocatedAmount = grantAllocationSplitService.getSubAllocatedAmountByProjectId(projectsInstance)
+	        if(headAllocatedAmount[0])
+				{
+					balanceAmount = projectsInstance.totAllAmount - headAllocatedAmount[0]
+						if(subAllocatedAmount[0])
+							balanceAmount = projectsInstance.totAllAmount - (headAllocatedAmount[0]+subAllocatedAmount[0])
+				}
 				else
-					balanceAmount = projectsInstance.totAllAmount
-			}
-        grantAllocationSplitInstance.unAllocatedAmt = new Double(balanceAmount)
-        ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
-        NumberFormat formatter = new DecimalFormat("#0.00");
-        return ['grantAllocationSplitInstance':grantAllocationSplitInstance,
-                'grantAllocationInstance':grantAllocationInstance,
-                'grantAllocationInstanceList':grantAllocationInstanceList,
-                'currencyFormat':currencyFormatter,
-				'unAllocatedAmount':grantAllocationSplitInstance.unAllocatedAmt,'accountHeadList':accountHeadList,
-				'amount':formatter.format(grantAllocationSplitInstance.amount),
-				'balanceAmount':balanceAmount]
-		}
+				{
+					if(subAllocatedAmount[0])
+						balanceAmount = projectsInstance.totAllAmount - subAllocatedAmount[0]
+					else
+						balanceAmount = projectsInstance.totAllAmount
+				}
+	        grantAllocationSplitInstance.unAllocatedAmt = new Double(balanceAmount)
+	        ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+	        NumberFormat formatter = new DecimalFormat("#0.00");
+	        return ['grantAllocationSplitInstance':grantAllocationSplitInstance,
+	                'grantAllocationInstance':grantAllocationInstance,
+	                'grantAllocationInstanceList':grantAllocationInstanceList,
+	                'currencyFormat':currencyFormatter,
+					'unAllocatedAmount':grantAllocationSplitInstance.unAllocatedAmt,'accountHeadList':accountHeadList,
+					'amount':formatter.format(grantAllocationSplitInstance.amount),
+					'balanceAmount':balanceAmount]
+	//	}
     }
 
     def save = {

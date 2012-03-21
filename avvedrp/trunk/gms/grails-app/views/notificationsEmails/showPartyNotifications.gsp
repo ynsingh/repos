@@ -40,16 +40,23 @@
                          <tr class="prop">
                             <td valign="top" class="name"><g:message code="default.LastProposalSubmissionDate.label"/></td>
                             <td><g:formatDate format="dd-MM-yyyy" date="${notificationsInstance.proposalSubmissionLastDate}"/></td>
-                            
-                            
                         </tr>
-                    
+                       
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="default.BudgetDetails.label"/></td>
+                            
+                            <td><g:link action="budgetList" controller='budgetDetails' id="${fieldValue(bean:notificationsInstance, field:'id')}" params="[moduleType:'Notification']"><g:message code="default.View.label"/></g:link></td>
+                        </tr>
+                        
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="default.Description.label"/></td>
                             
                             <td valign="top" class="value">${notificationsInstance.description}</td>
                             
                         </tr>
+                        
+                       
+                        
                         <tr class="prop">
            					<td valign="top" class="name"><g:message code="default.Documentation.label"/></td>
            					

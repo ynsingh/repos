@@ -19,23 +19,34 @@
                            <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
                             
                            <th><g:message code ="default.ProposalTitle.label" /></th>
+                           
+                           <th><g:message code="default.SubmittedBy.label"  /></th>
                             
-                            <th> <g:message code="default.ReviewerStatus.label" /></th>
+                           <th> <g:message code="default.ReviewerStatus.label" /></th>
                             
-                             <th><g:message code ="default.Comments.label" /></th>
-                            </tr>
+                           <th><g:message code ="default.Comments.label" /></th>
+                       </tr>
                            
                        </thead>
                       <tbody>
                         <% int j=0 %>
+                         <% int l=0 %>
                     <g:each in="${ProposalApprovalValueInstance}" status="i" var="proposalApprovalInstance">
                       <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                        <td>${i+1}</td>
 	                      <td>${proposalApplicationInstanceList[j]?.projectTitle}</td>
 	                      <%  j++ %>
+	                       <td>${proposalInstanceList[l].person.username}</td>
+	                       <%  l++ %>
 	                      <td>${fieldValue(bean: proposalApprovalInstance, field: "proposalStatus")}</td>
-	                      <td>${fieldValue(bean: proposalApprovalInstance, field: "remarks")}</td>
-	                   </tr>
+	                      <g:if test="${proposalApprovalInstance.remarks == null}">
+					          <td>No Comments</td>
+					      </g:if>
+					      <g:else>
+			    		      <td><input type="hidden" name="detailId${i}" id="detailId${i}" value="${proposalApprovalInstance?.id}">
+	                          <g:link controller ="proposalApproval" action="fullProposalReview"  onclick="return validateApproved(document.getElementById('detailId${i}').value)"><g:message code="default.View.label"/></g:link></td>
+         			      </g:else>
+                           </tr>
                       </g:each>
                 
                       </tbody>

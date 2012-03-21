@@ -10,7 +10,10 @@
 	            <h1>
 	            	<g:message code = "default.CreateSalaryComponent.create.head"/>
 	            </h1>
-	            <g:hasErrors bean="${salaryComponentInstance}">
+	            <g:if test="${flash.message}">
+            	   <div class="message">${flash.message}</div>
+                </g:if>
+                <g:hasErrors bean="${salaryComponentInstance}">
 		            <div class="errors">
 		                <g:renderErrors bean="${salaryComponentInstance}" as="list" />
 		            </div>
@@ -43,11 +46,7 @@
         </div>
         <div class="wrapper">
             <div class="body">
-
-                <g:if test="${flash.message}">
-            	   <div class="message">${flash.message}</div>
-                </g:if>
-                <g:if test="${salaryComponentInstanceList}">
+		     <g:if test="${salaryComponentInstanceList}">
             	   <div class="list">
             	      <table>
                     	<thead>

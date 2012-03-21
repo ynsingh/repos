@@ -38,12 +38,14 @@
                                
                                 <td><strong>${grantAllocationInstance.projects.code}</strong></td>
                                 <input type="hidden" name="grantAllocationId" id="grantAllocationId" value="${grantAllocationInstance.id}"/>
+                                <input type="hidden" name="project" id="projectCode" value="${grantAllocationInstance.projects.code}"/>
                                 <td align="left" class="name">
                                    <label for="Grantor"><g:message code="default.Grantor.label"/>:</label>
                                 </td>
                                 <td>
                                      <g:if test="${grantAllocationInstance.granter}">
                                      	<strong> ${grantAllocationInstance.granter.code}  </strong>
+                                     	<input type="hidden" name="grantor" id="grantorCode" value="${grantAllocationInstance.granter.code}"/>
                                      </g:if>
                                 </td>
                             </tr>  
@@ -53,6 +55,7 @@
                                 </td>
                                 <td valign="top" class="name">
                                   <strong>  ${grantAllocationInstance.party.code}</strong>
+                                  <input type="hidden" name="Recepient" id="recepientName" value="${grantAllocationInstance.party.id}"/>
                                 </td>
                                 <td align="left" class="name">
                                    <label for="Amount Allocated(Rs)"><g:message code="default.AmountAllocated.label"/>:</label>

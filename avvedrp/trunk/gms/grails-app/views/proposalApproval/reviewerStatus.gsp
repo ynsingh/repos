@@ -7,9 +7,9 @@
         <title><g:message code=" default.PreProposalReviewerStatusList.label"/></title>
     </head>
     <body>
-       <div class="wrapper">
+     <div class="wrapper">
         <div class="body">
-            <h1><g:message code="default.PreProposalReviewerStatusList.label"/></h1>
+           <h1><g:message code="default.PreProposalReviewerStatusList.label"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -19,19 +19,33 @@
                         <tr>
                            <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
                             <th><g:message code ="default.ProposalTitle.label" /></th>
+                             <th><g:message code="default.SubmittedBy.label"  /></th>
+                             <th><g:message code="default.ProposalCategory.label"  /></th>
                             <th> <g:message code="default.ReviewerStatus.label" /></th>
                             <th><g:message code ="default.Comments.label" /></th>
                         </tr>
                     </thead>
-                    <tbody>
+                     <tbody>
   	                      <% int j=0 %>
+  	                      <% int k=0 %>
+  	                      <% int l=0 %>
 	                   <g:each in="${ProposalApprovalValueInstance}" status="i" var="proposalApprovalInstance">
 	                      <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 	                      <td>${i+1}</td>
 	                      <td>${proposalApplicationInstanceList[j]?.projectTitle}</td>
 	                      <%  j++ %>
+	                      <td>${proposalInstanceList[l].person.username}</td>
+	                      <%  l++ %>
+	                      <td>${proposalApplicationInstanceList[k]?.proposalCategory.name}</td>
+	                      <%  k++ %>
 	                      <td>${fieldValue(bean: proposalApprovalInstance, field: "proposalStatus")}</td>
-	                      <td>${fieldValue(bean: proposalApprovalInstance, field: "remarks")}</td>
+	                      <g:if test="${proposalApprovalInstance.remarks == null}">
+					          <td>No Comments</td>
+					      </g:if>
+					      <g:else>
+			    		      <td><input type="hidden" name="detailId${i}" id="detailId${i}" value="${proposalApprovalInstance?.id}">
+	                          <g:link controller ="proposalApproval" action="reviewerStatus"  onclick="return validateApproved(document.getElementById('detailId${i}').value)"><g:message code="default.View.label"/></g:link></td>
+         			      </g:else>
 	                      </tr>
 	                   </g:each>
                   </tbody>

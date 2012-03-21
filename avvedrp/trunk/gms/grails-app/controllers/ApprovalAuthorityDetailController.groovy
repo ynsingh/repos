@@ -42,10 +42,9 @@ class ApprovalAuthorityDetailController {
     	for(int i=0;i<userList.size();i++)
     	{
     		def userInstance = Person.get(userList[i].user.id)
-    		println"userInstance"+userInstance
+    		println"userInstance**********8"+userInstance
     		userInstanceList.add(userInstance)
     	}
-    	println"userInstanceList"+userInstanceList
     	def approvalAuthorityDetailPersonList = []
       if(approvalAuthorityDetailInstance)
     	{
@@ -60,8 +59,7 @@ class ApprovalAuthorityDetailController {
     	if(approvalAuthorityDetailPersonList)
     	{
     		userInstanceList.removeAll(approvalAuthorityDetailPersonList) 
-        println"userInstanceList"+userInstanceList
-
+        
     	}
         
     	println"approvalAuthorityDetailInstance++++"+approvalAuthorityDetailInstance
@@ -325,7 +323,6 @@ class ApprovalAuthorityDetailController {
     		
     		def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
 		.getProposalApprovalAuthorityMapByApprovalauthorityId(approvalAuthorityDetailInstance.approvalAuthority.id)
-		println"proposalApprovalAuthorityMapInstance--------------->"+proposalApprovalAuthorityMapInstance
 		if(proposalApprovalAuthorityMapInstance)
 		{
 			for(int j=0;j<proposalApprovalAuthorityMapInstance.size();j++)

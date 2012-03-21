@@ -89,7 +89,7 @@
 		                        <label for="investigator"><g:message code="default.Investigator.label"/>:</label>
 		                    </td>
 		                    <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'investigator','errors')}">
-		                        <g:select optionKey="id" optionValue="name" from="${Investigator.findAll('from Investigator I where I.activeYesNo=\'Y\' ')}" name="investigator.id" value="${projectsInstance?.investigator?.id}" noSelection="['null':'select']"></g:select>
+		                        <g:select optionKey="id" optionValue="fullName" from="${investigatorInstanceList}" name="investigator.id" value="${projectsInstance?.investigator?.id}" noSelection="['null':'select']"></g:select>
 		                    </td>
 		             </tr>  
 		             <tr class="prop">

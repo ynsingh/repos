@@ -31,7 +31,7 @@
 	P.name AS ProjectTitle,
 	P.code AS IDNo,
 	
-	(SELECT I.name FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=P.id AND PMAP.role='PI' GROUP BY P.id) AS PI,
+	(SELECT (CONCAT(I.name," ",I.user_sur_name)) FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=P.id AND PMAP.role='PI' GROUP BY P.id) AS PI,
 	CONCAT(YEAR(P.project_start_date)," - ",YEAR(P.project_end_date)) AS ProjectPeriod,
 	DATE_FORMAT(DATE(GE.date_of_expense),'%d/%m/%Y') AS DATE,
 	PD.department_code AS FundingDepartment,

@@ -27,11 +27,11 @@
 	<parameter name="Path" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT 
 	YEAR(PR.project_start_date) AS YEAR,
-	(SELECT I.name FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=PR.id AND PMAP.role='PI' GROUP BY PR.id) AS PI,
+	(SELECT (CONCAT(I.name," ",I.user_sur_name)) FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=PR.id AND PMAP.role='PI' GROUP BY PR.id) AS PI,
 	PR.name AS ProjectTitle,
 	P.code AS Grantor,
 	PD.name AS Department,
-	PD.department_code AS Code,
+	PD.department_code AS CODE,
        ( (YEAR(CURRENT_DATE)- YEAR(PR.project_start_date))+1 ) AS CurrentYear,
        PT.type AS ProjectType
 FROM 

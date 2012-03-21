@@ -21,7 +21,7 @@
                   <tbody>
                     <tr class="prop">
                         <td valign="top" class="name"><g:message code="default.NotificationTitle.label"/></td>
-                        <td valign="top" style="font-size:100%" class="value"><b>${notificationsInstance?.notificationTitle.encodeAsHTML()}</b></td>
+                        <td valign="top" class="value"><b>${notificationsInstance?.notificationTitle.encodeAsHTML()}</b></td>
                     </tr>
 
                     <tr class="prop">

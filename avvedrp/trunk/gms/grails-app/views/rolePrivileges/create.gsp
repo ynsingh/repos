@@ -27,6 +27,7 @@
                           <tr class="prop">
                             	<td valign="top" class="name">
                                     <label for="role"><g:message code="default.Role.label"/>:</label>
+                                    <label for="role" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:rolePrivilegesInstance,field:'role','errors')}">
                                     <g:select optionKey="id" optionValue="authority" from="${authorityInstanceList}" name="role.id" 
@@ -35,6 +36,7 @@
                                 </td>
                                 <td valign="top" class="name">
                                     <label for="controllerName"><g:message code="default.Privilegesgroup.label"/>:</label>
+                                    <label for="controllerName" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:rolePrivilegesInstance,field:'controllerName','errors')}">
                                 	<g:select from="${filename}" name="controllerName" id="controllerName"

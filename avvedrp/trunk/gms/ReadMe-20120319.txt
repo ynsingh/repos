@@ -1,0 +1,42 @@
+1. First copy the gms_09_feb_12.diff file to gms folder from the folder Patch.
+
+2. Then execute the scripts.sql and views.sql from the folder Patch.
+
+3. Then apply the patch file(gms_09_feb_12.diff).
+
+4. After applying the patch copy the commons-beanutils-1.7.0.jar file from patch folder to gms/lib folder.
+
+5. Then copy the contents of mondrain folder to gms/plugins/mondrian-0.1/lib folder.
+
+6. Copy these images innerpageheader.jpg and  indexnew_0.2.jpg from Patch/images to folder gms/web-app/images/themesky.
+
+7. Copy these images rupee.JPG, header1.jpg and header2.jpg from Patch/images to folder gms/web-app/reports/images
+
+8. Copy the images from Patch/images/web-app/wcf/calender to folder  gms/web-app/wcf/calender
+
+9. Copy the images from Patch/images/web-app/wcf/catedit to folder  gms/web-app/wcf/catedit
+
+10.Copy the images from Patch/images/web-app/wcf/changeorder to folder  gms/web-app/wcf/changeorder
+
+11.Copy the images from Patch/images/web-app/wcf/form to folder  gms/web-app/wcf/form  
+
+12.Copy the images from Patch/images/web-app/wcf/tabbed to folder  gms/web-app/wcf/tabbed
+
+13.Copy the images from Patch/images/web-app/wcf/table to folder  gms/web-app/wcf/table
+
+14.Copy the images from Patch/images/web-app/wcf/toolbar to folder  gms/web-app/wcf/toolbar
+
+15.Copy the images from Patch/images/web-app/wcf/tree  to folder  gms/web-app/wcf/tree 
+
+16.Copy the images from Patch/images/web-app/jpivot/navi  to folder  gms/web-app/jpivot/navi
+
+17.Copy the images from Patch/images/web-app/jpivot/table  to folder  gms/web-app/jpivot/table  
+
+18.Copy the images from Patch/images/web-app/jpivot/toolbar  to folder  gms/web-app/jpivot/toolbar
+
+19. copy gmsdb.properties from the folder to TOMCAT_HOME/conf directory and change the database configurations
+(This is for Adhoc Report tool)
+
+20. copy gmsDb.properties file to tomcat conf dir
+
+21. Finally create the war 

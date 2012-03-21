@@ -403,7 +403,43 @@ class BudgetDetailsController {
     	def budgetMasterInstanceList=[]
     	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
     	NumberFormat formatter = new DecimalFormat("#0.00");
-    	def budgetModMapInstance = budgetMasterService.getmodulTypeIdByModuleType(budgetId)
+    	def budgetModMapInstance = budgetMasterService.getmodulTypeIdByModuleType(budgetId,params.moduleType)
+    	for(int i=0;i<budgetModMapInstance.size();i++)
+		{
+    		budgetMasterInstance = budgetMasterService.getMasterIdByModuleMap(budgetModMapInstance[i].budgetMaster.id)
+    		for(int j=0;j<budgetMasterInstance.size();j++)
+			{
+	    		masterInstance = budgetMasterInstance[j]
+	    		budgetMasterInstanceList.add(masterInstance)
+			}
+		}
+    	for(int i=0;i<budgetModMapInstance.size();i++)
+		{
+    		budgetDetailsInstanceList = budgetMasterService.getBudgetDetailsByMaasterId(budgetModMapInstance[i].budgetMaster.id)
+    		for(int j=0;j<budgetDetailsInstanceList.size();j++)
+			{
+	    		detailsInstance = budgetDetailsInstanceList[j]
+	    		budgetDetInstanceList.add(detailsInstance)
+			}
+		}
+    	[budgetModMapInstance:budgetModMapInstance,budgetMasterInstanceList:budgetMasterInstanceList,budgetDetailsInstanceList:budgetDetailsInstanceList,budgetDetInstanceList:budgetDetInstanceList,'currencyFormat':currencyFormatter]
+    }
+    
+    def assignedBudget=
+    {
+    	def budgetMasterService = new BudgetMasterService()
+    	def budgetId = params.id
+    	def budgetMasterInstance
+    	def masterInstance
+    	def budgetDetailList
+    	def detailsInstance
+    	def accountHeadInstanceList=[]
+    	def budgetDetInstanceList=[]
+    	def budgetDetailsInstanceList
+    	def budgetMasterInstanceList=[]
+    	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+    	NumberFormat formatter = new DecimalFormat("#0.00");
+    	def budgetModMapInstance = budgetMasterService.getmodulTypeIdByModuleType(budgetId,params.moduleType)
     	for(int i=0;i<budgetModMapInstance.size();i++)
 		{
     		budgetMasterInstance = budgetMasterService.getMasterIdByModuleMap(budgetModMapInstance[i].budgetMaster.id)

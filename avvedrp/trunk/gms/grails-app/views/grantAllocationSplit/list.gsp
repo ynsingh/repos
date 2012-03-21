@@ -128,12 +128,15 @@
 		        								<td width="169"><g:message code="default.Rs.label" /> 
 		        									${currencyFormat.ConvertToIndainRS(grantAllocationSplit[3])}
 	        									</td>
+	        			     					<g:if test="${(projectsInstance.parent)&& (grantorInstance.party.id != partyInstance.id)}"></g:if> 
+	        									<g:else>
 		            							<td width="169"> 
 		            								<g:link action="edit" id="${grantAllocationSplit[4]}"  rel="example3" 
 		            									params="['grantAllotId':grantAllocationInstanceList.id,'UnAll':unallocateAmt]" title="Edit  Allocation" >  
 		            									<g:message code="default.Edit.label"/> 
 		        									</g:link> 
 		    									</td>
+		  									   </g:else>
 		  									</tr>
 	       								</g:each>
 									</table>
@@ -204,21 +207,29 @@
 					  	</tr>
 					   <tr>
 					  	
-
  						<td height="40">
  							<strong><g:message code="default.HeadAllocation.UnallocatedAmount(Rs).label"/> : <g:message code="default.Rs.label" />
  							${currencyFormat.ConvertToIndainRS(unallocateAmt)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
- 							<g:if test="${unallocateAmt>0}">
- 								<g:link action="create" id="${grantAllocationSplitInstance.projects.id}" rel="example1" 
- 									params="['grantAllotId':grantAllocationInstanceList.id,'UnAll':unallocateAmt]" 
- 									title="Head Wise Allocation" >  <g:message code="default.HeadAllocation.Allocate.label"/> 
-								</g:link>
-							</g:if>
+ 							<g:if test="${(projectsInstance.parent)&& (grantorInstance.party.id != partyInstance.id)}"> </g:if> 
+	        				<g:else>
+		        				<%def projectTrackingInstanceCheck=GrantAllocationTracking.find("from GrantAllocationTracking PT where PT.grantAllocationStatus='Closed' and PT.grantAllocation= "+grantAllocationSplitInstance.grantAllocation.id+"")%>
+		        				<g:if test="${projectTrackingInstanceCheck}"> </g:if>
+		        			    <g:else>
+		 							<g:if test="${unallocateAmt>0}">
+		 								<g:link action="create" id="${grantAllocationSplitInstance.projects.id}" rel="example1" 
+		 									params="['grantAllotId':grantAllocationInstanceList.id,'UnAll':unallocateAmt]" 
+		 									title="Head Wise Allocation" >  <g:message code="default.HeadAllocation.Allocate.label"/> 
+										</g:link>
+									</g:if>
+							    </g:else>
+							</g:else>
+		                  
 						</td>
     					<td align="left"> </td>
     					<td>&nbsp;</td>
     					<td>&nbsp;</td>
   					  </tr>
+  					   
   					</g:each>
 				</table>              
 			</div> 

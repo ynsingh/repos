@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+ <Schema name="Asset">
+ <Cube name="Asset">
+ <Table name="Asset"/> 
+ 	 
+ 	 <Dimension name="Parent Project" hasAll="true">
+            <Hierarchy hasAll="true" >
+            	<Level name="Parent" column="Parent_project" type="String" uniqueMembers="false"/> 
+                              
+    		</Hierarchy>
+     </Dimension>
+     
+     <Dimension name="Project" hasAll="true">
+            <Hierarchy hasAll="true">
+            			<Level name="Project ID" column="project_code" type="String" uniqueMembers="false"/> 
+                      <Level name="ProjectName" column="project_name" type="String" uniqueMembers="false"/> 
+                               
+            </Hierarchy>
+     </Dimension>
+     <Dimension name="Partner Institute" hasAll="false">
+            <Hierarchy hasAll="true" >
+            	<Level name="Institute"  column="institute" type="String" uniqueMembers="false"/>
+                       
+    		</Hierarchy>
+     </Dimension>
+     <Dimension name="AccountHhead" hasAll="false">
+            <Hierarchy hasAll="true" >
+            	<Level name="AccountHhead"  column="acchead" type="String" uniqueMembers="false"/>
+                       
+    		</Hierarchy>
+     </Dimension>
+     <Dimension name="PIName" hasAll="false">
+            <Hierarchy hasAll="true" >
+            	<Level name="PIName"  column="PI_name" type="String" uniqueMembers="false"/>
+                       
+    		</Hierarchy>
+     </Dimension>
+     <Dimension name="Date" hasAll="false">
+            <Hierarchy hasAll="true" >
+            	<Level name="Date"  column="date" type="String" uniqueMembers="false"/>
+                       
+    		</Hierarchy>
+     </Dimension>
+     <Dimension name="AssetName" hasAll="true">
+            <Hierarchy hasAll="true">
+                      <Level name="AssetName" column="asset_name" type="String" uniqueMembers="false"/> 
+                      <Level name="AssetType" column="asset_type" type="String" uniqueMembers="false"/>          
+            </Hierarchy>
+     </Dimension>
+    
+         <Measure name="Value" column="value" aggregator="sum" formatString="#,###"/>
+       
+    </Cube>
+    </Schema>

@@ -2679,3 +2679,20 @@ VALUES (150, 0, 'Y', 'SuperAdmin', NOW(), 45, 'SuperAdmin', NOW(), (SELECT a.id 
 INSERT INTO menu_role_map (`id`,`version`, `active_yes_no`, `created_by`, `created_date`, `menu_id`, `modified_by`, `modified_date`, `role_id`)
 VALUES (151, 0, 'Y', 'SuperAdmin', NOW(), 46, 'SuperAdmin', NOW(), (SELECT a.id FROM authority a WHERE authority='ROLE_PROPOSALADMIN'));
 
+
+
+/*Script for GMS release 2.8 - added on 2nd Feb 2012 */
+
+ALTER TABLE grant_expense  ADD COLUMN `fund_advance_code` VARCHAR(255) NULL AFTER `expense_request_code`; 
+
+ALTER TABLE fund_advance ADD COLUMN `status` VARCHAR(255) NULL AFTER `modified_date`;
+
+ALTER TABLE person  ADD COLUMN `active_yes_no` CHAR(1) NOT NULL AFTER `username`;
+UPDATE person SET active_yes_no='Y';
+
+ALTER TABLE person DROP KEY `username`;
+
+ALTER TABLE person ADD COLUMN `user_designation` VARCHAR(255) NULL AFTER `active_yes_no`;    
+ALTER TABLE person ADD COLUMN `ph_number` VARCHAR(255) NULL AFTER `user_designation`;
+
+

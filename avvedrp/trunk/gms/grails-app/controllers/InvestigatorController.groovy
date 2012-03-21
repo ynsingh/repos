@@ -261,6 +261,7 @@ class InvestigatorController {
         			userInstance.userSurName = investigatorInstance.userSurName
         			userInstance.password = springSecurityService.encodePassword(userName)
         			userInstance.email = investigatorInstance.email
+        			userInstance.activeYesNo = "Y"
         			userInstance.enabled=false
         			//userInstance.save()
         			def userService = new UserService()

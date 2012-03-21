@@ -33,6 +33,10 @@
             <g:if test="${flash.message}">
               <div class="message">${flash.message}</div>
             </g:if>
+            <g:if test="${flash.error}">
+	        	<div class="errors">${flash.error}</div>
+            </g:if>
+            
             <g:if test="${notificationInstanceList}">
               <div class="list">
                 <table>
@@ -61,11 +65,7 @@
                            	<td>
                            	<modalbox:createLink controller="proposal" action="notificationDetails" id="${notificationInstanceList.id}" title="${message(code: 'default.NotificationDetails.label')}" width="900"><g:message code="${message(code: 'default.View.label')}"/></modalbox:createLink>
                            	</td>
-                           	
-                           	
-                           	                           	
-                           	
-							<td>
+                           	<td>
 							    <g:form controller="proposal" action="save" id="${notificationInstanceList.id}">
 							    <g:link action="uploadProposalApplication" controller="proposal" id="${notificationInstanceList.id}" onClick="return validateProposalsubmit('${notificationInstanceList.proposalSubmissionLastDate}')"><g:message code="${message(code: 'default.Apply.label')}"/></g:link>  
                      			</g:form>

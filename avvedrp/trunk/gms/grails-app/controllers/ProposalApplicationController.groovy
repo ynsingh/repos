@@ -11,6 +11,7 @@ class ProposalApplicationController {
 	def gmsSettingsService
 	def attachmentsService
 	def proposalCategoryService
+	def notificationService 
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -323,16 +324,54 @@ class ProposalApplicationController {
 	}
 	def proposalAppPart1PersonalDetails = 
     {
-    	
-    	GrailsHttpSession gh = getSession()
+		GrailsHttpSession gh = getSession()
 		gh.putValue("PartyId",params.party)
-    	def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(gh.getValue("ProposalId"))
-    	def total=2
-    	def page=1
-    	def proposalCategoryList=proposalCategoryService.getProposalCategoryList()
-    	def proposalApplicationExtInstance = proposalService.getProposalApplicationExtByProposalApplicationId(proposalApplicationInstance?.id)
-    	 [proposalApplicationInstance:proposalApplicationInstance,
-    	 proposalCategoryList:proposalCategoryList,proposalApplicationExtInstance:proposalApplicationExtInstance,total:total,page:page]
+		def notificationInstance = notificationService.getNotificationById(gh.getValue("NotificationId"))
+	
+	 if(params.party) 
+	  {
+		if(params.party!='null')
+	    {
+			if(notificationInstance.party.id == new Integer(params.party))
+		    {
+				flash.error = "${message(code: 'default.Owninstitutionshouldnotapply.label')}"
+				redirect(controller:"proposal",action:"notificationList")
+	 	    }
+		   else
+		    {
+		    	def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(gh.getValue("ProposalId"))
+		    	def total=2
+		    	def page=1
+		    	def proposalCategoryList=proposalCategoryService.getProposalCategoryList()
+		    	def proposalApplicationExtInstance = proposalService.getProposalApplicationExtByProposalApplicationId(proposalApplicationInstance?.id)
+		    	 [proposalApplicationInstance:proposalApplicationInstance,
+		    	 proposalCategoryList:proposalCategoryList,proposalApplicationExtInstance:proposalApplicationExtInstance,total:total,page:page]
+		    }
+			
+	    }
+	    else
+	    {
+	    	def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(gh.getValue("ProposalId"))
+	    	def total=2
+	    	def page=1
+	    	def proposalCategoryList=proposalCategoryService.getProposalCategoryList()
+	    	def proposalApplicationExtInstance = proposalService.getProposalApplicationExtByProposalApplicationId(proposalApplicationInstance?.id)
+	    	 [proposalApplicationInstance:proposalApplicationInstance,
+	    	 proposalCategoryList:proposalCategoryList,proposalApplicationExtInstance:proposalApplicationExtInstance,total:total,page:page]
+	    }
+	  }
+	  else
+	  {
+		  def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(gh.getValue("ProposalId"))
+	    	def total=2
+	    	def page=1
+	    	def proposalCategoryList=proposalCategoryService.getProposalCategoryList()
+	    	def proposalApplicationExtInstance = proposalService.getProposalApplicationExtByProposalApplicationId(proposalApplicationInstance?.id)
+	    	 [proposalApplicationInstance:proposalApplicationInstance,
+	    	 proposalCategoryList:proposalCategoryList,proposalApplicationExtInstance:proposalApplicationExtInstance,total:total,page:page]
+
+	  }
+	    
     }
 	def proposalAppPartInformationOfDepartment = 
     {

@@ -348,6 +348,8 @@
        	subQuery =subQuery+" "+params.order
     	def grantAllocationService = new GrantAllocationService()
     	def grantAllocation=grantAllocationService.getGrantAllocationById(new Integer(params.id))
+    	def investigatorService=new InvestigatorService()
+		def investigatorInstanceList = investigatorService.getAllInvestigators()
     	def dataSecurityService = new DataSecurityService()
     	//checking  whether the user has access to the given projects
     	if(dataSecurityService.checkForAuthorisedAcsessInProjects(new Integer(params.id),new Integer(getUserPartyID()))==0)
@@ -387,6 +389,7 @@
 	         }
 	        else
 	        	grantAllocationInstance.balanceAmount=projectInstance.parent.totAllAmount - sumAmountAllocated
+	        
 	        ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
 	        NumberFormat formatter = new DecimalFormat("#0.00");
 	        return ['grantAllocationInstance':grantAllocationInstance,
@@ -395,7 +398,8 @@
 	                'partyInstance':partyInstance,'grantAllocation':grantAllocation,
 	                'projectsPIMapInstanceList':projectsPIMapInstanceList,
 	                'currencyFormat':currencyFormatter,'subProjectsList':subProjectsList,
-	                'amount':formatter.format(grantAllocationInstance.amountAllocated)]
+	                'amount':formatter.format(grantAllocationInstance.amountAllocated),
+	                'investigatorInstanceList':investigatorInstanceList]
     	}
  			def projectInstance = Projects.get( params.id )
 	        projectInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectInstance.id,getUserPartyID())
@@ -412,6 +416,19 @@
                 'partyInstance':partyInstance,'grantAllocation':grantAllocation ]
 		
     }
+	
+	def updatePi = {
+		def investigatorService=new InvestigatorService()
+		
+		if(params.recipient)
+    	{
+			def investigatorInstanceList = investigatorService.getInvestigatorsWithParty(params.recipient)
+	    	
+	    	render (template:"listPi", model : ['investigatorInstanceList' : investigatorInstanceList])
+	    	
+    	}
+		
+	}
     
     def subGrantAllotExt = {
     	GrailsHttpSession gh=getSession()
@@ -471,16 +488,16 @@
 	 * */
     def subGrantSave = 
     {
-
 		def investigatorService = new InvestigatorService()
 		params.createdDate = new Date();
 		params.modifiedDate = new Date();
 		double sumAmount = 0.0
-    	double totAllAmount = ((params.totAllAmount).toDouble()).doubleValue()
-    	double amountAllocated = ((params.amountAllocated).toDouble()).doubleValue()
-    	double newAmount = ((params.amount).toDouble()).doubleValue()
-    	double balanceAmount= ((params.balance).toDouble()).doubleValue()
+    	double totAllAmount = ((params.totAllAmount).toDouble()).doubleValue()// Fund for the parent project
+    	double amountAllocated = ((params.amountAllocated).toDouble()).doubleValue() // new amount
+    	double newAmount = ((params.amount).toDouble()).doubleValue() // Total amount used for sub allocation
+    	double balanceAmount= ((params.balance).toDouble()).doubleValue()// totAllAmount - newAmount
     	sumAmount = amountAllocated + newAmount
+      	
     	def granterInstance
     	def grantAllocationInstance
     	def projectsInstance = new Projects(params)
@@ -505,7 +522,7 @@
 		grantAllocationInstance.allocationType="grand"
 		grantAllocationInstance.code=""
 		def grantAllocationInstanceCheck = grantAllocationService.getGrantAllocationsByProjectIdAndPartyId(grantAllocationInstance.projects.id,grantAllocationInstance.party.id)
-    	def partyService = new PartyService();
+		def partyService = new PartyService();
     	def grantAllocationService = new GrantAllocationService()
     
 		if(Double.compare(totAllAmount,sumAmount) >=0 )
@@ -519,21 +536,85 @@
 			
 			if(grantAllocationList)
 			{
-				if(grantAllocationList[0].party.id == grantAllocationInstance.party.id || grantAllocationList==null)
-				{
-					GrantAllocation = grantAllocationService.checkGrantAllocationSplitByProjectId(grantAllocationInstance)
-					if(GrantAllocation == null)
+					
+					if(grantAllocationList[0].party.id == grantAllocationInstance.party.id || grantAllocationList==null)
 					{
-						flash.message = "${message(code: 'default.couldnotallocatenotdoneHeadwiseallocation.label')}"
-					}
-					else
-					{
-						
-						if(amountAllocated > balanceAmount)
+						GrantAllocation = grantAllocationService.checkGrantAllocationSplitByProjectId(grantAllocationInstance)
+						if(GrantAllocation == null)
 						{
-							flash.message= "${message(code: 'default.couldnotallocateBalanceAmount.label')}"
+							projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
+							if(projectsInstance.saveMode != null)
+							{
+								if(projectsInstance.saveMode.equals("Saved"))
+					    		{
+									GrantAllocationSave = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
+									if(!grantAllocationInstanceCheck)
+									{
+										grantAllocationInstanceForAccess = GrantAllocationSave
+										accessInstance = projectsService.saveProjectAccessPermission(grantAllocationInstanceForAccess)
+										def userInstanse = Person.get(gh.getValue("UserId"))
+										/*calling a method for save project access permission for pi*/
+								    	projectsService.saveAccessPermissionForprojects(grantAllocationInstance,projectsInstance,investigatorInstance.email)
+							    	
+									}
+									flash.message = "${message(code: 'default.Newallocationcreated.label')}"
+				    			}
+				    			else if(projectsInstance.saveMode.equals("Duplicate"))
+				    			{
+				    				flash.message = "${message(code: 'default.AlreadyExists.label')}"
+				    			
+				    			}
+				    		}
+							else
+				    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
+							
+							
 						}
 						else
+						{
+							
+							if(amountAllocated > balanceAmount)
+							{
+								flash.message= "${message(code: 'default.couldnotallocateBalanceAmount.label')}"
+							}
+							else
+							{
+							projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
+							if(projectsInstance.saveMode != null)
+							{
+								if(projectsInstance.saveMode.equals("Saved"))
+					    		{
+									GrantAllocationSave = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
+									if(!grantAllocationInstanceCheck)
+									{
+										grantAllocationInstanceForAccess = GrantAllocation.get(GrantAllocation.id)
+										accessInstance = projectsService.saveProjectAccessPermission(grantAllocationInstanceForAccess)
+									}
+									flash.message = "${message(code: 'default.Newallocationcreated.label')}"
+					    		}
+					    		else if(projectsInstance.saveMode.equals("Duplicate"))
+					    		{
+					    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
+					    			
+					    		}
+					    	}
+					    	else
+					    		flash.message = "${message(code: 'default.AlreadyExists.label')}"
+				    	}
+					}
+				}
+				else
+				{
+					flash.message = "${message(code: 'default.ProjectAlreadyAllotted.label')}" + grantAllocationList[0].party.code
+				}
+			}
+			
+			
+			
+			else
+			{
+				GrantAllocation = grantAllocationService.checkGrantAllocationSplitByProjectId(grantAllocationInstance)
+					if(GrantAllocation == null)
 						{
 						projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
 						if(projectsInstance.saveMode != null)
@@ -543,71 +624,61 @@
 								GrantAllocationSave = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
 								if(!grantAllocationInstanceCheck)
 								{
-									grantAllocationInstanceForAccess = GrantAllocation.get(GrantAllocation.id)
+									grantAllocationInstanceForAccess = GrantAllocationSave
 									accessInstance = projectsService.saveProjectAccessPermission(grantAllocationInstanceForAccess)
+									def userInstanse = Person.get(gh.getValue("UserId"))
+									/*calling a method for save project access permission for pi*/
+							    	projectsService.saveAccessPermissionForprojects(grantAllocationInstance,projectsInstance,investigatorInstance.email)
+						    	
 								}
 								flash.message = "${message(code: 'default.Newallocationcreated.label')}"
-				    		}
-				    		else if(projectsInstance.saveMode.equals("Duplicate"))
-				    		{
-				    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
-				    			
-				    		}
-				    	}
-				    	else
-				    		flash.message = "${message(code: 'default.AlreadyExists.label')}"
-			    	}
-				}
-				}
-				else
-				{
-					flash.message = "${message(code: 'default.ProjectAlreadyAllotted.label')}" + grantAllocationList[0].party.code
-				}
-			}
-			else
-			{
-				GrantAllocation = grantAllocationService.checkGrantAllocationSplitByProjectId(grantAllocationInstance)
-				if(GrantAllocation == null)
-				{
-					flash.message = "${message(code: 'default.couldnotallocatenotdoneHeadwiseallocation.label')}"
-				}
-				else
-				{
-					if(amountAllocated > balanceAmount)
-					{
-						
-					flash.message="${message(code: 'default.couldnotallocateBalanceAmount.label')}"
-					}
-				
-				else
-				{
-					projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
-					if(projectsInstance.saveMode != null)
-					{
-						if(projectsInstance.saveMode.equals("Saved"))
-			    		{
-							GrantAllocationSave = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
-							if(!grantAllocationInstanceCheck)
-							{
-								grantAllocationInstanceForAccess = GrantAllocation.get(GrantAllocation.id)
-								accessInstance = projectsService.saveProjectAccessPermission(grantAllocationInstanceForAccess)
-								def userInstanse = Person.get(gh.getValue("UserId"))
-								/*calling a method for save project access permission for pi*/
-						    	projectsService.saveAccessPermissionForprojects(grantAllocationInstance,projectsInstance,investigatorInstance.email)
-					    	
-							}
-							flash.message = "${message(code: 'default.Newallocationcreated.label')}"
-		    			}
-		    			else if(projectsInstance.saveMode.equals("Duplicate"))
-		    			{
-		    				flash.message = "${message(code: 'default.AlreadyExists.label')}"
-		    			
-		    			}
-		    		}
+			    			}
+			    			else if(projectsInstance.saveMode.equals("Duplicate"))
+			    			{
+			    				flash.message = "${message(code: 'default.AlreadyExists.label')}"
+			    			
+			    			}
+			    		}
+						else
+			    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
+					    }
 					else
-		    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
-			    }
-			}
+						{
+							if(amountAllocated > balanceAmount)
+								{
+									
+								flash.message="${message(code: 'default.couldnotallocateBalanceAmount.label')}"
+								}
+						
+							else
+								{
+									projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
+									if(projectsInstance.saveMode != null)
+									{
+										if(projectsInstance.saveMode.equals("Saved"))
+							    		{
+											GrantAllocationSave = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
+											if(!grantAllocationInstanceCheck)
+											{
+												grantAllocationInstanceForAccess = GrantAllocation.get(GrantAllocation.id)
+												accessInstance = projectsService.saveProjectAccessPermission(grantAllocationInstanceForAccess)
+												def userInstanse = Person.get(gh.getValue("UserId"))
+												/*calling a method for save project access permission for pi*/
+										    	projectsService.saveAccessPermissionForprojects(grantAllocationInstance,projectsInstance,investigatorInstance.email)
+									    	
+											}
+											flash.message = "${message(code: 'default.Newallocationcreated.label')}"
+						    			}
+						    			else if(projectsInstance.saveMode.equals("Duplicate"))
+						    			{
+						    				flash.message = "${message(code: 'default.AlreadyExists.label')}"
+						    			
+						    			}
+						    		}
+									else
+						    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
+							    }
+					   }
 			}
 		}
 		else
@@ -697,8 +768,11 @@
 		GrailsHttpSession gh=getSession()
 		def partyService = new PartyService()
 		def grantAllocationService = new GrantAllocationService()
-		 def dataSecurityService = new DataSecurityService()
+		def dataSecurityService = new DataSecurityService()
+		def investigatorService=new InvestigatorService()
+		
 		def grantAllocationInstance = grantAllocationService.getGrantAllocationById(new Integer(params.id))
+		def investigatorInstanceList = investigatorService.getInvestigatorsWithParty(grantAllocationInstance.party.id)
 		def projectsInstance = Projects.get(grantAllocationInstance.projects.id)
         if(projectsInstance)
 		{
@@ -761,14 +835,13 @@
 	        	         'partyInstance':partyInstance,
 	        	         'currencyFormat':currencyFormatter,
 	        	         'amount':formatter.format(grantAllocationInstance.amountAllocated),
-	        	         'projectsInstance':projectsInstance,]
+	        	         'projectsInstance':projectsInstance,'investigatorInstanceList':investigatorInstanceList]
 	        }
         
 		}
     }
     def updateProAllot = 
     {
-			 println"params....."+params
 		 double sumAmount = 0.0
     	 double projectAmount = 0.0
     	 double amountToBeUpdated = 0.0
@@ -778,19 +851,29 @@
      	 sumAmount = ((params.amountAllocated).toDouble()).doubleValue() + ((params.amount).toDouble()).doubleValue()
     	 GrailsHttpSession gh=getSession()
 		 def grantAllocationService = new GrantAllocationService()
-		def investigatorService = new InvestigatorService()
+		 def investigatorService = new InvestigatorService()
 		 def pastGrantAllocation = grantAllocationService.getGrantAllocationById(new Integer(params.id))
 		 amountToBeUpdated = (sumAmount - (pastGrantAllocation.amountAllocated).doubleValue())
 		 double exactBalance = (balanceAmount+(pastGrantAllocation.amountAllocated).doubleValue())
 		 
-	        def grantAllocationUpdateInstance = grantAllocationService.getGrantAllocationById(new Integer(params.id))
+	     def grantAllocationUpdateInstance = grantAllocationService.getGrantAllocationById(new Integer(params.id))
 	        
 		 def grantAllocationInstance 
 		 def grantAllocationSplitInstance = grantAllocationService.getGrantAllocationSplit(grantAllocationUpdateInstance);
-			def grantExpenseInstance = grantAllocationService.getExpenseForGrantAllocation(grantAllocationUpdateInstance);
-			def grantReceiptInstance = grantAllocationService.getGrantReceiptForGrantAllocation(grantAllocationUpdateInstance);
-			def fundTransferInstance= grantAllocationService.getFundTransferForGrantAllocation(grantAllocationUpdateInstance);
-
+		 def grantExpenseInstance = grantAllocationService.getExpenseForGrantAllocation(grantAllocationUpdateInstance);
+		 def grantReceiptInstance = grantAllocationService.getGrantReceiptForGrantAllocation(grantAllocationUpdateInstance);
+		 def fundTransferInstance= grantAllocationService.getFundTransferForGrantAllocation(grantAllocationUpdateInstance);
+		 def grantAllocationTackingInstance = GrantAllocationTracking.find("from GrantAllocationTracking GT where GT.grantAllocation="+pastGrantAllocation.id)
+		 if(grantAllocationTackingInstance)
+         {
+          if(grantAllocationTackingInstance.grantAllocationStatus=='Closed')
+	        {
+	        	 flash.message = "${message(code: 'default.Cantupdatethisprojectasitisalreadyclosed.label')}"
+	    		 redirect(action:'editProAllot',id:pastGrantAllocation.id)
+	        }
+	     }
+         else
+         {
 			if(amountAllocated > exactBalance)
 			{
 				flash.message= "${message(code: 'default.couldnotallocateBalanceAmount.label')}"
@@ -910,6 +993,7 @@
 			 flash.message = "GrantAllocation not found with id ${params.id}"
 			 redirect(action:edit,id:params.id)
 		 }*/
+    }
     }
     }
     }
@@ -1072,8 +1156,7 @@ def projectDash =
            	
            	def grantAllocationSplit = GrantAllocationSplit.findAll("from GrantAllocationSplit  GAS where  GAS.projects="+projectInstance.id);
             def grantAllocationInstance = GrantAllocation.find("from GrantAllocation  GA where  GA.projects="+projectInstance.id);
-             
-    		  grantAllocationSplit = GrantAllocationSplit.executeQuery("select sum(GAS.amount) as SumAmt,GAS.accountHead.code from GrantAllocationSplit GAS where GAS.projects.id ="+ projectInstance.id+"and  GAS.grantAllocation.party.id ="+ getUserPartyID()+" group by GAS.accountHead.id")
+            grantAllocationSplit = GrantAllocationSplit.executeQuery("select sum(GAS.amount) as SumAmt,GAS.accountHead.code from GrantAllocationSplit GAS where GAS.projects.id ="+ projectInstance.id+"and  GAS.grantAllocation.party.id ="+ getUserPartyID()+" group by GAS.accountHead.id")
                               
                               
              def monthlyExpenseAndRecipts = GrantReceipt.executeQuery("SELECT MONTH(dateOfExpense) as Month ,"+ 
@@ -1083,9 +1166,7 @@ def projectDash =
 
 							 println  "monthlyExpenseAndRecipts "+monthlyExpenseAndRecipts
 							
-							
-							 
-							 
+							  
 							 
 							 
 							 GrailsHttpSession gh=getSession()
@@ -1129,44 +1210,48 @@ def projectDash =
 								//drawing the line chart
 
 									  def chart1 = new GoogleChartBuilder()
-									def resultLinechart = chart1.lineChart{
-									 size(w:250, h:180)  
-									 title
-									 {
-									 row('Fund Utilization') 
-									 } 
-									 data(encoding:'extended')
-									 { 
-									 dataSet(balance)  
-
-									 } 
-									 colors
-									 {   
-									 color('66CC00') 
-									 color('3399ff')  
-									 } 
-									 lineStyle(line1:[1,6,3]) 
-									 legend{
-									 label('Balance') 
-
-									 }  
-									 axis(left:[0,20,40,60,80,100], bottom:monthnameView) 
-									 backgrounds{
-									 background{
-									  solid(color:'cbe2f0')
-									    }  
-
-									 area{
-									       gradient(angle:45, start:'FFFFFF', end:'cbe2f0')
-									 } 
-									 } 
-									 markers
-									 {     
-									 rangeMarker(type:'horizontal', color:'FF0000', start:50, end:52)
-
-									 }
-
-									  grid(y:50, x:100/1, dash:3, space:1)
+									def resultLinechart = chart1.lineChart
+									{
+										 size(w:250, h:180)  
+										 title(color:'808080', size:13)
+										 {
+										  row('Fund Utilization') 
+										 } 
+										 data(encoding:'extended')
+										 { 
+											 dataSet(balance)  
+										 } 
+										 colors
+										 {   
+											 color('66CC00') 
+											 color('3399ff')  
+										 } 
+										 lineStyle(line1:[1,6,3]) 
+										 legend
+										 {
+											 label('% of balance') 
+										 }  
+										 axis(left:[0,20,40,60,80,100], bottom:monthnameView)
+										 backgrounds
+										 {
+											 background
+											 {
+												 solid(color:'cbe2f0')
+											 }  
+		
+											 area
+											 {
+											       gradient(angle:45, start:'FFFFFF', end:'cbe2f0')
+											 } 
+										 } 
+										 markers
+										 {     
+											 rangeMarker(type:'horizontal', color:'FF0000', start:50, end:52)
+										 }
+	
+										  grid(y:50, x:100/1, dash:3, space:1)
+										  
+										  
 									 }
 
 									  
@@ -1191,25 +1276,22 @@ def projectDash =
 						if(total<projectInstance.totAllAmount)
 						textList.add((projectInstance.totAllAmount-total)*100/projectInstance.totAllAmount)
 				      def resultPiechart = chart.pie3DChart{
-				      size(w:300, h:95)
-				      title
-				   {
-				      row('Fund Allocation') 
-				   } 
+				      size(w:250, h:95)
+				      title(color:'808080', size:13)
+				      {
+				         row('Fund Allocation') 
+				      } 
 				      data(encoding:'text')
 				      {
-				       dataSet(textList)
-				       }
-					colors{
+				         dataSet(textList)
+				      }
+					  colors
+					  {
 						color('e25d3a')
 						color('fbc363')
-					    }
+					   }
 					    
-					     title(color:'0000ff', size:1){
-						row('')
-						row('')
-					    }
-
+					     
 
 				       labels
 				       { 
@@ -1219,7 +1301,7 @@ def projectDash =
 					 i++
 					 }
 						if(total<projectInstance.totAllAmount)
-						label("Un Allocated")
+						label(" Un Allocated")
 					}
 				       backgrounds{
 				 background{
@@ -1483,6 +1565,7 @@ def gmsFrame = {
 			def userService = new UserService()
 			def partyService = new PartyService()
 			GrailsHttpSession gh=getSession()
+			def partyInstance = Party.get(gh.getValue("Party"))
 			def menuRoleMapParentList = [] as Set
 			def userRoleList = userService.getUserRoleByUserId(gh.getValue("UserId"))
 			def roleLst= new ArrayList()
@@ -1507,12 +1590,38 @@ def gmsFrame = {
 				}
 			}
 			if(menuRoleMapChildInstance){
+			
 				path = "../"+menuRoleMapChildInstance[0].menu.menuPath
+				
 			}
 			else{
 				path = "../user/changePassword"
 			}
 				
 			[path:path]
+	}
+	
+   def projectsSummary = {
+			
+	GrailsHttpSession gh=getSession()
+	def partyInstance=Party.get(gh.getValue("Party"))
+	return['partyInstance':partyInstance]
+
+	}
+	
+  def grantedProjects = {
+			
+			GrailsHttpSession gh=getSession()
+			def partyInstance=Party.get(gh.getValue("Party"))
+			def partyInstanceList = Party.executeQuery("select GA.party.id from GrantAllocation GA where GA.granter.id = "+partyInstance.id+" group by GA.party.id")
+            def partyNewInstanceList=[]
+            def partyIdInstance
+            for(int i=0;i<partyInstanceList.size();i++)
+              {
+            	partyIdInstance = Party.find("from Party P where P.id = "+partyInstanceList[i])
+         	    partyNewInstanceList.add(partyIdInstance)
+              }
+			return['partyInstance':partyInstance,'partyNewInstanceList':partyNewInstanceList]	
+			
 	}
 }

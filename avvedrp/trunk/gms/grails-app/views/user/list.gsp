@@ -20,7 +20,7 @@
 					<g:sortableColumn property="user.username" title="${message(code: 'default.LoginName.label')}" />
 					<g:sortableColumn property="user.userRealName" title="${message(code: 'default.FirstName.label')}" />
 					<g:sortableColumn property="user.userSurName" title="${message(code: 'default.LastName.label')}" />
-					<g:sortableColumn property="user.role" title="${message(code: 'default.RoleNames.label')}" />
+					<th><g:message code="default.RoleNames.label"/></th>
 					<g:if test="${personRoleInstance.authority == 'ROLE_SUPERADMIN'}">
 					<th><g:message code="default.Institution.label"/></th>
 					</g:if> 

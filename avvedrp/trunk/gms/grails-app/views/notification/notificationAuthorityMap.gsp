@@ -16,7 +16,8 @@
 		<table>
 		<tbody>
 			<tr class="prop">
-				<td valign="top" class="name"><label for="authority"><g:message code="default.ApprovalAuthority.label"/>:</label></td>
+				<td valign="top" class="name"><label for="authority"><g:message code="default.ApprovalAuthority.label"/>:</label>
+				<label for="authority" style="color:red;font-weight:bold"> * </label></td>
 				<td valign="top" class="value ${hasErrors(bean:approvalAuthority,field:'name','errors')}" width="90%">
 				<g:if test="${currentApprovalAuthority}">
 				<g:select optionKey="id" optionValue="name" from="${approvalAuthorityInstance}" name="approvalAuthorityId" value="${currentApprovalAuthority?.approvalAuthority?.id}"></g:select>

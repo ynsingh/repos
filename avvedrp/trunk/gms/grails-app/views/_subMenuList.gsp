@@ -9,9 +9,9 @@
 	   		<ul id="topnav"> 
 		        <li> <g:link  controller='grantAllocation' action="projectDash" id="${session.ProjectID}"><g:message code="default.ProjectInfo.label"/></g:link>
 		           			<span> 
-								<g:link  controller='projects' action="edit" id="${session.ProjectID}">Project Home</g:link> |
-								<g:link  controller='projectsPIMap' action="create" id="${session.ProjectID}">Co-PI Addition</g:link> |<g:link  controller='projectDepartmentMap' action="create" id="${session.ProjectID}">Department Addition</g:link>|
-								<g:link  controller='budgetDetails' action="budgetList" id="${session.ProjectID}"><g:message code="default.BudgetDetails.label"/></g:link>  
+								<g:link  controller='projects' action="edit" id="${session.ProjectID}"><g:message code="default.ProjectHome.label"/></g:link> |
+								<g:link  controller='projectsPIMap' action="create" id="${session.ProjectID}"><g:message code="default.Co-PIAddition.label"/></g:link> |<g:link  controller='projectDepartmentMap' action="create" id="${session.ProjectID}"><g:message code="default.DepartmentAddition.label"/></g:link>|
+								<g:link  controller='budgetDetails' action="assignedBudget" params="[moduleType:'Projects']" id="${session.ProjectID}"><g:message code="default.BudgetDetails.label"/></g:link>  
 				            	<g:if test="${projectsInstance.parent}"></g:if>
 				        		<g:else>
 				        			|<g:link controller='grantAllocation' action="fundAllot" id="${session.ProjectID}"><g:message code="default.FundAllocation.label"/></g:link>
@@ -21,8 +21,16 @@
 		        <li> 
 					<a href="#"><g:message code="default.Allocation.label"/></a> 
 		            <span> 
+		            <g:if test="${projectsInstance.parent}">
+			            <g:link  controller='grantAllocationSplit' action="list" id="${session.ProjectID}"><g:message code="default.HeadwiseAllocationByGranter.label"/></g:link> |
+			            <g:link  controller='grantAllocation' action="subGrantAllot" id="${session.ProjectID}"><g:message code="default.SuballocateProject.label"/></g:link> |
+		                <g:link  controller='externalFundAllocation' action="agencyCreate" id="${session.ProjectID}"><g:message code="default.ExternalFundAllocation.label"/></g:link>
+		            </g:if>
+		            <g:else>   
 		                <g:link  controller='grantAllocationSplit' action="list" id="${session.ProjectID}"><g:message code="default.HeadwiseAllocation.label"/></g:link> |
-						<g:link  controller='grantAllocation' action="subGrantAllot" id="${session.ProjectID}"><g:message code="default.SuballocateProject.label"/></g:link> 
+						<g:link  controller='grantAllocation' action="subGrantAllot" id="${session.ProjectID}"><g:message code="default.SuballocateProject.label"/></g:link> |
+						<g:link  controller='externalFundAllocation' action="agencyCreate" id="${session.ProjectID}"><g:message code="default.ExternalFundAllocation.label"/></g:link>
+		            </g:else>
 		            </span> 
 		        </li> 
 		        <li> 
@@ -37,7 +45,8 @@
 							<g:link  controller='grantReceipt' action="create" id="${session.ProjectID}"><g:message code="default.GrantReceipt.label"/></g:link> |
 					    	<g:link  controller='grantExpense' action="create" id="${session.ProjectID}"><g:message code="default.RecordExpenses.label"/></g:link> |
 							<g:link  controller='grantExpense' action="listExpenses" id="${session.ProjectID}"><g:message code="default.ViewExpenseForaPeriod.label"/></g:link> |
-							<g:link  controller='grantExpense' action="listSummaryExpenses" id="${session.ProjectID}"><g:message code="default.ViewExpensesHeadwise.label"/></g:link>
+							<g:link  controller='grantExpense' action="listSummaryExpenses" id="${session.ProjectID}"><g:message code="default.ViewExpensesHeadwise.label"/></g:link> |
+							<g:link  controller='fundAdvance' action="create" id="${session.ProjectID}"><g:message code="default.FundAdvance.label"/></g:link>
 					   </g:else>	 
 		            </span> 
 				</li> 

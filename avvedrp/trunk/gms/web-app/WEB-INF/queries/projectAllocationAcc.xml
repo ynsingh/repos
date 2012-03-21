@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+ <Schema name="projectAllocationAcc">
+ <Cube name="projectAllocationAcc">
+ <Table name="Project_allocation_acc"/> 
+ 	 
+ 	 <Dimension name="Parent Project" hasAll="true">
+            <Hierarchy hasAll="true" >
+            	<Level name="Parent" column="Parent_project" type="String" uniqueMembers="false"/> 
+                              
+    		</Hierarchy>
+     </Dimension>
+     
+     <Dimension name="Project" hasAll="true">
+            <Hierarchy hasAll="true">
+            			<Level name="Project ID" column="project_code" type="String" uniqueMembers="false"/> 
+                      <Level name="ProjectName" column="project_name" type="String" uniqueMembers="false"/> 
+                               
+            </Hierarchy>
+     </Dimension>
+     <Dimension name="Partner Institute" hasAll="false">
+            <Hierarchy hasAll="true" >
+            	<Level name="Institute"  column="partner_inst" type="String" uniqueMembers="false"/>
+                       
+    		</Hierarchy>
+     </Dimension>
+     <Dimension name="Account Head" hasAll="false">
+            <Hierarchy hasAll="true" >
+            	<Level name="AccountHead"  column="acchead" type="String" uniqueMembers="false"/>
+                       
+    		</Hierarchy>
+     </Dimension>
+     <Dimension name="PIName" hasAll="false">
+            <Hierarchy hasAll="true" >
+            	<Level name="PIName"  column="PI_name" type="String" uniqueMembers="false"/>
+                       
+    		</Hierarchy>
+     </Dimension>
+     
+    
+         <Measure name="Amount Allocated" column="amt_allocated" aggregator="sum" formatString="#,###"/>
+         <Measure name="Amount Utilized" column="amt_utilized" aggregator="sum" formatString="#,###"/>
+         <Measure name="Amount Available" column="Amt_available" aggregator="sum" formatString="#,###"/>
+       
+    </Cube>
+    </Schema>

@@ -32,7 +32,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="proposalType"><g:message code="proposalApprovalAuthorityMap.proposalType.label" default="Proposal Type" />:</label>
+                                    <label for="proposalType"><g:message code="default.ProposalType.label"/>:</label>
                                     <label for="proposalType" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'proposalType', 'errors')}">
@@ -43,7 +43,7 @@
                      
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="proposalId"><g:message code="proposalApprovalAuthorityMap.proposalId.label" default="Proposal Title" />:</label>
+                                    <label for="proposalId"><g:message code="default.ProposalTitle.label"/>:</label>
                                     <label for="proposalId" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 
@@ -56,7 +56,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="approvalAuthority"><g:message code="proposalApprovalAuthorityMap.approvalAuthority.label" default="Approval Authority" />:</label>
+                                    <label for="approvalAuthority"><g:message code="default.ApprovalAuthority.label"/>:</label>
                                     <label for="approvalAuthority" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'approvalAuthority', 'errors')}">
@@ -66,7 +66,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="approveOrder"><g:message code="proposalApprovalAuthorityMap.approveOrder.label" default="Approve Order" />:</label>
+                                    <label for="approveOrder"><g:message code="default.ApproveOrder.label" />:</label>
                                      <label for="approveOrder" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'approveOrder', 'errors')}">
@@ -76,7 +76,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="processRestartOrder"><g:message code="proposalApprovalAuthorityMap.processRestartOrder.label" default="Process Restart Order" />:</label>
+                                    <label for="processRestartOrder"><g:message code="default.ProcessRestartOrder.label" />:</label>
                                     <label for="processRestartOrder" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'processRestartOrder', 'errors')}">
@@ -101,20 +101,20 @@
                     <thead>
                         <tr>
                         
-                            <g:sortableColumn property="id" title="${message(code: 'proposalApprovalAuthorityMap.id.label', default: 'Id')}" />
+                            <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
                         
-                            <g:sortableColumn property="proposalType" title="Proposal Type" />
-                            <g:sortableColumn property="proposalType" title="${message(code: 'proposalApprovalAuthorityMap.proposalId.label', default:'Proposal Title')}" />
-                            <g:sortableColumn property="proposalType" title="${message(code: 'proposalApprovalAuthorityMap.proposalType.label', default: 'Approval Authority')}" />
+                            <g:sortableColumn property="proposalType" title="${message(code: 'default.ProposalType.label')}" />
+                            <g:sortableColumn property="proposalType" title="${message(code: 'default.ProposalTitle.label')}" />
+                            <g:sortableColumn property="proposalType" title="${message(code: 'default.ApprovalAuthority.label')}" />
                         
                                                     
-                            <g:sortableColumn property="approveOrder" title="${message(code: 'proposalApprovalAuthorityMap.approveOrder.label', default: 'Approve Order')}" />
+                            <g:sortableColumn property="approveOrder" title="${message(code: 'default.ApproveOrder.label')}" />
                         
-                            <g:sortableColumn property="processRestartOrder" title="${message(code: 'proposalApprovalAuthorityMap.processRestartOrder.label', default: 'Process Restart Order')}" />
+                            <g:sortableColumn property="processRestartOrder" title="${message(code: 'default.ProcessRestartOrder.label')}" />
                         
-                            <g:sortableColumn property="remarks" title="${message(code: 'proposalApprovalAuthorityMap.remarks.label', default: 'Remarks')}" />
+                            <g:sortableColumn property="remarks" title="${message(code: 'default.Remarks.label')}" />
                         
-                        	<th>Edit</th>
+                        	<g:sortableColumn property="edit" title="${message(code: 'default.Edit.label')}" />
                         </tr>
                     </thead>
                     <tbody>
@@ -142,7 +142,7 @@
                         
                             <td>${fieldValue(bean: proposalApprovalAuthorityMapInstance, field: "remarks")}</td>
                         	
-                        	<td><g:link action="edit" id="${proposalApprovalAuthorityMapInstance.id}">Edit</g:link></td>
+                        	<td><g:link action="edit" id="${proposalApprovalAuthorityMapInstance.id}"><g:message code="default.Edit.label"/></g:link></td>
                         </tr>
                     </g:each>
                     </tbody>

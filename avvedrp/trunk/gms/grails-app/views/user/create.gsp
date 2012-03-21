@@ -70,7 +70,30 @@
 							<input type="text" id="email" name="email" value="${person.email?.encodeAsHTML()}"/>
 						</td>
 	               	</tr>	
-	               		<tr class="prop">
+	               	
+	               	<tr class="prop">
+
+						<td valign="top" class="name">
+						<label for="userDesignation"><g:message code="default.UserDesignation.label"/>:</label>
+						</td>
+
+						<td valign="top" class="value ${hasErrors(bean:person,field:'userDesignation','errors')}">
+							<input type="text" id="userDesignation" name="userDesignation" value="${person?.userDesignation?.encodeAsHTML()}"/>
+						</td>
+					</tr>   
+					
+					<tr class="prop">
+
+						<td valign="top" class="name">
+						<label for="phNumber"><g:message code="default.ContactNo.label"/>:</label>
+						</td>
+
+						<td valign="top" class="value ${hasErrors(bean:person,field:'phNumber','errors')}">
+							<input type="text" id="phNumber" name="phNumber" value="${person?.phNumber?.encodeAsHTML()}"/>
+						</td>
+					</tr>    
+	               	
+	               	<tr class="prop">
 						<td valign="top" class="name" align="left">
 						<g:message code="default.AssignRoles.label"/>:
 						<label for="AssignRoles" style="color:red;font-weight:bold"> * </label>

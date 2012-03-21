@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+ <Schema name="projectExp">
+ <Cube name="projectExp">
+ <Table name="Project_exp"/> 
+ 	 
+ 	 <Dimension name="Parent Project" hasAll="true">
+            <Hierarchy hasAll="true" >
+            	<Level name="Parent" column="Parent_project" type="String" uniqueMembers="false"/> 
+                              
+    		</Hierarchy>
+     </Dimension>
+     
+     <Dimension name="Project" hasAll="true">
+            <Hierarchy hasAll="true">
+            			<Level name="Project ID" column="project_code" type="String" uniqueMembers="false"/> 
+                      <Level name="ProjectName" column="project_name" type="String" uniqueMembers="false"/> 
+                               
+            </Hierarchy>
+     </Dimension>
+     <Dimension name="Institute" hasAll="false">
+            <Hierarchy hasAll="true" >
+            	<Level name="Institute"  column="institute" type="String" uniqueMembers="false"/>
+                       
+    		</Hierarchy>
+     </Dimension>
+     <Dimension name="Account Head" hasAll="false">
+            <Hierarchy hasAll="true" >
+            	<Level name="AccountHead"  column="acchead" type="String" uniqueMembers="false"/>
+                       
+    		</Hierarchy>
+     </Dimension>
+     <Dimension name="PIName" hasAll="false">
+            <Hierarchy hasAll="true" >
+            	<Level name="PIName"  column="PI_name" type="String" uniqueMembers="false"/>
+                       
+    		</Hierarchy>
+     </Dimension>
+     <Dimension name="Date Of Expense" hasAll="false">
+                 <Hierarchy hasAll="true" allMemberName="All Date Of Expense">
+                 	<Level name="DateOfExpense"  column="date_of_expense" type="String" uniqueMembers="false"/>
+                            
+         		</Hierarchy>
+     </Dimension>
+     <Dimension name="Expense Name" hasAll="false">
+                 <Hierarchy hasAll="true" >
+                 	<Level name="ExpenseName"  column="expense_name" type="String" uniqueMembers="false"/>
+                            
+         		</Hierarchy>
+     </Dimension>
+     
+    
+         <Measure name="Expense Amount" column="amt_expense" aggregator="sum" formatString="#,###"/>
+         
+       
+    </Cube>
+    </Schema>

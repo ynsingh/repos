@@ -37,18 +37,22 @@
                                 </td>
                                 <td>                             
                                 	<strong>  ${fieldValue(bean:fundTransferInstance.grantAllocation,field:'projects.code')} </strong>
+                                	<input type="hidden" name="project" id="projectCode" value="${fundTransferInstance.grantAllocation.projects.code}"/>
                                 </td>
                                 <td valign="top" class="name">
                                    <label for="Grantor"><g:message code="default.Grantor.label"/>:</label>
                                 </td>
                                 <td> <strong> ${fieldValue(bean:fundTransferInstance.grantAllocation,field:'granter.code')} </strong></td>
+                                <input type="hidden" name="grantor" id="grantorCode" value="${fundTransferInstance.grantAllocation.granter.code}"/>
                                 <input type="hidden" name="grantAllocationId" id="grantAllocationId" value="${fundTransferInstance.grantAllocation.id}"/>
                         	</tr>
                         	<tr>
                         		<td valign="top" class="name">
                                    <label for="Recepient"><g:message code="default.Recepient.label"/>:</label>
                             	</td>
-                            	<td> <strong> ${fieldValue(bean:fundTransferInstance.grantAllocation,field:'party.code')} </strong></td>
+                            	<td> <strong> ${fieldValue(bean:fundTransferInstance.grantAllocation,field:'party.code')} </strong>
+                            		  <input type="hidden" name="Recepient" id="recepientName" value="${fundTransferInstance.grantAllocation.party.id}"/>
+                            	</td>
                                 <td align="left" class="name">
                                    <label for="Amount Allocated(Rs)"><g:message code="default.AmountAllocated.label"/>:</label>
                                 </td>

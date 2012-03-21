@@ -3,7 +3,10 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 
 
 class PartyController  extends GmsController {
-    
+	
+	
+	def partyService 
+	def userService 
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -36,8 +39,11 @@ class PartyController  extends GmsController {
      */
     def edit = 
     {
+		GrailsHttpSession gh=getSession()
 		def partyService = new PartyService()
-		
+		def userService = new UserService()
+    	def personRoleInstance = userService.getUserRoleByUserId(session.UserId)
+    	def userMapInstance = userService.getSuperAdminUser(params.id)
 		/*getting party details based on id*/
 		def partyInstance = partyService.getPartyById(new Integer(params.id ))
         if(!partyInstance)/*Checking whether the party exists or not*/
@@ -47,7 +53,7 @@ class PartyController  extends GmsController {
         }
         else 
         {
-            return [ partyInstance : partyInstance ]
+        	return [ partyInstance : partyInstance,personRoleInstance : personRoleInstance,userMapInstance:userMapInstance]
         }
     }
 
@@ -128,5 +134,31 @@ class PartyController  extends GmsController {
         else
             render(view:'create',model:[partyInstance:partyInstance])
     }
+    
+    /**
+     * Method to perform the delete action
+     */
+     
+     def delete = 
+     {
+     		def personInstanceList = []
+        	def personRoleInstance = userService.getUserRoleByUserId(session.UserId)
+        	def partyInstance = partyService.getPartyById(new Integer(params.id))
+        	partyInstance.activeYesNo = 'N'
+         	if(partyInstance.save())
+         	{
+         		def partyUsersList=userService.getAllUsersByPartyID(params.id)
+          	         for(int i=0;i<partyUsersList.size();i++)
+         	         {
+           	        	def personInstance = Person.find("from Person P where P.id="+partyUsersList[i].user.id)
+         	        	personInstance.enabled = false
+          	        	personInstance.activeYesNo = 'N'
+         	        	personInstance.save()
+         	         }
+         	}
+     		
+     		    flash.message = "${message(code: 'default.deleted.label')}"
+	            redirect(action:list)
+     }
        
 }

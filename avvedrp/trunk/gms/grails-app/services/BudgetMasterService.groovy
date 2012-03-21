@@ -194,7 +194,16 @@ class BudgetMasterService
     /*
      * Method to get BudgetMaster from BudgetModuleMap
      */
-    public getbudgetModMapInstance(def budgetMasterInstance)
+    public getbudgetModMapInstance(def budgetMasterInstance,def email)
+	{
+    	def budgetModMapInstance = BudgetModuleMap.findAll("from BudgetModuleMap BMM where BMM.activeYesNo = 'Y' and BMM.createdBy='"+email+"' and BMM.budgetMaster="+budgetMasterInstance)
+    	return budgetModMapInstance
+	}
+    
+    /*
+     * Method to get BudgetMaster from BudgetModuleMap
+     */
+    public getbudgetModInstance(def budgetMasterInstance)
 	{
     	def budgetModMapInstance = BudgetModuleMap.findAll("from BudgetModuleMap BMM where BMM.activeYesNo = 'Y' and BMM.budgetMaster="+budgetMasterInstance)
     	return budgetModMapInstance
@@ -282,9 +291,9 @@ class BudgetMasterService
     /*
      * Method to get ModuleType Id
      */
-    public getmodulTypeIdByModuleType(def budgetId)
+    public getmodulTypeIdByModuleType(def budgetId,def moduleType)
 	{
-    	def budgetModMapInstance = BudgetModuleMap.findAll("from BudgetModuleMap BMM where BMM.moduleTypeId="+budgetId)
+    	def budgetModMapInstance = BudgetModuleMap.findAll("from BudgetModuleMap BMM where BMM.moduleType='"+moduleType+"' and BMM.moduleTypeId="+budgetId)
     	return budgetModMapInstance
 	}
    /*

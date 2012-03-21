@@ -178,6 +178,7 @@
 				                                    <g:select id="recipient" optionKey="id" optionValue="code" 
 					                                    from="${Party.findAll('from Party P where P.activeYesNo=\'Y\' and P.partyType is null ')}"  
 					                                    name="party.id" value="${grantAllocationInstance?.party?.id}" 
+					                                    onchange="${remoteFunction(controller:'grantAllocation',action:'updatePi',update:'listPi',  params:'\'recipient=\' + this.value' )}"
 					                                    noSelection="['null':'-Select-']">
 				                                    </g:select>
 				                                </td>
@@ -187,7 +188,9 @@
 					                                <label for="investigator" style="color:red;font-weight:bold"> * </label>
 					                            </td>
 					                            <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'investigator','errors')}">
-					                                <g:select id="investigator.id" optionKey="id" optionValue="name" from="${Investigator.findAll('from Investigator I where I.activeYesNo=\'Y\' ')}" name="investigator.id" value="" noSelection="['null':'-Select-']"></g:select>
+					                            	<div id="listPi">
+					                                	<g:select name="investigator.id" value="" disabled="true"noSelection="['null':'-Select-']"></g:select>
+					                                </div>
 					                            </td>
 				                     		</tr>  
 								                             
@@ -257,10 +260,7 @@
                	        <g:sortableColumn property="sanctionOrderNo" 
                	        	title="${message(code:'default.GrantAllocation.SanctionOrderNo.label')}"/>
                	        
-               	        <g:sortableColumn property="granter" 
-               	        	title="${message(code:'default.Grantor.label')}"/>
-               	        	
-               	        	
+               	        <th><g:message code="default.DisburseFund.label"/></th>	
                	        
                	        <th><g:message code="default.UploadAttachments.label"/></th>
                	        
@@ -268,7 +268,7 @@
                	        	title="${message(code:'default.GrantAllocation.GrantWithdrawal/Closure.label')}"/>
                     	<th><g:message code="default.FundTransfer.label"/></th>
                	       	<th><g:message code="default.Edit.label"/> </th>
-                   </tr>
+               	   </tr>
                 </thead>
                 <tbody>
                 <g:each in="${grantAllocationInstanceList}" status="i" var="grantAllocationInstance">
@@ -286,7 +286,11 @@
                         <td>${currencyFormat.ConvertToIndainRS(grantAllocationInstance.amountAllocated)}</td>
                         
                        	<td>${fieldValue(bean:grantAllocationInstance,field:'sanctionOrderNo')} </td>
-                       	<td>${fieldValue(bean:grantAllocationInstance,field:'granter.code')} </td>
+                       	<td>
+						   <g:link action="list" controller="grantAllocationSplit" id="${grantAllocationInstance.projects.id}" params="[subMenu:'subGrantAllot']">
+                        		<g:message code="default.HeadDetails.label"/>
+                        	</g:link>
+						</td>
                         
                         <td>
                             <g:link action="create"  controller='attachments' 
@@ -294,13 +298,19 @@
 	                            <g:message code="default.Attachments.label"/>
                             </g:link>
                         </td>
-	                    <td>
+	                    <%def projectTrackingInstanceCheck=GrantAllocationTracking.find("from GrantAllocationTracking PT where PT.grantAllocationStatus='Closed' and PT.grantAllocation.id= '"+grantAllocationInstance.id+"'")%>
+	                    <g:if test="${projectTrackingInstanceCheck}">
+	                       <td><g:message code="default.Closed.label"/></td>
+						</g:if>
+						<g:else>
+						<td>
 	                    	<g:link action="create"  controller='grantAllocationTracking' 
-	                            id="${grantAllocationInstance.id}" params="[trackType:'withdraw']">
-	                            <g:message code="default.GrantAllocation.GrantWithdrawal/Closure.label"/>
+	                         id="${grantAllocationInstance.id}" params="[trackType:'withdraw']">
+	                         <g:message code="default.GrantAllocation.GrantWithdrawal/Closure.label"/>
                             </g:link>
                         </td>
-                        <td>
+                        </g:else>
+                         <td>
                         	<g:link action="create" controller="fundTransfer" id="${grantAllocationInstance.id}" params="[subMenu:'subGrantAllot']">
                         		<g:message code="default.FundTransfer.label"/>
                         	</g:link>
@@ -310,6 +320,7 @@
                      			<g:message code="default.Edit.label"/> 
                      		</g:link>
                  		</td>
+                 		
                      </tr>
                  	</g:each>
             	</tbody>

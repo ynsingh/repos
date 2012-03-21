@@ -21,9 +21,8 @@
                         <tr>
                         
                           <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
-                          <th><g:message code="default.Institution.label"  /></th>
                           <th><g:message code="default.ProposalTitle.label"/></th>
-                          <th><g:message code="default.Investigator.label"  /></th>
+                          <th><g:message code="default.SubmittedBy.label"  /></th>
 	                      <th> <g:message code="default.PreProposalStatus.label" /></th>
 	                      <th><g:message code="default.ApprovalAuthority.label"  /></th>
 	                      <g:if test="${proposalType=='FullProposal'}">
@@ -36,7 +35,6 @@
                     <g:each in="${preProposalInstanceList}" status="i" var="proposalInstance" >
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                             <td>${i+1}</td>
-                            <td>${proposalInstance.party.code}</td>
                             <td>${proposalApplicationList[i].projectTitle}</td>
                             <td>${proposalInstance.person.username}</td>
                             <td>${proposalInstance.proposalStatus}</td>

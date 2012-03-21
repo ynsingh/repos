@@ -122,7 +122,7 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                             <td>${(i + 1)}</td>
                             <td>${fieldValue(bean:grantAllocationInstance, field:'projects.code')}</td>
-                             <td>${fieldValue(bean:projectsPIMapInstance, field:'investigator.name')}</td>
+                             <td>${fieldValue(bean:projectsPIMapInstance, field:'investigator.name')}&nbsp;${projectsPIMapInstance.investigator.userSurName}</td>
                                <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectStartDate}"/></td>
                             <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectEndDate}"/></td>
                         

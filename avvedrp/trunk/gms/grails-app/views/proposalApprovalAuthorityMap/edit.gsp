@@ -30,7 +30,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="proposalType"><g:message code="proposalApprovalAuthorityMap.proposalType.label" default="Proposal Type" />:</label>
+                                    <label for="proposalType"><g:message code="default.ProposalType.label" />:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'proposalType', 'errors')}">
                                 <strong>${proposalApprovalAuthorityMapInstance?.proposalType}</strong>
@@ -39,7 +39,7 @@
                            
                           
                                 <td valign="top" class="name">
-                                  <label for="proposalId"><g:message code="proposalApprovalAuthorityMap.proposalId.label" default="Proposal Title" />:</label>
+                                  <label for="proposalId"><g:message code="default.ProposalTitle.label" />:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'proposalId', 'errors')}">
                                     <strong>${projectTitleInstance?.projectTitle}</strong>
@@ -49,7 +49,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="approveOrder"><g:message code="proposalApprovalAuthorityMap.approveOrder.label" default="Approve Order" />:</label>
+                                  <label for="approveOrder"><g:message code="default.ApproveOrder.label" />:</label>
                                   <label for="approveOrder" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'approveOrder', 'errors')}">
@@ -57,7 +57,7 @@
                                 </td>
                           
                                 <td valign="top" class="name">
-                                  <label for="processRestartOrder"><g:message code="proposalApprovalAuthorityMap.processRestartOrder.label" default="Process Restart Order" />:</label>
+                                  <label for="processRestartOrder"><g:message code="default.ProcessRestartOrder.label" />:</label>
                                   <label for="processRestartOrder" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'processRestartOrder', 'errors')}">
@@ -68,14 +68,14 @@
                             <tr class="prop">
                               
                                 <td valign="top" class="name">
-                                  <label for="remarks"><g:message code="proposalApprovalAuthorityMap.remarks.label" default="Remarks" />:</label>
+                                  <label for="remarks"><g:message code="default.Remarks.label" />:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'remarks', 'errors')}">
                                     <g:textArea name="remarks" value="${proposalApprovalAuthorityMapInstance?.remarks}" />
                                 </td>
                                 
                                  <td valign="top" class="name">
-                                  <label for="approvalAuthority"><g:message code="proposalApprovalAuthorityMap.approvalAuthority.label" default="Approval Authority" />:</label>
+                                  <label for="approvalAuthority"><g:message code="default.ApprovalAuthority.label" />:</label>
                                   <label for="approvalAuthority" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'approvalAuthority', 'errors')}">

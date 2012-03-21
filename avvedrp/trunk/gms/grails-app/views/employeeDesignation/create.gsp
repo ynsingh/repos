@@ -10,6 +10,9 @@
        <div class="wrapper"> 
 	       <div class="body">
 	        	<h1><g:message code="default.CreateEmployeeDesignation.create.head"/></h1>
+	        	<g:if test="${flash.message}">
+            		<div class="message">${flash.message}</div>
+                </g:if>
 	            <g:hasErrors bean="${employeeDesignationInstance}">
 	            	<div class="errors">
 	                	<g:renderErrors bean="${employeeDesignationInstance}" as="list" />
@@ -43,9 +46,6 @@
              </g:form>
        		
        		<div class="body">
-       		<g:if test="${flash.message}">
-            	<div class="message">${flash.message}</div>
-            </g:if>
        		<g:if test="${employeeDesignationInstanceList}">
 	       		<div class="list">
 	                <table>

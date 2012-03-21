@@ -30,7 +30,7 @@
 	<queryString><![CDATA[SELECT 
 	P.name AS ProjectTitle,
 	(SELECT PY.name_of_the_institution FROM party PY,grant_allocation G WHERE PY.id=G.granter_id AND G.projects_id=GA.projects_id AND P.id=G.projects_id GROUP BY G.projects_id)AS FundingAgency,
-	(SELECT I.name FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=P.id AND PMAP.role='PI' GROUP BY P.id) AS PI,
+	(SELECT (CONCAT(I.name," ",I.user_sur_name)) FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=P.id AND PMAP.role='PI' GROUP BY P.id) AS PI,
 	AH.name AS SanctionedHead,
 	(SELECT SUM(GR.amount) FROM grant_receipt GR,grant_allocation GA,grant_allocation_split GS,account_heads AHS WHERE GA.projects_id=GR.projects_id AND GR.projects_id=P.id AND GR.grant_allocation_id= GA.id AND GR.grant_allocation_split_id=GS.id AND GS.account_head_id=AH.id
        AND AHS.id=AH.id GROUP BY AHS.id)AS FundsReceived,

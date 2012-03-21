@@ -3,5 +3,5 @@
 <input type="text" id="ddNo" name="ddNo" value="${fieldValue(bean:grantReceiptInstance,field:'ddNo')}" style="text-align: right" />
 </g:if>
 <g:else>
-<input type="text" id="ddNo" name="ddNo" value="" disabled="true" />
+<input type="text" id="ddNo" name="ddNo" value="" style="background-color: #E6E8EB;" disabled="true" />
 </g:else>

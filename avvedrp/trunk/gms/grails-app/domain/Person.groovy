@@ -15,13 +15,18 @@ class Person {
 	boolean accountExpired
 	boolean accountLocked
 	boolean passwordExpired
-
+	char activeYesNo
+	String userDesignation
+	String phNumber
+	
 	static constraints = {
-		username blank: false, unique: true
+		username(blank: false)
 		userRealName(blank: false)
 		userSurName(blank: true,nullable:true)
 		email email:true,blank:true
 		password blank: false
+		userDesignation(nullable:true)
+		phNumber(nullable:true)
 	}
 
 	Set<Authority> getAuthorities() {

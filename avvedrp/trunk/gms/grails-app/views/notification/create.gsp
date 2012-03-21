@@ -25,6 +25,7 @@
                 <tbody>
                         <input type=hidden id="party.id" name="party.id" value="${session.Party}">
                         <input type=hidden id="publishYesNo" name="publishYesNo" value="N">
+                        <input type=hidden id="publicYesNo" name="publicYesNo" value="Y">
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="project"><g:message code="default.NotificationTitle.label"/>:</label>
@@ -75,13 +76,7 @@
                     </tr> 
                     
                     <tr class="prop">
-                        <td valign="top" class="name">
-                            <label for="publicYesNo"><g:message code="default.publicYesNo.label"/>:</label>
-                            <label for="proposalSubmissionLastDate" style="color:red;font-weight:bold"> * </label>
-                        </td>
-                        <td valign="top" class="value ${hasErrors(bean:notificationInstance,field: 'publicYesNo', 'errors')}"> 
-                          <g:select name="publicYesNo" optionValue="key" optionKey="value" from ="${['Yes':'Y', 'No':'N']}" value="${fieldValue(bean: notificationInstance, field: 'publicYesNo')}" />     
-                        </td>     
+                            
                       </tr>      
                                 
                     <tr class="prop">

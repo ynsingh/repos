@@ -92,7 +92,7 @@
                 </div>
                 <div class="buttons">
                      <span class="button"><g:submitButton name="create" class="save"   onClick="return validateBudgetDetails()" value="${message(code: 'default.Create.button')}" /></span>
-                     <span class="button"><g:actionSubmit class="cancel" action="cancel" value="${message(code: 'default.button.cancel.label', default: 'Cancel')}" /></span>
+                     <span class="button"><g:actionSubmit class="cancel" action="cancel" value="${message(code: 'default.Cancel.button')}" /></span>
 			  </div>
             </g:form>
              </div>
