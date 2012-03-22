@@ -49,7 +49,7 @@ public class PostAudioStream implements Runnable {
  	 */
 	public void startThread(){
         	if (runner == null) {
-			AudioCapture.getController().startCapture();
+			AudioCapture.getController().start();
 			flag=true;
             		runner = new Thread(this);
             		runner.start();
@@ -82,7 +82,7 @@ public class PostAudioStream implements Runnable {
 			while(flag && ThreadController.getController().getThreadFlag()) {
 				try {
 				String filename="audio.wav";
-				AudioCapture.getController().stopCapture();
+				AudioCapture.getController().startCapture();
                                 HttpClient client = new HttpClient();
                                 PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);
                                 client.setConnectionTimeout(20000);
@@ -106,8 +106,6 @@ public class PostAudioStream implements Runnable {
 					File audioFile= new File(filename); 
 					if(audioFile.exists() ) 
 						audioFile.delete(); 
-					AudioCapture.getController().startCapture();
-					runner.sleep(5000); 
 					runner.yield();
 				}catch(Exception ex){}
 				}catch(Exception epe){}

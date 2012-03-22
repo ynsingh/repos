@@ -100,11 +100,11 @@ public class GetAudioStream implements Runnable {
         		        	byte audioBytes[]=method.getResponseBody();
         	        		method.releaseConnection();
 					AudioInputStream ais = new AudioInputStream(new ByteArrayInputStream(audioBytes),audioFormat, audioBytes.length / getAudioFormat().getFrameSize());
-					if((ais != null) && (audioBytes.length > 70))
+					if((ais != null) && (audioBytes.length > 1600))
                               			AudioPlayer.getController().putAudioStream(ais);
 					ais.close();
 				}catch(Exception we){}
-               			try { runner.sleep(5000); runner.yield(); }catch(Exception ex){}
+               			try { runner.sleep(500); runner.yield(); }catch(Exception ex){}
 				System.gc();
                         }
 		}catch(Exception exe){try { runner.sleep(5000); runner.yield(); }catch(Exception ex){}System.out.println("Error on get stream in GetAudioStream  "+exe.getMessage());}

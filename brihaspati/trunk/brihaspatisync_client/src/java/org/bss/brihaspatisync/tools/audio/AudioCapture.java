@@ -47,6 +47,7 @@ public class AudioCapture {
    	private Thread captureThread=null;
    	private Mixer currentMixer=null;
 	private String fileName="audio.wav";
+        private int bufferSize=16000;	
 
 	/**
  	 * Controller for the class.
@@ -108,24 +109,24 @@ public class AudioCapture {
 	        targetDataLine.close();
 		System.out.println("stopping audio capture successfull");
         }
+	
+	protected void start(){
+                getTargetLine();
+                bufferSize = (int) (audioFormat.getSampleRate())*(audioFormat.getFrameSize());
+        }
+	
 
 	/**
  	 * Local thread for record audio from microphone and save in file named as filename variable.
  	 */  
 	public void startCapture(){ 
-                try{
-                        getTargetLine();
-                        fileType = AudioFileFormat.Type.WAVE;
-                        captureThread = new Thread(new Runnable() {
-				public void run() {
-					try{
-                                        	AudioSystem.write(new AudioInputStream(targetDataLine), fileType, new File(fileName));
-                                       	}catch (Exception e){
-                                        	e.printStackTrace();
-                                    	}
-                             	}
-                     	}, "CaptureThread #1");
-                        captureThread.start();
+                try {
+			byte tempBuffer[] = new byte[bufferSize*10];
+                        try {
+                                int cnt = targetDataLine.read(tempBuffer,0,tempBuffer.length);
+                                AudioInputStream ais = new AudioInputStream(new java.io.ByteArrayInputStream(tempBuffer),audioFormat, tempBuffer.length / getAudioFormat().getFrameSize());
+                                AudioSystem.write(ais,AudioFileFormat.Type.WAVE, new File("audio.wav"));
+                        } catch(Exception e){System.out.println("Error in capture Audio"+e.getCause());}
                 }catch(Exception e){System.out.println("Error in capture Audio"+e.getCause());}
         }
 
