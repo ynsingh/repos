@@ -116,6 +116,10 @@ public class PostVideoCapture implements Runnable {
 						
 					BufferedImage bimg=BufferImage.getController().get(0);
 					BufferImage.getController().remove();
+					java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
+					ImageIO.write(bimg, "jpeg", os);
+                                        java.io.InputStream is = new java.io.ByteArrayInputStream(os.toByteArray());	
+					/*
                                         java.io.FileOutputStream fout = new java.io.FileOutputStream("image1.jpeg");
                                         JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(fout);
                                         JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
@@ -123,7 +127,8 @@ public class PostVideoCapture implements Runnable {
                                         jencoder.setJPEGEncodeParam(enParam);
                                         jencoder.encode(bimg);
                                         fout.close();	
-        	               		postMethod.setRequestBody(new FileInputStream("image1.jpeg"));
+					*/
+        	               		postMethod.setRequestBody(is);//new FileInputStream("image1.jpeg"));
                				postMethod.setRequestHeader(h);
 					
 					// Http Proxy Handler

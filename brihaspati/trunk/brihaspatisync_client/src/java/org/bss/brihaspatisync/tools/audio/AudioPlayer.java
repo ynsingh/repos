@@ -39,8 +39,6 @@ public class AudioPlayer implements Runnable {
 	}
 	
 	protected void putAudioStream(AudioInputStream object){
-		 if (runner == null) 
-			startThread();
 		audioVector.add(object);
 	}
 	
@@ -136,7 +134,7 @@ public class AudioPlayer implements Runnable {
         			                        int count;
                 			                while ((count = input.read(buffer, 0, buffer.length)) != -1) {
 								if(count>0)
-                                					sourceDataLine.write(buffer, 0, count);
+                                					sourceDataLine.write(buffer, 0, bufferSize);
 			                                }
         			                }catch (Exception e) {  
 							System.out.println("Error in play audio stream : "+e.getMessage());       

@@ -54,6 +54,7 @@ public class GetAudioStream implements Runnable {
 			flag=true;
         		runner = new Thread(this);
             		runner.start();
+			AudioPlayer.getController().startThread();	
 			System.out.println("GetAudioStream start sucessfully !!");
 		}
    	}
@@ -66,6 +67,7 @@ public class GetAudioStream implements Runnable {
 			flag=false;
         		runner.stop();
         		runner = null;
+			AudioPlayer.getController().stopThread();	
 			System.out.println("GetAudioStream stop Successfully !!");
        		}
   	}
@@ -107,7 +109,7 @@ public class GetAudioStream implements Runnable {
                			try { runner.sleep(500); runner.yield(); }catch(Exception ex){}
 				System.gc();
                         }
-		}catch(Exception exe){try { runner.sleep(5000); runner.yield(); }catch(Exception ex){}System.out.println("Error on get stream in GetAudioStream  "+exe.getMessage());}
+		}catch(Exception exe){try { runner.sleep(500); runner.yield(); }catch(Exception ex){}System.out.println("Error on get stream in GetAudioStream  "+exe.getMessage());}
 	}
 	
 	private AudioFormat getAudioFormat(){

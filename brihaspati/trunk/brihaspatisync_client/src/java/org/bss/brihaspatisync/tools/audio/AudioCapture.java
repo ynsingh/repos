@@ -119,15 +119,19 @@ public class AudioCapture {
 	/**
  	 * Local thread for record audio from microphone and save in file named as filename variable.
  	 */  
-	public void startCapture(){ 
+	public InputStream startCapture(){ 
                 try {
 			byte tempBuffer[] = new byte[bufferSize*10];
                         try {
                                 int cnt = targetDataLine.read(tempBuffer,0,tempBuffer.length);
                                 AudioInputStream ais = new AudioInputStream(new java.io.ByteArrayInputStream(tempBuffer),audioFormat, tempBuffer.length / getAudioFormat().getFrameSize());
-                                AudioSystem.write(ais,AudioFileFormat.Type.WAVE, new File("audio.wav"));
+				java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
+                                AudioSystem.write(ais,AudioFileFormat.Type.WAVE, os);
+                                InputStream is = new java.io.ByteArrayInputStream(os.toByteArray());
+				return is;	
                         } catch(Exception e){System.out.println("Error in capture Audio"+e.getCause());}
                 }catch(Exception e){System.out.println("Error in capture Audio"+e.getCause());}
+		return null;
         }
 
 	/**

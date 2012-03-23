@@ -82,12 +82,12 @@ public class PostAudioStream implements Runnable {
 			while(flag && ThreadController.getController().getThreadFlag()) {
 				try {
 				String filename="audio.wav";
-				AudioCapture.getController().startCapture();
+				java.io.InputStream is=AudioCapture.getController().startCapture();
                                 HttpClient client = new HttpClient();
                                 PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);
                                 client.setConnectionTimeout(20000);
-                                if((new File(filename)).exists()) {
-                                        postMethod.setRequestBody(new java.io.FileInputStream(filename));
+                                if(is !=null ){//(new File(filename)).exists()) {
+                                        postMethod.setRequestBody(is);//new java.io.FileInputStream(filename));
 					postMethod.setRequestHeader(h);
 					// Http Proxy Handler	
 					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
@@ -103,15 +103,14 @@ public class PostAudioStream implements Runnable {
                                 postMethod.releaseConnection();
 				
                                 try { 
-					File audioFile= new File(filename); 
-					if(audioFile.exists() ) 
-						audioFile.delete(); 
+					//File audioFile= new File(filename); 
+					//if(audioFile.exists() ) 
+					//	audioFile.delete(); 
 					runner.yield();
 				}catch(Exception ex){}
 				}catch(Exception epe){}
                         }
 		}catch(Exception e){
-			try{ runner.sleep(1000); runner.yield(); }catch(Exception we){}
 			System.out.println("Error in PostMethod of Audio sender : "+e.getMessage());
 		}
 	}

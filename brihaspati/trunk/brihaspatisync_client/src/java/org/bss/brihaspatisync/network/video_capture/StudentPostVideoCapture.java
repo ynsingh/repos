@@ -113,14 +113,20 @@ public class StudentPostVideoCapture implements Runnable {
 					client.setConnectionTimeout(8000);
 						
 					BufferedImage bimg=BufferImage.getController().get(0);
+					BufferImage.getController().remove();
+					java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
+                                        ImageIO.write(bimg, "jpeg", os);
+                                        java.io.InputStream is = new java.io.ByteArrayInputStream(os.toByteArray());
+					
+					/*
                                         java.io.FileOutputStream fout = new java.io.FileOutputStream("image2.jpeg");
                                         JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(fout);
                                         JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
                                         enParam.setQuality(0.25F, true);
                                         jencoder.setJPEGEncodeParam(enParam);
                                         jencoder.encode(bimg);
-                                        fout.close();	
-        	               		postMethod.setRequestBody(new FileInputStream("image2.jpeg"));
+                                        fout.close();	*/
+        	               		postMethod.setRequestBody(is);//new FileInputStream("image2.jpeg"));
                				postMethod.setRequestHeader(h);
 					
 					// Http Proxy Handler
@@ -135,7 +141,6 @@ public class StudentPostVideoCapture implements Runnable {
         	               		int statusCode1 = client.executeMethod(postMethod);
                 	       		postMethod.getStatusLine();
                        			postMethod.releaseConnection();
-					BufferImage.getController().remove();
                        			try {
 	                               		runner.sleep(10);
 						runner.yield();
