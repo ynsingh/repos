@@ -31,7 +31,6 @@ import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on Oct2011.
- * @author <a href="mailto:esha2008@gmail.com">Esha Srivastava </a>Implement method for dynamic selection of mixer.
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Modified transmit thread.
  */
 
@@ -46,7 +45,6 @@ public class AudioCapture {
     	private AudioFileFormat.Type fileType = null;
    	private Thread captureThread=null;
    	private Mixer currentMixer=null;
-	private String fileName="audio.wav";
         private int bufferSize=16000;	
 
 	/**
@@ -67,7 +65,6 @@ public class AudioCapture {
        		for (int cnt = 0; cnt < mixerInfo.length; cnt++) {
          		System.out.println(mixerInfo[cnt].getName());
            		Mixer currentMixer = AudioSystem.getMixer(mixerInfo[cnt]);
-
 			if( currentMixer.isLineSupported(dataLineInfo) ) {
 				System.out.println("mixer name: " + mixerInfo[cnt].getName() + " index:" + cnt);
 				return currentMixer;
@@ -88,7 +85,6 @@ public class AudioCapture {
             			targetDataLine =(TargetDataLine)currentMixer.getLine(dataLineInfo);
             		else
             			System.out.println("Mixer not found!!");
-
 			audioFormat = getAudioFormat();
 			if(!targetDataLine.isOpen()){
             			targetDataLine.open(audioFormat);
@@ -119,7 +115,7 @@ public class AudioCapture {
 	/**
  	 * Local thread for record audio from microphone and save in file named as filename variable.
  	 */  
-	public InputStream startCapture(){ 
+	public java.io.ByteArrayOutputStream startCapture(){ 
                 try {
 			byte tempBuffer[] = new byte[bufferSize*10];
                         try {
@@ -127,8 +123,7 @@ public class AudioCapture {
                                 AudioInputStream ais = new AudioInputStream(new java.io.ByteArrayInputStream(tempBuffer),audioFormat, tempBuffer.length / getAudioFormat().getFrameSize());
 				java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
                                 AudioSystem.write(ais,AudioFileFormat.Type.WAVE, os);
-                                InputStream is = new java.io.ByteArrayInputStream(os.toByteArray());
-				return is;	
+				return os;	
                         } catch(Exception e){System.out.println("Error in capture Audio"+e.getCause());}
                 }catch(Exception e){System.out.println("Error in capture Audio"+e.getCause());}
 		return null;

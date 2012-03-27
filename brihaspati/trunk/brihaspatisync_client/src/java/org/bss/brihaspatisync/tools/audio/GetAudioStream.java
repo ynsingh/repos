@@ -23,7 +23,6 @@ import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on Oct2011.
- * @author <a href="mailto:esha2008@gmail.com">Esha Srivastava </a>Implement method for dynamic selection of mixer.
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Implement method for get audio stream from reflector.
  */
 

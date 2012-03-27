@@ -59,7 +59,6 @@ public class StudentGetVideo implements Runnable {
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
-			//org.bss.brihaspatisync.gui.JoinSessionPanel.getController().getAV_Panel().add(org.bss.brihaspatisync.gui.VideoPanel.getController().createGUI());
 			System.out.println("Student GetVideo start sucessfully !!");
 		}
         }
@@ -84,7 +83,7 @@ public class StudentGetVideo implements Runnable {
 		while(flag && ThreadController.getController().getThreadFlag()) {
 		        try {
 				HttpClient client = new HttpClient();
-				HttpMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":"+port);//8094");
+				HttpMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":"+port); 
 		                client.setConnectionTimeout(8000);
                                 method.setRequestHeader(h);
 				// Http Proxy Handler

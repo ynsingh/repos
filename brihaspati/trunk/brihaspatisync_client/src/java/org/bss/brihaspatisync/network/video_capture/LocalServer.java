@@ -81,11 +81,7 @@ public class LocalServer implements Runnable {
 		while(flag && ThreadController.getController().getThreadFlag()) {
 		        try {
 				HttpClient client = new HttpClient();
-				HttpMethod method=null;
-				if(runtime_object.getVideoServer().equals("127.0.0.1"))
-					method = new GetMethod("http://localhost:8090");
-				else
-					method = new GetMethod("http://"+runtime_object.getVideoServer()+":"+runtime_object.getVideoServerPort());
+				HttpMethod method= new GetMethod("http://"+runtime_object.getVideoServer()+":"+runtime_object.getVideoServerPort());
 		                client.setConnectionTimeout(80000);
                                 method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
 				// Http Proxy Handler
@@ -117,7 +113,6 @@ public class LocalServer implements Runnable {
 				System.gc();
 			} catch(Exception e){ 
 				try {   runner.sleep(1000); runner.yield();}catch(Exception ep){}
-				System.out.println("Error in GetMethod of Video Captureing : "+e.getMessage()); 
 			}
 		}
 	}

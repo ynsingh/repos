@@ -136,24 +136,16 @@ public class PostSharedScreen implements Runnable {
 					HttpClient client = new HttpClient();
 			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);
 					client.setConnectionTimeout(8000);
-					java.io.InputStream is=null;
-					try {
-						BufferedImage bimg=captureScreen();
-						java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
-						ImageIO.write(bimg, "jpeg", os);
-						is = new java.io.ByteArrayInputStream(os.toByteArray());
-
-						/*
-	                                	java.io.FileOutputStream fout = new java.io.FileOutputStream("image.jpeg");
-						JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(fout);
-                	        	        JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
-                        	        	enParam.setQuality(0.25F, true);
-	                                	jencoder.setJPEGEncodeParam(enParam);
-        	                	        jencoder.encode(bimg);
-	                	                fout.close();
-						*/
-					}catch(Exception ew){}
-       	                	        postMethod.setRequestBody(is);//new FileInputStream("image.jpeg"));
+					BufferedImage bimg=captureScreen();
+					java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
+					
+					JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(os);
+                	        	JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
+                        	        enParam.setQuality(0.25F, true);
+	                                jencoder.setJPEGEncodeParam(enParam);
+        	                	jencoder.encode(bimg);
+					
+       	                	        postMethod.setRequestBody(new java.io.ByteArrayInputStream(os.toByteArray()));
 	               			postMethod.setRequestHeader(h);
 					
 					// Http Proxy Handler
@@ -167,6 +159,8 @@ public class PostSharedScreen implements Runnable {
 	
         	               		int statusCode1 = client.executeMethod(postMethod);
                 	       		postMethod.getStatusLine();
+					os.flush();	
+					os.close();	
                        			postMethod.releaseConnection();
                        			try {	runner.sleep(100); runner.yield(); }catch(Exception ex){}
 					StatusPanel.getController().setdestopClient("yes");
