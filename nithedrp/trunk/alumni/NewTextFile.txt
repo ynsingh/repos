@@ -1,0 +1,11 @@
+This is the fully functional alumni website project including 
+a discussion forum. Just open the project in netbeans and 
+make the following changes 
+
+Set the absolute path of the config.properties file in the 
+variable path present in all the three beans classes located
+ in forum package. 
+
+set the path variable to the location of the config.properties 
+present at the location $project/build/web/config.properties, 
+and then the project should work fine. 

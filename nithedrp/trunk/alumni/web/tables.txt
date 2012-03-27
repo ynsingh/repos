@@ -1,0 +1,79 @@
+create database alumni;
+
+create table admin(username varchar(50),password varchar(50) );
+
+create table degreelist(degree varchar(100));
+
+create table departmentlist(department varchar(100));
+
+create table hostellist(hostel varchar(100));
+
+create table info(
+Firstnamevarchar(50),
+Midnamevarchar(50),
+Lastnamevarchar(50),
+Alias varchar(50),
+Nickname varchar(50),
+Gender varchar(50),
+Dob varchar(50),
+Deg1 varchar(50),
+Dep1varchar(50),
+Batch1 varchar(50),
+Host1 varchar(50),
+Deg2 varchar(50),
+Dep2 varchar(50),
+Batch2varchar(50),
+Host2 varchar(50),
+Deg3 varchar(50),
+Dep3 varchar(50),
+Batch3varchar(50),
+Host3varchar(50),
+Street1varchar(200),
+City1varchar(50),
+State1varchar(50),
+Country1varchar(50),
+Pin1varchar(50),
+Phone1varchar(50),
+Mobile1varchar(50),
+Fax1varchar(50),
+Email varchar(50),
+Url varchar(50),
+Occupation varchar(100),
+Organisationvarchar(100),
+Designation varchar(100),
+Interest varchar(400),
+Street2varchar(200),
+City2varchar(50),
+State2varchar(50),
+Country2varchar(50),
+Pin2varchar(50),
+Phone2varchar(50),
+Mobile2varchar(50),
+Fax2varchar(50),
+LoginMailvarchar(50),
+Password varchar(20),
+F_email1 varchar(50),
+F_email2 varchar(50),
+F_email3 varchar(50),
+F_email4 varchar(50),
+RID int Auto_increment primary key
+);
+
+create table calendar1 (date date,sdate date,edate date,title varchar(500), ttip varchar(500), message text, flag Boolean);
+
+create table divtext ( divtype varchar(50),divid varchar(50), title varchar(50), message text);
+insert into divtext value('news','news1','','');
+insert into divtext value('news','news2','','');
+insert into divtext value('news','news3','','');
+insert into divtext value('news','news4','','');
+insert into divtext value('news','news5','','');
+insert into divtext value('news','news6','','');
+insert into divtext values('header','collegename','National Institute of Technology,Hamirpur','');
+insert into divtext values('header','logourl','includes/logo-nith.png','');
+insert into divtext values('center','welcome','Welcome Message','');
+
+
+create table boxes (box_id int(10), member_id int(10), box_name text,sort_desc text,primary key(box_id));
+create table levels ( grade text, min_post int(10), max_post int(10), description text);
+create table members ( member_id int(10), username text, password text, firstname text, lastname text, email text, regdate text, type text);
+create table threads (thread_id int(10), box_id int(10), parent_id int(10), member_id int(10), subject text,post_text text, post_date int(10) );
