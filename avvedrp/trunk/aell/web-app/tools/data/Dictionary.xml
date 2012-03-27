@@ -1,0 +1,1458 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<DATA>
+
+<ITEM ID="1">
+	<SENTENCE>When we taste humiliation and pain, we learn never to abase others.</SENTENCE>
+	<WORD>Abase</WORD>
+	<CHOICE ID="1">Degrade, humiliate or make humble.</CHOICE>
+	<CHOICE ID="2">Denigrate.</CHOICE>
+	<CHOICE ID="3">Embarrass.</CHOICE>
+	<CHOICE ID="4">Detest or hate.</CHOICE>
+	<HINT>Abase means to degrade.</HINT>
+	 <IMG>AH-1,BMP-1,EH-1,SS-1</IMG>
+	 <POS>0,15,35,65,80</POS>
+	<SOUND>abase.mp3</SOUND>
+	<AUDSENT>abasesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+<ITEM ID="2">
+	<SENTENCE>She was abashed by her friend’s rude behaviour towards the old woman.</SENTENCE>
+	<WORD>Abash</WORD>
+	<CHOICE ID="1">Embarrass.</CHOICE>
+	<CHOICE ID="2">Shame.</CHOICE>
+	<CHOICE ID="3">Denigrate.</CHOICE>
+	<CHOICE ID="4">Abnormal or deviant.</CHOICE>
+	<HINT>Abash means to make someone feel embarrassed.</HINT>
+	<IMG>AH-1,BMP-1,AH-1,SH-1</IMG>
+	<POS>0,25,40,65,80</POS>
+	<SOUND>abash.mp3</SOUND>
+	<AUDSENT>abashsentence.mp3</AUDSENT>
+	<TYPE>adverb</TYPE>
+</ITEM>
+<ITEM ID="3">
+	<SENTENCE>After two days of continuous downpour, the rain finally abated.</SENTENCE>
+	<WORD>Abate</WORD>
+	<CHOICE ID="1"> Subside.</CHOICE>
+	<CHOICE ID="2">Shorten</CHOICE>
+	<CHOICE ID="3">Deviation from the normal.</CHOICE>
+	<CHOICE ID="4">Detest or hate.</CHOICE>
+	<HINT>Abate means to subside.</HINT>
+	<IMG>AH-1,BMP-1,EH-1,TT-1</IMG>
+	<POS>0,25,40,65,80</POS>
+	<SOUND>abate.mp3</SOUND>
+	<AUDSENT>abatesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+<ITEM ID="4">
+	<SENTENCE>To  abbreviate the word ‘mister’, one should write Mr.</SENTENCE>
+	<WORD>Abbreviate</WORD>
+	<CHOICE ID="1">Shorten.</CHOICE>
+	<CHOICE ID="2">Cut down.</CHOICE>
+	<CHOICE ID="3">Suspended action.</CHOICE>
+	<CHOICE ID="4">Decrease.</CHOICE>
+	<HINT>Abbreviate means to shorten.</HINT>
+	<IMG>AA-1,BMP-1,RR-1,FV-1,AA-1,TT-1</IMG>
+	<POS>0,20,40,55,65,75,85</POS>
+	<SOUND>abbreviate.mp3</SOUND><AUDSENT>abbreviatesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+
+<ITEM ID="5">
+	<SENTENCE>The king of Nepal was forced to  abdicate his throne when the people rebelled.</SENTENCE>
+	<WORD>Abdicate</WORD>
+	<CHOICE ID="1">Renounce a position, right, or responsibility.</CHOICE>
+	<CHOICE ID="2">Anger.</CHOICE>
+	<CHOICE ID="3">Abnormal or deviant.</CHOICE>
+	<CHOICE ID="4">Detest or hate.</CHOICE>
+	<HINT>Abdicate means to renounce a position.</HINT>
+	<IMG>AA-1,BMP-1,CDG-1,AA-1,TT-1</IMG>
+	<POS>0,25,50,75</POS>
+	<SOUND>abdicate.mp3</SOUND>
+	<AUDSENT>abdicatesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+<ITEM ID="6">
+	<SENTENCE>When drunk even a person with good manners displays aberrant behaviour.</SENTENCE>
+	<WORD>Aberrant</WORD>
+	<CHOICE ID="1">Abnormal or deviant.</CHOICE>
+	<CHOICE ID="2">Disfunctional.</CHOICE>
+	<CHOICE ID="3">Suspended action.</CHOICE>
+	<CHOICE ID="4">Decrease.</CHOICE>
+	<HINT>Aberrant means to behave in an abnormal manner.</HINT>
+	<IMG>AA-1,BMP-1,AH-1,RR-1,NN-1,TT-1</IMG>
+	<POS>0,20,40,55,65,75,90</POS>
+	<SOUND>aberrant.mp3</SOUND>
+	<AUDSENT>aberrantsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="7">
+	<SENTENCE>The severe cold was an  aberration from the usual weather pattern.</SENTENCE>
+	<WORD>Aberration</WORD>
+	<CHOICE ID="1">Deviation from the normal.</CHOICE>
+	<CHOICE ID="2">Disfunction.</CHOICE>
+	<CHOICE ID="3">Detest or hate.</CHOICE>
+	<CHOICE ID="4">Fury.</CHOICE>
+	<HINT>Aberration means a departure from what is normal.</HINT>
+	<IMG>AA-1,BMP-1,EH-1,RR-1,AA-1,SH-1,NN-1</IMG>
+	<POS>0,15,25,35,45,65,75,85,90</POS>
+	<SOUND>aberration.mp3</SOUND>
+	<AUDSENT>aberrationsentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+<ITEM ID="8">
+	<SENTENCE>We should not  abet others in wrong doing.</SENTENCE>
+	<WORD>Abet</WORD>
+	<CHOICE ID="1">Assist or encourage, usually in doing something wrong.</CHOICE>
+	<CHOICE ID="2">Caring.</CHOICE>
+	<CHOICE ID="3">A good work.</CHOICE>
+	<CHOICE ID="4">Helpful.</CHOICE>
+	<HINT>Abet means to assist someone in doing something wrong.</HINT>
+	<IMG>AH-1,BMP-1,AA-1,TT-1</IMG>
+	<POS>0,25,40,50,75</POS>
+	<SOUND>abet.mp3</SOUND>
+	<AUDSENT>abetsentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+<ITEM ID="9">
+	<SENTENCE>The cricket match was held in  abeyance until the rain stopped.</SENTENCE>
+	<WORD>Abeyance</WORD>
+	<CHOICE ID="1">Suspended action.</CHOICE>
+	<CHOICE ID="2">Bring to halt.</CHOICE>
+	<CHOICE ID="3">To continue.</CHOICE>
+	<CHOICE ID="4">To increase.</CHOICE>
+	<HINT>Abeyance means a state of temporary suspension.</HINT>
+	<IMG>AH-1,BMP-1,EH-1,AA-1,NN-1</IMG>
+	<POS>0,15,30,45,65,80</POS>
+	<SOUND>abeyance.mp3</SOUND><AUDSENT>abeyancesentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+<ITEM ID="10">
+	<SENTENCE>Abhor violence and sow the seeds of love and kindness.</SENTENCE>
+	<WORD>Abhor</WORD>
+	<CHOICE ID="1">To hate, detest.</CHOICE>
+	<CHOICE ID="2">Undisciplined, lewd.</CHOICE>
+	<CHOICE ID="3">One who flatters for self-gain.</CHOICE>
+	<CHOICE ID="4">Not capable, unqualified.</CHOICE>
+	<HINT>Abhor means to hate.</HINT>
+	<IMG>AH-1,BMP-1,OH-1,RR-1</IMG>
+	<POS>0,25,50,60,85</POS>
+	<SOUND>abhor.mp3</SOUND><AUDSENT>abhorsentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+<ITEM ID="11">
+	<SENTENCE>Fearing violence the Minister acquiesced to the request of his party for a change  in policy.</SENTENCE>
+	<WORD>Acquiesce</WORD>
+	<CHOICE ID="1">To agree without protesting.</CHOICE>
+	<CHOICE ID="2">Loud, boisterous.</CHOICE>
+	<CHOICE ID="3">Not inclined to talk.</CHOICE>
+	<CHOICE ID="4">Notoriety, extreme ill repute.</CHOICE>
+	<HINT>Acquiesce means to agree without protesting.</HINT>
+	<IMG>AA-1,EH-1,OOUW-1,EH-1,SS-1</IMG>
+	<POS>0,15,30,45,65,80</POS>
+	<SOUND>acquiesce.mp3</SOUND><AUDSENT>acquiescesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+<ITEM ID="12">
+	<SENTENCE>He accepted the invitation to attend the course on Quality Management with alacrity.</SENTENCE>
+	<WORD>Alacrity</WORD>
+	<CHOICE ID="1">Eagerness, speed.</CHOICE>
+	<CHOICE ID="2">To confuse or annoy.</CHOICE>
+	<CHOICE ID="3">Ready to fight, cruel.</CHOICE>
+	<CHOICE ID="4">To prevent, restrain.</CHOICE>
+	<HINT>Alacrity means eagerness.</HINT>
+	<IMG>AH-1,LL-1,AH-1,RR-1,TT-1,EE-1</IMG>
+	<POS>0,20,40,55,65,75,90</POS>
+	<SOUND>alacrity.mp3</SOUND><AUDSENT>alacritysentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+<ITEM ID="13">
+	<SENTENCE>The convenor of the programme was very amiable and greeted everyone enthusiastically.</SENTENCE>
+	<WORD>Amiable</WORD>
+	<CHOICE ID="1">Friendly.</CHOICE>
+	<CHOICE ID="2">Deserving of respect because of age or achievement.</CHOICE>
+	<CHOICE ID="3">Resentment, offence.</CHOICE>
+	<CHOICE ID="4">Inborn, inherent.</CHOICE>
+	<HINT>Amiable means friendly.</HINT>
+	<IMG>AA-1,BMP-1,EH-1,AH-1,BMP-1,LL-1</IMG>
+	<POS>0,20,40,55,65,75,85</POS>
+	<SOUND>amiable.mp3</SOUND><AUDSENT>amiablesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="14">
+	<SENTENCE>It is difficult to appease a person when he is angry.</SENTENCE>
+	<WORD>Appease</WORD>
+	<CHOICE ID="1">To calm, satisfy.</CHOICE>
+	<CHOICE ID="2">Resentment, offence.</CHOICE>
+	<CHOICE ID="3">Deserving of respect because of age or achievement.</CHOICE>
+	<CHOICE ID="4">Incapable of being satisfied.</CHOICE>
+	<HINT>Appease means to calm.</HINT>
+	<IMG>AA-1,BMP-1,EE-1,SS-1</IMG>
+	<POS>0,25,40,60,75</POS>
+	<SOUND>appease.mp3</SOUND><AUDSENT>appeasesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+<ITEM ID="15">
+	<SENTENCE>Any working procedure must be known by all and should not be arcane.</SENTENCE>
+	<WORD>Arcane</WORD>
+	<CHOICE ID="1">Obscure, known only by a few.</CHOICE>
+	<CHOICE ID="2">Ready to fight, cruel.</CHOICE>
+	<CHOICE ID="3">To confuse or annoy.</CHOICE>
+	<CHOICE ID="4">Narrow-minded; tight-knit.</CHOICE>
+	<HINT>Arcane means something known only by a few</HINT>
+	<IMG>AH-1,AA-1,EE-1,NN-1</IMG>
+	<POS>0,25,35,50,75</POS>
+	<SOUND>arcane.mp3</SOUND><AUDSENT>arcanesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+	
+	<ITEM ID="16">
+	<SENTENCE>Man today seems to be driven by avarice and selfish desires, ignoring those of others.</SENTENCE>
+	<WORD>Avarice</WORD>
+	<CHOICE ID="1">	Excessive greed.</CHOICE>
+	<CHOICE ID="2">Not inclined to talk.</CHOICE>
+	<CHOICE ID="3">Loud, boisterous.</CHOICE>
+	<CHOICE ID="4">Brave in the face of danger.</CHOICE>
+	<HINT>Avarice means excessive greed.</HINT>
+	<IMG>AA-1,FV-1,AH-1,RR-1,SS-1</IMG>
+	<POS>0,15,30,45,65,80</POS>
+	<SOUND>avarice.mp3</SOUND>
+	<AUDSENT>avaricesentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+<ITEM ID="17">
+	<SENTENCE>Politics today is corrupted and follow a brazen approach in amassing public funds for private ends.</SENTENCE>
+	<WORD>Brazen</WORD>
+	<CHOICE ID="1">Excessively bold brash and obvious.</CHOICE>
+	<CHOICE ID="2">One who flatters for self-gain.</CHOICE>
+	<CHOICE ID="3">Undisciplined lewd.</CHOICE>
+	<CHOICE ID="4">Stubbornly established by habit.</CHOICE>
+	<HINT>Brazen means excessively brash.</HINT>
+	<IMG>BMP-1,RR-1,AA-1,SS-1,NN-1</IMG>
+	<POS>0,15,30,45,65,80</POS>
+	<SOUND>brazen.mp3</SOUND>
+	<AUDSENT>brazensentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="18">
+	<SENTENCE>The service provided was a little brusque as the executive was busy.</SENTENCE>
+	<WORD>Brusque</WORD>
+	<CHOICE ID="1">Short, abrupt.</CHOICE>
+	<CHOICE ID="2">Exceeding what is necessary.</CHOICE>
+	<CHOICE ID="3">The highest point, culminating point.</CHOICE>
+	<CHOICE ID="4">Extremely joyful, happy.</CHOICE>
+	<HINT>Brusque means abrupt</HINT>
+	<IMG>BMP-1,RR-1,SS-1,NN-1</IMG>
+	<POS>0,20,35,50,60,80</POS>
+	<SOUND>brusque.mp3</SOUND><AUDSENT>brusquesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="19">
+	<SENTENCE>It is easy to cajole a child with chocolates.</SENTENCE>
+	<WORD>Cajole</WORD>
+	<CHOICE ID="1">To urge, coax.</CHOICE>
+	<CHOICE ID="2">Sedate, self-restrained.</CHOICE>
+	<CHOICE ID="3">An abundance, excess.</CHOICE>
+	<CHOICE ID="4">The solemn sound of a bell, often indicating a death.</CHOICE>
+	<HINT>Cajole means to urge</HINT>
+	<IMG>AH-1,JJ-1,OH-1,LL-1</IMG>
+	<POS>0,25,40,60,75</POS>
+	<SOUND>cajole.mp3</SOUND>
+	<AUDSENT>cajolesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+	<ITEM ID="20">
+	<SENTENCE>Some people have a callous disregard towards the suffering of others.</SENTENCE>
+	<WORD>Callous</WORD>
+	<CHOICE ID="1">Harsh, unfeeling.</CHOICE>
+	<CHOICE ID="2">Luck, finding good things without looking for them.</CHOICE>
+	<CHOICE ID="3">A preference or inclination for something.</CHOICE>
+	<CHOICE ID="4">Graceful, supple.</CHOICE>
+	<HINT>Callous means unfeeling.</HINT>
+	<IMG>CA-1,LL-1,SS-1</IMG>
+	<POS>0,25,40,55</POS>
+	<SOUND>callous.mp3</SOUND>
+	<AUDSENT>calloussentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="21">
+	<SENTENCE>A good leader should have professional candour and rate everyone the same.</SENTENCE>
+	<WORD>Candour</WORD>
+	<CHOICE ID="1">Honesty, frankness.</CHOICE>
+	<CHOICE ID="2">Significant, conspicuous.</CHOICE>
+	<CHOICE ID="3">Charmingly old-fashioned.</CHOICE>
+	<CHOICE ID="4">Ghastly, sensational.</CHOICE>
+	<HINT>Candour means frankness.</HINT>
+	<IMG>AH-1,LL-1,OH-1,RR-1</IMG>
+	<POS>0,25,40,50,65</POS>
+	<SOUND>candour.mp3</SOUND><AUDSENT>candoursentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+<ITEM ID="22">
+	<SENTENCE>The teacher chided the child for not completing his homework.</SENTENCE>
+	<WORD>Chide</WORD>
+	<CHOICE ID="1">To voice disapproval.</CHOICE>
+	<CHOICE ID="2">Abundant.</CHOICE>
+	<CHOICE ID="3">Hasty, incautious.</CHOICE>
+	<CHOICE ID="4">An independent, nonconformist person.</CHOICE>
+	<HINT>Chide means to voice disapproval.</HINT>
+	<IMG>CDG-1,AH-1,LL-1</IMG>
+	<POS>0,25,40,60</POS>
+	<SOUND>chide.mp3</SOUND><AUDSENT>chidesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>	
+	<ITEM ID="23">
+	<SENTENCE>He was circumspect in his dealing with her, as she was known to carry tales about others.</SENTENCE>
+	<WORD>Circumspect</WORD>
+	<CHOICE ID="1">Cautious.</CHOICE>
+	<CHOICE ID="2">To reject, refuse to accept.</CHOICE>
+	<CHOICE ID="3">To restore, clean up.</CHOICE>
+	<CHOICE ID="4">A common saying expressing a principle of conduct.</CHOICE>
+	<HINT>Circumspect means cautious.	</HINT>
+	<IMG>CDG-1,AH-1,BMP-1,CDG-1,BMP-1,EH-1,TT-1</IMG>
+	<POS>0,25,35,45,55,65,75,80,90</POS>
+	<SOUND>circumspect.mp3</SOUND><AUDSENT>circumspectsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="24">
+	<SENTENCE>The politicians had a clandestine meeting as they did not want the media to know of it.</SENTENCE>
+	<WORD>Clandestine</WORD>
+	<CHOICE ID="1">Secret.</CHOICE>
+	<CHOICE ID="2">To restore, clean up.</CHOICE>
+	<CHOICE ID="3">To reject, refuse to accept.</CHOICE>
+	<CHOICE ID="4">Extremely careful with details.	Clandestine means secret.</CHOICE>
+	<HINT>Clandestine means secret.</HINT>
+	<IMG>AH-1,LL-1,NN-1,CDG-1,TT-1,AH-1,NN-1</IMG>
+	<POS>0,10,20,30,40,50,60,70,85</POS>
+	<SOUND>clandestine.mp3</SOUND><AUDSENT>clandestinesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+		<ITEM ID="25">
+	<SENTENCE>Despite having lost his job, Renjith was coerced into making his car payment by a callous bill collector.</SENTENCE>
+	<WORD>Coerce</WORD>
+	<CHOICE ID="1">Make somebody do something by force or threat.</CHOICE>
+	<CHOICE ID="2">Hasty, incautious.</CHOICE>
+	<CHOICE ID="3">Abundant.</CHOICE>
+	<CHOICE ID="4">A small amount of something.</CHOICE>
+	<HINT>Coerce means to make somebody do something by force.</HINT>
+	<IMG>OH-1,EE-1,RR-1,CDG-1</IMG>
+	<POS>0,25,45,60,70</POS>
+	<SOUND>coerce.mp3</SOUND><AUDSENT>coercesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>				
+									
+<ITEM ID="26">
+	<SENTENCE>Despite a head injury the patient was stable and gave coherent responses.</SENTENCE>
+	<WORD>Coherent</WORD>
+	<CHOICE ID="1">Logically consistent, intelligible.</CHOICE>
+	<CHOICE ID="2">Charmingly old-fashioned.</CHOICE>
+	<CHOICE ID="3">Significant, conspicuous.</CHOICE>
+	<CHOICE ID="4">Gloomy or sullen.</CHOICE>
+	<HINT>Coherent means being logically consistent</HINT>
+	<IMG></IMG>
+	<SOUND>coherent.mp3</SOUND><AUDSENT>coherentsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>		
+<ITEM ID="27">
+	<SENTENCE>Complacency with health issues can lead to serious problems over time.</SENTENCE>
+	<WORD>Complacency</WORD>
+	<CHOICE ID="1">Self-Satisfied ignorance of danger.</CHOICE>
+	<CHOICE ID="2">A preference or inclination for something.</CHOICE>
+	<CHOICE ID="3">Luck, finding good things without looking for them.</CHOICE>
+	<CHOICE ID="4">Consisting of a very great number.</CHOICE>
+	<HINT>Complacency means a self-satisfied ignorance of danger.</HINT>
+	<IMG></IMG>
+	<SOUND>complacency.mp3</SOUND><AUDSENT>complacencysentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+<ITEM ID="28">
+	<SENTENCE>A best friend can be a trusted confidant.</SENTENCE>
+	<WORD>Confidant</WORD>	
+	<CHOICE ID="1">A person entrusted with secrets.</CHOICE>
+	<CHOICE ID="2">An abundance, excess.</CHOICE>
+	<CHOICE ID="3">Sedate, self-restrained.</CHOICE>	
+	<CHOICE ID="4">The lowest point of something.</CHOICE>
+	<HINT>Confidant means a person entrusted with secrets</HINT>
+	<IMG></IMG>
+	<SOUND>confidant.mp3</SOUND><AUDSENT>confidantsentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+<ITEM ID="29">
+	<SENTENCE>Mark's co-workers connived to bring about his downfall.</SENTENCE>
+	<WORD>Connive</WORD>
+	<CHOICE ID="1">To plot, scheme.</CHOICE>
+	<CHOICE ID="2">A careful examination, review.</CHOICE>
+	<CHOICE ID="3">Trifling, insignificant.</CHOICE>
+	<CHOICE ID="4">Exceeding what is necessary.</CHOICE>
+	<HINT>Connive means to plot</HINT>
+	<IMG></IMG>
+	<SOUND>connive.mp3</SOUND><AUDSENT>connivesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+	<ITEM ID="30">
+	<SENTENCE>Deposits in bank are cumulative and give good interest.</SENTENCE>
+	<WORD>Cumulative</WORD>
+	<CHOICE ID="1">Increasing, building upon itself.</CHOICE>
+	<CHOICE ID="2">A tendency, preference.</CHOICE>
+	<CHOICE ID="3">A beginner, someone without experience.</CHOICE>
+	<CHOICE ID="4">One who flatters for self-gain.</CHOICE>
+	<HINT>Cumulative means to increase.</HINT>
+	<IMG></IMG>
+	<SOUND>cumulative.mp3</SOUND><AUDSENT>cumulativesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="31">
+	<SENTENCE>Do not debase others as each person has an identity that should be respected.</SENTENCE>
+	<WORD>Debase</WORD>
+	<CHOICE ID="1">To lower the quality or esteem of something.</CHOICE>
+	<CHOICE ID="2">A satirical imitation.</CHOICE>
+	<CHOICE ID="3">A slight variation in meaning, tone.</CHOICE>
+	<CHOICE ID="4">Not inclined to talk.</CHOICE>
+	<HINT>Debase means to lower the esteem of others</HINT>
+	<IMG></IMG>
+	<SOUND>debase.mp3</SOUND>
+	<AUDSENT>debasesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+<ITEM ID="32">
+	<SENTENCE>The price rise in petrol was decried by all.</SENTENCE>
+	<WORD>Decry</WORD>
+	<CHOICE ID="1">To criticise openly.</CHOICE>
+	<CHOICE ID="2">A remedy for all ills or difficulties.</CHOICE>
+	<CHOICE ID="3">Lacking consciousness or awareness of something.</CHOICE>
+	<CHOICE ID="4">Ready to fight, cruel.</CHOICE>
+	<HINT>Decry means to criticise openly</HINT>
+	<IMG></IMG>
+	<SOUND>decry.mp3</SOUND>
+	<AUDSENT>decrysentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+			
+<ITEM ID="33">
+	<SENTENCE>We should learn to be deferential to those in authority.</SENTENCE>
+	<WORD>Deferential</WORD>
+	<CHOICE ID="1">Showing respect for another’s authority.</CHOICE>
+	<CHOICE ID="2">Lacking quickness of sensibility or intellect.</CHOICE>
+	<CHOICE ID="3">Excessively compliant or submissive.</CHOICE>
+	<CHOICE ID="4">Resentment, offence.</CHOICE>
+	<HINT>Deferential means showing respect for another’s authority.</HINT>
+	<IMG></IMG>
+	<SOUND>deferential.mp3</SOUND><AUDSENT>deferentialsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="34">
+	<SENTENCE>He had a demure manner and did not talk much.</SENTENCE>
+	<WORD>Demure</WORD>
+	<CHOICE ID="1">Quiet, reserved.</CHOICE>
+	<CHOICE ID="2">Excessively compliant or submissive.</CHOICE>
+	<CHOICE ID="3">Lacking quickness of sensibility or intellect.</CHOICE>
+	<CHOICE ID="4">Deserving of respect because of age or achievement.</CHOICE>
+	<HINT>Demure means reserved.</HINT>
+	<IMG>LL-1,CDG-1,BMP-1,OOUW-1,RR-1</IMG>
+	<POS>0,25,35,45,55,70</POS>
+	<SOUND>demure.mp3</SOUND><AUDSENT>demuresentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="35">
+	<SENTENCE>Never deride others, it may boomerang.</SENTENCE>
+	<WORD>Deride</WORD>
+	<CHOICE ID="1">To laugh at mockingly, scorn.</CHOICE>
+	<CHOICE ID="2">Lacking consciousness or awareness of something.</CHOICE>
+	<CHOICE ID="3">A remedy for all ills or difficulties.</CHOICE>
+	<CHOICE ID="4">To confuse or annoy.</CHOICE>
+	<HINT>Deride means to laugh at mockingly</HINT>
+	<IMG></IMG>
+	<SOUND>deride.mp3</SOUND><AUDSENT>deridesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+<ITEM ID="36">
+	<SENTENCE>A week of rioting in the capital caused the ouster of the despot ruling the country.</SENTENCE>
+	<WORD>Despot</WORD>
+	<CHOICE ID="1">One who has total power and rules brutally.</CHOICE>
+	<CHOICE ID="2">A slight variation in meaning, tone.</CHOICE>
+	<CHOICE ID="3">A satirical imitation.</CHOICE>
+	<CHOICE ID="4">Loud, boisterous.</CHOICE>
+	<HINT>Despot means one who has total power and rules brutally.</HINT>
+	<IMG></IMG>
+	<SOUND>despot.mp3</SOUND><AUDSENT>despotsentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>				
+	 
+	<ITEM ID="37">
+	<SENTENCE>She is a dedicated and diligent worker.</SENTENCE>
+	<WORD>Diligent</WORD>
+	<CHOICE ID="1">Showing care in doing one’s work.</CHOICE>
+	<CHOICE ID="2">A beginner, someone without experience.</CHOICE>
+	<CHOICE ID="3">A tendency, preference.</CHOICE>
+	<CHOICE ID="4">Undisciplined, lewd.</CHOICE>
+	<HINT>Diligent means showing care in doing one’s work</HINT>
+	<IMG></IMG>
+	<SOUND>diligent.mp3</SOUND><AUDSENT>diligentsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="38">
+	<SENTENCE>He was elated by the grades he obtained in the exam, and joyfully announced it to his parents.</SENTENCE>
+	<WORD>Elated</WORD>
+	<CHOICE ID="1">Overjoyed, thrilled.</CHOICE>
+	<CHOICE ID="2">Trifling, insignificant.</CHOICE>
+	<CHOICE ID="3">A careful examination, review.</CHOICE>
+	<CHOICE ID="4">The highest point, culminating point.</CHOICE>
+	<HINT>Elated means overjoyed</HINT>
+	<IMG></IMG>
+	<SOUND>elated.mp3</SOUND><AUDSENT>elatedsentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+<ITEM ID="39">
+	<SENTENCE>The chief guest's speech was eloquent and received a loud applause from the audience.</SENTENCE>
+	<WORD>Eloquent</WORD>
+	<CHOICE ID="1">Expressive, articulate.</CHOICE>
+	<CHOICE ID="2">The lowest point of something.</CHOICE>
+	<CHOICE ID="3">The solemn sound of a bell, often indicating a death.</CHOICE>
+	<CHOICE ID="4">An abundance, excess.</CHOICE>
+	<HINT>Eloquent means expressive</HINT>
+	<IMG>EE-1,LL-1,AH-1,OOUW-1,AH-1,NN-1,TT-1</IMG>
+	<POS>0,25,35,45,55,65,75,85</POS>
+	<SOUND>eloquent.mp3</SOUND><AUDSENT>eloquentsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+
+	<ITEM ID="40">
+	<SENTENCE>The crooked accountant was jailed for embezzling the bank.</SENTENCE>
+	<WORD>Embezzle</WORD>
+	<CHOICE ID="1">To steal money by falsifying records.</CHOICE>
+	<CHOICE ID="2">Consisting of a very great number.</CHOICE>
+	<CHOICE ID="3">Graceful, supple.</CHOICE>
+	<CHOICE ID="4">A preference or inclination for something.</CHOICE>
+	<HINT>Embezzle means to steal money by falsifying records.</HINT>
+	<IMG>EH-1,BMP-1,AH-1,SS-1,LL-1</IMG>
+	<POS>0,25,45,55,65,75</POS>
+	<SOUND>embezzle.mp3</SOUND><AUDSENT>embezzlesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+<ITEM ID="41">
+	<SENTENCE>Mother Theresa was known for her empathy, love and kindness.</SENTENCE>
+	<WORD>Empathy</WORD>
+	<CHOICE ID="1">Sensitivity to another’s feelings as if they were one’s own.</CHOICE>
+	<CHOICE ID="2">Gloomy or sullen.</CHOICE>
+	<CHOICE ID="3">Ghastly, sensational.</CHOICE>
+	<CHOICE ID="4">Charmingly old-fashioned.</CHOICE>
+	<HINT>Empathy means sensitivity to another’s feelings as if they were one’s own.</HINT>
+	<IMG></IMG>
+	<SOUND>empathy.mp3</SOUND><AUDSENT>empathysentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+<ITEM ID="42">
+	<SENTENCE>Among animals, the mongoose and the snake are known for their enmity.</SENTENCE>
+	<WORD>Enmity</WORD>
+	<CHOICE ID="1">Hatred, hostility.</CHOICE>
+	<CHOICE ID="2">A small amount of something.</CHOICE>
+	<CHOICE ID="3">An independent, nonconformist person.</CHOICE>
+	<CHOICE ID="4">Hasty, incautious.  Enmity means hatred.</CHOICE>
+	<HINT>Enmity means hatred.</HINT>
+	<IMG></IMG>
+	<SOUND>enmity.mp3</SOUND><AUDSENT>enmitysentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>	
+<ITEM ID="43">
+	<SENTENCE>The university head is an erudite and well educated person, respected by all.</SENTENCE>
+	<WORD>Erudite</WORD>
+	<CHOICE ID="1">Learned.</CHOICE>
+	<CHOICE ID="2">Extremely careful with details.</CHOICE>
+	<CHOICE ID="3">A common saying expressing a principle of conduct.</CHOICE>
+	<CHOICE ID="4">To restore, clean up.</CHOICE>
+	<HINT>Erudite means learned.</HINT>
+	<IMG></IMG>
+	<SOUND>erudite.mp3</SOUND><AUDSENT>eruditesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="44">
+	<SENTENCE>Among our modern day politicians, Dr Abdul Kalam is extolled and loved by all.</SENTENCE>
+	<WORD>Extol</WORD>
+	<CHOICE ID="1">To praise, revere.</CHOICE>
+	<CHOICE ID="2">A common saying expressing a principle of conduct.</CHOICE>
+	<CHOICE ID="3">Extremely careful with details.</CHOICE>
+	<CHOICE ID="4">To reject, refuse to accept.</CHOICE>
+	<HINT>Extol means to praise</HINT>
+	<IMG></IMG>
+	<SOUND>extol.mp3</SOUND><AUDSENT>extolsentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+	
+							
+	<ITEM ID="45">
+	<SENTENCE>You don't gain anything by fabricating stories about others.</SENTENCE>
+	<WORD>Fabricate</WORD>
+	<CHOICE ID="1">To make up, invent.</CHOICE>
+	<CHOICE ID="2">An independent, nonconformist person.</CHOICE>
+	<CHOICE ID="3">A small amount of something.</CHOICE>
+	<CHOICE ID="4">Abundant.</CHOICE>
+	<HINT>Fabricate means to make up</HINT>
+	<IMG></IMG>
+	<SOUND>fabricate.mp3</SOUND><AUDSENT>fabricatesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+<ITEM ID="46">
+	<SENTENCE>Feral animals don’t make good pets.</SENTENCE>
+	<WORD>Feral</WORD>
+	<CHOICE ID="1">Wild, savage.</CHOICE>
+	<CHOICE ID="2">Ghastly, sensational.</CHOICE>
+	<CHOICE ID="3">Gloomy or sullen.</CHOICE>
+	<CHOICE ID="4">Significant, conspicuous.</CHOICE>
+	<HINT>Feral means wild.</HINT>
+	<IMG></IMG>
+	<SOUND>feral.mp3</SOUND><AUDSENT>feralsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="47">
+	<SENTENCE>The athlete was flabbergasted by her victory, as she had been unwell while competing.</SENTENCE>
+	<WORD>Flabbergasted</WORD>
+	<CHOICE ID="1">Astounded.</CHOICE>
+	<CHOICE ID="2">Graceful, supple.</CHOICE>
+	<CHOICE ID="3">Consisting of a very great number.</CHOICE>
+	<CHOICE ID="4">Luck, finding good things without looking for them.</CHOICE>
+	<HINT>Flabbergasted means astounded.</HINT>
+	<IMG>FV-1,LL-1,AA-1,BMP-1,EH-1,AH-1,SS-1,TT-1,LL-1</IMG>
+	<POS>0,10,20,30,40,50,60,70,80,85</POS>
+	<SOUND>flabbergasted.mp3</SOUND><AUDSENT>flabbergastedsentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+<ITEM ID="48">
+	<SENTENCE>You gain peace when you forsake the desire to amass earthly possessions.</SENTENCE>
+	<WORD>Forsake</WORD>
+	<CHOICE ID="1">To give up, renounce.</CHOICE>
+	<CHOICE ID="2">The solemn sound of a bell, often indicating a death.</CHOICE>
+	<CHOICE ID="3">The lowest point of something.</CHOICE>
+	<CHOICE ID="4">Sedate, self-restrained.</CHOICE>
+	<HINT>Forsake means to renounce</HINT>
+	<IMG></IMG>
+	<SOUND>forsake.mp3</SOUND><AUDSENT>forsakesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+<ITEM ID="49">
+	<SENTENCE>The baby was in a fractious mood as he was both hungry and sleepy.</SENTENCE>
+	<WORD>Fractious</WORD>
+	<CHOICE ID="1">Troublesome or irritable.</CHOICE>
+	<CHOICE ID="2">Extremely joyful, happy.</CHOICE>
+	<CHOICE ID="3">Lazy.</CHOICE>
+	<CHOICE ID="4">Trifling, insignificant.</CHOICE>
+	<HINT>Fractious means troublesome.</HINT>
+	<IMG></IMG>
+	<SOUND>fractious.mp3</SOUND><AUDSENT>fractioussentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+				
+
+
+
+<ITEM ID="50">
+	<SENTENCE>The thief's furtive actions gave him away.</SENTENCE>
+	<WORD>Furtive</WORD>
+	<CHOICE ID="1">Secretive, sly.</CHOICE>
+	<CHOICE ID="2">Stubbornly established by habit.</CHOICE>
+	<CHOICE ID="3">Not capable, unqualified.</CHOICE>
+	<CHOICE ID="4">A beginner, someone without experience.</CHOICE>
+	<HINT>Furtive means being secretive.</HINT>
+	<IMG></IMG>
+	<SOUND>furtive.mp3</SOUND><AUDSENT>furtivesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="51">
+	<SENTENCE>Don't give in to gluttony: eat and drink only to live.</SENTENCE>
+	<WORD>Gluttony</WORD>
+	<CHOICE ID="1">Overindulgence in food or drink.</CHOICE>
+	<CHOICE ID="2">Brave in the face of danger.</CHOICE>
+	<CHOICE ID="3">Notoriety, extreme ill repute.</CHOICE>
+	<CHOICE ID="4">A slight variation in meaning, tone.</CHOICE>
+	<HINT>Gluttony means overindulgence in food or drink</HINT>
+	<IMG></IMG>
+	<SOUND>gluttony.mp3</SOUND><AUDSENT>gluttonysentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+<ITEM ID="52">
+	<SENTENCE>A responsible media would choose not to air programmes that depict gratuitous violence or lust.</SENTENCE>
+	<WORD>Gratuitous</WORD>
+	<CHOICE ID="1">Uncalled for, unwarranted.</CHOICE>
+	<CHOICE ID="2">Narrow-minded; tight-knit.</CHOICE>
+	<CHOICE ID="3">To prevent, restrain.</CHOICE>
+	<CHOICE ID="4">Lacking consciousness or awareness of something.</CHOICE>
+	<IMG>AH-1,RR-1,OOUW-1,AA-1,TT-1,SS-1</IMG>
+	<POS>0,25,45,65,75,90</POS>
+	<HINT>Gratuitous means something that is unwarranted</HINT>
+	<IMG></IMG>
+	<SOUND>gratuitous.mp3</SOUND><AUDSENT>gratuitoussentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="53">
+	<SENTENCE>Pride goes before destruction and a haughty spirit before a fall.</SENTENCE>
+	<WORD>Haughty</WORD>
+	<CHOICE ID="1">Disdainfully proud.</CHOICE>
+	<CHOICE ID="2">Incapable of being satisfied.</CHOICE>
+	<CHOICE ID="3">Inborn, inherent.</CHOICE>
+	<CHOICE ID="4">Excessively compliant or submissive.</CHOICE>
+	<HINT>Haughty means disdainfully proud.</HINT>
+	<IMG></IMG>
+	<SOUND>haughty.mp3</SOUND><AUDSENT>haughtysentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+	<ITEM ID="54">
+	<SENTENCE>There are three things in the world that deserve no mercy: hypocrisy, fraud and tyranny.</SENTENCE>
+	<WORD>Hypocrisy</WORD>
+	<CHOICE ID="1">Pretending to believe what one does not.</CHOICE>
+	<CHOICE ID="2">Inborn, inherent.</CHOICE>
+	<CHOICE ID="3">Incapable of being satisfied.</CHOICE>
+	<CHOICE ID="4">Lacking quickness of sensibility or intellect.</CHOICE>
+	<HINT>Hypocrisy means pretending to believe what one does not.</HINT>
+	<IMG></IMG>
+	<SOUND>hypocrisy.mp3</SOUND><AUDSENT>hypocrisysentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+
+					
+	<ITEM ID="55">
+	<SENTENCE>Mahatma Gandhi, whose integrity is beyond reproach, was a man of impeccable character.</SENTENCE>
+	<WORD>Impeccable</WORD>
+	<CHOICE ID="1">Exemplary, flawless.</CHOICE>
+	<CHOICE ID="2">To prevent, restrain.</CHOICE>
+	<CHOICE ID="3">Narrow-minded; tight-knit.</CHOICE>
+	<CHOICE ID="4">A remedy for all ills or difficulties.</CHOICE>
+	<HINT>Impeccable means exemplary.</HINT>
+	<IMG>EH-1,BMP-1,AA-1,AH-1,BMP-1,LL-1</IMG>
+	<POS>0,25,35,45,55,75,85</POS>
+	<SOUND>impeccable.mp3</SOUND><AUDSENT>impeccablesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>			
+					
+
+	<ITEM ID="56">
+	<SENTENCE>The boy was told to bring his parents to school the next day because of his impertinent behaviour to the teacher.</SENTENCE>
+	<WORD>Impertinent</WORD>
+	<CHOICE ID="1">Rude, insolent.</CHOICE>
+	<CHOICE ID="2">Notoriety, extreme ill repute.</CHOICE>
+	<CHOICE ID="3">Brave in the face of danger.</CHOICE>
+	<CHOICE ID="4">A satirical imitation.</CHOICE>
+	<HINT>Impertinent means rude</HINT>
+	<IMG></IMG>
+	<SOUND>impertinent.mp3</SOUND><AUDSENT>impertinentsenence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+
+<ITEM ID="57">
+	<SENTENCE>Being dead against the proposed plan, she was implacable in her opposition to it.</SENTENCE>
+	<WORD>Implacable</WORD>
+	<CHOICE ID="1">Incapable of being appeased or mitigated.</CHOICE>
+	<CHOICE ID="2">Not capable, unqualified.</CHOICE>
+	<CHOICE ID="3">Stubbornly established by habit.</CHOICE>
+	<CHOICE ID="4">A tendency, preference.</CHOICE>
+	<HINT>Implacable means incapable of being appeased</HINT>
+	<IMG></IMG>
+	<SOUND>implacable.mp3</SOUND><AUDSENT>implacablesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="58">
+	<SENTENCE>Let your words be polite and full of grace: do not be impudent and hurt others.</SENTENCE>
+	<WORD>Impudent</WORD>
+	<CHOICE ID="1">Casually rude, insolent.</CHOICE>
+	<CHOICE ID="2">Lazy.</CHOICE>
+	<CHOICE ID="3">Extremely joyful, happy.</CHOICE>
+	<CHOICE ID="4">A careful examination, review.</CHOICE>
+	<HINT>Impudent means casually rude</HINT>
+	<IMG></IMG>
+	<SOUND>impudent.mp3</SOUND>
+	<AUDSENT>impudentsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+	<ITEM ID="59">
+	<SENTENCE>The interviewer’s incisive questions about the corruption in politics made the minister babble.</SENTENCE>
+	<WORD>Incisive</WORD>
+	<CHOICE ID="1">Clear, direct.</CHOICE>
+	<CHOICE ID="2">Secretive, sly.</CHOICE>
+	<CHOICE ID="3">Overindulgence in food or drink.</CHOICE>
+	<CHOICE ID="4">Something that differs from the norm.</CHOICE>
+	<HINT>Incisive means being direct</HINT>
+	<IMG></IMG>
+	<SOUND>incisive.mp3</SOUND>
+	<AUDSENT>incisivesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+			
+	<ITEM ID="60">
+	<SENTENCE>There are men so incorrigibly indolent that no inducement offered will tempt them to work.</SENTENCE>
+	<WORD>Indolent</WORD>
+	<CHOICE ID="1">Lazy.</CHOICE>
+	<CHOICE ID="2">Casually rude, insolent.</CHOICE>
+	<CHOICE ID="3">Clear, direct.</CHOICE>
+	<CHOICE ID="4">To hate, detest.</CHOICE>
+	<HINT>Indolent means lazy</HINT>
+	<IMG></IMG>
+	<SOUND>indolent.mp3</SOUND>
+	<AUDSENT>indolentsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="61">
+	<SENTENCE>An inept employee will probably have a short career in a good company.</SENTENCE>
+	<WORD>Inept</WORD>
+	<CHOICE ID="1">Not capable, unqualified.</CHOICE>
+	<CHOICE ID="2">Incapable of being appeased or mitigated.</CHOICE>
+	<CHOICE ID="3">Uncalled for, unwarranted.</CHOICE>
+	<CHOICE ID="4">To agree without protesting..</CHOICE>
+	<HINT>Inept means not capable</HINT>
+	<IMG></IMG>
+	<SOUND>inept.mp3</SOUND>
+	<AUDSENT>ineptsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+			
+	<ITEM ID="62">
+	<SENTENCE>Instead of being a source of pride for India, the Common Wealth Games gained infamy due to  corruption and cams.</SENTENCE>
+	<WORD>Infamy</WORD>
+	<CHOICE ID="1">Notoriety, extreme ill repute.</CHOICE>
+	<CHOICE ID="2">Rude, insolent.</CHOICE>
+	<CHOICE ID="3">Disdainfully proud.</CHOICE>
+	<CHOICE ID="4">Eagerness, speed.</CHOICE>
+	<HINT>Infamy means notoriety</HINT>
+	<IMG></IMG>
+	<SOUND>infamy.mp3</SOUND>
+	<AUDSENT>infamysentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>	
+<ITEM ID="63">
+	<SENTENCE>The British could not inhibit India's cry for independence and had to give in at last.</SENTENCE>
+	<WORD>Inhibit</WORD>
+	<CHOICE ID="1">To prevent, restrain.</CHOICE>
+	<CHOICE ID="2">Exemplary, flawless.</CHOICE>
+	<CHOICE ID="3">Pretending to believe what one does not.</CHOICE>
+	<CHOICE ID="4">Friendly.</CHOICE>
+	<HINT>Inhibit means to prevent</HINT>
+	<IMG></IMG>
+	<SOUND>inhibit.mp3</SOUND>
+	<AUDSENT>inhibitsentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+<ITEM ID="64">
+	<SENTENCE>Some people have innate leadership skills that cannot be acquired by education.</SENTENCE>
+	<WORD>Innate</WORD>
+	<CHOICE ID="1">Inborn, inherent.</CHOICE>
+	<CHOICE ID="2">Pretending to believe what one does not.</CHOICE>
+	<CHOICE ID="3">Exemplary, flawless.</CHOICE>
+	<CHOICE ID="4">To calm, satisfy.</CHOICE>
+	<HINT>Innate means inborn</HINT>
+	<IMG></IMG>
+	<SOUND>innate.mp3</SOUND>
+	<AUDSENT>innatesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+ 			<ITEM ID="65">
+	<SENTENCE>Insatiable desire to acquire wealth and power leads to all kinds of evil.</SENTENCE>
+	<WORD>Insatiable</WORD>
+	<CHOICE ID="1">Incapable of being satisfied.</CHOICE>
+	<CHOICE ID="2">Disdainfully proud.</CHOICE>
+	<CHOICE ID="3">Rude, insolent.</CHOICE>
+	<CHOICE ID="4">Obscure, known only by a few.</CHOICE>
+	<HINT>Insatiable means incapable of being satisfied.</HINT>
+	<IMG></IMG>
+	<SOUND>insatiable.mp3</SOUND>
+	<AUDSENT>insatiablesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="66">
+	<SENTENCE>For a country to develop, it should open up its economic, social and political boundaries and not remain insular.</SENTENCE>
+	<WORD>Insular</WORD>
+	<CHOICE ID="1">Narrow-minded; tight-knit.</CHOICE>
+	<CHOICE ID="2">Uncalled for, unwarranted.</CHOICE>
+	<CHOICE ID="3">Incapable of being appeased or mitigated.</CHOICE>
+	<CHOICE ID="4">Excessive greed.</CHOICE>
+	<HINT>Insular means narrow-minded.</HINT>
+	<IMG></IMG>
+	<SOUND>insular.mp3</SOUND>
+	<AUDSENT>insularsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="67">
+	<SENTENCE>Learn to be intrepid and not cower before criticism.</SENTENCE>
+	<WORD>Intrepid</WORD>
+	<CHOICE ID="1">Brave in the face of danger.</CHOICE>
+	<CHOICE ID="2">Overindulgence in food or drink.</CHOICE>
+	<CHOICE ID="3">Casually rude, insolent.</CHOICE>
+	<CHOICE ID="4">Excessively bold, brash and obvious.</CHOICE>
+	<HINT>Intrepid means brave in the face of danger.</HINT>
+	<IMG></IMG>
+	<SOUND>intrepid.mp3</SOUND>
+	<AUDSENT>intrepidsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="68">
+	<SENTENCE>Better to never begin, as it’s too difficult to stop once you become an inveterate smoker.</SENTENCE>
+	<WORD>Inveterate</WORD>
+	<CHOICE ID="1">Stubbornly established by habit.</CHOICE>
+	<CHOICE ID="2">Clear, direct.</CHOICE>
+	<CHOICE ID="3">Secretive, sly.</CHOICE>
+	<CHOICE ID="4">Short, abrupt.</CHOICE>
+	<HINT>Inveterate means stubbornly established by habit</HINT>
+	<IMG></IMG>
+	<SOUND>inveterate.mp3</SOUND>
+	<AUDSENT>inveteratesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+ 		
+	<ITEM ID="69">
+	<SENTENCE>Having won the elections, the members of the party were in a jubilant mood.	</SENTENCE>
+	<WORD>Jubilant</WORD>
+	<CHOICE ID="1">Extremely joyful, happy</CHOICE>
+	<CHOICE ID="2">Troublesome or irritable</CHOICE>
+	<CHOICE ID="3">To praise, revere.</CHOICE>
+	<CHOICE ID="4">Harsh, unfeeling.</CHOICE>
+	<HINT>Jubilant means extremely joyful.</HINT>
+	<IMG>JJ-1,OOUW-1,BMP-1,LL-1,AH-1,TT-1</IMG>
+	<POS>0,25,35,45,55,65,75</POS>
+	<SOUND>jubilant.mp3</SOUND>
+	<AUDSENT>jubilantsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>	
+<ITEM ID="70">
+	<SENTENCE>The recession tolled the death knell for many companies, leaving millions jobless.</SENTENCE>
+	<WORD>Knell</WORD>
+	<CHOICE ID="1">The solemn sound of a bell, often indicating a death.</CHOICE>
+	<CHOICE ID="2">To give up, renounce.</CHOICE>
+	<CHOICE ID="3">To steal money by falsifying records.</CHOICE>
+	<CHOICE ID="4">Honesty, frankness.</CHOICE>
+	<HINT>Knell means the solemn sound of a bell, often indicating a death.</HINT>
+	<IMG>LL-1,EE-1,LL-1</IMG>
+	<POS>0,45,55,75</POS>
+	<SOUND>knell.mp3</SOUND>
+	<AUDSENT>knellsentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>	
+<ITEM ID="71">
+	<SENTENCE>The lithe movement of the snake in the emerald green paddy field was a lovely site to see.</SENTENCE>
+	<WORD>Lithe</WORD>
+	<CHOICE ID="1">Graceful, supple.</CHOICE>
+	<CHOICE ID="2">Astounded.</CHOICE>
+	<CHOICE ID="3">Sensitivity to another’s feelings.</CHOICE>
+	<CHOICE ID="4">To voice disapproval.</CHOICE>
+	<HINT>Lithe means graceful.</HINT>
+	<IMG>LL-1,AH-1,EH-1,TH-1</IMG>
+	<POS>0,25,40,50,75</POS>
+	<SOUND>lithe.mp3</SOUND>
+	<AUDSENT>lithesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+
+<ITEM ID="72">
+	<SENTENCE>Father told us a lurid and melodramatic story of a person trapped in a mine.</SENTENCE>
+	<WORD>Lurid</WORD>
+	<CHOICE ID="1">Ghastly, sensational.</CHOICE>
+	<CHOICE ID="2">Wild, savage.</CHOICE>
+	<CHOICE ID="3">Hatred, hostility.</CHOICE>
+	<CHOICE ID="4">Cautious.</CHOICE>
+	<HINT>Lurid means something ghastly.</HINT>
+	<IMG></IMG>
+	<SOUND>lurid.mp3</SOUND>
+	<AUDSENT>luridsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+										
+		<ITEM ID="73">
+	<SENTENCE>Some politicians are true mavericks and risk takers and don't let their party interfere in their moves.</SENTENCE>
+	<WORD>Maverick</WORD>
+	<CHOICE ID="1">An independent, nonconformist person.</CHOICE>
+	<CHOICE ID="2">To make up, invent.</CHOICE>
+	<CHOICE ID="3">Learned.</CHOICE>
+	<CHOICE ID="4">Secret.</CHOICE>
+	<HINT>Maverick means an independent or nonconformist person.</HINT>
+	<IMG>BMP-1,EH-1,FV-1,AH-1,RR-1,EH-1</IMG>
+	<POS>0,25,35,45,55,65,75</POS>
+	<SOUND>maverick.mp3</SOUND>
+	<AUDSENT>mavericksentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+
+<ITEM ID="74">
+	<SENTENCE>The one maxim to be acted upon is that of loving kindness: do unto others what you would they should do unto you.</SENTENCE>
+	<WORD>Maxim</WORD>
+	<CHOICE ID="1">A common saying expressing a principle of conduct.</CHOICE>
+	<CHOICE ID="2">To praise, revere.</CHOICE>
+	<CHOICE ID="3">To make up, invent.</CHOICE>
+	<CHOICE ID="4">Make somebody do something by force or threat.</CHOICE>
+	<HINT>Maxim means a common saying expressing a principle of conduct.</HINT>
+	<IMG></IMG>
+	<SOUND>maxim.mp3</SOUND>
+	<AUDSENT>maximsentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+<ITEM ID="75">
+	<SENTENCE>Whatever  your profession, ensure you are meticulous in your work, or you may end up having to redo it.</SENTENCE>
+	<WORD>Meticulous</WORD>
+	<CHOICE ID="1">Extremely careful with details.</CHOICE>
+	<CHOICE ID="2">Learned.</CHOICE>
+	<CHOICE ID="3">Wild, savage.</CHOICE>
+	<CHOICE ID="4">Logically consistent, intelligible.</CHOICE>
+	<HINT>Meticulous means extremely careful with details.</HINT>
+	<IMG></IMG>
+	<SOUND>meticulous.mp3</SOUND>
+	<AUDSENT>meticuloussentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+
+<ITEM ID="76">
+	<SENTENCE>Though stories in fables weave themselves around fantasy, they have a modicum of truth in them.</SENTENCE>
+	<WORD>Modicum</WORD>
+	<CHOICE ID="1">A small amount of something.</CHOICE>
+	<CHOICE ID="2">Hatred, hostility.</CHOICE>
+	<CHOICE ID="3">Astounded.</CHOICE>
+	<CHOICE ID="4">Self-Satisfied ignorance of danger.</CHOICE>
+	<HINT>Modicum means a small amount of something.</HINT>
+	<IMG></IMG>
+	<SOUND>modicum.mp3</SOUND>
+	<AUDSENT>modicumsentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+<ITEM ID="77">
+	<SENTENCE>Be cheerful in your disposition and don’t be morose or irritable whatever your state of mind.</SENTENCE>
+	<WORD>Morose</WORD>
+	<CHOICE ID="1">Gloomy or sullen.</CHOICE>
+	<CHOICE ID="2">Sensitivity to another’s feelings as if they were one’s own.</CHOICE>
+	<CHOICE ID="3">To give up, renounce.</CHOICE>
+	<CHOICE ID="4">A person entrusted with secrets.</CHOICE>
+	<HINT>Morose means gloomy.</HINT>
+	<IMG>BMP-1,OH-1,RR-1,OH-1,SS-1</IMG>
+	<POS>0,25,40,50,60,75</POS>
+	<SOUND>morose.mp3</SOUND>
+	<AUDSENT>morosesentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+<ITEM ID="78">
+	<SENTENCE>Proper parental guidance  can help solve the myriad of problems teenagers face.</SENTENCE>
+	<WORD>Myriad</WORD>
+	<CHOICE ID="1">Consisting of a very great number.</CHOICE>
+	<CHOICE ID="2">To steal money by falsifying records.</CHOICE>
+	<CHOICE ID="3">Troublesome or irritable.</CHOICE>
+	<CHOICE ID="4">To plot, scheme.</CHOICE>
+	<HINT>Myriad means consisting of a very great number.</HINT>
+	<IMG></IMG>
+	<SOUND>myriad.mp3</SOUND>
+	<AUDSENT>myriadsentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+<ITEM ID="79">
+	<SENTENCE>The recession was the nadir for the economic growth of many countries.</SENTENCE>
+	<WORD>Nadir</WORD>
+	<CHOICE ID="1">The lowest point of something.</CHOICE>
+	<CHOICE ID="2">Expressive, articulate.</CHOICE>
+	<CHOICE ID="3">Increasing, building upon itself.</CHOICE>
+	<CHOICE ID="4">Overindulgence in food or drink.</CHOICE>
+	<HINT>Nadir means the lowest point of something.</HINT>
+	<IMG></IMG>
+	<SOUND>nadir.mp3</SOUND>
+	<AUDSENT>nadirsentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+
+
+<ITEM ID="80">
+	<SENTENCE>The doctor charges only nominal fees and as a result he has many patients.</SENTENCE>
+	<WORD>Nominal</WORD>
+	<CHOICE ID="1">Trifling, insignificant.</CHOICE>
+	<CHOICE ID="2">Overjoyed, thrilled.</CHOICE>
+	<CHOICE ID="3">To lower the quality or esteem of something.</CHOICE>
+	<CHOICE ID="4">Clear, direct.</CHOICE>
+	<HINT>Nominal means something insignificant.</HINT>
+	<IMG></IMG>
+	<SOUND>nominal.mp3</SOUND>
+	<AUDSENT>nominalsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>	
+
+
+<ITEM ID="81">
+	<SENTENCE>Being new to the job, he was a novice and needed training and guidance.</SENTENCE>
+	<WORD>Novice</WORD>
+	<CHOICE ID="1">A beginner, someone without experience.</CHOICE>
+	<CHOICE ID="2">Showing care in doing one’s work.</CHOICE>
+	<CHOICE ID="3">To criticise openly.</CHOICE>
+	<CHOICE ID="4">Uncalled for, unwarranted.</CHOICE>
+	<HINT>Novice means a beginner.</HINT>
+	<IMG></IMG>
+	<SOUND>novice.mp3</SOUND>
+	<AUDSENT>novicesentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+	</ITEM>
+	<ITEM ID="82">
+	<SENTENCE>There are nuances of facial expressions, where even a slightly raised eyebrow speaks volumes.</SENTENCE>
+	<WORD>Nuance</WORD>
+	<CHOICE ID="1">A slight variation in meaning, tone.</CHOICE>
+	<CHOICE ID="2">One who has total power and rules brutally.</CHOICE>
+	<CHOICE ID="3">Showing respect for another’s authority.</CHOICE>
+	<CHOICE ID="4">Disdainfully proud.</CHOICE>
+	<HINT>Nuance means a slight variation in meaning.</HINT>
+	<IMG></IMG>
+	<SOUND>nuance.mp3</SOUND>
+	<AUDSENT>nuancesentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+
+<ITEM ID="83">
+	<SENTENCE>The optimist sees the rose and not its thorns: the pessimist stares at the thorns, oblivious to the rose.</SENTENCE>
+	<WORD>Oblivious</WORD>
+	<CHOICE ID="1">Lacking consciousness or awareness of something.</CHOICE>
+	<CHOICE ID="2">To laugh at mockingly, scorn.</CHOICE>
+	<CHOICE ID="3">Quiet, reserved.</CHOICE>
+	<CHOICE ID="4">Pretending to believe what one does not.</CHOICE>
+	<HINT>Oblivious means lacking awareness of something.</HINT>
+	<IMG>OH-1,BMP-1,LL-1,EE-1,FV-1,AH-1,SS-1</IMG>
+	<POS>0,25,35,45,55,65,75,85</POS>
+	<SOUND>oblivious.mp3</SOUND><AUDSENT>oblivioussentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="84">
+	<SENTENCE>Trying to curry favour with the boss, the new employee was being obviously obsequious.</SENTENCE>
+	<WORD>Obsequious</WORD>
+	<CHOICE ID="1">Excessively compliant or submissive.</CHOICE>
+	<CHOICE ID="2">Quiet, reserved.</CHOICE>
+	<CHOICE ID="3">To laugh at mockingly, scorn.</CHOICE>
+	<CHOICE ID="4">Exemplary, flawless.</CHOICE>
+	<HINT>Obsequious means excessively submissive.</HINT>
+	<IMG></IMG>
+	<SOUND>obsequious.mp3</SOUND><AUDSENT>obsequioussentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+	
+	
+<ITEM ID="85">
+	<SENTENCE>The real motive behind wars is to meet mans selfish ends.  Only the naive or wilfully obtuse believe otherwise.</SENTENCE>
+	<WORD>Obtuse</WORD>
+	<CHOICE ID="1">Lacking quickness of sensibility or intellect.</CHOICE>
+	<CHOICE ID="2">Showing respect for another’s authority.</CHOICE>
+	<CHOICE ID="3">One who has total power and rules brutally.</CHOICE>
+	<CHOICE ID="4">Rude, insolent.</CHOICE>
+	<HINT>Obtuse means lacking quickness of sensibility.</HINT>
+	<IMG></IMG>
+	<SOUND>obtuse.mp3</SOUND><AUDSENT>obtusesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+<ITEM ID="86">
+	<SENTENCE>Change is an easy panacea. It takes character to stay in one place and be happy there.</SENTENCE>
+	<WORD>Panacea</WORD>
+	<CHOICE ID="1">A remedy for all ills or difficulties.</CHOICE>
+	<CHOICE ID="2">To criticise openly.</CHOICE>
+	<CHOICE ID="3">Showing care in doing one’s work.</CHOICE>
+	<CHOICE ID="4">Incapable of being appeased or mitigated.</CHOICE>
+	<IMG>BMP-1,AA-1,LL-1,AH-1,SS-1,EH-1</IMG>
+	<POS>0,25,35,45,50,65,75</POS>
+	<HINT>Panacea means a remedy for all ills.</HINT>
+	<IMG></IMG>
+	<SOUND>panacea.mp3</SOUND><AUDSENT>panaceasentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+
+
+<ITEM ID="87">
+	<SENTENCE>Mimicry artists can parody almost anything.</SENTENCE>
+	<WORD>Parody</WORD>
+	<CHOICE ID="1">A satirical imitation.</CHOICE>
+	<CHOICE ID="2">To lower the quality or esteem of something.</CHOICE>
+	<CHOICE ID="3">Overjoyed, thrilled.</CHOICE>
+	<CHOICE ID="4">Casually rude, insolent.</CHOICE>
+	<HINT>Parody means a satirical imitation.</HINT>
+	<IMG></IMG>
+	<SOUND>parody.mp3</SOUND><AUDSENT>parodysentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+<ITEM ID="88">
+	<SENTENCE>Some people have a penchant for speaking foreign languages.</SENTENCE>
+	<WORD>Penchant</WORD>
+	<CHOICE ID="1">A tendency, preference.</CHOICE>
+	<CHOICE ID="2">Increasing, building upon itself.</CHOICE>
+	<CHOICE ID="3">Expressive, articulate.</CHOICE>
+	<CHOICE ID="4">Secretive, sly.</CHOICE>
+	<HINT>Penchant means a tendency.</HINT>
+	<IMG></IMG>
+	<SOUND>penchant.mp3</SOUND><AUDSENT>penchantsentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+<ITEM ID="89">
+	<SENTENCE>The agent at the travel desk took his travel documents for perusal.</SENTENCE>
+	<WORD>Perusal</WORD>
+	<CHOICE ID="1">A careful examination, review.</CHOICE>
+	<CHOICE ID="2">To plot, scheme.</CHOICE>
+	<CHOICE ID="3">Harsh, unfeeling.</CHOICE>
+	<CHOICE ID="4">To praise, revere.</CHOICE>
+	<HINT>Perusal means a careful examination.</HINT>
+	<IMG></IMG>
+	<SOUND>perusal.mp3</SOUND><AUDSENT>perusalsentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+
+
+<ITEM ID="90">
+	<SENTENCE>Globalisation has provided a plethora of opportunities to employees in MNC's for business travels abroad.</SENTENCE>
+	<WORD>Plethora</WORD>
+	<CHOICE ID="1">An abundance, excess.</CHOICE>
+	<CHOICE ID="2">A person entrusted with secrets.</CHOICE>
+	<CHOICE ID="3">Honesty, frankness.</CHOICE>
+	<CHOICE ID="4">To steal money by falsifying records.</CHOICE>
+	<HINT>Plethora means an abundance.</HINT>
+	<IMG></IMG>
+	<SOUND>plethora.mp3</SOUND><AUDSENT>plethorasentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+
+<ITEM ID="91">
+	<SENTENCE>Children have a predilection for chocolate!
+</SENTENCE>
+	<WORD>Predilection</WORD>
+	<CHOICE ID="1">A preference or inclination for something.</CHOICE>
+	<CHOICE ID="2">Self-Satisfied ignorance of danger.</CHOICE>
+	<CHOICE ID="3">To voice disapproval.</CHOICE>
+	<CHOICE ID="4">Sensitivity to another’s feelings as if they were one’s own.</CHOICE>
+	<HINT>Predilection means a inclination for something.</HINT>
+	<IMG></IMG>
+	<SOUND>predilection.mp3</SOUND><AUDSENT>predilectionsentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+
+<ITEM ID="92">
+	<SENTENCE>The quaint appearance of the house gave a feeling of looking at a building from the medieval Victorian era.
+</SENTENCE>
+	<WORD>Quaint</WORD>
+	<CHOICE ID="1">Charmingly old-fashioned.</CHOICE>
+	<CHOICE ID="2">Logically consistent, intelligible.</CHOICE>
+	<CHOICE ID="3">Cautious.</CHOICE>
+	<CHOICE ID="4">Hatred, hostility.</CHOICE>
+	<HINT>Quaint means charmingly old-fashioned.</HINT>
+	<IMG></IMG>
+	<SOUND>quaint.mp3</SOUND><AUDSENT>quaintsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+
+<ITEM ID="93">
+	<SENTENCE>Do not be rash and think before you speak.  
+</SENTENCE>
+	<WORD>Rash</WORD>
+	<CHOICE ID="1">Hasty, incautious.</CHOICE>
+	<CHOICE ID="2">Make somebody do something by force or threat.</CHOICE>
+	<CHOICE ID="3">Secret.</CHOICE>
+	<CHOICE ID="4">Learned.</CHOICE>
+	<HINT>Rash means hasty, incautious.</HINT>
+	<IMG></IMG>
+	<SOUND>rash.mp3</SOUND><AUDSENT>rashsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+	
+<ITEM ID="94">
+	<SENTENCE>The building and its premises have been completely refurbished to depict the company's corporate style.
+</SENTENCE>
+	<WORD>Refurbish</WORD>
+	<CHOICE ID="1">To restore, clean up.</CHOICE>
+	<CHOICE ID="2">Secret.</CHOICE>
+	<CHOICE ID="3">Make somebody do something by force or threat.</CHOICE>
+	<CHOICE ID="4">To make up, invent.</CHOICE>
+	<HINT>Refurbish means to restore.</HINT>
+	<IMG></IMG>
+	<SOUND>refurbish.mp3</SOUND><AUDSENT>refurbishsentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+
+<ITEM ID="95">
+	<SENTENCE>Being against the proposed scheme, he repudiated it when he had to voice his vote.
+</SENTENCE>
+	<WORD>Repudiate</WORD>
+	<CHOICE ID="1">To reject, refuse to accept.</CHOICE>
+	<CHOICE ID="2">Cautious.</CHOICE>
+	<CHOICE ID="3">Logically consistent, intelligible.</CHOICE>
+	<CHOICE ID="4">Wild, savage.</CHOICE>
+	<HINT>Repudiate means to reject.</HINT>
+	<IMG></IMG>
+	<SOUND>repudiate.mp3</SOUND><AUDSENT>repudiatesentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+
+<ITEM ID="96">
+	<SENTENCE>Speculations ran rife that the minister had shady dealings with armed gangs.
+</SENTENCE>
+	<WORD>Rife</WORD>
+	<CHOICE ID="1">Abundant.</CHOICE>
+	<CHOICE ID="2">To voice disapproval.</CHOICE>
+	<CHOICE ID="3">Self-Satisfied ignorance of danger.</CHOICE>
+	<CHOICE ID="4">Astounded.</CHOICE>
+	<HINT>Rife means abundant.</HINT>
+	<IMG></IMG>
+	<SOUND>rife.mp3</SOUND><AUDSENT>rifesentence.mp3</AUDSENT>
+	<TYPE>adverb</TYPE>
+</ITEM>
+
+
+
+
+<ITEM ID="97">
+	<SENTENCE>Winning the lottery was a fortunate stroke of serendipity for Aneesh and totally changed his life.
+</SENTENCE>
+	<WORD>Serendipity</WORD>
+	<CHOICE ID="1">Luck, finding good things without looking for them.</CHOICE>
+	<CHOICE ID="2">Harsh, unfeeling.</CHOICE>
+	<CHOICE ID="3">To plot, scheme.</CHOICE>
+	<CHOICE ID="4">Troublesome or irritable.</CHOICE>
+	<HINT>Serendipity means luck, finding good things without looking for them.</HINT>
+	<IMG></IMG>
+	<SOUND>serendipity.mp3</SOUND><AUDSENT>serendipitysentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+
+<ITEM ID="98">
+	<SENTENCE>The lawyer was not provoked by the accusation hurled at him, but was staid in his response.
+</SENTENCE>
+	<WORD>Staid</WORD>
+	<CHOICE ID="1">Sedate, self-restrained.</CHOICE>
+	<CHOICE ID="2">To urge, coax.</CHOICE>
+	<CHOICE ID="3">Something that differs from the norm.</CHOICE>
+	<CHOICE ID="4">Increasing, building upon itself.</CHOICE>
+	<HINT>Staid means self-restrained.</HINT>
+	<IMG></IMG>
+	<SOUND>staid.mp3</SOUND><AUDSENT>staidsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+	
+<ITEM ID="99">
+	<SENTENCE>John had to remove the superfluous items in his luggage to avoid overweight charges.
+</SENTENCE>
+	<WORD>Superfluous</WORD>
+	<CHOICE ID="1">Exceeding what is necessary.</CHOICE>
+	<CHOICE ID="2">Short, abrupt.</CHOICE>
+	<CHOICE ID="3">To hate, detest.</CHOICE>
+	<CHOICE ID="4">To lower the quality or esteem of something.</CHOICE>
+	<HINT>Superfluous means exceeding what is necessary.</HINT>
+	<IMG></IMG>
+	<SOUND>superfluous.mp3</SOUND><AUDSENT>superfluoussentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+ 											
+
+<ITEM ID="100">
+	<SENTENCE>To get into the good books of his boss, the sycophant utilised any opportunity that came his way to flatter him.</SENTENCE>
+	<WORD>Sycophant</WORD>
+	<CHOICE ID="1">One who flatters for self-gain.</CHOICE>
+	<CHOICE ID="2">Excessively bold, brash and obvious.</CHOICE>
+	<CHOICE ID="3">To agree without protesting.</CHOICE>
+	<CHOICE ID="4">To criticise openly.</CHOICE>
+	<HINT>Sycophant means one who flatters for self-gain.</HINT>
+	<IMG>SS-1,EE-1,OH-1,FV-1,AH-1,LL-1</IMG>
+	<POS>0,25,40,55,65,75,85</POS>
+	<SOUND>sycophant.mp3</SOUND><AUDSENT>sycophantsentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+
+
+	
+	<ITEM ID="101">
+	<SENTENCE>The normally calm and taciturn child was babbling with excitement after seeing the circus.</SENTENCE>
+	<WORD>Taciturn</WORD>
+	<CHOICE ID="1">Not inclined to talk.</CHOICE>
+	<CHOICE ID="2">Excessive greed.</CHOICE>
+	<CHOICE ID="3">Eagerness, speed.</CHOICE>
+	<CHOICE ID="4">Showing respect for another’s authority.</CHOICE>
+	<HINT>Taciturn means not inclined to talk.</HINT>
+	<IMG></IMG>
+	<SOUND>taciturn.mp3</SOUND>
+	<AUDSENT>taciturnsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+
+<ITEM ID="102">
+	<SENTENCE>Vineeta  took umbrage  to her friend's critical comments on her new haircut.
+</SENTENCE>
+	<WORD>Umbrage</WORD>
+	<CHOICE ID="1">Resentment, offence.</CHOICE>
+	<CHOICE ID="2">To calm, satisfy.</CHOICE>
+	<CHOICE ID="3">To calm, satisfy.</CHOICE>
+	<CHOICE ID="4">To laugh at mockingly, scorn.</CHOICE>
+	<HINT>Umbrage means resentment.</HINT>
+	<IMG></IMG>
+	<SOUND>umbrage.mp3</SOUND><AUDSENT>umbragesentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>
+
+<ITEM ID="103">
+	<SENTENCE>Dr Abdul Kalam is a venerable statesman.
+</SENTENCE>
+	<WORD>Venerable</WORD>
+	<CHOICE ID="1">Deserving of respect because of age or achievement.</CHOICE>
+	<CHOICE ID="2">Friendly.</CHOICE>
+	<CHOICE ID="3">Obscure, known only by a few.</CHOICE>
+	<CHOICE ID="4">One who has total power and rules brutally.</CHOICE>
+	<HINT>Venerable means deserving of respect because of achievement.</HINT>
+	<IMG>FV-1,EH-1,LL-1,RR-1,BMP-1,LL-1</IMG>
+	<POS>0,25,40,55,65,75,85</POS>
+	<SOUND>venerable.mp3</SOUND><AUDSENT>venerablesentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+
+<ITEM ID="104">
+	<SENTENCE>Anand was vexed by the gossip his friends indulged in.
+</SENTENCE>
+	<WORD>Vex</WORD>
+	<CHOICE ID="1">To confuse or annoy.</CHOICE>
+	<CHOICE ID="2">Eagerness, speed.</CHOICE>
+	<CHOICE ID="3">Excessive greed.</CHOICE>
+	<CHOICE ID="4">Showing care in doing one’s work.</CHOICE>
+	<HINT>Vex means to annoy.</HINT>
+	<IMG></IMG>
+	<SOUND>vex.mp3</SOUND><AUDSENT>vexsentence.mp3</AUDSENT>
+	<TYPE>verb</TYPE>
+</ITEM>
+
+<ITEM ID="105">
+	<SENTENCE>Politicians are often very vociferous when they get the microphone.
+</SENTENCE>
+	<WORD>Vociferous</WORD>
+	<CHOICE ID="1">Loud, boisterous.</CHOICE>
+	<CHOICE ID="2">To agree without protesting.</CHOICE>
+	<CHOICE ID="3">Excessively bold, brash and obvious.</CHOICE>
+	<CHOICE ID="4">Overjoyed, thrilled.</CHOICE>
+	<HINT>Vociferous means boisterous.</HINT>
+	<IMG>FV-1,EH-1,SS-1,FV-1,RR-1,SS-1</IMG>
+	<POS>0,25,40,55,65,75,85</POS>
+	<SOUND>vociferous.mp3</SOUND><AUDSENT>vociferoussentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>
+	
+<ITEM ID="106">
+	<SENTENCE>A person with a wanton behaviour is looked down upon.  One should be disciplined in life.
+</SENTENCE>
+	<WORD>Wanton</WORD>
+	<CHOICE ID="1">Undisciplined, lewd.</CHOICE>
+	<CHOICE ID="2">To hate, detest.</CHOICE>
+	<CHOICE ID="3">Short, abrupt.</CHOICE>
+	<CHOICE ID="4">Expressive, articulate.</CHOICE>
+	<HINT>Wanton means undisciplined.</HINT>
+	<IMG></IMG>
+	<SOUND>wanton.mp3</SOUND><AUDSENT>wantonsentence.mp3</AUDSENT>
+	<TYPE>adjective</TYPE>
+</ITEM>	
+
+<ITEM ID="107">
+	<SENTENCE>Having obtained the post of the CEO in the company, he has reached the zenith of his career.
+</SENTENCE>
+	<WORD>Zenith</WORD>
+	<CHOICE ID="1">The highest point, culminating point.</CHOICE>
+	<CHOICE ID="2">Something that differs from the norm.</CHOICE>
+	<CHOICE ID="3">To urge, coax.</CHOICE>
+	<CHOICE ID="4">To agree without protesting.</CHOICE>
+	<HINT>Zenith means the highest point.</HINT>
+	<IMG>CDG-1,LL-1,EE-1,TH-1</IMG>
+	<POS>0,25,40,55,65</POS>
+	<SOUND>zenith.mp3</SOUND><AUDSENT>zenithsentence.mp3</AUDSENT>
+	<TYPE>noun</TYPE>
+</ITEM>	
+</DATA>
+
+					
+									
+	 
+											
+				
+
+	
+	
+	
+ 					
+							
+	 						
