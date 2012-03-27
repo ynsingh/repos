@@ -1,0 +1,19 @@
+<plugin name='fckeditor' version='0.9.5' grailsVersion='1.0 &gt; *'>
+  <author>Stefano Gualdi</author>
+  <authorEmail>stefano.gualdi@gmail.com</authorEmail>
+  <title>Grails plugin for using FCKeditor rich editing features in a Grails application</title>
+  <description>Grails plugin for using FCKeditor rich editing features in a Grails application</description>
+  <documentation>http://grails.org/plugin/fckeditor</documentation>
+  <resources>
+    <resource>FckeditorUrlMappings</resource>
+    <resource>org.gualdi.grails.plugins.fckeditor.FckeditorController</resource>
+    <resource>org.gualdi.grails.plugins.fckeditor.FckeditorService</resource>
+    <resource>org.gualdi.grails.plugins.fckeditor.FckeditorTagLib</resource>
+  </resources>
+  <dependencies>
+    <resolvers>
+      <resolver type='grailsPlugins' name='grailsPlugins' />
+    </resolvers>
+  </dependencies>
+  <behavior />
+</plugin>

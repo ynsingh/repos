@@ -1,0 +1,179 @@
+/* CSS Styles for FIB module. Correct and Wrong responses*/
+.fibch
+{
+  width-minimum:5px;
+  border-style:none;
+  border-bottom: 1px solid black;
+  font-style:italic;
+  font-size:15px;
+  text-align:center;
+  color:blue;
+}
+
+.fibchWrong
+{
+  border-style:none;
+  border-bottom: 1px solid black;
+  font-weight:900;
+  font-size:15px;
+  text-align:center;
+  color:#FF0000;
+}
+
+.fibchCorrect
+{
+  border-style:none;
+  border-bottom: 1px solid black;
+  font-weight:900;
+  font-size:15px;
+  text-align:center;
+  color:#19A347;
+}
+
+.fibText{
+    font-family: Verdana,Geneva,sans-serif;
+    font-size: 12px;
+    line-height:200%;
+    float:left;
+    text-align: left;
+}
+
+/* CSS Styles for Pop-over divs*/
+.popOver
+{
+  position: absolute;
+  /*top:25%;*/
+  left:20%;
+  width:62%;
+  text-align: center;
+  display: none;
+  z-index:2;
+}
+
+.qnBorder{
+    border-style:outset;
+    border-width:5px;
+    color:#ffffff;
+    background-color:#ffffff;
+}
+/* TRANSPRENT Black background for the Pop Over Div - Div that spans the whole screen */ 
+#backgroundPopup{  
+  display:none;  
+  position:fixed;  
+  height:100%;  
+  width:100%;  
+  top:0;  
+  left:0;  
+  background:#000000;  
+  border:1px solid #cecece;  
+  z-index:1;  
+}
+
+/* CSS for Section Instructions for FIB and MF Questions*/
+.secInsDisp{
+  width: 100%;
+  font-weight: bold;
+  padding-top:2px;
+}
+.qnType{ 
+  width: 100%; 
+  height: 30px;
+  border: 1px solid #4297d7; 
+  background: #2191c0 url(../images/ui-bg_gloss-wave_75_2191c0_500x100.png) 50% 50% repeat-x; 
+  color: #eaf5f7; 
+  font-weight: bold;
+  padding-top:5px;
+  }
+  
+  .secIns{ 
+  width: 630px; 
+  height: auto;
+  border: 1px solid #4297d7; 
+  background: #2191c0 url(../images/ui-bg_gloss-wave_75_2191c0_500x100.png) 50% 50% repeat-x; 
+  }
+
+/* Css for Tabs */
+ #tab-ul li{
+  /*  height: 6em;
+    width: 8.44em;*/
+ }
+ 
+#myBox
+{
+/* padding: 0% 20%;*/
+ display:inline;
+}
+
+.tabText{
+  font-weight:600;
+  font-size:11px;
+  /*text-align:center;*/
+  color:black;
+ display:inline;
+}
+
+.dataPosition{
+	position:relative;
+	left:1%;
+}
+
+/*CSS for DND Modules*/
+.dndWrong
+{
+  font-weight:900;
+  font-size:15px;
+  color:#FF0000;
+}
+.dndCorrect
+{
+  font-weight:900;
+  font-size:15px;
+  color:#19A347;
+}
+
+.dndText{
+    font-family: Verdana,Geneva,sans-serif;
+    font-size: 12px;
+}
+
+/* CSS Styling for Play Audio */
+#playButton{
+	cursor:pointer;
+}
+
+/*CSS Styling for AUDIO ROLE PLAY*/
+.arpContent{
+	padding-left:15%;
+}
+
+/* CSS Styling for the Drag and Drop Textual Questions */
+.dndTOptions{
+	/*display:inline;*/
+	/*float:left;*/
+	font-size: 15px;
+	color: #4297D7;
+}
+
+.divClass{
+	position:relative;
+	width:630px;
+}
+
+.dndch
+{
+  width-minimum:5px;
+  border-style:none;
+  border-bottom: 1px solid black;
+  font-style:italic;
+  font-size:15px;
+  text-align:center;
+  color:blue;
+}
+
+.dndText{
+    font-family: Verdana,Geneva,sans-serif;
+    font-size: 12px;
+    line-height:200%;
+    float:left;
+    text-align: left;
+}

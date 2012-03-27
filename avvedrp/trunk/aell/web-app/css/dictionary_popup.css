@@ -1,0 +1,53 @@
+
+.popup_msg {
+	position:absolute;
+	z-index:10;  
+	 width:172px;
+  height:xpx;
+  text-align:justify;
+  color:#000;
+  font: 11px Georgia, "Times New Roman", Times, serif, Arial, Helvetica, sans-serif;
+   background-color:#FFC;
+    border: 1px solid #000 ;
+ display:none;
+ -moz-border-radius: 7px;
+ border-radius: 9px;
+padding-bottom:6px;
+padding-right:6px;
+padding-left:6px;
+}
+
+
+/* THE TRIANGLE
+------------------------------------------------------------------------------------------------------------------------------- */
+
+.popup_msg:before {
+	content:"";
+	display:block; /* reduce the damage in FF3.0 */
+	position:absolute;
+	bottom:-25px; /* value = - border-top-width - border-bottom-width */
+	left:17px; /* controls horizontal position */
+	width:0;
+	height:0;
+	border:12px solid transparent;
+	border-top-color:#000;
+}
+
+/* creates the smaller  triangle */
+.popup_msg:after {
+	content:"";
+	display:block; /* reduce the damage in FF3.0 */
+	position:absolute;
+	bottom:-24px; /* value = - border-top-width - border-bottom-width */
+	left:17px; /* value = (:before left) + (:before border-left) - (:after border-left) */
+	width:0;
+	height:0;
+	border:12px solid transparent;
+	border-top-color:#FFC;
+}
+/*css for the close button*/
+.close_img{
+padding-top:5px   ;
+}
+
+

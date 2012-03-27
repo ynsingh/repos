@@ -1,0 +1,26 @@
+
+#notice {
+
+	position:absolute;
+
+	/*background-image:url('../images/message.png');*/
+	background : #000  url(../images/skin/check1.jpg)left  no-repeat ;
+	/*background: #000 url(../images/skin/information.png) 8px 50% no-repeat;
+/* background: url(../images/skin/database_add.png) center left no-repeat;*/
+	width:350px;
+     
+	height:20px;
+
+	text-align:center;
+
+	padding-left:10px 0 0 0;
+
+	font-size:15px;
+	font-weight: bold; 
+
+	color:#FFF;
+	
+	
+    
+
+}

@@ -1,0 +1,76 @@
+.admintabs{
+float:center;
+	width:90%;
+	padding-left:10px;
+	font-size:93%;
+	letter-spacing:.8px;
+	line-height:normal;
+	border-bottom:1px solid #666;
+	margin-bottom:1em; /*margin between menu and rest of page*/
+	overflow:hidden;
+	margin-left:25px;
+}
+
+.admintabs ul{
+	margin:0;
+	padding:10px 10px 0 0px;
+	list-style:none;
+}
+
+.admintabs li{
+  display:inline;
+	margin:0;
+	padding:0;
+}
+
+.admintabs a{
+float:left;
+background:url("../images/left_admin.png") no-repeat left top;
+margin:0;
+padding:0 0 0 6px;
+text-decoration:none;
+}
+
+.admintabs a span{
+float:left;
+display:block;
+background:url("../images/right_admin.png") no-repeat right top;
+padding:6px 15px 4px 6px;
+margin-right:2px;
+color:#FFF;
+}
+
+/* Commented Backslash Hack hides rule from IE5-Mac \*/
+.admintabs a span {float:none;}
+/* End IE5-Mac hack */
+
+.admintabs a:hover {
+	background-position:0% -42px;
+	}
+
+.admintabs a:hover span {
+	background-position:100% -42px;
+	}
+.admintabs li.current a{
+	background-position:0% -42px; /*Shift background image up to start of 2nd tab image*/
+}
+
+.admintabs li.current a span{
+	background-position:100% -42px; /*Shift background image up to start of 2nd tab image*/
+}
+.admintabs span.unPublished {
+	color : black;
+	font-weight: bold;
+}
+.tabcontainer{
+	clear: left;
+	width:95%; /*width of 2nd level sub menus*/
+	height:1.5em; /*height of 2nd level sub menus. Set to largest's sub menu's height to avoid jittering.*/
+}
+
+.tabcontent{
+display:none;
+}
+/****************************************/
+
+

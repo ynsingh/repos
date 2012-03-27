@@ -1,0 +1,26 @@
+.QuestDrag{
+  	width: 20px;
+  	height: 20px;
+  	border: 2px solid #333;
+  	background: #666;
+ 	color: #fff;
+ 	text-align: center;
+}
+.answerDrop{
+  width: 20px;
+  height: 20px;
+  border: 2px solid #333;
+  text-align: center;
+  
+}
+
+.answerSlots div.hovered {
+  background: #aaa;
+}
+ 
+
+ 
+
+ 
+
+

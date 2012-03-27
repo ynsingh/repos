@@ -1,0 +1,29 @@
+#playButton a {
+	text-decoration: none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 17px;
+	font-weight: bold;
+	color: #FFF;
+}
+#playButton {
+	width:120px;
+	height:26px;
+	background-color:#09F;
+	text-align:center;
+	vertical-align:middle;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:17px;
+	font-weight:bold;
+	color:#FFF;
+	padding-top: 4px;
+	-moz-border-radius: 9px;
+	border-radius: 9px;
+	background-color:#39C;
+}
+#playButton a:hover {
+	text-decoration: none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 17px;
+	font-weight: bold;
+	color: #FFC;
+}
