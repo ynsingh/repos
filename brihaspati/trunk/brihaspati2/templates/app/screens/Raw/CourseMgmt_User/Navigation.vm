@@ -1,0 +1,130 @@
+#*
+*
+ * @(#) Navigation.vm
+ * Copyright(c) 2012 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="palseema30@gmail.com">ManoramaPal</a>
+ * @author <a href="kishore.shukla@gmail.com">Kishore Kumar Shukla</a>
+*#
+
+<html>
+$page.setTitle("User Home Page")
+$page.setBgColor("bgcolor")
+<head>
+<link rel="stylesheet" type="text/css" href="/brihaspati2/scrpts/Scormjs/common.css"/>
+</head>
+<body  align ="left" topmargin="0" leftmargin="0" bgcolor="#efe3b5" onload="parent.highlightFirstItem();">
+<form name="f" method="post">
+<table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+<tr align="left">
+<td width="40" align="left">
+<img src="/brihaspati2/images/book.gif">
+</td>
+<td>
+<script>
+var pagenum=0;
+var courseURL = window.parent.parent.courseURL;
+var courseid =window.parent.parent.courseid; 
+var API = window.parent.parent.API;
+var title = window.parent.parent.title;
+if (API.getScoItems(courseid)) {
+	var page = API.getInitPage();
+	if ( page != "" ) {
+		//alert("page===upper===="+page);
+	}
+} else {
+	document.write("ERROR : Can't find manifest file.");	
+}
+
+var title = window.parent.title;
+self.document.writeln('<font face="helvetica" color="balck" size="3"><strong>');
+self.document.writeln(title);
+self.document.writeln('</strong></font>');
+</script>
+</td>
+<!-- NAVIGATION BUTTON -->
+
+<table cellpadding="0" cellspacing="0" border="0" align="right">
+<tr align="right">
+<td><a class="topmenu" href="javascript:goPreviousSco()"><img src="/brihaspati2/images/nav/prev.gif" border="0"></a></td>
+<td><a class="topmenu"  href="javascript:goNextSco()"><img src="/brihaspati2/images/nav/next.gif" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td><a class="topmenu"  href="javascript:goExit()"><img src="/brihaspati2/images/nav/exit2.gif" border="0"></a></td>
+</tr>
+</table>
+</tr></table>
+</form>
+</body>
+<script>
+function getPageURL(p) {
+	var s;
+	if ( p == "blank" ) {
+			//alert("nav===="+s);
+		s ="/brihaspati2/ScormPlayer/show_title.html";
+	}
+	else {
+		if ( p.indexOf('http://') < 0 ) {
+			s = courseURL+"servlet/brihaspati/template/call,ViewFileContent.vm/topic/"+title+"/type/Scormpackage/filename/"+p;
+		} else {
+			s = p;
+			//alert("nav===="+s);
+		}
+	}	
+	return s;
+}
+
+function goNextSco() {
+	var API = window.parent.parent.API;
+	var page = API.goNextSco();
+	if ( page != "" ) {
+		if ( page == "blank" ) {
+			window.parent.frame_content.location.href = "/brihaspati2/ScormPlayer/show_title.html";
+		}
+		else window.parent.frame_content.location.href = getPageURL(page);
+		eval(parent.nextDocs())
+	} else {
+		alert("End of course.");
+	}	
+}
+function goPreviousSco() {
+	var API = window.parent.parent.API;
+	var page = API.goPreviousSco();
+	if ( page != "" ) {
+		var url = getPageURL(page);
+		if ( page == "blank" ) {
+			window.parent.frame_content.location.href = "/brihaspati2/ScormPlayer/show_title.html";
+		}
+		else window.parent.frame_content.location.href = url;
+		eval(parent.prevDocs())
+	} else {
+		alert("Beginning of course.");
+	}	
+	
+}
+function goToSco(i) {
+	var API = window.parent.parent.API;
+	var page = API.goToSco(i);
+	if ( page != "" ) {
+		window.parent.frame_content.location.href = "/brihaspati2/ScormPlayer/loading.html";
+		var url = getPageURL(page);
+		window.parent.frame_content.location.href = url;
+	} else {
+	}	
+}
+function goExit() {
+	if (!confirm('Do you want to exit?')) return;
+	document.f.target = "_top";
+        document.f.action = "$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm")";
+        document.f.submit();
+}
+function getAboutMe() {
+	var API = window.parent.parent.API;
+	alert(API.getAboutMe());
+}
+
+function openWindow(theURL,winName) {
+	var features = "width=600,height=420";
+  	window.open(theURL,winName,features);
+}
+</script>
+</html
