@@ -1,0 +1,73 @@
+<html>
+<body onload="displayComments()" bgcolor="#202275">
+<form name="f" method="post" leftmargin="0">
+<table border="0" align="center">
+	<tr>
+		<td>
+		<textarea name="notes" cols="65" rows="25" onchange="noteModified()"></textarea>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
+		<input type="button" style="color:#FFFFFF; background-color:#202275" value="Save Note" onclick="saveComments()">
+		<input type="button" style="color:#FFFFFF; background-color:#202275" value="Close Window" onclick="closeWindow()">
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+<script>
+
+var noteSaved = false;
+
+function noteModified() {
+	noteSaved = false;	
+}
+
+function closeWindow() {
+	if ( !noteSaved ) {
+		alert ('You have not saved your notes!');
+		if ( !window.confirm('Close note window?') ) return;
+	}
+	window.close();
+}
+
+function displayComments() {
+	var API = window.opener.getAPI();
+	var sco = API.getCurrentScoId();
+
+	noteSaved = true;	
+	var value = API.LMSGetValue("cmi.comments")
+	if ( value  != "" ) {
+			document.f.notes.value = value;
+	}
+	else 
+	{
+		//alert("Currently no user comments are available!");
+		document.f.notes.value = "";
+		}
+    
+}
+
+function getUserInput() {
+    var userInput= prompt("Please input your comments: ", "");
+    if (userInput != null){
+	    var temp= "" + userInput + "";
+		var API = window.opener.getAPI();
+		var value = API.LMSSetValue("cmi.comments", temp);    
+    }
+}
+
+function saveComments() {
+	if ( !window.confirm('Save comments?') ) return;
+    var userInput= document.f.notes.value;
+    if (userInput != null){
+	    var temp= "" + userInput + "";
+		var API = window.opener.getAPI();
+		var value = API.LMSSetValue("cmi.comments", temp);    
+		noteSaved = true;
+		//alert("Your notes was saved");
+   }
+}
+</script>
+</html>
