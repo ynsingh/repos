@@ -6,45 +6,51 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a> 
  * @author <a href="mailto:richa.tandon1@gmail.com ">Richa Tandon</a> 
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 20-10-2010, 22-11-2010, 23-12-2010, 11-01-2011
+ * @modified date: 20-10-2010, 22-11-2010, 23-12-2010, 11-01-2011, 27-03-2012
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
 $page.setTitle("Admin Home | User Management")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/InstUserMgmt_Admin.js")"></script>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table bgcolor="$ui.tableColor" width=100%>
-<tr bgcolor="$ui.menuColor"><td colspan=7>
-     	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | 
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_usr $brih_mgmt</a> | 
-	#if($mode=="")
-	$brih_a_usr
-	#elseif($mode=="sclist")
-		$brih_student $brih_course $brih_list 
-		<td align=right>
+<tr bgcolor="$ui.menuColor" align="right">
+	#if($mode=="sclist")
+		<td>
 		#if($mode1=="list")
 			#if( $total_size!=0 )
 				  #if( $endIndex < $total_size )
                                         #if( $endIndex <  $AdminConf )
                                                 ##[$k - $total_size] of $total_size
-                                                #if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of
- $total_size #end
+						[$k - $total_size ] $brih_in $brih_from1 <td width="10%" align="left"> $total_size </td>
                                         #else
                                                 ##[$k - $endIndex] of $total_size
-                                                 #if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $endIndex] #else [$k - $endIndex] $brih_of $total_size #end
+						[$k - $endIndex] $brih_in $brih_from1 <td width="10%" align="left"> $total_size </td>
                                         #end
                                #else
                                        ##[$k - $total_size] of $total_size
-                                        #if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+					[$k - $total_size ] $brih_in $brih_from1 <td width="10%" align="left"> $total_size</td>
                                #end
 			#end
 		#end
 		</td>		
+		<td colspan="6">
+	#else
+		<td colspan="7">
+	#end
+     	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_Of1 $brih_home</a> | 
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none> $brih_mgmt $brih_usr</a> | 
+	#if($mode=="")
+		$brih_add $brih_usr
+	#elseif($mode=="sclist")
+		$brih_student $brih_course $brih_list 
 	#elseif($mode=="AddMUser")
-	$brih_add $brih_multiple1 $brih_usr
+		$brih_add $brih_multiple1 $brih_usr
 	#elseif($mode=="UPhoto")
-	$brih_upload $brih_photo	 
+		$brih_upload $brih_photo	 
 	#else
 		#if($role=="instructor")
 			$brih_delete $brih_ins
@@ -53,118 +59,137 @@ $!data.getMessage()
 		#end
 	#end
 </td></tr>
-<tr bgcolor="$ui.tableColor">
-	#if($tdcolor != "1")
-        <td>
-        #elseif($tdcolor == "1")
-        <td bgcolor="#AFDCEC">
-        #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_a_usr</a></td>
-	#if($tdcolor != "2")
-        <td>
-        #elseif($tdcolor == "2")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student #if($lang == "hindi") $brih_Of #end $brih_course $brih_list</a></td>
-        #if($tdcolor != "3")
-        <td>
-        #elseif($tdcolor == "3")
-        <td bgcolor="#AFDCEC">
-        #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi") $brih_Instructor $brih_delete #else $brih_delete $brih_Instructor #end </a></td>
-        #if($tdcolor != "4")
-        <td>
-        #elseif($tdcolor == "4")
-        <td bgcolor="#AFDCEC">
-        #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none>  #if($lang == "hindi") $brih_student $brih_delete #else $brih_delete $brih_student #end </a></td>
-        #if($tdcolor != "5")
-        <td>
-        #elseif($tdcolor == "5")
-        <td bgcolor="#AFDCEC">
-        #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none>$brih_multi_usr</a></td>
-	#if($tdcolor != "6")
-        <td>
-        #elseif($tdcolor == "6")
-        <td bgcolor="#AFDCEC">
-        #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none> #if($lang == "hindi") $brih_photo $brih_upload #else $brih_upload $brih_photo #end </a></td>
+<tr bgcolor="$ui.tableColor" align="right">
 	#if($tdcolor != "7")
         <td>
         #elseif($tdcolor == "7")
         <td bgcolor="#AFDCEC">
         #end
 	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserAttendence_Sheet.vm").addPathInfo("count","7") style=text-decoration:none>$brih_attendence</a></td>
-
+	#if($tdcolor != "6")
+        <td>
+        #elseif($tdcolor == "6")
+        <td bgcolor="#AFDCEC">
+        #end
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none> #if($lang == "hindi") $brih_photo $brih_upload #else $brih_upload $brih_photo #end </a></td>
+        #if($tdcolor != "5")
+        <td>
+        #elseif($tdcolor == "5")
+        <td bgcolor="#AFDCEC">
+        #end
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none>$brih_multi_usr</a></td>
+        #if($tdcolor != "4")
+        <td>
+        #elseif($tdcolor == "4")
+        <td bgcolor="#AFDCEC">
+        #end
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none>  #if($lang == "hindi") $brih_student $brih_delete #else $brih_delete $brih_student #end </a></td>
+        #if($tdcolor != "3")
+        <td>
+        #elseif($tdcolor == "3")
+        <td bgcolor="#AFDCEC">
+        #end
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi") $brih_Instructor $brih_delete #else $brih_delete $brih_Instructor #end </a></td>
+	#if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor == "2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student #if($lang == "hindi") $brih_Of #end $brih_course $brih_list</a></td>
+	#if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_add $brih_usr</a></td>
 </tr>
+</table>
 #if(($mode=="")&&($mode !="sclist")&&($mode !="AddMUser")&&($mode !="UPhoto")&&(($mode !="userdelete")||($role=="instructor")||($role=="student"))) 
 <form name=frm method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("AddUser_Institute")">
-<table width=100% align=left bgcolor="$ui.tableColor">
-	<tr bgcolor="$ui.menuColor"><td colspan=7><b>$brih_entUsrDetail</b></td></tr>
-	<tr>
+<table width=100% align="right" bgcolor="$ui.tableColor">
+	<tr bgcolor="$ui.menuColor" align="right"><td align="right" colspan="5"><b>$brih_entUsrDetail</b></td></tr>
+	<tr align="right">
         ##formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
-           #formCell("$brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
+           ##formCell("$brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
+		<td align="right" colspan="4"> <input type="text" name="EMAIL" value=""> </td>
+		<td> <font color=red>*</font> $brih_email $brih_ID </td> 
       </tr>
-      <tr bgcolor="$ui.menuColor">
-        #formPasswordCell ("$brih_pwd" "PASSWD" "")
+      <tr bgcolor="$ui.menuColor" align="right">
+        ##formPasswordCell ("$brih_pwd" "PASSWD" "")
+	<td align="right" colspan="4"> <input type="password" name="PASSWD" value=""> </td>
+	<td> $brih_pwd </td> 
       </tr>
-          <tr>
-                #formCell ("$brih_first $brih_name" "FNAME" "")
+          <tr align="right">
+                ##formCell ("$brih_first $brih_name" "FNAME" "")
+		<td align="right" colspan="4"> <input type="text" name="FNAME" value=""> </td>
+		<td> $brih_first $brih_name </td>
           </tr>
-          <tr bgcolor="$ui.menuColor">
-           #formCell("$brih_last $brih_name" "LNAME" "")
+          <tr bgcolor="$ui.menuColor" align="right">
+          	##formCell("$brih_last $brih_name" "LNAME" "")
+		<td align="right" colspan="4"> <input type="text" name="LNAME" value=""> </td>
+		<td> $brih_last $brih_name </td>
+	
           </tr>
-          <tr><td>
-          $brih_sel_course <font color=RED>*</font>
-          </td>
-     	<td>
+	<tr align="right">
+     	<td align="right" colspan="4">
         <select id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
           ##<option>
+		#foreach($name in $courseList)
+                        <option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()-$name.getUserName()</option>
+	          #end
+
+#*
 	  #set($counter=1)
           #foreach($name in $courseList)
 	  	#set($counter1=1)
           	#foreach($instrctrname in $instructorList)
           		#if($counter==$counter1)
-          		<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()-$instrctrname</option>
+          		<option value="$name.getGroupName()"> $name.getCAlias(): $name.getCourseName()-$name.getUserName()</option>
           		#end
           	#set($counter1=$counter1+1)
           	#end
           #set($counter=$counter+1)
           #end
+*#
            ##</option>
           </select>
          </td>
+	<td>
+	          <font color=RED>*</font> $brih_sel_course
+	</td>
          </tr>
- 	<tr bgcolor="$ui.menuColor">
-          <td>
-          $brih_sel_Role <font color="Red">*</font>
-          </td>
-     <td>
-    <select id="role_id" name="role" size=1 onChange="ChangeGroup(document.frm,this);"/>
-          <option>
-          <option value="instructor">$brih_Instructor
-          <option value="student">$brih_student
-          <option value="group_admin">$brih_groupAdmin
-          <option value="author">$brih_author
-          </option>
-          </select>
+ 	<tr bgcolor="$ui.menuColor" align="right">
+     	<td colspan="4">
+		<select id="role_id" name="role" size=1 onChange="ChangeGroup(document.frm,this);"/>
+        	  <option>
+	          <option value="instructor">$brih_Instructor
+        	  <option value="student">$brih_student
+	          <option value="group_admin">$brih_groupAdmin
+        	  <option value="author">$brih_author
+	          </option>
+		</select>
         </td>
+          <td align="right">
+		<font color="Red">*</font> $brih_sel_Role
+          </td>
         </tr>
-	<tr>
-                #formCell ("$brih_rollno($brih_if $brih_student)" "rollno" "")
-	</tr>
-	<tr bgcolor="$ui.menuColor">
-                <td>$brih_program($brih_if $brih_student) </td>
-                <td colspan=3><select name="prg" size=1 onChange="checkOption1(document.frm,this);"/>
-			<option value="Select Program"> #if($lang=="hindi") $brih_program $brih_select #else $brih_select $brih_program #end</option>
-			#foreach($progname in $PrgDetail)
-				<option value="$progname.getPrgCode()">$progname.getPrgName() </option>
-			#end
+	<tr align="right">
+                <td colspan="4"><select name="prg" size=1 onChange="ChkPrg(document.frm,this);"/>
+                        <option value="Select Program"> $brih_program $brih_select </option>
+                        #foreach($progname in $PrgDetail)
+                                <option value="$progname.getPrgCode()">$progname.getPrgName() </option>
+                        #end
                         </select></td>
+
+                <td>($brih_program($brih_student $brih_if </td>
         </tr>
-        <tr>
-        <td colspan=2 align="left">
+	<tr bgcolor="$ui.menuColor" align="right">
+		##formCell ("$brih_rollno($brih_if $brih_student)" "rollno" "")
+		<td align="right" colspan="4"> <input type="text" name="rollno" value="" disabled="true"/> </td>
+		<td> ($brih_rollno( $brih_student $brih_if </td>
+	</tr>
+        <tr align="right">
+        <td colspan=5 align="right">
         <input type="hidden" name="actionName">
         <input type="hidden" name="group_author">
         <input type="hidden" name="role_author">
@@ -178,53 +203,75 @@ $!data.getMessage()
 #end
 #if($mode == "sclist")
  <form name=frm method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("status","ForallStudent")">
-<table width=100% cellpadding=1 align="left" bgcolor="$ui.tableColor">
-        <tr bgcolor="$ui.menuColor">
-                <td width=20% align=left>$brih_searchBy</td>
-                <td colspan=8>
+<table width=100% cellpadding=1 align="right" bgcolor="$ui.tableColor">
+        <tr bgcolor="$ui.menuColor" align="right">
+                <td colspan=9>
                 <select name="queryList">
-                <option value="User Name">$brih_usr $brih_name</option>
+                <option value="User Name">$brih_usr $brih_Of1 $brih_name</option>
                 <option value="First Name">$brih_first $brih_name</option>
                 <option value="Last Name">$brih_last $brih_name</option>
                 <option value="Email">$brih_email</option>
+		<option value="RollNo">$brih_rollno </option>
                 </select></td>
+                <td width=20% align="right">$brih_searchBy</td>
         </tr>
-        <tr>
+        <tr align="right">
+                <td colspan=9><input align=left type="text" name="value" value=""></td>
                 <td width=20%>$brih_match_str</td>
-                <td colspan=7><input align=left type="text" name="value" value=""></td>
         </tr>
-        <tr bgcolor="$ui.menuColor">
-                <td colspan=8>
+        <tr bgcolor="$ui.menuColor" align="right">
+                <td colspan=10>
                         <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
-			 <input type="hidden" name="mode" value="$mode"/>	
-			 <input type="hidden" name="mode1" value="list"/>	
-			 <input type="hidden" name="count" value="$tdcolor"/>	
+			<input type="hidden" name="mode" value="$mode"/>	
+			<input type="hidden" name="mode1" value="list"/>	
+			<input type="hidden" name="count" value="$tdcolor"/>	
                 </td>
         </tr>
 #if($total_size != 0)
 #if($mode1 == "list")
-<tr bgcolor="$ui.menuColor">
-#set ( $headings = ["$brih_login $brih_name","$brih_student $brih_name","$brih_email"," ",""] )
+<tr bgcolor="$ui.menuColor" align="right">
+###set ( $headings = ["$brih_login $brih_name","$brih_student $brih_name","$brih_email"," ",""] )
+#set ( $headings = ["","","", "", "", "", "$brih_rollno", "$brih_email", "$brih_student $brih_Of1 $brih_name", "$brih_login $brih_name"]) 
+##,"$brih_student $brih_name","$brih_email"," ",""] )
         #foreach ($heading in $headings)
                 <td><font size=3><b>$heading</b></font></td>
         #end
     </tr>
         #foreach($list in $ListUser)
 		#if($velocityCount%2==0)
-        	<tr bgcolor="$ui.menuColor">
+        	<tr bgcolor="$ui.menuColor" align="right">
         	#else
-        	<tr bgcolor="$ui.tableColor">
+        	<tr bgcolor="$ui.tableColor" align="right">
         	#end
-        	<td>$!list.getLoginName()</td>
-        	<td>$!list.getUserName()</td>
-        	<td><a href=mailto:$!list.getEmail()>$!list.getEmail()</a></td>
-		<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("Process","modify").addPathInfo("mode","All").addPathInfo("count",$tdcolor).addPathInfo("from","usermgmt") style=text-decoration:none>$brih_update</a> &nbsp;</td>
         	##<td colspan=5><a href=$link.setPage("call,UserMgmt_Admin,StudentCourselist.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_list</a></td>
-        	<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_list</a></td>
+        	<td align="right" colspan="3"><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_list</a></td>
+		<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("mode","changePW").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_changePassword </a> &nbsp; </td>
+		<td align="right"> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("Process","modify").addPathInfo("mode","sclist").addPathInfo("count",$tdcolor).addPathInfo("from","usermgmt") style=text-decoration:none>$brih_update</a> &nbsp;</td>
+		##<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("Process","modify").addPathInfo("mode","All").addPathInfo("count",$tdcolor).addPathInfo("from","usermgmt") style=text-decoration:none>$brih_update</a> &nbsp;</td>
+        	#set ($i=2)
+                #set ($j=0)
+                #foreach ($urecord1 in $rollnolist)
+                        #if($!list.getLoginName()== $!rollnolist.get($j).getEmailId())
+                                <td align="right"> $!rollnolist.get($j).getRollNo()</td>
+                                #set ($i = $i - 1)
+                        #end
+                        #set($j = $j + 1)
+                #end
+                ## if no rollno exist
+                #if($i==2)
+                        <td align="right"></td><td align="right"></td>
+                #end
+                ## if one rollno exist
+                #if($i==1)
+                        <td align="right"></td>
+                #end
+		<td align="right"><a href=mailto:$!list.getEmail()>$!list.getEmail()</a></td>
+        	<td align="right">$!list.getUserName()</td>
+        	<td align="right">$!list.getLoginName()</td>
     		</tr>
         #end
 	<tr>
-        <td bgcolor="$ui.menuColor" colspan=8 align=left>
+        <td bgcolor="$ui.menuColor" colspan="10" align="right">
         #if($total_size<= $AdminConf)
 
         <font color="white">$brih_first</font> &nbsp;
@@ -286,10 +333,11 @@ face="$ui.sansSerifFonts">$type</font>
 #end
 #if($mode == "AddMUser")
 <table width="100%" bgcolor="$ui.tableColor" align="left">
-<tr><td align="right" colspan=7><img src="$content.getURI("/images/hand.gif")"><b>
-<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati2/docs/Userdoc.html","newWin"); style=text-decoration:none>$brih_help</a></font>
+<tr><td align="left" colspan=7>
+<b>
+<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati2/docs/Userdoc.html","newWin"); style=text-decoration:none>$brih_help</a></font> <img src="$content.getURI("/images/Lefthand.gif")">
 </td></tr>
-<tr bgcolor="$ui.menuColor"><td colspan=7>
+<tr bgcolor="$ui.menuColor" align="right"><td colspan=7>
 <marquee scrollamount="3" direction="left" width="100%" behaviour="slide">
 <font size=4 color=red><b>$brih_upload_msg5</b></font>
 </marquee>
@@ -297,7 +345,7 @@ face="$ui.sansSerifFonts">$type</font>
 ##<form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_Admin,UserManagement_Admin.vm").setAction("UserAction_InstituteAdmin")">
 <form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("UserAction_InstituteAdmin")">
       #if ($errorTemplate)
-      <tr>
+      <tr align="right">
         <td colspan="4">
           ##<tableibgcolor="$ui.bgcolor">
           <table>
@@ -313,23 +361,15 @@ face="$ui.sansSerifFonts">$type</font>
         </td>
       </tr>
       #end
-        <tr>
+        <tr align="right">
         ##<td colspan=2 bgcolor="$ui.menuColor" align="left">
-        <td colspan=2  align="left">
+        <td align="right">
                 ## <font size=4><b>File Upload for automatic multiple user registration</b></font>
                 <font size=4><b>$brih_upload_msg1</b></font>
         </td>
         </tr>
-	<tr bgcolor="$ui.menuColor">
+	<tr bgcolor="$ui.menuColor" align="right">
         ##<td bgcolor="$ui.tableColor">
-        <td>
-                 <b>
-                <font face="$ui.sansSerifFonts">
-                ## Select a course <font color=RED>*</font>
-                $brih_sel_course <font color=RED>*</font>
-                </font>
-                </b>
-        </td>
         <td>
                 <select name="GroupName" size=1>
                 #foreach($name in $courseList)
@@ -341,17 +381,14 @@ face="$ui.sansSerifFonts">$type</font>
                 </option>
                 </select>
         </td>
+        <td>
+                 <b>  <font face="$ui.sansSerifFonts">  ## Select a course <font color=RED>*</font>
+                <font color=RED>*</font> $brih_course $brih_select
+                </font> </b>
+        </td>
         </tr>
-        <tr>
+        <tr align="right">
           ##<td bgcolor="$ui.menuColor">
-          <td>
-                <b>
-                <font face="$ui.sansSerifFonts">
-                ## Select a role <font color=RED>*</font>
-                $brih_sel_Role <font color=RED>*</font>
-                </font>
-                </b>
-                </td>
           <td>
                 <select name="role" size=1>
                 <option value="student">$brih_student
@@ -359,16 +396,22 @@ face="$ui.sansSerifFonts">$type</font>
                 </option>
                 </select>
          </td>
+          <td>
+                <b> <font face="$ui.sansSerifFonts">        ## Select a role <font color=RED>*</font>
+                $brih_sel_Role <font color=RED>*</font>
+                </font> </b>
+	</td>
 	 </tr>
-        <tr bgcolor="$ui.menuColor">
+        <tr bgcolor="$ui.menuColor" align="right">
                 ## #fileUpload ("Attach File <font color=RED>*</font>" "file")
 
-                #fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
+                <td> <input type="file" name="file" value="" ></td>
+		<td> <font color=RED>*</font>$brih_at_file </td>
 
         </tr>
-        <tr>
+        <tr align="right">
         ##<td colspan=2 align="left" bgcolor="$ui.buttonBoxColor">
-        <td colspan=2 align="left">
+        <td colspan=2 align="right">
           #*
             Check for a mode, the update and delete buttons
             shouldn't appear when inserting a new user.
@@ -400,19 +443,23 @@ face="$ui.sansSerifFonts">$type</font>
 #end
 #if($mode == "UPhoto")
 <table width=100% align=left bgcolor="$ui.tableColor">
-<tr bgcolor="$ui.menuColor"><td align=right colspan=7><img src="$content.getURI("/images/hand.gif")"> 
-<a href=javascript:popupWin("/brihaspati/docs/PhotoUpload.html","newWin"); style=text-decoration:none>$brih_help</a></td></tr>
+<tr bgcolor="$ui.menuColor"><td colspan=7>
+<a href=javascript:popupWin("/brihaspati/docs/PhotoUpload.html","newWin"); style=text-decoration:none>$brih_help</a>
+<img src="$content.getURI("/images/Lefthand.gif")"> 
+</td></tr>
 <tr><td colspan=7><marquee scrollamount="3" direction="left" loop="0" width="100%" behaviour="slide">
 <font size=4 color=red><b>$brih_upload_msg4</b></font>
 </marquee>
 </td></tr>
 <form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("UserAction_InstituteAdmin")">
-        <tr bgcolor="$ui.menuColor"> <td colspan=2><font size=4><b>$brih_upload_msg2</b></font></td></tr>
-        <tr>
-                #fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
+        <tr bgcolor="$ui.menuColor" align="right"> <td colspan=2><font size=4><b>$brih_upload_msg2</b></font></td></tr>
+        <tr align="right">
+                ##fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
+                <td align="right"> <input type="file" name="file" value="" ></td>
+		<td> <font color=RED>*</font>$brih_at_file </td>
         </tr>
-        <tr bgcolor="$ui.menuColor">
-        <td colspan=2 align="left">
+        <tr bgcolor="$ui.menuColor" align="right">
+        <td colspan="2" align="right">
                 <font face="$ui.sansSerifFonts">
                 <input type="button" name="eventSubmit_doUploadphoto" value="$brih_upload" onClick="TestField(document.frm,this);"/>
                 <input type="hidden" name="actionName" value=""/>
@@ -439,191 +486,153 @@ face="$ui.sansSerifFonts">$type</font>
 </form>
 #end
 #if(($mode == "userdelete")||($role == "instructor") ||($role == "student"))
-<form name="frm" method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("InstituteUserManagement_RemoveUser").addPathInfo("mode",$mode)">
-<table width=100% align="left" bgcolor="$ui.tableColor">
-<tr>
-<td>
-<table align=left width=100%>
-        <tr bgcolor="$ui.menuColor">
-          ##<td bgcolor="$ui.menuColor">
-          <td width=40%><b>
-          <font face="$ui.sansSerifFonts">
-          #if($role=="instructor")
-                $brih_selCourseRemIns
-          #else
-                $brih_selCourseRemStu
-          #end
-          </font>
-          </b></td>
-          <td width=20%>
-          <select name="group" size=1>
-          #set($i=1)
-          <option name=all value="All">$Notice_All
-	  #set($counter=1)
-          #foreach($course in $courseList)
-          	#set($counter1=1)
-          	#foreach($instrctrname in $instructorList)
-          	#if($counter==$counter1)
-                ##if(($course.getName()!="author") && ($course.getName()!="global"))
-          	##<option name=option$i value="$course">$course
-	  	<option name=option$i value="$course.getGroupName()">$course.getCourseName()-$instrctrname</option>	
-          	#set($i=$i+1)
-          	##end
-          	#end
-          	#set($counter1=$counter1+1)
-          	#end
-          #set($counter=$counter+1)
-          #end
-          ##</option>
-          </select>
-          ##</space>
-         </td>
-        <td align="left">
-        <input type="submit" name="eventSubmit_doSearch" value="$brih_search">
-        <input type="hidden" name="role" value="$role">
-        <input type="hidden" name="mode" value="userdelete">
-        <input type="hidden" name="count" value="$tdcolor">
-        </td>
-</tr>
-</table>
-</td>
-</tr>
-<tr bgcolor="$ui.menuColor">
-<td align="left">
-#if($status=="notempty")
+	<form name="frm" method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("InstituteUserManagement_RemoveUser").addPathInfo("mode",$mode)">
+	<table width=100% align="left" bgcolor="$ui.tableColor">
+	<tr align="right">
+		<td>
+			<table align="right" width=100%>
+			        <tr bgcolor="$ui.menuColor" align="right">
+				        <td align="right">
+				        <input type="submit" name="eventSubmit_doSearch" value="$brih_search">
+				        <input type="hidden" name="role" value="$role">
+				        <input type="hidden" name="mode" value="userdelete">
+				        <input type="hidden" name="count" value="$tdcolor">
+				        </td>
+				          <td width=20% align="right">
+					          <select name="group" size=1>
+						          #set($i=1)
+						          <option name=all value="All">$Notice_All
+							#foreach($course in $courseList)
+								<option name=option$i value="$course.getGroupName()">$course.getCAlias(): $course.getCourseName()-$course.getUserName()</option>
+						                #set($i=$i+1)
+							#end	
 
- #set($headings = ["$brih_course $brih_ID","$brih_usr $brih_name","$brih_first $brih_name","$brih_last $brih_name"] )
-<table width=100% align=left bgcolor="$ui.tableColor">
-        <tr>
-                <td align=left>
-                <table width=100% cellspacing=1 cellpadding=5>
-                <tr bgcolor="$ui.tableColor">
-                        #set($lang = $data.getUser().getTemp("lang" ).toString())
+						          ##</option>
+						</select>
+					          ##</space>
+					</td>
+					<td width=40%><b> <font face="$ui.sansSerifFonts">
+				        #if($role=="instructor")
+				        	$brih_selCourseRemIns
+					#else
+				        	$brih_selCourseRemStu
+					#end
+				        </font> </b></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr align="right">
+		<td align="right">
+		#if($status=="notempty")
+			###set($headings = ["$brih_course $brih_ID","$brih_usr $brih_name","$brih_first $brih_name","$brih_last $brih_name"] )
+			#set($headings = ["$brih_last $brih_name", "$brih_first $brih_name", "$brih_usr $brih_Of1 $brih_name", "$brih_course $brih_Of1 $brih_ID"] )
+			<table width=100% align=left bgcolor="$ui.tableColor">
+				<tr align="right">
+				<td align="right">
+			                <table width=100% cellspacing=1 cellpadding=5>
+				                <tr bgcolor="$ui.tableColor" align="right">
+				                        #set($lang = $data.getUser().getTemp("lang" ).toString())
+				                        ##<td bgcolor="$ui.menuColor" align=left>
 
-                        ##<td bgcolor="$ui.menuColor" align=left>
-                        <td align=left>
-                        <input type="CHECKBOX" name="checkAll" onClick=selectAll(this);>
-                        <font face="$ui.sansSerifFonts"><b>
-                        #if($lang == "hindi")
-                                 $brih_all $brih_select</b>
-                        #else
-                                $brih_select $brih_all</b>
-                        #end
-                        </td>
-
-                        #foreach ($heading in $headings)
-                                #headerCell ($heading)
-                        #end
-                </tr>
-                ##set($count="")
-                #set($counter="")
-                #set($count2=1)
-                #foreach($user in $selected_users)
-                        #foreach($i in $user)
-                                #set($count1=1)
-                                #foreach($groupname in $groupname)
-	                        #if($count2==$count1)
-				#if($velocityCount%2==0)
-                                <tr bgcolor="$ui.tableColor" width=100%>
-                                #else
-                                <tr bgcolor="$ui.menuColor" width=100%>
-                                #end
-                                        <td>
-                                                #set($userAndGroup = "$groupname:$!i.UserName" )
-                                          	<INPUT TYPE="CHECKBOX" NAME="$userAndGroup" onClick="addDeleteList(this,document.frm);">
-                                        </td>
-					<td>$groupname</td>
-                                        <td>$!i.UserName</td>
-                                        <td>$!i.getFirstName()</td>
-                                        <td>$!i.getLastName()</td>
-                                        </tr>
-                                        #end
-                                        #set($count1=$count1+1)
-                                #end
-                                #set($counter="$counter$userAndGroup^")
-                                #set($count2=$count2+1)
-                        #end
-                #end
+					                        #foreach ($heading in $headings)
+					                                #headerCell ($heading)
+					                        #end
+				                        <td align="right">
+					                        <font face="$ui.sansSerifFonts"><b> $brih_all $brih_select</b>
+					                        <input type="CHECKBOX" name="checkAll" onClick=selectAll(this);>
+				                        </td>
+						</tr>
+					                ##set($count="")
+				        	        #set($counter="")
+					                #set($count2=1)
+					                #foreach($user in $selected_users)
+					                        #foreach($i in $user)
+					                                #set($count1=1)
+					                                #foreach($groupname in $groupname)
+							                        #if($count2==$count1)
+											#if($velocityCount%2==0)
+								                                <tr bgcolor="$ui.tableColor" width=100% align="right">
+							                                #else
+								                                <tr bgcolor="$ui.menuColor" width=100% align="right">
+							                                #end
+							                                        <td>$!i.getLastName()</td>
+							                                        <td>$!i.getFirstName()</td>
+							                                        <td>$!i.UserName</td>
+												<td>$groupname</td>
+							                                        <td>
+        	                                        						#set($userAndGroup = "$groupname:$!i.UserName" )
+                							                          	<INPUT TYPE="CHECKBOX" NAME="$userAndGroup" onClick="addDeleteList(this,document.frm);">
+							                                        </td>
+						                                        </tr>
+					                                        #end
+                                        					#set($count1=$count1+1)
+					                                #end
+					                                #set($counter="$counter$userAndGroup^")
+					                                #set($count2=$count2+1)
+					                        #end
+					                #end
+					</table>
+		                </td>
+			        </tr>
+			        <tr bgcolor="$ui.menuColor" align="right">
+			                <td align="right">
+				                <input type="submit" name="eventSubmit_doRemoveUser" value="$brih_remove" onClick="DeleteField(document.frm,this);">
+				                <input type="hidden" name="deleteFileNames" value="">
+				                <input type="hidden" name="group" value="$group">
+				                <input type="hidden" name="role" value="$role">
+				 		<input type="hidden" name="count" value="$tdcolor">
+			                </td>
+			        </tr>
+			</table>
+		#end
+#############3</td>
+##################3</tr>
+###########################</table>
+	 <input type="hidden" name="actionName" value="">
+	</tr> </td>
+	</form>
+##<td>
+	<table width=100% bgcolor="$ui.tableColor" align="left">
+	#foreach( $e in $error_user )
+        	<tr bgcolor="$ui.menuColor">
+		        <td align="right">
+	        		<font face="$ui.sansSerifFonts">$brih_usr $brih_name <font color="brown">"$e.getErr_User()"</font>
+        		</td>
+		        <td align="right">
+        			<font face="$ui.sansSerifFonts">$e.getErr_Type()</font>
+	        	</td>
+        	</tr>
+	#end
+	</table>
+#end
+#if($mode=="changePW")
+	<form name="frm" method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("UserAction_InstituteAdmin")">
+       		<table align="right" width="100%" bgcolor="$ui.menuColor" >
+               		<tr align="right"><td> $brih_changePassword1 $username</td></tr>
+	        </table>
+                <table align="right" width="100%" bgcolor="$ui.tableColor" >
+                        <tr align="right">
+                                ##formPasswordCell("$brih_pwd  <font color=Red>*</font>" "newpass" "")
+				<td> <input type="password" name="newpass" value=""> </td>
+				<td> <font color=Red>*</font> $brih_pwd </td>
+                        </tr>
                 </table>
-                </td>
-        </tr>
-        <tr bgcolor="$ui.menuColor">
-                <td align="left">
-                <input type="submit" name="eventSubmit_doRemoveUser" value="$brih_remove" onClick="DeleteField(document.frm,this);">
-                <input type="hidden" name="deleteFileNames" value="">
-                <input type="hidden" name="group" value="$group">
-                <input type="hidden" name="role" value="$role">
- 		<input type="hidden" name="count" value="$tdcolor">
-                </td>
-        </tr>
-</table>
+                <table align="right" width="100%" bgcolor="$ui.menuColor" >
+        	        <tr align="right"><td>
+                	        <input type="button" name="eventSubmit_doUpdatePass" value="$brih_update" onClick="checkpass(document.frm,this);"/>
+                        	<input type="reset" name="clear" value="$brih_clear" onClick="clearValues(document.frm,this);"/>
+	                        <input type="hidden" name="username" value=$username />
+        	                <input type="hidden" name="actionName"/>
+                	        <input type="hidden" name="mode" value="sclist"/>
+                        	<input type="hidden" name="count" value="$tdcolor"/>
+	                </td></tr>
+                </table>
+	</form>
 #end
-</td>
-</tr>
+
 ##</table>
- <input type="hidden" name="actionName" value="">
-</form>
-</td><td>
-<table width=100% bgcolor="$ui.tableColor" align="left">
-#foreach( $e in $error_user )
-        <tr bgcolor="$ui.menuColor">
-        <td align=center>
-        <font face="$ui.sansSerifFonts">$brih_usr $brih_name <font color="brown">"$e.getErr_User()"</font>
-        </font>
-        </td>
-        <td align=center>
-        <font face="$ui.sansSerifFonts">$e.getErr_Type()</font>
-        </td>
-        </tr>
-#end
-</table>
-#end
-</table>
 <SCRIPT LANGUAGE="javascript">
-        ##function checkField(frm,field,b)
-        function checkField(frm,field)
-        {
-                if((frm.EMAIL.value!="") &&(frm.group.value!="") && (frm.role.value!=""))
-                {
-			if(frm.role.value == "student")
-                        {
-				if(frm.rollno.value=="")
-                        	{
-                                	if(frm.prg.value=="Select Program")
-                                	{
-                                        	frm.actionName.value=field.name;
-                                        	frm.submit();
-                                	}
-                                	else
-                                	{
-                                        	alert("Please fill the Roll No Field!!");
-                                	}
-                        	}
-	                        else if(frm.rollno.value!="")
-	                        {
-	                                if(frm.prg.value!="Select Program")
-	                                {
-	                                        frm.actionName.value=field.name;
-	                                        frm.submit();
-        	                        }
-                	                else
-                        	        {
-                                	        alert("Please fill the Program Field!!");
-	                                }
-        	                }
-			}
-			else
-                        {
-                                frm.actionName.value=field.name;
-                                frm.submit();
-                        }
-                }
-                else
-                {
-                        alert("Please fill the Mandatory(*) Fields !");
-                        ##alert(b);
-                }
-        }
 	function ChangeRole(frm,field)
                 {
                         if(frm.group.value=="author")
@@ -756,6 +765,21 @@ face="$ui.sansSerifFonts">$type</font>
                                 frm.actionName.value=field.name;
                                 frm.submit();
         }
+	function checkpass(frm,field)
+        {
+                if(frm.newpass.value!="")
+                {
+                      frm.actionName.value=field.name;
+                      frm.submit();
+                }
+                else
+                {
+                      alert("Password can not be null!");
+                }
+         }
 
-
+        function clearValues(frm,field)
+        {
+                frm.newpass.value="";
+        }
 </SCRIPT>

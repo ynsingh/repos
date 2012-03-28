@@ -5,87 +5,112 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a> 
  * @author <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a> 	
  * Contributors: Members of ETRG, I.I.T. Kanpur
- * @modify 20-03-2009
+ * @modify 20-03-2009, 27-03-2012
  *#
 
 $page.setTitle("Login Page | Online Registration ")
-$!data.getMessage()
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/OnlineRegistration.js")"></script>
+
 	
-	<table bgcolor="$ui.tableColor" width=100% cellspacing=0>
+<table bgcolor="$ui.tableColor" width=100% >
 	<tr align="right">
-	    <td>
+	    <td align="right">
 		<font face="$ui.sansSerifFonts" size=3><b>
 			<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)> $brih_login $brih_Of1 $WikiPage </a>| $online_online $brih_reg   
 	    </td>
 	</tr>
-	</table>
-	<form name=frm method="post" action="$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).setAction("OnlineRegistration")">
-##  	<div align="center">
+</table>
+<table bgcolor="$ui.tableColor" width=100% >
 
-	<table> <tr align="left"> <td>
-	<font face="$ui.sansSerifFonts" size=3>
-	<a href=javascript:popupWin("/brihaspati2/docs/OnlineRegistration.html","newWin");>$brih_help</a>
-	</font>
-	<img src="$content.getURI("/images/Lefthand.gif")">
-</td></tr></table>
-<br>
-	<table align=center bgcolor="$ui.tableColor" width="60%" cellspacing=0>
-	<tr>
-		<td align=center><b>
-			<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","CourseRegistration")> $brih_course $brih_Of1 $brih_reg </a>
-	    	</td>
-		<td align=center><b>
-			<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","UserResitration")> $brih_usr $brih_Of1 $brih_reg </a>
-		</td>
-	</tr>
-	</table>
-	<br>
-	
-	<table align=center bgcolor="$ui.tableColor" border=2 cellpadding="5">
+	<form name=frm method="post" action="$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).setAction("OnlineRegistration")">
+$!data.getMessage()
+<tr>
+	<td> 	<a href=javascript:popupWin("/brihaspati2/docs/OnlineRegistration.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")"></td>
+	#if($tdcolor != "1")
+		<td align="right">
+	#elseif($tdcolor == "1")
+		<td bgcolor="#AFDCEC" align="right">
+	#end
+	<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","UserResitration").addPathInfo("count","1") style=text-decoration:none> $brih_student $brih_Of1 $brih_reg </a>
+	</td>
+	#if($tdcolor != "2")
+		<td align="right">
+	#elseif($tdcolor == "2")
+	<td bgcolor="#AFDCEC" align="right">
+	#end
+	<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","CourseRegistration").addPathInfo("count","2") style=text-decoration:none> $brih_Instructor ($brih_course) $brih_Of1 $brih_reg </a>
+	</td>
+
+	##<table> <tr align="left"> 
+</tr>
+##</table>
+	##<table align=center bgcolor="$ui.tableColor" border=2 cellpadding="5">
 		#if($status == "UserResitration")
-      	<tr>
+      	#*<tr>
 	    <td colspan=2 face="$ui.sansSerifFonts" align=center bgcolor="$ui.menuColor">
         	<font size=4><b>$brih_usr $brih_Of1 $brih_reg </b></font>
 	</td>
-        </tr>
+        </tr>*#
+        <tr align="right"> <td colspan="2"> 
+                <select id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
+                ##set($counter=1)
+                #foreach($crsname in $courseList)
+                        <option value="$crsname.getGroupName()">$crsname.getCAlias(): $crsname.getCourseName()-$crsname.getUserName()</option>
+                #end
+                </select>
+		 <input type="submit" name="eventSubmit_doSearch" value="$brih_search"/>
+		<select name="instName" size=1 onChange="checkOption(document.frm,this);"/>
+        	#if($Insname=="")
+                	<option> $brih_Institute $brih_select </option>
+	        #else
+        	        <option>$Insname</option>
+                	##<option> $brih_Institute $brih_select </option>
+	        #end
+	          #foreach($name in $instList)
+        		  <option value="$name.getInstituteName()">$name.getInstituteName() </option>
+	          #end
+          </select>
+		</td>	
+		<td> <font color=RED>*</font> $RemoteInstitute $brih_Of1 $brih_name $brih_select  </td> </tr>
+		
         <tr align="right">
         	##formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
-		<td width="50" bgcolor="#f7f3de">
-			<input type="text" size="30" name="UNAME" value="">
+		<td colspan="2">
+			<input type="text" size="30" name="EMAIL" value="">
   		</td>
-		<td bgcolor="#f7f3de">    <b>
-        		<font color=red>*</font> $brih_usr $brih_Of1 $brih_name
-		</b> </td>
+		<td> <font color=red>*</font> $brih_email $brih_ID </td>
 		
         </tr>
         <tr align="right">
         	##formPasswordCell ("$brih_pwd" "PASSWD" "")
-		<td> <input type="password" size="30" name="PASSWD" value=""> </td>
-		<td><b> $brih_pwd </b></td>
+		<td colspan="2"> <input type="password" size="30" name="PASSWD" value=""> </td>
+		<td> $brih_pwd </td>
         </tr>
 	<tr align="right">
 		##formCell(" $brih_first  $brih_name " "FNAME" "")
-		<td> <input type="text" size="30" name="FNAME" value=""></td>
-		<td> <b>$brih_first  $brih_name </b></td>
+		<td colspan="2"> <input type="text" size="30" name="FNAME" value=""></td>
+		<td>$brih_first  $brih_name </td>
 	</tr>
 	<tr align="right">
 		##formCell(" $brih_last $brih_name " "LNAME" "")
-		<td> <input type="text" size="30" name="LNAME" value=""></td>
-		<td> <b>$brih_last $brih_name </b></td>
+		<td colspan="2"> <input type="text" size="30" name="LNAME" value=""></td>
+		<td> $brih_last $brih_name </td>
 	</tr>
 	<tr align="right">
 		##formCell(" $online_organisation " "ORGTN " "")
-		<td> <input type="text" size="30" name="ORGTN " value=""> </td>
-		<td>  <b> $online_organisation </b></td>
-	</tr>	
+		<td colspan="2"> <input type="text" size="30" name="ORGTN " value=""> </td>
+		<td> $online_organisation </td>
+	</tr>
+#*	
 	  <tr align="right">
 	  	##formCell(" $brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
-		<td> <input type="text" size="30" name="EMAIL" value=""> </td>
+		<td colspan="2"> <input type="text" size="30" name="EMAIL" value=""> </td>
 		<td>  <b> <font color=red>*</font> $brih_email $brih_ID </b></td>
 	  </tr>
 	  
 	  <tr align="right">
-       <td>
+       <td colspan="2">
     	<select id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
 	  <option>
 	  #foreach($name in $courseList)
@@ -98,26 +123,44 @@ $!data.getMessage()
 	 </td>
 	 <td > <b> <font color=RED>*</font> <font face="$ui.sansSerifFonts">$brih_sel_course </font> </b> </td>
 	 </tr>
-
+*#
 	<tr align="right">
-	  <td>
+	  <td colspan="2">
 	  <select id="role_id" name="role" size=1 onChange="ChangeGroup(document.frm,this);"/>
 	  <option>
 	  <option value="student">$brih_student
-	  <option value="author">$brih_author
+	  ##<option value="author">$brih_author
 	  </option>
 	  </select>
 	</td>
-	  <td>  <b> <font color="Red">*</font> <font face="$ui.sansSerifFonts">$brih_sel_Role </font> </b> </td>
+	  <td>  <b> <font color="Red">*</font> <font face="$ui.sansSerifFonts">$brih_role $brih_select </font> </b> </td>
 	</tr>
-	<tr>
-	<td colspan=2 align="center"  bgcolor="$ui.menuColor">
+	<tr align="right">
+                <td colspan="2"><select name="prg" size=1 onChange="ChkPrg(document.frm,this);"/>
+                        <option value="Select Program"> $brih_program $brih_select</option>
+                        #foreach($progname in $PrgDetail)
+                                <option value="$progname.getPrgCode()">$progname.getPrgName() </option>
+                        #end
+                        </select></td>
+                <td> ($brih_program ( $brih_student $brih_if</td>
+         </tr>
+        <tr align="right">
+                <td colspan="2"><input type="text" name="rollno" value="" disabled="true"/></td>
+                <td>( $brih_rollno($brih_student $brih_if</td>
+        </tr>
+
+	<tr align="right" bgcolor="$ui.menuColor">
+	<td colspan="3"> 
 	<input type="hidden" name="actionName">
         <input type="hidden" name="groupName" value="$name.getName()">
     	<input type="hidden" name="group_author">
     	<input type="hidden" name="role_author">
     	<input type="button" name="eventSubmit_UserRegister" value="$brih_reg1" onClick="checkField(document.frm,this);"/> 
-	<input type="Reset" name="Reset" Value="$brih_clear"/>
+	<input type="Reset" name="Reset" Value="$brih_clear" onClick="clearField(document.frm,this);"/>
+        <input type="hidden" name="count" value="$tdcolor"/>
+        <input type="hidden" name="status" value="$status"/>
+        <input type="hidden" name="val"/>
+
 	</td>
 	</tr>
        
@@ -127,63 +170,69 @@ $!data.getMessage()
 ##////////////Course Registration///////////
 
 	#if($status == "CourseRegistration")	
-
-	<tr>
-          <td align=center colspan=2 bgcolor="$ui.menuColor">
-           <font face="$ui.sansSerifFonts" size=3> <b> $brih_course $brih_Of1 $brih_reg </b>
-          </td>
+	<tr align="right">
+        <td colspan="2">
+        <select name="instName">
+        #foreach($name in $instList)
+        <option value="$name.getInstituteName()">$name.getInstituteName() </option>
+        #end
+        </select>
+        </td>
+        <td> $RemoteInstitute $brih_Of1 $brih_name $brih_select <font color=RED>*</font></td>
         </tr>
+
         <tr align="right">
             ##formCell(" $brih_course $brih_ID <font color=red>*</font>" "COURSEID" "")
-		<td> <input type="text" size="30" name="COURSEID" value=""> </td>
+		<td colspan="2"> <input type="text" size="30" name="COURSEID" value=""> </td>
 		<td> <b><font color=red>*</font>  $brih_course $brih_Of1 $brih_ID  </b></td>
         </tr>
         <tr align="right">
             ##formCell("$brih_course $brih_name <font color=red>*</font>" "CNAME" "")
-		<td>  <input type="text" size="30" name="CNAME"  value=""> </td>
+		<td colspan="2">  <input type="text" size="30" name="CNAME"  value=""> </td>
 		<td> <b><font color=red>*</font> $brih_course $brih_Of1 $brih_name </b></td>
         </tr>
         <tr align="right">
             ##formCell(" $brih_dept " "DEPT" "")
-		<td>  <input type="text" size="30" name="DEPT" value=""> </td>
+		<td colspan="2">  <input type="text" size="30" name="DEPT" value=""> </td>
 		<td> <b> $brih_dept </b></td>
         </tr>
- 
+	<tr align="right">
+            ##formCell(" $brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
+	    <td colspan="2">  <input type="text" size="30" name="EMAIL" value=""> </td>
+	  <td> <b> <font color=red>*</font>  $brih_email $brih_ID </b></td>
+	</tr>
+#* 
         <tr align="right">
            ##formCell(" $brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
 	   <td>  <input type="text" size="30" name="UNAME" value=""> </td>
 	   <td> <b> <font color=red>*</font> $brih_usr $brih_Of1 $brih_name</b> </td>
         </tr>
+*#
         <tr align="right">
             ##formPasswordCell(" $brih_pwd " "PASS" "")
-	   <td> <input type="password" size="30" name="PASS" value=""> </td>
+	   <td colspan="2"> <input type="password" size="30" name="PASS" value=""> </td>
 	   <td> <b> $brih_pwd </b></td>
 		
         </tr>
         <tr align="right">
 	
            ##formCell(" $brih_first  $brih_name " "FNAME" "")
-	  <td>  <input type="text" size="30" name="FNAME" value=""></td> 
+	  <td colspan="2">  <input type="text" size="30" name="FNAME" value=""></td> 
 	  <td> <b> $brih_first  $brih_name </b></td>
 	</tr>
 	<tr align="right">
 
            ##formCell(" $brih_last $brih_name " "LNAME" "")
-	  <td> <input type="text" size="30" name="LNAME" value=""> </td>
+	  <td colspan="2"> <input type="text" size="30" name="LNAME" value=""> </td>
 	  <td> <b>$brih_last $brih_name </b></td>
 	</tr>	
 	<tr align="right">
 	   ##formCell(" $online_organisation " "ORGTN" "")
-	   <td><input type="text" size="30" name="ORGTN" value=""> </td>
+	   <td colspan="2"><input type="text" size="30" name="ORGTN" value=""> </td>
 	   <td> <b> $online_organisation </b> </td>
 	</tr>
-	<tr align="right">
-            ##formCell(" $brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
-	    <td>  <input type="text" size="30" name="EMAIL" value=""> </td>
-	  <td> <b> <font color=red>*</font>  $brih_email $brih_ID </b></td>
-	</tr>
-        <tr>
-            <td align=center colspan=2 bgcolor="$ui.menuColor">
+        <tr bgcolor="$ui.menuColor">
+            <td align="right" colspan=3> 
     		<input type="hidden" name="actionName">
     		<input type="button" name="eventSubmit_CourseRegister" value=" $brih_submit " onClick="checkCourseName(document.frm,this);"/>
        		 &nbsp;&nbsp;&nbsp;
@@ -205,158 +254,44 @@ $!data.getMessage()
         {
                 Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
         }
-//////////////////////////////////////////////	
-	function checkField(frm,field)
-	{
-	 	if((frm.UNAME.value!="")&&(frm.EMAIL.value!="")&&(frm.group.value!="")&&(frm.role.value!=""))
-		{
-			var emailID=document.frm.EMAIL;
-                	if (echeck(emailID.value)==false){
-	        		emailID.value="";
-	        	        emailID.focus();
-        	        	return;
-			}
-	                else
-                		frm.actionName.value=field.name;
-                       	frm.submit();
-		}
-		else
-		{
-	        	alert("Please fill all the Mandatory(*) Fields !");
-		}
-	}
-	function echeck(str) {
-
-                var at="@"
-
-                var dot="."
-
-                var lat=str.indexOf(at)
-
-                var lstr=str.length
-
-                var ldot=str.indexOf(dot)
-
-                if (str.indexOf(at)==-1){
-
-                   alert("Invalid E-mail ID")
-
-                   return false;
-
-                }
-
-                if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
-
-                   alert("Invalid E-mail ID")
-
-                   return false;
-
-                }
-
-                if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
-
-                    alert("Invalid E-mail ID")
-
-                    return false
-
-                }
-
-                 if (str.indexOf(at,(lat+1))!=-1){
-
-                    alert("Invalid E-mail ID")
-
-                    return false
-
-                 }
-		if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
-
-                    alert("Invalid E-mail ID")
-
-                    return false
-
-                 }
-
-                 if (str.indexOf(dot,(lat+2))==-1){
-
-                    alert("Invalid E-mail ID")
-
-                    return false
-
-                 }
-
-                 if (str.indexOf(" ")!=-1){
-
-                    alert("Invalid E-mail ID")
-
-                    return false
-
-                 }
-
-                 return true
-        }
-////////////////////////////////////////
 	function ChangeRole(frm,field)
-	{
-		if(frm.group.value=="author")
-		{
-		       frm.role.value="author";
-		       frm.role_author.value=frm.role.value;
-		       makeDisable();
-		}
-		else
-		{
-		       if(frm.role.value=="author")
-		       {
-		       frm.role.value="";
-		       }
-		       makeEnable();
-		}
-	}
-	function ChangeGroup(frm,field)
         {
-		if(frm.role.value=="author")
-		{
-		       frm.group.value="author";
-		       frm.group_author.value=frm.group.value;
-		       makeDisable_group();
-		}
-		else
-		{
-		       if(frm.group.value=="author")
-		       {
-		       frm.group.value="";
-		       }
-		       makeEnable_group();
-		}
-	}
-
-        function checkCourseName(frm,field)
-        {
-		 if((frm.COURSEID.value!="")&&(frm.CNAME.value!="")&&(frm.UNAME.value!="")&&(frm.EMAIL.value!=""))
+                if(frm.group.value=="author")
                 {
-                        var emailID=document.frm.EMAIL;
-                        if (echeck(emailID.value)==false){
-                                emailID.value=""
-                                emailID.focus()
-                                return;
-                        }
-                        else
-                                frm.actionName.value=field.name;
-			frm.submit();
+                       frm.role.value="author";
+                       frm.role_author.value=frm.role.value;
+                       makeDisable();
                 }
                 else
                 {
-                        alert("Please Fill All The Mandatory(*) Text Fields........");
+                       if(frm.role.value=="author")
+                       {
+                       frm.role.value="";
+                       }
+                       makeEnable();
                 }
-
         }
-        function checkClear(frm,field)
+	function ChangeGroup(frm,field)
         {
-                frm.COURSEID.value="";
-                frm.CNAME.value="";
-                frm.UNAME.value="";
-                frm.EMAIL.value="";
+                if(frm.role.value=="author")
+                {
+                       frm.group.value="author";
+                       frm.group_author.value=frm.group.value;
+                       makeDisable_group();
+                }
+                else
+                {
+                       if(frm.group.value=="author")
+                       {
+                       frm.group.value="";
+                       }
+                        frm.tmp.value = frm.role.value;
+                       makeEnable_group();
+                }
         }
-
+        function checkOption (frm,field)
+        {
+                frm.val.value=document.frm.instName.value;
+        }
 
 </SCRIPT>

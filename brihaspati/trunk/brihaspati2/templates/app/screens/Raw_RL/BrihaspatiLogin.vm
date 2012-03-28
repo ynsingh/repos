@@ -5,7 +5,7 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 10-08-2010, 24-09-2010 (Shaista)
- * @modified date: 15-02-2011 (Shaista)
+ * @modified date: 15-02-2011 (Shaista), 27-03-2012
 *#
 <head>
 <style type="text/css">
@@ -24,7 +24,6 @@
 
 $page.setTitle("Login in Brihaspati")
 $page.setBgColor($ui.bgcolor)
-<form name="frm" method="post" action="$link.setAction("myLogin")">
 
 <table width="100%">
 <tr><td>
@@ -85,8 +84,9 @@ $page.setBgColor($ui.bgcolor)
 				#end
                         </select>
 	        </td>
-        	        <td align="right"> $brih_language $brih_select</td>
+        	        <td align="right"><b> $brih_language $brih_select </b></td>
 		</tr>
+<form name="frm" method="post" action="$link.setAction("myLogin")">
 		<tr align="right">
                         <td align=right colspan="3"> <input type="text" size="20" name="username" value="" ></td>
                         <td align=right ><b>$brih_usr</b></td>
@@ -111,6 +111,27 @@ $page.setBgColor($ui.bgcolor)
 		<input type=hidden name="lang" value="$lang">
 		<input type=hidden name="flag" value="$flag">
 		<tr align="right"><td colspan=4 align="right">$brih_guestMsg2</td></tr>
+</form>
+<form name="frm1" method="post" action="$link.setAction("AOpenid")">
+<tr align="right"><td colspan=4> <b> $brih_open $brih_ID $brih_with $brih_login</b></td></tr>
+<tr align="right"><td colspan=4>$brih_openId </td></tr>
+<tr align="right"><td colspan=4>
+<input id="openid_identifier" name="openid_identifier" type="text" value="http://202.141.40.216:8081/openid/username" size="49" style="border: 1px solid #789; padding: 0.2em;"/>
+</td></tr>
+<tr align="right"><td colspan=4> ## ,
+<font face="$ui.sansSerifFonts">
+<input type="submit" value="$brih_login">
+<input type=hidden name="lang" value="english">
+<input type=hidden name="flag" value="$flag">
+</font>
+</td> </tr> ## ,
+<tr align="right"><td colspan=4> $brih_openId1 <a href="http://202.141.40.217:8080/openid/">  <br>
+<a href=javascript:popupWin("/brihaspati2/docs/openidfaq.html","newWin");> $brih_openId2 </a>
+$brih_openId3<br>
+
+$brih_openId4 <a href="http://openid.net/what/"> $brih_openId5 </a> & <a href="http://openid.net/get/"> $brih_openId6 </a>.
+   </td></tr>
+</form>
 		<tr align="right"><td colspan=4 align="right"><b>
 			<a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang",$lang).addPathInfo("status","User")>$brih_forgot $brih_pwd</a>
 			<img src="$content.getURI("/images/orange_sq_but.gif")">
@@ -208,7 +229,7 @@ $page.setBgColor($ui.bgcolor)
 	</td> ## TD3
 </tr> ## tr1 end
 </table> ## Ta1 end
-</form>
+##</form>
 
 <SCRIPT language="JavaScript">
         function popupWin(url,popupName)

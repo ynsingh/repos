@@ -39,7 +39,8 @@ package org.iitk.brihaspati.modules.screens.call.ListMgmt_InstituteAdmin;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad  Singh</a> 
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
- * @modified date:13-01-2012
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a> 
+ * @modified date:13-01-2012, 27-03-2012
  */
 
 import java.util.Vector;
@@ -192,7 +193,13 @@ public class InstAdminviewall extends SecureScreen_Institute_Admin{
 				{
 					String usrWith=m_u.ConvertedString("usrWith",file);
                                         String notExist=m_u.ConvertedString("notExist",file);
-				 	data.setMessage(usrWith+" "+query+" '"+valueString+"' "+ notExist);
+					if(file.endsWith("_urd.properties"))
+				 		data.setMessage(usrWith+" "+notExist+" '"+valueString+"' "+query);
+ 					 else if( file.endsWith("_hi.properties"))
+				 		data.setMessage(query+" '"+valueString+"' "+notExist);
+
+					else
+					 	data.setMessage(usrWith+" "+query+" '"+valueString+"' "+ notExist);
 				}
 				status="empty";
                         }

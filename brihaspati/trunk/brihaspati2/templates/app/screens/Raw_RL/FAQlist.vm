@@ -7,7 +7,7 @@
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 22-11-2010
- * @modified date: 15-04-2011
+ * @modified date: 15-04-2011, 27-03-2012
  *
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
@@ -15,11 +15,33 @@
 $page.setTitle("FAQ")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
+#if($mode == "showmessage")
+<table width="100%" bgcolor="$ui.menuColor">
+<tr bgcolor="$ui.menuColor" align="right">
+<td>
+        <font face="$ui.sansSerifFonts" size=3>
+        <a href=$link.setPage("Index.vm")>$brih_home</a> |
+        <a href="$link.setPage("FAQlist.vm").addPathInfo("mode","alllist").addPathInfo("lang",$lang)"> $brih_important $DiscussionBoard $brih_message </a>
+</td>
+</tr>
+        #if($type == "faq")
+        <tr bgcolor="$ui.tableColor"><b>
+                <td><font color=Red><b>Question  :</b></font><font color=Red><b> $subject </b></font></td>
+        </tr>
+        <tr>
+                <td><b>Answer :</b> $message</td>
+        </tr>
+        <tr bgcolor="$ui.tableColor">
+                <td><a href=$link.setPage("FAQlist.vm").addPathInfo("mode","alllist").addPathInfo("type","instadmin").addPathInfo("lang",$lang)> $brih_backtofaq </a></td>
+        </tr>
+        #end
+</table>
+#else
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr align="right"><td>
         <font face="$ui.sansSerifFonts" size=3>
-	#if($type=="instadmin")
+	#if(($type=="instadmin") && ($mode != "alllist"))
         <b><a href=$link.setPage("Index.vm")>$brih_home</a> |</b>
 	#end
 	#if($type =="general")
@@ -28,6 +50,11 @@ $!data.getMessage()
 	#if($mode=="list")
         <a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type",$type)>$brih_cat $brih_Of $brih_list</a> |
         #end
+	#if($mode =="alllist")
+         <b><a href=$link.setPage("Index.vm")>$brih_home</a> |</b>
+        <a href="$link.setPage("FAQlist.vm").addPathInfo("mode","alllist")"> $brih_important $DiscussionBoard $brih_message </a> |
+        #end
+
         $brih_FAQ $brih_Of $brih_list
         </font>
         </td>
@@ -123,4 +150,5 @@ $!data.getMessage()
 	#end
 	<tr><td align="right"><img src="$content.getURI("/images/backtotop.gif")"> <a href="#top" onclick="window.scrollTo(0,0); return false">$brih_backtotop</a></td></tr>
 </table>
+#end
 </form>

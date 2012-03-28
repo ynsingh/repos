@@ -1,9 +1,11 @@
 #*
  * @(#)InstituteAdminRegistration.vm 
- * Copyright (c)2010 ETRG,IIT Kanpur.
+ * Copyright (c)2010, 2012 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 24-03-2012 (Shaista)
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 $!data.getMessage()
@@ -25,6 +27,7 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 			</td>
 		</tr>
 	</table>
+#*
 #macro(opt)
 
         <option value=Govt>$brih_govt</option>
@@ -32,6 +35,7 @@ $page.setTitle("Login Page | Institute Admin Registration ")
         <option value=SF>$brih_sf</option>
         <option value=Other>$brih_other</option>
 #end
+*#
 ## Creating the form to collect the information for creation of Instiute account
 ## alongwith Institute admin information.
 
@@ -65,12 +69,30 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 				<td align="right" width=75%> <font face="$ui.sansSerifFonts"> <input type="text" name="ISTATE" value=""> </font> </td>
 				 <td> <b> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $Inst_state </font> </b> </td>
                         </tr>
-                        <tr align="right">
+#*
                                 ###formCell ("$Inst_landline <font color=red>*</font>" "ILANDLINE" "")
 				<td align="right" width=75%> <font face="$ui.sansSerifFonts"> <input type="text" name="ILANDLINE" value=""> </font> </td>
 				<td> <b> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $Inst_landline  </font> </b> </td>
 
+*#
+                        <tr align="right">
+                                <tdalign="right"><font color=red>*</font> $Inst_landline</td>
                         </tr>
+                        <tr align="right">
+                                <td>+<input type="text" name="ccode" value="91">
+                                <td>$brih_country $brih_code</td>
+                        </tr>
+                        <tr align="right">
+                                <td> Ex.(0512)$brih_knp $brih_for <input type="text" name="rcode" value=""> </td>
+                                <td>$brih_region $brih_code </td>
+                        </tr>
+                        <tr align="right">
+                                <td>
+				##<input type="text" name="phnumber" value=""> Ex.
+				 Ex. (2597841)$brih_iit $brih_knp $brih_for <input type="text" name="phnumber" value=""> </td>
+                                <td>$brih_num </td>
+                        </tr>
+
 			<tr bgcolor="$ui.menuColor" align="right">
 				## #formCell ("$RemoteInstitute $brih_domain <font color=red>*</font>" "IDOMAIN" "")
 				<td align="right" width=75%>@<font face="$ui.sansSerifFonts"> <input type="text" name="IDOMAIN" value=""> </font></td>
@@ -79,8 +101,12 @@ $page.setTitle("Login Page | Institute Admin Registration ")
                         <tr align="right">
                                 ###formCell ("$Inst_type <font color=red>*</font>" "ITYPE" "")
 				<td align="right" width=75%> 
-					<select name="ITYPE">
-                                        #opt()
+				<select name="ITYPE">
+                                        ##opt()
+					<option value=Govt>$brih_govt</option>
+				        <option value=SemiGovt2>$brih_semi $brih_govt</option>
+				        <option value=SF>$brih_sf</option>
+				        <option value=Other>$brih_other</option>
                                 </select></td>
 				<td> <b> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $RemoteInstitute $brih_Of $brih_type </font> </b> </td>
                         </tr>

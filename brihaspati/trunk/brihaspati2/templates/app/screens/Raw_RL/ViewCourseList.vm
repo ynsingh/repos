@@ -1,9 +1,11 @@
 #*
  * @(#)ViewCourseList.vm
- *  Copyright (c) 2005 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005, 2012 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
+ * @author <a href="shaistashekh@hotmail.com" > Shaista </a>
+ * @modified date: 27-03-2012
  *#
 
 $page.setTitle("$brih_reg2 $brih_course $brih_list")
@@ -24,9 +26,9 @@ $!data.getMessage()
 <br>
 <form name="frm" method="Post">
 #set($listConf = ["10","20","30","40","50"] )
-<table align="center" width="60%">
+<table align="right" width="100%">
 	<tr bgcolor="$ui.tableColor">
-	<td align="left">
+	<td align="right">
 		<select name="SearchList" onChange="ShowList(document.frm,this);"/>
 			<option value=$ListConf_str>$ListConf_str</option>
 			#foreach($list in $listConf)
@@ -35,11 +37,7 @@ $!data.getMessage()
 				#end
 			#end
                 </select>     
-		#if($lang == "english")
-			<b>$brih_select $brih_valueList</b>&nbsp;&nbsp;
-		#else
 			<b>$brih_list $brih_for $brih_value $brih_select</b>&nbsp;&nbsp;
-		#end
 	</td>
 	<td align="right">
 	##<b>$brih_course $brih_Of $brih_search</b>&nbsp;&nbsp;<input type="text" name="SearchKey" value="$!SearchKey" onSelect="ShowList(document.frm,this);"/>
@@ -49,32 +47,41 @@ $!data.getMessage()
 </table>
 #if($status!="empty")
 #set($headings = ["$brih_course $brih_Of1 $brih_ID","$brih_course $brih_Of1 $brih_name","$brih_status","$brih_instructor $brih_Of1 $brih_name","$brih_instructor $brih_Of1 $brih_email"] )
-<table align="center">
-<tr>
+<table align="right" width="100%">
+<tr align="right">
 	<td><font size=4><u><b>$brih_reg2 $brih_course</b></u></font></td>
 </tr>
 </table>
-<table border=1 align="center">
-	<tr>
+<table width="100%" bgcolor="$ui.tableColor" align="right">
+	<tr align="right">
   		#foreach ($heading in $headings)
-  		<td align=center bgcolor="$ui.menuColor"><font size=4><b>$heading</b></font></td>
+  		<td bgcolor="$ui.menuColor"><font size=4><b>$heading</b></font></td>
 		#end
 	</tr>
 	#foreach($entry in $allcourse)
-	<tr>
-		#entryCell($!entry.getGroupName())
-		#entryCell($entry.getCourseName())
+		#if($velocityCount%2==0)
+		        <tr bgcolor="$ui.tableColor" align="right">
+	        #else
+	        	<tr bgcolor="$ui.menuColor" align="right">
+	        #end
+		##entryCell($!entry.getGroupName())
+		##entryCell($entry.getCourseName())
+		<td>$entry.getCAlias() : $entry.getCourseName()</td>
+                <td>$!entry.getGroupName()</td>
+
 		#if ($entry.getActive()=="1")
-			<td bgcolor="$ui.tableColor"><font color="Green">$brih_active $brih_in $brih_is</font></td>
+			<td ><font color="Green">$brih_active $brih_in $brih_is</font></td>
 		#else
-		<td bgcolor="$ui.tableColor"><font color="Red">$brih_inactive $brih_in $brih_not $brih_is</font></td>
+			<td><font color="Red">$brih_inactive $brih_in $brih_not $brih_is</font></td>
 		#end
-		#entryCell($!entry.getInstructorName())
-		#entryCell("<a href=mailto:$!entry.getEmail()>$!entry.getEmail()</a>")
+		##entryCell($!entry.getInstructorName())
+		##entryCell("<a href=mailto:$!entry.getEmail()>$!entry.getEmail()</a>")
+		<td>$!entry.getInstructorName()</td>
+                <td><a href=mailto:$!entry.getEmail()>$!entry.getEmail()</a></td>
 	</tr>
 	#end
-	<tr>
-	<td align="center" colspan=5 bgcolor="$ui.menuColor">
+	<tr bgcolor="$ui.menuColor" align="right">
+	<td colspan=5 >
         	#if($total_size <= $ListConf)
          	<u><font color="white">$brih_first</font></u> &nbsp;
          	<u><font color="white">$brih_nxt</font></u> &nbsp;
