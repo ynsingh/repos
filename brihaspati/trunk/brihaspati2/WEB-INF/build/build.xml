@@ -499,7 +499,8 @@
       <classpath refid="classpath"/>
     </javac>
     <antcall target="copy-log4j-properties"/>
-    
+ <copy file="${build.dest}/APIAdapter.class" tofile="${tdk.home}/webapps/${tdk.project}/ScormPlayer/APIAdapter.class"/>
+ <copy file="${tdk.home}/webapps/${tdk.project}/WEB-INF/build/dbconnection.properties" tofile="${build.dest}/dbconnection.properties"/>
   </target>
 
   <!-- =================================================================== -->

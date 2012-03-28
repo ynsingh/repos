@@ -53,4 +53,49 @@
     <auth-method>BASIC</auth-method>
     <realm-name>Brihaspati Internals</realm-name>
   </login-config>
+<!--SCORM CONTENT LAUNCH-->
+        <servlet>
+            <servlet-name>items</servlet-name>
+            <servlet-class>org.iitk.brihaspati.modules.screens.call.tunnel.ScoItemServlet</servlet-class>
+        </servlet>
+        <servlet>
+            <servlet-name>initservlet</servlet-name>
+            <servlet-class>org.iitk.brihaspati.modules.screens.call.tunnel.InitDataServlet</servlet-class>
+        </servlet>
+        <servlet>
+            <servlet-name>myservlet</servlet-name>
+            <servlet-class>org.iitk.brihaspati.modules.screens.call.tunnel.MyServlet</servlet-class>
+        </servlet>
+        <servlet>
+            <servlet-name>update</servlet-name>
+            <servlet-class>org.iitk.brihaspati.modules.screens.call.tunnel.UpdateServlet</servlet-class>
+        </servlet>
+        <servlet>
+            <servlet-name>preq</servlet-name>
+            <servlet-class>org.iitk.brihaspati.modules.screens.call.tunnel.PrerequisitesServlet</servlet-class>
+        </servlet>
+        <!-- /SCORM CONTENT LAUNCH -->
+
+<!--SCORM  CONTENT LAUNCH -->
+<servlet-mapping>
+        <servlet-name>items</servlet-name>
+        <url-pattern>/ScormPlayer/items</url-pattern>
+        </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>initservlet</servlet-name>
+        <url-pattern>/ScormPlayer/initservlet</url-pattern>
+        </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>myservlet</servlet-name>
+        <url-pattern>/ScormPlayer/myservlet</url-pattern>
+        </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>update</servlet-name>
+        <url-pattern>/ScormPlayer/update</url-pattern>
+        </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>preq</servlet-name>
+        <url-pattern>/ScormPlayer/preq</url-pattern>
+        </servlet-mapping>
+        <!-- /SCORM CONTENT LAUNCH -->
 </web-app>

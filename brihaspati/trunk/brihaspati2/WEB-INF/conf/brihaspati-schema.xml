@@ -561,4 +561,14 @@
 	      <reference local="USER_ID" foreign="USER_ID"/>
 	</foreign-key>-->
 </table>
+
+<!-- ==========================scorm learner tracking======================================================== -->
+<table name ="Learner_sco" description="learner sco tracking">
+        <column name="cmi_name" required="true" size="50" type="VARCHAR"/>
+        <column name="cmi_value" required="true"  size="50" type="VARCHAR"/>
+        <column name="course_id" required="true" size="50" type="VARCHAR"/>
+        <column name="sco_id" required="true" size="255" type="VARCHAR"/>
+        <column name="member_id" required="true" size="50" type="VARCHAR"/>
+        <column name="cmi_value_text" required="true" size="255" type="VARCHAR"/>
+</table>
 </database>

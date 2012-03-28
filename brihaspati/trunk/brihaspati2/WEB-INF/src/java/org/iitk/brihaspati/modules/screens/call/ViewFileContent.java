@@ -181,7 +181,8 @@ public class ViewFileContent extends SecureScreen
 			else if(Type.equals("Scormpackage"))
                         {
                                 String topic=pp.getString("topic","")+"/";
-                                String dir=pp.getString("dir","")+"/";
+                                //String dir=pp.getString("dir","")+"/";
+                                String dir=(String)data.getUser().getTemp("course_id")+"/";
                                 String docRoot=data.getServletContext().getRealPath("/Courses")+"/";
                                 filePath=docRoot+dir+"Scormpackage/"+topic+fileID;
                         }

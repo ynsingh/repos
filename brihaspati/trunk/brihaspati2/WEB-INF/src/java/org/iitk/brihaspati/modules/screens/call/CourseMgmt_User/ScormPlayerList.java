@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
 /*
  * @(#)ScormPlayerList.java	
  *
- *  Copyright (c) 2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2009,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -36,7 +36,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
  * 
  */
 /**
- *This class contains code for Creating a group
+ *This class contains code for the total list of scorm package
  *@author: <a href="mailto:seema_020504@yahoo.com">Seemapal</a>
  *@author: <a href="mailto:kshuklak@rediffmail.com">Kishore Kumar shukla</a>
  */
@@ -54,11 +54,13 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.ListManagement;
+import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+
  public class ScormPlayerList extends SecureScreen 
   {
   
@@ -82,6 +84,7 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
                 	context.put("mode",mode);
                 	String type=pp.getString("type","");
                 	context.put("type",type);
+			String inst_id=(String)user.getTemp("Institute_id");
 			/**
                          *Time calculaion for how long user use this page.
                          */
@@ -97,7 +100,7 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
                         if(!scormDir.exists())
                                 scormDir.mkdirs();
 			String courseRealPath=TurbineServlet.getRealPath("/Courses");
-			String filepath=(courseRealPath+"/"+course_id+"/"+"/Scormpackage");
+			String filepath=(courseRealPath+"/"+course_id+"/"+"Scormpackage");
 			File pathlistxml= new File(filepath+"/PackageList.xml");
                         if(!pathlistxml.exists())
                                 TopicMetaDataXmlWriter.writeWithRootOnly(pathlistxml.getAbsolutePath());
@@ -108,13 +111,15 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 			boolean found=false;
 			String PDate="",topicname="",status="";
 			topicmetadata=new TopicMetaDataXmlReader(filepath+xmlfile);
-                	topicList=topicmetadata.getFileDetails();
-             		context.put("topicList",topicList);
+			if(Role.equals("instructor"))
+                		topicList=topicmetadata.getFileDetails();
+			else
+				topicList=ReadEntry(filepath,xmlfile);
           		if(topicList==null)
                                 return;
                                 if(topicList.size()!=0)
                                 {
-                                       String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                                       String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteProfileDir"+"/"+inst_id+"Admin.properties";
                                        String AdminConf = AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
                                        context.put("userConf",new Integer(AdminConf));
                                        context.put("userConf_string",AdminConf);
@@ -158,4 +163,31 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 			data.setMessage("The Error in ScormPlayerList screen !! "+e);
 		}
     	}
+	public  Vector ReadEntry(String filePath,String xmlfile)
+        {
+                Vector Read=new Vector() ;
+                try
+                {
+                        XmlWriter xmlWriter=null;
+                        TopicMetaDataXmlReader tr =new TopicMetaDataXmlReader(filePath+xmlfile);
+                        Vector Readtr=tr.getFileDetails();
+                        if(Read != null)
+                        {
+                                for(int n=0;n<Readtr.size();n++)
+                                {
+                                        String name =((FileEntry)Readtr.elementAt(n)).getName();
+                                        String Alias =((FileEntry)Readtr.elementAt(n)).getAlias();
+                                        if(Alias.equals("Launch"))
+                                        {
+						FileEntry filelist=new FileEntry();
+						filelist.setName(name);
+                                                filelist.setAlias(Alias);
+                                                Read.addElement(filelist);
+                                        }
+                                }
+                        }
+                }//try
+                catch(Exception e){ErrorDumpUtil.ErrorLog("Error in method [ScormPlayerList]:ReadEntry !!"+e);}
+                return Read;
+        }//readmethod
 }
