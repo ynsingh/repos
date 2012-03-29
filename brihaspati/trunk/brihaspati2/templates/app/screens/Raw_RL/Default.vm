@@ -23,7 +23,11 @@ $page.setBgColor("$ui.bgcolor")
 ##getting the varible from screen file for video files
 
 #set($result=$data.getParameters().getString("str"))
-#if($result=="video")
+#if($result=="runscorm")
+<body valign="left">
+  $screen_placeholder
+</body>
+#elseif($result=="video")
 <body valign="left">
         <table align="center"  height="600px">
                 <tr valign="middle">
