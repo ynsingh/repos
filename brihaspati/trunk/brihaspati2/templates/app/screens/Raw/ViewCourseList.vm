@@ -22,7 +22,7 @@ $!data.getMessage()
 	</td>
 </tr>
 </table>
-<form name="frm" method="Post">
+<form name="frm" method="Post" action="$link.setPage("ViewCourseList.vm")">
 #set($listConf = ["10","20","30","40","50"] )
 <table align="left" width="100%" bgcolor="$ui.tableColor">
 <tr><td>
@@ -65,6 +65,19 @@ $!data.getMessage()
 			</select>
                 </td>
 <td><b>$brih_search $brih_courses</b>&nbsp;&nbsp;<input type="text" name="SearchKey" value="" onSelect="ShowList(document.frm,this);"/></td>
+<td align="right">
+#if( $total_size!=0 )
+	#if( $endIndex < $total_size )
+		#if( $endIndex < $ListConf )
+	                #if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_Of $total_size #end
+                #else
+	                #if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $endIndex] #else [$k - $endIndex] $brih_Of $total_size #end
+	        #end
+	#else
+                #if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_Of $total_size #end
+        #end
+#end
+</td>
 </tr>
 </table>
 #if($status!="empty")
@@ -111,18 +124,18 @@ $!data.getMessage()
           	#elseif($startIndex== $ListConf_str)
           	<u><font color="white">$brih_first</font></u> &nbsp;
           	<u><font color="white">$brih_pre</font></u> &nbsp;
-          	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("startIndex",$startIndex)">$brih_nxt</a> &nbsp;
-          	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("startIndex",$check_last)">$brih_last</a> &nbsp;
+          	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$startIndex)">$brih_nxt</a> &nbsp;
+          	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_last)">$brih_last</a> &nbsp;
          	#elseif($endIndex == $total_size || $endIndex > $total_size)
-         	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("startIndex",$check_first)">$brih_first</a> &nbsp;
-         	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("startIndex",$check_pre)">$brih_pre</a> &nbsp;
+         	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_first)">$brih_first</a> &nbsp;
+         	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_pre)">$brih_pre</a> &nbsp;
          	<u><font color="white">$brih_nxt</font></u> &nbsp;
          	<u><font color="white">$brih_last</font></u> &nbsp;
           	#else
-           	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("startIndex",$check_first)">$brih_first</a> &nbsp;
-           	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("startIndex",$check_pre)">$brih_pre</a> &nbsp;
-           	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex)">$brih_nxt</a> &nbsp;
-            	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("startIndex",$check_last)">$brih_last</a> &nbsp;
+           	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_first)">$brih_first</a> &nbsp;
+           	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_pre)">$brih_pre</a> &nbsp;
+           	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex)">$brih_nxt</a> &nbsp;
+            	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_last)">$brih_last</a> &nbsp;
 		#end
 
 
