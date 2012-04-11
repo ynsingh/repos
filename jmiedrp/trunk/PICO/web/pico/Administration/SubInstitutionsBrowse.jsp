@@ -21,7 +21,7 @@
     </head>
     <body class="twoColElsLtHdr">
         <div id="container">
-            <div id="header">
+            <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
             <div id="sidebar1">
@@ -45,29 +45,26 @@
                         <display:column property="institutionmaster.imName" title="Institution Name"
                                     maxLength="35" headerClass="gridheader"
                                     class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" style="width:20%" sortable="true"/>
-                    <display:column property="simName" title="College/Faculty/School Name"
+                    <display:column property="simName" title="College/Faculty/School"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:20%" sortable="true"/>
-                    <%-- <display:column property="subinstitutiontype.erpmgmEgmDesc" title="Type"
-                                    maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/> --%>
+                                    class="griddata" sortable="true"/>
                     <display:column property="simShortName" title="Short Name"
-                                    maxLength="10" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
+                                    maxLength="10" headerClass="gridheader" style="width:20%"
+                                    class="griddata" sortable="true"/>
                     <display:column property="statemaster.stateName" title="State"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
-                    <display:column property="simEmailId" title="E-Mail"
+                                    class="griddata" sortable="true"/>
+                    <display:column property="simEmailId" title="E_Mail_ID"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:20%" sortable="true"/>
+                                    class="griddata" sortable="true"/>
                     <display:column paramId="SIMID" paramProperty="simId"
                                     href="/pico/Administration/EditSubInstitution"
                                     headerClass="gridheader" class="griddata" media="html"  title="Edit" >
-                                    <img align="left" src="../images/edit.jpg" border="0" alt="Edit" style="cursor:pointer;" title="Edit"/>
+                                    Edit
                     </display:column>
                     <display:column paramId="SIMID" paramProperty="simId" href="/pico/Administration/DeleteSubInstitution.action"
                                     headerClass="gridheader" class="griddata" media="html" title="Delete" style="width:30%" >
-                         <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete" style="cursor:pointer;" title="Delete"/>
+                                    Delete
                     </display:column>
                 </display:table>
                 </table>

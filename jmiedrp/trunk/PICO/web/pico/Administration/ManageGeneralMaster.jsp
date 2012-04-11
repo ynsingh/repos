@@ -27,7 +27,7 @@
     </head>
     <body class="twoColElsLtHdr">        
         <div id="container" >
-            <div id="header">
+            <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
 
@@ -35,7 +35,7 @@
                 <jsp:include page="menu.jsp" flush="true"></jsp:include>
             </div>
             <!-- *********************************End Menu****************************** -->
-            <div id ="mainContent">                
+            <div id ="mainContent"> <br><br>
                 <p align="center"><s:label value="GENERAL MASTER MANAGEMENT" cssClass="pageHeading"/></p>
                 <p align="center"><s:property value="message" /></p>
                 <s:form name="frmGeneralMasterAddEdit" action="SaveGeneralMasterAction"  validate="true">
@@ -49,6 +49,10 @@
                                     <s:textfield label="General Master Entry" name="erpmgm.erpmgmEgmDesc" title="Enter General Master Entry" 
                                                  required="true" requiredposition="left" maxLength="50" size="50"  cssClass="textInput"/>
                                     <s:textfield label="Remarks" name="erpmgm.erpmgmerpmgmRemarks" title="Remarks about General Master Entry"
+                                                 required="true" requiredposition="left" maxLength="50" size="50" cssClass="textInput" />
+                                    <s:textfield label="testingRemarks" name="erpmgm.erpgmEgmRemarks" title="Remarks about General Master Entry"
+                                                 required="true" requiredposition="left" maxLength="50" size="50" cssClass="textInput" />
+                                    <s:textfield label="checksRemarks" name="erpmgm.erpgmEgmChecks" title="Remarks about General Master Entry"
                                                  required="true" requiredposition="left" maxLength="50" size="50" cssClass="textInput" />
                                 </td>
                             </tr> <tr>
@@ -91,12 +95,12 @@
                          <display:column paramId="ErpmgmEgmId" paramProperty="erpmgmEgmId"
                                     href="/pico/Administration/EditGeneralMasterAction.action"
                                     headerClass="gridheader" class="griddata" media="html"  title="Edit">
-                                    <img align="right" src="../images/edit.jpg" border="0" alt="Edit" style="cursor:pointer;"/>
+                                    Edit
                     </display:column>
                     <display:column paramId="ErpmgmEgmId" paramProperty="erpmgmEgmId"
                                     href="/pico/Administration/DeleteGeneralMasterAction.action"
                                     headerClass="gridheader" class="griddata" media="html" title="Delete">
-                                    <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;"/>
+                                    Delete
                     </display:column>
                 </display:table>
                 </td></tr>

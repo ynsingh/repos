@@ -32,6 +32,7 @@
             </div>
             
             <!-- *********************************End Menu****************************** -->
+            <br><br>
             
             <div id ="mainContent">
                 <p align="center"><s:label value="ITEM MASTER" cssClass="pageHeading"/></p>
@@ -42,23 +43,23 @@
                     <table border="0" cellpadding="4" cellspacing="0" align="center">
                         <tbody>
                             <tr>
-                                <td><br><s:submit theme="simple" name="bthReset" value="Browse Items"  action="BrowseItems"/>
+                                <td><br>
                                     <s:select label="Institution" name="erpmim.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"
                                               onchange="getCapitalCategoryList('SaveItemMaster_erpmim_institutionmaster_imId', 'SaveItemMaster_erpmim_erpmCapitalCategory_erpmccId')"/>
-                                    <s:textarea required="true" requiredposition="left" rows="3" cols="100" maxLength="500"
-                                                 label="Item Brief Description" name="erpmim.erpmimItemBriefDesc" title="Enter Item Brief Description" />
+                                    <s:textarea required="true" requiredposition="left" rows="5" cols="100" maxLength="500"
+                                                 label="Item Brief Description" name="erpmim.erpmimItemBriefDesc" title="Enter Item Brief Description"  />
                                     <s:textfield required="false" requiredposition="left" maxLength="20" size="20"
                                                  label="Item Make" name="erpmim.erpmimMake" title="Enter Item Make" />
                                     <s:textfield required="false" requiredposition="left" maxLength="20" size="20"
                                                  label="Item Model" name="erpmim.erpmimModel" title="Enter Item Model" />
                                     <s:select label="Item Type" name="erpmim.erpmItemCategoryMasterByErpmimItemCat1.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList1" listKey="erpmicmItemId" listValue="erpmicmCatDesc"
-                                              onchange="getSubCategoryList('SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat1_erpmicmItemId', 'SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId')"/>
+                                              onchange="getSubCategoryList('SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat1_erpmicmItemId', 'SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId')" ondblclick="getSubCategoryList('SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat1_erpmicmItemId');"/>
                                     <s:select label="Item Category" name="erpmim.erpmItemCategoryMasterByErpmimItemCat2.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList2" listKey="erpmicmItemId" listValue="erpmicmCatDesc"
-                                              onchange="getSubCategoryList('SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId', 'SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat3_erpmicmItemId')"/>
+                                              onchange="getSubCategoryList('SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId', 'SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat3_erpmicmItemId')" ondblclick="getSubCategoryList('SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId');"/>
                                     <s:select label="Item Sub Category" name="erpmim.erpmItemCategoryMasterByErpmimItemCat3.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList3" listKey="erpmicmItemId" listValue="erpmicmCatDesc"  />
                                     <s:select label="Unit of Purchase" name="erpmim.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="erpmGmIdList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc"/>
                                     <s:select label="Capital Category" name="erpmim.erpmCapitalCategory.erpmccId" headerKey="" headerValue="-- None --" list="erpmCapitalCategoryList" listKey="erpmccId" listValue="ermccDesc"/>
-                                    <s:textarea required="true" requiredposition="left" rows="5" cols="100" maxLength="2000"
+                                    <s:textarea required="true" requiredposition="left" rows="20" cols="100" maxLength="2000"
                                                  label="Detailed Description" name="erpmim.erpmimDetailedDesc" title="Enter Detailed Description" />
                                     <s:textfield required="false" requiredposition="left" maxLength="100" size="50"
                                                  label="Remarks" name="erpmim.erpmimRemarks" title="Enter Remarks, if any" />                                    

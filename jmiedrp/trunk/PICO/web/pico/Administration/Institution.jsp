@@ -1,10 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
-<html>
+
+
+   <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>ERP Mission - A Project sponsored by NMEICT, MHRD, Govt. of India</title>
@@ -18,6 +19,7 @@
         <meta name="author" content="S.Kazim Naqvi, Jamia Millia Islamia">
         <meta name="email" content="sknaqvi@jmi.ac.in">
         <meta name="copyright" content="NMEICT, MHRD, Govt. of India">
+        <s:head />
     </head>
     <body class="twoColElsLtHdr">
         <div id="container">
@@ -29,69 +31,113 @@
                 <jsp:include page="menu.jsp" flush="true"></jsp:include>
             </div>
             <!-- *********************************End Menu****************************** -->
+
+
             <div id ="mainContent">
-               <s:form name="frmInstitution" action="SaveInstitutionAction"  validate="true">
+                <s:bean name="java.util.HashMap" id="qTableLayout">
+                    <s:param name="tablecolspan" value="%{8}" />
+                </s:bean>
+
+               <s:form name="frmInstitution" action="SaveInstitutionAction" theme="qxhtml">
                    <s:hidden name="im.imId" />
-                    <table border="0" cellpadding="4" cellspacing="0" align="center">
-                        <tbody>
-                            <tr>
-                                <td colspan="2" align="left">                                    
-                            </tr>
-                            <tr>
-                                <td valign="middle" class="FormContent">
-                                    <s:label value="INSTITUTION RECORDS MANAGEMENT"  cssClass="pageHeading"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td> <br><br>
-                                     <%--<s:submit theme="simple" name="btnSubmit" value="Browse Institutions" action="BrowseInstitutions" />--%>
-                                  <s:url action="BrowseInstitutions" id="NavigatetoURL" ></s:url>
-                                    <a href='<s:property value="NavigatetoURL"/>'>Browse Institutions</a>
-                                    <br>
-                                  <s:textfield requiredposition="left" maxLength="100" size="100"
-                                                 label="Institution Name" required="true" name="im.ImName" title="Enter InstitutionName" cssClass="textInput" />
-                                  <s:select label="Institution Head Name" required="true" name="im.employeemaster.empId" headerKey="" headerValue="-- Please Select --" list="empList" listKey="empId" listValue="empFname+' '+empMname+' '+empLname" cssClass="textInput"/>
 
-                                   <s:select label="Institution Type" required="true" name="im.erpmgmInstitutiontype.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="institutiontypeList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc" cssClass="textInput"/>
-                                   <s:textfield required="true" requiredposition="left" maxLength="10" size="10"
-                                                 label="Institution Short Name" name="im.ImShortName" title="Enter Short Name for InstitutionName"  cssClass="textInput"/>
-                                   <s:textfield required="true" requiredposition="left" maxLength="50" size="50"
-                                                 label="Institution Address" name="im.ImAddressLine1" title="Enter Institution Address" cssClass="textInput" />
-                                   <s:textfield required="false" requiredposition="left" maxLength="50" size="50"
-                                                 name="im.ImAddressLine2" title="Enter Institution Address"  cssClass="textInput"/>
-                                   
-               <s:select label="Country" required="true" name="im.countrymaster.countryId" headerKey="" headerValue="-- Please Select --" list="ctList" listKey="countryId" listValue="countryName"
-                onchange="getStateList('SaveInstitutionAction_im_countrymaster_countryId','SaveInstitutionAction_im_statemaster_stateId')"  cssClass="textInput"/>
-               <s:select label="State" required="true" name="im.statemaster.stateId" headerKey="" headerValue="-- Please Select --" list="statemasterList" listKey="stateId" listValue="stateName" cssClass="textInput"/>
+                   <p align="center" class="pageHeading">Institution Records Management</p>
 
-               <s:textfield required="false" requiredposition="left" maxLength="50" size="50"
-                 label="District" name="im.ImDistrict" title="Enter Institution Address"  cssClass="textInput"/>
-               <s:textfield required="false" requiredposition="left" maxLength="6" size="6"
-                 label="Pin Code" name="im.ImPinNo" title="Enter Institution Address"  cssClass="textInput"/>
-               <s:textfield required="true" requiredposition="left" maxLength="50" size="50"
-                           label="Institution E-Mail" name="im.ImEmailId" title="Enter Institution E-Mail Address" cssClass="textInput" />
-               </td>
-               </tr> <tr>
-               <td>
-                   <s:submit theme="simple" name="btnSubmit" value="Save Institution"  cssClass="textInput"/>
-               </td>
-               <td>
-               <s:submit theme="simple" name="bthReset" value="Clear" onclick="ClearInstitutionFields();" cssClass="textInput"/>
-               <td>
-               </tr>
-               <tr>
-              <td> <br><br> </td>
-              </tr>
-              <tr>
-              <td> <br><br> </td>
-               </tr>
-              </tbody>
-              </table>
-              </s:form>
+                   <s:textfield requiredposition="left" maxLength="100" size="100" cssErrorStyle="true"
+                                label="Institution Name" required="true" name="im.ImName" title="Enter Institution Name" cssClass="queryInput">
+                       <s:param name="labelcolspan" value="%{2}" />
+                       <s:param name="inputcolspan" value="%{6}" />
+                   </s:textfield>
+
+                    <s:select label="Institution Type" required="true" name="im.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="institutiontypeList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc" cssClass="queryInput">
+                        <s:param name="labelcolspan" value="%{2}" />
+                        <s:param name="inputcolspan" value="%{2}" />
+                   </s:select>
+
+                   <s:textfield required="true" requiredposition="left" maxLength="10" size="10"
+                            label="Institution Short Name" name="im.ImShortName" title="Enter Short Name for InstitutionName"  cssClass="textInput">
+                       <s:param name="labelcolspan" value="%{2}" />
+                       <s:param name="inputcolspan" value="%{2}" />
+                   </s:textfield>
+
+                   <s:select label="Institution Head Name" required="true" name="im.employeemaster.empId"
+                             headerKey="0" headerValue="-- Please Select --" list="empList" listKey="empId" listValue="empFname+' '+empMname+' '+empLname" cssClass="textInput">
+                        <s:param name="labelcolspan" value="%{2}" />
+                        <s:param name="inputcolspan" value="%{6}" />
+                   </s:select>
+
+                   <s:textfield required="true" requiredposition="left" maxLength="50" size="100"
+                                label="Institution Address" name="im.ImAddressLine1" title="Enter Institution Address" cssClass="textInput" >
+                        <s:param name="labelcolspan" value="%{2}" />
+                        <s:param name="inputcolspan" value="%{6}" />
+                   </s:textfield>
+
+                   <s:textfield required="false" requiredposition="left" maxLength="50" size="100"
+                                label="Address Line-2" name="im.ImAddressLine2" title="Enter Institution Address"  cssClass="textInput">
+                        <s:param name="labelcolspan" value="%{2}" />
+                        <s:param name="inputcolspan" value="%{6}" />
+                   </s:textfield>
+
+                   <s:textfield required="false" requiredposition="left" maxLength="50" size="50"
+                                label="District" name="im.ImDistrict" title="Enter Institution Address"  cssClass="textInput">
+                        <s:param name="labelcolspan" value="%{2}" />
+                        <s:param name="inputcolspan" value="%{3}" />
+                   </s:textfield>
+
+                   <s:textfield required="false"  cssStyle="right" maxLength="6" size="18"
+                                label="Pin Code" name="im.ImPinNo" title="Enter Institution Address"  cssClass="textInput">
+                        <s:param name="labelcolspan" value="%{1}" />
+                        <s:param name="inputcolspan" value="%{2}" />
+                   </s:textfield>
+
+                   <s:select label="State" required="true" name="im.statemaster.stateId" headerKey="" headerValue="-- Please Select --" list="statemasterList" listKey="stateId" listValue="stateName" cssClass="queryInput">
+                        <s:param name="labelcolspan" value="%{2}" />
+                        <s:param name="inputcolspan" value="%{2}" />
+                   </s:select>
+
+                   <s:select label="Country" required="true" name="im.countrymaster.countryId" headerKey="" headerValue="-- Please Select --" list="ctList" listKey="countryId" listValue="countryName"
+                             onchange="getStateList('SaveInstitutionAction_im_countrymaster_countryId','SaveInstitutionAction_im_statemaster_stateId')"  cssClass="textInput" ondblclick="getCountryList('SaveInstitutionAction_im_countrymaster_countryId');">
+                        <s:param name="labelcolspan" value="%{2}" />
+                        <s:param name="inputcolspan" value="%{2}" />
+                   </s:select>
+
+                  <s:textfield required="true" requiredposition="left" maxLength="100" size="100"
+                               label="Institution E-Mail" name="im.ImEmailId" title="Enter Institution E-Mail Address" cssClass="textInput">
+                        <s:param name="labelcolspan" value="%{2}" />
+                        <s:param name="inputcolspan" value="%{6}" />
+                   </s:textfield>
+
+                   <tr><td> &nbsp; </td></tr>
+                   <s:submit value="Save Institution" >
+                        <s:param name="colspan" value="%{3}" />
+                        <s:param name="align" value="%{'center'}" />
+                    </s:submit>
+
+                   <s:submit name="btnSubmit" value="Browse Institution" action="BrowseInstitutions">
+                        <s:param name="colspan" value="%{2}" />
+                        <s:param name="align" value="%{'center'}" />
+                    </s:submit>
+
+                   <s:submit value="Clear Screen" onclick="ClearInstitutionFields();" >
+                        <s:param name="colspan" value="%{2}" />
+                        <s:param name="align" value="%{'center'}" />
+                    </s:submit>
+
+
+                   <s:submit name="btnReport" value="Export Data" action="PrintInstitutions">
+                        <s:param name="colspan" value="%{1}" />
+                        <s:param name="align" value="%{'center'}" />
+                   </s:submit>
+
+                   <tr><td> &nbsp; </td></tr>
+                   </s:form>
               </div>
               <div id="footer">
               <jsp:include page="footer.jsp" flush="true"></jsp:include>
               </div>
               </div>
               </body>
-              </html>
+
+   </html>
+
+

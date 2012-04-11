@@ -37,61 +37,49 @@
                 <jsp:include page="../Administration//menu.jsp" flush="true"></jsp:include>
             </div>
             <!-- *********************************End Menu****************************** -->
-            <div id ="mainContent" >
+            <div id ="mainContent" ><br><br>
                 <p align="center"><s:label cssClass="pageHeading" value="MANAGE ITEM RATES TAXES" /></p>
 
                 <%--------------------this is a internal indent request form fill by internal users--------------------%>
 
                  <s:form name="Frmitemratetaxes" action="SaveIndentRateTaxes"  validate="true" >
-                    <p align="left" class="pageMessage"><s:property value="message" /></p>
-                    <s:hidden name ="itemrate.irItemRateId" />
-                    <s:hidden name="itemratedet.irdItemRateDetailsId" />
+                 <p align="left" class="pageMessage"><s:property value="message" /></p>
+                 <s:hidden name ="itemrate.irItemRateId" />
                   <s:hidden name="itemratetax.irtItemRateTaxesId" />
-                    
+
+<%--                 <s:textfield  cssClass="textInputRO"  maxLength="10" size="10"
+                        label="You are now Adding Items Rate Taxes For The Item Rate Detail ID_NO:" name="itemratedet.irdItemRateDetailsId" title="" readonly="true"/>
 
                 <s:textfield  cssClass="textInputRO"  maxLength="10" size="10"
-               label="You are now Adding Items  Rate Taxes For The Item Rate ID_NO:" name="defaultRate" title="" readonly="true"/>
+                    label="You are now Adding Taxes For Item ID_NO:" name="Default_Item_Supplier" title="" readonly="true"/>
+--%>
+                <s:textfield cssClass="textInputRO"  requiredposition="left" maxLength="50" size="50"
+                       label="Item Name" name="itemrate.erpmItemMaster.erpmimItemBriefDesc" readonly="True" />
+                <s:textfield cssClass="textInputRO"  requiredposition="left" maxLength="50" size="50"
+                       label="Supplier Name" name="itemrate.suppliermaster.smName" readonly="True" />    
+                <s:textfield cssClass="textInput" required="" requiredposition="left" maxLength="50" size="30"
+                       label="Tax Name" name="itemratetax.irtTaxName" title="" />
+                <s:textfield cssClass="textInput" required="" requiredposition="left" maxLength="6" size="30"
+                       label="Tax Percent" name="itemratetax.irtTaxPercent" title=""  />
+                <s:textfield cssClass="textInput" required="" requiredposition="left" maxLength="6" size="30"
+                       label="Tax on Value Percent" name="itemratetax.irtTaxOnValuePercent" title="" />
+                <s:textfield cssClass="textInput" required="" requiredposition="left" maxLength="6" size="30"
+                       label="Surcharge Percent" name="itemratetax.irtSurchargePercent" title=""  />
 
-       
- 
-
-          <s:textfield cssClass="textInputRO" required="" requiredposition="left" maxLength="50" size="50"
-                       label="Item Name" name="itemrate.erpmItemMaster.erpmimItemBriefDesc" readonly="True"   disabled="True"/>
-
-
-          <s:textfield cssClass="textInputRO" required="" requiredposition="left" maxLength="50" size="50"
-                       label="Supplier Name" name="itemrate.suppliermaster.smName" readonly="True" />
-
-        
-          <s:textfield cssClass="textInput" required="" requiredposition="left" maxLength="50" size="50"
-                    label="Tax Name" name="itemratetax.irtTaxName" title="" />
-
-          <s:textfield cssClass="textInput" required="" requiredposition="left" maxLength="50" size="50"
-                    label="Tax Percent" name="itemratetax.irtTaxPercent" title="" />
-
-          <s:textfield cssClass="textInput" required="" requiredposition="left" maxLength="50" size="50"
-                    label="Tax on Value Percent" name="itemratetax.irtTaxOnValuePercent" title="" />
-
-          <s:textfield cssClass="textInput" required="" requiredposition="left" maxLength="50" size="50"
-                    label="Surcharge Percent" name="itemratetax.irtSurchargePercent" title="" />
-
-          <s:submit cssClass="savebutton"  name="btnSubmit" value="Save" />
+                <s:submit cssClass="savebutton"  name="btnSubmit" value="Save" />
+       </s:form>
+       </div>
 
 
-
-                       </s:form>
-            </div>
-
-
-             <div id ="mainContent" align="center">
-             <s:form name="frmitemratetaxrowse">
+       <div id ="mainContent" align="center">
+       <s:form name="frmitemratetaxrowse">
                  <table width="60%" border="1" cellspacing="0" cellpadding="0" align="center" >
                     <tr><td>
                     <display:table name="itemratetaxlist" pagesize="15"
                                excludedParams="*" export="true" cellpadding="0"
                                cellspacing="0" summary="true" id="doc"
                                requestURI="/PrePurchase/ManageItemRates.action">
-                        <display:column  class="griddata" title="Record" style="width:40%" sortable="true" maxLength="100" headerClass="gridheader">
+                        <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
                         <c:out> ${doc_rowNum}
                         </display:column>
 
@@ -101,17 +89,13 @@
                                    style="width:30%" sortable="true"  href=""/>
                        <display:column property="irtTaxPercent" title="Tax %"
                                     maxLength="100" headerClass="gridheader"
-                                    class="griddata" style="width:40%" sortable="true"/>
-
-                       <display:column property="irtTaxOnValuePercent" title="Taxon Value %"
+                                    class="griddata"  sortable="true"/>
+                       <display:column property="irtTaxOnValuePercent" title="Tax on Value %"
                                     maxLength="100" headerClass="gridheader"
-                                    class="griddata" style="width:40%" sortable="true"/>
-
+                                    class="griddata" sortable="true"/>
                        <display:column property="irtSurchargePercent" title="Surcharge %"
                                     maxLength="100" headerClass="gridheader"
-                                    class="griddata" style="width:40%" sortable="true"/>
-
-                   
+                                    class="griddata" sortable="true"/>               
                         <display:column paramId="IrtItemRateTaxesId" paramProperty="irtItemRateTaxesId"
                                     href="/pico/PrePurchase/DeleteIndentRateTaxes.action?itemratedet.irdItemRateDetailsId=${param['itemratedet.irdItemRateDetailsId']}"
                                     headerClass="gridheader" class="griddata" media="html">

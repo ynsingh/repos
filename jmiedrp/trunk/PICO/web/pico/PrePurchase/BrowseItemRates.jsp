@@ -27,7 +27,7 @@
     </head>
     <body class="twoColElsLtHdr">
         <div id="container">
-            <div id="header">
+            <div id="headerbar1">
                 <jsp:include page="../Administration/header.jsp" flush="true"></jsp:include>
             </div>
             <div id="sidebar1">
@@ -53,19 +53,19 @@
                                     class="griddata" style="width:30%" sortable="true"/>
                     <display:column property="erpmItemMaster.erpmimItemBriefDesc" title="Item_Name"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
+                                    class="griddata" sortable="true"/>
                     <display:column property="suppliermaster.smName" title="Supplier_Name"
                                    maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
+                                    class="griddata" sortable="true"/>
                     <display:column property="erpmGenMasterByIrCurrencyId.erpmgmEgmDesc" title="Currency"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>                
+                                    class="griddata" sortable="true"/>                
                     <display:column property="erpmGenMasterByIrWarrantyStartsFromId.erpmgmEgmDesc" title="Warranty_Starts_From"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
+                                    class="griddata" sortable="true"/>
                     <display:column property="irWarrantyMonths" title="Warranty_Months"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
+                                    class="griddata" sortable="true"/>
 
                  <%--   <display:column property="itemratedet.irdWefDate" title="Warranty_Months"
                                     maxLength="35" headerClass="gridheader"

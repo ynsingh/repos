@@ -57,10 +57,13 @@
                             </tr> <tr>
                                 <td>
                                     <s:submit theme="simple" name="btnSubmit" value="Save Role"  />
-                                </td>
-                                <td>
+                                
+                                
+                                    <s:submit theme="simple" name="btnSubmit" value="Clear"  />
+                                
+                                
                                     <s:submit theme="simple" name="bthReset" value="Fetch Roles" action="FetchIUR" />
-                                <td>
+                                </td>
                             </tr>
                             <tr><td><br></td><td><br></td></tr>
                         </tbody>
@@ -99,12 +102,12 @@
                         <display:column paramId="IurId" paramProperty="iurId"
                                     href="/pico/Administration/EditIUR.action"
                                     headerClass="gridheader" class="griddata" media="html" >
-                                    <img align="right" src="../images/edit.jpg" border="0" alt="Edit" style="cursor:pointer;"/>
+                                    Edit
                         </display:column>
                         <display:column paramId="IurId" paramProperty="iurId"
                                     href="/pico/Administration/DeleteIUR.action"
                                     headerClass="gridheader" class="griddata" media="html">
-                                    <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;"/>
+                                    Delete
                         </display:column>
                 </display:table>
                 </table>

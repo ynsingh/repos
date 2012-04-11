@@ -1,4 +1,3 @@
-
 <%-- Document   : IndentForm
     Created on : April 19, 2011, 12:28:32 PM
     Author     : Sajid Aziz
@@ -6,7 +5,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="sx" uri="/struts-dojo-tags" %>
-<%@taglib prefix="html" uri="/struts-tags"%>
+<%@ taglib prefix="html" uri="/struts-tags"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 
 
@@ -37,7 +36,7 @@
                 <jsp:include page="../Administration//menu.jsp" flush="true"></jsp:include>
             </div>
             <!-- *********************************End Menu****************************** -->
-            <div id ="mainContent" >
+            <div id ="mainContent" ><br><br>
                           <p align="center"><s:label cssClass="pageHeading" value="MANAGE PURCHASE ORDER" /></p>
 
                 <%--------------------this is a internal indent request form fill by internal users--------------------%>
@@ -48,11 +47,17 @@
                     <p align="left" class="pageMessage"><s:property value="message" /></p>
                     <s:hidden name ="podetail.podPodetailsId" />
                     <s:hidden name="pomaster.pomPoMasterId" />
-                  
+                    <s:hidden name ="pomaster.institutionmaster.imId"/>
+
+                     <table border="0" cellpadding="4" cellspacing="0" align="center" >
+                        <tbody>
+                            <tr>
+
+
      <s:textfield  cssClass="textInputRO"  maxLength="10" size="10"
                    label="You are now Adding Detail PO  For The PO ID_NO:" name="defaultPOM" title="" readonly="true"/>
-     <s:textfield  cssClass="textInputRO"  maxLength="50" size="50"
-                     label="PO  Date" name="pomaster.pomPoDate" title="" readonly="true" maxLength="30" size="30" />
+
+     <s:textfield  cssClass="textInputRO"  maxLength="50" size="50" label="PO  Date" name="pomaster.pomPoDate" title="" readonly="true" maxLength="30" size="30" />
      <s:textfield  cssClass="textInputRO"  maxLength="50" size="50"
                      label="Insitute Name" name="pomaster.institutionmaster.imName" title="" readonly="true" maxLength="30" size="30" />
      <s:textfield  cssClass="textInputRO"  maxLength="50" size="50"
@@ -63,26 +68,41 @@
                      label="Supplier" name="pomaster.suppliermaster.smName" title="" readonly="true" maxLength="30" size="30" />
      <s:textfield  cssClass="textInputRO"  maxLength="50" size="50"
                      label="PO Approved By" name="pomaster.erpmusersByPomApprovedById.erpmuFullName" title="" readonly="true" maxLength="30" size="30" />
-      
+
 
      <br><s:label value="Please Add  Item Details For Your Purchase Orders:" cssClass= "pageSubHeading"/>
-     <s:select cssClass="textInput" label="Item Name" name="podetail.erpmItemMaster.erpmimId" headerKey="" headerValue="-- Please Select --" list="itemlist" listKey="erpmimId" listValue="erpmimItemBriefDesc"
-               ondblclick="getitemList('SavePODetails_podetail_erpmItemMaster_erpmimId');"/>
+     <s:select cssClass="textInput" label="Item Name" name="podetail.erpmItemMaster.erpmimId" headerKey=""
+          headerValue="-- Please Select --" list="itemlist" listKey="erpmimId" listValue="erpmimItemBriefDesc" ondblclick="getitemList('SavePODetails_podetail_erpmItemMaster_erpmimId')"/>
+
      <s:textfield cssClass="textInput" required="" requiredposition="left" maxLength="10" size="30"
                   label="Quantity" name="podetail.podQuantity" title=""  value="0"/>
      <s:textfield cssClass="textInput" required="" requiredposition="left" maxLength="12" size="30"
                    label="Rate" name="podetail.podRate" title="" />
      <s:textfield cssClass="textInput" required="" requiredposition="left" maxLength="8" size="30"
-                    label="Discount" name="podetail.podDiscount" title="" />
-     <br>
-     <s:submit cssClass="savebutton"  name="btnSubmit" value="Add Items" />    
-                       </s:form>
+                    label="Discount" name="podetail.podDiscount" title="" value="0"/>
+
+                </tr> <tr>
+                <td align="right">
+                    <s:submit theme="simple" cssClass="savebutton"  name="btnSubmit" value="Clear" action="ClearPODetail"/>
+                </td>
+                <td>
+                    <s:submit theme="simple" name="bthReset"  name="btnSubmit" value="Add Items" />
+                    <s:submit theme="simple" name="bthBrowse"  value="Fetch PO Details"  action="BrowseMaster"  />
+
+                    <s:submit theme="simple" name="bthBrowse"  value="Browse Indent Items"  action="BrowseIndentItemsfromPO"  />
+
+                </td>
+                </tr>
+         </tbody>
+        </table>
+
+                </s:form>
             </div>
  <div id ="mainContent" align="center">
-             <s:form name="frmPODetails">
-                 <table width="60%" border="1" cellspacing="0" cellpadding="0" align="center" >
+             <s:form name="frmPODetails" align="center">
+                <table width="65%" border="1" cellspacing="0" cellpadding="0" >
                     <tr><td>
-                    <display:table name="podetailslist" pagesize="15"
+                    <display:table name="PODetailList" pagesize="15"
                                excludedParams="*" export="true" cellpadding="0"
                                cellspacing="0" summary="true" id="doc"
                                requestURI="/PrePurchase/ManagePOMaster.action">
@@ -90,23 +110,21 @@
                         <c:out> ${doc_rowNum}
                         </display:column>
 
-
-
                         <display:column property="erpmItemMaster.erpmimItemBriefDesc" title="Item Name"
-                                    maxLength="80" headerClass="gridheader"
-                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"
-                                   style="width:25%" sortable="true"  href=""/>
+                                        maxLength="80" headerClass="gridheader"
+                                        class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"
+                                        style="width:25%" sortable="true"  href="" style="width:30%"/>
 
 
                          <display:column property="podQuantity" title="Quantity"
                                     maxLength="100" headerClass="gridheader"
                                     class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"
-                                   style="width:25%" sortable="true"  href=""/>
+                                   style="width:25%" sortable="true"  href="" style="width:30%"/>
 
 
                         <display:column property="podRate" title="Unit_Rate"
                                     maxLength="100" headerClass="gridheader"
-                                    class="griddata" style="width:25" sortable="true"/>
+                                    class="griddata" style="width:25" sortable="true" style="width:30%"/>
 
                         <display:column property="podDiscount" title="Discount"
                                     maxLength="100" headerClass="gridheader"
@@ -115,38 +133,33 @@
 
                         <display:column paramId="PodetailsId" paramProperty="podPodetailsId"
                                     href="/pico/PrePurchase/DeletePoDetails.action?pomaster.pomPoMasterId=${param['pomaster.pomPoMasterId']}"
-                                    headerClass="gridheader" class="griddata" media="html">
-                                    <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;"/>
+                                    headerClass="gridheader" class="griddata" media="html" title="Delete">
+                                    Delete
                         </display:column>
 
 
                        <display:column paramId="PodetailsId" paramProperty="podPodetailsId"
                                     href="/pico/PrePurchase/EditPODetails.action?pomaster.pomPoMasterId=${param['pomaster.pomPoMasterId']}"
-                                    headerClass="gridheader" class="griddata" media="html">
-                           <img align="left" src="../images/edit.jpg" border="0" alt="Edit"  style="cursor:pointer;"/>
+                                    headerClass="gridheader" class="griddata" media="html" title="Edit">
+                                    Edit
                         </display:column>
 
                     </display:table>
                 <br></td></tr>
                 </table>
-                 <br>
+
                  <%--
-                 
+
        <s:url action="POTerms?POMID=" id="NavigatetoURL"></s:url>
        <p  align="center"><a href="POTerms?pomaster.pomPoMasterId=${param['pomaster.pomPoMasterId']}"><B><BIG>--->GO TO PO TERMS AND CONDITIONS</BIG></B></a>   </p>--%>
 
            <s:url action="POTerms"   id="NavigatetoURL"></s:url>
            <p align="center"><a href='<s:property value="NavigatetoURL" />' ><big>--->GO TO PO TERMS AND CONDITIONS</big></a></p>
 
-                     
-
-
-                     <br>
-
-
              </s:form>
      <br>
-     
+
+
     <%-- <s:submit cssClass="savebutton"  name="btnSubmit" value="Terms and Conditions"   action="POTerms" />--%>
 
             </div>
@@ -156,5 +169,4 @@
         </div>
     </body>
 </html>
-
 

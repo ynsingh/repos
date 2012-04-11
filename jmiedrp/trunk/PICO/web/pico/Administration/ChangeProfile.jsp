@@ -1,4 +1,3 @@
-
 <%--
     Document   : ChangeProfile
     Created on : 8 Jan, 2011, 9:22:50 PM
@@ -32,27 +31,32 @@
     </head>
     <body class="twoColElsLtHdr">
         <div id="container">
-            <div id="header">
+            <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
             <div id="sidebar1">
                 <jsp:include page="menu.jsp" flush="true"></jsp:include>
-            </div>              
+            </div>
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent" align="center">
              <s:form name="frmChangeProfile">
+                 <br>
                  <p align="center"><s:label value="CHANGE USER PROFILE "/><s:property value="erpmuName" /></p>
                  <s:property value="message" />
-                 
+                  <s:submit  name="btnSubmit" value="Request Additional Profile "  action="AddProfile" /><br>
+
+
                  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
-                    <s:url action="AddProfile" id="NavigatetoURL"></s:url>
-                    <p align="left"><a   href='<s:property value="NavigatetoURL"/>'>Request Additional Profile</a></p>
+                  <%--  <s:url action="AddProfile" id="NavigatetoURL"></s:url>
+                    <p align="left"><a   href='<s:property value="NavigatetoURL"/>'>Request Additional Profile</a></p>--%>
+
+
                      <display:table name="erpmurList" pagesize="15" summary="false"
                                    excludedParams="*" export="false" cellpadding="0" id="doc"
                                    cellspacing="0" requestURI="/Administration/ChangeProfile.action">
-                       <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
+                       <display:column  class="griddata" title="SNo" sortable="true" headerClass="gridheader">
                         <c:out> ${doc_rowNum}
-                        </display:column>
+                       </display:column>
                          <display:column property="institutionmaster.imName" title="Institution Name"
                                         maxLength="45" headerClass="gridheader"
                                         class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"
@@ -76,15 +80,16 @@
                          Choose this Profile
                         </display:column>
                         <display:column paramId="erpmurId" paramProperty="erpmurId" href="SetDefaultProfile.action" headerClass="gridheader" class="griddata" media="html" value="Set Default">
-                            
+
                         </display:column>
-                        
+
 
 
                     </display:table>
                 </table>
+             <br><br><br>
              </s:form>
-                 <br>
+
             </div>
              <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>

@@ -1,5 +1,3 @@
-
-
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 
@@ -9,15 +7,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script language="JavaScript" type="text/JavaScript" src="../javaScript/ajax/jquery2.js"></script>        
+        <script language="JavaScript" type="text/JavaScript" src="../javaScript/ajax/jquery2.js"></script>
         <title>ERP Mission - A Project sponsored by NMEICT, MHRD, Govt. of India</title>
         <link href="../css/pico.css" rel="stylesheet" type="text/css" />
         <meta HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-8">
         <meta name="description" content="ERP for Universities">
         <meta name="keywords" content="ERP">
-        <meta name="author" content="Afree Khan, Jamia Millia Islamia">
+        <meta name="author" content="Afreen Khan, Jamia Millia Islamia">
         <meta name="email" content="afreen.mca@gmail.com">
         <meta name="copyright" content="NMEICT, MHRD, Govt. of India">
+        <sx:head />
     </head>
     <body class="twoColElsLtHdr">
         <div id="container">
@@ -30,7 +29,7 @@
 
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent" align="center">
-                <p align="center"><s:label value="SUPPLIER LIST" /></p>
+                <p align="center"><s:label value="SUPPLIER MASTER" cssClass="pageHeading"/></p>
                 <p align="center"><s:property value="message" /></p>
 
                 <s:form name="frmSupplierBrowse">
@@ -62,12 +61,12 @@
                             <display:column paramId="SMID" paramProperty="smId"
                                             href="/pico/PrePurchase/EditSupplier.action"
                                             headerClass="gridheader" class="griddata" media="html"  title="Edit" >
-                                <img align="right" src="../images/edit.jpg" border="0" alt="Edit" style="cursor:pointer;"  title="Edit"/>
+                                            Edit
                             </display:column>
                             <display:column paramId="SMID" paramProperty="smId"
                                             href="/pico/PrePurchase/DeleteSupplier.action"
                                             headerClass="gridheader" class="griddata" media="html" title="Delete" >
-                                <img align="right" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;" title="Delete"/>
+                                            Delete
                             </display:column>
 
                             <display:column paramId="SMID" paramProperty="smId"
@@ -78,6 +77,7 @@
                         </display:table>
                     </table>
                 </s:form>
+                <p/>
             </div>
             <div id="footer">
                 <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>

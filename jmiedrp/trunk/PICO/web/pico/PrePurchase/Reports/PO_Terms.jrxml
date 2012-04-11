@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PO_Terms" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     erpm_po_terms.`POT_POT_ID` AS erpm_po_terms_POT_POT_ID,
+     erpm_po_terms.`POT_POM_ID` AS erpm_po_terms_POT_POM_ID,
+     erpm_po_terms.`POT_TERMS_DESCRIPTION` AS erpm_po_terms_POT_TERMS_DESCRIPTION,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS erpm_gen_master_ERPMGM_EGM_DESC,
+     erpm_gen_master.`ERPGM_EGM_REMARKS` AS erpm_gen_master_ERPGM_EGM_REMARKS
+FROM
+     `erpm_gen_master` erpm_gen_master INNER JOIN `erpm_po_terms` erpm_po_terms ON erpm_gen_master.`ERPMGM_EGM_ID` = erpm_po_terms.`POT_EGM_ID`]]>
+	</queryString>
+	<field name="erpm_po_terms_POT_POT_ID" class="java.lang.Long"/>
+	<field name="erpm_po_terms_POT_POM_ID" class="java.lang.Long"/>
+	<field name="erpm_po_terms_POT_TERMS_DESCRIPTION" class="java.lang.String"/>
+	<field name="erpm_gen_master_ERPMGM_EGM_DESC" class="java.lang.String"/>
+	<field name="erpm_gen_master_ERPGM_EGM_REMARKS" class="java.lang.String"/>
+	<group name="erpm_po_terms_POT_POM_ID">
+		<groupExpression><![CDATA[$F{erpm_po_terms_POT_POM_ID}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="17" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="181" height="17"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PO Terms & Conditions :]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement x="30" y="6" width="506" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_gen_master_ERPMGM_EGM_DESC}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="30" y="22" width="506" height="17"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_po_terms_POT_TERMS_DESCRIPTION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="7" width="24" height="14"/>
+				<textElement>
+					<font size="10"/>
+					<paragraph tabStopWidth="40"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{erpm_po_terms_POT_POM_ID_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

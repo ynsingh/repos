@@ -46,7 +46,7 @@
     </script>
 
 
-            <div id="header">
+            <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
 
@@ -54,6 +54,8 @@
                 <jsp:include page="menu.jsp" flush="true"></jsp:include>
             </div>
             <!-- *********************************End Menu****************************** -->
+            <br><br>
+
             <p align="center"><s:label value="BUDGET HEAD MANAGEMENT" cssClass="pageHeading"/></p>
             <p align="center"><s:property value="message" /></p>
             <div id ="mainContent">
@@ -63,8 +65,9 @@
                         <tbody>
                             <tr>
                                 <td><br>
-                                                            <s:file  name="Record" label="record"
+<%--                                                            <s:file  name="Record" label="record"
                                                       title="Enter the path of the File" ></s:file>
+--%>
                                     <s:select label="Institution" name="bhm.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" cssClass="textInput"/>
                                     <s:textfield required="true" requiredposition="left" maxLength="100" size="50"
                                                  label="Budget Head Name" name="bhm.bhmName" title="Enter Capital Item Category Name"  cssClass="textInput"/>
@@ -111,12 +114,12 @@
                         <display:column paramId="BhmId" paramProperty="bhmId"
                                     href="/pico/Administration/EditBudgetHeadAction.action" 
                                     headerClass="gridheader" class="griddata" media="html"  title="Edit">
-                                    <img align="left" src="../images/edit.jpg" border="0" alt="Edit" style="cursor:pointer;" title="Edit"/>
+                                    Edit
                         </display:column>
                         <display:column paramId="BhmId" paramProperty="bhmId"
                                     href="/pico/Administration/DeleteBudgetHeadAction.action"
                                     headerClass="gridheader" class="griddata" media="html" title="Delete" style="width:30%">
-                                    <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;" title="Delete"/>
+                                    Delete
                         </display:column>
                     </display:table>
                 <br></td></tr>

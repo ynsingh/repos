@@ -23,7 +23,7 @@
      </head>
        <body class="twoColElsLtHdr">
         <div id="container">
-            <div id="header">
+            <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
 
@@ -31,6 +31,7 @@
                 <jsp:include page="menu.jsp" flush="true"></jsp:include>
             </div>
             <!-- *********************************End Menu****************************** -->
+            <br><br>
             <p align="center"><s:label value="DEPARTMENTAL BUDGET ALLOCATION"  cssClass="pageHeading"/>
             <p align="center"><s:property value="message" /></p>
             <div id ="mainContent" >
@@ -89,7 +90,7 @@
                  <display:column property="departmentmaster.dmName" title="Institution"
                                  maxLength="100" headerClass="gridheader"
                                  class="griddata" style="width:20%" sortable="true"/>
-                 <display:column property="budgetheadmaster.bhmName" title="Budget Head Name"
+                 <display:column property="budgetheadmaster.bhmName" title="Budget_Head_Name"
                                   maxLength="100" headerClass="gridheader"
                                   class="griddata"  sortable="true"/>
                   <display:column property="dbaAmount" title="Amount"
@@ -104,13 +105,13 @@
                   <display:column paramId="DBAID" paramProperty="dbaId"
                                     href="/pico/Administration/DeleteDepartmentalBudgetAllocation.action"
                                     headerClass="gridheader" class="griddata" media="html" title="Delete" >
-                                    <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;" title="Delete"/>
+                                    Delete
                    </display:column>
 
                    <display:column paramId="DBAID" paramProperty="dbaId"
                                     href="/pico/Administration/EditDepartmentalBudgetAllocation"
                                     headerClass="gridheader" class="griddata" media="html"  title="Edit">
-                                    <img align="left" src="../images/edit.jpg" border="0" alt="Edit" style="cursor:pointer;" title="Edit"/>
+                                    Edit
                     </display:column>
                     </display:table>
                     <br></td></tr>

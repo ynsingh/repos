@@ -101,20 +101,20 @@
                         <display:column property="potTermsDescription" title="PO_Terms_Description"
                                     maxLength="100" headerClass="gridheader"
                                     class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"
-                                   style="width:30%" sortable="true"  href=""/>
+                                    style="width:50%" sortable="true"  href=""/>
 
 
                         <display:column paramId="PotpoId" paramProperty="potPotId"
                                     href="/pico/PrePurchase/DeletePoTerms.action?pomaster.pomPoMasterId=${param['pomaster.pomPoMasterId']}"
-                                    headerClass="gridheader" class="griddata" media="html">
-                                    <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;"/>
+                                    headerClass="gridheader" class="griddata" media="html" title="Delete">
+                                    Delete
                         </display:column>
 
 
                       <display:column paramId="PotpoId" paramProperty="potPotId"
                                     href="/pico/PrePurchase/EditPoTerms.action?pomaster.pomPoMasterId=${param['pomaster.pomPoMasterId']}"
-                                    headerClass="gridheader" class="griddata" media="html">
-                           <img align="left" src="../images/edit.jpg" border="0" alt="Edit"  style="cursor:pointer;"/>
+                                    headerClass="gridheader" class="griddata" media="html" title="Edit">
+                                    Edit
                         </display:column>
 
 

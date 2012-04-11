@@ -20,17 +20,18 @@
     </head>
     <body class="twoColElsLtHdr">
         <div id="container">
-            <div id="header">
+            <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
             <div id="sidebar1">
-                <jsp:include page="menu.jsp" flush="true"></jsp:include>
+                <jsp:include page="menu.jsp"   flush="true" ></jsp:include >
             </div>
 
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent" align="center">
                 <br>
             <s:form name="frmInstitutionsBrowse">
+                <br>
                    <p align="center"><s:label value="INSTITUTION LIST" /></p>
                  <s:property value="message" />
                  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
@@ -38,37 +39,43 @@
                                excludedParams="*"  cellpadding="0"
                                cellspacing="0"  id="doc"
                                requestURI="/Administration/BrowseInstitutions.action">
-                   <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
+                   <display:column  class="griddata" title="S.No" sortable="true" headerClass="gridheader">
                         <c:out> ${doc_rowNum}
-                        </display:column>
-                        <display:column property="imName" title="Institution Name"
+                   </display:column>
+                   <display:column property="imName" title="Institution Name"
                                     maxLength="35" headerClass="gridheader"
                                     class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"  style="width:20%" sortable="true"/>
-                    <display:column property="imShortName" title="Short Name"
+                   <display:column property="imShortName" title="Short Name"
                                     maxLength="10" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
-                    <display:column property="imAddressLine1" title="Address"
+                                    class="griddata" sortable="true"  />
+                   <display:column property="erpmGenMaster.erpmgmEgmDesc" title="Insitute Type"
+                                    maxLength="30" headerClass="gridheader"
+                                    class="griddata" sortable="true"/>
+                   <display:column property="imEmailId" title="Email Id"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:25%" sortable="true"/>
-                    <display:column property="imEmailId" title="Email Id"
+                                    class="griddata" sortable="true"/>
+                   <display:column property="countrymaster.countryName" title="Country"
+                                    maxLength="30" headerClass="gridheader"
+                                    class="griddata" sortable="true"/>
+                   <display:column property="statemaster.stateName" title="State"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:20%" sortable="true"/>
-                    <display:column property="statemaster.stateName" title="State"
-                                    maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:15%" sortable="true"/>
+                                    class="griddata" sortable="true"/>
                     <display:column paramId="ImId" paramProperty="imId"
                                     href="/pico/Administration/EditInstitution"
-                                    headerClass="gridheader" class="griddata" media="html"  title="Edit">
-                                    <img align="left" src="../images/edit.jpg" border="0" alt="Edit" style="cursor:pointer;" title="Edit"/>
-                    </display:column>                    
+                                    headerClass="gridheader" class="griddata" media="html"   title="Edit">
+                                    Edit
+                                    
+                    </display:column>
                                     <tr><td></td></tr>
-                                    <display:column paramId="imId" paramProperty="imId" href="/pico/Administration/DeleteInstitution.action" headerClass="gridheader" class="griddata" media="html" title="Delete" style="width:20%">
-                                        <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;" title="Delete" />
+                    <display:column paramId="imId" paramProperty="imId" href="/pico/Administration/DeleteInstitution.action"
+                                    headerClass="gridheader"  class="griddata" media="html"  style="width:20%" title="Delete">
+                                    Delete
+                                       
                     </display:column>
                 </display:table>
                 </table>
              </s:form>
-                   <br>
+             <br>
             </div>
              <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>

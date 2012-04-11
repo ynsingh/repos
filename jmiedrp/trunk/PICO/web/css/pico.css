@@ -2,7 +2,7 @@
 
 
 body  {
-   
+
     font: 100% Verdana, Arial, Helvetica, sans-serif;
     background: #666666;
     margin: 0;              /* it's good practice to zero the margin and padding of the body
@@ -54,7 +54,7 @@ size. You may want to adjust based on your final font sizing.
 element. */
 }
 
-.twoColElsLtHdr #header {   
+.twoColElsLtHdr #header {
    background: #DDDAAA;
    padding: 0 5px;     /*      This padding matches the left alignment of the elements
                                 in the divs that appear beneath it. If an image is used in the #header
@@ -83,8 +83,8 @@ by placing a left and right margin on those elements as seen in the
 */
 .twoColElsLtHdr #headerbar1 {
    float:  inherit;
-   background: #DDDAAA;
-   width: 82em;         /* since this element is floated, a width must be given */
+   background: #d6dff7;
+   /*width: 82em;         /* since this element is floated, a width must be given */
    /*background: #EBEBEB; /* the background color will be displayed for the
 length of the content in the column, but no further */
    padding: 2px 3px; /* top and bottom padding create visual space within this
@@ -125,7 +125,7 @@ to give the mainContent "hasLayout." This avoids several IE-specific bugs that
 may occur.
 */
 .twoColElsLtHdr #mainContent {
-  
+
     margin: 0 1.5em 0 13em; /* the right margin can be given in ems or pixels.
 It creates the space down the right side of the page. */
 }
@@ -332,10 +332,15 @@ smallitemCenter{
    color: black;
 }
 
+.Banner {
+   font: 30px/36px Calibri, Verdana, Arial;
+   font-weight:  bold;
+   color: #990000;
+}
 
 .pageHeading {
-   font: 18px/24px Georgia, serif;
-   color: #0000ff; 
+   font: 22px/28px Calibri, Verdana, Arial;
+   color:  darkblue;
 }
 
 .pageSubHeading {
@@ -369,18 +374,47 @@ smallitemCenter{
 }
 
 .tdLabel {
+       font-weight:  normal;
+       font: 14px/16px Verdana, Arial;
+       color: #990000;
+       font-family: "Trebuchet MS";
+       text-align: left;
+       float: left;
+}
+
+.tdSpace {
+       color:  #FFFFFF;
+}
+
+.label {
        font-weight: bold;
        font: 14px/16px Verdana, Arial;
        color: #990000;
        font-family: "Trebuchet MS";
-}
+       float: left;
 
+}
+.checkboxLabel {
+       background-color: #FFFFFF; ;
+       font: 14px/18px Verdana, Arial;
+       color: #990000;
+       font-family: "Trebuchet MS";
+}
 .textInput, textarea {
        background-color: #FFFFFF; ;
        font: 12px/16px Verdana, Arial;
        color: #000000;
        font-family: "Trebuchet MS";
 }
+
+.queryInput, textarea {
+       background-color: #d6dff7; ;
+       font: 12px/16px Verdana, Arial;
+       color: #000000;
+       font-family: "Trebuchet MS";
+}
+
+
 
 .textInputRO, textareaRO {
        background-color: #DDDDDD; ;
@@ -394,7 +428,7 @@ smallitemCenter{
    color: #666;
    text-align: left;
    padding: 5px;
-   font: 14px verdana, serif;
+   font: 14px Calibri, verdana, serif;
    font-weight:bold;
 }
 
@@ -404,4 +438,14 @@ smallitemCenter{
    width:228px;
    color: #786e4e;
    height:37px;
+}
+
+.inputButton{
+ float: left;
+ }
+
+ .errorMessage {
+     font: 14px/24px Calibri, Verdana, Arial;
+     font-weight:  normal;
+     font-style:  italic;
 }

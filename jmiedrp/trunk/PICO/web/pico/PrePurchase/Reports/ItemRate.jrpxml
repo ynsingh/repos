@@ -1,0 +1,954 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperPrint xmlns="http://jasperreports.sourceforge.net/jasperreports/print" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/print http://jasperreports.sourceforge.net/xsd/jasperprint.xsd" name="ItemRate" pageWidth="842" pageHeight="595" topMargin="20" leftMargin="20" bottomMargin="20" rightMargin="20" orientation="Landscape" locale="en_IN" timezone="Asia/Calcutta">
+	<property name="net.sf.jasperreports.export.xml.start.page.index" value="0"/>
+	<property name="net.sf.jasperreports.export.xml.end.page.index" value="1"/>
+	<property name="net.sf.jasperreports.export.xml.page.count" value="2"/>
+	<origin band="background"/>
+	<origin band="pageHeader"/>
+	<origin band="columnHeader"/>
+	<origin band="detail"/>
+	<origin band="pageFooter"/>
+	<origin report="Item_Tax_Rate" band="background"/>
+	<origin report="Item_Tax_Rate" band="detail"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<page>
+		<image scaleImage="RetainShape" hAlign="Left" vAlign="Top">
+			<reportElement x="20" y="20" width="185" height="65" origin="1" srcId="1"/>
+			<imageSource isEmbedded="true">
+				<![CDATA[/9j/4AAQSkZJRgABAQEASABIAAD/4QB6RXhpZgAATU0AKgAAAAgABgEyAAIAAAAUAAAAVgMBAAUA
+AAABAAAAagMDAAEAAAABAAAAAFEQAAEAAAABAQAAAFERAAQAAAABAAALElESAAQAAAABAAALEgAA
+AAAyMDEwOjA5OjIzIDA1OjM0OjQzAAABhqAAALGP/9sAQwACAQECAQECAgICAgICAgMFAwMDAwMG
+BAQDBQcGBwcHBgcHCAkLCQgICggHBwoNCgoLDAwMDAcJDg8NDA4LDAwM/9sAQwECAgIDAwMGAwMG
+DAgHCAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwM/8AA
+EQgAcADmAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIB
+AwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBka
+JSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SV
+lpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX2
+9/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAEC
+dwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4
+OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWm
+p6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQAC
+EQMRAD8A/fiiiigAooooAKKKKACiiigAooooAKKKM0AcJ8evj9o3wE8Lm+1GRJrqRWaG0VwJGRcb
+5mHURRggu/RRXyx+0/8A8FGtHvfC6aMNaXw+seoKLvWdPlNxZ3FuIg/7tl+dQzPGAXAHfOK7n/go
+x+zp4n8XtpnxD8MeKYNPbwnbTR6jo1+ubLV7V1IeIuMshJIyADuwK/KL48+NbP4a6Z4Rv4bO8uNV
+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]]>
+			</imageSource>
+		</image>
+		<text textAlignment="Center" textHeight="26.855469">
+			<reportElement x="31" y="52" width="790" height="33" origin="1" srcId="2"/>
+			<font fontName="Calibri" size="22" isBold="true"/>
+			<textContent><![CDATA[Item Rate Details]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="29.296875">
+			<reportElement x="20" y="20" width="801" height="32" origin="1" srcId="3"/>
+			<font fontName="Calibri" size="24" isBold="true"/>
+			<textContent><![CDATA[Jamia Millia Islamia]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="13.427734" valueClass="java.util.Date" pattern="MMMMM dd, yyyy">
+			<reportElement x="722" y="64" width="100" height="20" origin="1" srcId="4"/>
+			<font fontName="Calibri" size="11"/>
+			<textContent><![CDATA[March 23, 2012]]></textContent>
+		</text>
+		<rectangle radius="0">
+			<reportElement x="20" y="91" width="802" height="32" backcolor="#FFFFE1" origin="2" srcId="5"/>
+		</rectangle>
+		<text textAlignment="Center" textHeight="12.578125">
+			<reportElement x="75" y="94" width="130" height="26" origin="2" srcId="6"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Brief Description]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.578125">
+			<reportElement x="208" y="94" width="105" height="26" origin="2" srcId="7"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Supplier Name]]></textContent>
+		</text>
+		<text textHeight="25.15625">
+			<reportElement x="313" y="94" width="47" height="26" origin="2" srcId="8"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Warranty (Months)]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.578125">
+			<reportElement x="360" y="94" width="64" height="26" origin="2" srcId="9"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Starts From]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.578125">
+			<reportElement x="424" y="94" width="118" height="26" origin="2" srcId="10"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Rate Validity Period]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.578125">
+			<reportElement x="544" y="94" width="97" height="26" origin="2" srcId="11"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Unit Rate ]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="641" y="94" width="181" height="26" origin="2" srcId="12"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Tax Name]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="25.15625">
+			<reportElement x="21" y="94" width="54" height="26" origin="2" srcId="13"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Approval ID]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.207031" valueClass="java.lang.Long">
+			<reportElement x="20" y="126" width="41" height="20" origin="3" srcId="14"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[60]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="65" y="126" width="140" height="20" origin="3" srcId="15"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[HP LaserJet 3315]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="543" y="126" width="97" height="20" origin="3" srcId="16"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[0.00 Dollar/Pieces]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="208" y="126" width="105" height="20" origin="3" srcId="17"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[Wipro Infotech Ltd]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.207031" valueClass="java.lang.Long">
+			<reportElement x="313" y="126" width="46" height="20" origin="3" srcId="18"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[12]]></textContent>
+		</text>
+		<text textHeight="24.414062">
+			<reportElement x="360" y="126" width="63" height="24" origin="3" srcId="19"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[Date of Delivery]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="425" y="126" width="117" height="20" origin="3" srcId="20"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[22/09/2011 - 27/09/2013]]></textContent>
+		</text>
+		<rectangle>
+			<reportElement mode="Transparent" x="641" y="126" width="181" height="84" origin="3" srcId="21"/>
+			<graphicElement fill="Solid">
+				<pen lineWidth="0.0"/>
+			</graphicElement>
+		</rectangle>
+		<text textHeight="12.207031">
+			<reportElement x="641" y="126" width="178" height="20" origin="6" srcId="31"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[12.00% Service Tax on 12.00% value]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="641" y="147" width="178" height="20" origin="6" srcId="31"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[44.00% VAT on 100.00% value]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="641" y="168" width="178" height="20" origin="6" srcId="31"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[12.00% Service Tax on 2.00% value]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="641" y="189" width="178" height="20" origin="6" srcId="31"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[12.00% Service Tax on 100.00% value]]></textContent>
+		</text>
+		<line>
+			<reportElement x="20" y="261" width="800" height="1" origin="3" srcId="22"/>
+		</line>
+		<text textHeight="12.207031">
+			<reportElement x="21" y="175" width="620" height="22" origin="3" srcId="23"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[HP LaserJet 3315]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="121" y="154" width="73" height="20" origin="3" srcId="24"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Make & Model:]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="194" y="154" width="259" height="20" origin="3" srcId="25"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[Hewlett Pakard Model: LaserJet 3315]]></textContent>
+		</text>
+		<text textHeight="25.15625">
+			<reportElement x="21" y="149" width="73" height="28" origin="3" srcId="26"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Detailed Specifications:]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="452" y="154" width="87" height="20" origin="3" srcId="27"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Capital Category:]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="544" y="155" width="97" height="20" origin="3" srcId="28"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[Equipment]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.207031" valueClass="java.lang.Long">
+			<reportElement x="20" y="272" width="41" height="20" origin="3" srcId="14"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[63]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="65" y="272" width="140" height="20" origin="3" srcId="15"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[HP LaserJet 3315]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="543" y="272" width="97" height="20" origin="3" srcId="16"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[4.00 Dollar/Pieces]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="208" y="272" width="105" height="20" origin="3" srcId="17"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[Wipro Infotech Ltd]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="425" y="272" width="117" height="20" origin="3" srcId="20"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[01/02/2012 - 30/11/2012]]></textContent>
+		</text>
+		<rectangle>
+			<reportElement mode="Transparent" x="641" y="272" width="181" height="20" origin="3" srcId="21"/>
+			<graphicElement fill="Solid">
+				<pen lineWidth="0.0"/>
+			</graphicElement>
+		</rectangle>
+		<line>
+			<reportElement x="20" y="343" width="800" height="1" origin="3" srcId="22"/>
+		</line>
+		<text textHeight="12.207031">
+			<reportElement x="21" y="321" width="620" height="22" origin="3" srcId="23"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[HP LaserJet 3315]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="121" y="300" width="73" height="20" origin="3" srcId="24"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Make & Model:]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="194" y="300" width="259" height="20" origin="3" srcId="25"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[Hewlett Pakard Model: LaserJet 3315]]></textContent>
+		</text>
+		<text textHeight="25.15625">
+			<reportElement x="21" y="295" width="73" height="28" origin="3" srcId="26"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Detailed Specifications:]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="452" y="300" width="87" height="20" origin="3" srcId="27"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Capital Category:]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.207031" valueClass="java.lang.Long">
+			<reportElement x="20" y="354" width="41" height="20" origin="3" srcId="14"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[67]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="65" y="354" width="140" height="20" origin="3" srcId="15"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[HP LaserJet 3315]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="543" y="354" width="97" height="20" origin="3" srcId="16"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[6.00 Dollar/Pieces]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="208" y="354" width="105" height="20" origin="3" srcId="17"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[Wipro Infotech Ltd]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.207031" valueClass="java.lang.Long">
+			<reportElement x="313" y="354" width="46" height="20" origin="3" srcId="18"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[11]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="425" y="354" width="117" height="20" origin="3" srcId="20"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[01/09/2011 - 15/09/2011]]></textContent>
+		</text>
+		<rectangle>
+			<reportElement mode="Transparent" x="641" y="354" width="181" height="63" origin="3" srcId="21"/>
+			<graphicElement fill="Solid">
+				<pen lineWidth="0.0"/>
+			</graphicElement>
+		</rectangle>
+		<text textHeight="12.207031">
+			<reportElement x="641" y="354" width="178" height="20" origin="6" srcId="33"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[21.00% Service Tax on 100.00% value]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="641" y="375" width="178" height="20" origin="6" srcId="33"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[12.00% Service Tax on 3.00% value]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="641" y="396" width="178" height="20" origin="6" srcId="33"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[2.00% Service Tax on 100.00% value]]></textContent>
+		</text>
+		<line>
+			<reportElement x="20" y="468" width="800" height="1" origin="3" srcId="22"/>
+		</line>
+		<text textHeight="12.207031">
+			<reportElement x="21" y="403" width="620" height="22" origin="3" srcId="23"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[HP LaserJet 3315]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="121" y="382" width="73" height="20" origin="3" srcId="24"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Make & Model:]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="194" y="382" width="259" height="20" origin="3" srcId="25"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[Hewlett Pakard Model: LaserJet 3315]]></textContent>
+		</text>
+		<text textHeight="25.15625">
+			<reportElement x="21" y="377" width="73" height="28" origin="3" srcId="26"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Detailed Specifications:]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="452" y="382" width="87" height="20" origin="3" srcId="27"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Capital Category:]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="12.578125">
+			<reportElement x="347" y="546" width="80" height="20" origin="4" srcId="29"/>
+			<textContent><![CDATA[Page 1 of]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="427" y="546" width="40" height="20" origin="4" srcId="30"/>
+			<textContent><![CDATA[ 2]]></textContent>
+		</text>
+	</page>
+	<page>
+		<image scaleImage="RetainShape" hAlign="Left" vAlign="Top">
+			<reportElement x="20" y="20" width="185" height="65" origin="1" srcId="1"/>
+			<imageSource isEmbedded="true">
+				<![CDATA[/9j/4AAQSkZJRgABAQEASABIAAD/4QB6RXhpZgAATU0AKgAAAAgABgEyAAIAAAAUAAAAVgMBAAUA
+AAABAAAAagMDAAEAAAABAAAAAFEQAAEAAAABAQAAAFERAAQAAAABAAALElESAAQAAAABAAALEgAA
+AAAyMDEwOjA5OjIzIDA1OjM0OjQzAAABhqAAALGP/9sAQwACAQECAQECAgICAgICAgMFAwMDAwMG
+BAQDBQcGBwcHBgcHCAkLCQgICggHBwoNCgoLDAwMDAcJDg8NDA4LDAwM/9sAQwECAgIDAwMGAwMG
+DAgHCAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwM/8AA
+EQgAcADmAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIB
+AwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBka
+JSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SV
+lpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX2
+9/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAEC
+dwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4
+OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWm
+p6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQAC
+EQMRAD8A/fiiiigAooooAKKKKACiiigAooooAKKKM0AcJ8evj9o3wE8Lm+1GRJrqRWaG0VwJGRcb
+5mHURRggu/RRXyx+0/8A8FGtHvfC6aMNaXw+seoKLvWdPlNxZ3FuIg/7tl+dQzPGAXAHfOK7n/go
+x+zp4n8XtpnxD8MeKYNPbwnbTR6jo1+ubLV7V1IeIuMshJIyADuwK/KL48+NbP4a6Z4Rv4bO8uNV
+1C5njvRcXDx29/FLC6S27KAWUoqAxyqp2mNc4rxMwxVWEuTZM0hFPU+lPAX7dK61ZfD/AFHwhr/x
+Kt5tbluI5JdUvbi/ju7i3kIjjeBVLRC5QF0JAGGB6c199/Cn9v3wb8UvDWkX0Ey2Nzq2oppEWn3U
+ipdm52b5V2+iLzn0r8S9buviF4btbC5jsrG+07woYYNKhhS0043iTW+W+23EErtKyqZH2oDllQkr
+XoP7Nmh33xG+K/hnRPCXiwaY+umTSYdXjlb7Ro120QWKFTjq67trtgHkZzXFh8dUhKy1uVKNz93t
+A8Q2HirR4NQ0y8tr+xuQTFcQSCSOQAkEhhweQR+FXK88/ZW+Bc/7N/wL0Lwfda9e+JLnSotsl9cK
+E8xickIg4VAeg+p716HX00G3FN7mTCiiiqEFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRR
+QAUUUUAFFFFABRRRQBxn7Q/wtn+NfwT8S+FbW/Ol3et2T29vebS32WQ/dfHfBANfgh+0t+zP8TNQ
+8aWmrSeCNf1ybw3rM/gedbCImbU78Ql0aONcj5UUszgkES4JBNf0RV8G/tafE/R/An7QPgPw+2v2
+y3GsfFAa/uhlUHTksoYftEcgB/jRiuD8zFxxXk5nQjJKbLhLoflPL4q8Y+MdYv8AwHoej6j4j161
+iuNTl0KztSl3axpGx8yRGw0SKjZAfaxzhQQM171/wRr/AGWPEfjD9uy20W+n13Rrb4RRQ6prUFxC
+sBuZZfnijIzuIfdkggDAyD2r6B1L4g+KfAPwYsPEukan4Mk8U+N08YaONQdliutZe3vWWyfz9ucC
+KNg4xxnHSvr79gb4ieEPjBYJ4w0W+06fVvE2gafJMsRQzOkMYhdmI5cCQEbjXnYTCxdWKb21Lk9D
+6Rooor6cxCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK8B/aH
+/wCCnHwi/ZW8d6r4c8c3fxA0vUNF0q5127ltfhx4k1KwXTraOCS6vVvLWwktpLe3W6txNKkjJC0q
+rIUb5aALX/BSH496z+zf+xz4z8TeHQq69BZNDZTMG22rv8vnZAPKAlgO5AFfhV41/Z1/ach8VeHP
+idq/jvxLpPhPTrdbLQddFlbG4mluCJfnG9szSSFT5jYwo6fLiv2X/aE/bA+DP7Qvwf1vwj4q8O/t
+DpoWrQbbmWD4I+N4JYAp3CRX/sjClcZyQQK/Jv4k/sx/Arw18N/Fni34S/Gz9qfxnoLz2NpbeHp/
+hr4puYL271H7K9rardy6elstzPDf2b2qv5fnNdWwDosyvXlY7D1Zy5oao0g0jsfHX7PjeKPB198G
+dC+KnxQj+Inw5TVZ7TxJe3Vu9tf34RJdSja2xvgglHCSHuPc14No/wAHv2qv2VfC/wALvE3wq+KW
+sXPg5tXF1DFc2yRf2fvl3SpOQfmtXcMCAcEnjFfTHiS6m+IP7Potbv4y/EfT7DUp4vCmpeJV+AXj
+CLWb6db0aeNLub1NMeJroXoW0aNCWadfK5fg/Tfiz/gjJ8Hv2dfhZ4cvPid4u+Pfjm3srm3sfsXh
+nSdT1mCR13T4ex0u0uLhYS0b7pXxHllUlWdQeKnhMRzXSsVzI/QT4LePJPif8J/D3iCaF7efVbGK
+eaNozHskK4cAHkDcDj2xXT18tJ/wV2+BPhq3uLID4uWMWh6laeHLiFvg14xQWN/cJbta2Lg6X8lx
+Kl1amOJsO4uYSoIkXPPy/wDBbH4YL4h8OX0PhT41X3wy8WadaXOmeOrb4VeKW0yW6u544bO12tpq
+tJ9rNxbC2kt/OEzy7CEJjMv0EU0kmZM+xaKKKoQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUA
+FFFFABRRRQAVxPxb/aV+HXwC1PQ7Lx1498GeC7zxNK8Ojwa7rdtp0uqyIY1dLdZnUyspliBCZIMi
+Z+8M9tX58/8ABfP4QfDj9q3Tv2fPgt498UWPhi4+JPj27t9LuHlVLlJk8P6tFbyRqSC6jUbnS0KA
+gO00aZG8V6OU4SlicVCjWbUXe7Su0km27dbWIqSajdH2xq/7QHgTw/8AGDSvh7f+NPCdj49121a+
+03w3cavbx6vqFuolJmhtWcSyRgQTEsqkAQyc/K2Pif8A4Ksfsy/Br43fGS60/wAe/tIaR8Ltf8Xe
+A9Z8L22h6x48uNKktE1SKO3S+tbSK/tTcQPPY24mspxJaXRtfupIJWl8L/4I8/H/AMf+Pf8Agox4
+c+C3xv0OQfGP9mz4feKNEvtbmXzTrdhNqPhwafdLK3zOxhW4HmEfPHIjklpHA3P+DiL4EeFf23/j
+P4P+EUGp6a/xSsvhZ4u8S+FNLMq/bLm/jvtDuLeKNOrNcW2natGvtHKf4DX0FPhmlDNqeXYqo1Fq
+7nG0klq1Ja/C1Z90mZOs/ZucUfTfjbwh8IP2Zfiv4l1X41/tD32h614yvdUvNDh134wap4fgh068
+R4jbx6Y2ox2JFsJnjhmit1ZNkMhPnp5p8K/aD/4JtfDL9nPTfDnh/wCIX7Wsnw88D6p47s/GEela
+3rlv4TuNdt9LsfDVrBZxTWF1p6b7Q6HD5U0UO23jv/lhW4it7tPzO+Jv7Tt38c/jT/wTq+M3xU17
+RdK8Rz+J7GHUJr3Uo4ntNA0rUtJt49TvA5Hkxz3kWtTea+EIV8EiM4+8v+DyDxTplp/wT3+G+iy6
+jYRazqHxCt761sHnRbm5t4NN1BJpkjJ3NHG9xbq7AEKZ4wSC659OfA8KePwWAnUu67kpNbRcZOLt
+3ta7JWJvGUktj0H4O/sm/s0/Ezxz4J0T4e/tWeFvEvjzSvFLazZ2Fh4q03xDda9p0PjaTxn/AGfK
+s89xqEkqEGOW6iuUecwR3Fws3kpGn1P/AMFBviP8D9c8Fz/DP4p/HXw18JL3Wrb7WYLjxVpWm3l7
+ZSrNbustpqAkt7uzmUzxPHcQSwuQ3y70Vl+O/wBhz9qX4RePv+Ch9p4f+IvjjwP8cfjzrHxD1bUv
+hz4p8FBH07RdHHhOBZQDHdzC1tSItQh+yySzM1wTPsO4XA4z/g45+KXhjwn/AMFM/wDgn+NV8RaF
+ph8L+OTres/a7+KH+ybBtV0Xbd3G5h5UB+y3OJXwh+zy8/I2PMw/DMKmY08E+aKlCU7tb8sZSXLd
+K6fLZNpO99NNadZqDl52Prjwp/wS9+E37HX7NHizwvF41f4afD4eL9I8a6bqFmbDSR4euNP0jSdP
+R53uEktLmWSfTTePLNAP9IufMVVmiSevNf2Yv2DvBHxZ+H3gnQdD/aPj+Jdl8NpPAk3he68PeNry
+bSBD4WfRje20mh2t9/Z7ieaxWXz5vPkhk1Vc5+zw+Zlf8HAng/xhcfF/9jvxjbx3snwn8BfFXT9U
+8dSIrSWmmxi8sWgvbpRkLBFEl6GkYbV80Akbhn6S+CPir4HftMftqD4k/DK9g8U+JPDXhO98O6p4
+l8OxQT6Dcw3d3YzrbTXqLi5ukay3RpFIwiR5/MCmSLPl1MphDA08Xdy51Juy0i1LlSl5vR+jWmpo
+ql5OPY7DxV/wUn/Z28C+J9S0TW/jz8GtI1nR7qWxv7C98aabb3VlcROUkhljeYMkiOrKysAVIIIB
+Fem/DH4q+GPjZ4HsfE/g3xHoXi3w3qfmfY9V0a/iv7K68uRon8uaJmR9siOhwThkYHkEV+Mv/BeD
+wd8Jv2YP+CkX7D9ppLeFfCsL/FK/8eeMfPv0V4vt+uaRPPqV60rlkhkeG7w8hEarbyIm1Iiq/sX8
+DvgX4S/Zv+G9r4R8D6JbeHfDVndXl7b6fbs7Q28l3dS3c+wMTtVp55WCDCoGCqFVVUa5rlWGw2Aw
+2Kpyk5Vk3ZpWSjKUX89E15P71Co3JxfQ62iiivnTUKKKKACiiigAooooAKKKKACiiigAooooA+ZP
+28/+CofhT/gnv4j8P2HjDwt4x1G38TW809he6VFaTQSNEyrLERJcRyK6B4mJKbSJVwxIYLmaf/wV
+U04/8K6u9S+FPxS0nQfijeafZ6JrMtvp01ixvmjFu0zQ3kjRBhIrYdQ+AcKSMV8h/wDB0EQdQ+CQ
+BGRHrf8APT69G/Yr1fwr+zD4D+H+rfEfxRb+Mh8XvD3gHRvCuhXUVtPqGnXcMkrR7IRHGq21vJdw
+SpMS0qlHJLOE3/KLNcRLM62EbtCHLZ6dVfXvrordz9+nwDk1LgfLuIIwc8RiHWUoJyu+SbinGyaj
+aPvS5tHZpWufVX7d/wC374f/AGAfBeheIfFHh3xPrGj65eHTxcaQlrJ9ln8syIkiyzxt86JIQUDA
+eU24qSobw7Xf+C9nw88I+A/B/ivWfAPxL03wz47N1/Y2ovbadIl0LWYQ3BKR3jSJskIGGUE5yARz
+XI/8HKZB/Yz8GkZAPjK2/wDSG+r84/2hPCGp6H+wF+zP4iutV1LW9GvJPEkcOk3ccS2Olsmpjckb
+xIkx8/DM3mSM3yHYUAwODO8/xmFxVWlRtaMFJadXJJ38rPofWeFvhLw7n2RYHHZi5KpXxFSlK0mr
+xjRqVFy6WUuaKV3pa63aP6D9I+KNn4u+EVv4x8N29z4jsNQ0tdW06G0Mcc2pRvEJY1j85kQM4Kge
+YyKCw3MoyR8ZfDn/AIL8/Dz4uDxA3h34efE7Uh4W0e41/U8W+mxm1sYColm+e9G7bvX5VyxzwDg4
++pf2T/FVl44/ZG8A6zp2lwaHp+q+F7C7ttOhOYrGOS0jZYVP91AQo9hX4cf8Ee/gnrv7Rvxz8e+C
+NC8R6d4XbxN4C1HTb69u9KfUv9EmuLSOVY0WeHbId4IclgMEbSSCPRzbNcTRrYanQ19rzX+STVr+
+vU+N8PuA8kzHLs6xubNx+pOny3bslKcoy5lFNuyjpyrfuj9n/wBhb/goN4E/b+8J6vqng1NVs59C
+mSG/sdSgSG5t94JjYhHdSrbWwQx5RumK92KgkEgGvmf/AIJr/wDBNTQ/+CdHg7X7Ow1278S6z4nm
+ik1DUJbcWyusQYRRpGGbaq+ZIeWYkuecYA+mK9zLp4l4eDxiSqdbbf1Y/LuMaeS085rw4dnKeETX
+I5/E1ZXvdJ/Fe10na19T5A/bM/4LG+Bf2HfjRN4J8XeDvHlzdraQ31veafbWU1rdwy7gHQtcq4w8
+cqEOqndGxAK7WPT/ALWP/BVD4a/sl/CbwX4x1SPWfEOmePUE2kpo0MU0ssJiWXziJZI1CbWQdScu
+OOpHyJ/wWT+GWjftA+LvjUNPvLW58UfDnwp4a1uO2jkBmEUN1rX2xSOoC291FIR/1z9RXyj8Z/h7
+4jsf+COfw88U+J7ma4bU/F8OnaDHKDutNLhg1RkHPd5pJjnvGsI6KtfKZhnuOoVq9OCTSi5RdtrO
+zT/rsfvvCHhXwtm2XZXi8ROcKk60KNaHNZz9pTU4yhdaJXu900nZrQ/ar9jr9q3S/wBsz4HWnxB0
+LQdd0PQ9Rnnhshqy26TXawuY3lVYZZdqeYsiYcqxMbHbtKs3hPwp/wCC0fgv4v8A7Ulr8H7DwD8R
+LfxnNq1xo80NzFpohspbcyfaGeRbxlKRLFIxMe8sEOwOSoOl/wAENSD/AMEtfh2ARkNq3/p0u6/O
+79iI/wDHQleE/wDQ8+K//ROpV2YnOMTCjgpxavVcVLT+ZK9j53JPDrJsTmXEuFqqXLl8K8qXvdaU
+pKPN3TSV9vKx+un7VP7YnhH9krSdBbxEb281bxXqEelaJpNhGsl5qly7KojjDsqKAWXLyOqDcAWB
+IBg+Gf7YOk+PfjHbfD+98N+K/DHi+bR5tcey1SzjEcVvFNDCSLiKSSCVi06cRSOAAdxU4B8K/wCC
+v/7Jfg/9syLwH4RvfGdp4P8AiSBf3nhE3aObfUVT7OLqFiMAHLW5GDvGCyqwVwPH/wDgjj45+Leh
+ftY+NfhL8T/s/imX4Z6S0Nvr0jLe3GkmaW3b7Il5je0U6KkmxzkG1UEDZtXtq5liKeYLDTj7kmkm
+tdbXafVPt5HzOB4LyrF8IzznD1r4mkpSqU5Xi+XnUITpu3LOKulJbqV9dEn9g/FD9u/w14I/aBT4
+XaNoniDxv46isDql7pmjLbBtOtcqBJLJczQxgnepCKzOQwO3BGeu/Z//AGmdA/aPsfE0+g22s2p8
+J6s+iX8WpWEllMlykEMzgRyYbaFnQZIGSCRlcMfz+/4KTfsIn49/tUeMviP8FPiLbaP8WPBS23/C
+S6NJePYXETrZxPDNDPxs3WzRDP8AqmIILqyuK+gf+CLHxz8VftGfsh3vivxlptpDrl5rE8EurQ2a
+Wz+IliggiW7l2AB5AEEBfHItlHbFLC5liJY2WFrRstXFrVNLTfo11THnvBeVUeF6GeZbW55Wpxqw
+leM4VJpy+Fq0qcknySTWnfW0Hwn/AOC03gz4vftSWvwfsPAXxFtvGc2rXGjzQXEWmrDZS25k+0NJ
+It4ylIlilYmPeWCHYHJUH6G/af8A2rPBX7IHwvm8W+OtWXStMR1giVUMs13MwJWKJF5dyATgcAAk
+kAEj8ef2Ijj/AIOErwngDxz4r/8AROpV9If8HL/w38ReIvhR8OfEmn291ceHfDt7eQ6r5SlkgknW
+EQSuB0UeXIm48AyKOrDPmYfPcU8uxGKceaVOTilborav0vdn2+beFWQx4yybIYVHSo4uhTqzk5Xf
+NJTbjFvRXcVGN72b6n0l8Lv+Cu3w28d/E/wr4S1mw8S+B9U8dadbar4dbXYLdINXt7ksIGR4JpQh
+kKsFWXYxOBjJAPov7av7ZVj+xJ8NE8Y614S8V+IfDUTBL+90ZbR10wtJHHF5qTTxORI8gUGNXAKn
+dtyu78Xf2svAmufF/wCMX7L3h3wjHPdeIdR+Fnhi3tPs2WeGXfOd5x90IPnYn7oUk4Ar9ff+ClPi
+Pw/oX7MOm2niW70+3stS8XeF4JEvGURzout2MsykNwwEMcrMOm1WJ4rrwOaYmvDERlZOFrS6O6vr
+6P8AM8HirgLJsqxOUVaPNUjinL2lJP3oqNTlvF7rmjdq6esXutDE/Z1/4KweB/2qvgz4t8VeCPD/
+AIu1fUvBu17zw15NpHrE0TY/fRI1wInTG8/6wMfKYBSxVW9Z/ZN/aVt/2tPg7Y+N7Dw14k8M6Tqr
+FrCPW44Ip72HapW4VYpZAI2JIXcVY7Sdu0qzfj3+1T8EvFn/AARc/bb0f4g+BEnuPAeuyO9gHYmC
+aB8G40yZueg5Rjk4CMNzRtj9a/8Agnauz9g/4OgDGfBmkH/yShqskzPE4irLD4pctSn8SS0fZp+a
+OfxO4GybKMBRzjIZOphcU06UpS9+Nk/aU5xWl4ytr5ta2uey0UUV9MfiIUUUUAUPE3iex8IaRJfa
+jcJb28XBY5JYnoABySfQc15Dcftb3Oq6lLFo/h2V7eGRY2mvJxBgscDcDjHrwW4/KqPx71m48QeI
+Jb4szaV4eu0trZUk2l7zGTx3IJxn/ZwMbiaxZPANqdOa/wBcu7KbzbkB/tbARtI5AwseeMZ5OQM9
+AOteZXxM3JxhpY+uy3K8LGkqmIXM5bLt8keieGP2nbG61sadrdm2lTGXyVuFfzbdmyQMtgbQSODy
+MdSK9Q3r5e/I24zntXy94w8Lt8O4LhZCt1p8y/Z5oopPNDIxJ+Rz9wZPIxnnGSMYT46/GHVPB3wM
+tvCl7fy6ff6nqY0i51NAXe2sBEJ3mG3Hz+SyqcdCx9Kqni5K6qdDz88wNDD0PrVD4e3+Xzf4mf8A
+tH678Nfjl8SmgtfhJ4J+KWu6cg06XXNftbQWVnh2K2y3Esbu4Du52oNoLnnJNYHhn4beBPgp4n03
+VPFX7OPws0G4sZ0u4NR8N2ljd3OnSRtuSZUEKSBlZdwZDuXbkDIry/XtYsfDXgLWtc8RpOPD2lp9
+m06w0yEpcnC7kmgYqyIQn7xmkDDd0wa5L9kz9pPwt+0Oj3ngpPF0S+FIm1PU9S1SNbiVWQkFLcrg
+oQrByWDAgOAK82eKp+2Slbme2i/y/U+NXFONg44VYiSunaKk7W66H6FeLPhL8Lv2uPDmi6vrvhzw
+h4+022R20y41HToL9bcSbfMEfmK2wtsUMBg5QA8jjh/iX8N/gL8F/AEvhK/8C+BItEubpb59Ci0O
+1Ns9wwWNZ3hEe3eQqrvKk4AHQV51+yh8Qrr4S+NdQsGQjw/4gtby7RPL8iFdStm/e+WMnHnIUc4w
+C3OOTXwh+2R+0R4m+IHxKuvDcpufCmteNLJ9RuPFd3clv+Ees45seUkUfV3UbVBPUj3rfGY6lSp8
+8oJyemx+hcF4TG5u1RhWlCEHfSTsnu2lftrpqfpNF+1P8EvDfw+Pgi5sbHSdDaOXSJfDx0lRaCJg
+UeAwqvl+U4YjBG1gx7E11HwL/Zr+B+l6pY+MPAXgL4fabqVmX+zajpeiWlvc2pZGRwskaBlJVmU4
+PIJHINfhX+1B8MP2h/2dfEHifx7o/jvWPE+h3unWtpPfTRIt8tom1082DYY02eWuXHJDc5ya+6P+
+CXX7e0firxZ4UvNI0fWNJ8C+Jrs6FcPfLlpdRCg+cGX5CjNlflChSOnNcWCzeNWqoVopNbabH2+e
+8CYjBZfLGZfiXUhP47Sdm7XaktHfe173P1LvbyHTbSW4uJY4IIVLvI7BVQDqST0rhdb/AGj/AA3p
+N7qVtEur6nLpSZuRY2EkwQ+ZFHsBwMtmeM8fw5OcA457xn8ZdR1dfFMWg6RN4h/s64GhJpE1sIGu
+LtiN0u9zhrdQwLMFOAGODivLfjN4N1rwnClz4g8R+I7zU9K0c6lrM2g6uui2tpAkkuw20DK7TSqu
+5cOxyI0B5bFfY06KfxH4tKbWx6Z4a+AHwL8T/EfUNY07wT8P5PF14bqW9uP7Dto9RuDNvjuXdmjE
+jiTfIrschw7AkgnPR+M/2TPhh8RPD2h6Rr3w+8GaxpfhmE2+kWl5ottPBpcTBAY4EZCsSkRoMIAM
+IvoK5CK28V+E/GFhe2MGma1Ya1oyW2m+Ir+zUahp8iqHEd3gp5iS9vL2AMeVPWofjp+05b6F+y9c
++IJJl0e+uoZYLmOSYJNYtGG844GeVAJxkEAg5rmnhaaWkVZnfDNcXzRl7WScdtXpbTTXTcwfEHx3
++Ff7Gul33hrwL4c8NaOZZXuZLLSraKxtZZyI4zKVhT5iQFUvjIEYHIAryX4E+NP2dp/iXZW6/B/4
+Z6D4r0icXqmw0S1S6054nDLNGTAhJjYA7o23AjIHFeO+B7XUbiW3NpHY2/iC+sDrOpatq6gw+GLS
+T/UwcEb5o1BVj8qnAYhiTT9SvtI+Jfh2wv5vEXhvxr4autQWxt9d0JPJutAvz/qyZAwPksww2SD7
+kHFQ6NN2TitNtNioZli4uco1ZJz+LV+9666/M/STXPBfg746eG4JtT0nRPE+mXVu8MZu7SO5jkhd
+kLph1Pys0aEr0JjXI+UY5XUPFHwp/Yz8NJp1vD4a8G2T5lj07TbOOAycgFlhhUE9QM4rwj9jL9q2
+fw94E8VReKFhTVfDS341K0twwDXNoqsWiDNgJJEysM4y26sj4QfCaP4q6tqPxG8br9hurthfyahf
+SlpraFh+7g2ghUKj5FRcD5CWDkgjzcbiZRqqlR5VK1239ld/n02OrCP9w3XlJ072UU/ie/okt3o3
+5Ho2q/Gb9nj9oHW0g8VeHvD93dXF6HRvEGgRSK9xhYVcu6MA5WNFDMQdqKOgAr6P0DSNP0fQ7e00
+y3tbbT4YwkEVuipEiAYAULwAB0A4r5y8V/Dnwd8TfDV/beHtatNYltx9puokMTzLgY81QqhWZe6u
+rAjoVODVf9kf4s3Xw2uNW8Cam6T2ukWM19pwWUsIDGA8lsruxZwySJKu7JUM6kkIKxoYmpSqr20o
+yjN2UkrWfZ6vf1LrVI4ik4UXJcuvK3dW2utrW9NvQrfHbQf2SP2FJtM8R+LPCvwp8JarDcLcaQtv
+4dtTqclzGfMja2jiiMvmBlyrKBggHIrv/wBmL9t74P8A7fHhLUI/BfiDT9fFuph1LR72Aw3lsCCC
+ssEgyVI7gFeevavxat/2t/BXhb49+HfGnxH1a61j4lfFLVimo6/fqLpPCljLNIiG2QDbDFFEY0yv
+GfmIPOafib9p7wTq3xYv9a+G3iefSviZ8H76c6P4h0qMW48T2sb8JcK3yywSLuBBHOc8V8SuPpwx
+b5cFJYT2ns/aXV73acuS3wX0ve/Wx9ZX4QzatCNStUlKoocyvd2W9lJ6J9bH7zfDb9mj4e/B3Vbi
+/wDCfgnwp4bvbsYmn0zSYLSSYZzhmjQE8+tSfFv9nbwF8ezp58beDfDHi06T5n2P+19Lgvfsnmbd
+/l+arbd2xM4xnYuegrV+FnjF/iH8MfDmvyW5tZNc0y21BoTyYTLEshX8N2PwreJABJ4A5r9OdKCi
+42Vj4R47EuqqzqS511u7/fueP3UPwW+Lwn+FN1p3g7XbXwjDCW8PXWnRTWenRxKEjCROnlKI1woC
+j5RxxXTat498L/Bf4W6qNHh09dP8EaI94mlabsjW2tYIiUjjRflRdse1QAAAMDgV80/GjxJ8PPiF
+8eLfSjqQ0631pZdAd9Mhkhym/fMZJkXAMjgIuOepz2r0bX/2ZfC/7Of7I/xPXQrCWyudX8PX0t9J
+NeyXbvttZAq+Y5ztUdBwOTXzmW5liMRiZwgoOMW05J623Str+Z7fEGFpYXLPayqVFNx5owkrxv8A
+ad7rqtlFvu+p8uw/8HLPgGdHZPhz4xcRrvcrIjBB6nA4H1q5rP8AwcceD/DksSah8L/G9o09ut2n
+mMg3Qt92Tp90+tfCv7Hvxpj/AGePgt4n0HVPCVpqM3i8RRW17cW6OkLTR+ZFguhJkAQHAOwDGQxN
+emfCz9vrSvFCXl/rXw7ivLrUbOTw7arNbwS+ZKsZy8aeWMEgcp90dsV7MK02tZfgfzZhuLsxqRj7
+TFKMn05Fofqv+wl+2fpP7dvwO/4TnRdI1DRbP+0JrD7PeMrSbo9uWyOMHcKK8K/4IFaNcaD+w9eW
+11ZPp0y+KNQY2zcmEExkL1PABHeiuyDbimz9XyLFVcRgKVes7ykk30Ot8eeE7Xwr8YfFdyIb5NXu
+9Rh1SST7bK8M8AAVVWDOxCoxl1AJLDOcVf8AHfw70P4wTwTazfyy6WkEUa2MKHAuFOVlLIVck9MF
+tvbHevWfjr8Ibrxkkeq6LKLfV7YBJVBCm8hBJMe4g7TyeTkHPI6EePJpsNpPOktxdaVPHvMtpcW7
+CUZGdqgfLjOACMk+teNWpOEmpLRn6xl2OVelCdObU4q3dq1l93YDo0ngXwja6L/aR1m9trmS4lld
+VUiNpAyowUYbYF2gdemSeTXIeKNCl0q18Oa5oAttEln8RXlotzrc8mpWMV5dW8ZZ5A7Z2B0kQICF
+XAAwK7HwDoOs+INfCaNp3nXiMFkvp0ItIwQcvgjcDgnCA4yMjHJr23xH+z/oXir4LXHgi6ib+z7i
+DZ5o5ljlzuEwJ/jD/Nnv370UsPKorrZbf8OeVxRWTwssNe8pNPfzvqlt5Hyb4StTe+EbxNSEWqeB
+tG1uSXxBDY3jImqxGM4uNh3PJCrA5gTAwBxxXC/swaVq3gD4Waz4r8G6Z4Z0jwlfx30OoQKgsb75
+5JRFE0Lx7izAqw2sPlAx0xU3jL4Oa/8As26+9p4kGoW1rYF5NL1PT0kMOoSMMBlkU7oJAOWRgc9j
+tOKPDXiL/hNNXks9CtPG3jjWNZ+QyX073AVoyPLkG5VSNQDIN2Mr15rlkk6ic9JL7z8klH97GUla
+SuvM6rTvBXiDxaLbQF0/TrZbfw1da9a6pbX7TyawklqkfzR4xCVfcgH8WzPXNfmb8cvHVt+yb+17
+o/inXPC/jCfwj4l8NQ2Ori8i2LHcgMiPAxHyhSNwB68mv3K/ZZ/Z2n+Eelahqmumzl8R68qJPDar
+i0022QYis4R3RMkljyzMx9BXzt+39/wThk+N2k6pbTw6j4r8MajeRaj/AGUbxons3iOQkbjlVbpz
+kDPGKnMcuqVKKlHc/afC/iCjlVWVLGr3Km/RpOy+/S58T+Of2mvH/wCxh+yD4WXWNL8HeN/hf4ov
+1it7291n7Ze6vayOXkhVwu5wqnad2doUDqBSf8Ee/grqE3hvRZ7S71zVdHu/GjQJp1xbzR2Ph0xz
+M4eBiw3F0Ks2QBnqDXQ+Gv8Agkhb63c2WhXGi+Pn8N2+vf2poGiPcbYPCAyHnjDsG8xZmEfB67Cc
+gkk/pR+yp+y/qXwx1O/8QeINSuJrzUpPNg01SFtrLjhyg4MxHBauLAYCtVrRnLRRPv8AiPinLsLl
+tTDYOznVk3JpWT/l0u9bPVq2q7Hxp+2j8Y9e+AP/AAUi/Za8SeK9SuNH+H1lr+reHb9P7Tkntba8
+ulKQTXMhxjcrAhHJCDpXof8AwUb/AG7b34W/tCxeHrH4Y6N4vi8OWEN5DfXtpcXDXM0pV/s8exlU
+/Lsfad4O3OOOPqD9sf8AY+8H/tifA7W/BfizSBqWj6kr3D20GyGWS5C/u5lkIJSRTjDfnkcV8XfD
+H9nv9qL9mzwxqPgvSPGml+P9J02RbLwdeeL7HN94SvFgZhKso/4+4ljZowzYBIxgdK/QZy9rBOL5
+ZL/M/ntqUZPqmb//AAU7/a6Tx5+zD+zzZaYb7SfG3xW8aaLc2Oj2UzLeRxxOZLnK4DGNBkNkAH3r
+2r4qfDqXWvh7baxa6PbsD4ivpI4r9YHsnNwhgSSZFRfMjZ8DDdN3zbwMV5X+wT/wTG1MfHC0+Pfx
+l8Z658T/AIoT2KNpOqX0C2lrosb53QwWmMREDjI/nX3N4l8Haf4r8LXmj3VvEbG9jaN0VFAXP8QG
+MBgeQex5qa8oqKpx1tuy6UZXcpH5i/Grwlp+rzeOfCHiHV7TTNG+I2nDSIde09vNtra8ty4MTTL1
+GDxnAwCOc4HD/DT4Mp8K/DmuaFN4l8KeJPFHxAv7Oe6j8OaalvpOlWVkFPntCh2KxVQS2cljnk19
+J+Pv2JvEPwk8d6kukIl/4U1OLaNPTT0e1aTdI6t5Q+XzCeWOMDGVwSa85+G37KnxK+JMdz4dtvD/
+AIe8E6JcwqJ4vD9uYHnAcsfMuHyVSRTwuCRzgqa5Dc9H8SfD2/8AEvws8VXKWnh5ooNFvtXDx/vB
+qNrcIAjXEifOZseZgZIAjwQeMdB43t739of4HWc/g7TrO/sINRa+u9JS/wDsxu7QpjekjKfnjPz7
+Sp+/gYODX0d+zv8As8aR8Afh0uiWMECtMgWfyw3l4AO1ACTwu5hnqcknJNfNnjH4YeN/2XfiFf6h
+Y2U2reHbmWW4t7myjbES5HlxygHMcgZtvmAFGRV3Llc181nGFg5y9q3GFSKTaXwuLur+Tv1VtNdz
+28vqTqUo06aTlBtqL+1zKzXTXRbNM4P9jz4e/GGLx/Za9450Dwn4cttCvZZpb3TCYN2l7GWC2aLH
+7yWXjcxPbpmu7b4kaNoXxF1DX73w5dHS/B+najPrUkUSzNqEUVmUkZB95ceeIsrncVI7VD4k+M3x
+A+PUNpo+iW95DczSCOSVB9oeMsP4fkRIh1UzSLIEzkKDXuHwg+B6fAbwDq2v6vpTa7r13ZpE1hao
+Lg2lso3LZRlv9YocuzO3LsxJ7AcuBwmHbVLBTc05KUnpZctrJNK13bb1uTRp18HTSxS5ZRi4pdXz
+Xu2r30T39D+an9u79m74g/sl/Fe38Y6Fdp4++DGpyTHwz4v0vT2u7I2bEypYXMRG6GWMMEYPjgZB
+7Vc/Yz/Z/wDFP7VnjibxTfz2nhj4fRxoniDxjd2b2ulaHbKQ8lugCgzyug2RogJJblq/drxT+yTo
+H7SHi3Utc0XQ/it8ILvWLORrwaXLENL1kxoMCWwmV7dnYHAYRgsc5z1qX4G/sZeH/hlanxNr+nfF
+n4hXvguSOPSNI12K3ttOt3kGGktbC2WO3JXoXdCR1Ffeurg5UuWWHhzei5fW1t/1M6nEeeyorCrH
+VVSTvyqTs/nvbyvY9Wh+Oq+If2H9D8W/Du11LTtKltI4NPS4gBubeyRjAJSjYwwjUOAfbOeleJ6D
+8S/idrngq51zTPG3izXtBtpbnQIJm06Ame0ZpfM1JtiAtPCiDaBhcjlTmvrvwBdW3xO+Ht5Z6n4R
+u/DllM0lrJpl7EsfmIQPnUJxtOTyMHIPeug8FeCdK+HXhe00XRLKHT9MsU2QwR5IQZyeSSSSSSSS
+STXA1c8u+tz4c/Zh/aT8eJ+0xZfC+40JbrwlodlLeRax/ZsaQXFkIi0dzJMAAs7HhkABya9e+H/x
+x1f9pP8A4JxeLPFutaVDpE+p6NrMcVvGSyNDEs8SOM84YJu+hrb+LX7MV7rniPWbHwPFL4Tj8Wxe
+Tr2sm8keNIXP70W1sW2C4dfl8wjC5zgmu3+I/wAL7fwp+yjr/g/wzp7m3svDNzpmnWcXzO2LZkRB
+nqxOOT1JrihSmptpWST269vuPPx8q9aUrSfIovR9ZP8Ay/U/H34M/DCX9o/9kzw9pmnXTT+J/Apt
+NcisIo/Ou7rTDE1tMY1yN7RSpuxnIV81P8DP2XJdX12x8TXk95ZeF/BE11rOp6hewNBECqlIoELY
+DSvIQAoHSsv4Afs8/tG/AjVIZ9M+HHjezMD+da3VtboLvTpDjc0bNnKsBhoyCrdcZ5r1D4/SftN/
+HPw3a2mp+AvHeqG1PyWc2nRW1jHL2ujGmPMkA6BsqDzivOUpW1TPyihgKEqaq1qcueK2s7O239WP
+tD/gjReQ337LOqyRIEK+JbtJAOB5ixwq+B2+YEfhRSf8EWfhF4o+Cn7Gv9jeLtF1LQtXOu3tw1vf
+LtmZXKEOeeQeeaK9qg37NXP1HJItYGkpKzstD//Z]]>
+			</imageSource>
+		</image>
+		<text textAlignment="Center" textHeight="26.855469">
+			<reportElement x="31" y="52" width="790" height="33" origin="1" srcId="2"/>
+			<font fontName="Calibri" size="22" isBold="true"/>
+			<textContent><![CDATA[Item Rate Details]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="29.296875">
+			<reportElement x="20" y="20" width="801" height="32" origin="1" srcId="3"/>
+			<font fontName="Calibri" size="24" isBold="true"/>
+			<textContent><![CDATA[Jamia Millia Islamia]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="13.427734" valueClass="java.util.Date" pattern="MMMMM dd, yyyy">
+			<reportElement x="722" y="64" width="100" height="20" origin="1" srcId="4"/>
+			<font fontName="Calibri" size="11"/>
+			<textContent><![CDATA[March 23, 2012]]></textContent>
+		</text>
+		<rectangle radius="0">
+			<reportElement x="20" y="91" width="802" height="32" backcolor="#FFFFE1" origin="2" srcId="5"/>
+		</rectangle>
+		<text textAlignment="Center" textHeight="12.578125">
+			<reportElement x="75" y="94" width="130" height="26" origin="2" srcId="6"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Brief Description]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.578125">
+			<reportElement x="208" y="94" width="105" height="26" origin="2" srcId="7"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Supplier Name]]></textContent>
+		</text>
+		<text textHeight="25.15625">
+			<reportElement x="313" y="94" width="47" height="26" origin="2" srcId="8"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Warranty (Months)]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.578125">
+			<reportElement x="360" y="94" width="64" height="26" origin="2" srcId="9"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Starts From]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.578125">
+			<reportElement x="424" y="94" width="118" height="26" origin="2" srcId="10"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Rate Validity Period]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.578125">
+			<reportElement x="544" y="94" width="97" height="26" origin="2" srcId="11"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Unit Rate ]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="641" y="94" width="181" height="26" origin="2" srcId="12"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Tax Name]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="25.15625">
+			<reportElement x="21" y="94" width="54" height="26" origin="2" srcId="13"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Approval ID]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.207031" valueClass="java.lang.Long">
+			<reportElement x="20" y="126" width="41" height="20" origin="3" srcId="14"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[68]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="65" y="126" width="140" height="20" origin="3" srcId="15"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[HP Deskjet 3015]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="543" y="126" width="97" height="20" origin="3" srcId="16"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[23.00 Rupees/Pieces]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="208" y="126" width="105" height="20" origin="3" srcId="17"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[Wipro Infotech Ltd]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.207031" valueClass="java.lang.Long">
+			<reportElement x="313" y="126" width="46" height="20" origin="3" srcId="18"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[12]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="425" y="126" width="117" height="20" origin="3" srcId="20"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[10/09/2011 - 16/12/2011]]></textContent>
+		</text>
+		<rectangle>
+			<reportElement mode="Transparent" x="641" y="126" width="181" height="42" origin="3" srcId="21"/>
+			<graphicElement fill="Solid">
+				<pen lineWidth="0.0"/>
+			</graphicElement>
+		</rectangle>
+		<text textHeight="12.207031">
+			<reportElement x="641" y="126" width="178" height="20" origin="6" srcId="34"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[5.00% Service Tax on 4.00% value]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="641" y="147" width="178" height="20" origin="6" srcId="34"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[12.00% VAT on 3.00% value]]></textContent>
+		</text>
+		<line>
+			<reportElement x="20" y="219" width="800" height="1" origin="3" srcId="22"/>
+		</line>
+		<text textHeight="12.207031">
+			<reportElement x="21" y="175" width="620" height="22" origin="3" srcId="23"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[HP Deskjet 3015]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="121" y="154" width="73" height="20" origin="3" srcId="24"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Make & Model:]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="194" y="154" width="259" height="20" origin="3" srcId="25"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[Hewlett Pakard Model: Deskjet 3015]]></textContent>
+		</text>
+		<text textHeight="25.15625">
+			<reportElement x="21" y="149" width="73" height="28" origin="3" srcId="26"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Detailed Specifications:]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="452" y="154" width="87" height="20" origin="3" srcId="27"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Capital Category:]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.207031" valueClass="java.lang.Long">
+			<reportElement x="20" y="230" width="41" height="20" origin="3" srcId="14"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[73]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="65" y="230" width="140" height="20" origin="3" srcId="15"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[HP Deskjet 3015]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="543" y="230" width="97" height="20" origin="3" srcId="16"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[21.00 Rupees/Pieces]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="208" y="230" width="105" height="20" origin="3" srcId="17"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[Wipro Infotech Ltd]]></textContent>
+		</text>
+		<text textHeight="24.414062">
+			<reportElement x="360" y="230" width="63" height="24" origin="3" srcId="19"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[Date of installation]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="425" y="230" width="117" height="20" origin="3" srcId="20"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[14/10/2015 - 16/02/2012]]></textContent>
+		</text>
+		<rectangle>
+			<reportElement mode="Transparent" x="641" y="230" width="181" height="20" origin="3" srcId="21"/>
+			<graphicElement fill="Solid">
+				<pen lineWidth="0.0"/>
+			</graphicElement>
+		</rectangle>
+		<line>
+			<reportElement x="20" y="305" width="800" height="1" origin="3" srcId="22"/>
+		</line>
+		<text textHeight="12.207031">
+			<reportElement x="21" y="279" width="620" height="22" origin="3" srcId="23"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[HP Deskjet 3015]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="121" y="258" width="73" height="20" origin="3" srcId="24"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Make & Model:]]></textContent>
+		</text>
+		<text textHeight="12.207031">
+			<reportElement x="194" y="258" width="259" height="20" origin="3" srcId="25"/>
+			<font fontName="Calibri"/>
+			<textContent><![CDATA[Hewlett Pakard Model: Deskjet 3015]]></textContent>
+		</text>
+		<text textHeight="25.15625">
+			<reportElement x="21" y="253" width="73" height="28" origin="3" srcId="26"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Detailed Specifications:]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="452" y="258" width="87" height="20" origin="3" srcId="27"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[Capital Category:]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="12.578125">
+			<reportElement x="347" y="546" width="80" height="20" origin="4" srcId="29"/>
+			<textContent><![CDATA[Page 2 of]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="427" y="546" width="40" height="20" origin="4" srcId="30"/>
+			<textContent><![CDATA[ 2]]></textContent>
+		</text>
+	</page>
+</jasperPrint>

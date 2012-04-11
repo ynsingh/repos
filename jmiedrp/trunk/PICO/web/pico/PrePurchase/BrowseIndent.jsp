@@ -36,47 +36,48 @@
             <!-- *********************************End Menu****************************** -->
               <div id ="mainContent" align="center">
              <s:form name="frmindentBrowse">
+                 <p align="left" class="pageMessage"><s:property value="message" /></p>
               <s:hidden name="erpmindtmast.indtIndentId" />              
-                 <table width="90%" border="1" cellspacing="0" cellpadding="0" align="center" >
+                 <table width="65%" border="2" cellspacing="0" cellpadding="0" align="center" >
                     <tr><td>
-                    <display:table name="IndentList" pagesize="40"
+                    <display:table name="IndentList" pagesize="20"
                                excludedParams="*" export="true" cellpadding="0"
                                cellspacing="0" summary="true" id="doc"
                                requestURI="/PrePurchase/BrowseIndent.action">
                      <display:column  class="griddata" title="Record" style="width:40%" sortable="true" maxLength="100" headerClass="gridheader">
                         <c:out> ${doc_rowNum}
                         </display:column>
-                        <display:column property="indtIndentDate" title="Date"
+                        <display:column property="indtIndentDate" title="Indent_Date"
                                     maxLength="10" headerClass="gridheader"
                                     class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"
                                     style="width:5%" sortable="true"/>
                     <display:column property="institutionmaster.imShortName" title="Institute."
                                     maxLength="20" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
+                                    class="griddata"  sortable="true"/>
                     <display:column property="subinstitutionmaster.simShortName" title="Coll./Flty./School"
                                     maxLength="20" headerClass="gridheader"
-                                    class="griddata" style="width:5%" sortable="true"/>
+                                    class="griddata"  sortable="true"/>
                     <display:column property="departmentmaster.dmName" title="Department"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
-                    <display:column property="budgetheadmaster.bhmName" title="Budget Head "
+                                    class="griddata"  sortable="true"/>
+                    <display:column property="budgetheadmaster.bhmName" title="Budget_Head "
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:15%" sortable="true"/>       
+                                    class="griddata"  sortable="true"/>       
                     <display:column paramId="indtindentid" paramProperty="indtIndentId"
                                     href="/pico/PrePurchase/DeleteIndentMasterDetails.action"
-                                    headerClass="gridheader" class="griddata" media="html">
-                                   <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;"/>
+                                    headerClass="gridheader" class="griddata" media="html" title="Delete">
+                                    Delete
                     </display:column>
                     <display:column paramId="indtindentid" paramProperty="indtIndentId"
                                     href="/pico/PrePurchase/EditIndentMasterDetails.action"
-                                    headerClass="gridheader" class="griddata" media="html" >
-                                   <img align="left" src="../images/edit.jpg" border="0" alt="Edit"  style="cursor:pointer;"/>
+                                    headerClass="gridheader" class="griddata" media="html" title="Edit">
+                                    Edit
                     </display:column>                                   
-                    <display:column paramId="indtindentid" paramProperty="indtIndentId"
+                <%--    <display:column paramId="indtindentid" paramProperty="indtIndentId"
                                     href="/pico/PrePurchase/BrowseIndentDetail.action"
-                                    headerClass="gridheader" class="griddata" media="html">
-                                    <img align="left" src="../images/more_bg.gif" border="0" alt="Items Details"  style="cursor:pointer;"  />
-                    </display:column>
+                                    headerClass="gridheader" class="griddata" media="html" title="Browse Indent Details">
+                                    Go_To_Indent_Details
+                    </display:column>--%>
                 </display:table>
                 </table>
              </s:form>

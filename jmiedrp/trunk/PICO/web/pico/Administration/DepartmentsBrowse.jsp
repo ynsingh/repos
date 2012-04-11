@@ -20,7 +20,7 @@
     </head>
     <body class="twoColElsLtHdr">
         <div id="container">
-            <div id="header">
+            <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
             <div id="sidebar1">
@@ -39,8 +39,8 @@
                                requestURI="/Administration/BrowseDepartments.action">
                     <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
                         <c:out> ${doc_rowNum}
-                        </display:column>
-                         <display:column property="institutionmaster.imName" title="Institution Name"
+                    </display:column>
+                    <display:column property="institutionmaster.imName" title="Institution Name"
                                     maxLength="35" headerClass="gridheader"
                                     class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" style="width:30%" sortable="true"/>
                     <display:column property="subinstitutionmaster.simName" title="College/Faculty/School"
@@ -58,12 +58,12 @@
                     <display:column paramId="dmId" paramProperty="dmId"
                                     href="/pico/Administration/EditDepartment" title="Edit"
                                     headerClass="gridheader" class="griddata" media="html" >
-                                    <img align="left" src="../images/edit.jpg" border="0" alt="Edit" style="cursor:pointer;" title="Edit"/>
+                                    Edit
                     </display:column>
                     <display:column paramId="dmId" paramProperty="dmId" title="Delete"
                                     href="/pico/Administration/DeleteDepartment.action"
                                     headerClass="gridheader" class="griddata" media="html" style="width:30%">
-                                    <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;" title="Delete"/>
+                                    Delete
                     </display:column>
                 </display:table>
                 </table>

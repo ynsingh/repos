@@ -21,7 +21,7 @@
     </head>
     <body class="twoColElsLtHdr">
         <div id="container">
-            <div id="header">
+            <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
             <div id="sidebar1">
@@ -30,8 +30,8 @@
                 <s:hidden name="erpmuName" />
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent" align="center">
-             <s:form name="frmUserProfileBrowse">                 
-                 <s:property value="message" />                                   
+             <s:form name="frmUserProfileBrowse">
+                 <s:property value="message" />
                  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
                     <display:table name="erpmurList" pagesize="15"
                                excludedParams="*" export="true" cellpadding="0"
@@ -61,10 +61,11 @@
                    <display:column property="erpmurActive" title="Activation Status"
                                     maxLength="5" headerClass="gridheader"
                                     class="griddata" sortable="true"/>
-                   <display:column paramId="customerid" paramProperty="customerid" href="/CustomerDatabase/customer/Delete.action" headerClass="gridheader" class="griddata" media="html" title="Delete">
-                        <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete" style="cursor:pointer;"/>
+                   <display:column paramId="customerid" paramProperty="customerid" href="/CustomerDatabase/customer/Delete.action"
+                                   headerClass="gridheader" class="griddata" media="html" title="Delete">
+                                   Delete
                     </display:column>
-                </di
+                                  
                 </display:table>
                 </table>
              </s:form>

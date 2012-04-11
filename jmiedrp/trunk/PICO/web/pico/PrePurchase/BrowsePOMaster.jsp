@@ -14,7 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>ERP Mission - A Project sponsored by NMEICT, MHRD, Govt. of India</title>
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/ajax/jquery2.js"></script>
-        <script language="JavaScript" type="text/JavaScript" src="../javaScript/PrePurchase/country.js"></script>
+        <%--<script language="JavaScript" type="text/JavaScript" src="../javaScript/PrePurchase/country.js"></script>--%>
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/Administration/Admin.js"></script>
         <link href="../css/pico.css" rel="stylesheet" type="text/css" />
         <meta HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-8">
@@ -35,64 +35,64 @@
             </div>
             <!-- *********************************End Menu****************************** -->
               <div id ="mainContent" align="center">
-             <s:form name="frmindentBrowse">
-              <s:hidden name="pomaster.pomPoMasterId" />
-                 <table width="90%" border="1" cellspacing="0" cellpadding="0" align="center" >
+                 <%--<p align="center"><s:label value="PO MASTER LIST" /></p>
+               <%-- <p align="center"><s:property value="message" /></p>--%>
+             <s:form name="frmPOBrowse" align="center">
+            
+           <table width="110%" border="0" cellspacing="0" cellpadding="0" align="center" >
                     <tr><td>
-                    <display:table name="POMasterList" pagesize="40"
+                            
+                    <display:table name="POMList" pagesize="15"
                                excludedParams="*" export="true" cellpadding="0"
                                cellspacing="0" summary="true" id="doc"
-                               requestURI="/PrePurchase/BrowseIndentPOMaster.action">
+                               requestURI="/PrePurchase/BrowseMaster.action">
                      <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
                         <c:out> ${doc_rowNum}
                         </display:column>
 
-
-                    <display:column property="departmentmaster.dmName" title="Department"
+                  <display:column property="departmentmaster.dmName" title="Department"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
-                    <display:column property="pomPoNo" title="Po_No"
+                                    class="griddata" sortable="true"/>
+                  <display:column property="pomPoNo" title="Po_No"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
-                    <display:column property="pomPoDate" title="PO_Date"
+                                    class="griddata" sortable="true"/>
+                  <display:column property="pomPoDate" title="PO_Date"
                                    maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
-                    <display:column property="suppliermaster.smName" title="Supplier"
+                                    class="griddata" sortable="true"/>
+                  <display:column property="suppliermaster.smName" title="Supplier"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
-                    <display:column property="erpmGenMasterByPomCurrencyId.erpmgmEgmDesc" title="Currency"
+                                    class="griddata" sortable="true"/>
+                  <display:column property="erpmGenMasterByPomCurrencyId.erpmgmEgmDesc" title="Currency"
                                     maxLength="35" headerClass="gridheader"
-                                  class="griddata" style="width:10%" sortable="true"/>
-
-                    <display:column property="erpmusersByPomUserId.erpmuName" title="User ID"
+                                  class="griddata" sortable="true"/>
+                     <display:column property="pomDeliveryDate" title="PO_Delivery_Date"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
-                    <display:column property="pomDeliveryDate" title="PO_Delivery_Date"
+                                    class="griddata" sortable="true"/>
+                  <display:column property="pomAccomplished" title="PO_Closed"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
-                    <display:column property="pomAccomplished" title="PO_Accompolished"
+                                    class="griddata" sortable="true"/>
+                  <display:column property="pomCancelled" title="PO_Cancelled"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
-                    <display:column property="pomCancelled" title="PO_Cancelled"
-                                    maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:10%" sortable="true"/>
+                                    class="griddata" sortable="true"/>
 
 
                     <display:column paramId="PoMasterId" paramProperty="pomPoMasterId"
                                     href="/pico/PrePurchase/DeletePOMaster.action"
-                                    headerClass="gridheader" class="griddata" media="html">
-                                   <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;"/>
+                                    headerClass="gridheader" class="griddata" media="html" title="Delete">
+                                    Delete
                     </display:column>
 
                     <display:column paramId="PoMasterId" paramProperty="pomPoMasterId"
                                     href="/pico/PrePurchase/EditPOMaster.action"
-                                    headerClass="gridheader" class="griddata" media="html" >
-                                   <img align="left" src="../images/edit.jpg" border="0" alt="Edit"  style="cursor:pointer;"/>
+                                    headerClass="gridheader" class="griddata" media="html"  title="Edit">
+                                    Edit
+                                   
                     </display:column>
                     <display:column paramId="PoMasterId" paramProperty="pomPoMasterId"
                                     href="/pico/PrePurchase/BrowsePOMasterDetail.action"
-                                    headerClass="gridheader" class="griddata" media="html">
-                                    <img align="left" src="../images/more_bg.gif" border="0" alt="Items Details"  style="cursor:pointer;"  />
+                                    headerClass="gridheader" class="griddata" media="html" title="Add/Edit">
+                                    Add/Edit_Items
+                                   
                     </display:column>
 
                 </display:table>

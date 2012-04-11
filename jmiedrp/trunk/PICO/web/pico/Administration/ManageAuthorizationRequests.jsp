@@ -21,7 +21,7 @@
     </head>
     <body class="twoColElsLtHdr">
         <div id="container">
-            <div id="header">
+            <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
             <div id="sidebar1">
@@ -29,12 +29,13 @@
             </div>
                 <s:hidden name="erpmuName" />
             <!-- *********************************End Menu****************************** -->
-              <s:property value="message" />                                                    
+              <s:property value="message" />
             <div id ="mainContent" align="center">
 
                 <br>
                 <s:form name="frmManageAuthorizationRequests">
-               
+                    <br><br>
+
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
                     <display:table name="erpmurList" pagesize="15" summary="false"
                                    excludedParams="*" export="false" cellpadding="0" id="doc"
@@ -66,8 +67,9 @@
                         <display:column property="erpmurActive" title="Activation Status"
                                         maxLength="5" headerClass="gridheader"
                                         class="griddata" sortable="false"/>
-                        <display:column paramId="erpmurId" paramProperty="erpmurId" href="ApproveUserProfile.action" headerClass="gridheader" class="griddata" media="html">
-                            <img align="left" src="../images/Permit.gif" border="0" alt="Approve" style="cursor:pointer;"/>
+                        <display:column paramId="erpmurId" paramProperty="erpmurId" href="ApproveUserProfile.action"
+                                        headerClass="gridheader" class="griddata" media="html" title="Approve">
+                            Approve
                         </display:column>
                     </display:table>
                 </table>
@@ -80,3 +82,7 @@
         </div>
     </body>
 </html>
+
+
+
+

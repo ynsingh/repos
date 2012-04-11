@@ -49,7 +49,7 @@
                             url:"/pico/ajax/setLanguage.action?searchValue=" + lang,
                             async:false
                         }).responseText;
-                        alert("hello"+msg);
+                        alert(msg);
                     }
 
                 </script>
@@ -59,14 +59,14 @@
                         <table border="0" cellpadding="4" cellspacing="0" align="center">
                             <tbody>
                                 <tr>
-                                    <td colspan="2" align="left" class="textInput">
+                                    <td colspan="2" align="right" class="textInput">
                                         <br>
                                         <s:property value="message"/>
                                 </tr>
                                 <tr>
                                     <td valign="middle" class="FormContent">
                                         <%--<s:select label="Language" name="language" headerKey="" headerValue="-- Please Select --" list="LangList" listKey="langId" listValue="langName" cssClass="textInput"  onchange="getCurrentLanguage(this.options[this.selectedIndex].text)"/>--%>
-                                        <s:textfield required="true" requiredposition="left" maxLength="25"
+                                        <s:textfield required="true" requiredposition="left" maxLength="50"
                                                      name="erpmuser.erpmuName" title="Enter Username"   key="global.username"/>
 
                                         <s:password  required="true" requiredposition="left" maxLength="25"
@@ -112,6 +112,7 @@
 
                 </td>
                 </tbody>
+                <br><br><br>
             </table>
         <div id="footer">
             <jsp:include page="footer.jsp" flush="true"></jsp:include>

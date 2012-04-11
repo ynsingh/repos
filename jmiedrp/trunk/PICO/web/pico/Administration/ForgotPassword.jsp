@@ -23,7 +23,7 @@
     </head>
     <body class="twoColElsLtHdr">
         <div id="container">
-            <div id="header">
+            <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>                
             <!-- *********************************End Menu****************************** -->
@@ -51,7 +51,8 @@
                                 </td>
                                 <td>
                                     <s:reset theme="simple" name="bthReset" id="btnReset" value="Clear" action = "ClearForgotPassword"/>
-                                </td>
+                                    <s:submit theme="simple" action="Index"  name="login" value="Go to Login Page"/>
+                                 </td>
                             </tr>
                         </tbody>
                     </table>

@@ -21,10 +21,10 @@
     </head>
     <body class="twoColElsLtHdr" onload="SetInstitutionList('SaveUserProfileAction_erpmur_institutionmaster_imId')">
         <div id="container">
-            <div id="header">
+            <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
-            </div>          
-            <!-- *********************************End Menu****************************** -->            
+            </div>
+            <!-- *********************************End Menu****************************** -->
             <div id ="mainContent">
                 <s:form name="frmUserProfileUser" action="SaveUserProfile">
                    <s:hidden name="erpmuName"/>
@@ -33,22 +33,22 @@
                             <tr>
                                 <td colspan="2" align="right"><a href="Index.action">Go to Login Page</a></td>
                             </tr>
-                            <tr>
+                           <%-- <tr>
                                 <td colspan="2" align="right"><a href="AddInstitutionAction.action">Register your Institute</a></td>
-                            </tr>
+                            </tr>--%>
                             <tr>
                                 <td valign="middle" class="FormContent">
                                     SETUP USER PROFILE FOR <s:property value="erpmuName"/>
                                 </td>
                             </tr>
                             <tr>
-                        <br>              
-                        
+                        <br>
+
                     </tr><tr>
                     <td>
                         <s:select label="Institution" name="erpmur.institutionmaster.imId" cssClass="textInput" headerKey="0" headerValue="-- Please Select --" list="imIdList" listKey="imId" listValue="imName"  onchange="SetInstitutionDependenetLists_UserProfile('SaveUserProfile_erpmur_institutionmaster_imId','SaveUserProfile_erpmur_subinstitutionmaster_simId')"/>
                     </td><td>
-                          <s:submit theme="simple" name="btnSubmit" value="If your institure is not listed, Click here" cssClass="textInput" />
+                         <%-- <s:submit theme="simple" name="btnSubmit" value="If your institure is not listed, Click here" cssClass="textInput" />--%>
                     </td>
                         <s:select label="College/Faculty/School" name="erpmur.subinstitutionmaster.simId"  cssClass="textInput" headerKey="0" headerValue="-- Please Select --" list="simImIdList" listKey="simId" listValue="simName" onchange="getDepartmentList('SaveUserProfile_erpmur_subinstitutionmaster_simId','SaveUserProfile_erpmur_departmentmaster_dmId')"/>
                         <s:select label="Department" name="erpmur.departmentmaster.dmId" headerKey="0" cssClass="textInput"  headerValue="-- Please Select --" list="dmIdList" listKey="dmId" listValue="dmName" />
@@ -56,16 +56,16 @@
                         <s:checkbox label="Is this your default role?" name="erpmur.erpmurDefault" value="0"  />
                     </tr> <tr>
                     <td>
-                        <s:submit theme="simple" name="btnSubmit" value="Save Profile " cssClass="textInput" />
+                        <s:submit theme="simple" name="btnSubmit" value="Save Profile "  />
                     </td><td>
-                        <s:reset theme="simple" name="bthReset" id="btnReset" value="Reset"  cssClass="textInput"/>
+                        <s:reset theme="simple" name="bthReset" id="btnReset" value="Reset"  />
                     <td>
                 </tr>
                 </tbody>
                 </table>
-                
+
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
-                    <display:table name="erpmurList" pagesize="15" summary="false" 
+                    <display:table name="erpmurList" pagesize="15" summary="false"
                                    excludedParams="*" export="false" cellpadding="0" id="doc"
                                    cellspacing="0" requestURI="/Administration/SaveUserProfile.action">
                         <display:column  class="griddata" title="Record" style="width:40%" sortable="true" maxLength="100" headerClass="gridheader">
@@ -90,13 +90,14 @@
                                         maxLength="5" headerClass="gridheader"
                                         class="griddata" sortable="false"/>
                         <display:column property="erpmurActive" title="Activation Status"
-                                        maxLength="5" headerClass="gridheader" 
+                                        maxLength="5" headerClass="gridheader"
                                         class="griddata" sortable="false"/>
-                        <display:column paramId="erpmurId" paramProperty="erpmurId" href="DeleteUserProfile.action" headerClass="gridheader" class="griddata" media="html">
-                            <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete" style="cursor:pointer;"/>
+                        <display:column paramId="erpmurId" paramProperty="erpmurId" href="DeleteUserProfile.action"
+                                        headerClass="gridheader" class="griddata" media="html" title="Delete">
+                                        Delete
                         </display:column>
                     </display:table>
-                </table>                         
+                </table>
         </s:form>
     </div>
     <div id="footer">
@@ -105,3 +106,5 @@
 </div>
 </body>
 </html>
+
+

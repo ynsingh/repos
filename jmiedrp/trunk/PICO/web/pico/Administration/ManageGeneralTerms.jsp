@@ -31,13 +31,14 @@
             <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
-            <s:property value="message" />
+            
            <div id="sidebar1">
                 <jsp:include page="menu.jsp" flush="true"></jsp:include>
             </div>
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent">
                <s:form name="frmGeneralTerms" action="SaveGeneralTermsAction"  validate="true">
+                    <p align="left" class="pageMessage"><s:property value="message" /></p>
                     <s:hidden name="GTerms.gtGtid" />
                     <table border="0" cellpadding="4" cellspacing="0" align="center">
                         <tbody>
@@ -51,11 +52,7 @@
                             </tr>
                             <tr>
                                 <td> <br><br>
-                                <s:url action="BrowseGeneralTerms" id="NavigatetoURL"></s:url>
-                                    <a href='<s:property value="NavigatetoURL"/>'>Browse General Terms</a>
-                                    <br>
-
-                                        <s:select label="Institution" required="true" name="GTerms.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="termsImIdList" listKey="imId" listValue="imName" cssClass="textInput"/>
+                                     <s:select label="Institution" required="true" name="GTerms.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="termsImIdList" listKey="imId" listValue="imName" cssClass="textInput"/>
 
                                         <s:select label="Terms & Conditions Type" required="true" name="GTerms.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="termsTypeList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc" cssClass="textInput"/>
 
@@ -64,11 +61,14 @@
                                 </td>
                             </tr> <tr>
                                 <td>
-                                    <s:submit theme="simple" name="btnSubmit" value="Save General Terms"   cssClass="textInput"/>  <%-- action="SaveGeneralTermsAction"/> --%>
+                                    <s:submit theme="simple" name="btnSubmit" value="Save General Terms" />  <%-- action="SaveGeneralTermsAction"/> --%>
                                 </td>
                                 <td>
-                                    <s:submit theme="simple" name="bthReset" value="Clear"  cssClass="textInput" action="ClearGeneralTermsAction"/>
+                                    <s:submit theme="simple" name="bthReset" value="Clear"   action="ClearGeneralTermsAction"/>
                                 <td>
+                                <td>
+                                    <s:submit theme="simple" name="btnSubmit" value="Browse General Terms"    action="BrowseGeneralTerms"/>
+                                </td>
                             </tr>
                             <tr>
                     <td> <br><br> </td>

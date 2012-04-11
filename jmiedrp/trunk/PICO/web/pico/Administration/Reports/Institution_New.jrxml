@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Institution_New" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="154"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<queryString>
+		<![CDATA[SELECT
+     institutionmaster.`IM_ID` AS institutionmaster_IM_ID,
+     institutionmaster.`IM_Name` AS institutionmaster_IM_Name,
+     institutionmaster.`IM_Short_Name` AS institutionmaster_IM_Short_Name,
+     institutionmaster.`im_type` AS institutionmaster_im_type,
+     institutionmaster.`IM_Address_Line1` AS institutionmaster_IM_Address_Line1,
+     institutionmaster.`IM_Address_Line2` AS institutionmaster_IM_Address_Line2,
+     institutionmaster.`IM_District` AS institutionmaster_IM_District,
+     institutionmaster.`IM_State_ID` AS institutionmaster_IM_State_ID,
+     institutionmaster.`IM_Pin_No` AS institutionmaster_IM_Pin_No,
+     institutionmaster.`IM_EMail_ID` AS institutionmaster_IM_EMail_ID,
+     institutionmaster.`IM_Country_ID` AS institutionmaster_IM_Country_ID,
+     institutionmaster.`IM_EMP_ID` AS institutionmaster_IM_EMP_ID,
+     statemaster.`State_Name` AS statemaster_State_Name,
+     countrymaster.`Country_Name` AS countrymaster_Country_Name,
+     employeemaster.`EMP_FName` AS employeemaster_EMP_FName,
+     employeemaster.`EMP_MName` AS employeemaster_EMP_MName,
+     employeemaster.`EMP_LName` AS employeemaster_EMP_LName,
+     employeemaster.`EMP_DESIGNATION_ID` AS employeemaster_EMP_DESIGNATION_ID,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS erpm_gen_master_ERPMGM_EGM_DESC
+FROM
+     `statemaster` statemaster INNER JOIN `institutionmaster` institutionmaster ON statemaster.`State_ID` = institutionmaster.`IM_State_ID`
+     INNER JOIN `countrymaster` countrymaster ON institutionmaster.`IM_Country_ID` = countrymaster.`Country_ID`
+     INNER JOIN `employeemaster` employeemaster ON institutionmaster.`IM_EMP_ID` = employeemaster.`EMP_ID`
+     INNER JOIN `erpm_gen_master` erpm_gen_master ON institutionmaster.`im_type` = erpm_gen_master.`ERPMGM_EGM_ID`]]>
+	</queryString>
+	<field name="institutionmaster_IM_ID" class="java.lang.Integer"/>
+	<field name="institutionmaster_IM_Name" class="java.lang.String"/>
+	<field name="institutionmaster_IM_Short_Name" class="java.lang.String"/>
+	<field name="institutionmaster_im_type" class="java.lang.Long"/>
+	<field name="institutionmaster_IM_Address_Line1" class="java.lang.String"/>
+	<field name="institutionmaster_IM_Address_Line2" class="java.lang.String"/>
+	<field name="institutionmaster_IM_District" class="java.lang.String"/>
+	<field name="institutionmaster_IM_State_ID" class="java.lang.Integer"/>
+	<field name="institutionmaster_IM_Pin_No" class="java.lang.String"/>
+	<field name="institutionmaster_IM_EMail_ID" class="java.lang.String"/>
+	<field name="institutionmaster_IM_Country_ID" class="java.lang.Integer"/>
+	<field name="institutionmaster_IM_EMP_ID" class="java.lang.Long"/>
+	<field name="statemaster_State_Name" class="java.lang.String"/>
+	<field name="countrymaster_Country_Name" class="java.lang.String"/>
+	<field name="employeemaster_EMP_FName" class="java.lang.String"/>
+	<field name="employeemaster_EMP_MName" class="java.lang.String"/>
+	<field name="employeemaster_EMP_LName" class="java.lang.String"/>
+	<field name="employeemaster_EMP_DESIGNATION_ID" class="java.lang.Long"/>
+	<field name="erpm_gen_master_ERPMGM_EGM_DESC" class="java.lang.String"/>
+	<group name="institutionmaster_IM_Name">
+		<groupExpression><![CDATA[$F{institutionmaster_IM_Name}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<textField>
+					<reportElement style="SubTitle" x="47" y="13" width="506" height="24" forecolor="#000000"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{institutionmaster_IM_Name}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement mode="Opaque" x="0" y="13" width="36" height="24" forecolor="#CCCCCC" backcolor="#CCCCCC"/>
+				</rectangle>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<group name="erpm_gen_master_ERPMGM_EGM_DESC">
+		<groupExpression><![CDATA[$F{erpm_gen_master_ERPMGM_EGM_DESC}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<textField>
+					<reportElement style="SubTitle" x="0" y="4" width="460" height="20"/>
+					<textElement>
+						<font size="16" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{erpm_gen_master_ERPMGM_EGM_DESC}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<image scaleImage="RetainShape">
+				<reportElement x="275" y="0" width="300" height="64"/>
+				<imageExpression><![CDATA["leaf_banner_gray.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="0" y="13" width="263" height="33"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Leaf Gray Title]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="117" y="46" width="157" height="22"/>
+				<textElement/>
+				<text><![CDATA[Leaf Gray SubTitle]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[institutionmaster_IM_ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="32" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[institutionmaster_IM_Short_Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="64" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[institutionmaster_im_type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="96" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[institutionmaster_IM_Address_Line1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="128" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[institutionmaster_IM_Address_Line2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="160" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[institutionmaster_IM_District]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="192" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[institutionmaster_IM_State_ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="224" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[institutionmaster_IM_Pin_No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="256" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[institutionmaster_IM_EMail_ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="288" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[institutionmaster_IM_Country_ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="320" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[institutionmaster_IM_EMP_ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="352" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[statemaster_State_Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="384" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[countrymaster_Country_Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="416" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[employeemaster_EMP_FName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="448" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[employeemaster_EMP_MName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="480" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[employeemaster_EMP_LName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="512" y="19" width="32" height="15"/>
+				<textElement/>
+				<text><![CDATA[employeemaster_EMP_DESIGNATION_ID]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Detail" x="0" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="32" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Short_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="64" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{institutionmaster_im_type}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="96" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Address_Line1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="128" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Address_Line2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="160" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_District}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="192" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_State_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="224" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Pin_No}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="256" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_EMail_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="288" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Country_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="320" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_EMP_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="352" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{statemaster_State_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="384" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{countrymaster_Country_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="416" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{employeemaster_EMP_FName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="448" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{employeemaster_EMP_MName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="480" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{employeemaster_EMP_LName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="512" y="0" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{employeemaster_EMP_DESIGNATION_ID}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

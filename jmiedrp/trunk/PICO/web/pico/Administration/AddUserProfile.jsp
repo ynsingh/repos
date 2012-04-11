@@ -36,9 +36,9 @@
                             <tr>
                                 <td colspan="2" align="right"><a href="Index.action">Go to Login Page</a></td>
                             </tr>
-                            <tr>
+                           <%-- <tr>
                                 <td colspan="2" align="right"><a href="AddInstitutionAction.action">Register your Institute</a></td>
-                            </tr>
+                            </tr>--%>
                             <tr>
                                 <td valign="middle" class="FormContent">
                                     SETUP USER PROFILE FOR <s:property value="erpmuName"/>
@@ -50,10 +50,11 @@
                     </tr><tr>
                     <td>
                         <s:select label="Institution" name="erpmur.institutionmaster.imId" headerKey="0" headerValue="-- Please Select --" list="imIdList" listKey="imId" listValue="imName"  onchange="SetInstitutionDependenetLists_UserProfile('SaveUserProfile_erpmur_institutionmaster_imId','SaveUserProfile_erpmur_subinstitutionmaster_simId')"/>
-                    </td><td>
-                          <s:submit theme="simple" name="btnSubmit" value="If your institure is not listed, Click here"  />
                     </td>
-                        <s:select label="College/Faculty/School" name="erpmur.subinstitutionmaster.simId" headerKey="0" headerValue="-- Please Select --" list="simImIdList" listKey="simId" listValue="simName" onchange="getDepartmentList('SaveUserProfile_erpmur_subinstitutionmaster_simId','SaveUserProfile_erpmur_departmentmaster_dmId')"/>
+                    <%--<td>
+                          <s:submit theme="simple" name="btnSubmit" value="If your institure is not listed, Click here"  />
+                    </td>--%>
+                    <s:select label="College/Faculty/School" name="erpmur.subinstitutionmaster.simId" headerKey="0" headerValue="-- Please Select --" list="simImIdList" listKey="simId" listValue="simName"/><%-- onchange="getDepartmentList('SaveUserProfile_erpmur_subinstitutionmaster_simId','SaveUserProfile_erpmur_departmentmaster_dmId')"/>--%>
                         <s:select label="Department" name="erpmur.departmentmaster.dmId" headerKey="0" headerValue="-- Please Select --" list="dmIdList" listKey="dmId" listValue="dmName" />
                         <s:select label="Institutional User Role" name="erpmur.institutionuserroles.iurId" headerKey="0" headerValue="-- Please Select --" list="iurIdList" listKey="iurId" listValue="iurName"/>
                         <s:checkbox label="Is this your default role?" name="erpmur.erpmurDefault" value="0"  />

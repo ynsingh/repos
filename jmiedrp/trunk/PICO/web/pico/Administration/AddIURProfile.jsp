@@ -4,22 +4,20 @@
     Author     : sknaqvi
 --%>
 
-<%@ page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
-
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>ERP Mission - A Project sponsored by NMEICT, MHRD, Govt. of India</title>
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/ajax/jquery2.js"></script>
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/Administration/Admin.js"></script>
+        <script language="JavaScript" type="text/JavaScript" src="../javaScript/ajax/jquery2.js"></script>
+        <script language="JavaScript" type="text/JavaScript" src="../javaScript/PrePurchase/country.js"></script>
         <link href="../css/pico.css" rel="stylesheet" type="text/css" />
-        <link href="/BookShop/css/stylesheet.css" type="text/css" rel="stylesheet">
         <meta HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-8">
         <meta name="description" content="ERP for Universities">
         <meta name="keywords" content="ERP">
@@ -28,10 +26,11 @@
         <meta name="copyright" content="NMEICT, MHRD, Govt. of India">
     </head>
     <body class="twoColElsLtHdr">
-        <div id="container" >
+        <div id="container">
             <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
+
             <div id="sidebar1">
                 <jsp:include page="menu.jsp" flush="true"></jsp:include>
             </div>

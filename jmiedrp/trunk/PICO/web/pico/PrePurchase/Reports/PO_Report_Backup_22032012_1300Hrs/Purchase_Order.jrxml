@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Purchase_Order" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="274"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\PICO\\PICO\\web\\pico\\PrePurchase\\Reports\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     if(erpm_po_taxes.`POT_Tax_Percent` is null or erpm_po_taxes.`POT_Tax_Percent` = 0, " ", concat(CAST(erpm_po_taxes.`POT_Tax_Percent` AS CHAR), "% ", erpm_po_taxes.`POT_Tax_Name`, " on ", CAST(erpm_po_taxes.`POT_Tax_on_Value_Percent` AS CHAR), "% of value", if(erpm_po_taxes.`POT_Surcharge_Percent` is null or erpm_po_taxes.`POT_Surcharge_Percent` = 0, " ", ", with "), if(erpm_po_taxes.`POT_Surcharge_Percent` is null or erpm_po_taxes.`POT_Surcharge_Percent` = 0, " ", CAST(erpm_po_taxes.`POT_Surcharge_Percent` AS CHAR)), if(erpm_po_taxes.`POT_Surcharge_Percent` is null or erpm_po_taxes.`POT_Surcharge_Percent` = 0, " "," Surcharge."))) AS Tax_Description,
+     erpm_po_master.`POM_PO_Master_ID` AS erpm_po_master_POM_PO_Master_ID,
+     erpm_po_master.`POM_IM_ID` AS erpm_po_master_POM_IM_ID,
+     erpm_po_master.`POM_DM_ID` AS erpm_po_master_POM_DM_ID,
+     erpm_po_master.`POM_PO_No` AS erpm_po_master_POM_PO_No,
+     erpm_po_master.`POM_PO_Date` AS erpm_po_master_POM_PO_Date,
+     erpm_po_master.`POM_Purchase_Mode` AS erpm_po_master_POM_Purchase_Mode,
+     erpm_po_master.`POM_Payment_Mode_ID` AS erpm_po_master_POM_Payment_Mode_ID,
+     erpm_po_master.`POM_Supplier_ID` AS erpm_po_master_POM_Supplier_ID,
+     erpm_po_master.`POM_Form_ID` AS erpm_po_master_POM_Form_ID,
+     erpm_po_master.`POM_Form_No` AS erpm_po_master_POM_Form_No,
+     erpm_po_master.`POM_Terms_Days` AS erpm_po_master_POM_Terms_Days,
+     erpm_po_master.`POM_Delivery_Date` AS erpm_po_master_POM_Delivery_Date,
+     erpm_po_master.`POM_Remarks` AS erpm_po_master_POM_Remarks,
+     erpm_po_master.`POM_Discount` AS erpm_po_master_POM_Discount,
+     erpm_po_master.`POM_Currency_ID` AS erpm_po_master_POM_Currency_ID,
+     erpm_po_master.`POM_Approved_By_ID` AS erpm_po_master_POM_Approved_By_ID,
+     erpm_po_master.`POM_Approved_By_Designation` AS erpm_po_master_POM_Approved_By_Designation,
+     erpm_po_master.`POM_Against_Reference_ID` AS erpm_po_master_POM_Against_Reference_ID,
+     erpm_po_master.`POM_User_ID` AS erpm_po_master_POM_User_ID,
+     erpm_po_master.`POM_Accomplished` AS erpm_po_master_POM_Accomplished,
+     erpm_po_master.`POM_Cancelled` AS erpm_po_master_POM_Cancelled,
+     erpm_po_master.`POM_SIM_ID` AS erpm_po_master_POM_SIM_ID,
+     erpm_po_master.`POM_Purchase_Purpose` AS erpm_po_master_POM_Purchase_Purpose,
+     erpm_po_taxes.`POT_Tax_Name` AS erpm_po_taxes_POT_Tax_Name,
+     erpm_po_taxes.`POT_Tax_Percent` AS erpm_po_taxes_POT_Tax_Percent,
+     erpm_po_taxes.`POT_Tax_on_Value_Percent` AS erpm_po_taxes_POT_Tax_on_Value_Percent,
+     erpm_po_taxes.`POT_Surcharge_Percent` AS erpm_po_taxes_POT_Surcharge_Percent,
+     erpm_po_details.`POD_PODetails_ID` AS erpm_po_details_POD_PODetails_ID,
+     erpm_po_details.`POD_POMaster_ID` AS erpm_po_details_POD_POMaster_ID,
+     erpm_po_details.`POD_Item_ID` AS erpm_po_details_POD_Item_ID,
+     erpm_po_details.`POD_Quantity` AS erpm_po_details_POD_Quantity,
+     erpm_po_details.`POD_Discount` AS erpm_po_details_POD_Discount,
+     erpm_po_details.`POD_Warranty_Terms` AS erpm_po_details_POD_Warranty_Terms,
+     erpm_po_details.`POD_Schedule` AS erpm_po_details_POD_Schedule,
+     erpm_po_details.`POD_RATE` AS erpm_po_details_POD_RATE,
+     erpm_po_details.`POD_INDTL_ID` AS erpm_po_details_POD_INDTL_ID,
+     suppliermaster.`SM_Name` AS suppliermaster_SM_Name,
+     suppliermaster.`SM_STATE_ST_VAT_RGN_NO` AS suppliermaster_SM_STATE_ST_VAT_RGN_NO,
+     suppliermaster.`SM_CEN_ST_VAT_RGN_NO` AS suppliermaster_SM_CEN_ST_VAT_RGN_NO,
+     suppliermaster.`SM_ED_RGN_NO` AS suppliermaster_SM_ED_RGN_NO,
+     suppliermaster.`SM_PAN_No` AS suppliermaster_SM_PAN_No,
+     suppliermaster.`SM_TAN_No` AS suppliermaster_SM_TAN_No,
+     suppliermaster.`SM_ECC_CODE` AS suppliermaster_SM_ECC_CODE,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS erpm_item_master_ERPMIM_Item_Brief_Desc,
+     erpm_item_master.`ERPMIM_Item_Cat2` AS erpm_item_master_ERPMIM_Item_Cat2,
+     erpm_item_master.`ERPMIM_Item_Cat3` AS erpm_item_master_ERPMIM_Item_Cat3,
+     erpm_item_master.`ERPMIM_UOP` AS erpm_item_master_ERPMIM_UOP,
+     erpm_item_master.`ERPMIM_Model` AS erpm_item_master_ERPMIM_Model,
+     erpm_item_master.`ERPMIM_Capital_Cat` AS erpm_item_master_ERPMIM_Capital_Cat,
+     erpm_item_master.`ERPMIM_Item_Cat1` AS erpm_item_master_ERPMIM_Item_Cat1,
+     erpm_item_master.`ERPMIM_Make` AS erpm_item_master_ERPMIM_Make,
+     erpm_item_master.`ERPMIM_Detailed_Desc` AS erpm_item_master_ERPMIM_Detailed_Desc,
+     institutionmaster.`IM_Name` AS institutionmaster_IM_Name,
+     institutionmaster.`IM_Address_Line1` AS institutionmaster_IM_Address_Line1,
+     institutionmaster.`IM_Address_Line2` AS institutionmaster_IM_Address_Line2,
+     institutionmaster.`IM_EMail_ID` AS institutionmaster_IM_EMail_ID,
+     subinstitutionmaster.`SIM_Name` AS subinstitutionmaster_SIM_Name,
+     subinstitutionmaster.`SIM_Short_Name` AS subinstitutionmaster_SIM_Short_Name,
+     subinstitutionmaster.`SIM_Address_Line1` AS subinstitutionmaster_SIM_Address_Line1,
+     subinstitutionmaster.`SIM_Address_Line2` AS subinstitutionmaster_SIM_Address_Line2,
+     subinstitutionmaster.`SIM_District` AS subinstitutionmaster_SIM_District,
+     subinstitutionmaster.`SIM_State_ID` AS subinstitutionmaster_SIM_State_ID,
+     subinstitutionmaster.`SIM_EMail_ID` AS subinstitutionmaster_SIM_EMail_ID,
+     subinstitutionmaster.`sim_type` AS subinstitutionmaster_sim_type,
+     institutionmaster.`IM_District` AS institutionmaster_IM_District,
+     institutionmaster.`IM_State_ID` AS institutionmaster_IM_State_ID,
+     supplier_address.`ad_Line1` AS supplier_address_ad_Line1,
+     supplier_address.`ad_Line2` AS supplier_address_ad_Line2,
+     supplier_address.`ad_country_id` AS supplier_address_ad_country_id,
+     supplier_address.`ad_state_id` AS supplier_address_ad_state_id,
+     supplier_address.`ad_city` AS supplier_address_ad_city,
+     supplier_address.`ad_Phn` AS supplier_address_ad_Phn
+FROM
+     `erpm_po_master` erpm_po_master INNER JOIN `erpm_po_details` erpm_po_details ON erpm_po_master.`POM_PO_Master_ID` = erpm_po_details.`POD_POMaster_ID`
+     INNER JOIN `suppliermaster` suppliermaster ON erpm_po_master.`POM_Supplier_ID` = suppliermaster.`SM_Id`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_po_master.`POM_IM_ID` = institutionmaster.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster ON erpm_po_master.`POM_SIM_ID` = subinstitutionmaster.`sim_id`
+     INNER JOIN `supplier_address` supplier_address ON suppliermaster.`SM_Id` = supplier_address.`ad_sm_id`
+     INNER JOIN `erpm_item_master` erpm_item_master ON erpm_po_details.`POD_Item_ID` = erpm_item_master.`ERPMIM_ID`
+     LEFT OUTER JOIN `erpm_po_taxes` erpm_po_taxes ON erpm_po_details.`POD_PODetails_ID` = erpm_po_taxes.`POT_PODetail_ID`]]>
+	</queryString>
+	<field name="Tax_Description" class="java.lang.String"/>
+	<field name="erpm_po_master_POM_PO_Master_ID" class="java.lang.Long"/>
+	<field name="erpm_po_master_POM_IM_ID" class="java.lang.Integer"/>
+	<field name="erpm_po_master_POM_DM_ID" class="java.lang.Integer"/>
+	<field name="erpm_po_master_POM_PO_No" class="java.lang.Integer"/>
+	<field name="erpm_po_master_POM_PO_Date" class="java.sql.Date"/>
+	<field name="erpm_po_master_POM_Purchase_Mode" class="java.lang.String"/>
+	<field name="erpm_po_master_POM_Payment_Mode_ID" class="java.lang.Long"/>
+	<field name="erpm_po_master_POM_Supplier_ID" class="java.lang.Long"/>
+	<field name="erpm_po_master_POM_Form_ID" class="java.lang.Long"/>
+	<field name="erpm_po_master_POM_Form_No" class="java.lang.String"/>
+	<field name="erpm_po_master_POM_Terms_Days" class="java.lang.Integer"/>
+	<field name="erpm_po_master_POM_Delivery_Date" class="java.sql.Date"/>
+	<field name="erpm_po_master_POM_Remarks" class="java.lang.String"/>
+	<field name="erpm_po_master_POM_Discount" class="java.math.BigDecimal"/>
+	<field name="erpm_po_master_POM_Currency_ID" class="java.lang.Long"/>
+	<field name="erpm_po_master_POM_Approved_By_ID" class="java.lang.Integer"/>
+	<field name="erpm_po_master_POM_Approved_By_Designation" class="java.lang.String"/>
+	<field name="erpm_po_master_POM_Against_Reference_ID" class="java.lang.Long"/>
+	<field name="erpm_po_master_POM_User_ID" class="java.lang.Integer"/>
+	<field name="erpm_po_master_POM_Accomplished" class="java.lang.String"/>
+	<field name="erpm_po_master_POM_Cancelled" class="java.lang.String"/>
+	<field name="erpm_po_master_POM_SIM_ID" class="java.lang.Integer"/>
+	<field name="erpm_po_master_POM_Purchase_Purpose" class="java.lang.String"/>
+	<field name="erpm_po_taxes_POT_Tax_Name" class="java.lang.String"/>
+	<field name="erpm_po_taxes_POT_Tax_Percent" class="java.math.BigDecimal"/>
+	<field name="erpm_po_taxes_POT_Tax_on_Value_Percent" class="java.math.BigDecimal"/>
+	<field name="erpm_po_taxes_POT_Surcharge_Percent" class="java.math.BigDecimal"/>
+	<field name="erpm_po_details_POD_PODetails_ID" class="java.lang.Long"/>
+	<field name="erpm_po_details_POD_POMaster_ID" class="java.lang.Long"/>
+	<field name="erpm_po_details_POD_Item_ID" class="java.lang.Long"/>
+	<field name="erpm_po_details_POD_Quantity" class="java.math.BigDecimal"/>
+	<field name="erpm_po_details_POD_Discount" class="java.math.BigDecimal"/>
+	<field name="erpm_po_details_POD_Warranty_Terms" class="java.lang.String"/>
+	<field name="erpm_po_details_POD_Schedule" class="java.lang.String"/>
+	<field name="erpm_po_details_POD_RATE" class="java.math.BigDecimal"/>
+	<field name="erpm_po_details_POD_INDTL_ID" class="java.lang.Integer"/>
+	<field name="suppliermaster_SM_Name" class="java.lang.String"/>
+	<field name="suppliermaster_SM_STATE_ST_VAT_RGN_NO" class="java.lang.String"/>
+	<field name="suppliermaster_SM_CEN_ST_VAT_RGN_NO" class="java.lang.String"/>
+	<field name="suppliermaster_SM_ED_RGN_NO" class="java.lang.String"/>
+	<field name="suppliermaster_SM_PAN_No" class="java.lang.String"/>
+	<field name="suppliermaster_SM_TAN_No" class="java.lang.String"/>
+	<field name="suppliermaster_SM_ECC_CODE" class="java.lang.String"/>
+	<field name="erpm_item_master_ERPMIM_Item_Brief_Desc" class="java.lang.String"/>
+	<field name="erpm_item_master_ERPMIM_Item_Cat2" class="java.lang.Long"/>
+	<field name="erpm_item_master_ERPMIM_Item_Cat3" class="java.lang.Long"/>
+	<field name="erpm_item_master_ERPMIM_UOP" class="java.lang.Long"/>
+	<field name="erpm_item_master_ERPMIM_Model" class="java.lang.String"/>
+	<field name="erpm_item_master_ERPMIM_Capital_Cat" class="java.lang.Long"/>
+	<field name="erpm_item_master_ERPMIM_Item_Cat1" class="java.lang.Long"/>
+	<field name="erpm_item_master_ERPMIM_Make" class="java.lang.String"/>
+	<field name="erpm_item_master_ERPMIM_Detailed_Desc" class="java.lang.String"/>
+	<field name="institutionmaster_IM_Name" class="java.lang.String"/>
+	<field name="institutionmaster_IM_Address_Line1" class="java.lang.String"/>
+	<field name="institutionmaster_IM_Address_Line2" class="java.lang.String"/>
+	<field name="institutionmaster_IM_EMail_ID" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Name" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Short_Name" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Address_Line1" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Address_Line2" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_District" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_State_ID" class="java.lang.Integer"/>
+	<field name="subinstitutionmaster_SIM_EMail_ID" class="java.lang.String"/>
+	<field name="subinstitutionmaster_sim_type" class="java.lang.Long"/>
+	<field name="institutionmaster_IM_District" class="java.lang.String"/>
+	<field name="institutionmaster_IM_State_ID" class="java.lang.Integer"/>
+	<field name="supplier_address_ad_Line1" class="java.lang.String"/>
+	<field name="supplier_address_ad_Line2" class="java.lang.String"/>
+	<field name="supplier_address_ad_country_id" class="java.lang.Integer"/>
+	<field name="supplier_address_ad_state_id" class="java.lang.Integer"/>
+	<field name="supplier_address_ad_city" class="java.lang.String"/>
+	<field name="supplier_address_ad_Phn" class="java.lang.Integer"/>
+	<variable name="SumQty" class="java.lang.Integer" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{erpm_po_details_POD_Quantity}]]></variableExpression>
+	</variable>
+	<variable name="TotalAmount" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{erpm_po_details_POD_Quantity}*$F{erpm_po_details_POD_RATE})-($F{erpm_po_details_POD_Discount}*($F{erpm_po_details_POD_Quantity}*$F{erpm_po_details_POD_RATE})/100)]]></variableExpression>
+	</variable>
+	<variable name="Tax_Desc" class="java.lang.String">
+		<variableExpression><![CDATA[$F{erpm_po_taxes_POT_Tax_Percent} + "% " + $F{erpm_po_taxes_POT_Tax_Name} + " on " + $F{erpm_po_taxes_POT_Tax_on_Value_Percent} + "% value" + " with " + $F{erpm_po_taxes_POT_Surcharge_Percent} + " Surcharge "]]></variableExpression>
+	</variable>
+	<variable name="Tax_Amount" class="java.lang.Double">
+		<variableExpression><![CDATA[($F{erpm_po_taxes_POT_Tax_Percent}*($V{Amt_post_Discount})*$F{erpm_po_taxes_POT_Tax_on_Value_Percent}/10000)*(1+$F{erpm_po_taxes_POT_Surcharge_Percent}/100)]]></variableExpression>
+	</variable>
+	<variable name="Amt_post_Discount" class="java.lang.Double">
+		<variableExpression><![CDATA[($F{erpm_po_details_POD_Quantity}*$F{erpm_po_details_POD_RATE})-($F{erpm_po_details_POD_Discount}*($F{erpm_po_details_POD_Quantity}*$F{erpm_po_details_POD_RATE})/100)]]></variableExpression>
+	</variable>
+	<variable name="Final_Amount" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{Amt_post_Discount}+$V{Tax_Amount}]]></variableExpression>
+	</variable>
+	<group name="erpm_po_master_POM_PO_No">
+		<groupExpression><![CDATA[$F{erpm_po_master_POM_PO_No}]]></groupExpression>
+	</group>
+	<group name="erpm_item_master_ERPMIM_Item_Brief_Desc">
+		<groupExpression><![CDATA[$F{erpm_item_master_ERPMIM_Item_Brief_Desc}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="227" splitType="Stretch">
+			<textField>
+				<reportElement x="87" y="106" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_po_master_POM_PO_No}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMM yyyy">
+				<reportElement x="477" y="106" width="78" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_po_master_POM_PO_Date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="131" width="231" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{suppliermaster_SM_Name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="106" width="84" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PO No. :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="106" width="52" height="20"/>
+				<textElement textAlignment="Justified">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PO Date :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="207" width="550" height="20"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Kindly supply the following item(s) and/or service(s) as per the details given below :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="134" y="19" width="225" height="15"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(A Central University by an act of Parliament)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="134" y="0" width="291" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement x="134" y="33" width="288" height="27"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Address_Line1} + ", " + $F{institutionmaster_IM_Address_Line2} + ", " + $F{institutionmaster_IM_District} + ", " + $F{institutionmaster_IM_State_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="134" y="62" width="288" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subinstitutionmaster_SIM_Name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement x="134" y="80" width="288" height="24"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subinstitutionmaster_SIM_Address_Line1} + ", " + $F{subinstitutionmaster_SIM_Address_Line2} + ", " + $F{subinstitutionmaster_SIM_District}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="213" y="104" width="149" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Purchase Order]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement x="2" y="151" width="288" height="24"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{supplier_address_ad_Line1} + ", " + $F{supplier_address_ad_Line2} + ", " + $F{supplier_address_ad_city}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="187" width="97" height="20"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Dear Sir / Madam,]]></text>
+			</staticText>
+			<image>
+				<reportElement x="-7" y="1" width="199" height="58"/>
+				<imageExpression><![CDATA["C:\\PICO\\PICO\\web\\images\\MHRD.JPG"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="7" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement x="34" y="2" width="159" height="20"/>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Item Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="2" width="54" height="20"/>
+				<textElement textAlignment="Right">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="325" y="22" width="49" height="20"/>
+				<textElement textAlignment="Right">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Rate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="432" y="2" width="43" height="20"/>
+				<textElement textAlignment="Right">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Discount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="22" width="122" height="20"/>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Warranty Terms]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="479" y="2" width="72" height="20"/>
+				<textElement textAlignment="Right">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="2" width="30" height="20"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="true"/>
+					<paragraph tabStopWidth="40"/>
+				</textElement>
+				<text><![CDATA[Sl.No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="192" y="2" width="98" height="20"/>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Tax Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="406" y="22" width="69" height="20"/>
+				<textElement textAlignment="Right">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Tax Amount]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="38" splitType="Stretch">
+			<textField>
+				<reportElement x="34" y="0" width="159" height="15"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_item_master_ERPMIM_Item_Brief_Desc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="320" y="0" width="54" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="10" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_po_details_POD_Quantity}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="325" y="18" width="49" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_po_details_POD_RATE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="406" y="0" width="69" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{erpm_po_details_POD_Discount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="34" y="15" width="158" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_po_details_POD_Warranty_Terms}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="1" width="30" height="14"/>
+				<textElement>
+					<font size="10"/>
+					<paragraph tabStopWidth="40"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{erpm_po_master_POM_PO_No_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="193" y="1" width="97" height="29"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Tax_Description}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="374" y="18" width="99" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{Tax_Amount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="479" y="15" width="71" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Final_Amount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="474" y="1" width="76" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{Amt_post_Discount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="26" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="10" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="802" splitType="Stretch">
+			<textField>
+				<reportElement x="315" y="0" width="59" height="20"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SumQty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="473" y="0" width="77" height="20"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TotalAmount}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="5" y="32" width="550" height="759"/>
+				<subreportParameter name="erpm_po_master_POM_PO_Master_ID">
+					<subreportParameterExpression><![CDATA[$F{erpm_po_master_POM_PO_Master_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "PO_Terms.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

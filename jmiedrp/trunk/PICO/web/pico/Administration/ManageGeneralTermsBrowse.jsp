@@ -40,7 +40,7 @@
     </head>
     <body class="twoColElsLtHdr">
         <div id="container">
-            <div id="header">
+            <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
             <div id="sidebar1">
@@ -72,11 +72,11 @@
                                     class="griddata" style="width:65%" sortable="true"/>
                     <display:column paramId="GTGTID" paramProperty="gtGtid" href="/pico/Administration/EditGeneralTerms"
                                     headerClass="gridheader" class="griddata" media="html"  title="Edit" >
-                                    <img align="left" src="../images/edit.jpg" border="0" alt="Edit" style="cursor:pointer;" title="Edit"/>
+                                    Edit
                     </display:column>
                     <display:column paramId="GTGTID" paramProperty="gtGtid" href="/pico/Administration/DeleteGeneralTerms.action"
                                     headerClass="gridheader" class="griddata" media="html" title="Delete" style="width:20%" >
-                                    <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete" style="cursor:pointer;" title="Delete"/>
+                                    Delete
                     </display:column>
                 </display:table>
                 </table>

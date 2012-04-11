@@ -86,8 +86,6 @@
                     <s:hidden name="ADID" />
                     <s:hidden name="SMID" />
 
-
-
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
                         <display:table name="adList" pagesize="15"
                                        excludedParams="*" export="true" cellpadding="0"

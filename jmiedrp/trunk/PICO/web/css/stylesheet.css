@@ -64,6 +64,12 @@ TEXTAREA {
 	border: 1px solid #000;
 }
 
+.queryInput, textarea {
+	background-color: chartreuse;
+	border: 1px solid #000;
+}
+
+
 .buttonText {
 	padding-right: 30px;
 	padding-left: 0px;

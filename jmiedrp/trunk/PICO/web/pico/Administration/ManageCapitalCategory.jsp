@@ -26,7 +26,7 @@
     </head>
     <body class="twoColElsLtHdr">
         <div id="container">
-            <div id="header">
+            <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
             
@@ -34,6 +34,7 @@
                 <jsp:include page="menu.jsp" flush="true"></jsp:include>
             </div>
             <!-- *********************************End Menu****************************** -->
+            <br><br>
             <p align="center"><s:label value="CAPITAL ITEMS CATEGORIES MANAGEMENT" cssClass="pageHeading"/></p>
             <p align="center"><s:property value="message" /></p>
             <div id ="mainContent">
@@ -85,12 +86,12 @@
                         <display:column paramId="ErpmccId" paramProperty="erpmccId"
                                     href="/pico/Administration/EditCapitalCategoryAction.action" 
                                     headerClass="gridheader" class="griddata" media="html" title="Edit" >
-                                    <img align="left" src="../images/edit.jpg" border="0" alt="Edit" style="cursor:pointer;" title="Edit"/>
+                                    Edit
                         </display:column>
                         <display:column paramId="ErpmccId" paramProperty="erpmccId"
                                     href="/pico/Administration/DeleteCapitalCategoryAction.action"
                                     headerClass="gridheader" class="griddata" media="html" title="Delete" style="width:30%">
-                                    <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;" title="Delete" />
+                                    Delete
                         </display:column>
                     </display:table>
                 <br></td></tr>

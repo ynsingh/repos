@@ -87,6 +87,7 @@
                                 <td> </td><td>
                                     <s:submit theme="simple" name="btnSubmit" value="Save"  />
                                     <s:reset theme="simple" name="bthReset" id="btnReset" value="Clear"/>
+                                    <s:submit theme="simple" name="btnSubmit" value="Exit"   action="Index"/>
                                 </td>
                                 <td>
                                 <td>
