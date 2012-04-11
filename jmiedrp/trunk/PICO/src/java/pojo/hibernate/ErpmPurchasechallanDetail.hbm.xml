@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmPurchasechallanDetail" table="erpm_purchasechallan_detail">
+        <id name="pcdPcdId" type="java.lang.Integer">
+            <column name="PCD_PCD_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmPurchasechallanMaster" class="pojo.hibernate.ErpmPurchasechallanMaster" fetch="select">
+            <column name="PCD_PCMaster_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmItemMaster" class="pojo.hibernate.ErpmItemMaster" fetch="select">
+            <column name="PCD_ItemMaster_ID" />
+        </many-to-one>
+        <property name="pcdRecvQuantity" type="big_decimal">
+            <column name="PCD_Recv_Quantity" precision="8" />
+        </property>
+        <set name="erpmPurchasechallanSerials" inverse="true">
+            <key>
+                <column name="PCS_PCDetail_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPurchasechallanSerial" />
+        </set>
+    </class>
+</hibernate-mapping>

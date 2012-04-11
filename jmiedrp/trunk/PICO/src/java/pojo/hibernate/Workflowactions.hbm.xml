@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Workflowactions" table="workflowactions">
+        <id name="wfaId" type="java.lang.Integer">
+            <column name="WFA_Id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="WFA_EGM_Action_Id" />
+        </many-to-one>
+        <many-to-one name="workflowdetail" class="pojo.hibernate.Workflowdetail" fetch="select">
+            <column name="WFA_WFD_Id" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

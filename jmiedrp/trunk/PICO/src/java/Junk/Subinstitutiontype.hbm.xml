@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 19, 2011 11:12:21 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="pojo.hibernate.Subinstitutiontype" table="subinstitutiontype">
+    <id name="simtTypeId" type="java.lang.Byte">
+      <column name="SIMT_Type_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="simtName" type="string">
+      <column length="100" name="SIMT_Name" not-null="true"/>
+    </property>
+    <set inverse="true" name="subinstitutionmasters">
+      <key>
+        <column name="SIM_Type" not-null="true"/>
+      </key>
+      <one-to-many class="pojo.hibernate.Subinstitutionmaster"/>
+    </set>
+  </class>
+</hibernate-mapping>

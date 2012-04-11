@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Erpmsubmodule" table="erpmsubmodule">
+        <id name="erpmSubModuleId" type="java.lang.Integer">
+            <column name="ErpmSubModule_Id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmmodule" class="pojo.hibernate.Erpmmodule" fetch="select">
+            <column name="ESM_Module_Id" />
+        </many-to-one>
+        <property name="esmName" type="string">
+            <column name="ESM_Name" length="45" />
+        </property>
+        <property name="esmOrder" type="java.lang.Byte">
+            <column name="ESM_ORDER" />
+        </property>
+        <property name="esmHref" type="string">
+            <column name="ESM_HREF" length="200" />
+        </property>
+        <property name="esmEnvVariable" type="string">
+            <column name="ESM_Env_Variable" length="100" />
+        </property>
+        <set name="erpmprograms" inverse="true">
+            <key>
+                <column name="ERPMP_ESM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Erpmprogram" />
+        </set>
+        <set name="genericroleprivilegeses" inverse="true">
+            <key>
+                <column name="GUP_ERPMSM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.Genericroleprivileges" />
+        </set>
+        <set name="institutionroleprivilegeses" inverse="true">
+            <key>
+                <column name="IUP_EMPMSM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.Institutionroleprivileges" />
+        </set>
+    </class>
+</hibernate-mapping>

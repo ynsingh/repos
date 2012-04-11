@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Workflowmaster" table="workflowmaster">
+        <id name="wfmId" type="java.lang.Integer">
+            <column name="WFM_Id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="WFM_Depaartment" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="WFM_Sub_Institution" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="WFM_Institution" />
+        </many-to-one>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="WFM_EGM_ID" />
+        </many-to-one>
+        <property name="wfmName" type="string">
+            <column name="WFM_Name" length="100" not-null="true" />
+        </property>
+        <set name="erpmIndentMasters" inverse="true">
+            <key>
+                <column name="Indt_WFM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIndentMaster" />
+        </set>
+        <set name="workflowtransactions" inverse="true">
+            <key>
+                <column name="WFT_WFM_Id" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Workflowtransaction" />
+        </set>
+        <set name="workflowdetails" inverse="true">
+            <key>
+                <column name="WFD_WFM_Id" />
+            </key>
+            <one-to-many class="pojo.hibernate.Workflowdetail" />
+        </set>
+    </class>
+</hibernate-mapping>

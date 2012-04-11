@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Genericuserroles" table="genericuserroles">
+        <id name="gurId" type="java.lang.Byte">
+            <column name="GUR_ID" />
+            <generator class="identity" />
+        </id>
+        <property name="gurRoleName" type="string">
+            <column name="GUR_Role_Name" length="50" not-null="true" />
+        </property>
+        <property name="gurDescription" type="string">
+            <column name="GUR_Description" length="100" />
+        </property>
+        <set name="genericroleprivilegeses" inverse="true">
+            <key>
+                <column name="GUP_GUR_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Genericroleprivileges" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmItemRate" table="erpm_item_rate">
+        <id name="irItemRateId" type="java.lang.Integer">
+            <column name="IR_Item_Rate_Id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="IR_IM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmGenMasterByIrWarrantyStartsFromId" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="IR_Warranty_Starts_From_ID" />
+        </many-to-one>
+        <many-to-one name="erpmGenMasterByIrCurrencyId" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="IR_Currency_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="suppliermaster" class="pojo.hibernate.Suppliermaster" fetch="select">
+            <column name="IR_Supplier_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmItemMaster" class="pojo.hibernate.ErpmItemMaster" fetch="select">
+            <column name="IR_Item_ID" not-null="true" />
+        </many-to-one>
+        <property name="irWarrantyMonths" type="java.lang.Integer">
+            <column name="IR_Warranty_Months" />
+        </property>
+        <property name="irWarrantyClause" type="string">
+            <column name="IR_Warranty_Clause" length="100" />
+        </property>
+        <property name="irdWefDate" type="date">
+            <column name="IRD_WEF_Date" length="10" not-null="true" />
+        </property>
+        <property name="irdWetDate" type="date">
+            <column name="IRD_WET_Date" length="10" not-null="true" />
+        </property>
+        <property name="irdRate" type="big_decimal">
+            <column name="IRD_Rate" precision="10" not-null="true" />
+        </property>
+        <set name="erpmIndentDetails" inverse="true">
+            <key>
+                <column name="Indt_IR_Item_Rate_Id" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIndentDetail" />
+        </set>
+        <set name="erpmItemRateTaxeses" inverse="true">
+            <key>
+                <column name="IRT_Item_Rate_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmItemRateTaxes" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Subinstitutionmaster" table="subinstitutionmaster">
+        <id name="simId" type="java.lang.Integer">
+            <column name="sim_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="statemaster" class="pojo.hibernate.Statemaster" fetch="select">
+            <column name="SIM_State_ID" />
+        </many-to-one>
+        <many-to-one name="employeemaster" class="pojo.hibernate.Employeemaster" fetch="select">
+            <column name="SIM_EMP_ID" />
+        </many-to-one>
+        <many-to-one name="countrymaster" class="pojo.hibernate.Countrymaster" fetch="select">
+            <column name="SIM_Country_ID" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="SIM_IM_ID" not-null="true" />
+        </many-to-one>
+        <property name="simName" type="string">
+            <column name="SIM_Name" length="100" not-null="true" />
+        </property>
+        <property name="simShortName" type="string">
+            <column name="SIM_Short_Name" length="10" />
+        </property>
+        <property name="simType" type="java.lang.Integer">
+            <column name="sim_type" />
+        </property>
+        <property name="simAddressLine1" type="string">
+            <column name="SIM_Address_Line1" length="50" />
+        </property>
+        <property name="simAddressLine2" type="string">
+            <column name="SIM_Address_Line2" length="50" />
+        </property>
+        <property name="simDistrict" type="string">
+            <column name="SIM_District" length="50" />
+        </property>
+        <property name="simPinNo" type="string">
+            <column name="SIM_Pin_No" length="6" />
+        </property>
+        <property name="simEmailId" type="string">
+            <column name="SIM_EMail_ID" length="50" />
+        </property>
+        <property name="simHeadDesignation" type="string">
+            <column name="SIM_Head_Designation" length="30" />
+        </property>
+        <set name="workflowmasters" inverse="true">
+            <key>
+                <column name="WFM_Sub_Institution" />
+            </key>
+            <one-to-many class="pojo.hibernate.Workflowmaster" />
+        </set>
+        <set name="budgetmasters" inverse="true">
+            <key>
+                <column name="BM_SIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Budgetmaster" />
+        </set>
+        <set name="departmentalBudgetAllocations" inverse="true">
+            <key>
+                <column name="DBA_SIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.DepartmentalBudgetAllocation" />
+        </set>
+        <set name="erpmPoMasters" inverse="true">
+            <key>
+                <column name="POM_SIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPoMaster" />
+        </set>
+        <set name="committeemasters" inverse="true">
+            <key>
+                <column name="Committee_SIM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.Committeemaster" />
+        </set>
+        <set name="itemcategories" inverse="true">
+            <key>
+                <column name="IC_SIM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.Itemcategory" />
+        </set>
+        <set name="erpmPurchasechallanMasters" inverse="true">
+            <key>
+                <column name="PCM_SIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPurchasechallanMaster" />
+        </set>
+        <set name="employeemasters" inverse="true">
+            <key>
+                <column name="EMP_SIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Employeemaster" />
+        </set>
+        <set name="erpmuserroles" inverse="true">
+            <key>
+                <column name="ERPMUR_SIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Erpmuserrole" />
+        </set>
+        <set name="erpmIndentMasters" inverse="true">
+            <key>
+                <column name="Indt_Subinstitution_Id" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIndentMaster" />
+        </set>
+        <set name="departmentmasters" inverse="true">
+            <key>
+                <column name="DM_SIM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.Departmentmaster" />
+        </set>
+        <set name="supplierregistrationauthorities" inverse="true">
+            <key>
+                <column name="SRA_SIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Supplierregistrationauthority" />
+        </set>
+    </class>
+</hibernate-mapping>

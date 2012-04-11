@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Itemtype" table="itemtype">
+        <id name="itId" type="java.lang.Byte">
+            <column name="IT_ID" />
+            <generator class="identity" />
+        </id>
+        <property name="itName" type="string">
+            <column name="IT_Name" length="50" not-null="true" unique="true">
+                <comment>Holds Item Name</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Committeemaster" table="committeemaster">
+        <id name="committeeId" type="java.lang.Integer">
+            <column name="Committee_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="Committee_SIM_ID" />
+        </many-to-one>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="Committee_DM_ID" />
+        </many-to-one>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="Committee_Type" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="Committee_Im_id" />
+        </many-to-one>
+        <property name="committeeName" type="string">
+            <column name="Committee_Name" length="100" not-null="true" unique="true" />
+        </property>
+        <property name="commmitteePurpose" type="string">
+            <column name="Commmittee_Purpose" length="250" />
+        </property>
+        <property name="committeeActive" type="java.lang.Character">
+            <column name="Committee_Active" length="1" />
+        </property>
+        <property name="committeeConvener" type="string">
+            <column name="Committee_Convener" length="100" not-null="true" />
+        </property>
+        <property name="committeeLevel" type="java.lang.Character">
+            <column name="Committee_Level" length="1" />
+        </property>
+        <set name="workflowdetailsForWfdDestinationCommittee" inverse="true">
+            <key>
+                <column name="WFD_Destination_Committee" />
+            </key>
+            <one-to-many class="pojo.hibernate.Workflowdetail" />
+        </set>
+        <set name="workflowtransactionsForWftDestinationId" inverse="true">
+            <key>
+                <column name="WFT_Destination_Id" />
+            </key>
+            <one-to-many class="pojo.hibernate.Workflowtransaction" />
+        </set>
+        <set name="workflowtransactionsForWftSourceId" inverse="true">
+            <key>
+                <column name="WFT_Source_Id" />
+            </key>
+            <one-to-many class="pojo.hibernate.Workflowtransaction" />
+        </set>
+        <set name="workflowdetailsForWfdSourceCommittee" inverse="true">
+            <key>
+                <column name="WFD_Source_Committee" />
+            </key>
+            <one-to-many class="pojo.hibernate.Workflowdetail" />
+        </set>
+    </class>
+</hibernate-mapping>

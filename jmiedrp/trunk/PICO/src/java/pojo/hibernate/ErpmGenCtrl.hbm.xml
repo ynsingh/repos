@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmGenCtrl" table="erpm_gen_ctrl">
+        <id name="erpmgcGenType" type="java.lang.Short">
+            <column name="ERPMGC_GEN_TYPE" />
+            <generator class="identity" />
+        </id>
+        <property name="erpmgcGenDesc" type="string">
+            <column name="ERPMGC_GEN_DESC" length="50" not-null="true" unique="true" />
+        </property>
+        <property name="erpmgcRemarks" type="string">
+            <column name="ERPMGC_Remarks" length="50" />
+        </property>
+        <set name="erpmGenMasters" inverse="true">
+            <key>
+                <column name="ERPMGM_EGM_TYPE" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmGenMaster" />
+        </set>
+    </class>
+</hibernate-mapping>

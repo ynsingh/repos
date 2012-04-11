@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmPurchasechallanMaster" table="erpm_purchasechallan_master">
+        <id name="pcmPcmId" type="java.lang.Integer">
+            <column name="PCM_PCM_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="PCM_SIM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmusers" class="pojo.hibernate.Erpmusers" fetch="select">
+            <column name="PCM_PreparedBy_ID" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="PCM_IM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="PCM_DM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmPoMaster" class="pojo.hibernate.ErpmPoMaster" fetch="select">
+            <column name="PCM_PO_Master_ID" not-null="true" />
+        </many-to-one>
+        <property name="pcmRecvDate" type="date">
+            <column name="PCM_Recv_Date" length="10" />
+        </property>
+        <property name="pcmChallanNo" type="string">
+            <column name="PCM_Challan_No" length="20" />
+        </property>
+        <property name="pcmChallanDate" type="date">
+            <column name="PCM_Challan_Date" length="10" />
+        </property>
+        <property name="pcmImportExchangeRate" type="big_decimal">
+            <column name="PCM_ImportExchange_Rate" precision="5" />
+        </property>
+        <property name="pcmRemarks" type="string">
+            <column name="PCM_Remarks" length="500" />
+        </property>
+        <property name="pcmBillMasterId" type="int">
+            <column name="PCM_BillMaster_ID" not-null="true" />
+        </property>
+        <property name="pcmCheckedBy" type="string">
+            <column name="PCM_Checked_By" length="50" />
+        </property>
+        <set name="erpmPurchasechallanDetails" inverse="true">
+            <key>
+                <column name="PCD_PCMaster_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPurchasechallanDetail" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmItemMaster" table="erpm_item_master">
+        <id name="erpmimId" type="java.lang.Integer">
+            <column name="ERPMIM_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmItemCategoryMasterByErpmimItemCat1" class="pojo.hibernate.ErpmItemCategoryMaster" fetch="select">
+            <column name="ERPMIM_Item_Cat1" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmItemCategoryMasterByErpmimItemCat3" class="pojo.hibernate.ErpmItemCategoryMaster" fetch="select">
+            <column name="ERPMIM_Item_Cat3" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmItemCategoryMasterByErpmimItemCat2" class="pojo.hibernate.ErpmItemCategoryMaster" fetch="select">
+            <column name="ERPMIM_Item_Cat2" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="ERPMIM_UOP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmCapitalCategory" class="pojo.hibernate.ErpmCapitalCategory" fetch="select">
+            <column name="ERPMIM_Capital_Cat" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="ERPMIM_IM_ID">
+                <comment>This filed stores Institution fotr which Item has been created</comment>
+            </column>
+        </many-to-one>
+        <property name="erpmimItemBriefDesc" type="string">
+            <column name="ERPMIM_Item_Brief_Desc" length="500" not-null="true" />
+        </property>
+        <property name="erpmimMake" type="string">
+            <column name="ERPMIM_Make" length="20" />
+        </property>
+        <property name="erpmimModel" type="string">
+            <column name="ERPMIM_Model" length="20" />
+        </property>
+        <property name="erpmimDetailedDesc" type="string">
+            <column name="ERPMIM_Detailed_Desc" length="2000" not-null="true" />
+        </property>
+        <property name="erpmimRemarks" type="string">
+            <column name="ERPMIM_Remarks" length="100" />
+        </property>
+        <set name="erpmPurchasechallanDetails" inverse="true">
+            <key>
+                <column name="PCD_ItemMaster_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPurchasechallanDetail" />
+        </set>
+        <set name="erpmPoDetailses" inverse="true">
+            <key>
+                <column name="POD_Item_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPoDetails" />
+        </set>
+        <set name="erpmItemRates" inverse="true">
+            <key>
+                <column name="IR_Item_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmItemRate" />
+        </set>
+        <set name="erpmIndentDetails" inverse="true">
+            <key>
+                <column name="Indt_Item_Id" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIndentDetail" />
+        </set>
+    </class>
+</hibernate-mapping>

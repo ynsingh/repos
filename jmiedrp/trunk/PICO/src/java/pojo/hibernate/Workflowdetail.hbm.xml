@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Workflowdetail" table="workflowdetail">
+        <id name="wfdId" type="java.lang.Integer">
+            <column name="WFD_Id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="committeemasterByWfdSourceCommittee" class="pojo.hibernate.Committeemaster" fetch="select">
+            <column name="WFD_Source_Committee" />
+        </many-to-one>
+        <many-to-one name="workflowmaster" class="pojo.hibernate.Workflowmaster" fetch="select">
+            <column name="WFD_WFM_Id" />
+        </many-to-one>
+        <many-to-one name="committeemasterByWfdDestinationCommittee" class="pojo.hibernate.Committeemaster" fetch="select">
+            <column name="WFD_Destination_Committee" />
+        </many-to-one>
+        <property name="wfdStage" type="int">
+            <column name="WFD_Stage" not-null="true" />
+        </property>
+        <property name="wfdForward" type="java.lang.Boolean">
+            <column name="WFD_Forward" />
+        </property>
+        <property name="wfdSendBack" type="java.lang.Boolean">
+            <column name="WFD_Send_Back" />
+        </property>
+        <property name="wfdRecommendApproval" type="java.lang.Boolean">
+            <column name="WFD_Recommend_Approval" />
+        </property>
+        <property name="wfdRecommendReject" type="java.lang.Boolean">
+            <column name="WFD_Recommend_Reject" />
+        </property>
+        <property name="wfdApprove" type="java.lang.Boolean">
+            <column name="WFD_Approve" />
+        </property>
+        <property name="wfdReject" type="java.lang.Boolean">
+            <column name="WFD_Reject" />
+        </property>
+        <set name="workflowactionses" inverse="true">
+            <key>
+                <column name="WFA_WFD_Id" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Workflowactions" />
+        </set>
+    </class>
+</hibernate-mapping>

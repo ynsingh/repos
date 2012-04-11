@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.Erpmteam" table="erpmteam">
+        <id name="erpmtId" type="java.lang.Byte">
+            <column name="ERPMT_ID" />
+            <generator class="identity" />
+        </id>
+        <property name="erpmtName" type="string">
+            <column name="ERPMT_Name" length="100" not-null="true" />
+        </property>
+        <property name="ermtPiName" type="string">
+            <column name="ERMT_PI_Name" length="50" not-null="true" />
+        </property>
+        <property name="erpmtCopiName" type="string">
+            <column name="ERPMT_COPI_Name" length="50" />
+        </property>
+        <property name="erpmtPiEmail" type="string">
+            <column name="ERPMT_PI_EMail" length="50" not-null="true" />
+        </property>
+        <property name="erpmtCopiEmail" type="string">
+            <column name="ERPMT_COPI_EMail" length="50" />
+        </property>
+        <set name="erpmmodules" inverse="true">
+            <key>
+                <column name="ERPMM_ERPMT_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Erpmmodule" />
+        </set>
+    </class>
+</hibernate-mapping>

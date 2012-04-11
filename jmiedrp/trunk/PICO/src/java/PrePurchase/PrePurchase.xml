@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="PrePurchase" namespace="/PrePurchase" extends="struts-default">
+
+        <interceptors>
+            <interceptor name="loginInterceptor" class="Administration.AuthenticationInterceptor" />
+            <interceptor-stack name="PrePurchaseStack">
+               <!-- <interceptor-ref name="loginInterceptor" /> -->
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">execute, browse</param>
+            </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+
+        <action name="LogoutAction">
+            <result type="redirect">/Administration/LogoutAction</result>
+        </action>
+
+        <action name="ChangeProfileAction">
+            <result type="redirect">/Administration/ChangeProfileAction</result>
+        </action>
+
+        <action name="ManageItems" class="PrePurchase.ManageItems">
+            <interceptor-ref name="PrePurchaseStack" />
+            <result name="success">/pico/PrePurchase/ManageItems.jsp</result>
+            <result name="error">/pico/PrePurchase/ManageItems.jsp</result>
+            <result name="input">/pico/PrePurchase/ManageItems.jsp</result>
+        </action>
+
+        <action name="SaveItemMaster" method="Save" class="PrePurchase.ManageItems">
+            <result name="success">/pico/PrePurchase/BrowseItems.jsp</result>
+            <result name="error">/pico/PrePurchase/ManageItems.jsp</result>
+            <result name="input">/pico/PrePurchase/ManageItems.jsp</result>
+        </action>
+
+        <action name="BrowseItems" method="Browse" class="PrePurchase.ManageItems">
+            <interceptor-ref name="PrePurchaseStack" />
+            <result name="success">/pico/PrePurchase/BrowseItems.jsp</result>
+            <result name="error">/pico/PrePurchase/BrowseItems.jsp</result>
+            <result name="input">/pico/PrePurchase/BrowseItems.jsp</result>
+        </action>
+
+        <action name="DeleteItem" method="Delete" class="PrePurchase.ManageItems">
+            <result name="success">/pico/PrePurchase/BrowseItems.jsp</result>
+            <result name="error">/pico/PrePurchase/BrowseItems.jsp</result>
+            <result name="input">/pico/PrePurchase/BrowseItems.jsp</result>
+        </action>
+
+        <action name="EditItem" method="Edit" class="PrePurchase.ManageItems">
+            <result name="success">/pico/PrePurchase/ManageItems.jsp</result>
+            <result name="error">/pico/PrePurchase/BrowseItems.jsp</result>
+            <result name="input">/pico/PrePurchase/BrowseItems.jsp</result>
+        </action>
+
+        <!-- This part deals with Supplier -->
+        <action name="ManageSupplier" class="PrePurchase.ManageSupplier">
+        <interceptor-ref name="PrePurchaseStack" />
+            <result name="success">/pico/PrePurchase/SupplierMaster.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/SupplierMaster.jsp</result>
+        </action>
+
+        <action name="SaveSupplier" method="Save" class="PrePurchase.ManageSupplier">
+            <result name="success">/pico/PrePurchase/SupplierMaster.jsp</result>
+            <result name="error">/pico/PrePurchase/SupplierMaster.jsp</result>
+            <result name="input">/pico/PrePurchase/SupplierMaster.jsp</result>
+        </action>
+
+        <action name="BrowseSupplier" method="Browse" class="PrePurchase.ManageSupplier">
+        <interceptor-ref name="PrePurchaseStack" />
+            <result name="success">/pico/PrePurchase/BrowseSupplier.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/BrowseSupplier.jsp</result>
+        </action>
+
+        <action name="DeleteSupplier" method="Delete" class="PrePurchase.ManageSupplier">
+            <result name="success">/pico/PrePurchase/BrowseSupplier.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/BrowseSupplier.jsp</result>
+        </action>
+
+        <action name="EditSupplier" method="Edit" class="PrePurchase.ManageSupplier">
+            <result name="success">/pico/PrePurchase/SupplierMaster.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/SupplierMaster.jsp</result>
+        </action>
+
+        <action name="ExportSuppliers" method="Export" class="PrePurchase.ManageSupplier">
+            <result name="success" type="stream">
+                    <param name="contentType">application/pdf</param>
+                    <param name="inputName">inputStream</param>
+                    <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/SupplierMaster.jsp</result>
+        </action>
+
+
+        <action name="ManageSupplierAddress" class="PrePurchase.ManageSupplierAddress">
+            <result name="success">/pico/PrePurchase/Address.jsp</result>
+            <result name="error">/pico/PrePurchase/Address.jsp</result>
+            <result name="input">/pico/PrePurchase/Address.jsp</result>
+        </action>
+
+
+        <action name="SaveAddress" method="Save" class="PrePurchase.ManageSupplierAddress">
+            <result name="success">/pico/PrePurchase/Address.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/Address.jsp</result>
+        </action>
+
+
+        <action name="DeleteAddress" method="Delete" class="PrePurchase.ManageSupplierAddress">
+            <result name="success">/pico/PrePurchase/BrowseAddress.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/BrowseAddress.jsp</result>
+        </action>
+
+        <action name="EditAddress" method="Edit" class="PrePurchase.ManageSupplierAddress">
+            <result name="success">/pico/PrePurchase/Address.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/Address.jsp</result>
+        </action>
+
+ <!--ACTION RELATED TO INDENT MASTER-->
+
+        <action name="ManageIndent" class="PrePurchase.ManageIndent">
+        <interceptor-ref name="PrePurchaseStack" />
+            <result name="success">/pico/PrePurchase/IndentForm.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/IndentForm.jsp</result>
+        </action>
+
+         <action name="SaveIndent" method="SaveIndentMaster" class="PrePurchase.ManageIndent">
+           <result name="success">/pico/PrePurchase/AddItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/IndentForm.jsp</result>
+        </action>
+
+          <action name="EditIndentMasterDetails" method="EditIndentMaster" class="PrePurchase.ManageIndent">
+            <result name="success">/pico/PrePurchase/IndentForm.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/BrowseIndent.jsp</result>
+          </action>
+
+          <action name="DeleteIndentMasterDetails" method="DeleteIndentMaster" class="PrePurchase.ManageIndent">
+            <result name="success">/pico/PrePurchase/BrowseIndent.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/showWelcomePage.jsp</result>
+          </action>
+
+          <action name="BrowseIndent" method="BrowseIndentsMaster" class="PrePurchase.ManageIndent">
+              <interceptor-ref name="PrePurchaseStack"/>
+            <result name="success">/pico/PrePurchase/BrowseIndent.jsp</result>
+            <result name="error">/pico/PrePurchase/BrowseIndent.jsp</result>
+            <result name="input">/pico/PrePurchase/BrowseIndent.jsp</result>
+          </action>
+
+           <action name="ClearIndentMaster" method="ClearIndentMaster" class="PrePurchase.ManageIndent">
+            <result name="success">/pico/PrePurchase/IndentForm.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/IndentForm.jsp</result>
+        </action>
+
+           <action name="SubmitWorkflowAction" method="SubmitWorkflowAction" class="PrePurchase.ManageIndent">
+            <result name="success">/pico/PrePurchase/IndentForm.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/IndentForm.jsp</result>
+        </action>
+
+          <action name="ShowPendingIndents" method="ShowPendingIndents" class="PrePurchase.ManageIndent">
+              <interceptor-ref name="PrePurchaseStack"/>
+            <result name="success">/pico/PrePurchase/BrowseIndent.jsp</result>
+            <result name="error">/pico/PrePurchase/BrowseIndent.jsp</result>
+            <result name="input">/pico/PrePurchase/BrowseIndent.jsp</result>
+          </action>
+
+
+
+
+                         <!--ACTION RELATED TO INDENT DETAIL-->
+
+        <action name="ManageExportAction"   method="Export" class="PrePurchase.ManageIndent">
+            <result name="success">/pico/PrePurchase/IndentForm.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/showWelcomePage.jsp</result>
+        </action>
+
+
+       <action name="SaveIndentItems" method="SaveIndentDetailsItems" class="PrePurchase.ManageIndent">
+
+           <result name="success">/pico/PrePurchase/AddItems.jsp</result>
+           <result name="error">/pico/Administration/ErrorPage.jsp</result>
+           <result name="input">/pico/PrePurchase/AddItems.jsp</result>
+        </action>
+
+        <action name="DeleteManageIndentAction" method="DeleteIndentDetail" class="PrePurchase.ManageIndent">
+            <result name="success">/pico/PrePurchase/AddItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/showWelcomePage.jsp</result>
+        </action>
+
+        <action name="EditManageIndentAction" method="EditIndentDetail" class="PrePurchase.ManageIndent">
+            <result name="success">/pico/PrePurchase/AddItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/showWelcomePage.jsp</result>
+        </action>
+
+
+            <action name="ClearIndentDetail" method="ClearIndentDetail" class="PrePurchase.ManageIndent">
+            <result name="success">/pico/PrePurchase/AddItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/AddItems.jsp</result>
+        </action>
+
+
+       <action name="BrowseIndentDetail" method="BrowseIndentDetail" class="PrePurchase.ManageIndent">
+            <result name="success">/pico/PrePurchase/AddItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/showWelcomePage.jsp</result>
+        </action>
+
+         <action name="ShowIndentDetailItems" method="ShowIndentDetailItems" class="PrePurchase.ManageIndent">
+            <result name="success">/pico/PrePurchase/IndentForm.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/showWelcomePage.jsp</result>
+        </action>
+
+
+
+
+
+
+
+
+
+                            <!--ACTION RELATED TO MANAGE ITEM RATES-->
+
+
+        <action name="ManageItemRates" class="PrePurchase.ManageItemRates">
+        <interceptor-ref name="PrePurchaseStack" />
+            <result name="success">/pico/PrePurchase/ManageItemRates.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ManageItemRates.jsp</result>
+        </action>
+
+         <action name="SaveItemRate" method="SaveItemRate" class="PrePurchase.ManageItemRates">
+            <result name="success">/pico/PrePurchase/ManageItemRates.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ManageItemRates.jsp</result>
+        </action>
+
+        <action name="DeleteItemRate" method="DeleteItemRate" class="PrePurchase.ManageItemRates">
+            <result name="success">/pico/PrePurchase/ManageItemRates.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ManageItemRates.jsp</result>
+        </action>
+
+        <action name="EditItemRate" method="EditItemRate" class="PrePurchase.ManageItemRates">
+            <result name="success">/pico/PrePurchase/ManageItemRates.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ManageItemRates.jsp</result>
+        </action>
+
+       <action name="ExportItemRates" method="ExportItemRates" class="PrePurchase.ManageItemRates">
+            <result name="success" type="stream">
+                    <param name="contentType">application/pdf</param>
+                    <param name="inputName">inputStream</param>
+                    <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ManageItemRates.jsp</result>
+        </action>
+
+        <action name="FetchItemRates" method="FetchItemRates" class="PrePurchase.ManageItemRates">
+            <result name="success">/pico/PrePurchase/ManageItemRates.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ManageItemRates.jsp</result>
+        </action>
+
+
+        <action name="FetchItemRatesDetailsFromTaxex" method="FetchItemRatesDetailsFromTaxex" class="PrePurchase.ManageItemRates">
+            <result name="success">/pico/PrePurchase/ManageItemRates.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ManageItemRates.jsp</result>
+        </action>
+
+        <action name="ClearItemRates" method="ClearItemRates" class="PrePurchase.ManageItemRates">
+            <result name="success">/pico/PrePurchase/ManageItemRates.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ManageItemRates.jsp</result>
+        </action>
+
+        <!-- Actions for the Item Tax Management Starts Here -->
+        <action name="ItemTax" method="PrepareItemTax" class="PrePurchase.ManageItemRates">
+            <result name="success">/pico/PrePurchase/ManageItemTaxes.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ManageItemTaxes.jsp</result>
+        </action>
+
+        <action name="SaveItemRateTaxes" method="SaveItemRateTaxes" class="PrePurchase.ManageItemRates">
+           <result name="success">/pico/PrePurchase/ManageItemTaxes.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ManageItemTaxes.jsp</result>
+        </action>
+
+         <action name="DeleteItemRateTaxes" method="DeleteItemRateTaxes" class="PrePurchase.ManageItemRates">
+
+            <result name="success">/pico/PrePurchase/ManageItemTaxes.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ManageItemTaxes.jsp</result>
+        </action>
+
+
+        <action name="EditItemRateTaxes" method="EditItemRateTaxes" class="PrePurchase.ManageItemRates">
+            <result name="success">/pico/PrePurchase/ManageItemTaxes.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ManageItemTaxes.jsp</result>
+        </action>
+
+         <action name="BrowseitemRatesDetails" method="BrowseitemRatesDetails" class="PrePurchase.ManageItemRates">
+               <interceptor-ref name="PrePurchaseStack" />
+            <result name="success">/pico/PrePurchase/BrowseItemRates.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/BrowseItemRates.jsp</result>
+        </action>
+
+         <action name="DeletePOitemRate" method="DeletePOitemRate" class="PrePurchase.ManageItemRates">
+            <result name="success">/pico/PrePurchase/BrowseItemRates.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/BrowseItemRates.jsp</result>
+          </action>
+
+          <action name="EdititemRate" method="EdititemRate" class="PrePurchase.ManageItemRates">
+            <result name="success">/pico/PrePurchase/ManageItemRates.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageItemRates.jsp</result>
+          </action>
+
+
+
+
+                <!--ACTION RELATED TO MANAGE PO MASTER -->
+
+
+       <action name="ManagePOMaster" class="PrePurchase.ManagePOMaster">
+        <interceptor-ref name="PrePurchaseStack" />
+            <result name="success">/pico/PrePurchase/POMaster.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/POMaster.jsp</result>
+        </action>
+
+        <action name="SavePOMaster" method="SavePOMaster" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/AddPODetails.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/POMaster.jsp</result>
+        </action>
+
+   <action name="ClearPOMaster" method="ClearPOMaster" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/POMaster.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/POMaster.jsp</result>
+    </action>
+
+      <action name="SavePODetails" method="SavePODetails" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/AddPODetails.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/AddPODetails.jsp</result>
+        </action>
+
+
+  <action name="DeletePoDetails" method="DeletePoDetails" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/AddPODetails.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/AddPODetails.jsp</result>
+        </action>
+
+   <action name="EditPODetails" method="EditPODetails" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/AddPODetails.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/AddPODetails.jsp</result>
+    </action>
+
+
+        <action name="PrintPO" method="PrintPO" class="PrePurchase.ManagePOMaster">
+            <result name="success" type="stream">
+                    <param name="contentType">application/pdf</param>
+                    <param name="inputName">inputStream</param>
+                    <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/POMaster.jsp</result>
+        </action>
+
+
+           <action name="BrowseMaster" method="Browse" class="PrePurchase.ManagePOMaster">
+        <interceptor-ref name="PrePurchaseStack" />
+            <result name="success">/pico/PrePurchase/BrowsePOMaster.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/BrowsePOMaster.jsp</result>
+        </action>
+
+
+    <action name="BrowsePOMasterDetail" method="BrowsePOMasterDetail" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/AddPODetails.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/showWelcomePage.jsp</result>
+          </action>
+
+          <action name="DeletePOMaster" method="DeletePOMaster" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/BrowsePOMaster.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/showWelcomePage.jsp</result>
+          </action>
+
+          <action name="EditPOMaster" method="EditPOMaster" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/POMaster.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/showWelcomePage.jsp</result>
+          </action>
+
+          <!--ACTION RELATED PO TEMS AND CONDITON-->
+
+          <action name="POTerms" method="POTerms" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/POTerms.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/POTerms.jsp</result>
+          </action>
+
+          <action name="SavePOTerms" method="SavePOTerms" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/POTerms.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/POTerms.jsp</result>
+          </action>
+
+           <action name="GetDefaultGeneralTerms" method="GetDefaultGeneralTerms" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/POTerms.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/POTerms.jsp</result>
+          </action>
+
+
+<action name="DeletePoTerms" method="DeletePoTerms" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/POTerms.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/POTerms.jsp</result>
+          </action>
+
+
+
+<action name="EditPoTerms" method="EditPoTerms" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/POTerms.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/POTerms.jsp</result>
+          </action>
+
+ <action name="EditPoTerms" method="EditPoTerms" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/POTerms.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/POTerms.jsp</result>
+          </action>
+
+ <action name="AddItemsFromIndent" method="AddItemsFromIndent" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/AddIndentItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/AddIndentItems.jsp</result>
+     </action>
+
+
+     <action name="BrowseIndentItemsfromPO" method="BrowseIndentItemsfromPO" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/ShowIndentItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ShowIndentItems.jsp</result>
+        </action>
+
+
+         <action name="FetchSelectedIndentItems" method="FetchSelectedIndentItems" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/ShowIndentItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ShowIndentItems.jsp</result>
+        </action>
+
+
+          <action name="FetchAllIndentItems" method="FetchAllIndentItems" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/ShowIndentItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ShowIndentItems.jsp</result>
+        </action>
+
+          <action name="SaveIndentItemsToPO" method="SaveIndentItemsToPO" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/ShowIndentItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ShowIndentItems.jsp</result>
+        </action>
+
+
+          <action name="SaveAllIndentItemsToPO" method="SaveAllIndentItemsToPO" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/ShowIndentItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ShowIndentItems.jsp</result>
+        </action>
+
+
+
+
+</package>
+</struts>

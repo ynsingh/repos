@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC '-//OpenSymphony Group//XWork Validator 1.0.2//EN'
+'http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd'>
+
+<validators>
+    <field name="erpmim.institutionmaster.imId">
+        <field-validator type="required">
+            <message>Please select institution</message>
+        </field-validator>
+    </field>
+   <field name="erpmim.erpmimItemBriefDesc">
+        <field-validator type="requiredstring">
+            <message>Please enter brief description of the item</message>
+        </field-validator>
+   </field>
+
+   <field name="erpmim.erpmItemCategoryMasterByErpmimItemCat1.erpmicmItemId">
+        <field-validator type="required">
+            <message>Please select Item Type</message>
+        </field-validator>
+   </field>
+
+   <field name="erpmim.erpmItemCategoryMasterByErpmimItemCat2.erpmicmItemId">
+        <field-validator type="required">
+            <message>Please select Item Category</message>
+        </field-validator>
+   </field>
+
+   <field name="erpmim.erpmItemCategoryMasterByErpmimItemCat3.erpmicmItemId">
+        <field-validator type="required">
+            <message>Please select Item Sub-Category</message>
+        </field-validator>
+   </field>
+
+   <field name="erpmim.erpmimDetailedDesc">
+        <field-validator type="requiredstring">
+            <message>Please enter Item's detailed description/specification</message>
+        </field-validator>
+   </field>
+
+</validators>

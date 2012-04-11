@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="Purchase" namespace="/Purchase" extends="struts-default">
+
+        <interceptors>
+            <interceptor name="loginInterceptor" class="Administration.AuthenticationInterceptor" />
+            <interceptor-stack name="PurchaseStack">
+               <!-- <interceptor-ref name="loginInterceptor" /> -->
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">execute, browse</param>
+            </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+
+        <action name="LogoutAction">
+            <result type="redirect">/Administration/LogoutAction</result>
+        </action>
+
+        <action name="ChangeProfileAction">
+            <result type="redirect">/Administration/ChangeProfileAction</result>
+        </action>
+
+
+
+        <!-- ACTIONS RELATED TO PURCHASE CHALLAN RECEIVING -->
+        <action name="ManagePurchaseChallanAction" class="Purchase.ManagePurchaseChallanAction">
+            <interceptor-ref name="PurchaseStack" />
+            <result name="success">/pico/Purchase/ManagePurchaseChallan.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallan.jsp</result>
+        </action>
+
+        <action name="SavePurchaseChallan" method="SavePurchaseChallan" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallan.jsp</result>
+        </action>
+     
+      <action name="SavePurchaseChallanDetail" method="SavePurchaseChallanDetail" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+        </action>
+
+
+  <action name="DeletePurchaseChallanDetail" method="DeletePurchaseChallanDetail" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+        </action>
+
+   <action name="EditPurchaseChallanDetail" method="EditPurchaseChallanDetail" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+    </action>
+
+<action name="BrowsePurchaseChallanMaster" method="BrowsePurchaseChallanMaster" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/ManagePurchaseChallan.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallan.jsp</result>
+          </action>
+
+
+
+<action name="PurchaseChallanSerial" method="PurchaseChallanSerial" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/ManagePurchaseChallanSerial.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallanSerial.jsp</result>
+          </action>
+
+
+<action name="SavePurchaseChallanSerial" method="SavePurchaseChallanSerial" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/ManagePurchaseChallanSerial.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallanSerial.jsp</result>
+          </action>
+
+<!--
+  <action name="DeletePurchaseChallan" method="DeletePurchaseChallan" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/ManagePurchaseChallan.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallan.jsp</result>
+        </action>
+
+   <action name="EditDeletePurchaseChallan" method="EditPurchaseChallan" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/ManagePurchaseChallan.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallan.jsp</result>
+    </action>
+
+
+    
+
+
+    <action name="BrowsePOMasterDetail" method="BrowsePOMasterDetail" class="Purchase.ManagePOMaster">
+            <result name="success">/pico/Purchase/AddPODetails.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/showWelcomePage.jsp</result>
+          </action>
+
+          <action name="DeletePOMaster" method="DeletePOMaster" class="Purchase.ManagePOMaster">
+            <result name="success">/pico/Purchase/BrowsePOMaster.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/showWelcomePage.jsp</result>
+          </action>
+
+          <action name="EditPOMaster" method="EditPOMaster" class="Purchase.ManagePOMaster">
+            <result name="success">/pico/Purchase/POMaster.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/showWelcomePage.jsp</result>
+          </action>
+
+-->
+
+
+    </package>
+</struts>
