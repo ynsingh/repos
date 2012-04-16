@@ -53,8 +53,6 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 	                context.put("mode",mode);
 	                String uname=pp.getString("username");
 	                int permission=Integer.parseInt(pp.getString("permission"));
-	                //String instadname=pp.getString("iadname");
-	                int uid=UserUtil.getUID(instadname);
 	
         	        List admindetail=null;
 	                if(mode.equals("instadminlist"))
