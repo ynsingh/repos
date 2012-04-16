@@ -292,6 +292,7 @@ public class Institute_RootAdmin extends VelocitySecureAction
 			UserManagement usermanagement = new UserManagement();
                         ParameterParser pp = data.getParameters();
 			String usermgmt = "";
+			String mail_msg="";
                         LangFile = (String)data.getUser().getTemp("LangFile");
 			MultilingualUtil mu = new MultilingualUtil();
                         String instadmininf = data.getParameters().getString("deleteFileNames");
@@ -361,6 +362,7 @@ public class Institute_RootAdmin extends VelocitySecureAction
 							crit.add(InstituteAdminUserPeer.ADMIN_EMAIL,adminemail);
 							crit.add(InstituteAdminUserPeer.ADMIN_UNAME,adminusername);
 							crit.add(InstituteAdminUserPeer.ADMIN_PASSWORD,encrPassword);
+							crit.add(InstituteAdminUserPeer.ADMIN_PERMISSION_STATUS,0);
 							InstituteAdminUserPeer.doInsert(crit);
 							String serverName=data.getServerName();
 	                        	                int srvrPort=data.getServerPort();
@@ -381,6 +383,7 @@ public class Institute_RootAdmin extends VelocitySecureAction
 								InstituteAdminRegistrationPeer.doUpdate(crit);
 							}
 						}
+						data.setMessage(usermgmt +" "+ mail_msg);
 					}
 					else{
 						data.setMessage(mu.ConvertedString("brih_specialSymbol&char", LangFile)+" "+mu.ConvertedString("Notallow", LangFile)+" "+(mu.ConvertedString("brih_exceptAtTheRate&Dot",LangFile) +"!!"));

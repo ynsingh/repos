@@ -320,7 +320,8 @@
         <column name="ADMIN_DESIGNATION" required="true" type="VARCHAR" size="255"/>
         <column name="ADMIN_UNAME" required="true" type="VARCHAR" size="32"/>
         <column name="ADMIN_PASSWORD" required="true" type="VARCHAR" size="32"/>
-	
+	<column name="ADMIN_PERMISSION_STATUS" default="1" required="true" type="INTEGER" size="2"/>
+
 	
 </table>
 

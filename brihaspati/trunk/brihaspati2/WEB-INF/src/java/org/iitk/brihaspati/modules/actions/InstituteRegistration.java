@@ -114,7 +114,6 @@ public class InstituteRegistration extends VelocitySecureAction
 			institutepincode = parameterparser.getString("IPINCODE");
 		
 			institutestate = parameterparser.getString("ISTATE");
-			//institutelandline = parameterparser.getString("ILANDLINE");
 			String ccode = parameterparser.getString("ccode");
 			String rcode = parameterparser.getString("rcode");
 			String phnum = parameterparser.getString("phnumber");
@@ -201,6 +200,7 @@ public class InstituteRegistration extends VelocitySecureAction
 					criteria.add(InstituteAdminUserPeer.ADMIN_DESIGNATION,instituteadmindesignation);
 					criteria.add(InstituteAdminUserPeer.ADMIN_UNAME,adminusername);
 					criteria.add(InstituteAdminUserPeer.ADMIN_PASSWORD,instpassword);
+					criteria.add(InstituteAdminUserPeer.ADMIN_PERMISSION_STATUS,1);
 					InstituteAdminUserPeer.doInsert(criteria);
                                         String server_name=TurbineServlet.getServerName();
                                         String srvrPort=TurbineServlet.getServerPort();
