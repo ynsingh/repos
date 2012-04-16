@@ -56,6 +56,7 @@ import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 
 
 /**
@@ -65,7 +66,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 
 
 
-public class UserMgmt_Admin extends SecureScreen{
+public class UserMgmt_Admin extends SecureScreen_Institute_Admin{
 
 	 public void doBuildTemplate( RunData data, Context context ) {
 	
@@ -73,7 +74,6 @@ public class UserMgmt_Admin extends SecureScreen{
                  * getting property file According to selection of Language in temporary variable
                  * getting the values of configuration parameter.
                  */
-
 		 User user = data.getUser();
 		 String LangFile=(String)user.getTemp("LangFile");
 		 String mode=data.getParameters().getString("mode","");
@@ -82,6 +82,7 @@ public class UserMgmt_Admin extends SecureScreen{
                  context.put("tdcolor",counter);
                  context.put("mode",mode);
                  String institute_id=user.getTemp("Institute_id").toString();
+		 context.put("institute_id",institute_id);
 		 int inst_ID = Integer.parseInt(institute_id);
 		 String iname = InstituteIdUtil.getIstName(inst_ID);
 		 context.put("iname", iname);
@@ -93,8 +94,6 @@ public class UserMgmt_Admin extends SecureScreen{
 		 List admindetail=null;
 		 List detail=null;
 		 int perms = -1;
-		 
-		//context.put("institute_id",institute_id);
                                 
 		try {
                            

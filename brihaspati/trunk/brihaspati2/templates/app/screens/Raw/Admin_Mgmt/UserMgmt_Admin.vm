@@ -45,7 +45,7 @@ $!data.getMessage()
                 #end
 		
 		#if($permission != "0")
-                <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","2").addPathInfo("institute_id","$institute_id") style=text-decoration:none> #if($lang == "hindi") $brih_reg1 $brih_sec $brih_admin #else $brih_reg1 $brih_sec $brih_admin #end </a>
+                <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_reg1 $brih_sec $brih_admin #else $brih_reg1 $brih_sec $brih_admin #end </a>
 		#end
                 </td>
         </tr>
@@ -65,7 +65,7 @@ $!data.getMessage()
 
 #if(($mode =="")&&($permission != "0"))
 ##<table bgcolor="$ui.tableColor" width="100%">
-<form name=frm method="post" action="$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").setAction("Institute_RootAdmin").addPathInfo("institute_id","$institute_id")"> 
+<form name=frm method="post" action="$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").setAction("Institute_RootAdmin")"> 
 
                 <tr bgcolor="$ui.menuColor">
                         <td>$RemoteInstitute $brih_name</td>
@@ -167,7 +167,11 @@ $!data.getMessage()
                 <td><a><font face="times, times new roman" size="4" color="red">$brih_sec $brih_admin</font></a></td>
                                         #end 
                                 #else
-                        	<center><a><font foce="times, times new roman, serif" size="3">$brih_priv</a></center>
+			
+				 <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("permission","0").addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doPermissionUser") onclick="javascript:return confirm('$brih_permissionsecondryadmin !!')" style=text-decoration:none>$DisBoard_DBmsg8 $Repo_Perm</a> &nbsp; &nbsp;
+                                        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doRemove") onclick="javascript:return confirm('$brih_removesecondryadmin')" style=text-decoration:none>$brih_remove</a> &nbsp; &nbsp;</td>
+
+                        	##<center><a><font foce="times, times new roman, serif" size="3">$brih_priv</a></center>
                         	<td><a><font face="times, times new roman, serif" size="4">$brih_prim $brih_admin</font></a></td>
                                 #end
 			      #end    
