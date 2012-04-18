@@ -35,9 +35,9 @@ $!data.getMessage()
 ##($stats == "fromIndex") Use for general discussion group ## sk
 ##($mode2 == "instituteWise") Use for insititue wise discussion group ## sk
 #if($stats == "fromIndex")
-        <b><a href=$link.setPage("Index.vm")> Home </a> | <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("stats","fromIndex").addPathInfo("count","4") style=text-decoration:none>$brih_general $DiscussionBoard </a>|
+        <b><a href=$link.setPage("Index.vm")> $brih_home</a> | <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("stats","fromIndex").addPathInfo("count","4") style=text-decoration:none>$brih_general $DiscussionBoard </a>|
 #elseif ($mode2 == "instituteWise")
-        <b><a href=$link.setPage("Index.vm")> Home </a> | <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8") style=text-decoration:none>$RemoteInstitute $brih_wise $DiscussionBoard </a>|
+        <b><a href=$link.setPage("Index.vm")> $brih_home </a> | <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8") style=text-decoration:none>$RemoteInstitute $brih_wise $DiscussionBoard </a>|
 #else
 		<b><a href=$link.setPage("Index.vm")>$brih_home</a> | 
 		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |

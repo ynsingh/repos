@@ -22,10 +22,10 @@ $!data.getMessage()
 ## (mode2 == instituteWise) Use for InsitituteWise discussion group ##
 
 		#if($stats == "fromIndex")
-                        <b><a href=$link.setPage("Index.vm")>Home</a> |
+                        <b><a href=$link.setPage("Index.vm")>$brih_home</a> |
                         <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("stats","fromIndex").addPathInfo("count","4")>$brih_general $DiscussionBoard</a>
                 #elseif($mode2 == "instituteWise")
-                        <b><a href=$link.setPage("Index.vm")>Home</a> |
+                        <b><a href=$link.setPage("Index.vm")>$brih_home</a> |
                         <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8")> $RemoteInstitute $brih_wise $DiscussionBoard</a>
                 #else
 			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a>|

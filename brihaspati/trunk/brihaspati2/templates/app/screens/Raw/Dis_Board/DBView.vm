@@ -173,7 +173,7 @@ $!data.getMessage()
 	</table>
 	<tr bgcolor="$ui.menuColor"><td colspan=5>
 	#if($stats=="fromIndex")
-                <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("stats","fromIndex").addPathInfo("msgid",$msgID).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor)>Reply</a>&nbsp&nbsp
+                <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("stats","fromIndex").addPathInfo("msgid",$msgID).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor)>$LocalMail_Reply</a>&nbsp&nbsp
                 <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("stats","fromIndex").addPathInfo("course_id",$workgroup).addPathInfo("mode","All").addPathInfo("count",$tdcolor).addPathInfo("countTemp","1")>$LocalMail_Close</a>
         #elseif($mode2=="instituteWise")
                 <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode2","instituteWise").addPathInfo("msgid",$msgID).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count","8")>$LocalMail_Reply</a>&nbsp&nbsp

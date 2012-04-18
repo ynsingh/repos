@@ -64,17 +64,17 @@ $!data.getMessage()
 
                                 <input type="text" name="Offphnumber" value="$!offphone" maxlength="10" onkeypress="return isNumberKey(event)">
                                 #if($!offradio=="3")
-                                <input type="radio" name="Offdirectory" value="$public"/>Public
-                                <input type="radio" name="Offdirectory" value="$protected"/>Protected
-                                <input type="radio" name="Offdirectory" value="$private" checked />Private
+                                <input type="radio" name="Offdirectory" value="$public"/>$public
+                                <input type="radio" name="Offdirectory" value="$protected"/>$protected
+                                <input type="radio" name="Offdirectory" value="$private" checked />$private
                                 #elseif($!offradio=="2")
-                                <input type="radio" name="Offdirectory" value="$public"/>Public
-                                <input type="radio" name="Offdirectory" value="$protected" checked />Protected
-                                <input type="radio" name="Offdirectory" value="$private"/>Private
+                                <input type="radio" name="Offdirectory" value="$public"/>$public
+                                <input type="radio" name="Offdirectory" value="$protected" checked />$protected
+                                <input type="radio" name="Offdirectory" value="$private"/>$private
                                 #else
-                                <input type="radio" name="Offdirectory" value="$public" checked />Public
-                                <input type="radio" name="Offdirectory" value="$protected"/>Protected
-                                <input type="radio" name="Offdirectory" value="$private"/>Private
+                                <input type="radio" name="Offdirectory" value="$public" checked />$public
+                                <input type="radio" name="Offdirectory" value="$protected"/>$protected
+                                <input type="radio" name="Offdirectory" value="$private"/>$private
 				#end
                                 
 				</td>
@@ -97,17 +97,17 @@ $!data.getMessage()
                                 <input type="text" name="Mobrcode" value="$!mobrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)">
 				<input type="text" name="Mobphnumber" value="$!mobphone" maxlength="10" onkeypress="return isNumberKey(event)">
 				#if($!mobradio=="3")
-				<input type="radio" name="Mobdirectory" value="$public"/>Public
-                                <input type="radio" name="Mobdirectory" value="$protected"/>Protected
-                                <input type="radio" name="Mobdirectory" value="$private" checked />Private
+				<input type="radio" name="Mobdirectory" value="$public"/>$public
+                                <input type="radio" name="Mobdirectory" value="$protected"/>$protected
+                                <input type="radio" name="Mobdirectory" value="$private" checked />$private
 				#elseif($!mobradio=="2")
-				<input type="radio" name="Mobdirectory" value="$public"/>Public
-                                <input type="radio" name="Mobdirectory" value="$protected" checked/>Protected
-                                <input type="radio" name="Mobdirectory" value="$private"/>Private
+				<input type="radio" name="Mobdirectory" value="$public"/>$public
+                                <input type="radio" name="Mobdirectory" value="$protected" checked/>$protected
+                                <input type="radio" name="Mobdirectory" value="$private"/>$private
 				#else
-				<input type="radio" name="Mobdirectory" value="$public" checked />Public
-                                <input type="radio" name="Mobdirectory" value="$protected"/>Protected
-                                <input type="radio" name="Mobdirectory" value="$private"/>Private
+				<input type="radio" name="Mobdirectory" value="$public" checked />$public
+                                <input type="radio" name="Mobdirectory" value="$protected"/>$protected
+                                <input type="radio" name="Mobdirectory" value="$private"/>$private
 				#end
                                 </td>
 
@@ -132,17 +132,17 @@ $!data.getMessage()
 
                                 <input type="text" name="Homephnumber" value="$!homephone" maxlength="10" onkeypress="return isNumberKey(event)">
 				#if($!homeradio=="3")
-                                <input type="radio" name="Homedirectory" value="$public"/>Public
-                                <input type="radio" name="Homedirectory" value="$protected"/>Protected
-                                <input type="radio" name="Homedirectory" value="$private" checked />Private
+                                <input type="radio" name="Homedirectory" value="$public"/>$public
+                                <input type="radio" name="Homedirectory" value="$protected"/>$protected
+                                <input type="radio" name="Homedirectory" value="$private" checked />$private
 				#elseif($!homeradio=="2")
-                                <input type="radio" name="Homedirectory" value="$public"/>Public
-                                <input type="radio" name="Homedirectory" value="$protected" checked />Protected
-                                <input type="radio" name="Homedirectory" value="$private"/>Private
+                                <input type="radio" name="Homedirectory" value="$public"/>$public
+                                <input type="radio" name="Homedirectory" value="$protected" checked />$protected
+                                <input type="radio" name="Homedirectory" value="$private"/>$private
 				#else
-                                <input type="radio" name="Homedirectory" value="$public" checked />Public                    
-                                <input type="radio" name="Homedirectory" value="$protected"/>Protected
-                                <input type="radio" name="Homedirectory" value="$private"/>Private
+                                <input type="radio" name="Homedirectory" value="$public" checked />$public                    
+                                <input type="radio" name="Homedirectory" value="$protected"/>$protected
+                                <input type="radio" name="Homedirectory" value="$private"/>$private
 				#end
 				</td>
                         </tr>
@@ -164,17 +164,17 @@ $!data.getMessage()
 
                                 <input type="text" name="Othphnumber" value="$!othphone" maxlength="10" onkeypress="return isNumberKey(event)">
 				#if($!othradio=="3")
-                                <input type="radio" name="Othdirectory" value="$public"/>Public
-                                <input type="radio" name="Othdirectory" value="$protected"/>Protected
-                                <input type="radio" name="Othdirectory" value="$private" checked />Private
+                                <input type="radio" name="Othdirectory" value="$public"/>$public
+                                <input type="radio" name="Othdirectory" value="$protected"/>$protected
+                                <input type="radio" name="Othdirectory" value="$private" checked />$private
 				#elseif($!othradio=="2")
-                                <input type="radio" name="Othdirectory" value="$public"/>Public
-                                <input type="radio" name="Othdirectory" value="$protected" checked />Protected
-                                <input type="radio" name="Othdirectory" value="$private"/>Private
+                                <input type="radio" name="Othdirectory" value="$public"/>$public
+                                <input type="radio" name="Othdirectory" value="$protected" checked />$protected
+                                <input type="radio" name="Othdirectory" value="$private"/>$private
 				#else
-                                <input type="radio" name="Othdirectory" value="$public" checked />Public                    
-                                <input type="radio" name="Othdirectory" value="$protected"/>Protected
-                                <input type="radio" name="Othdirectory" value="$private"/>Private
+                                <input type="radio" name="Othdirectory" value="$public" checked />$public                    
+                                <input type="radio" name="Othdirectory" value="$protected"/>$protected
+                                <input type="radio" name="Othdirectory" value="$private"/>$private
 				#end
 				</td>
                         </tr>
@@ -280,11 +280,11 @@ $!data.getMessage()
 		<tr bgcolor="$ui.menuColor">
                 <td colspan=7>
 		#if($size == 0)
-                	<input type="button" name="eventSubmit_doUpdate" value="Submit" onClick="checkAnswer(document.frm,this);"/>                 
+                	<input type="button" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkAnswer(document.frm,this);"/>                 
 		#else
-			<input type="button" name="eventSubmit_doUpdate" value="Update" onClick="checkAnswer(document.frm,this);"/>
+			<input type="button" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkAnswer(document.frm,this);"/>
 		#end
-		<input type="reset"  value="Reset"/>
+		<input type="reset"  value="$brih_reset"/>
 		<input type="hidden" name="actionName"/>
 		<input type="hidden" name="counter" value="$counter"/>
 		<input type="hidden" name="count" value="$count"/>
