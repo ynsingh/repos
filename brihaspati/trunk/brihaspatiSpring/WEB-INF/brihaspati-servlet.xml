@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <bean id="DirectoryController" class="org.iitk.brihaspati.controller.DirectoryController">
+    </bean>
+
+
+
+    <bean id="DefaultController" class="org.iitk.brihaspati.controller.DefaultController"> </bean>
+
+    <bean id="DefaultBottomController" class="org.iitk.brihaspati.controller.DefaultBottomController"></bean>
+
+    <bean id="DefaultTopController" class="org.iitk.brihaspati.controller.DefaultTopController"></bean>
+
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename"><value>messages</value></property>
+    </bean>
+
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+		<prop key="/directory.vm">DirectoryController</prop>
+		<prop key="/Default.vm">DefaultController</prop>
+		<prop key="/DefaultBottom.vm">DefaultBottomController</prop>
+		<prop key="/DefaultTop.vm">DefaultTopController</prop>
+	    </props>
+        </property>
+    </bean>
+
+<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+<property name="resourceLoaderPath"><value>/</value></property>
+</bean>
+
+
+<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+<property name="paramName" value="language" />
+</bean> 
+
+<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" >
+	<property name="interceptors">
+	<list>
+		<ref bean="localeChangeInterceptor" />
+	</list>
+	</property>
+</bean>
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+        <property name="prefix"><value>/WEB-INF/templates/velocity/</value></property>
+        <property name="suffix"><value>.vm</value></property>
+	<property name="exposeSpringMacroHelpers"><value>true</value></property>
+    </bean>
+
+</beans>        

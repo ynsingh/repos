@@ -1,0 +1,19 @@
+#*
+ * @(#) DefaultTop.vm
+ * Copyright (c) 2012 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ * @author<a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
+ * @modified date: 01-01-2012 (vipul kumar pal)
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ *#
+
+<html>
+
+<head>
+<link rel="shortcut icon" href="images/favicon.ico" >
+<link rel="icon" type="image/gif" href="images/animated_favicon.gif">
+</head>
+
+	<table border=0><tr><td width="55%"><img src="images/englishbrihaspati3.png"></td><td colspan=2 width="40%" align="right"><img src="images/Logo/logo.png"</td></tr></table>
+<hr>

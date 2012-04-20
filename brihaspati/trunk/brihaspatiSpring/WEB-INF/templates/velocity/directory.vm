@@ -1,0 +1,118 @@
+#*
+*#
+#parse("/WEB-INF/templates/velocity/DefaultTop.vm")
+<head><title>Directory</title></head>
+<body onload="setValue(document.frm,this)">
+	<table  width="100%">
+        <tr width="100%"><td align="center" colspan="2"><p><font size="6" color="Brown">Telephone Directory</font></p></td></tr>
+	<tr><td><p><font color="red">$!{model1.ErrorMsg}</font><p></td></tr>
+	<tr><td>
+	<a href=${model1.url}>BACK</a>
+	</td>
+	</tr>
+	</table>
+	<table>
+<form name="frm" method="post" action="">
+<table width="100%" bgcolor="#efe3b5" border="0" cellspacing="2" cellpadding="5">
+<tr><td align="right"><b><font size="4">Search By</font></b></td>
+<td><select name="querylist" value="">
+<option value="name">Name</option>
+<option value="mailid">Mail ID</option>
+<option value="address">Address</option>
+<option value="department">Department</option>
+</select></td>
+<td align="right"><b><font size="4">Match String</font></b></td>
+<td><input type="text" name="matchstring" value="$!{model1.match}">
+	<input type="button" name="Search" value="Search" onClick="checkNull(document.frm,this);">
+</td>
+<td align="right">
+	##<INPUT TYPE="BUTTON" VALUE="First" ONCLICK="first(document.frm,this);" style="height: 30px; width: 90px; color: blue;">
+	##<a href="" onClick="window.location.reload( true );">Show All</a>
+</td>
+</tr>
+</table>
+<table width="100%" bgcolor="#f7f3de" border="2" cellspacing="0" cellpadding="5" border-color="c6bfbf">
+  <tr bgcolor="#D2B48C">
+<b>
+  <td>ID</td><td>NAME</td><td>MAIL-ID</td><td>ADDRESS</td><td>OFFICE NO</td><td>MOBILE NO</td><td>HOME NO</td><td>OTHER NO</td><td>DEPARTMENT</td><td>DESIGNATION</td><td>STATE</td></b>
+  </tr>
+#foreach ($value in ${model1.dirList})
+  <tr>
+	<td> $!value.getId() </td> <td>$value.name</td> <td>$value.mailid</td> <td>$value.address</td>
+	<td>
+		${value.officeno}
+	</td>
+	<td>
+		${value.mobileno}
+	</td>
+	<td>
+		
+        	${value.homeno}
+	</td>
+	<td>
+		${value.otherno}
+	</td>
+	<td>${value.department}</td><td>${value.designation}</td><td>${value.state}</td></tr>
+#end
+</table>
+#if(${model1.total_size}<= ${model1.AdminConf})
+	<INPUT TYPE="BUTTON" VALUE="First" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
+        <INPUT TYPE="BUTTON" VALUE="Previous" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
+        <INPUT TYPE="BUTTON" VALUE="Next" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
+        <INPUT TYPE="BUTTON" VALUE="Last" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
+#elseif(${model1.startIndex}== ${model1.AdminConf_str})
+	<INPUT TYPE="BUTTON" VALUE="First" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
+        <INPUT TYPE="BUTTON" VALUE="Previous" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
+	<INPUT TYPE="BUTTON" VALUE="Next" ONCLICK="next(document.frm,this);" style="height: 30px; width: 90px; color: blue;">
+	<input type="hidden" name="startIndex" value=${model1.startIndex} /> &nbsp;
+	<INPUT TYPE="BUTTON" VALUE="Last" ONCLICK="last(document.frm,this);" style="height: 30px; width: 90px; color: blue;"> &nbsp;
+#elseif(${model1.endIndex} == ${model1.total_size} || ${model1.endIndex} > ${model1.total_size})
+	<INPUT TYPE="BUTTON" VALUE="First" ONCLICK="first(document.frm,this);" style="height: 30px; width: 90px; color: blue;"> &nbsp;
+        <INPUT TYPE="BUTTON" VALUE="Previous" ONCLICK="previous(document.frm,this);" style="height: 30px; width: 90px; color: blue;"> &nbsp;
+        <INPUT TYPE="BUTTON" VALUE="Next" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
+        <INPUT TYPE="BUTTON" VALUE="Last" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
+#else
+	<INPUT TYPE="BUTTON" VALUE="First" ONCLICK="first(document.frm,this);" style="height: 30px; width: 90px; color: blue;"> &nbsp;
+        <INPUT TYPE="BUTTON" VALUE="Previous" ONCLICK="next(document.frm,this);" style="height: 30px; width: 90px; color: blue;"> &nbsp;
+        <INPUT TYPE="BUTTON" VALUE="Next" ONCLICK="previous(document.frm,this);" style="height: 30px; width: 90px; color: blue;"> &nbsp;
+        <INPUT TYPE="BUTTON" VALUE="Last" ONCLICK="last(document.frm,this);" style="height: 30px; width: 90px; color: blue;"> &nbsp;
+#end
+#parse("/WEB-INF/templates/velocity/DefaultBottom.vm")
+<input type="hidden" name="ms" value="${model1.ms}">
+<input type="hidden" name="ip" value="${model1.ip}">
+<input type="hidden" name="random" value="${model1.random}">
+<input type="hidden" name="mail" value="${model1.mail}">
+<input type="hidden" name="str" value="${model1.str}">
+<input type="hidden" name="url" value="${model1.url}">
+
+</form>
+</body>
+
+<SCRIPT language="JavaScript">
+        function checkNull(frm,field){
+                if(frm.matchstring.value!=""){
+                        frm.submit();
+                }
+                else{
+                        alert("The 'Match String' text box can not be NULL");
+                }
+        }
+	function first(frm,field){
+                window.location.href='#springUrl("/directory.vm")?mode=${model1.mod}&startIndex=${model1.check_first}'
+                frm.submit();
+        }
+	function previous(frm,field){
+                window.location.href='#springUrl("/directory.vm")?mode=${model1.mod}&startIndex=${model1.check_pre}'
+                frm.submit();
+        }
+	function next(frm,field){
+                window.location.href='#springUrl("/directory.vm")?mode=${model1.mod}&startIndex=${model1.startIndex}'
+                frm.submit();
+        }
+	function last(frm,field){
+		window.location.href='#springUrl("/directory.vm")?mode=${model1.mod}&startIndex=${model1.check_last}'
+		frm.submit();
+	}
+
+</SCRIPT>
+

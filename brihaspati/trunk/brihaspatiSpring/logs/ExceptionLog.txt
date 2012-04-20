@@ -1,0 +1,60 @@
+Mon Mar 26 12:00:37 IST 2012---querylist1 ==============>>>>name
+Mon Mar 26 12:00:37 IST 2012---querylist 2==============>>>>NAME
+Mon Mar 26 12:00:37 IST 2012---querylist 6==============>>>>
+Mon Mar 26 12:00:37 IST 2012---querylist 7==============>>>>Criteria:: TELEPHONE_DIRECTORY.NAME<=>TELEPHONE_DIRECTORY.NAME LIKE '%vipul%':  
+Current Query SQL (may not be complete or applicable): SELECT  FROM TELEPHONE_DIRECTORY WHERE TELEPHONE_DIRECTORY.NAME LIKE '%vipul%'
+Mon Mar 26 12:00:37 IST 2012---querylist 7==============>>>>Criteria:: TELEPHONE_DIRECTORY.NAME<=>TELEPHONE_DIRECTORY.NAME LIKE '%vipul%':  
+Current Query SQL (may not be complete or applicable): SELECT  FROM TELEPHONE_DIRECTORY WHERE TELEPHONE_DIRECTORY.NAME LIKE '%vipul%'
+Mon Mar 26 12:00:37 IST 2012---List ==============>>>>[TelephoneDirectory:
+Id = 1040
+UserId = 1
+MailId = vipulpal@gmail.com
+Name = vipulpal
+Address = ACES Lab 301
+MobileNo = 3-0-91--9876543212
+OtherNo = 1-0-91--3333333333
+HomeNo = 2-0-91--1234567890
+OfficeNo = 2-+-91-512-123456
+Designation = ADMIN
+Department = EE
+State = UTTAR PRADESH
+Country = INDIA
+, TelephoneDirectory:
+Id = 1080
+UserId = 1020
+MailId = vipul@gmail.com
+Name = vipulpal
+Address = ACES Lab 301A
+MobileNo = 1-0-91--9876543212
+OtherNo = 2-+-91--2222222222
+HomeNo = 3-0-91--1234567890
+OfficeNo = 3-+-91-0512-4567781
+Designation = Admin
+Department = Electrical
+State = UP
+Country = INDIA
+]
+Mon Mar 26 12:00:37 IST 2012---ididididid==============>>>>1040
+Mon Mar 26 12:00:37 IST 2012---vector=====================[bus.Directory@263c8db9]
+Mon Mar 26 12:00:37 IST 2012---ididididid==============>>>>1080
+Mon Mar 26 12:00:37 IST 2012---vector=====================[bus.Directory@263c8db9, bus.Directory@517c804b]
+Mon Mar 26 12:15:06 IST 2012---ididididid==============>>>>1040
+Mon Mar 26 12:15:06 IST 2012---vector=====================[bus.Directory@6f5f6479]
+Mon Mar 26 12:15:06 IST 2012---ididididid==============>>>>1080
+Mon Mar 26 12:15:06 IST 2012---vector=====================[bus.Directory@6f5f6479, bus.Directory@5fbd7d0e]
+Mon Mar 26 12:15:48 IST 2012---ididididid==============>>>>1040
+Mon Mar 26 12:15:48 IST 2012---vector=====================[bus.Directory@33d232d1]
+Mon Mar 26 12:15:48 IST 2012---ididididid==============>>>>1080
+Mon Mar 26 12:15:48 IST 2012---vector=====================[bus.Directory@33d232d1, bus.Directory@2d0651eb]
+Mon Mar 26 12:15:53 IST 2012---ididididid==============>>>>1040
+Mon Mar 26 12:15:53 IST 2012---vector=====================[bus.Directory@6cae00e3]
+Mon Mar 26 12:15:53 IST 2012---ididididid==============>>>>1080
+Mon Mar 26 12:15:53 IST 2012---vector=====================[bus.Directory@6cae00e3, bus.Directory@13bc6ed3]
+Mon Mar 26 12:16:00 IST 2012---ididididid==============>>>>1040
+Mon Mar 26 12:16:00 IST 2012---vector=====================[bus.Directory@49833c9c]
+Mon Mar 26 12:16:00 IST 2012---ididididid==============>>>>1080
+Mon Mar 26 12:16:00 IST 2012---vector=====================[bus.Directory@49833c9c, bus.Directory@47004b78]
+Mon Mar 26 12:17:13 IST 2012---ididididid==============>>>>1040
+Mon Mar 26 12:17:13 IST 2012---vector=====================[bus.Directory@3be4d6ef]
+Mon Mar 26 12:17:13 IST 2012---ididididid==============>>>>1080
+Mon Mar 26 12:17:13 IST 2012---vector=====================[bus.Directory@3be4d6ef, bus.Directory@2cdb03a1]
