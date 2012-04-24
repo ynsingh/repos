@@ -1,13 +1,64 @@
-package org.bss.brihaspatisync.monitor.graphlayout;
-
-/**
- * TGPanel.java
+/* Original source which is modified resulting in this file, is copyrighted (c)
+ * 2001-2002 by Alexander Shapiro in made available under the license as
+ * reproduced below.
  *
- * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG, IIT Kanpur.
+ * TouchGraph LLC. Apache-Style Software License
+ *
+ *
+ * Copyright (c) 2001-2002 Alexander Shapiro. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * 3. The end-user documentation included with the redistribution,
+ *    if any, must include the following acknowledgment:
+ *       "This product includes software developed by
+ *        TouchGraph LLC (http://www.touchgraph.com/)."
+ *    Alternately, this acknowledgment may appear in the software itself,
+ *    if and wherever such third-party acknowledgments normally appear.
+ *
+ * 4. The names "TouchGraph" or "TouchGraph LLC" must not be used to endorse
+ *    or promote products derived from this software without prior written
+ *    permission.  For written permission, please contact
+ *    alex@touchgraph.com
+ *
+ * 5. Products derived from this software may not be called "TouchGraph",
+ *    nor may "TouchGraph" appear in their name, without prior written
+ *    permission of alex@touchgraph.com.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL TOUCHGRAPH OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * ====================================================================
+ * 
+ * The changes done in the original source to suit our requirement are released
+ * under the license as given in LICENSE file distributed with this source.
+ * All such changes are Copyrighted (c) 2011-2012 ETRG, IIT Kanpur.
  */
 
-import org.bss.brihaspatisync.monitor.*;
+package org.bss.brihaspatisync.monitor.graphlayout;
+
+import org.bss.brihaspatisync.monitor.ReflectorManager;
+import org.bss.brihaspatisync.monitor.RegisterToIndexServer;
+import org.bss.brihaspatisync.monitor.gui.MainWindow;
+
 import  org.bss.brihaspatisync.monitor.graphlayout.interaction.*;
 import  org.bss.brihaspatisync.monitor.graphlayout.graphelements.*;
 
@@ -17,7 +68,10 @@ import  java.util.*;
 
 /**
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>
- * @date 05/12/2011
+ * @date 05/12/2012
+ * Modified for showing courses running and reflector to reflector peering
+ * @date 15/04/12
+ *
  */
 
 
@@ -52,9 +106,11 @@ public class TGPanel extends Panel {
     private Vector paintListeners;
     int count=0;
     public Vector ip=new Vector();
+    static Vector sCourse=new Vector();
     static String refIP;
 
     public Vector load;
+    private Vector peerIP;
 
     TGLensSet tgLensSet;  // Converts between a nodes visual position (drawx, drawy),
                           // and its absolute position (x,y).
@@ -115,11 +171,6 @@ public class TGPanel extends Panel {
   // Node manipulation ...........................
 
     /** Returns an Iterator over all nodes in the complete graph. */
-/*
-    public Iterator getAllNodes() {
-        return completeEltSet.getNodes();
-    }
-*/
 
     /** Return the current visible locality. */
     public ImmutableGraphEltSet getGES() {
@@ -176,24 +227,34 @@ public class TGPanel extends Panel {
    /** Adds a Node, with its ID and label being the current node count plus 1.
      * @see com.touchgraph.graphlayout.Node
      */
-    	public void getSelectedRef(String str){
+    
+   /** Method for gettigng IP Address of Reflector Which has been Selected */ 	
+	public void getSelectedRef(String str){
 		refIP=str;
         }
+	
+   /** Method for gettigng Course Which User has Checked*/ 	
+	public void getSelectedCourse(String str){
+		if(!sCourse.contains(str))
+			sCourse.add(str);	
+        }
 
-	public Vector getLoad(){
-            load=ReflectorManager.getController().getLoadOnReflector(refIP);
-	    return load;
-	}
+   /** Method for gettigng Course Which User has Unchecked*/  
+	 public void removeCourse(String str){
+                        sCourse.removeElement(str);
+        }
+
+    /** Method for gettigng get IP Address Of Peers Who are connected to a Particular Reflector*/
 
 	public String getIP(){
-      	    Vector peerIP=new Vector();
+      	    peerIP=new Vector();
 	    peerIP.clear();
 	    Vector courses=new Vector();
 	    courses.clear();
 	    courses=ReflectorManager.getController().getReflectorCourses(refIP);
-	    for(int i=0;i<courses.size();i++){
-	     	RegisterToIndexServer.getController().connectGetLectureXML(courses.elementAt(i).toString());	
-		peerIP=ReflectorManager.getController().getPeerValue(courses.elementAt(i).toString());
+	    for(int i=0;i<sCourse.size();i++){
+	     	RegisterToIndexServer.getController().connectGetLectureXML(sCourse.elementAt(i).toString());	
+		peerIP=ReflectorManager.getController().getPeerValue(sCourse.elementAt(i).toString());
 	    }
 	    ip.clear();  
 	    ip.add(refIP);
@@ -201,6 +262,8 @@ public class TGPanel extends Panel {
 	    ip.add(peerIP.elementAt(i).toString());
 	    return ip.elementAt(count).toString();
 	}
+	
+    /** Modified for showing IP adrees on Label */
     public Node addNode() throws TGException {
         String id = String.valueOf(getNodeCount()+1);
         String label=String.valueOf(getIP());

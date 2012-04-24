@@ -34,20 +34,12 @@ public class GLPanelThread extends Thread {
 			while(true){
 				 try {   this.sleep(1000);this.yield();}catch(Exception e){}
 				      
-				      		TGPanel tgPanel=new TGPanel();
-						Vector load=new Vector();
-				      	        load=tgPanel.getLoad();
-						int size=load.size();
-						String a= load.lastElement().toString();
-						String b= load.elementAt(size-2).toString();
-
-						if(!a.equals(b)){
+				      			TGPanel tgPanel=new TGPanel();
 							GLPanel glPanel=new GLPanel();
                                                 	MainWindow.getController().getRightPanel().remove(1);
 							MainWindow.getController().getRightPanel().add(MainWindow.getController().createMonitorPanel(),BorderLayout.PAGE_START);
                                                 	MainWindow.getController().getRightPanel().add(glPanel,BorderLayout.CENTER);
                                                 	MainWindow.getController().getRightPanel().revalidate();
-						}
                                         
 			 }
 						

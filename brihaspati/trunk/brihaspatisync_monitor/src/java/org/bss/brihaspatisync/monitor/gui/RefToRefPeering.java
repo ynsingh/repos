@@ -1,5 +1,5 @@
 /**
- *  TreeMenu.java
+ *  RefToRefPeering.java
  *      
  *  See LICENCE file for usage and redistribution terms
  *  Copyright (c) 2011, ETRG, IIT Kanpur.
@@ -9,10 +9,8 @@
 
 /**
  *  @author <a href="mailto:shikhashuklaa.gmail.com">Shikha Shukla</a>
- *  @date 05/12/2011
- *  Modified for showing courses running and reflector to reflector peering
- *  @date 15/04/12
- *
+ *  @date 15/04/2012
+ *    
  *  */
 
 
@@ -52,16 +50,18 @@ import org.bss.brihaspatisync.monitor.graphlayout.TGPanel;
 import org.bss.brihaspatisync.monitor.util.ServerLog;
 
 
-public class TreeMenu implements TreeSelectionListener{
+public class RefToRefPeering implements TreeSelectionListener{
 	private JPanel mainPanel;
 	private JScrollPane scrollPane=null;
 	private JTree tree =null;
-	
-	private static TreeMenu tree_menu=null;
+	static String refIP;
 
-	public static TreeMenu getController(){
+	
+	private static RefToRefPeering tree_menu=null;
+
+	public static RefToRefPeering getController(){
 		if(tree_menu==null){
-			tree_menu=new TreeMenu();
+			tree_menu=new RefToRefPeering();
 		}
 		return tree_menu;
 	}
@@ -81,66 +81,40 @@ public class TreeMenu implements TreeSelectionListener{
 		return scrollPane;
 
 	}
-		
+	
+	 public void getSelectedRef(String str){
+                refIP=str;
+        }
+ 	
+	
 	protected static Vector brihaspatisync_v=new Vector();
         public static Vector brihaspati_reflector=new Vector();
 	
 	private static TreeModel createModel() {
-		DefaultMutableTreeNode parent			= new DefaultMutableTreeNode("<html><font size=3 ><b>Brihaspati</b></font></html>", true);
-      		DefaultMutableTreeNode brihaspati 		= new DefaultMutableTreeNode("<html><font size=3 ><b>brihaspati</b></font></html>",true);
-      		DefaultMutableTreeNode brihaspatisync 		= new DefaultMutableTreeNode("<html><font size=3 ><b>brihaspatisync</b></font></html>",true);
-      		DefaultMutableTreeNode reflector 		= new DefaultMutableTreeNode("<html><font size=3 ><b>Reflector</b></font></html>",true);
+		DefaultMutableTreeNode parent			= new DefaultMutableTreeNode("<html><font size=3 ><b>Reflector</b></font></html>", true);
 		brihaspatisync_v.clear();
 		Vector brihaspati_v=new Vector();
 		brihaspati_v.clear();
-		brihaspati_v=org.bss.brihaspatisync.monitor.util.ClientObject.getController().getbrihaspatiServerAddr();
-		if(!brihaspati_v.contains("reflector")) 
-		brihaspati_v.add("reflector");
+		brihaspati_reflector.add(refIP);
 		brihaspati_reflector.clear();
 		brihaspati_reflector=org.bss.brihaspatisync.monitor.ReflectorManager.getController().getReflectorList();
 		for(int j=0;j<brihaspati_reflector.size();j++){       
 			String s="https://"+(brihaspati_reflector.elementAt(j))+":"+"9999"+"/brihaspatisync_reflector";
-			for(int i=0;i<brihaspati_v.size();i++) {
+			for(int i=0;i<=brihaspati_v.size();i++) {
 				if(!brihaspati_v.contains(s)) {
 		          		brihaspati_v.add("https://"+(brihaspati_reflector.elementAt(j))+":"+"9999"+"/brihaspatisync_reflector");
 				}
 			}
 		}
-
-		parent.add(brihaspatisync);
-		parent.add(reflector);
-		parent.add(brihaspati);
 		
-		boolean rflag=false;
-		boolean flag=false;
 		for(int i=0;i<brihaspati_v.size();i++){
-			String str=brihaspati_v.get(i).toString().trim();
-			if(!flag){
-				if(str.equals("brihaspatisync")) {
-					flag=true;
-				}
-				else if(!str.equals("brihaspati")) {
-					DefaultMutableTreeNode abc = new DefaultMutableTreeNode(brihaspati_v.get(i).toString());
-					brihaspati.add(abc);
-					brihaspatisync_v.add(brihaspati_v.get(i).toString());
-				}
-			}if(flag)  {
-				if(!rflag){
-					 if(str.equals("reflector")) {
-					 	rflag=true;
-					 }
-					else if(!str.equals("brihaspatisync")){
-						DefaultMutableTreeNode abc = new DefaultMutableTreeNode(brihaspati_v.get(i).toString());
-				        	brihaspatisync.add(abc);		
-						brihaspatisync_v.add(brihaspati_v.get(i).toString());
-					}
-				}
-			}if(rflag && !str.equals("reflector")){
+			        DefaultMutableTreeNode ab = new DefaultMutableTreeNode(brihaspati_v.firstElement().toString());
+                                 parent.add(ab);
+
 				 DefaultMutableTreeNode abc = new DefaultMutableTreeNode(brihaspati_v.get(i).toString());
-                                 reflector.add(abc);                
+                                 ab.add(abc);                
                                  brihaspatisync_v.add(brihaspati_v.get(i).toString());
 
-			 }
 		}
 		CheckStatusServer.getController().checkServer(brihaspatisync_v);	
 		return new DefaultTreeModel(parent);
@@ -159,9 +133,7 @@ public class TreeMenu implements TreeSelectionListener{
 			TGPanel tgp=new TGPanel();
                         tgp.getSelectedRef(str[0]);
 			MainWindow.getController().getSelectedRef(str[0]);
-			RefToRefPeering.getController().getSelectedRef(str[0]);
-             		MainWindow.getController().getrefPPanel().add(RefToRefPeering.getController().createGUI(),BorderLayout.CENTER);
-                        MainWindow.getController().getrefPPanel().revalidate();
+                        MainWindow.getController().getdisplayPanel().add(MainWindow.getController().createCoursePanel(),BorderLayout.CENTER);
 		}catch(Exception ex){System.out.println("======valueChanged===========>  "+ex.getMessage());}
 	}
 	private static class MyTreeCellRenderer extends DefaultTreeCellRenderer {
@@ -177,8 +149,6 @@ public class TreeMenu implements TreeSelectionListener{
 			try{
 				if(brihaspatisync_v.contains(tempstr)){	
 					try {
-						DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-						Date date = new Date();
 					        JLabel label = (JLabel) this ;
 						String temp="";
 						if(tempstr.startsWith("https://"))

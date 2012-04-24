@@ -1,12 +1,20 @@
-package org.bss.brihaspatisync.monitor.gui;
+/**
+ *  MainWindow.java
+ *    
+ *  See LICENCE file for usage and redistribution terms
+ *  Copyright (c) 2011, ETRG, IIT Kanpur.
+ *  */
 
 /**
- * MainWindow.java
- *
- * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011, ETRG, IIT Kanpur.
- */
+ *  @author <a href="mailto:shikhashuklaa.gmail.com">Shikha Shukla</a>
+ *  @date 05/12/2011
+ *  Modified for showing courses running and reflector to reflector peering
+ *  @date 15/04/12
+ *  */
 
+
+
+package org.bss.brihaspatisync.monitor.gui;
 
 import java.util.Vector;
 
@@ -49,34 +57,41 @@ import javax.swing.UIManager;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JTextArea;
-import javax.swing.JComboBox;
 
-import org.bss.brihaspatisync.monitor.RegisterToIndexServer;
 import org.bss.brihaspatisync.monitor.ReflectorManager;
+import org.bss.brihaspatisync.monitor.RegisterToIndexServer;
 import org.bss.brihaspatisync.monitor.graphlayout.GLPanel;
+import org.bss.brihaspatisync.monitor.graphlayout.TGPanel;
 
-/**
- * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
- * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>
- * @date 05/12/2011
- */
+import javax.swing.*;
+import  java.awt.*;
+import  java.awt.event.*;
 
 
-public class MainWindow  extends JFrame implements ActionListener, MouseListener {
+public class MainWindow  extends JFrame implements ActionListener, MouseListener, ItemListener {
 
 	private static JDesktopPane desktop=null;
 	private JPanel main_Panel=null;
+	private JPanel refp_Panel=null;
 	private JPanel left_Panel =null;
 	private JPanel north_Panel =null;
 	private JPanel status_Panel =null;
 	private JPanel right_Panel =null;
+	private JPanel course_Panel =null;
+	private JPanel display_Panel =null;
+
 	private JMenuBar menuBar=null;
 	private JMenuItem login_menu=null;
+	private JMenuItem logout_menu=null;
         private JPanel monitorPanel=null;
 	private JPanel top_panel=null;
    	boolean flag; 
 	
 	private JSplitPane jSplitPane=null;
+	private JSplitPane jSplitPane1=null;
+	private JSplitPane jSplitPane2=null;
+  
+ 
     	private ClassLoader clr= this.getClass().getClassLoader();;
 	private Container content=null;
 	private JMenu help_menu=null;
@@ -88,13 +103,17 @@ public class MainWindow  extends JFrame implements ActionListener, MouseListener
         private JLabel pptBttn=null;
         private JLabel desktopsharingBttn=null;
         private JLabel clientBttn=null;
-
+	
+	private JCheckBox[] courseLabel = new JCheckBox[5];
+	
 	private Vector ReflectorsRunning=null;
+	private Vector courses=null;
 
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
 	private static MainWindow fw=null;
+	static String refIP;
 
   	public static MainWindow  getController(){
     		if (fw==null){
@@ -145,6 +164,55 @@ public class MainWindow  extends JFrame implements ActionListener, MouseListener
                 left_Panel.setMinimumSize(dim);
 		return left_Panel;
         }
+
+	
+	  public JPanel createdisplayCoursePanel(){
+                display_Panel=new JPanel();
+                display_Panel.setLayout(new BorderLayout());
+		Dimension dim=new Dimension(70,40);
+                display_Panel.setMinimumSize(dim);
+                return display_Panel;
+        }
+
+	
+	 public void getSelectedRef(String str){
+                refIP=str;
+        }
+
+	 public JPanel createCoursePanel(){
+		courses=new Vector();
+		int j=courses.size();
+		courses=ReflectorManager.getController(). getReflectorCourses(refIP);
+		course_Panel=new JPanel();
+                course_Panel.setLayout(new GridLayout(j,1));
+                course_Panel.setBackground(Color.white);
+		Dimension dim=new Dimension(70,40);
+                course_Panel.setMinimumSize(dim);
+		JLabel courseLabel1=new JLabel("Please Select the Course");
+		course_Panel.add(courseLabel1,BorderLayout.PAGE_START);
+			for(int i=0;i<courses.size();i++){
+                		courseLabel[i]=new JCheckBox(courses.elementAt(i).toString());
+				courseLabel[i].setSelected(false);
+				courseLabel[i].setName(courses.elementAt(i).toString());
+                		course_Panel.add(courseLabel[i]);
+				courseLabel[i].addItemListener(this);
+				courseLabel[i].setBackground(Color.white);
+
+			}
+
+                return course_Panel;
+        }
+
+	public JPanel createrefPPanel(){
+                refp_Panel=new JPanel();
+                refp_Panel.setLayout(new BorderLayout());
+		refp_Panel.setBackground(Color.white);
+		Dimension dim=new Dimension(70,40);
+                refp_Panel.setMinimumSize(dim);
+   
+                return refp_Panel;
+        }
+
 	
 	public JPanel createRightPanel(){
       		right_Panel=new JPanel();
@@ -165,9 +233,27 @@ public class MainWindow  extends JFrame implements ActionListener, MouseListener
                 right_Panel.setMinimumSize(dim1);
                 return right_Panel;
         }
+
+	
+          public JSplitPane createSplitPane2(){
+                jSplitPane2 =new JSplitPane(JSplitPane.VERTICAL_SPLIT,createrefPPanel(),createdisplayCoursePanel());
+                jSplitPane2.setContinuousLayout(false);
+		jSplitPane2.setDividerLocation(260);		
+                return jSplitPane2;
+        }
+
+	
+        public JSplitPane createSplitPane1(){
+                jSplitPane1 =new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,createSplitPane2(), createRightPanel());
+                jSplitPane1.setContinuousLayout(false);
+		jSplitPane1.setDividerLocation(260);
+
+                return jSplitPane1;
+        }
+
 	
         public JSplitPane createSplitPane(){
-                jSplitPane =new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, createLeftPanel(), createRightPanel());
+                jSplitPane =new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, createLeftPanel(),createSplitPane1());
                 jSplitPane.setContinuousLayout(false);  
                 jSplitPane.setDividerLocation(260);
                 jSplitPane.setDividerSize(1);
@@ -225,8 +311,17 @@ public class MainWindow  extends JFrame implements ActionListener, MouseListener
                 login_menu.addActionListener(this);
                 login_menu.setEnabled(true);
 		
+		logout_menu=new JMenuItem("Exit");
+                logout_menu.setActionCommand("exit");
+                logout_menu.addActionListener(this);
+                logout_menu.setEnabled(true);
+
+
                 var_brihaspati.add(login_menu);
+	        var_brihaspati.add(logout_menu);
+
 		menuBar.add(var_brihaspati);
+
 
 		seprate_menu = new JMenu(" | ");
                 seprate_menu.setBackground(new Color(5,106,167));
@@ -254,6 +349,20 @@ public class MainWindow  extends JFrame implements ActionListener, MouseListener
                 return right_Panel;
         }
 
+	  public JPanel getCoursePanel(){
+                return course_Panel;
+        }
+
+	  public JPanel getrefPPanel(){
+                return refp_Panel;
+        }
+
+        public JPanel getdisplayPanel(){
+                return display_Panel;
+        }
+    	
+
+	
 	 public boolean startReflector() {
                 Vector indexServerList=RegisterToIndexServer.getController().connectToMasterServer1();
                 String str1[]=new String[indexServerList.size()];
@@ -275,6 +384,8 @@ public class MainWindow  extends JFrame implements ActionListener, MouseListener
 
 	public void actionPerformed(ActionEvent e) {
  
+		if(e.getActionCommand().equals("exit"))
+			 System.exit(0);
 		if(e.getActionCommand().equals("login")){
 			 org.bss.brihaspatisync.monitor.gui.MainWindow.getController().startReflector();
 			 
@@ -295,27 +406,44 @@ public class MainWindow  extends JFrame implements ActionListener, MouseListener
                 }
 		
 	}
+	
+
 
 	 public void mouseClicked(MouseEvent me) {
 		if(me.getComponent().getName().equals("clientBttn.Action")){
-				ReflectorsRunning=ReflectorManager.getController().getReflectorIP();
 				GLPanel glPanel = new GLPanel();
                         	clientBttn.setCursor(busyCursor);
-                             	getRightPanel().remove(1);
-	                        getRightPanel().add(glPanel,BorderLayout.CENTER);
-        	                getRightPanel().revalidate();
+				getRightPanel().remove(1);
+                                getRightPanel().add(glPanel,BorderLayout.CENTER);
+                                getRightPanel().revalidate();
 				org.bss.brihaspatisync.monitor.network.GLPanelThread st=new org.bss.brihaspatisync.monitor.network.GLPanelThread();
                 		st.start();
 		
 			
-   		}
+		}
 	}
 	
+
+	public void itemStateChanged(ItemEvent e) {
+		getRightPanel().add(createMonitorPanel(),BorderLayout.PAGE_START);
+                getRightPanel().revalidate();
+		String s=null;
+    		for(int i=0;i<courses.size();i++){
+    			if(courseLabel[i].isSelected()){
+				s=courseLabel[i].getText();
+				TGPanel tgp=new TGPanel();
+				tgp.getSelectedCourse(s);
+			}else{
+				s=courseLabel[i].getText();
+				TGPanel tgp=new TGPanel();
+                                tgp.removeCourse(s);
+			}
+		}
+	}
 		
    	public void mousePressed(MouseEvent e) {}
   	public void mouseReleased(MouseEvent e) {}
   	public void mouseEntered(MouseEvent e) {}
   	public void mouseExited(MouseEvent e) {}
-
 }
 
