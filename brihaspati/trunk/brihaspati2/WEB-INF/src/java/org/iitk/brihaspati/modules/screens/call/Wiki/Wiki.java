@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Wiki;
 /*
  * @(#)Wiki.java	
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -47,10 +47,12 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.om.security.User;  
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 
 /**
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  *
  */
 
@@ -68,23 +70,30 @@ public class Wiki extends SecureScreen{
 		String LangFile= null;
 		try{	 User user=data.getUser();
 			 LangFile =(String)user.getTemp("LangFile");
+			 ParameterParser pp=data.getParameters();
 			 String username=user.getName();
 			 String firstname=user.getFirstName();
                          String lastname=user.getLastName();
 			 String cId=(String)user.getTemp("course_id");
 			 context.put("courseid",cId);
 			 context.put("course",(String)user.getTemp("course_name"));
-                         String role=(String)user.getTemp("role");
+			 String userrole=(String)user.getTemp("role");
+			 context.put("userrole",userrole);
+			 String mode=pp.getString("mode","");
+			 context.put("mode",mode);
+			 //ErrorDumpUtil.ErrorLog("\n mode===>>>"+mode);
+			
 			 /**
 			 * check if user is primary instructor
 			 * as he alone can access Adminwiki.vm
 			 */
+			/*
 			 boolean check_Primary=CourseManagement.IsPrimaryInstructor(cId,username);
 			 if(check_Primary)
-			 context.put("role","instructor");			
+			 context.put("userrole","instructor");			
 			 else
-			 context.put("role","");
-
+			 context.put("userrole","");
+			*/
 			 WikiUtil ol = new WikiUtil();
 			 int i=0;
 			 Vector all=new Vector();
@@ -162,10 +171,10 @@ public class Wiki extends SecureScreen{
 			fh=null;
 
 		   }//try
-		 catch(Exception e)
-		  {
+		   catch(Exception e)
+		   {
 			 data.setMessage("Error in screen call,Wiki,Wiki.java is ========>  "+ e);
 
-		  }
-	}
+		   }
+	 }
 }

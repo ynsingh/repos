@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Wiki;
 /*
  * @(#)Logwiki.java	
  *
- *  Copyright (c) 2005 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -47,11 +47,12 @@ import java.io.FileReader;
 import java.io.FileInputStream;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 
 /**
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  */
 
 public class Logwiki extends SecureScreen
@@ -66,6 +67,8 @@ public class Logwiki extends SecureScreen
 	    	User user=data.getUser();
 		String cId=(String)user.getTemp("course_id");
 		context.put("courseid",cId);
+		String userrole=(String)user.getTemp("role");
+		context.put("userrole",userrole);
 		context.put("course",(String)user.getTemp("course_name"));
     	    	String fName=data.getParameters().getString("filename","");
 		String filePath=data.getServletContext().getRealPath("/WIKI"+"/"+cId+"/"+ "/Wikilog/"+fName);
@@ -94,14 +97,9 @@ public class Logwiki extends SecureScreen
 		* Getting file object from temporary variable and 
 		* Replacing the String from Propety file
 		*/
-              }
-		catch(Exception e)
-		{
-			   	
-			   data.setMessage("Error in screen call,Wiki,Logwiki.java is ========>  "+ e);
-
-		}
+       	}catch(Exception e)
+	{
+		data.setMessage("Error in screen call,Wiki,Logwiki.java is ========>  "+ e);
+	}
     }
 }
-
-

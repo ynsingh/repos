@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Wiki;
 /*
  * @(#)Editwiki.java	
  *
- *  Copyright (c) 2005 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -46,10 +46,12 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 
 /**
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  *
  */
 
@@ -62,12 +64,14 @@ public class Editwiki extends SecureScreen
 		String cId=(String)user.getTemp("course_id");
 		context.put("courseid",cId);
 		context.put("course",(String)user.getTemp("course_name"));
-	    	ParameterParser pp=data.getParameters();	   
+	    	ParameterParser pp=data.getParameters();
+		String userrole=(String)user.getTemp("role");
+		context.put("userrole",userrole);
     	    	String fName=pp.getString("filename","");
     	    	String word=pp.getString("query","");
     	    	String search=pp.getString("searchtype","");
 		String filePath=data.getServletContext().getRealPath("/WIKI"+"/"+cId+"/");
-		String filePathf=filePath + "/Wikifirst/" + fName ;
+		String filePathf=filePath + "/Wikilast/" + fName ;
 		String fpath=filePath + "/Wikilog/" + fName;
         	/**
 		* Check if filename is null or not
@@ -126,5 +130,3 @@ public class Editwiki extends SecureScreen
 		}
 	}//function ends
 }//class ends
-
-

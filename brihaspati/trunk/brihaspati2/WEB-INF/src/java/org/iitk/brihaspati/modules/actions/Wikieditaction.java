@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  *  @(#)Wikieditaction.java
  
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2006,2012 ETRG,IIT Kanpur.
  *  All Rights Reserved.
 
  *  Redistribution and use in source and binary forms, with or
@@ -50,6 +50,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.utils.WikiUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.util.parser.ParameterParser;    
 //Brihaspati
 import org.iitk.brihaspati.modules.utils.StringUtil;
@@ -58,6 +59,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 /** 
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  */
 
 
@@ -400,6 +402,7 @@ public  synchronized void  doEdit(RunData data,Context context){
 						/**
 						* Release memory
 						*/
+
 						df=null;
 						f1=null;
 						f2=null;
@@ -450,6 +453,40 @@ public  synchronized void  doEdit(RunData data,Context context){
 * @param context Context
 */
 
+///////////////////////////////////////////////////////////////////////////////
+/*
+public void ShowLog(RunData data,Context context)
+{
+	try{
+	User user=data.getUser();
+                String cId=(String)user.getTemp("course_id");
+                context.put("courseid",cId);
+                String userrole=(String)user.getTemp("role");
+                context.put("userrole",userrole);
+                context.put("course",(String)user.getTemp("course_name"));
+                String fName=data.getParameters().getString("filename","");
+                String filePath=data.getServletContext().getRealPath("/WIKI"+"/"+cId+"/"+ "/Wikilog/"+fName);
+                FileReader fr= new FileReader(filePath);
+                BufferedReader br=new BufferedReader(fr);
+                Vector v = new Vector();
+                String s2=null;
+                while((s2=br.readLine())!=null)
+                {
+                        v.addElement(s2);
+                }
+                context.put("first",v);
+                br.close();
+                fr.close();
+		context.put("filename",fName);
+		ErrorDumpUtil.ErrorLog("\n fName in action file=================>>"+fName);
+	}
+        catch(Exception e1)
+        {
+        	data.setMessage("Language Exception in action Wikieditaction method doShowOriginal is \n"+e1);
+        }
+}
+*/
+///////////////////////////////////////////////////////////////////////////////
 public void doShoworiginal(RunData data,Context context)
 {  //do show starts
 		String file,Wikibutton15,Wikibutton13,Wikibutton5;
@@ -1434,14 +1471,14 @@ public void doFindPage(RunData data,Context context)
         			    
 				}//for loop end
 		
-				if(v.isEmpty())
-		 		data.setMessage(Page+" "+word +" "+notExist);
-				else
-				{
+				//if(v.isEmpty())
+		 		//	data.setMessage(Page+" "+word +" "+notExist);
+				//else
+				//{
 					context.put("second",v);
 					context.put("search","true");
 					context.put("query",word);
-				}//else ends
+				//}//else ends
 			} //if ends
 			else
 			{
@@ -1747,7 +1784,7 @@ public void doDelversion(RunData data,Context context)
 */
 public void doDelpage(RunData data,Context context)
 {  //do Delpage starts
-
+	//ErrorDumpUtil.ErrorLog("do delete..");
 	String file,Wikiaction37,Page;
         file=Wikiaction37=Page=null;
         try{
@@ -1761,6 +1798,7 @@ public void doDelpage(RunData data,Context context)
            }
 
 	  try{  //try starts
+			//ErrorDumpUtil.ErrorLog("deketeeeeeeeeeee");
 			User user=data.getUser();
         		String cId=(String)user.getTemp("course_id");
 			ParameterParser pp = data.getParameters();
@@ -1790,7 +1828,6 @@ public void doDelpage(RunData data,Context context)
 			elfh.delete();
 			elff.delete();
 			elflog.delete();
-
           		data.setMessage("["+fId+"] "+Page+" "+" "+Wikiaction37);
 			/**
 			* release memory
@@ -1854,6 +1891,8 @@ public void doPerform(RunData data,Context context) throws Exception{
                         doMergedone(data,context);
 		else if(action.equals("eventSubmit_doStoptraffic"))
                         doStoptraffic(data,context);
+		//else if(action.equals("eventSubmit_ShowLog"))
+                  //      ShowLog(data,context);
 		else
                         data.setMessage(c_msg);
         }

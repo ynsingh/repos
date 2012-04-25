@@ -1,12 +1,11 @@
-
 #*
  * @(#)Wiki.vm
- * Copyright(c)2005,2009 ETRG,IIT Kanpur.
+ * Copyright(c)2005,2009,2012 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
 $page.setTitle(" $brih_home | $course | $brih_Wiki")
 $page.setBgColor("#ffffff")
 #set($lang=$data.getUser().getTemp("lang").toString())
@@ -15,198 +14,234 @@ $page.setBgColor("#ffffff")
 <tr>
 <td><b>
         <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | $brih_Wiki
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
+	<a href=$link.setPage("call,Wiki,Wiki.vm")>$brih_Wiki</a> | $Notice_All $brih_content $brih_list
 	</b>
 </td>
 </tr>
 </table>
-
-## Representation of HELP link
-<table width=100% align=left bgcolor="$ui.tableColor">
-        <tr>
-                <td align=right colspan=3>
-                       <img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati2/docs/Wikiusermanual.html","newWin");>$brih_help</a>
-                </td>
-        </tr>
-##</table>
-##<table align="left" bgcolor="$ui.tableColor" width=100%>
-<tr bgcolor="$ui.menuColor">
-     		<td width="25%">
-			<h4><a href=$link.setPage("call,Wiki,Editwiki.vm")>
-			#if($lang == "hindi")
-			$WikiPage $WikiCreate
-			#else
-			$WikiCreate $WikiPage
-			#end
-			</a></h4>
-		</td>
-
-		#if($role=="instructor")
-		<td width="25%">
-			<h4 ><a href=$link.setPage("call,Wiki,Adminwiki.vm")>${Wikimain5}</a></h4>
-		</td>
-		#end
-		<td width="50%">
-
-			<FORM  name=frm method="POST" action="$link.setPage("call,Wiki,Wiki.vm").setAction("Wikieditaction")">
-			<b>$Wikimain4 </b><br /><INPUT type="text" name="query" size="15">
-			<input type="hidden" name="actionName" >
-			<input type="submit" name="eventSubmit_doFind" value="${Wikimain6}" onClick="return checkSearchName(document.frm,this);" /> ##
-			<input type="submit" name="eventSubmit_doFindPage" value="${Wikimain7}" onClick="return checkSearchName(document.frm,this);" />
-			</FORM>
-		</td>
-	</tr>
-</table>			
-
-#if($search=="true")
-	<div style="background-color:$ui.tableColor">
-	<h3>${Wikimain1}</h3>&nbsp;
-	</div>
-#end
-
-			#################################################
-			##  Code below displays search results         ##
-			##                                             ##
-			################################################
-
-                #**
-                * Put the result of page Name search
-                *#
-#if($second.size() !=0)
-<table bgcolor="$ui.tableColor" width =100% >
-        <tr>
-                #foreach($t in $second)
-                        #if($velocityCount % 8 != 0)
-                                <td bgcolor="$ui.menuColor" align=center><a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$t).addPathInfo("query",$query).addPathInfo("searchtype","page")">$t</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        #else
-                                </tr><tr>
-                        #end
-                #end
-        </tr>
-</table>
-#end
-
-                #**
-                * Put the result  of  pattern search
-                *#
-#if($first.size() !=0)
-<table align=left bgcolor="$ui.tableColor" width=100% >
-        <tr>
-                #foreach($file in $first)
-                        #if($velocityCount % 8 != 0)
-                                <td align=center><a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName()).addPathInfo("query",$query).addPathInfo("searchtype","pattern")">$file.getName()</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        #else
-                                </tr><tr>
-                        #end
-                #end
-</tr>
-</table>
-#end
-
-	                #################################################
-                        ##   displays search results  ends here       ##
-                        ##                                            ##
-                        ################################################
-
-#set ( $a = $mypage.size())
-#if($a > 0)
-	<div style="background-color:$ui.tableColor">
-	<H3>${Wikimain2}</H3>&nbsp
-	</div>
-#end
-
-#set ( $count=1 )
-<table align="left" bgcolor="$ui.tableColor" width=100% >
-	#foreach($file in $mypage)
-	#if($velocityCount%2==0)
-	<tr bgcolor="$ui.tableColor"> 
-	#else
-	<tr bgcolor="$ui.menuColor"> 
-	#end	
-			<td>
-				$count 
-			</td>
-
-			#set ( $aliasval = $file.getName())
-			#set ( $date = $file.lastModified())
-			#set ( $at = $file.getPath())
-			<td>
-				<a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName())">$aliasval</a>
-			</td>
-			<td>
-				$Util.getAuthor($at)</a>	
-			</td>
-
-
-			<td>
-				<script type = "text/javascript">
-					var d= new Date($date)
-					document.write(d.toUTCString())
-				</script>
-				</td>
-	
-			<td>
-				<a href="$link.setPage("call,Wiki,Logwiki.vm").addPathInfo("filename",$file.getName())">
-				#if($lang == "hindi")
-				 	$aliasval &nbsp; ${Wikimain8} 
-				#else
-					${Wikimain8}  &nbsp; $aliasval
-				#end
-				</a>
-			</td>
-			
-		</tr>
-		#set ( $count= $count+1)
-	#end
-</table>
-
-#set($bl= $dirContent.size())
-#if($bl>0)
-	<div style="background-color:$ui.tableColor">	
-	<br><H3>${Wikimain3}</H3>&nbsp
-	</div>
-#end
-#set ( $count=1 )
-
-<table align="left" bgcolor="$ui.tableColor" width="100%" >
-	#foreach($file in $dirContent)
-	#if($velocityCount%2==0)
+<FORM  name=frm method="POST" action="$link.setPage("call,Wiki,Wiki.vm").setAction("Wikieditaction")">
+<table width="100%" align=left bgcolor="$ui.tableColor">
 	<tr bgcolor="$ui.tableColor">
-	#else	
-	<tr bgcolor="$ui.menuColor">
-	#end
-		<td>
-			$count 
-		</td>
-		#set ( $aliasval = $file.getName())
-		#set ( $date = $file.lastModified())
-		#set ( $at = $file.getPath())
-		<td>
-			<a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName())">$aliasval</a>
-		</td>
-		<td>
-			$Util.getAuthor($at)</a>
-		</td>
-		<td>
-			<script type = "text/javascript">
-			var d= new Date($date)
-			document.write(d.toUTCString())
-			</script>
-		</td>
-		<td>
-			<a href="$link.setPage("call,Wiki,Logwiki.vm").addPathInfo("filename",$file.getName())">
-			#if($lang == "hindi")
-                                        $aliasval &nbsp; ${Wikimain8}
-                                #else
-                                        ${Wikimain8}  &nbsp; $aliasval
-                                #end </a>
-			##	View Log details of &nbsp; $aliasval</a>
-		</td>
+        	<td colspan="2">
+                	<a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none > $brih_Wiki $brih_home </a> &nbsp;|&nbsp;
+	                <a href=$link.setPage("call,Wiki,Wiki.vm") style=text-decoration:none > $brih_index </a> &nbsp;|&nbsp; 
+			<a href=$link.setPage("call,Wiki,Adminwiki.vm") style=text-decoration:none > $Wikimain5 </a>&nbsp; &nbsp;
+                        <b> $brih_search </b><INPUT type="text" name="query" size="15">
+                        <input type="hidden" name="actionName" >
+                        ##<input type="submit" name="eventSubmit_doFind" value="Find Pattern" onClick="return checkSearchName(document.frm,this);" />
+                        <input type="submit" name="eventSubmit_doFindPage" value="${Wikimain7}" onClick="return checkSearchName(document.frm,this);" />
+        	</td>
 	</tr>
-	#set ( $count= $count+1)
-	#end
+</FORM>
+	<tr bgcolor="$ui.menuColor">
+        	<td align="right" colspan=5>
+                	<a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none > $Notice_Read </a>&nbsp;
+	                <a href=$link.setPage("call,Wiki,Editwiki.vm") style=text-decoration:none> $WikiCreate </a> &nbsp;
+        	        ##<a href=$link.setPage("call,Wiki,History.vm") style=text-decoration:none > $brih_view $WikiHistory </a>
+	        </td>
+	</tr>
+	<tr>
+         	<td valign="top">
+               		<table width="100%" bgcolor="$ui.tableColor">
+				<tr><td></td></tr>
+				<tr><td></td></tr>
+				<tr><td></td></tr>
+                        	<tr><td><a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none > $WikiMain $WikiPage </a></td></tr>
+				<tr><td></td></tr>
+                                <tr><td><a href=$link.setPage("call,Wiki,Wiki.vm").addPathInfo("mode","mycontent") style=text-decoration:none > $brih_My $brih_content </a></td></tr>
+				<tr><td></td></tr>
+                                <tr><td><a href=$link.setPage("call,Wiki,Wiki.vm") style=text-decoration:none > $Notice_All $brih_content </a></td></tr>
+				<tr><td></td></tr>
+                                <tr><td><a href=javascript:popupWin("/brihaspati2/docs/Wikiusermanual.html","newWin"); style=text-decoration:none>$brih_help</a></td></tr>
+			</table>
+        	</td>
+	       	<td width="90%">
+			#if($first.size() !=0)
+				<table align=left bgcolor="$ui.tableColor" width=100% >
+					<tr>
+						#foreach($file in $first)
+							#if($velocityCount % 8 != 0)
+								<td align=center><a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName()).addPathInfo("query",$query).addPathInfo("searchtype","pattern")" style=text-decoration:none >$file.getName()</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+							#else
+								</tr><tr>
+							#end
+						#end
+					</tr>
+				</table>
+			#end
+			#if($mode == "mycontent")
+                               	<table align="left" bgcolor="$ui.tableColor" width=100% >
+					#if($mypage.size() == 0)
+						<tr>
+							<td>
+	                                                	<h3> $WikiNullMessage </h3>
+        	                                        </td>
+						</tr>
+                	                        <tr>
+							<td>
+                        	                        	$WikiFirstPage &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href=$link.setPage("call,Wiki,Editwiki.vm") style=text-decoration:none> $WikiCreate $brih_Wiki </a> &nbsp;
+                                                	</td>
+						</tr>
+					#end
+					#if(($search=="true") && ($second.size() !=0))
+						<b><blink><font color=red> $Wikimain1 </font></blink></b>&nbsp;
+                                        #end
+                                        	#set ( $a = $mypage.size())
+                                        	#if($second.size() ==0)
+                                        		<tr><td><b><blink><font color=red> $Wikimain9 </font></blink></b></td></tr>
+                                                #end
+		                                #if($a > 0)
+                	                                <tr bgcolor="#CEF6CE"><td colspan="5"><b> $Wikimain2 </b></td></tr>
+							<tr><th><b> $brih_content $brih_name</b></th><th><b>$brih_usr $brih_name</b></th><th><b> $brih_Da $brih_and $brih_time </b></th><th><b> $brih_action </b></th></tr>
+                               		        #end
+		                                #set ( $count=1 )
+                		                #foreach($file in $mypage)
+                                	        	#if($velocityCount%2==0)
+                                        	        	<tr bgcolor="$ui.tableColor">
+		                                        #else
+        		                                        <tr bgcolor="$ui.menuColor">
+                		                        #end    
+                        		                #set ( $aliasval = $file.getName())
+                                		        #set ( $date = $file.lastModified())
+                                        		#set ( $at = $file.getPath())
+                                        		#if(($query != "") && ($second.size() !=0) )
+                                        			#if($file.getPath().indexOf($query) != -1)
+							                <td>
+        	                        	                                <a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none >$aliasval</a>
+                	                                	        </td>
+                        	                                	<td>
+                                	                                	$Util.getAuthor($at)</a>
+	                                	                        </td>
+	                                        	                <td>
+        	                                        	                <script type = "text/javascript">
+                	                                        	                var d= new Date($date)
+                        	                                        	        document.write(d.toUTCString())
+	                                	                                </script>
+        	                        				</td>
+				                        	        <td>
+				                                	        <a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none ><img src="$content.getURI("/images/EDIT.JPG")" width="25" height="15"> $brih_edit</a>
+	                        				        </td>
+						                        <td>
+                	                				        <a href="$link.setPage("call,Wiki,Logwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none>
+		        	                        	                ${Wikimain8}
+			        	                        	        </a>
+	                        				        </td>
+								#end
+							#else
+									<td>
+                                                                                <a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none >$aliasval</a>
+                                                                        </td>
+                                                                        <td>
+                                                                                $Util.getAuthor($at)</a>
+                                                                        </td>
+                                                                        <td>
+                                                                                <script type = "text/javascript">
+                                                                                        var d= new Date($date)
+                                                                                        document.write(d.toUTCString())
+                                                                                </script>
+                                                                        </td>
+                                                                        <td>
+                                                                                <a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none ><img src="$content.getURI("/images/EDIT.JPG")" width="25" height="15"> Edit</a>
+                                                                        </td>
+                                                                        <td>
+                                                                                <a href="$link.setPage("call,Wiki,Logwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none>
+                                                                                View Log details of
+                                                                                </a>
+                                                                        </td>
+							#end
+				                        #set ( $count= $count+1)
+						#end ##foreach close
+					                        </tr>
+		                        	</table>
+                		#else
+		                        	<table align="left" bgcolor="$ui.tableColor" width="100%" >
+						#if($dirContent.size() == 0)
+							<tr>
+                                                        	<td>
+                                                                	<h3> $WikiNullMessage </h3>
+	                                                        </td>
+        	                                        </tr>   
+                	                                <tr>
+                        	                                <td>
+                                	                                $WikiFirstPage &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href=$link.setPage("call,Wiki,Editwiki.vm") style=text-decoration:none> $WikiCreate $brih_Wiki </a> &nbsp;
+                                        	                </td>
+                                                	</tr>
+						#end
+						#if(($search=="true") && ($second.size() !=0))
+							<b><blink> <font color=red> $Wikimain1 </font> </blink> </b>&nbsp;
+                                        	#end
+                		        	#set($bl= $dirContent.size())
+                		        	#if($second.size() ==0)
+                		        		<tr><td><b> <blink> <font color=red> $Wikimain9 </font></blink> </b></td></tr>
+                                        	#end
+		                        	#if($bl>0)
+                		                	<tr bgcolor="#CEF6CE"><td colspan="5"><b> $Wikimain3 </b></td></tr>
+							<tr><th><b> $brih_content $brih_name</b></th><th><b>$brih_usr $brih_name</b></th><th><b> $brih_Da $brih_and $brih_time </b></th><th><b> $brih_action </b></th></tr>
+		                        	#end
+	                		        #set ( $count=1 )
+			                        #foreach($file in $dirContent)
+                			                #if($velocityCount%2==0)
+			                                        <tr bgcolor="$ui.tableColor">
+							#else   
+                        			                <tr bgcolor="$ui.menuColor">
+		                                	#end
+	                                		#set ( $aliasval = $file.getName())
+			                                #set ( $date = $file.lastModified())
+                			                #set ( $at = $file.getPath())
+                			                #if(($query != "") && ($second.size() !=0) )
+                			                	#if($file.getPath().indexOf($query) != -1)
+	                        	        	                <td>
+        	                        	        		        <a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none >$aliasval</a>
+	        	                        	                </td>
+        	        	                        	        <td>
+                	        	                        	        $Util.getAuthor($at)</a>
+	                        		                        </td>
+        	                        		                <td>
+                	                        		                <script type = "text/javascript">
+                        	                                		        var d= new Date($date)
+                                	                                		document.write(d.toUTCString())
+	                                        	        	        </script>
+        	                                        		</td>
+                	                                		<td>
+	                	                                        	<a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none ><img src="$content.getURI("/images/EDIT.JPG")" width="25" height="15"> $brih_edit </a>
+		                	                                </td>
+        		                	                        <td>
+                		                	                        <a href="$link.setPage("call,Wiki,Logwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none >
+                                	                	                ${Wikimain8}
+                                        	        		</td>
+								#end
+							#else
+									<td>
+                                                                                <a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none >$aliasval</a>
+                                                                        </td>
+                                                                        <td>
+                                                                                $Util.getAuthor($at)</a>
+                                                                        </td>
+                                                                        <td>
+                                                                                <script type = "text/javascript">
+                                                                                        var d= new Date($date)
+                                                                                        document.write(d.toUTCString())
+                                                                                </script>
+                                                                        </td>
+                                                                        <td>
+                                                                                <a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none ><img src="$content.getURI("/images/EDIT.JPG")" width="25" height="15"> $brih_edit </a>
+                                                                        </td>
+                                                                        <td>
+                                                                                <a href="$link.setPage("call,Wiki,Logwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none >
+                                                                                ${Wikimain8}
+                                                                        </td>
+							#end
+		                                        	</tr>
+	        	                                #set ( $count= $count+1)
+        	        	        	#end ## foreach close
+                        		</table>
+                		#end
+                		</td>
+        		</tr>
+		</table>
+		<input type="hidden" name="mode" value=$mode>
 </table>
-
 <SCRIPT LANGUAGE="javascript">
         function popupWin(url,popupName)
         {

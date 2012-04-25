@@ -1,10 +1,9 @@
 package org.iitk.brihaspati.modules.screens.call.Wiki;         
 
-
 /*
  * @(#)Adminwiki.java	
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -42,17 +41,19 @@ import java.util.Vector;
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.utils.WikiUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;    
-import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;    
+//import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;    
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context; 
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 
-	/*
-	 * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
-	 */
+/*
+ * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ */
 
-public class Adminwiki extends  SecureScreen_Instructor{
+//public class Adminwiki extends  SecureScreen_Instructor{
+public class Adminwiki extends  SecureScreen{
 
 	/**
 	 * This is the default method that builds the template page
@@ -70,11 +71,12 @@ public class Adminwiki extends  SecureScreen_Instructor{
 				String cId=(String)user.getTemp("course_id");			        
 				context.put("courseid",cId);
 				context.put("course",(String)user.getTemp("course_name"));
-
+				String userrole=(String)user.getTemp("role");
+	                        context.put("userrole",userrole);
 				/**
 				* code below will send all pages in Wiki in that particular course to vm
 				*/
-				
+	
 				ParameterParser pp = data.getParameters();
 				String fName=pp.getString("fname","");
 				String filePath=data.getServletContext().getRealPath("/WIKI"+"/"+cId+"/");
@@ -166,5 +168,3 @@ public class Adminwiki extends  SecureScreen_Instructor{
 	}// function ends
 
 }// class ends
-
-

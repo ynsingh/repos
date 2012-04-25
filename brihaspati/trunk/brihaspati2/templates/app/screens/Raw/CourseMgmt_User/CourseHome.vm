@@ -265,11 +265,11 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0>
 							<tr><td align=center>
-	     							<a href=$link.setPage("call,Wiki,Wiki.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/greenpen.gif")"></a>
+	     							<a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none><img border=0 src="$content.getURI("/images/Wiki.png")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-								<a href=$link.setPage("call,Wiki,Wiki.vm").addPathInfo("count","1") style=text-decoration:none>$brih_Wiki</a>
+								<a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none>$brih_Wiki</a>
 							</td></tr>
 						</table>
 					</td>
@@ -427,11 +427,11 @@ $!data.getMessage()
 				<td align=center>
                                                 <table border=0>
                                                         <tr><td align=center>
-                                                                <a href=$link.setPage("call,Wiki,Wiki.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/greenpen.gif")"></a>
+                                                                <a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none><img border=0 src="$content.getURI("/images/Wiki.png")"></a>
                                                         </td></tr>
                                                         <tr><td align=center>
                                                                 <font face="$ui.sansSerifFonts">
-                                                                <a href=$link.setPage("call,Wiki,Wiki.vm").addPathInfo("count","1") style=text-decoration:none>$brih_Wiki</a>
+                                                                <a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none>$brih_Wiki</a>
                                                         </td></tr>
 						</table>
 				</td>
