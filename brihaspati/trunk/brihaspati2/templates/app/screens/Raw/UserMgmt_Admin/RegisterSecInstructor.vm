@@ -5,6 +5,7 @@
  * @author <a href="shaistashekh@hotmail.com"> Shaista</a>  
  * @author <a href="awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>  
  * @author <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>  
+ * @author <a href="tejdgurung20@gmail.com">Tej Bahadur</a>  
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modified date:24-08-2011 (Shaista)
 *#
@@ -16,6 +17,8 @@
 <body>
 $page.setTitle("Admin Home | Registeration Management | Register Secondary Instructor | Registeration")
 $!data.getMessage()
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
 <table align=left bgcolor="$ui.menuColor" width=100%>
 <tr>
@@ -83,7 +86,7 @@ $!data.getMessage()
 *#
 	<tr bgcolor="$ui.menuColor">
 	<td colspan=2 align=left>
-	    <input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
+	    <input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkFieldInst(document.frm,this);"/>
 	    <input type="reset" name="Clear" value="$brih_clear"/>
 	</td>
 	</tr>
@@ -95,19 +98,3 @@ $!data.getMessage()
   </div>
 </form>
 </body>
-
-<SCRIPT LANGUAGE="javascript">
-        function checkField(frm,field)
-        {
-                //if(frm.UNAME.value!="")
-                if(frm.EMAIL.value!="")
-                {
-                                frm.actionName.value=field.name;
-                                frm.submit();
-                }
-                else
-                {
-                        alert("Please fill the Mandatory(*) Fields !");
-                }
-        }
-</SCRIPT>

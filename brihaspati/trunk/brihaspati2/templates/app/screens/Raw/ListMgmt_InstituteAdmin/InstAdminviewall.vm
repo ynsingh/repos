@@ -8,13 +8,14 @@
  * @author  <a href="richa.tandon1@gmail.com">Richa Tandon</a>  
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 24-03-2012 (Shaista) 
+ * @author  <a href="tejdgurung20@gmail.com">Tej Bahadur</a>   
  *#
 
 $page.setTitle("Admin Home | User Management | View All Users")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 <head>
-	<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/Instructor_Mgmt.js")"></script>
+	<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 </head>
 <font face="$ui.sansSerifFonts"> $!mmessage</font>
 ##<table bgcolor="$ui.tableColor" width=100% cellspacing=0>

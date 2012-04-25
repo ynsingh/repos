@@ -9,7 +9,8 @@
 $page.setTitle("$brih_ad $brih_home | $brih_admin $brih_mgmt")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
-<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/RegisterationManagement.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/InstituteAdminRegistration.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table bgcolor="$ui.tableColor" width=100%>
 <tr bgcolor="$ui.menuColor"><td colspan=7>
@@ -90,7 +91,7 @@ $!data.getMessage()
                 </tr>
                 <tr> <td colspan=2>
                 <input type="hidden" name="actionName">
-               <input type="button" name="eventSubmit_AddAdmin" value="$brih_reg1" onClick="checkField(document.frm,this);"/>
+               <input type="button" name="eventSubmit_AddAdmin" value="$brih_reg1" onClick="checkFieldAdminMgmt(document.frm,this);"/>
                 <input type="Reset" name="Reset" Value="$brih_clear"/>
                 <input type="hidden" name="instituteid" Value="$institute_id">
                 <input type="hidden" name="iname" Value="$iname">
@@ -214,90 +215,3 @@ $!data.getMessage()
 </FORM>
 </table>
  #end
-<SCRIPT LANGUAGE="javascript">
-
-        function checkField(frm,field)
-        {
-
-                if ((frm.IADMINFNAME.value!="") && (frm.IADMINLNAME.value!=""))
-                {
-
-                        var adminemailid = document.frm.IADMINEMAIL.value;
-
-                        if (CheckValidEmail(adminemailid) == false)
-                        {
-                                adminemailid = "";
-                                adminemailid.focus();
-                                return;
-                        }
-                        else
-                        {
-                                frm.actionName.value=field.name;
-                                frm.submit();
-                        }
-                }
-                else
-                {
-                        alert("Please fill all the mandatory(*) Fielsd !");
-                }
-		
-		  function CheckValidEmail(adminemail)
-        {
-                var atrate = "@";
-                var dot = ".";
-                var indexofatrate = adminemail.indexOf(atrate);
-                var emaillength = adminemail.length;
-                var indexofdot = adminemail.indexOf(dot);
-
-                if (indexofatrate == -1)
-                {
-                        alert("Invalid email ID")
-                        return false;
-                }
-
-                if (indexofatrate == -1 || indexofatrate == 0 || indexofatrate == emaillength)
-                {
-                        alert("Invalid email ID ")
-                        return false;
-                }
-
-                if (indexofdot == -1 || indexofdot == 0 || indexofdot == emaillength)
-                {
-                        alert("Invalid E-mail ID")
-                        return false
-                }
-
-                if (adminemail.indexOf(atrate,(indexofatrate+1)) != -1)
-                {
-                        alert("Invalid E-mail ID")
-                        return false
-                }
-                 
-if (adminemail.substring(indexofatrate-1,indexofatrate)==dot || adminemail.substring(indexofatrate+1,indexofatrate+2)==dot)
-                {
-                        alert("Invalid E-mail ID")
-                        return false
-                }
-
-                if (adminemail.indexOf(dot,(indexofatrate+2))==-1)
-                {
-                        alert("Invalid E-mail ID")
-                        return false
-                }
-
-                if (adminemail.indexOf(" ")!=-1)
-                {
-                        alert("Invalid E-mail ID")
-                        return false
-                }
-
-                 return true
-        }
-
-
-   }
-
-</SCRIPT>
-
-
-

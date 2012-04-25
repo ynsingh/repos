@@ -6,7 +6,7 @@
  * @Created Date: 10-12-2011
  */
 
-function  checkField(frm,fld) {
+function  checkFieldInstAdmin(frm,fld) {
 var reason = "";
     reason += validateIName(frm.INAME);
     reason += validateIAddress(frm.IADDRESS);
@@ -240,12 +240,22 @@ function validatePaswd(fld){
         }
         return error;
 }
+
 /**
- * This java script is used for open the popup window for help document. 
- * @see template InstUserRegistrationManagement.vm,RegisterationManagement.vm
+ * This java script is used for validate the registration form for Register Secondary Admin in the Institue or organization.
+ * This java script return alert message and highlighted the field if the input value in the form is missing or incorrect.
+ * @see template, Admin_Mgmt/UserMgmt_Admin.vm
  */
 
-function popupWin(url,popupName)
-{
-        Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
+function  checkFieldAdminMgmt(frm,fld) {
+var reason = "";
+    reason += validateAdminFName(frm.IADMINFNAME);
+    reason += validateAdminLName(frm.IADMINLNAME);
+    reason += validateEmail(frm.IADMINEMAIL);
+if (reason != "") {
+        alert("Some fields need correction:\n\n" + reason);
+        return false;
+}
+        frm.actionName.value=fld.name;
+        frm.submit();
 }

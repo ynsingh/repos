@@ -14,7 +14,8 @@ $page.setTitle("Admin Home | Registration Management")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
-<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/RegisterationManagement.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
 #set($InstituteId = $data.getUser().getTemp("Institute_id" ))
 ##<table bgcolor="#d9e3ec" width=100% cellspacing=0>
@@ -186,7 +187,7 @@ $!data.getMessage()
         ##<td colspan=2 align="left" bgcolor="$ui.buttonBoxColor">
         <td colspan=2 align="left">
                 <font face="$ui.sansSerifFonts">
-                <input type="button" name="eventSubmit_doUploadcourse" value="$brih_upload" onClick="CheckFields(document.frm,this);"/>
+		<input type="button" name="eventSubmit_doUploadcourse" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
                 <input type="hidden" name="actionName" value=""/>
                 <input type="hidden" name="count" value="$tdcolor">
     		<input type="hidden" name="domainname" value="$domainname" >

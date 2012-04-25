@@ -12,7 +12,8 @@
 $!data.getMessage()
 $page.setTitle("Login Page | Institute Admin Registration ")
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
-<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/InstituteAdminRegistration.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/InstituteAdminRegistration.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 	
 ## Adding the line containing urls after the header image.
 	<table bgcolor="$ui.menuColor" width=100%>
@@ -118,7 +119,7 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 			<tr>
         			<td colspan=2 align="left">
 				<input type="hidden" name="actionName">
-				<input type="button" name="eventSubmit_InstituteRegister" value="$brih_reg1" onClick="checkField(document.frm,this);"/>
+				<input type="button" name="eventSubmit_InstituteRegister" value="$brih_reg1" onClick="checkFieldInstAdmin(document.frm,this);"/>
         			<input type="Reset" name="Reset" Value="$brih_clear"/>
         			</td>
         		</tr>

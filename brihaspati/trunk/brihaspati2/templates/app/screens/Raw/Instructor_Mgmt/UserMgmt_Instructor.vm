@@ -5,15 +5,15 @@
  * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
- * @modify date: 10-12-2011
+ * @modify date: 10-12-2011, 07-02-2012
 *#
 
 $page.setTitle("brih_home | $course1 | $brih_ins $brih_mgmt")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
-<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/RegisterationManagement.js")"></script>
-<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/Instructor_Mgmt.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #if($institudeName != "ListAll")
 <table bgcolor="$ui.tableColor" width=100%>
