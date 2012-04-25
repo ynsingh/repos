@@ -1,0 +1,297 @@
+/**
+ *  RELOAD TOOLS
+ *
+ *  Copyright (c) 2003 Oleg Liber, Bill Olivier, Phillip Beauvoir
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in
+ *  all copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ *  Project Management Contact:
+ *
+ *  Oleg Liber
+ *  Bolton Institute of Higher Education
+ *  Deane Road
+ *  Bolton BL3 5AB
+ *  UK
+ *
+ *  e-mail:   o.liber@bolton.ac.uk
+ *
+ *
+ *  Technical Contact:
+ *
+ *  Phillip Beauvoir
+ *  e-mail:   p.beauvoir@bolton.ac.uk
+ *
+ *  Web:      http://www.reload.ac.uk
+ *
+ */
+
+package uk.ac.reload.editor.prefs;
+
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.util.Arrays;
+import java.util.Locale;
+
+import javax.swing.AbstractAction;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.UIManager;
+
+import uk.ac.reload.diva.prefs.UserPrefs;
+import uk.ac.reload.dweezil.gui.layout.XYConstraints;
+import uk.ac.reload.dweezil.gui.layout.XYLayout;
+import uk.ac.reload.dweezil.prefs.PrefsPanel;
+import uk.ac.reload.dweezil.util.DweezilUIManager;
+import uk.ac.reload.editor.EditorFrame;
+import uk.ac.reload.editor.Messages;
+
+
+
+/**
+ * An Appearance Settings User Prefs Panel
+ *
+ * @author Phillip Beauvoir
+ * @version $Id: AppearancePrefsPanel.java9May_2k7,v 1.1 1998/03/26 15:32:14 ynsingh Exp $
+ */
+public class AppearancePrefsPanel
+extends PrefsPanel
+{
+	/**
+	 * Look and Feel Combo box
+	 */
+	private JComboBox _lfComboBox;
+	
+	/**
+	 * System Look and Feels
+	 */
+	private UIManager.LookAndFeelInfo[] systemLookAndFeels = UIManager.getInstalledLookAndFeels();
+	
+	/**
+	 * Previous L&F
+	 */
+	private String _oldLF;
+	
+	/**
+	 * Flag
+	 */
+	private boolean _updateLFCombo;
+	
+	/**
+	 * Language Combo box
+	 */
+	private JComboBox _lfLanguageBox;
+	
+	/**
+	 * Installed Languages
+	 */
+	private Language[] _installedLanguages;
+	
+	/**
+	 * Constructor
+	 */
+	public AppearancePrefsPanel() {
+		setLayout(new XYLayout());
+		initGUI();
+	}
+	
+	/**
+	 * Init the GUI
+	 */
+	private void initGUI() {
+		// Look and Feels
+	    LookAndFeel[] installedLookAndFeels = new LookAndFeel[systemLookAndFeels.length];
+		for(int i = 0; i < systemLookAndFeels.length; i++) {
+			installedLookAndFeels[i] = new LookAndFeel(systemLookAndFeels[i]);
+		}
+		_lfComboBox = new JComboBox(installedLookAndFeels);
+		
+		int x = 10;
+		int y = 10;
+		
+		add(new JLabel(Messages.getString("uk.ac.reload.editor.prefs.AppearancePrefsPanel.0")), new XYConstraints(x, y, 0, 0)); //$NON-NLS-1$ //$NON-NLS-2$
+		add(_lfComboBox, new XYConstraints(x + 230, y, 200, COMBOBOX_HEIGHT));
+
+		_lfComboBox.addActionListener(new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				if(_updateLFCombo) {
+				    setAppearance(((LookAndFeel) _lfComboBox.getSelectedItem()).getClassName());
+				}
+			}
+		});
+		
+		// Language
+		y += 30;
+		
+		// Populate the Combo Box witha vailable Locales
+		Locale[] locales = Locale.getAvailableLocales();
+		_installedLanguages = new Language[locales.length];  // Not:- locales.length - 1
+		_installedLanguages[0] = new Language();  // Add (default)
+		for(int i = 1; i < locales.length; i++) {
+		    _installedLanguages[i] = new Language(locales[i]);
+	        }
+		
+		// Sort them
+		Arrays.sort(_installedLanguages);
+		
+		_lfLanguageBox = new JComboBox(_installedLanguages);
+		
+		add(new JLabel(Messages.getString("uk.ac.reload.editor.prefs.AppearancePrefsPanel.1")), new XYConstraints(x, y, 0, 0)); //$NON-NLS-1$ //$NON-NLS-2$
+		add(_lfLanguageBox, new XYConstraints(x + 230, y, 200, COMBOBOX_HEIGHT));
+		}
+
+	
+	/**
+	 * Update UserPrefs according to the controls' settings
+	 */
+	public void saveToUserPrefs(UserPrefs prefs) {
+		// L&F
+	    prefs.putValue(EditorPrefs.GENERAL_PREFS_LF,
+				((LookAndFeel) _lfComboBox.getSelectedItem()).getClassName());
+		
+		// Language
+	    Language language = (Language)_lfLanguageBox.getSelectedItem();	
+	    prefs.putValue(EditorPrefs.LANGUAGE, language.getLanguage());
+	}
+	
+	/* (non-Javadoc)
+	 * @see uk.ac.reload.dweezil.prefs.PrefsPanel#setFields(uk.ac.reload.dweezil.prefs.UserPrefs)
+	 */
+	public void setFields(UserPrefs prefs) {
+		// Save current L&F
+		_oldLF = UIManager.getLookAndFeel().getClass().getName();
+		
+	    // Don't listen to L&F combo
+		_updateLFCombo = false;
+
+		// Set L&F Combo selected item
+	    if(_oldLF != null) {
+		    for (int i = 0; i < systemLookAndFeels.length; i++) {
+				if (systemLookAndFeels[i].getClassName().equals(_oldLF)) {
+					_lfComboBox.setSelectedIndex(i);
+					break;
+				}
+			}
+		}
+		
+	    // Do listen to L&F combo
+		_updateLFCombo = true;
+		
+		// Set Language Combo selected item
+        String language = prefs.getValue(EditorPrefs.LANGUAGE);
+        if(language != null && _installedLanguages != null) {
+            for(int i = 0; i < _installedLanguages.length; i++) {
+                if(language.equals(_installedLanguages[i].getLanguage())) {
+                    _lfLanguageBox.setSelectedItem(_installedLanguages[i]);
+                }
+            }
+        }
+	}
+	
+	/**
+	 * Look and Feel changed - Update top level frames, including this one
+	 * @param className
+	 */
+	public void setAppearance(String className) {
+		DweezilUIManager.setLookAndFeel(className, new Component[]{ EditorFrame.getInstance(),
+				EditorFrame.getInstance().getStatusWindow(),
+				AppearancePrefsPanel.this.getParent().getParent()});
+		
+	}
+	
+	/* 
+	 * Cancel any changes
+	 */
+	public void cancel() {
+		// Look and Feel
+	    if(_oldLF != null) {
+			String currentLF = UIManager.getLookAndFeel().getClass().getName();
+			if(!_oldLF.equals(currentLF)) {
+			    setAppearance(_oldLF);
+			}
+		}
+	}
+
+	/**
+	 * LookAndFeel Class 
+	 */
+	private class LookAndFeel {
+		private UIManager.LookAndFeelInfo lookAndFeelInfo;
+		
+		public LookAndFeel(UIManager.LookAndFeelInfo lookAndFeelInfo) {
+			this.lookAndFeelInfo = lookAndFeelInfo;
+		}
+		
+		public String toString() {
+			return lookAndFeelInfo.getName();
+		}
+		
+		public String getClassName() {
+			return lookAndFeelInfo.getClassName();
+		}
+	}
+
+	/**
+	 * Language Class 
+	 */
+	private class Language implements Comparable {
+		private Locale locale;
+		
+		/**
+		 * Constructor for Default Language
+		 */
+		public Language() {
+		    locale = null;
+		}
+		
+		/**
+		 * Constructor or given Locale
+		 * @param locale
+		 */
+		public Language(Locale locale) {
+			this.locale = locale;
+		}
+
+		/**
+		 * @return The full language code such as "en_GB" or "(default)"
+		 */
+		public String getLanguage() {
+		    if(locale == null) {
+		        return EditorPrefs.DEFAULT_LANGUAGE;
+		    }
+			return locale.toString();
+		}
+		
+		public String toString() {
+		    if(locale == null) {
+		        return EditorPrefs.DEFAULT_LANGUAGE;
+		    }
+			return locale.getDisplayName();
+		}
+		
+	    /* (non-Javadoc)
+	     * @see java.lang.Comparable#compareTo(java.lang.Object)
+	     */
+	    public int compareTo(Object o) {
+	        if(o instanceof Language) {
+	            Language language = (Language)o;
+	            return toString().compareTo(language.toString());
+	        }
+	        return 0;
+	    }
+	}
+}

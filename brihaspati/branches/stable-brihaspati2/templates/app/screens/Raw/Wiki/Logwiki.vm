@@ -1,0 +1,86 @@
+#*
+ * @(#) Logwiki.vm
+ * Copyright(c)2005,2012 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+$page.setTitle("$brih_home | $course | $brih_Wiki | $WikiLog $brih_Wiki")
+$page.setBgColor("#ffffff")
+$!data.getMessage()
+#set($lang=$data.getUser().getTemp("lang").toString())
+
+<table bgcolor="$ui.menuColor" width=100%>
+<tr>
+<td>
+        <font face="$ui.sansSerifFonts"><b>
+        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+        <a href=$link.setPage("call,Wiki,Wiki.vm")>$brih_Wiki</a> | $WikiLog $brih_Wiki
+
+        </font>
+</td>
+</tr>
+</table>
+<table width=100% align=left bgcolor="$ui.tableColor">
+        <tr bgcolor="$ui.tableColor">
+           <td colspan="2">
+                <a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none > $brih_Wiki $brih_home </a> &nbsp;|&nbsp;
+                <a href=$link.setPage("call,Wiki,Wiki.vm") style=text-decoration:none > $brih_index </a>
+		##if($userrole == "instructor")
+			&nbsp;|&nbsp;
+	                <a href=$link.setPage("call,Wiki,Adminwiki.vm") style=text-decoration:none > $Wikimain5 </a>&nbsp;
+        	##        <a href=$link.setPage("call,Wiki,Wiki.vm") style=text-decoration:none >Discussion Wiki</a>&nbsp;|&nbsp;
+		##end
+                ##Search : <input type="text" name="search">
+           </td>
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+                <td align="right" colspan=5>
+                        <a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none > $Notice_Read </a>&nbsp;
+                        <a href=$link.setPage("call,Wiki,Editwiki.vm") style=text-decoration:none > $WikiCreate </a> &nbsp;
+                       ## <a href=$link.setPage("call,Wiki,History.vm") style=text-decoration:none > $brih_view $WikiHistory </a>
+                </td>
+        </tr>
+        <tr>
+	<td></td>
+	<td>
+			#if($lang == "hindi")
+				 <INPUT type="text" value="$filename" size="25" READONLY>  $WikiLogtxt1 
+			#else 
+				$WikiLogtxt1  <INPUT type="text" value="$filename" size="25" READONLY> 
+			#end
+			</td>
+		</tr>
+		<tr>
+                	<td valign="top">
+                        	<table width="100%" bgcolor="$ui.tableColor">
+        				<tr><td><a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none > $WikiMain $WikiPage </a></td></tr>
+					<tr><td></td></tr>
+                                        <tr><td><a href=$link.setPage("call,Wiki,Wiki.vm").addPathInfo("mode","mycontent") style=text-decoration:none >  $brih_My $brih_content </a></td></tr>
+					<tr><td></td></tr>
+                                        <tr><td><a href=$link.setPage("call,Wiki,Wiki.vm") style=text-decoration:none > $Notice_All $brih_content </a></td></tr>
+					<tr><td></td></tr>
+                                        <tr><td><a href=javascript:popupWin("/brihaspati2/docs/Wikiusermanual.html","newWin"); style=text-decoration:none>$brih_help</a></td></tr>
+				</table>
+                       	</td>
+                        <td width="90%" colspan="3">
+<TEXTAREA  wrap="virtual" name="text" rows="25"  cols="100" READONLY>
+#foreach($t in $first)
+$t
+#end
+</TEXTAREA>
+</td>
+                        </tr>
+                   </table>
+     
+	</table>       
+
+<SCRIPT language="JavaScript">
+        function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"scrollbars=1,height=400,width=400");
+        }
+</SCRIPT>

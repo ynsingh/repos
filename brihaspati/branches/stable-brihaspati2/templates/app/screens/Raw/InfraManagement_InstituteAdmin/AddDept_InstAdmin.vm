@@ -1,0 +1,405 @@
+$page.setTitle("Admin Home | Infrastructure Management") $page.setBgColor("bgcolor")
+$!data.getMessage()
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+#set($tdcolspan = 6)
+<table bgcolor="$ui.tableColor" width=100%>
+<tr bgcolor="$ui.menuColor"><td colspan=$tdcolspan>
+     	<a href=$link.setPage("Index.vm") style=text-decoration:none>Admin's Home</a> | 
+	<a href=$link.setPage("call,InfraManagement_InstituteAdmin,AddDept_InstAdmin.vm").addPathInfo("count","1") style=text-decoration:none>Infrastructure Management</a> | 
+	#if($count=="1" || $count=="")
+		Add Department/Building
+	#elseif($count=="2")
+		 Add Room		
+	#elseif($count=="3")
+		Add Multiple Departments/Building
+	#elseif($count=="4")
+		Add Multiple Rooms
+	#elseif($count=="5")
+		Department/Building List
+	#elseif($count=="6")
+		Room List
+	#else
+		Error
+	#end
+</td></tr>
+
+<tr>
+	#if($count=="1" || $count=="")
+	<td bgcolor="#AFDCEC">	
+	#else
+	<td>
+	#end
+		<a href=$link.setPage("call,InfraManagement_InstituteAdmin,AddDept_InstAdmin.vm").addPathInfo("count","1") style=text-decoration:none>Add Department</a>
+	</td>
+	
+	#if($count=="2")
+	<td bgcolor="#AFDCEC">	
+	#else
+	<td>
+	#end
+		<a href=$link.setPage("call,InfraManagement_InstituteAdmin,AddDept_InstAdmin.vm").addPathInfo("count","2") style=text-decoration:none>Add Room</a>
+	</td>
+	
+	#if($count=="3")
+	<td bgcolor="#AFDCEC">	
+	#else
+	<td>
+	#end
+		<a href=$link.setPage("call,InfraManagement_InstituteAdmin,AddDept_InstAdmin.vm").addPathInfo("count","3") style=text-decoration:none>Add Multiple Departments</a>
+	</td>
+	
+	#if($count=="4")
+	<td bgcolor="#AFDCEC">	
+	#else
+	<td>
+	#end
+		<a href=$link.setPage("call,InfraManagement_InstituteAdmin,AddDept_InstAdmin.vm").addPathInfo("count","4") style=text-decoration:none>Add Multiple Rooms</a>
+	</td>
+	
+	#if($count=="5")
+	<td bgcolor="#AFDCEC">	
+	#else
+	<td>
+	#end
+		<a href=$link.setPage("call,InfraManagement_InstituteAdmin,AddDept_InstAdmin.vm").addPathInfo("count","5") style=text-decoration:none>Department List</a>
+	</td>
+	
+	#if($count=="6")
+	<td bgcolor="#AFDCEC">	
+	#else
+	<td>
+	#end
+		<a href=$link.setPage("call,InfraManagement_InstituteAdmin,AddDept_InstAdmin.vm").addPathInfo("count","6") style=text-decoration:none>Room List</a>
+	</td>
+	
+</tr>
+#if($err)
+<tr>
+	<td colspan=$tdcolspan><font color=red>$err</font></td>
+</tr>
+#end
+<tr bgcolor="$ui.menuColor">
+	<td colspan=$tdcolspan><b>
+	#if($count=="1" || $count=="")
+		Enter Department/Building Details
+	#elseif($count=="2")
+		 Enter Room Details		
+	#elseif($count=="3")
+		File Upload For Multiple Departments/Building
+	#elseif($count=="4")
+		File Upload For Multiple Rooms
+	#elseif($count=="5")
+		Department/Building List
+	#elseif($count=="6")
+		Room List
+	#else
+		Error
+	#end
+	</b></td>
+</tr>
+</table>
+
+#if($count=="1" || $count=="")
+<form name="frm" method="post" action="$link.setPage("call,InfraManagement_InstituteAdmin,AddDept_InstAdmin.vm").setAction("InfraManagement")">
+	<table bgcolor="$ui.tableColor" width=100%>
+    	
+    	<tr>
+    		#formCell("Department/Building Name <font color=red>*</font>" "DEPARTMENTNAME" "")
+    	</tr>
+		
+    	<tr bgcolor="$ui.menuColor">
+    		#formCell("Department/Building Code <font color=red>*</font>" "DEPARTMENTCODE" "")
+    	</tr>
+	
+		<tr>
+    		#formCell("No. of floors <font color=red>*</font>" "FLOORSCOUNT" "")
+    	</tr>
+		
+    	<tr>
+			<td width=33%>
+				<input type="hidden" name="actionName" value="eventSubmit_doAddDept">
+			</td>
+    		<td>
+				<input type="submit" name="eventSubmit_doPerform" value="Submit"/>
+    		</td>
+    	</tr>
+	</table>
+</form>
+	
+#elseif($count=="2")
+<form name="frm" method="post" action="$link.setPage("call,InfraManagement_InstituteAdmin,AddDept_InstAdmin.vm").setAction("InfraManagement")">
+	<table bgcolor="$ui.tableColor" width=100%>
+    	
+    	<tr>
+    		#formCell("Room Code/No. <font color=red>*</font>" "ROOMCODE" "")
+    	</tr>
+		
+    	<tr bgcolor="$ui.menuColor">
+    		#formCell("Capacity <font color=red>*</font>" "CAPACITY" "")
+    	</tr>
+    	
+		<tr>
+			<td width=33%>Department/Building <font color=red>*</font></td>
+			<td>
+				<select name="DEPARTMENTID" size="1">
+					#if($departments)
+						#foreach($department in $departments)
+							<option value="$department.getDepartmentId()">$department.getName()</option>
+						#end
+					#end
+				</select>
+			</td>
+		</tr>
+		
+		<tr bgcolor="$ui.menuColor">
+    		<td width=33%>Is a Lab?</td>
+    		<td>
+				<select name="LAB" size="1">
+					<option value="Y">Yes</option>
+					<option value="N" selected="yes">No</option>
+				</select>
+			</td>
+    	</tr>
+    	
+		<tr>
+    		<td width=33%>Has a Projector?</td>
+    		<td>
+				<select name="PROJECTOR" size="1">
+					<option value="Y">Yes</option>
+					<option value="N" selected="yes">No</option>
+				</select>
+			</td>
+    	</tr>
+    	
+		<tr bgcolor="$ui.menuColor">
+    		<td width=33%>For Department/Building Use Only?</td>
+    		<td>
+				<select name="DEPTONLY" size="1">
+					<option value="Y">Yes</option>
+					<option value="N" selected="yes">No</option>
+				</select>
+			</td>
+    	</tr>
+    
+		<tr>
+    		<td width=33%>Has a Projector?</td>
+    		<td>
+				<select name="PROJECTOR" size="1">
+					<option value="Y">Yes</option>
+					<option value="N" selected="yes">No</option>
+				</select>
+			</td>
+    	</tr>
+	
+		<tr bgcolor="$ui.menuColor">
+				#formCell("Located at Floor No." "FLOOR" "")
+    	</tr>
+
+		<tr>
+			<td width=33% align="left">
+				<input type="hidden" name="actionName" value="eventSubmit_doAddRoom">
+			</td>
+    		<td>
+				<input type="submit" name="eventSubmit_doPerform" value="Submit"/>
+    		</td>
+    	</tr>
+	</table>
+</form>
+	
+#elseif($count=="3")
+	<form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,InfraManagement_InstituteAdmin,AddDept_InstAdmin.vm").setAction("InfraManagement")">
+	<table bgcolor="$ui.tableColor" width=100%>
+    	
+		<tr>
+			#fileUpload ("Attach File <font color=RED>*</font>" "file")
+		</tr>
+		
+    	<tr bgcolor="$ui.menuColor">
+			<td width=33%></td>
+			<td>
+				<input type="submit" name="eventSubmit_doPerform" value="Upload"/>
+				<img src="$content.getURI("/images/hand.gif")">
+				<input type="hidden" name="actionName" value="eventSubmit_doAddMultipleDepartments">
+				<font face="$ui.sansSerifFonts" size=3>
+					<b><a href=javascript:popupWin("/brihaspati2/docs/DepartmentMultiUploadHelp.html","newWin"); style=text-decoration:none>Help</a></b>
+				</font>
+			</td>
+    	</tr>
+	</table>
+</form>
+	
+#elseif($count=="4")
+	<form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,InfraManagement_InstituteAdmin,AddDept_InstAdmin.vm").setAction("InfraManagement")">
+	<table bgcolor="$ui.tableColor" width=100%>
+    	
+		<tr>
+			#fileUpload ("Attach File <font color=RED>*</font>" "file")
+		</tr>
+		
+    	<tr bgcolor="$ui.menuColor">
+			<td width=33%></td>
+			<td>
+				<input type="submit" name="eventSubmit_doPerform" value="Upload"/>
+				<img src="$content.getURI("/images/hand.gif")">
+				<input type="hidden" name="actionName" value="eventSubmit_doAddMultipleRooms">
+				<font face="$ui.sansSerifFonts" size=3>
+					<b><a href=javascript:popupWin("/brihaspati2/docs/RoomMultiUploadHelp.html","newWin"); style=text-decoration:none>Help</a></b>
+				</font>
+			</td>
+    	</tr>
+	</table>
+</form>
+
+
+##	Department List body
+#elseif($count=="5")
+	#if(!($departments))
+		Error: No departments.
+	#else
+    <form name="frm" method="post" action="$link.setPage("call,InfraManagement_InstituteAdmin,AddDept_InstAdmin.vm").setAction("InfraManagement")">
+    	<table bgcolor="$ui.tableColor" width=100%>
+		<tr>
+			<td width=33%>
+				<b><u>Name</b></u>
+			</td>
+			<td>
+				<b><u>Code</b></u>
+			</td>
+			<td>
+				<b><u>No. of Floors</b></u>
+			</td>
+		</tr>
+		#foreach($department in $departments)
+        	<tr>
+				<td width=33%>
+					<input type="checkbox" name="departments" value="$department.getDepartmentId()" /> $department.getName()
+				</td>
+				<td>
+					$department.getDepartmentCode()
+				</td>
+				<td>
+					$department.getFloorsCount()
+				</td>
+			</tr>
+		#end
+			<tr>
+				<td colspan=2>
+					<font color=red>WARNING: All rooms in the departments selected will be deleted too.</font>
+				</td>
+			</tr>
+    		<tr bgcolor="$ui.menuColor">
+    			<td width=33% align="left"><input type="submit" name="eventSubmit_doPerform" value="Delete"/></td>
+        		<td>
+    				<input type="hidden" name="actionName" value="eventSubmit_doDeleteDepartment">
+        		</td>
+				<td>&nbsp;</td>
+        	</tr>
+    	</table>
+    </form>
+	#end
+	
+#*
+	Delete Room
+	Opens when $count = 6
+*#
+
+##	Room List body
+#elseif($count=="6")
+	#if(!($rooms))
+		Error
+	#else
+    <form name="frm" method="post" action="$link.setPage("call,InfraManagement_InstituteAdmin,AddDept_InstAdmin.vm").setAction("InfraManagement")">
+    	<table bgcolor="$ui.tableColor" width=100%>
+		<tr>
+			<td>
+				<b><u>Room Code</b></u>
+			</td>
+			<td>
+				<b><u>Capacity</b></u>
+			</td>
+			<td>
+				<b><u>Department/Building</b></u>
+			</td>
+			<td>
+				<b><u>Lab</b></u>
+			</td>
+			<td>
+				<b><u>Projector</b></u>
+			</td>
+			<td>
+				<b><u>Dept Use Only?</b></u>
+			</td>
+			<td>
+				<b><u>Floor</u></b>
+			</td>
+		</tr>
+		#foreach($room in $rooms)
+        	<tr>
+				<td>
+					<input type="checkbox" name="rooms" value="$room.getRoomId()" /> $room.getRoomCode()
+				</td>
+				<td>
+					$room.getCapacity()
+				</td>
+				<td>
+					#set($depName = $utils.getDepartmentById($room.getDepartmentId()).getName())
+					#if($depName)
+						$depName
+					#else
+						Null
+					#end
+				</td>
+				<td>
+					#if($room.getLab().toString() == "1")
+						Yes
+					#else
+						No
+					#end
+				</td>
+				<td>
+					#if($room.getProjector().toString() == "1")
+						Yes
+					#else
+						No
+					#end
+				</td>
+				<td>
+					#if($room.getDeptonly().toString() == "1")
+						Yes
+					#else
+						No
+					#end
+				</td>
+				<td>
+					$room.getFloor()
+				</td>
+			</tr>
+		#end
+			
+    		<tr bgcolor="$ui.menuColor">
+    			<td align="left"><input type="submit" name="eventSubmit_doPerform" value="Delete"/></td>
+        		<td>
+    				<input type="hidden" name="actionName" value="eventSubmit_doDeleteRoom">
+        		</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+        	</tr>
+    	</table>
+    </form>
+	#end
+	
+
+##  Error page when $count is invalid
+#else
+	Error
+#end
+
+<SCRIPT LANGUAGE="JAVASCRIPT">
+	function popupWin(url,popupName)
+	{
+		Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
+	}
+</SCRIPT>

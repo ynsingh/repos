@@ -1,0 +1,2 @@
+use brihaspati;
+ALTER TABLE COURSES ADD ONLINECONF INTEGER NOT NULL  default '0';

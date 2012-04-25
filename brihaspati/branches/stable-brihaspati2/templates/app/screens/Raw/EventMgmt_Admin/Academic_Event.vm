@@ -1,0 +1,199 @@
+#*
+ * @(#) Academic_Event.vm
+ * Copyright (c) 2007 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 07-12-2010
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+$page.setBgColor($ui.bgcolor)
+$!data.getMessage()
+
+<body>
+#set($lang = $data.getUser().getTemp("lang").toString())
+## Representation of TOP BAR
+<table bgcolor="$ui.menuColor" width=100%>
+        <tr><td>
+			##if($data.getUser().getUserName() == "admin")
+			$page.setTitle("Admin Home ")
+			<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
+			#if($mode == "edit")
+			<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("count","1")>$brih_emgmt</a> | #if($lang=="hindi" || $lang == "gujarati") $brih_Ev #if($lang=="hindi") $brih_Of1 #end $brih_update #else  $brih_update $brih_Ev #end
+			#else
+			<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("count","1")>$brih_emgmt</a> | #if($lang=="hindi" || $lang =="gujarati") $brih_Ev $brih_add #else $brih_add $brih_Ev #end
+			#end
+			##end
+       </td></tr>
+</table>
+<table width=100%>
+<tr>
+	#if($tdcolor!="1")
+	<td>
+	#elseif($tdcolor=="1")
+	<td bgcolor="#AFDCEC">
+	#end
+	<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1")>$brih_survey</a></td>
+	#if($tdcolor!="2")
+	<td>
+	#elseif($tdcolor=="2")
+	<td bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","sresult").addPathInfo("count","2")>$brih_survey #if($lang=="hindi") $brih_Of1 #end $brih_result</a></td>
+	#if($tdcolor!="3")
+	<td>
+	#elseif($tdcolor=="3")
+	<td bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","update").addPathInfo("count","3")>$brih_survey #if($lang=="hindi") $brih_Of1 #end $brih_edit</a></td>
+	#if($tdcolor!="4")
+	<td>
+	#elseif($tdcolor=="4")
+	<td bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("count","4")>$brih_col1</a></td>
+</tr>
+
+## Representation of HELP link
+
+##<table width=100% align=left bgcolor="$ui.menuColor">
+        <tr bgcolor="$ui.menuColor">
+	<td colspan=3><i>$brih_nt</i></td>
+                <td align=right>
+<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/acdcal.html","newWin");>$brih_help</a>
+                </td>
+        </tr>
+##</table>
+</body>
+#set($month=["01","02","03","04","05","06","07","08","09","10","11","12"])
+<form name=frm method="post" action="$link.setAction("AcademicAction").setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("mode","edit")">
+
+  ##<table align=left bgcolor="$ui.tableColor" width=100%>
+	<tr bgcolor="$ui.tableColor">
+		#if(($mode == "edit") && ($actionName!="eventSubmit_doInsert") && ($actionName!="eventSubmit_doUpdate"))		
+        	<td colspan=4><b><i> #if($lang =="hindi" || $lang == "gujarati") $brih_col1 $brih_update #else $brih_update $brih_col1 #end </i></b></td>
+		#else
+        	<td colspan=4><b><i> #if($lang == "hindi" || $lang == "gujarati") $brih_col1 $brih_add #else  $brih_add $brih_col1 #end </i></b></td>
+		#end
+	</tr>
+	##</table>
+
+  ##<table align=left bgcolor="$ui.tableColor" width=100%>
+	#if(($mode==" ") || ($actionName=="eventSubmit_doInsert") ||($actionName=="eventSubmit_doUpdate"))
+        <tr bgcolor="$ui.menuColor">
+            	<td>$brih_Da</td>
+             	<td colspan=3>
+			<select name="Start_mon">
+            		<option value="$cmonth">$cmonth
+	    		#foreach($mon in $month)
+	    			#if($mon != $cmonth)
+            			<option value="$mon">$mon
+	    			#end
+			#end
+			</select>
+      			&nbsp<font size=+1>.</font>&nbsp
+			<select name="Start_year">
+                	<option value="$cyear">$cyear
+			#foreach($year in $year_list)
+				#if($cyear != $year)
+				<option value="$year">$year
+		    		#end
+		 	#end
+                	</select>
+                </td>
+	</tr>		
+	<tr bgcolor="$ui.tableColor">
+        	<td>$brih_Ev #if($lang =="hindi") $brih_Of2 #end $brih_type</td>
+		<td colspan=3><select name="etype" onChange="checkoption(document.frm,this);">
+			<option value="Academic">$brih_acd
+			<option value="holidays">$brih_col2
+		</td>	
+	</tr>
+        <tr bgcolor="$ui.menuColor">
+		<td>$brih_Ev</font></td>
+                <td colspan=3><textarea name="event" wrap="physical" rows=4 cols=50></textarea>
+		<a href=javascript:popupWin("/brihaspati2/docs/acdevent.html","newWin");>$brih_hint</a>
+		</td>
+	</tr>
+	#end
+	#if(($mode =="edit") && ($actionName !="eventSubmit_doInsert") && ($actionName !="eventSubmit_doUpdate"))
+		<tr bgcolor="$ui.menuColor">
+                <td>$brih_Da</td>
+                <td colsapn=3><input type="text" size=25 name="date" value="$!keydate" "readonly"></td>
+                </tr>
+		<tr>
+                <td>$brih_Ev  #if($lang =="hindi") $brih_Of2 #end $brih_type</td>
+                <td colspan=3><input type="text" size=25 name="etype" value="$!etype" "readonly"></td>
+                </tr>
+		<tr bgcolor="$ui.menuColor">
+		<td>$brih_Ev</td>
+                <td colspan=3><textarea name="detail" wrap="physical" rows=4 cols=50>$!element</textarea>
+		<a href=javascript:popupWin("/brihaspati2/docs/acdevent.html","newWin");>$brih_hint</a>
+		</td>
+                </tr>
+	#end	
+	<tr bgcolor="$ui.tableColor">
+        	<td colspan=4>
+        	<font face="$ui.sanSerifFonts">
+		#if(($mode==" ") || ($actionName=="eventSubmit_doInsert")|| ($actionName=="eventSubmit_doUpdate"))
+		<input type=button name="eventSubmit_doInsert" value=$brih_submit onClick="checkEvent(document.frm,this);"/>
+		<input type=button name="eventSubmit_doGet" value=$brih_edit onClick="checkData(document.frm,this);"/>
+		#else
+		<input type=button name="eventSubmit_doUpdate" value=$brih_update onClick="checkList(document.frm,this);"/>
+		#end
+		<input type="hidden" name="actionName">
+		<input type="hidden" name="val">
+		<input type="hidden" name="mode" value="edit">
+		<input type="hidden" name="count" value="$tdcolor">
+        	</font>
+        	</td>
+        </tr>
+</table>
+</form>
+
+<SCRIPT LANGUAGE="javascript">
+	 function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=200,width=300,align=center");
+        }
+
+        function checkEvent(frm,field)
+        {
+          	if((frm.event.value!="") && (frm.etype.value!=""))
+          	{
+          		frm.actionName.value=field.name;
+                	frm.submit();
+		}
+        	else 
+        	{
+        		alert("Please Write the events");
+        	}
+	}
+        function checkList(frm,field)
+        {
+          	if(frm.detail.value!="") 
+          	{
+          		frm.actionName.value=field.name;
+                	frm.submit();
+		}
+        	else 
+        	{
+        		alert("Please Write the events");
+        	}
+	}
+
+        function checkData(frm,field)
+        {
+          	if((frm.Start_mon.value!="") && (frm.Start_year.value!="") && (frm.etype.value!=""))
+          	{
+          		frm.actionName.value=field.name;
+                	frm.submit();
+		}
+	}
+	function checkoption (frm,field)
+	{
+        	frm.val.value=document.frm.etype.value;
+	}
+
+</SCRIPT>

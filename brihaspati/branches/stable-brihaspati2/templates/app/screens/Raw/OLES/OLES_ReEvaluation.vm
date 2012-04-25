@@ -1,0 +1,156 @@
+#*
+ * @(#) Quiz_Detail.vm
+ * Copyright (c) 2010 DEI Agra.
+ * All Rights Reserved.
+ * @author <a href="mailto:dev.singha93@gmail.com ">Devendra Singhal</a>
+ * Contributors: Members of MHRD Project, DEI Agra
+*#
+
+$page.setTitle("Quiz ReEvaluation")
+$page.setBgColor($ui.bgcolor)
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+#set($cnm = $data.getUser().getTemp("course_name" ).toString())
+#if($flag)
+<font size="4">
+	$!data.getMessage()
+</font>
+#end
+<table bgcolor="$ui.menuColor" width=100%>
+        <tr><td><b>
+		<font face="$ui.sansSerifFonts">
+                <a href=$link.setPage("Index.vm")>Home</a> |
+                <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> |
+                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")> $online_online $brih_examat $brih_system< </a>| $brih_reevaluate    
+        </b></td> </tr>    
+</table>
+
+## Creating the links for help regarding FAQ 
+<table width="100%">
+	<tr>
+		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a></td>
+	</tr>
+</table>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<form name="frm" method="post"  enctype="multipart/form-data" action=$link.setPage("call,OLES,ReEvaluation.vm").setAction("OLES_AttemptQuiz")>
+	<table width="100%" bgcolor="$ui.tableColor">
+	<tr bgcolor="$ui.tableColor">
+		#if($tdcolor != "1")
+		  	<td>
+		 #elseif($tdcolor == "1")
+			<td bgcolor="#AFDCEC">
+		#end
+		<b><I><a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</I></b></a></td>
+		#if($tdcolor != "2")
+			<td>
+		 #elseif($tdcolor == "2")
+			<td bgcolor="#AFDCEC">
+		#end
+		<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1").addPathInfo("mode","quizSetup") style=text-decoration:none>$brih_generate $brih_exam</I></b></a></td>
+		#if($tdcolor != "3")
+		   <td>
+	    #elseif($tdcolor == "3")
+			<td bgcolor="#AFDCEC">
+		#end
+		<b><I><a href=$link.setPage("call,OLES,AnnounceExam_Manage.vm").addPathInfo("count","3") style=text-decoration:none>$brih_QDannounce $brih_exam</I></b></a></td>
+		#if($tdcolor != "4")
+			<td>
+		#elseif($tdcolor == "4")
+			<td bgcolor="#AFDCEC">
+		#end
+		<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","4") style=text-decoration:none>$brih_evaluation</I></b></a></td>
+		#if($tdcolor != "5")
+			<td>
+        #elseif($tdcolor == "5")
+            <td bgcolor="#AFDCEC"
+		#end
+		<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style=text-decoration:none>$brih_result</I></b></a></td>
+		#if($tdcolor != "6")
+			<td>
+		#elseif($tdcolor == "6")
+           	<td bgcolor="#AFDCEC>
+        #end
+      	<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security") style=text-decoration:none>$brith_security</I></b></a></td>
+      	#if($tdcolor != "7")
+			<td>
+		#elseif($tdcolor == "7")
+           	<td bgcolor="#AFDCEC>
+        #end
+       	<b><I><a href=$link.setPage("call,OLES,OLES_ReEvaluation.vm").addPathInfo("count","7") style=text-decoration:none>$brih_reevaluation</I></b></a></td>
+	</tr>
+</table>
+<table bgcolor="$ui.tableColor" width="100%">
+	<tr bgcolor="$ui.menuColor" width="100%">
+		<td align="left" width="100%" colspan="6"><b><i><font size="3">$brih_score $brih_reevaluation</font><b></i></td>
+	</tr>
+</table>
+
+<table bgcolor="$ui.tableColor" width="100%">
+	#if($collectScore.size()!=0)
+	#if($flag)
+		<tr bgcolor="$ui.tableColor" width="100%" collspan="6">
+			<th>QuizID</th>
+			<th>StudentID(Student Name)</th>
+			<th>Total Score</th>
+		</tr>
+	#else
+		<tr bgcolor="$ui.tableColor" width="100%">
+			<td align="center" collspan="6">
+			<b><font size="4">
+				$!data.getMessage()
+			</font></b>
+			</td>
+		</tr>
+	#end
+       	#foreach($scr in $collectScore)
+			#if($velocityCount%2==0)
+				<tr bgcolor="$ui.menuColor">
+			#else
+				<tr bgcolor="$ui.tableColor">
+			#end
+			#if($scr.getEvaluate()=="ReEvaluate")
+					<td>
+						$scr.getQuizID()
+					</td>
+					<td>
+						$scr.getUserID()($scr.getStudentName())
+					</td>
+					<td>
+						$scr.getScore()
+					</td>
+					<td>	
+						<b><I><a href=$link.setPage("call,OLES,Evaluate_Quiz.vm").addPathInfo("count","6").addPathInfo("quizID",$scr.getQuizID()).addPathInfo("type","ReEvaluate").addPathInfo("studentLoginName",$scr.getStudentName()).addPathInfo("actionName","eventSubmit_Evaluate") style=text-decoration:none>$brih_reevaluate</I></b></a>
+					</td>
+			#end
+				</tr>
+		#end
+	#else
+		<tr bgcolor="$ui.tableColor" width="100%">
+			<td align="center" collspan="6">
+			<b><font size="4">
+				$!data.getMessage()
+			</font></b>
+			</td>
+		</tr>
+	#end
+</table>		
+</form>
+</body>
+<SCRIPT LANGUAGE="javascript">
+
+	function popupWin(url,popupName){
+	        Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+	}
+</SCRIPT>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1040 @@
+/*
+This script is a modified version of Alex benenson's cyrillic translitarator and this version was created by user Tatari
+*/
+var amhaHash='{"k":"क्","क् ":"क ","क्a":"क","कa":"का","क्i":"कि","क्I":"की","किi":"की","केe":"की","क्u":"कु","क्U":"कू","कोo":"कू","कुu":"कू","क्e":"के","कi":"कै","क्o":"को","कu":"कौ","क्:":"कः","क:":"कः","क्O":"कॉ","कॉM":"काँ","क्E":"कॅ","कॅM":"कँ","क्R":"कृ","कृu":"कृ","कृU":"कॄ","कृओo":"कृऊ","कृl":"कॢ","कॢu":"कॢ","कॢU":"कॣ","कॢओo":"कॢऊ","क्M":"कं","क्h":"ख्","ख् ":"ख ","ख्a":"ख","खa":"खा","ख्i":"खि","ख्I":"खी","खिi":"खिइ","खेe":"खी","ख्u":"खु","ख्U":"खू","खोo":"खू","खुu":"खू","ख्e":"खे","खi":"खै","ख्o":"खो","खu":"खौ","ख्:":"खः","ख:":"खः","ख्O":"खॉ","खॉM":"खाँ","ख्E":"खॅ","खॅM":"खँ","ख्R":"खृ","खृu":"खृ","खृU":"खॄ","खृओo":"खृऊ","ख्M":"खं","खृl":"खॢ","खॢu":"खॢ","खॢU":"खॣ","खॢओo":"खॢऊ",';
+amhaHash+='"g":"ग्","ग् ":"ग ","ग्a":"ग","गa":"गा","ग्i":"गि","ग्I":"गी","गिi":"गी","गेe":"गी","ग्u":"गु","ग्U":"गू","गोo":"गू","गुu":"गू","ग्e":"गे","गi":"गै","ग्o":"गो","गu":"गौ","ग्:":"गः","ग:":"गः","ग्O":"गॉ","गॉM":"गाँ","ग्E":"गॅ","गॅM":"गँ","ग्R":"गृ","गृu":"गृ","गृU":"गॄ","गृओo":"गॄ","ग्M":"गं","गृl":"गॢ","गॢu":"गॢ","गॢU":"गॣ","गॢo":"गॣ","ग्h":"घ्","घ् ":"घ ","घ्a":"घ","घa":"घा","घ्i":"घि","घ्I":"घी","घिi":"घी","घेe":"घी","घ्u":"घु","घ्U":"घू","घोo":"घू","घुu":"घू","घ्e":"घे","घi":"घै","घ्o":"घो","घu":"घौ","घ्:":"घः","घ:":"घः","घ्O":"घॉ","घॉM":"घाँ","घ्E":"घॅ","घॅM":"घँ","घ्R":"घृ","घृu":"घृ","घृU":"घॄ","घृओo":"घॄ","घ्M":"घं","घृl":"घॢ","घॢu":"घॢ","घॢU":"घॣ","घॢओo":"घॣ","G":"ङ्","ङ्a":"ङ","ङa":"ङा","ङ्i":"ङि","ङ्I":"ङी","ङिi":"ङी","ङेe":"ङी","ङ्u":"ङु","ङ्U":"ङू","ङोo":"ङू","ङुu":"ङू","ङ्e":"ङे","ङi":"ङै","ङ्o":"ङो","ङu":"ङौ","ङ्:":"ङः","ङ:":"ङः","ङ्O":"ङॉ","ङॉM":"ङाँ","ङ्E":"ङॅ","ङॅM":"ङँ","ङ्R":"ङृ","ङृu":"ङृ","ङृU":"ङॄ","ङृओo":"ङॄ","ङ्M":"ङं","ङृl":"ङॢ","ङॢu":"ङॢ","ङॢU":"ङॣ","ङॢओo":"ङॣ",';
+amhaHash+='"c":"च्","ch":"च्","च् ":"च ","च्a":"च","चa":"चा","च्i":"चि","च्I":"ची","चिi":"ची","चेe":"ची","च्u":"चु","च्U":"चू","चोo":"चू","चुu":"चू","च्e":"चे","चi":"चै","च्o":"चो","चu":"चौ","च्:":"चः","च:":"चः","च्O":"चॉ","चॉM":"चाँ","च्E":"चॅ","चॅM":"चँ","च्R":"चृ","चृu":"चृ","चृU":"चॄ","चृओo":"चॄ","च्M":"चं","चृl":"चॢ","चॢu":"चॢ","चॢU":"चॣ","चॢओo":"चॣ",';
+amhaHash+='"C":"छ्","च्ह्h":"छ्","छ्h":"छ्","छ् ":"छ ","छ्a":"छ","छa":"छा","छ्i":"छि","छ्I":"छी","छिi":"छी","छेe":"छी","छ्u":"छु","छ्U":"छू","छोo":"छू","छुu":"छू","छ्e":"छे","छi":"छै","छ्o":"छो","छu":"छौ","छ्:":"छः","छ:":"छः","छ्O":"छॉ","छॉM":"छाँ","छ्E":"छॅ","छॅM":"छँ","छ्R":"छृ","छृu":"छृ","छृU":"छॄ","छृओo":"छॄ","छ्M":"छं","छृl":"छॢ","छॢu":"छॢ","छॢU":"छॣ","छॢओo":"छॣ",';
+amhaHash+='"j":"ज्","ज् ":"ज ","ज्a":"ज","जa":"जा","ज्i":"जि","ज्I":"जी","जिi":"जी","जेe":"जी","ज्u":"जु","ज्U":"जू","जोo":"जू","जुu":"जू","ज्e":"जे","जi":"जै","ज्o":"जो","जu":"जौ","ज्:":"जः","ज:":"जः","ज्O":"जॉ","जॉM":"जाँ","ज्E":"जॅ","जॅM":"जँ","ज्R":"जृ","जृu":"जृ","जृU":"जॄ","जृओo":"जॄ","ज्M":"जं","जृl":"जॢ","जॢu":"जॢ","जॢU":"जॣ","जॢओo":"जॣ","ज्h":"झ्","झ् ":"झ ","झ्a":"झ","झa":"झा","झ्i":"झि","झ्I":"झी","झिi":"झी","झेe":"झी","झ्u":"झु","झ्U":"झू","झोo":"झू","झुu":"झू","झ्e":"झे","झi":"झै","झ्o":"झो","झu":"झौ","झ्:":"ञः","झ्a:":"झः","झ्O":"झॉ","झॉM":"झाँ","झ्E":"झॅ","झॅM":"झँ","झ्R":"झृ","झृu":"झृ","झृU":"झॄ","झृओo":"झॄ","झ्M":"झं","झृl":"झॢ","झॢu":"झॢ","झॢU":"झॣ","झॢओo":"झॣ",';
+amhaHash+='"z":"झ्","झ:":"झः","Z":"झ्","Y":"ञ्","ञ् ":"ञ ","ञ्a":"ञ","ञa":"ञा","ञ्i":"ञि","ञ्I":"ञी","ञिi":"ञी","ञेe":"ञी","ञ्u":"ञु","ञ्U":"ञू","ञोo":"ञू","ञुu":"ञू","ञ्e":"ञे","ञi":"ञै","ञ्o":"ञो","ञu":"ञौ","ञ:":"ञः","ञ्O":"ञॉ","ञॉM":"ञाँ","ञ्E":"ञॅ","ञॅM":"ञँ","ञ्R":"ञृ","ञृu":"ञृ","ञृU":"ञॄ","ञृओo":"ञॄ","ञ्M":"ञं","ञृl":"ञॢ","ञॢu":"ञॢ","ञॢU":"ञॣ","ञॢओo":"ञॣ",';
+amhaHash+='"T":"ट्","ट् ":"ट ","ट्a":"ट","टa":"टा","ट्i":"टि","ट्I":"टी","टिi":"टी","टेe":"टी","ट्u":"टु","ट्U":"टू","टोo":"टू","टुu":"टू","ट्e":"टे","टi":"टै","ट्o":"टो","टu":"टौ","ट्:":"टः","ट:":"टः","ट्O":"टॉ","टॉM":"टाँ","ट्E":"टॅ","टॅM":"टँ","ट्R":"टृ","टृu":"टृ","टृU":"टॄ","टृओo":"टॄ","ट्M":"टं","टृl":"टॢ","टॢu":"टॢ","टॢU":"टॣ","टॢओo":"टॣ","ट्h":"ठ्","ठ् ":"ठ ","ठ्a":"ठ","ठa":"ठा","ठ्i":"ठि","ठ्I":"ठी","ठिi":"ठी","ठेe":"ठी","ठ्u":"ठु","ठ्U":"ठू","ठोo":"ठू","ठुu":"ठू","ठ्e":"ठे","ठi":"ठै","ठ्o":"ठो","ठu":"ठौ","ठ्:":"ठः","ठ्a:":"ठः","ठ्O":"ठॉ","ठॉM":"ठाँ","ठ्E":"ठॅ","ठॅM":"ठँ","ठ्R":"ठृ","ठृu":"ठृ","ठृU":"ठॄ","ठृओo":"ठॄ","ठ्M":"ठं","ठृl":"ठॢ","ठॢu":"ठॢ","ठॢU":"ठॣ","ठॢओo":"ठॣ",';
+amhaHash+='"D":"ड्","ड् ":"ड ","ड्a":"ड","डa":"डा","ड्i":"डि","ड्I":"डी","डिi":"डी","डेe":"डी","ड्u":"डु","ड्U":"डू","डोo":"डू","डुu":"डू","ड्e":"डे","डi":"डै","ड्o":"डो","डu":"डौ","ड्:":"डः","ड:":"डः","ड्O":"डॉ","डॉM":"ऑाँ","ड्E":"डॅ","डॅM":"डँ","ड्R":"डृ","डृu":"डृ","डृU":"डॄ","डृओo":"डॄ","ड्M":"डं","डृl":"डॢ","डॢu":"डॢ","डॢU":"डॣ","डॢओo":"डॣ","ड्h":"ढ्","ढ् ":"ढ ","ढ्a":"ढ","ढa":"ढा","ढ्i":"ढि","ढ्I":"ढी","ढिi":"ढी","ढेe":"ढी","ढ्u":"ढु","ढ्U":"ढू","ढोo":"ढू","ढुu":"ढू","ढ्e":"ढे","ढi":"ढै","ढ्o":"ढो","ढu":"ढौ","ढ्:":"ढः","ढ्a:":"ढः","ढ्O":"ढॉ","ढॉM":"ढाँ","ढ्E":"ढॅ","ढॅM":"ढँ","ढ्R":"ढृ","ढृu":"ढृ","ढृU":"ढॄ","ढृओo":"ढॄ","ढ्M":"ढं","ढृl":"ढॢ","ढॢu":"ढॢ","ढॢU":"ढॣ","ढॢओo":"ढॣ",';
+amhaHash+='"N":"ण्","ण् ":"ण ","ण्a":"ण","णa":"णा","ण्i":"णि","ण्I":"णी","णिi":"णी","णेe":"णी","ण्u":"णु","ण्U":"णू","णोo":"णू","णुu":"णू","ण्e":"णे","णi":"णै","ण्o":"णो","णu":"णौ","ण्:":"णः","ण:":"णः","ण्O":"णॉ","णॉM":"णाँ","ण्E":"णॅ","णॅM":"णँ","ण्R":"णृ","णृu":"णृ","णृU":"णॄ","णृओo":"णॄ","ण्M":"णं","णृl":"णॢ","णॢu":"णॢ","णॢU":"णॣ","णॢओo":"णॣ",';
+amhaHash+='"t":"त्","त् ":"त ","त्a":"त","तa":"ता","त्i":"ति","त्I":"ती","तिi":"ती","तेe":"ती","त्u":"तु","त्U":"तू","तोo":"तू","तुu":"तू","त्e":"ते","तi":"तै","त्o":"तो","तu":"तौ","त्:":"तः","त:":"तः","त्O":"तॉ","तॉM":"ताँ","त्E":"तॅ","तॅM":"तँ","त्R":"तृ","तृu":"तृ","तृU":"तॄ","तृओo":"तॄ","त्M":"तं","तृl":"तॢ","तॢu":"तॢ","तॢU":"तॣ","तॢओo":"तॣ","त्h":"थ्","थ् ":"थ ","थ्a":"थ","थa":"था","थ्i":"थि","थ्I":"थी","थिi":"थी","थेe":"थी","थ्u":"थु","थ्U":"थू","थोo":"थू","थुu":"थू","थ्e":"थे","थi":"थै","थ्o":"थो","थu":"थौ","थ्:":"थः","थ्a:":"थः","थ्O":"थॉ","थॉM":"थाँ","थ्E":"थॅ","थॅM":"थँ","थ्R":"थृ","थृu":"थृ","थृU":"थॄ","थृओo":"थॄ","थ्M":"थं","थृl":"थॢ","थॢu":"थॢ","थॢU":"थॣ","थॢओo":"थॣ",';
+amhaHash+='"d":"द्","द् ":"द ","द्a":"द","दa":"दा","द्i":"दि","द्I":"दी","दिi":"दी","देe":"दी","द्u":"दु","द्U":"दू","दोo":"दू","दुu":"दू","द्e":"दे","दi":"दै","द्o":"दो","दu":"दौ","द्:":"दः","द:":"दः","द्O":"दॉ","दॉM":"दाँ","द्E":"दॅ","दॅM":"दँ","द्R":"दृ","दृu":"दृ","दृU":"दॄ","दृओo":"दॄ","द्M":"दं","दृl":"दॢ","दॢu":"दॢ","दॢU":"दॣ","दॢओo":"दॣ","द्h":"ध्","ध् ":"ध ","ध्a":"ध","धa":"धा","ध्i":"धि","ध्I":"धी","धिi":"धी","धेe":"धी","ध्u":"धु","ध्U":"धू","धोo":"धू","धुu":"धू","ध्e":"धे","धi":"धै","ध्o":"धो","धu":"धौ","ध्:":"धः","ध्a:":"धः","ध्O":"धॉ","धॉM":"धाँ","ध्E":"धॅ","धेM":"धँ","ध्R":"धृ","धृu":"धृ","धृU":"धॄ","धृओo":"धॄ","ध्M":"धं","धृl":"धॢ","धॢu":"धॢ","धॢU":"धॣ","धॢओo":"धॣ",';
+amhaHash+='"n":"न्","न् ":"न ","न्a":"न","नa":"ना","न्i":"नि","न्I":"नी","निi":"नी","नेe":"नी","न्u":"नु","न्U":"नू","नोo":"नू","नुu":"नू","न्e":"ने","नi":"नै","न्o":"नो","नu":"नौ","न्:":"नः","न:":"नः","न्O":"नॉ","नॉM":"नाँ","न्E":"नॅ","नॅM":"नँ","न्R":"नृ","नृu":"नृ","नृU":"नॄ","नृओo":"नॄ","न्M":"नं","नृl":"नॢ","नॢu":"नॢ","नॢU":"नॣ","नॢओo":"नॣ",';
+amhaHash+='"p":"प्","प् ":"प ","प्a":"प","पa":"पा","प्i":"पि","प्I":"पी","पिi":"पी","पेe":"पी","प्u":"पु","प्U":"पू","पोo":"पू","पुu":"पू","प्e":"पे","पi":"पै","प्o":"पो","पu":"पौ","प्:":"पः","प:":"पः","प्O":"पॉ","पॉM":"पाँ","प्E":"पॅ","पॅM":"पँ","प्R":"पृ","पृu":"पृ","पृU":"पॄ","पृओo":"पॄ","प्M":"पं","पृl":"पॢ","पॢu":"पॢ","पॢU":"पॣ","पॢओo":"पॣ",';
+amhaHash+='"P":"प्","प् ":"प ","प्a:":"पः","प्h":"फ्","फ्a":"फ","फa":"फा","फ्i":"फि","फ्I":"फी","फिi":"फी","फ्ee":"फी","फ्u":"फु","फ्U":"फू","फोo":"फू","फ्uu":"फू","फ्e":"फे","फi":"फै","फ्o":"फो","फu":"फौ","फ्:":"फः","फ्a:":"फः","फ्O":"फॉ","फॉM":"फाँ","फ्E":"फॅ","फॅM":"फँ","फ्R":"फृ","फृu":"फृ","फृU":"फॄ","फृओo":"फॄ","फ्M":"फं","फृl":"फॢ","फॢu":"फॢ","फॢU":"फॣ","फॢओo":"फॣ",';
+amhaHash+='"f":"फ्","F":"फ्","b":"ब्","ब् ":"ब ","ब्a":"ब","बa":"बा","ब्i":"बि","ब्I":"बी","बिi":"बी","बेe":"बी","ब्u":"बु","ब्U":"बू","बोo":"बू","बुu":"बू","ब्e":"बे","बi":"बै","ब्o":"बो","बu":"बौ","ब्:":"बः","ब:":"बः","ब्O":"बॉ","बॉM":"बाँ","ब्E":"बॅ","बॅM":"बँ","ब्R":"बृ","बृu":"बृ","बृU":"बॄ","बृओo":"बॄ","ब्M":"बं","बृl":"बॢ","बॢu":"बॢ","बॢU":"बॣ","बॢओo":"बॣ",';
+amhaHash+='"B":"ब्","ब्h":"भ्","भ् ":"भ ","भ्a":"भ","भa":"भा","भ्i":"भि","भ्I":"भी","भिi":"भी","भेe":"भी","भ्u":"भु","भ्U":"भू","भोo":"भू","भुu":"भू","भ्e":"भे","भi":"भै","भ्o":"भो","भu":"भौ","भ्:":"भः","भ्a:":"भः","भ्O":"भॉ","भॉM":"भाँ","भ्E":"भॅ","भॅM":"भँ","भृ":"भृ","भृu":"भृ","भृU":"भॄ","भृओo":"भॄ","भ्M":"भं","भृl":"भॢ","भॢu":"भॢ","भॢU":"भॣ","भॢओo":"भॣ","U092DU094D":"भ्",';
+amhaHash+='"m":"म्","म् ":"म ","म्a":"म","मa":"मा","म्i":"मि","म्I":"मी","मिi":"मी","मेe":"मी","म्u":"मु","म्U":"मू","मोo":"मू","मुu":"मू","म्e":"मे","मi":"मै","म्o":"मो","मu":"मौ","म्:":"मः","म:":"मः","म्O":"मॉ","मॉM":"माँ","म्E":"मॅ","मॅM":"मँ","म्R":"मृ","मृu":"मृ","मृU":"मॄ","मृओo":"मॄ","म्M":"मं","मृl":"मॢ","मॢu":"मॢ","मॢU":"मॣ","मॢओo":"मॣ",';
+amhaHash+='"y":"य्","य् ":"य ","य्a":"य","यa":"या","य्i":"यि","य्I":"यी","यिi":"यी","येe":"यी","य्u":"यु","य्U":"यू","योo":"यू","युu":"यू","य्e":"ये","यi":"यै","य्o":"यो","यu":"यौ","य्:":"यः","य:":"यः","य्O":"यॉ","यॉM":"याँ","य्E":"यॅ","यॅM":"यँ","य्R":"यृ","यृu":"यृ","यृU":"यॄ","यृओo":"यॄ","य्M":"यं","यृl":"यॢ","यॢu":"यॢ","यॢU":"यॣ","यॢओo":"यॣ",';
+amhaHash+='"r":"र्","र्r":"र्‍","र् ":"र ","र्a":"र","रa":"रा","र्i":"रि","र्I":"री","रिi":"री","रेe":"री","र्u":"रु","र्U":"रू","रोo":"रू","रुu":"रू","र्e":"रे","रi":"रै","र्o":"रो","रu":"रौ","र्:":"रः","र:":"रः","र्O":"रॉ","रॉM":"राँ","र्E":"रॅ","रॅM":"रँ","र्M":"रं","रॢ":"रॢ","रॢu":"रॢ","रॢU":"रॣ","रॢओo":"रॣ","र्R":"रृ","रृu":"रृ","रृU":"रॄ","रृओo":"रॄ",';
+amhaHash+='"l":"ल्","ल्a":"ल","ल् ":"ल ","लa":"ला","ल्i":"लि","ल्I":"ली","लिi":"ली","लेe":"ली","ल्u":"लु","ल्U":"लू","लोo":"लू","लुu":"लू","ल्e":"ले","लi":"लै","ल्o":"लो","लu":"लौ","ल्:":"लः","ल:":"लः","ल्O":"लॉ","लॉM":"लाँ","ल्E":"लॅ","लॅM":"लँ","ल्R":"लृ","लृu":"लृ","लृU":"लॄ","लृओo":"लॄ","ल्M":"लं","लृl":"लॢ","लॢu":"लॢ","लॢU":"लॣ","लॢओo":"लॣ",';
+amhaHash+='"v":"व्","व् ":"व ","व्a":"व","वa":"वा","व्i":"वि","व्I":"वी","विi":"वी","वेe":"वी","व्u":"वु","व्U":"वू","वोo":"वू","वुu":"वू","व्e":"वे","वi":"वै","व्o":"वो","वu":"वौ","व्:":"वः","व:":"वः","व्O":"वॉ","वॉM":"वाँ","व्E":"वॅ","वॅM":"वँ","व्R":"वृ","वृu":"वृ","वृU":"वॄ","वृओo":"वृU","व्M":"वं","वृl":"वॢ","\u0935\u0962u":"वॢ","\u0935\u0962U":"वॣ","\u0935\u0962ओo":"वॣ",';
+amhaHash+='"V":"व्","w":"व्","W":"व्","स्h":"श्","श् ":"श ","श्a":"श","शa":"शा","श्i":"शि","श्I":"शी","शिi":"शी","शेe":"शी","श्u":"शु","श्U":"शू","शोo":"शू","शुu":"शू","श्e":"शे","शi":"शै","श्o":"शो","शu":"शौ","श्:":"शः","श्a:":"शः","श्O":"शॉ","शॉM":"शाँ","श्E":"शॅ","शॅM":"शँ","श्rR":"शरृ","शरृu":"शरृ","शरृU":"शरॄ","शरृoo":"शरॄ","श्R":"शृ","शृu":"शृ","शृU":"शॄ","शृओo":"शॄ","श्M":"शं","शृl":"शॢ","शॢu":"शॢ","शॢU":"शॣ","शॢओo":"शॣ","श्h":"ष्","ष् ":"ष ","ष्a":"ष","षa":"षा","ष्i":"षि","ष्I":"षी","षिi":"षी","षेe":"षी","ष्u":"षु","ष्U":"षू","षोo":"षू","षुu":"षू","ष्e":"षे","षi":"षै","ष्o":"षो","षu":"षौ","ष्:":"षः","ष:":"षः","ष्O":"षॉ","षॉM":"षाँ","ष्E":"षॅ","षॅM":"षँ","ष्R":"षृ","षृu":"षृ","षृU":"षॄ","षृओo":"षॄ","ष्M":"षं","षृl":"षॢ","षॢu":"षॢ","षॢU":"षॣ","षॢओo":"षॣ","ष्h":"ष्",';
+amhaHash+='"s":"स्","स् ":"स ","स्a":"स","सa":"सा","स्i":"सि","स्I":"सी","सिi":"सी","सेe":"सी","स्u":"सु","स्U":"सू","सोo":"सू","सुu":"सू","स्e":"से","सi":"सै","स्o":"सो","सu":"सौ","स:":"सः","सा:":"सः","स्O":"सॉ","सॉM":"साँ","स्E":"सॅ","सॅM":"सँ","स्R":"सृ","सृu":"सृ","सृU":"सॄ","सृओo":"सॄ","स्M":"सं","सृl":"सॢ","सॢu":"सॢ","सॢU":"सॣ","सॢओo":"सॣ",';
+amhaHash+='"S":"श्","h":"ह्","ह् ":"ह ","ह्a":"ह","हa":"हा","ह्i":"हि","ह्I":"ही","हिi":"ही","हेe":"ही","ह्u":"हु","ह्U":"हू","होo":"हू","हुu":"हू","ह्e":"हे","हi":"है","ह्o":"हो","हu":"हौ","ह्:":"हः","ह:":"हः","ह्O":"हॉ","हॉM":"हाँ","ह्E":"हॅ","हॅM":"हँ","ह्R":"हृ","हृu":"हृ","हृU":"हॄ","हृओo":"हॄ","ह्M":"हं","हृl":"हॢ","हॢu":"हॢ","हॢU":"हॣ","हॢओo":"हॣ",';
+amhaHash+='"L":"ळ्","ळ्a":"ळ","ळa":"ळा","ळ्i":"ळि","ळ्I":"ळी","ळिi":"ळी","ळेe":"ळी","ळ्u":"ळु","ळ्U":"ळू","ळोo":"ळू","ळुu":"ळू","ळ्e":"ळे","ळi":"ळै","ळ्o":"ळो","ळu":"ळौ","ळ्:":"ळः","ळ:":"ळः","ळ्O":"ळॉ","ळॉM":"ळाँ","ळ्E":"ळॅ","ळॅM":"ळँ","ळ्R":"ळृ","ळृu":"ळृ","ळृU":"ळॄ","ळृओo":"ळॄ","ळ्M":"ळं","ळृl":"ळॢ","ळॢu":"ळॢ","ळॢU":"ळॣ","ळॢओo":"ळॣ",';
+amhaHash+='"x":"क्ष्","क्ष् ":"क्ष ","क्ष्a":"क्ष","क्षa":"क्षा","क्ष्i":"क्षि","क्ष्I":"क्षी","क्षिi":"क्षी","क्षेe":"क्षी","क्ष्u":"क्षु","क्ष्U":"क्षू","क्षोo":"क्षू","क्षुu":"क्षू","क्ष्e":"क्षे","क्षi":"क्षै","क्ष्o":"क्षो","क्षu":"क्षौ","क्ष्:":"क्षः","क्ष:":"क्षः","क्ष्O":"क्षॉ","क्षॉM":"क्षाँ","क्ष्E":"क्षॅ","क्षॅM":"क्षँ","क्ष्R":"क्षृ","क्षृu":"क्षृ","क्षृU":"क्षॄ","क्षृओo":"क्षॄ","क्ष्M":"क्षं","क्षृl":"क्षॢ","क्षॢu":"क्षॢ","क्षॢU":"क्षॣ","क्षॢओo":"क्षॣ",';
+amhaHash+='"X":"क्ष्","़n":"ज्ञ्","ङ्y":"ज्ञ्","ज्ञ्a":"ज्ञ","ज्ञ् ":"ज्ञ ","ज्ञa":"ज्ञा","ज्ञ्i":"ज्ञि","ज्ञ्I":"ज्ञी","ज्ञिi":"ज्ञी","ज्ञेe":"ज्ञी","ज्ञ्u":"ज्ञु","ज्ञ्U":"ज्ञू","ज्ञोo":"ज्ञू","ज्ञुu":"ज्ञू","ज्ञ्e":"ज्ञे","ज्ञi":"ज्ञै","ज्ञ्o":"ज्ञो","ज्ञu":"ज्ञौ","ज्ञ्:":"ज्ञः","ज्ञ्a:":"ज्ञः","ज्ञ्O":"ज्ञॉ","ज्ञॉM":"ज्ञाँ","ज्ञ्E":"ज्ञॅ","ज्ञॅM":"ज्ञँ","ज्ञ्R":"ज्ञृ","ज्ञृu":"ज्ञृ","ज्ञृU":"ज्ञॄ","ज्ञृओo":"ज्ञॄ","ज्ञ्M":"ज्ञं","ज्ञृl":"ज्ञॢ","ज्ञॢu":"ज्ञॢ","ज्ञॢU":"ज्ञॣ","ज्ञॢओo":"ज्ञॣ",';
+amhaHash+='"DaK":"ड़","ड़aa":"ड़ा","ड़i":"ड़ि","ड़I":"ड़ी","ड़िi":"ड़ी","ड़ेe":"ड़ी","ड़u":"ड़ु","ड़U":"ड़ू","ड़ोo":"ड़ू","ड़ुu":"ड़ू","ड़e":"ड़े","ड़ai":"ड़ै","ड़o":"ड़ो","ड़au":"ड़ौ","ड़:":"ड़ः","ड़a:":"ड़:","ड़O":"ड़ॉ","ड़ॉM":"ड़ॉं","ड़E":"ड़ॅ","ड़ॅM":"ड़ॅं","ड़M":"ड़ं",';
+amhaHash+='"a":"अ","ऑm":"ॐ","अa":"आ","A":"आ","i":"इ","I":"ई","इi":"ई","एe":"ऐ","u":"उ","उu":"ऊ","U":"ऊ","ओo":"औ","e":"ए","अi":"ऐ","o":"ओ","अu":"औ","H":"ः","M":"ं","ंM":"ँ","E":"ऍ","ऍM":"अँ","O":"ऑ","ऑM":"आँ","आU":"ऑ","ऋl":"ॡ","ॡu":"ॡ","R":"ऋ","ऋi":"ऋ","ऋu":"ऋ","ऋU":"ॠ","ऋओo":"ॠ","ऋI":"ॠ","ऋइi":"ॠ","अ~":"ऽ","ःH":"‌","q":"॑","॑q":"॒","Q":"॓","॓Q":"॔","J":"़","K":"़","C":"॰","z":"।",".":"।","।.":"॥","0":"०","1":"१","2":"२","3":"३","4":"४","5":"५","6":"६","7":"७","8":"८","9":"९"}';
+
+
+
+var scripted_message= "";
+// for compatibility with bookmarklets
+function cyr_translit(src) {
+	//alert("test cyr_translit" +src);
+	return to_cyrillic(src);
+}
+
+var conversionHash = undefined;
+var maxcyrlength = 0;
+
+function getConversionHash() {
+	if (conversionHash == undefined) {
+		conversionHash = eval("("+amhaHash+")");
+		 maxcyrlength=6;
+	}
+
+	return conversionHash;
+}
+
+
+function to_cyrillic(src, output, chunks) {
+	if (src == undefined || src == "" || src == null)
+		return src;
+	if (output == undefined)
+		output = new String();
+
+	var hash = getConversionHash();
+	
+	var location = 0;
+	
+	while (location < src.length) {
+		var len = Math.min(maxcyrlength, src.length - location);
+		var arr = undefined;
+		var sub;
+		while (len > 0) {
+			sub = src.substr(location, len);
+			arr = hash[sub];
+			if (arr != undefined) 
+				break;
+			else 
+				len--;
+		}
+		
+		// need this for translit on the fly
+		//alert("sub.."+sub +"location.."+location);
+		if (chunks != undefined)
+			chunks[chunks.length] = sub;
+			
+		if (arr == undefined) {
+			output += sub;
+			location ++;
+		}
+		else {
+
+			// case analysis
+			var newChar = arr;
+			
+			if (sub.toLowerCase() == sub.toUpperCase() && arr.length > 1 && arr[1] && (newChar.toUpperCase() != newChar.toLowerCase())) {
+			
+				// need translit hash to determine if previous character (and possibly the one before it) 
+				// were converted and are in upper case
+				
+				// set prevDud to true previous is not a translated character or simply a blank
+				// set prevCap to true if previous was translated and was upper case
+
+				var prevCh = output.length == 0 ? null : output.substr(output.length - 1, 1);
+				//alert("test3.1 ...prevCh.. ."+prevCh );
+				var prevDud = !prevCh || !getTranslitString(prevCh);
+				var prevCap = (!prevDud && prevCh == prevCh.toUpperCase());
+
+				// sub is caseless but result isn't. case will depend on lookbehind and lookahead
+				if (prevDud || !prevCap) {
+					output += newChar.toLowerCase();
+					prevCap = false;
+				}
+				else {
+					var next = " ";
+					if (location + len < src.length)
+						next = src.substr(location + len, 1);
+
+					if (next != next.toUpperCase() && next == next.toLowerCase() ) {
+						//next is lowercase (and not caseless)
+						output += newChar.toLowerCase();
+					}
+					else if (next == next.toUpperCase() && next != next.toLowerCase() ) {
+						// next is uppercase (and not caseless)
+						output += newChar.toUpperCase();
+					}
+					else {
+						// next is caseless. output case determined by the case of output[length - 2]
+						var pprevCh = output.length == 1 ? null : output.substr(output.length - 2, 1);
+						var pprevDud = !pprevCh || !getTranslitString(pprevCh);
+						if (!pprevDud && (pprevCh == pprevCh.toUpperCase())) {
+							//pre-prev is in upper case. output is also uppercase
+							output += newChar.toUpperCase();
+						}
+						else {
+						    output += newChar.toLowerCase();
+						}
+						
+					}
+				}
+					
+			}
+			else if ((sub.toLowerCase() == sub.toUpperCase()) && (arr.length < 2 || !arr[1])) {
+				
+				// literal treatment of newChar
+				output += newChar;		
+
+			}
+			else if (sub != sub.toLowerCase()) {
+			
+				// sub not all-lowercase
+				output += newChar.toUpperCase();
+			}
+			else {
+					
+					
+					
+				// sub is lowercase
+			    output += newChar.toLowerCase();
+			}
+			location += len;
+			//alert("test13...location+=len..."+location);
+		}
+	}
+	//alert("test14...output..."+output);
+	
+	return output;
+}
+
+
+
+function convertIt(src,converter){
+ var resultbuffer=""; 
+	for(var i=0;i<src.length;i++){
+	resultbuffer=converter(resultbuffer+src[i]);
+	}
+	//alert("resultbuffer.."+resultbuffer);
+        return converter(resultbuffer);
+
+}
+
+
+
+var translitHash = undefined;
+
+function initTranslit() {
+	if (translitHash == undefined) {
+		translitHash = new Array();
+
+		for (var i = 0; i < conversionHash.length; i++) {
+			var ch = conversionHash[i][1];
+			// if the translit string is not caseless, convert cyr string to upper case
+			// otherwise maintain its case
+			if (conversionHash[i][0].toUpperCase() != conversionHash[i][0].toLowerCase())
+				ch = ch.toUpperCase();
+				
+			if (translitHash[ch] == undefined)
+				translitHash[ch] = conversionHash[i][0];
+		}
+	}
+}
+
+
+
+
+//-- translit on-the-fly -- 
+
+function replaceValue(node, value, stepback) {
+	if (stepback == undefined)
+		stepback = 0;
+		
+	if (isExplorer()) {
+		var range = document.selection.createRange();
+		range.moveStart("character", -stepback);
+		range.text = value;
+		range.collapse(false);
+		range.select();
+	}
+	else {
+                //alert("replace value...");
+		var scrollTop = node.scrollTop;
+		var cursorLoc =  node.selectionStart;
+		node.value = node.value.substring(0, node.selectionStart - stepback) + value + 
+                node.value.substring(node.selectionEnd, node.value.length);
+		node.scrollTop = scrollTop;
+		node.selectionStart = cursorLoc + value.length - stepback;
+		node.selectionEnd = cursorLoc + value.length - stepback;
+	}
+}
+
+
+// compare positions
+function positionIsEqual(other) {
+	if (isExplorer())
+		return this.position.isEqual(other.position);
+	else
+		return this.position == other.position;
+  
+}
+
+function Position(node) {
+	//alert("this is position function");
+  if (node.selectionStart != undefined)
+	this.position = node.selectionStart;
+  else if (document.selection && document.selection.createRange())
+    this.position = document.selection.createRange();
+    
+  this.isEqual = positionIsEqual;
+}
+
+function resetState() {
+	this.position = new Position(this.node);
+	this.transBuffer = "";
+	this.cyrBuffer = "";
+	//alert("this is reset position function");
+}
+
+function StateObject(node) {
+	this.node = node;
+	this.reset = resetState;
+	this.cyrBuffer = "";
+	this.transBuffer = "";
+	//alert("this is stAteObject function");
+	this.position = new Position(node);
+}
+
+
+var stateHash = new Array();
+
+function isExplorer() {
+  return (document.selection != undefined && document.selection.createRange().isEqual != undefined);
+}
+
+function pressedKey(event) {
+  if (isExplorer())
+	return event.keyCode;
+  else{
+  // alert("test02..event.which.."+event.which+"...event.charCode ..."+event.charCode); 
+    return event.which;
+  }
+}
+
+function translitonkey(event) {
+	if ((event.keyCode == 255 && event.charCode > 0) ) 
+	{
+		return;
+	}
+    
+	if (event == undefined)
+		event = window.event;
+    
+	var node = null;
+	if (event.target)
+		node = event.target;
+	else if (event.srcElement)
+		node = event.srcElement;
+		
+	
+	
+	// initialize state
+	var state = stateHash[node];
+	if (state == null) {
+		state = new StateObject(node);
+		stateHash[node] = state;
+	}
+	if ( (pressedKey(event) > 20) && !event.ctrlKey && !event.altKey && !event.metaKey && (pressedKey(event) != 46) && (pressedKey(event) != 0)) {
+		if(pressedKey(event) == 46)
+                        var c = "";
+                else  
+			var c = String.fromCharCode(pressedKey(event));
+		
+		//alert("scripted_message..."+scripted_message);
+		// process input
+		var result = process_translit(state, c);
+		//alert("test1..c..."+c +"result.."+result.out);
+		// finish up
+		if (c != result.out || result.replace != 0) {
+		  if (isExplorer())
+			event.returnValue = false;
+		  else
+                    //alert("test1..c..."+c +"result.."+result.out);
+		    event.preventDefault();
+		  
+		  replaceValue(node, result.out, result.replace);
+		  
+		  state.position = new Position(node);
+
+		}
+		scripted_message += c;
+		//alert("scripted_message..."+scripted_message);
+	}
+	 if(pressedKey(event) == 8 )
+        {
+		forBackspace();
+        } //==8 **/
+//alert("scripted_message out of if..."+scripted_message);
+document.editform.hexaStr.value = scripted_message;	
+}
+/////////////////////////////////////////////////////////////////////
+function forBackspace()
+{
+	var currentChar;
+	var preChar;
+	var secondToLastChar;
+	var thirdToLastChar;
+	var k =scripted_message.length, l=1;
+	var flag = false;
+	var tempFlag = false;
+	var bool = false;
+	if(scripted_message.length ==  1)
+	       	tempStr = scripted_message.substring(0,scripted_message.length - 1);
+	for(i=scripted_message.length -1; i >0; i--)
+	{
+		if(i<scripted_message.length) 
+		//var currentChar = scripted_message.substring(k,scripted_message.length - 1);
+		var currentChar = scripted_message.charAt(i);
+		switch(currentChar){
+				case 'a': 
+					preChar = scripted_message.charAt(scripted_message.length - 2);
+					//alert("This is   a         case preChar="+preChar);
+					if(preChar == ' ')
+					{
+						tempStr = scripted_message.substring(0,scripted_message.length - 2);
+						//alert("This is   a         case tempStr="+tempStr);
+					}
+					else if(preChar == 'z')
+						 tempStr = scripted_message.substring(0,scripted_message.length - 1);
+					else
+						findConsonent(preChar);		
+					flag = true;
+					break ;
+				case 'e':
+					preChar = scripted_message.charAt(scripted_message.length - 2);
+					//alert("This is    e              currentChar="+currentChar+"   preChar="+preChar);
+					//if(preChar == "")
+					if(preChar == ' ')
+						 tempStr = scripted_message.substring(0,scripted_message.length - 1);
+					else	
+						findConsonent(preChar);		
+					//bool = true;
+					flag = true;
+					break ;
+				case 'E':
+					preChar = scripted_message.charAt(scripted_message.length - 2);
+					//alert("This is    E              currentChar="+currentChar+"   preChar="+preChar);
+					//if(preChar == "")
+					if(preChar == ' ')
+						 tempStr = scripted_message.substring(0,scripted_message.length - 1);
+					else
+					{
+						bool = true;
+						findConsonent(preChar);		
+					}
+					flag = true;
+					break ;
+				case 'i':
+					preChar = scripted_message.charAt(scripted_message.length - 2);
+					//alert("This is    i              currentChar="+currentChar+"   preChar="+preChar);
+					//if(preChar == "")
+					if(preChar == ' ')
+						 tempStr = scripted_message.substring(0,scripted_message.length - 1);
+					else
+					{
+						bool = true;
+						findConsonent(preChar);		
+					}
+					flag = true;
+					break ;
+				case 'I':
+					bool = true;
+					tempStr = scripted_message.substring(0,scripted_message.length - 1);
+					flag = true;
+					break ;
+				case 'o':
+					preChar = scripted_message.charAt(scripted_message.length - 2);
+					//alert("This is    o              currentChar="+currentChar+"   preChar="+preChar);
+					bool = true;
+					if(preChar == ' ')
+						tempStr = scripted_message.substring(0,scripted_message.length - 1);
+					else
+						findConsonent(preChar);		
+					flag = true;
+					break ;
+				case 'O':
+					bool = true;
+					tempStr = scripted_message.substring(0,scripted_message.length - 1);
+					flag = true;
+					break ;
+				case 'u':
+					preChar = scripted_message.charAt(scripted_message.length - 2);
+					//if(preChar == "")
+					if(preChar == ' ')
+						tempStr = scripted_message.substring(0,scripted_message.length - 1);
+					else if((currentChar == 'u') && (preChar == 'a'))
+					{
+						secondToLastChar = scripted_message.charAt(scripted_message.length - 3);
+						findVowel(secondToLastChar);
+						if(!tempFlag)
+							tempStr = scripted_message.substring(0,scripted_message.length - 2) +"a";
+						if(secondToLastChar == "")
+							tempStr = scripted_message.substring(0,scripted_message.length - 2);
+					}
+
+					else
+					{
+						findConsonent(preChar);		
+					}
+					flag = true;
+					break ;
+				default :
+					preChar = scripted_message.charAt(scripted_message.length - 2);
+					secondToLastChar = scripted_message.charAt(scripted_message.length - 3);
+					//alert("This is  default outer case currentChar="+currentChar+"    preChar="+preChar +"        secondToLastChar="+secondToLastChar);
+					/**
+					 * String is " kh" " gh" " ph" both caracter are consonent 
+					 * if pre character is consonent  will go in if(!tempFlag) condition  
+					 * if current character is 'h' then 
+					**/
+					findVowel(preChar);
+					if((currentChar == 'h') && ( secondToLastChar == ' ') && (!tempFlag))
+						tempStr = scripted_message.substring(0,scripted_message.length - 2);
+					else if((currentChar != ' ') && (preChar != ' ') && (!tempFlag))
+					{
+						//alert("This is if Not tempFlag ="+tempFlag);
+						if(currentChar == 'h')
+						{
+							findComposite(preChar);
+							//alert("This is currentChar  equal h tmpstr="+tempStr);
+						}
+						else
+							//  if string is "ndr" i.e all are consonent & curent Character is not "h"	
+							tempStr = scripted_message.substring(0,scripted_message.length - 1)+"a";
+					}
+					else 
+						tempStr = scripted_message.substring(0,scripted_message.length - 1);
+					//alert("This is default outer case substring ="+tempStr);
+					flag = true;
+					
+			}//switch case 
+		//k= k - 1;
+		l= l + 1;
+		if(flag == true) break;
+	} //for loop
+	scripted_message = tempStr;
+	//alert("	scripted_message="+scripted_message);
+function findConsonent (preChar)
+{
+	switch(preChar)
+	{
+		case 'k':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			//alert("This is k case substring ="+tempStr);
+			break;
+			case 'g':
+				if(bool)
+					tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+				else
+				{
+					k = k - 1;
+					//alert(" k   ="+k +"   scripted_message.length =    "+scripted_message.length  );
+					secondToLastChar= scripted_message.charAt(scripted_message.length - 3);
+					if(secondToLastChar == 'N')
+						tempStr = scripted_message.substring(0,scripted_message.length - 3);
+					else	
+						tempStr = scripted_message.substring(0,scripted_message.length - 2);
+				}
+				bool = false;
+				break;
+		case 'G':
+				if(bool)
+					tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+				else
+					tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			//alert("This is G case substring ="+tempStr);
+			bool = false;
+			break;
+		case 'c':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			//alert("This is m case substring ="+tempStr);
+			bool = false;
+			break;
+		case 'j':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+			{
+				secondToLastChar= scripted_message.charAt(scripted_message.length - 3);
+				if(secondToLastChar == 'N')
+					tempStr = scripted_message.substring(0,scripted_message.length - 3);
+				else	
+					tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			}
+			bool = false;
+			//alert("This is j case substring ="+tempStr);
+			break;
+		case 'T':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			//alert("This is T case substring ="+tempStr);
+			bool = false;
+			break;
+		case 'D':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			//alert("This is D case substring ="+tempStr);
+			bool = false;
+			break;
+		case 't':	
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			//alert("This is t case substring ="+tempStr);
+			bool = false;
+			break;
+		case 'd':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			//alert("This is d case substring ="+tempStr);
+			bool = false;
+			break;
+		case 'n':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			//alert("This is n case substring ="+tempStr);
+			break;
+		case 'N':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			break;
+		case 'p':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			break;
+		case 'f':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			break;
+		case 'b':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			break;
+		case 'm':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			break;
+		case 'y':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			break;
+		case 'R':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			break;
+		case 'r':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			break;
+		case 'l':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			break;
+		case 'v':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			break;
+		case 'w':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			break;
+		case 'W':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			break;
+		case 's':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			break;
+		case 'S':
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			break;
+		case 'h':
+			secondToLastChar = scripted_message.charAt(scripted_message.length - 3);
+			//alert("This is         h case              preChar="+preChar);
+			findVowel(secondToLastChar);
+			if(bool)
+				tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			else if(secondToLastChar == ' ')
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			else if(secondToLastChar == 'c')
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+               		else if (!tempFlag)
+
+                                tempStr = scripted_message.substring(0,scripted_message.length - 3);
+			else
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+                        break;
+		 case 'a':
+                        secondToLastChar = scripted_message.charAt(scripted_message.length - 3);
+                        //alert("This is         a case              preChar="+preChar);
+			findVowel(secondToLastChar);
+                        if (!tempFlag)
+                                tempStr = scripted_message.substring(0,scripted_message.length - 2) +"a";
+                        else
+                                tempStr = scripted_message.substring(0,scripted_message.length - 1);
+                        break;
+
+		case 'A':
+			tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			break;
+		case 'e':
+			//currentChar= scripted_message.charAt(scripted_message.length - 2);
+			//alert("This is e consonent case"+"              preChar="+preChar+"     scripted_message="+scripted_message);
+			if( preChar != ' ')
+				secondToLastChar = scripted_message.charAt(scripted_message.length - 3);
+			findVowel(secondToLastChar);
+			thirdToLastChar = scripted_message.charAt(scripted_message.length - 4);
+			scripted_message.substring(k,scripted_message.length - 3);
+			/**
+				This below if check is for consonent cheking
+			**/
+			if((!tempFlag) && (secondToLastChar != ' '))
+			{
+                		tempStr = scripted_message.substring(0,scripted_message.length - 2) +"a";
+			}
+			else if((currentChar == 'e') && (preChar == 'e') && (secondToLastChar == 'e')&&(thirdToLastChar == 'e'))
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			else if((currentChar == 'e') && (preChar == 'e') && (secondToLastChar == 'e'))
+				tempStr = scripted_message.substring(0,scripted_message.length - 1);
+			else if((currentChar == 'e') && (preChar == 'e'))
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			else
+		                tempStr = scripted_message.substring(0,scripted_message.length - 2);
+                        break;
+		case 'E':
+			tempStr = scripted_message.substring(0,scripted_message.length - 2);
+                        break;
+		case 'i':
+			secondToLastChar = scripted_message.charAt(scripted_message.length - 3);
+			findVowel(secondToLastChar);
+			//alert("This is i case"+"              secondToLastChar="+secondToLastChar+"     scripted_message="+scripted_message +"   tempFlag="+tempFlag);
+			//if((secondToLastChar != 'a')||(secondToLastChar != 'e')|| (secondToLastChar != 'i')||(secondToLastChar != 'o')||(secondToLastChar != 'u'))
+			if(!tempFlag)
+			{
+				if(bool)
+	                		tempStr = scripted_message.substring(0,scripted_message.length - 2) +"a";
+				else
+				      	tempStr = scripted_message.substring(0,scripted_message.length - 1);
+			}
+			else if( (currentChar == 'i') && (preChar == 'i') && (secondToLastChar == 'i') )
+			{
+				thirdToLastChar = scripted_message.charAt(scripted_message.length - 4);
+				findVowel(thirdToLastChar);
+			/**
+			  * if on forth position 'i' is present  flag would be true
+			  * string is like "bai-ii-i" or ai-ii-i or ii-ii
+			**/
+				if(tempFlag)
+				{
+					var forthToLastChar = scripted_message.charAt(scripted_message.length - 5);
+					// if string is ai-ii-i or ii-ii-i
+					if(forthToLastChar == 'a') 
+			      			tempStr = scripted_message.substring(0,scripted_message.length - 1);
+						
+					else if(forthToLastChar == 'i') 
+	                			tempStr = scripted_message.substring(0,scripted_message.length - 1);
+					else
+			      			tempStr = scripted_message.substring(0,scripted_message.length - 2);
+				}
+			      	else
+					tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			
+			}
+			else
+			      	tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			bool = false;
+			break;
+		case 'I':
+			tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			break;
+		case 'u':
+			secondToLastChar= scripted_message.charAt(scripted_message.length - 3);
+			thirdToLastChar = scripted_message.charAt(scripted_message.length - 4);
+			//alert("This is consonent u case"+"currentChar="+currentChar+" preChar="+preChar+"   secondToLastChar= "+ secondToLastChar+"       thirdToLastChar="+thirdToLastChar+"     scripted_message="+scripted_message+"    bool="+bool);
+			findVowel(secondToLastChar);
+			if((currentChar == 'u') && (preChar == 'u') && (secondToLastChar == 'u')&&(thirdToLastChar == 'u'))
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			else if((currentChar == 'u') && (preChar == 'u') && (secondToLastChar == 'u') && (thirdToLastChar == 'a'))
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			else if((currentChar == 'u') && (preChar == 'u') && (secondToLastChar == 'u'))
+				tempStr = scripted_message.substring(0,scripted_message.length - 1);
+			else if((currentChar == 'u') && (preChar == 'u') && (secondToLastChar == 'a'))
+				tempStr = scripted_message.substring(0,scripted_message.length - 1);
+			else if((currentChar == 'u') && (preChar == 'u'))
+			{
+				findVowel(secondToLastChar);
+				if(secondToLastChar == ' ')
+					tempStr = scripted_message.substring(0,scripted_message.length - 2);
+				else if(!tempFlag)
+	                                tempStr = scripted_message.substring(0,scripted_message.length - 2) +"a";
+				else
+					tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			}
+			else
+			{
+				if(bool)
+					tempStr = scripted_message.substring(0,scripted_message.length - 2) +"a";
+				else
+					tempStr = scripted_message.substring(0,scripted_message.length - 1);
+			}
+			bool = false;
+			break;
+		case 'U':
+                	tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			break;
+		case 'o':
+			secondToLastChar= scripted_message.charAt(scripted_message.length - 3);
+			//alert("This is o Consonent case"+"              secondToLastChar="+secondToLastChar+"     scripted_message="+scripted_message );
+			if(secondToLastChar == ' ')
+				tempStr = scripted_message.substring(0,scripted_message.length - 2);
+				// if string is like "poo"
+			else 
+			{
+				findVowel(secondToLastChar);
+				if(!tempFlag)
+					tempStr = scripted_message.substring(0,scripted_message.length - 2)+"a";
+				else if( (currentChar == 'o') && (preChar == 'o') && (secondToLastChar == 'o') )
+	        	        {
+        	        		thirdToLastChar = scripted_message.charAt(scripted_message.length - 4);
+					findVowel(thirdToLastChar);
+					var forthToLastChar = scripted_message.charAt(scripted_message.length - 5);
+					if( thirdToLastChar == ' ')
+       	                	        	tempStr = scripted_message.substring(0,scripted_message.length - 1);
+						// if there is any consonent character at 4 th position of a string like "po-oo"
+					else if(!tempflag)
+                	       	                tempStr = scripted_message.substring(0,scripted_message.length - 2);
+					else if(forthToLastChar == 'o')
+                               			tempStr = scripted_message.substring(0,scripted_message.length - 1);
+	               	                else
+			                        	/**
+	        	        		          * if on forth position 'vowel' is present  flag would be true
+				                          * string is like "bao-oo-o" or ao-oo-o or oo-oo
+							**/
+                        	        	        tempStr = scripted_message.substring(0,scripted_message.length - 2);
+        	             	}
+				else
+					tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			}
+			bool = false;
+			break;
+		case 'O':
+			tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			break;
+		default :
+			//alert("This is default inner case");
+	} //inner switch
+} //findConsonent 
+function findComposite(currentChar)
+{
+     	//alert("This is composit case currentChar"+currentChar);
+	switch(currentChar)
+        {
+        	case 'K':
+                case 'k':
+                case 'G':
+                case 'g':
+                case 'C':
+                case 'c':
+                case 'J':
+                case 'j':
+                case 'T':
+                case 't':
+                case 'D':
+                case 'd':
+                case 'P':
+                case 'p':
+                case 'B':
+                case 'b':
+                case 'S':
+                case 's':
+        		tempStr = scripted_message.substring(0,scripted_message.length - 2);
+			//alert(" scripted_messag ="+tempStr);
+                        break;
+		default :
+			tempStr = scripted_message.substring(0,scripted_message.length - 1) +"a";
+			bool = false;
+	} //switch            
+
+} //findComposite
+function findVowel(secondToLastChar)
+{
+	var tempStrin = new Array();
+	tempStrin[0] = 'a';
+	tempStrin[1] = 'e';
+	tempStrin[2] = 'i';
+	tempStrin[3] = 'o';
+	tempStrin[4] = 'u';
+	var i=0;
+	for( i in tempStrin)
+	{
+		if(secondToLastChar == tempStrin[i])
+		{
+			tempFlag = true;
+			break;
+		}
+	} //for
+} //findvowel
+///////////////////////////////////////////////
+}
+////////////////////////////////////////////////////////////////////
+
+function TranslitResult() {
+	this.out = "";
+	this.replace = 0;
+}
+
+function process_translit(state, c) {
+	// reset state if position changed
+	if (!state.position.isEqual(new Position(state.node)))
+		state.reset();
+		
+	var result = new TranslitResult();
+	
+	// initial backbuffer. Add to it as characters are converted
+	var backbuffer = getBackBuffer(state.node, state.cyrBuffer.length, 2);
+	var chunks = new Array();
+	
+	state.transBuffer = state.transBuffer+ c
+
+	var str = to_cyrillic(state.cyrBuffer+c, backbuffer, chunks);
+
+	// remove backbuffer from output
+	str = str.substr(backbuffer.length);
+	result.out = str; 
+	/* str is now left alone - it has the output matching contents of chunks and 
+	   will be used to reinitialize backbuffers, along with chunks and state.transBuffer
+	*/
+	
+	// get the difference between state.cyrBuffer and output
+	for (var i = 0; i < Math.min(state.cyrBuffer.length, result.out.length); i++) {
+		if (state.cyrBuffer.substr(i, 1) != result.out.substr(i, 1)) {
+			result.replace = state.cyrBuffer.length - i;
+			result.out = result.out.substr(i);
+			break;
+		}
+	}
+	if (result.replace == 0) {
+               if(result.out.length<state.cyrBuffer.length)
+				result.replace=state.cyrBuffer.length- result.out.length;
+		result.out = result.out.substr(Math.min(state.cyrBuffer.length, result.out.length));
+                 
+                       //    result.out+="\u0008"
+                         
+	}
+	
+	// update state: backbuffer, bufferArray
+	if (chunks.length > 0 && chunks[chunks.length - 1] == result.out.substr(result.out.length - 1)) {
+		// no convertion took place, reset state
+		state.reset();
+	}
+	else {
+		while (state.transBuffer.length > maxcyrlength) {
+			state.transBuffer = state.transBuffer.substr(chunks[0].length);
+			chunks.shift();
+			str = str.substr(1);
+		}
+		state.cyrBuffer = str;
+	}
+	return result;
+}
+
+function getBackBuffer(node, offset, count) {
+		
+	if (isExplorer()) { //.tagName.toUpperCase() == "EDITOR") {
+	
+		var range = document.selection.createRange();
+		range.moveStart("character", -offset);
+		var result = range.text.substr(-count);
+		if (!result)
+			result = "";
+			
+		return result;
+
+	} else {
+		return node.value.substring(0, node.selectionStart - offset).substr(-count);
+	}
+}
+
+// need this for bookmarklets
+function getSelectedNode() {
+  if (document.activeElement)
+	return document.activeElement;
+  else
+    if (window.getSelection && window.getSelection() && window.getSelection().rangeCount > 0) {
+		var range = window.getSelection().getRangeAt(0);
+		if (range.startContainer && range.startContainer.childNodes && range.startContainer.childNodes.length > range.startOffset)
+			return range.startContainer.childNodes[range.startOffset]
+    }
+  return null;
+}
+
+function toggleCyrMode() {
+	var node = getSelectedNode();
+	if (node) {
+		if (stateHash[node]) {
+			if (removeKeyEventListener(node))
+				delete stateHash[node];
+		}
+		else {
+			if (addKeyEventListener(node))
+				stateHash[node] = new StateObject(node);
+		}
+	}
+}
+
+function addKeyEventListener(node) {
+	if (node.addEventListener)
+		node.addEventListener("keypress", translitonkey, false);
+	else if (node.attachEvent)
+	    node.attachEvent("onkeypress", translitonkey);
+	else return false;
+	return true;
+}
+function removeKeyEventListener(node) {
+	if (node.removeEventListener)
+		node.removeEventListener("keypress", translitonkey, false);
+	else if (node.detachEvent)
+		node.detachEvent("onkeypress", translitonkey);
+	else return false;
+	return true;
+}
+
+function getSelectedText() {
+	if (isExplorer()) {
+		return document.selection.createRange().text;
+	}
+	else {
+		var node = getSelectedNode();
+		if (node && node.value && node.selectionStart != undefined && node.selectionEnd != undefined)
+			return node.value.substring(node.selectionStart, node.selectionEnd);
+	}
+	return "";
+}

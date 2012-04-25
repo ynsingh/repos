@@ -1,0 +1,53 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(4900,1374)(1414,-1123)
+{\color[rgb]{0,0,0}\thinlines
+\put(5776,-286){\circle{1060}}
+}%
+{\color[rgb]{0,0,0}\put(3094,-383){\circle{1060}}
+}%
+{\color[rgb]{0,0,0}\put(1576, 89){\circle{212}}
+}%
+{\color[rgb]{0,0,0}\put(3601,-136){\vector( 1, 0){1650}}
+}%
+{\color[rgb]{0,0,0}\put(5326,-511){\vector(-1, 0){1725}}
+}%
+{\color[rgb]{0,0,0}\put(1576, 14){\line( 0,-1){1050}}
+}%
+{\color[rgb]{0,0,0}\put(1576,-1036){\line(-2,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(1576,-1036){\line( 2,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(1576,-586){\line(-1,-1){ 75}}
+}%
+{\color[rgb]{0,0,0}\put(1576,-586){\line( 1,-1){ 75}}
+}%
+{\color[rgb]{0,0,0}\put(2626,-586){\vector(-1, 0){675}}
+}%
+{\color[rgb]{0,0,0}\put(2026,-136){\vector( 1, 0){600}}
+}%
+\put(2251,-61){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}
+\put(4651,-61){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}
+\put(1951,-811){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2}%
+}}}
+\put(2476,-811){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}3}%
+}}}
+\put(3826,-811){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2}%
+}}}
+\put(5101,-811){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}3}%
+}}}
+\put(2851,-361){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}web}%
+}}}
+\put(2926,-661){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}IF}%
+}}}
+\put(5401,-361){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Notice}%
+}}}
+\end{picture}

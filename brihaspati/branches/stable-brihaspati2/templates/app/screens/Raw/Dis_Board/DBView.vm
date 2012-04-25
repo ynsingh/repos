@@ -1,0 +1,195 @@
+#*
+ * @(#)DBView.vm
+ * Copyright (c)2005-2006, 2009, 2010, 2011 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @author <a href="mailto:aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
+ * @author <a href="sumanrjpt@yahoo.co.in">Suman Rajput</a>
+ * @author <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
+ * @author <a href="mailto:singh_jaivir@Rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @modified date: 31-12-2009
+ * @ modified date: 13-Oct-2010 (Shaista), 11-Aug-2011 (Sunil Kr)
+ *#
+<head>
+##This Script use for Fck Editor in Textarea.
+<script type="text/javascript">
+        _editor_url = "$content.getURI("/scrpts/")";
+        _editor_lang = "en";
+</script>
+<script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script> ##sk
+</head>
+<body onload="initEditor()">
+$page.setBgColor($ui.bgcolor)
+$page.setTitle("Home|$CName|Communication|Discussion Board|Read Message")
+$!data.getMessage()
+#set($lang=$data.getUser().getTemp("lang").toString())
+
+<table bgcolor="$ui.tableColor" width=100%> 
+<tr bgcolor="$ui.menuColor"><td colspan=5> 
+	<b>
+
+##($stats == "fromIndex") Use for general discussion group ## sk
+##($mode2 == "instituteWise") Use for insititue wise discussion group ## sk
+
+#if($stats=="fromIndex")
+        <a href=$link.setPage("call,IndexHome.vm")>Home</a> |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4").addPathInfo("stats","fromIndex")>$brih_general $DiscussionBoard</a>|
+        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("stats","fromIndex").addPathInfo("mode","All").addPathInfo("count","4")>$LocalMail_MailContent_msg3</a> | $Notice_Read $brih_msg2
+#elseif($mode2=="instituteWise")
+        <a href=$link.setPage("call,IndexHome.vm")>Home</a> |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","8").addPathInfo("mode2","instituteWise")>$RemoteInstitute $brih_wise $DiscussionBoard</a>|
+        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode2","instituteWise").addPathInfo("mode","All").addPathInfo("count","8")>$LocalMail_MailContent_msg3</a> | $Notice_Read $brih_msg2
+#else
+	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | <a href=$link.setPage("CourseHome.vm")>$CName</a> | 
+        <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | 
+        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</a> |
+	<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("count","4")>$LocalMail_MailContent_msg3</a> | $Notice_Read $brih_msg2
+#end
+</td></tr>
+<tr>
+#if($stats=="fromIndex")
+        #if($tdcolor != "4")
+        <td>
+        #elseif($tdcolor=="4")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("stats","fromIndex").addPathInfo("count","4")>$brih_general $DiscussionBoard</td>
+#elseif($mode2=="instituteWise")
+        #if($tdcolor != "8")
+        <td>
+        #elseif($tdcolor=="8")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8")>$RemoteInstitute $brih_wise $DiscussionBoard</td>
+#else
+        #if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor=="1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
+        #if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor=="2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
+        #if($tdcolor != "3")
+        <td>
+        #elseif($tdcolor=="3")
+        <td bgcolor="#AFDCEC">
+        #end
+	#if($data.getUser().getTemp("role") == "student")
+                 <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3") style=text-decoration:none> $Notice_NoticeContent_msg1</a>
+        #else
+	        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3")>$brih_Notices</td>
+	#end
+        #if($tdcolor != "4")
+        <td>
+        #elseif($tdcolor=="4")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+	#if($data.getUser().getTemp("role") != "student")
+        	#if($tdcolor != "5")
+	        <td>
+        	#elseif($tdcolor=="5")
+	        <td bgcolor="#AFDCEC">
+        	#end
+	   	<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+        #end
+#end
+</tr>
+</table> 
+<form method="post" enctype="multipart/form-data">
+<table width=100% bgcolor="$ui.tableColor"> 
+	<tr><td>    
+    	<table bgcolor="$ui.tableColor" width=100%> 
+      	#if($errorTemplate)
+      		<tr><td colspan="4"> 
+        		<table bgcolor="$ui.tableColor"> 
+            			<tr> 
+				<td> 
+                		<img src="$ui.image($ui.alertImage,$data)">
+              			</td>
+              			<td> 
+                		#parse ($errorTemplate)
+              			</td>  
+				</tr>  
+          		</table> 
+        	</td></tr> 
+      	#end
+	<tr bgcolor="$ui.menuColor"><td>$Notice_Subject :&nbsp $sub </td></tr>
+     	<tr><td>$Notice_Sender :&nbsp $retrive_user </td></tr>
+	<tr bgcolor="$ui.menuColor">
+	#if($lang == "hindi")
+     	<td>$brih_Da $LocalMail_MailView_msg2 :</u></b>&nbsp $retrive_date</td>
+	#else
+     	<td>$LocalMail_MailView_msg2 :</u></b>&nbsp $retrive_date</td>
+	#end
+	</tr>
+     	##<tr><td> 
+     	##<table align=center> 
+     		<tr><td>$brih_msg2 :</td></tr>
+      		<tr> <td>
+		<textarea id="ta" name=description rows=10 cols=110 wrap=physical onFocus="this.blur();"> $message</textarea>
+       		</td></tr>
+	##</table> 
+     	##</td></tr> 
+   	</table> 
+	#set($count=1)
+	<table width=100% bgcolor="$ui.tableColor"> 
+				<tr><td><b><u>$brih_attachment :</u></b></td></tr>
+		#foreach($file in $dirContent)
+			<tr> 
+				<td>&nbsp;&nbsp;</td>
+		     		#set($countfield=0)
+		     		<td>&nbsp <image src="$content.getURI("/images/star_off_2.gif")" height=10 width=10> &nbsp </td>
+				#foreach($var in $file)
+		     			#if($countfield==0)
+						#if($stats=="fromIndex")
+                                                        <input type="hidden" name="stats" value="$stats">
+                                                        <td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("topic","$topic").addPathInfo("view","content").addPathInfo("type","DB").addPathInfo("stats","fromIndex").addPathInfo("msgid",$msgID).addPathInfo("filename",$var)","newWin");>$var</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                #elseif($mode2=="instituteWise")
+                                                        <input type="hidden" NAME="mode2" value="$mode2">
+                                                        <td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("topic","$topic").addPathInfo("view","content").addPathInfo("type","DB").addPathInfo("mode2","instituteWise").addPathInfo("msgid",$msgID).addPathInfo("filename",$var)","newWin");>$var</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                #else   
+                                                        <td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("topic","$topic").addPathInfo("view","content").addPathInfo("type","DB").addPathInfo("msgid",$msgID).addPathInfo("filename",$var)","newWin");>$var</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                #end
+	             			#else
+		         			<td>
+							#if($lang == "hindi")
+								<b>$var $DisBoard_DBView_msg22  </b></td>
+							#else
+								<b>$DisBoard_DBView_msg22  $var</b></td>
+							#end
+		     			#end
+		     		#set($countfield=1)
+			#end
+			</tr> 
+		#set ( $count= $count+1)
+		#end
+	</table>
+	<tr bgcolor="$ui.menuColor"><td colspan=5>
+	#if($stats=="fromIndex")
+                <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("stats","fromIndex").addPathInfo("msgid",$msgID).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor)>$LocalMail_Reply</a>&nbsp&nbsp
+                <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("stats","fromIndex").addPathInfo("course_id",$workgroup).addPathInfo("mode","All").addPathInfo("count",$tdcolor).addPathInfo("countTemp","1")>$LocalMail_Close</a>
+        #elseif($mode2=="instituteWise")
+                <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode2","instituteWise").addPathInfo("msgid",$msgID).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count","8")>$LocalMail_Reply</a>&nbsp&nbsp
+                <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode2","instituteWise").addPathInfo("course_id",$workgroup).addPathInfo("mode","All").addPathInfo("count","8").addPathInfo("countTemp","1")>$LocalMail_Close</a>
+        #else
+		<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("msgid",$msgID).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor)>$LocalMail_Reply</a>&nbsp&nbsp
+		<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("course_id",$workgroup).addPathInfo("mode","All").addPathInfo("count",$tdcolor).addPathInfo("countTemp","1")>$LocalMail_Close</a>
+	#end
+ 	 </td></tr>
+</table> 
+</td></tr> 
+</form>
+</body>
+<script LANGUAGE="JAVASCRIPT">									  
+	function popupWin(urlName,popupName)
+	{
+		 window.open(urlName,popupName,"toolbar=yes,scrollbars=yes");
+	 }
+</script>

@@ -1,0 +1,49 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(6678,3742)(901,-3893)
+{\color[rgb]{0,0,0}\thinlines
+\put(2476,-2873){\circle{1074}}
+}%
+{\color[rgb]{0,0,0}\put(5663,-1636){\oval(674,300)}
+}%
+{\color[rgb]{0,0,0}\put(5663,-3737){\oval(674,300)}
+}%
+{\color[rgb]{0,0,0}\put(5326,-1636){\line( 0,-1){2100}}
+}%
+{\color[rgb]{0,0,0}\put(6001,-1636){\line( 0,-1){2100}}
+}%
+{\color[rgb]{0,0,0}\put(5101,-2536){\vector(-1, 0){2100}}
+}%
+{\color[rgb]{0,0,0}\put(2851,-2311){\vector( 1, 0){2100}}
+}%
+{\color[rgb]{0,0,0}\put(3076,-2911){\vector( 1, 0){2100}}
+}%
+{\color[rgb]{0,0,0}\put(5101,-3286){\vector(-1, 0){2100}}
+}%
+\put(2251,-2761){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}LOCAL}%
+}}}}
+\put(2176,-3136){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MAIL}%
+}}}}
+\put(3376,-2236){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}USERID}%
+}}}}
+\put(3601,-2761){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MSGID}%
+}}}}
+\put(3676,-3136){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MSGID}%
+}}}}
+\put(3451,-3511){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}SUBJECT,TIME }%
+}}}}
+\put(3526,-3811){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}SENDER ID}%
+}}}}
+\put(6226,-2311){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MAIL-RECIEVE}%
+}}}}
+\put(6301,-2611){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MAIL-SEND}%
+}}}}
+\put(901,-286){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}RECIEVING MAIL}%
+}}}}
+\end{picture}%

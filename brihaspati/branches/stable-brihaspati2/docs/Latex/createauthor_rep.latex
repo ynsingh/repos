@@ -1,0 +1,51 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(7463,3369)(1501,-3736)
+{\color[rgb]{0,0,0}\thinlines
+\put(3601,-2686){\oval(1678,1678)}
+}%
+{\color[rgb]{0,0,0}\put(8117,-2632){\oval(1678,1678)}
+}%
+{\color[rgb]{0,0,0}\put(1726,-2386){\circle{212}}
+}%
+{\color[rgb]{0,0,0}\put(4426,-2386){\vector( 1, 0){2850}}
+}%
+{\color[rgb]{0,0,0}\put(7426,-3061){\vector(-1, 0){3075}}
+}%
+{\color[rgb]{0,0,0}\put(2026,-2836){\vector( 1, 0){750}}
+}%
+{\color[rgb]{0,0,0}\put(1726,-2461){\line( 0,-1){750}}
+}%
+{\color[rgb]{0,0,0}\put(1726,-3211){\line( 3,-2){225}}
+}%
+{\color[rgb]{0,0,0}\put(1726,-3211){\line(-1,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(1726,-2836){\line( 1, 1){150}}
+}%
+{\color[rgb]{0,0,0}\put(1726,-2836){\line(-1, 1){150}}
+}%
+\put(2326,-2761){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}
+\put(5851,-2311){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2}%
+}}}
+\put(5851,-3361){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}4}%
+}}}
+\put(8101,-3286){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}3}%
+}}}
+\put(2926,-2836){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}AUTHOR HOME}%
+}}}
+\put(7426,-2461){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}REPOSITERY}%
+}}}
+\put(7726,-2836){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}HOME}%
+}}}
+\put(1501,-3736){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}AUTHOR}%
+}}}
+\put(4801,-511){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}CREATE REPOSITORY(AUTHOR)}%
+}}}
+\end{picture}

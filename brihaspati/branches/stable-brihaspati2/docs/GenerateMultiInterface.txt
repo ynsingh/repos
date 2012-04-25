@@ -1,0 +1,95 @@
+***********************************************************************************************
+Copyright 2006 ETRG, IIT Kanpur
+Contributions by:- Awadhesh Kumar Trivedi, Nagendra Kumar Singh, Shaista Bano
+Build on 18 January 2006
+***********************************************************************************************
+
+
+#############################################################################
+
+	Documentation for creating Brihaspati interfaces in Different Languages
+
+#############################################################################
+
+Step-1. Go to build.properties file in ~/tdk-2.3_01/webapps/brihaspati2/WEB-INF/build dir
+   	Add your Languages with single space at :
+
+    		Multilingual.Lang =
+
+   		For Example:
+    			Multilingual.Lang= english hindi RL_urdu
+Step-2. Go to ~/tdk-2.3_01/webapps/brihaspati2/WEB-INF/conf Directory
+   
+	(a).   	Create a language file with .properties extention e.g. BrihLang_hi.properties 
+		here "hi" means hindi language.
+	(b).	Copy "BrihLang_en.properties" file to your created file.
+
+		$cp BrihLang_en.properties BrihLang_<your Language name >.properties   	
+
+		For Example:
+		
+		$cp BrihLang_en.properties BrihLang_hi.properties
+
+		(b1).	Open your Language file Created
+		
+		$ vi ~/tdk-2.3_01/webapps/brihaspati2/WEB-INF/conf/BrihLang_<your Language name >.properties
+
+	******  Attention variable name on left hand side always be same in created file *******
+
+		(b2).	Left Hand side (action_msg ) are variables (given below ).
+			These variable will remain same in your Language file
+			Right hand side	is unicode String(given below according to hindi).
+			Convert this unicode Strings  to your language e.g. :
+
+		action_msg =\u0916\u0947\u0926  \u0939\u0948  \u093F\u0915\u092F\u093E  \u0917
+			    \u092F\u093E  \u0915\u093E\u092F\u0954  \u093F\u0928\u092F\u092E  
+			    \u093F\u0935\u0930\u0941\u0927  \u0939\u0948 !!
+			
+Step-3. Go to ~/tdk-2.3_01/webapps/brihaspati2/docs/unicode 	directory
+
+	(a).	Create another language  file here e.g. Var_english.properties.	Language file 
+		should have same name (acording to your language)as mentioned in build.property
+		file. 
+	(b).	Copy Var_english.properties file to your created file
+		For Example :
+
+		$cp ~/tdk-2.3_01/webapps/brihaspati2/templates/app/screens/Var_english.properties ~/tdk-2.3_01/webapps/brihaspati2/docs/unicode/Var_<your language >.properties
+
+		(b1)	Open your language file created.
+		
+	$vi ~/tdk-2.3_01/webapps/brihaspati2/docs/unicode/Var_<your language>.properties
+	
+		(b2)	Left Hand side (brih_action,brih_active ) are variables (given below ).
+                        These variable will remain same in your Language file
+                        Right hand side is unicode String(given below according to hindi).
+                        Convert this unicode Strings  to your language e.g. :
+ 
+		brih_action =\u0915\u093E\u092F\u0954  \u0915\u093E
+		brih_active =\u0938\u0915\u094D\u093F\u0930\u092F
+
+
+Step-4. Go to ~/tdk-2.3_01/webapps/brihaspati2/docs/unicode    directory	
+	(a).	Open unicodeConverter.java file
+	(b).	Change String name according to your Language  created by you in
+		 ~/tdk-2.3_01/webapps/brihaspati2/docs/unicode directory in
+
+		 FileInputStream fis = new FileInputStream("./Var_<languagename>.properties"); 
+		 FileOutputStream fos = new FileOutputStream("./tdk-2.3_01/webapps/brihaspati2/templates/app/screens/Var_<languagename>.properties",true);
+
+
+	(c).	compile unicodeConverter.java file e.g. :
+		javac unicodeConverter.java
+		java unicodeConverter
+Step-5. Put corresponding font to your local directory(see-Step-13 in InstallBrih2.txt).
+
+Step-6. Go to ~/tdk-2.3_01/webapps/brihaspati2/WEB-INF/build directory
+	(a).	Run commond / type in build directory:
+		  
+		$ ant update				
+
+Step-7. START BRIHASPATI
+	Go to  ~/tdk-2.3_01/webapps/brihaspati2/bin and open BrihStart.sh when using
+	system first time after installation. Set the variable appropriately and type
+
+		$ ./BrihStart.sh &
+ 

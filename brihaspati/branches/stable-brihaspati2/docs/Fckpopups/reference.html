@@ -1,0 +1,145 @@
+<html> <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Fck Editor</title>
+<style type="text/css">
+	@import url(htmlarea.css);
+	body { font: 14px verdana,sans-serif; background: #fff; color: #000; }
+	h1, h2 { font-family:tahoma,sans-serif; }
+	h1 { border-bottom: 2px solid #000; }
+	h2 { border-bottom: 1px solid #aaa; }
+	h3, h4 { margin-bottom: 0px; font-family: Georgia,serif; font-style: italic; }
+	h4 { font-size: 90%; margin-left: 1em; }
+	acronym { border-bottom: 1px dotted #063; color: #063; }
+	p { margin-left: 2em; margin-top: 0.3em; }
+	li p { margin-left: 0px; }
+.abstract { padding: 5px; margin: 0px 10em; font-size: 90%; border: 1px dashed #aaa; background: #eee;}
+	li { margin-left: 2em; }
+	em { color: #042; }
+	a { color: #00f; }
+	a:hover { color: #f00; }
+	a:active { color: #f80; }
+	span.browser { font-weight: bold; color: #864; }
+.fixme { font-size: 20px; font-weight: bold; color: red; background: #fab;
+	padding: 5px; text-align: center; }
+.code {
+	background: #e4efff; padding: 5px; border: 1px dashed #abc; margin-left: 2em; margin-right: 2em;
+	font-family: fixed,"lucidux mono","andale mono","courier new",monospace;
+}
+.note, .warning { font-weight: bold; color: #0a0; font-variant: small-caps; }
+.warning { color: #a00; }
+.string {
+	color: #06c;
+} /* font-lock-string-face */
+.comment {
+	color: #840;
+} /* font-lock-comment-face */
+.variable-name {
+	color: #000;
+} /* font-lock-variable-name-face */
+.type {
+	color: #008;
+	font-weight: bold;
+} /* font-lock-type-face */
+.reference {
+	color: #048;
+} /* font-lock-reference-face */
+.preprocessor {
+	color: #808;
+} /* font-lock-preprocessor-face */
+.keyword {
+	color: #00f;
+	font-weight: bold;
+} /* font-lock-keyword-face */
+.function-name {
+	color: #044;
+} /* font-lock-function-name-face */
+.html-tag {
+	font-weight: bold;
+} /* html-tag-face */
+.html-helper-italic {
+	font-style: italic;
+} /* html-helper-italic-face */
+.html-helper-bold {
+	font-weight: bold;
+} /* html-helper-bold-face */
+</style>
+<script type="text/javascript">
+	_editor_url = '../';
+	_editor_lang = 'en';
+</script>
+<script type="text/javascript" src="../../scrpts/htmlarea.js"></script>
+<script type="text/javascript" src="../../scrpts/dialog.js"></script>
+<script tyle="text/javascript" src="../../scrpts/lang/en.js"></script>
+</head>
+<body onload="HTMLArea.replace('TA')">
+<h1>Fck Editor Documentation</h1>
+<div class="abstract" style="color: red; font-weight: bold">
+      This documentation contains valid information for Fckeditor in to the Brihaspati,
+</div>
+<h2>Introduction</h2>
+<h3>What is Fckeditor?</h3>
+<p>Fckeditor is totaly based on html editor, <acronym title=""> </acronym> editor replacement for <code>&lt;textarea&gt;</code>
+fields.
+users do the following: Features of the Fck Editor:</p>
+<ul>
+  <li>Format text to be bold, italicized, or underlined.</li>
+  <li>Change the face, size, style and color.</li>
+  <li>Left, center, or right-justify paragraphs.</li>
+  <li>Make bulleted or numbered lists.</li>
+  <li>Indent or un-indent paragraphs.</li>
+  <li>Insert a horizontal line.</li>
+  <li>Insert hyperlinks and images.</li>
+  <li>View the raw HTML source of what they're editing.</li>
+  <li>and much more...</li>
+</ul>
+<ul>
+  <li>
+  <li>Generates clean, valid HTML.</li>
+  <li>It degrades gracefully to older or non-supported browsers (they get the original textarea field).</li>
+  <li>It works with any server-side languages (ASP, PHP, Perl, Java,  etc).</li>
+  <li>It's written in JavaScript and can be easily viewed, modified or  extended.</li>
+  <li>It remembers entered content when a user navigates away and then hits  "back" in their browser.</li>
+</ul>
+<p>FckEditor requires <span class="browser"><a
+href="http://www.microsoft.com/ie">Internet Explorer</a> &gt;= 5.5</span>
+(Windows only), or <span class="browser"><a
+href="http://mozilla.org">Mozilla</a> &gt;= 1.3-Beta</span> on any platform.
+Any browser based on <a href="http://mozilla.org/newlayout">Gecko</a> will
+also work, provided that Gecko version is at least the one included in
+Mozilla-1.3-Beta (for example, <a
+href="http://galeon.sf.net">Galeon-1.2.8</a>).  However, it degrades
+gracefully to other browsers. They will get a regular textarea field
+instead of a WYSIWYG editor.</p>
+<h3>Can I see an example of what it looks like?</h3>
+<p>Just make sure you're using one of the browsers mentioned above and see below.</p>
+<!--<h2>If you want to save this page,<blink> Click this [<>] button</blink>, Then you Click Save Button</h2>-->
+<table align="center" border="2">
+<tr><td align="left">
+<form onsubmit="return false;">
+<textarea id="TA" style="width: 300%; height: 20em;">
+<p> <h3>In to the Brihaspati If you want to save this page,<blink> Click this [<>] button</blink>, Then you Click Save Button </h3>
+</textarea>
+</form>
+</td></tr></table>
+<h2>Keyboard shortcuts</h2>
+<p>The Fckeditor provides the following key combinations:</p>
+<ul>
+  <li>CTRL-A -- select all</li>
+  <li>CTRL-B -- bold</li>
+  <li>CTRL-I -- italic</li>
+  <li>CTRL-U -- underline</li>
+  <li>CTRL-S -- strikethrough</li>
+  <li>CTRL-L -- justify left</li>
+  <li>CTRL-E -- justify center</li>
+  <li>CTRL-R -- justify right</li>
+  <li>CTRL-J -- justify full</li>
+  <li>CTRL-1 .. CTRL-6 -- headings (&lt;h1&gt; .. &lt;h6&gt;)</li>
+  <li>CTRL-0 (zero) -- clean content pasted from Word</li>
+</ul>
+<hr />
+<address>&copy; <a href="http://172.26.80.113:8080/brihaspati/servlet/brihaspati/" title="Visit our website"
+>Brihaspati</a> 2009.
+<br />
+Documentation written by Sunil Kumar.<i><h3>sunil.singh6094@gmail.com</h3></i>
+</address>
+</body> </html>

@@ -1,0 +1,98 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(8154,2022)(1276,-2698)
+{\color[rgb]{0,0,0}\thinlines
+\put(8851,-1711){\circle{1142}}
+}%
+{\color[rgb]{0,0,0}\put(5943,-1761){\circle{1142}}
+}%
+{\color[rgb]{0,0,0}\put(4576,-1336){\circle{336}}
+}%
+{\color[rgb]{0,0,0}\put(6451,-1636){\vector( 1, 0){1875}}
+}%
+{\color[rgb]{0,0,0}\put(8326,-1936){\vector(-1, 0){1875}}
+}%
+{\color[rgb]{0,0,0}\put(4576,-1486){\line( 0,-1){1125}}
+}%
+{\color[rgb]{0,0,0}\multiput(4576,-2611)(7.50000,-3.75000){21}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\multiput(4576,-2611)(-6.25000,-6.25000){13}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\multiput(4576,-2086)(6.00000,-6.00000){26}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\multiput(4576,-2086)(-6.00000,-6.00000){26}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\put(5401,-1711){\line( 0,-1){ 12}}
+\put(5401,-1723){\line( 0,-1){ 11}}
+\put(5401,-1734){\line( 0,-1){ 11}}
+\put(5401,-1745){\line( 0,-1){  9}}
+\put(5401,-1754){\line( 0,-1){  5}}
+\put(5401,-1759){\line( 0,-1){  2}}
+\put(5401,-1761){\line( 0, 1){  2}}
+\put(5401,-1759){\line( 0, 1){  5}}
+\put(5401,-1754){\line( 0, 1){  9}}
+\put(5401,-1745){\line( 0, 1){ 11}}
+\put(5401,-1734){\line( 0, 1){ 11}}
+\put(5401,-1723){\line( 0, 1){ 12}}
+\put(5401,-1711){\line( 0, 1){ 12}}
+\put(5401,-1699){\line( 0, 1){ 12}}
+\put(5401,-1687){\line( 0, 1){ 12}}
+\put(5401,-1675){\line( 0, 1){ 11}}
+\put(5401,-1664){\line( 0, 1){  9}}
+\put(5401,-1655){\line( 0, 1){  6}}
+\put(5401,-1649){\line( 0, 1){  1}}
+\put(5401,-1648){\line( 0, 1){  1}}
+\put(5401,-1647){\line( 0, 1){  1}}
+\put(5401,-1646){\line( 0, 1){  1}}
+\put(5401,-1645){\line( 0, 1){  1}}
+\put(5401,-1644){\line( 0, 1){  1}}
+\put(5401,-1643){\line( 0, 1){  1}}
+\put(5401,-1642){\line( 0, 1){  1}}
+\put(5401,-1641){\line( 0, 1){  1}}
+\put(5401,-1640){\line( 0, 1){  1}}
+\put(5401,-1639){\line( 0,-1){  1}}
+\put(5401,-1640){\line( 0,-1){  1}}
+\put(5401,-1641){\line( 0,-1){  1}}
+\put(5401,-1642){\line( 0,-1){  1}}
+\put(5401,-1643){\line( 0,-1){  1}}
+\put(5401,-1644){\line( 0,-1){  1}}
+\put(5401,-1645){\line( 0,-1){  1}}
+\put(5401,-1646){\line( 0,-1){  1}}
+\put(5401,-1647){\line( 0,-1){  1}}
+\put(5401,-1648){\line( 0,-1){  1}}
+\put(5401,-1649){\line( 0,-1){  6}}
+\put(5401,-1655){\line( 0,-1){  9}}
+\put(5401,-1664){\line( 0,-1){ 11}}
+\put(5401,-1675){\line( 0,-1){ 12}}
+\put(5401,-1687){\line( 0,-1){ 12}}
+\put(5401,-1699){\line( 0,-1){ 12}}
+}%
+{\color[rgb]{0,0,0}\put(4876,-1636){\vector( 1, 0){525}}
+}%
+{\color[rgb]{0,0,0}\put(5401,-1936){\vector(-1, 0){450}}
+}%
+\put(5176,-1411){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}}
+\put(5176,-2236){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2}%
+}}}}
+\put(7576,-1411){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}}
+\put(7351,-2161){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2}%
+}}}}
+\put(5701,-1711){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}web}%
+}}}}
+\put(5926,-2011){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}IF}%
+}}}}
+\put(8551,-1861){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Course}%
+}}}}
+\put(8776,-2161){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}mgt}%
+}}}}
+\put(1276,-811){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Downlode the list of student}%
+}}}}
+\end{picture}%

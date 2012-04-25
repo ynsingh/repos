@@ -1,0 +1,39 @@
+<!DOCTYPE input-data 
+	SYSTEM "http://jakarta.apache.org/turbine/dtd/intake.dtd">
+
+<!-- ==================================================================== -->
+<!--                                                                      -->
+<!--                P R O J E C T  I N P U T S                            -->
+<!--                                                                      -->
+<!-- ==================================================================== -->
+
+<input-data basePackage="org.iitk.brihaspati.">
+
+	<!-- intake example with the login screen -->
+	<group name="Login" key="login">
+		<field name="Username" key="username" type="String">
+			<rule name="required" value="true">Please enter a username</rule>
+			<rule name="minLength" value="1">You have entered a login that is too short, please try again</rule>
+			<rule name="maxLength" value="25">You have entered a login that is too long, please try again</rule>
+		</field> 
+		<field name="Password" key="password" type="String">
+			<rule name="required" value="true">Please enter a password</rule>
+			<rule name="minLength" value="4">The password you entered was too short, please try again.</rule>
+		</field>
+	</group>
+
+	<!-- validation rules for our system's user notes application -->
+	<group name="Note" key="note" mapToObject="om.Note">
+		<field name="PostedBy" key="postedBy" type="String">
+			<rule name="required" value="true">Please enter your name</rule>
+			<rule name="minLength" value="1">You have entered a name that is too short, please try again</rule>
+			<rule name="maxLength" value="255">Your name cannot be more than 255 characters</rule>
+		</field>
+		<field name="Note" key="note" type="String" mapToProperty="Note">
+			<rule name="required" value="true">Please enter your note</rule>
+			<rule name="minLength" value="1">You have entered a note that is too short, please try again</rule>
+			<rule name="maxLength" value="255">Your note cannot be more than 255 characters</rule>
+		</field>
+	</group>
+
+</input-data>

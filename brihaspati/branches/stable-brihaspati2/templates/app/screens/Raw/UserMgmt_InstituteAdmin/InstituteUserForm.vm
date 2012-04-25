@@ -1,0 +1,451 @@
+#*
+ * @(#)InstituteUserForm.vm
+ *  Copyright (c) 2005,2010,2011 ETRG,IIT Kanpur.
+ *  All Rights Reserved.
+ *  Contributors: Members of ETRG, I.I.T. Kanpur
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date: 20-10-2010, 05-08-2011, 28-12-2011(Richa)
+ *#
+
+$page.setBgColor($ui.bgcolor)
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+#if($status!="viewallUser")
+	#if($Process=="modify")
+		$page.setTitle("Admin Home | List Management | Search User | Update User")
+	#else
+		$page.setTitle("Admin Home | List Management | Search User | Remove User")
+	#end
+#else
+	#if($Process=="modify")
+		$page.setTitle("Admin Home | List Management | View All Users | Update User")
+	#else
+		$page.setTitle("Admin Home | List Management | View All Users | Remove User")
+	#end
+#end
+$!data.getMessage()
+<table bgcolor="$ui.menuColor" width=100%>
+<tr><td>
+<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
+#if($from=="usermgmt")
+##<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
+<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_usr $brih_mgmt</a> |
+#else
+##<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
+<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>$brih_list_mgmt</a> |
+##<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("mode","All").addPathInfo("listcourse","listcourse").addPathInfo("count","1") style=text-decoration:none>$brih_list_mgmt</a> |
+##<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2") style=text-decoration:none>$brih_listUsr</a> |
+#end
+#if($Process=="modify")
+	#if($lang == "hindi")
+		$brih_userDetail $brih_update 
+	#else
+		$brih_update $brih_usr 
+        #end
+#else
+	#if($lang == "hindi")
+		$brih_userDetail $brih_remove 
+	#else
+		$brih_remove $brih_usr
+	#end
+#end
+</td></tr>
+</table>
+<table width=100% align=left bgcolor="$ui.tableColor">
+<tr>
+#if($from == "usermgmt")
+	#if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_a_usr</a></td>
+        #if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor == "2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student $brih_course $brih_list</a></td>
+        #if($tdcolor != "3")
+        <td>
+        #elseif($tdcolor == "3")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none>$brih_delete $brih_Instructor</a></td>
+        #if($tdcolor != "4")
+        <td>
+        #elseif($tdcolor == "4")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none>$brih_delete $brih_student</a></td>
+	#if($tdcolor != "5")
+        <td>
+        #elseif($tdcolor == "5")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none>$brih_multi_usr</a></td>
+        #if($tdcolor != "6")
+        <td>
+        #elseif($tdcolor == "6")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none>$brih_upload $brih_photo</a></td>
+        #if($tdcolor != "7")
+        <td>
+        #elseif($tdcolor == "7")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserAttendence_Sheet.vm").addPathInfo("count","7") style=text-decoration:none>$brih_attendence</a></td>
+
+#else
+	#if($tdcolor !="1")
+	<td>
+	#elseif($tdcolor == "1")
+	<td bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>
+	#if($lang == "hindi")
+		$brih_listUsr
+	#else
+		$brih_view_all $brih_usr
+	#end
+	</a></td>
+	#if($tdcolor !="2")
+	<td>
+	#elseif($tdcolor == "2")
+	<td bgcolor="#AFDCEC">
+	#end
+	<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","2") style=text-decoration:none>$brih_view_all1</a></td>
+</tr>
+#end
+</table>
+#if($from=="usermgmt")
+##<form method="post" action="$link.setPage("call,serMgmt_Admin,UserManagement_Admin.vm").setAction("UserAction_Admin")">
+<form name="frm" method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("UserAction_InstituteAdmin")">
+#else
+##<form method="post" action="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").setAction("UserAction_Admin")">
+<form name="frm" method="post" action="$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").setAction("UserAction_InstituteAdmin")">
+#end
+<table width=100% align="left" bgcolor="$ui.menuColor">
+<tr><td> $brih_userDetail</td></tr>
+</table>
+<table width=100% bgcolor="$ui.tableColor" align="left">
+      #foreach($i in $udetail)
+      <tr bgcolor="$ui.tableColor">
+		#entry1Cell("$brih_usr $brih_name" $!i.UserName)
+		<td colspan=3></td>
+      </tr>
+      #if($Process=="modify")
+      <tr bgcolor="$ui.menuColor">
+        	#formCell ("$brih_first $brih_name" "firstname" $!i.FirstName)
+		<td colspan=3></td>
+      </tr>
+      <tr bgcolor="$ui.tableColor">
+        	#formCell ("$brih_last $brih_name" "lastname" $!i.LastName)
+		<td colspan=3></td>
+      </tr>
+      <tr bgcolor="$ui.menuColor">
+        	#formCell ("$brih_email $brih_ID" "email" $!i.Email)
+		<td colspan=3></td>
+      </tr>
+	#if($counter>=0)
+      <tr>
+      		<td>$brih_listCourse1</td><td>$brih_program $brih_name</td><td colspan=3>$brih_rollno</td>
+      </tr>
+	#end
+	#set($flag=true)
+        #set($temp=0)
+        #set($rlno="")
+        #set($grpname="")
+        #set($pgcode="")
+        #set($pgname="")
+        #set($crsnm="")
+        #set($crsals="")
+        #set($crsInst="")
+        #set($studsrid="")
+        #set($num=1)
+        	##If value of Crscount is zero,it shows user does not have rollno,prg and Course
+        	##then show default row for rollno,prg and Course list 
+	        #set($temp1=0)
+	        #if(($Crscount==0)||($sizecount==0)||($counter==0))
+	        <tr bgcolor="$ui.menuColor">
+                <td><select name="group1" size=1>
+                        <option value="Select Course">$brih_select $brih_course </option>
+			#foreach($name in $CourseList)
+				<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()- $name.getUserName() </option>
+			#end
+		</td>
+                <td><select name="prg1" size=1>
+			<option value="Select Program">$brih_select $brih_program </iption>
+			#foreach($instplist in $PrgDetail)
+	                        <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
+	                #end
+	        </td>
+                <td>
+                        <input type="text" name="rollno1" value="">
+                </td>
+                </tr>
+                #end
+        ## If counter value is less than 1 then it set to be 1 for display blank field of program and rollno
+        ## after this check type, if it is "more", then set counter to 2 for display one more entry of program and rollno
+        ## for the student.
+	#if($counter<1)
+	        #set($counter=1)
+        #elseif($type=="more")
+                #set($counter=2)
+        #end
+                ##all details of user concatenate with ":" then first split it and get values 
+	 	        #foreach($st in $UDetail)
+	 	        	#foreach($lst in $st.split(":"))
+	 	        		#if($rlno=="")
+	                                        #set($rlno=$lst)
+                                        #elseif($grpname=="")
+    	                                    #set($grpname=$lst)
+                                        #elseif($pgcode=="")
+	                                        #set($pgcode=$lst)
+	                                #elseif($pgname=="")
+	                                       #set($pgname=$lst)
+	                                #elseif($crsnm=="")
+                                               #set($crsnm=$lst)
+                                        #elseif($crsals=="")
+	                                        #set($crsals=$lst)
+	                                #elseif($crsInst=="")
+	                                       #set($crsInst=$lst)
+	                                #else
+                                               #set($studsrid=$lst)
+	                               #end
+	                        #end
+	                        #if($velocityCount%2==0)
+	                                <tr bgcolor="$ui.tableColor">
+	                        #else
+	                                <tr bgcolor="$ui.menuColor">
+	                        #end
+				#if($temp == $temp1)
+                	        #set($tmpCourse = $grpname)
+               	        <td><select name="group$num" size=1 id="$num">
+					<option value="$grpname">$crsals: $crsnm - $crsInst </option>
+        	                #end
+		                #foreach($name in $CourseList)
+		                	#if($tmpCourse!=$name.getGroupName())
+    	        				<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()- $name.getUserName() </option>
+			                #end
+			        #end
+                </select></td>
+	        <td><select name="prg$num" size=1 id="pg$num">
+		## get another record from the list
+		## display in drop down list
+		        #if($temp == $temp1)
+		        #set($tmpPrg = $pgname)
+				<option value="$pgcode">$pgname </option>
+	                #end
+        	        #foreach($instplist in $PrgDetail)
+	        	        #if($tmpPrg!=$instplist.getPrgName())
+		        	        <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
+			        #end
+        	        #end
+		 </select></td>
+	        <td colspan=3>
+		## get rollno from record
+	        	#if($temp == $temp1)
+				<input type="text" name="rollno$num" value="$rlno" id="rl$num">
+	                       	<input type="hidden" name="Srid$num" value="$studsrid">
+				#set($flag=false)
+	                #end
+	        #set($temp1=$temp1+1)
+	        #set($temp=$temp+1)
+	      #*  ## Display more link
+	        #if(($UDetail.size()!=0)&&($counter!=2)&&($Crscount==0))
+	        	#if($from=="usermgmt")
+                               <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("Process","modify").addPathInfo("username",$i.UserName).addPathInfo("count","2").addPathInfo("type","more").addPathInfo("mode","sclist").addPathInfo("from","usermgmt") style=text-decoration:none>$brih_more</a>
+	                #else
+	               <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("Process","modify").addPathInfo("username",$i.UserName).addPathInfo("count","1").addPathInfo("type","more").addPathInfo("mode","All") style=text-decoration:none>$brih_more</a>
+			#end
+	        #end*#
+        	</td></tr>
+		<input type="hidden" name="num" value="$num">
+	        		#set($rlno="")
+			        #set($grpname="")
+			        #set($pgcode="")
+			        #set($pgname="")
+			        #set($crsnm="")
+			        #set($crsals="")
+			        #set($crsInst="")
+			        #set($num=$num+1)
+			#end
+      #else
+      <tr>
+        <td><b>$brih_first $brih_name</b></td>
+	<td>$!i.FirstName</td>
+      </tr>
+      <tr>
+        <td><b>$brih_last $brih_name</b></td>
+	<td>$!i.LastName</td>
+      </tr>
+      <tr>
+        <td><b>$brih_email $brih_ID</b></td>
+	<td>$!i.Email</td>
+      </tr>
+	#foreach($j in $urollno)
+                #if(($!i.UserName)==($!j.EmailId))
+	<tr>
+        <td><b>$brih_rollno(If Student)</b></td>
+        <td>$!j.RollNo</td>
+      </tr>
+		#end
+        #end
+      #end
+	<input type="hidden" name="username" value="$i.UserName"/>
+        <input type="hidden" name="mode" value="$mode"/>
+        <input type="hidden" name="count" value="$tdcolor"/>
+	<input type="hidden" name="counter" value="$counter">
+        <input type="hidden" name="sizecount" value="$sizecount">
+        <input type="hidden" name="Instituteid" value="$InstId">
+        <input type="hidden" name="actionName">
+	<input type=hidden name="type" value="$type">
+       #end
+         ##</table> 
+     #if($counter%2==0)
+     	<tr bgcolor="$ui.menuColor">
+     #end
+        <td align="left" colspan ="5">
+          #*
+            Check for a mode, the update and delete buttons
+            shouldn't appear when inserting a new user.
+          *#
+          #if ($Process== "modify")
+            <input type="button" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
+          #elseif ($Process == "delete")
+            <input type="submit" name="eventSubmit_doDelete" value="$brih_remove"/>
+          #end
+      </td>
+    </tr>
+    </table>
+</form>
+
+<br>
+<table width=60% border=1 bgcolor="$ui.tableColor" align=center>
+#set ( $count = 1 )
+        #foreach( $entry in $error_user )
+                #set ( $count2 = 1 )
+                #foreach( $type in $error_type )
+                        #if( $count == $count2 )
+                        <tr bgcolor="$ui.tableColor">
+                        <td align=center>
+                                <font face="$ui.sansSerifFonts">User
+Name <font color="brown">"$entry"</font></font>
+                        </td>
+                        <td align=center>
+                                <font
+face="$ui.sansSerifFonts">$type</font>
+                        </td>
+                        </tr>
+                        #end
+                        #set ( $count2 = $count2+1 )
+                #end
+                #set ( $count = $count+1 )
+        #end
+</table>
+<SCRIPT LANGUAGE="javascript">
+function checkField(frm,field)
+{
+        var count=0;
+        var tmpgrp,tmpprg,tmprl;
+        var tmpgrp1,tmpprg1,tmprl1;
+        if($counter>1){
+        for(var i=1;i<=$counter;i++){
+                var grpid = document.getElementById(i);
+                var grpval = grpid.value;
+                //alert("inside script document.frm.group1.value\n"+grpval);
+                var pgid = document.getElementById("pg"+i);
+                var pgval = pgid.value;
+                //alert("inside script document.frm.prg1.value\n"+pgval);
+                var rlid = document.getElementById("rl"+i);
+                var rlval = rlid.value;
+                //alert("inside script document.frm.rollno1.value\n"+rlval);
+        if(count==0)
+        {
+                tmpgrp=grpval;
+                tmpprg = pgval;
+                tmprl = rlval;
+                count=1;
+        }
+        else
+        {
+                tmpgrp1 = grpval;
+                tmpprg1 = pgval;
+                tmprl1 = rlval;
+                count=0;
+        }
+                if(i>1)
+                {
+                        if(tmpgrp!=tmpgrp1)
+                        {
+                                if(tmpprg1==tmpprg)
+                                {
+                                        if(tmprl1!=tmprl)
+                                        {
+                                                alert("If you want to change rollno,Please change all rollno for same program.");
+                                                return;
+                                        }
+                                }
+                        }
+                        else
+                        {
+                                alert("Selected course should be different");
+                                return;
+                        }
+		}
+                if(i==$counter)
+                {
+                        frm.actionName.value=field.name;
+                        frm.submit();
+                }
+        }
+}
+if($counter==1)
+{
+	if(document.frm.group1.value=="Select Course")
+        {
+        	if(document.frm.prg1.value=="Select Program")
+                {
+                	if(document.frm.rollno1.value=="")
+                        {
+                        	frm.actionName.value=field.name;
+                                frm.submit();
+                        }
+                        else
+                        {
+                                alert("Please select program name");
+                        }
+                }
+                else if(document.frm.group1.value=="Select Course")
+                {
+  	               alert("Please select course");
+                }
+                else if(document.frm.rollno1.value=="")
+                {
+                       alert("Please fill rollno field");
+                }
+                else
+                {
+                       frm.actionName.value=field.name;
+                       frm.submit();
+                }
+        }
+        else if(document.frm.prg1.value=="Select Program")
+	{
+        	alert("Please select program name");
+        }
+        else if(document.frm.rollno1.value=="")
+        {
+                alert("Please fill rollno field");
+        }
+        else
+        {
+                frm.actionName.value=field.name;
+                frm.submit();
+        }
+}	
+}
+</script>

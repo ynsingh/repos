@@ -1,0 +1,21 @@
+$page.DefaultDoctype
+$page.setBgColor("$ui.bgcolor")
+$page.setTitle("Generate Timetable")
+
+<br/>
+<br/>
+<a href=$link.setPage("call,Timetable,Index.vm").addPathInfo("count", "1") > Back</a>
+#if($msg != "Success")
+	FATAL: $msg
+#end
+<br/>
+<a href=$link.setPage("call,Timetable,bfr_html.vm")> HTML </a> <br />
+<a href=$link.setPage("call,Timetable,bfr_pdf.vm")> PDF </a> <br />
+
+#if($errorMsgs)
+	WARNING: $errorMsgs
+#end
+
+#if($unassignedEvents)
+	The following events were not scheduled: $unassignedEvents
+#end

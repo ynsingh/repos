@@ -1,0 +1,127 @@
+#*
+ * @(#)UpdateInstituteAdmin.vm 
+ * Copyright (c)2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 22-11-2010
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ *#
+$!data.getMessage()
+$page.setTitle("Login Page | Institute Admin Registration ")
+#set($lang = $data.getUser().getTemp("lang").toString())	
+## Adding the line containing urls after the header image.
+<table  bgcolor="$ui.tableColor" width=100%>
+        <tr bgcolor="$ui.menuColor">
+                <td colspan=14>
+      		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
+                <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$RemoteInstitute $brih_mgmt</a> |
+                <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_approved #if($lang =="hindi") $brih_institute $brih_Of #else $RemoteInstitute #end $brih_list</a> | #if($lang =="hindi") $brih_detail $brih_update #else $brih_update $brih_detail #end
+                </td>
+        </tr>
+	<tr>
+                #if($tdcolor != "1")
+                <td>
+                #elseif($tdcolor == "1")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$brih_pending #if($lang =="hindi") $brih_institute $brih_Of #else $RemoteInstitute #end $brih_list</a></td>
+                #if($tdcolor != "2")
+                <td>
+                #elseif($tdcolor == "2")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_approved #if($lang =="hindi") $brih_institute $brih_Of #else $RemoteInstitute #end $brih_list</a></td>
+                #if($tdcolor != "3")
+                <td>
+                #elseif($tdcolor == "3")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","reject").addPathInfo("count","3") style=text-decoration:none>$brih_rejected #if($lang =="hindi") $brih_institute $brih_Of #else $RemoteInstitute #end $brih_list</a></td>
+        </tr>
+
+</table>
+	<form name="frm" method="post" action="$link.setPage("call,Root_Admin,UpdateInstituteAdmin.vm").setAction("Institute_RootAdmin")">
+	   <table align=left bgcolor="$ui.tableColor" width="100%">
+		#if($status=="instituteedit")
+		#foreach($instdet in $detAregis)
+	      	<tr bgcolor="$ui.menuColor">
+                 #formCell ("$RemoteInstitute $brih_name" "INAME" "$instdet.getInstituteName()")
+	        </tr>
+	        <tr>
+		 #formCell ("$RemoteInstitute $RemoteAddress" "IADDRESS" "$instdet.getInstiuteAddress()")
+		</tr>
+		<tr bgcolor="$ui.menuColor">   
+                #formCell ("$Inst_city" "ICITY" "$instdet.getCity()")
+                </tr>
+                <tr>
+                #formCell ("$Inst_pincode" "IPINCODE" "$instdet.getPincode()")
+                </tr>
+		<tr bgcolor="$ui.menuColor">      
+                #formCell ("$Inst_state" "ISTATE" "$instdet.getState()")
+                </tr>
+                <tr>
+                #formCell ("$Inst_landline" "ILANDLINE" "$instdet.getLandlineNo()")
+                </tr>
+		<tr bgcolor="$ui.menuColor">   
+		<td>$RemoteInstitute $brih_domain</td>
+		<td><input type="text" name="IDOMAIN" value="$instdet.getInstituteDomain()"></td>
+                </tr>
+                <tr>
+                #formCell ("$Inst_type" "ITYPE" "$instdet.getTypeOfInstitution()")
+                </tr>
+                 <tr bgcolor="$ui.menuColor">
+		<td>#if($lang =="hindi") $brih_institute $brih_Of #else $RemoteInstitute #end $Inst_website</td>
+                <td><input type="text"  name="IWEBSITE" value="$instdet.getInstituteWebsite()"></td></tr>
+		#end
+		#else
+			#foreach($userdet in $detAuser)
+			<tr bgcolor="$ui.menuColor">
+				###formCell ("$brih_ad $brih_first $brih_name" "IADMINFNAME" "$userdet.getAdminFname()")
+				<td>$brih_ad #if($lang =="hindi") $brih_Of1 #end $brih_first $brih_name </td>
+				<td> <input type="text" name="IADMINFNAME" value="$userdet.getAdminFname()"> </td>
+		
+                        </tr>
+                        <tr>    
+				##formCell ("$brih_ad $brih_last $brih_name" "IADMINLNAME" "$userdet.getAdminLname()")
+				<td>$brih_ad #if($lang =="hindi") $brih_Of1 #end $brih_last $brih_name </td>
+				<td>  <input type="text" name="IADMINLNAME" value="$userdet.getAdminLname()" > </td>
+                        </tr>
+			<tr bgcolor="$ui.menuColor">
+	                        ##formCell ("$brih_ad $Inst_designation" "IADMINDESIGNATION" "$userdet.getAdminDesignation()")
+				<td> $brih_ad #if($lang =="hindi") $brih_Of1 #end $Inst_designation </td>
+				<td>  <input type="text" name="IADMINDESIGNATION" value="$userdet.getAdminDesignation()" > </td>
+			</tr>
+			<tr> 
+				##formCell ("$brih_ad $brih_email" "IADMINEMAIL" "$userdet.getAdminEmail()")
+				<td> $brih_ad #if($lang =="hindi") $brih_Of1 #end $brih_email </td>
+				 <td>  <input type="text" name="IADMINEMAIL" value="$userdet.getAdminEmail()" > </td>
+			</tr>
+				<input type="hidden" name="id" value="$userdet.getId()">
+			#end   
+			#end   ##if
+			<tr bgcolor="$ui.menuColor">
+        			<td align="left" colspan=3>
+				<input type="hidden" name="actionName">
+				<input type="hidden" name="instituteid" value="$instId">
+				<input type="hidden" name="iadname" value="$iadname">
+				<input type="hidden" name="status" value="$status">
+				<input type="button" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
+        			</td>
+        		</tr>
+			
+		</table>
+	</form>
+
+
+<SCRIPT LANGUAGE="javascript">
+
+        function checkField(frm,field)
+        {
+		frm.actionName.value=field.name;
+                frm.submit();
+        }
+</SCRIPT>
+

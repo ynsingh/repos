@@ -1,0 +1,47 @@
+\setlength{\unitlength}{4657sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(3640,1531)(350,-823)
+{\color[rgb]{0,0,0}\thinlines
+\put(526,389){\circle{336}}
+}%
+{\color[rgb]{0,0,0}\put(1801,239){\circle{912}}
+}%
+{\color[rgb]{0,0,0}\put(3526,245){\circle{912}}
+}%
+{\color[rgb]{0,0,0}\put(526,239){\line( 0,-1){900}}
+}%
+{\color[rgb]{0,0,0}\multiput(526,-661)(5.00000,-5.00000){31}{\makebox(1.4124,9.8870){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\multiput(526,-661)(-5.00000,-5.00000){31}{\makebox(1.4124,9.8870){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\multiput(526,-211)(6.52174,-3.26087){24}{\makebox(1.4124,9.8870){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\multiput(526,-211)(-6.52174,-3.26087){24}{\makebox(1.4124,9.8870){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\put(2251,389){\vector( 1, 0){825}}
+}%
+{\color[rgb]{0,0,0}\put(3151, 14){\vector(-1, 0){900}}
+}%
+{\color[rgb]{0,0,0}\put(1351, 89){\vector(-1, 0){825}}
+}%
+\put(1576,239){\makebox(0,0)[lb]{\smash{{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}web}%
+}}}}
+\put(1576, 14){\makebox(0,0)[lb]{\smash{{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}interface}%
+}}}}
+\put(3226,314){\makebox(0,0)[lb]{\smash{{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Discuss-}%
+}}}}
+\put(3226,164){\makebox(0,0)[lb]{\smash{{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}ion Board}%
+}}}}
+\put(3451,-136){\makebox(0,0)[lb]{\smash{{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2}%
+}}}}
+\put(2551,-211){\makebox(0,0)[lb]{\smash{{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}3}%
+}}}}
+\put(2476,464){\makebox(0,0)[lb]{\smash{{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2}%
+}}}}
+\end{picture}%

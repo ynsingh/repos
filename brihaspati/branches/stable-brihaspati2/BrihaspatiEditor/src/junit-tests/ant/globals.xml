@@ -1,0 +1,164 @@
+<project name="reload-junit-tests" default="init" basedir=".">
+
+    <description>
+		Runs the automated JUnit tests.
+		
+		$Id: globals.xml,v 1.1 1998/03/25 23:04:54 ynsingh Exp $
+	</description>
+
+    <!-- Set directory locations for this build -->
+    <property name="report.dir" 		location="../../../$$junit-report$$"/>
+    <property name="target.dir" 		location="${report.dir}/temp"/>
+    <property name="testdata.dir" 		location="../../junit-tests"/>
+
+    <property name="jdom.dir" 			location="../../jdom"/>
+    <property name="diva.dir" 			location="../../diva"/>
+    <property name="dweezil.dir" 		location="../../dweezil"/>
+    <property name="moonunit.dir" 		location="../../moonunit"/>
+    <property name="editor.dir" 		location="../../editor"/>
+    <property name="scormplayer.dir" 	location="../../scorm-player"/>
+    <property name="xindice.dir" 		location="../../xindice"/>
+
+
+    <!-- Initialise -->
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp>
+            <format property="testDate" pattern="yyyy/MM/dd HH:mm:ss"/>
+        </tstamp>
+
+        <mkdir dir="${report.dir}"/>
+        <mkdir dir="${target.dir}"/>
+
+        <path id="class.path">
+            <pathelement path="${jdom.dir}/bin"/>
+            <pathelement path="${diva.dir}/bin"/>
+            <pathelement path="${dweezil.dir}/bin" />
+            <pathelement path="${moonunit.dir}/bin" />
+            <pathelement path="${editor.dir}/bin" />
+            <pathelement path="${scormplayer.dir}/bin" />
+            <pathelement path="${xindice.dir}/bin" />
+
+            <pathelement location="../../junit-tests/bin"/>
+
+            <fileset dir="../../org.jdom">
+                <include name="*.jar" />
+            </fileset>
+
+            <fileset dir="../../org.exolab.castor">
+                <include name="*.jar" />
+            </fileset>
+
+            <fileset dir="../../org.apache.xerces">
+                <include name="*.jar" />
+            </fileset>
+            
+            <fileset dir="../../org.beanshell">
+                <include name="*.jar" />
+            </fileset>
+
+            <fileset dir="../../org.apache.jakarta-tomcat">
+                <include name="catalina.jar" />
+            </fileset>
+
+            <fileset dir="../../org.apache.xindice">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+    </target>
+
+    <!-- JUnit -->
+    <target name="junit_run">
+        <junit printsummary="yes">
+            <classpath refid="class.path"/>
+
+            <!-- These values are picked up in the tests themselves -->
+            <sysproperty key="working.dir" value="${working.dir}"/>
+            <sysproperty key="testdata.dir" value="${testdata.dir}"/>
+
+            <formatter type="plain" usefile="false"/>
+            <formatter type="xml"/>
+
+            <batchtest todir="${target.dir}">
+                <fileset dir="${src.dir}">
+                    <exclude name="**/*AbstractTest.java"/>
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <!-- Reports -->
+    <target name="junit_report">
+        <junitreport todir="${report.dir}">
+            <fileset dir="${target.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${report.dir}"/>
+        </junitreport>
+    </target>
+
+    <!-- Clean -->
+    <target name="clean">
+        <delete dir="${target.dir}" />
+    </target>
+
+
+
+    <!-- JDOM Tests -->
+    <target name="jdom_tests">
+        <antcall target="junit_run">
+            <param name="src.dir" value="${jdom.dir}/tests" />
+            <param name="working.dir" value="${jdom.dir}" />
+        </antcall>
+    </target>
+
+    <!-- Diva Tests -->
+    <target name="diva_tests">
+        <antcall target="junit_run">
+            <param name="src.dir" value="${diva.dir}/tests"/>
+            <param name="working.dir" value="${diva.dir}"/>
+        </antcall>
+    </target>
+
+    <!-- Dweezil Tests -->
+    <target name="dweezil_tests">
+        <antcall target="junit_run">
+            <param name="src.dir" value="${dweezil.dir}/tests" />
+            <param name="working.dir" value="${dweezil.dir}"/>
+        </antcall>
+    </target>
+
+    <!-- Moonunit Tests -->
+    <target name="moonunit_tests">
+        <antcall target="junit_run">
+            <param name="src.dir" value="${moonunit.dir}/tests"/>
+            <param name="working.dir" value="${moonunit.dir}"/>
+        </antcall>
+    </target>
+
+    <!-- Editor Tests -->
+    <target name="editor_tests">
+        <antcall target="junit_run">
+            <param name="src.dir" value="${editor.dir}/tests"/>
+            <param name="working.dir" value="${editor.dir}"/>
+        </antcall>
+    </target>
+
+    <!-- SCORM Player Tests -->
+    <target name="scormplayer_tests">
+        <antcall target="junit_run">
+            <param name="src.dir" value="${scormplayer.dir}/tests"/>
+            <param name="working.dir" value="${scormplayer.dir}"/>
+        </antcall>
+    </target>
+
+    <!-- Xindice Tests -->
+    <target name="xindice_tests">
+        <antcall target="junit_run">
+            <param name="src.dir" value="${xindice.dir}/tests"/>
+            <param name="working.dir" value="${xindice.dir}"/>
+        </antcall>
+    </target>
+
+</project>

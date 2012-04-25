@@ -1,0 +1,73 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(6000,7347)(376,-6673)
+{\color[rgb]{0,0,0}\thinlines
+\put(4201,-173){\circle{928}}
+}%
+{\color[rgb]{0,0,0}\put(4201,-1997){\circle{928}}
+}%
+{\color[rgb]{0,0,0}\put(4201,-3872){\circle{928}}
+}%
+{\color[rgb]{0,0,0}\put(1088,-173){\circle{238}}
+}%
+{\color[rgb]{0,0,0}\put(6151,-5611){\circle{150}}
+}%
+{\color[rgb]{0,0,0}\put(4275,-5828){\circle{928}}
+}%
+{\color[rgb]{0,0,0}\put(3526,-6661){\framebox(1425,7125){}}
+}%
+{\color[rgb]{0,0,0}\put(1276,-286){\line( 1, 0){2475}}
+}%
+{\color[rgb]{0,0,0}\put(1276,-286){\line( 3,-4){2502}}
+}%
+{\color[rgb]{0,0,0}\put(1351,-286){\line( 3,-2){2388.461}}
+}%
+{\color[rgb]{0,0,0}\put(1126,-286){\line( 0,-1){1050}}
+}%
+{\color[rgb]{0,0,0}\put(1126,-1336){\line( 3,-2){225}}
+}%
+{\color[rgb]{0,0,0}\put(1126,-1336){\line(-1,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(1126,-886){\line( 1,-1){225}}
+}%
+{\color[rgb]{0,0,0}\put(6151,-5686){\line( 0,-1){600}}
+}%
+{\color[rgb]{0,0,0}\put(6151,-6286){\line( 1,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(6151,-6286){\line(-1,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(6151,-5986){\line( 2,-3){150}}
+}%
+{\color[rgb]{0,0,0}\put(6151,-5986){\line(-1,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(4876,-5836){\line( 1, 0){1275}}
+}%
+{\color[rgb]{0,0,0}\put(1126,-886){\line(-1,-1){150}}
+}%
+\put(3901,-5836){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}   Conrol}%
+}}}
+\put(4051,-6136){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Wiki}%
+}}}
+\put(3976,-3811){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}View}%
+}}}
+\put(4051,-4186){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Log}%
+}}}
+\put(3901,-2011){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Edit page}%
+}}}
+\put(3901,-136){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Create}%
+}}}
+\put(3976,-436){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Page}%
+}}}
+\put(376,539){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}USE CASE}%
+}}}
+\put(451,-811){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}student}%
+}}}
+\put(6376,-5761){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Primary Instructor}%
+}}}
+\end{picture}

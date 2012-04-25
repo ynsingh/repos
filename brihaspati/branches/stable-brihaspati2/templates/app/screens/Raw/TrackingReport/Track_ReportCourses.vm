@@ -1,0 +1,196 @@
+#*
+ * @(#)Track_ReportCourses.vm
+ * Copyright (c) 2009 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
+ *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
+ *
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+$page.setTitle("Tracking Report")
+$page.setBgColor("bgcolor")
+$!data.getMessage()
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+<table bgcolor="$ui.menuColor" width=100%>
+<tr><td><b>
+	<font face="$ui.sansSerifFonts">
+	#if($data.getUser().getUserName() == "admin"|| $data.getUser().getTemp("role")=="institute_admin")
+	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
+        #if($type =="active")
+    	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
+        $brih_active $brih_usr/$brih_course $brih_reports
+        #end
+	#else
+	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a> | 
+	#if($type =="user")
+      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
+        $brih_usr $brih_reports
+        #end
+        #if($type =="course")
+     	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
+        $brih_course $brih_reports
+        #end
+        #if($type =="quiz")
+    	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports</a> |
+        $brih_quiz $brih_reports
+        #end
+        #if($type==" ")
+        $brih_tracking $brih_reports
+        #end
+	#end
+	</font>
+</b></td></tr>
+</table>
+<table width="100%">
+<tr><td align=right>
+	#if($data.getUser().getUserName() == "admin"|| $data.getUser().getTemp("role")=="institute_admin")
+	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Trackadminreport.html","newWin");>$brih_help</a>
+	#else
+	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/TrackInstreport.html","newWin");>$brih_help</a>
+	#end
+</td></tr>
+</table>
+<form name="frm" method="post" action=$link.setPage("call,TrackingReport,Track_ReportCourses.vm").setAction("TrackingReport")>
+<table width=100%>
+#if($mode == "repoinfo")
+#if($type =="course")
+<table  bgcolor="$ui.tableColor" width="100%" align="left" cellsapacing="0" cellpadding ="0">
+<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_usr $brih_course $brih_infos</b></td></tr>
+<tr bgclor="$ui.menuColor" align="left">
+        <td align="left" width="50%">$brih_usrName:
+        <td align="left" width="50%"><b>$usrname</b>
+</tr>
+<tr bgclor="$ui.menuColor" >
+        <td align="left" width="50%">$brih_usr $brih_role:
+        <td align="left" width="50%"><b>$Rolename</b>
+</tr>
+<tr bgclor="$ui.menuColor">
+        <td align="left" width="50%">$brih_num $brih_of $brih_topics:
+	#if($value =="noempty")
+        <td align="left" width="50%"><b>$dc</b>
+	#else
+        <td align="left" width="50%"><b>brih_trackmsg</b>
+        #end
+</tr>
+<tr bgclor="$ui.menuColor" >
+        <td align="left" width="50%">$brih_course $brih_status:
+        <td align="left" width="50%"><b>$Active</b>
+</tr>
+<tr bgclor="$ui.menuColor" width="100%" aligh="left">
+        <td align="left" width="50%">$Res_join:</td>
+        <td align="left" width="50%"><b>$jdate</td>
+</tr>
+<tr bgclor="$ui.menuColor">
+        <td align="left" width="50%">$brih_total $brih_trktime $brih_in $brih_course:
+        <td align="left" width="50%"><b>$cctime</b>
+</tr>
+<table width="100%" align="left" cellsapacing="0" cellpadding ="0">
+<tr bgcolor="$ui.menuColor" width="100%">
+	#if($value =="noempty")
+        <td align="left" width="30%"><b>$brih_topics $brih_name:
+        <td align="left" width="20%"><b>$brih_total $brih_noOf $brih_file</td>
+        <td align="left" width="25%"><b>$brih_unpublish $brih_file</td>
+        <td align="left" width="25%"><b>$brih_publish $brih_file</td>
+</tr>
+#set($count = 1)
+        #foreach($tname in $dcourse)
+	#set($count2 = 1)
+	#foreach($totalfile in $totalfile)
+        #set($count3 = 1)
+	#foreach($unpublist in $unpublist)
+        #set($count4 = 1)
+	#foreach($nofiles in $nofiles)
+#if($count == $count2 && $count == $count3 && $count == $count4)
+	#if($velocityCount%2==0)
+        <tr bgcolor="$ui.tableColor">
+        #else
+        <tr bgcolor="$ui.menuColor">
+        #end
+        <td align="left" width="30%">$tname.getName()</td>
+        <td align="left" width="20%"><b>$totalfile</td>
+        <td align="left" width="25%"><b>$unpublist</td>
+        <td align="left" width="25%"><b>$nofiles</td>
+        </tr>
+	#end
+        #set ( $count4 = $count4+1 )
+        #end
+        #set ( $count3 = $count3+1 )
+        #end
+        #set ( $count2 = $count2+1 )
+        #end
+        #set ( $count = $count+1 )
+        #end
+ 	#end
+</table>
+#end
+#if($data.getUser().getUserName() == "admin" || $data.getUser().getTemp("role")=="institute_admin")
+#if($type =="active")
+<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b><i>$brih_most $brih_active $brih_usr</i></b></td></tr>
+<tr bgcolor="$ui.tableColor" colspan="5">
+        <td align="left" width="40%"><b>$brih_usr $brih_name</td>
+        <td align="left" width="30%"><b>$brih_total $brih_nos $brih_access</td>
+        <td align="left" width="30%"><b>$brih_total $brih_access $brih_time</td>
+</tr>
+<tr bgcolor="$ui.menuColor">
+        <td align="left" width="30%"><b>$uname</td>
+        <td align="left" width="30%"><b>$tmp</td>
+        <td align="left" width="30%"><b>$time</td>
+</tr>
+<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_most $brih_active $brih_courses</b></td></tr>
+<tr bgcolor="$ui.tableColor">
+        <td align="left" width="30%"><b>$brih_course $brih_name</td>
+        <td align="left" width="30%"><b>$brih_total $brih_nos $brih_usr $brih_access</td>
+        <td align="left" width="30%"><b>$brih_total $brih_access $brih_time</td>
+<tr>
+<tr bgcolor="$ui.menuColor">
+        <td align="left" width="30%"><b>$gname1</td>
+        <td align="left" width="30%"><b>$tmp1</td>
+        <td align="left" width="30%"><b>$ctime</td>
+</tr>
+#end
+#end
+#end
+</table>
+</table>
+	<input type="hidden" name="actionName" >
+        <input type="hidden" name="type" value="$type">
+        <input type="hidden" name="mode" value="$mode">
+        <input type="hidden" name="status" value="$status">
+        <input type="hidden" name="usrname" value="$usrname">
+        <input type="hidden" name="valdir">
+</form>
+<SCRIPT LANGUAGE="javascript">
+function Changename(frm,field)
+        {
+                frm.valdir.value=document.frm.uname.value;
+
+        }
+function checkNull(frm,field)
+{
+        if(frm.valueString.value!="")
+        {
+		frm.actionName.value=field.name;
+                frm.submit();
+        }
+        else
+                alert("The 'Match String' text box can not be NULL");
+}
+function Checkfield(frm,field)
+        {
+                var items;
+                items=frm.valdir.value;
+                if(items.length!=0)
+                {
+                        frm.actionName.value=field.name;
+                        frm.submit();
+                }
+                        else
+                        alert("Please select option");
+        }
+function popupWin(url,popupName)
+{
+        Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+}
+</script>

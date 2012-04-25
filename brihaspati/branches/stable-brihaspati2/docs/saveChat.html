@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<b><font color="#000099">To save Chat Text, Canvas and White Board</font></b> <br>
+<b><font color="#000099">You need to make some changes in java Policy File </font></b>
+<p> <b>STEP 1:</b>Go to /usr/java/jdk1.5.0_04/jre/lib/security/ <br>
+<b>STEP 2:</b>  Open the file "java.policy" and add these given below line :<br>
+        permission java.io.FilePermission "${user.home}${/}*", "read,write";<br>
+        permission java.io.FilePermission "${user.home}${/}-", "read,write";<br>
+        permission java.io.FilePermission "${user.home}${/}", "read,write";<br>
+        permission java.io.FilePermission "{user.home}/tdk-2.3_01/webapps/brihaspati2/babylon/babylon.jar" ,"read,write";
+<br>
+</p>
+</body>
+</html>
+

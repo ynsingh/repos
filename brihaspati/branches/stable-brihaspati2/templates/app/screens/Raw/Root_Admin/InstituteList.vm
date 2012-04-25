@@ -1,0 +1,329 @@
+#*
+ * @(#) InstituteList.vm 
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modified date: 10-08-2010 (Shaista)
+ * @modified date: 10-10-2010, 22-11-2010 (Shaista)
+*#
+
+
+$page.setTitle("Admin Home | View Institute List")
+
+$page.setBgColor($ui.bgcolor)
+<body>
+
+$!data.getMessage()
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+<table  bgcolor="$ui.tableColor" width=100%>
+	<tr bgcolor="$ui.menuColor">
+		<td colspan=14> 
+		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
+		##<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>Institute Management</a> |
+		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$RemoteInstitute $brih_mgmt</a> |
+		#if($mode=="pendinglist")
+			#if($lang == "hindi")
+				$brih_pending $brih_Institute $brih_Of $brih_list	
+			#else
+				$brih_pending $RemoteInstitute $brih_list	
+			#end
+		#end
+		#if($mode=="approved")
+			#if($lang == "hindi")
+				$brih_approved $brih_Institute $brih_Of $brih_list
+			#else
+				$brih_approved $RemoteInstitute $brih_list
+			#end
+		#end
+		#if($mode=="reject")
+			#if($lang == "hindi")
+				$brih_rejected $brih_Institute $brih_Of $brih_list
+			#else
+				$brih_rejected $RemoteInstitute $brih_list
+			#end
+		#end
+		</td>
+	</tr>
+</table>
+<table  bgcolor="$ui.tableColor" width=100%>
+	<tr>
+		#if($tdcolor != "1")
+	                <td>
+                #elseif($tdcolor == "1")
+        	        <td bgcolor="#AFDCEC">
+                #end
+		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_pending $brih_Institute $brih_Of $brih_list #else $brih_pending $RemoteInstitute $brih_list #end </a></td>
+		#if($tdcolor != "2")
+                	<td>
+                #elseif($tdcolor == "2")
+	                <td bgcolor="#AFDCEC">
+                #end
+		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_approved $brih_Institute $brih_Of $brih_list #else $brih_approved $RemoteInstitute $brih_list #end </a></td>
+		#if($tdcolor != "3")
+	                <td>
+                #elseif($tdcolor == "3")
+        	        <td bgcolor="#AFDCEC">
+                #end
+		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","reject").addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi") $brih_rejected $brih_Institute $brih_Of $brih_list #else $brih_rejected $RemoteInstitute $brih_list #end </a></td>
+	</tr>
+</table>
+#if($mode=="approved")
+	<form name="frm1" method="post" action="$link.setPage("call,Root_Admin,InstituteList.vm")">
+		<table width=100% align=left bgcolor="$ui.tableColor">
+	        <tr>
+        		<td><b>$brih_searchBy</b></td>
+	                <td align=left>
+        	                <select name="queryList">
+                	                <option value="InstituteId"> $RemoteInstitute  $brih_ID</option>
+                        	        <option value="InstituteName"> $RemoteInstitute $brih_name</option>
+                                	<option value="InstituteAdd"> $RemoteInstitute  $brih_address</option>
+                	        </select>
+	                </td>
+        	        <td align=left><b>$brih_match_str</b></td>
+                	<td align=left>
+                        	<input align=center type="text" name="valueString" value="">
+	                </td>
+        	        <td>
+                	        <input type="button" name="Search" value="Search" onClick="checkNull(document.frm1,this);">
+                        	<input type="hidden" name="mode" value="approved">
+                        	<input type="hidden" name="mod" value="Search">
+	                        <input type="hidden" name="count" value="2">
+        	      </td>
+	        </tr>
+		</table>
+	</form>
+#end
+<form name="frm" method="Post" action="$link.setPage("call,Root_Admin,InstituteList.vm").setAction("Institute_RootAdmin")">
+<table  bgcolor="$ui.tableColor" width=100%>
+	#if($mode=="pendinglist")
+      	<tr bgcolor="$ui.menuColor">
+        <td align=center>$brih_select</td>
+        <td align=center>$RemoteInstitute $brih_name</td>
+	<td align=center>$RemoteInstitute $RemoteAddress</td>
+	<td align=center>$Inst_city</td>
+	<td align=center>$Inst_state</td>
+        <td align=center>$Inst_landline</td>
+        <td align=center>$RemoteInstitute $brih_domain</td>
+        <td align=center>$Inst_type</td>
+        <td align=center> #if($lang == "hindi") $brih_Institute $brih_Of #else $RemoteInstitute #end $Inst_website</td>
+        <td align=center>$brih_ad #if($lang == "hindi") $brih_Of1 #end $brih_first $brih_name</td>
+	<td align=center>$brih_ad #if($lang == "hindi") $brih_Of1 #end $brih_last $brih_name</td>
+        <td align=center>$brih_ad #if($lang == "hindi") $brih_Of1 #end $brih_email</td>
+        <td align=center>$brih_ad #if($lang == "hindi") $brih_Of1 #end $Inst_designation</td>
+        <td align=center>$brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name</td>
+        </tr>
+	#foreach($details in $idetail)
+        #foreach($details1 in $idetail1)
+        #if($details.getInstituteId()==$details1.getInstituteId())
+        #if($velocityCount%2==0)
+        <tr bgcolor="$ui.menuColor">
+        #else
+        <tr bgcolor="$ui.tableColor">
+        #end 
+		<td align="center">
+                	<INPUT TYPE="CHECKBOX" NAME="$details.getInstituteId()" onClick="apprv_rej(this,document.frm);">
+          	</td>
+		<td>
+			$details.getInstituteName()
+		</td>
+		<td>
+			$details.getInstiuteAddress() 
+		</td>
+		<td>		
+			$details.getCity()
+		</td>
+		<td>
+			$details.getState()
+		</td>
+		<td>
+			$details.getLandlineNo()			
+		</td>
+		<td>
+			$details.getInstituteDomain()
+		</td>
+		<td>
+			$details.getTypeOfInstitution()
+		</td>
+		<td>
+			$details.getInstituteWebsite()
+		</td>
+		<td>
+			$details1.getAdminFname()
+		</td>
+		<td>
+			$details1.getAdminLname()
+		</td>
+		<td>
+			$details1.getAdminEmail()
+		</td>
+		<td>
+			$details1.getAdminDesignation()
+		</td>
+			<td>
+			$details1.getAdminUname()
+		</td>
+
+	</tr>
+	#end
+	#end
+	#end
+        #*<tr bgcolor="$ui.menuColor">
+                <td align="left" colspan=14>
+                <input type="hidden" name="actionName">
+                <input type="button" name="eventSubmit_AcceptAdmin" value="$online_accept" onClick="AcceptField(document.frm,this);">
+                <input type="button" name="eventSubmit_RejectAdmin" value="$online_reject" onClick="AcceptField(document.frm,this);">
+                <input type="hidden" name="deleteFileNames" value="">
+		<input type="hidden" name="role" value="7">
+                <input type="hidden" name="institute_id" value="$idetail.get(0).getInstituteId()">
+                <input type="hidden" name="count" value="$tdcolor">
+                </td>
+        </tr>*# 
+	#end
+</table>
+<table width=100% bgcolor="$ui.tableColor">
+	#if($mode=="approved")
+	<tr><td colspan="5">
+	</td></tr>
+	<tr bgcolor="$ui.menuColor">
+		<td><b>$RemoteInstitute $brih_name</b></td>
+		<td><b>$RemoteInstitute $brih_ID</b></td>
+		<td align="center" colspan="4"><b>$brih_availableAction</b></td>
+	</tr>
+	#foreach($applist in $approved)
+	#if($velocityCount%2==0)
+	<tr bgcolor="$ui.menuColor">
+	#else
+	<tr bgcolor="$ui.tableColor">
+	#end 
+	<td>$applist.getInstituteName()</td>
+	<td>$applist.getInstituteId()</td>
+
+	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","addadmin").addPathInfo("count","2") style=text-decoration:none>
+	#if($lang=="english")$brih_add $RemoteInstitute $brih_admin #else $RemoteInstitute $brih_ad $brih_add #end</a></td>
+	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","viewadmin").addPathInfo("count","2") style=text-decoration:none>
+#if($lang=="gujarati") $RemoteInstitute $brih_admin $brih_view  #elseif($lang == "hindi") $brih_Institute $brih_Of2 $brih_ad $brih_Of1 $brih_view #else $brih_view $RemoteInstitute $brih_admin #end</a></td>
+	<td><a href=$link.setPage("call,Root_Admin,UpdateInstituteAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("status","instituteedit").addPathInfo("count","2") style=text-decoration:none>
+#if($lang=="hindi")$brih_detail $brih_Of1 $brih_edit #else $brih_edit $brih_detail #end</a></td>
+	<td><a href=$link.setPage("call,Root_Admin,InstituteList.vm").setAction("Institute_RootAdmin").addPathInfo("deleteFileNames",$applist.getInstituteId()).addPathInfo("actionName","eventSubmit_RejectAdmin").addPathInfo("count","2") style=text-decoration:none>$brih_delete
+	</tr>		
+	#end
+	<tr><td>
+        #if($total_size <= $userConf)
+        <font color="white">$brih_first</font> &nbsp;
+        <font color="white">$brih_pre</font> &nbsp;
+        <font color="white">$brih_nxt</font> &nbsp;
+        <font color="white">$brih_last</font> &nbsp;
+
+        #elseif($startIndex == $userConf_string)
+        <font color="white">$brih_first</font> &nbsp;
+        <font color="white">$brih_pre</font> &nbsp;
+        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_nxt</a> &nbsp;
+     <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_last</a> &nbsp;
+        #elseif($endIndex == $total_size || $endIndex > $total_size)
+        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_first</a> &nbsp;
+     <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_pre</a> &nbsp;
+        <u><font color="white">$brih_nxt</font></u> &nbsp;
+        <u><font color="white">$brih_last</font></u> &nbsp;
+
+        #else
+	<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_first</a> &nbsp;
+        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_pre</a> &nbsp;
+        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_nxt</a> &nbsp;
+        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_last</a> &nbsp;
+        #end
+        </td></tr>
+	#end
+</table>
+<table width=100% bgcolor="$ui.tableColor">
+	#if($mode=="reject")
+	<tr bgcolor="$ui.menuColor">
+        	<td>$brih_select</td>
+		<td>$RemoteInstitute $brih_name</td>
+		<td> #if($lang=="hindi")$brih_Institute $brih_Of2 $brih_ad $brih_Of1 $brih_name #else $brih_instAdname #end</td>
+	</tr>
+	#foreach($rejectlist in $rejectedlist)
+	#foreach($udetail in $userdetail)
+        #if($rejectlist.getInstituteId()==$udetail.getInstituteId())
+        #if($velocityCount%2==0)
+        <tr bgcolor="$ui.menuColor">
+        #else
+        <tr bgcolor="$ui.tableColor">
+        #end 
+	<td>
+       	<INPUT TYPE="CHECKBOX" NAME="$rejectlist.getInstituteId()" onClick="apprv_rej(this,document.frm);">
+	<td>$rejectlist.getInstituteName()</td>
+	<td>$udetail.getAdminUname()</td>
+	</tr>		
+	#end
+	#end
+	#end
+	#end
+	#if($mode != "approved")
+        <tr bgcolor="$ui.menuColor">
+                <td align="left" colspan=14>
+                <input type="hidden" name="actionName">
+                <input type="button" name="eventSubmit_AcceptAdmin" value="$online_accept" onClick="AcceptField(document.frm,this);">
+		#if($mode != "reject")
+                <input type="button" name="eventSubmit_RejectAdmin" value="$online_reject" onClick="AcceptField(document.frm,this);">
+		#end
+                <input type="hidden" name="deleteFileNames" value="">
+		<input type="hidden" name="role" value="7">
+                <input type="hidden" name="institute_id" value="$idetail.get(0).getInstituteId()">
+                <input type="hidden" name="count" value="$tdcolor">
+                </td>
+        </tr> 
+	#end
+</table>
+</form>
+</body>
+
+<SCRIPT LANGUAGE="javascript">
+	function checkNull(frm1,field){
+                if(frm1.valueString.value!=""){
+                        frm1.submit();
+                }
+                else{
+                        alert("The 'Match String' text box can not be NULL");
+                }
+        }
+
+        function AcceptField(frm,field)
+        {
+		if(frm.deleteFileNames.value != "")
+		{
+			frm.actionName.value=field.name;
+        	        frm.submit();
+		}
+		else
+		{
+			alert("Please select the check box");	
+			return;	
+		}
+	}
+ 
+        function apprv_rej(field,frm)
+        {
+		if(field.checked)
+        	{
+                	frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";
+		}                
+        	else
+		{
+                      	var rmFile,index,actualString,preString,postString;
+	        	actualString=frm.deleteFileNames.value;
+        	        index=actualString.indexOf(field.name+"^",0);
+                	preString=actualString.substring(0,index);
+                        postString=actualString.substring(index+field.name.length+1);
+	                actualString=preString+postString;
+        	        frm.deleteFileNames.value=actualString;
+		}                
+        }
+
+
+</SCRIPT>
+

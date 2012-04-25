@@ -1,0 +1,162 @@
+#*
+ * @(#)FAQlist.vm
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ * @author <a href="mailto:seema_020504@yahoo.com ">Manorama Pal</a>
+ * @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:tpthshobhi30@gmail.com">Shobhika</a>
+ * @modified date: 22-11-2010
+ *
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+$page.setTitle("FAQ")
+$page.setBgColor("bgcolor")
+##$!data.getMessage()
+#set($lang=$data.getUser().getTemp("lang").toString())
+#if($mode == "showmessage")
+<table width="100%" bgcolor="$ui.menuColor">
+<tr bgcolor="$ui.menuColor">
+<td>
+        <font face="$ui.sansSerifFonts" size=3>
+        <a href=$link.setPage("Index.vm")>$brih_home</a> |
+        <a href="$link.setPage("FAQlist.vm").addPathInfo("mode","alllist")"> $brih_important $DiscussionBoard $brih_message </a>
+</td>
+</tr>
+        #if($type == "faq")
+        <tr bgcolor="$ui.tableColor"><b>
+        	<td><font color=Red><b>Question  :</b></font><font color=Red><b> $subject </b></font></td>
+	</tr>
+	<tr>
+		<td><b>Answer :</b> $message</td>
+	</tr>
+        <tr bgcolor="$ui.tableColor">
+		<td><a href=$link.setPage("FAQlist.vm").addPathInfo("mode","alllist").addPathInfo("type","instadmin").addPathInfo("lang",$lang)> $brih_backtofaq </a></td>
+	</tr>
+        #end
+</table>
+#else
+<table bgcolor="$ui.menuColor" width="100%">
+<tr><td>
+        <font face="$ui.sansSerifFonts" size=3>
+	#if(($type=="instadmin")&& ($mode != "alllist") )
+        <b><a href=$link.setPage("Index.vm")>$brih_home</a> |</b>
+	#end
+	#if($type =="general")
+        <a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)>$brih_login $WikiPage</a> |
+	#end
+	#if($mode=="list")
+        <a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type",$type)>$brih_cat$brih_list</a> |
+        #end
+	#if($mode =="alllist")
+         <b><a href=$link.setPage("Index.vm")>Home</a> |</b>
+        <a href="$link.setPage("FAQlist.vm").addPathInfo("mode","alllist")"> $brih_important $DiscussionBoard $brih_message </a> |
+        #end
+        $brih_FAQ$brih_list
+        </font>
+        </td>
+	 <td align=right>
+                #if( $total_size!=0 )
+                        #if( $endIndex < $total_size )
+                                #if( $endIndex < $userConf )
+                                ##[$k - $total_size] of $total_size
+					#if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+                                #elseif($k == $j)
+                                ##[$k - $total_size] of $total_size
+					#if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+                                #else
+                                ##[$k - $endIndex] of $total_size
+					#if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $endIndex] #else [$k - $endIndex] $brih_of $total_size #end
+                                #end
+                        #else
+                        ##[$k - $total_size] of $total_size
+				#if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+                        #end
+                #end
+        </td>
+</tr>
+<tr bgcolor="$ui.tableColor">
+        #foreach ($ass in $assign)
+                <tr bgcolor="$ui.tableColor">
+                <td colspan="2"><a href="$link.setPage("FAQlist.vm").addPathInfo("mode","showmessage").addPathInfo("type","faq").addPathInfo("subject",$ass.getAssignmentfile())"> $!ass.getStudentname() </a>
+                </td>
+        #end
+</tr>
+</table>
+<form name="frm" method="post">
+<table width="100%" bgcolor="$ui.tableColor">
+#if($status=="NoBlank")
+	#if($mode=="alllist")
+		<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_frequently #if($lang == "hindi") $brih_asked1 $brih_qus2 $brih_Of #else  $brih_asked $brih_qus2 #end $brih_category </b></td></tr>
+               		#foreach($catlist in $entry)
+				#if($velocityCount%2==0)
+                		<tr bgcolor="$ui.menuColor">
+                		#else
+                		<tr bgcolor="$ui.tableColor">
+				#end
+				<td><a href="$link.setPage("FAQlist.vm").addPathInfo("category",$catlist.getCategory()).addPathInfo("userid1",$catlist.getUserId()).addPathInfo("mode","list").addPathInfo("type",$type).addPathInfo("lang",$lang)">$catlist.getCategory()</a></td>
+			#end
+	#else
+	<tr bgcolor="$ui.tableColor"><td><b>$brih_frequently #if($lang == "hindi") $brih_asked1 #else $brih_asked #end $brih_qus2(FAQs)</b></td></tr>
+               	#foreach($list in $entry)
+			#if($velocityCount%2==0)
+                	<tr bgcolor="$ui.menuColor">
+                	#else
+                	<tr bgcolor="$ui.tableColor">
+			#end
+			<td width="40%" colspan="5">
+			<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
+			<a href="$link.setPage("FAQlist.vm").addPathInfo("category",$category).addPathInfo("userid1",$userid1).addPathInfo("quesid",$list.questionid).addPathInfo("modefaq","faqcheck").addPathInfo("type",$type).addPathInfo("mode","$mode").addPathInfo("lang",$lang)">$list.question</a></td>
+		#end
+		#end
+		 #if($modefaq=="faqcheck")
+                	<table width="100%" bgcolor="$ui.tableColor">
+                        	<tr bgcolor="$ui.menuColor"><td width="100%" colspan="5"><b>$brih_qus: $ques </b></a></td></tr>
+				#foreach($anslist in $queslist)
+				<tr width="100%"><td width="100%">
+                        	$anslist.Answer
+				#end
+				</td></tr>
+			</table>
+		#end
+		#if($mode=="alllist")
+			<tr bgcolor="$ui.menuColor"><td colspan="5">
+				#if($total_size <= $userConf)
+                		<u><font color="white">$brih_first</font></u> &nbsp;
+                		<u><font color="white">$brih_pre</font></u> &nbsp;
+                		<u><font color="white">$brih_nxt</font></u> &nbsp;
+                		<u><font color="white">$brih_last</font></u> &nbsp;
+                		#elseif($startIndex == $userConf_string)
+                		<u><font color="white">$brih_first</font></u> &nbsp;
+                		<u><font color="white">$brih_pre</font></u> &nbsp;
+                		<a href="$link.setPage("FAQlist.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("type",$type)">$brih_nxt</a> &nbsp;
+                		<a href="$link.setPage("FAQlist.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("type",$type)">$brih_last</a> &nbsp;
+                		#elseif($endIndex == $total_size || $endIndex > $total_size)
+                		<a href="$link.setPage("FAQlist.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("type",$type)">$brih_first</a>&nbsp;
+                		<a href="$link.setPage("FAQlist.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("type",$type)">$brih_pre</a> &nbsp;
+                		<u><font color="white">$brih_nxt</font></u> &nbsp;
+                		<u><font color="white">$brih_last</font></u> &nbsp;
+                		#else
+                		<a href="$link.setPage("FAQlist.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("type",$type)">$brih_first</a>&nbsp;
+                		<a href="$link.setPage("FAQlist.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("type",$type)">$brih_pre</a> &nbsp;
+                		<a href="$link.setPage("FAQlist.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode).addPathInfo("type",$type)">$brih_nxt</a> &nbsp;
+                		<a href="$link.setPage("FAQlist.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("type",$type)">$brih_last</a> &nbsp;
+               		 	#end
+			</td></tr>
+		#end
+	#else
+		#if($mode=="alllist")
+		<tr><td align="center"><b><font size="3">$brih_frequently #if($lang == "hindi") $brih_asked1 $brih_qus2 $brih_Of #else  $brih_asked $brih_qus2 #end $brih_category $brih_arenotexists</font></td></tr> 
+		#end
+		#if($mode=="list")
+		<tr><td align="center"><b><font size="3"> #if($lang == "hindi") $brih_faqmsg #else  $brih_faqmsg $brih_cat #end </font></td></tr>
+		#end
+	#end
+	 <tr>
+		<td align="left"><img src="$content.getURI("/images/backtotop.gif")"><a href="#top" onclick="window.scrollTo(0,0); return false">$brih_backtotop</a></td>
+		<td><a href="$link.setPage("FAQlist.vm").addPathInfo("mode","alllist").addPathInfo("type","instadmin")"> $brih_backtofaq </a></td>
+	</tr>
+</table>
+#end
+</form>

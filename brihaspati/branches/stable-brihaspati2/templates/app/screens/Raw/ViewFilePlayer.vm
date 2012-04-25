@@ -1,0 +1,42 @@
+#*
+ * @(#) ViewFilePlayer.vm
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
+*#
+$!data.getMessage()
+$page.setBgColor($ui.bgcolor)
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+
+<html>
+<head>
+##calling script for flv
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="/brihaspati2/scrpts/webflv.css" />
+        <script type="text/javascript" src="/brihaspati2/scrpts/webflv.js">
+        </script>
+</head>
+<body onload="init();return false">
+##form created
+<form name="frm">
+<center>
+##set style for flv
+<div id="videocontainer" style="width:480px;border:1px solid black;padding:3px;margin;1em;">
+
+</div>
+</center>
+<input type="hidden" name="filename" value="$filePath">
+
+</form>
+</body>
+
+<SCRIPT language="JavaScript">
+function init(filename) {
+	gWebflvWidth=480;
+        gWebflvHeight=360;
+        var filename =document.frm.filename.value;
+        webflv_mediaplayer_toggle(filename,"videocontainer","true");
+    }
+</script>
+</html>
