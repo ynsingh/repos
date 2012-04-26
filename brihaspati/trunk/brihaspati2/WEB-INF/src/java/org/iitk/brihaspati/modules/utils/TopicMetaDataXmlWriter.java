@@ -177,8 +177,8 @@ public class TopicMetaDataXmlWriter
 	* @param gname String
 	* @param roleName String
 	*/
-	public static void appendOnlineUserElement(XmlWriter xmlWriter,String uname,String passwd,String fname,String lname,String orgtn,String email,String gname,String roleName, String registerationDate,String rollno,String program)
-        {
+	public static void appendOnlineUserElement(XmlWriter xmlWriter,String uname,String passwd,String fname,String lname,String orgtn,String email,String gname,String roleName, String registerationDate,String rollno,String program, String instAdminName)
+	      {
                 AttributesImpl ats=new AttributesImpl();
                 ats.addAttribute("","uname","","",StringUtil.replaceXmlSpecialCharacters(uname));
                 ats.addAttribute("","passwd","","",StringUtil.replaceXmlSpecialCharacters(passwd));
@@ -191,6 +191,7 @@ public class TopicMetaDataXmlWriter
 		ats.addAttribute("","registerationDate","","",StringUtil.replaceXmlSpecialCharacters(registerationDate));
                 ats.addAttribute("","rollno","","",StringUtil.replaceXmlSpecialCharacters(rollno));
                 ats.addAttribute("","program","","",StringUtil.replaceXmlSpecialCharacters(program));
+                ats.addAttribute("","instAdminName","","",StringUtil.replaceXmlSpecialCharacters(instAdminName));
                 xmlWriter.appendElement("File",null,ats);
 
         }
@@ -352,10 +353,11 @@ public class TopicMetaDataXmlWriter
 					String registerationDate=((CourseUserDetail)v.get(i)).getCreateDate();
 					String rollno=((CourseUserDetail)v.get(i)).getRollNo();
 					String program=((CourseUserDetail)v.get(i)).getPrgCode();
+					String instAdminName=((CourseUserDetail)v.get(i)).getInstAdminName(); 
 					//ErrorDumpUtil.ErrorLog("roll no in write xml---------->\n"+rollno);
 					//ErrorDumpUtil.ErrorLog("program in write xml---------->\n"+program);
                                         //appendElement1(xmlWriter,uname,passwd,email,gname,roleName);
-                                        appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program);
+                                        appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program, instAdminName);
                                 }
                         }
                 }
@@ -400,7 +402,6 @@ public class TopicMetaDataXmlWriter
                                         String lname=((CourseUserDetail)v.get(i)).getUserName();
 					String orgtn=((CourseUserDetail)v.get(i)).getDept();
 					String registerationDate=((CourseUserDetail)v.get(i)).getCreateDate();
-
 					int instid=((CourseUserDetail)v.get(i)).getInstId();
                                         //appendElementC(xmlWriter,gname,cname,uname,email,fname,lname);
 					String inst_id=Integer.toString(instid);
