@@ -62,7 +62,7 @@ StaffDetail staffobj=null;
             query = session.createQuery("FROM  StaffDetail  WHERE loginId =:login_id  ");
             query.setString("login_id", login_id);
 staffobj=( StaffDetail) query.uniqueResult();
-           
+           session.getTransaction().commit();
         }
          catch (HibernateException e) {
 
@@ -83,7 +83,7 @@ public static StaffDetail searchLibraryID(String library_id) {
             query = session.createQuery("FROM  StaffDetail  WHERE id.libraryId =:library_id");
             query.setString("library_id", library_id);
 staffobj=( StaffDetail) query.uniqueResult();
-           
+        session.getTransaction().commit();
         }
          catch (HibernateException e) {
 
@@ -105,6 +105,7 @@ public static StaffDetail searchStaffId(String staff_id,String library_id) {
            
             query.setString("staff_id", staff_id);
            staffobj=( StaffDetail) query.uniqueResult();
+           session.getTransaction().commit();
         }
         catch (HibernateException e) {
 
@@ -128,6 +129,7 @@ List<staffsubLib> obj=null;
 
             query.setString("library_id", library_id);
     obj=(List<staffsubLib>) query.list();
+    session.getTransaction().commit();
            
         }
           catch (HibernateException e) {
@@ -152,8 +154,8 @@ List<staffsubLib> obj=null;
 
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
-
-           
+    obj=(List<staffsubLib>)query.list();
+           session.getTransaction().commit();
         }
        catch (HibernateException e) {
 
@@ -174,7 +176,8 @@ StaffDetail staffobj=null;
             query.setString("library_id", library_id);
             query.setString("staff_id", staff_id);
             query.setString("sublibrary_id",sublibrary_id);
-            
+            staffobj=(StaffDetail)query.uniqueResult();
+            session.getTransaction().commit();
         }
         catch (HibernateException e) {
 
@@ -301,7 +304,7 @@ public void delete(int user_id,String institute_id) {
             query.setString("libraryId",institute_id );
             query.executeUpdate();
             tx.commit();
-            //return (BibliographicDetails) query.uniqueResult();
+         
         }
 catch (HibernateException e) {
 
@@ -323,6 +326,7 @@ public List getStaffDetails(){
         session.beginTransaction();
         query = session.createQuery("FROM StaffDetail");
         obj=query.list();
+        session.getTransaction().commit();
            
         }
     catch (HibernateException e) {
@@ -348,6 +352,7 @@ public List getStaffDetails(String staffId,String libraryId){
              query.setString("staffId", staffId);
              query.setString("libraryId", libraryId);
          obj=  query.list();
+         session.getTransaction().commit();
         }
  catch (HibernateException e) {
 

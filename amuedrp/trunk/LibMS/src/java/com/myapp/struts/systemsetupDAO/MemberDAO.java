@@ -33,6 +33,7 @@ public static EmployeeType getEployeeName(String library_id,String emptype_id) {
             query.setString("emptype_id",emptype_id);
 
             obj= (EmployeeType) query.uniqueResult();
+            session.getTransaction().commit();
         }
          catch (Exception ex)
         {
@@ -57,6 +58,7 @@ public static List<CirMemberAccount> searchAccount(String library_id,String empt
             query.setString("emptype_id",emptype_id);
 
            obj= (List<CirMemberAccount>) query.list();
+           session.getTransaction().commit();
         }
          catch (Exception ex)
         {
@@ -81,6 +83,7 @@ public static List<CirMemberAccount> searchAccount(String library_id,String empt
             query.setString("emptype_id",emptype_id);
             query.setString("subemp_id",subemp_id);
            obj= (List<CirMemberAccount>) query.list();
+           session.getTransaction().commit();
         }
          catch (Exception ex)
         {
@@ -105,6 +108,7 @@ public static EmployeeType getEployeeByName(String library_id,String emptype_id)
             query.setString("emptype_id",emptype_id);
 
             obj= (EmployeeType) query.uniqueResult();
+            session.getTransaction().commit();
         }
         catch (Exception ex)
         {
@@ -131,6 +135,7 @@ public static EmployeeType getEmployeeByName(String library_id,String empname) {
             query.setString("emptype_id",empname);
 
             obj= (EmployeeType) query.uniqueResult();
+            session.getTransaction().commit();
         }
          catch (Exception ex)
         {
@@ -157,6 +162,7 @@ public static SubEmployeeType getSubEmployeeByName(String library_id,String empt
             query.setString("empname",empname);
 
             obj= (SubEmployeeType) query.uniqueResult();
+            session.getTransaction().commit();
         }
          catch (Exception ex)
         {
@@ -181,6 +187,7 @@ public static List<EmployeeType> searchEmployeeType(String library_id) {
 
 
             obj= (List<EmployeeType>) query1.list();
+            session.getTransaction().commit();
         }
         catch (Exception ex)
         {

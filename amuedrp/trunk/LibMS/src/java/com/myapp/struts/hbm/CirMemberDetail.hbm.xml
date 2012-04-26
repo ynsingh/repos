@@ -69,8 +69,8 @@
         <property name="location" type="string">
             <column name="location" length="70" />
         </property>
-        <property name="image" type="binary">
-            <column name="image" />
+        <property name="image" type="string">
+            <column name="image"  length="50"/>
         </property>
         <property name="createdBy" type="string">
             <column name="CreatedBy" length="50" />

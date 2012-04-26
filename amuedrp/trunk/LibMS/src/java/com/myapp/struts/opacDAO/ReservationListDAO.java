@@ -55,7 +55,7 @@ public class ReservationListDAO {
    
        
        public static Reservationlist getRequestDetail(String library_id,String sublibrary_id,String mem_id,String accession_no,String status) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session =  HibernateUtil.getSessionFactory().openSession();
         Reservationlist obj=null;
         try {
             session.beginTransaction();
@@ -67,6 +67,7 @@ public class ReservationListDAO {
             query.setString("accession_no",accession_no);
             query.setString("status",status);
             obj=  (Reservationlist)query.uniqueResult();
+            session.getTransaction().commit();
         }
         catch(Exception ex){
         ex.printStackTrace();
@@ -83,7 +84,7 @@ return obj;
 
 
      public static List<Reservationlist> getMemberDetail(String library_id,String sublibrary_id,String memid) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session =  HibernateUtil.getSessionFactory().openSession();
         List<Reservationlist>  obj=null;
         try {
             session.beginTransaction();
@@ -94,6 +95,7 @@ return obj;
 
 
             obj=  (List<Reservationlist>)query.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();

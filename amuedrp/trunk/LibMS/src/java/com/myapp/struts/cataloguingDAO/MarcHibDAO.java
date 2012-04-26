@@ -75,6 +75,7 @@ List<Integer> obj=null;
             query.setString("sub_id", sub_library_id);
             query.setString("title", title);
             obj= (List<Integer>) query.list();
+            session.getTransaction().commit();
         }
         catch (RuntimeException e) {
 
@@ -89,16 +90,15 @@ List<Integer> obj=null;
        }
         public List<Integer> searchDoc2(String library_id, String sub_library_id) 
           {
-    Session session = HibernateUtil.getSessionFactory().openSession();
-List<Integer> obj=null;
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            List<Integer> obj=null;
         try {
             session.beginTransaction();
-
-
             Query query = session.createQuery("select distinct id.bibId from Biblio where id.libraryId= :lib_id and sublibraryId = :sub_id");
             query.setString("lib_id", library_id);
             query.setString("sub_id", sub_library_id);
-           obj=(List<Integer>) query.list();
+            obj=(List<Integer>) query.list();
+            session.getTransaction().commit();
         }
         catch (RuntimeException e) {
 
@@ -124,6 +124,7 @@ List<Integer> obj=null;
                     .add(Restrictions.eq("id.bibId", bib_id))
                     .add(Restrictions.eq("sublibraryId", sub_library_id)));
             obj= (List<Biblio>)criteria.list();
+            session.getTransaction().commit();
         } catch (RuntimeException e) {
 
             e.printStackTrace();
@@ -148,6 +149,7 @@ List<Integer> obj=null;
                     .add(Restrictions.eq("$a", call_no))
                     .add(Restrictions.eq("sublibraryId", sub_library_id)));
            obj= (Biblio)criteria.uniqueResult();
+           session.getTransaction().commit();
         }  catch (RuntimeException e) {
 
             e.printStackTrace();
@@ -173,6 +175,7 @@ List<Integer> obj=null;
             query.setString("lib_id", library_id);
             query.setString("sub_id", sub_library_id);
             obj= (List<Integer>) query.list();
+            session.getTransaction().commit();
         }
         catch (RuntimeException e) {
 
@@ -198,6 +201,7 @@ List<Integer> obj=null;
                     .add(Restrictions.eq("id.bibId", bib_id))
                     .add(Restrictions.eq("sublibraryId", sub_library_id)));
             obj= (List<BiblioTemp>)criteria.list();
+            session.getTransaction().commit();
         } catch (RuntimeException e) {
 
             e.printStackTrace();
@@ -243,7 +247,7 @@ List<Integer> obj=null;
             } else {
                 maxbiblio++;
             }
-
+session.getTransaction().commit();
           
         } catch (RuntimeException e) {
 
@@ -273,7 +277,7 @@ List<Integer> obj=null;
             } else {
                 maxbiblio++;
             }
-
+session.getTransaction().commit();
            
         }  catch (RuntimeException e) {
 
@@ -296,6 +300,7 @@ List<Integer> obj=null;
             Criteria criteria = session.createCriteria(Biblio.class)
             .add(Restrictions.between("id.marctag", "0", "100"));
             obj= criteria.list();
+            session.getTransaction().commit();
         }  catch (RuntimeException e) {
 
             e.printStackTrace();
@@ -318,6 +323,7 @@ List<Integer> obj=null;
             query.setString("title", title);
             System.out.println("I'm in getdata4update in marchibdao.");
            obj=(List<Biblio>) query.list();
+           session.getTransaction().commit();
         }
          catch (RuntimeException e) {
 
@@ -343,6 +349,7 @@ public List<Biblio> getdataforupdate1(String bibid, String eee)
             query.setString("eee",eee);
             System.out.println("I'm in getdata4update1 in marchibdao.");
             obj= (List<Biblio>) query.list();
+            session.getTransaction().commit();
         }
        catch (RuntimeException e) {
 
@@ -369,6 +376,7 @@ public List<Biblio> getdataforupdate1(String bibid, String eee)
 
             System.out.println("I'm in getdata4update2 in marchibdao.");
             obj= (List<Biblio>) query.list();
+            session.getTransaction().commit();
         }
         catch (RuntimeException e) {
 

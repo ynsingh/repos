@@ -6,7 +6,7 @@
 package com.myapp.struts.admin;
 
 import com.myapp.struts.AdminDAO.LibraryDAO;
-import com.myapp.struts.AdminDAO.LogsDAO;
+//import com.myapp.struts.AdminDAO.LogsDAO;
 import com.myapp.struts.hbm.Logs;
 import java.io.File;
 import java.util.ArrayList;

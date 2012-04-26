@@ -1,41 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<!--THE HIBERNATE CONFIGURATION XML FILE SPECIFY JNDI & ALL TABLES XML MAPPING-->
 <hibernate-configuration>
   <session-factory>
-
-
-
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    
-    <property name="hibernate.connection.datasource">java:comp/env/jdbc/TestDB</property>
-    <property name="hibernate.connection.release_mode">auto</property>
-
-   
-<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-
-<!-- Enable Hibernate's automatic session context management -->
-
-<property name="current_session_context_class">thread</property>
-
-<!-- Disable the second-level cache -->
-
-<property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
-
-<!-- Echo all executed SQL to stdout -->
-
-<property name="show_sql">false</property>
-
-<!-- Drop and re-create the database schema on startup -->
-
-<property name="hbm2ddl.auto">update</property>
-
-
+     <property name="hibernate.connection.datasource">java:comp/env/jdbc/TestDB</property>
+ 
     <mapping resource="com/myapp/struts/hbm/EmployeeType.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/CirCheckin.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/AcqPrivilege.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/AcqFinalDemandList.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/Department.hbm.xml"/>
-      <mapping resource="com/myapp/struts/hbm/SerLanguage.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/SerLanguage.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/Location.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/Notices.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/Faculty.hbm.xml"/>
@@ -86,10 +63,5 @@
     <mapping resource="com/myapp/struts/hbm/Biblio.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/Customizedbiblio.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/BiblioTemp.hbm.xml"/>
-    <mapping resource="com/myapp/struts/hbm/SerPublisher.hbm.xml"/>
-    <mapping resource="com/myapp/struts/hbm/SerBiolioDetails.hbm.xml"/>
-     <mapping resource="com/myapp/struts/hbm/SerNewEntry.hbm.xml"/>
-     <mapping resource="com/myapp/struts/hbm/CancellationReason.hbm.xml"/>
-     <mapping resource="com/myapp/struts/hbm/DeliquencyReason.hbm.xml"/>
-  </session-factory>
+     </session-factory>
 </hibernate-configuration>

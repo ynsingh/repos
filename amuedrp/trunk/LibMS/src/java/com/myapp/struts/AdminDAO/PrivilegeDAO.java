@@ -63,6 +63,7 @@ Privilege obj=null;
             query.setString("sublibrary_id", sublibrary_id);
             query.setString("staff_id", staff_id);
 obj= ( Privilege) query.uniqueResult();
+session.getTransaction().commit();
         }
         catch(Exception e)
         {
@@ -118,6 +119,7 @@ Privilege obj=null;
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
            obj= ( Privilege) query.uniqueResult();
+           session.getTransaction().commit();
         }
         catch(Exception e){
         System.out.println(e);
@@ -288,6 +290,7 @@ List list=null;
             query.setString("staff_id", staff_id);
             query.setResultTransformer(Transformers.TO_LIST);
             list=(List) query.list();
+            session.getTransaction().commit();
         }
         catch(Exception e)
         {

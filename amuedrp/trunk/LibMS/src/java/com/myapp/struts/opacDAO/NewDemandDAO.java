@@ -5,7 +5,6 @@
 
 package com.myapp.struts.opacDAO;
 
-import com.myapp.struts.hbm.HibernateUtil;
 import com.myapp.struts.hbm.*;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -23,7 +22,7 @@ public class NewDemandDAO {
   Criterion criterion;
 
   public static Notices ViewNotice(String library_id,String sublibrary_id,String notice_id) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session =  HibernateUtil.getSessionFactory().openSession();
        Notices obj = null;
         System.out.println("LibraryID="+library_id+" SublibraryId="+sublibrary_id+" noticeId="+notice_id);
         try {
@@ -33,6 +32,7 @@ public class NewDemandDAO {
             query.setString("sublibrary_id",sublibrary_id);
             query.setString("notice_id",notice_id);
            obj= (Notices) query.uniqueResult();
+                       session.getTransaction().commit();
         }
         catch(Exception e){
         System.out.println("Notices NewDemandDAO Action "+e);
@@ -64,7 +64,7 @@ return obj;
          obj= criteria.list();
          }
          
-         
+                     hsession.getTransaction().commit();
 
         }
         catch(Exception e)
@@ -84,30 +84,46 @@ return obj;
 
 
 
-    public static List NewArrival(String library_id,String sub_lib,String year1,String year2,String cat)
+    public static List NewArrival(String library_id,String sub_lib,String year1,String year2,String cat,int pageNumber)
     {
        List obj=null;
         Session hsession=HibernateUtil.getSessionFactory().openSession();
         try
         {
          hsession.beginTransaction();
-         Criteria criteria = hsession.createCriteria(BibliographicDetails.class);
-         if(!library_id.equalsIgnoreCase("all"))
-         criteria.add(Restrictions.eq("id.libraryId",library_id));
-         if(!sub_lib.equalsIgnoreCase("all"))
-         criteria.add(Restrictions.eq("id.sublibraryId",sub_lib));
+           Criteria criteria = hsession.createCriteria(BibliographicDetails.class, "aliasOfTableA");
 
+                    if(!library_id.equalsIgnoreCase("all"))
+                        criteria.add(Restrictions.eq("aliasOfTableA.id.libraryId",library_id ));
+                    if(!sub_lib.equalsIgnoreCase("all"))
+                        criteria.add(Restrictions.eq("aliasOfTableA.id.sublibraryId",sub_lib ));
+
+                  
          if(!cat.equalsIgnoreCase("all"))
-         criteria.add(Restrictions.eq("documentType",cat));
-            System.out.println(year1  +  " <  "+year2);
+         criteria.add(Restrictions.eq("aliasOfTableA.documentType",cat));
+            System.out.println(year1  +  " <  "+year2+library_id+sub_lib);
          if(year1!=null){
 
-         criteria.add(Restrictions.gt("dateAcquired",year1));
+         criteria.add(Restrictions.ge("aliasOfTableA.dateAcquired",year1));
          }
+        //  get Total Size
+            OpacSearchDAO.setSearchSize(criteria.list());
 
 
-         obj= criteria.list();
-
+            
+            
+              if(pageNumber==0)
+                {
+                    criteria = criteria.setFirstResult(0);
+                    criteria.setMaxResults(100);
+                    obj=criteria.list();
+                }
+                else
+                {
+                    CriteriaPagingAction o=new CriteriaPagingAction(criteria,pageNumber,100);
+                    obj=o.getList();
+                }
+hsession.getTransaction().commit();
         }
         catch(Exception e)
         {
@@ -222,7 +238,7 @@ return obj;
 
 }
      public static Demandlist getDemandList(String library_id,String sublibrary_id,String memid,String title,String status) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session =  HibernateUtil.getSessionFactory().openSession();
         Demandlist obj=null;
        
         try {
@@ -234,8 +250,9 @@ return obj;
             query.setString("mem_id",memid);
             query.setString("title",title);
             query.setString("status",status);
-
            obj=  (Demandlist)query.uniqueResult();
+session.getTransaction().commit();
+
         }
         catch(Exception e){
         e.printStackTrace();
@@ -248,7 +265,7 @@ return obj;
 
 
        public static List getMaxReservationId(String library_id,String sublibrary_id,String memId) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session =  HibernateUtil.getSessionFactory().openSession();
         List obj=null;
         try {
             session.beginTransaction();
@@ -257,6 +274,7 @@ return obj;
             query.setString("sublibrary",sublibrary_id );
             query.setString("memId",memId );
             obj=query.list();
+            session.getTransaction().commit();
         }
         finally {
             session.close();

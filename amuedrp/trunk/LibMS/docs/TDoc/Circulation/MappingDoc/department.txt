@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.Department" table="department" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.DepartmentId">
+            <key-property name="deptId" type="string">
+                <column name="dept_id" length="20" />
+            </key-property>
+            <key-property name="facultyId" type="string">
+                <column name="faculty_id" length="20" />
+            </key-property>
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="faculty" class="com.myapp.struts.hbm.Faculty" update="false" insert="false" fetch="select">
+            <column name="library_id" length="20" not-null="true" />
+            <column name="faculty_id" length="20" not-null="true" />
+        </many-to-one>
+        <many-to-one name="library" class="com.myapp.struts.hbm.Library" update="false" insert="false" fetch="select">
+            <column name="library_id" length="20" not-null="true" />
+        </many-to-one>
+        <property name="deptName" type="string">
+            <column name="dept_name" length="50" />
+        </property>
+        <set name="courseses" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+                <column name="faculty_id" length="20" not-null="true" />
+                <column name="dept_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.Courses" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -35,6 +35,7 @@ public static Faculty getFacultyName(String library_id,String faculty_id) {
             query.setString("facultyId",faculty_id);
 
             obj= (Faculty) query.uniqueResult();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -56,6 +57,7 @@ public static List<CirMemberAccount> searchAccountCourse(String library_id,Strin
             query.setString("course_id", course_id);
 
            obj= (List<CirMemberAccount>) query.list();
+           session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -76,6 +78,7 @@ public static List<CirMemberAccount> searchAccount(String library_id,String facu
             query.setString("faculty_id", faculty_id);
             query.setString("dept_id", dept_id);
             obj= (List<CirMemberAccount>) query.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -96,6 +99,7 @@ public static List<CirMemberAccount> searchAccount(String library_id,String facu
             query.setString("faculty_id", faculty_id);
 
            obj= (List<CirMemberAccount>) query.list();
+           session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -116,6 +120,7 @@ public static List<Faculty> getFaculty(String library_id,String faculty_id) {
             query.setString("facultyId",faculty_id);
 
             obj= (List<Faculty>) query.list();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -137,6 +142,7 @@ public static Faculty getFacultyId(String library_id,String faculty_name) {
             query.setString("faculty_name",faculty_name);
 
            obj=  (Faculty)query.uniqueResult();
+           session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -157,6 +163,7 @@ public static List<Faculty> getFacultyRecord(String library_id) {
            
 
             obj= (List<Faculty>) query1.list();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -183,6 +190,7 @@ public static List<Faculty> searchFaculty(String library_id) {
             }
 
             obj=(List<Faculty>) query.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -203,6 +211,7 @@ public static List<Faculty> searchFaculty(String library_id) {
             query1.setString("libraryId",library_id);
             query1.setString("facultyId",faculty_id);
             obj= (Faculty) query1.uniqueResult();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -310,13 +319,14 @@ public static  boolean insert(Faculty obj)
 
 
  public static List getMaxFacultyRecordIdNo(String library_id) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session =HibernateUtil.getSessionFactory().openSession();
       List obj=null;
         try {
             session.beginTransaction();
             query = session.createQuery("SELECT Max(id.facultyId)FROM Faculty where id.libraryId = :library_id ");
             query.setString("library_id",library_id );
            obj=  query.list();
+           session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -331,7 +341,7 @@ public static  boolean insert(Faculty obj)
 
 
   public static Faculty getFacultyRecordIdNo1(String library_id,String faculty_name) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
       Faculty obj=null;
         try {
             session.beginTransaction();
@@ -339,6 +349,7 @@ public static  boolean insert(Faculty obj)
             query.setString("libraryId",library_id );
             query.setString("facultyName",faculty_name);
             obj= (Faculty) query.uniqueResult();
+            session.getTransaction().commit();
            
         }
        

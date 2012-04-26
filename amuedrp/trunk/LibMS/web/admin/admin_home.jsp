@@ -155,7 +155,7 @@ document.write('</div></span>');
 <li><a href="<%=contextPath%>/manage_superadmin.jsp"  target="f3">Change Password</a></li>
 <li><a href="<%=contextPath%>/admin/block_admin.jsp"  target="f3"><%=resource.getString("login.delinquentinstitutelist")%></a></li>
 <li><a href="<%=contextPath%>/admin/view_blocked_institute.jsp"  target="f3"><%=resource.getString("login.changeworkingstatus")%></a></li>
-<li><%--<a href="<%=contextPath%>/logs/search_log.jsp"  target="f3">--%>User Log<%--</a>--%></li>
+<li><a href="<%=contextPath%>/admin/mailsetting.jsp"  target="f3">Mail Setting</a></li>
 </ul>
 </div>
 

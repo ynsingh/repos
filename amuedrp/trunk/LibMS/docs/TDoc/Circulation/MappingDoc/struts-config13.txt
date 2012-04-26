@@ -1,0 +1,4 @@
+<action attribute="CirOpacApprovedActionForm" path="/CirOpacViewNewMember" input="/circulation/cir_opac_viewmem.jsp" name="CirOpacApprovedActionForm"   scope="request" type="com.myapp.struts.circulation.CirOpacApprovedAction" >
+                      <forward name="Approved" path="/circulation/cir_ask_for_createaccount.jsp"/>
+                      <forward name="failure" path="/circulation/cir_requestfrom_opacgrid.jsp"/>
+</action>

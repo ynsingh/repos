@@ -1,24 +1,19 @@
-<%-- 
-    Document   : view_marc_details
-    Created on : Sep 12, 2011, 3:13:09 PM
-    Author     : EdRP-05
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
     <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
     <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
     <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<html>
+    <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
         <title>LibMS</title>
     </head>
     <body>
-        <table class="datagrid">
-            
+        <table class="datagrid" style="border:solid 1px">
+
+            <tr><td colspan="4" class="headerStyle">BIBLIOGRAPHIC DETAILS IN MARC-21 FORMAT OF TITLE</td></tr>
             <logic:iterate id="BiblioTemp" name="opacList">
                 <tr>
                     <td>

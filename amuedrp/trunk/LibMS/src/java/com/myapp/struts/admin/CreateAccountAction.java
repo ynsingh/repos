@@ -155,7 +155,7 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
 
  String path = servlet.getServletContext().getRealPath("/");
  System.out.println(path+"  "+staffobj);
-             obj=new Email(path,staffobj.getEmailId(),password,"Your Account on LibMS Created Successfully","Your Account of LibMS has been Created Successfully for LibMS.\nUser Id="+login_id+"\nPassword:"+password+"\nUser Role:"+role,"Dear "+staffobj.getFirstName()+" "+staffobj.getLastName()+",\n","Thanks,"+session.getAttribute("username").toString()+"\nInstitute Admin");
+             obj=new Email(staffobj.getEmailId(),password,"Your Account on LibMS Created Successfully","Dear "+staffobj.getFirstName()+" "+staffobj.getLastName()+",\nYour Account of LibMS has been Created Successfully for LibMS.\nUser Id="+login_id+"\nPassword:"+password+"\nUser Role:"+role+"Thanks,"+session.getAttribute("username").toString()+"\nInstitute Admin");
 
             executor.submit(new Runnable() {
 

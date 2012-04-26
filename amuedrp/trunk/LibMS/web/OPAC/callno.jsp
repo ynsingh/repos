@@ -1,4 +1,4 @@
-
+<!-- CALL NO SEARCH JSP-->
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -10,61 +10,66 @@
 
 <html><head>
 <title>Search by Call Number...</title>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+   String align="left";
+%>
+<%
+ String lib_id = (String)session.getAttribute("library_id");
+  String sublib_id = (String)session.getAttribute("memsublib");
+        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+   request.setCharacterEncoding("UTF-8");
+
+String net=null;
+try
+{
+      URL url = new URL("http://www.gmail.com");
+      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+      // just want to do an HTTP GET here
+      connection.setRequestMethod("GET");
+      // give it 15 seconds to respond
+      connection.setReadTimeout(5*1000);
+      connection.connect();
+      net="true";
+}
+catch(Exception e)
+{
+    net="false";
+}
+
+    %>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
- <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
- <script language="javascript" type="text/javascript">
-/*
-* Returns an new XMLHttpRequest object, or false if the browser
-* doesn't support it
-*/
+   <script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAApEiKekYWqFpDa_PStAFTMBRxcC-Fn9tK14QS9YKtPPoXy5_dfhQr8n6mPjQbdLIjMkUpUDQ7khVrfQ">
+        </script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/js/ajax.js"></script>
+<script language="javascript" type="text/javascript">
 var availableSelectList;
-function newXMLHttpRequest() {
-var xmlreq = false;
-// Create XMLHttpRequest object in non-Microsoft browsers
-if (window.XMLHttpRequest) {
-xmlreq = new XMLHttpRequest();
-} else if (window.ActiveXObject) {
-try {
-// Try to create XMLHttpRequest in later versions
-// of Internet Explorer
-xmlreq = new ActiveXObject("Msxml2.XMLHTTP");
-} catch (e1) {
-// Failed to create required ActiveXObject
-try {
-// Try version supported by older versions
-// of Internet Explorer
-xmlreq = new ActiveXObject("Microsoft.XMLHTTP");
-} catch (e2) {
-// Unable to create an XMLHttpRequest by any means
-xmlreq = false;
-}
-}
-}
-return xmlreq;
-}
-/*
-* Returns a function that waits for the specified XMLHttpRequest
-* to complete, then passes it XML response to the given handler function.
-* req - The XMLHttpRequest whose state is changing
-* responseXmlHandler - Function to pass the XML response to
-*/
-function getReadyStateHandler(req, responseXmlHandler) {
-// Return an anonymous function that listens to the XMLHttpRequest instance
-return function () {
-// If the request's status is "complete"
-if (req.readyState == 4) {
-// Check that we received a successful response from the server
-if (req.status == 200) {
-// Pass the XML payload of the response to the handler function.
-responseXmlHandler(req.responseXML);
-} else {
-// An HTTP problem has occurred
-alert("HTTP error "+req.status+": "+req.statusText);
-}
-}
-}
-}
 function search() {
+
+     var acc=document.getElementById('TXTKEY').value;
+        if(acc=="")
+            {
+                alert("Please Enter CALL No to Search Title");
+                return false;
+
+            }
+
 
     var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
 
@@ -126,51 +131,26 @@ newOpt.text = ndValue1;
 }
 fun();
 }
-
-</script>
-<script language="javascript">
 function fun()
 {
-    document.getElementById("Form1").action="SearchByCallNo.do";
+ var acc=document.getElementById('TXTKEY').value;
+        if(acc=="")
+            {
+                alert("Please Enter CALL No to Search Title");
+                return false;
+
+            }
+
+document.getElementById("Form1").action="SearchByCallNo.do";
 document.getElementById("Form1").method="post";
 document.getElementById("Form1").target="f1";
 document.getElementById("Form1").submit();
-
-
-
 }
 
-</script>
-<%!
-    Locale locale=null;
-    String locale1="en";
-    String rtl="ltr";
-   String align="left";
-%>
-<%
- String lib_id = (String)session.getAttribute("library_id");
-  String sublib_id = (String)session.getAttribute("memsublib");
-        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
-try{
-locale1=(String)session.getAttribute("locale");
-    if(session.getAttribute("locale")!=null)
-    {
-        locale1 = (String)session.getAttribute("locale");
-        System.out.println("locale="+locale1);
-    }
-    else locale1="en";
-}catch(Exception e){locale1="en";}
-     locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
-    else{ rtl="RTL";align="right";}
-    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
-    %>
-
-<script type="text/javascript">
    function DisBox()
 {
-if(document.getElementById('checkboxId').checked)
+if(document.getElementById('checkboxId5').checked)
 {
 document.getElementById("checkbox").value="Checked";
 }
@@ -178,10 +158,6 @@ else{
     document.getElementById("checkbox").value="Unchecked";
 }
 }
-</script>
-<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAApEiKekYWqFpDa_PStAFTMBRxcC-Fn9tK14QS9YKtPPoXy5_dfhQr8n6mPjQbdLIjMkUpUDQ7khVrfQ">
-        </script>
-        <script type="text/javascript">
       // Load the Google Transliterate API
       google.load("elements", "1", {
             packages: "transliteration"
@@ -201,7 +177,7 @@ else{
           new google.elements.transliteration.TransliterationControl(options);
 
         // Enable transliteration in the textfields with the given ids.
-        var ids = [];
+        var ids = ["TXTKEY"];
         transliterationControl.makeTransliteratable(ids);
 
         // Add the STATE_CHANGED event handler to correcly maintain the state
@@ -223,8 +199,8 @@ else{
             serverReachableHandler);
 
         // Set the checkbox to the correct state.
-        document.getElementById('checkboxId').checked =
-          transliterationControl.isTransliterationEnabled();
+       // document.getElementById('checkboxId').checked =
+         // transliterationControl.isTransliterationEnabled();
 
         // Populate the language dropdown
         var destinationLanguage =
@@ -251,13 +227,22 @@ else{
       // Handler for STATE_CHANGED event which makes sure checkbox status
       // reflects the transliteration enabled or disabled status.
       function transliterateStateChangeHandler(e) {
-        document.getElementById('checkboxId').checked = e.transliterationEnabled;
+        document.getElementById('checkboxId5').checked = e.transliterationEnabled;
       }
 
       // Handler for checkbox's click event.  Calls toggleTransliteration to toggle
       // the transliteration state.
       function checkboxClickHandler() {
           window.status="Press F1 for Help";
+             if(document.getElementById('checkboxId5').checked==true)
+        {
+        document.getElementById('MLI').style.display = 'block';
+        }
+        else{
+            document.getElementById('MLI').style.display = 'none';
+            document.getElementById('TXTKEY').style.textAlign = "left";
+             
+        }
         transliterationControl.toggleTransliteration();
       }
 
@@ -293,17 +278,14 @@ else{
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
 </head>
-<body onload="checkboxClickHandler();search();fun();" style="background-color:#e0e8f5;margin: 0px 0px 0px 0px">
-    <html:form  method="post" action="/OPAC/SearchByCallNo" target="f1" styleId="Form1">
+<body onload="checkboxClickHandler();" style="background-color:#e0e8f5;margin: 0px 0px 0px 0px">
+    <html:form  method="post" action="/OPAC/SearchByCallNo" onsubmit="return search();" target="f1" styleId="Form1">
     </head><body >
   
-    <table width="100%" >
-
-        <td valign="top" width="15%">
             <table align="center" dir="<%=rtl%>" width="100%" class="datagrid" height="400px"  style="border:solid 1px black;">
 
 
-  <tr class="header" dir="<%=rtl%>"><td   dir="<%=rtl%>"  height="28px" align="center" colspan="2">
+  <tr class="header" dir="<%=rtl%>"><td   dir="<%=rtl%>"  height="28px" align="center" colspan="3">
 
 
           <b dir="<%=rtl%>"><%=resource.getString("opac.callno.callno")%></b>
@@ -312,36 +294,34 @@ else{
 
 
         </td></tr>
-   <tr style="background-color:#e0e8f5;" dir="<%=rtl%>"><td dir="<%=rtl%>">
-           <%=resource.getString("cataloguing.catbiblioentry.selectlang")%></td><td>
-                       <div id='translControl'>
-      <input type="checkbox" id="checkboxId" onclick="javascript:checkboxClickHandler();javascript:DisBox();javascript:languageChangeHandler()">
-      <html:hidden property="checkbox" styleId="checkbox" name="CallNoSearchActionForm"/>
-      <select id="languageDropDown" class="selecthome" onchange="javascript:languageChangeHandler()"></select>
-      <html:hidden property="language" styleId="language" name="CallNoSearchActionForm"/>
-    </div>
-                   </td>
-</tr>
 
-<tr><td dir="<%=rtl%>" >
-                     
+ <html:hidden property="checkbox" styleId="checkbox" name="CallNoSearchActionForm"/>
+   <html:hidden property="language" styleId="language" name="CallNoSearchActionForm"/>
+         <tr><td dir="<%=rtl%>" width="100%" >
+                 <table>
+                     <tr><td>
+
                       <%=resource.getString("opac.callno.entercallno")%></td><td>
         <input id="TXTKEY" dir="<%=rtl%>"  name="TXTKEY" type="text" onfocus="statwords('Enter Call Number')">
 <input id="TXTPAGE" value="callno" dir="<%=rtl%>" name="TXTPAGE" type="hidden">
+   <input type="button" onclick="return fun();" class="buttonhome" dir="<%=rtl%>" id="Button1" name="go" value="<%=resource.getString("opac.callno.go")%>" >
+
+<input type="reset" class="buttonhome" id="Button2" dir="<%=rtl%>" name="" value="<%=resource.getString("opac.browse.clear")%>">
+
                   </td>
+
 </tr>
-
-
-
-
-    
-<tr><td class="header" dir="<%=rtl%>" colspan="2">
+        </table>
+             </td><td>
+                 <table>
+                          <tr>
+                  <td class="header" dir="<%=rtl%>" colspan="2">
            <%=resource.getString("opac.simplesearch.restrictedby")%>
 
        </td>
-    </tr>
-    
-              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%> </td><td>
+
+                          </tr>
+                           <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%> </td><td>
 
                       <html:select property="CMBLib" dir="<%=rtl%>"  styleClass="selecthome" tabindex="3"  value="<%=lib_id%>" styleId="CMBLib" onchange="search()">
      <html:option value="all">All</html:option>
@@ -350,36 +330,27 @@ else{
 
      </td></tr>
               <tr><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%></td><td>
-                      <html:select property="CMBSUBLib" styleClass="selecthome"  styleId="SubLibrary" value="<%=sublib_id%>" onchange="fun();">
-                         <%--  <html:option value="all">All</html:option>
-                              <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
-              --%>         </html:select></td>
+                      <html:select property="CMBSUBLib" styleClass="selecthome"  styleId="SubLibrary" value="<%=sublib_id%>" onchange="search();">
+                          <html:option value="all">All</html:option>
+                       </html:select></td>
 
 
 
 
      </tr>
-     <tr><td dir="<%=rtl%>" colspan="2">
-
-
-<input type="submit" class="buttonhome" dir="<%=rtl%>" id="Button1" name="go" value="<%=resource.getString("opac.callno.go")%>" >
-
-<input type="reset" class="buttonhome" id="Button2" dir="<%=rtl%>" name="" value="<%=resource.getString("opac.browse.clear")%>">
-
-
-      </td></tr>
-  
-
-        </table>
-
-        </td>
-        <td  dir="<%=rtl%>" height="700px" valign="top"  >
+                      </table>
+             </td></tr>
+        <tr>
+            <td  dir="<%=rtl%>" height="700px" valign="top"  style="border:Solid 1px black;" colspan="3" >
 
              <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="100%" width="100%" scrolling="yes"  id="f1"></IFRAME>
 
 
       </td>
+
+        </tr>
     </table>
+        
 </html:form>
 
 

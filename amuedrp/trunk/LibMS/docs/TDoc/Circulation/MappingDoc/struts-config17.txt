@@ -1,0 +1,4 @@
+<action attribute="CirCheckinActionForm" path="/circheckin" input="/circulation/cir_checkin.jsp" name="CirCheckinActionForm"   scope="request" type="com.myapp.struts.circulation.CirCheckinAction" >
+    <forward name="submit" path="/circulation/cir_checkinbookdetail.jsp"/>
+    <forward name="notfound" path="/circulation/cir_checkin.jsp"/>
+</action>

@@ -232,7 +232,7 @@ public class CatPrivilegeDAO {
 
 
 
-
+session.getTransaction().commit();
 
 
         }
@@ -319,6 +319,7 @@ CatPrivilege catobj=null;
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
            catobj=( CatPrivilege) query.uniqueResult();
+           session.getTransaction().commit();
         }
          catch (Exception ex)
         {
@@ -374,6 +375,7 @@ CatPrivilege catobj=null;
             query.setString("sublibrary_id", sublibrary_id);
             query.setString("staff_id", staff_id);
 catobj=( CatPrivilege) query.uniqueResult();
+session.getTransaction().commit();
         }
         catch(Exception e)
         {
@@ -435,6 +437,7 @@ List obj=null;
             query.setString("staff_id", staff_id);
             query.setResultTransformer(Transformers.TO_LIST);
             obj=( List) query.list();
+            session.getTransaction().commit();
         }
         catch(Exception e)
         {

@@ -61,6 +61,7 @@ public static Notices getNoticeName(String library_id,String notice_id,String su
             query.setString("noticeId",notice_id);
             query.setString("sublibraryId", sub_lib);
            obj= (Notices) query.uniqueResult();
+           session.getTransaction().commit();
         }
          catch (Exception ex)
         {
@@ -134,6 +135,7 @@ List<Notices> obj=null;
 
              query1.setString("sublibraryId", sub_lib);
            obj= (List<Notices>) query1.list();
+           session.getTransaction().commit();
         }
         catch (Exception ex)
         {

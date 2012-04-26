@@ -1,0 +1,3 @@
+ <action  attribute="CirCreateAccountActionForm" path="/cir_account"  input="/circulation/cir_createaccount.jsp" name="CirCreateAccountActionForm"   scope="request" type="com.myapp.struts.circulation.CirCreateAccountAction">
+                       <forward name="Submit" path="/circulation/cir_accept_message.jsp"/>
+                      </action>

@@ -1,0 +1,4 @@
+<action  path="/cir_account_updateview" input="/circulation/cir_view_update_account.jsp" name="CirViewUpdateAccountActionForm"   scope="request" type="com.myapp.struts.circulation.CirViewUpdateAccountAction">
+                      <forward name="fail" path="/circulation/manage_member_account.jsp"/>
+                      <forward name="success" path="/circulation/manage_member_account.jsp"/>
+   </action>

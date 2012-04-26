@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.Library" table="library" catalog="libms">
+        <id name="libraryId" type="string">
+            <column name="library_id" length="20" />
+            <generator class="assigned" />
+        </id>
+        <property name="registrationId" type="java.lang.Integer">
+            <column name="registration_id" />
+        </property>
+        <property name="libraryName" type="string">
+            <column name="library_name" length="50" />
+        </property>
+        <property name="staffId" type="string">
+            <column name="staff_id" length="100" />
+        </property>
+        <property name="workingStatus" type="string">
+            <column name="working_status" length="50" not-null="true" />
+        </property>
+        <set name="courseses" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.Courses" />
+        </set>
+        <set name="locations" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.Location" />
+        </set>
+        <set name="feedbacks" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.Feedback" />
+        </set>
+        <set name="noticeses" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.Notices" />
+        </set>
+        <set name="subEmployeeTypes" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.SubEmployeeType" />
+        </set>
+        <set name="staffDetails" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.StaffDetail" />
+        </set>
+        <set name="departments" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.Department" />
+        </set>
+        <set name="reservationlists" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.Reservationlist" />
+        </set>
+        <set name="bibliographicDetailses" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.BibliographicDetails" />
+        </set>
+        <set name="cirCheckouts" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.CirCheckout" />
+        </set>
+        <set name="cirMemberDetails" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.CirMemberDetail" />
+        </set>
+        <set name="documentCategories" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.DocumentCategory" />
+        </set>
+        <set name="employeeTypes" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.EmployeeType" />
+        </set>
+        <set name="acqFinalDemandLists" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.AcqFinalDemandList" />
+        </set>
+        <set name="cirTransactionHistories" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.CirTransactionHistory" />
+        </set>
+        <set name="faculties" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.Faculty" />
+        </set>
+        <set name="subLibraries" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.SubLibrary" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -2,6 +2,7 @@ package com.myapp.struts.hbm;
 // Generated May 2, 2011 12:00:18 PM by Hibernate Tools 3.2.1.GA
 
 
+import com.myapp.struts.utility.UserLog;
 import java.util.HashSet;
 import java.util.Set;
 import java.awt.image.BufferedImage;
@@ -65,7 +66,7 @@ public class CirMemberDetail  implements java.io.Serializable {
      private String phone1;
      private String phone2;
      private String location;
-     private byte[] image;
+     private String image;
      private java.awt.image.BufferedImage image1;
      private String createdBy;
      private Set cirOpacRequests = new HashSet(0);
@@ -79,7 +80,7 @@ public class CirMemberDetail  implements java.io.Serializable {
         this.id = id;
         this.library = library;
     }
-    public CirMemberDetail(CirMemberDetailId id, Library library, String fname, String mname, String lname, String address1, String address2, String city1, String state1, String pin1, String country1, String city2, String state2, String pin2, String country2, String email, String fax, String phone1, String phone2, String location, byte[] image, String createdBy, Set cirOpacRequests, Set cirMemberAccounts,String temp_reg,String coll,String colladd) {
+    public CirMemberDetail(CirMemberDetailId id, Library library, String fname, String mname, String lname, String address1, String address2, String city1, String state1, String pin1, String country1, String city2, String state2, String pin2, String country2, String email, String fax, String phone1, String phone2, String location, String image, String createdBy, Set cirOpacRequests, Set cirMemberAccounts,String temp_reg,String coll,String colladd) {
        this.id = id;
        this.library = library;
        this.fname = fname;
@@ -110,10 +111,14 @@ public class CirMemberDetail  implements java.io.Serializable {
     }
 
     public BufferedImage getImage1() {
-        InputStream in = new ByteArrayInputStream(this.image);
+        
 	try{
+            InputStream in = new ByteArrayInputStream(UserLog.getBytesFromFile(image));
         image1 = ImageIO.read(in);
-        }catch(Exception e){}
+        }catch(Exception e)
+        {
+        
+        }
 
         return image1;
     }
@@ -262,11 +267,11 @@ public class CirMemberDetail  implements java.io.Serializable {
     public void setLocation(String location) {
         this.location = location;
     }
-    public byte[] getImage() {
+    public String getImage() {
         return this.image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
     public String getCreatedBy() {

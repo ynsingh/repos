@@ -73,7 +73,7 @@ e.printStackTrace();
             query.setString("sublibrary_id", sublibrary_id);
             query.setResultTransformer(Transformers.TO_LIST);
             obj= (List<DocumentCategory>)  query.list();
-
+session.getTransaction().commit();
        
         }
         catch(Exception e){
@@ -97,7 +97,7 @@ List<DocumentDetails> obj=null;
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
                     .add(Restrictions.eq("bookType", doc_category_id)));
            obj= (List<DocumentDetails>) criteria.list();
-
+session.getTransaction().commit();
 
         }  catch(Exception e){
         e.printStackTrace();
@@ -147,7 +147,7 @@ List<DocumentDetails> obj=null;
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
                     .add(Restrictions.eq("id.documentCategoryId", doc_category_id)));
            obj=(DocumentCategory) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }  catch(Exception e){
         e.printStackTrace();
@@ -170,7 +170,7 @@ List<DocumentDetails> obj=null;
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
                    );
            obj= (List<DocumentCategory>) criteria.list();
-
+session.getTransaction().commit();
 
         }  catch(Exception e){
         e.printStackTrace();
@@ -192,7 +192,7 @@ List<DocumentDetails> obj=null;
                     .add(Restrictions.eq("id.sublibraryId",sublibrary_id))
                    );
            obj= (List<DocumentCategory>) criteria.list();
-
+session.getTransaction().commit();
 
         }  catch(Exception e){
         e.printStackTrace();
@@ -215,7 +215,7 @@ DocumentCategory obj=null;
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
                     .add(Restrictions.eq("documentCategoryName", doc_category_name)));
             obj= (DocumentCategory) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }  catch(Exception e){
         e.printStackTrace();
@@ -239,7 +239,7 @@ List<DocumentCategory> obj=null;
                     .add(Restrictions.eq("id.sublibraryId",sublibrary_id))
                    );
            obj= (List<DocumentCategory>) criteria.list();
-
+session.getTransaction().commit();
 
         }  catch(Exception e){
         e.printStackTrace();

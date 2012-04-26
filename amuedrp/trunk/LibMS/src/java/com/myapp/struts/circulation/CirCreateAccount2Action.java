@@ -131,7 +131,7 @@ private String password1;
                 CirMemberDetail cirobj=CirculationDAO.searchCirMemDetails(library_id, mem_id);
                 //Create Member Account  Successfully from LibMS OPAC Login","User Id="+mem_id+" Your Password for LibMS OPAC Login is="
                   String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,cirobj.getEmail(),password,"Congruation,Your are Registered as Library Member","You Have been registered as a valid Library member for Library Name"+session.getAttribute("library_name").toString()+"\nYour Member Account as Follows \nUser Id:"+mem_id+"\nPassword:"+password+"\n","Dear "+cirobj.getMname()+" "+cirobj.getMname()+" "+cirobj.getLname()+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+            obj=new Email(cirobj.getEmail(),password,"Congruation,Your are Registered as Library Member","Dear "+cirobj.getMname()+" "+cirobj.getMname()+" "+cirobj.getLname()+",\nYou Have been registered as a valid Library member for Library Name"+session.getAttribute("library_name").toString()+"\nYour Member Account as Follows \nUser Id:"+mem_id+"\nPassword:"+password+"\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
             
             executor.submit(new Runnable() {
 

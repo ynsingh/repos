@@ -161,5 +161,13 @@
     <property name="fileType" type="string">
       <column length="20" name="file_type"/>
     </property>
+    <!-- <set name="documentDetailses1" inverse="true">
+            <key>
+                <column name="biblio_id" />
+                <column name="library_id" length="20" not-null="true" />
+                <column name="sublibrary_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.DocumentDetails" />
+        </set>-->
   </class>
 </hibernate-mapping>

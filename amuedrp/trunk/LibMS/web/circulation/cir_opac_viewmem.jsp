@@ -1,9 +1,4 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%--  Design by Iqubal Ahmad
-      Modified on 2011-02-02
-     This jsp page is meant for viewing Details of Member After Clicking on Grid From Request from OPAC Menu .
-     This jsp page is Second page in Process of Request from OPAC Menu.
---%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <jsp:include page="/admin/header.jsp"/> 

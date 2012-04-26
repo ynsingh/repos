@@ -6,63 +6,82 @@
 
 <html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="Faraz Hasan" content="MCA,AMU">
 <title>Advance Search...</title>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+String lib_id = (String)session.getAttribute("library_id");
+String sublib_id = (String)session.getAttribute("memsublib");
+        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
+try{
+    List libRs = (List)session.getAttribute("libRs");
+    List sublib = (List)session.getAttribute("sublib");
 
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+request.setCharacterEncoding("UTF-8");
+
+
+String net=null;
+try
+{
+      URL url = new URL("http://www.gmail.com");
+      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+      // just want to do an HTTP GET here
+      connection.setRequestMethod("GET");
+      // give it 15 seconds to respond
+      connection.setReadTimeout(5*1000);
+      connection.connect();
+      net="true";
+}
+catch(Exception e)
+{
+    net="false";
+}
+
+    %>
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+   <script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAApEiKekYWqFpDa_PStAFTMBRxcC-Fn9tK14QS9YKtPPoXy5_dfhQr8n6mPjQbdLIjMkUpUDQ7khVrfQ">
+        </script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/js/ajax.js"></script>
 <script language="javascript" type="text/javascript">
-/*
-* Returns an new XMLHttpRequest object, or false if the browser
-* doesn't support it
-*/
 var availableSelectList;
-function newXMLHttpRequest() {
-var xmlreq = false;
-// Create XMLHttpRequest object in non-Microsoft browsers
-if (window.XMLHttpRequest) {
-xmlreq = new XMLHttpRequest();
-} else if (window.ActiveXObject) {
-try {
-// Try to create XMLHttpRequest in later versions
-// of Internet Explorer
-xmlreq = new ActiveXObject("Msxml2.XMLHTTP");
-} catch (e1) {
-// Failed to create required ActiveXObject
-try {
-// Try version supported by older versions
-// of Internet Explorer
-xmlreq = new ActiveXObject("Microsoft.XMLHTTP");
-} catch (e2) {
-// Unable to create an XMLHttpRequest by any means
-xmlreq = false;
-}
-}
-}
-return xmlreq;
-}
-/*
-* Returns a function that waits for the specified XMLHttpRequest
-* to complete, then passes it XML response to the given handler function.
-* req - The XMLHttpRequest whose state is changing
-* responseXmlHandler - Function to pass the XML response to
-*/
-function getReadyStateHandler(req, responseXmlHandler) {
-// Return an anonymous function that listens to the XMLHttpRequest instance
-return function () {
-// If the request's status is "complete"
-if (req.readyState == 4) {
-// Check that we received a successful response from the server
-if (req.status == 200) {
-// Pass the XML payload of the response to the handler function.
-responseXmlHandler(req.responseXML);
-} else {
-// An HTTP problem has occurred
-alert("HTTP error "+req.status+": "+req.statusText);
-}
-}
-}
+function funcSearch()
+{
+    document.getElementById("Form1").action="advance_search.do";
+    document.getElementById("Form1").method="post";
+    document.getElementById("Form1").target="f1";
+    document.getElementById("Form1").submit();
 }
 function search() {
+
+      var x=document.getElementById('TXTPHRASE1').value;
+             var y=document.getElementById('TXTPHRASE2').value;
+              var z=document.getElementById('TXTPHRASE3').value;
+
+
+        if(x=='' && y=='' && z=='' )
+            {
+                alert("Please Enter KeyWord No to Search Title");
+                return false;
+
+            }
+
+
     var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
 if(keyValue=="all"){
            document.getElementById('CMBLib').focus();
@@ -106,8 +125,6 @@ newOpt.value = ndValue;
 newOpt.text = ndValue1;
 }
 }
-</script>
-<SCRIPT language="JAVASCRIPT">
      function f()
     {
         search();
@@ -139,6 +156,18 @@ newOpt.text = ndValue1;
     }
     function validate()
     {
+          var x=document.getElementById('TXTPHRASE1').value;
+             var y=document.getElementById('TXTPHRASE2').value;
+              var z=document.getElementById('TXTPHRASE3').value;
+
+
+        if(x=='' && y=='' && z=='' )
+            {
+                alert("Please Enter KeyWord No to Search Title");
+                return false;
+
+            }
+
         if(document.getElementById('CMBYR').value=="between")
             {
                 if((document.getElementById('TXTYR1').value=="") || (document.getElementById('TXTYR2').value==""))
@@ -156,39 +185,9 @@ newOpt.text = ndValue1;
           }
                return true;
     }
-</SCRIPT>
-<%!
-    Locale locale=null;
-    String locale1="en";
-    String rtl="ltr";
-    String align="left";
-%>
-<%
-String lib_id = (String)session.getAttribute("library_id");
-String sublib_id = (String)session.getAttribute("memsublib");
-        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
-try{
-    List libRs = (List)session.getAttribute("libRs");
-    List sublib = (List)session.getAttribute("sublib");
-        
-locale1=(String)session.getAttribute("locale");
-    if(session.getAttribute("locale")!=null)
-    {
-        locale1 = (String)session.getAttribute("locale");
-        System.out.println("locale="+locale1);
-    }
-    else locale1="en";
-}catch(Exception e){locale1="en";}
-     locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
-    else{ rtl="RTL";align="right";}
-    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
-request.setCharacterEncoding("UTF-8");
-    %>
-<script type="text/javascript">
    function DisBox()
 {
-if(document.getElementById('checkboxId').checked)
+if(document.getElementById('checkboxId3').checked)
 {
 document.getElementById("checkbox").value="Checked";
 }
@@ -196,10 +195,6 @@ else{
     document.getElementById("checkbox").value="Unchecked";
 }
 }
-</script>
-<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAApEiKekYWqFpDa_PStAFTMBRxcC-Fn9tK14QS9YKtPPoXy5_dfhQr8n6mPjQbdLIjMkUpUDQ7khVrfQ">
-        </script>
-        <script type="text/javascript">
       // Load the Google Transliterate API
       google.load("elements", "1", {
             packages: "transliteration"
@@ -240,10 +235,7 @@ else{
             google.elements.transliteration.TransliterationControl.EventType.SERVER_REACHABLE,
             serverReachableHandler);
 
-        // Set the checkbox to the correct state.
-        document.getElementById('checkboxId').checked =
-          transliterationControl.isTransliterationEnabled();
-
+       
         // Populate the language dropdown
         var destinationLanguage =
           transliterationControl.getLanguagePair().destinationLanguage;
@@ -269,13 +261,25 @@ else{
       // Handler for STATE_CHANGED event which makes sure checkbox status
       // reflects the transliteration enabled or disabled status.
       function transliterateStateChangeHandler(e) {
-        document.getElementById('checkboxId').checked = e.transliterationEnabled;
+        document.getElementById('checkboxId3').checked = e.transliterationEnabled;
       }
 
       // Handler for checkbox's click event.  Calls toggleTransliteration to toggle
       // the transliteration state.
       function checkboxClickHandler() {
           window.status="Press F1 for Help";
+            if(document.getElementById('checkboxId3').checked==true)
+        {
+        document.getElementById('MLI').style.display = 'block';
+        }
+        else{
+            document.getElementById('MLI').style.display = 'none';
+            document.getElementById('TXTPHRASE1').style.textAlign = "left";
+             document.getElementById('TXTPHRASE2').style.textAlign = "left";
+              document.getElementById('TXTPHRASE3').style.textAlign = "left";
+               document.getElementById('TXTYR1').style.textAlign = "left";
+               document.getElementById('TXTYR2').style.textAlign = "left";
+        }
         transliterationControl.toggleTransliteration();
       }
 
@@ -301,32 +305,42 @@ else{
         document.getElementById("errorDiv").innerHTML = "";
       }
       google.setOnLoadCallback(onLoad);
-      function loadHelp()
-      {
-          window.status="Press F1 for Help";
-      }
-
+     
     </script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard.js" charset="UTF-8"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
     </head>
-<body onload="checkboxClickHandler();search();" style="background-color:#e0e8f5;margin: 0px 0px 0px 0px " >
-   
-     <html:form  method="post" action="/OPAC/advance_search" onsubmit="return validate();" acceptCharset="utf-8">
-            <table  align="center" dir="<%=rtl%>" width="70%" class="datagrid"  style="border:solid 1px black;">
+<body onload="checkboxClickHandler();" style="background-color:#e0e8f5;margin: 0px 0px 0px 0px " >
+    <html:form  method="post" action="/OPAC/advance_search" target="f1" onsubmit="return validate();" styleId="Form1"  acceptCharset="utf-8">
+     <table  align="center" dir="<%=rtl%>" width="80%" class="datagrid"  style="border:solid 1px black;">
   <tr class="header" dir="<%=rtl%>"><td  width="100%" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
 		  <%=resource.getString("opac.advance.advancesearchtext")%>
         </td></tr>
-  <tr dir="<%=rtl%>"><td>
-    <div id='translControl'>
-      <input type="checkbox" id="checkboxId" onclick="javascript:checkboxClickHandler();javascript:DisBox();javascript:languageChangeHandler();">
-      <html:hidden property="checkbox" styleId="checkbox" name="AdvanceSearchActionForm"/>
-      <%=resource.getString("cataloguing.catbiblioentry.selectlang")%><select id="languageDropDown" class="selecthome" onchange="javascript:languageChangeHandler()"></select>
+  
    <html:hidden property="language" styleId="language" name="AdvanceSearchActionForm"/>
-    </div>
-      </td></tr>
+  <html:hidden property="checkbox" styleId="checkbox" name="AdvanceSearchActionForm"/>
+  <% if(net.equalsIgnoreCase("true")){%>
+        <tr dir="<%=rtl%>"><td >
+        <table><tr><td>
+      <%=resource.getString("cataloguing.catbiblioentry.selectlang1")%> </td><td> <div id='translControl'>
+
+         <input type="checkbox" id="checkboxId3"  onclick="javascript:DisBox();javascript:checkboxClickHandler();javascript:languageChangeHandler()">
+        </div></td><td>
+        <div id="MLI" style="visibility: block;" >
+          <select id="languageDropDown" class="selecthome" onchange="javascript:languageChangeHandler()">
+          </select>
+        </div>
+        </td></tr></table>
+
+        </td></tr>
+        <%}else{%>
+         <tr><td  dir="<%=rtl%>" colspan="3">
+                 Sorry Cannot Support MLI Entry because of unavaliblibility of Net
+         </td>
+        </tr>
+        <%}%>
   <tr ><td  dir="<%=rtl%>" width="50%">
           <table   width="100%" dir="<%=rtl%>">
               <tr><td  dir="<%=rtl%>" with="20%"><%=resource.getString("opac.advance.seachkeyword")%></td><td colspan="2"><input name="TXTPHRASE1" id="TXTPHRASE1" class="keyboardInput"  type="text" dir="<%=rtl%>" onfocus="statwords('Enter Keyword')" onblur="loadHelp()">
@@ -346,7 +360,7 @@ else{
           <table  width="100%" >
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.field")%> </td><td align="<%=align%>" valign="top" dir="<%=rtl%>">
           <select name="CMBFIELD1" class="selecthome" size="1" dir="<%=rtl%>" >
-<option selected value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%></option>
+<%--<option selected value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%></option>--%>
 <option value="author" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
 <option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
 <option value="isbn10" dir="<%=rtl%>">ISBN</option>
@@ -373,12 +387,12 @@ else{
           <table dir="<%=rtl%>" width="100%" >
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%> </td><td dir="<%=rtl%>" valign="top">
          <select name="CMBFIELD2" class="selecthome" size="1"  dir="<%=rtl%>">
-<option selected value="author" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%></option>
-<option value="author" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
-<option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
-<option value="isbn10" dir="<%=rtl%>">ISBN</option>
-<option value="subject" dir="<%=rtl%>"><%=resource.getString("opac.advance.subject")%></option>
-</select>
+        <%--<option selected value="author" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%></option>--%>
+        <option value="author" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
+        <option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
+        <option value="isbn10" dir="<%=rtl%>">ISBN</option>
+        <option value="subject" dir="<%=rtl%>"><%=resource.getString("opac.advance.subject")%></option>
+        </select>
      </td>
               </tr></table></td></tr>
    <tr dir="<%=rtl%>"><td   dir="<%=rtl%>" width="50%" >
@@ -386,13 +400,13 @@ else{
                 <tr><td  dir="<%=rtl%>"><%=resource.getString("opac.advance.seachkeyword")%></td><td dir="<%=rtl%>" colspan="2"><input name="TXTPHRASE3" id="TXTPHRASE3" class="keyboardInput" type="text" dir="<%=rtl%>"onfocus="statwords('Enter Keyword')" onblur="loadHelp()" >
 </td></tr>
               <tr>   <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.connectwordas")%></td><td dir="<%=rtl%>"> <select class="selecthome" name="CMB3" size="1" dir="<%=rtl%>">
-    <option value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
-    <option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
-  </select></td><td>    <select name="CMBF3" class="selecthome" size="1" dir="<%=rtl%>">
-<option value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
-<option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
-</select>
-</td>
+         <option value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
+        <option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
+        </select></td><td>    <select name="CMBF3" class="selecthome" size="1" dir="<%=rtl%>">
+        <option value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
+        <option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
+        </select>
+        </td>
       </tr>
           </table>
       </td>
@@ -400,12 +414,12 @@ else{
           <table dir="<%=rtl%>" width="100%" >
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%> </td><td dir="<%=rtl%>"  valign="top">
         <select name="CMBFIELD3" size="1" dir="<%=rtl%>" class="selecthome">
-<option selected value="subject" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%></option>
-<option value="author" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
-<option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
-<option value="isbn10" dir="<%=rtl%>">ISBN</option>
-<option value="subject" dir="<%=rtl%>"><%=resource.getString("opac.advance.subject")%></option>
-</select>
+        <%--<option selected value="subject" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%></option>--%>
+        <option value="author" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
+        <option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
+        <option value="isbn10" dir="<%=rtl%>">ISBN</option>
+        <option value="subject" dir="<%=rtl%>"><%=resource.getString("opac.advance.subject")%></option>
+        </select>
      </td>
               </tr></table></td></tr>
   <tr class="header" dir="<%=rtl%>"><td  dir="<%=rtl%>"  align="<%=align%>" ><%=resource.getString("opac.simplesearch.restrictedby")%></td><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
@@ -414,10 +428,10 @@ else{
                        <table width="100%">
               <tr><td ><%=resource.getString("opac.simplesearch.database")%></td><td>
                       <select name="CMBDB" size="1" class="selecthome" id="CMBDB" dir="<%=rtl%>">
-<option value="combined" selected dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.combnd")%></option>
-    <option value="book" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.books")%></option>
-    <option value="cd" dir="<%=rtl%>">CDs</option>
-</select>
+        <option value="combined" selected dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.combnd")%></option>
+        <option value="book" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.books")%></option>
+        <option value="cd" dir="<%=rtl%>">CDs</option>
+        </select>
                   </td></tr>
               <tr>   <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%></td><td>
                       <html:select property="CMBLib" dir="<%=rtl%>" styleClass="selecthome" value="<%=lib_id%>"  tabindex="3"  styleId="CMBLib" onchange="search()">
@@ -427,8 +441,7 @@ else{
 </td>
 <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                        <html:select property="CMBSUBLib" styleClass="selecthome" dir="<%=rtl%>" value="<%=sublib_id%>"  styleId="SubLibrary" >
-                        <%--   <html:option value="all">All</html:option>
-                           <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />--%>
+                      <html:option value="all">All</html:option>
                        </html:select>
       </tr>
           </table>
@@ -451,10 +464,10 @@ else{
       <td align="<%=align%>" dir="<%=rtl%>">
            <table dir="<%=rtl%>">
                            <tr dir="<%=rtl%>"><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.field1")%></td><td> <select class="selecthome" name="CMBSORT" dir="<%=rtl%>" size="1" id="CMBSORT">
-<option  value="author_main" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
+<option  value="author" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
 <option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
-<option value="isbn10" dir="<%=rtl%>">ISBN</option>
-<option value="publisher_name" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.pub")%></option>
+<option value="subject" dir="<%=rtl%>">Subject</option>
+<option value="isbn10" dir="<%=rtl%>">ISBN10</option>
 </select></td>
                            </tr></table>
       </td>
@@ -463,88 +476,14 @@ else{
 <input id="Button2" class="buttonhome" name="" dir="<%=rtl%>" value="<%=resource.getString("opac.simplesearch.find")%>"  type="submit">
 <input id="Button1" name="" class="buttonhome" dir="<%=rtl%>" value="<%=resource.getString("opac.browse.clear")%>" type="reset">
       </td></tr>
-         <%--  <tr class="header" dir="<%=rtl%>">
-                               <td colspan="2" dir="<%=rtl%>">
-                            <a name="tips" dir="<%=rtl%>">&nbsp;<%=resource.getString("opac.simplesearch.searchtip")%></a>
-                            <table class="datagrid" dir="<%=rtl%>" style="background-color:#e0e8f5;color:black;" halign="right" border="0" cellpadding="2" cellspacing="0" width="100%" frame="hspaces" height="38" rules="rows">
-    <colgroup width="15%"></colgroup><colgroup width="1%" dir="<%=rtl%>"></colgroup><colgroup width="90%" dir="<%=rtl%>"></colgroup>
-    <tbody><tr>
-    <th colspan="3" class="tipstext" dir="<%=rtl%>">
-    	<%=resource.getString("opac.advance.t1")%>
-    </th>
-    </tr>
-    <tr>
-        <td class="txt2" dir="<%=rtl%>">
-    		<%=resource.getString("opac.simplesearch.library")%>
-    </td>
-    <td class="tipsheading" dir="<%=rtl%>">:</td>
-    <td class="tipstext" dir="<%=rtl%>">
-    		 <%=resource.getString("opac.simplesearch.t11")%>
-    </td>
-    </tr>
-      <tr>
-        <td class="txt2" dir="<%=rtl%>">
-    		<%=resource.getString("opac.simplesearch.database")%>
-    </td>
-    <td class="tipsheading" dir="<%=rtl%>">:</td>
-    <td class="tipstext" dir="<%=rtl%>">
-    		<%=resource.getString("opac.simplesearch.t3")%>
-    </td>
-    </tr>
-    <tr valign="top" dir="<%=rtl%>">
-    	<td class="txt2" dir="<%=rtl%>">
-    		<%=resource.getString("opac.simplesearch.field1")%>
-   	</td>
-   	<td class="tipsheading" dir="<%=rtl%>">:</td>
-   	<td class="tipstext" dir="<%=rtl%>">
-    		<%=resource.getString("opac.simplesearch.t5")%>
-    	</td>
-    </tr>
-    <tr valign="top" dir="<%=rtl%>">
-    	<td class="txt2" dir="<%=rtl%>">
-    		<%=resource.getString("opac.advance.seachkeyword")%>
-    	</td>
-    	<td class="tipsheading" dir="<%=rtl%>">:</td>
-    	<td class="tipstext" dir="<%=rtl%>">
-    		 <%=resource.getString("opac.simplesearch.t7")%>
-    	</td>
-    </tr>
-    <tr valign="top" dir="<%=rtl%>">
-    	<td class="txt2" dir="<%=rtl%>">
-    		<%=resource.getString("opac.simplesearch.connectwordas")%>
-    	</td>
-    	<td class="tipsheading" dir="<%=rtl%>">:</td>
-    	<td class="tipstext" dir="<%=rtl%>">
-    		 <%=resource.getString("opac.simplesearch.t9")%>
-    	</td>
-    </tr>
-     <tr valign="top" dir="<%=rtl%>">
-    	<td class="txt2" dir="<%=rtl%>">
-    		<%=resource.getString("opac.simplesearch.field1")%>
-    	</td>
-    	<td class="tipsheading" dir="<%=rtl%>">:</td>
-    	<td class="tipstext" dir="<%=rtl%>">
-    		 <%=resource.getString("opac.simplesearch.t15")%>
-    	</td>
-    </tr>
-    <tr valign="top" dir="<%=rtl%>">
-    	<td class="txt2" nowrap1="" dir="<%=rtl%>">
-    		<%=resource.getString("opac.simplesearch.pubyear")%>
-    	</td>
-    	<td class="tipsheading" dir="<%=rtl%>">:</td>
-    	<td class="tipstext" dir="<%=rtl%>">
-    		 <%=resource.getString("opac.simplesearch.t13")%>
-    	</td>
-    </tr>
-   <tr valign="top" dir="<%=rtl%>">
-   	<td class="txt2" align="right" dir="<%=rtl%>">
-   	     <%=resource.getString("opac.simplesearch.t16")%>
-    	</td>
-    	<td colspan="2" class="txt2" dir="<%=rtl%>">
-    		<%=resource.getString("opac.advance.t2")%>
-    	</td>
-   </tr></tbody></table>
-                               </td></tr>--%>
+  <tr ><td dir="<%=rtl%>" height="500px"   valign="top" colspan="2" >
+<hr/>
+          <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="100%" width="100%" scrolling="yes"  id="f1"></IFRAME>
+
+
+      </td></tr>
+
+        
        </table>
    </html:form>
 

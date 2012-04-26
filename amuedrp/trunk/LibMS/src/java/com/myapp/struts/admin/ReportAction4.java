@@ -5,7 +5,7 @@
 
 package com.myapp.struts.admin;
 
-import com.myapp.struts.AdminDAO.LogsDAO;
+//import com.myapp.struts.AdminDAO.LogsDAO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -57,17 +57,17 @@ public class ReportAction4 extends org.apache.struts.action.Action {
           
             System.out.println("sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
             HashMap map = new HashMap();
-List<Log1> log=LogsDAO.getUserLogChart();
-for(int i=0;i<log.size();i++)
-    System.out.println(log.get(i).getLibrary_id()+" "+log.get(i).getCount1());
+//List<Log1> log=LogsDAO.getUserLogChart();
+//for(int i=0;i<log.size();i++)
+  //  System.out.println(log.get(i).getLibrary_id()+" "+log.get(i).getCount1());
 
          
 JRBeanCollectionDataSource dataSource;
 
 JasperCompileManager.compileReportToFile(path + "/logs.jrxml");
 System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
- dataSource = new JRBeanCollectionDataSource(log);
-          JasperFillManager.fillReportToFile(path+"/logs.jasper",map, dataSource);
+ //dataSource = new JRBeanCollectionDataSource(log);
+   //       JasperFillManager.fillReportToFile(path+"/logs.jasper",map, dataSource);
 
 
 

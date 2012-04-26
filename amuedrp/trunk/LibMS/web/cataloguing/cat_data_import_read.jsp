@@ -27,7 +27,7 @@
             </html:form>
 
 
-    <html:form action="/uploadtxt" method="post"  enctype="multipart/form-data">
+    <!--<html:form action="/uploadtxt" method="post"  enctype="multipart/form-data">
           <tr><td colspan="3" align="center" class="headerStyle">Upload Txt/Flat File</td></tr>
          
             <tr>
@@ -113,7 +113,7 @@
                     <%--<input type="checkbox"> Check if you want to overwrite previous same record.--%>
                 </td>            
             </tr>
-           </html:form>
+           </html:form>-->
             <tr><td colspan="3">
                   <p class="err">
                     <html:errors />

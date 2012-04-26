@@ -4,7 +4,7 @@
      
 --%>
 
- <%@page contentType="text/html" import="java.util.*,java.io.*,java.sql.*,com.myapp.struts.hbm.*"%>
+ <%@page contentType="text/html" import="java.util.*,java.io.*,java.sql.*,com.myapp.struts.hbm.*,com.myapp.struts.utility.*"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -12,13 +12,14 @@
 CirMemberDetail cirmemdetail  =(CirMemberDetail)session.getAttribute("cirmemdetail");
 
 byte[] bytes=null;
-if(cirmemdetail.getImage()!=null)
-{
-bytes = cirmemdetail.getImage();
-//System.out.println("Image Length1="+cirmemdetail.getImage().length);
+//Read Image from Images Folder
+
+if(cirmemdetail.getImage()!=null){
+bytes = UserLog.getBytesFromFile(AppPath.getProjectImagePath()+cirmemdetail.getImage());
 }
-else
+if(bytes==null)
 {
+
     File file = new File(application.getRealPath("images")+"/no-image.jpg");
 
       

@@ -16,6 +16,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.hbm.*;
+import com.myapp.struts.utility.AppPath;
+import com.myapp.struts.utility.UserLog;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -125,18 +127,24 @@ public class CirculationNewMemberRegAction extends org.apache.struts.action.Acti
             cmd.setFax(cmdf.getTXTFAX());
             cmd.setCreatedBy((String)session1.getAttribute("sublibrary_id"));
             System.out.println(cmdf.getTempreg()+".........................");
-            if(cmdf.getTempreg()!=null){
+            if(cmdf.getTempreg()!=null)
+            {
             cmd.setCollege(cmdf.getCollege());
             cmd.setCollAddress(cmdf.getColladd());
             cmd.setTempStatus("Y");
             }
 
-         if (cmdf.getImg()!=null)
-            cmd.setImage(cmdf.getImg().getFileData());
-         else
-               if(iii!=null){cmd.setImage(iii);}
-               else{cmd.setImage(null);}
+         System.out.println(cmdf.getImg()+v.getFileName());
+            if(v.getFileName()!=null)
+            {
+                iii=v.getFileData();
+                String ext=v.getFileName().substring(v.getFileName().indexOf(".")+1,v.getFileName().length());
+                UserLog.writeImage(member_id+"."+ext, iii);
+                cmd.setImage(member_id+"."+ext);
+            }
+           
 
+            
 
             CirculationDAO.insert(cmd);
 
@@ -260,11 +268,15 @@ public class CirculationNewMemberRegAction extends org.apache.struts.action.Acti
             cmd1.setFax(cmdf.getTXTFAX());
 
 
-            if (cmdf.getImg()!=null)
-            cmd1.setImage(cmdf.getImg().getFileData());
-             else
-             { if(iii!=null){cmd1.setImage(iii);}}
-
+         
+            if(cmdf.getImg()!=null)
+            {
+                iii=cmdf.getImg().getFileData();
+                String ext=v.getFileName().substring(v.getFileName().indexOf(".")+1,v.getFileName().length());
+                UserLog.writeImage(member_id+"."+ext, iii);
+                cmd.setImage(member_id+"."+ext);
+            }
+           
             
             result=CirculationDAO.update(cmd1);
 

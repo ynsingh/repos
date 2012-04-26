@@ -92,13 +92,13 @@ public Integer getInstituteRequestCount(String status){
         Integer countrequest=null;
     try {
         session = HibernateUtil.getSessionFactory().openSession();
-        
+        session.beginTransaction();
         Criteria criteria = session.createCriteria(Library.class)
                  .setProjection(Projections.count("id.libraryId"));
         criteria.add(Restrictions.eq("status",status ));
               countrequest= Integer.parseInt((String)criteria.uniqueResult());
 
-    
+    session.getTransaction().commit();
 
 
            
@@ -124,7 +124,7 @@ public List getInstituteDetailsByStatus(String institute_id, String status){
             query.setString("libraryId",institute_id );
             query.setString("status",status );
 obj=(List)query.list();
-            
+            session.getTransaction().commit();
         }
     catch (Exception e) {
 
@@ -145,6 +145,7 @@ public Library getInstituteDetails(String instituteId){
             query = session.createQuery("FROM Library where id.libraryId = :instituteId");
             query.setString("instituteId", instituteId);
            obj=(Library)query.uniqueResult();
+           session.getTransaction().commit();
         }
     catch (Exception e) {
 
@@ -165,6 +166,7 @@ public Library getInstituteDetailsByRegistrationId(Integer RegistrationId){
             query = session.createQuery("FROM Library where registrationId = :registrationId");
             query.setInteger("registrationId", RegistrationId);
      obj=(Library)query.uniqueResult();
+     session.getTransaction().commit();
         }
      catch (Exception e) {
 
@@ -196,6 +198,7 @@ public List getLibrarySearch(String search_by, String search_keyword, String sor
                     .addEntity(Library.class)
                     .setResultTransformer(Transformers.aliasToBean(AdminReg_Institute.class));
            obj= query.list();
+           session.getTransaction().commit();
         }
      catch (Exception e) {
           e.printStackTrace();
@@ -212,12 +215,12 @@ public Integer getLibraryRequestCount(){
         Integer countrequest=null;
     try {
         session = HibernateUtil.getSessionFactory().openSession();
-        
+        session.beginTransaction();
         Criteria criteria = session.createCriteria(Library.class)
                  .setProjection(Projections.count("id.libraryId"));
        
              countrequest= Integer.parseInt((String)criteria.uniqueResult());
-   
+   session.getTransaction().commit();
         }
      catch (Exception e) {
           e.printStackTrace();
@@ -241,6 +244,7 @@ List obj=null;
             query = session.createQuery("FROM  Library where id.libraryId !=:lib");
             query.setString("lib","libms");
             obj=(List<Library>) query.list();
+            session.getTransaction().commit();
         }
          catch (Exception e) {
           e.printStackTrace();
@@ -265,6 +269,7 @@ Library obj=null;
             query = session.createQuery("FROM  Library  WHERE libraryId =:library_id  ");
             query.setString("library_id", library_id);
             obj=( Library) query.uniqueResult();
+            session.getTransaction().commit();
             
         }
         catch (Exception e) {
@@ -288,6 +293,7 @@ Library obj=null;
             query.setString("library_id", library_id);
             query.setString("working_status", "Blocked");
 obj=( Library) query.uniqueResult();
+session.getTransaction().commit();
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -309,6 +315,7 @@ Library obj=null;
             query = session.createQuery("FROM  Library  WHERE libraryId =:library_id  ");
             query.setString("library_id", library_id);
 obj=( Library) query.uniqueResult();
+session.getTransaction().commit();
 
         }
         catch (Exception e) {
@@ -331,6 +338,7 @@ Library obj=null;
             query = session.createQuery("FROM  Library  WHERE libraryName =:library_name");
             query.setString("library_name", library_name);
 obj=( Library) query.uniqueResult();
+session.getTransaction().commit();
 
         }
        catch (Exception e) {

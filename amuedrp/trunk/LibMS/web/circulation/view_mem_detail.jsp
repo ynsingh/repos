@@ -5,7 +5,7 @@
 <%
 CirMemberDetail cirmemdetail  =(CirMemberDetail)session.getAttribute("cirmemberdetail");
 
-byte[] bytes=null;
+/*byte[] bytes=null;
 if(cirmemdetail.getImage()!=null)
 {
 bytes = cirmemdetail.getImage();
@@ -15,7 +15,7 @@ System.out.println("Cir Image Length="+cirmemdetail.getImage());
 ServletOutputStream servletOutputStream = response.getOutputStream();
 servletOutputStream.write(bytes);
 servletOutputStream.flush();
-
+*/
 
 %>
 

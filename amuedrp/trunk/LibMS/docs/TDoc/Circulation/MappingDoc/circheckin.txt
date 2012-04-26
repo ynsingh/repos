@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.CirCheckin" table="cir_checkin" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.CirCheckinId">
+            <key-property name="checkinId" type="string">
+                <column name="checkin_id" length="10" />
+            </key-property>
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+            <key-property name="sublibraryId" type="string">
+                <column name="sublibrary_id" length="20" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="cirCheckout" class="com.myapp.struts.hbm.CirCheckout" update="false" insert="false" fetch="select">
+            <column name="checkout_id" />
+            <column name="library_id" length="20" not-null="true" />
+            <column name="sublibrary_id" length="20" not-null="true" />
+        </many-to-one>
+        <property name="memberId" type="string">
+            <column name="member_id" length="100" />
+        </property>
+        <property name="returningDate" type="string">
+            <column name="returning_date" length="15" />
+        </property>
+        <property name="documentId" type="string">
+            <column name="document_id" length="10" />
+        </property>
+        <property name="damagedStatus" type="string">
+            <column name="damaged_status" length="20" />
+        </property>
+        <property name="lossStatus" type="string">
+            <column name="loss_status" length="20" />
+        </property>
+        <property name="reason" type="string">
+            <column name="reason" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>

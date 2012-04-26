@@ -173,7 +173,7 @@ System.out.println(adminobj);
   
  String path = servlet.getServletContext().getRealPath("/");
  
-             obj=new Email(path,adminRegistrationActionForm.getAdmin_email(),"",msg,"Your request for Library registration has been accepted Successfully.\nShortly you will get another mail regrading approval of your request.\n","\n\nDear "+adminRegistrationActionForm.getAdmin_fname()+" "+adminRegistrationActionForm.getAdmin_lname()+",\n","Thanks\nWebAdmin\nLibMS");
+             obj=new Email(adminRegistrationActionForm.getAdmin_email(),"",msg,"\n\nDear "+adminRegistrationActionForm.getAdmin_fname()+" "+adminRegistrationActionForm.getAdmin_lname()+",\n Your request for Library registration has been accepted Successfully.\nShortly you will get another mail regrading approval of your request.\nThanks\nWebAdmin\nLibMS");
             executor.submit(new Runnable() {
 
                 public void run() {

@@ -45,13 +45,13 @@ public class BudgetDAO {
 
             sql = "select a.*,b.* from acq_budget a left outer join acq_budget_allocation b on a.library_id=b.library_id and a.budgethead_id=b.budgethead_id where a.library_id='"+library_id+"' and b.financial_yr1='"+String.valueOf(year)+"'";
 
-        System.out.println(sql);
-
+       
           Query query =  session.createSQLQuery(sql)
                     .addEntity(AcqBudget.class)
                     .addEntity(AcqBudgetAllocation.class)
                     .setResultTransformer(Transformers.aliasToBean(MixBudgetAllocation.class));
             obj= (List<MixBudgetAllocation>)query.list();
+            session.getTransaction().commit();
         }
     catch(Exception e){
     e.printStackTrace();
@@ -79,8 +79,7 @@ public class BudgetDAO {
         Iterator it = query.iterate(); it.hasNext();
      amount=query.uniqueResult().toString();
         System.out.println("Total rows1: " + amount);
-
-     
+        sess.getTransaction().commit();
     }
     catch(Exception e){
       e.printStackTrace();
@@ -101,6 +100,7 @@ public class BudgetDAO {
       
 
             obj= (List<AcqBudget>) query1.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -122,6 +122,7 @@ public class BudgetDAO {
             query1.setString("year",year);
 
             obj= (AcqBudgetAllocation) query1.uniqueResult();
+            session.getTransaction().commit();
         }
  catch(Exception e){
         e.printStackTrace();
@@ -143,6 +144,7 @@ public class BudgetDAO {
 
 
             obj= (List<AcqBudgetAllocation>) query1.list();
+            session.getTransaction().commit();
         }
  catch(Exception e){
         e.printStackTrace();
@@ -163,6 +165,7 @@ public class BudgetDAO {
 
 
             obj= (BaseCurrency) query1.uniqueResult();
+            session.getTransaction().commit();
         }
  catch(Exception e){
         e.printStackTrace();
@@ -183,6 +186,7 @@ public class BudgetDAO {
             query1.setString("scurr", scurr);
 
             obj= (AcqCurrency) query1.setMaxResults(1).uniqueResult();
+            session.getTransaction().commit();
         }
       catch(Exception e){
         e.printStackTrace();
@@ -203,6 +207,7 @@ public class BudgetDAO {
 
 
            obj= (List<AcqBudgetAllocation>) query1.list();
+           session.getTransaction().commit();
         }
  catch(Exception e){
         e.printStackTrace();
@@ -224,6 +229,7 @@ public class BudgetDAO {
 
 
             obj= (AcqBudget) query1.uniqueResult();
+            session.getTransaction().commit();
         }
  catch(Exception e){
         e.printStackTrace();
@@ -247,6 +253,7 @@ public static AcqBudget getLocationByName(String library_id,String budegetheadna
             query1.setString("budgetheadName", budegetheadname);
 
             obj= (AcqBudget) query1.uniqueResult();
+            session.getTransaction().commit();
         }
  catch(Exception e){
         e.printStackTrace();
@@ -269,6 +276,7 @@ public static AcqBudgetAllocation getBudgetHeadByName(String library_id,String b
            query1.setString("financialYr1", financial_yr);
 
             obj= (AcqBudgetAllocation) query1.uniqueResult();
+            session.getTransaction().commit();
         }
  catch(Exception e){
         e.printStackTrace();
@@ -295,7 +303,7 @@ public static Integer returnMaxBiblioId(String library_id) {
             } else {
                 maxbiblio++;
             }
-
+session.getTransaction().commit();
            
         }
         catch(Exception e){
@@ -483,7 +491,7 @@ AcqBudget obj=null;
                     .add(Restrictions.eq("id.libraryId", library_id))                  
                     .add(Restrictions.eq("id.budgetheadId", budgethead_id)));
             obj= (AcqBudget) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }catch(Exception e){
         e.printStackTrace();
@@ -506,7 +514,7 @@ AcqBudgetAllocation obj=null;
                     .add(Restrictions.eq("financialYr1", fyear))
                     .add(Restrictions.eq("budgetheadId", budgethead_id)));
             obj= (AcqBudgetAllocation) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }catch(Exception e){
         e.printStackTrace();
@@ -527,7 +535,7 @@ List<AcqBudget> obj=null;
                     .add(Restrictions.eq("id.libraryId", library_id))
                    );
             obj= (List<AcqBudget>) criteria.list();
-
+session.getTransaction().commit();
 
         } catch(Exception e){
         e.printStackTrace();

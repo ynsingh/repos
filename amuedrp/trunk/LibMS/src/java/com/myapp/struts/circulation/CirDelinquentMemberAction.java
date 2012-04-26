@@ -90,8 +90,7 @@ public class CirDelinquentMemberAction extends org.apache.struts.action.Action {
   {
 
        
-                  String path = servlet.getServletContext().getRealPath("/");
-              obj=new Email(path,cirmem.getEmail(),password,"Renewal of Library Member Registration","Your Library MemberShip is Successfully Renewed With \n UserID: "+cirmemac.getId().getMemid()+"\nPassword: "+password,"\n\nDear "+cirmem.getFname()+" "+cirmem.getLname()+",\n","With Regards\nWebAdmin\nLibMS");
+              obj=new Email(cirmem.getEmail(),password,"Renewal of Library Member Registration","\n\nDear "+cirmem.getFname()+" "+cirmem.getLname()+"Your Library MemberShip is Successfully Renewed With \n UserID: "+cirmemac.getId().getMemid()+"\nPassword: "+password+",\nWith Regards\nWebAdmin\nLibMS");
 
             executor.submit(new Runnable() {
 

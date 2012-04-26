@@ -1,0 +1,5 @@
+  <action  path="/cir_checkout" input="/circulation/cir_view_book.jsp" name="CirCheckoutAllActionForm"   scope="request" type="com.myapp.struts.circulation.CirCheckoutAllAction">
+                      
+                       <forward name="success" path="/circulation/cir_checkout.jsp"/>
+
+   </action>

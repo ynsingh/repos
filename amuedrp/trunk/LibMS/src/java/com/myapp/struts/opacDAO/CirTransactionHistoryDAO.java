@@ -9,12 +9,10 @@ package com.myapp.struts.opacDAO;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.opac.MemberFinewithDocument;
 import java.util.List;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 
 /**
@@ -59,7 +57,7 @@ public class CirTransactionHistoryDAO {
  
 
      public static CirTransactionHistory getMemberDetail(String library_id,String sublibrary_id,String memid) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session =  HibernateUtil.getSessionFactory().openSession();
         CirTransactionHistory obj=null;
         try {
             session.beginTransaction();
@@ -67,9 +65,8 @@ public class CirTransactionHistoryDAO {
             query.setString("library_id",library_id);
             query.setString("sublibrary_id",sublibrary_id);
             query.setString("mem_id",memid);
-            
-
             obj=  (CirTransactionHistory)query.uniqueResult();
+                        session.getTransaction().commit();
             
         }
         catch (Exception ex)
@@ -86,7 +83,7 @@ public class CirTransactionHistoryDAO {
      }
 
 public static List<MemberFinewithDocument> getMemberFineWithDocumentDetail(String library_id,String sublibrary_id,String memid) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session =  HibernateUtil.getSessionFactory().openSession();
        List<MemberFinewithDocument> obj = null;
         Criterion criterion;
         try {
@@ -105,6 +102,8 @@ public static List<MemberFinewithDocument> getMemberFineWithDocumentDetail(Strin
             query.setResultTransformer(Transformers.aliasToBean(MemberFinewithDocument.class));
 
           obj=  (List<MemberFinewithDocument>)query.list();
+                     session.getTransaction().commit();
+
         }
        catch (Exception ex)
         {

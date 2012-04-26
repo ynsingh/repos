@@ -100,7 +100,7 @@ public class CirculationList implements Serializable{
 
     public void setCirMemberDetail(CirMemberDetail cirMemberDetail) {
         this.cirMemberDetail = cirMemberDetail;
-        this.setImage(cirMemberDetail.getImage());
+     //   this.setImage(cirMemberDetail.getImage());
         this.setFname(cirMemberDetail.getFname());
         this.mname = cirMemberDetail.getMname();
         this.lname = cirMemberDetail.getLname();

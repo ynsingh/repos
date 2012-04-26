@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 16 Nov, 2011 3:38:39 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated 6 Apr, 2012 6:28:59 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="com.myapp.struts.hbm.Library" table="library" catalog="libms">
         <id name="libraryId" type="string">
@@ -20,11 +20,29 @@
         <property name="workingStatus" type="string">
             <column name="working_status" length="50" not-null="true" />
         </property>
-        <set name="serNewEntries" inverse="true">
+        <set name="bibliographicDetailses" inverse="true">
             <key>
                 <column name="library_id" length="20" not-null="true" />
             </key>
-            <one-to-many class="com.myapp.struts.hbm.SerNewEntry" />
+            <one-to-many class="com.myapp.struts.hbm.BibliographicDetails" />
+        </set>
+        <set name="bibliographicDetailsLangs" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.BibliographicDetailsLang" />
+        </set>
+        <set name="bibliographicDetailses_1" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.BibliographicDetails" />
+        </set>
+        <set name="bibliographicDetailsLangs_1" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.BibliographicDetailsLang" />
         </set>
     </class>
 </hibernate-mapping>

@@ -7,17 +7,20 @@
 
 <struts-config>
     <form-beans>
+        <!-- BAR CODE SCANNER ACTIVITY-->
+        <form-bean name="BarBookInformationActionForm" type="com.myapp.struts.cataloguing.BarBookInformationActionForm"/>
+
+
         <!-- Serial Form Naming-->
         <form-bean name="SerLanguageActionForm" type="com.myapp.struts.Serial.SerLanguageActionForm"/>
         <form-bean name="SerAddLanguageActionForm" type="com.myapp.struts.Serial.SerAddLanguageActionForm"/>
         <form-bean name="SerBiblioActionForm" type="com.myapp.struts.Serial.SerBiblioActionForm"/>
         <form-bean name="SerPublisherActionForm" type="com.myapp.struts.Serial.SerPublisherActionForm"/>
-  <!--End Serial Form Naming-->
+        <!--End Serial Form Naming-->
 
 
 
-  <!--AcquisitionFormBean-->
-
+        <!--AcquisitionFormBean-->
         <form-bean name="AcqBiblioActionForm" type="com.myapp.struts.Acquisition.AcqBiblioActionForm"/>
         <form-bean name="AcqInitiateApprovalActionForm" type="com.myapp.struts.Acquisition.AcqInitiateApprovalActionForm"/>
         <form-bean name="AcqOrderManagementActionForm" type="com.myapp.struts.Acquisition.AcqOrderManagementActionForm"/>
@@ -30,45 +33,34 @@
         <form-bean name="AcqPurchaseOrderActionForm" type="com.myapp.struts.Acquisition.AcqPurchaseOrderActionForm"/>
 
   
-<!--System Setup Form Setting-->
+        <!--System Setup Form Setting-->
         <form-bean name="FacultyActionForm" type="com.myapp.struts.systemsetup.FacultyActionForm"/>
         <form-bean name="AddFacultyActionForm" type="com.myapp.struts.systemsetup.AddFacultyActionForm"/>
         <form-bean name="FacultyUpdateViewActionForm" type="com.myapp.struts.systemsetup.FacultyUpdateViewActionForm"/>
         <form-bean name="LocationActionForm" type="com.myapp.struts.systemsetup.LocationActionForm"/>
- <form-bean name="AddNoticeActionForm" type="com.myapp.struts.systemsetup.AddNoticeActionForm"/>
-  <form-bean name="LocationViewActionForm" type="com.myapp.struts.opac.LocationViewActionForm"/>
-<form-bean name="DocumentCategoryActionForm" type="com.myapp.struts.systemsetup.DocumentCategoryActionForm"/>
-
-
-
-
+        <form-bean name="AddNoticeActionForm" type="com.myapp.struts.systemsetup.AddNoticeActionForm"/>
+        <form-bean name="LocationViewActionForm" type="com.myapp.struts.opac.LocationViewActionForm"/>
+        <form-bean name="DocumentCategoryActionForm" type="com.myapp.struts.systemsetup.DocumentCategoryActionForm"/>
         <form-bean name="DepartmentActionForm" type="com.myapp.struts.systemsetup.DepartmentActionForm"/>
         <form-bean name="AddDepartmentActionForm" type="com.myapp.struts.systemsetup.AddDepartmentActionForm"/>
         <form-bean name="DepartmentUpdateViewActionForm" type="com.myapp.struts.systemsetup.DepartmentUpdateViewActionForm"/>
-
         <form-bean name="CourseActionForm" type="com.myapp.struts.systemsetup.CourseActionForm"/>
         <form-bean name="AddCourseActionForm" type="com.myapp.struts.systemsetup.AddCourseActionForm"/>
         <form-bean name="CourseUpdateViewActionForm" type="com.myapp.struts.systemsetup.CourseUpdateViewActionForm"/>
-         <form-bean name="BookCategoryDecideActionForm" type="com.myapp.struts.systemsetup.BookCategoryDecideActionForm"/>
-         <form-bean name="BookCategoryDecideActionForm1" type="com.myapp.struts.systemsetup.BookCategoryDecideActionForm1"/>
+        <form-bean name="BookCategoryDecideActionForm" type="com.myapp.struts.systemsetup.BookCategoryDecideActionForm"/>
+        <form-bean name="BookCategoryDecideActionForm1" type="com.myapp.struts.systemsetup.BookCategoryDecideActionForm1"/>
         <form-bean name="Member2ActionForm" type="com.myapp.struts.systemsetup.Member2ActionForm"/>
         <form-bean name="AddMemberActionForm" type="com.myapp.struts.systemsetup.AddMemberActionForm"/>
         <form-bean name="MemberUpdateViewActionForm" type="com.myapp.struts.systemsetup.MemberUpdateViewActionForm"/>
-
         <form-bean name="SubMember2ActionForm" type="com.myapp.struts.systemsetup.SubMember2ActionForm"/>
         <form-bean name="AddSubMemberActionForm" type="com.myapp.struts.systemsetup.AddSubMemberActionForm"/>
         <form-bean name="SubMemberUpdateViewActionForm" type="com.myapp.struts.systemsetup.SubMemberUpdateViewActionForm"/>
 
-
-
         <!--Login Form Naming-->
-
         <form-bean name="LoginActionForm" type="com.myapp.struts.LoginActionForm"/>
         <form-bean name="SuperAdminActionForm" type="com.myapp.struts.SuperAdminActionForm"/>
 
         <!--Admin Form Naming-->
-
-
         <form-bean name="CreateAccountActionForm" type="com.myapp.struts.admin.CreateAccountActionForm"/>
         <form-bean name="SecurityActionForm" type="com.myapp.struts.admin.SecurityActionForm"/>
         <form-bean name="AccountActionForm" type="com.myapp.struts.admin.AccountActionForm"/>
@@ -93,36 +85,31 @@
       <!-- Circulation Form Naming-->
         <form-bean name="ActivityActionForm" type="com.myapp.struts.circulation.ActivityActionForm"/>
         <form-bean name="ActivityActionForm1" type="com.myapp.struts.circulation.ActivityActionForm1"/>
-       <form-bean name="GenerateCardActionForm" type="com.myapp.struts.circulation.GenerateCardActionForm"/>
- <form-bean name="CardInformationActionForm" type="com.myapp.struts.circulation.CardInformationActionForm"/>
- <form-bean name="CirCardProcessActionForm" type="com.myapp.struts.circulation.CirCardProcessActionForm"/>
-
-      <form-bean name="CirDelinquentMemberActionForm" type="com.myapp.struts.circulation.CirDelinquentMemberActionForm"/>
-         <form-bean name="CirCheckinActionForm" type="com.myapp.struts.circulation.CirCheckinActionForm"/>
-         <form-bean name="CirculationMemberActionForm" type="com.myapp.struts.circulation.CirculationMemberActionForm"/>
-         <form-bean name="CirculationMemberRegActionForm" type="com.myapp.struts.circulation.CirculationMemberRegActionForm"/>
-         <form-bean name="CirCreateAccountActionForm" type="com.myapp.struts.circulation.CirCreateAccountActionForm"/>
-         <form-bean name="CirImageUploadActionForm" type="com.myapp.struts.circulation.ImageUploadActionForm"/>
-         <form-bean name="CirOpacApprovedActionForm" type="com.myapp.struts.circulation.CirOpacApprovedActionForm"/>
-  <form-bean name="CirCheckOutViewAllActionForm" type="com.myapp.struts.circulation.CirCheckOutViewAllActionForm"/>
-<form-bean name="CirViewAll1ActionForm" type="com.myapp.struts.circulation.CirViewAll1ActionForm"/>
-       <form-bean name="CirculationCheckoutActionForm" type="com.myapp.struts.circulation.CirculationCheckoutActionForm"/>
-       <form-bean name="CirCheckoutActionForm" type="com.myapp.struts.circulation.CirCheckoutActionForm"/>
-       <form-bean name="CallnoForBookActionForm" type="com.myapp.struts.circulation.CallnoForBookActionForm"/>
-       <form-bean name="CirCheckoutAllActionForm" type="com.myapp.struts.circulation.CirCheckoutAllActionForm"/>
-<form-bean name="CirculationShowMemberActionForm" type="com.myapp.struts.circulation.CirculationShowMemberActionForm"/>
-<form-bean name="CirOpacRequestActionForm" type="com.myapp.struts.circulation.CirOpacRequestActionForm"/>
-
- <form-bean name="CirMemberAccountActionForm" type="com.myapp.struts.circulation.CirMemberAccountActionForm"/>
-       <form-bean name="CirCreateAccount2ActionForm" type="com.myapp.struts.circulation.CirCreateAccount2ActionForm"/>
-       <form-bean name="CirculationNewMemberRegAgainActionForm" type="com.myapp.struts.circulation.CirculationNewMemberRegAgainActionForm"/>
-       <form-bean name="CirViewUpdateAccountActionForm" type="com.myapp.struts.circulation.CirViewUpdateAccountActionForm"/>
-<form-bean name="CirCheckInReportActionForm" type="com.myapp.struts.circulation.CirCheckInReportActionForm"/>
-
-
+        <form-bean name="GenerateCardActionForm" type="com.myapp.struts.circulation.GenerateCardActionForm"/>
+        <form-bean name="CardInformationActionForm" type="com.myapp.struts.circulation.CardInformationActionForm"/>
+        <form-bean name="CirCardProcessActionForm" type="com.myapp.struts.circulation.CirCardProcessActionForm"/>
+        <form-bean name="CirDelinquentMemberActionForm" type="com.myapp.struts.circulation.CirDelinquentMemberActionForm"/>
+        <form-bean name="CirCheckinActionForm" type="com.myapp.struts.circulation.CirCheckinActionForm"/>
+        <form-bean name="CirculationMemberActionForm" type="com.myapp.struts.circulation.CirculationMemberActionForm"/>
+        <form-bean name="CirculationMemberRegActionForm" type="com.myapp.struts.circulation.CirculationMemberRegActionForm"/>
+        <form-bean name="CirCreateAccountActionForm" type="com.myapp.struts.circulation.CirCreateAccountActionForm"/>
+        <form-bean name="CirImageUploadActionForm" type="com.myapp.struts.circulation.ImageUploadActionForm"/>
+        <form-bean name="CirOpacApprovedActionForm" type="com.myapp.struts.circulation.CirOpacApprovedActionForm"/>
+        <form-bean name="CirCheckOutViewAllActionForm" type="com.myapp.struts.circulation.CirCheckOutViewAllActionForm"/>
+        <form-bean name="CirViewAll1ActionForm" type="com.myapp.struts.circulation.CirViewAll1ActionForm"/>
+        <form-bean name="CirculationCheckoutActionForm" type="com.myapp.struts.circulation.CirculationCheckoutActionForm"/>
+        <form-bean name="CirCheckoutActionForm" type="com.myapp.struts.circulation.CirCheckoutActionForm"/>
+        <form-bean name="CallnoForBookActionForm" type="com.myapp.struts.circulation.CallnoForBookActionForm"/>
+        <form-bean name="CirCheckoutAllActionForm" type="com.myapp.struts.circulation.CirCheckoutAllActionForm"/>
+        <form-bean name="CirculationShowMemberActionForm" type="com.myapp.struts.circulation.CirculationShowMemberActionForm"/>
+        <form-bean name="CirOpacRequestActionForm" type="com.myapp.struts.circulation.CirOpacRequestActionForm"/>
+        <form-bean name="CirMemberAccountActionForm" type="com.myapp.struts.circulation.CirMemberAccountActionForm"/>
+        <form-bean name="CirCreateAccount2ActionForm" type="com.myapp.struts.circulation.CirCreateAccount2ActionForm"/>
+        <form-bean name="CirculationNewMemberRegAgainActionForm" type="com.myapp.struts.circulation.CirculationNewMemberRegAgainActionForm"/>
+        <form-bean name="CirViewUpdateAccountActionForm" type="com.myapp.struts.circulation.CirViewUpdateAccountActionForm"/>
+        <form-bean name="CirCheckInReportActionForm" type="com.myapp.struts.circulation.CirCheckInReportActionForm"/>
 
         <!--OPAC Form Naming-->
-
        <form-bean name="SimpleSearchActionForm" type="com.myapp.struts.opac.SimpleSearchActionForm"/>
        <form-bean name="browseSearchActionForm" type="com.myapp.struts.opac.browseSearchActionForm"/>
        <form-bean name="AdditionalSearchActionForm" type="com.myapp.struts.opac.AdditionalSearchActionForm"/>
@@ -139,25 +126,26 @@
        <form-bean name="JournalActionForm" type="com.myapp.struts.opac.JournalActionForm"/>
        <form-bean name="OpacImageUploadActionForm" type="com.myapp.struts.opac.OpacImageUploadActionForm"/>
        <form-bean name="OpacNewMemberActionForm" type="com.myapp.struts.opac.OpacNewMemberActionForm"/>
-     <form-bean name="Notice1ActionForm" type="com.myapp.struts.opac.Notice1ActionForm"/>
+       <form-bean name="Notice1ActionForm" type="com.myapp.struts.opac.Notice1ActionForm"/>
       
 
       <!--LogActionForm-->
       <form-bean name="LogActionForm" type="com.myapp.struts.admin.LogActionForm"/>
       <form-bean name="LogGridActionForm" type="com.myapp.struts.admin.LogGridActionForm"/>
+      <!--SUPERADMIN MAIL SETTING-->
+      <form-bean name="MailSettingActionForm" type="com.myapp.struts.admin.MailSettingActionForm"/>
 
 
-<!-- Cataloguing Form Naming-->
+    <!-- Cataloguing Form Naming-->
         <form-bean name="BibliographicDetailEntryActionForm" type="com.myapp.struts.cataloguing.BibliographicDetailEntryActionForm"/>
-<form-bean name="BibliographicDetailEntryActionForm1" type="com.myapp.struts.cataloguing.BibliographicDetailEntryActionForm1"/>
-          <form-bean name="StrutsUploadForm" type="com.myapp.struts.cataloguing.StrutsUploadForm"/>
-      <!-- Marc -->
-            <form-bean name="CatControlActionForm" type="com.myapp.struts.marc.CatControlActionForm"/>
-        <form-bean name="ViewMarcActionForm" type="com.myapp.struts.marc.ViewMarcActionForm"/>
+        <form-bean name="BibliographicDetailEntryActionForm1" type="com.myapp.struts.cataloguing.BibliographicDetailEntryActionForm1"/>
+        <form-bean name="StrutsUploadForm" type="com.myapp.struts.cataloguing.StrutsUploadForm"/>
 
+    <!-- Marc -->
+        <form-bean name="CatControlActionForm" type="com.myapp.struts.marc.CatControlActionForm"/>
+        <form-bean name="ViewMarcActionForm" type="com.myapp.struts.marc.ViewMarcActionForm"/>
         <form-bean name="UpdateMarcActionForm" type="com.myapp.struts.marc.UpdateMarcActionForm"/>
         <form-bean name="CustomMarcActionForm" type="com.myapp.struts.marc.CustomMarcActionForm"/>
-
         <form-bean name="CatActionForm8" type="com.myapp.struts.marc.CatActionForm8"/>
         <form-bean name="CatActionForm7" type="com.myapp.struts.marc.CatActionForm7"/>
         <form-bean name="CatActionForm6" type="com.myapp.struts.marc.CatActionForm6"/>
@@ -166,74 +154,55 @@
         <form-bean name="CatActionForm3" type="com.myapp.struts.marc.CatActionForm3"/>
         <form-bean name="CatActionForm2" type="com.myapp.struts.marc.CatActionForm2"/>
         <form-bean name="CatActionForm1" type="com.myapp.struts.marc.CatActionForm1"/>
-
         <form-bean name="BiblioActionForm" type="com.myapp.struts.marc.BiblioActionForm"/>
-
         <form-bean name="NewMarcActionForm" type="com.myapp.struts.marc.NewMarcActionForm" />
         <form-bean name="NewStrutsActionForm" type="com.myapp.struts.marc.NewStrutsActionForm" />
         <form-bean name="EditMarcActionForm" type="com.myapp.struts.marc.EditMarcActionForm" />
     <!--End Cataloguing Form Naming-->
 
     </form-beans>
-
-   <!-- <global-exceptions>
-
-    <exception-type>java.lang.Exception</exception-type>
-  <exception-location>/error.jsp</exception-location>
-
-
-   </global-exceptions>
-    <global-forwards>
-        <forward name="out"  path="/login.jsp"/>
-    </global-forwards>-->
-
-   
-
-
-
-
-
     <action-mappings>
 
-        <!--Serial Action Setting-->
-   <action path="/ser_lang" input="/serial/ser_language.jsp" scope="request" name="SerLanguageActionForm" type="com.myapp.struts.Serial.SerLanguageAction">
-       <forward name="add" path="/serial/ser_addlanguage.jsp"/>
-       <forward name="duplicate" path="/serial/ser_language.jsp"/>
-   </action>
-   <action path="/add_lang" input="/serial/ser_addlanguage.jsp" scope="request" name="SerAddLanguageActionForm" type="com.myapp.struts.Serial.SerAddLanguageAction">
-       <forward name="success" path="/serial/ser_language.jsp"/>
-   </action>
+         <!--Mail Setting IN SUPERADMIN INTERFACE-->
+        <action input="/admin/mailsetting.jsp" name="MailSettingActionForm" path="/mailsetting" type="com.myapp.struts.admin.MailSettingAction">
+                    <forward name="success" path="/admin/mailsetting.jsp"/>
+        </action>
 
-   <action path="/ser_pub" input="/serial/ser_publisher.jsp" scope="request" name="SerPublisherActionForm" type="com.myapp.struts.Serial.SerPublisherAction">
-       <forward name="add" path="/serial/ser_addpublisher.jsp"/>
-       <forward name="duplicate" path="/serial/ser_publisher.jsp"/>
-   </action>
-    <action path="/add_pub" input="/serial/ser_addpublisher.jsp" scope="request" name="SerPublisherActionForm" type="com.myapp.struts.Serial.SerAddPublisherAction">
-       <forward name="success" path="/serial/ser_publisher.jsp"/>
-   </action>
-  <!--End Serial Action Setting-->
+        <!-- BAR CODE SCANNER DATA RECEIVE-->
+        <action  path="/cataloguing/bar_book_info" scope="request" name="BarBookInformationActionForm"   input="/cataloguing/barcode_book_information.jsp" type="com.myapp.struts.cataloguing.BarBookInformationAction">
+           <forward name="success" path="/cataloguing/barcode_book_information1.jsp" />
+           <forward name="fail" path="/cataloguing/barcode_book_information.jsp" />
+        </action>
+
+        <!--Serial Action Setting-->
+       <action path="/ser_lang" input="/serial/ser_language.jsp" scope="request" name="SerLanguageActionForm" type="com.myapp.struts.Serial.SerLanguageAction">
+            <forward name="add" path="/serial/ser_addlanguage.jsp"/>
+            <forward name="duplicate" path="/serial/ser_language.jsp"/>
+       </action>
+       <action path="/add_lang" input="/serial/ser_addlanguage.jsp" scope="request" name="SerAddLanguageActionForm" type="com.myapp.struts.Serial.SerAddLanguageAction">
+            <forward name="success" path="/serial/ser_language.jsp"/>
+       </action>
+
+        <action path="/ser_pub" input="/serial/ser_publisher.jsp" scope="request" name="SerPublisherActionForm" type="com.myapp.struts.Serial.SerPublisherAction">
+            <forward name="add" path="/serial/ser_addpublisher.jsp"/>
+            <forward name="duplicate" path="/serial/ser_publisher.jsp"/>
+        </action>
+        <action path="/add_pub" input="/serial/ser_addpublisher.jsp" scope="request" name="SerPublisherActionForm" type="com.myapp.struts.Serial.SerAddPublisherAction">
+            <forward name="success" path="/serial/ser_publisher.jsp"/>
+        </action>
+       <!--End Serial Action Setting-->
   
 
-<!--Insti-logo-->
-   <action path="/admin/instilogo" input="/admin/main.jsp" name="ImageUploadActionForm" scope="session" type="com.myapp.struts.admin.InstiLogo">
-    <forward name="success" path="/admin/changelogo.jsp"/>
-    <forward name="failure" path="/admin/changelogo.jsp"/>
-</action>
+        <!--Institute Logo-->
+        <action path="/admin/instilogo" input="/admin/main.jsp" name="ImageUploadActionForm" scope="session" type="com.myapp.struts.admin.InstiLogo">
+            <forward name="success" path="/admin/changelogo.jsp"/>
+            <forward name="failure" path="/admin/changelogo.jsp"/>
+        </action>
 
-<!--Email Check -->
- <action  path="/admin/mailcheck" scope="request"   type="com.myapp.struts.admin.LogReportAction"/>
-        <!--Log Mapping-->
-
-           <action  path="/log/print" scope="request"   type="com.myapp.struts.admin.LogReportAction"/>
-            <action input="/logs/search_log.jsp" name="SearchInstituteActionForm" path="/logs/search_log" scope="request" type="com.myapp.struts.admin.LogInstituteAction">
-                        <forward name="institute_search"  path="/logs/search_admin_grid1.jsp"/>
-               </action>
 
         <!--Acquisition Action Mapping-->
-     <action  path="/print1" scope="request"   type="com.myapp.struts.Acquisition.ReportAction"/>
-
-
- <action path="/budget1" input="/acquisition/acq_add_budget_allocation.jsp" scope="request" name="AcqBudgetActionForm" type="com.myapp.struts.Acquisition.AcqBudgetAllocationEntryAction">
+            <action  path="/print1" scope="request"   type="com.myapp.struts.Acquisition.ReportAction"/>
+            <action path="/budget1" input="/acquisition/acq_add_budget_allocation.jsp" scope="request" name="AcqBudgetActionForm" type="com.myapp.struts.Acquisition.AcqBudgetAllocationEntryAction">
                        <forward name="add" path="/acquisition/acq_add_budgetlocation.jsp"/>
                        <forward name="duplicate" path="/acquisition/acq_budget_alloc.do"/>
                        <forward name="update" path="/acquisition/acq_add_budgetlocation.jsp"/>
@@ -245,12 +214,12 @@
                         <forward name="fail" path="/acquisition/acq_budget_alloc.do"/>
               </action>
 
- <action path="/acquisition/acq_budget_alloc"  scope="request" type="com.myapp.struts.Acquisition.ShowBudgetAction" >
+                <action path="/acquisition/acq_budget_alloc"  scope="request" type="com.myapp.struts.Acquisition.ShowBudgetAction" >
                        <forward name="success" path="/acquisition/acq_budget_allocation.jsp"/>
 
                </action>
 
-    <action  path="/acq_new_entry" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_new_entry.jsp" type="com.myapp.struts.Acquisition.AcqBiblioEntryAction" validate="true">
+            <action  path="/acq_new_entry" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_new_entry.jsp" type="com.myapp.struts.Acquisition.AcqBiblioEntryAction" validate="true">
                       <forward name="new" path="/acquisition/acq_bibliographic_details.jsp" />
                       <forward name="update" path="/acquisition/acq_bibliographic_update_details.jsp" />
                       <forward name="delete" path="/acquisition/acq_bibliographic_delete.jsp" />
@@ -262,360 +231,287 @@
                       <forward name="fail" path="/acquisition/acq_new_entry.jsp" />
                     </action>
 
-
-
-
-<action  path="/acquisition/viewOwn" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_duplicate_titlegrid.jsp" type="com.myapp.struts.Acquisition.AcqBibliographicDetailAction">
+                    <action  path="/acquisition/viewOwn" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_duplicate_titlegrid.jsp" type="com.myapp.struts.Acquisition.AcqBibliographicDetailAction">
                       <forward name="view" path="/acquisition/acq_view_biblio.jsp" />
 
                     </action>
 
- <action  path="/acquisition/viewOwn1" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_update_titlegrid.jsp" type="com.myapp.struts.Acquisition.AcqBibliographicDetails1Action">
+                    <action  path="/acquisition/viewOwn1" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_update_titlegrid.jsp" type="com.myapp.struts.Acquisition.AcqBibliographicDetails1Action">
                       <forward name="update1" path="/acquisition/acq_bibliographic_update_details.jsp" />
                     </action>
-      <action  path="/acquisition/viewOwn2" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_view_titlegrid.jsp" type="com.myapp.struts.Acquisition.AcqBibliographicDetail2Action">
+                    <action  path="/acquisition/viewOwn2" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_view_titlegrid.jsp" type="com.myapp.struts.Acquisition.AcqBibliographicDetail2Action">
                       <forward name="view" path="/acquisition/acq_view_biblio1.jsp" />
                     </action>
 
-            <action  path="/acquisition/viewOwn3" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_delete_titledatagrid.jsp" type="com.myapp.struts.Acquisition.AcqBibliographicDetail3Action">
+                    <action  path="/acquisition/viewOwn3" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_delete_titledatagrid.jsp" type="com.myapp.struts.Acquisition.AcqBibliographicDetail3Action">
                       <forward name="delete" path="/acquisition/acq_bibliographic_delete.jsp" />
                     </action>
 
-
-  <action  path="/acqmerge" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_duplicate_titlegrid.jsp" type="com.myapp.struts.Acquisition.AcqMergeAction">
+                    <action  path="/acqmerge" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_duplicate_titlegrid.jsp" type="com.myapp.struts.Acquisition.AcqMergeAction">
                       <forward name="merge" path="/acquisition/acq_bibliographic_details.jsp" />
                     </action>
 
-
- <action  path="/acq_biblio" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_bibliographic_details.jsp" type="com.myapp.struts.Acquisition.AcqBiblioNewEntryAction">
+                     <action  path="/acq_biblio" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_bibliographic_details.jsp" type="com.myapp.struts.Acquisition.AcqBiblioNewEntryAction">
                       <forward name="success" path="/acquisition/acq_new_entry.jsp" />
                        <forward name="fail" path="/acquisition/acq_bibliographic_details.jsp" />
                         <forward name="intacq" path="/acquisition/acq_update_titles1.jsp" />
                     </action>
-         <action  path="/acq_update_biblio" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_bibliographic_update_details.jsp" type="com.myapp.struts.Acquisition.AcqBiblioUpdateAction">
-                      <forward name="update" path="/acquisition/acq_new_entry.jsp" />
-                      <forward name="delete" path="/acquisition/acq_new_entry.jsp" />
-                       <forward name="view" path="/acquisition/acq_view_biblio.jsp" />
+                    <action  path="/acq_update_biblio" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_bibliographic_update_details.jsp" type="com.myapp.struts.Acquisition.AcqBiblioUpdateAction">
+                          <forward name="update" path="/acquisition/acq_new_entry.jsp" />
+                          <forward name="delete" path="/acquisition/acq_new_entry.jsp" />
+                          <forward name="view" path="/acquisition/acq_view_biblio.jsp" />
                           <forward name="fail" path="/acquisition/acq_new_entry.jsp" />
                     </action>
-
-
-        <action  path="/acquisition/acqAllBiblio" scope="request" input="/acquisition/acq_search_title.jsp" name="AcqBiblioActionForm"  type="com.myapp.struts.Acquisition.AcqViewSearchAction">
+                    <action  path="/acquisition/acqAllBiblio" scope="request" input="/acquisition/acq_search_title.jsp" name="AcqBiblioActionForm"  type="com.myapp.struts.Acquisition.AcqViewSearchAction">
                       <forward name="search" path="/acquisition/acq_search_all_title.jsp" />
                     </action>
-
-
-               <action  path="/acquisition/acqAllBiblio2" scope="request" input="/acquisition/acq_all_viewbiblioedit.jsp" name="AcqBiblioActionForm"  type="com.myapp.struts.Acquisition.AcqViewBiblioSearchAction">
+                   <action  path="/acquisition/acqAllBiblio2" scope="request" input="/acquisition/acq_all_viewbiblioedit.jsp" name="AcqBiblioActionForm"  type="com.myapp.struts.Acquisition.AcqViewBiblioSearchAction">
                       <forward name="search" path="/acquisition/acq_editapprovallistgrid.jsp" />
                     </action>
-
-         <action  path="/acquisition/titleShow" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_search_all_title.jsp" type="com.myapp.struts.Acquisition.AcqInitiateAcquisitionAction">
+                   <action  path="/acquisition/titleShow" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_search_all_title.jsp" type="com.myapp.struts.Acquisition.AcqInitiateAcquisitionAction">
                       <forward name="success" path="/acquisition/acq_update_titles.jsp" />
                       <forward name="fail" path="/acquisition/acq_search_title.jsp"/>
                     </action>
-<action  path="/acquisition/acq_initiate_acquisition1" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_update_titles.jsp" type="com.myapp.struts.Acquisition.AcqInitiateAcquisitionProcessAction">
-                      <forward name="success" path="/acquisition/acq_search_title.jsp" />
+                    <action  path="/acquisition/acq_initiate_acquisition1" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_update_titles.jsp" type="com.myapp.struts.Acquisition.AcqInitiateAcquisitionProcessAction">
+                        <forward name="success" path="/acquisition/acq_search_title.jsp" />
                         <forward name="fail" path="/acquisition/acq_update_titles.jsp" />
                     </action>
-<action  path="/acquisition/acq_initiate_acquisition" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_update_titles1.jsp" type="com.myapp.struts.Acquisition.AcqInitiateAcquisitionProcessAction1">
+                    <action  path="/acquisition/acq_initiate_acquisition" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_update_titles1.jsp" type="com.myapp.struts.Acquisition.AcqInitiateAcquisitionProcessAction1">
                       <forward name="success" path="/acquisition/acq_new_entry.jsp" />
                       <forward name="fail" path="/acquisition/acq_update_titles1.jsp" />
                     </action>
-
-
-            <action  path="/acq_approval" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_initiate_approval.jsp" type="com.myapp.struts.Acquisition.AcqInitiateApprovalAction">
+                    <action  path="/acq_approval" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_initiate_approval.jsp" type="com.myapp.struts.Acquisition.AcqInitiateApprovalAction">
                       <forward name="listApproval" path="/acquisition/acq_view_approval_list.jsp" />
                       <forward name="newapproval" path="/acquisition/acq_update_approval_list.jsp" />
                       <forward name="duplicateapprovalno" path="/acquisition/acq_initiate_approval.jsp" />
                     </action>
-
-                  <action  path="/deleteapproval" scope="request"  input="/acquisition/acq_view_approval_list.jsp"  name="AcqBiblioActionForm" type="com.myapp.struts.Acquisition.DeleteApproval">
+                    <action  path="/deleteapproval" scope="request"  input="/acquisition/acq_view_approval_list.jsp"  name="AcqBiblioActionForm" type="com.myapp.struts.Acquisition.DeleteApproval">
                        <forward name="success" path="/acquisition/acq_initiate_approval.jsp" />
                        <forward name="failure" path="/acquisition/acq_initiate_approval.jsp" />
                     </action>
-
-               <action  path="/acq_approval1" scope="request"  type="com.myapp.struts.Acquisition.AcqInitiateApproval2Action">
+                   <action  path="/acq_approval1" scope="request"  type="com.myapp.struts.Acquisition.AcqInitiateApproval2Action">
                       <forward name="listApproval" path="/acquisition/acq_list_approval_all1.jsp" />
                      </action>
-
-                <action  path="/acq_approvalprint" scope="request"   type="com.myapp.struts.Acquisition.ApprovalReportAction"/>
-
-                  <action  path="/acq_approvalprint2" scope="request"   type="com.myapp.struts.Acquisition.ApprovalReportAction2"/>
-
-
-
-                  <action  path="/acq_approval2" scope="request"  type="com.myapp.struts.Acquisition.AcqInitiateApproval3Action">
+                    <action  path="/acq_approvalprint" scope="request"   type="com.myapp.struts.Acquisition.ApprovalReportAction"/>
+                    <action  path="/acq_approvalprint2" scope="request"   type="com.myapp.struts.Acquisition.ApprovalReportAction2"/>
+                    <action  path="/acq_approval2" scope="request"  type="com.myapp.struts.Acquisition.AcqInitiateApproval3Action">
                       <forward name="listApproval" path="/acquisition/acq_list_approval_all.jsp" />
-                     </action>
-
-                      <action  path="/acq_approved" scope="request"  type="com.myapp.struts.Acquisition.AcqApprovedList">
+                    </action>
+                    <action  path="/acq_approved" scope="request"  type="com.myapp.struts.Acquisition.AcqApprovedList">
                       <forward name="success" path="/acquisition/acq_ApprovedList.jsp" />
-                     </action>
-
-<action  path="/acq_approvalprint3" scope="request"  type="com.myapp.struts.Acquisition.PrintCardItemListAction6"/>
-
-
-
-                     <action  path="/acq_firmorder1" scope="request"  type="com.myapp.struts.Acquisition.AcqFirmOrderAction">
+                   </action>
+                   <action  path="/acq_approvalprint3" scope="request"  type="com.myapp.struts.Acquisition.PrintCardItemListAction6"/>
+                   <action  path="/acq_firmorder1" scope="request"  type="com.myapp.struts.Acquisition.AcqFirmOrderAction">
                       <forward name="listApproval" path="/acquisition/acq_firmorder.jsp" />
-                     </action>
-
-              <action  path="/acqlistApproval" scope="request" input="/acquisition/acq_list_approval.jsp"  type="com.myapp.struts.Acquisition.AcqViewApprovalListAction">
+                   </action>
+                  <action  path="/acqlistApproval" scope="request" input="/acquisition/acq_list_approval.jsp"  type="com.myapp.struts.Acquisition.AcqViewApprovalListAction">
                       <forward name="search" path="/acquisition/acq_list_approval_all.jsp" />
                     </action>
-
-              <action  path="/acquisition/acq_update_approvedtitle" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_update_approvaltitle.jsp" type="com.myapp.struts.Acquisition.AcqEditApprovalTitleAction">
+                  <action  path="/acquisition/acq_update_approvedtitle" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_update_approvaltitle.jsp" type="com.myapp.struts.Acquisition.AcqEditApprovalTitleAction">
                       <forward name="editapprovaltitle" path="/acquisition/acq_all_viewbiblioedit.jsp" />
-
-                </action>
-
+                  </action>
                  <action path="/acquisition/titleShow1" scope="request" input="/acquisition/acq_editapprovallistgrid.jsp" name="AcqBiblioActionForm" type="com.myapp.struts.Acquisition.AcqEditApprovedTitleAction">
                      <forward name="success" path="/acquisition/acq_update_approvaltitle.jsp"/>
                  </action>
-
-                    <action path="/acq_initiate_approval" scope="session" name="AcqBiblioActionForm" input="/acquisition/acq_update_approval_list.jsp" type="com.myapp.struts.Acquisition.AcqInitiateAcquisitionProcess1Action">
+                 <action path="/acq_initiate_approval" scope="session" name="AcqBiblioActionForm" input="/acquisition/acq_update_approval_list.jsp" type="com.myapp.struts.Acquisition.AcqInitiateAcquisitionProcess1Action">
                       <forward name="success" path="/acquisition/acq_initiate_approval.jsp" />
-                    </action>
-
-
-                     <action  path="/acq_initiate_approval3" scope="request" type="com.myapp.struts.Acquisition.AcqInitiateApprovalFrameAction">
+                 </action>
+                 <action  path="/acq_initiate_approval3" scope="request" type="com.myapp.struts.Acquisition.AcqInitiateApprovalFrameAction">
                       <forward name="success" path="/acquisition/acq_initiate_approval3.jsp" />
-                    </action>
-<action path="/acq_approval_process" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_update_approval_list.jsp" type="com.myapp.struts.Acquisition.AcqInitiateApproval1Action">
-    <forward name="success" path="/acquisition/acq_initiate_approval.jsp"/>
-</action>
-
-<!--acqorderprocessing-->
-
-<action path="/acq_initiate_order" scope="request" name="AcqOrderManagementActionForm" input="/acquisition/acq_initiate_order.jsp" type="com.myapp.struts.Acquisition.AcqInitiateOrderAction">
-    <forward name="success" path="/acquisition/acq_initiate_approval.jsp"/>
-    <forward name="duplicateorderno" path="/acquisition/acq_initiate_order.jsp"/>
-    <forward name="new" path="/acquisition/acq_order_process.jsp"/>
-    <forward name="duplicate" path="/acquisition/acq_initiate_order.jsp"/>
-    <forward name="add" path="/acquisition/acq_purchaseorder.jsp"/>
-    <forward name="delete" path="/acquisition/acq_deletepurchaseorder.jsp"/>
-    <forward name="view" path="/acquisition/acq_deletepurchaseorder.jsp"/>
-</action>
- <action path="/acq_initiate_order_process" scope="request" name="AcqOrderManagementActionForm" input="/acquisition/acq_order_process.jsp" type="com.myapp.struts.Acquisition.AcqInitiateOrderProcessAction">
-    <forward name="success" path="/acquisition/acq_purchaseorder.jsp"/>
-
-</action>
-
-<action path="/acq_purchase" scope="request" name="AcqPurchaseOrderActionForm" input="/acquisition/acq_purchaseorder.jsp" type="com.myapp.struts.Acquisition.AcqPurchaseOrderAction">
-    <forward name="success" path="/acq_order.do"/>
-
-</action>
-<action path="/acq_delete_purchase" scope="request" name="AcqPurchaseOrderActionForm" input="/acquisition/acq_deletepurchaseorder.jsp" type="com.myapp.struts.Acquisition.AcqDeleteOrderAction">
-    <forward name="success" path="/acq_order.do"/>
-    <forward name="fail" path="/acq_order.do"/>
-
-
-</action>
-
-<action  path="/acq_order" scope="request" name="AcqOrderManagementActionForm" type="com.myapp.struts.Acquisition.AcqOrderAction">
-
+                 </action>
+                <action path="/acq_approval_process" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_update_approval_list.jsp" type="com.myapp.struts.Acquisition.AcqInitiateApproval1Action">
+                    <forward name="success" path="/acquisition/acq_initiate_approval.jsp"/>
+                </action>
+                <!--acqorderprocessing-->
+                <action path="/acq_initiate_order" scope="request" name="AcqOrderManagementActionForm" input="/acquisition/acq_initiate_order.jsp" type="com.myapp.struts.Acquisition.AcqInitiateOrderAction">
+                    <forward name="success" path="/acquisition/acq_initiate_approval.jsp"/>
+                    <forward name="duplicateorderno" path="/acquisition/acq_initiate_order.jsp"/>
+                    <forward name="new" path="/acquisition/acq_order_process.jsp"/>
+                    <forward name="duplicate" path="/acquisition/acq_initiate_order.jsp"/>
+                    <forward name="add" path="/acquisition/acq_purchaseorder.jsp"/>
+                    <forward name="delete" path="/acquisition/acq_deletepurchaseorder.jsp"/>
+                    <forward name="view" path="/acquisition/acq_deletepurchaseorder.jsp"/>
+            </action>
+            <action path="/acq_initiate_order_process" scope="request" name="AcqOrderManagementActionForm" input="/acquisition/acq_order_process.jsp" type="com.myapp.struts.Acquisition.AcqInitiateOrderProcessAction">
+                <forward name="success" path="/acquisition/acq_purchaseorder.jsp"/>
+            </action>
+            <action path="/acq_purchase" scope="request" name="AcqPurchaseOrderActionForm" input="/acquisition/acq_purchaseorder.jsp" type="com.myapp.struts.Acquisition.AcqPurchaseOrderAction">
+                <forward name="success" path="/acq_order.do"/>
+            </action>
+            <action path="/acq_delete_purchase" scope="request" name="AcqPurchaseOrderActionForm" input="/acquisition/acq_deletepurchaseorder.jsp" type="com.myapp.struts.Acquisition.AcqDeleteOrderAction">
+                <forward name="success" path="/acq_order.do"/>
+                <forward name="fail" path="/acq_order.do"/>
+            </action>
+            <action  path="/acq_order" scope="request" name="AcqOrderManagementActionForm" type="com.myapp.struts.Acquisition.AcqOrderAction">
                       <forward name="order" path="/acquisition/acq_initiate_order.jsp" />
-                     </action>
-
-
-<!--acqrecieveorder-->
-
-
-
-<action path="/acq_initiate_recieve_order" scope="request" name="AcqOrderManagementActionForm" input="/acquisition/acq_initiate_recieve_order.jsp"  type="com.myapp.struts.Acquisition.AcqInitiateRecieveOrderAction">
-    <forward name="duplicateorderno" path="/acquisition/acq_initiate_recieve_order.jsp"/>
-
-    <forward name="delete" path="/acquisition/acq_recieve_order_detail.jsp"/>
-    <forward name="duplicateapprovalno" path="/acquisition/acq_view_recieve_order.jsp"/>
-</action>
-
-<action path="/acq_recieve_order_detail" scope="request" name="AcqOrderManagementActionForm" input="/acquisition/acq_recieve_order_detail.jsp"  type="com.myapp.struts.Acquisition.AcqInitiateRecieveOrderDetailAction">
-    <forward name="success" path="/acquisition/acq_initiate_recieve_order.jsp"/>
-</action>
-
-<action path="/acq_recieve_order" scope="request" name="AcqOrderManagementActionForm"  type="com.myapp.struts.Acquisition.AcqRecieveOrderProcessAction">
-    <forward name="order" path="/acquisition/acq_initiate_recieve_order.jsp"/>
-</action>
-
-<!--acqinvoicing-->
-
-    <action  path="/acq_invoice" scope="request" name="AcqOrderManagementActionForm" type="com.myapp.struts.Acquisition.AcqInvoiceAction">
-
+            </action>
+            <!--acqrecieveorder-->
+            <action path="/acq_initiate_recieve_order" scope="request" name="AcqOrderManagementActionForm" input="/acquisition/acq_initiate_recieve_order.jsp"  type="com.myapp.struts.Acquisition.AcqInitiateRecieveOrderAction">
+                <forward name="duplicateorderno" path="/acquisition/acq_initiate_recieve_order.jsp"/>
+                <forward name="delete" path="/acquisition/acq_recieve_order_detail.jsp"/>
+                <forward name="duplicateapprovalno" path="/acquisition/acq_view_recieve_order.jsp"/>
+            </action>
+            <action path="/acq_recieve_order_detail" scope="request" name="AcqOrderManagementActionForm" input="/acquisition/acq_recieve_order_detail.jsp"  type="com.myapp.struts.Acquisition.AcqInitiateRecieveOrderDetailAction">
+                <forward name="success" path="/acquisition/acq_initiate_recieve_order.jsp"/>
+            </action>
+            <action path="/acq_recieve_order" scope="request" name="AcqOrderManagementActionForm"  type="com.myapp.struts.Acquisition.AcqRecieveOrderProcessAction">
+                <forward name="order" path="/acquisition/acq_initiate_recieve_order.jsp"/>
+            </action>
+            <!--acqinvoicing-->
+            <action  path="/acq_invoice" scope="request" name="AcqOrderManagementActionForm" type="com.myapp.struts.Acquisition.AcqInvoiceAction">
                       <forward name="order" path="/acquisition/acq_initiate_invoice.jsp" />
-                     </action>
-
-
-    <action  path="/acq_initiate_invoice" scope="request" name="AcqOrderManagementActionForm"  input="/acquisition/acq_initiate_invoice.jsp" type="com.myapp.struts.Acquisition.AcqInvoiceProcessAction">
-
+            </action>
+           <action  path="/acq_initiate_invoice" scope="request" name="AcqOrderManagementActionForm"  input="/acquisition/acq_initiate_invoice.jsp" type="com.myapp.struts.Acquisition.AcqInvoiceProcessAction">
                       <forward name="success" path="/acquisition/acq_initiate_invoice.jsp" />
                       <forward name="duplicateorderno" path="/acquisition/acq_initiate_invoice.jsp" />
                       <forward name="delete" path="/acquisition/acq_invoice_process.jsp" />
-                     </action>
-
-
-
-
- <!--acqvendor-->
-
-
- <action path="/acq_vendor" scope="request" name="AcqVendorActionForm" input="/acquisition/acq_initiate_vendor.jsp" type="com.myapp.struts.Acquisition.AcqInitiateVendorAction">
-    <forward name="success" path="/acquisition/acq_vendor_details.jsp"/>
-    <forward name="new" path="/acquisition/acq_vendor_details.jsp"/>
-    <forward name="delete" path="/acquisition/acq_vendor_delete.jsp"/>
-    <forward name="duplicatevendorid" path="/acquisition/acq_initiate_vendor.jsp"/>
-    <forward name="update1" path="/acquisition/acq_update_vendor.jsp"/>
-    <forward name="view" path="/acquisition/acq_view_vendor_details.jsp"/>
-    <forward name="failure" path="/acquisition/acq_initiate_vendor.jsp"/>
- </action>
-
-<action path="/acq_vendor_dtail" scope="request" name="AcqVendorActionForm" input="/acquisition/acq_vendor_details.jsp" type="com.myapp.struts.Acquisition.AcqVendorDetailsAction">
-
-    <forward name="success" path="/acquisition/acq_initiate_vendor.jsp"/>
- </action>
-
- <action path="/acq_vendor_update" scope="request" name="AcqVendorActionForm" input="/acquisition/acq_update_vendor.jsp" type="com.myapp.struts.Acquisition.AcqVendorUpdateAction">
-    <forward name="update" path="/acquisition/acq_initiate_vendor.jsp"/>
-    <forward name="success" path="/acquisition/acq_initiate_vendor.jsp"/>
-    <forward name="delete" path="/acquisition/acq_initiate_vendor.jsp"/>
-    <forward name="view" path="/acquisition/acq_view_vendor_details.jsp"/>
- </action>
-
- <action path="/budget" input="/acquisition/add_budgethead.jsp" scope="request" name="AcqBudgetActionForm" type="com.myapp.struts.Acquisition.AcqBudgetEntryAction">
-                       <forward name="add" path="/acquisition/acq_budgethead_entry.jsp"/>
-                       <forward name="duplicate" path="/acquisition/acq_add_budgethead.jsp"/>
-                       <forward name="update" path="/acquisition/acq_budgethead_entry.jsp"/>
-                       <forward name="delete" path="/acquisition/acq_budgethead_entry.jsp"/>
-                       <forward name="view" path="/acquisition/acq_budgethead_entry.jsp"/>
-              </action>
-   <action path="/add_budget" input="/acquisition/acq_budgethead_entry.jsp" scope="request" name="AcqBudgetActionForm" type="com.myapp.struts.Acquisition.AcqBudgetHeadAddAction">
-                       <forward name="success" path="/acquisition/acq_add_budgethead.jsp"/>
-              </action>
-
-<!--acquisition currency-->
-
-<action path="/acq_setbasecurrency" input="/acquisition/acq_base_currency.jsp" scope="request" name="AcqCurrencyActionForm" type="com.myapp.struts.Acquisition.AcqBaseCurrencyEntryAction">
+           </action>
+         <!--acqvendor-->
+         <action path="/acq_vendor" scope="request" name="AcqVendorActionForm" input="/acquisition/acq_initiate_vendor.jsp" type="com.myapp.struts.Acquisition.AcqInitiateVendorAction">
+            <forward name="success" path="/acquisition/acq_vendor_details.jsp"/>
+            <forward name="new" path="/acquisition/acq_vendor_details.jsp"/>
+            <forward name="delete" path="/acquisition/acq_vendor_delete.jsp"/>
+            <forward name="duplicatevendorid" path="/acquisition/acq_initiate_vendor.jsp"/>
+            <forward name="update1" path="/acquisition/acq_update_vendor.jsp"/>
+            <forward name="view" path="/acquisition/acq_view_vendor_details.jsp"/>
+            <forward name="failure" path="/acquisition/acq_initiate_vendor.jsp"/>
+        </action>
+        <action path="/acq_vendor_dtail" scope="request" name="AcqVendorActionForm" input="/acquisition/acq_vendor_details.jsp" type="com.myapp.struts.Acquisition.AcqVendorDetailsAction">
+            <forward name="success" path="/acquisition/acq_initiate_vendor.jsp"/>
+        </action>
+         <action path="/acq_vendor_update" scope="request" name="AcqVendorActionForm" input="/acquisition/acq_update_vendor.jsp" type="com.myapp.struts.Acquisition.AcqVendorUpdateAction">
+            <forward name="update" path="/acquisition/acq_initiate_vendor.jsp"/>
+            <forward name="success" path="/acquisition/acq_initiate_vendor.jsp"/>
+            <forward name="delete" path="/acquisition/acq_initiate_vendor.jsp"/>
+            <forward name="view" path="/acquisition/acq_view_vendor_details.jsp"/>
+        </action>
+         <action path="/budget" input="/acquisition/add_budgethead.jsp" scope="request" name="AcqBudgetActionForm" type="com.myapp.struts.Acquisition.AcqBudgetEntryAction">
+             <forward name="add" path="/acquisition/acq_budgethead_entry.jsp"/>
+             <forward name="duplicate" path="/acquisition/acq_add_budgethead.jsp"/>
+             <forward name="update" path="/acquisition/acq_budgethead_entry.jsp"/>
+             <forward name="delete" path="/acquisition/acq_budgethead_entry.jsp"/>
+             <forward name="view" path="/acquisition/acq_budgethead_entry.jsp"/>
+         </action>
+        <action path="/add_budget" input="/acquisition/acq_budgethead_entry.jsp" scope="request" name="AcqBudgetActionForm" type="com.myapp.struts.Acquisition.AcqBudgetHeadAddAction">
+             <forward name="success" path="/acquisition/acq_add_budgethead.jsp"/>
+        </action>
+        <!--acquisition currency-->
+        <action path="/acq_setbasecurrency" input="/acquisition/acq_base_currency.jsp" scope="request" name="AcqCurrencyActionForm" type="com.myapp.struts.Acquisition.AcqBaseCurrencyEntryAction">
                        <forward name="add" path="/acquisition/acq_currency_conversion1.jsp"/>
                        <forward name="duplicate" path="/acquisition/acq_base_currency.jsp"/>
                        <forward name="update" path="/acquisition/acq_base_currency.jsp"/>
                        <forward name="delete" path="/acquisition/acq_base_currency.jsp"/>
                        <forward name="view" path="/acquisition/acq_base_currency.jsp"/>
-              </action>
-
-
-
- <action path="/acq_currency_conversion" input="/acquisition/acq_currency_conversion1.jsp" scope="request" name="AcqCurrencyActionForm" type="com.myapp.struts.Acquisition.AcqUpdateBaseCurrency">
+        </action>
+        <action path="/acq_currency_conversion" input="/acquisition/acq_currency_conversion1.jsp" scope="request" name="AcqCurrencyActionForm" type="com.myapp.struts.Acquisition.AcqUpdateBaseCurrency">
                        <forward name="success" path="/acquisition/acq_base_currency.jsp"/>
-              </action>
-
-
-
-<action path="/currency" input="/acquisition/acq_currency1.jsp" scope="request" name="AcqCurrency1ActionForm" type="com.myapp.struts.Acquisition.AcqCurrencyConversion2Action">
-
-                      <forward name="add" path="/acquisition/acq_currency_coversion2.jsp"/>
+        </action>
+        <action path="/currency" input="/acquisition/acq_currency1.jsp" scope="request" name="AcqCurrency1ActionForm" type="com.myapp.struts.Acquisition.AcqCurrencyConversion2Action">
+                         <forward name="add" path="/acquisition/acq_currency_coversion2.jsp"/>
                        <forward name="duplicate" path="/acquisition/acq_currency1.jsp"/>
                        <forward name="update" path="/acquisition/acq_currency_coversion2.jsp"/>
                        <forward name="delete" path="/acquisition/acq_currency_coversion2.jsp"/>
                        <forward name="view" path="/acquisition/acq_currency_coversion2.jsp"/>
-              </action>
-
-     <action path="/currency3" input="/acquisition/acq_currency_coversion2.jsp" scope="request" name="AcqCurrency1ActionForm" type="com.myapp.struts.Acquisition.AcqSetExchangeRatesAction">
+      </action>
+         <action path="/currency3" input="/acquisition/acq_currency_coversion2.jsp" scope="request" name="AcqCurrency1ActionForm" type="com.myapp.struts.Acquisition.AcqSetExchangeRatesAction">
                   <forward name="success" path="/acquisition/acq_currency1.jsp"/>
-              </action>
-
-<!--Cataloguing Action Mapping-->
-<action  path="/getTitleSuggestions" type="com.myapp.struts.cataloguing.SuggestTitleAction"/>
-<action  path="/cataloguing/viewAllBiblio" scope="request" name="BibliographicDetailEntryActionForm1"  type="com.myapp.struts.cataloguing.ViewAllBiblioAction">
+        </action>
+        <!--Cataloguing Action Mapping-->
+        <action  path="/getTitleSuggestions" type="com.myapp.struts.cataloguing.SuggestTitleAction"/>
+           <!-- VIEW ALL TITLE OLD TITLE-> VIEW ALL ACTIVITY-->
+            <action  path="/cataloguing/viewAllBiblio" scope="request" name="BibliographicDetailEntryActionForm1"  type="com.myapp.struts.cataloguing.ViewAllBiblioAction">
                       <forward name="all" path="/cataloguing/cat_viewAll_biblio.jsp" />
-                    </action>
-      <action  path="/cataloguing/titleShow" scope="request" name="BibliographicDetailEntryActionForm1" input="/cataloguing/cat_viewAll_biblio.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction2">
+            </action>
+            <!-- VIEW ALL TITLE OLD TITLE-> VIEW ALL ACTIVITY-VIEW EACH RECORD FROM GRID-->
+            <action  path="/cataloguing/titleShow" scope="request" name="BibliographicDetailEntryActionForm1" input="/cataloguing/cat_viewAll_biblio.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction2">
                       <forward name="view" path="/cataloguing/cat_title_view_out.jsp" />
-                    </action>
-<action attribute="BibliographicDetailEntryActionForm" path="/catOldBiblioAction" input="/cataloguing/cat_old_title.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.BibliographicDetailEntryAction">
+            </action>
+            <action attribute="BibliographicDetailEntryActionForm" path="/catOldBiblioAction" input="/cataloguing/cat_old_title.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.BibliographicDetailEntryAction">
                       <forward name="fail" path="/cataloguing/cat_old_title.jsp"/>
                       <forward name="new" path="/cataloguing/cat_old_title_entry1.jsp"/>
                       <forward name="grid" path="/cataloguing/cat_viewall_title_grid.jsp"/>
                       <forward name="cd" path="/cataloguing/cat_cd_entry.jsp"/>
                       <forward name="main" path="/admin/main.jsp" />
-                      </action>
-<action attribute="BibliographicDetailEntryActionForm" path="/catOldBiblio" input="/cataloguing/cat_old_title_entry1.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.NewEntryBiblioAction">
+            </action>
+            <action attribute="BibliographicDetailEntryActionForm" path="/catOldBiblio" input="/cataloguing/cat_old_title_entry1.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.NewEntryBiblioAction">
                       <forward name="failure" path="/cataloguing/cat_old_title_entry1.jsp"/>
                       <forward name="accession" path="/cataloguing/cat_accession_entry.jsp"/>
                       <forward name="fail" path="/cataloguing/cat_old_title_entry1.jsp"/>
                       <forward name="success" path="/cataloguing/cat_old_title.jsp"/>
-                      </action>
-<action attribute="BibliographicDetailEntryActionForm" path="/CdEntryAction" input="/cataloguing/cat_cd_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.BibliographicCdAction">
+            </action>
+            <action attribute="BibliographicDetailEntryActionForm" path="/CdEntryAction" input="/cataloguing/cat_cd_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.BibliographicCdAction">
                       <forward name="failure" path="/cataloguing/cat_cd_entry.jsp"/>
                       <forward name="accession" path="/cataloguing/cat_accession_disc_entry.jsp"/>
                       <forward name="fail" path="/cataloguing/cat_cd_entry.jsp"/>
                       <forward name="success" path="/cataloguing/cat_old_title.jsp"/>
-                      </action>
-<action path="/cataloguing/viewOwn1" attribute="BibliographicDetailEntryActionForm"  input="/cataloguing/cat_viewall_title_grid.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.BibliographicDetailActionLang">
+            </action>
+            <action path="/cataloguing/viewOwn1" attribute="BibliographicDetailEntryActionForm"  input="/cataloguing/cat_viewall_title_grid.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.BibliographicDetailActionLang">
                       <forward name="success" path="/cataloguing/cat_own_title_view.jsp"/>
                       <forward name="new" path="/cataloguing/cat_old_title_entry1.jsp"/>
                       <forward name="cd" path="/cataloguing/cat_cd_entry.jsp"/>
-                      </action>
-<action attribute="BibliographicDetailEntryActionForm" path="/catNewTitle" input="/cataloguing/cat_biblio.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.BibliographicDetailEntryAction1">
+            </action>
+            <action attribute="BibliographicDetailEntryActionForm" path="/catNewTitle" input="/cataloguing/cat_biblio.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.BibliographicDetailEntryAction1">
                       <forward name="fail" path="/cataloguing/cat_biblio.jsp"/>
                       <forward name="new" path="/cataloguing/cat_biblio_entry.jsp"/>
                       <forward name="grid" path="/cataloguing/cat_view_own_biblio_grid.jsp"/>
                        <forward name="main" path="/admin/main.jsp" />
-                    </action>
-<action attribute="BibliographicDetailEntryActionForm" path="/catMultiLang" input="/cataloguing/cat_biblio_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.NewEntryBiblioAction1">
+            </action>
+            <action attribute="BibliographicDetailEntryActionForm" path="/catMultiLang" input="/cataloguing/cat_biblio_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.NewEntryBiblioAction1">
                       <forward name="failure" path="/cataloguing/cat_biblio_entry.jsp"/>
                       <forward name="accession" path="/cataloguing/cat_accession_entry.jsp"/>
                       <forward name="fail" path="/cataloguing/cat_biblio_entry.jsp"/>
                       <forward name="success" path="/cataloguing/cat_biblio.jsp"/>
-                     </action>
-<action  path="/cataloguing/viewOwnLang" scope="request" name="BibliographicDetailEntryActionForm" input="/cataloguing/cat_view_own_biblio_grid.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction">
+            </action>
+            <action  path="/cataloguing/viewOwnLang" scope="request" name="BibliographicDetailEntryActionForm" input="/cataloguing/cat_view_own_biblio_grid.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction">
                       <forward name="success" path="/cataloguing/cat_biblio_entry_lang_delete.jsp"/>
                       <forward name="new" path="/cataloguing/cat_biblio_entry.jsp"/>
-                    </action>
-<action  path="/cataloguing/viewOwnLangNew" scope="request" name="BibliographicDetailEntryActionForm" input="/cataloguing/cat_view_own_biblio_grid.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction">
+            </action>
+            <action  path="/cataloguing/viewOwnLangNew" scope="request" name="BibliographicDetailEntryActionForm" input="/cataloguing/cat_view_own_biblio_grid.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction">
                       <forward name="success" path="/cataloguing/cat_biblio_entry_lang_delete.jsp"/>
                       <forward name="new" path="/cataloguing/cat_biblio_entry.jsp"/>
-                    </action>
-<action path="/catAccession" attribute="BibliographicDetailEntryActionForm"  input="/cataloguing/cat_accession.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionEntry">
+            </action>
+            <action path="/catAccession" attribute="BibliographicDetailEntryActionForm"  input="/cataloguing/cat_accession.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionEntry">
                       <forward name="new" path="/cataloguing/cat_accession_entry.jsp"/>
                       <forward name="cd" path="/cataloguing/cat_accession_disc_entry.jsp"/>
                       <forward name="cdaccession" path="/cataloguing/cat_accession_disc_entry.jsp"/>
                       <forward name="fail" path="/cataloguing/cat_accession.jsp"/>
                       <forward name="grid" path="/cataloguing/cat_view_accession_grid.jsp"/>
                       <forward name="main" path="/admin/main.jsp" />
-                    </action>
-<action attribute="BibliographicDetailEntryActionForm" path="/accessionEntry" input="/cataloguing/cat_accession_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionEntryAction">
+            </action>
+            <action attribute="BibliographicDetailEntryActionForm" path="/accessionEntry" input="/cataloguing/cat_accession_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionEntryAction">
                       <forward name="failure" path="/cataloguing/cat_old_title.jsp"/>
                       <forward name="accession" path="/cataloguing/cat_accession_entry.jsp"/>
                       <forward name="fail" path="/cataloguing/cat_old_title_entry1.jsp"/>
                       <forward name="success" path="/cataloguing/cat_accession_entry.jsp"/>
-                    </action>
-<action attribute="BibliographicDetailEntryActionForm" path="/DiscAccessionEntry" input="/cataloguing/cat_accession_disc_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.DiscAccessionEntryAction">
+            </action>
+            <action attribute="BibliographicDetailEntryActionForm" path="/DiscAccessionEntry" input="/cataloguing/cat_accession_disc_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.DiscAccessionEntryAction">
                       <forward name="failure" path="/cataloguing/cat_old_title.jsp"/>
                       <forward name="accession" path="/cataloguing/cat_accession_disc_entry.jsp"/>
                       <forward name="success" path="/cataloguing/cat_accession_disc_entry.jsp"/>
-                    </action>
-<action attribute="BibliographicDetailEntryActionForm" path="/cataloguing/accessiongrid" input="/cataloguing/cat_view_accession_grid.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionEditAction">
+            </action>
+            <action attribute="BibliographicDetailEntryActionForm" path="/cataloguing/accessiongrid" input="/cataloguing/cat_view_accession_grid.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionEditAction">
                       <forward name="show" path="/cataloguing/cat_accession_update.jsp"/>
                       <forward name="cd" path="/cataloguing/cat_accession_disc_entry.jsp"/>
                       <forward name="cdupdate" path="/cataloguing/cat_accession_cd_update.jsp"/>
                       <forward name="add" path="/cataloguing/cat_accession_entry.jsp"/>
-                    </action>
-<action attribute="BibliographicDetailEntryActionForm" path="/ownaccessionEntry1" input="/cataloguing/cat_accession_update.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionEntryAction">
+            </action>
+            <action attribute="BibliographicDetailEntryActionForm" path="/ownaccessionEntry1" input="/cataloguing/cat_accession_update.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionEntryAction">
                       <forward name="show" path="/cataloguing/cat_accession_update.jsp"/>
-                    </action>
-<action attribute="BibliographicDetailEntryActionForm" path="/cataloguing/accessionedit" input="/cataloguing/cat_single_update_grid.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionSingleEdit">
+            </action>
+            <action attribute="BibliographicDetailEntryActionForm" path="/cataloguing/accessionedit" input="/cataloguing/cat_single_update_grid.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionSingleEdit">
                       <forward name="show" path="/cataloguing/cat_single_delete.jsp"/>
                       <forward name="showcd" path="/cataloguing/cat_single_cd_update.jsp"/>
-                    </action>
-<action attribute="BibliographicDetailEntryActionForm" path="/deleteAccess" input="/cataloguing/cat_single_delete.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionDeleteAction">
+            </action>
+            <action attribute="BibliographicDetailEntryActionForm" path="/deleteAccess" input="/cataloguing/cat_single_delete.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionDeleteAction">
                       <forward name="success" path="/cataloguing/cat_single_update_grid.jsp"/>
-                    </action>
-<action path="/cataloguing/printcardbiblio"  scope="request" type="com.myapp.struts.cataloguing.PrintCardBiblioListAction">
+            </action>
+            <action path="/cataloguing/printcardbiblio"  scope="request" type="com.myapp.struts.cataloguing.PrintCardBiblioListAction">
                       <forward name="success" path="/cataloguing/cat_card_print.jsp"/>
-                    </action>
-<action path="/cataloguing/showPrintItems"  scope="request" type="com.myapp.struts.cataloguing.PrintCardItemListAction">
+            </action>
+            <action path="/cataloguing/showPrintItems"  scope="request" type="com.myapp.struts.cataloguing.PrintCardItemListAction">
                       <forward name="success" path="/cataloguing/cat_card_print_items.jsp"/>
-                    </action>
-<!-- Export/Import -->
+            </action>
+            <!-- Export/Import -->
 
          <action path="/uploadExcel" name="StrutsUploadForm" input="/cataloguing/cat_data_import_read.jsp"   scope="session" type="com.myapp.struts.cataloguing.Uploadaction">
             <forward name="success" path="/cataloguing/cat_data_import_map_table.jsp"/>
@@ -632,13 +528,7 @@
             <forward name="success" path="/cataloguing/cat_exportDatabaseToExcell.jsp"/>
             <forward name="Back" path="/cataloguing/cat_data_import_read.jsp"/>
         </action>
-      <!--  <action input="/cataloguing/cat_Import_Tables.jsp" name="StrutsUploadForm" path="/TempToDatabase1" scope="request" type="com.myapp.struts.cataloguing.TempToDatabase">
-            <forward name="success" path="/cataloguing/cat_data_import_read.jsp"/>
-            <forward name="failure" path="/cataloguing/cat_Import_Tables.jsp"/>
-        </action>-->
-
-
-     <action   path="/uploadmarc" input="/cataloguing/cat_data_import_read.jsp" scope="request" name="StrutsUploadForm" type="com.myapp.struts.cataloguing.MarcUploadAction">
+      <action   path="/uploadmarc" input="/cataloguing/cat_data_import_read.jsp" scope="request" name="StrutsUploadForm" type="com.myapp.struts.cataloguing.MarcUploadAction">
          <forward name="success" path="/cataloguing/cat_data_import_read.jsp"/>
      </action>
      <action   path="/uploadtxt" input="/cataloguing/cat_data_import_read.jsp" scope="request" name="StrutsUploadForm" type="com.myapp.struts.cataloguing.TextUploadAction">
@@ -647,27 +537,28 @@
      <action   path="/viewMarcRepos" name="StrutsUploadForm" scope="request" type="com.myapp.struts.cataloguing.ViewMarcReposAction">
          <forward name="success" path="/cataloguing/view_marc_repos.jsp"/>
      </action>
-<action   path="/catExport" input="/cataloguing/view_marc_repos_1.jsp" name="StrutsUploadForm" scope="request" type="com.myapp.struts.cataloguing.ViewMarcReposAction1">
+     <action   path="/catExport" input="/cataloguing/view_marc_repos_1.jsp" name="StrutsUploadForm" scope="request" type="com.myapp.struts.cataloguing.ViewMarcReposAction1">
          <forward name="success" path="/cataloguing/view_marc_repos_1.jsp"/>
      </action>
 
-<action   path="/exportMarc" scope="request" type="com.myapp.struts.cataloguing.ExportMarcAction">
+      <action   path="/exportMarc" scope="request" type="com.myapp.struts.cataloguing.ExportMarcAction">
          <forward name="success" path="/cataloguing/view_marc_repos_1.jsp"/>
      </action>
-<action   path="/cataloguing/showMarcDetails" scope="request"  type="com.myapp.struts.cataloguing.ShowMarcDetailsAction">
+    <action   path="/cataloguing/showMarcDetails" scope="request"  type="com.myapp.struts.cataloguing.ShowMarcDetailsAction">
          <forward name="success" path="/cataloguing/view_marc_details.jsp"/>
      </action>
-<action   path="/cataloguing/showMarcDetails1" scope="request"  type="com.myapp.struts.cataloguing.ShowMarcDetailsAction1">
+    <!-- SHOW MARC RECORD DETAILS FROM GRID-->
+    <action   path="/cataloguing/showMarcDetails1" scope="request"  type="com.myapp.struts.cataloguing.ShowMarcDetailsAction1">
          <forward name="success" path="/cataloguing/view_marc_details.jsp"/>
         
      </action>
-<action   path="/cataloguing/showMarcDetails2" scope="request"  type="com.myapp.struts.cataloguing.ShowMarcDetailsAction1">
+    <action   path="/cataloguing/showMarcDetails2" scope="request"  type="com.myapp.struts.cataloguing.ShowMarcDetailsAction1">
          <forward name="success" path="/cataloguing/view_marc_details2.jsp"/>
      </action>
-<action   path="/cataloguing/updateExistMarc" scope="request" input="/cataloguing/view_marc_details2.jsp" name="EditMarcActionForm"  type="com.myapp.struts.marc.UpdateSimpleMarcAction">
+    <action   path="/cataloguing/updateExistMarc" scope="request" input="/cataloguing/view_marc_details2.jsp" name="EditMarcActionForm"  type="com.myapp.struts.marc.UpdateSimpleMarcAction">
          <forward name="success" path="/cataloguing/cat_update_marc1.jsp"/>
      </action>
-<!-- End Export/Import -->
+    <!-- End Export/Import -->
 
 <!--    ****************************************************************************************************************************    -->
 <!--    **                                                  | MARC cataloguing  |                                                 **    -->
@@ -1014,12 +905,12 @@
         <!-- *************************    END of MARC Biblio View and Delete    ************************* -->
 
             <!-- ^^^^^^^^^^^^^^^^^^^^^^^             Customized MARC Biblio Graphy Management          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^  -->
- <action input="/cataloguing/cat_add_MARC.jsp" path="/newmarc" name="NewMarcActionForm" scope="session" type="com.myapp.struts.marc.NewMarcAction" >
-    <forward name="success" path="/cataloguing/cat_editmarc.jsp"/>
+    <action input="/cataloguing/cat_add_MARC.jsp" path="/newmarc" name="NewMarcActionForm" scope="session" type="com.myapp.struts.marc.NewMarcAction" >
+            <forward name="success" path="/cataloguing/cat_editmarc.jsp"/>
             <forward name="failure" path="/cataloguing/cat_editmarc.jsp"/>
     </action>
     <action input="/cataloguing/cat_modify_MARC.jsp" path="/modifymarc" name="NewMarcActionForm" scope="session" type="com.myapp.struts.marc.NewMarcAction" >
-<forward name="success" path="/cataloguing/cat_editmarc.jsp"/>
+            <forward name="success" path="/cataloguing/cat_editmarc.jsp"/>
             <forward name="failure" path="/cataloguing/cat_editmarc.jsp"/>
     </action>
     <action input="/cataloguing/cat_editmarc.jsp" name="NewStrutsActionForm" path="/shownewmarc" scope="request" type="com.myapp.struts.marc.ShowAction">
@@ -1029,10 +920,10 @@
             <forward name="modify" path="/cataloguing/cat_modify_MARC.jsp"/>
             <forward name="delete" path="/cataloguing/cat_delete_marc.jsp" />
         </action>
-<action input="/cataloguing/cat_delete_marc.jsp" name="NewMarcActionForm" path="/deletemarc" scope="session" type="com.myapp.struts.marc.CatDeleteAction">
+    <action input="/cataloguing/cat_delete_marc.jsp" name="NewMarcActionForm" path="/deletemarc" scope="session" type="com.myapp.struts.marc.CatDeleteAction">
         <forward name="success" path="/cataloguing/cat_editmarc.jsp"/>
-        </action>
-         <action input="/cataloguing/cust_marc_entry.jsp" name="CustomMarcActionForm" path="/custommarcentry" scope="request" type="com.myapp.struts.marc.CustomMarcAction" validate="false" >
+    </action>
+    <action input="/cataloguing/cust_marc_entry.jsp" name="CustomMarcActionForm" path="/custommarcentry" scope="request" type="com.myapp.struts.marc.CustomMarcAction" validate="false" >
              <forward name="forward0" path="/cataloguing/cust_marc_entry.jsp"/>
              <forward name="forward1" path="/cataloguing/cust_marc_entry1.jsp"/>
              <forward name="forward2" path="/cataloguing/cust_marc_entry2.jsp"/>
@@ -1849,7 +1740,9 @@
                     <action input="/OPAC/simple.jsp" name="SimpleSearchActionForm" path="/simple_search" scope="request" type="com.myapp.struts.opac.SimpleSearchAction">
                         <forward name="success"  path="/OPAC/simple_search.jsp"/>
                     </action>
-
+                      <action input="/OPAC/advance.jsp" name="AdvanceSearchActionForm" path="/OPAC/advance_search" scope="request" type="com.myapp.struts.opac.AdvanceSearchAction">
+                        <forward name="success"  path="/OPAC/advanceSearch.jsp"/>
+                     </action>
                     
                     <action path="/lib" scope="request" type="com.myapp.struts.opac.LibraryAction"/>
 
@@ -1862,9 +1755,11 @@
                         <forward name="newarrival" path="/OPAC/newarrivalsdetails.jsp"/>
                         <forward name="accessionno" path="/OPAC/newarrivalsdetails.jsp"/>
                      </action>
-                     <action input="/OPAC/browse1.jsp" name="browseSearchActionForm" path="/OPAC/browse" scope="request" type="com.myapp.struts.opac.browseSearchAction">
-                        <forward name="success"  path="/OPAC/browse.jsp"/>
+                     <action input="/OPAC/browse.jsp" name="browseSearchActionForm" path="/OPAC/browse_search" scope="request" type="com.myapp.struts.opac.browseSearchAction">
+                        <forward name="success"  path="/OPAC/browse1.jsp"/>
                      </action>
+                    
+
                      <action input="/OPAC/additional.jsp" name="AdditionalSearchActionForm" path="/OPAC/additional" scope="request" type="com.myapp.struts.opac.AdditionalSearchAction">
                         <forward name="success"  path="/OPAC/additional_search.jsp"/>
                      </action>
@@ -1874,9 +1769,7 @@
                      <action input="/OPAC/callno.jsp" name="CallNoSearchActionForm" path="/OPAC/SearchByCallNo" scope="request" type="com.myapp.struts.opac.CallNoSearchAction">
                         <forward name="success"  path="/OPAC/callno1.jsp"/>
                      </action>
-                     <action input="/OPAC/advance.jsp" name="AdvanceSearchActionForm" path="/OPAC/advance_search" scope="request" type="com.myapp.struts.opac.AdvanceSearchAction">
-                        <forward name="success"  path="/OPAC/advanceSearch.jsp"/>
-                     </action>
+                    
                      <action input="/OPAC/isbn.jsp" name="SearchByIsbnActionForm" path="/OPAC/SearchByIsbn" scope="request" type="com.myapp.struts.opac.SearchByIsbnAction">
                         <forward name="success"  path="/OPAC/isbnSearch.jsp"/>
                      </action>
@@ -1951,7 +1844,7 @@
                      </action>
                      <action path="/OPAC/OpacLib" scope="request" type="com.myapp.struts.opac.OpacLibResultSetAction">
                         <forward name="simple"  path="/OPAC/simple.jsp"/>
-                        <forward name="browse"  path="/OPAC/browse1.jsp"/>
+                        <forward name="browse"  path="/OPAC/browse.jsp"/>
                         <forward name="additional"  path="/OPAC/additional.jsp"/>
                         <forward name="advance"  path="/OPAC/advance.jsp"/>
                         <forward name="isbn"  path="/OPAC/isbn.jsp"/>

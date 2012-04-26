@@ -124,9 +124,9 @@ function copysubtitle(){
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
         <script type="text/javascript">
-animatedcollapse.addDiv('1', 'fade=1,height=20px')
-animatedcollapse.addDiv('2', 'fade=1,height=20px')
-animatedcollapse.addDiv('3', 'fade=1,height=20px')
+animatedcollapse.addDiv('8', 'fade=1,height=20px')
+animatedcollapse.addDiv('9', 'fade=1,height=20px')
+animatedcollapse.addDiv('10', 'fade=1,height=20px')
 animatedcollapse.addDiv('4', 'fade=1,height=20px')
 animatedcollapse.addDiv('5', 'fade=1,height=20px')
 animatedcollapse.addDiv('6', 'fade=1,height=20px')
@@ -456,28 +456,31 @@ function disablecheck(){
 <tr>
         <td class="txtStyle" align="<%=align%>"><strong><%=resource.getString("cataloguing.catoldtitleentry1.addedentry")%>:</strong></td>
         <td><html:text property="added_entry" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="15" />
-     <input type="button" onclick="javascript:animatedcollapse.show(['1','2','3'])" value="+"/>
-     <input type="button" onclick="javascript:animatedcollapse.hide(['1','2','3'])" value="-"/></td>
+     <input type="button" onclick="javascript:animatedcollapse.show(['8','9','10'])" value="+"/>
+     <input type="button" onclick="javascript:animatedcollapse.hide(['8','9','10'])" value="-"/></td>
          </tr>
             <tr>
                 <td></td>
                 <td>
-                    <div id="1" style="display: none;">
+                    <div id="8" style="display: none;">
                         <html:text property="added_entry0" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="16"/>
 </div>
-<div id="2" style="display: none;">
+<div id="9" style="display: none;">
     <html:text property="added_entry1" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="17"/>
 </div>
-<div id="3" style="display: none;">
+<div id="10" style="display: none;">
     <html:text property="added_entry2" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="18"/>
 </div>
+<%--<div id="3" style="display: none;">
+    <html:text property="added_entry2" readonly="<%=read%>" name="BibliographicDetailEntryActionForm"  styleClass="textBoxWidth" tabindex="18"/>
+</div>--%>
  </td>
             </tr>
   <tr><td height="2px"></td>
 </tr>
 
 <tr> <td class="txtStyle" align="<%=align%>"><strong><%=resource.getString("cataloguing.catoldtitleentry1.isbn13")%>:</strong></td>
-         <td><html:text  property="isbn13" readonly="<%=read%>"  name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="25" /></td>
+         <td><html:text  property="isbn13" readonly="<%=read%>"   name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="25" /></td>
 </tr>
  <tr><td height="2px"></td>
 </tr>
@@ -563,7 +566,7 @@ function disablecheck(){
   <tr><td height="2px"></td>
 </tr>
              <tr>
-                 <td><html:text property="call_no1" readonly="true" name="BibliographicDetailEntryActionForm" styleId="callno" styleClass="keyboardInput" tabindex="34" /></td>
+                 <td><html:text property="call_no1"  readonly="true" name="BibliographicDetailEntryActionForm" styleId="callno" styleClass="keyboardInput" tabindex="34" /></td>
              </tr>
               <tr><td height="2px"></td>
 </tr>

@@ -34,7 +34,7 @@ public static Integer returnIssueLimit(String library_id,String document_categor
             .add(Restrictions.eq("id.subEmptypeId", submem_type))
             .add(Restrictions.eq("id.emptypeId",mem_type));
             maxbiblio = (Integer) criteria.setProjection(Projections.property("issueDaysLimit")).uniqueResult();
-          
+          session.getTransaction().commit();
         }   catch(Exception e){
         e.printStackTrace();
         }
@@ -54,7 +54,7 @@ List obj=null;
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id)));
            obj=  criteria.list();
-
+session.getTransaction().commit();
         }   catch(Exception e){
         e.printStackTrace();
         }
@@ -74,7 +74,7 @@ List obj=null;
             query.setString("library_id", library_id);
             query.setResultTransformer(Transformers.TO_LIST);
             obj= (List<BookCategory>)  query.list();
-
+session.getTransaction().commit();
        
         }  catch(Exception e){
         e.printStackTrace();
@@ -98,6 +98,7 @@ List obj=null;
             query.setString("library_id", library_id);
             query.setResultTransformer(Transformers.aliasToBean(FineDetailGrid.class));
            obj=(List<FineDetailGrid>)  query.list();
+           session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -124,6 +125,7 @@ BookCategory obj=null;
                     .add(Restrictions.eq("id.subEmptypeId", subemptype_id))
                     .add(Restrictions.eq("id.bookType", book_type)));
            obj= (BookCategory) criteria.uniqueResult();
+           session.getTransaction().commit();
 
 
         }
@@ -149,6 +151,7 @@ BookCategory obj=null;
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.emptypeId", emptype_id)));
             obj= (EmployeeType) criteria.uniqueResult();
+            session.getTransaction().commit();
 
 
         }
@@ -174,7 +177,7 @@ SubEmployeeType obj=null;
                     .add(Restrictions.eq("id.emptypeId", emp_id))
                     .add(Restrictions.eq("id.subEmptypeId",subemptype_id)));
             obj= (SubEmployeeType) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -202,7 +205,7 @@ List<BookCategory> obj=null;
                     .add(Restrictions.eq("id.emptypeId", emptype_id))
                     .add(Restrictions.eq("id.subEmptypeId",subemptype_id)));
             obj= (List<BookCategory>) criteria.list();
-
+session.getTransaction().commit();
 
         }
           catch(Exception e){

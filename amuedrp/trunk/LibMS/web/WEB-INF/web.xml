@@ -15,7 +15,13 @@
 
  </resource-ref>
 
+ <listener>
 
+     <listener-class>
+         com.myapp.struts.ReqListener
+     </listener-class>
+
+     </listener>
 
     <servlet>
         <servlet-name>action</servlet-name>

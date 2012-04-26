@@ -1,6 +1,43 @@
 package com.myapp.struts.opac;
 public class OpacDoc {
+
+    public String getDateacq() {
+        return dateacq;
+    }
+
+    public void setDateacq(String dateacq) {
+        this.dateacq = dateacq;
+    }
+    protected String dateacq;
+    protected int biblioid;
+
+    public int getBiblioid() {
+        return biblioid;
+    }
+
+    public void setBiblioid(int biblioid) {
+        this.biblioid = biblioid;
+    }
+
         protected String title;
+
+    public int getRowno() {
+        return rowno;
+    }
+
+    public void setRowno(int rowno) {
+        this.rowno = rowno;
+    }
+    protected String sublibrary_id;
+
+    public String getSublibrary_id() {
+        return sublibrary_id;
+    }
+
+    public void setSublibrary_id(String sublibrary_id) {
+        this.sublibrary_id = sublibrary_id;
+    }
+        protected int rowno;
         protected String author;
 	protected String accessionno;
 	protected String callno;
@@ -16,6 +53,15 @@ public class OpacDoc {
 	protected String db_category;
 	protected String pub_yr;
         protected String library_id;
+        protected String main_entry;
+
+    public String getMain_entry() {
+        return main_entry;
+    }
+
+    public void setMain_entry(String main_entry) {
+        this.main_entry = main_entry;
+    }
 
 	public String getAccessionno() { return accessionno;}
      public void setAccessionno(String accessionno) {this.accessionno = accessionno;}

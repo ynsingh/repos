@@ -23,12 +23,14 @@ public class AcqApprovalDao {
         List<AcqApprovalHeader> obj=null;
      
         try {
+            session.beginTransaction();
             Criteria criteria = session.createCriteria(AcqApprovalHeader.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("acqMode", "Approved")));
            obj=criteria.list();
+       session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -43,6 +45,7 @@ public static List<AcqBibliographyDetails> searchBudgetHead(String library_id,St
         Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqBibliographyDetails> obj=null;
         try {
+            session.beginTransaction();
             Criteria criteria = session.createCriteria(AcqBibliographyDetails.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id))
@@ -50,6 +53,7 @@ public static List<AcqBibliographyDetails> searchBudgetHead(String library_id,St
                     .add(Restrictions.eq("primaryBudget", budgetHeadId))
                     );
            obj= (List<AcqBibliographyDetails>)criteria.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
 

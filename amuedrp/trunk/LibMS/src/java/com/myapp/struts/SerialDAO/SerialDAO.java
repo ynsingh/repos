@@ -39,6 +39,7 @@ public class SerialDAO {
                     .add(Restrictions.eq("id.sublibraryId", sub_library_id))
                     .add(Restrictions.eq("id.newSerialId", new_serial_id)));
             obj= (SerNewEntry) criteria.uniqueResult();
+            session.getTransaction().commit();
         }
         catch(Exception e)
         {
@@ -63,6 +64,7 @@ public static List getBiblio(String library_id,String sublibrary_id,String searc
                     .add(Restrictions.ilike(search_by,search_keyword+"%"))
                     .addOrder(Property.forName(sort_by).asc());
             obj= (List) criteria.list();
+            session.getTransaction().commit();
         }   catch(Exception e)
         {
         e.printStackTrace();
@@ -84,6 +86,7 @@ public static List getBiblio(String library_id,String sublibrary_id,String searc
                     .add(Restrictions.eq("id.sublibraryId", sub_library_id))
                     .add(Restrictions.eq("title",title)));
            obj= criteria.list();
+           session.getTransaction().commit();
         }  catch(Exception e)
         {
         e.printStackTrace();
@@ -106,6 +109,7 @@ public static List getBiblio(String library_id,String sublibrary_id,String searc
                     .add(Restrictions.eq("id.sublibraryId", sub_library_id))
                     .add(Restrictions.eq("title",title)));
             obj=(SerNewEntry) criteria.uniqueResult();
+            session.getTransaction().commit();
         }  catch(Exception e)
         {
         e.printStackTrace();
@@ -147,7 +151,7 @@ public static List getBiblio(String library_id,String sublibrary_id,String searc
                 id++;
             }
 
-         
+         session.getTransaction().commit();
            
         }  catch(Exception e)
         {
@@ -186,6 +190,7 @@ SerLanguage obj=null;
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.languageId", language_id)));
             obj= (SerLanguage) criteria.uniqueResult();
+            session.getTransaction().commit();
 
 
         }   catch(Exception e)
@@ -211,6 +216,7 @@ SerLanguage obj=null;
                     .add(Restrictions.eq("id.sublibraryId", sub_library_id))
                     .add(Restrictions.eq("id.pubId",pub_id)));
             obj= (SerPublisher) criteria.uniqueResult();
+            session.getTransaction().commit();
         }   catch(Exception e)
         {
         e.printStackTrace();

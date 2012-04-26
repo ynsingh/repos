@@ -1,0 +1,3 @@
+<action path="/showbook"  scope="request"  type="com.myapp.struts.circulation.ShowBookAction">
+                     <forward name="success" path="/circulation/cir_view_book.jsp"/>
+                     <forward name="failure" path="/circulation/cir_checkout.jsp"/>

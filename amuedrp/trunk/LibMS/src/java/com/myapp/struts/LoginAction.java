@@ -68,7 +68,7 @@ List list1,list2;
     {
 
      //   DOMConfigurator.configure("log4j.xml");
-
+System.gc();
 
 
 date=DateCalculation.now();

@@ -65,6 +65,7 @@ public static  boolean insert1(AdminRegistration obj)
     Integer maxNewAdminId=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
+          tx = session.beginTransaction();
         Criteria criteria = session.createCriteria(AdminRegistration.class)
                  .setProjection(Projections.max("registrationId"));
              maxNewAdminId= new Integer((Integer)criteria.uniqueResult()==null?0:(Integer)criteria.uniqueResult());
@@ -72,10 +73,11 @@ public static  boolean insert1(AdminRegistration obj)
             System.out.println("New Registration Id="+maxNewAdminId);
 
 
-            tx = session.beginTransaction();
+          
             adminDetails.setRegistrationId(maxNewAdminId);
             session.save(adminDetails);
             tx.commit();
+
             
         }
         catch (Exception e) {
@@ -140,19 +142,19 @@ public Integer getAdminRequestCount(String status){
     try {
 
         session = HibernateUtil.getSessionFactory().openSession();
-        //Transaction tx = null;
+      session.beginTransaction();
         Criteria criteria = session.createCriteria(AdminRegistration.class)
                  .setProjection(Projections.count("registrationId"));
         criteria.add(Restrictions.eq("status",status ));
            countrequest  = (Integer)criteria.uniqueResult();
 
    
-
+session.getTransaction().commit();
 
         
         }
     catch (Exception e) {
-
+                if(tx!=null)
                 tx.rollback();
             e.printStackTrace();
         }
@@ -173,7 +175,7 @@ public List getAdminDetailsByStatus(String status){
             query = session.createQuery("FROM AdminRegistration where status = :status");
              query.setString("status",status );
 obj=query.list();
-           
+       session.getTransaction().commit();
         }
       catch (Exception e) {
 
@@ -194,6 +196,7 @@ public List getAdminDetails(){
             session.beginTransaction();
             query = session.createQuery("FROM AdminRegistration");
         obj=    query.list();
+        session.getTransaction().commit();
         }
     catch (Exception e) {
 
@@ -217,6 +220,7 @@ public List getAdminInstituteDetails(){
                     .addEntity(Library.class)
                     .setResultTransformer(Transformers.aliasToBean(AdminReg_Institute.class));
            obj=query.list();
+           session.getTransaction().commit();
         }
     catch (Exception e) {
 
@@ -242,6 +246,7 @@ public List getAdminInstituteDetailsById(Integer registerationId){
                     .setResultTransformer(Transformers.aliasToBean(AdminReg_Institute.class));
             query.setInteger("registrationId", registerationId);
             obj= query.list();
+            session.getTransaction().commit();
          
         }
     catch (Exception e) {
@@ -268,6 +273,7 @@ public List getAdminInstituteDetailsByStatus(String status){
             query.setString("status", status);
             System.out.println("Sql Query="+query.getQueryString());
            list=query.list();
+           session.getTransaction().commit();
         }
     catch (Exception e) {
 
@@ -291,6 +297,7 @@ public List getAdminDeatilsById(Integer registrationId){
             Query query = session.createQuery("FROM AdminRegistration where id.registrationId = :registrationId");
            query.setInteger("registrationId",i);
           list= query.list();
+          session.getTransaction().commit();
         }
       catch (Exception e) {
 
@@ -314,6 +321,7 @@ public List getAdminDeatilsByUserId(String UserId){
             Query query = session.createQuery("FROM AdminRegistration where loginId = :userId");
            query.setString("userId",UserId);
            list=query.list();
+           session.getTransaction().commit();
         }
       catch (Exception e) {
 
@@ -332,7 +340,7 @@ public Integer getAdminRequestCount(){
     Integer countrequest=null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
-        session = HibernateUtil.getSessionFactory().openSession();
+     session.beginTransaction();
        
         Criteria criteria = session.createCriteria(AdminRegistration.class)
                  .setProjection(Projections.count("registrationId"));
@@ -340,7 +348,7 @@ public Integer getAdminRequestCount(){
            countrequest  = (Integer)criteria.uniqueResult();
 
    
-
+session.getTransaction().commit();
 
            
         }
@@ -368,14 +376,14 @@ return true;
         try
           {
           
-            Transaction tx = null;
+            session.beginTransaction();
             Criteria criteria = session.createCriteria(AdminRegistration.class).setProjection(Projections.max("registrationId"));
             maxNewRegId = (Integer)criteria.uniqueResult();
             if(maxNewRegId==null)
                 maxNewRegId=1;
             else
                 maxNewRegId++;
-            
+            session.getTransaction().commit();
     
         }
         catch(Exception e)
@@ -403,6 +411,7 @@ AdminRegistration obj=null;
             query.setString("login_id", login_id);
            
             obj=(AdminRegistration) query.uniqueResult();
+            session.getTransaction().commit();
         }
         catch(Exception e)
         {
@@ -427,6 +436,7 @@ AdminRegistration obj=null;
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
 obj=(AdminRegistration) query.uniqueResult();
+session.getTransaction().commit();
 
         }
         catch(Exception e)
@@ -449,7 +459,8 @@ AdminRegistration obj=null;
             session.beginTransaction();
             query = session.createQuery("FROM  AdminRegistration  WHERE loginId =:login_id");
             query.setString("login_id", login_id);
-obj=(AdminRegistration) query.uniqueResult();
+            obj=(AdminRegistration) query.uniqueResult();
+            session.getTransaction().commit();
 
         }
         catch(Exception e)

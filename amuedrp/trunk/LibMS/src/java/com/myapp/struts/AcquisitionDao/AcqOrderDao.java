@@ -18,9 +18,7 @@ import org.hibernate.criterion.Restrictions;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.transform.Transformers;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
 /**
  *
@@ -42,6 +40,7 @@ public class AcqOrderDao {
                 );
         
         obj=(AcqOrderHeader) criteria.uniqueResult();
+        session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -66,6 +65,7 @@ public class AcqOrderDao {
                 );
         
        obj=(AcqRecievingHeader) criteria.uniqueResult();
+       session.getTransaction().commit();
        }
       catch(Exception e){
         e.printStackTrace();
@@ -102,6 +102,7 @@ sql="(select d.isbn,d.title,d.author,ca.no_of_copies,b.control_no from acq_order
 
                     .setResultTransformer(Transformers.aliasToBean(ApprovalList.class));
            obj= (ArrayList<ApprovalList>)query.list();
+           session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -133,6 +134,7 @@ sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date
 
                     .setResultTransformer(Transformers.aliasToBean(ApprovalList.class));
             obj= (ArrayList<ApprovalList>)query.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -167,6 +169,7 @@ sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date
 
                     .setResultTransformer(Transformers.aliasToBean(ApprovalList.class));
            obj= (ArrayList<ApprovalList>)query.list();
+           session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -189,6 +192,7 @@ sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date
     try {
       
       session =  HibernateUtil.getSessionFactory().openSession();
+      session.beginTransaction();
       String SQL_QUERY = "select id.approvalItemId from AcqApproval a where a.id.libraryId='"+library_id+"' and a.id.subLibraryId='"+sublibrary_id+"' and a.controlNo="+control_no+" and a.approvalNo='"+approval_no+"'";
         Query query = session.createQuery(SQL_QUERY);
         for (Iterator it = query.iterate(); it.hasNext();) {
@@ -198,7 +202,7 @@ sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date
         System.out.println("Total rows: " + count);
         Iterator it = query.iterate(); it.hasNext();
      amount=query.uniqueResult().toString();
-        System.out.println("Total rows1: " + amount);
+    session.getTransaction().commit();
 
      
     }
@@ -266,6 +270,7 @@ sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date
                     .addEntity(AcqBibliographyDetails.class)
                     .setResultTransformer(Transformers.aliasToBean(PurchaseOrderClass.class));
             obj= (PurchaseOrderClass)query.uniqueResult();
+            session.getTransaction().commit();
         }
        catch(Exception e){
         e.printStackTrace();
@@ -286,6 +291,7 @@ sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date
         Criteria criteria = session.createCriteria(AcqOrder1.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.subLibraryId", sub_library_id)).add(Restrictions.eq("id.orderNo",order_no)));
         
         obj=(List<AcqOrder1>) criteria.list();
+        session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -304,6 +310,7 @@ sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date
         session.beginTransaction();
         Criteria criteria = session.createCriteria(AcqOrderHeader.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.subLibraryId", sub_library_id)).add(Restrictions.eq("id.orderNo",order_no)));
                 obj=(AcqOrderHeader) criteria.uniqueResult();
+                session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -323,6 +330,7 @@ sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date
         Criteria criteria = session.createCriteria(AcqOrderHeader.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("orderStatus", "Placed")).add(Restrictions.eq("id.subLibraryId", sub_library_id)).add(Restrictions.eq("id.orderNo",order_no)));
        
         obj=(AcqOrderHeader) criteria.uniqueResult();
+        session.getTransaction().commit();
         }
 
       catch(Exception e){
@@ -349,6 +357,7 @@ sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date
                 .add(Restrictions.eq("id.orderItemId",order_item_id)));
        
        obj= (AcqOrder1) criteria.uniqueResult();
+       session.getTransaction().commit();
         }
      catch(Exception e){
         e.printStackTrace();
@@ -369,7 +378,8 @@ sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date
         session.beginTransaction();
         Criteria criteria = session.createCriteria(AcqBibliographyDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.subLibraryId", sub_library_id)).add(Restrictions.eq("id.controlNo",con_no)));
         
-        return (AcqBibliographyDetails) criteria.uniqueResult();
+        obj=(AcqBibliographyDetails) criteria.uniqueResult();
+        session.getTransaction().commit();
        }
         catch(Exception e)
         {
@@ -477,6 +487,7 @@ public static boolean updateAcqApproval(AcqApproval obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
          Integer maxbiblio=null;
         try {
+            session.beginTransaction();
             Criteria criteria = session.createCriteria(AcqApproval.class);
             Criterion a = Restrictions.eq("id.libraryId", library_id);
             Criterion b = Restrictions.eq("id.subLibraryId", sublibrary_id);
@@ -487,7 +498,7 @@ public static boolean updateAcqApproval(AcqApproval obj) {
             } else {
                 maxbiblio++;
             }
-
+session.getTransaction().commit();
          
         }catch(Exception e){ e.printStackTrace();} finally {
             session.close();
@@ -500,8 +511,9 @@ public static boolean updateAcqApproval(AcqApproval obj) {
 
         Session session = HibernateUtil.getSessionFactory().openSession();
           Integer maxbiblio=null;
-        session.beginTransaction();
+       
         try {
+             session.beginTransaction();
             Criteria criteria = session.createCriteria(AcqOrder1.class);
             Criterion a = Restrictions.eq("id.libraryId", library_id);
             Criterion b = Restrictions.eq("id.subLibraryId", sublibrary_id);
@@ -515,7 +527,7 @@ public static boolean updateAcqApproval(AcqApproval obj) {
                 maxbiblio++;
             }
 
-           
+           session.getTransaction().commit();
         }
         catch(Exception e){
 

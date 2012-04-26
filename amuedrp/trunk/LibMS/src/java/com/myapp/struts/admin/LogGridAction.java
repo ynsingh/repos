@@ -5,7 +5,7 @@
 
 package com.myapp.struts.admin;
 
-import com.myapp.struts.AdminDAO.LogsDAO;
+//import com.myapp.struts.AdminDAO.LogsDAO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -41,12 +41,12 @@ if(userid==null) userid="";
         if(libraryid==null) libraryid="all";
         if(sublibraryid==null) sublibraryid="all";
 
-         List LogGrid=(List)LogsDAO.searchlog(libraryid, sublibraryid, startdate, enddate, userid);
+//         List LogGrid=(List)LogsDAO.searchlog(libraryid, sublibraryid, startdate, enddate, userid);
 
         
-        System.out.println("logggggggggliststststststtstststss"+LogGrid.size());
+  //      System.out.println("logggggggggliststststststtstststss"+LogGrid.size());
        
-         session.setAttribute("loglist", LogGrid);
+    //     session.setAttribute("loglist", LogGrid);
         
         return mapping.findForward(SUCCESS);
     }

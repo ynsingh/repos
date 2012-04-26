@@ -11,6 +11,15 @@ public class DocumentDetails  implements java.io.Serializable {
 
      private DocumentDetailsId id;
      private BibliographicDetails bibliographicDetails;
+//     private BibliographicDetailsLang bibliographicDetailsLang;
+//
+//    public BibliographicDetailsLang getBibliographicDetailsLang() {
+//        return bibliographicDetailsLang;
+//    }
+//
+//    public void setBibliographicDetailsLang(BibliographicDetailsLang bibliographicDetailsLang) {
+//        this.bibliographicDetailsLang = bibliographicDetailsLang;
+//    }
      private String documentType;
      private String accessionType;
      private String dateAcquired;
@@ -80,11 +89,13 @@ public class DocumentDetails  implements java.io.Serializable {
     public DocumentDetails(DocumentDetailsId id, BibliographicDetails bibliographicDetails) {
         this.id = id;
         this.bibliographicDetails = bibliographicDetails;
+      //,BibliographicDetailsLang bibliographicDetailsLang  this.bibliographicDetailsLang=bibliographicDetailsLang;
     }
     public DocumentDetails(DocumentDetailsId id, BibliographicDetails bibliographicDetails,int biblioId, String documentType,String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, String publishingYear, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String physicalForm, String colour, String typeOfDisc, String fileType, String accessionNo, Integer recordNo, String callNo, String volumeNo, String location, String shelvingLocation, String indexNo, String noOfPages, String physicalWidth, String status, String bindType) {
        this.id = id;
        this.biblioId = biblioId;
        this.bibliographicDetails = bibliographicDetails;
+//       ,BibliographicDetailsLang bibliographicDetailsLang this.bibliographicDetailsLang=bibliographicDetailsLang;
        this.documentType = documentType;
        this.bookType = bookType;
        this.accessionType = accessionType;

@@ -52,6 +52,7 @@ public class VendorDAO {
         Criteria criteria = session.createCriteria(AcqVendor.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.subLibraryId", sub_library_id)).add(Restrictions.eq("id.vendorId", vendor_id)));
         
         obj= (AcqVendor) criteria.uniqueResult();
+        session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -75,6 +76,7 @@ public class VendorDAO {
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id)));                    
             obj= criteria.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -98,6 +100,7 @@ public class VendorDAO {
 
              query.setString("libraryId", library_id);
              obj=query.list();
+             session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -120,6 +123,7 @@ public class VendorDAO {
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("id.vendorId", vendor_no)));
             obj=(AcqVendor) criteria.uniqueResult();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -139,6 +143,7 @@ public class VendorDAO {
         Criteria criteria = session.createCriteria(AcqVendor.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.subLibraryId", sub_library_id)).add(Restrictions.eq("id.vendorId", vendor_id)));
         
         obj=(AcqVendor) criteria.uniqueResult();
+        session.getTransaction().commit();
        }
        catch(Exception e){
         e.printStackTrace();
@@ -162,6 +167,7 @@ public class VendorDAO {
                     .add(Restrictions.eq("id.libraryId", library_id))
                     );
             obj= criteria.list();
+            session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }

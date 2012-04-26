@@ -232,7 +232,7 @@ public static String getValue(SerPrivilege ser,int i) {
 
 
 
-
+session.getTransaction().commit();
 
 
 
@@ -286,6 +286,7 @@ SerPrivilege serobj=null;
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
             serobj=( SerPrivilege) query.uniqueResult();
+            session.getTransaction().commit();
         }
          catch (HibernateException e) {
 
@@ -345,6 +346,7 @@ SerPrivilege serobj=null;
             query.setString("sublibrary_id", sublibrary_id);
             query.setString("staff_id", staff_id);
 serobj=( SerPrivilege) query.uniqueResult();
+session.getTransaction().commit();
         }
         catch(Exception e)
         {
@@ -442,6 +444,7 @@ List obj=null;
             query.setString("staff_id", staff_id);
             query.setResultTransformer(Transformers.TO_LIST);
             obj=( List) query.list();
+            session.getTransaction().commit();
         }
         catch(Exception e)
         {

@@ -31,7 +31,7 @@ AcqCurrency obj=null;
                     .add(Restrictions.eq("systemDate", date))
                     .add(Restrictions.eq("sourceCurrency",scurrency)));
            obj= (AcqCurrency) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -54,7 +54,7 @@ AcqCurrency obj=null;
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.conversionId",convrsion_id)));
             obj=(AcqCurrency) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -80,7 +80,7 @@ AcqCurrency obj=null;
                     .add(Restrictions.eq("sourceCurrency",scurrency)));
            obj= (AcqCurrency) criteria.uniqueResult();
 
-
+session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -103,7 +103,7 @@ AcqCurrency obj=null;
                    );
             obj= (AcqCurrency) criteria.uniqueResult();
 
-
+session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -125,6 +125,7 @@ AcqCurrency obj=null;
             query1.setInteger("conversionId",convrsion_id);
 
            obj= (AcqCurrency) query1.uniqueResult();
+           session.getTransaction().commit();
         }
        catch(Exception e){
         e.printStackTrace();
@@ -148,6 +149,7 @@ AcqCurrency obj=null;
             query1.setString("sourceCurrency",scurrency);
 
             obj= (AcqCurrency) query1.uniqueResult();
+            session.getTransaction().commit();
         }
        catch(Exception e){
         e.printStackTrace();
@@ -233,6 +235,7 @@ AcqCurrency obj=null;
         Session session = HibernateUtil.getSessionFactory().openSession();
        Integer maxbiblio =null;
         try {
+              session.beginTransaction();
             Criteria criteria = session.createCriteria(AcqCurrency.class);
             Criterion a = Restrictions.eq("id.libraryId", library_id);
            
@@ -243,7 +246,7 @@ AcqCurrency obj=null;
             } else {
                 maxbiblio++;
             }
-
+            session.getTransaction().commit();
            
         } catch(Exception e){
         e.printStackTrace();

@@ -266,7 +266,7 @@ public static String getValue(AcqPrivilege acq,int i) {
 
 
 
-
+session.getTransaction().commit();
 
 
 
@@ -322,6 +322,7 @@ AcqPrivilege acqobj=null;
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
            acqobj=( AcqPrivilege) query.uniqueResult();
+           session.getTransaction().commit();
         }
          catch (Exception ex)
         {
@@ -381,6 +382,7 @@ AcqPrivilege acqobj=null;
             query.setString("sublibrary_id", sublibrary_id);
             query.setString("staff_id", staff_id);
 acqobj=( AcqPrivilege) query.uniqueResult();
+session.getTransaction().commit();
         }
         catch(Exception e)
         {
@@ -443,6 +445,7 @@ List obj=null;
             query.setString("staff_id", staff_id);
             query.setResultTransformer(Transformers.TO_LIST);
             obj= ( List) query.list();
+            session.getTransaction().commit();
         }
         catch(Exception e)
         {

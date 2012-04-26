@@ -6,7 +6,7 @@
 package com.myapp.struts.admin;
 
 import java.util.*;
-import com.myapp.struts.AdminDAO.LogsDAO;
+//import com.myapp.struts.AdminDAO.LogsDAO;
 import com.myapp.struts.hbm.Logs;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,9 +29,9 @@ public class ShowLog extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 HttpSession session=request.getSession();
-        List<String> logobj=LogsDAO.SearchlogLib();
-        System.out.println(logobj.size());
-        session.setAttribute("logliblist", logobj);
+//        List<String> logobj=LogsDAO.SearchlogLib();
+ //       System.out.println(logobj.size());
+  //      session.setAttribute("logliblist", logobj);
 
 
         return mapping.findForward("success");

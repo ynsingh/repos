@@ -51,6 +51,7 @@ Courses course=null;
 
                     );
       course= (Courses) criteria.uniqueResult();
+      session.getTransaction().commit();
 
 
         }
@@ -78,7 +79,7 @@ List<CirMemberAccount> obj=null;
                     .add(Restrictions.eq("status", "Blocked"))
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id)));
             obj=(List<CirMemberAccount>) criteria.list();
-
+            session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -107,7 +108,7 @@ List<CirMemberAccount> obj=null;
                     .add(Restrictions.eq("status", "Cancel"))
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id)));
            obj=  (List<CirMemberAccount>) criteria.list();
-
+            session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -160,7 +161,7 @@ List<DeliquencyReason> obj=null;
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
     );
             obj= (List<DeliquencyReason>) criteria.list();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -187,7 +188,7 @@ List<CancellationReason> obj=null;
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
     );
             obj= (List<CancellationReason>) criteria.list();
-
+session.getTransaction().commit();
 
         }
          catch(Exception e){
@@ -215,7 +216,7 @@ CancellationReason  obj=null;
                     .add(Restrictions.eq("id.id", id))
     );
             obj= (CancellationReason) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -243,7 +244,7 @@ DeliquencyReason obj=null;
                     .add(Restrictions.eq("id.id", id))
     );
             obj= (DeliquencyReason) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
          catch(Exception e){
@@ -325,7 +326,7 @@ sql+=" order by a.member_id)";
 
           System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             obj= (List<CirculationList_1>)query.list();
-
+session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -392,7 +393,7 @@ if(memid!=null)
 
           
           obj= (List<CirculationList>)query.list();
-
+session.getTransaction().commit();
 
 
 
@@ -496,7 +497,7 @@ System.out.println("its working2");
 
          
             obj= (List<MixCirMemberDetail>)query.list();
-
+hsession.getTransaction().commit();
         }
        catch(Exception e){
         e.printStackTrace();
@@ -525,7 +526,7 @@ List<Faculty> obj=null;
                     );
 obj= (List<Faculty>) criteria.list();
 
-
+session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -552,7 +553,7 @@ List<Department> obj=null;
 
                     );
             obj= (List<Department>) criteria.list();
-
+session.getTransaction().commit();
 
         }
        catch(Exception e){
@@ -583,7 +584,7 @@ List<Courses> obj=null;
                     );
             obj= (List<Courses>) criteria.list();
 
-
+session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -611,7 +612,7 @@ List<SubLibrary> obj=null;
 
                     );
             obj= (List<SubLibrary>) criteria.list();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -738,7 +739,7 @@ CirCheckin obj=null;
 
                     .add(Restrictions.eq("memberId", mem_id)));
             obj= (CirCheckin) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -770,7 +771,7 @@ CirCheckin obj=null;
 
                     );
             obj=(CirCheckin) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
        catch(Exception e){
@@ -855,7 +856,7 @@ public static List  ViewAllThoughOpacReq(String library_id,String sub_lib,String
 
 
             obj= (ArrayList<MixCirMemberDetail>)query.list();
-
+hsession.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -888,7 +889,7 @@ public static List  ViewAllThoughOpacReq(String library_id,String sub_lib,String
                     .add(Restrictions.eq("status", "Active"))
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id)));
             obj= (List<CirMemberAccount>) criteria.list();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -942,7 +943,7 @@ DocumentDetails obj=null;
                     .add(Restrictions.eq("id.sublibraryId", sub_library_id))
                     .add(Restrictions.eq("accessionNo", accession_no)));
             obj= (DocumentDetails) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -969,7 +970,7 @@ CirCheckout obj=null;
                     .add(Restrictions.eq("id.sublibraryId", sub_library_id))
                     .add(Restrictions.eq("documentId", document_id)));
             obj= (CirCheckout) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -996,7 +997,7 @@ CirCheckout obj=null;
                     .add(Restrictions.eq("documentId", document_id))
             .add(Restrictions.eq("status", status)));
            obj= (CirCheckout) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -1023,7 +1024,7 @@ CirCheckout obj=null;
                     .add(Restrictions.eq("documentId", document_id))
                     .add(Restrictions.eq("status", status)));
             obj= (CirCheckout) criteria.uniqueResult();
-
+            session.getTransaction().commit();
 
         }
          catch(Exception e){
@@ -1052,7 +1053,7 @@ List<CirCheckout> obj=null;
                     .add(Restrictions.eq("status", status)));
             obj= (List<CirCheckout>) criteria.list();
 
-
+session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -1077,7 +1078,7 @@ CirMemberDetail obj=null;
                    
                     .add(Restrictions.eq("id.memId", mem_id)));
             obj= (CirMemberDetail) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
          catch(Exception e){
@@ -1106,7 +1107,7 @@ CirOpacRequest obj=null;
                      .add(Restrictions.eq("accessionNo", accession_no))
                     .add(Restrictions.eq("documentId",Integer.parseInt(document_id))));
             obj= (CirOpacRequest) criteria.uniqueResult();
-
+            session.getTransaction().commit();
 
         }
          catch(Exception e){
@@ -1135,7 +1136,7 @@ CirOpacRequest obj=null;
                     .add(Restrictions.eq("documentId",Integer.parseInt(document_id))));
             obj=(CirOpacRequest) criteria.uniqueResult();
 
-
+session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -1162,7 +1163,7 @@ CirOpacRequest obj=null;
                      .add(Restrictions.eq("status", "Pending"))
                     .add(Restrictions.eq("memid",memId)));
             obj=(CirOpacRequest) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
          catch(Exception e){
@@ -1190,7 +1191,7 @@ List<CirMemberAccount> obj=null;
 
                     );
             obj=(List<CirMemberAccount>) criteria.list();
-
+session.getTransaction().commit();
 
         }
        catch(Exception e){
@@ -1216,7 +1217,7 @@ List<CirMemberAccount> obj=null;
                     
                     .add(Restrictions.eq("id.memid", mem_id)));
             obj= (List<CirMemberAccount>) criteria.list();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -1243,7 +1244,7 @@ CirMemberAccount obj=null;
 
                     .add(Restrictions.eq("id.memid", mem_id)));
             obj= (CirMemberAccount) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
        catch(Exception e){
@@ -1269,7 +1270,7 @@ public static  List<CirMemberAccount> searchCirMemAccountDetailsLst(String libra
                     .add(Restrictions.not(Restrictions.eq("id.sublibraryId", sublibrary_id)))
                     .add(Restrictions.eq("id.memid", mem_id)));
             obj= (List<CirMemberAccount>) criteria.list();
-
+session.getTransaction().commit();
 
         }
        catch(Exception e){
@@ -1296,7 +1297,7 @@ CirTransactionHistory obj=null;
                     .add(Restrictions.eq("id.sublibraryId", sub_library_id))
                     .add(Restrictions.eq("checkoutId", checkoutId)));
             obj= (CirTransactionHistory) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
          catch(Exception e){
@@ -1325,7 +1326,7 @@ BookCategory obj=null;
                     );
            obj= (BookCategory) criteria.uniqueResult();
 
-
+session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -1350,7 +1351,7 @@ BookCategory obj=null;
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.bookType",book_type )));
            obj= (BookCategory) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -1377,7 +1378,7 @@ BookCategory obj=null;
             query.setString("sublibraryId",sublibraryId);
             query.setString("documentId", docId);
                     obj= (BookCategory) query.uniqueResult();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -1409,7 +1410,7 @@ List<MemberFineWithCheckoutDetails> obj=null;
             query.setString("sublibraryId", subLibraryId);
 
                     obj= (List<MemberFineWithCheckoutDetails>) query.list();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -1435,7 +1436,7 @@ HashMap<String,String> demo=new HashMap<String,String>();
   if(!demo.containsKey(row[0].toString()))
             demo.put(row[0].toString(), row[1].toString());
  System.out.println("Invested Amount: " + row[0] + row[1]);
-                   
+          session.getTransaction().commit();
 
 
         }
@@ -1472,6 +1473,7 @@ noofchk=row[1].toString();
 System.out.println("rows"+row[1].toString());
 
         }
+  session.getTransaction().commit();
         }
        catch(Exception e){
         e.printStackTrace();
@@ -1507,7 +1509,7 @@ System.out.println("rows"+row[1].toString());
             } else {
                 maxbiblio++;
             }
-
+session.getTransaction().commit();
         
         }  catch(Exception e){
         e.printStackTrace();
@@ -1757,6 +1759,7 @@ return false;
             
 
         obj= (List<CirMemberAccount>)criteria.list();
+        session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
 
@@ -1817,6 +1820,7 @@ List<MixDocumentType> obj=null;
           query.setString("sublibrary_id", sublibrary_id);
           query.setString("book_type", doc_type);
            obj= (List<MixDocumentType>) query.list();
+           session.getTransaction().commit();
 
         }
        catch(Exception e){
@@ -1849,7 +1853,7 @@ List<CirMemberDetail> obj=null;
 
                     );
             obj= (List<CirMemberDetail>) criteria.list();
-
+session.getTransaction().commit();
 
         }
        catch(Exception e){
@@ -1890,6 +1894,7 @@ public static List  CheckInReport(String library_id,String sub_lib,String year1,
          }
 
     obj=criteria.list();
+    hsession.getTransaction().commit();
 
         }
        catch(Exception e){
@@ -1918,6 +1923,7 @@ public static List  CheckInReport(String library_id,String sub_lib)
 
 
          obj= criteria.list();
+         hsession.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -1964,7 +1970,7 @@ public static List  CheckInReport(String library_id,String sub_lib)
          }
 
          obj= criteria.list();
-
+hsession.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -1989,7 +1995,7 @@ public static List  CheckInReport(String library_id,String sub_lib)
 
                     .add(Restrictions.eq("memid", mem_id)));
             obj= (CirCheckout) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
        catch(Exception e){
@@ -2016,7 +2022,7 @@ List<CirCheckout> obj=null;
                     .add(Restrictions.eq("status", "issued"))
                     .add(Restrictions.eq("memid", mem_id)));
             obj= (List<CirCheckout>) criteria.list();
-
+            session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -2044,7 +2050,7 @@ CirCheckout obj=null;
                     .add(Restrictions.eq("id.checkoutId",Integer.parseInt(checkoutId)))
                     );
             obj= (CirCheckout) criteria.uniqueResult();
-
+            session.getTransaction().commit();
 
         }
          catch(Exception e){
@@ -2065,10 +2071,10 @@ List<EmployeeType> obj=null;
             session.flush();
             Query query1 = session.createQuery("FROM  EmployeeType  WHERE id.libraryId =:library_id");
             query1.setString("library_id", library_id);
-          
-
-
             obj=(List<EmployeeType>) query1.list();
+               session.getTransaction().commit();
+
+
         }
         catch(Exception e){
         e.printStackTrace();
@@ -2088,10 +2094,10 @@ List<SubEmployeeType> obj=null;
             session.flush();
             Query query1 = session.createQuery("FROM  SubEmployeeType  WHERE id.libraryId =:library_id");
             query1.setString("library_id", library_id);
-        
-
-
             obj= (List<SubEmployeeType>) query1.list();
+                 session.getTransaction().commit();
+
+
         }
         catch(Exception e){
         e.printStackTrace();
@@ -2111,10 +2117,9 @@ List<Faculty> obj=null;
             session.flush();
             Query query1 = session.createQuery("FROM  Faculty  WHERE id.libraryId =:library_id");
             query1.setString("library_id", library_id);
-           
+        obj=(List<Faculty>) query1.list();
+     session.getTransaction().commit();
 
-
-obj=(List<Faculty>) query1.list();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -2133,13 +2138,10 @@ List<SubLibrary> obj=null;
             session.beginTransaction();
             Query query1 = session.createSQLQuery("select * from sub_library s where s.library_id = :library_id and s.library_id=s.sublibrary_id and s.sublibrary_id not in (select cma.sublibrary_id from cir_member_account cma where cma.memid=:memId and  cma.status='Active')")
                     .addEntity(SubLibrary.class);
-                  
-
             query1.setString("library_id", library_id);
             query1.setString("memId", memId);
-           
-
            obj= (List<SubLibrary>) query1.list();
+           session.getTransaction().commit();
         }
        catch(Exception e){
         e.printStackTrace();
@@ -2162,9 +2164,9 @@ List<SubLibrary> obj=null;
             query1.setString("library_id", library_id);
             query1.setString("sublibraryId", sublibraryId);
             query1.setString("memId", memId);
-           
-
 obj= (List<SubLibrary>) query1.list();
+   session.getTransaction().commit();
+
         }
         catch(Exception e){
         e.printStackTrace();
@@ -2189,6 +2191,7 @@ List<SubLibrary> obj=null;
             query1.setString("sublibraryId", sublibraryId);
            
            obj=(List<SubLibrary>) query1.list();
+           session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -2215,6 +2218,7 @@ CirMemberAccount obj=null;
                     .add(Restrictions.eq("id.memid", mem_id))
                     .add(Restrictions.eq("password", password)));
             obj=(CirMemberAccount) criteria.uniqueResult();
+            session.getTransaction().commit();
 
 
         }
@@ -2242,7 +2246,7 @@ CirMemberAccount obj=null;
                     .add(Restrictions.eq("id.memid", mem_id))
                     .add(Restrictions.eq("password", password)));
             obj= (CirMemberAccount) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -2267,6 +2271,7 @@ CirMemberAccount obj=null;
                     .add(Restrictions.eq("id.memid", memid))
                     .add(Restrictions.eq("status", "Active")));
             obj= (CirMemberAccount) criteria.uniqueResult();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -2293,6 +2298,7 @@ CirMemberAccount obj=null;
                 
                     );
             obj= criteria.list();
+            session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
 
@@ -2315,6 +2321,7 @@ CirMemberAccount obj=null;
             query.setString("status", status);
             query.setString("sublibrary_id",sublibrary_id);
             obj= (String)  query.uniqueResult();
+            session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
 
@@ -2339,6 +2346,7 @@ public static CirMemberAccount getAccount2(String library_id,String sublibrary_i
             query.setString("sublibrary_id",sublibrary_id);
 
             obj= (CirMemberAccount) query.uniqueResult();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -2363,6 +2371,7 @@ CirMemberDetail obj=null;
             query.setString("memid",memid);
 
             obj= (CirMemberDetail) query.uniqueResult();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -2414,6 +2423,7 @@ public static CirMemberDetail getMemid(String library_id,String memid) {
             query.setString("memId",memid);
 
             obj= (CirMemberDetail) query.uniqueResult();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -2436,6 +2446,7 @@ public static CirMemberAccount getAccount(String library_id,String sublibrary_id
             query.setString("memid",memid);
             query.setString("sublibrary_id",sublibrary_id);
             obj= (CirMemberAccount) query.uniqueResult();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -2458,6 +2469,7 @@ public static List<CirOpacRequest> getOpacCheckOut(String library_id,String subl
             query.setString("sublibrary_id",sublibrary_id);
             query.setString("status",status);
             obj= (List<CirOpacRequest>) query.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -2483,6 +2495,7 @@ public static List<DocumentDetails> searchBYCallno(String library_id,String subl
             query.setString("status", status);
              query.setString("sublibrary_id",sublibrary_id);
             obj=(List<DocumentDetails>) query.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -2504,6 +2517,7 @@ public static DocumentDetails getBook(String library_id,String sublibrary_id,Str
             query.setString("sublibrary_id", sublibrary_id);
             query.setString("accession_no",accession_no);
             obj= (DocumentDetails) query.uniqueResult();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -2526,6 +2540,7 @@ public static DocumentDetails getBookStatus(String library_id,String sublibrary_
             query.setString("accession_no",accession_no);
             query.setString("status", "issued");
             obj= (DocumentDetails) query.uniqueResult();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -2547,6 +2562,7 @@ public static DocumentDetails getDocument(String library_id,String sublibrary_id
             query.setString("sublibrary_id", sublibrary_id);
             query.setInteger("document_id",document_id);
            obj= (DocumentDetails) query.uniqueResult();
+           session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -2569,6 +2585,7 @@ public static CirMemberAccount getCirMem(String library_id,String sublibrary_id,
             query.setString("sublibrary_id", sublibrary_id);
             query.setString("memid",memid);
             obj= (CirMemberAccount) query.uniqueResult();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -2620,7 +2637,7 @@ public static  boolean update(CirMemberAccount obj3,DocumentDetails obj4)
 
 
  public static List getMaxChkoutId(String library_id,String sublibrary_id) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session =HibernateUtil.getSessionFactory().openSession();
         List obj = null;
         try {
             session.beginTransaction();
@@ -2628,6 +2645,7 @@ public static  boolean update(CirMemberAccount obj3,DocumentDetails obj4)
             query.setString("library_id",library_id );
             query.setString("sublibrary_id",sublibrary_id );
             obj=  query.list();
+            session.getTransaction().commit();
         }
        catch(Exception e){
         e.printStackTrace();
@@ -2642,13 +2660,14 @@ public static  boolean update(CirMemberAccount obj3,DocumentDetails obj4)
 
 
  public static List getMaxTransId(String library_id) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         List obj = null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("SELECT Max(id.transactionId)FROM CirTransactionHistory where id.libraryId = :library_id ");
             query.setString("library_id",library_id );
             obj= query.list();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();

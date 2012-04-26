@@ -25,8 +25,7 @@
    //  String webpass=getServletContext().getInitParameter("webpass");
 %>
 <%
-//session.setAttribute("webadmin",webadmin);
-//session.setAttribute("webpass",webpass);
+System.gc();
 %>
 <script type="text/javascript" language="javascript">
     this.opener.close();
@@ -255,7 +254,12 @@ sessionId = session.getId().toString();
 
     %>
     <body  style="margin:0px 0px 0px 0px; table-layout: auto;background-color: white; " onload="validateSession()" >
-    
+<%
+ String os=System.getProperty("os.name");
+
+String projectPath = System.getProperty("user.dir");
+out.println(os+projectPath);
+%>    
 
 
 

@@ -30,6 +30,7 @@ public class LocationDAO {
             query1.setString("sublibrary_id", sublibrary_id);
 
             obj= (List<Location>) query1.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -51,6 +52,7 @@ public class LocationDAO {
             query1.setString("loc", loc);
 
            obj= (List<DocumentDetails>)  query1.list();
+           session.getTransaction().commit();
         }
       catch(Exception e){
         e.printStackTrace();
@@ -73,6 +75,7 @@ public static Location getLocationByName(String library_id,String sublibrary_id,
             query1.setString("locationName", locName);
 
            obj= (Location) query1.uniqueResult();
+           session.getTransaction().commit();
         }
        catch(Exception e){
         e.printStackTrace();
@@ -166,6 +169,7 @@ Location obj=null;
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
                     .add(Restrictions.eq("id.locationId", location_id)));
            obj= (Location) criteria.uniqueResult();
+           session.getTransaction().commit();
 
 
         }catch(Exception e){
@@ -187,6 +191,7 @@ Location obj=null;
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id)));
            obj= (List<Location>) criteria.list();
+           session.getTransaction().commit();
 
 
         } catch(Exception e){

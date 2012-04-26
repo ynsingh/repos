@@ -1,3 +1,4 @@
+<!--ACCESSION NO SEARCH JSP-->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -62,10 +63,22 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 }
 }
+window.status="Press F1 for Help";
 function search() {
-    window.status="Press F1 for Help";
+   
 
+
+        var acc=document.getElementById('TXTKEY').value;
+        if(acc=="")
+            {
+                alert("Please Enter Accession No to Search Title");
+                return false;
+
+            }
+    
+    
     var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
+
 
 if (keyValue=="all")
     {
@@ -123,7 +136,7 @@ newOpt.text = ndValue1;
 
 
 }
-
+funcSearch();
 }
 
 </script>
@@ -131,11 +144,19 @@ newOpt.text = ndValue1;
 
 function funcSearch()
 {
+    
+ var acc=document.getElementById('TXTKEY').value;
+        if(acc=="")
+            {
+                alert("Please Enter Accession No to Search Title");
+                return false;
+
+            }
     document.Form1.action="accession.do";
    document.Form1.method="post";
     document.Form1.submit();
 }
-loadHelp()
+function loadHelp()
 {
     window.status="Press F1 for Help";
 }
@@ -169,12 +190,12 @@ session.setAttribute("page_name", "accessionno");
 
 
 
-    </head><body style="background-color:#e0e8f5;margin: 0px 0px 0px 0px" onload="search();">
+    </head><body style="background-color:#e0e8f5;margin: 0px 0px 0px 0px" >
   
 
 
-    <html:form  method="post" action="/OPAC/accession" target="f1" styleId="Form1" >
-        <table align="center" dir="<%=rtl%>" width="80%" class="datagrid" height="400px"  style="border:solid 1px black;" >
+    <html:form  method="post" action="/OPAC/accession" target="f1" onsubmit="return funcSearch();" styleId="Form1" >
+        <table align="center" dir="<%=rtl%>" width="100%" class="datagrid" height="400px"  style="border:solid 1px black;" >
 
 
   <tr class="header"><td  width="80%" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
@@ -194,7 +215,7 @@ session.setAttribute("page_name", "accessionno");
                      *Case Sensentive
 <input id="TXTPAGE" value="accessionno" name="TXTPAGE" type="hidden">
 
-<input type="submit" id="Button1" name="go" dir="<%=rtl%>" value="<%=resource.getString("opac.accessionno.go")%>" class="buttonhome" />
+<input type="submit"  id="Button1" name="go" dir="<%=rtl%>" value="<%=resource.getString("opac.accessionno.go")%>" class="buttonhome" />
 
 <input type="reset" id="Button2" name="" value="<%=resource.getString("opac.browse.clear")%>" class="buttonhome">
 
@@ -221,14 +242,15 @@ session.setAttribute("page_name", "accessionno");
               <table >
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.accessionno.library")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                      <html:select property="CMBLib" dir="<%=rtl%>" tabindex="3" styleClass="selecthome" value="<%=lib_id%>" styleId="CMBLib" onchange="search()">
+                      <html:select property="CMBLib" dir="<%=rtl%>" tabindex="3" styleClass="selecthome" value="<%=lib_id%>" styleId="CMBLib" onchange="return search();">
     <html:option value="all">All</html:option>
     <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
  </html:select>
 
      </td></tr><tr><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <html:select property="CMBSUBLib" styleClass="selecthome" dir="<%=rtl%>" value="<%=sublib_id%>"  styleId="SubLibrary" >
-                           </html:select></td>
+                      <html:select property="CMBSUBLib" styleClass="selecthome" dir="<%=rtl%>" value="<%=sublib_id%>"  styleId="SubLibrary" onchange="return search()" >
+                          <html:option value="all">All</html:option>
+                          </html:select></td>
 
 
               </tr></table></td>

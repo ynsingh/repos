@@ -65,7 +65,7 @@ public class MarcCommitAction1 extends org.apache.struts.action.Action {
                 String key=(String)is1.next();
                 Biblio bib=new Biblio();
                 bib=(Biblio)hm1.get(key);
-                 
+                System.out.println(hm1+"........................New Changes"+key);
                 if(key.equals("5")&& bib.get$a()==null){
                                  
                     request.setAttribute("msg1","Please Enter Value in 082 $a Field");

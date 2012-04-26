@@ -63,7 +63,7 @@ public static SubLibrary getMainSubLibraryId(String library_id,String sublibrary
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
             sublib=(SubLibrary) query.uniqueResult();
-
+session.getTransaction().commit();
            
         }
         catch (HibernateException e) {
@@ -87,6 +87,7 @@ List<SubLibrary> obj=null;
 
 
            obj=(List<SubLibrary>) query.list();
+           session.getTransaction().commit();
         }
          catch (HibernateException e) {
 
@@ -109,6 +110,7 @@ SubLibrary obj=null;
             query.setString("sublibrary_id",sublibrary_id);
 
            obj=(SubLibrary) query.uniqueResult();
+           session.getTransaction().commit();
         }
         catch (HibernateException e) {
 
@@ -130,6 +132,7 @@ public static SubLibrary getSubLibraryId(String library_id,String sublibrary_nam
             query.setString("sublibrary_name",sublibrary_name);
 
            sublib=(SubLibrary) query.uniqueResult();
+           session.getTransaction().commit();
         }
           catch (HibernateException e) {
 
@@ -150,6 +153,7 @@ List<SubLibrary> sublib=null;
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
 sublib=(List<SubLibrary>) query.list();
+session.getTransaction().commit();
            
         }
           catch (HibernateException e) {
@@ -172,6 +176,7 @@ List<SubLibrary> sublib=null;
            
 
             sublib=(List<SubLibrary>) query.list();
+            session.getTransaction().commit();
         }
         catch (HibernateException e) {
 
@@ -191,6 +196,7 @@ List<SubLibrary> sublib=null;
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
 sublib=(List<SubLibrary>) query.list();
+session.getTransaction().commit();
             
         }
          catch (HibernateException e) {
@@ -213,6 +219,7 @@ SubLibrary sub=null;
             query.setString("sublibraryname",sublibrary_name);
 
        sub=(SubLibrary) query.uniqueResult();
+       session.getTransaction().commit();
         }
         catch (HibernateException e) {
 

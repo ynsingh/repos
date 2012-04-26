@@ -1,70 +1,28 @@
-
-    <%@page import="com.myapp.struts.opac.OpacDoc"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-    <%@ page import="java.util.*"%>
-    <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
-    <%@ page import="org.apache.taglibs.datagrid.DataGridTag"%>
-    <%@ page import="java.sql.*"%>
-    <%@ page import="java.io.*"   %>
-    <%@ taglib uri="http://jakarta.apache.org/taglibs/datagrid-1.0" prefix="ui" %>
-    <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
-    <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
-
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
-    <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
-
- 
-    <script language="javascript" type="text/javascript ">
-        function loadHelp()
-        {
-            window.status="Press F1 for Help";
-        }
-    </script>
-</head>
-<body style="margin:0px 0px 0px 0px 0px;background-color:#e0e8f5;" onload="loadHelp()">
-
-
+<!-- BROWSE SEARCH JSP-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*,java.io.*,java.net.*"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@page import="java.sql.ResultSet"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+<title>Browsing.... </title>
 <%!
-
-   ResultSet rs=null;
-   OpacDoc Ob;
-   ArrayList opacList;
-   int fromIndex, toIndex;
-   static Integer count=0;
+    static Integer count=0;
     Locale locale=null;
     String locale1="en";
     String rtl="ltr";
     String align="left";
-    int tcount =0;
 %>
-
 <%
-
-if(session.getAttribute("browse_search_list")!=null){
-
- opacList = new ArrayList ();
-   
-   int perpage=10;
-   int tpage=0;
-opacList=(ArrayList)session.getAttribute("browse_search_list");
-if(opacList!=null)
-    tcount=opacList.size();
- 
-   fromIndex = (int)DataGridParameters.getDataGridPageIndex(request, "datagrid1");
-   if ((toIndex = fromIndex+10) >= tcount)
-   toIndex = tcount;
-   System.out.println("opacList="+tcount+" tcount="+tcount);
-   if(opacList!=null)request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
-   pageContext.setAttribute("tCount", tcount);
-
-%>
-
-<%
+    String library_id = (String)session.getAttribute("library_id");
+    String sublibrary_id = (String)session.getAttribute("memsublib");
+     if(sublibrary_id==null)sublibrary_id=   (String)session.getAttribute("sublibrary_id");
+if(sublibrary_id==null)sublibrary_id="all";
 try{
+    List libRs = (List)session.getAttribute("libRs");
+
 locale1=(String)session.getAttribute("locale");
     if(session.getAttribute("locale")!=null)
     {
@@ -78,342 +36,303 @@ locale1=(String)session.getAttribute("locale");
     else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
-    %>
-
-<%
-  String Title=resource.getString("opac.simplesearch.title");
-  pageContext.setAttribute("Title", Title);
-  String MainEntry=resource.getString("opac.simplesearch.mainentry");
-  pageContext.setAttribute("MainEntry", MainEntry);
-  String LibraryID=resource.getString("opac.browse.table.Libraryid");
-  pageContext.setAttribute("LibraryID",LibraryID);
-pageContext.setAttribute("project",request.getContextPath());
-  pageContext.setAttribute("fromIndex", fromIndex);
-   pageContext.setAttribute("fromIndex1", fromIndex+1);
- 
-   pageContext.setAttribute("toIndex1", toIndex);
-
-%>
-
-    <table align="<%=align%>" dir="<%=rtl%>"  class="datagrid" >
-
-
-
-        <tr ><td   dir="<%=rtl%>"   height="18px" align="<%=align%>" >
-
-
-		<i><%--<%=resource.getString("opac.browse.browsesearchresult")%>--%> Browse Search Result >> <%=tcount%> Record Found</i>
-
-
-
-
-
-        </td><%--<td valign="top" align="left" dir="<%=rtl%>">
-    <i><%=resource.getString("opac.browse.bibliodetail")%>>></i>
-  </td>--%></tr>
-  
-  
-      
-  
-  
-     <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
-         <td  align="center" width="80%" valign="top" dir="<%=rtl%>" height="300px">
-
-
-
-
-<%
-
-
-
-
-if(tcount==0)
+String net=null;
+try
 {
+      URL url = new URL("http://www.google.com");
+      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+      // just want to do an HTTP GET here
+      connection.setRequestMethod("GET");
+      // give it 15 seconds to respond
+      connection.setReadTimeout(5*1000);
+      connection.connect();
+      net="true";
+}
+catch(Exception e)
+{
+    net="false";
+}
+
 %>
- <i>    Browse Search Results>><span class="err"> <%=tcount%> Record Found</span></i>
-<%}
-else
-{%>
-<table  dir="<%=rtl%>"><tr><td valign="top" dir="<%=rtl%>">
-<ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAApEiKekYWqFpDa_PStAFTMBRxcC-Fn9tK14QS9YKtPPoXy5_dfhQr8n6mPjQbdLIjMkUpUDQ7khVrfQ">
+</script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/ajax.js"></script>
+<script language="javascript" type="text/javascript">
+var availableSelectList;
+function search()
+{
 
-  <columns>
-
- <column width="15%">
-      <header value="${Title}" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.title}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  hAlign="left"/>
-    </column>
-
-    <column width="15%">
-      <header value="${MainEntry}" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.mainEntry}" hAlign="left" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"   />
-    </column>
- <column width="10%">
-      <header value="PublisherName" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.publisherName}" hAlign="left" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  />
-    </column>
- <column width="10%">
-      <header value="PublicationPlace" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.publicationPlace}" hAlign="left" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  />
-    </column>
- 
-
-      <column width="10%">
-      <header value="CallNo" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.callNo}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hAlign="left" />
-    </column>
-
-      <column width="10%">
-      <header value="${LibraryID}" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.id.libraryId}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hAlign="left" />
-    </column>
-       <column width="10%">
-      <header value="SubLibrary" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.id.sublibraryId}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  hAlign="left" />
-    </column>
-
-   
- </columns>
-
-<rows styleClass="rows" hiliteStyleClass="hiliterows"/>
-  <alternateRows styleClass="alternaterows"/>
-
-  <paging size="10" count="${tCount}" custom="true" nextUrlVar="next"
-       previousUrlVar="previous" pagesVar="pages"/>
-
-</ui:dataGrid>
-</td></tr>
-<tr class="header">
-
-<td align="center" class="datagrid">
- <c:if test="${previous != null}">
-   <a style="color:white;" href="<c:out value="${previous}"/>">
-      <b><i><< <%=resource.getString("global.previous")%></i></b>
-    </a>
-</c:if>&nbsp;
-
-
-   <c:forEach items="${pages}"  var="page"  >
-
-
-
-
-
-<c:choose>
-  <c:when test="${page.current}">
-
- <span style="color:white;font-weight:italic" href="<c:out value="${page.url}" />">Record No : <%=pageContext.getAttribute("fromIndex1")%></span>
-  </c:when>
-
-</c:choose>
- <%--<c:if test="${next != null}">
-<a style="color:white;" href="<c:out value="${next}" />">  <%=pageContext.getAttribute("toIndex1")%></a>
-</c:if>
---%>
-
-</c:forEach>
-    <span style="color:white;"> to <%=pageContext.getAttribute("toIndex1")%></span>&nbsp;&nbsp;
-<c:if test="${next != null}">
-<a style="color:white;" href="<c:out value="${next}"/>"> <b><i> <%=resource.getString("global.next")%>>></i></b></a>
-</c:if>
-
-
-</td>
-</tr>
-</table>
-  <%}%>
-
-
-         </td><%--<td valign="top">
-             <IFRAME  name="fr2" src="#" width="100%" frameborder=0 scrolling="no" height="400px"  id="fr2"></IFRAME></td>--%></tr></table>
-
-  <%}else if(session.getAttribute("browse_search_list1")!=null){
-
-   opacList = new ArrayList ();
-
-   int perpage=10;
-   int tpage=0;
-opacList=(ArrayList)session.getAttribute("browse_search_list1");
-if(opacList!=null)
-    tcount=opacList.size();
-
-   fromIndex = (int)DataGridParameters.getDataGridPageIndex(request, "datagrid1");
-   if ((toIndex = fromIndex+10) >= tcount)
-   toIndex = tcount;
-   System.out.println("opacList="+tcount+" tcount="+tcount);
-   if(opacList!=null)request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
-   pageContext.setAttribute("tCount", tcount);
-
-
-try{
-locale1=(String)session.getAttribute("locale");
-    if(session.getAttribute("locale")!=null)
+    var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
+     if(keyValue=="all")
+     {
+               document.getElementById('CMBLib').focus();
+               document.getElementById('SubLibary').options.length = 0;
+               newOpt = document.getElementById('SubLibary').appendChild(document.createElement('option'));
+               newOpt.value = "all";
+               newOpt.text = "All";
+               return false;
+        }
+    else
     {
-        locale1 = (String)session.getAttribute("locale");
-        System.out.println("locale="+locale1);
+        keyValue = keyValue.replace(/^\s*|\s*$/g,"");
+        if (keyValue.length >= 1)
+        {
+            var req = newXMLHttpRequest();
+            req.onreadystatechange = getReadyStateHandler(req, update);
+            req.open("POST","<%=request.getContextPath()%>/sublibrary.do", true);
+            req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            req.send("getSubLibrary_Id="+keyValue);
+        }
+    return true;
     }
-    else locale1="en";
-}catch(Exception e){locale1="en";}
-     locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
-    else{ rtl="RTL";align="right";}
-    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+}
 
-    %>
-
-<%
-  String Title=resource.getString("opac.simplesearch.title");
-  pageContext.setAttribute("Title", Title);
-  String MainEntry=resource.getString("opac.simplesearch.mainentry");
-  pageContext.setAttribute("MainEntry", MainEntry);
-  String LibraryID=resource.getString("opac.browse.table.Libraryid");
-  pageContext.setAttribute("LibraryID",LibraryID);
-
-pageContext.setAttribute("project",request.getContextPath());
-  pageContext.setAttribute("fromIndex", fromIndex);
-   pageContext.setAttribute("fromIndex1", fromIndex+1);
-   pageContext.setAttribute("toIndex1", toIndex);
-%>
-
-   <table align="<%=align%>" width="100%" dir="<%=rtl%>"  class="datagrid" >
-
-
-
-        <tr ><td   dir="<%=rtl%>"   height="18px" align="<%=align%>" >
-
-
-		<i><%--<%=resource.getString("opac.browse.browsesearchresult")%>--%> Browse Search Result >> <%=tcount%> Record Found</i>
-
-
-
-
-
-        </td><%--<td valign="top" align="left" dir="<%=rtl%>">
-    <i><%=resource.getString("opac.browse.bibliodetail")%>>></i>
-  </td>--%></tr>
-
-
-
-
-
-     <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
-         <td  align="center" width="80%" valign="top" dir="<%=rtl%>" height="300px">
-
-
-
-
-<%
-
-
-
-
-if(tcount==0)
+function update(cartXML)
 {
-%>
- <i>    Browse Search Results>><span class="err"> <%=tcount%> Record Found</span></i>
-<%}
-else
-{%>
-<table width="80%" dir="<%=rtl%>">
-    <tr><td valign="top" dir="<%=rtl%>">
+    var depts = cartXML.getElementsByTagName("sublibrary_ids")[0];
+    var em = depts.getElementsByTagName("sublibrary_id");
+    var em1 = depts.getElementsByTagName("sublibrary_name");
+    var newOpt =document.getElementById('SubLibary').appendChild(document.createElement('option'));
+    document.getElementById('SubLibary').options.length = 0;
+    newOpt = document.getElementById('SubLibary').appendChild(document.createElement('option'));
+    newOpt.value = "all";
+    newOpt.text = "All";
+    for (var i = 0; i < em.length ; i++)
+    {
+    var ndValue = em[i].firstChild.nodeValue;
+    var ndValue1=em1[i].firstChild.nodeValue;
+    newOpt = document.getElementById('SubLibary').appendChild(document.createElement('option'));
+    newOpt.value = ndValue;
+    newOpt.text = ndValue1;
+    }
+    fun();
+}
 
-<ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
+function fun()
+{
+    document.getElementById("Form1").action="browse_search.do";
+    document.getElementById("Form1").method="post";
+    document.getElementById("Form1").target="f1";
+    document.getElementById("Form1").submit();
+}
 
-  <columns>
+      //********************************* Load the Google Transliterate API************************************
 
- <column width="25%">
-      <header value="${Title}" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.title}" hyperLink="${project}/OPAC/viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  hAlign="left"/>
-    </column>
-
-    <column width="25%">
-      <header value="${MainEntry}" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.mainEntry}" hAlign="left" hyperLink="${project}/OPAC/viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"   />
-    </column>
- <column width="10%">
-      <header value="PublisherName" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.publisherName}" hAlign="left" hyperLink="${project}/OPAC/viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  />
-    </column>
- <column width="10%">
-      <header value="PublicationPlace" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.publicationPlace}" hAlign="left" hyperLink="${project}/OPAC/viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  />
-    </column>
-
-
-      <column width="10%">
-      <header value="CallNo" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.callNo}" hyperLink="${project}/OPAC/viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hAlign="left" />
-    </column>
-
-      <column width="10%">
-      <header value="${LibraryID}" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.id.libraryId}" hyperLink="${project}/OPAC/viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hAlign="left" />
-    </column>
-       <column width="10%">
-      <header value="SubLibrary" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.id.sublibraryId}" hyperLink="${project}/OPAC/viewDetails1.do?doc_id=${doc.id.biblioId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}"  hAlign="left" />
-    </column>
+      google.load("elements", "1", {
+            packages: "transliteration"
+          });
+      var transliterationControl;
+      function onLoad() {
 
 
- </columns>
+        var options = {
+            sourceLanguage: 'en',
+            destinationLanguage: ['ar','hi','kn','ml','ta','te'],
+            transliterationEnabled: true,
+            shortcutKey: 'ctrl+g'
+        };
 
- 
+        // Create an instance on TransliterationControl with the required
+        // options.
+        transliterationControl =
+          new google.elements.transliteration.TransliterationControl(options);
 
-<rows styleClass="rows" hiliteStyleClass="hiliterows"/>
-  <alternateRows styleClass="alternaterows"/>
+        // Enable transliteration in the textfields with the given ids.
+        var ids = [ "TXTTITLE"];
+        transliterationControl.makeTransliteratable(ids);
 
-  <paging size="10" count="${tCount}" custom="true" nextUrlVar="next"
-       previousUrlVar="previous" pagesVar="pages"/>
+        // Add the STATE_CHANGED event handler to correcly maintain the state
+        // of the checkbox.
+        transliterationControl.addEventListener(
+            google.elements.transliteration.TransliterationControl.EventType.STATE_CHANGED,
+            transliterateStateChangeHandler);
 
-</ui:dataGrid>
-</td></tr>
+        // Add the SERVER_UNREACHABLE event handler to display an error message
+        // if unable to reach the server.
+        transliterationControl.addEventListener(
+            google.elements.transliteration.TransliterationControl.EventType.SERVER_UNREACHABLE,
+            serverUnreachableHandler);
 
+        // Add the SERVER_REACHABLE event handler to remove the error message
+        // once the server becomes reachable.
+        transliterationControl.addEventListener(
+            google.elements.transliteration.TransliterationControl.EventType.SERVER_REACHABLE,
+            serverReachableHandler);
 
-  <%}%>
-   <tr class="header">
-
-<td align="center" class="datagrid">
- <c:if test="${previous != null}">
-   <a style="color:white;" href="<c:out value="${previous}"/>">
-      <b><i><< <%=resource.getString("global.previous")%></i></b>
-    </a>
-</c:if>&nbsp;
-
-
-   <c:forEach items="${pages}"  var="page"  >
-
-
-
-
-
-<c:choose>
-  <c:when test="${page.current}">
-
- <span style="color:white;font-weight:italic" href="<c:out value="${page.url}" />">Record No : <%=pageContext.getAttribute("fromIndex1")%></span>
-  </c:when>
-
-</c:choose>
-
-
-</c:forEach>
-    <span style="color:white;"> to <%=pageContext.getAttribute("toIndex1")%></span>&nbsp;&nbsp;
-<c:if test="${next != null}">
-<a style="color:white;" href="<c:out value="${next}"/>"> <b><i> <%=resource.getString("global.next")%>>></i></b></a>
-</c:if>
+        // Populate the language dropdown
+        var destinationLanguage =
+          transliterationControl.getLanguagePair().destinationLanguage;
+        var languageSelect = document.getElementById('languageDropDown');
+        var supportedDestinationLanguages =
+          google.elements.transliteration.getDestinationLanguages(
+            google.elements.transliteration.LanguageCode.ENGLISH);
 
 
-</td>
+        for (var lang in supportedDestinationLanguages) {
+
+          var opt = document.createElement('option');
+          opt.text = lang;
+          opt.value = supportedDestinationLanguages[lang];
+          if (destinationLanguage == opt.value) {
+            opt.selected = true;
+          }
+          try {
+            languageSelect.add(opt, null);
+          } catch (ex) {
+            languageSelect.add(opt);
+          }
+        }
+
+      }
+
+      // Handler for STATE_CHANGED event which makes sure checkbox status
+      // reflects the transliteration enabled or disabled status.
+      function transliterateStateChangeHandler(e) {
+        document.getElementById('checkboxId1').checked = e.transliterationEnabled;
+      }
+
+      // Handler for checkbox's click event.  Calls toggleTransliteration to toggle
+      // the transliteration state.
+      function checkboxClickHandler() {
+        window.status="Press F1 for Help";
+        if(document.getElementById('checkboxId1').checked)
+        {
+        document.getElementById("checkbox").value="Checked";
+        }
+        else
+        {
+        document.getElementById("checkbox").value="Unchecked";
+        }
+        if(document.getElementById('checkboxId1').checked==true)
+        {
+        document.getElementById('MLI').style.display = 'block';
+        }
+        else{
+            document.getElementById('MLI').style.display = 'none';
+            document.getElementById('TXTTITLE').style.textAlign = "left";
+        }
+        
+        transliterationControl.toggleTransliteration();
+      }
+
+           // Handler for dropdown option change event.  Calls setLanguagePair to
+      // set the new language.
+      function languageChangeHandler() {
+                  var keyValue = document.getElementById('languageDropDown').options[document.getElementById('languageDropDown').selectedIndex].value;
+              document.getElementById("language").value=keyValue;
+        var dropdown = document.getElementById('languageDropDown');
+        transliterationControl.setLanguagePair(
+            google.elements.transliteration.LanguageCode.ENGLISH,
+            dropdown.options[dropdown.selectedIndex].value);
+
+      }
+
+      // SERVER_UNREACHABLE event handler which displays the error message.
+      function serverUnreachableHandler(e) {
+        document.getElementById("errorDiv").innerHTML =
+            "Transliteration Server unreachable";
+      }
+
+      // SERVER_UNREACHABLE event handler which clears the error message.
+      function serverReachableHandler(e) {
+        document.getElementById("errorDiv").innerHTML = "";
+      }
+      google.setOnLoadCallback(onLoad);
+      //****************************************END OF GOOGLE API JS CODE******************************************
+
+
+
+</script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard.js" charset="UTF-8"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
+    </head>
+<body onload="checkboxClickHandler();search();fun();" style="margin:0px 0px 0px 0px 0px;background-color:#e0e8f5;">
+    <html:form action="/OPAC/browse_search"  styleId="Form1" target="f1" acceptCharset="utf-8">
+        <table align="<%=align%>" dir="<%=rtl%>" width="100%" class="datagrid" >
+            <tr><td width="20%" valign="top">
+        <table  align="<%=align%>" dir="<%=rtl%>" width="100%" class="datagrid"  style="border: 1px solid black"  >
+      <tr class="header"><td  dir="<%=rtl%>" width="20%" height="28px" align="center" colspan="2">
+	<%=resource.getString("opac.browse.browsesearch")%>
+      </td></tr>
+      <html:hidden property="checkbox" styleId="checkbox" name="browseSearchActionForm"/>
+        <html:hidden property="language" styleId="language" name="browseSearchActionForm"/>
+   <% if(net.equalsIgnoreCase("true")){%>
+        <tr dir="<%=rtl%>"><td >  <%=resource.getString("cataloguing.catbiblioentry.selectlang1")%></td><td>
+        <table><tr><td>
+        <div id='translControl'>
+
+         <input type="checkbox" id="checkboxId1"  onclick="javascript:checkboxClickHandler();javascript:languageChangeHandler()">
+        </div></td><td>
+        <div id="MLI" style="visibility: block" >
+          <select id="languageDropDown" class="selecthome" onchange="javascript:languageChangeHandler()">
+          </select>
+        </div>
+        </td></tr></table>
+        </td></tr>
+        <%}else{%>
+         <tr><td  dir="<%=rtl%>" colspan="3">
+                 Sorry Cannot Support MLI Entry because of unavaliblibility of Net
+         </td>
+        </tr>
+        <%}%>
+  <tr ><td  dir="<%=rtl%>" >
+         <%=resource.getString("opac.browse.enterstartingkeyword")%></td><td><input  name="TXTTITLE" id="TXTTITLE" class="keyboardInput" type="text" dir="<%=rtl%>"  onfocus="statwords('Enter Search Keyword')"></td></tr>
+  <tr>
+      <td dir="<%=rtl%>"   align="<%=align%>" valign="top">
+
+         <%=resource.getString("opac.simplesearch.field")%> </td>
+      <td  dir="<%=rtl%>" valign="top">
+<select dir="<%=rtl%>" name="CMBFIELD" class="selecthome"  size="1">
+<option value="any field" selected dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%></option>
+<option value="mainEntry" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
+<option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
+<option value="publisherName" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.pub")%></option>
+</select>
+     </td>
+              </tr>
+              <tr class="header"><td colspan="2" dir="<%=rtl%>"  align="<%=align%>" ><%=resource.getString("opac.simplesearch.restrictedby")%></td></tr>
+
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.database")%></td><td>
+                    <select name="CMBDB" class="selecthome" dir="<%=rtl%>"  size="1">
+<option selected value="combined" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.combnd")%></option>
+    <option value="book" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.books")%></option>
+     <option value="cd" dir="<%=rtl%>">CDs</option>
+</select>
+                  </td></tr>
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%></td>
+                  <td>
+                      <html:select property="CMBLib" styleClass="selecthome" dir="<%=rtl%>"  tabindex="3" value="<%=library_id%>"  styleId="CMBLib" onchange="search();">
+                           <html:option value="all">All</html:option>
+                            <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
+                      </html:select>
+                  </td>
+              </tr>
+              <tr>
+                  <td align="left" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%></td><td><html:select styleClass="selecthome" property="CMBSUBLib" dir="<%=rtl%>" value="<%=sublibrary_id%>" styleId="SubLibary" >
+       <html:option value="all">All</html:option>
+                      </html:select>
 </tr>
-</table>
-
-  </td></tr>
-
-   </table>
-
-
-
-  <%}%>
-
-    </body>
-
+<tr><td dir="<%=rtl%>">Sort</td><td dir="<%=rtl%>"> <select class="selecthome" name="CMBSORT" dir="<%=rtl%>" size="1"  id="CMBSORT">
+<option value="title" dir="<%=rtl%>">Title</option>
+<option  value="mainEntry" dir="<%=rtl%>">Main Author</option>
+<option value="isbn10" dir="<%=rtl%>">ISBN</option>
+<option value="publisherName" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.pub")%></option>
+</select>
+</td>
+                           </tr>
+                           <tr><td colspan="2">
+                                   <input type="submit"  class="buttonhome" id="Button1" name="" dir="<%=rtl%>"  value="<%=resource.getString("opac.simplesearch.find")%>">
+                                    <input type="reset" id="Button2" class="buttonhome" name="" dir="<%=rtl%>"  value="<%=resource.getString("opac.browse.clear")%>">
+      </td></tr>
+       </table>
+                </td>
+            <td   style="background-color:#e0e8f5;" valign="top"   dir="<%=rtl%>" colspan="2">
+          <IFRAME  style="background-color:#e0e8f5;" name="f1"  src="#" frameborder=0 height="460px" width="100%" scrolling="yes"  id="f1"></IFRAME>
+      </td>  </tr>
+        </table>
+ </html:form>
+</body>
 </html>

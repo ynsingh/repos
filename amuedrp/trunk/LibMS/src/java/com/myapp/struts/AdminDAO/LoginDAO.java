@@ -140,6 +140,7 @@ public List getLoginDetails(String user_id,String password){
              query.setString("password",password);
              System.out.println("user_id="+user_id+ "  Passwoord="+password);
             obj=query.list();
+            session.getTransaction().commit();
         }
      catch (HibernateException e) {
           
@@ -165,6 +166,7 @@ public  Login getSuperAdminLoginDetails(String user_id,String password,String ro
              query.setString("role",role);
           
 obj=(Login)query.uniqueResult();
+session.getTransaction().commit();
         }
  catch (HibernateException e) {
 
@@ -188,6 +190,7 @@ public List getLoginDetailsbyRole(String role){
              query = session.createQuery("FROM Login where role = :role");
              query.setString("role",role );
             obj=query.list();
+            session.getTransaction().commit();
             
         }
     catch (HibernateException e) {
@@ -207,12 +210,13 @@ public List getUser(String user_id){
     List obj=null;
     try {
       
-        System.out.println(session);
+       
                 session.beginTransaction();
                 
                  query = session.createQuery("FROM Login where loginId = :userId");
                 query.setString("userId",user_id );
                  obj= query.list();
+                 session.getTransaction().commit();
         }
     catch (HibernateException e) {
 
@@ -238,6 +242,7 @@ Login obj=null;
             query.setString("library_id",library_id );
             query.setString("ans1",ans1 );
 obj=( Login) query.uniqueResult();
+session.getTransaction().commit();
            
         } catch (HibernateException e) {
 
@@ -260,7 +265,7 @@ try {
             query = session.createQuery("FROM  Login  WHERE loginId =:login_id  ");
             query.setString("login_id", login_id);
 obj=( Login) query.uniqueResult();
-           
+           session.getTransaction().commit();
         }
          catch (HibernateException e) {
 
@@ -283,7 +288,7 @@ Login obj=null;
             query = session.createQuery("FROM  Login  WHERE id.libraryId =:library_id  ");
             query.setString("login_id", library_id);
 obj=( Login) query.uniqueResult();
-            
+   session.getTransaction().commit();
         }
          catch (HibernateException e) {
 
@@ -307,6 +312,7 @@ Login obj=null;
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
           obj=  (Login) query.uniqueResult();
+          session.getTransaction().commit();
         }
          catch (HibernateException e) {
 
@@ -334,6 +340,7 @@ public  List<AccountSubLibrary> searchAllStaffListAccount(String library_id) {
             query.setString("library_id", library_id);
             
 obj=(List<AccountSubLibrary>) query.list();
+session.getTransaction().commit();
            
               }
          catch (HibernateException e) {
@@ -361,7 +368,7 @@ List<AccountSubLibrary>  obj=null;
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
 obj=(List<AccountSubLibrary>) query.list();
-             
+     session.getTransaction().commit();
         }
          catch (HibernateException e) {
 
@@ -385,6 +392,7 @@ Login login=null;
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
          login=( Login) query.uniqueResult();
+         session.getTransaction().commit();
         }
          catch (HibernateException e) {
 
@@ -407,7 +415,7 @@ Login obj=null;
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
 obj=( Login) query.uniqueResult();
-           
+      session.getTransaction().commit();
         }
         catch (HibernateException e) {
 
@@ -501,6 +509,7 @@ Login obj=null;
             query.setString("library_id", library_id);
            
          obj=( Login) query.uniqueResult();
+         session.getTransaction().commit();
         }
            catch (Exception ex)
         {
@@ -528,7 +537,7 @@ Login obj=null;
             query.setString("library_id", library_id);
            obj=( Login) query.uniqueResult();
 
-            
+        session.getTransaction().commit();
         }
         catch(HibernateException e){
         e.printStackTrace();
@@ -619,7 +628,7 @@ Login obj=null;
             query.setString("login_id", login_id);
             query.setString("ques", "@");
 obj=( Login) query.uniqueResult();
-          
+   session.getTransaction().commit();
         }
 
          catch (Exception ex)
@@ -657,7 +666,7 @@ Login obj=null;
            obj=(Login) query.uniqueResult();
            
 
-            
+            session.getTransaction().commit();
             
         }
          catch (Exception ex)
@@ -676,7 +685,6 @@ Login obj=null;
 }
 public  Login searchUser(String login_id,String password) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        System.out.println(session+"...........................");
 Query query=null;
 Login obj=null;
         try {
@@ -685,6 +693,7 @@ Login obj=null;
             query.setString("login_id", login_id);
             query.setString("password", password);
             obj=(Login) query.uniqueResult();
+            session.getTransaction().commit();
         }
 
        catch (Exception ex)

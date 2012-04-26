@@ -28,6 +28,7 @@ List<SubLibrary> obj=null;
             query1.setString("sublibrary_id", sublibrary_id);
 
             obj=(List<SubLibrary>) query1.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -52,6 +53,7 @@ Courses obj=null;
             query1.setString("course_id",name);
            
             obj= (Courses) query1.uniqueResult();
+            session.getTransaction().commit();
         }
        catch(Exception e){
         e.printStackTrace();
@@ -76,6 +78,7 @@ Courses obj=null;
             query1.setString("course_id",course_id);
            
             obj= (Courses) query1.uniqueResult();
+            session.getTransaction().commit();
         }
        catch(Exception e){
         e.printStackTrace();
@@ -189,7 +192,7 @@ public static  boolean insert(Courses obj)
 
 
  public static List getMaxCourseRecordIdNo(String library_id) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         List obj=null;
         try {
@@ -197,6 +200,7 @@ public static  boolean insert(Courses obj)
             Query query = session.createQuery("SELECT Max(id.courseId)FROM Courses where id.libraryId = :library_id ");
             query.setString("library_id",library_id );
             obj=query.list();
+            session.getTransaction().commit();
         }
       catch(Exception e){
         e.printStackTrace();
@@ -211,7 +215,7 @@ public static  boolean insert(Courses obj)
 
 
   public static Department getDeptRecordIdNo(String library_id,String dept_id) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
        Department obj=null;
         try {
             session.beginTransaction();
@@ -219,6 +223,7 @@ public static  boolean insert(Courses obj)
             query.setString("libraryId",library_id );
             query.setString("deptId",dept_id );
            obj=(Department)query.uniqueResult();
+           session.getTransaction().commit();
             
         }
      catch(Exception e){
@@ -231,7 +236,7 @@ public static  boolean insert(Courses obj)
 
 }
 public static List<Courses> getCourse(String library_id,String faculty_id,String dept_id) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         List<Courses> obj=null;
         try {
             session.beginTransaction();
@@ -240,6 +245,7 @@ public static List<Courses> getCourse(String library_id,String faculty_id,String
             query.setString("deptId",dept_id );
             query.setString("faculty_id",faculty_id );
           obj=(List<Courses>)query.list();
+          session.getTransaction().commit();
 
         }
        catch(Exception e){
@@ -254,7 +260,7 @@ public static List<Courses> getCourse(String library_id,String faculty_id,String
 
 
 public static List<Courses> getCourse(String library_id) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         List<Courses> obj=null;
         try {
             session.beginTransaction();
@@ -271,6 +277,7 @@ public static List<Courses> getCourse(String library_id) {
 
             
            obj= query.list();
+           session.getTransaction().commit();
 
         }
        catch(Exception e){

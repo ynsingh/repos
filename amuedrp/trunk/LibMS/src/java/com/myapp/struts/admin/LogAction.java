@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.myapp.struts.AdminDAO.LogsDAO;
+//import com.myapp.struts.AdminDAO.LogsDAO;
 import com.myapp.struts.hbm.Logsetting;
 
 /**
@@ -78,12 +78,12 @@ public class LogAction extends org.apache.struts.action.Action {
                     obj.setP7("ActionResult");//Line Number: %L %n";
 
         //Line Number: %L %n";
-        boolean result = LogsDAO.DeleteSetting();
+//        boolean result = LogsDAO.DeleteSetting();
 
 
-                 result=LogsDAO.insertSetting(obj);
+  //               result=LogsDAO.insertSetting(obj);
            
-                    request.setAttribute("msg", "File Logged Successfully!");
+    //                request.setAttribute("msg", "File Logged Successfully!");
                     return mapping.findForward(SUCCESS);
 
     }

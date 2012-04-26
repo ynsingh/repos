@@ -55,7 +55,7 @@ logindao=new LoginDAO();
         StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
         Login  log=logindao.searchRole(staff_id, library_id);
  String path = servlet.getServletContext().getRealPath("/");
-        obj=new Email(path,staffobj.getEmailId(),password,"Password Changed Successfully from LibMS Account","Your Password for LibMS Account is changed Successfully.\nYour New Password for libMS Account is:\nUser Id :"+login_id+"\nNew Password :"+password+"\n","Dear "+staffobj.getFirstName()+" "+staffobj.getLastName()+",\n","Thanks,\nWebAdmin\nLibMS");
+        obj=new Email(staffobj.getEmailId(),password,"Password Changed Successfully from LibMS Account","Dear "+staffobj.getFirstName()+" "+staffobj.getLastName()+",\nYour Password for LibMS Account is changed Successfully.\nYour New Password for libMS Account is:\nUser Id :"+login_id+"\nNew Password :"+password+"\nThanks,\nWebAdmin\nLibMS");
         System.out.println((String)session.getAttribute("webmail")+" "+(String)session.getAttribute("webpass")+" "+obj);
         executor.submit(new Runnable() {
 

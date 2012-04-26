@@ -20,6 +20,11 @@
             <column name="library_id" length="20" not-null="true" />
             <column name="sublibrary_id" length="20" not-null="true" />
         </many-to-one>
+       <!-- <many-to-one name="bibliographicDetailsLang" class="com.myapp.struts.hbm.BibliographicDetailsLang" update="false" insert="false" fetch="select">
+            <column name="biblio_id" />
+            <column name="library_id" length="20" not-null="true" />
+            <column name="sublibrary_id" length="20" not-null="true" />
+        </many-to-one>-->
         <property name="biblioId" type="java.lang.Integer">
             <column name="biblio_id" />
         </property>

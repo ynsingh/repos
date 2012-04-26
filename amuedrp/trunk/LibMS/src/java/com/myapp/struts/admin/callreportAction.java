@@ -7,7 +7,7 @@ package com.myapp.struts.admin;
 
 
 import com.myapp.struts.admin.LogGridActionForm;
-import com.myapp.struts.AdminDAO.LogsDAO;
+//import com.myapp.struts.AdminDAO.LogsDAO;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,15 +38,15 @@ public class callreportAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
   
-         HttpSession session=request.getSession();
+        // HttpSession session=request.getSession();
         
-   List LogGrid=(List)LogsDAO.searchlog("all", "all", null, null, "");
+   //List LogGrid=(List)LogsDAO.searchlog("all", "all", null, null, "");
 
-         session.setAttribute("LogGrid", LogGrid);
+     //    session.setAttribute("LogGrid", LogGrid);
         
-         List loglist=(List)LogsDAO.loglist("all", "all");
-         session.setAttribute("loglist", loglist);
-         System.out.println("logggggggggliststststststtstststss"+loglist.size());
+  //       List loglist=(List)LogsDAO.loglist("all", "all");
+//         session.setAttribute("loglist", loglist);
+       //  System.out.println("logggggggggliststststststtstststss"+loglist.size());
         
         return mapping.findForward(SUCCESS);
     }

@@ -1,0 +1,3 @@
+ <action  path="/circulation/showMemberReport"   scope="request" type="com.myapp.struts.circulation.CirShowSingleMemberReportAction">
+                      <forward name="success" path="/circulation/cir_viewall_singlememberreport.jsp"/>
+</action>

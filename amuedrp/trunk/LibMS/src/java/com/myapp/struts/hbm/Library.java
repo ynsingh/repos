@@ -1,5 +1,5 @@
 package com.myapp.struts.hbm;
-// Generated 16 Nov, 2011 3:38:39 PM by Hibernate Tools 3.2.1.GA
+// Generated 6 Apr, 2012 6:28:58 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.HashSet;
@@ -16,7 +16,10 @@ public class Library  implements java.io.Serializable {
      private String libraryName;
      private String staffId;
      private String workingStatus;
-     private Set serNewEntries = new HashSet(0);
+     private Set bibliographicDetailses = new HashSet(0);
+     private Set bibliographicDetailsLangs = new HashSet(0);
+     private Set bibliographicDetailses_1 = new HashSet(0);
+     private Set bibliographicDetailsLangs_1 = new HashSet(0);
 
     public Library() {
     }
@@ -26,13 +29,16 @@ public class Library  implements java.io.Serializable {
         this.libraryId = libraryId;
         this.workingStatus = workingStatus;
     }
-    public Library(String libraryId, Integer registrationId, String libraryName, String staffId, String workingStatus, Set serNewEntries) {
+    public Library(String libraryId, Integer registrationId, String libraryName, String staffId, String workingStatus, Set bibliographicDetailses, Set bibliographicDetailsLangs, Set bibliographicDetailses_1, Set bibliographicDetailsLangs_1) {
        this.libraryId = libraryId;
        this.registrationId = registrationId;
        this.libraryName = libraryName;
        this.staffId = staffId;
        this.workingStatus = workingStatus;
-       this.serNewEntries = serNewEntries;
+       this.bibliographicDetailses = bibliographicDetailses;
+       this.bibliographicDetailsLangs = bibliographicDetailsLangs;
+       this.bibliographicDetailses_1 = bibliographicDetailses_1;
+       this.bibliographicDetailsLangs_1 = bibliographicDetailsLangs_1;
     }
    
     public String getLibraryId() {
@@ -70,12 +76,33 @@ public class Library  implements java.io.Serializable {
     public void setWorkingStatus(String workingStatus) {
         this.workingStatus = workingStatus;
     }
-    public Set getSerNewEntries() {
-        return this.serNewEntries;
+    public Set getBibliographicDetailses() {
+        return this.bibliographicDetailses;
     }
     
-    public void setSerNewEntries(Set serNewEntries) {
-        this.serNewEntries = serNewEntries;
+    public void setBibliographicDetailses(Set bibliographicDetailses) {
+        this.bibliographicDetailses = bibliographicDetailses;
+    }
+    public Set getBibliographicDetailsLangs() {
+        return this.bibliographicDetailsLangs;
+    }
+    
+    public void setBibliographicDetailsLangs(Set bibliographicDetailsLangs) {
+        this.bibliographicDetailsLangs = bibliographicDetailsLangs;
+    }
+    public Set getBibliographicDetailses_1() {
+        return this.bibliographicDetailses_1;
+    }
+    
+    public void setBibliographicDetailses_1(Set bibliographicDetailses_1) {
+        this.bibliographicDetailses_1 = bibliographicDetailses_1;
+    }
+    public Set getBibliographicDetailsLangs_1() {
+        return this.bibliographicDetailsLangs_1;
+    }
+    
+    public void setBibliographicDetailsLangs_1(Set bibliographicDetailsLangs_1) {
+        this.bibliographicDetailsLangs_1 = bibliographicDetailsLangs_1;
     }
 
 

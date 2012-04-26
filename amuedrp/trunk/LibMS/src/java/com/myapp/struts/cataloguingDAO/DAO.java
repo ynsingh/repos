@@ -68,6 +68,7 @@ List obj=null;
             //SQLQuery query = session.createSQLQuery("SHOW COLUMNS FROM temp_excell_import");
 //query.setResultTransformer(Transformers.aliasToBean(Tab.class));
            obj=  query.list();
+           session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -88,6 +89,7 @@ List obj=null;
             SQLQuery query = session.createSQLQuery("(select COLUMN_NAME  from information_schema.columns where table_name ='"+table_name+"' TABLE_SCHEMA='libms' order by ordinal_position)");
 
            obj=  query.list();
+           session.getTransaction().commit();
         }catch(Exception e){
         e.printStackTrace();
         }
@@ -106,6 +108,7 @@ List obj=null;
             SQLQuery query = session.createSQLQuery("select DATA_TYPE  from information_schema.columns where table_name ='temp_excell_import' and TABLE_SCHEMA='libms' order by ordinal_position") ;
 //query.setResultTransformer(Transformers.aliasToBean(Tab.class));
             obj=  query.list();
+            session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }
@@ -123,6 +126,7 @@ List<String> obj=null;
 
             
            obj= (List<String>) query.list();
+           session.getTransaction().commit();
             
         }catch(Exception e){
         e.printStackTrace();
@@ -141,6 +145,7 @@ List obj=null;
 
             
             obj= (List) query.list();
+            session.getTransaction().commit();
             
         }catch(Exception e){
         e.printStackTrace();
@@ -159,7 +164,7 @@ List obj=null;
 
            
             obj= (List) query.list();
-           
+           session.getTransaction().commit();
         }catch(Exception e){
         e.printStackTrace();
         }
@@ -200,6 +205,7 @@ return obj;
             session.beginTransaction();
             Criteria criteria = session.createCriteria(TempExcellImport.class).add(Restrictions.eq("title", title)).add(Restrictions.eq("callNo", callno));
            obj=(List) criteria.list();
+           session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }
@@ -216,6 +222,7 @@ return obj;
              session.beginTransaction();
             Criteria criteria = session.createCriteria(TempExcellImport.class).add(Restrictions.eq("libraryId", library_id)).add(Restrictions.eq("sublibraryId",sublibrary_id)).add(Restrictions.eq("title",title)).add(Restrictions.eq("callNo", callno));
            obj= (List) criteria.list();
+           session.getTransaction().commit();
         }catch(Exception e){
         e.printStackTrace();
         }
@@ -233,6 +240,7 @@ return obj;
             session.beginTransaction();
             Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.eq("id.biblioId", biblio_id)).add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sublibrary_id));
           obj= (BibliographicDetails) criteria.uniqueResult();
+          session.getTransaction().commit();
         }catch(Exception e){
         e.printStackTrace();
         }
@@ -249,6 +257,7 @@ return obj;
              session.beginTransaction();
             Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.eq("libraryId",library_id)).add(Restrictions.eq("sublibraryId",library_id)).add(Restrictions.eq("libraryId",library_id)).add(Restrictions.eq("libraryId",library_id));
            obj= (BibliographicDetails) criteria.uniqueResult();
+           session.getTransaction().commit();
         }catch(Exception e){
         e.printStackTrace();
         }
@@ -267,6 +276,7 @@ List obj=null;
 
 
           obj= (List) query.list();
+          session.getTransaction().commit();
         }catch(Exception e){
         e.printStackTrace();
         }
@@ -285,7 +295,7 @@ List obj=null;
 
 
            obj=(List) query.list();
-
+session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }
@@ -300,8 +310,9 @@ return obj;
 
 
  Integer maxbiblio=null;
-        session.beginTransaction();
+        
         try {
+            session.beginTransaction();
             Criteria criteria = session.createCriteria(TempExcellImport.class);
             Criterion a = Restrictions.eq("id.libraryId", library_id);
             Criterion b = Restrictions.eq("id.sublibraryId", sublibrary_id);
@@ -314,7 +325,7 @@ return obj;
             } else {
                 maxbiblio++;
             }
-
+session.getTransaction().commit();
            
         } catch(Exception e){
         e.printStackTrace();
@@ -336,7 +347,7 @@ return obj;
             } else {
                 maxbiblio=new Integer("0");
             }
-
+session.getTransaction().commit();
         }catch(Exception e){
         e.printStackTrace();
         }
@@ -357,7 +368,7 @@ return maxbiblio;
             } else {
                maxbiblio=new Integer("0");
             }
-
+session.getTransaction().commit();
         }catch(Exception e){
         e.printStackTrace();
         }
@@ -377,7 +388,7 @@ Integer maxbiblio=null;
             } else {
                 maxbiblio=new Integer("0");
             }
-
+session.getTransaction().commit();
         }catch(Exception e){
         e.printStackTrace();
         }

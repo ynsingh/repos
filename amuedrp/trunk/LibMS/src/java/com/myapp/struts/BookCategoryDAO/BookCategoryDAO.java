@@ -28,6 +28,7 @@ public static BookCategory getMemid(String library_id,String memtype,String sub_
             query.setString("sub_memtype",sub_memtype);
             query.setString("book_type",book_type);
            obj=(BookCategory) query.uniqueResult();
+           session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();

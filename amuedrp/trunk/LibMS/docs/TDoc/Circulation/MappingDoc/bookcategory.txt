@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.BookCategory" table="book_category" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.BookCategoryId">
+            <key-property name="bookType" type="string">
+                <column name="book_type" length="20" />
+            </key-property>
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+            <key-property name="emptypeId" type="string">
+                <column name="emptype_id" length="20" />
+            </key-property>
+            <key-property name="subEmptypeId" type="string">
+                <column name="sub_emptype_id" length="20" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="subEmployeeType" class="com.myapp.struts.hbm.SubEmployeeType" update="false" insert="false" fetch="select">
+            <column name="library_id" length="20" not-null="true" />
+            <column name="emptype_id" length="20" not-null="true" />
+            <column name="sub_emptype_id" length="20" not-null="true" />
+        </many-to-one>
+        <property name="detail" type="string">
+            <column name="Detail" length="20" />
+        </property>
+        <property name="fine" type="java.lang.Float">
+            <column name="fine" precision="12" scale="0" />
+        </property>
+        <property name="issueDaysLimit" type="java.lang.Integer">
+            <column name="IssueDaysLimit" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -759,7 +759,7 @@ logindao=new LoginDAO();
 
                         
                   String path = servlet.getServletContext().getRealPath("/");
-              obj=new Email(path,staffobj.getEmailId(),password,"Approval of request for library Registration","Your request for Library registration has been Successfully Approved .\n User ID :"+login_id+"\n Password :"+password+"\n","\n\nDear "+logobj.getUserName()+",\n","With Regards\nWebAdmin\nLibMS");
+              obj=new Email(staffobj.getEmailId(),password,"Approval of request for library Registration","\n\nDear "+logobj.getUserName()+",\nYour request for Library registration has been Successfully Approved .\n User ID :"+login_id+"\n Password :"+password+"\nWith Regards\nWebAdmin\nLibMS");
  
             executor.submit(new Runnable() {
 
@@ -811,7 +811,7 @@ logindao=new LoginDAO();
 
 
    String     path = servlet.getServletContext().getRealPath("/");
-      obj=new Email(path,adminobj.getAdminEmail(),"","Approval of request for library Registration","Sorry, Your request for Library registration had not been Approved .\n" ,"\n\nDear "+adminobj.getAdminFname()+" "+adminobj.getAdminLname()+",\n","With Regards\nWebAdmin\nLibMS");
+      obj=new Email(adminobj.getAdminEmail(),"","Approval of request for library Registration","\n\nDear "+adminobj.getAdminFname()+" "+adminobj.getAdminLname()+",\nSorry, Your request for Library registration had not been Approved .\nWith Regards\nWebAdmin\nLibMS");
 
  
             executor.submit(new Runnable() {

@@ -9,6 +9,7 @@ package com.myapp.struts.hbm;
 import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.SessionFactory;
+import org.hibernate.stat.Statistics;
 
 /**
  * Hibernate Utility class with a convenient method to get Session Factory object.
@@ -20,7 +21,7 @@ public class HibernateUtil {
 
    //Static Session Factory
 	    private static org.hibernate.SessionFactory sessionFactory;
-
+   private static Statistics stats;
 	    private HibernateUtil() {}
 
 	    static {
@@ -28,7 +29,8 @@ public class HibernateUtil {
 	        //Creates the SessionFactory based on the XML Configuration
 	        Configuration configs = new Configuration();
 	        sessionFactory = configs.configure().buildSessionFactory();
-
+             stats =  HibernateUtil.getSessionFactory().getStatistics();
+            stats.setStatisticsEnabled(true);
 	    }
 
 	    public static SessionFactory getSessionFactory() {
@@ -44,6 +46,9 @@ public class HibernateUtil {
 	    }
 
 	    public static void close() {
+                stats.logSummary();
+
+
 	        if (sessionFactory != null)
 	            sessionFactory.close();
 	        sessionFactory = null;

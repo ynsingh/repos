@@ -1,6 +1,5 @@
 <!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
+NEW ARRIVAL JSP PAGE OPAC
 -->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <%@ page import="java.util.*"%>
@@ -8,14 +7,9 @@ and open the template in the editor.
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*,java.io.*,java.net.*"%>
-<%
-   List lib =(List)session.getAttribute("lib");%>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="Mayank Saxena" content="MCA,AMU">
-
-
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
 <script language="javascript" type="text/javascript">
@@ -74,15 +68,15 @@ function search() {
 
     var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
 
-if (keyValue=="al2")
+if (keyValue=="all")
     {
 
 
                document.getElementById('CMBLib').focus();
                document.getElementById('SubLibary').options.length = 0;
                 newOpt = document.getElementById('SubLibary').appendChild(document.createElement('option'));
-                newOpt.value = "suball";
-                newOpt.text = "All Sub Library";
+                newOpt.value = "all";
+                newOpt.text = "All";
                 fun();
 
 		return false;
@@ -173,7 +167,7 @@ locale1=(String)session.getAttribute("locale");
 
 </head>
 
-<body style="background-color:  #e0e8f5;">
+<body style="background-color:  #e0e8f5;" onload="fun();">
  
 
 
@@ -197,7 +191,7 @@ locale1=(String)session.getAttribute("locale");
 <%=resource.getString("opac.newarrivals.library")%></td>
     <td width="200px" dir="<%=rtl%>">
         <html:select property="CMBLib" styleClass="selecthome" dir="<%=rtl%>"  value="<%=lib_id%>"  styleId="CMBLib" onchange="search()">
-      <html:option value="al2">All Library</html:option>
+      <html:option value="all">All Library</html:option>
             <html:options collection="lib" property="libraryId" labelProperty="libraryName"/>
     </html:select>
 
@@ -207,8 +201,8 @@ locale1=(String)session.getAttribute("locale");
 <td  align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%></td>
 <td  dir="<%=rtl%>">
     <html:select property="CMBSUBLib" styleClass="selecthome" dir="<%=rtl%>" value="<%=sublib_id%>" styleId="SubLibary" onchange="return fun();" >
-                            <html:option value="suball">All Sub Library</html:option>
-                           <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
+                            <html:option value="all">All</html:option>
+                         
                        </html:select>
 
                   </td>
@@ -232,7 +226,7 @@ locale1=(String)session.getAttribute("locale");
 <tr style="background-color:#e0e8f5;"><td   valign="top"  dir="<%=rtl%>">
         <hr/>
        
-             <IFRAME  style="margin:0px 0px 0px 0px" src="<%=request.getContextPath()%>/OPAC/newarrivals.jsp" style="background-color:#e0e8f5;"  frameborder=0 height="370px" width="100%" scrolling="no" name="f1" id="f1"></IFRAME>
+             <IFRAME  style="margin:0px 0px 0px 0px" src="#" style="background-color:#e0e8f5;"  frameborder=0 height="370px" width="100%" scrolling="no" name="f1" id="f1"></IFRAME>
   
 
       </td>

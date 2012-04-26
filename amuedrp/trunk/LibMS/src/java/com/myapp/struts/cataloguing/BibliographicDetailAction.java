@@ -59,6 +59,9 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         bibform.setSubtitle(bib.getSubtitle());
         bibform.setTitle(bib.getTitle());
         bibform.setCall_no(bib.getCallNo());
+        bibform.setSubject(bib.getSubject());
+        bibform.setNotes(bib.getNotes());
+        bibform.setThesis_abstract(bib.getAbstract_());
         bibform.setAccession_type(bib.getAccessionType());
         bibform.setBook_type(bib.getBookType());
         bibform.setSer_note(bib.getSeries());
@@ -83,7 +86,9 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         bibform.setLCC_no1(biblang.getLccNo());
         bibform.setEdition1(biblang.getEdition());
         bibform.setIsbn101(biblang.getIsbn10());
-        bibform.setIsbn131(biblang.getIsbn13());      
+        bibform.setIsbn131(biblang.getIsbn13());
+        bibform.setThesis_abstract(biblang.getAbstract_());
+        bibform.setSubject(biblang.getSubject());
         bibform.setPublication_place1(biblang.getPublicationPlace());
         bibform.setPublisher_name1(biblang.getPublisherName());
         bibform.setPublishing_year1(biblang.getPublishingYear());
@@ -103,7 +108,7 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         }
          if(buttonhand.equalsIgnoreCase("Import Data")||buttonhand.equalsIgnoreCase("Edit")||buttonhand.equalsIgnoreCase("Delete"))
         {
-             System.out.println("dfgdgdfg");
+           
         int ii=bibform.getBiblio_id();
         BibliographicDetails bib = dao.getBiblio(bibform.getLibrary_id(),bibform.getSublibrary_id(), ii);
         bibform.setMain_entry(bib.getMainEntry());
@@ -121,6 +126,9 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         bibform.setPublication_place(bib.getPublicationPlace());
         bibform.setPublisher_name(bib.getPublisherName());
         bibform.setPublishing_year(bib.getPublishingYear());
+        bibform.setThesis_abstract(bib.getAbstract_());
+        bibform.setSubject(bib.getSubject());
+        bibform.setNotes(bib.getNotes());
         bibform.setSubtitle(bib.getSubtitle());
         bibform.setTitle(bib.getTitle());
         bibform.setCall_no(bib.getCallNo());
@@ -147,6 +155,8 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         bibform.setSer_note1(biblang.getSeries());
         bibform.setLCC_no1(biblang.getLccNo());
         bibform.setEdition1(biblang.getEdition());
+        bibform.setThesis_abstract(biblang.getAbstract_());
+        bibform.setSubject(biblang.getSubject());
         bibform.setIsbn101(biblang.getIsbn10());
         bibform.setIsbn131(biblang.getIsbn13());      
         bibform.setPublication_place1(biblang.getPublicationPlace());
@@ -173,7 +183,6 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         return mapping.findForward("new");
         }
         if (buttonhand.equalsIgnoreCase("New")) {
-            System.out.println("FARAZ");
             bibform.setTitle(bibform.getTitle());
             bibform.setLibrary_id(library_id);
             bibform.setSublibrary_id(sub_library_id);

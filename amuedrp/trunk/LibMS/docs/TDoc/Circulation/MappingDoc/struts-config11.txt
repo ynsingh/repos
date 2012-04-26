@@ -1,0 +1,3 @@
+<action  path="/circulation/showAccount"   scope="request" type="com.myapp.struts.circulation.CirShowSingleAccountAction">
+                      <forward name="success" path="/circulation/cir_newmember_reg_1.jsp"/>
+</action>

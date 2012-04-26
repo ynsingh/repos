@@ -33,7 +33,7 @@ List<SubLibrary> obj=null;
                     .add(Restrictions.ne("id.sublibraryId", sublibrary_id))
                     );
             obj= (List<SubLibrary>) criteria.list();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -55,6 +55,7 @@ List<SubLibrary> obj=null;
 
 
            obj=  query.list();
+           session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -75,7 +76,7 @@ List<SubLibrary> obj=null;
                     );
             obj= (List<SubLibrary>) criteria.list();
 
-
+session.getTransaction().commit();
         }   catch(Exception e){
         e.printStackTrace();
         }
@@ -95,6 +96,7 @@ public static Department getDeptId(String library_id,String faculty_id,String de
             query.setString("faculty_id",faculty_id);
 
            obj= (Department) query.uniqueResult();
+           session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -115,6 +117,7 @@ public static Department getDeptName(String library_id,String dept_id) {
             query.setString("deptId",dept_id);
 
            obj= (Department) query.uniqueResult();
+           session.getTransaction().commit();
         }
           catch(Exception e){
         e.printStackTrace();
@@ -135,6 +138,7 @@ public static Department getDeptByFaculty(String library_id,String faculty_id,St
             query.setString("deptId",dept_id);
 
             obj= (Department) query.uniqueResult();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -154,6 +158,7 @@ public static List<Department> getDept(String library_id,String faculty_id) {
             query.setString("faculty_id",faculty_id);
 
             obj=  query.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -178,6 +183,7 @@ public static List getDeptRecord(String library_id,String faculty_id) {
              query = session.createQuery("FROM  Department");
             }
             obj= query.list();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -205,6 +211,7 @@ public static List<Department> searchDept(String library_id) {
             }
 
             obj=(List<Department>) query1.list();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -224,6 +231,7 @@ List<SubLibrary> obj=null;
             query1.setString("sublibrary_id", sublibrary_id);
 
             obj= (List<SubLibrary>) query1.list();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -243,6 +251,7 @@ SubLibrary obj=null;
             query1.setString("sublibraryname",sublibrary_name);
 
             obj= (SubLibrary) query1.uniqueResult();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -338,13 +347,14 @@ public static  boolean insert(Department obj)
 
 
  public static List getMaxDeptRecordIdNo(String library_id) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         List obj=null;
         try {
             session.beginTransaction();
             Query query = session.createQuery("SELECT Max(id.deptId)FROM Department where id.libraryId = :library_id ");
             query.setString("library_id",library_id );
             obj=  query.list();
+            session.getTransaction().commit();
         }
         catch (Exception e) {
 
@@ -365,7 +375,7 @@ public static  boolean insert(Department obj)
 
 
   public static Department getDeptRecordIdNo(String library_id,String dept_id) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
       Department obj=null;
         try {
             session.beginTransaction();
@@ -373,6 +383,7 @@ public static  boolean insert(Department obj)
             query.setString("libraryId",library_id );
             query.setString("deptId",dept_id );
             obj=(Department)query.uniqueResult();
+            session.getTransaction().commit();
             
         }
          catch (RuntimeException e) {
@@ -393,7 +404,7 @@ public static  boolean insert(Department obj)
 
 
   public static Department getDeptRecordId(String library_id,String dept_name) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
        Department obj=null;
         try {
             session.beginTransaction();
@@ -401,6 +412,7 @@ public static  boolean insert(Department obj)
             query.setString("libraryId",library_id );
             query.setString("deptName",dept_name);
            obj=(Department)query.uniqueResult();
+           session.getTransaction().commit();
             
         }
           catch (RuntimeException e) {

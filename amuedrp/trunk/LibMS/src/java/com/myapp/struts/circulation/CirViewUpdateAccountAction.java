@@ -151,7 +151,7 @@ System.out.println(no_of_issueable+"...................");
  CirMemberDetail cirobj=CirculationDAO.searchCirMemDetails(library_id, mem_id);
     //"Update Circulation Member Account :Password Reset Successfully from LibMS","User Id="+mem_id+" Your Password for LibMS OPAC Login is="+password
     String path = servlet.getServletContext().getRealPath("/");
- obj=new Email(path,cirobj.getEmail(),password,"Update Circulation Member Account as Library Member","Your Account is Updated for Library member for Library Name "+session.getAttribute("library_name").toString()+"\nYour Member Account as Follows \nUser Id:"+mem_id+"\nPassword:"+password+"\n","Dear "+cirobj.getFname()+" "+cirobj.getMname()+" "+cirobj.getLname()+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+ obj=new Email(cirobj.getEmail(),password,"Update Circulation Member Account as Library Member","Dear "+cirobj.getFname()+" "+cirobj.getMname()+" "+cirobj.getLname()+"Your Account is Updated for Library member for Library Name "+session.getAttribute("library_name").toString()+"\nYour Member Account as Follows \nUser Id:"+mem_id+"\nPassword:"+password+"\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
   
             executor.submit(new Runnable() {
 
@@ -205,7 +205,7 @@ System.out.println("hggggggggggggggg");
            {
                   String path = servlet.getServletContext().getRealPath("/");
         
-          obj=new Email(path,cirobj.getEmail(),"","Update LibMS Member Account","Sorry Your Member Account is Deleted for Library Name "+session.getAttribute("library_name").toString()+"\n","Dear "+cirobj.getFname()+" "+cirobj.getMname()+" "+cirobj.getLname()+",\n","Thanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+          obj=new Email(cirobj.getEmail(),"","Update LibMS Member Account","Dear "+cirobj.getFname()+" "+cirobj.getMname()+" "+cirobj.getLname()+",\nSorry Your Member Account is Deleted for Library Name "+session.getAttribute("library_name").toString()+"\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
             executor.submit(new Runnable() {
 
                 public void run() {

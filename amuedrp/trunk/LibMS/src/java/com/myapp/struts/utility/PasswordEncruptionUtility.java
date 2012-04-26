@@ -6,7 +6,6 @@
 package com.myapp.struts.utility;
 import java.security.MessageDigest;
 import java.util.Random;
-import java.util.Properties;
 
 
 /**
@@ -38,13 +37,13 @@ public static StringBuffer sb;
                 sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
                 }
 
-              //  System.out.println("Digest(in hex format):: " + sb.toString());
+              
 
         
            }
             catch(Exception e)
             {
-            System.out.println(e);
+            
            }
         return sb.toString();
     }

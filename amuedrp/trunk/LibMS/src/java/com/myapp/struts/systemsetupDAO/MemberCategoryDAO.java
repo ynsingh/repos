@@ -30,6 +30,7 @@ List<EmployeeType> obj=null;
                 query1 = session.createQuery("FROM  EmployeeType");
 
             obj= (List<EmployeeType>) query1.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -53,7 +54,9 @@ SubEmployeeType obj=null;
             query1.setString("submemtype_id", submemtype_id);
 
 
-            return (SubEmployeeType) query1.uniqueResult();
+            obj= (SubEmployeeType)query1.uniqueResult();
+            session.getTransaction().commit();
+
         }
        catch(Exception e){
         e.printStackTrace();
@@ -80,6 +83,7 @@ List<SubEmployeeType> obj=null;
            query1 = session.createQuery("FROM  SubEmployeeType ");
            }
            obj=(List<SubEmployeeType>) query1.list();
+           session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -102,6 +106,7 @@ EmployeeType obj=null;
 
 
             obj=(EmployeeType) query1.uniqueResult();
+            session.getTransaction().commit();
         }
       catch(Exception e){
         e.printStackTrace();
@@ -128,6 +133,7 @@ List<SubEmployeeType> obj=null;
             query1.setString("empTypeId", empTypeId);
 
            obj= (List<SubEmployeeType>) query1.list();
+           session.getTransaction().commit();
         }
       catch(Exception e){
         e.printStackTrace();

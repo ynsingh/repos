@@ -14,13 +14,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <script language="javascript" >
 
-function showcount()
-{
-    var page;
-    page = document.getElementById("pagesize").value;
-    if (page>0){
-    location.href="/LibMS/OPAC/simple_search.jsp?pagesize="+page;}
-}
+
 </script>
 </head>
 <body style="background-color:#e0e8f5;">

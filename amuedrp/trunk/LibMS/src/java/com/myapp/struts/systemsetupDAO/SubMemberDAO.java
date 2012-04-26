@@ -36,6 +36,7 @@ SubEmployeeType obj=null;
                     .add(Restrictions.eq("id.subEmptypeId", subemptype_id))
                   );
             obj= (SubEmployeeType) criteria.uniqueResult();
+            session.getTransaction().commit();
 
 
         }
@@ -61,6 +62,7 @@ public static SubEmployeeType getSubEployeeName(String library_id,String emptype
             query.setString("emptype_id",emptype_id);
 
            obj=(SubEmployeeType) query.uniqueResult();
+           session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -83,6 +85,7 @@ List<SubEmployeeType> obj=null;
 
 
             obj= (List<SubEmployeeType>) query1.list();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -103,6 +106,7 @@ List<SubEmployeeType> obj=null;
             query1.setString("emptype_id",emptype_id);
 
             obj= (List<SubEmployeeType>) query1.list();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();

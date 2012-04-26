@@ -155,6 +155,8 @@ function ShowBoxes()
 --%>
 
       <div>
+       
+          
         <div id="divTestBox1" style=" width: 200px; position: absolute;"><a href="javascript:void(0);" onclick="ToggleBox();">News</a>
 
 <div id="divTestArea4" style="width: 200px; height: 150px; display: none; background-color: #89BC38;">Under Construction</div><br />
@@ -257,7 +259,40 @@ $(function()
     </td>
 
     </tr>
+    <tr>
+    <td  class="tipstext" align="<%=align%>" dir="<%=rtl%>">
 
+    <b><i> Next To Encorpate:-</i></b>
+    </td>
+
+    </tr>
+
+
+
+    <tr>
+    <td  class="tipstext" align="<%=align%>" dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
+
+    	Most Viewed Books Section
+    </td>
+
+    </tr>
+    <tr>
+    <td  class="tipstext" align="<%=align%>" dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
+    	Book Rating By User
+    </td>
+
+    </tr>
+    <tr>
+    <td  class="tipstext" align="<%=align%>" dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
+    	Digital Library width Full Text Search
+    </td>
+
+    </tr>
+    <tr>
+        <td  class="tipstext" align="<%=align%>" dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
+    	Export Title Detail in MARC,Flat File & XLS Format
+    </td>
+    </tr>
   </tbody></table>
 
 

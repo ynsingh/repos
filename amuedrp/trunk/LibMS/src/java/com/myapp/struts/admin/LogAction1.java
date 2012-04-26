@@ -31,9 +31,9 @@ public class LogAction1 extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        List<Logs> log=(List<Logs>)LogsDAO.getUserLog();
-        HttpSession session=request.getSession();
-        session.setAttribute("loglist", log);
+//        List<Logs> log=(List<Logs>)LogsDAO.getUserLog();
+  //      HttpSession session=request.getSession();
+    //    session.setAttribute("loglist", log);
 
                     return mapping.findForward(SUCCESS);
 

@@ -30,7 +30,7 @@ public class CirRequestfromOpacDAO {
 
 
     public static List<CheckInDocumentDetails> getCheckIn(String library_id,String sublibrary_id,String memid,String  starting_date,String end_date) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session =  HibernateUtil.getSessionFactory().openSession();
       List<CheckInDocumentDetails> obj=null;
         Transaction tx = null;
         try {
@@ -63,7 +63,7 @@ sql+=" and cc.member_id=:memId ";
 
 
 obj= (List<CheckInDocumentDetails>)query1.list();
-          
+    session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -76,7 +76,7 @@ obj= (List<CheckInDocumentDetails>)query1.list();
 
 
 public static CirMemberDetail getMemberId(String library_id,String memid) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         CirMemberDetail obj=null;
         try {
             session.beginTransaction();
@@ -86,7 +86,7 @@ public static CirMemberDetail getMemberId(String library_id,String memid) {
 
 
           obj= (CirMemberDetail)query.uniqueResult();
-         
+         session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -133,7 +133,7 @@ public static CirMemberDetail getMemberId(String library_id,String memid) {
  
 
      public static CirRequestfromOpac getMemberDetail(String library_id,String sublibrary_id,String memid) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session =  HibernateUtil.getSessionFactory().openSession();
         CirRequestfromOpac obj=null;
         try {
             session.beginTransaction();
@@ -142,7 +142,7 @@ public static CirMemberDetail getMemberId(String library_id,String memid) {
             query.setString("sublibrary_id",sublibrary_id);
             query.setString("mem_id",memid);
             obj=(CirRequestfromOpac)query.uniqueResult();
-
+session.getTransaction().commit();
            
         }
          catch (Exception ex)
@@ -186,7 +186,7 @@ session.close();
 }
   
 public static List<CirOpacRequest> checkDuplicateRequest(String library_id,String sublibrary_id,String memid,String docId) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session =  HibernateUtil.getSessionFactory().openSession();
         List<CirOpacRequest> obj=null;
         try {
             session.beginTransaction();
@@ -196,8 +196,8 @@ public static List<CirOpacRequest> checkDuplicateRequest(String library_id,Strin
             criteria.add(Restrictions.eq("memid", memid));
             criteria.add(Restrictions.eq("documentId", Integer.parseInt(docId)));
             criteria.add(Restrictions.eq("status", "Pending"));
-
             obj= (List<CirOpacRequest>)criteria.list();
+            session.getTransaction().commit();
         }
          catch (Exception e) {
         e.printStackTrace();
@@ -228,7 +228,7 @@ public static Integer returnMaxRequestId(String library_id, String sublibrary_id
                 maxrequestId++;
             }
 
-          
+                      session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -288,7 +288,7 @@ return flag;
 }
 
 public static List<CheckoutDeocumentDetails> getCheckOuts(String library_id,String sublibrary_id,String memid) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         List<CheckoutDeocumentDetails> obj=null;
         try {
             session.beginTransaction();
@@ -302,6 +302,7 @@ public static List<CheckoutDeocumentDetails> getCheckOuts(String library_id,Stri
                     query1.setParameter("libraryId", library_id);
                     query1.setParameter("sublibrary_id", sublibrary_id);
             obj=  (List<CheckoutDeocumentDetails>)query1.list();
+                        session.getTransaction().commit();
         }
         catch(Exception e){
        e.printStackTrace();
@@ -315,7 +316,7 @@ return obj;
      }
 
 public static List<CheckoutDeocumentDetails> getCheckOuts(String library_id,String sublibrary_id,String memid,String  starting_date,String end_date) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         List<CheckoutDeocumentDetails> obj=null;
         try {
             session.beginTransaction();
@@ -348,6 +349,7 @@ sql+=" and cc.memid=:memId ";
 
 
             obj=  (List<CheckoutDeocumentDetails>)query1.list();
+                        session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();

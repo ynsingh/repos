@@ -66,8 +66,8 @@ public class Log extends org.apache.struts.action.Action {
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
       
-        List<Logs> bb=LogsDAO.log();
-        session.setAttribute("opacListb", bb);
+//        List<Logs> bb=LogsDAO.log();
+  //      session.setAttribute("opacListb", bb);
           System.out.println("Compiling report...");
           JasperCompileManager.compileReportToFile(path + "/log1.jrxml");
        
@@ -80,7 +80,7 @@ public class Log extends org.apache.struts.action.Action {
 
 // System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"+cir_checkout_report.get(j).toString());
  HashMap map = new HashMap();
- dataSource = new JRBeanCollectionDataSource(bb);
+// dataSource = new JRBeanCollectionDataSource(bb);
 
 //JasperFillManager.fillReportToFile(path+"/log1.jasper", map, simpleDS);
 

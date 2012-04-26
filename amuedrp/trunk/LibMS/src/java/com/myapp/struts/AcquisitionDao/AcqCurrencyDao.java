@@ -29,7 +29,7 @@ BaseCurrency obj=null;
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.baseCurrencySymbol", base_currency_symbol)));
             obj= (BaseCurrency) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -52,7 +52,7 @@ BaseCurrency obj=null;
                     .add(Restrictions.eq("id.libraryId", library_id))
                    );
             obj= (BaseCurrency) criteria.uniqueResult();
-
+session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -77,6 +77,7 @@ BaseCurrency obj=null;
             query1.setString("baseCurrencySymbol", base_currency_symbol);
 
             obj= (BaseCurrency) query1.uniqueResult();
+            session.getTransaction().commit();
         }
        catch(Exception e){
         e.printStackTrace();
@@ -99,6 +100,7 @@ public static List<AcqCurrency> getCurrencyList(String library_id,String base_cu
             query1.setString("targetCurrency", base_currency_symbol);
 
             obj= (List<AcqCurrency>) query1.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -121,6 +123,7 @@ public static List<BaseCurrency> getCurrencyList1(String library_id,String base_
             query1.setString("baseCurrencySymbol", base_currency_symbol);
 
           obj=(List<BaseCurrency>) query1.list();
+          session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();

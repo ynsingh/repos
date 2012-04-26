@@ -1,0 +1,8 @@
+ <action  attribute="CirculationMemberRegActionForm" path="/memberreg" input="/circulation/cir_member_reg.jsp" name="CirculationMemberRegActionForm"   scope="request" type="com.myapp.struts.circulation.CirculationMemberAction" >
+                      <forward name="success" path="/circulation/cir_newmember.jsp"/>
+                      <forward name="failure" path="/circulation/cir_member_reg.jsp"/>
+                      <forward name="single" path="/circulation/cir_view_update.jsp"/>
+                       <forward name="view/update/delete" path="/circulation/cir_view_member.jsp"/>
+
+
+                    </action>

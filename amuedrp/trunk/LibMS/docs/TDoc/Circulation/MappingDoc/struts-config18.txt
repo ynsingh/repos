@@ -1,0 +1,5 @@
+<action attribute="CirCheckinActionForm" path="/circheckinbookdetail" input="/circulation/cir_checkinbookdetail.jsp" name="CirCheckinActionForm"   scope="request" type="com.myapp.struts.circulation.CirCheckinbookdetailAction" >
+    <forward name="success" path="/circulation/cir_accept_message.jsp"/>
+    <forward name="failure" path="/circulation/cir_checkinbookdetail.jsp"/>
+
+</action>

@@ -106,7 +106,7 @@ public class CirCreateAccountAction extends org.apache.struts.action.Action {
                     CirMemberDetail cma1 = (CirMemberDetail) CirculationDAO.searchCirMemDetails(library_id, cca.getMem_id());
                     //"Member Account Created Successfully for LibMS OPAC Login", "Login Id=" + cca.getMem_id() + " Your Password for LibMS OPAC Login is=" + password
                       String path = servlet.getServletContext().getRealPath("/");
-                      obj=new Email(path,cma1.getEmail(),password,"Congruation,Your are Registered as Library Member","You Have been registered as a valid Library member for Library Name"+session1.getAttribute("library_name").toString()+"\nYour Member Account as Follows \nUser Id:"+cca.getMem_id()+"\nPassword:"+password+".\n","Dear "+cca.getMem_name()+",\n","Thanks,\n"+session1.getAttribute("username")+",\n"+"Institute Admin");
+                      obj=new Email(cma1.getEmail(),password,"Congruation,Your are Registered as Library Member","Dear "+cca.getMem_name()+",\nYou Have been registered as a valid Library member for Library Name"+session1.getAttribute("library_name").toString()+"\nYour Member Account as Follows \nUser Id:"+cca.getMem_id()+"\nPassword:"+password+".\nThanks,\n"+session1.getAttribute("username")+",\n"+"Institute Admin");
                     //obj = new Email(path,cma1.getEmail(), password, resource.getString("circulation.circreateaccaction.memacccreatforopac"), resource.getString("circulation.circreateaccaction.loginid") + cca.getMem_id() + resource.getString("circulation.circreateaccaction.yourpassforlogin") + password);
                     executor.submit(new Runnable() {
 
@@ -156,7 +156,7 @@ public class CirCreateAccountAction extends org.apache.struts.action.Action {
                     CirMemberDetail cma1 = (CirMemberDetail) CirculationDAO.searchCirMemDetails(library_id, cca.getMem_id());
                //Member Account Created Successfully for LibMS OPAC Login", "Login Id=" + cca.getMem_id() + " Your Password for LibMS OPAC Login is=" + password
                        String path = servlet.getServletContext().getRealPath("/");
-                   obj=new Email(path,cma1.getEmail(),password,"Congruation,Your are Registered as Library Member","You Have been registered as a valid Library member for Library Name"+session1.getAttribute("library_name").toString()+"\nYour Member Account as Follows \nUser Id:"+cca.getMem_id()+"\nPassword:"+password+".\n","Dear "+cca.getMem_name()+",\n","Thanks,\n"+session1.getAttribute("username")+",\n"+"Institute Admin");
+                   obj=new Email(cma1.getEmail(),password,"Congruation,Your are Registered as Library Member","Dear "+cca.getMem_name()+",\nYou Have been registered as a valid Library member for Library Name"+session1.getAttribute("library_name").toString()+"\nYour Member Account as Follows \nUser Id:"+cca.getMem_id()+"\nPassword:"+password+".\nThanks,\n"+session1.getAttribute("username")+",\n"+"Institute Admin");
                        
                     executor.submit(new Runnable() {
 

@@ -40,6 +40,7 @@ public class AcquisitionDao {
                     .add(Restrictions.eq("vendorId", vendor_id))
                     .add(Restrictions.eq("id.recievingNo", recieving_no)));
             obj= (AcqRecievingHeader) criteria.uniqueResult();
+            session.getTransaction().commit();
         }
         catch(HibernateException e){
         e.printStackTrace();
@@ -50,7 +51,7 @@ public class AcquisitionDao {
         return obj;
     }
   public  List<AcqOrder1> BibliobyControlId2(String library_id,String sub_library_id,int con_no,String order_no) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
  List<AcqOrder1> obj=null;
         try {
             session.beginTransaction();
@@ -62,6 +63,7 @@ public class AcquisitionDao {
                     .add(Restrictions.eq("id.orderNo", order_no))
                     .add(Restrictions.eq("controlNo",con_no )));
                   obj= criteria.list();
+                  session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -74,7 +76,7 @@ public class AcquisitionDao {
 
 
    public  List<AcqBudgetTransaction> BudgetHeadId(String library_id,String budget_head_id,int con_no) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
 List<AcqBudgetTransaction> obj=null;
         try {
             session.beginTransaction();
@@ -84,6 +86,7 @@ List<AcqBudgetTransaction> obj=null;
                     .add(Restrictions.eq("acqBudgetHeadId", budget_head_id))
                     .add(Restrictions.eq("controlNo",con_no )));
                    obj=  (List<AcqBudgetTransaction>) criteria.uniqueResult();
+                   session.getTransaction().commit();
         } finally {
             session.close();
         }
@@ -104,6 +107,7 @@ List<AcqBudgetTransaction> obj=null;
 
                     .add(Restrictions.eq("id.orderNo", order_no)));
            obj= (List<AcqOrder1>) criteria.list();
+           session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -115,7 +119,7 @@ List<AcqBudgetTransaction> obj=null;
     }
 
     public AcqBibliographyDetails BibliobyControlIdonApproval(String library_id,String sub_library_id,int con_no) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
 AcqBibliographyDetails obj=null;
         try {
             session.beginTransaction();
@@ -126,6 +130,7 @@ AcqBibliographyDetails obj=null;
                     .add(Restrictions.eq("id.controlNo",con_no )));
 
           obj= (AcqBibliographyDetails) criteria.uniqueResult();
+          session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -138,7 +143,7 @@ AcqBibliographyDetails obj=null;
     }
     
 public AcqApproval BibliobyControlId3(String library_id,String sub_library_id,int con_no,int x) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
  AcqApproval obj=null;
         try {
             session.beginTransaction();
@@ -149,6 +154,7 @@ public AcqApproval BibliobyControlId3(String library_id,String sub_library_id,in
                     .add(Restrictions.eq("controlNo",con_no ))
                     .add(Restrictions.eq("id.approvalItemId",x )));
            obj= (AcqApproval) criteria.uniqueResult();
+           session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -161,7 +167,7 @@ public AcqApproval BibliobyControlId3(String library_id,String sub_library_id,in
 
 
 public AcqBudgetAllocation BudgetByControlId(String library_id,int con_no,double x) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
  AcqBudgetAllocation obj=null;
         try {
             session.beginTransaction();
@@ -171,6 +177,7 @@ public AcqBudgetAllocation BudgetByControlId(String library_id,int con_no,double
                     .add(Restrictions.eq("controlNo",con_no ))
                     .add(Restrictions.eq("amount",x )));
            obj= (AcqBudgetAllocation) criteria.uniqueResult();
+           session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -197,7 +204,7 @@ public AcqBudgetAllocation BudgetByControlId(String library_id,int con_no,double
             } else {
                 maxbiblio++;
             }
-
+session.getTransaction().commit();
             
         }  
          catch(Exception e)
@@ -263,9 +270,9 @@ public AcqBudgetAllocation BudgetByControlId(String library_id,int con_no,double
                     .setResultTransformer(Transformers.aliasToBean(approval_1.class));
 
           
-            return (List<approval_1>)query.list();
+           obj= (List<approval_1>)query.list();
 
-            
+            session.getTransaction().commit();
 
         }
         catch(Exception e){
@@ -301,7 +308,7 @@ public AcqBudgetAllocation BudgetByControlId(String library_id,int con_no,double
 
         
            obj= (List<CirculationList_1_1>)query.list();
-
+session.getTransaction().commit();
         }
         catch(Exception e)
         {
@@ -336,6 +343,7 @@ public AcqBudgetAllocation BudgetByControlId(String library_id,int con_no,double
 
           System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             obj= (List<CirculationList_1_1>)query.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -588,7 +596,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
             } else {
                 maxbiblio++;
             }
-
+session.getTransaction().commit();
            
         } catch(Exception e){
         e.printStackTrace();
@@ -614,7 +622,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
             } else {
                 maxbiblio++;
             }
-
+session.getTransaction().commit();
             
         }  catch(Exception e){
         e.printStackTrace();
@@ -640,7 +648,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
             } else {
                 maxbiblio++;
             }
-
+session.getTransaction().commit();
           
         } catch(Exception e){
         e.printStackTrace();
@@ -666,7 +674,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
             } else {
                 maxbiblio++;
             }
-
+session.getTransaction().commit();
           
         }  catch(Exception e){
         e.printStackTrace();
@@ -691,6 +699,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     .add(Restrictions.eq("approvalNo", approval_no));
 
             obj=(AcqApproval) criteria.uniqueResult();
+            session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }
@@ -713,6 +722,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     .add(Restrictions.eq("id.vendorId", vendor_id));
 
             obj= (AcqVendor) criteria.uniqueResult();
+            session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }
@@ -736,6 +746,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     .add(Restrictions.eq("sourceCurrency", SourceCurrency));
 
             obj= (AcqCurrency) criteria.uniqueResult();
+            session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -758,6 +769,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     .add(Restrictions.eq("approvalNo", approval_no));
 
             obj=(List<AcqApproval>) criteria.list();
+            session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -781,6 +793,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     
 
            obj= (List<AcqApproval>) criteria.list();
+           session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }
@@ -806,6 +819,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
 
 
           obj=(AcqApproval) criteria.uniqueResult();
+          session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }
@@ -830,7 +844,8 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     );
 
 
-            return (AcqApproval) criteria.uniqueResult();
+            obj= (AcqApproval) criteria.uniqueResult();
+            session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -856,7 +871,8 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     );
                     
 
-            return (List<AcqOrder1>) criteria.list();
+           obj= (List<AcqOrder1>) criteria.list();
+            session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -879,7 +895,8 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     .add(Restrictions.eq("id.subLibraryId", sublibrary_id))
                     .add(Restrictions.ilike(search_by,search_keyword+"%"))
                     .addOrder(Property.forName(sort_by).asc());
-            return (List) criteria.list();
+            obj= (List) criteria.list();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -906,6 +923,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
 
 
             obj=(AcqBibliographyDetails)criteria.uniqueResult();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -934,6 +952,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
 
 
            obj=(AcqBibliographyDetails)criteria.uniqueResult();
+           session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -952,6 +971,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
          Session session = HibernateUtil.getSessionFactory().openSession();
        AcqRecievingHeader obj=null;
         try {
+            session.beginTransaction();
             Criteria criteria = session.createCriteria(AcqRecievingHeader.class)
         
                     .add(Restrictions.conjunction()
@@ -963,6 +983,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
 
 
             obj= (AcqRecievingHeader)criteria.uniqueResult();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -991,6 +1012,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
           Query query =  session.createSQLQuery(sql)
                     .setResultTransformer(Transformers.aliasToBean(ApprovalList.class));
            obj= (ArrayList<ApprovalList>) query.list();
+           session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -1018,6 +1040,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
 
 
             obj= (AcqApprovalHeader)criteria.uniqueResult();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -1041,6 +1064,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("id.titleId", title_id)));
            obj=(AcqBibliography) criteria.uniqueResult();
+           session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -1064,6 +1088,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("id.controlNo", control_no)));
            obj= (AcqBibliographyDetails) criteria.uniqueResult();
+           session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -1085,6 +1110,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("id.approvalNo", approval)));
             obj= (AcqApprovalHeader) criteria.uniqueResult();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -1107,6 +1133,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("approvalNo", approval)));
            obj= (List<AcqApproval>) criteria.list();
+           session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -1128,6 +1155,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("acqMode","On Approval")));
             obj= (List<AcqBibliographyDetails>) criteria.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -1150,6 +1178,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("acqMode", "On Approval")));
             obj= criteria.list();
+            session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }
@@ -1175,6 +1204,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
           Query query =  session.createSQLQuery(sql)
                     .setResultTransformer(Transformers.aliasToBean(ApprovalList.class));
             obj= (List<ApprovalList>)query.list();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -1202,7 +1232,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
             
 
             obj= criteria.list();
-                  return obj;
+                  session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -1210,7 +1240,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
         {
         session.close();
         }
-  return null;
+  return obj;
     }
 
 
@@ -1227,6 +1257,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
            query.setString("subLibraryId",sub_library_id);
            query.setString("acqMode","Firm Order");
             obj= query.list();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -1248,6 +1279,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     .add(Restrictions.eq("id.subLibraryId", sublibrary_id));
                    
             obj= (List) criteria.list();
+            session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -1270,6 +1302,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     .add(Restrictions.eq("vendor", vendor));
                    
             obj= (List) criteria.list();
+            session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -1290,6 +1323,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id)));
             obj= criteria.list();
+            session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -1301,7 +1335,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
     }
 
      public AcqBibliographyDetails BibliobyControlId(String library_id,String sub_library_id,int control_no) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
  AcqBibliographyDetails obj=null;
         try {
             session.beginTransaction();
@@ -1311,6 +1345,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("id.controlNo",control_no )));
             obj=(AcqBibliographyDetails) criteria.uniqueResult();
+            session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }
@@ -1332,7 +1367,8 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
                       .add(Restrictions.ne("status", "Ordered"))
                       .add(Restrictions.ne("status", "Ordered/PartiallyRecieved"))
                     .add(Restrictions.eq("acqMode", "Firm Order")));
-            return criteria.list();
+            obj= criteria.list();
+            session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -1361,6 +1397,7 @@ public List<ApprovalList> getApprovalList(String library_id, String sub_library_
           Query query =  session.createSQLQuery(sql)
                     .setResultTransformer(Transformers.aliasToBean(ApprovalList.class));
            obj=(List<ApprovalList>)query.list();
+           session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -1389,6 +1426,7 @@ public ApprovalList getApprovalListbySelectionF(String library_id, String sub_li
           Query query =  session.createSQLQuery(sql)
                     .setResultTransformer(Transformers.aliasToBean(ApprovalList.class));
             obj= (ApprovalList)query.uniqueResult();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -1416,6 +1454,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
           Query query =  session.createSQLQuery(sql)
                     .setResultTransformer(Transformers.aliasToBean(ApprovalList.class));
             obj= (ApprovalList)query.uniqueResult();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -1445,6 +1484,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
          
       
               obj= criteria.list();
+              session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -1467,6 +1507,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("title",title)));
             obj= criteria.list();
+            session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }
@@ -1495,6 +1536,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
             criteria.add(le);
             criteria.setProjection(Projections.distinct(Property.forName("vendor")));
             obj= criteria.list();
+            session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -1521,6 +1563,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("id.titleId", title_id)));
             obj= (AcqBibliography) criteria.uniqueResult();
+            session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }
@@ -1542,6 +1585,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("titleId", title_id)));
             obj=(AcqBibliographyDetails) criteria.uniqueResult();
+            session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -1563,6 +1607,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("id.vendorId", vendor_id)));
             obj=(AcqVendor) criteria.uniqueResult();
+            session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -1585,6 +1630,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("title",title)));
             obj= criteria.list();
+            session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -1605,7 +1651,8 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
                     .add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("id.controlNo",control_no)));
-            return criteria.list();
+            obj= criteria.list();
+            session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }
@@ -1627,6 +1674,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
                     .add(Restrictions.eq("id.subLibraryId", sub_library_id))
                     .add(Restrictions.eq("id.vendorId",vendor_id)));
             obj=(AcqVendor)criteria.uniqueResult();
+            session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -1663,6 +1711,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
             session.beginTransaction();
             Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("title", title)));
             obj= (List) criteria.list();
+            session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }
@@ -1709,6 +1758,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
         Criteria criteria = session.createCriteria(AcqApprovalHeader.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.subLibraryId", sub_library_id)).add(Restrictions.eq("id.approvalNo", approval_no)));
         
         obj=(AcqApprovalHeader) criteria.uniqueResult();
+        session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();
@@ -1735,7 +1785,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
             query.setString("subLibraryId", sub_library_id);
             query.executeUpdate();
             tx.commit();
-            return true;
+           
 
         }
          catch(Exception e){
@@ -1747,7 +1797,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
         {
         session.close();
         }
-        
+      return true;
     }
      public static boolean deleteApproval(String library_id, String sub_library_id,String approval_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -1763,7 +1813,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
             query.setString("subLibraryId", sub_library_id);
             query.executeUpdate();
             tx.commit();
-            return true;
+           
 
         }
          catch(Exception e){
@@ -1775,7 +1825,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
         {
         session.close();
         }
-        
+       return true;
     }
 
      public static AcqOrderHeader searchOrderHeaderByOrderNo(String library_id,String sublibrary_id,String order_no) {
@@ -1795,6 +1845,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
 
 
             obj= (AcqOrderHeader)criteria.uniqueResult();
+            session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }
@@ -1822,6 +1873,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
                     );
 
          obj=(ArrayList<AcqRecievingDetails>)criteria.list();
+         session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -1849,6 +1901,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
                     );
 
           obj=(ArrayList<AcqOrder1>)criteria.list();
+          session.getTransaction().commit();
         }  catch(Exception e){
         e.printStackTrace();
         }
@@ -1881,6 +1934,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
           Query query =  session.createSQLQuery(sql)
                     .setResultTransformer(Transformers.aliasToBean(ApprovalList.class));
             obj=(List<ApprovalList>)query.list();
+            session.getTransaction().commit();
         }
         catch(Exception e){
         e.printStackTrace();
@@ -1919,6 +1973,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
           Query query =  session.createSQLQuery(sql)
                     .setResultTransformer(Transformers.aliasToBean(ApprovalList.class));
             obj=(List<ApprovalList>)query.list();
+            session.getTransaction().commit();
         }
          catch(Exception e){
         e.printStackTrace();

@@ -52,15 +52,7 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
     String rtl="ltr";
     String align="left";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -158,7 +150,7 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblangid.setLibraryId(library_id);
                 biblangid.setSublibraryId(sub_library_id);
                 biblang.setId(biblangid);
-                biblang.setIsbn10(isbn101);
+                biblang.setIsbn10(isbn10);
                 biblang.setBookType(bibform.getBook_type());
                 biblang.setDocumentType(bibform.getDocument_type());
                 biblang.setTitle(bibform.getTitle1());
@@ -172,10 +164,10 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblang.setPublisherName(bibform.getPublisher_name1());
                 biblang.setPublicationPlace(bibform.getPublication_place1());
                 biblang.setPublishingYear(bibform.getPublishing_year1());
-                biblang.setLccNo(bibform.getLCC_no1());
-                biblang.setIsbn13(bibform.getIsbn131());
+                biblang.setLccNo(bibform.getLCC_no());
+                biblang.setIsbn13(bibform.getIsbn13());
                 biblang.setEdition(bibform.getEdition1());
-                biblang.setCallNo(bibform.getCall_no1());
+                biblang.setCallNo(bibform.getCall_no());
                 biblang.setAltTitle(bibform.getAlt_title1());
                 biblang.setSubject(bibform.getSubject1());
                 biblang.setSeries(bibform.getSer_note1());
@@ -261,7 +253,7 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblangid.setLibraryId(library_id);
                 biblangid.setSublibraryId(sub_library_id);
                 biblang.setId(biblangid);
-                biblang.setIsbn10(isbn101);
+                biblang.setIsbn10(isbn10);
                 biblang.setBookType(bibform.getBook_type());
                 biblang.setDocumentType(bibform.getDocument_type());
                 biblang.setTitle(bibform.getTitle1());
@@ -275,10 +267,10 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblang.setPublisherName(bibform.getPublisher_name1());
                 biblang.setPublicationPlace(bibform.getPublication_place1());
                 biblang.setPublishingYear(bibform.getPublishing_year1());
-                biblang.setLccNo(bibform.getLCC_no1());
-                biblang.setIsbn13(bibform.getIsbn131());
+                biblang.setLccNo(bibform.getLCC_no());
+                biblang.setIsbn13(bibform.getIsbn13());
                 biblang.setEdition(bibform.getEdition1());
-                biblang.setCallNo(bibform.getCall_no1());
+                biblang.setCallNo(bibform.getCall_no());
                 biblang.setAltTitle(bibform.getAlt_title1());
                 biblang.setSubject(bibform.getSubject1());
                 biblang.setSeries(bibform.getSer_note1());
@@ -348,7 +340,7 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblangid.setLibraryId(library_id);
                 biblangid.setSublibraryId(sub_library_id);
                 biblang.setId(biblangid);
-                biblang.setIsbn10(isbn101);
+                biblang.setIsbn10(isbn10);
                 biblang.setBookType(bibform.getBook_type());
                 biblang.setDocumentType(bibform.getDocument_type());
                 biblang.setTitle(bibform.getTitle1());
@@ -362,10 +354,10 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblang.setPublisherName(bibform.getPublisher_name1());
                 biblang.setPublicationPlace(bibform.getPublication_place1());
                 biblang.setPublishingYear(bibform.getPublishing_year1());
-                biblang.setLccNo(bibform.getLCC_no1());
-                biblang.setIsbn13(bibform.getIsbn131());
+                biblang.setLccNo(bibform.getLCC_no());
+                biblang.setIsbn13(bibform.getIsbn13());
                 biblang.setEdition(bibform.getEdition1());
-                biblang.setCallNo(bibform.getCall_no1());
+                biblang.setCallNo(bibform.getCall_no());
                 biblang.setAltTitle(bibform.getAlt_title1());
                 biblang.setSubject(bibform.getSubject1());
                 biblang.setSeries(bibform.getSer_note1());
@@ -379,8 +371,7 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                     dao.updateBiblioLang(biblang);
                 }
           }
-       System.out.println(bibform.getBiblio_id());
-        BibliographicDetails biblio = dao.searchIsbn10ByBiblio(bibform.getCall_no(),bibform.getIsbn10(), bibform.getBiblio_id(), library_id, sub_library_id);
+       BibliographicDetails biblio = dao.searchIsbn10ByBiblio(bibform.getCall_no(),bibform.getIsbn10(), bibform.getBiblio_id(), library_id, sub_library_id);
        BibliographicDetails uniq_calsearch = dao.searchCallNOByBiblio(bibform.getCall_no(), bibform.getBiblio_id(), library_id, sub_library_id);
      //  BibliographicDetailsLang bibliolang=dao.searchIsbn10LangByBiblio(isbn10, biblio_id, library_id, sub_library_id);
     //   BibliographicDetailsLang calllang=dao.searchCallNoLangByBiblio(call_no, biblio_id, library_id, sub_library_id);
@@ -441,14 +432,14 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
         dao.update1(dd);
         }
        }
-         dao.update(bib);
-         
+        dao.update(bib);
+        System.out.println("Biblio"+bib);
         bibform.setIsbn10("");
         bibform.setTitle("");
+ }
         String msg1 =resource.getString("cataloguing.catoldttitleupdate1.recordupdate"); //Record updated successfully
         request.setAttribute("msg2",msg1);
         return mapping.findForward(SUCCESS);
- }
     }
     if(button.equals("Delete")){
           int  biblio_id=bibform.getBiblio_id();

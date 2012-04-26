@@ -15,6 +15,15 @@ public class BibliographicDetails  implements java.io.Serializable {
     
 
      private BibliographicDetailsId id;
+
+    public int getRowno() {
+        return rowno;
+    }
+
+    public void setRowno(int rowno) {
+        this.rowno = rowno;
+    }
+     private int rowno;
      private Library library;
      private String documentType;
      private String bookType;
