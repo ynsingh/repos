@@ -166,6 +166,8 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
 						if(instituteId.equals(instituteid))
 						{
 						String gname=((CourseUserDetail) list.elementAt(i)).getGroupName();
+						if(!gname.isEmpty())
+							gname=gname.replace("&colon",":");
 						String cname=((CourseUserDetail) list.elementAt(i)).getCourseName();
 			              		String uname=((CourseUserDetail) list.elementAt(i)).getLoginName();
 						String orgtn=((CourseUserDetail) list.elementAt(i)).getDept();

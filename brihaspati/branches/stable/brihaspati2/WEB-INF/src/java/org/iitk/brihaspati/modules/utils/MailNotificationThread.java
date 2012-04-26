@@ -74,6 +74,7 @@ public class MailNotificationThread implements Runnable {
 	//public String set_Message(String message_text,String mailId,String sub,String filePathForLM,String LangFile, String portNum)
 	public String set_Message(String message_text, String msg_Dear, String msg_regard, String msg_UserInfo, String mailId, String sub, String filePathForLM, String LangFile, String instId )
 	{
+		//ErrorDumpUtil.ErrorLog("Lang File in MailNotificationThread Class ="+LangFile);
 		v=new Vector();
 		v.add(mailId); //0   
                 v.add(sub);    //1
