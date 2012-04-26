@@ -2,6 +2,7 @@
 
 <project name="brihaspati" basedir="." default="usage">
     <property file="build.properties"/>
+    <property file="Torque.properties"/>
     <property name="src.dir" value="src"/>
     <property name="build.dir" value="WEB-INF/classes"/>
     <property name="name" value="brihaspati"/>
@@ -10,7 +11,7 @@
         <fileset dir="WEB-INF/lib">
             <include name="*.jar"/>
         </fileset>
-        <fileset dir="${appserver.lib}">
+        <fileset dir="${lib.dir}">
             <include name="servlet*.jar"/>
         </fileset>
         <pathelement path="${build.dir}"/>
@@ -23,18 +24,18 @@
         <echo message=""/>
         <echo message="Available targets are:"/>
         <echo message=""/>
-        <echo message="build     --> Build the application"/>
+        <echo message="om      --> Create peer based file"/>
+        <echo message="compile     --> Build the application"/>
         <echo message="deploy    --> Deploy application as directory"/>
         <echo message="deploywar --> Deploy application as a WAR file"/>
-        <echo message="install   --> Install application in Tomcat"/>
-        <echo message="reload    --> Reload application in Tomcat"/>
-        <echo message="start     --> Start Tomcat application"/>
-        <echo message="stop      --> Stop Tomcat application"/>
-        <echo message="list      --> List Tomcat applications"/>
-        <echo message="peer      --> Create peer based file"/>
+      <!--  <echo message="install    Install application in Tomcat"/> -->
+       <!-- <echo message="reload     Reload application in Tomcat"/> -->
+<!--        <echo message="start      Start Tomcat application"/> -->
+    <!--    <echo message="stop       Stop Tomcat application"/>  -->
+      <!--  <echo message="list       List Tomcat applications"/> -->
     </target>
 
-    <target name="build" description="Compile main source tree java files">
+    <target name="compile" depends="om" description="Compile main source tree java files">
         <mkdir dir="${build.dir}"/>
         <javac destdir="${build.dir}" source="1.5" target="1.5" debug="true"
                deprecation="false" optimize="false" failonerror="true">
@@ -43,7 +44,7 @@
         </javac>
     </target>
 
-    <target name="deploy" depends="build" description="Deploy application">
+    <target name="deploy" depends="compile" description="Deploy application">
         <copy todir="${deploy.path}/${name}/WEB-INF" preservelastmodified="true">
             <fileset dir="WEB-INF">
                 <include name="**/*.*"/>
@@ -51,10 +52,7 @@
         </copy>
     </target>
 
-    <target
-    name="peer"
-    unless="noObjectModel"
-    description="--> generates the peer-based object model for your project">
+    <target name="om" unless="noObjectModel" description="--> generates the peer-based object model for your project">
 
     <ant
       antfile="${torque.buildFile}"
@@ -64,7 +62,7 @@
     </target>
 
 
-    <target name="deploywar" depends="build" description="Deploy application as a WAR file">
+    <target name="deploywar" depends="compile" description="Deploy application as a WAR file">
         <war destfile="${name}.war"
              webxml="WEB-INF/web.xml">
             <fileset dir="WEB-INF">
@@ -89,10 +87,10 @@
             <include name="catalina-ant.jar"/>
         </fileset>
     </path>
-
+<!--
     <taskdef name="install" classname="org.apache.catalina.ant.InstallTask">
         <classpath refid="catalina-ant-classpath"/>
-    </taskdef>
+    </taskdef> 
     <taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask">
         <classpath refid="catalina-ant-classpath"/>
     </taskdef>
@@ -140,7 +138,7 @@
                  username="${tomcat.manager.username}"
                  password="${tomcat.manager.password}"/>
     </target>
-
+-->
         
     <target name="clean" description="Clean output directories">
         <delete>
