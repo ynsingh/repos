@@ -39,6 +39,9 @@ package org.iitk.brihaspati.modules.screens.call.ListMgmt_InstituteAdmin;
 /**
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh -20100810</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh - 20100810</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified 20-04-2012
+
  */
 
 import java.util.Vector;
@@ -169,7 +172,11 @@ public class InstList_Mgmt extends SecureScreen_Institute_Admin
                                 {
                                         String str=m_u.ConvertedString("listCourseReg",file);
                                         String str1=m_u.ConvertedString("notExist",file);
-                                        if(((String)data.getUser().getTemp("lang")).equals("hindi"))
+					 if(file.endsWith("_urd.properties"))
+                                                //data.setMessage(str+" "+str1+" '"+valueString+"' "+query);
+                                                data.setMessage(str+" "+str1+""+query+" "+"'"+ valueString+"'");
+					else if(file.endsWith("_hi.properties"))
+
                                                 data.setMessage(query+" "+"'"+ valueString+"'"+" "+ str +"  "+ str1);
                                         else
                                                 data.setMessage(str+" "+query+" "+"'"+ valueString+"'"+" "+ str1);

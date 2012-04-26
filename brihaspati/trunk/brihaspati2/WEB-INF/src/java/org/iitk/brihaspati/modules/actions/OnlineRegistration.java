@@ -38,13 +38,17 @@ import java.util.Vector;
 import java.util.List;
 import java.util.Properties;
 import java.sql.Date;
-import org.apache.turbine.util.RunData;
+
 import org.apache.torque.util.Criteria;
-import org.apache.velocity.context.Context;
+import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.modules.actions.VelocitySecureAction;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
+import org.apache.turbine.services.security.torque.om.TurbineUser;
+import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.apache.velocity.context.Context;
+
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
@@ -54,9 +58,11 @@ import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
@@ -70,8 +76,7 @@ import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.om.Courses;
 import org.iitk.brihaspati.om.CoursesPeer;
-import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
-import org.apache.turbine.services.security.torque.om.TurbineUser;
+
 /**
  * This class is called for requesting to add a new user in specified group and 
  * assigned a role to the system. 
@@ -84,7 +89,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>20092010
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
- * @modified date: 20-10-2010,23-12-2010
+ * @modified date: 20-10-2010,23-12-2010, 16-06-2011, 20-04-2012
  */
 
 
@@ -150,12 +155,25 @@ public class OnlineRegistration extends VelocitySecureAction
 		List onconf=CoursesPeer.doSelect(crit);
 		int onlineconf = ((Courses)(onconf.get(0))).getOnlineconf();
                 //end
-		String instituteid="";	
+		String instituteid="", instAdminName="";	
 		if(!gname.equals("author")){
-		String []gnamesplit=gname.split("_");
-		//String Agname=gnamesplit[0];
-		instituteid=gnamesplit[1];
+			/*String []gnamesplit=gname.split("_");
+			//String Agname=gnamesplit[0];
+			instituteid=gnamesplit[1];
+			*/
+			instituteid=org.apache.commons.lang.StringUtils.substringAfterLast(gname,"_");
 		}
+		 String instName = InstituteIdUtil.getIstName(Integer.parseInt(instituteid));	
+		// below line added by shaista
+		try{	crit=new Criteria();
+			crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instituteid);
+                        List inm=InstituteAdminUserPeer.doSelect(crit);
+			InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
+			instAdminName=element.getAdminFname() +" "+element.getAdminLname();
+
+		}
+		catch(Exception e){}
+		//ErrorDumpUtil.ErrorLog("instAdminNameeeeeeeeeeeeeeeeeeee OnlineRegistration Action="+instAdminName);
                 String roleName=pp.getString("role","");
 		curDate = Integer.toString(Integer.parseInt(ExpiryUtil.getCurrentDate("")));
                 if(gname.equals(""))
@@ -171,8 +189,8 @@ public class OnlineRegistration extends VelocitySecureAction
 
 		//for checking online configuration value for course added modified by sharad 
 		if(onlineconf==0){ 
-                path=data.getServletContext().getRealPath("/OnlineUsers");
-                File filepath=new File(path);
+	                path=data.getServletContext().getRealPath("/OnlineUsers");
+        	        File filepath=new File(path);
                 if(!filepath.exists())
                 {
                         filepath.mkdirs();
@@ -207,12 +225,14 @@ public class OnlineRegistration extends VelocitySecureAction
                          */
 			if(userExists == false && RoleExist==false)
 			{ //if 2
+				/**
                         	for(int j=0; j<10; j++)
 	                        {
 					userExists=UserManagement.checkUserExist(uname +getNext());
 					if(userExists == true)
 					 	vc.addElement(uname+getNext()+"\n");
 				}
+				*/
 				data.addMessage(MultilingualUtil.ConvertedString("u_msg",LangFile));
                         //	data.addMessage(MultilingualUtil.ConvertedString("online_msg10",LangFile) +vc.toString());
                         	data.addMessage(MultilingualUtil.ConvertedString("online_msg11",LangFile));
@@ -234,20 +254,23 @@ public class OnlineRegistration extends VelocitySecureAction
                                 	        uName=((CourseUserDetail)userlist.get(i)).getLoginName();
 	                                        if(gName.equals(gname) && uName.equals(uname))
         	                                {
-                	                                for(j=0; j<10; j++)
-                        	                        {
+               	                                        flag = true;
+	                                        	break;
+                	                                //for(j=0; j<10; j++)
+                        	                        //{
                                 	                        /**
                                         	                 * Getting Random Group name if Given Group Name with same User Name is already  exist in xml
-                                                	         * See OnlineReg/courses.xml file
+                                                	         * See OnlineReg/OnlineUser.xml file
                                                         	 */
-	                                                        vc.addElement(uname+getNext()+"\n");
-                	                                        flag = true;
-                        	                        }
+	                                                        //vc.addElement(uname+getNext()+"\n");
+                	                                        //flag = true;
+                        	                       // }
                                 	        }
-                                        	if(flag == true)
-	                                        break;
+                                        	//if(flag == true)
+	                                        //break;
         	                        }
-					if(vc != null && vc.size() > 0 ) //if 4
+					//if(vc != null && vc.size() > 0 ) //if 4
+                                       	if(flag == true)
 	                                {
         	                                data.addMessage(MultilingualUtil.ConvertedString("u_msg9",LangFile));
 						//data.addMessage(vc.toString());
@@ -262,16 +285,16 @@ public class OnlineRegistration extends VelocitySecureAction
 						server_name= TurbineServlet.getServerName();
 	        	                	srvrPort= TurbineServlet.getServerPort();
 						MsgForExpireTime = "forUser "; 
-						indexList = sendMail_MoreThanSevenDays(userlist, MsgForExpireTime, uname, server_name, srvrPort, LangFile);
+						indexList = sendMail_MoreThanSevenDays(userlist, MsgForExpireTime, uname, server_name, srvrPort, LangFile, instAdminName, instituteid);
 						xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineUser(path,"/OnlineUser.xml",indexList);
 						if(program.equals("Select Program"))
                                                         program="";
-				                TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program);
+				                TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName);
         				        xmlWriter.writeXmlFile();
 						if(gname.equals("author"))
-						sendMailToApproval(gname,LangFile,uname,"",0);
+							sendMailToApproval(gname,LangFile,uname,"","","",0);
 						else
-						sendMailToApproval(gname,LangFile,uname,"",(Integer.parseInt(instituteid)));
+							sendMailToApproval(gname,LangFile,uname,fname,lname,"",(Integer.parseInt(instituteid)));
 					
 			        	} //else 4
 				} //if 3
@@ -282,9 +305,9 @@ public class OnlineRegistration extends VelocitySecureAction
 	                		xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineUser(path,"/OnlineUser.xml",indexList);
 					if(program.equals("Select Program"))
                                                         program="";
-		        	        TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program);
+		        	        TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName);
         		        	xmlWriter.writeXmlFile();
-					sendMailToApproval(gname,LangFile,uname,"",(Integer.parseInt(instituteid)));
+					sendMailToApproval(gname,LangFile,uname,fname,lname,"",(Integer.parseInt(instituteid)));
 				} //else 3
 				String str=MultilingualUtil.ConvertedString("online_msg5",LangFile);
         		        data.setMessage(str);
@@ -314,7 +337,8 @@ public class OnlineRegistration extends VelocitySecureAction
         public void CourseRegister(RunData data, Context context) throws Exception
         {
  
-		boolean doesNotExists = true;
+		boolean doesNotExists = true, bl= false;
+		String instAdminName ="";
 		//Vector vc = new Vector();
                 ParameterParser pp=data.getParameters();
                 /**
@@ -341,6 +365,20 @@ public class OnlineRegistration extends VelocitySecureAction
 		String []starr=email.split("@");
                 passwd=starr[0];
 		}
+		/**
+		 * Below line added by Shaista 
+		 * Getting institute admin's First n Last Name according to instituteId
+		 */
+		 try{   crit=new Criteria();
+                        crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instituteid);
+                        List inm=InstituteAdminUserPeer.doSelect(crit);
+                        InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
+                        instAdminName=element.getAdminFname() +" "+element.getAdminLname();
+
+		}
+
+                catch(Exception e){}
+
 		curDate = Integer.toString(Integer.parseInt(ExpiryUtil.getCurrentDate("")));
                 path=TurbineServlet.getRealPath("/OnlineUsers");
                 File filepath=new File(path);
@@ -430,21 +468,22 @@ public class OnlineRegistration extends VelocitySecureAction
 					MsgForExpireTime = "forCourse";
 					server_name= TurbineServlet.getServerName();
         	                	srvrPort= TurbineServlet.getServerPort();
-					indexList = sendMail_MoreThanSevenDays(courselist, MsgForExpireTime, gName, server_name, srvrPort, LangFile);
+					indexList = sendMail_MoreThanSevenDays(courselist, MsgForExpireTime, gName, server_name, srvrPort, LangFile, instAdminName, InstituteId);
 					xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
+	        	        	//TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate, instname);
 	        	        	TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId);
 	        		        xmlWriter.writeXmlFile();
-					sendMailToApproval("fromCourse",LangFile,uname, cname,instituteid);
+					sendMailToApproval("fromCourse",LangFile,uname,fname,lname, cname,instituteid);
 				} //else inner
         		}
 			else
 			{
 				indexList.add(-1);
                 		xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
+		                //TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,instname);
 		                TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId);
-
         		        xmlWriter.writeXmlFile();
-				sendMailToApproval("fromCourse",LangFile,uname, cname,instituteid);
+				sendMailToApproval("fromCourse",LangFile,uname,fname,lname,cname,instituteid);
 			}
 		}
                 context.put("lang",lang);
@@ -456,35 +495,42 @@ public class OnlineRegistration extends VelocitySecureAction
 	*if request for role student then mail send to Instructor.
 	*else mail send to Institute admin.  
 	*/		
-	void sendMailToApproval(String gname, String LangFile, String unme, String courseName ,int instituteId)
+	void sendMailToApproval(String gname, String LangFile, String unme, String fname, String lname, String courseName ,int instituteId)
 	{
 		int j=0;
 		String temp="";
-		String info_msg="";
+		String info_msg="", info_Opt="", msgRegard="", msgBrihAdmin="" ;
 		server_name= TurbineServlet.getServerName();
                 srvrPort= TurbineServlet.getServerPort();
-/////////////////////////////////////////////////////////////////////////////////////////
 		try{
 			fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
        		        pr =MailNotification.uploadingPropertiesFile(fileName);
 			//MsgForExpireTime = " A user ";
 			//String subMsgForExpireTime =", has requested for registration as student in your course"+" "+gname+" "+" on brihaspati. Kindly do the needful to approve or reject the request";
 			if(!gname.equals("fromCourse") && !gname.equals("author")) {
-				if(srvrPort.equals("8080"))
+				if(srvrPort.equals("8080")){
 					info_new="approvalOfonLineRegReqForStudent";
-				else
+					info_Opt = "newUser";
+				}
+				else {
 					info_new="approvalOfonLineRegReqForStudent_https";
+					info_Opt = "newUserhttps";
+				}
 				subject = MailNotification.subjectFormate(info_new, "", pr );
-				message = MailNotification.getMessage(info_new, gname, "", unme,"" , server_name, srvrPort,pr); 
-				message=MailNotification.getMessage_new(message,fname,lname,"","");//added by Shikha
-				
-
-///////////////////////////////////////////////////////////////////////////////////////////
+				msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+	                        msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+				message = MailNotification.getMessage(info_new, gname, "", unme, "", pr); 
+				//message=MailNotification.getMessage_new(message,fname,lname,"","");//added by Shikha
+				if(fname.equals("") && lname.equals("")){
+		                        fname=unme;
+                		}
 				int counter=0;
 				int gid=GroupUtil.getGID(gname);
 				Vector uid=UserGroupRoleUtil.getUID(gid,2);
-				String []gnamesplit=gname.split("_");
-				String Agname=gnamesplit[0];
+				//String []gnamesplit=gname.split("_");
+				//String Agname=gnamesplit[0];
+				String Agname = org.apache.commons.lang.StringUtils.substringBeforeLast(gname, "_");
+				//ErrorDumpUtil.ErrorLog("\n\n\n actions OnlineRegist at 503 msgRegard="+msgRegard+"\n fname="+fname+"\n lname="+lname);
 				for(counter =0; counter<uid.size(); counter++)
 				{
 					String s=uid.elementAt(counter).toString();
@@ -499,22 +545,28 @@ public class OnlineRegistration extends VelocitySecureAction
 						if(check_Primary==true && check_Active==false)
 						{
 							emailId = element1.getEmail();
-							//Mail_msg=MailNotification.sendMail(MsgForExpireTime+unme+subMsgForExpireTime,emailId,"onlineRegRequest","Updation Mail","","","",server_name,srvrPort,LangFile);
-							Mail_msg=MailNotification.sendMail(message, emailId, subject, "", LangFile);
+							//Mail_msg=MailNotification.sendMail(message, emailId, subject, "", LangFile);
+							 String Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, fname+" "+lname, emailId, subject, "", LangFile, "");
 						}		
 					}
 				}// for
 			} //if
 			else
 			{
-				if(srvrPort.equals("8080"))
+				if(srvrPort.equals("8080")){
 					info_new="approvalOfonLineRegReqForCourse";
-				else
+					info_Opt = "newUser";
+				}
+				else{
 					info_new="approvalOfonLineRegReqForCourse_https";
-			
+					info_Opt = "newUserhttps";
+				}
+					
 				subject = MailNotification.subjectFormate(info_new, "", pr );
-				message = MailNotification.getMessage(info_new, courseName, "", unme,"" , server_name, srvrPort,pr); 
-//////////////////////////////////////////////////////////////////////////////////////
+				message = MailNotification.getMessage(info_new, courseName, "", unme,"" , pr); 
+				msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+	                        msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+				msgBrihAdmin = pr.getProperty("brihaspati.MailNotification."+info_Opt+".msgBrihAdmin");
 				/**
 				 * Get email Id if role is author
 				 * {System admin}else
@@ -523,12 +575,12 @@ public class OnlineRegistration extends VelocitySecureAction
 				 *@see MailNotification util in utils  
 				 */
 				if(gname.equals("author")){
-				String s=Integer.toString(UserUtil.getUID("admin"));
-				List st=UserManagement.getUserDetail(s);
-				for(j=0;j<st.size();j++){
-					TurbineUser element1=(TurbineUser)st.get(j);
-					emailId = element1.getEmail();
-					}
+					String s=Integer.toString(UserUtil.getUID("admin"));
+					List st=UserManagement.getUserDetail(s);
+					for(j=0;j<st.size();j++){
+						TurbineUser element1=(TurbineUser)st.get(j);
+						emailId = element1.getEmail();
+						}
 				}
 				else{
 				Criteria crit=new Criteria();	
@@ -536,7 +588,8 @@ public class OnlineRegistration extends VelocitySecureAction
 				List iadetlist=InstituteAdminUserPeer.doSelect(crit);
 				emailId=((InstituteAdminUser)iadetlist.get(0)).getAdminEmail();
 				}
-				Mail_msg=MailNotification.sendMail(message, emailId, subject, "", LangFile);
+				//Mail_msg=MailNotification.sendMail(message, emailId, subject, "", LangFile);
+				String Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgBrihAdmin, emailId, subject, "", LangFile, Integer.toString(instituteId));
 			}
 		} //try close
 		catch(Exception e){ErrorDumpUtil.ErrorLog("Erro in approvalOfonLineRegReqForStudent"+e);}
@@ -569,38 +622,46 @@ public class OnlineRegistration extends VelocitySecureAction
 		    return sb.toString();
 		
 	}
-	public Vector sendMail_MoreThanSevenDays(Vector listCrs_OR_Usr, String MsgForExpireTime, String name, String serverName, String serverPort, String LangFile)
+	public Vector sendMail_MoreThanSevenDays(Vector listCrs_OR_Usr, String MsgForExpireTime, String name, String serverName, String serverPort, String LangFile, String instAdminName, String instId)
 	{
 		Vector indexList = new Vector();
 		Date Creation_date;
-		//////////////////////////////////////////////////
+		String msgRoleInfo="", msgRegard="", info_Opt="";
 		//String subMsgForExpireTime =" registration is expired. Please talk to the administrator personally";
 		try{
 			fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
         	        pr =MailNotification.uploadingPropertiesFile(fileName);
 
 			if(MsgForExpireTime.equals("forUser") ){
-				if(serverPort.equals("8080")) 
+				if(serverPort.equals("8080")){ 
 					info_new = "onLineRegRequestForUserExpire";
-				else
+					info_Opt = "newUser";
+				}
+				else {
 					info_new = "onLineRegRequestForUserExpirehttps";
-
-                		subject = MailNotification.subjectFormate(info_new, "", pr );
-                		message = MailNotification.getMessage(info_new, "", "", name, "", serverName, serverPort,pr);
+					info_Opt = "newUserhttps";
+				}
+                		message = MailNotification.getMessage(info_new, "", "", name, "", pr);
+                                //msgRoleInfo = pr.getProperty("brihaspati.MailNotification."+info_Opt+".msgBrihAdmin");
 			}
 			if(MsgForExpireTime.equals("forCourse") ){
-				if(serverPort.equals("8080")) 
+				if(serverPort.equals("8080")) { 
 					info_new = "onLineRegRequestForCourseExpire";
-				else
+					info_Opt = "newUser";
+				}
+				else {
 					info_new = "onLineRegRequestForCourseExpirehttps";
-
-                		subject = MailNotification.subjectFormate(info_new, "", pr );
-                		message = MailNotification.getMessage(info_new, name, "", "", "", serverName, serverPort,pr);
-                      
+					info_Opt = "newUserhttps";
+				}
+	               		message = MailNotification.getMessage(info_new, name, "", "", "", pr);
 			}
+                		subject = MailNotification.subjectFormate(info_new, "", pr );
+				msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                                msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+                                msgRoleInfo = pr.getProperty("brihaspati.MailNotification."+info_Opt+".msgInstAdmin");
+				if(msgRoleInfo.length() >0)
+					msgRoleInfo = msgRoleInfo.replaceAll("institute_admin",instAdminName);
 
-		 /////////////////////////////////////////////////
-			
 			for( int i=0; i <listCrs_OR_Usr.size(); i++)
 			{
 				String cdate=((CourseUserDetail)listCrs_OR_Usr.get(i)).getCreateDate();
@@ -614,8 +675,9 @@ public class OnlineRegistration extends VelocitySecureAction
         			if(noOfdays > 7 && (longCurrentDate-longCreationDate)!=0)
 			        {
         				emailId = ((CourseUserDetail)listCrs_OR_Usr.get(i)).getEmail();
-                			//String Mail_msg=MailNotification.sendMail(MsgForExpireTime+name+subMsgForExpireTime,emailId,"onlineRegRequest","Updation Mail","","","",serverName,serverPort,LangFile);
-	                		Mail_msg=MailNotification.sendMail(message, emailId, subject, "", LangFile);
+	                		//Mail_msg=MailNotification.sendMail(message, emailId, subject, "", LangFile);
+					
+					Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, emailId, subject, "", LangFile, instId);
 		                	indexList.add(i);
 				}
 			}

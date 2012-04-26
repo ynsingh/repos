@@ -9,7 +9,7 @@
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
  * @modified date: 30-03-2010
- * @modified date: 15-02-2011
+ * @modified date: 15-02-2011, 20-04-2012
 *#
 
 $page.setTitle("Home | $course | Course management")
@@ -75,7 +75,7 @@ $!data.getMessage()
 <table width=100% bgcolor="$ui.tableColor">
 <tr>
         #if($lang == "hindi")
-                 <td><b>$brih_space $quota_sze: $!aSize </b></td><td align=right ><b>$brih_usedspace $quota_sze: $!aSize </b></td>
+                 <td><b>$brih_space $quota_sze: $!aSize </b></td><td align=right ><b>$brih_usedspace $quota_sze: $!TUSize </b></td>
         #else
                  <td><b>$brih_space $!aSize $quota_sze</b></td><td align=right ><b>$brih_usedspace   $!TUSize $quota_sze </b></td>
         #end

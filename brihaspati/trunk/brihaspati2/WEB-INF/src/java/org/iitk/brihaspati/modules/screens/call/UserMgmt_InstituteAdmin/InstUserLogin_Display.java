@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
 /*
  * @(#)InstUserLogin_Display.java	
  *
- *  Copyright (c) 2005 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005, 2011-2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -51,6 +51,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 /**
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
+ * @modified 20-04-2012
  */
 
 public class InstUserLogin_Display extends SecureScreen_Institute_Admin
@@ -74,7 +75,10 @@ public class InstUserLogin_Display extends SecureScreen_Institute_Admin
 			context.put("status","NoBlank");
 		}
 		else
-		{	
+		{
+			if( LangFile.endsWith("_hi.properties") || LangFile.endsWith("_urd.properties"))
+				data.setMessage(MultilingualUtil.ConvertedString("adminUsrTime",LangFile)+" "+Username);
+	
 			data.setMessage(Username+" "+ MultilingualUtil.ConvertedString("adminUsrTime",LangFile));
 			context.put("status","Blank");
 		}

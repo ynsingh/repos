@@ -47,6 +47,7 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.apache.commons.lang.StringUtils;
 //brihaspati classes
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
@@ -69,7 +70,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
  * @author  <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author  <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modify 20-03-09
- * @modify 20-10-2010,23-12-2010, 16-06-2011
+ * @modify 20-10-2010,23-12-2010, 16-06-2011, 20-04-2012
  */
 
 
@@ -105,7 +106,6 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 			//String subMsgForExpireTime= " registration is rejected. Please contact to the administrator personally";
                         String server_name= TurbineServlet.getServerName();
                         String srvrPort= TurbineServlet.getServerPort();
-////////////////////////////////////////////////////////////////////////
 			String message ="";
                         String info_new = "", info_Opt="", msgRegard="";
 			String loginName = data.getUser().getName();
@@ -126,15 +126,20 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 			msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
 			msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
 			//ErrorDumpUtil.ErrorLog("OnlineRegistration_Instructor.java RejectUser  subject="+subject);
-///////////////////////////////////////////////////////////////////////////
 			for(int j=0;st.hasMoreTokens();j++)
                         {
 				tokn=st.nextToken();
+				//ErrorDumpUtil.ErrorLog(" reject User tokn="+tokn);
+                                userName =StringUtils.substringBefore(tokn,":");
+                                String strTemp = StringUtils.substringAfter(tokn,":");
+                                groupName = StringUtils.substringBeforeLast(strTemp,":");
+                                mailId = StringUtils.substringAfterLast(strTemp,":");
+/**
 				splitedTokn = tokn.split(":");
 				userName = splitedTokn[0];
 				groupName = splitedTokn[1];
 				mailId = splitedTokn[2];
-				
+*/				
 				
 
                         	if(userlist!= null)
@@ -156,6 +161,7 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 							indexList.add(i);
 							String str=MultilingualUtil.ConvertedString("online_msg3",LangFile);
                 					data.setMessage(str);
+                					data.addMessage(Mail_msg);
 						} 
                                 	}
                         	}
@@ -201,13 +207,21 @@ public class  OnlineRegistration_Instructor extends SecureAction{
                         {
 				//String mailid=st.nextToken();
 				tokn=st.nextToken();
-                                splitedTokn = tokn.split(":");
+				//ErrorDumpUtil.ErrorLog("tokn======"+tokn);
+				userName =StringUtils.substringBefore(tokn,":");
+                                String strTemp = StringUtils.substringAfter(tokn,":");
+                                groupName = StringUtils.substringBeforeLast(strTemp,":");
+                                mailId = StringUtils.substringAfterLast(strTemp,":");
+/**
+				splitedTokn = tokn.split(":");
                                 userName = splitedTokn[0];
                                 groupName = splitedTokn[1];
+                                mailId = splitedTokn[2];
 				splitedInstId = groupName.split("_");
 				instId = splitedInstId [1];
+*/
+				instId = StringUtils.substringAfterLast(groupName, "_");
 				instName=InstituteIdUtil.getIstName(Integer.parseInt(instId));
-                                mailId = splitedTokn[2];
 
 				if(userlist!=null)
                         	{
