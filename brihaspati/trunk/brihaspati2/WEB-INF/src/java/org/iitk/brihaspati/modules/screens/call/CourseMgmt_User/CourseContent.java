@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
 /*
  * @(#)CourseContent.java	
  *
- *  Copyright (c) 2006-2008,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006-2008,2010,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -37,6 +37,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
  */
 
 import java.util.Vector;
+import java.util.List;
 import java.io.File;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
@@ -45,7 +46,9 @@ import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.Turbine;
 //import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.om.security.User;
+import org.apache.torque.util.Criteria;;
 import org.apache.turbine.modules.screens.VelocitySecureScreen;
+import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 //import org.iitk.brihaspati.modules.utils.NotInclude;
 import org.apache.turbine.util.parser.ParameterParser;
@@ -60,6 +63,7 @@ import org.xml.sax.helpers.AttributesImpl;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
 
 
 /**
@@ -68,6 +72,8 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
 * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
 * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
+* @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+* @modified date:30-04-2012(Richa)
 */
 
 public class CourseContent extends VelocitySecureScreen{
@@ -78,7 +84,6 @@ public class CourseContent extends VelocitySecureScreen{
 		String langfile=data.getUser().getTemp("LangFile").toString();
 		try{
 
-			Vector v=new Vector();
 			User user=data.getUser();
 			ParameterParser pp=data.getParameters();
 			AccessControlList acl=data.getACL();
@@ -116,6 +121,18 @@ public class CourseContent extends VelocitySecureScreen{
 			* Write all topic in xml file if topic is not present
 			*/
 			CommonUtility.cretUpdtxml(filePath,user.getName(),"course");
+			int gid = GroupUtil.getGID(group);
+			Criteria crit = new Criteria();
+	                crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
+	                crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
+	                crit.add(TurbineUserGroupRolePeer.USER_ID,0);
+	                List v=TurbineUserGroupRolePeer.doSelect(crit);
+			String gstaccess = pp.getString("GuestAccess","");
+			String contentTopic = pp.getString("topic","");
+			XmlWriter xmlWriter=null;	
+			String st=""; 
+			boolean flag=false;
+			context.put("AccessMsg","");
                         if(Path.exists())
                         {
                                 TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+"coursecontent__des.xml");
@@ -124,7 +141,49 @@ public class CourseContent extends VelocitySecureScreen{
                                 {
                                         context.put("dirContent",dc);
                                 }
-                        }
+				/**
+ 				 * Instructor have permission to give guest access inside course content.
+ 				 * So below code is only executed when role is instructor.
+ 				 * Before giving access to guest, first check guest have permission to access that course or not.
+ 				 */ 	
+				if(role.equals("instructor"))
+				{
+					topicMetaData=null;
+					String Xmlgstaccess=null;
+					for(int i=0;i<dc.size();i++){
+                	                       	st=((FileEntry) dc.elementAt(i)).getName();
+						String Pdate=((FileEntry)dc.elementAt(i)).getPDate();
+						Xmlgstaccess=((FileEntry)dc.elementAt(i)).getGuestAccess();
+						if(st.equals(contentTopic))
+						{
+							xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(filePath,"coursecontent",st,gstaccess);
+							xmlWriter.writeXmlFile();
+						}
+						else
+							flag=true;				
+					}
+					if(flag)
+					{
+						st="";
+						if(v.size()==0)
+						{
+							xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(filePath,"coursecontent",st,"true");
+							xmlWriter.writeXmlFile();
+							context.put("courseaccess",v.size());
+							String Accessmsg = MultilingualUtil.ConvertedString("Guest_msg3",langfile);
+							context.put("AccessMsg",Accessmsg);
+						}
+						else if(org.apache.commons.lang.StringUtils.isBlank(Xmlgstaccess))	
+						{
+							xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(filePath,"coursecontent",st,"false");
+	                                                xmlWriter.writeXmlFile();
+						}
+					}
+	                                topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+"coursecontent__des.xml");
+	                                Vector reader=topicMetaData.getFileDetailsModify();
+					context.put("dirContent",reader);
+				}
+			}
                         /**
                         * Remote Course Path
                         */

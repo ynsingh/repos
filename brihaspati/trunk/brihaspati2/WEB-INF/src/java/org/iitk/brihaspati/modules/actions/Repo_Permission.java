@@ -102,15 +102,15 @@ public class Repo_Permission extends SecureAction
                		ParameterParser pp=data.getParameters();
 			String username=pp.getString("UNAME","");
 			context.put("username",username);
-			ErrorDumpUtil.ErrorLog("athname at line 103==="+authorname+"\nunm==="+username);	
+			//ErrorDumpUtil.ErrorLog("athname at line 103==="+authorname+"\nunm==="+username);	
 			String coursename=pp.getString("CNAME","");
-			ErrorDumpUtil.ErrorLog("cname at line 102==="+coursename);	
+			//ErrorDumpUtil.ErrorLog("cname at line 102==="+coursename);	
 			String topicname=pp.getString("tname");
 			context.put("contentlist",topicname);
 			String role=pp.getString("group1","");
 			context.put("role",role);
 			FileItem fileItem=pp.getFileItem("tname");
-			ErrorDumpUtil.ErrorLog("fItm=="+fileItem);
+			//ErrorDumpUtil.ErrorLog("fItm=="+fileItem);
 			String stat=pp.getString("stats","");
 			String statvalue=pp.getString("statvalue","");
 			context.put("status",stat);
@@ -130,7 +130,7 @@ public class Repo_Permission extends SecureAction
 				File authordesc= new File(UserPath+"/"+authorname);
 				File authordesc1= new File(UserPath+"/"+authorname +"/" + topicname + "/"+topicname+"__des.xml");
 				File athdes= new File(UserPath+"/"+authorname +"/" + topicname);
-				ErrorDumpUtil.ErrorLog("athd at line 135==="+authordesc1);	
+				//ErrorDumpUtil.ErrorLog("athd at line 135==="+authordesc1);	
 				FileInputStream fis = new FileInputStream(authordesc1);
 				String Apath=UserPath+"/"+authorname;
 				String Upath2= filePath+"/"+coursename+"/Content/Permission";
@@ -305,18 +305,18 @@ public class Repo_Permission extends SecureAction
                						xmlwriter.writeXmlFile();
 							File dFile=new File(way+"/"+"coursecontent__des.xml");
 							if(dFile.exists()){	
-								ErrorDumpUtil.ErrorLog("testing at line 299====");
+								//ErrorDumpUtil.ErrorLog("testing at line 299====");
 								xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
-								ErrorDumpUtil.ErrorLog("testing at line 315===="+xmlWriter);
-		                                        	TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,topicname,topicname,dateOfCreation,authorname,"Repo");
+								//ErrorDumpUtil.ErrorLog("testing at line 315===="+xmlWriter);
+		                                        	TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,topicname,topicname,dateOfCreation,authorname,"Repo","");
 								xmlWriter.writeXmlFile();
-								ErrorDumpUtil.ErrorLog("testing at line 307====");
+								//ErrorDumpUtil.ErrorLog("testing at line 307====");
 							}
                         				else{
                                 				TopicMetaDataXmlWriter.writeWithRootOnly(dFile.getAbsolutePath());
                                 				if(topicname.length()>0){
                                         			xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
-		                                        	TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,topicname,topicname,dateOfCreation,authorname,"Repo");
+		                                        	TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,topicname,topicname,dateOfCreation,authorname,"Repo","");
                                         			xmlWriter.writeXmlFile();
                                 				}
                         				}
@@ -555,7 +555,7 @@ public class Repo_Permission extends SecureAction
                 	String UserPathU=data.getServletContext().getRealPath("/UserArea");
                 	String path=UserPathR+"/"+authorname;
                 	String UserPathC=data.getServletContext().getRealPath("/Courses");
-			ErrorDumpUtil.ErrorLog("UserPathR=="+UserPathR+"\nUserPathC=="+UserPathC);
+			//ErrorDumpUtil.ErrorLog("UserPathR=="+UserPathR+"\nUserPathC=="+UserPathC);
                         File filepath = null;
                 	/**
                 	* this will give seqquence number  of permissionRecieve to delete it

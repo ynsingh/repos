@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.FileOutputStream;
 import java.util.Vector;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.velocity.context.Context;
@@ -46,6 +47,8 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
+import org.apache.torque.util.Criteria;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -62,7 +65,6 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
-import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 
 /**
  * Class responsible for Upload files in particuler Area
@@ -75,6 +77,8 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
  * @author <a href="mailto:kshuklak@rediffmail.com">Kishore kumar shukla</a> 
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a> 
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date:30-Apr-2012(Richa)(Guest access enable/disable)
  */
 
 public class UploadAction extends SecureAction
@@ -160,6 +164,15 @@ public class UploadAction extends SecureAction
 		String way=coursesRealPath+"/"+courseHome+"/Content/";
 		String filePath="";
 		f=new File(topicDir.getPath()+"/Unpublished/");
+		/**
+ 		 * check guest access for course inside database
+ 		 */
+		int gid = GroupUtil.getGID(courseHome);
+		Criteria crit = new Criteria();
+		crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
+		crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
+		crit.add(TurbineUserGroupRolePeer.USER_ID,0);
+		List v=TurbineUserGroupRolePeer.doSelect(crit);	
 
 //check for available quota space and return true if space available
 	//	String gname=GroupUtil.getGroupName(uid,2);
@@ -190,12 +203,20 @@ public class UploadAction extends SecureAction
 					String st=((FileEntry) dc.elementAt(i)).getName();
 					if(st.equals(contentTopic)){
 						flag=true;
+						if(v.size()==0)
+							xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent",st,"true");
+						else
+							xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent",st,"false");
+                       				xmlWriter.writeXmlFile();
 					}
 				}
 				if(!flag){
                         		//xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"content");
                         		xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
-   					TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location);
+					if(v.size()==0)
+	   					TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location,"true");
+					else
+						TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location,"false");
                        			xmlWriter.writeXmlFile();
 				}
 			}
@@ -204,7 +225,10 @@ public class UploadAction extends SecureAction
 				if(contentTopic.length()>0){
                         		//xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"content");
                         		xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
-   					TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location);
+					if(v.size()==0)
+                                                TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location,"true");
+                                        else
+                                                TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location,"false");
                        			xmlWriter.writeXmlFile();
                        		}
                        	}
@@ -360,7 +384,7 @@ public class UploadAction extends SecureAction
                                 if(!flag){
                                         //xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"content");
                                         xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
-	                                TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location);
+	                                TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location,"true");
                                         xmlWriter.writeXmlFile();
                                 }
                         }
@@ -369,7 +393,7 @@ public class UploadAction extends SecureAction
                                 if(contentTopic.length()>0){
                                         //xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"content");
                                         xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
-	                                TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location);
+	                                TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location,"true");
                                         xmlWriter.writeXmlFile();
                                 }
                         }

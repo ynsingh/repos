@@ -124,18 +124,18 @@ $!data.getMessage()
           	#elseif($startIndex== $ListConf_str)
           	<u><font color="white">$brih_first</font></u> &nbsp;
           	<u><font color="white">$brih_pre</font></u> &nbsp;
-          	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$startIndex)">$brih_nxt</a> &nbsp;
-          	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_last)">$brih_last</a> &nbsp;
+          	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$startIndex).addPathInfo("SearchList",$ListConf)">$brih_nxt</a> &nbsp;
+          	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_last).addPathInfo("SearchList",$ListConf)">$brih_last</a> &nbsp;
          	#elseif($endIndex == $total_size || $endIndex > $total_size)
-         	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_first)">$brih_first</a> &nbsp;
-         	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_pre)">$brih_pre</a> &nbsp;
+         	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_first).addPathInfo("SearchList",$ListConf)">$brih_first</a> &nbsp;
+         	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_pre).addPathInfo("SearchList",$ListConf)">$brih_pre</a> &nbsp;
          	<u><font color="white">$brih_nxt</font></u> &nbsp;
          	<u><font color="white">$brih_last</font></u> &nbsp;
           	#else
-           	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_first)">$brih_first</a> &nbsp;
-           	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_pre)">$brih_pre</a> &nbsp;
-           	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex)">$brih_nxt</a> &nbsp;
-            	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_last)">$brih_last</a> &nbsp;
+           	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_first).addPathInfo("SearchList",$ListConf)">$brih_first</a> &nbsp;
+           	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_pre).addPathInfo("SearchList",$ListConf)">$brih_pre</a> &nbsp;
+           	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("SearchList",$ListConf)">$brih_nxt</a> &nbsp;
+            	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_last).addPathInfo("SearchList",$ListConf)">$brih_last</a> &nbsp;
 		#end
 
 

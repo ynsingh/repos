@@ -75,6 +75,7 @@ public class FileEntry
 	private String emailId;
         private String status;
         private String url;
+        private String Access;
 //----------------------------------FAQ
 	private String Answer;
         private String Version;
@@ -420,6 +421,14 @@ public class FileEntry
         {
                 int index=InstId.lastIndexOf('/'); // truncate the relative path from the this.name
                 return InstId.substring(index+1);  // to retrieve the user name.
+        }
+	public void setGuestAccess(String Access)
+        {
+                this.Access=Access;
+        }
+        public String getGuestAccess()
+        {
+                return Access;
         }
 
 		

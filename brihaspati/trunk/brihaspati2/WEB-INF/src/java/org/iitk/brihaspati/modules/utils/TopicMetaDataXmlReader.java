@@ -643,7 +643,7 @@ public class TopicMetaDataXmlReader
 		if(files!=null)
 		{
 			Attributes ats;
-			String fileName,alias,UName,locationidef;
+			String fileName,alias,UName,locationidef,guestaccess;
 			for(int j=0;j<files.length;j++)
 			{
 				FileEntry fileEntry=new FileEntry();	
@@ -653,12 +653,14 @@ public class TopicMetaDataXmlReader
 				String dateString=ats.getValue("publishingDate");
 				UName=ats.getValue("username");
 				locationidef=ats.getValue("location");
+				guestaccess=ats.getValue("guestlogin");
 
 				fileEntry.setName(fileName);
 				fileEntry.setAlias(alias);
 				fileEntry.setPDate(dateString);
 				fileEntry.setUserName(UName);
 				fileEntry.setLocation(locationidef);
+				fileEntry.setGuestAccess(guestaccess);
 				vt.add(fileEntry);
 			//	ErrorDumpUtil.ErrorLog("vt return vale======"+vt);
 			}

@@ -1,6 +1,6 @@
 #*
  * @(#) CourseContents.vm
- * Copyright (c) 2005,2009,2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2009,2010,2012 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
@@ -8,12 +8,14 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
- * @modified date: 30-03-2010
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date: 30-03-2010,30-04-2012(Richa)
 *#
 
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Course Content")
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
+#set ($loginusr=$data.getUser().getName().toString())
 
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
@@ -36,10 +38,14 @@ $!data.getMessage()
 </tr>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
-<tr><td align=right colspan=9>
-	#if ($isInstructor=="true")
+#if ($isInstructor=="true")
+	<tr>
+        #if($AccessMsg!="")
+	        <td colspan=2><font color="red" size="4">$AccessMsg</td>
+        #end
+               	<td align=right colspan=9>
 		<img src="$content.getURI("/images/hand.gif")">	<a href=javascript:popupWin("/brihaspati2/docs/CourseContent.html","newWin");> $brih_help </a>
-	#end
+#end
 </td></tr>
 <tr bgcolor="$ui.menuColor">
 #if($user_role == "instructor")
@@ -156,6 +162,15 @@ $!data.getMessage()
 			<td align="center"><a href="$link.setPage("call,CourseMgmt_User,Edit.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("status",$file.getLocation())">$brih_edit</a>&nbsp;&nbsp;</td> 
 			<td align="center"><a href="$link.setPage("call,CourseMgmt_User,PublishModule.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("stat",$file.getLocation())">$brih_publish</a></td>
 			<td align="center"><a href="$link.setAction("PublishAction").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("stat",$file.getLocation()).addPathInfo("actionName","eventSubmit_doDeleteTopic")" onclick="javascript:return confirm('Do you want to delete this topic')"> $brih_delete</a></td>
+			#if($AccessMsg=="")
+				#if($file.getGuestAccess()=="true")
+        	                        <td align="center"><a href="$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("stat",$file.getLocation()).addPathInfo("GuestAccess","false")"><font color="red"> $brih_guest $DisBoard_DBmsg7</a></td>
+                	        #else
+                        	         <td align="center"><a href="$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("stat",$file.getLocation()).addPathInfo("GuestAccess","true")"><font color="green"> $brih_guest $DisBoard_DBmsg8</a></td>
+	                        #end	
+	                #else
+	                	<td align="center"><font color="grey">$brih_guest $DisBoard_DBmsg7</td>
+			#end
 			<td>
                         #if($dirContent.size()>1)
                         <input type="radio" name="orderRadio" value="$file.CheckboxName" onClick="changeOrder(this,document.frm,$seqno);">
@@ -183,22 +198,29 @@ $!data.getMessage()
 	#else
 ##<br>
 		#foreach($file in $dirContent)
-		#if($velocityCount%2==0)
-		<tr bgcolor="$ui.tableColor">
-		#else
-		<tr bgcolor="$ui.menuColor">
-		#end
-			<td>$count &nbsp;</td> <td><b>$file.getName()</b> </td>
-			<td align="center"><a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("status",$file.getLocation())"> $brih_view</a>&nbsp;&nbsp;</td> 
+			#if($velocityCount%2==0)
+				<tr bgcolor="$ui.tableColor">
+			#else
+				<tr bgcolor="$ui.menuColor">
+			#end
+			#if($loginusr=="guest")
+	                        #if($file.getGuestAccess()=="false")
+		                        <td colspan=2><b>$file.getName()</b> </td>
+			                <td align="center"><a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("status",$file.getLocation())"> $brih_view</a>&nbsp;&nbsp;</td>
+	                        #end
+                        #else
+	                        <td>$count &nbsp;</td> <td><b>$file.getName()</b> </td>
+        			<td align="center"><a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("status",$file.getLocation())"> $brih_view</a>&nbsp;&nbsp;</td>
+                        #end
 		</tr>
 		#set ( $count= $count+1)
 		#end
 		#foreach($r in $readR)
-                #if($velocityCount%2==0)
-                <tr bgcolor="$ui.tableColor">
-                #else
-                <tr bgcolor="$ui.menuColor">
-                #end
+	                #if($velocityCount%2==0)
+        		        <tr bgcolor="$ui.tableColor">
+	                #else
+        		        <tr bgcolor="$ui.menuColor">
+	                #end	
                         <td>$count&nbsp;</td><td><b>$r.Topic</b></td>
                         <td align="center"><a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("uname",$r.UserName).addPathInfo("status","Remote").addPathInfo("cName",$r.CourseName).addPathInfo("topic",$r.Topic).addPathInfo("count",$tdcolor)"> $brih_view</a>&nbsp;&nbsp;</td>
                 </tr>

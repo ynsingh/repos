@@ -149,7 +149,7 @@ public class InstituteDetailsManagement
 			Criteria crit=new Criteria();
                         crit.addGroupByColumn(CoursesPeer.GROUP_NAME);
 			List v=CoursesPeer.doSelect(crit);
-ErrorDumpUtil.ErrorLog("The error in get()"+v.toString());
+//ErrorDumpUtil.ErrorLog("The error in get()"+v.toString());
 			/**
  			*Get GroupName,CourseName,GroupAlias,etc 
  			*/ 
