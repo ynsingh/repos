@@ -75,10 +75,12 @@
  #if($data.getUser().getTemp("role") == "student")
                 <tr bgcolor="$ui.menuColor">
                         <td>
+			#if($data.getUser().getUserName() != "guest")
                         ##<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm")>$brih_course $brih_content</a>
-                        ##<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi") $brih_content #else $brih_course $brih_content #end </a>
 			<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","coursecontent").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none> #if($lang =="hindi") $brih_content #else $brih_course $brih_content #end </a>
-
+			#else
+			<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi") $brih_content #else $brih_course $brih_content #end </a>
+			#end
 			</td> ##today28july
                 </tr>
 		#if($data.getUser().getUserName() != "guest") ##guest is not login
@@ -95,8 +97,13 @@
                         <td>
                         ##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a>
                         ##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>Communication</a>
-                        ##<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a>
+
+			#if($data.getUser().getUserName() != "guest") ##guest is not login
+
 			<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","communication").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_communication</a>
+			#else
+			<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a>
+			#end
                         </td>
                 </tr>
 	#if($data.getUser().getUserName() != "guest") ##guest is not login

@@ -56,8 +56,9 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 	/** 
 	* This class contains code of Repost Answer to the Assignment
@@ -87,8 +88,9 @@ public class RePostAns extends  SecureScreen
                          int uid=UserUtil.getUID(UserName);
                          if((Role.equals("student")) || (Role.equals("instructor")))
                          {
-                                CourseTimeUtil.getCalculation(uid);
-                                ModuleTimeUtil.getModuleCalculation(uid);
+                               // CourseTimeUtil.getCalculation(uid);
+                               // ModuleTimeUtil.getModuleCalculation(uid);
+				 MailNotificationThread.getController().CourseTimeSystem(uid);
                          }
 
 			Date curdate=new Date();

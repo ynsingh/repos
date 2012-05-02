@@ -40,8 +40,9 @@ import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 /**
  * This class loads the vm file and checks for the access rights of the user if he can access this page 
@@ -67,8 +68,9 @@ public class MultiUserReg_Instructor extends SecureScreen_Instructor
                   int uid=UserUtil.getUID(user.getName());
                   if((Role.equals("student")) || (Role.equals("instructor")))
                   {
-                         CourseTimeUtil.getCalculation(uid);
-                         ModuleTimeUtil.getModuleCalculation(uid);
+                         //CourseTimeUtil.getCalculation(uid);
+                         //ModuleTimeUtil.getModuleCalculation(uid);
+			 MailNotificationThread.getController().CourseTimeSystem(uid);
                   }
 
 	}

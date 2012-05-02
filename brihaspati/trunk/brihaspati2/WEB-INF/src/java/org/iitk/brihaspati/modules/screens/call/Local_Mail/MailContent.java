@@ -55,8 +55,9 @@ import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /** 
  * This class contains code to show Messages in specific user's Mailbox 
  *  
@@ -104,8 +105,9 @@ public class MailContent extends SecureScreen
 			String Role = (String)user.getTemp("role");
 			if((Role.equals("student")) || (Role.equals("instructor")))
                         {
-	                        CourseTimeUtil.getCalculation(user_id);
-        	                ModuleTimeUtil.getModuleCalculation(user_id);
+	                        //CourseTimeUtil.getCalculation(user_id);
+        	                //ModuleTimeUtil.getModuleCalculation(user_id);
+				MailNotificationThread.getController().CourseTimeSystem(user_id);
                         }
 	    		/** 
 	     		* Select all the messagesid according to the ReceiverId

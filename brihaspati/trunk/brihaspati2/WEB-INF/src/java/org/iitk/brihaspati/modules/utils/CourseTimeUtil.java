@@ -39,6 +39,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.Collections;
+import org.apache.commons.lang.StringUtils;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.om.UsageDetails;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
@@ -93,7 +94,7 @@ public class CourseTimeUtil
 			}
 			else
 			entryid=v.size();
-                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method getentryid ----------------"); }
+                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method getentryid -----"+ex); }
                 return entryid;
         }
 
@@ -116,7 +117,7 @@ public class CourseTimeUtil
                                 }
 
                         }catch(Exception e){
-                                ErrorDumpUtil.ErrorLog("Error CourseTimeUtil in getCTid Method------------------"+ctid);}
+                                ErrorDumpUtil.ErrorLog("Error CourseTimeUtil in getCTid Method------"+e);}
                                 return ctid;
                 }
 		/*
@@ -138,7 +139,7 @@ public class CourseTimeUtil
                                 ctid=element.getCtId();
 
 			}catch(Exception e){
-				ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil getACid Method------------------"+ctid);}
+				ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil getACid Method------"+e);}
 				return ctid;
 		}
 		/*
@@ -172,7 +173,7 @@ public class CourseTimeUtil
 					ctime=diffHours+" hours"+" "+diffMin+" min";
 				}
 			}
-                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil getCloginTime Method------------------");}
+                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil getCloginTime Method------"+ex);}
                  return ctime;
         }
 	/*
@@ -183,38 +184,52 @@ public class CourseTimeUtil
 	 *subtract from current Date .
 	 *add the diff with STINE in DataBase and send in database.
 	 */
-	public static void getCalculation(int userid)
-	{
-		try{
-			Date date=new Date();
-			int eid=getentryid(userid);
-		   	Criteria crit=new Criteria();
-			crit.add(CourseTimePeer.ENTRY_ID,eid);
-			List v=CourseTimePeer.doSelect(crit);
-			for(int i=0;i<v.size();i++){
-				CourseTime element=(CourseTime)v.get(i);
-				int status=element.getStatus();
-				if(status==1){
-					int ctid=element.getCtId();
-					Date priviousDate=element.getCloginDate();
-					//ErrorDumpUtil.ErrorLog("priviousDate----------------"+priviousDate);
-					//ErrorDumpUtil.ErrorLog("date---------------------------"+date);
-					Integer ctime=element.getCourseTime();
-					long ctime1 = ctime.longValue();
-					//ErrorDumpUtil.ErrorLog("ctime1------------------:"+ctime1);
-					long diff1=date.getTime()-priviousDate.getTime();
-					//ErrorDumpUtil.ErrorLog("diff1------------------"+diff1);
-					long diff=diff1+ctime1;
-					//ErrorDumpUtil.ErrorLog("diff------------------"+diff);
-					Criteria cr=new Criteria();
+	 public static void getCalculation(int userid)
+        {
+                try{
+                        Date date=new Date();
+                        int eid=getentryid(userid);
+                        Criteria crit=new Criteria();
+                        crit.add(CourseTimePeer.ENTRY_ID,eid);
+                        List v=CourseTimePeer.doSelect(crit);
+                        for(int i=0;i<v.size();i++){
+                                CourseTime element=(CourseTime)v.get(i);
+                                int status=element.getStatus();
+                                if(status==1){
+                                        int ctid=element.getCtId();
+                                        String courseid=element.getCourseId();
+                                        Date priviousDate=element.getCloginDate();
+                                        Integer ctime=element.getCourseTime();
+                                        long ctime1 = ctime.longValue();
+                                        long diff1=date.getTime()-priviousDate.getTime();
+                                        long diff=diff1+ctime1;
+                                        String priDate=ModuleTimeUtil.getDateformate(priviousDate);
+                                        String TodayDate=ModuleTimeUtil.getDateformate(date);
+                                        Criteria cr=new Criteria();
+                                        if(priDate.equals(TodayDate)){
+                                        cr.add(CourseTimePeer.CT_ID,ctid);
+                                        cr.and(CourseTimePeer.CLOGIN_DATE,date);
+                                        cr.add(CourseTimePeer.COURSE_TIME,diff);
+                                        CourseTimePeer.doUpdate(cr);
+                                        }else
+                                        {
 					cr.add(CourseTimePeer.CT_ID,ctid);
-					cr.and(CourseTimePeer.CLOGIN_DATE,date);
-					cr.add(CourseTimePeer.COURSE_TIME,diff);
-					CourseTimePeer.doUpdate(cr);		
-				}
-			}
-		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil getCalculation Method-------------");}
-	}
+                                        cr.add(CourseTimePeer.STATUS,"0");
+                                        CourseTimePeer.doUpdate(cr);
+                                        cr.add(CourseTimePeer.ENTRY_ID,eid);
+                                        cr.add(CourseTimePeer.USER_ID,userid);
+                                        cr.add(CourseTimePeer.COURSE_ID,courseid);
+                                        cr.add(CourseTimePeer.CLOGIN_DATE,date);
+                                        cr.add(CourseTimePeer.COURSE_TIME,"00");
+                                        cr.add(CourseTimePeer.COUNT_COURSELOGIN,"1");
+                                        cr.add(CourseTimePeer.STATUS,"1");
+                                        CourseTimePeer.doInsert(cr);
+                                        }
+                                }
+                        }
+                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil getCalculation Method-------"+ex);}
+        }
+
 	/*
 	 *Method for getting list of allActive Users of this Group who are currently 
 	 *use this CourseArea. 
@@ -273,7 +288,7 @@ public class CourseTimeUtil
 					}
 				}
 			}
-		} catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method getCourseUid-------------"); }
+		} catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method getCourseUid------"+ex); }
                  return userList;
 		}
 	/*
@@ -303,7 +318,7 @@ public class CourseTimeUtil
 				//}
 				TimeandLogin=totalTime+"@"+totalLogin;
 			
-		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in TotalCourseTime Method------------------");}
+		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in TotalCourseTime Method-----"+ex);}
 		 return TimeandLogin;
 	}
 
@@ -323,39 +338,41 @@ public class CourseTimeUtil
 					if(de.equals(date))
 					CourseTimePeer.doDelete(crit);
 			}
-		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil Total deleteDayEntry Method------------------");}
+		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil Total deleteDayEntry Method-----"+ex);}
 	}
-	public static void CourseDay()
+	 public static void CourseDay()
         {
                 try{
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.DATE, -1);
+                        Date yesterday = calendar.getTime();
+                        String date=ModuleTimeUtil.getDateformate(yesterday);
                         Vector vec=new Vector();
                         Criteria crit=new Criteria();
-			crit.setDistinct();
+                        crit.setDistinct();
                         crit.addGroupByColumn(CourseTimePeer.USER_ID);
                         crit.addGroupByColumn(CourseTimePeer.COURSE_ID);
                         List v=CourseTimePeer.doSelect(crit);
-                        //ErrorDumpUtil.ErrorLog("----------------listv"+v);
                         for(int p=0;p<v.size();p++){
                                 CourseTime element=(CourseTime)v.get(p);
                                 int userid=element.getUserId();
                                 String courseid=element.getCourseId();
-                                Date clogindate=element.getCloginDate();
-                                String de = ModuleTimeUtil.getDateformate(clogindate);
-                                String TimeandLogin=totalCourseTime(userid,courseid,de);
+                                String TimeandLogin=totalCourseTime(userid,courseid,date);
                                 String [] Stringsplit=TimeandLogin.split("@");
                                 int totalTime=Integer.parseInt(Stringsplit[0]);
                                 int totalLogins=Integer.parseInt(Stringsplit[1]);
-                                deleteDayEntry(userid,courseid,de);
+                                deleteDayEntry(userid,courseid,date);
+                                String date1=date+" "+"00:00:00";
                                         Criteria cr=new Criteria();
                                         cr.add(CourseTimedayPeer.USER_ID,userid);
                                         cr.add(CourseTimedayPeer.COURSE_ID,courseid);
-                                        cr.add(CourseTimedayPeer.PRIVIOUS_DATE,de);
+                                        cr.add(CourseTimedayPeer.PRIVIOUS_DATE,date1);
                                         cr.add(CourseTimedayPeer.COURSE_TIMEDAY,totalTime);
                                         cr.add(CourseTimedayPeer.COUNT_LOGINDAY,totalLogins);
                                         CourseTimedayPeer.doInsert(cr);
-				 }
+                                 }
 
-                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil Method CourseDay-------------");}
+                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil Method CourseDay-------------"+ex);}
         }
 
 	/*
@@ -381,10 +398,10 @@ public class CourseTimeUtil
 					crit=new Criteria();
 					crit.add(CourseTimedayPeer.CTD_ID,ctdid);
 					CourseTimedayPeer.doDelete(crit);
-					ErrorDumpUtil.ErrorLog("-------Delete Today date Entry------------");
+					//ErrorDumpUtil.ErrorLog("-------Delete Today date Entry------------");
 				}
 			}
-		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error CourseTimeUtil in deleteSameDateEntry----------------------");}
+		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error CourseTimeUtil in deleteSameDateEntry-----"+ex);}
 	}
 
         /* 
@@ -423,7 +440,7 @@ public class CourseTimeUtil
 			time=time2/(60*1000);
 			monthTimeandLogin=time+"@"+NoofLogins;
                 }catch(Exception ex){
-                ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method CoMonthTime-----------------------");
+                ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method CoMonthTime-----"+ex);
                 }
                  return monthTimeandLogin;
         }
@@ -465,7 +482,7 @@ public class CourseTimeUtil
                         }
 
                         
-                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil getmonthYear Method----------------------");}
+                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil getmonthYear Method------"+ex);}
                 return mYear; 
       }
 
@@ -505,7 +522,7 @@ public class CourseTimeUtil
 				//}
 			//}
 			//deleteSameDateEntry();
-		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method UpdateCourseMonth()---------i-");}
+		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method UpdateCourseMonth()-----"+ex);}
 	}
 	/*
 	 *Method for deleting same month entry of privious year
@@ -532,7 +549,7 @@ public class CourseTimeUtil
 				}
 			}
 			
-		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in deleteSameMonthEntry----------------");}	
+		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in deleteSameMonthEntry-----"+ex);}	
 	}
 	
         /**method for changing the status of a user in database if he stop to use 
@@ -549,7 +566,7 @@ public class CourseTimeUtil
                         crit.add(CourseTimePeer.CT_ID,ctid);
                         crit.add(CourseTimePeer.STATUS,"0");
                         CourseTimePeer.doUpdate(crit);
-                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method getchangeStatus-----------------------"); }
+                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method getchangeStatus-----"+ex); }
                  return status;
 }
  	/*
@@ -573,7 +590,7 @@ public class CourseTimeUtil
                         if(status==1)
                         recenttime=element.getCloginDate();
                         }
-                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method getDatetime-------------");}
+                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method getDatetime------"+ex);}
                 return recenttime;
         }
 

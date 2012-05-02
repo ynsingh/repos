@@ -53,8 +53,9 @@ import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
 * This class displays the list of quizzes to announce/update that quiz
 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi Sr</a>
@@ -87,8 +88,9 @@ public class AnnounceExam_Manage extends SecureScreen{
                  int uid=UserUtil.getUID(user.getName());
                  if((Role.equals("student")) || (Role.equals("instructor")))
                  {
-                         CourseTimeUtil.getCalculation(uid);
-                         ModuleTimeUtil.getModuleCalculation(uid);
+                         //CourseTimeUtil.getCalculation(uid);
+                         //ModuleTimeUtil.getModuleCalculation(uid);
+			 MailNotificationThread.getController().CourseTimeSystem(uid);
                   }
 
             File file=new File(filePath+"/"+quizPath);

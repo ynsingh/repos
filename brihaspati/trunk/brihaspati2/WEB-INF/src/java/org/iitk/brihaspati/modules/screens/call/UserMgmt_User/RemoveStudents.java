@@ -50,8 +50,9 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.om.UserConfiguration;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 
 /**
@@ -92,8 +93,9 @@ public class RemoveStudents extends SecureScreen_Instructor{
                        
                          if((Role.equals("student")) || (Role.equals("instructor")))
                          {
-                                CourseTimeUtil.getCalculation(current_user_id);
-                                ModuleTimeUtil.getModuleCalculation(current_user_id);
+                                //CourseTimeUtil.getCalculation(current_user_id);
+                                //ModuleTimeUtil.getModuleCalculation(current_user_id);
+				MailNotificationThread.getController().CourseTimeSystem(current_user_id);
                          }
 
 			/**

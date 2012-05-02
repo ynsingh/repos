@@ -57,8 +57,9 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
  *   This class is used to show report card of student after attempting the quiz
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
@@ -196,8 +197,9 @@ public class Report_Card extends SecureScreen{
 			 int userid=UserUtil.getUID(user.getName());
                          if((Role.equals("student")) || (Role.equals("instructor")))
                          {
-                                CourseTimeUtil.getCalculation(userid);
-                                ModuleTimeUtil.getModuleCalculation(userid);
+                                //CourseTimeUtil.getCalculation(userid);
+                                //ModuleTimeUtil.getModuleCalculation(userid);
+				 MailNotificationThread.getController().CourseTimeSystem(userid);
                          }
 							
 		}	

@@ -1,4 +1,38 @@
 package org.iitk.brihaspati.modules.actions;
+/*
+ * @(#)ModuleLogin.java
+ *
+ *  Copyright (c)2011 ETRG,IIT Kanpur.
+ *  All Rights Reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or
+ *  without modification, are permitted provided that the following
+ *  conditions are met:
+ *
+ *  Redistributions of source code must retain the above copyright
+ *  notice, this  list of conditions and the following disclaimer.
+ *
+ *  Redistribution in binary form must reproducuce the above copyright
+ *  notice, this list of conditions and the following disclaimer in
+ *  the documentation and/or other materials provided with the
+ *  distribution.
+ *
+ *
+ *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ *  DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *  Contributors : members of ETRG, IIT Kanpur
+ *
+ */
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,36 +72,39 @@ public class ModuleLogin extends SecureAction
            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String de =sdf.format(Todaydate);
 	    Criteria crit=new Criteria();
-	    //ErrorDumpUtil.ErrorLog("da-------------------------"+de);
-	      String dateandmid=ModuleTimeUtil.getDate(uid,courseid,mname);
-	//	ErrorDumpUtil.ErrorLog("smita--------------------------"+dateandmid);
-	     if(dateandmid.equals("")){
-	  //  ErrorDumpUtil.ErrorLog("smita-------------------------"+dateandmid.equals(""));
-                    crit.add(ModuleTimePeer.USER_ID, uid);
-                    crit.add(ModuleTimePeer.COURSE_ID, courseid);
-                    crit.add(ModuleTimePeer.MNAME, mname);
-                    crit.add(ModuleTimePeer.MLOGIN_DATETIME, Todaydate);
-	            crit.add(ModuleTimePeer.MTIME,"00");
-                    ModuleTimePeer.doInsert(crit);
-	}else{	//or update given entry in database.
-		String [] Stringsplit=dateandmid.split("@");
-              String date =(Stringsplit[0]);
-              int mid=Integer.parseInt(Stringsplit[1]);
-		crit=new Criteria();
-		crit.add(ModuleTimePeer.MID,mid);
-		List v=ModuleTimePeer.doSelect(crit);
-		ModuleTime element = (ModuleTime)v.get(0);
-		Integer time = (element.getMtime());
-		
-                    		long time1 = time.longValue();
+	    if((uid!=0) || (uid!=1)){
+	  	  String dateandmid=ModuleTimeUtil.getDate(uid,courseid,mname);
+	     	   if(dateandmid.equals("")){
+                   	 crit.add(ModuleTimePeer.USER_ID, uid);
+                  	 crit.add(ModuleTimePeer.COURSE_ID, courseid);
+               		 crit.add(ModuleTimePeer.MNAME, mname);
+            	         crit.add(ModuleTimePeer.MLOGIN_DATETIME, Todaydate);
+	        	 crit.add(ModuleTimePeer.MTIME,"00");
+                  	 ModuleTimePeer.doInsert(crit);
+		}else{	//or update given entry in database.
+			String [] Stringsplit=dateandmid.split("@");
+             		 String date =(Stringsplit[0]);
+              		int mid=Integer.parseInt(Stringsplit[1]);
+			crit=new Criteria();
+			crit.add(ModuleTimePeer.MID,mid);
+			List v=ModuleTimePeer.doSelect(crit);
+			ModuleTime element = (ModuleTime)v.get(0);
+			Integer time = (element.getMtime());
+	
+                  		long time1 = time.longValue();
                     		crit = new Criteria();
                     		crit.add(ModuleTimePeer.MID, mid);
                     		crit.add(ModuleTimePeer.MLOGIN_DATETIME,Todaydate);
                     		crit.add(ModuleTimePeer.MTIME, time1);
                     		ModuleTimePeer.doUpdate(crit);
                 	}
+		}	
 	 
-        }catch(Exception e) { }
+        }
+	catch(Exception ex){
+                data.setMessage("The Error in ModuleLogin Action");
+                }
+
     }
 
     public void doPerform(RunData data, Context context)throws Exception

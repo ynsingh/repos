@@ -59,8 +59,9 @@ import org.iitk.brihaspati.modules.utils.CalendarUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.apache.velocity.context.Context;
 
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
  * @author <a href="mailto:singhnk@iitk.ac.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
@@ -117,8 +118,9 @@ public class Calendar_Day extends SecureScreen
                         	int user_id=Integer.parseInt(uid_user);
                          	if((Role.equals("student")) || (Role.equals("instructor")))
                          	{
-                                	CourseTimeUtil.getCalculation(user_id);
-                                	ModuleTimeUtil.getModuleCalculation(user_id);
+                                	//CourseTimeUtil.getCalculation(user_id);
+                                	//ModuleTimeUtil.getModuleCalculation(user_id);
+					MailNotificationThread.getController().CourseTimeSystem(user_id);
                          	}
 			}
 

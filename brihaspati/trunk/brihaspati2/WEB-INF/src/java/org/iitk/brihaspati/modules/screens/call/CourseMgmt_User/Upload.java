@@ -48,8 +48,9 @@ import org.iitk.brihaspati.modules.utils.QuotaUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.Courses;
 import org.apache.torque.util.Criteria;
@@ -115,8 +116,9 @@ public class Upload extends SecureScreen_Instructor {
 		String Role = (String)user.getTemp("role");
 		if((Role.equals("student")) || (Role.equals("instructor")))
                 {
-                       CourseTimeUtil.getCalculation(uid);
-                       ModuleTimeUtil.getModuleCalculation(uid);
+                       //CourseTimeUtil.getCalculation(uid);
+                       //ModuleTimeUtil.getModuleCalculation(uid);
+		       MailNotificationThread.getController().CourseTimeSystem(uid);
                 }
 
 		}catch(Exception ex){data.setMessage("the error in upload screens !!"+ex);}

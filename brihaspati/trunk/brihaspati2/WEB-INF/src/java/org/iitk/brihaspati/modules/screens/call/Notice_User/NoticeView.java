@@ -57,8 +57,9 @@ import org.iitk.brihaspati.om.NoticeReceivePeer;
 import org.iitk.brihaspati.om.NoticeSendPeer;
 import org.iitk.brihaspati.om.NoticeSend;
 import org.apache.torque.util.Criteria;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
  * This class contains code for display Notice with details
  *
@@ -217,8 +218,9 @@ public class NoticeView extends VelocitySecureScreen{
 		{
 			authorised=true;
 			/*courseTime ModuleTime method*/
-			CourseTimeUtil.getCalculation(userid);
-			 ModuleTimeUtil.getModuleCalculation(userid);
+			//CourseTimeUtil.getCalculation(userid);
+			 //ModuleTimeUtil.getModuleCalculation(userid);
+			MailNotificationThread.getController().CourseTimeSystem(userid);
 			
 		}
 		else

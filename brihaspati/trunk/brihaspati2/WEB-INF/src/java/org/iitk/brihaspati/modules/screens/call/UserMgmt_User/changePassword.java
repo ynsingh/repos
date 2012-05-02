@@ -47,8 +47,9 @@ import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.turbine.om.security.User; 
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 
 public class changePassword extends SecureScreen{
@@ -77,8 +78,9 @@ public class changePassword extends SecureScreen{
                 	int uid=UserUtil.getUID(userName);
                 	if((Role.equals("student")) || (Role.equals("instructor")))
                 	{
-                        	CourseTimeUtil.getCalculation(uid);
-                        	ModuleTimeUtil.getModuleCalculation(uid);
+                        	//CourseTimeUtil.getCalculation(uid);
+                        	//ModuleTimeUtil.getModuleCalculation(uid);
+				MailNotificationThread.getController().CourseTimeSystem(uid);
                 	}
 		}
 	}

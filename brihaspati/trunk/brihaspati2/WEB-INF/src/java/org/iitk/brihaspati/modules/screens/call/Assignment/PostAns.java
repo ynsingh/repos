@@ -55,8 +55,9 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.parser.ParameterParser;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 	/** 
 	* This class contains code of Post Answer to the Assignment
 	* @author<a href="arvindjss17@yahoo.co.in">Arvind Pal</a>
@@ -91,8 +92,9 @@ public class PostAns extends  SecureScreen
                          int uid=UserUtil.getUID(user.getName());
                          if((Role.equals("student")) || (Role.equals("instructor")))
                          {
-                                CourseTimeUtil.getCalculation(uid);
-                                ModuleTimeUtil.getModuleCalculation(uid);
+                               // CourseTimeUtil.getCalculation(uid);
+                               // ModuleTimeUtil.getModuleCalculation(uid);
+				MailNotificationThread.getController().CourseTimeSystem(uid);
                          }
 
 			Vector v=new Vector();

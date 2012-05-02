@@ -66,8 +66,9 @@ import java.io.FileReader;
 import java.util.StringTokenizer;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 
 public class NoticeContent extends SecureScreen{
@@ -327,8 +328,9 @@ public class NoticeContent extends SecureScreen{
                           String Role=(String)data.getUser().getTemp("role");
                           if((Role.equals("student")) || (Role.equals("instructor")))
                           {
-                                   CourseTimeUtil.getCalculation(user_id);
-                                   ModuleTimeUtil.getModuleCalculation(user_id);
+                                   //CourseTimeUtil.getCalculation(user_id);
+                                   //ModuleTimeUtil.getModuleCalculation(user_id);
+				    MailNotificationThread.getController().CourseTimeSystem(user_id);
                            }
 
 		}

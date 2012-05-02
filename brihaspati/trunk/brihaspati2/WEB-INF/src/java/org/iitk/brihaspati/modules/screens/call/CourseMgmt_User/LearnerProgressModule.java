@@ -57,9 +57,10 @@ import org.iitk.brihaspati.modules.utils.ManifestParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+
 import org.iitk.brihaspati.modules.screens.call.tunnel.ScoData;
 import org.iitk.brihaspati.modules.screens.call.tunnel.ScoDataFactory;
-
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /* this class contain the code for tracking user scorm (sco) report*/
 
 public class LearnerProgressModule extends SecureScreen {
@@ -141,6 +142,12 @@ public class LearnerProgressModule extends SecureScreen {
 				}			
 
 			}//for
+			int userid=UserUtil.getUID(uname);
+			 if((Role.equals("student")) || (Role.equals("instructor")))
+                        {
+                               MailNotificationThread.getController().CourseTimeSystem(userid);
+                         }
+
 	
 		}//try
 		catch(Exception ex){data.setMessage("The error in LearnerProgressModule !! "+ex);}

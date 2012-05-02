@@ -51,8 +51,9 @@ import org.iitk.brihaspati.om.CalInformation;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
  * @author <a href="mailto:singhnk@iitk.ac.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
@@ -95,8 +96,9 @@ public class Calendar_Insert extends SecureScreen
 			int uid=UserUtil.getUID(username);
 			if((Role.equals("student")) || (Role.equals("instructor")))
 			{
-				CourseTimeUtil.getCalculation(uid);
-        	                ModuleTimeUtil.getModuleCalculation(uid);
+				//CourseTimeUtil.getCalculation(uid);
+        	                //ModuleTimeUtil.getModuleCalculation(uid);
+				MailNotificationThread.getController().CourseTimeSystem(uid);
 	
 			}
 		}

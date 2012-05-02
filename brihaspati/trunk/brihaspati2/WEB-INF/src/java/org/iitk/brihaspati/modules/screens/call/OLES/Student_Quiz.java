@@ -73,8 +73,9 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.om.QuizPeer;
 import org.iitk.brihaspati.om.Quiz;
 import javax.servlet.http.*;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
  *   This class contains code for quiz attempt part from student login
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
@@ -257,8 +258,9 @@ public class Student_Quiz extends SecureScreen
                          int userid=UserUtil.getUID(user.getName());
                          if((Role.equals("student")) || (Role.equals("instructor")))
                          {
-                                CourseTimeUtil.getCalculation(userid);
-                                ModuleTimeUtil.getModuleCalculation(userid);
+                                //CourseTimeUtil.getCalculation(userid);
+                                //ModuleTimeUtil.getModuleCalculation(userid);
+				MailNotificationThread.getController().CourseTimeSystem(userid);
                          }
 
 		}catch(Exception e)

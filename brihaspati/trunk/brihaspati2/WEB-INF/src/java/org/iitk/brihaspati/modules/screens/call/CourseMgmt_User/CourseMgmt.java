@@ -56,8 +56,9 @@ import org.iitk.brihaspati.modules.utils.XMLWriter_Cms;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.StudentInstructorMAP;
 import org.apache.turbine.util.security.AccessControlList;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
@@ -108,8 +109,9 @@ public class CourseMgmt extends SecureScreen {
 		  String role=(String)user.getTemp("role");
                  if((role.equals("student")) || (role.equals("instructor")))
                  {
-                        CourseTimeUtil.getCalculation(u_id);
-                        ModuleTimeUtil.getModuleCalculation(u_id);
+                        //CourseTimeUtil.getCalculation(u_id);
+                        //ModuleTimeUtil.getModuleCalculation(u_id);
+			MailNotificationThread.getController().CourseTimeSystem(u_id);
                  }
 
 		/**
