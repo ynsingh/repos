@@ -1,5 +1,5 @@
 #*
- * @(#) CourseContents.vm
+ * @(#) CourseContent.vm
  * Copyright (c) 2005,2009,2010,2012 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
@@ -147,7 +147,7 @@ $!data.getMessage()
 		<tr><td></td><td align="left" colspan=1>
 		<font size=4><b> $brih_topic #if($lang=="hindi") $brih_Of1 #end $brih_name  
 		</td>
-		<td colspan=4><font size=4><b> $brih_availableAction</td>
+		<td align="center" colspan=4><font size=4><b> $brih_availableAction</td>
 		</tr>
 	#if($isInstructor=="true")
 		#foreach($file in $dirContent)
@@ -171,11 +171,6 @@ $!data.getMessage()
 	                #else
 	                	<td align="center"><font color="grey">$brih_guest $DisBoard_DBmsg7</td>
 			#end
-			<td>
-                        #if($dirContent.size()>1)
-                        <input type="radio" name="orderRadio" value="$file.CheckboxName" onClick="changeOrder(this,document.frm,$seqno);">
-                        #end
-                        </td>
 
 		</tr>
 		#set ( $count= $count+1)
@@ -235,40 +230,51 @@ $!data.getMessage()
         <td>
 		#if($dirContent.size()>1)
                 <table bgcolor="$ui.menuColor" width=100%>
-        	<tr><td align=left>
-                        #headerCell("Action")
-                        #headerCell("Sequence")
-        	</td></tr>
+        	<tr>
+			<td align=left>
+                        	#headerCell("Action")
+	                        #headerCell("Sequence")
+        		</td>
+		</tr>
+		#set($i=0)
+                #set($flag=true)
+                #foreach($file in $dirContent)
         	<tr>	
-			<td></td>
-	        	<td>
-                	##if( $dirContent.size()>1)
-                        <select name="actionType">
-                        <option selected value="-1"></option>
-                        <option value=1> $brih_move</option>
-                        <option value=2> $brih_exchange </option>
-                        </select>
-                	##end
-        		</td>
-        		<td>
-                	##if( $dirContent.size()>1)
-                        <select name="destinationSeqno">
-                        <option selected value="-1"></option>
-                        #foreach($index in [1..$dirContent.size()])
-                        #set ( $seqno= $index - 1 )
-                        <option value=$seqno >$index</option>
-                        #end
-                        </select>
-                	##end
-        		</td>
-        	</tr>
+			<td>
+			#if($dirContent.size()>1)
+	                        <input type="radio" name="orderRadio" value="$file.CheckboxName" onClick="changeOrder(this,document.frm,$seqno);">
+	                #end
+			</td>
+			#if(($i%2!=0)&&($flag==true))
+				<td width="15%" align="center">
+        	                        <select name="actionType">
+                		                <option selected value="-1"></option>
+			                        <option value=1> Move</option>
+                        		        <option value=2> Exchange with </option>
+	                                </select>
+                                </td>
+        	                <td width="15%" align="center">
+					<select name="destinationSeqno">
+			                        <option selected value="-1"></option>
+						#foreach($index in [1..$dirContent.size()])
+						#set ( $seqno= $index - 1 )
+							<option value=$seqno >$index</option>
+						#end
+					</select>
+				</td>
+	                        <td align="left">
+        		                <input type="button" name=eventSubmit_doChangeTopicOrder value="Change file Order" onClick="isOrderChanged(document.frm,this);">
+	                        </td>
+				#set($flag=false)
+			#end
+			#set($i=$i+1)
+		#end
+		</tr>
 		</table>
 		##end
         </td>
 	</tr> ##main tr
         ##if( $dirContent.size()>1)
-	<tr bgcolor="$ui.menuColor"><td colspan=7>
-        <input type="button" name=eventSubmit_doChangeTopicOrder value="Change file Order" onClick="isOrderChanged(document.frm,this);">
                 <input type="hidden" name="actionName" value="">
                 <input type="hidden" name="deleteFileNames" value="">
                 <input type="hidden" name="changeFileNameOrder" value="">
