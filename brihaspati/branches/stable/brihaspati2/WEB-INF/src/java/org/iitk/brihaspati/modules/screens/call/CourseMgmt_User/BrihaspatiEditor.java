@@ -47,8 +47,9 @@ import org.iitk.brihaspati.modules.utils.NotInclude;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
  *This class contains code for Creating a group
  *@author: <a href="mailto:seema_020504@yahoo.com">Seemapal</a>
@@ -65,7 +66,6 @@ public class BrihaspatiEditor extends SecureScreen{
                      String authorname=user.getName();
                      context.put("username",authorname);
                      String C_Name=(String)user.getTemp("course_name");
-		    ErrorDumpUtil.ErrorLog("c_name----------"+C_Name);
 		     context.put("Cname",C_Name);
 		     context.put("tdcolor",data.getParameters().getString("count",""));
 		     String UserPath=data.getServletContext().getRealPath("/BrihaspatiEditor");
@@ -89,8 +89,9 @@ public class BrihaspatiEditor extends SecureScreen{
                        int uid=UserUtil.getUID(user.getName());
                        if((Role.equals("student")) || (Role.equals("instructor")))
                        {
-                              CourseTimeUtil.getCalculation(uid);
-                              ModuleTimeUtil.getModuleCalculation(uid);
+                              //CourseTimeUtil.getCalculation(uid);
+                              //ModuleTimeUtil.getModuleCalculation(uid);
+			       MailNotificationThread.getController().CourseTimeSystem(uid);
                        }
 
 

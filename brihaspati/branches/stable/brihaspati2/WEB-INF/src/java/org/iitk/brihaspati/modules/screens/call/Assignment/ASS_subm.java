@@ -59,8 +59,9 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
  *   This class contains code for all discussions in workgroup
  *   Compose a discussion and reply.
@@ -113,8 +114,9 @@ public class  ASS_subm  extends  SecureScreen
 			 int uid=UserUtil.getUID(user.getName());
 			 if((Role.equals("student")) || (Role.equals("instructor")))
                          {
-                                CourseTimeUtil.getCalculation(uid);
-                                ModuleTimeUtil.getModuleCalculation(uid);
+				MailNotificationThread.getController().CourseTimeSystem(uid);
+                                //CourseTimeUtil.getCalculation(uid);
+                                //ModuleTimeUtil.getModuleCalculation(uid);
                          }
 
 			/**

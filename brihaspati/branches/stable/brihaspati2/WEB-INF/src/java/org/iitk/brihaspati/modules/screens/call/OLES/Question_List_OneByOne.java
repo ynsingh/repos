@@ -52,7 +52,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
 * This class is used to display question list for one by one
 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
@@ -112,8 +112,9 @@ public class Question_List_OneByOne extends SecureScreen{
 		 int uid=UserUtil.getUID(user.getName());
                  if((Role.equals("student")) || (Role.equals("instructor")))
                  {
-                          CourseTimeUtil.getCalculation(uid);
-                          ModuleTimeUtil.getModuleCalculation(uid);
+                          //CourseTimeUtil.getCalculation(uid);
+                          //ModuleTimeUtil.getModuleCalculation(uid);
+			  MailNotificationThread.getController().CourseTimeSystem(uid);
                  }
 
 

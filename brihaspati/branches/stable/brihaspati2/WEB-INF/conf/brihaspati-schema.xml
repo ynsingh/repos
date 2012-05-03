@@ -515,7 +515,7 @@
 	<column name="CTD_ID"  required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
         <column name="USER_ID" required="true"  type="INTEGER"/>
         <column name="COURSE_ID" required="true" size="255" type="VARCHAR"/>
-        <column name="PRIVIOUS_DATE" required="true" type="DATE" />
+        <column name="PRIVIOUS_DATE" required="true" type="TIMESTAMP" />
         <column name="COURSE_TIMEDAY"  type="INTEGER"/>
 	 <column name="COUNT_LOGINDAY" required="true" type="INTEGER"/>
   </table>

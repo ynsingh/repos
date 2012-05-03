@@ -53,8 +53,9 @@ import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 /**
  *   This class contains code for displaying list of all records for ReEvaluation
@@ -130,8 +131,9 @@ public class OLES_ReEvaluation extends SecureScreen{
 			int userid=UserUtil.getUID(user.getName());
                         if((Role.equals("student")) || (Role.equals("instructor")))
                         {
-                                CourseTimeUtil.getCalculation(userid);
-                                ModuleTimeUtil.getModuleCalculation(userid);
+                                //CourseTimeUtil.getCalculation(userid);
+                                //ModuleTimeUtil.getModuleCalculation(userid);
+				MailNotificationThread.getController().CourseTimeSystem(userid);
                         }
 
 		}

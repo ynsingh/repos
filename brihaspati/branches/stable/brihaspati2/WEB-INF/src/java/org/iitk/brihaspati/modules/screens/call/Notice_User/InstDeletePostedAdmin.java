@@ -59,7 +59,9 @@ import java.util.List;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.FileReader;
-
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 public class InstDeletePostedAdmin extends SecureScreen_Institute_Admin
 {
 	public void doBuildTemplate( RunData data, Context context ){
@@ -186,6 +188,17 @@ public class InstDeletePostedAdmin extends SecureScreen_Institute_Admin
                  		* here comes the code to view attachment with the message
                  		*/
                 		context.put("message",topicDesc);
+				 /*
+	                         *method for how much time user spend in this page.
+        	                 */
+				 String Role = (String)user.getTemp("role");
+				 if((Role.equals("student")) || (Role.equals("instructor")))
+                        	{
+                                	//CourseTimeUtil.getCalculation(user_id);
+                               		//ModuleTimeUtil.getModuleCalculation(user_id);
+					MailNotificationThread.getController().CourseTimeSystem(user_id);
+                        	}
+
                 	}
 		}
 		catch(Exception e)

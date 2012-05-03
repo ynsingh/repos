@@ -45,8 +45,9 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.NewsHeadlinesUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.apache.turbine.om.security.User;
 /**
  * This class displays all the course specific news
@@ -140,8 +141,9 @@ public class News_Course extends SecureScreen
                         	int uid=UserUtil.getUID(username);
                         	if((Role.equals("student")) || (Role.equals("instructor")))
                         	{
-                               	 	CourseTimeUtil.getCalculation(uid);
-                                	ModuleTimeUtil.getModuleCalculation(uid);
+                               	 	//CourseTimeUtil.getCalculation(uid);
+                                	//ModuleTimeUtil.getModuleCalculation(uid);
+					MailNotificationThread.getController().CourseTimeSystem(uid);
                         	}
 
 				

@@ -40,12 +40,13 @@ import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.apache.turbine.om.security.User;
 /**
  * This class contains code for all record of News
- * Grab all the records in a table using a Peer, and
+ * Grab all the records in a table using a Peer, and;
  * place the Vector of data objects in the context
  * where they can be displayed by a #foreach loop.
  * @author <a href="mailto:singh_jaivir@rediffmail.com ">jaivir singh</a>
@@ -120,8 +121,9 @@ public class News_Add extends SecureScreen
                         int uid=UserUtil.getUID(username);
                         if((Role.equals("student")) || (Role.equals("instructor")))
                         {
-                                CourseTimeUtil.getCalculation(uid);
-                                ModuleTimeUtil.getModuleCalculation(uid);
+                                //CourseTimeUtil.getCalculation(uid);
+                                //ModuleTimeUtil.getModuleCalculation(uid);
+				MailNotificationThread.getController().CourseTimeSystem(uid);
                         }
 
 

@@ -58,8 +58,9 @@ import org.iitk.brihaspati.om.MailSendPeer;
 import org.iitk.brihaspati.om.MailSend;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 /**
  * This class contains code for display message with details
@@ -92,8 +93,9 @@ public class MailView extends SecureScreen{
                  int uid=UserUtil.getUID(user_name);
                  if((Role.equals("student")) || (Role.equals("instructor")))
                  {
-	                 CourseTimeUtil.getCalculation(uid);
-        	         ModuleTimeUtil.getModuleCalculation(uid);
+	                 //CourseTimeUtil.getCalculation(uid);
+        	         //ModuleTimeUtil.getModuleCalculation(uid);
+			MailNotificationThread.getController().CourseTimeSystem(uid);
                  }
 
 

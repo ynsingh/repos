@@ -44,8 +44,9 @@ import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
 * This class contain the code for newsdetails and removal of news
 * Grab all the records in a table using a Peer, and
@@ -139,8 +140,9 @@ public class News_Edit extends SecureScreen
 			String Role = (String)data.getUser().getTemp("role");
                         if((Role.equals("student")) || (Role.equals("instructor")))
                         {
-                                CourseTimeUtil.getCalculation(userId);
-                                ModuleTimeUtil.getModuleCalculation(userId);
+                                //CourseTimeUtil.getCalculation(userId);
+                                //ModuleTimeUtil.getModuleCalculation(userId);
+				MailNotificationThread.getController().CourseTimeSystem(userId);
                         }
 
                 }

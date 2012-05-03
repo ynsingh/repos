@@ -71,6 +71,7 @@ import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.apache.turbine.services.session.TurbineSession;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
  * This Class manage all functionality of Course
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
@@ -290,7 +291,8 @@ public class CourseHome extends SecureScreen{
                          */
                         if((Role.equals("student")) || (Role.equals("instructor")))
                         {
-                               CourseTimeUtil.getCalculation(userid);
+                               //CourseTimeUtil.getCalculation(userid);
+				MailNotificationThread.getController().CourseTimeSystem(userid);
                          }
 			 /*
                         *method for how much time user spend in this page.

@@ -49,8 +49,9 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.AssignmentDetail;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.apache.turbine.om.security.User;
 /**
  *   This class contains code for all discussions in workgroup
@@ -208,8 +209,9 @@ public class Archive extends SecureScreen
                         	int uid=UserUtil.getUID(username);
                         	if((Role.equals("student")) || (Role.equals("instructor")))
                         	{	
-                                	CourseTimeUtil.getCalculation(uid);
-                                	ModuleTimeUtil.getModuleCalculation(uid);
+                                	//CourseTimeUtil.getCalculation(uid);
+                                	//ModuleTimeUtil.getModuleCalculation(uid);
+					MailNotificationThread.getController().CourseTimeSystem(uid);
                         	}
 
 			}

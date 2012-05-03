@@ -68,8 +68,9 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 	/**
 	 *   This class contains code for disply all assignment
@@ -97,8 +98,9 @@ public class EditDelete extends  SecureScreen
 			 int uid=UserUtil.getUID(UserName);
                          if((Role.equals("student")) || (Role.equals("instructor")))
                          {
-                                CourseTimeUtil.getCalculation(uid);
-                                ModuleTimeUtil.getModuleCalculation(uid);
+                               // CourseTimeUtil.getCalculation(uid);
+                               // ModuleTimeUtil.getModuleCalculation(uid);
+				MailNotificationThread.getController().CourseTimeSystem(uid);
                          }
 
 

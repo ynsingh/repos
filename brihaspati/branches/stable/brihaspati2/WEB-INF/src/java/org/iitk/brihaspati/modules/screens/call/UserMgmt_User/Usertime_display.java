@@ -45,12 +45,13 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil; 
 import java.util.List;
 
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 /**
  * This class responsible for user login time display
- * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadh;esh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  */
 
@@ -72,8 +73,9 @@ public class Usertime_display extends SecureScreen_Instructor
                  */
                  if((Role.equals("student")) || (Role.equals("instructor")))
                  {
- 	                CourseTimeUtil.getCalculation(uid);
-        	         ModuleTimeUtil.getModuleCalculation(uid);
+ 	                //CourseTimeUtil.getCalculation(uid);
+        	        // ModuleTimeUtil.getModuleCalculation(uid);
+			MailNotificationThread.getController().CourseTimeSystem(uid);
                 }
 
                 Criteria crit=new Criteria();

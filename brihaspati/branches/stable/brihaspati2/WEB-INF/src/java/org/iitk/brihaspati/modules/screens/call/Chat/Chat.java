@@ -51,8 +51,9 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
  * In this class, Get all details for Chat applet server
  *
@@ -176,8 +177,9 @@ public class Chat extends SecureScreen
 			String Role=(String)data.getUser().getTemp("role");
 			if((Role.equals("student")) || (Role.equals("instructor")))
 			{
-				CourseTimeUtil.getCalculation(uid);
-				ModuleTimeUtil.getModuleCalculation(uid);
+				//CourseTimeUtil.getCalculation(uid);
+				//ModuleTimeUtil.getModuleCalculation(uid);
+				MailNotificationThread.getController().CourseTimeSystem(uid);
 			}
 		}
 	}

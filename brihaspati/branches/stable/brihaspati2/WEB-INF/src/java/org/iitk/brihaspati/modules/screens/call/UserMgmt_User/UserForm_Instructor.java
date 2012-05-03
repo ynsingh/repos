@@ -57,8 +57,9 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
 
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 /**
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
@@ -91,8 +92,9 @@ public class UserForm_Instructor extends SecureScreen_Instructor{
                  int uid=UserUtil.getUID(userName);
                  if((Role.equals("student")) || (Role.equals("instructor")))
                  {
-	                 CourseTimeUtil.getCalculation(uid);
-        	         ModuleTimeUtil.getModuleCalculation(uid);
+	                 //CourseTimeUtil.getCalculation(uid);
+        	         //ModuleTimeUtil.getModuleCalculation(uid);
+			 MailNotificationThread.getController().CourseTimeSystem(uid);
                  }
 
 		/**

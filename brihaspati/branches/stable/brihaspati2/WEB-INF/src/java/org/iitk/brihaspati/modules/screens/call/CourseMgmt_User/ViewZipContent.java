@@ -59,8 +59,9 @@ import org.iitk.brihaspati.modules.utils.NotInclude;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
 
@@ -125,8 +126,9 @@ public class ViewZipContent extends SecureScreen_Instructor{
                         int uid=UserUtil.getUID(userLoginName);
                         if((Role.equals("student")) || (Role.equals("instructor")))
                         {
-                                CourseTimeUtil.getCalculation(uid);
-                                ModuleTimeUtil.getModuleCalculation(uid);
+                                //CourseTimeUtil.getCalculation(uid);
+                                //ModuleTimeUtil.getModuleCalculation(uid);
+				MailNotificationThread.getController().CourseTimeSystem(uid);
                         }
 
 		}

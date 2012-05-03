@@ -34,7 +34,7 @@ package org.iitk.brihaspati.modules.utils;
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *
  */
-
+import java.util.Date;
 import java.util.Vector;
 import java.util.LinkedList;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
@@ -54,10 +54,11 @@ public class MailNotificationThread implements Runnable {
 	private static String serverPort=null;
 	private static LinkedList mailnotification = new LinkedList();
 	private boolean flag=false;
+	private boolean flag1=false;
 	private static Thread runner=null;
 	private static MailNotificationThread mailNotificationThread=null;
 	private static MultilingualUtil mu=new MultilingualUtil();
-	
+	private int userid=0;
 
 	/**
 	 * Controller for this class to use as a singleton.
@@ -90,6 +91,13 @@ public class MailNotificationThread implements Runnable {
 		return mu.ConvertedString("mail_msg", LangFile);
 		//"Message is in queue";
 	}
+
+	public void CourseTimeSystem(int userid){
+                this.userid=userid;
+		flag1=true;	
+                start();
+        }
+
 	
 	/**
         * Start MailNotificationThread Thread.
@@ -123,7 +131,6 @@ public class MailNotificationThread implements Runnable {
 			try { 
 				while(mailnotification.size() != 0) {
 					boolean boolFlag = false;
-					//ErrorDumpUtil.ErrorLog(" ====> mailNotification before "+mailnotification.toString());
 					Vector mail_data=(Vector)mailnotification.pop();
 					String mailId =mail_data.get(0).toString();
         	                        String sub = mail_data.get(1).toString();
@@ -138,11 +145,9 @@ public class MailNotificationThread implements Runnable {
 					int j=0;
 					while(mailnotification.size() !=0 ) {
 						boolean flag1=false;
-						//ErrorDumpUtil.ErrorLog("================> j >"+j);
 						Vector mail_data1=(Vector)mailnotification.get(j);
 		                                String searchId =mail_data1.get(0).toString();
 						String searchInstId =mail_data1.get(6).toString();
-						//ErrorDumpUtil.ErrorLog("\n inner while  mailId "+mailId+"\nsearchId="+searchId);
 						if(mailId.equals(searchId) && (instId.equals(searchInstId)|| searchInstId.equals(""))){
 							flag1=true;
 							boolFlag = true;
@@ -171,7 +176,6 @@ public class MailNotificationThread implements Runnable {
 	                                        } else {
 							j++;
                                                 }
-						//ErrorDumpUtil.ErrorLog(" ----------------->  "+j+"  mailnotification. "+mailnotification.size());
 						if(j== (mailnotification.size())){
 							break;
 						}	
@@ -180,13 +184,17 @@ public class MailNotificationThread implements Runnable {
 						sub = "Combined mail from Brihaspati- The Virtual Classroom ";
 					}
 					String msg=MailNotification.sendMail(msgDear+message_text+msgRegard1+msgUserInfo, mailId, sub, filePathForLM, LangFile);
-					//ErrorDumpUtil.ErrorLog(""+msg);
-					//ErrorDumpUtil.ErrorLog("\nmailNotification llllllllllllllllllllll  "+mailnotification.toString());
 				} //main while close
-					if(mailnotification.size() == 0){
-					 	if(MailNotificationThread.attachedFile.length() >0)
+				if(mailnotification.size() == 0){
+				 	if(MailNotificationThread.attachedFile.length() >0)
 						MailNotification.deletingAttachedFile(MailNotificationThread.attachedFile);
-					}
+				}
+				if(flag1){
+					CourseTimeUtil.getCalculation(userid);
+                                        ModuleTimeUtil.getModuleCalculation(userid);
+
+					flag1=false;
+				}
 			}catch(Exception es){}
 			stop();
 		}	

@@ -64,8 +64,9 @@ import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 /**
   * This class contains code for listing of all user without admin and guest
@@ -117,8 +118,9 @@ public class StudentList extends SecureScreen_Instructor{
                          int uid=UserUtil.getUID(user.getName());
                          if((Role.equals("student")) || (Role.equals("instructor")))
                          {
-                                CourseTimeUtil.getCalculation(uid);
-                                ModuleTimeUtil.getModuleCalculation(uid);
+                                //CourseTimeUtil.getCalculation(uid);
+                                //ModuleTimeUtil.getModuleCalculation(uid);
+				MailNotificationThread.getController().CourseTimeSystem(uid);
                          }
 
 			/**

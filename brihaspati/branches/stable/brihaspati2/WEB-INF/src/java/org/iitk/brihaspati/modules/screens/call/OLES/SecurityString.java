@@ -61,8 +61,9 @@ import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 /**
  *   @author  <a href="dev.singha93@gmail.com">Devendra singhal</a> 
@@ -96,8 +97,9 @@ public class SecurityString extends  SecureScreen{
                          int userid=Integer.parseInt(uid);
                          if((Role.equals("student")) || (Role.equals("instructor")))
                          {
-                                CourseTimeUtil.getCalculation(userid);
-                                ModuleTimeUtil.getModuleCalculation(userid);
+                                //CourseTimeUtil.getCalculation(userid);
+                                //ModuleTimeUtil.getModuleCalculation(userid);
+				MailNotificationThread.getController().CourseTimeSystem(userid);
                          }
 
 			int g_id=GroupUtil.getGID(courseid);

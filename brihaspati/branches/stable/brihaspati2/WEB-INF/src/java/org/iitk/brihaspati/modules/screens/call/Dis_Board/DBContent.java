@@ -60,8 +60,9 @@ import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 
 /** 
@@ -275,8 +276,9 @@ public class DBContent extends SecureScreen
 				String Role = (String)data.getUser().getTemp("role");
 				if((Role.equals("student")) || (Role.equals("instructor")))
                 	        {
-                        	        CourseTimeUtil.getCalculation(user_id);
-                            	         ModuleTimeUtil.getModuleCalculation(user_id);
+                        	        //CourseTimeUtil.getCalculation(user_id);
+                            	        // ModuleTimeUtil.getModuleCalculation(user_id);
+					MailNotificationThread.getController().CourseTimeSystem(user_id);
                       		}
 			}
 			

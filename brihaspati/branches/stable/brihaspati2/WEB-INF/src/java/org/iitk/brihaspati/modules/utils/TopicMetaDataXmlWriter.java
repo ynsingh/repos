@@ -838,7 +838,7 @@ public class TopicMetaDataXmlWriter
               return xmlWriter;
         }
 	//Jaivir Singh	
-	public static void appendFileElementModify(XmlWriter xmlWriter,String fileName,String alias,String publishingDate,String username,String location)
+	public static void appendFileElementModify(XmlWriter xmlWriter,String fileName,String alias,String publishingDate,String username,String location,String guestAccess)
 	{
 		AttributesImpl ats=new AttributesImpl();
 		ats.addAttribute("","name","","",StringUtil.replaceXmlSpecialCharacters(fileName));
@@ -846,6 +846,7 @@ public class TopicMetaDataXmlWriter
 		ats.addAttribute("","publishingDate","","",publishingDate);
 		ats.addAttribute("","username","","",StringUtil.replaceXmlSpecialCharacters(username));
 		ats.addAttribute("","location","","",StringUtil.replaceXmlSpecialCharacters(location));
+		ats.addAttribute("","guestlogin","","",guestAccess);
 		xmlWriter.appendElement("File",null,ats);
 	}
 	public static XmlWriter WriteXml_NewModify(String filePath,String topic)
@@ -874,7 +875,54 @@ public class TopicMetaDataXmlWriter
                                 String Pdate=((FileEntry)v.get(i)).getPDate();
                                 String uname=((FileEntry)v.get(i)).getUserName();
                                 String mdname=((FileEntry)v.get(i)).getLocation();
-                                appendFileElementModify(xmlWriter,name,alias,Pdate,uname,mdname);
+                                String gstaccess=((FileEntry)v.get(i)).getGuestAccess();
+				if((org.apache.commons.lang.StringUtils.isBlank(gstaccess))||gstaccess.equals(null))
+					gstaccess="false";
+                                appendFileElementModify(xmlWriter,name,alias,Pdate,uname,mdname,gstaccess);
+                                xmlWriter.changeData("Desc",topicDesc,0);
+                        }
+                }
+                catch(Exception ex){
+			ErrorDumpUtil.ErrorLog("The exception in xmlwriterutil in line 813::"+ex);
+                        System.out.println("See Exception message in ExceptionLog.txt file:: ");
+		}
+        return xmlWriter;
+        }
+	/**
+ 	 * Method Overloading for giving guest to course content access permission.  
+ 	 */ 
+	
+	public static XmlWriter WriteXml_NewModify(String filePath,String topic,String Fname,String Guestaccess)
+        {
+                XmlWriter xmlWriter=null;
+		String Xml_file="";
+		if(topic.endsWith(".xml"))
+			Xml_file=topic;
+		else
+			Xml_file=topic+"__des.xml";
+		
+               	File descFile=new File(filePath+"/"+Xml_file);
+
+                try{
+                        TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+Xml_file);
+                        String topicDesc=topicMetaData.getTopicDescription();
+                        Vector v=topicMetaData.getFileDetailsModify();
+                        descFile.delete();
+                        writeWithRootOnly(descFile.getAbsolutePath());
+                        xmlWriter=new XmlWriter(filePath+"/"+Xml_file);
+
+                        for(int i=0;i<v.size();i++)
+                        {
+                                String name=((FileEntry)v.get(i)).getName();
+                                String alias=((FileEntry)v.get(i)).getAlias();
+                                String Pdate=((FileEntry)v.get(i)).getPDate();
+                                String uname=((FileEntry)v.get(i)).getUserName();
+                                String mdname=((FileEntry)v.get(i)).getLocation();
+                                String gstaccess=((FileEntry)v.get(i)).getGuestAccess();
+				if(Fname.equals(name)||(Fname.equals("")))
+	                                appendFileElementModify(xmlWriter,name,alias,Pdate,uname,mdname,Guestaccess);
+				else
+					appendFileElementModify(xmlWriter,name,alias,Pdate,uname,mdname,gstaccess);
                                 xmlWriter.changeData("Desc",topicDesc,0);
                         }
                 }

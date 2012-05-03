@@ -55,8 +55,9 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import java.util.Vector;
 import java.util.StringTokenizer;
 import java.io.File;
@@ -159,8 +160,9 @@ public class  Grp_View_Delete extends SecureScreen
                          int uid=UserUtil.getUID(user.getName());
                          if((Role.equals("student")) || (Role.equals("instructor")))
                          {
-                                CourseTimeUtil.getCalculation(uid);
-                                ModuleTimeUtil.getModuleCalculation(uid);
+                                //CourseTimeUtil.getCalculation(uid);
+                                //ModuleTimeUtil.getModuleCalculation(uid);
+				MailNotificationThread.getController().CourseTimeSystem(uid);
                          }
 
 		}//try

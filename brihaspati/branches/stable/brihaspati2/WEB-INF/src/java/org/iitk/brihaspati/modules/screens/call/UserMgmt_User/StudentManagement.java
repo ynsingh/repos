@@ -50,9 +50,9 @@ import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.om.InstituteProgramPeer;
 import org.iitk.brihaspati.om.InstituteProgram;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
  * This class responsible manage student management 
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
@@ -91,8 +91,9 @@ public class StudentManagement extends SecureScreen_Instructor
                  int uid=UserUtil.getUID(user.getName());
                  if((Role1.equals("student")) || (Role1.equals("instructor")))
                  {
-                           CourseTimeUtil.getCalculation(uid);
-                           ModuleTimeUtil.getModuleCalculation(uid);
+                           //CourseTimeUtil.getCalculation(uid);
+                           //ModuleTimeUtil.getModuleCalculation(uid);
+			   MailNotificationThread.getController().CourseTimeSystem(uid);
                  }
 
 		if(((String)user.getTemp("role")).equals("")){

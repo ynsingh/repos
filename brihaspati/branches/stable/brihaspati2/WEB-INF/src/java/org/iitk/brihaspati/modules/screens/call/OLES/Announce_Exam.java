@@ -57,8 +57,9 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 /**
 * This class announce a quiz
@@ -249,8 +250,9 @@ public class Announce_Exam extends SecureScreen{
 		int uid=UserUtil.getUID(user.getName());
                 if((Role.equals("student")) || (Role.equals("instructor")))
                 {
-                	CourseTimeUtil.getCalculation(uid);
-                	ModuleTimeUtil.getModuleCalculation(uid);
+                	//CourseTimeUtil.getCalculation(uid);
+                	//ModuleTimeUtil.getModuleCalculation(uid);
+			MailNotificationThread.getController().CourseTimeSystem(uid);
                 }
 
         }catch(Exception e) {

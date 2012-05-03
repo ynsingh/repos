@@ -74,8 +74,9 @@ import org.iitk.brihaspati.modules.utils.DbDetail;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.om.QuizPeer;
 import org.iitk.brihaspati.om.Quiz;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 /**
  *   This class contains code for attempt quiz part of student
@@ -274,8 +275,9 @@ public class AttemptPractice_Quiz extends SecureScreen
 			int userid=UserUtil.getUID(user.getName());
                          if((Role.equals("student")) || (Role.equals("instructor")))
                          {
-                                CourseTimeUtil.getCalculation(userid);
-                                ModuleTimeUtil.getModuleCalculation(userid);
+                                //CourseTimeUtil.getCalculation(userid);
+                                //ModuleTimeUtil.getModuleCalculation(userid);
+				 MailNotificationThread.getController().CourseTimeSystem(userid);
                          }
 
 		}
