@@ -13,7 +13,7 @@ $page.setBgColor("bgcolor")
 <head>
 <link rel="stylesheet" type="text/css" href="/brihaspati2/scrpts/Scormjs/common.css"/>
 </head>
-<body  align ="left" topmargin="0" leftmargin="0" bgcolor="#efe3b5" onload="parent.highlightFirstItem();">
+<body  align ="left" topmargin="0" leftmargin="0" bgcolor="$ui.tableColor" onload="parent.highlightFirstItem();">
 <form name="f" method="post">
 <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
 <tr align="left">

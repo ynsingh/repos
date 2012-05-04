@@ -148,7 +148,7 @@ public class CourseContent extends VelocitySecureScreen{
  				 * So below code is only executed when role is instructor.
  				 * Before giving access to guest, first check guest have permission to access that course or not.
  				 */ 	
-				if(role.equals("instructor"))
+				if(role.equals("instructor") || (user.getName().equals("guest")))
 				{
 					topicMetaData=null;
 					String Xmlgstaccess=null;
