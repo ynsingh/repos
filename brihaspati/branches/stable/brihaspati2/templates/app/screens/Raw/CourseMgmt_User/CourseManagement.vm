@@ -75,7 +75,7 @@ $!data.getMessage()
 <table width=100% bgcolor="$ui.tableColor">
 <tr>
         #if($lang == "hindi")
-                 <td><b>$brih_space $quota_sze: $!aSize </b></td><td align=right ><b>$brih_usedspace $quota_sze: $!TUSize </b></td>
+                 <td><b>$brih_space $quota_sze: $!aSize </b></td><td align=right ><b>$brih_usedspace $!TUSize $quota_sze</b></td>
         #else
                  <td><b>$brih_space $!aSize $quota_sze</b></td><td align=right ><b>$brih_usedspace   $!TUSize $quota_sze </b></td>
         #end
@@ -285,7 +285,7 @@ $!data.getMessage()
       <tr bgcolor="$ui.menuColor" width=100%>
         ##formCell ("Topic Name" "contentTopic" "")
         <td>
-        <b><font face="$ui.sansSerifFonts">$brih_topic #if($lang=="hindi")  #end Name</font> </b>
+        <b><font face="$ui.sansSerifFonts">$brih_topic #if($lang=="hindi")  #end $brih_name</font> </b>
         </td>
         <td colspan=4>
         <input type="text" name=contentTopic onFocus=checkRadio() size=20>

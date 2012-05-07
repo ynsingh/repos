@@ -131,7 +131,7 @@ $!data.getMessage()
 	        <td><input type="text" name="maxTime" value=""></td>
         </tr>
 	<tr>
-           	<td><b> #if($lang =="hindi" || $lang =="gujarati") $brih_qus2 $brih_Of brih_nos #else $brih_nos $brih_qus2 #end </b><font color=Red>*</font></td>
+           	<td><b> #if($lang =="hindi" || $lang =="gujarati") $brih_qus2 $brih_Of $brih_nos #else $brih_nos $brih_qus2 #end </b><font color=Red>*</font></td>
 		<td><input type="text" name="numberQuestion" value=""></td>
         </tr>  
         <tr>

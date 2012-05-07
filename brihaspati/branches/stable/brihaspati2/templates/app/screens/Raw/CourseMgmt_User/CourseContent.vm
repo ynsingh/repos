@@ -232,8 +232,8 @@ $!data.getMessage()
                 <table bgcolor="$ui.menuColor" width=100%>
         	<tr>
 			<td align=left>
-                        	#headerCell("Action")
-	                        #headerCell("Sequence")
+                        	#headerCell("$brih_action")
+	                        #headerCell("$brih_sequence")
         		</td>
 		</tr>
 		#set($i=0)
@@ -263,7 +263,7 @@ $!data.getMessage()
 					</select>
 				</td>
 	                        <td align="left">
-        		                <input type="button" name=eventSubmit_doChangeTopicOrder value="Change file Order" onClick="isOrderChanged(document.frm,this);">
+        		                <input type="button" name=eventSubmit_doChangeTopicOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
 	                        </td>
 				#set($flag=false)
 			#end
