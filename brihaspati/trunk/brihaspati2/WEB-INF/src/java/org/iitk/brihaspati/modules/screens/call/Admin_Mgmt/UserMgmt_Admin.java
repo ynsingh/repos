@@ -55,6 +55,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import org.iitk.brihaspati.modules.utils.InstituteFileEntry;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 
@@ -62,6 +63,8 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 /**
  *   This class contains code for listing of all Institute Admin including Primary and Secondary.
  *   @author  <a href="mail2sunil00@gmail.com">Sunil Yadav</a>
+ *   @author  <a href="palseema@rediffmail.com">Manorama Pal</a>09may2012
+ *   @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>09may2012
  */
 
 
@@ -160,18 +163,23 @@ public class UserMgmt_Admin extends SecureScreen_Institute_Admin{
 				for(int i=0;i<all_uid.size();i++) {
 				int uid=Integer.parseInt(all_uid.elementAt(i).toString());
 				String uname=UserUtil.getLoginName(uid);
-				Criteria crit1=new Criteria();
+				/*Criteria crit1=new Criteria();
                                 crit1.add(InstituteAdminUserPeer.ADMIN_UNAME,uname);
                                 crit1.add(InstituteAdminUserPeer.INSTITUTE_ID,institute_id);
-                                List l=InstituteAdminUserPeer.doSelect(crit1);
+                                List l=InstituteAdminUserPeer.doSelect(crit1);*/
+				org.iitk.brihaspati.modules.screens.call.Root_Admin.UpdateInstituteAdmin UInstAdm=new org.iitk.brihaspati.modules.screens.call.Root_Admin.UpdateInstituteAdmin();
+				Vector l=UInstAdm.getInstAdmUserDetail(institute_id,uname);
 				if(l.size()>0) {
                                         for(int j=0;j<l.size();j++) {
-                                                InstituteAdminUser element=(InstituteAdminUser)(l.get(j));
+                                                //InstituteAdminUser element=(InstituteAdminUser)(l.get(j));
+						InstituteFileEntry ifdetail=(InstituteFileEntry)l.elementAt(j);
                                                 if(i==0){
-                                                        permission_status.add(Integer.toString(element.getAdminPermissionStatus()));
+                                                        //permission_status.add(Integer.toString(element.getAdminPermissionStatus()));
+                                                        permission_status.add(Integer.toString(ifdetail.getInstituteAdminStatus()));
                                                         userList.add(l);
                                                 }else {
-                                                        permission_status.add(1,Integer.toString(element.getAdminPermissionStatus()));
+							//permission_status.add(1,Integer.toString(element.getAdminPermissionStatus()));
+                                                        permission_status.add(1,Integer.toString(ifdetail.getInstituteAdminStatus()));
                                                         userList.add(1,l);
                                                 }
                                         }

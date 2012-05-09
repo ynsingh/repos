@@ -83,7 +83,7 @@ $!data.getMessage()
 	#elseif($tdcolor == "2")
         <td width=33% bgcolor="#AFDCEC">
 	#end
-   <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi" || $lang == "gujarati") $brih_multiple1 $brih_course $brih_inside $brih_reg1 #else $brih_reg1 $brih_multiple1 $brih_course #end </a></td> 
+   <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("instituteId",$InstituteId).addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi" || $lang == "gujarati") $brih_multiple1 $brih_course $brih_inside $brih_reg1 #else $brih_reg1 $brih_multiple1 $brih_course #end </a></td> 
 	#if($tdcolor != "3")
         <td width=33%>
 	#elseif($tdcolor == "3")
@@ -191,6 +191,7 @@ $!data.getMessage()
                 <input type="hidden" name="actionName" value=""/>
                 <input type="hidden" name="count" value="$tdcolor">
     		<input type="hidden" name="domainname" value="$domainname" >
+    		<input type="hidden" name="instituteId" value="$instituteId" >
 
                 </font>
         </td>

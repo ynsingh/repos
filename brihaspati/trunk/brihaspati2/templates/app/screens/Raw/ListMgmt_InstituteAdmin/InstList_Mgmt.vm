@@ -81,26 +81,27 @@ $!data.getMessage()
 <form name="frm" method="post" action="$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm")">
 <table width=100% align=left bgcolor="$ui.tableColor">
         <tr bgcolor="$ui.menuColor">
-                <td><b>$brih_searchBy</b></td>
-                <td align=left>
+                ##<td><b>$brih_searchBy</b></td>
+                <td><b>$brih_searchBy</b>
+                ##<td align=left>
                         <select name="queryList">
                                 <option value="CourseId"> $brih_course $brih_ID</option>
                                 <option value="Course Name">$brih_course $brih_name</option>
                                 <option value="Dept">$brih_dept </option>
                         </select>
                 </td>
-                <td align=left><b>$brih_match_str</b></td>
-                <td align=left>
-                        <input align=center type="text" name="valueString" value="">
-                </td>
-                <td>
+                <td align=left><b>$brih_match_str</b>
+                ##<td align=left>
+                        <input align=center type="text" name="valueString" value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                ##</td>
+                ##<td>
                         <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="listcourse" value="listcourse">
                         <input type="hidden" name="count" value="$tdcolor">
                 </td>
-                <td>
-                <td>
+                ##<td>
+                ##<td>
         </tr>
 </table>
 #if($status=="Noblank")
@@ -108,7 +109,7 @@ $!data.getMessage()
 ##<br>
 <table bgcolor="$ui.tableColor" align="left" width="100%">
   <tr><td>
-      <table cellspacing="1" cellpadding="1">
+      ##<table cellspacing="1" cellpadding="1">
         <tr>
           #foreach($heading in $headings)
                   #headerCell($heading)
@@ -153,7 +154,7 @@ $!data.getMessage()
 </td></tr>
          <tr bgcolor="$ui.menuColor">
               ##<td align=center bgcolor="$ui.menuColor">
-              <td colspan=10>
+         <td colspan=8>
          #if($mode!="Search")
          #if($total_size<= $AdminConf)
          <font color="white">$brih_first</font> &nbsp;

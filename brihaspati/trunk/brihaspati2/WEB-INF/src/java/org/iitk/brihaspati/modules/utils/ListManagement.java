@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)ListManagement.java	
  *
- *  Copyright (c) 2004-2008,2010,2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2008,2010,2011,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -346,7 +346,7 @@ public class ListManagement
 		w=vct;
 		}
 		catch(Exception e)
-		{}
+		{ErrorDumpUtil.ErrorLog("Exception in ListManagement getInstituteCourseList "+e);}
 		return w;
 	}
 	/**
@@ -504,7 +504,7 @@ public class ListManagement
 							if((gid==3)&&(GrpList.size()>1))
 							{
 								crit = new Criteria();
-								crit.add(InstituteAdminUserPeer.ADMIN_EMAIL,loginName);
+								crit.add(InstituteAdminUserPeer.ADMIN_UNAME,loginName);
 								crit.and(InstituteAdminUserPeer.INSTITUTE_ID,instituteId);
 								InsAdmin = InstituteAdminUserPeer.doSelect(crit);
 								//ErrorDumpUtil.ErrorLog("InsAdmin return from mysql==="+InsAdmin);

@@ -1,6 +1,6 @@
 #*
  * @(#) InstituteList.vm 
- * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2010,2012 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
@@ -10,14 +10,13 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modified date: 10-08-2010 (Shaista)
  * @modified date: 10-10-2010, 22-11-2010 (Shaista)
+ * @modified date: 12 April 2012
 *#
 
 
 $page.setTitle("Admin Home | View Institute List")
-
 $page.setBgColor($ui.bgcolor)
 <body>
-
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table  bgcolor="$ui.tableColor" width=100%>
@@ -81,7 +80,7 @@ $!data.getMessage()
         	                <select name="queryList">
                 	                <option value="InstituteId"> $RemoteInstitute  $brih_ID</option>
                         	        <option value="InstituteName"> $RemoteInstitute $brih_name</option>
-                                	<option value="InstituteAdd"> $RemoteInstitute  $brih_address</option>
+                                	<option value="InstituteAddress"> $RemoteInstitute  $brih_address</option>
                 	        </select>
 	                </td>
         	        <td align=left><b>$brih_match_str</b></td>
@@ -90,7 +89,7 @@ $!data.getMessage()
 	                </td>
         	        <td>
                 	        <input type="button" name="Search" value="Search" onClick="checkNull(document.frm1,this);">
-                        	<input type="hidden" name="mode" value="approved">
+                        	<input type="hidden" name="mode" value="$mode">
                         	<input type="hidden" name="mod" value="Search">
 	                        <input type="hidden" name="count" value="2">
         	      </td>
@@ -101,89 +100,79 @@ $!data.getMessage()
 <form name="frm" method="Post" action="$link.setPage("call,Root_Admin,InstituteList.vm").setAction("Institute_RootAdmin")">
 <table  bgcolor="$ui.tableColor" width=100%>
 	#if($mode=="pendinglist")
+	#if($idetail.size()!=0)
       	<tr bgcolor="$ui.menuColor">
-        <td align=center>$brih_select</td>
-        <td align=center>$RemoteInstitute $brih_name</td>
-	<td align=center>$RemoteInstitute $RemoteAddress</td>
-	<td align=center>$Inst_city</td>
-	<td align=center>$Inst_state</td>
-        <td align=center>$Inst_landline</td>
-        <td align=center>$RemoteInstitute $brih_domain</td>
-        <td align=center>$Inst_type</td>
-        <td align=center> #if($lang == "hindi") $brih_Institute $brih_Of #else $RemoteInstitute #end $Inst_website</td>
-        <td align=center>$brih_ad #if($lang == "hindi") $brih_Of1 #end $brih_first $brih_name</td>
-	<td align=center>$brih_ad #if($lang == "hindi") $brih_Of1 #end $brih_last $brih_name</td>
-        <td align=center>$brih_ad #if($lang == "hindi") $brih_Of1 #end $brih_email</td>
-        <td align=center>$brih_ad #if($lang == "hindi") $brih_Of1 #end $Inst_designation</td>
-        <td align=center>$brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name</td>
+        <td>$brih_select</td>
+        <td>$RemoteInstitute $brih_name</td>
+	<td>$RemoteInstitute $RemoteAddress</td>
+	<td>$Inst_city</td>
+	<td>$Inst_state</td>
+        <td>$Inst_landline</td>
+        <td>$RemoteInstitute $brih_domain</td>
+        <td>$Inst_type</td>
+        <td> #if($lang == "hindi") $brih_Institute $brih_Of #else $RemoteInstitute #end $Inst_website</td>
+        <td>$brih_ad #if($lang == "hindi") $brih_Of1 #end $brih_first $brih_name</td>
+	<td>$brih_ad #if($lang == "hindi") $brih_Of1 #end $brih_last $brih_name</td>
+        <td>$brih_ad #if($lang == "hindi") $brih_Of1 #end $brih_email</td>
+        <td>$brih_ad #if($lang == "hindi") $brih_Of1 #end $Inst_designation</td>
+        <td>$brih_login $brih_name</td>
         </tr>
 	#foreach($details in $idetail)
-        #foreach($details1 in $idetail1)
-        #if($details.getInstituteId()==$details1.getInstituteId())
         #if($velocityCount%2==0)
         <tr bgcolor="$ui.menuColor">
         #else
         <tr bgcolor="$ui.tableColor">
         #end 
 		<td align="center">
-                	<INPUT TYPE="CHECKBOX" NAME="$details.getInstituteId()" onClick="apprv_rej(this,document.frm);">
+                	<INPUT TYPE="CHECKBOX" NAME="$details.getInstituteDomain()" onClick="apprv_rej(this,document.frm);">
           	</td>
 		<td>
 			$details.getInstituteName()
 		</td>
 		<td>
-			$details.getInstiuteAddress() 
+			$details.getInstituteAddress()
 		</td>
 		<td>		
-			$details.getCity()
+			$details.getInstituteCity()
 		</td>
 		<td>
-			$details.getState()
+			$details.getInstituteState()
 		</td>
 		<td>
-			$details.getLandlineNo()			
+			$details.getInstituteLandLineNo() 		
 		</td>
 		<td>
 			$details.getInstituteDomain()
 		</td>
 		<td>
-			$details.getTypeOfInstitution()
+			$details.getInstituteType()
 		</td>
 		<td>
 			$details.getInstituteWebsite()
 		</td>
 		<td>
-			$details1.getAdminFname()
+			$details.getInstituteFName()
 		</td>
 		<td>
-			$details1.getAdminLname()
+			$details.getInstituteLName()
 		</td>
 		<td>
-			$details1.getAdminEmail()
+			$details.getInstituteEmail()
 		</td>
 		<td>
-			$details1.getAdminDesignation()
+			$details.getInstituteDesignation()
 		</td>
-			<td>
-			$details1.getAdminUname()
+		<td>
+			$details.getInstituteUserName()
 		</td>
 
 	</tr>
 	#end
+	#else
+		$brih_pend
 	#end
 	#end
-        #*<tr bgcolor="$ui.menuColor">
-                <td align="left" colspan=14>
-                <input type="hidden" name="actionName">
-                <input type="button" name="eventSubmit_AcceptAdmin" value="$online_accept" onClick="AcceptField(document.frm,this);">
-                <input type="button" name="eventSubmit_RejectAdmin" value="$online_reject" onClick="AcceptField(document.frm,this);">
-                <input type="hidden" name="deleteFileNames" value="">
-		<input type="hidden" name="role" value="7">
-                <input type="hidden" name="institute_id" value="$idetail.get(0).getInstituteId()">
-                <input type="hidden" name="count" value="$tdcolor">
-                </td>
-        </tr>*# 
-	#end
+
 </table>
 <table width=100% bgcolor="$ui.tableColor">
 	#if($mode=="approved")
@@ -207,9 +196,10 @@ $!data.getMessage()
 	#if($lang=="english")$brih_add $RemoteInstitute $brih_admin #else $RemoteInstitute $brih_ad $brih_add #end</a></td>
 	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","viewadmin").addPathInfo("count","2") style=text-decoration:none>
 #if($lang=="gujarati") $RemoteInstitute $brih_admin $brih_view  #elseif($lang == "hindi") $brih_Institute $brih_Of2 $brih_ad $brih_Of1 $brih_view #else $brih_view $RemoteInstitute $brih_admin #end</a></td>
-	<td><a href=$link.setPage("call,Root_Admin,UpdateInstituteAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("status","instituteedit").addPathInfo("count","2") style=text-decoration:none>
+	<td><a href=$link.setPage("call,Root_Admin,UpdateInstituteAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("status","instituteedit").addPathInfo("count","2").addPathInfo("mode",$mode) style=text-decoration:none>
 #if($lang=="hindi")$brih_detail $brih_Of1 $brih_edit #else $brih_edit $brih_detail #end</a></td>
-	<td><a href=$link.setPage("call,Root_Admin,InstituteList.vm").setAction("Institute_RootAdmin").addPathInfo("deleteFileNames",$applist.getInstituteId()).addPathInfo("actionName","eventSubmit_RejectAdmin").addPathInfo("count","2") style=text-decoration:none>$brih_delete
+	##<td><a href=$link.setPage("call,Root_Admin,InstituteList.vm").setAction("Institute_RootAdmin").addPathInfo("deleteFileNames",$applist.getInstituteId()).addPathInfo("actionName","eventSubmit_RejectAdmin").addPathInfo("count","2") style=text-decoration:none>$brih_delete
+	<td><a href=$link.setPage("call,Root_Admin,InstituteList.vm").setAction("Institute_RootAdmin").addPathInfo("instituteid",$applist.getInstituteId()).addPathInfo("actionName","eventSubmit_doDeleteInstitute").addPathInfo("count","2").addPathInfo("mode",$mode) onclick="javascript:return confirm('Do you want to Delete this institute')" style=text-decoration:none>$brih_delete 
 	</tr>		
 	#end
 	<tr><td>
@@ -242,28 +232,31 @@ $!data.getMessage()
 <table width=100% bgcolor="$ui.tableColor">
 	#if($mode=="reject")
 	<tr bgcolor="$ui.menuColor">
-        	<td>$brih_select</td>
+        	<b><td>$brih_select</td>
 		<td>$RemoteInstitute $brih_name</td>
-		<td> #if($lang=="hindi")$brih_Institute $brih_Of2 $brih_ad $brih_Of1 $brih_name #else $brih_instAdname #end</td>
+		<td> #if($lang=="hindi")$brih_Institute $brih_Of2 $brih_ad $brih_Of1 $brih_name #else $brih_instAdname #end</td></b>
 	</tr>
-	#foreach($rejectlist in $rejectedlist)
+	##foreach($rejectlist in $rejectedlist)
 	#foreach($udetail in $userdetail)
-        #if($rejectlist.getInstituteId()==$udetail.getInstituteId())
+        ##if($rejectlist.getInstituteId()==$udetail.getInstituteId())
         #if($velocityCount%2==0)
         <tr bgcolor="$ui.menuColor">
         #else
         <tr bgcolor="$ui.tableColor">
         #end 
 	<td>
-       	<INPUT TYPE="CHECKBOX" NAME="$rejectlist.getInstituteId()" onClick="apprv_rej(this,document.frm);">
-	<td>$rejectlist.getInstituteName()</td>
-	<td>$udetail.getAdminUname()</td>
+       	<INPUT TYPE="CHECKBOX" NAME="$udetail.getInstituteDomain()" onClick="apprv_rej(this,document.frm);">
+	##<td>$rejectlist.getInstituteName()</td>
+	##<td>$udetail.getAdminUname()</td>
+	<td>$udetail.getInstituteName()</td>
+	<td>$udetail.getInstituteFName() $udetail.getInstituteLName()</td>
 	</tr>		
 	#end
 	#end
-	#end
-	#end
+	##end
+	##end
 	#if($mode != "approved")
+	 #if(($idetail.size()!=0)||($userdetail.size()!=0))
         <tr bgcolor="$ui.menuColor">
                 <td align="left" colspan=14>
                 <input type="hidden" name="actionName">
@@ -278,6 +271,8 @@ $!data.getMessage()
                 </td>
         </tr> 
 	#end
+	#end
+        <input type="hidden" name="mode" value="$mode">
 </table>
 </form>
 </body>

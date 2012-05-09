@@ -40,6 +40,7 @@ import org.apache.turbine.util.RunData;
 import javax.servlet.ServletOutputStream;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.om.InstituteAdminUser;
+import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.apache.turbine.util.parser.ParameterParser;  
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 import org.apache.turbine.modules.screens.VelocityScreen;
@@ -47,12 +48,12 @@ import org.apache.turbine.modules.screens.VelocityScreen;
 /**
  * This class, Displays the admin name list of Institute used for popup window.
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:palseema@rediffmail.com">Seema Pal</a>
  */
 
 public class ViewANameList extends VelocityScreen
 {
-
-     	public void doBuildTemplate( RunData data, Context context ) 
+     	public void doBuildTemplate( RunData data, Context context) 
      	{
 		try{
 			/**
@@ -68,14 +69,13 @@ public class ViewANameList extends VelocityScreen
 			List list=InstituteAdminUserPeer.doSelect(crit);
 			for(int i=0;i<list.size();i++){
 				InstituteAdminUser iauser=(InstituteAdminUser)list.get(i);
-				String fname=iauser.getAdminFname();
-				String lname=iauser.getAdminLname();
-				String str=fname+" "+lname+"<br>";
+				int Auid=UserUtil.getUID(iauser.getAdminUname());
+                        	String str=UserUtil.getFullName(Auid)+"<br>";
                 		data.getResponse().setHeader("Content-Type","text/html");
                 		ServletOutputStream out=data.getResponse().getOutputStream();
                 		out.println(str);
 			}		
-		}
+		}//try
 		catch(Exception e)
 		{	
 			  data.setMessage("Error in Raw Page for display institute admin list name !!"+ e);

@@ -49,8 +49,8 @@ $page.setTitle("Login Page | Add Admin ")
         </tr>
 
 	</table>
-	#if($mode=="addadmin")
 	<form name="frm" method="post" action="$link.setPage("call,Root_Admin,AddAdmin.vm").setAction("Institute_RootAdmin")">
+	#if($mode=="addadmin")
 		<table bgcolor="$ui.tableColor" width="100%">
 		<tr bgcolor="$ui.menuColor">
                 	<td>$RemoteInstitute $brih_name</td>
@@ -79,55 +79,53 @@ $page.setTitle("Login Page | Add Admin ")
 
 		<tr>
         			<td colspan=2>
-				<input type="hidden" name="actionName">
 				<input type="button" name="eventSubmit_AddAdmin" value="$brih_reg1" onClick="checkField(document.frm,this);"/>
         			<input type="Reset" name="Reset" Value="$brih_clear"/>
-        			<input type="hidden" name="instituteid" Value="$Institute_Id">
-        			<input type="hidden" name="count" Value="$tdcolor">
+				<input type="hidden" name="mode" value="viewadmin">
         			</td>
         	</tr>
 			
 		</table>
-	</form>
 	#end
-	
 	#if($mode=="viewadmin")
-		        <form name="frm" method="post" action="$link.setPage("call,Root_Admin,AddAdmin.vm").setAction("Institute_RootAdmin")">
 				<table  bgcolor="$ui.tableColor" width=100%>
 				        <tr bgcolor="$ui.menuColor">
-					        <td align=center>$brih_ad #if($lang =="hindi") $brih_Of1 #end $brih_first $brih_name</td>
-					        <td align=center>$brih_ad #if($lang =="hindi") $brih_Of1 #end $brih_last $brih_name</td>
-					        <td align=center>$brih_ad #if($lang =="hindi") $brih_Of1 #end $brih_email</td>
-					        <td align=center>$brih_ad #if($lang =="hindi") $brih_Of1 #end $Inst_designation</td>
-					        <td align=center>$brih_usr #if($lang =="hindi") $brih_Of1 #end $brih_name</td>
-					        <td align=center>$brih_availableAction</td>
+					        <td align=left>$brih_ad #if($lang =="hindi") $brih_Of1 #end $brih_first $brih_name</td>
+					        <td align=left>$brih_ad #if($lang =="hindi") $brih_Of1 #end $brih_last $brih_name</td>
+					        <td align=left>$brih_ad #if($lang =="hindi") $brih_Of1 #end $brih_email</td>
+					        <td align=left>$brih_ad #if($lang =="hindi") $brih_Of1 #end $Inst_designation</td>
+					        <td align=left>$brih_login $brih_name</td>
+					        <td align=left colspan="2">$brih_availableAction</td>
         				</tr>
 					#foreach($admin_list in $adminlist )
 					<tr>
 				                <td>
-				                        $admin_list.getAdminFname()
+				                        ##$admin_list.getFirstName()
+				                        $admin_list.getInstituteFName()
 				                </td>
 				                <td>
-				                        $admin_list.getAdminLname()
+				                        $admin_list.getInstituteLName()
 				                </td>
 				                <td>
-				                        $admin_list.getAdminEmail()
+				                        $admin_list.getInstituteEmail()
 				                </td>
 				                <td>
-				                        $admin_list.getAdminDesignation()
+				                        $admin_list.getInstituteDesignation()
 				                </td>
 			                        <td>
-                        				$admin_list.getAdminUname()
+                        				$admin_list.getInstituteUserName()
                 				</td>
-						<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").setAction("Institute_RootAdmin").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("actionName","eventSubmit_doDelete") onclick="javascript:return confirm('Do you want to remove this institute admin')" style=text-decoration:none>$brih_remove</a></td>
-						<td><a href=$link.setPage("call,Root_Admin,UpdateInstituteAdmin.vm").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("status","instadminedit").addPathInfo("count","2") style=text-decoration:none>$brih_edit</a></td>
+						<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").setAction("Institute_RootAdmin").addPathInfo("username",$admin_list.getInstituteUserName()).addPathInfo("Institute_Id",$Institute_Id).addPathInfo("mode",$mode).addPathInfo("actionName","eventSubmit_doDelete") onclick="javascript:return confirm('Do you want to remove this institute admin')" style=text-decoration:none>$brih_remove</a></td>
+						<td><a href=$link.setPage("call,Root_Admin,UpdateInstituteAdmin.vm").addPathInfo("username",$admin_list.getInstituteUserName()).addPathInfo("Institute_Id",$Institute_Id).addPathInfo("status","instadminedit").addPathInfo("count","2").addPathInfo("mode",$mode) style=text-decoration:none>$brih_edit</a></td>
 					</tr>
 					#end
 				</table>
 			</form>
 	#end
-
-
+		<input type="hidden" name="actionName">
+		<input type="hidden" name="mode" value="$mode">
+        	<input type="hidden" name="count" Value="$tdcolor">
+		<input type="hidden" name="Institute_Id" value="$Institute_Id">
 <SCRIPT LANGUAGE="javascript">
 	
         function checkField(frm,field)

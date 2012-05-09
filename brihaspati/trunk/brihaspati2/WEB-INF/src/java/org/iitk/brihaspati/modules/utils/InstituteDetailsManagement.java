@@ -39,9 +39,12 @@ import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.om.Courses;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
+import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import java.util.StringTokenizer;
+import org.iitk.brihaspati.om.InstituteAdminUser;
+import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 /**
  * @author <a href="mailto:nksnghiitk@gmail.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
@@ -206,4 +209,42 @@ public class InstituteDetailsManagement
                 }
                 return(Cdetails);
 	}
+
+public static Vector getInstAdminUid(String instId)
+        {
+                Vector uid=new Vector();
+                Vector evect=new Vector();
+                try
+                {
+                        List lst=null;
+                        Criteria crit=new Criteria();
+                        crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instId);
+                        List v=InstituteAdminUserPeer.doSelect(crit);
+                        for(int i=0;i<v.size();i++)
+                        {
+                                InstituteAdminUser iauser=(InstituteAdminUser)v.get(i);
+                                String email=iauser.getAdminUname();
+                                evect.add(email);
+                        }
+                        for(int n=0;n<evect.size();n++)
+                        {
+                                String mail=evect.get(n).toString();
+                                crit=new Criteria();
+                                crit.add(TurbineUserPeer.EMAIL,mail);
+                                lst=TurbineUserPeer.doSelect(crit);
+                        //}
+                        for(int j=0;j<lst.size();j++){
+                                TurbineUser tuser=(TurbineUser)lst.get(j);
+                                int userid=tuser.getUserId();
+                                uid.add(userid);
+                        }
+                        }
+                }
+                catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("The error in getInstituteAdminUtil()"+e);
+                }
+                return(uid);
+        }
+
 }
