@@ -412,7 +412,7 @@ public class DeleteInstituteUtil
 			{
 				int uid=UserUtil.getUID((instadminlist.get(m).toString()));
 				String email=instadminlist.get(m).toString();
-				ErrorDumpUtil.ErrorLog("uid===="+uid);
+				//ErrorDumpUtil.ErrorLog("uid===="+uid);
 				adminrole=InstAdminRoleExist(uid);
 				otherinstExist=ExistInstAdmin(email);
 				/*flag true return when more than one role exits*/
@@ -488,7 +488,7 @@ public class DeleteInstituteUtil
 	/**
         *Method for getting all database details of all users of a particular Institute. 
         */
-        public static String InstituteBackup(String instId){
+        public static String InstituteBackup(String instId,String langfile){
 		String message="";
                 /**
                   *Get InstituteAdmin List
@@ -518,7 +518,8 @@ public class DeleteInstituteUtil
 		TableEntry(insttable,filePath+"inst.txt",instvtr);
 		File desf=new File(destPath);
 		copyFile(CoursesRealPath,desf);
-		message="backup done";
+		//message="backup done";
+		message=MultilingualUtil.ConvertedString("backup_backup",langfile)+" "+MultilingualUtil.ConvertedString("backup_msg1",langfile);
 		}//try
                 catch(Exception ex){ErrorDumpUtil.ErrorLog("The Error in DeleteInstituteUtil (InstituteBackup method)======"+ex);}
 		return message;

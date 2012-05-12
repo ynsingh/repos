@@ -53,19 +53,32 @@ import org.iitk.brihaspati.modules.utils.CreateZip;
 import org.iitk.brihaspati.modules.utils.BackupUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.DeleteInstituteUtil;
 import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.om.CoursesPeer;
+import org.iitk.brihaspati.om.InstituteAdminUser;
+import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.iitk.brihaspati.om.TurbineUser;
+import org.iitk.brihaspati.om.TurbineUserPeer;
+import org.iitk.brihaspati.om.InstituteProgramPeer;
+import org.iitk.brihaspati.om.InstituteProgram;
 
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 
 /**
  * This class is responsible for restoring the database entries and course contents. 
  *
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:mann_singh2004@yahoo.com">Manvendra Singh</a>
- * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>10may2012
+ * modify date:10may2012
 */
 
 public class BackupAction extends SecureAction
@@ -409,6 +422,17 @@ public class BackupAction extends SecureAction
                 //Vector courseList=CourseManagement.getCrsOnlinDetails(Integer.toString(instituteId));
                 context.put("crsList",courseList);
         }
+
+	/**
+ 	*Method for database backup of a particular Institute.
+	* @see DeleteInstituteUtil in utils. 
+ 	*/
+        public void doInstituteDbaseBackup(RunData data,Context context) throws Exception {
+		String LangFile=(String)data.getUser().getTemp("LangFile");
+		String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+		String instbckp=DeleteInstituteUtil.InstituteBackup(instituteId,LangFile);
+		data.setMessage(instbckp);	
+	}
  
     /**
      * Default action to perform if the specified action
@@ -435,6 +459,8 @@ public class BackupAction extends SecureAction
                        	doDeletebackup(data,context);
 		else if(actionName.equals("eventSubmit_doCrssearch"))
                        	doCrssearch(data,context);
+		else if(actionName.equals("eventSubmit_doInstituteDbaseBackup"))
+                       	doInstituteDbaseBackup(data,context);
                 else
                         data.setMessage(MultilingualUtil.ConvertedString("usr_prof2",LangFile));
 	}//doPerform                                                                

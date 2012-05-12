@@ -422,7 +422,6 @@ public class Institute_RootAdmin extends VelocitySecureAction
                 */
                 String DelInstAdmin=DeleteInstituteUtil.DeleteInstAdmin(username,instituteid,LangFile,file);
                 data.setMessage(DelInstAdmin);
-		ErrorDumpUtil.ErrorLog("DeleteAdmin message=="+DelInstAdmin);	
 	}
 	/**
 	*This method called when Sysadmin update the detail of Institute admin
@@ -510,13 +509,7 @@ public class Institute_RootAdmin extends VelocitySecureAction
                         *By calling method InstituteBackup.
                         *@see DeleteInstituteUtil in Utils
                         */
-                        String backup=DeleteInstituteUtil.InstituteBackup(instid);
-                        /*Criteria crit=new Criteria();
-                        crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instid);
-                        List v=InstituteAdminUserPeer.doSelect(crit);
-                        InstituteAdminUser element=(InstituteAdminUser)v.get(0);
-                        String email =element.getAdminUname();
-                        int uid=UserUtil.getUID(email);*/
+                        String backup=DeleteInstituteUtil.InstituteBackup(instid,LangFile);
                         String file=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                         String gname=GroupUtil.getGroupName(3);
                         /** DeleteCourse. 
@@ -524,15 +517,12 @@ public class Institute_RootAdmin extends VelocitySecureAction
                         *@see DeleteInstituteUtil in Utils
                         */
                         String delcourse=DeleteInstituteUtil.DeleteCourse(instid,LangFile,file);
-                        //String delcourse=DeleteInstituteUtil.DeleteCourse(instid,email,email,LangFile,file);
                         /** Delete Institute. 
                         *By calling method DeleteInstitute.
                         *@see DeleteInstituteUtil in Utils
                         */
                         String delinst=DeleteInstituteUtil.DeleteInstitute(instid,LangFile,file,gname);
-			//data.setMessage(MultilingualUtil.ConvertedString("brih_Institue"+"brih_hasbeendelete", LangFile));
 			data.setMessage(MultilingualUtil.ConvertedString("brih_Institue",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeendelete",LangFile));
-			//ErrorDumpUtil.ErrorLog(" DeleteInstitute===mode==="+mode);
                 }//try
                 catch(Exception ex){data.setMessage("Error in Institute_RootAdmin method doDeleteInstitute"+ex);}
         }

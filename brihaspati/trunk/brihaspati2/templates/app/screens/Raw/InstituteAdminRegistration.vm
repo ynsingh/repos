@@ -102,7 +102,7 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 
                         </tr>
 			<tr>
-				#formCell ("$Inst_affiliation" "IAFFILIATION" "")
+				#formCell ("$Inst_affiliation <font color=red>*</font>" "IAFFILIATION" "")
                         </tr>
 			<tr>
 				#formCell ("$brih_ad $brih_first $brih_name<font color=red>*</font>" "IADMINFNAME" "")

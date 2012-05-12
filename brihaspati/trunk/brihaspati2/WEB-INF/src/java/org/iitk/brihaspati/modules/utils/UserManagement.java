@@ -332,7 +332,7 @@ public class UserManagement
 
 							msgBrihAdmin = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin");
 							msgBrihAdmin = MailNotification.getMessage_new(msgBrihAdmin, "", "", instFirstLastName, "");
-							ErrorDumpUtil.ErrorLog("\n\nline 301 msgBrihAdmin"+msgBrihAdmin);
+							//ErrorDumpUtil.ErrorLog("\n\nline 301 msgBrihAdmin"+msgBrihAdmin);
 						}
 						msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
 						msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
@@ -1051,15 +1051,12 @@ public class UserManagement
                         * the parameters passed
                         */
                         User user=TurbineSecurity.getUser(userName);
-			ErrorDumpUtil.ErrorLog("user in removeUserProfile= "+user);
                         Group user_group=TurbineSecurity.getGroupByName(group_name);
-			ErrorDumpUtil.ErrorLog("usergroup at line 775 in removeUserProfile= "+user);
 			int uid=UserUtil.getUID(userName);
 			int gid=GroupUtil.getGID(group_name);
 			int role=getRoleinCourse(uid,gid);
 			String roleName=UserGroupRoleUtil.getRoleName(role);
                         Role user_role=TurbineSecurity.getRoleByName(roleName);
-			ErrorDumpUtil.ErrorLog("user_role at line 781 in removeUserProfile= "+user);
                         Criteria crit=new Criteria();
 
 						/**
@@ -1069,7 +1066,6 @@ public class UserManagement
                                                 crit.add(StudentExpiryPeer.UID,userName);
                                                 crit.add(StudentExpiryPeer.CID,group_name);
                                                 StudentExpiryPeer.doDelete(crit);
-						ErrorDumpUtil.ErrorLog("crit===="+crit);
                         /**
                         * Delete the role of the user from the specified group
                         */
@@ -1102,7 +1098,6 @@ public class UserManagement
                                        	crit.add(TurbineUserGroupRolePeer.USER_ID,user_id);
 					crit.addNotIn(TurbineUserGroupRolePeer.GROUP_ID,i);
 					List check=TurbineUserGroupRolePeer.doSelect(crit);
-					ErrorDumpUtil.ErrorLog("lst from TurbineUserGroupRolePeer in rmvusrprfle==="+check);
 					if(check.size()==0){
                                                	/**
                                                	* Remove the login details for the user
@@ -1123,7 +1118,6 @@ public class UserManagement
                                                	*/
                                       		TurbineSecurity.removeUser(user);
                                                	tool.deleteUser(userName);
-						ErrorDumpUtil.ErrorLog("testing after tooldeletion=======");	
 						/**
                                                  * Remove the user rollno and Program from database  
                                                  */
@@ -1131,7 +1125,6 @@ public class UserManagement
                                                 crit.add(StudentRollnoPeer.EMAIL_ID,userName);
                                                 StudentRollnoPeer.doDelete(crit);
 						CourseProgramUtil.DeleteCoursePrg(userName,group_name);
-						ErrorDumpUtil.ErrorLog("DeleteCoursePrg==UserManagement=="+crit);
                                                	/**
                        				* Delete the repository from the server for
                        				* this User
@@ -1566,7 +1559,6 @@ public class UserManagement
         	        String subject = MailNotification.subjectFormate(info_new, "", pr );
                 	String message = MailNotification.getMessage(info_new, group_name, "", "", "", serverName, serverPort,pr);
 			message = MailNotification.getMessage_new(message,"","",instName,userName);
-	                ErrorDumpUtil.ErrorLog("\n\n\n\n in UserManagement util  message="+message+"\nsubject="+subject+"\ninfo_new"+info_new);
 		////////////////////////////////////////
 		//String Mail_msg=MailNotification.sendMail(info_new,mail_id,group_name,"","","",file,serverName,serverPort,langFile);
 			Mail_msg=MailNotification.sendMail(message, mail_id, subject, "" ,langFile);

@@ -18,6 +18,7 @@ var reason = "";
     reason += validatePhoneNumber(frm.phnumber);
     reason += validateInsDomain(frm.IDOMAIN);
     reason += validateInsWebsite(frm.IWEBSITE);
+    reason += validateInsAffiliation(frm.IAFFILIATION);
     reason += validateAdminFName(frm.IADMINFNAME);
     reason += validateAdminLName(frm.IADMINLNAME);
     reason += validateDesgnation(frm.IADMINDESIGNATION);
@@ -240,7 +241,21 @@ function validatePaswd(fld){
         }
         return error;
 }
-
+/**
+ *This java script is used for validate the registration form institute admin. 
+ * @Created Date: 10May2012
+ */
+function validateInsAffiliation(fld){
+        var error="";
+         if (fld.value.length == 0){
+                fld.style.background="Yellow";
+                error="* You havn't enterd affiliation field.\n";
+        }
+        else{
+                fld.style.background="White";
+        }
+        return error;
+}
 /**
  * This java script is used for validate the registration form for Register Secondary Admin in the Institue or organization.
  * This java script return alert message and highlighted the field if the input value in the form is missing or incorrect.
