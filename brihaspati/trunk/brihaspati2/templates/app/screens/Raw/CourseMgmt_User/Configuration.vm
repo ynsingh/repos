@@ -477,7 +477,7 @@ $page.setBgColor($ui.bgcolor)
 	{
 		if(strString.length==0)
 		return false;
-		var invalidch=/[^a-z_]/i;
+		var invalidch=/[^a-z_\ ]/i;
 		var invalid=(invalidch.test(strString));			
 		return invalid;
 	}
@@ -486,7 +486,7 @@ $page.setBgColor($ui.bgcolor)
 	{
 		if(testStr.length==0)
 		return false;
-		var invalidch1=/[^a-z\d_\-]/i;
+		var invalidch1=/[^a-z\d_\-@.]/i;
 		var invalid1=(invalidch1.test(testStr));
 		return invalid1;
 	}

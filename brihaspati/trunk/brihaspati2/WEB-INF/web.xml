@@ -44,6 +44,7 @@
       <url-pattern>/templates/*</url-pattern>
       <url-pattern>/logs/*</url-pattern>
       <url-pattern>/Courses/*</url-pattern>
+      <url-pattern>/InstituteRegistration/*</url-pattern>
     </web-resource-collection>
     <auth-constraint>
       <role-name>admin</role-name>
