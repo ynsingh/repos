@@ -107,6 +107,7 @@ public class StudentInstructorMAP
 						insName=insName+" "+element2.getLastName();
                                 		String loginname=element2.getUserName();
 						String groupName=GroupUtil.getGroupName(gid);
+						String weekTime=CourseTimeUtil.getLastweekTime(user_id,groupName);
 						/*StringTokenizer mdgroupName=new StringTokenizer(groupName,"_");
 						String oldgroupName="";
 						String addIid=st[1];
@@ -132,6 +133,7 @@ public class StudentInstructorMAP
 						cDetail.setLastModified(CourseUtil.getLastModified(groupName));
 						cDetail.setCourseName(courseName);
 						cDetail.setInstructorName(insName);
+						cDetail.setCourseTime(weekTime);
 						entries.add(cDetail);
 						}
 						}
@@ -171,8 +173,9 @@ public class StudentInstructorMAP
 
 				String groupName=GroupUtil.getGroupName(gid);
                     		String courseName=CourseUtil.getCourseName(groupName); 
-                    		String Coursealias=CourseUtil.getCourseAlias(groupName); 
-				boolean check_act=CourseManagement.CheckcourseIsActive(gid);
+                   		String Coursealias=CourseUtil.getCourseAlias(groupName); 
+				String weekTime=CourseTimeUtil.getLastweekTime(uid,groupName);
+					boolean check_act=CourseManagement.CheckcourseIsActive(gid);
 				if(check_act==false)
 					act="1";
 				else
@@ -188,6 +191,7 @@ public class StudentInstructorMAP
 				cDetail.setGroupName(groupName);
 				cDetail.setCAlias(Coursealias);
 				cDetail.setActive(act);
+				cDetail.setCourseTime(weekTime);
 				cDetail.setCGuest(statc);
 				entries.add(cDetail);
 			}

@@ -58,7 +58,7 @@ import org.iitk.brihaspati.om.CourseMonth;
 //import com.workingdogs.village.Record;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 //package org.kodejava.example.util;
- 
+import org.apache.commons.lang.StringUtils; 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -593,5 +593,51 @@ public class CourseTimeUtil
                 }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method getDatetime------"+ex);}
                 return recenttime;
         }
+
+//}
+	
+ 	public static String getLastweekTime(int uid,String courseid)
+	{
+		String WeekTime=null;
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Calendar cal = Calendar.getInstance();
+			Date todaydate=cal.getTime();
+			String todate=sdf.format(todaydate);
+			int time=0;
+			for(int i=0;i<=7;i++){
+				cal.setTime(sdf.parse(todate));
+				cal.add(Calendar.DATE,-i);
+				String priviousdate = sdf.format(cal.getTime());
+				if(priviousdate.equals(todate))
+				{
+					String timelogin=CourseTimeUtil.totalCourseTime(uid,courseid,todate);
+					time=Integer.parseInt(StringUtils.substringBefore(timelogin,"@"));
+				}
+				Criteria crit=new Criteria();
+                        	crit.add(CourseTimedayPeer.USER_ID,uid);
+                        	crit.add(CourseTimedayPeer.COURSE_ID,courseid);
+                       		crit.add(CourseTimedayPeer.PRIVIOUS_DATE,priviousdate);
+				List v=CourseTimedayPeer.doSelect(crit);
+				if(v.size()!=0)
+				{
+					CourseTimeday el=(CourseTimeday)v.get(0);
+					int time1=el.getCourseTimeday();
+					time=time+time1;
+							
+					
+				}
+			
+			}
+			int Hours = time/(60 * 60 * 1000);
+                        int Hour = time%(60 * 60 * 1000);
+			int Mins=Hour/(60*1000);
+			int Min=Hour%(60*1000);
+			int sec=Min/1000;
+			WeekTime=Hours+"h:"+Mins+"m:"+sec+"s";
+			
+		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method getLastweekTime------"+ex);}
+		return WeekTime;
+	}
 
 }

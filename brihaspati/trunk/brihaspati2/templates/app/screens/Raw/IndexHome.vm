@@ -123,6 +123,10 @@ $!data.getMessage()
 					<font face="$ui.sansSerifFonts"><b>$brih_status</font>
 					</td>
 					<td align=center>
+                                        <font face="$ui.sansSerifFonts"><b>$brih_course $brih_Usage $brih_time(7 $brih_days)</font>
+                                        </td>
+
+					<td align=center>
 					<font face="$ui.sansSerifFonts"><b>$brih_msg2</font>
 					</td>
 					<td align=center>
@@ -136,7 +140,7 @@ $!data.getMessage()
 					#foreach($i_name in $Inst_name)
                                         <tr bgcolor="#CEF6CE">
                                         <font face="$ui.sansSerifFonts">
-                                        <td colspan=5>$i_name.getInstName()</td></font>
+                                        <td colspan=6>$i_name.getInstName()</td></font>
                                         </tr>
 					#foreach($instructor in $inst)
 					 ## Getting Inst_Id from group Name using split() method.
@@ -171,6 +175,7 @@ $!data.getMessage()
 							<font color="red">$brih_inactive</font>
 						#end
 						</td>
+						<td align=center>$instructor.getCourseTime()</td>
 						#if($message=="0" )
 							<td align=center>
 							<font face="$ui.sansSerifFonts">
@@ -216,6 +221,9 @@ $!data.getMessage()
 					<font face="$ui.sansSerifFonts"><b>$brih_instructorName</font>
 					</td>
 					<td align=center>
+                                        <font face="$ui.sansSerifFonts"><b>$brih_course $brih_Usage $brih_time(7 $brih_days)</font>
+                                        </td>
+					<td align=center>
 					<font face="$ui.sansSerifFonts"><b>$brih_msg2</font>
 					</td>
 					</tr>
@@ -252,6 +260,11 @@ $!data.getMessage()
 							$student.getInstructorName()
 				     			</font>
 						</td>
+						<td align=center>
+                                                        <font face="$ui.sansSerifFonts">
+                                                        $student.getCourseTime()
+                                                        </font>
+                                                </td>
 
 						#if( $message=="0" )
 						<td align=center>

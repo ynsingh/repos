@@ -87,7 +87,7 @@ $!data.getMessage()
                                             	<tr><td align=center>
                                                     <font face="$ui.sansSerifFonts">
                                                     ##<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style=text-decoration:none> $brih_assignment </a>
-						    <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","assinement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none> $brih_assignment </a>
+						    <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","assignment").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none> $brih_assignment </a>
                                             	</td></tr>
                                           	</table>
 					</td>
@@ -139,7 +139,7 @@ $!data.getMessage()
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
 								##<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("count","1") style=text-decoration:none>$brih_course #if($lang!="english") $brih_Of1 #end $brih_calendar</a><br>
-								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","calender").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_course #if($lang!="english") $brih_Of1 #end $brih_calendar</a><br>
+								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","calendar").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_course #if($lang!="english") $brih_Of1 #end $brih_calendar</a><br>
 
 							</td></tr>
 						</table>
@@ -303,7 +303,7 @@ $!data.getMessage()
                                             	<tr><td align=center>
                                                     <font face="$ui.sansSerifFonts">
                                                     ##<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style=text-decoration:none> $brih_assignment </a>
-						      <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","assignment").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none> $brih_assignment </a>
+						      <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","assignement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none> $brih_assignment </a>
                                             	</td></tr>
                                           	</table>
 					</td>
@@ -332,13 +332,13 @@ $!data.getMessage()
 						<table border=0>
 							<tr><td align=center>
 								##<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse") style=text-decoration:none><img border=0 src="$content.getURI("/images/CourseCalendar.gif")"></a>
-								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("cname",$groupName).addPathInfo("mname","calender").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/CourseCalendar.gif")"></a>
+								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("cname",$groupName).addPathInfo("mname","calendar").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/CourseCalendar.gif")"></a>
 
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
 								##<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse") style=text-decoration:none>$brih_course #if($lang!="english") $brih_Of1 #end $brih_calendar</a><br>
-								 <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("cname",$groupName).addPathInfo("mname","calender").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_course #if($lang!="english") $brih_Of1 #end $brih_calendar</a><br>
+								 <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("cname",$groupName).addPathInfo("mname","calendar").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_course #if($lang!="english") $brih_Of1 #end $brih_calendar</a><br>
 
 							</td></tr>
 						</table>
@@ -391,7 +391,7 @@ $!data.getMessage()
                                                         <tr><td align=center>
                                                                 <font face="$ui.sansSerifFonts">
 									##<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1") style=text-decoration:none>$brih_exam </a><br>
-									<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1")..addPathInfo("cname",$groupName).addPathInfo("mname","oles").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_exam </a><br>
+									<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","oles").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_exam </a><br>
 
                                                         </td></tr>
                                                 </table>
@@ -440,12 +440,12 @@ $!data.getMessage()
                           <table border=0>
                           <tr><td align=center>
                           ##<a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1")><img border=0 src="$content.getURI("/images/ScormPlayer.jpg")"></a></td></tr>
-			   <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","wiki").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin")><img border=0 src="$content.getURI("/images/ScormPlayer.jpg")"></a></td></tr>
+			   <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","scromplayer").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin")><img border=0 src="$content.getURI("/images/ScormPlayer.jpg")"></a></td></tr>
 
                            <tr><td align=center>
                            <font face="$ui.sansSerifFonts">
                            ##<a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1")>$brih_scorm $Repo_Player</a></td></tr>
-				<a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","wiki").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin")>$brih_scorm $Repo_Player</a></td></tr>
+				<a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","scromplayer").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin")>$brih_scorm $Repo_Player</a></td></tr>
 
                                 </table>
                                 </td>
@@ -605,27 +605,84 @@ $news.getNews_Subject()
 				                </table>	
 			                </td></tr>
 		                </table>
-					#if($guest_login == "false")
-					 <div style="overflow:auto;  height:180px;">
-                                                <table  bgcolor="$ui.tableColor" width="98%"  align="left">
-                                                        <tr>
-                                                                <td colspan="1" align="center" bgcolor="$ui.menuColor"><b>$brih_course $brih_active $brih_usr #if($lang== "hindi") $brih_Of #end $brih_list &nbsp;&nbsp;($uList.size())</b></td></tr></b>
-                                                                </td>
-                                                        </tr>
+		#if($guest_login == "false")
+			#if($user_role != "instructor")
+			 <div style="overflow:auto;  height:120px;">
+			#else
+			<div style="overflow:auto;  height:180px;">
+			#end
+                              <table  bgcolor="$ui.tableColor" width="98%"  align="left">
+                           	    <tr>
+                                	   <td colspan="1" align="center" bgcolor="$ui.menuColor"><b>$brih_course $brih_active $brih_usr #if($lang== "hindi") $brih_Of #end $brih_list &nbsp;&nbsp;($uList.size())</b></td></tr></b>
+                                           </td>
+                                    </tr>
 
-                                                                #foreach($element in $uList)
-                                                                        #if($velocityCount%2==0)
-                                                                        <tr bgcolor="$ui.menuColor">
-                                                                        #else
-                                                                        <tr bgcolor="$ui.tableColor">
-                                                                        #end
+                       	           #foreach($element in $uList)
+                        	   #if($velocityCount%2==0)
+                                   <tr bgcolor="$ui.menuColor">
+                                   #else
+                                   <tr bgcolor="$ui.tableColor">
+                                   #end
+					  <td> $element </td>
+                                   </tr>
+                                   #end
+                             </table>
+                     </div>
+		#end
+		#if($weektime.size()!=0)
+			<div style="overflow:auto;  height:100px;">
+                        	<table  bgcolor="$ui.tableColor" width="98%"  align="left">
+                                	<tr>
+                                        	<td colspan="2" align="center" bgcolor="$ui.menuColor"><b>$brih_module $brih_Usage $brih_time (7 $brih_days)</b></td></tr></b>
+                                         	  </td>                                                                                                              </tr>
+                                        #foreach($timelist in $weektime)       
+                                        #if($velocityCount%2==0)
+                                        <tr bgcolor="$ui.menuColor">
+                                        #else
+                                        <tr bgcolor="$ui.tableColor">
+                                        #end
+					#set($flag=false)
+					#if($timelist.getModuleName()=="assignment")
+                                        	<td>$brih_assignment</td>
+					#elseif($timelist.getModuleName()=="communication")
+						<td>$brih_communication</td>
+					#elseif($timelist.getModuleName()=="calendar")
+                                                <td>$brih_course #if($lang!="english") $brih_Of1 #end $brih_calendar</a><br></td>
+					#elseif($timelist.getModuleName()=="coursecontent")
+                                        	<td>
+							#if($lang =="hindi") $brih_content #else $brih_course $brih_content #end</td>
+							#elseif($timelist.getModuleName()=="groupmanagement")
+                                                <td>$brih_grp $brih_mgmt</td>
+							#elseif($timelist.getModuleName()=="viewmarks")
+                                                <td>
+							#if($lang!="english") 
+                                                                $brih_marks $brih_view </a><br>
+                                                        #else
+                                                                $brih_view $brih_marks</a><br>
+                                                	#end 
+						</td>
+					#elseif($timelist.getModuleName()=="coursemanagement")
+						<td>$brih_course $brih_mgmt</td>
+					#elseif($timelist.getModuleName()=="instructormanagement")
+                                                <td>$brih_ins $brih_mgmt</td>
+					#elseif($timelist.getModuleName()=="studentmanagement")
+                                                <td>$brih_student $brih_mgmt</td>
+					#elseif($timelist.getModuleName()=="uploadmarks")
+                                                <td>$brih_marks $brih_upload</td>
+					#elseif($timelist.getModuleName()=="oles")
+                                                <td>$brih_exam</td>
+							#else
+                                                                #set($flag=true)
 
-                                                                <td> $element </td>
-                                                        </tr>
-                                                                #end
-                                                </table>
-                                        </div>
-					#end
+							#end
+					#if($flag==false)
+                                              <td>$timelist.getModuleTime()</td>
+					 #end
+                                        </tr>
+                                	 #end
+   				</table>
+      			</div>
+		#end
 
 
 			</td>

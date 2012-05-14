@@ -72,6 +72,7 @@ import org.apache.turbine.services.session.TurbineSession;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
 /**
  * This Class manage all functionality of Course
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
@@ -291,9 +292,18 @@ public class CourseHome extends SecureScreen{
                          */
                         if((Role.equals("student")) || (Role.equals("instructor")))
                         {
-                               //CourseTimeUtil.getCalculation(userid);
-				MailNotificationThread.getController().CourseTimeSystem(userid);
+				 Date CreTime=CourseTimeUtil.getDatetime(userid);   
+				 Date mreTime=ModuleTimeUtil.getMrecenttime(userid);
+				              if(mreTime!=null){
+                                                        if((CreTime.getTime())==(mreTime.getTime())){
+								 ModuleTimeUtil.getModuleCalculation(userid);
+							}
+					}
+				CourseTimeUtil.getCalculation(userid);
                          }
+			Vector weektime=ModuleTimeUtil.LastweekModuleTime(courseid,userid);
+                        context.put("weektime",weektime);
+
 			 /*
                         *method for how much time user spend in this page.
                         *These lines add by Smita
