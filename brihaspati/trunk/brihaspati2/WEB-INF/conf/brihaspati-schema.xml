@@ -566,4 +566,14 @@
         <column name="member_id" required="true" size="50" type="VARCHAR"/>
         <column name="cmi_value_text" required="true" size="255" type="VARCHAR"/>
 </table>
+
+<table name="REMOTE_USERS" idMethod="idbroker">
+         <column name="SR_NO" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+         <column name="USERID" primarykey="true" type="VARCHAR" size="255"/>
+         <column name="RANDOMKEY" type="VARCHAR" size="255"/>
+         <column name="APPLICATION" type="VARCHAR" size="255"/>
+	<unique>
+                <unique-column name="USERID"/>
+        </unique>
+</table>
 </database>
