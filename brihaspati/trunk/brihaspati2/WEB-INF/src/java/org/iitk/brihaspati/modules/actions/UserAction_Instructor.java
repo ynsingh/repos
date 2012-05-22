@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#) UserAction_Instructor.java	
  *
- *  Copyright (c) 2005-2006, 2008-2010, 2010-2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2008-2010, 2010-2011,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -82,7 +82,8 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
- * @modified date: 26-02-2011, 27-07-2011, 05-08-2011
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a> 
+ * @modified date: 26-02-2011, 27-07-2011, 05-08-2011, 19-04-2012
  */
 public class UserAction_Instructor extends SecureAction_Instructor
 {
@@ -200,10 +201,8 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			String subject="";
 			String loginName = user.getName();
 			String strInstId =  (String)user.getTemp("Institute_id","");
-			//ErrorDumpUtil.ErrorLog("\n\nstrInstId======="+strInstId);
                         //int instid=Integer.parseInt( strInstId);
                         String instName=InstituteIdUtil.getIstName(Integer.parseInt(strInstId));
-			ErrorDumpUtil.ErrorLog("\n\n UserAction_Instructor class instName="+instName);
 
 			/**
 	                if(serverPort.equals("8080"))
@@ -362,10 +361,10 @@ public class UserAction_Instructor extends SecureAction_Instructor
                  * getting the values of first,last names,institute id and
                  * configuration parameter.
                  */
-		String serverName=data.getServerName();
+		//String serverName=data.getServerName();
 		String instName=InstituteIdUtil.getIstName(Integer.parseInt((data.getUser().getTemp("Institute_id")).toString()));
-                int srvrPort=data.getServerPort();
-                String serverPort=Integer.toString(srvrPort); 
+                //int srvrPort=data.getServerPort();
+               // String serverPort=Integer.toString(srvrPort); 
 	        User user=data.getUser();
                 LangFile=(String)user.getTemp("LangFile"); 
 	        try{
@@ -389,7 +388,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
                                  * @see RegisterMultiUser util
                                  * @see UserManagement Util
                                  **/
-                                Vector msg=RegisterMultiUser.Multi_Register(f,group,"student",serverName,serverPort,LangFile,instName);
+                                Vector msg=RegisterMultiUser.Multi_Register(f,group,"student",LangFile,instName);
                                 context.put("Msg",msg);
                         }
                 }
@@ -487,7 +486,6 @@ public class UserAction_Instructor extends SecureAction_Instructor
 		String group=data.getUser().getTemp("course_id").toString();
 		String loginName = user.getName();
 		String strInstId =  (String)user.getTemp("Institute_id","");
-		//ErrorDumpUtil.ErrorLog("\n\nstrInstId======="+strInstId);
                 String instName=InstituteIdUtil.getIstName(Integer.parseInt( strInstId));
 
 		/**

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)UserAction_InstituteAdmin.java	
  *
- *  Copyright (c) 2005-2006, 2008, 2010, 2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2008, 2010, 2011,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -58,12 +58,12 @@ import org.iitk.brihaspati.modules.utils.PasswordUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.RegisterMultiUser;
-//import org.iitk.brihaspati.modules.utils.RegisterMultiUser;
 import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
+//import org.iitk.brihaspati.modules.utils.ExtractZipFile;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
@@ -83,10 +83,11 @@ import org.iitk.brihaspati.om.CoursesPeer;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date: 08-07-2010, 20-10-2010, 26-12-2010, 27-07-2011, 05-08-2011
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date: 08-07-2010, 20-10-2010, 26-12-2010, 27-07-2011, 05-08-2011,07-02-2012
  */
 
-public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
+public class UserAction_InstituteAdmin extends SecureAction{
     	/**
     	  * ActionEvent responsible for register multiple user in the system
      	  * @param data RunData
@@ -127,9 +128,9 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
 				data.setMessage(upload_msg2);
         		}
 	        	else{
-				String serverName=data.getServerName();
-        	                int srvrPort=data.getServerPort();
-	                        String serverPort=Integer.toString(srvrPort);
+				//String serverName=data.getServerName();
+        	                //int srvrPort=data.getServerPort();
+	                        //String serverPort=Integer.toString(srvrPort);
 				String group=pp.getString("GroupName");
         			String role=pp.getString("Role");
 				Date date=new Date();
@@ -141,7 +142,7 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
  				 * @see RegisterMultiUser util
  				 * @see UserManagement Util
  				 **/
-        			Vector msg=RegisterMultiUser.Multi_Register(f,group,role,serverName,serverPort,LangFile,instName);
+        			Vector msg=RegisterMultiUser.Multi_Register(f,group,role,LangFile,instName);
 	        		context.put("Msg",msg);
 			}
 		}
@@ -421,7 +422,6 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String Grp_List=data.getParameters().getString("deleteFileNames","");
                         String Gname="";
-		//	ErrorDumpUtil.ErrorLog("gname==========="+Gname);
 			String msg="";
 			if(!Grp_List.equals(""))
                 	{
@@ -439,7 +439,6 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
 						act="1";
 	                        	String CStatus=CourseManagement.UpdateCourseDetails(Gname,CourseName,"","",act,LangFile);
 			msg=UserManagement.DeleteInstructor(Gname,LangFile);
-			//		ErrorDumpUtil.ErrorLog("msg in util at line 395==="+msg);
 				}
 			}
                         data.setMessage(msg);
@@ -493,6 +492,140 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
         {
 		setTemplate(data,"call,ListMgmt_InstituteAdmin,InstAdminviewall.vm");
 	}
+
+	/**
+        * ActionEvent responsible for registers a new course along with the instructor and student
+        * in the system in a single zip file.
+        * @param data RunData
+        * @param context Context
+        * @see UploadMUserSingleZipFile from Utils
+        */
+        public void doUploadMultiUserZip(RunData data, Context context){
+        try{
+                /**
+                * Getting file value from temporary variable according to selection
+                * Replacing the static value from Property file
+                **/
+                Runtime r=Runtime.getRuntime();
+                Process p=null;
+                File Zipfnm=new File("");
+                Vector msg=new Vector();
+		String instName="";
+                ParameterParser pp=data.getParameters();
+		String Role=pp.getString("role","");
+                LangFile=(String)data.getUser().getTemp("LangFile");
+                String inst_Id=(data.getUser().getTemp("Institute_id")).toString();
+		if(inst_Id.equals("")&&(Role.equals("admin"))){
+			instName = pp.getString("instName","");
+		}
+		else{
+	                int InstituteId=Integer.parseInt(inst_Id);
+			instName=InstituteIdUtil.getIstName(InstituteId);
+		}
+                FileItem file = pp.getFileItem("file");
+                String fileName=file.getName();
+                String flName[]=fileName.split("\\.");
+                String fname=flName[0];
+                File filnm=new File(fname);
+                if((!(fileName.toLowerCase()).endsWith(".zip"))||(file.getSize()<=0))
+                {
+                        /**
+                        * Getting file value from temporary variable according to selection of Language
+                        * Replacing the static value from Property file
+                        * show message if extension of file not found
+                        **/
+                        String upload_msg3=MultilingualUtil.ConvertedString("upload_msg3",LangFile);
+                        data.setMessage(upload_msg3);
+                }
+                else{
+                        /**
+                        * Here code for unzip a zip file in their appropriate place.
+                        **/
+                        Vector AddStudfile=new Vector();
+                        Vector AddInstfile=new Vector();
+                        Date date=new Date();
+                        File f=new File(TurbineServlet.getRealPath("/tmp")+"/"+date.toString()+"-"+fileName);
+                        file.write(f);
+                        File ZipDir=new File(TurbineServlet.getRealPath("/Registration/"));
+                        ZipDir.mkdirs();
+			GetUnzip.UnzipFileIntoDirectory(f.getAbsolutePath(),ZipDir.getAbsolutePath());
+                        Zipfnm=new File(TurbineServlet.getRealPath("/Registration/"+filnm));
+                        boolean exists = Zipfnm.exists();
+                        /**
+                        * condition for check the Directory exist or not
+                        * after successfully unzip the zip file in temporary folder
+                        * if directory not exist make a directory for unzip the file
+                        **/
+                        if (!exists){
+                                Zipfnm.mkdir();
+				GetUnzip.UnzipFileIntoDirectory(f.getAbsolutePath(),Zipfnm.getAbsolutePath());
+                        }
+                                /**
+                                * Get the list of file from unzip folder
+                                * If file list is not null then get all file name within flder.
+                                **/
+                                String[] listOfFiles = Zipfnm.list();
+				String msg3="";
+                                if (listOfFiles.length != 0){
+                                        for (int i=0; i<listOfFiles.length; i++)
+                                        {
+                                                /**
+                                                * Get "inst.txt" file for primary instructor registeration from list of files from unzip folder
+                                                * Add all files in new vector except "inst.txt" file for student registeration
+                                                */
+                                                String filenme = listOfFiles[i];
+                                                if(!filenme.equals("inst.txt")){
+                                                        AddStudfile.add(filenme);
+						}
+                                                else{
+							AddInstfile.add(filenme);
+						}
+					}
+						if(AddInstfile.size()!=0){
+							for(int k=0;k<AddInstfile.size();k++)
+							{
+								String InstF=AddInstfile.get(k).toString();
+                                                        	File InstFile=new File(TurbineServlet.getRealPath("/Registration/"+filnm+"/"+InstF));
+                                        			Vector msg1=RegisterMultiUser.RegisterInstructor(InstFile,LangFile,instName);
+                                                        	msg.addAll(msg1);
+                                                	}
+						}
+						else{
+							data.setMessage(MultilingualUtil.ConvertedString("upload_msg6",LangFile));
+						}	
+                                		/**
+	                                	* Get file name one by one within loop for reading content of each file
+	        	                        */
+						if(AddStudfile.size()!=0){
+                        	        		for(int j=0;j<AddStudfile.size();j++)
+                                			{
+                                        			String StudF=AddStudfile.get(j).toString();
+	                                        		File StudFile=new File(TurbineServlet.getRealPath("/Registration/"+filnm+"/"+StudF));
+        	                                		Vector msg2=RegisterMultiUser.Multi_Register(StudFile,"","student",LangFile,instName);
+	                	                        	msg.addAll(msg2);
+        	                	        	}
+						}
+						else{
+							data.setMessage(MultilingualUtil.ConvertedString("upload_msg7",LangFile));
+						}
+				}
+				else{
+					 data.setMessage(MultilingualUtil.ConvertedString("upload_msg8",LangFile));
+				}
+                                context.put("Msg",msg);
+                        
+                        /**
+                        * Remove Directory after successfully registration of User.
+                        **/
+				p = r.exec("rm  -fr "+ZipDir);
+                     		p.waitFor();
+               } 
+        }
+                catch(Exception ex){
+                data.setMessage("The Error in Zip File Uploading!! "+ex);
+                }
+        }
+
 	 /**
           * ActionEvent responsible if no method found in this action i.e. Default Method
           * @param data RunData
@@ -521,6 +654,10 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
 			doUploadLogo(data,context);
 		else if(action.equals("eventSubmit_doSearch"))
 			doSearch(data,context);
+		else if(action.equals("Search"))
+                        setTemplate(data,"call,ListMgmt_InstituteAdmin,InstAdminviewall.vm");
+		else if(action.equals("eventSubmit_doUploadMultiUserZip"))
+                        doUploadMultiUserZip(data,context);
 		else
 		{
 			 /**

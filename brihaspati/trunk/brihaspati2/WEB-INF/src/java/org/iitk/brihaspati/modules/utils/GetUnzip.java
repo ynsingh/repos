@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)GetUnzip.java
  *
- *  Copyright (c) 2005 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005,2012 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -41,14 +41,18 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 
-import java.util.zip.*;
+//import java.util.zip.*;
 import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 /**
  * This class Read zip file and Extract specified path
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
- *
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date: 07-02-2012 
  */
 
 public class GetUnzip
@@ -101,5 +105,59 @@ public class GetUnzip
            fos.close(); 	
        }
     }
+  }
+
+/**
+ * This class reads zip file and Extract it in specified folder.
+ */
+
+ public static void UnzipFileIntoDirectory(String SourceZipfile,String DestinationDir) {
+        try{
+                ZipFile zipFile=new ZipFile(SourceZipfile);
+                Enumeration files = zipFile.entries();
+                File f = null;
+                FileOutputStream fos = null;
+
+                while (files.hasMoreElements()) {
+                        try {
+                                ZipEntry entry = (ZipEntry) files.nextElement();
+                                InputStream eis = zipFile.getInputStream(entry);
+                                byte[] buffer = new byte[1024];
+                                int bytesRead = 0;
+
+                                f = new File(DestinationDir + File.separator + entry.getName());
+
+                                if (entry.isDirectory()) {
+                                        f.mkdirs();
+                                        continue;
+                                }
+                                else {
+                                        f.getParentFile().mkdirs();
+                                        f.createNewFile();
+                                }
+
+                                fos = new FileOutputStream(f);
+
+                                while ((bytesRead = eis.read(buffer)) != -1) {
+                                        fos.write(buffer, 0, bytesRead);
+                                }
+                        }
+                        catch (IOException e) {
+                                e.printStackTrace();
+                                continue;
+                        }
+                        finally {
+                                if (fos != null) {
+                                        try {
+                                                fos.close();
+                                        } catch (IOException e) {
+                                        // ignore
+                                        }
+                                }
+                        }
+                }
+        }
+        catch(Exception e){
+        }
   }
 }

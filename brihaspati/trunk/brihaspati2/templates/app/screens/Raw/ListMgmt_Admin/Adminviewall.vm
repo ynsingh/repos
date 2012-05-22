@@ -1,17 +1,21 @@
 #*
  * @(#) Adminviewall.vm
- *  Copyright (c) 2005,2008 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005,2008,2012 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author  <a href="sweetshaista00@yahoo.com">Shaista Shekh</a>   
  * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>   
- * @ modified date: 26-07-2010, 22-11-2010
+ * @author  <a href="tejdgurung20@gmail.com">Tej Bahadur</a>   
+ * @ modified date: 26-07-2010, 22-11-2010,20-05-2012
  *#
 
 $page.setTitle("Admin Home | User Management | View All Users")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+
 <font face="$ui.sansSerifFonts"> $!mmessage</font>
 ##<table bgcolor="$ui.tableColor" width=100% cellspacing=0>
 
@@ -216,7 +220,7 @@ $!data.getMessage()
 #set($count=$count+1)
 #end
 <tr>
-	<td><input type="button" name="eventSubmit_doExpire" Value=$brih_delete onClick="checkField(document.frm,this);"></td>
+	<td><input type="button" name="eventSubmit_doExpire" Value=$brih_delete onClick=" DeleteField(document.frm,this);"></td>
 </tr>
 		<input type="hidden" name="Process" value="delete">
 		<input type="hidden" name="mode" value="All">
@@ -240,19 +244,7 @@ $!data.getMessage()
 </table>
 
 <SCRIPT language="JavaScript">
-        function popupWin(url,popupName)
-        {
-                Win1=window.open(url,popupName,"resizable,height=200,width=300");
-        }
-	function checkNull(frm,field){
-                if(frm.valueString.value!=""){
-                        frm.submit();
-                }
-                else{
-                        alert("The 'Match String' text box can not be NULL");
-                }
-        }
-	
+#*
 	function checkField(frm,field)
    	{
     		if(frm.deleteFileNames.value!="")
@@ -263,7 +255,7 @@ $!data.getMessage()
     		else
      		alert("Please select checkbox !!");
    	}
-					
+*#					
 	function addDeleteList(field,frm)
         {
                 if(field.checked) {

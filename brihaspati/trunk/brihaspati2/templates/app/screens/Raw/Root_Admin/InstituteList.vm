@@ -7,10 +7,11 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modified date: 10-08-2010 (Shaista)
  * @modified date: 10-10-2010, 22-11-2010 (Shaista)
- * @modified date: 12 April 2012
+ * @modified date: 12 April 2012,20-05-2012
 *#
 
 
@@ -18,6 +19,9 @@ $page.setTitle("Admin Home | View Institute List")
 $page.setBgColor($ui.bgcolor)
 <body>
 $!data.getMessage()
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table  bgcolor="$ui.tableColor" width=100%>
 	<tr bgcolor="$ui.menuColor">
@@ -278,15 +282,6 @@ $!data.getMessage()
 </body>
 
 <SCRIPT LANGUAGE="javascript">
-	function checkNull(frm1,field){
-                if(frm1.valueString.value!=""){
-                        frm1.submit();
-                }
-                else{
-                        alert("The 'Match String' text box can not be NULL");
-                }
-        }
-
         function AcceptField(frm,field)
         {
 		if(frm.deleteFileNames.value != "")
@@ -318,7 +313,5 @@ $!data.getMessage()
         	        frm.deleteFileNames.value=actualString;
 		}                
         }
-
-
 </SCRIPT>
 

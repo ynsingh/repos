@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)RegisterIMCInstructor.java	
  *
- *  Copyright (c) 2009-2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2009-2010,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -55,8 +55,8 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.QuotaUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
-import java.math.BigDecimal;
-
+//import java.math.BigDecimal;
+import org.iitk.brihaspati.modules.utils.RegisterMultiUser;
 /**
  *
  * This Action class for Registering a multiple course with Instructor(Primary) 
@@ -64,7 +64,8 @@ import java.math.BigDecimal;
  * @author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
- * @modified date: 22-11-2010, 27-07-2011,1May2012
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date: 22-11-2010, 27-07-2011,1May2012,17-04-12
  */
 public class RegisterIMCInstructor extends SecureAction_Institute_Admin
 {
@@ -115,17 +116,24 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
 				Date date=new Date();
                                 File f=new File(TurbineServlet.getRealPath("/tmp")+"/"+date.toString()+".txt");
                                 file.write(f);
-				int entryNumber=0;
+				/**
+				 * Getting file path, langfile and institue name and pass this variable as a parameter
+				 * to register user as primary instructor.
+				 * @see util RegisterMultiUser
+				 */
+				Vector msg=RegisterMultiUser.RegisterInstructor(f,LangFile,instName);
+                                context.put("Msg",msg);
+				/*int entryNumber=0;
 				Vector ErrType=new Vector();
 				FileReader fr=new FileReader(f);
                 	        BufferedReader br=new BufferedReader(fr);
-                        	String line;
+                        	String line;*/
                         	/**
                         	* Read the lines in the file one by one and extracts
                         	* the user details with the
                         	* help of StringTokenizer
                         	*/
-                        	while((line=br.readLine())!=null){
+                        	/*while((line=br.readLine())!=null){
                                 StringTokenizer st1=new StringTokenizer(line,";",true);
 	                        entryNumber++;
         	                String first_name="",email="";
@@ -160,11 +168,11 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
 					int i=email.indexOf("@");
 					String pass=email.substring(0,i);
 					uname=email;
-					String check=courseid.concat(uname);
+					String check=courseid.concat(uname);*/
 					/** Getting the group name from the database
 					* and compare this group name with current group name
 					*/
-					Criteria  crit = new Criteria();
+					/*Criteria  crit = new Criteria();
 					crit.add(CoursesPeer.GROUP_NAME,check);
 		                	List v=CoursesPeer.doSelect(crit);
 					String gName="";
@@ -178,13 +186,13 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
 					String serverName=data.getServerName();
 					int srvrPort=data.getServerPort();
 					String serverPort=Integer.toString(srvrPort);
-					String dept="", description="", lname="";
+					String dept="", description="", lname="";*/
 					/**
 					* Register a new course with instructor
 					* @see CourseManagement Utils
 					*/ 
 					//String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,0);
-					boolean checkspace=QuotaUtil.CompareAllotedQuota(instituteId);
+					/*boolean checkspace=QuotaUtil.CompareAllotedQuota(instituteId);
                                 	if(checkspace){
 
 					/** 
@@ -194,7 +202,7 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
                                 	 * @see RegisterMultiUser util
 	                                 * @see UserManagement Util
         	                         **/
-					String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,InstituteId,instName);
+					/*String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,InstituteId,instName);
 					error=3;
 		                        errMsg=msg;
 					}
@@ -214,7 +222,7 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
                          * Adds the error message to a vector if all the required fields
                          * are not entered in the file. The entry number is also added.
                          */
-                        if( error!=0){//if error
+                        /*if( error!=0){//if error
                                 MsgDetails=new CourseUserDetail();
                                 String ErrorEntryNumber=Integer.toString(entryNumber);
                                 MsgDetails.setErr_User(ErrorEntryNumber);
@@ -241,7 +249,7 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
 			context.put("Msg",ErrType);
 			br.close();
 			fr.close();
-			f.delete();
+			f.delete();*/
 			}//end else#1
 		}//end try
 		catch(Exception e)

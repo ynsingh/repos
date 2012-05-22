@@ -274,3 +274,24 @@ if (reason != "") {
         frm.actionName.value=fld.name;
         frm.submit();
 }
+
+/**
+ * This java script is used for validate the registration form for Register Secondary Admin in the Institue or organization.
+ * This java script return alert message and highlighted the field if the input value in the form is missing or incorrect.
+ * @see template, Root_Admin/AddAdmin.vm 
+ */
+
+function  checkFieldAddAdmin(frm,fld) {
+var reason = "";
+    reason += validateAdminFName(frm.IADMINFNAME);
+    reason += validateAdminLName(frm.IADMINLNAME);
+    reason += validateDesgnation(frm.IADMINDESIGNATION);
+    reason += validateEmail(frm.IADMINEMAIL);
+if (reason != "") {
+        alert("Some fields need correction:\n\n" + reason);
+        return false;
+}
+        frm.actionName.value=fld.name;
+        frm.submit();
+}
+

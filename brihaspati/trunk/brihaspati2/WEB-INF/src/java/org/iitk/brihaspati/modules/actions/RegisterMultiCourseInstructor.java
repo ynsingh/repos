@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)RegisterMultiCourseInstructor.java	
  *
- *  Copyright (c) 2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -53,11 +53,15 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.modules.utils.RegisterMultiUser;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 /**
  *
  * This Action class for Registering a multiple course with Instructor(Primary) 
  * in the system from file.
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a> 
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej bahadur</a> 
+ * @modify date: 17-04-12
  */
 public class RegisterMultiCourseInstructor extends SecureAction_Admin
 {
@@ -79,9 +83,13 @@ public class RegisterMultiCourseInstructor extends SecureAction_Admin
 
 		CourseUserDetail MsgDetails=new CourseUserDetail();
 		LangFile=(String)data.getUser().getTemp("LangFile");
+		String instName="";
 	        try
 		 {//try
+			User user=data.getUser();
 		 	ParameterParser pp=data.getParameters();
+			String Role=pp.getString("role","");
+                        instName = pp.getString("instName","");
                         FileItem file = pp.getFileItem("file");
                         String fileName=file.getName();
 //                        if((!fileName.endsWith(".txt"))||(!fileName.endsWith(".TXT")))
@@ -97,9 +105,20 @@ public class RegisterMultiCourseInstructor extends SecureAction_Admin
                         }//end if#1
                         else{//else#1
 				Date date=new Date();
+				//String serverName=data.getServerName();
+                        	//int srvrPort=data.getServerPort();
+                        	//String serverPort=Integer.toString(srvrPort);
+				
                                 File f=new File(TurbineServlet.getRealPath("/tmp")+"/"+date.toString()+".txt");
                                 file.write(f);
-				int entryNumber=0;
+				 /**
+                                 * Getting file path, langfile and institue name and pass this variable as a parameter
+                                 * to register user as primary instructor.
+                                 * @see util RegisterMultiUser
+                                 */
+				Vector msg=RegisterMultiUser.RegisterInstructor(f,LangFile,instName);
+				context.put("Msg",msg);
+				/*int entryNumber=0;
 				Vector ErrType=new Vector();
 				FileReader fr=new FileReader(f);
                 	        BufferedReader br=new BufferedReader(fr);
@@ -109,7 +128,7 @@ public class RegisterMultiCourseInstructor extends SecureAction_Admin
                         * the user details with the
                         * help of StringTokenizer
                         */
-                        	while((line=br.readLine())!=null)
+                        	/*while((line=br.readLine())!=null)
                         	{//while#1
 
                                 	StringTokenizer st1=new StringTokenizer(line,";",true);
@@ -149,7 +168,7 @@ public class RegisterMultiCourseInstructor extends SecureAction_Admin
 								/** Getting the group name from the database
 								 *  and compare this group name with current group name
 								 */
-											Criteria crit = new Criteria();
+										/*	Criteria crit = new Criteria();
 											crit.add(CoursesPeer.GROUP_NAME,check);
 		                							List v=CoursesPeer.doSelect(crit);
 									                String gName="";
@@ -170,7 +189,7 @@ public class RegisterMultiCourseInstructor extends SecureAction_Admin
 											  * Register a new course with instructor
 											  * @see CourseManagement Utils
 											  */ 
-					 								String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,0,""); //modified by Shikha 
+					 					/*			String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,0,""); //modified by Shikha 
 													error=3;
 		                                			                                errMsg=msg;
 												}//end Else#7
@@ -185,7 +204,7 @@ public class RegisterMultiCourseInstructor extends SecureAction_Admin
                          * Adds the error message to a vector if all the required fields
                          * are not entered in the file. The entry number is also added.
                          */
-                        if( error!=0){//if error
+                        /*if( error!=0){//if error
                                 MsgDetails=new CourseUserDetail();
                                 String ErrorEntryNumber=Integer.toString(entryNumber);
                                 MsgDetails.setErr_User(ErrorEntryNumber);
@@ -212,7 +231,7 @@ public class RegisterMultiCourseInstructor extends SecureAction_Admin
 			context.put("Msg",ErrType);
 			br.close();
 			fr.close();
-			f.delete();
+			f.delete();*/
 			}//end else#1
 		}//end try
 		catch(Exception e)

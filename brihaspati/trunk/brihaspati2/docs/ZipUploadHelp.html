@@ -1,0 +1,58 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.78 [en] (X11; U; Linux 2.4.7-10 i586) [Netscape]">
+</head>
+<body bgcolor="#d9e3ec">
+
+<h3 align="center"><font color="blue"><u>Multiple User Registration With a Single Zip File</u></font></h3>
+<p><font color="blue">"Add Multiple Users"</font> registration page is available to the institute admin, provides an interface to create the course of primary Instructor and student.<br> 
+This module allows an Institute Admin to register multiple user as Primary instructor and as students along with their courses into the system using single zip file.<br>
+To effectively use of feature we should remember all the necessary conditions and instructions which are given below.<br><br>
+
+<b>1. <u>Guideline for creating registration file of instructor</u></b>
+<ul>
+<li>File name must be <font color="blue">"inst.txt" </font></li>
+<li>The authorised user should write down Full name of Instructor, Email Id of instructor, Course Id and Course Name in the <font color="blue">"inst.txt" </font>file which are all separated by semi-colons.</li>
+<li>Each line must contain four fields. Each field separated by semicolon(;).</li>
+<li>Note that there is no semicolon after the CourseName.</li>
+<li>Hence, the required format for instructor is :-<br>
+	 <font color="red"><b>Full name of instructor; Email Id; Course Id; Course Name</b></font></li>
+<li><b>Example:-
+    <font color="blue">Tej B Gurung; tejb@iitk.ac.in; TEST101; Testing of Modules</font></b></li> 
+</ul>
+<br>
+
+<b>2. <u>Guideline for creating registration file of student </u></b>
+<ul>
+<li>File name must be written with courseid<font color="red"><b>*(see Note)</b>.</font></li>
+<li><b>Example:- </b><font color="blue">TEST101.txt</font></li>
+<li>The authorised user should write down the <font color="blue">email, password, firstname, familyname, programcode, rollno and course_id</font><font color="red"><b>**(see Note)</b>.</font></li> 
+<li>All field separated by semi-colons in the student's registeration files.</li>
+<li>Note that there is no semicolon(;) after the course_id. </li>
+<li>Hence, theere are two required format for student is:-<br>
+	1. <font color="blue"><font color="red">*&nbsp;&nbsp;</font>email; password; firstname; familyname; programcode; rollno; course_id</font></li>
+	2. <font color="blue"><font color="red">**&nbsp;&nbsp;</font>email; password; firstname; familyname; programcode; rollno</font></li></br></br>
+<li><font color="red"><b>Note- &nbsp;&nbsp; *</b></font>&nbsp;If file name is not a course id then course id must be written in the file after roll no field.<br></li>
+<b>Example:- </b>
+<font color="blue"><b>tejb@iitk.ac.in; ;tej;bahadur; ;y1001;AE101</b></font></br></br>
+<li><font color="red"><b>Note- &nbsp;&nbsp; **</b></font>&nbsp;Course Id is optional If file name is same as course id. </br>
+<li><b>Example:- </b>
+<font color="blue"><b>tejb@iitk.ac.in; ;tej;bahadur; ;y1001</b></font></br>
+</li>
+</ul>
+<b>3. <u>Important Instructions</u></b><br>
+<ul>
+<li>It is necessary that each file should be kept in a folder before zip the file.</li> 
+<li>Each field in the entry should consist of alphanumeric characters. Email field is execption to this. '@' and '_' are allowed for use in this field.</li>
+<li><font color="blue">Email and Roll No are mandatory(*) fields and Course Id<font color="red"><b>**(see Note)</b></font> is optional.</font></li>
+<li>Without these fields, the new entry into the system will not be registered.</li>
+<li>Similarly, an entry containing an illegal character will also not be registered into the system.   <font color="blue"><b>Example:- # % & * { } \ : < > ? / +</b></font></li>
+<li>Each entry must be in one line and must contain the seven fields separated by six delimiters (;) in the student's registeration file.</li>
+<li>Ensure that there is no need of semicolon(;) after Course name field in instructor's registeration file and Course Id field in the student's registeration file.</li>
+</ul>
+</body>
+
+ <center><a href="javascript: self.close ()">Close Window</a></center>
+</html>

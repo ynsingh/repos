@@ -1,16 +1,19 @@
 #*
  * @(#)AddAdmin.vm 
- * Copyright (c)2010 ETRG,IIT Kanpur.
+ * Copyright (c)2010,2012 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
  * @author <a href="mailto:singh_jaivir@rediff.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 22-11-2010
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date: 22-11-2010,20-05-2012
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * 
  *#
 $!data.getMessage()
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/InstituteAdminRegistration.js")"></script>
 $page.setTitle("Login Page | Add Admin ")
 #set($lang=$data.getUser().getTemp("lang").toString())
 	
@@ -54,7 +57,7 @@ $page.setTitle("Login Page | Add Admin ")
 		<table bgcolor="$ui.tableColor" width="100%">
 		<tr bgcolor="$ui.menuColor">
                 	<td>$RemoteInstitute $brih_name</td>
-                	<td><input type="text" name="institutename" value="$Institute_Name" "readonly"></td>
+                	<td><input type="text" name="Institue_Name" value="$Institute_Name" readonly></td>
                 </tr>
                 <tr>
 			###formCell ("$brih_ad $brih_first $brih_name<font color=red>*</font>" "IADMINFNAME" "")
@@ -79,7 +82,7 @@ $page.setTitle("Login Page | Add Admin ")
 
 		<tr>
         			<td colspan=2>
-				<input type="button" name="eventSubmit_AddAdmin" value="$brih_reg1" onClick="checkField(document.frm,this);"/>
+				<input type="button" name="eventSubmit_AddAdmin" value="$brih_reg1" onClick="checkFieldAddAdmin(document.frm,this);"/>
         			<input type="Reset" name="Reset" Value="$brih_clear"/>
 				<input type="hidden" name="mode" value="viewadmin">
         			</td>
@@ -126,89 +129,3 @@ $page.setTitle("Login Page | Add Admin ")
 		<input type="hidden" name="mode" value="$mode">
         	<input type="hidden" name="count" Value="$tdcolor">
 		<input type="hidden" name="Institute_Id" value="$Institute_Id">
-<SCRIPT LANGUAGE="javascript">
-	
-        function checkField(frm,field)
-        {
-
-                if ((frm.IADMINFNAME.value!="") && (frm.IADMINLNAME.value!="")  && (frm.IADMINEMAIL.value !="") && (frm.IADMINDESIGNATION.value !=""))
-                {
-
-                        var adminemailid = document.frm.IADMINEMAIL.value;
-                        //alert("Emailid"+adminemailid);
-
-                        if (CheckValidEmail(adminemailid) == false)
-                        {
-                                adminemailid = "";
-                                adminemailid.focus();
-                                return;
-                        }
-                        else
-                        {
-                                frm.actionName.value=field.name;
-                                frm.submit();
-                        }
-                }
-                else
-                {
-                        alert("Please fill all the mandatory(*) Fielsd !");
-                }
-
-        }
-
-        function CheckValidEmail(adminemail)
-        {
-                var atrate = "@";
-                var dot = ".";
-                var indexofatrate = adminemail.indexOf(atrate);
-                var emaillength = adminemail.length;
-                var indexofdot = adminemail.indexOf(dot);
-
-                if (indexofatrate == -1)
-                {
-                        alert("Invalid email ID")
-                        return false;
-                }
-
-                if (indexofatrate == -1 || indexofatrate == 0 || indexofatrate == emaillength)
-                {
-                        alert("Invalid email ID ")
-                        return false;
-                }
-
-                if (indexofdot == -1 || indexofdot == 0 || indexofdot == emaillength)
-                {
-                        alert("Invalid E-mail ID")
-                        return false
-                }
-
-                if (adminemail.indexOf(atrate,(indexofatrate+1)) != -1)
-                {
-                        alert("Invalid E-mail ID")
-                        return false
-                }
-
-                if (adminemail.substring(indexofatrate-1,indexofatrate)==dot || adminemail.substring(indexofatrate+1,indexofatrate+2)==dot)
-                {
-                        alert("Invalid E-mail ID")
-                        return false
-                }
-
-                if (adminemail.indexOf(dot,(indexofatrate+2))==-1)
-                {
-                        alert("Invalid E-mail ID")
-                        return false
-                }
-
-                if (adminemail.indexOf(" ")!=-1)
-                {
-                        alert("Invalid E-mail ID")
-                        return false
-                }
-
-                 return true
-        }
-
-
-</SCRIPT>
-

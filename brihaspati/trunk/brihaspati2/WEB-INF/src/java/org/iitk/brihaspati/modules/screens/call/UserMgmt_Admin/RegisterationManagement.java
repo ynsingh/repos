@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_Admin;
 /*
  * @(#)RegisterationManagement.java	
  *
- *  Copyright (c) 2005,2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2009,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -40,7 +40,8 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_Admin;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
- * @modified date: 03-08-2011 (Shaista)
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej bahadur</a>
+ * @modified date: 03-08-2011 (Shaista),20-05-2012
  */
 
 import java.util.Vector;
@@ -79,7 +80,8 @@ public class RegisterationManagement extends SecureScreen_Admin
                         String stat=data.getParameters().getString("status","");
                         context.put("stat",stat);
                         String query="";
-			if((mode == "") && (mode != "MCRegister") && (mode != "All")){
+		//	if((mode == "") && (mode != "MCRegister") && (mode != "All")){
+			if(((mode == "") || (mode != "All"))||(mode == "MCRegister")||(mode == "MCRegister")){
 				/**
 				* Added by shaista to show the list of institute 
 	                        *Getting the list of Institute and set in context 
