@@ -1,0 +1,50 @@
+#*
+ * @(#) remPass.vm
+ * Copyright (c) 2012 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+$page.setTitle("Write password")
+$page.setBgColor($ui.bgcolor)
+$!data.getMessage()
+$!msg
+
+<table bgcolor="$ui.menuColor" width=100%>
+<tr><td align="center"><font size=6> Welcome to Central Authentication Server</font></td></tr>
+<tr><td>
+        RemoteLoginPassword
+</td></tr>
+</table>
+<form name="frm" method="post" action="$link.setAction("remoteAuthRes")">
+<table align=left bgcolor="$ui.tableColor" width="100%">
+        <tr>
+                <td width="15"><font size=4><b>Password</b></font></td>
+                <td width="40">
+			<input type="password" size="30" name="password" value="">
+		</td>
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+                <td colspan=2>
+                        <input type="button" name="eventSubmit_dochk" value="Submit" onClick="checkField(document.frm,this);"/>
+                        <input type="hidden" name="actionName">
+                        <input type="hidden" name="url" value=$url>
+                </td>
+        </tr>
+</table>
+</form>
+
+<script language="javascript">
+function checkField(frm,field)
+{
+        if(frm.password.value!="")
+        {
+                frm.actionName.value=field.name;
+                frm.submit();
+        }
+        else
+        {
+                alert("Please enter password");
+        }
+}
+</script>
