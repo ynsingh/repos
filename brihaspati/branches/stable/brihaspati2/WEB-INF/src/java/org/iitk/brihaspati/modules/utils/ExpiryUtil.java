@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 
 /*@(#)ExpiryUtil.java
- *  Copyright (c) 2004-2006,2011 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2004-2006,2011.2012 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -79,7 +79,7 @@ import org.iitk.brihaspati.om.TurbineUserGroupRole;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modified date: 26-02-2011
+ * @modified date: 26-02-2011,08May2012
  */
 
 public class ExpiryUtil{
@@ -447,30 +447,8 @@ public class ExpiryUtil{
 				}
 				else if(str[i].equals("Institutedel"))
 				{
-					crit=new Criteria();
-					crit.addAscendingOrderByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
-					crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"2");
-					List lst1=InstituteAdminRegistrationPeer.doSelect(crit);
-					crit=new Criteria();
-					crit.addAscendingOrderByColumn(InstituteAdminUserPeer.INSTITUTE_ID);
-					List lst2=InstituteAdminUserPeer.doSelect(crit);
-					boolean flag=false;
-					for(int p=0;p<lst2.size();p++){
-						InstituteAdminUser detail=(InstituteAdminUser)lst2.get(p);
-						int instIdUser=detail.getInstituteId();
-						for(int q=0;q<lst1.size();q++){
-							InstituteAdminRegistration detail1=(InstituteAdminRegistration)lst1.get(q);
-							int instIdReg=detail1.getInstituteId();
-							if(instIdUser == instIdReg){
-								flag=true;
-							}
-							if(flag){
-								crit=new Criteria();
-								crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instIdUser);
-								InstituteAdminUserPeer.doDelete(crit);
-							}
-						}
-					}
+					String filePath=TurbineServlet.getRealPath("/InstituteRegistration"+"/InstituteRejectList.xml");
+					XMLWriter_InstituteRegistration.RemoveElementRejectxml(filePath,current_date);
 					crit=new Criteria();
 					crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"2");
 					crit.add(InstituteAdminRegistrationPeer.EXPIRY_DATE,(Object)current_date,crit.LESS_EQUAL);

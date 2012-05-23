@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /* 
  *  @(#)CourseUtil.java
  *
- *  Copyright (c) 2004-2010 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2004-2010,2012 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -34,18 +34,21 @@ package org.iitk.brihaspati.modules.utils;
 //Java classes
 import java.util.List;
 import java.util.Date;
+import java.util.Vector;
 //Turbine classes
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.security.AccessControlList;
-//Brihaspati classes
+//Brihaspati classes4
 import org.iitk.brihaspati.om.Courses;
 import org.iitk.brihaspati.om.CoursesPeer;
 
 /**
  *
  * @author <a href="mailto:nksinghiitk@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify Date:- 07-02-2012
  */
 
 
@@ -123,4 +126,26 @@ public class CourseUtil{
 
         }
 
+	/**
+        * Get Group Name with the help of course alias(course id).
+        **/
+        public static Vector getCourseNameWithGAlias(String GAlias,String instId)
+        {
+                Vector GroupName=new Vector();
+                try{
+                        Criteria crit=new Criteria();
+                        crit.add(CoursesPeer.GROUP_ALIAS,GAlias);
+                        List Course_list=CoursesPeer.doSelect(crit);
+			for(int i=0;i<Course_list.size();i++){
+                        	String GName=((Courses)Course_list.get(i)).getGroupName();
+				if(GName.endsWith(instId)){
+				GroupName.add(GName);
+				}
+			}
+                }
+                catch(Exception e){
+		 ErrorDumpUtil.ErrorLog("The Error in getting group name in course Util "+e);
+		}
+                return GroupName;
+        }
 }

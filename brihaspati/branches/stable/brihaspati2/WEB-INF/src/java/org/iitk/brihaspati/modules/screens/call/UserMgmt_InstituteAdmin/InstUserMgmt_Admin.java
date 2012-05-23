@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
 /*
  * @(#)InstUserMgmt_Admin.java	
  *
- *  Copyright (c) 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010-11,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -40,7 +40,8 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date:23-12-2010, 11-01-2011
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date:23-12-2010, 11-01-2011, 31-01-2012
  */
 import java.util.List;
 import java.util.Vector;
@@ -94,9 +95,8 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 	  */
 	String instituteId=(data.getUser().getTemp("Institute_id")).toString();
 	try{
-		if((mode.equals(""))||(mode.equals("AddMUser"))||(mode.equals("userdelete"))){	
+		if((mode.equals(""))||(mode.equals("AddMUser"))||(mode.equals("userdelete"))||(mode.equals("USzip"))){	
 			Vector CourseList=InstituteDetailsManagement.getInstituteCourseDetails(instituteId);
-			//ErrorDumpUtil.ErrorLog("Course List in screen file [InstUserMgmt_Admin.java]======="+CourseList);
         		context.put("courseList",CourseList);
 		}
 		if(mode.equals("userdelete")){
@@ -170,7 +170,8 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 			 * @see StringUtil in utils	
                          */
 
-                         String  valueString =StringUtil.replaceXmlSpecialCharacters(data.getParameters().getString("value"));
+                         //String  valueString =StringUtil.replaceXmlSpecialCharacters(data.getParameters().getString("value"));
+                         String  valueString =StringUtil.replaceXmlSpecialCharacters(data.getParameters().getString("valueString"));
 
                         context.put("query",query);
                         context.put("value",valueString);

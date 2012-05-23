@@ -47,8 +47,8 @@ $!data.getMessage()
 	#end
 	#if($data.getUser().getUserName() == "admin")
 	<a href="$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doCompleteBackup").addPathInfo("count","2")" style=text-decoration:none >$brih_system #if($lang == "hindi") $brih_Of1 #end $brih_backup</a></td>
-	##else
-	##<a href="$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doInstituteDbaseBackup").addPathInfo("count","2")" style=text-decoration:none >$brih_system #if($lang == "hindi") $brih_Of1 #end $brih_backup</a></td>
+	#else
+	<a href="$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doInstituteDbaseBackup").addPathInfo("count","2")" style=text-decoration:none >$brih_system #if($lang == "hindi") $brih_Of1 #end $brih_backup</a></td>
 	#end
 	#if($tdcolor!="3")
 	<td>

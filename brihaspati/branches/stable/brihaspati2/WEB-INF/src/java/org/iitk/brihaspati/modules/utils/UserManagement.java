@@ -1,5 +1,4 @@
 package org.iitk.brihaspati.modules.utils;
-
 /*
  *  @(#) UserManagement.java
  *  Copyright (c) 2005-2011 ETRG,IIT Kanpur 
@@ -134,7 +133,7 @@ public class UserManagement
 		Criteria crit=new Criteria();
 		java.sql.Date expdate=null;
 		String instituteid="";
-		int instIdint = 0;
+		int instIdint = 0,Auid=0;
 		/**
 		 * Below  check is added by Shaista
 		 * In admin case iname is recieved null 
@@ -316,14 +315,16 @@ public class UserManagement
 							msgBrihAdmin=msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
 						else{ 
 							crit=new Criteria();
-							//ErrorDumpUtil.ErrorLog("\n\n\n\n UM CLASS line 283 instIdint="+instIdint);
 							try{
         				                        crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instIdint);
 	                                			List inm=InstituteAdminUserPeer.doSelect(crit);
-								//ErrorDumpUtil.ErrorLog("\n line 287="+inm);
 	                                		        InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
-        	                                        	instFirstLastName= element.getAdminFname() +" "+element.getAdminLname();
-								//ErrorDumpUtil.ErrorLog("\n\ninstFirstLastName"+instFirstLastName);
+								/**modify by jaivir,seema 
+								*Getting full name of user using UserUtil.
+								*@see UserUtil in utils
+								*/
+	                                		        Auid=UserUtil.getUID(element.getAdminUname());
+								instFirstLastName=UserUtil.getFullName(Auid);
                         			       }
 			                               catch(Exception ex){
                         			               ErrorDumpUtil.ErrorLog("The error in User Managemen Util class at line 282 to 288 !!"+ex);
@@ -331,7 +332,7 @@ public class UserManagement
 
 							msgBrihAdmin = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin");
 							msgBrihAdmin = MailNotification.getMessage_new(msgBrihAdmin, "", "", instFirstLastName, "");
-							ErrorDumpUtil.ErrorLog("\n\nline 301 msgBrihAdmin"+msgBrihAdmin);
+							//ErrorDumpUtil.ErrorLog("\n\nline 301 msgBrihAdmin"+msgBrihAdmin);
 						}
 						msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
 						msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
@@ -546,8 +547,6 @@ public class UserManagement
 						//messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
                                                 messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name,"");
 	
-						//ErrorDumpUtil.ErrorLog("\n\n\n\n subject="+subject+"		messageFormate="+messageFormate);
-						//MailNotification.sendMail(messageFormate, email_new, subject, "", file);
 						 MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid);
 						subject = ""; messageFormate =""; msgBrihAdmin="";
 						if(Role.equals("author") || Role.equals("institute_admin"))
@@ -558,7 +557,13 @@ public class UserManagement
                                                                 crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instIdint);
                                                                 List inm=InstituteAdminUserPeer.doSelect(crit);
                                                                 InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
-                                                                instFirstLastName= element.getAdminFname() +" "+element.getAdminLname();
+								/**modify by jaivir,seema 
+                                                                *Getting full name of user using UserUtil.
+                                                                *@see UserUtil in utils
+                                                                */
+
+								Auid=UserUtil.getUID(element.getAdminUname());
+                                                                instFirstLastName=UserUtil.getFullName(Auid);
                                                        }
                                                        catch(Exception ex){
                                                                ErrorDumpUtil.ErrorLog("The error in User Managemen Util class at line 506 to 513 !!"+ex);
@@ -574,7 +579,6 @@ public class UserManagement
                                                		messageFormate = MailNotification.getMessage(userRole, "", "", "", "", serverName, serverPort,pr);
 							//messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
 							messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name, "");
-							//ErrorDumpUtil.ErrorLog("----------- subject="+subject+"		messageFormate="+messageFormate);
 							//Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
 							 Mail_msg = message+MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid);
 						}
@@ -583,7 +587,6 @@ public class UserManagement
                                                		messageFormate = MailNotification.getMessage(userRole, cAlias, dept, "", "", serverName, serverPort,pr);
 							//messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
 							messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name, "");
-							//ErrorDumpUtil.ErrorLog("----------- subject="+subject+"		messageFormate="+messageFormate);
 							//Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
 							Mail_msg = message+MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid);							
 						}
@@ -819,7 +822,6 @@ public class UserManagement
                         ErrorDumpUtil.ErrorLog("This is the exception in get user details -utils(UserManagement)  :- "+e);
 					
 		}
-	//	ErrorDumpUtil.ErrorLog("Total User====>"+v);
 		return v;
 	}
 	/*Modified for getting User according to Institute wise.
@@ -963,7 +965,6 @@ public class UserManagement
 				StudentRollnoPeer.doUpdate(crit);
 
 				List CrsList = CourseProgramUtil.getUserCourseProgram(Integer.parseInt(StudSrid),CourseId,Program);
-				//ErrorDumpUtil.ErrorLog("CrsList in updateUserDetail--"+CrsList);
                                 if(CrsList.size()==0 && !CourseId.equals("Select Course")){
                                         CourseProgramUtil.InsertCourseProgram(Integer.parseInt(StudSrid),CourseId,Program);
                                 }
@@ -1050,15 +1051,12 @@ public class UserManagement
                         * the parameters passed
                         */
                         User user=TurbineSecurity.getUser(userName);
-		//	ErrorDumpUtil.ErrorLog("user in removeUserProfile= "+user);
                         Group user_group=TurbineSecurity.getGroupByName(group_name);
-		//	ErrorDumpUtil.ErrorLog("usergroup at line 775 in removeUserProfile= "+user);
 			int uid=UserUtil.getUID(userName);
 			int gid=GroupUtil.getGID(group_name);
 			int role=getRoleinCourse(uid,gid);
 			String roleName=UserGroupRoleUtil.getRoleName(role);
                         Role user_role=TurbineSecurity.getRoleByName(roleName);
-		//	ErrorDumpUtil.ErrorLog("user_role at line 781 in removeUserProfile= "+user);
                         Criteria crit=new Criteria();
 
 						/**
@@ -1100,7 +1098,6 @@ public class UserManagement
                                        	crit.add(TurbineUserGroupRolePeer.USER_ID,user_id);
 					crit.addNotIn(TurbineUserGroupRolePeer.GROUP_ID,i);
 					List check=TurbineUserGroupRolePeer.doSelect(crit);
-//					ErrorDumpUtil.ErrorLog("lst from TurbineUserGroupRolePeer in rmvusrprfle==="+check);
 					if(check.size()==0){
                                                	/**
                                                	* Remove the login details for the user
@@ -1121,7 +1118,6 @@ public class UserManagement
                                                	*/
                                       		TurbineSecurity.removeUser(user);
                                                	tool.deleteUser(userName);
-				//		ErrorDumpUtil.ErrorLog("testing after tooldeletion=======");	
 						/**
                                                  * Remove the user rollno and Program from database  
                                                  */
@@ -1563,7 +1559,6 @@ public class UserManagement
         	        String subject = MailNotification.subjectFormate(info_new, "", pr );
                 	String message = MailNotification.getMessage(info_new, group_name, "", "", "", serverName, serverPort,pr);
 			message = MailNotification.getMessage_new(message,"","",instName,userName);
-	                //ErrorDumpUtil.ErrorLog("\n\n\n\n in UserManagement util  message="+message+"      subject="+subject);
 		////////////////////////////////////////
 		//String Mail_msg=MailNotification.sendMail(info_new,mail_id,group_name,"","","",file,serverName,serverPort,langFile);
 			Mail_msg=MailNotification.sendMail(message, mail_id, subject, "" ,langFile);

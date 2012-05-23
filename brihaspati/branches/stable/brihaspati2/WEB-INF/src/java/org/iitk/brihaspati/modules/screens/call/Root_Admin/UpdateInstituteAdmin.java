@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens.call.Root_Admin;
 /* 
  * @(#)UpdateInstituteAdmin.java
  *
- *  Copyright (c) 2010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2010,2012 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -35,17 +35,22 @@ package org.iitk.brihaspati.modules.screens.call.Root_Admin;
  */
 
 import java.util.List;
+import java.util.Vector;
 import org.apache.turbine.util.RunData;
 import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
+import org.iitk.brihaspati.modules.utils.InstituteFileEntry;
 
  /**
- * This screens called when SysAdmin update the details of Institute Admin. 
- * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * This screen called when SysAdmin update the details of Institute Admin. 
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>09may2012
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>09may2012
  */
 
 public class UpdateInstituteAdmin extends SecureScreen_Admin 
@@ -59,25 +64,62 @@ public class UpdateInstituteAdmin extends SecureScreen_Admin
 			 *set to context for use in templates.
 			 */
 			String iid=data.getParameters().getString("Institute_Id");
-			context.put("instId",iid);
+			context.put("Institute_Id",iid);
 			String iname=data.getParameters().getString("username");
 			context.put("iadname",iname);
 			String status=data.getParameters().getString("status");
 			context.put("status",status);
+			String mode=data.getParameters().getString("mode");
+			context.put("mode",mode);
 			String count=data.getParameters().getString("count","");
                         context.put("tdcolor",count);
 			Criteria crit=new Criteria();
 			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,iid);
 			List listAreg=InstituteAdminRegistrationPeer.doSelect(crit);
-			crit=new Criteria();	
-			crit.add(InstituteAdminUserPeer.INSTITUTE_ID,iid);
-			crit.add(InstituteAdminUserPeer.ADMIN_UNAME,iname);
-			List listAuser=InstituteAdminUserPeer.doSelect(crit);
 			context.put("detAregis",listAreg);
-			context.put("detAuser",listAuser);
+			Vector instuser=getInstAdmUserDetail(iid,iname);
+			context.put("detAuser",instuser);
 		}
 		catch(Exception e) { data.setMessage("Error in Update Institute Admin screen!!" +e);}
-		
 	}
+	/** Getting detail of InstituteAdmin from 'InstituteAdminUser and TurbineUser table'
+	*/
+	public Vector getInstAdmUserDetail(String Instid,String Uname)
+	{
+		Vector instuser=new Vector();
+		try{
+			Criteria crit=new Criteria();  
+                        crit.add(InstituteAdminUserPeer.INSTITUTE_ID,Instid);
+                        crit.add(InstituteAdminUserPeer.ADMIN_UNAME,Uname);
+			List admindetail=InstituteAdminUserPeer.doSelect(crit);
+                        for(int k=0;k<admindetail.size();k++)
+                        {
+                                InstituteAdminUser instadminuser=(InstituteAdminUser)admindetail.get(k);
+                                int Id=instadminuser.getId();
+                                String email=instadminuser.getAdminUname();
+                                String ADesg=instadminuser.getAdminDesignation();
+                                int Apstatus=instadminuser.getAdminPermissionStatus();
+                                crit=new Criteria();
+                                crit.add(org.iitk.brihaspati.om.TurbineUserPeer.LOGIN_NAME,email);
+                                List tulist=org.iitk.brihaspati.om.TurbineUserPeer.doSelect(crit);
+                                org.iitk.brihaspati.om.TurbineUser udetail=(org.iitk.brihaspati.om.TurbineUser)tulist.get(0);
+                                String fname=udetail.getFirstName();
+                                String lname=udetail.getLastName();
+                                String temail=udetail.getEmail();
+                                String uname=udetail.getLoginName();
+                                InstituteFileEntry InstfileEntry=new InstituteFileEntry();
+                                InstfileEntry.setInstituteFName(fname);
+                                InstfileEntry.setInstituteLName(lname);
+                                InstfileEntry.setInstituteEmail(temail);
+                                InstfileEntry.setInstituteUserName(uname);
+                                InstfileEntry.setID(Id);
+                                InstfileEntry.setInstituteDesignation(ADesg);
+                                InstfileEntry.setInstituteAdminStatus(Apstatus);
+                                instuser.add(InstfileEntry);
+			}
+		}
+		catch(Exception e) { ErrorDumpUtil.ErrorLog("Error in Update Institute Admin screen!!" +e);}
+		return instuser;
+	}//method
 }
 

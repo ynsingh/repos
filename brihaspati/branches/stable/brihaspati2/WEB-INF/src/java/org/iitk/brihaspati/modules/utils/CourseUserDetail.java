@@ -76,6 +76,13 @@ public class CourseUserDetail
 	private int onlineconf;
 	private int studsrlid;
 	private String instAdminName;
+	private String courseTime;
+	private String moduleName;
+	private String moduleTime;
+	private String grpNameLeader;
+	private String loginDate;
+	private String loginTime;
+	private int countLogins;
 	/**
 	 * Course details
 	 */ 
@@ -300,6 +307,64 @@ public class CourseUserDetail
         {
                 return instAdminName;
         }
+	public void setCourseTime(String courseTime)
+        {
+                this.courseTime=courseTime;
+        }
+        public String getCourseTime()
+        {
+                return courseTime;
+        }
+	 public void setModuleName(String moduleName)
+        {
+                this.moduleName=moduleName;
+        }
+        public String getModuleName()
+        {
+                return moduleName;
+        }
+	 public void setModuleTime(String moduleTime)
+        {
+                this.moduleTime=moduleTime;
+        }
+        public String getModuleTime()
+        {
+                return moduleTime;
+        }
+
+	public void setgrpNameLeader(String grpNameLeader)
+        {
+                this.grpNameLeader=grpNameLeader;
+        }
+        public String getgrpNameLeader()
+        {
+                return grpNameLeader;
+        }
+	public void setLoginDate(String loginDate)
+        {
+                this.loginDate=loginDate;
+        }
+        public String getLoginDate()
+        {
+                return loginDate;
+        }
+	public void setLoginTime(String loginTime)
+        {
+                this.loginTime=loginTime;
+        }
+        public String getLoginTime()
+        {
+                return loginTime;
+        }
+	public void setCountLogins(int countLogins)
+        {
+                this.countLogins=countLogins;
+        }
+        public int getCountLogins()
+        {
+                return countLogins;
+        }
+
 
 
 }

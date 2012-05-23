@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Root_Admin;
 /* 
  * @(#) AddAdmin.java
  *
- *  Copyright (c) 2010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2010,2012 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -45,19 +45,16 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
-import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
-import org.iitk.brihaspati.om.InstituteAdminRegistration;
-import org.iitk.brihaspati.om.InstituteAdminUserPeer;
-import org.iitk.brihaspati.om.InstituteAdminUser;
-
+import org.iitk.brihaspati.modules.utils.DeleteInstituteUtil;
 
  /**
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>
+ * @ Modified 12 april 2012
  */
 
 /* Class for adding institute admin, view institute admin, delete institute admin in a institute by system admin
-
 */
 
 public class AddAdmin extends SecureScreen_Admin 
@@ -77,76 +74,21 @@ public class AddAdmin extends SecureScreen_Admin
 			String lang=pp.getString("lang","english");
                         context.put("lang",lang);
 			String mode = pp.getString("mode","");
-
+			context.put("mode",mode);
 			String institute_id=pp.getString("Institute_Id","");
 			context.put("Institute_Id",institute_id);
 			String institute_name=pp.getString("Institute_Name","");
 			context.put("Institute_Name",institute_name);
-
-			Criteria crit = new Criteria();
 			Vector instuser=new Vector();
-			
-			// Check for addition of institute admin in a institute.
-			 
-			
-			if(mode.equals("addadmin"))
-			{
-				context.put("mode",mode);
-				context.put("Institute_Id",institute_id);
-			}
-			
 			// Check for view institute admin in an institute.
-
 			if(mode.equals("viewadmin"))
 			{
-				try{
-					/* Get details of an institute according to the institute_id from 
-					 * Institute_Admin_Registration table.
-					*/
-					
-					crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,institute_id);
-                                	List instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
-                                	Vector inst_id=new Vector();
-                                	List admindetail=null;
-                                	if(instdetail.size() !=0){
-                                        	for(int i=0;i<instdetail.size();i++){
-                                                InstituteAdminRegistration inst=(InstituteAdminRegistration)(instdetail.get(i));
-                                                int instid=inst.getInstituteId();
-                                                //String instid=instidtemp.toString();
-                                                inst_id.add(instid);
-                                          	}
-                                	}
-
-					/* Get details of all institute admin acording to institute id in an 
-					 * institute
-		
-					*/
-
-					
-                                	for(int j=0;j<inst_id.size();j++)
-                                	{
-                                        	String Instid=(inst_id.get(j)).toString();
-                                        	int InstId=Integer.parseInt(Instid);
-                                        	crit=new Criteria();
-                                        	crit.add(InstituteAdminUserPeer.INSTITUTE_ID,InstId);
-                                        	try{
-                                                	admindetail=InstituteAdminUserPeer.doSelect(crit);
-                                                	for(int k=0;k<admindetail.size();k++)
-                                                	{
-                                                        	InstituteAdminUser instadminuser=(InstituteAdminUser)admindetail.get(k);
-                                                        	instuser.add(instadminuser);
-                                                	}	
-                                        	}
-                                        	catch(Exception e){}
-                                	}
-				}
-				catch(Exception e){}
+				/* Get details of all institute admin acording to institute id in an 
+				* institute
+				*/
+				instuser=DeleteInstituteUtil.InstAdminDetail(institute_id);
 				context.put("adminlist",instuser);
-			}
-			context.put("mode",mode);
-			context.put("Institute_Id",institute_id);
-
-			
+			}//ifmode
 		}
 		catch(Exception e) { 	data.setMessage("Error in AddAdmin !!" +e);
 		}

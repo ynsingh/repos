@@ -50,15 +50,18 @@ import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.DeleteInstituteUtil;
+import org.iitk.brihaspati.modules.utils.InstituteFileEntry;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
-import org.iitk.brihaspati.modules.utils.ListManagement;
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
 /**
 * Class for to display for list of approved institute.
 * @author <a href="nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
-* @author <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>21102010
+* @author <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>21102010,09may2012
+* @author <a href="palseema@rediffmail.com">Manorama Pal</a>09may2012
 * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
 */
 
@@ -71,48 +74,28 @@ public class ViewInstituteList extends VelocityScreen
 			/* Get the Language parameter */
                         String lang=pp.getString("lang","english");
                         context.put("lang",lang);
+			String file = MultilingualUtil.LanguageSelectionForScreenMessage(lang);
 			String mode=pp.getString("mode","");
 			context.put("mode",mode);
 			String query=pp.getString("queryList","");
 			String valueString = StringUtil.replaceXmlSpecialCharacters(pp.getString("valueString",""));
 			String TbNme=null;
 			String clmn=null;
-
-			Criteria crit = new Criteria();
-                        List instdetail=InstituteIdUtil.searchInst(mode, query, valueString);
+			Vector iidvector=InstAdminDetail(mode, query, valueString);
 			/**
 			 * Get InstituteId and using this InstituteId in 'INSTITUTEADMINUSER' 
 			 * to get details of institute admin(user) of that Institute.
 			 */
-			Vector iidvector=new Vector(); 
-			Vector vct=new Vector();
 			String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                         String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
                         int list_conf=Integer.parseInt(conf);
                         context.put("userConf",new Integer(list_conf));
                         context.put("userConf_string",conf);
-			for(int i=0;i<instdetail.size();i++){
-				InstituteAdminRegistration iar=(InstituteAdminRegistration)instdetail.get(i);
-				int iid=iar.getInstituteId();
-				iidvector.add(iar);
-				crit = new Criteria();
-				crit.add(InstituteAdminUserPeer.INSTITUTE_ID,iid);
-				List instdetail1=InstituteAdminUserPeer.doSelect(crit);
-				InstituteAdminUser iau=(InstituteAdminUser)instdetail1.get(0);
-				int id=iau.getId();
-				crit=new Criteria();
-				crit.add(InstituteAdminUserPeer.ID,id);
-				List instdetailUid=InstituteAdminUserPeer.doSelect(crit);
-				for(int k=0;k<instdetailUid.size();k++){
-				InstituteAdminUser iauid=(InstituteAdminUser)instdetailUid.get(k);
-				vct.add(iauid);
-				}
-				Vector vctr=CommonUtility.PListing(data ,context ,vct,list_conf);
-				context.put("entry",vctr);
-			}
-				Vector vctr1=CommonUtility.PListing(data ,context ,iidvector,list_conf);
-				context.put("entry1",vctr1);
-				context.put("institutenum",iidvector.size());
+			Vector vctr1=CommonUtility.PListing(data ,context ,iidvector,list_conf);
+			if((vctr1.size()==0)&&(mode.equals("Search")))
+                                data.setMessage((MultilingualUtil.ConvertedString("instnotexist",file))+" "+query+" "+valueString);
+			context.put("entry1",vctr1);
+			context.put("institutenum",iidvector.size());
 		}
 		catch(Exception e)
 		{
@@ -121,5 +104,48 @@ public class ViewInstituteList extends VelocityScreen
 		}
 	
     	}
-}
+	public static Vector InstAdminDetail(String mode, String query, String valueString){
+                Vector instuser=new Vector();
+                try{
+                        Criteria crit=new Criteria();
+			List instdetail=InstituteIdUtil.searchInst(mode, query, valueString);
+			for(int i=0;i<instdetail.size();i++){
+                                InstituteAdminRegistration iar=(InstituteAdminRegistration)instdetail.get(i);
+                                int iid=iar.getInstituteId();
+                                String Admaddress =iar.getInstiuteAddress();
+                                String InstName=iar.getInstituteName();
+                                String Instcity=iar.getCity();
+                        	crit=new Criteria();
+                        	crit.add(InstituteAdminUserPeer.INSTITUTE_ID,iid);
+                        	crit.add(InstituteAdminUserPeer.ADMIN_PERMISSION_STATUS,1);
+                        	List admindetail=InstituteAdminUserPeer.doSelect(crit);
+                        	for(int k=0;k<admindetail.size();k++)
+                        	{
+                                	InstituteAdminUser instadminuser=(InstituteAdminUser)admindetail.get(k);
+                                	String email=instadminuser.getAdminUname();
+                                	crit=new Criteria();
+                                	crit.add(org.iitk.brihaspati.om.TurbineUserPeer.LOGIN_NAME,email);
+                                	List tulist=org.iitk.brihaspati.om.TurbineUserPeer.doSelect(crit);
+                                	org.iitk.brihaspati.om.TurbineUser udetail=(org.iitk.brihaspati.om.TurbineUser)tulist.get(0);
+                                	String fname=udetail.getFirstName();
+                                	String lname=udetail.getLastName();
+                                	String temail=udetail.getEmail();
+                                	String uname=udetail.getLoginName();
+                                	InstituteFileEntry InstfileEntry=new InstituteFileEntry();
+                                	InstfileEntry.setID(iid);
+                                	InstfileEntry.setInstituteAddress(Admaddress);
+                                	InstfileEntry.setInstituteName(InstName);
+                                	InstfileEntry.setInstituteCity(Instcity);
+                                	InstfileEntry.setInstituteFName(fname);
+                                	InstfileEntry.setInstituteLName(lname);
+                                	InstfileEntry.setInstituteEmail(temail);
+                                	InstfileEntry.setInstituteUserName(uname);
+                                	instuser.add(InstfileEntry);
+                        	}
+			}
+                }//try
+                catch (Exception e){ErrorDumpUtil.ErrorLog("Error: fileterfile method" + e);}
+                return instuser;
 
+}
+}

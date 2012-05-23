@@ -1,11 +1,12 @@
 #*
  * @(#) List_Mgmt.vm
- * Copyright (c) 2004 - 2005, 2009, 2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2004 - 2005, 2009, 2010,2012 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modified date: 22-11-2010, 31-01-2011,
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
@@ -16,16 +17,19 @@ $page.setBgColor("#ffffff")
 
 ##<table bgcolor="#d9e3ec" width=100% cellspacing=0>
 $!data.getMessage()
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+
 <table bgcolor="$ui.tableColor" width=100%>
 <tr bgcolor="$ui.menuColor">
 	<td>
 	<font face="$ui.sansSerifFonts" size=3>
 	<b>
 	#if($listcourse=="")
-     	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |$brih_list_mgmt 
+     	<a href=$link.setPage("Index.vm") style="text-decoration:none">$brih_ad $brih_home</a> |$brih_list_mgmt 
 	#else
-     	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> | 
-	<a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionstat","Edit").addPathInfo("count","1")">$brih_list_mgmt</a> |
+     	<a href=$link.setPage("Index.vm") style="text-decoration:none">$brih_ad $brih_home</a> | 
+	<a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionstat","Edit").addPathInfo("count","1") style="text-decoration:none">$brih_list_mgmt</a> |
         #if($mode!="Search")
 		$brih_view_all1
         #else
@@ -56,13 +60,13 @@ $!data.getMessage()
 #elseif($tdcolor == "1")
 	<td width="50%" bgcolor="#AFDCEC">
 #end
-<a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1")"> $brih_view_all1</a></td>
+<a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style="text-decoration:none"> $brih_view_all1</a></td>
 #if($tdcolor != "2")
 	<td width="50%"> 
 #elseif($tdcolor == "2")
 	<td width="50%" bgcolor="#AFDCEC">
 #end 
-        <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2")"> #if($lang == "hindi" || $lang == "gujarati") $brih_all $brih_usr $brih_Of1 $brih_view  #else $brih_view_all $brih_usr #end </a>
+        <a href=$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2") style="text-decoration:none"> #if($lang == "hindi" || $lang == "gujarati") $brih_all $brih_usr $brih_Of1 $brih_view  #else $brih_view_all $brih_usr #end </a>
         </td>  
 	</tr>
 ##  </table>
@@ -113,7 +117,7 @@ $!data.getMessage()
 	#end
 <table bgcolor="$ui.tableColor" align="left" width="100%">
   <tr><td>
-      <table cellspacing="1" cellpadding="1">
+      ##<table cellspacing="1" cellpadding="1">
         <tr>
           #foreach($heading in $headings)
                   #headerCell($heading)
@@ -144,59 +148,59 @@ $!data.getMessage()
                   #else
                   <td><font bgcolor="$ui.tableColor" color="Red">$brih_inactive</font></td>
                   #end
-                  <td colspan=2>
+                  <td>
 		 <font face="$ui.sansSerifFonts">
-          <a href="$link.setPage("call,CourseMgmt_Admin,EditCourse.vm").addPathInfo("gName",$entry.getGroupName()).addPathInfo("count","1")">$brih_edit</a>
+          <a href=$link.setPage("call,CourseMgmt_Admin,EditCourse.vm").addPathInfo("gName",$entry.getGroupName()).addPathInfo("count","1") style="text-decoration:none">$brih_edit</a>
                         </font>
                  </td>
         </tr>
         #end
 </td></tr>
          <tr bgcolor="$ui.menuColor">
-              <td colspan=10>
+         <td colspan="8">
          #if($mode!="Search")
          #if($total_size<= $AdminConf)
-         <u><font color="white">$brih_first</font></u> &nbsp;
-         <u><font color="white">$brih_nxt</font></u> &nbsp;
-         <u><font color="white">$brih_pre</font></u> &nbsp;
-         <u><font color="white">$brih_last</font></u> &nbsp;
+         <font color="white">$brih_first</font> &nbsp;
+         <font color="white">$brih_nxt</font> &nbsp;
+         <font color="white">$brih_pre</font> &nbsp;
+         <font color="white">$brih_last</font> &nbsp;
           #elseif($startIndex== $AdminConf_str)
-          <u><font color="white">$brih_first</font></u> &nbsp;
-          <u><font color="white">$brih_pre</font></u> &nbsp;
-			 <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
- <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+          <font color="white">$brih_first</font> &nbsp;
+          <font color="white">$brih_pre</font> &nbsp;
+			 <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style="text-decoration:none">$brih_nxt</a> &nbsp;
+ <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style="text-decoration:none">$brih_last</a> &nbsp;
          #elseif($endIndex == $total_size || $endIndex > $total_size)
-      <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
-    <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
-         <u><font color="white">$brih_nxt</font></u> &nbsp;
-         <u><font color="white">$brih_last</font></u> &nbsp;
+      <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style="text-decoration:none">$brih_first</a> &nbsp;
+    <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style="text-decoration:none">$brih_pre</a> &nbsp;
+         <font color="white">$brih_nxt</font> &nbsp;
+         <font color="white">$brih_last</font> &nbsp;
           #else
-	 <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathinfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
- <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
-     <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
-     <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+	 <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathinfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style="text-decoration:none">$brih_first</a> &nbsp;
+ <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style="text-decoration:none">$brih_pre</a> &nbsp;
+     <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style="text-decoration:none">$brih_nxt</a> &nbsp;
+     <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style="text-decoration:none">$brih_last</a> &nbsp;
      #end
      #else
          #if($total_size<= $AdminConf)
-         <u><font color="white">$brih_first</font></u> &nbsp;
-         <u><font color="white">$brih_nxt</font></u> &nbsp;
-         <u><font color="white">$brih_pre</font></u> &nbsp;
-         <u><font color="white">$brih_last</font></u> &nbsp;
+         <font color="white">$brih_first</font> &nbsp;
+         <font color="white">$brih_nxt</font> &nbsp;
+         <font color="white">$brih_pre</font> &nbsp;
+         <font color="white">$brih_last</font> &nbsp;
           #elseif($startIndex== $AdminConf_str)
-          <u><font color="white">$brih_first</font></u> &nbsp;
-          <u><font color="white">$brih_pre</font></u> &nbsp;
-       <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
-      <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+          <font color="white">$brih_first</font> &nbsp;
+          <font color="white">$brih_pre</font> &nbsp;
+       <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style="text-decoration:none">$brih_nxt</a> &nbsp;
+      <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style="text-decoration:none">$brih_last</a> &nbsp;
          #elseif($endIndex == $total_size || $endIndex > $total_size)
-      <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
-       <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
-         <u><font color="white">$brih_nxt</font></u> &nbsp;
-         <u><font color="white">$brih_last</font></u> &nbsp;
+      <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)style="text-decoration:none">$brih_first</a> &nbsp;
+       <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)style="text-decoration:none">$brih_pre</a> &nbsp;
+         <font color="white">$brih_nxt</font> &nbsp;
+         <font color="white">$brih_last</font> &nbsp;
           #else
-        <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
-       <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
-        <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
-	<a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+        <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style="text-decoration:none">$brih_first</a> &nbsp;
+       <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style="text-decoration:none">$brih_pre</a> &nbsp;
+        <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style="text-decoration:none">$brih_nxt</a> &nbsp;
+	<a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("ciname",$ciid).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style="text-decoration:none">$brih_last</a> &nbsp;
      #end
     #end
     </td>
@@ -231,18 +235,6 @@ face="$ui.sansSerifFonts">$type</font>
 </table>
 </body>
 <SCRIPT language="JavaScript">
-        function popupWin(url,popupName)
-        {
-                Win1=window.open(url,popupName,"resizable,height=200,width=300");
-        }
-        function checkNull(frm,field){
-                if(frm.valueString.value!=""){
-                        frm.submit();
-                }
-                else{
-                        alert("The 'Match String' text box can not be NULL");
-                }
-        }
 	function Changename(frm,field)
         {
                 if(frm.ciname.value!="")

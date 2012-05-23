@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 /*
  *  @(#) InstituteIdUtil.java
- *  Copyright (c) 2010 ETRG,IIT Kanpur 
+ *  Copyright (c) 2010, 2012 ETRG,IIT Kanpur 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -31,15 +31,9 @@ package org.iitk.brihaspati.modules.utils;
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  
  */
-import java.io.*;
-import java.lang.*;
 import java.util.List;
 import java.util.Date;
 import java.util.Vector;
-import java.util.Collections;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
@@ -55,9 +49,6 @@ import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.om.Program;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.StudentRollno;
-import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
@@ -80,7 +71,6 @@ public class InstituteIdUtil
 		try{
 			crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
         	        crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
-                	crit.or(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"3");
 	                instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
 		}
 		catch(Exception ex){ErrorDumpUtil.ErrorLog("The error in getInstList() - Institute Id Util class !!"+ex);}
@@ -106,7 +96,7 @@ public class InstituteIdUtil
                                 if(by.equals("InstituteName")){
                                         crit.add("INSTITUTE_ADMIN_REGISTRATION","INSTITUTE_NAME",(Object)("%"+vale+"%"),crit.LIKE);
                                 }
-                                if(by.equals("InstituteAdd")){
+                                if(by.equals("InstituteAddress")){
                                         crit.add("INSTITUTE_ADMIN_REGISTRATION","INSTIUTE_ADDRESS",(Object)("%"+vale+"%"),crit.LIKE);
                                 }
                         }
@@ -118,8 +108,6 @@ public class InstituteIdUtil
                          */
 					crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
                                 	crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
-                        	        crit.or(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"3");
-
                         }
                         instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
 		}

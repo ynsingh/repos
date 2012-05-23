@@ -63,6 +63,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 
 import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.iitk.brihaspati.modules.utils.UserUtil;
 /**
  * @author  <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar singh</a>
  * @author  <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
@@ -75,7 +76,8 @@ import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 
 /**
  * This class called when institute admin accept or reject the request of registration of Student,Instructor(Course) and author
- * @author  <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>20092010
+ * @author  <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ *@modify 20092010,1may2012
 */
 public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 
@@ -114,7 +116,13 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 	                        crit.add(InstituteAdminUserPeer.ADMIN_UNAME,lUserName);
         	                List inm=InstituteAdminUserPeer.doSelect(crit);
                 	        InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
-                        	instAdminName=element.getAdminFname() +" "+element.getAdminLname();
+                        	//instAdminName=element.getAdminFname() +" "+element.getAdminLname();
+				/**modify by jaivir,seema 
+                        	*Getting full name of user using UserUtil.
+                        	*@see UserUtil in utils
+                        	*/
+                        	int Auid=UserUtil.getUID(element.getAdminUname());
+                        	instAdminName=UserUtil.getFullName(Auid);
                 	}
                 	catch(Exception e){ErrorDumpUtil.ErrorLog("Error in OnlineRegistration_Admin class in acion at line 113");}
 
@@ -311,7 +319,14 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 				crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instid);
 				List inm=InstituteAdminUserPeer.doSelect(crit);
 	                        InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
-        	                instAdminName=element.getAdminFname() +" "+element.getAdminLname();
+        	                //instAdminName=element.getAdminFname() +" "+element.getAdminLname();
+				/**modify by jaivir,seema 
+                                *Getting full name of user using UserUtil.
+                                *@see UserUtil in utils
+                                */
+                                int Auid=UserUtil.getUID(element.getAdminUname());
+                                instAdminName=UserUtil.getFullName(Auid);
+
 			}
 	                catch(Exception e){ErrorDumpUtil.ErrorLog("Error in OnlineRegistration_Admin class in action at line 245");}
 

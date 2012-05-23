@@ -4,7 +4,7 @@ package org.iitk.brihaspati.modules.actions;
 /**
  * @(#)OnlineRegistration.java	
  *  
- *  Copyright (c) 2008-2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2008-2010,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -89,7 +89,8 @@ import org.iitk.brihaspati.om.CoursesPeer;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>20092010
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
- * @modified date: 20-10-2010,23-12-2010, 16-06-2011, 20-04-2012
+ * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>3May2012
+ * @modified date: 20-10-2010,23-12-2010, 16-06-2011,20-04-2012
  */
 
 
@@ -169,7 +170,13 @@ public class OnlineRegistration extends VelocitySecureAction
 			crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instituteid);
                         List inm=InstituteAdminUserPeer.doSelect(crit);
 			InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
-			instAdminName=element.getAdminFname() +" "+element.getAdminLname();
+			/**modify by jaivir,seema 
+                        *Getting full name of user using UserUtil.
+                        *@see UserUtil in utils
+                        */
+			int Auid=UserUtil.getUID(element.getAdminUname());
+                        instAdminName=UserUtil.getFullName(Auid);
+			//instAdminName=element.getAdminFname() +" "+element.getAdminLname();
 
 		}
 		catch(Exception e){}
@@ -373,7 +380,13 @@ public class OnlineRegistration extends VelocitySecureAction
                         crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instituteid);
                         List inm=InstituteAdminUserPeer.doSelect(crit);
                         InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
-                        instAdminName=element.getAdminFname() +" "+element.getAdminLname();
+			/**modify by jaivir,seema 
+                        *Getting full name of user using UserUtil.
+                        *@see UserUtil in utils
+                        */
+                        int Auid=UserUtil.getUID(element.getAdminUname());
+                        instAdminName=UserUtil.getFullName(Auid);
+                        //instAdminName=element.getAdminFname() +" "+element.getAdminLname();
 
 		}
 
@@ -586,7 +599,7 @@ public class OnlineRegistration extends VelocitySecureAction
 				Criteria crit=new Criteria();	
 				crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instituteId);
 				List iadetlist=InstituteAdminUserPeer.doSelect(crit);
-				emailId=((InstituteAdminUser)iadetlist.get(0)).getAdminEmail();
+				emailId=((InstituteAdminUser)iadetlist.get(0)).getAdminUname();
 				}
 				//Mail_msg=MailNotification.sendMail(message, emailId, subject, "", LangFile);
 				String Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgBrihAdmin, emailId, subject, "", LangFile, Integer.toString(instituteId));

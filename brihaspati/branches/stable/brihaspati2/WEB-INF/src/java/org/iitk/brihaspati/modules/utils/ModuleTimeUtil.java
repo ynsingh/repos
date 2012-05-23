@@ -46,8 +46,9 @@ import org.iitk.brihaspati.om.CourseTime;
 import org.iitk.brihaspati.om.ModuleTimePeer;
 import org.iitk.brihaspati.om.ModuleTime;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-
-
+import org.apache.commons.lang.StringUtils;
+import org.apache.turbine.util.parser.ParameterParser;
+import org.apache.turbine.util.RunData;
 
 /**
  * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
@@ -63,7 +64,7 @@ public class ModuleTimeUtil
 		try{
   			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
  			 formatedDate=sdf.format(date);
-		}catch(Exception ex){ErrorDumpUtil.ErrorLog(" Error ModuleTimeUtil in Method getDateformate---------------------");}
+		}catch(Exception ex){ErrorDumpUtil.ErrorLog(" Error ModuleTimeUtil in Method getDateformate----"+ex);}
 		return formatedDate;
 	}
 	/*
@@ -87,7 +88,7 @@ public class ModuleTimeUtil
                                         courseid=element.getCourseId();
                         }
                 
-                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in getCourse Method-------------------");}
+                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in getCourse Method----"+ex);}
                  return courseid;
                 }
 
@@ -112,7 +113,7 @@ public class ModuleTimeUtil
 				else
 				dateAndmid="";
                         //}
-                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error ModuleTimeUtil in Method getDate---------------------");}
+                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error ModuleTimeUtil in Method getDate----"+ex);}
                  return dateAndmid;
         }
 
@@ -124,24 +125,25 @@ public class ModuleTimeUtil
        	{
 		String mname=null;
 		try{
-	          Vector vec=new Vector();
+		       Vector vec=new Vector();
 		  /*Take list of all values by USER_ID,
 			CNAME from ModuleTime table.*/
 		  Criteria crit=null;
 		  crit=new Criteria();
 		  crit.add(ModuleTimePeer.USER_ID,userid);
 		  crit.add(ModuleTimePeer.COURSE_ID,courseid);
+		  crit.add("MODULE_TIME","MLOGIN_DATETIME",(Object) (date+"%"),crit.LIKE);
 		  List v=ModuleTimePeer.doSelect(crit);
 		  /*Get max Logintime of user from list
 			take datefomate from this.*/
 		  for(int p=0;p<v.size();p++) {
 			ModuleTime element=(ModuleTime)v.get(p);
 			Date mlogintime=element.getMloginDatetime();
-			String mtime=getDateformate(mlogintime);
+			//String mtime=getDateformate(mlogintime);
 			/*if this date is equal to given date
 			  	add this date to vector.*/
-			if(date.equals(mtime))
-				vec.add(mlogintime);
+			//if(date.equals(mtime))
+			vec.add(mlogintime);
 			}
 			/*get maxvalue from vector and 
 				convert in to String.*/
@@ -154,8 +156,11 @@ public class ModuleTimeUtil
 			List v1=ModuleTimePeer.doSelect(crit);
   			ModuleTime element1=(ModuleTime)v1.get(0);
 			mname=element1.getMname();
+			//ParameterParser pp=data.getParameters();
+			//String mname1=pp.getString("mname","");
+			//ErrorDumpUtil.ErrorLog("------------------mname1"+mname1);
 		
-		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error ModuleTimeUtil in Method  getcMname---------------------"); }
+		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error ModuleTimeUtil in Method  getcMname----"+ex); }
 		 return mname;
 	}
 	/*
@@ -196,7 +201,7 @@ public class ModuleTimeUtil
 			crit.add(ModuleTimePeer.MTIME,diff);
 			ModuleTimePeer.doUpdate(crit);
 	
-		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error ModuleTimeUtil in Method getModuleCalculation---------------------"); }
+		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error ModuleTimeUtil in Method getModuleCalculation----"+ex); }
 		
 	}	
 	/*
@@ -216,28 +221,18 @@ public class ModuleTimeUtil
 			/*get current cname*/
                         String courseid=getCourseid(eid);
 			/*get list behalf of userid,cname.*/
+			String mname=getcMname(uid,courseid,date);
 			Criteria crit=new Criteria();
 			crit.add(ModuleTimePeer.USER_ID,uid);
 			crit.add(ModuleTimePeer.COURSE_ID,courseid);
+			crit.add(ModuleTimePeer.MNAME,mname);
+			crit.add("MODULE_TIME","MLOGIN_DATETIME",(Object) (date+"%"),crit.LIKE);
 			List v=ModuleTimePeer.doSelect(crit);
 			if(v.size()!=0){
-			/*take mid from this list and add to vector.*/
-			for(int p=0;p<v.size();p++){
-				ModuleTime element=(ModuleTime)v.get(p);
-				int mid=element.getMid();
-				vec.add(mid);	
-				}
-				/*take max mid from vector.*/
-				Object obm = Collections.max(vec);
-                                int mid=Integer.parseInt(obm.toString());
-				/*get max login time of max mid.*/
-				crit=new Criteria();
-				crit.add(ModuleTimePeer.MID,mid);
-				List v1=ModuleTimePeer.doSelect(crit);
-				ModuleTime el=(ModuleTime)v.get(0);
-				mrecenttime=el.getMloginDatetime();
+				ModuleTime element=(ModuleTime)v.get(0);
+				mrecenttime=element.getMloginDatetime();
 			}
-		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error ModuleTimeUtil in Method getMrecenttime-------------------"); }
+		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error ModuleTimeUtil in Method getMrecenttime----"+ex); }
 		return mrecenttime;
 	}
 	public static void deleteLastmonthentry()
@@ -259,7 +254,70 @@ public class ModuleTimeUtil
 				}
 			}
 		}
-		catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in ModuleTimeUtil in Method deleteLastMonthEntry----------------------");}
+		catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in ModuleTimeUtil in Method deleteLastMonthEntry----"+ex);}
+	}
+	
+	public static Vector getmName(String courseid,int uid)
+	{
+		Vector mname=new Vector();
+		try{
+			Criteria crit=new Criteria();
+                        crit.add(ModuleTimePeer.COURSE_ID,courseid);
+                        crit.add(ModuleTimePeer.USER_ID,uid);
+			crit.setDistinct();
+			List v=ModuleTimePeer.doSelect(crit);
+			for(int i=0;i<=v.size();i++)
+			{	
+				ModuleTime element=(ModuleTime)v.get(i);
+                                String mnam=element.getMname();
+				if(!mname.contains(mnam))
+				mname.add(mnam);		
+			}
+		}catch(Exception ex){}
+		return mname;
+	}
+	public static Vector LastweekModuleTime(String courseid,int uid)
+	{
+		Vector mTimeMname=new Vector();
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        Calendar cal = Calendar.getInstance();
+                        Date todaydate=cal.getTime();
+                        String todate=sdf.format(todaydate);
+			Vector mname=getmName(courseid,uid);
+			for(int j=0;j<mname.size();j++)
+			{
+				String mnam=mname.get(j).toString();
+				int mTime=0;
+				for(int i=0;i<=7;i++){
+                        	cal.setTime(sdf.parse(todate));
+                        	cal.add(Calendar.DATE,-i);
+                        	String priviousdate = sdf.format(cal.getTime());
+				Criteria crit=new Criteria();
+				crit.add(ModuleTimePeer.COURSE_ID,courseid);
+				crit.add(ModuleTimePeer.USER_ID,uid);
+				crit.add(ModuleTimePeer.MNAME,mnam);
+				crit.add("MODULE_TIME","MLOGIN_DATETIME",(Object) (priviousdate+"%"),crit.LIKE);
+				List v=ModuleTimePeer.doSelect(crit);
+				if(v.size()!=0){
+					ModuleTime element=(ModuleTime)v.get(0);
+					int mtime=element.getMtime();
+					mTime=mTime+mtime;
+					}
+				}
+					int Hours = mTime/(60 * 60 * 1000);
+        		                int Hour = mTime%(60 * 60 * 1000);
+	                	        int Mins=Hour/(60*1000);
+                        		int Min=Hour%(60*1000);
+                        		int sec=Min/1000;
+                        		String WeekTime=Hours+"h:"+Mins+"m:"+sec+"s";
+					CourseUserDetail cDetail=new CourseUserDetail();
+					cDetail.setModuleName(mnam);
+					cDetail.setModuleTime(WeekTime);
+					mTimeMname.add(cDetail);
+			}
+		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in ModuleTimeUtil in Method LastweekModuleTime---"+ex);}
+		return mTimeMname;
 	}
 
 }

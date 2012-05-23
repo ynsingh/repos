@@ -140,11 +140,14 @@ $!data.getMessage()
                         	#set($temp1 = $temp1 + 1)
                       	#end   
 			#foreach($admin_list in $admin_list1)
-			<td>$admin_list.getAdminFname()</td>
+			##<td>$admin_list.getAdminFname()</td>
+			<td>$admin_list.getInstituteFName()</td>
                                                 
-			<td>$admin_list.getAdminLname()</td>
+			##<td>$admin_list.getAdminLname()</td>
+			<td>$admin_list.getInstituteLName()</td>
                                         
-			<td><a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none>$admin_list.getAdminUname()</a></td>
+			##<td><a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none>$admin_list.getAdminUname()</a></td>
+			<td><a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none>$admin_list.getInstituteEmail()</a></td>
 			
 			 #if($permission != "0")
 			 <td>

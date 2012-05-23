@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)UserAction_Admin.java	
  *
- *  Copyright (c) 2005-2006, 2008, 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2008, 2010,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -83,7 +83,8 @@ import org.iitk.brihaspati.om.CoursesPeer;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date: 08-07-2010, 20-10-2010, 23-12-2010, 27-07-2011
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date: 08-07-2010, 20-10-2010, 23-12-2010, 27-07-2011, 18-04-2012
  */
 
 public class UserAction_Admin extends SecureAction_Admin{
@@ -125,9 +126,9 @@ public class UserAction_Admin extends SecureAction_Admin{
 				data.setMessage(upload_msg2);
         		}
 	        	else{
-				String serverName=data.getServerName();
-        	                int srvrPort=data.getServerPort();
-	                        String serverPort=Integer.toString(srvrPort);
+				//String serverName=data.getServerName();
+        	                //int srvrPort=data.getServerPort();
+	                        //String serverPort=Integer.toString(srvrPort);
 				String group=pp.getString("GroupName");
         			String role=pp.getString("Role");
 				Date date=new Date();
@@ -141,7 +142,7 @@ public class UserAction_Admin extends SecureAction_Admin{
                                	 * @see RegisterMultiUser util
                                  * @see UserManagement Util
        	                         **/
-        			Vector msg=RegisterMultiUser.Multi_Register(f,group,role,serverName,serverPort,LangFile,instName);
+        			Vector msg=RegisterMultiUser.Multi_Register(f,group,role,LangFile,instName);
 	        		context.put("Msg",msg);
 			}
 		}
@@ -175,7 +176,6 @@ public class UserAction_Admin extends SecureAction_Admin{
 	 	String lname=StringUtil.replaceXmlSpecialCharacters(pp.getString("lastname"));
          	String email=StringUtil.replaceXmlSpecialCharacters(pp.getString("email"));
 		String rollno=StringUtil.replaceXmlSpecialCharacters(pp.getString("rollno","")).trim();
-                //ErrorDumpUtil.ErrorLog("value of rollno in user action admin\n"+rollno);
                 /**
                  * check if rollno have any special character then return message
                  */
@@ -188,7 +188,6 @@ public class UserAction_Admin extends SecureAction_Admin{
 		String program=StringUtil.replaceXmlSpecialCharacters(pp.getString("prg",""));
 		String insid=pp.getString("InstName","");
 		String Studsrid=pp.getString("Studsrid","");
-                //ErrorDumpUtil.ErrorLog("value of program in user action admin\n"+program);
 		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program,insid,Studsrid,CId);
 	 	data.setMessage(msg);
 	}

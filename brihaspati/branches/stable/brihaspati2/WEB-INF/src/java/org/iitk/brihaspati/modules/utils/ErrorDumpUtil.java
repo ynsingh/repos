@@ -82,7 +82,7 @@ public class ErrorDumpUtil
 			Date Errordate=new Date();
 	//		String LogfilePath=TurbineServlet.getRealPath("/logs")+"/ExceptionLog.txt";
 			File existingFile=new File(path);
-			if(existingFile.length() >= 10048576 )
+			if(existingFile.length() >= 1073741824 )
 			{
 				boolean success=existingFile.delete();
 			}
