@@ -97,9 +97,9 @@ public class StudentInstructorMAP
 				List substud_list=TurbineUserGroupRolePeer.doSelect(crit);
 				for(int j=0;j<substud_list.size();j++){
 					TurbineUserGroupRole element1=(TurbineUserGroupRole)substud_list.get(j);
-					uid=element1.getUserId();
+					int usid=element1.getUserId();
 					crit=new Criteria();
-					crit.add(TurbineUserPeer.USER_ID,Integer.toString(uid));
+					crit.add(TurbineUserPeer.USER_ID,Integer.toString(usid));
 					List final_list=TurbineUserPeer.doSelect(crit);
 					for(int k=0;k<final_list.size();k++){
 						TurbineUser element2=(TurbineUser)final_list.get(k);
@@ -107,7 +107,7 @@ public class StudentInstructorMAP
 						insName=insName+" "+element2.getLastName();
                                 		String loginname=element2.getUserName();
 						String groupName=GroupUtil.getGroupName(gid);
-						String weekTime=CourseTimeUtil.getLastweekTime(user_id,groupName);
+						String weekTime=CourseTimeUtil.getLastweekTime(uid,groupName);
 						/*StringTokenizer mdgroupName=new StringTokenizer(groupName,"_");
 						String oldgroupName="";
 						String addIid=st[1];
