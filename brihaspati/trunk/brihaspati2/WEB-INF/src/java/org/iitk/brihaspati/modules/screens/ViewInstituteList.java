@@ -60,8 +60,8 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 /**
 * Class for to display for list of approved institute.
 * @author <a href="nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
-* @author <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>21102010,09may2012
-* @author <a href="palseema@rediffmail.com">Manorama Pal</a>09may2012
+* @author <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>21102010,09may2012,23may2012
+* @author <a href="palseema@rediffmail.com">Manorama Pal</a>09may2012,23may2012
 * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
 */
 
@@ -79,13 +79,11 @@ public class ViewInstituteList extends VelocityScreen
 			context.put("mode",mode);
 			String query=pp.getString("queryList","");
 			String valueString = StringUtil.replaceXmlSpecialCharacters(pp.getString("valueString",""));
-			String TbNme=null;
-			String clmn=null;
-			Vector iidvector=InstAdminDetail(mode, query, valueString);
 			/**
-			 * Get InstituteId and using this InstituteId in 'INSTITUTEADMINUSER' 
-			 * to get details of institute admin(user) of that Institute.
-			 */
+			  *Call InstAdminDetail to display the Institute list with the Institute Admin
+			  */
+			Vector iidvector=InstAdminDetail(mode, query, valueString);
+			//for page listing
 			String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                         String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
                         int list_conf=Integer.parseInt(conf);
@@ -93,17 +91,19 @@ public class ViewInstituteList extends VelocityScreen
                         context.put("userConf_string",conf);
 			Vector vctr1=CommonUtility.PListing(data ,context ,iidvector,list_conf);
 			if((vctr1.size()==0)&&(mode.equals("Search")))
-                                data.setMessage((MultilingualUtil.ConvertedString("instnotexist",file))+" "+query+" "+valueString);
+                        data.setMessage((MultilingualUtil.ConvertedString("instnotexist",file))+" "+query+" "+valueString);
 			context.put("entry1",vctr1);
 			context.put("institutenum",iidvector.size());
 		}
 		catch(Exception e)
 		{
 			ErrorDumpUtil.ErrorLog("Exception in View Institute List =====>"+e);
-			
 		}
-	
     	}
+
+	/**
+	  *In this method set the value of Institute details. 
+	  */		
 	public static Vector InstAdminDetail(String mode, String query, String valueString){
                 Vector instuser=new Vector();
                 try{
@@ -117,22 +117,21 @@ public class ViewInstituteList extends VelocityScreen
                                 String Instcity=iar.getCity();
                         	crit=new Criteria();
                         	crit.add(InstituteAdminUserPeer.INSTITUTE_ID,iid);
-                        	crit.add(InstituteAdminUserPeer.ADMIN_PERMISSION_STATUS,1);
                         	List admindetail=InstituteAdminUserPeer.doSelect(crit);
-                        	for(int k=0;k<admindetail.size();k++)
-                        	{
-                                	InstituteAdminUser instadminuser=(InstituteAdminUser)admindetail.get(k);
-                                	String email=instadminuser.getAdminUname();
-                                	crit=new Criteria();
-                                	crit.add(org.iitk.brihaspati.om.TurbineUserPeer.LOGIN_NAME,email);
-                                	List tulist=org.iitk.brihaspati.om.TurbineUserPeer.doSelect(crit);
-                                	org.iitk.brihaspati.om.TurbineUser udetail=(org.iitk.brihaspati.om.TurbineUser)tulist.get(0);
-                                	String fname=udetail.getFirstName();
-                                	String lname=udetail.getLastName();
-                                	String temail=udetail.getEmail();
-                                	String uname=udetail.getLoginName();
-                                	InstituteFileEntry InstfileEntry=new InstituteFileEntry();
-                                	InstfileEntry.setID(iid);
+                               	InstituteAdminUser instadminuser=(InstituteAdminUser)admindetail.get(0);
+                               	String email=instadminuser.getAdminUname();
+                               	crit=new Criteria();
+                               	crit.add(org.iitk.brihaspati.om.TurbineUserPeer.LOGIN_NAME,email);
+                               	List tulist=org.iitk.brihaspati.om.TurbineUserPeer.doSelect(crit);
+                               	org.iitk.brihaspati.om.TurbineUser udetail=(org.iitk.brihaspati.om.TurbineUser)tulist.get(0);
+                               	String fname=udetail.getFirstName();
+                               	String lname=udetail.getLastName();
+                               	String temail=udetail.getEmail();
+                               	String uname=udetail.getLoginName();
+                               	InstituteFileEntry InstfileEntry=new InstituteFileEntry();
+				if(admindetail.size()==1)
+                                {
+                               		InstfileEntry.setID(iid);
                                 	InstfileEntry.setInstituteAddress(Admaddress);
                                 	InstfileEntry.setInstituteName(InstName);
                                 	InstfileEntry.setInstituteCity(Instcity);
@@ -142,10 +141,19 @@ public class ViewInstituteList extends VelocityScreen
                                 	InstfileEntry.setInstituteUserName(uname);
                                 	instuser.add(InstfileEntry);
                         	}
+				else
+				{
+					InstfileEntry.setID(iid);
+                                        InstfileEntry.setInstituteAddress(Admaddress);
+                                        InstfileEntry.setInstituteName(InstName);
+                                        InstfileEntry.setInstituteCity(Instcity);
+                                        InstfileEntry.setInstituteEmail(temail);
+                                        InstfileEntry.setInstituteUserName("checkname");
+                                        instuser.add(InstfileEntry);
+				}
 			}
                 }//try
-                catch (Exception e){ErrorDumpUtil.ErrorLog("Error: fileterfile method" + e);}
+                catch (Exception e){ErrorDumpUtil.ErrorLog("Error: ViewInstituteList(InstAdminDetail) method" + e);}
                 return instuser;
-
-}
+	}//method
 }

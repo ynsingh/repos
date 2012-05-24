@@ -100,7 +100,9 @@ public class InstituteIdUtil
                                         crit.add("INSTITUTE_ADMIN_REGISTRATION","INSTIUTE_ADDRESS",(Object)("%"+vale+"%"),crit.LIKE);
                                 }
                         }
-                        else{
+			else if(vale.equals("")){
+			//}
+                        //else{
                         /**
                          * Get the list of all registered Institute
                          *  status for approved(1) institute list
