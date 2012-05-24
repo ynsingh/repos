@@ -94,14 +94,15 @@ import org.iitk.brihaspati.modules.utils.XMLWriter_InstituteRegistration;
 *   This class basically used for accepting, adding, deleting and rejecting institute admin only.
 */
 
-public class Institute_RootAdmin extends VelocitySecureAction
+//public class Institute_RootAdmin extends VelocitySecureAction
+public class Institute_RootAdmin extends SecureAction_Admin
 {
 	private String LangFile=new String();
 
-	protected boolean isAuthorized(RunData data) throws Exception
+	/*protected boolean isAuthorized(RunData data) throws Exception
 	{
 		return true;
-	}
+	}*/
 
 	/** 
 	*  Method for giving approval to a institute by sysadmin.

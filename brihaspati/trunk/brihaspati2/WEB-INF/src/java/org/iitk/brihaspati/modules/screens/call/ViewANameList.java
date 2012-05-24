@@ -43,6 +43,8 @@ import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.apache.turbine.util.parser.ParameterParser;  
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.iitk.brihaspati.om.TurbineUserPeer;
+import org.iitk.brihaspati.om.TurbineUser;
 import org.apache.turbine.modules.screens.VelocityScreen;
 
 /**
@@ -70,10 +72,15 @@ public class ViewANameList extends VelocityScreen
 			for(int i=0;i<list.size();i++){
 				InstituteAdminUser iauser=(InstituteAdminUser)list.get(i);
 				int Auid=UserUtil.getUID(iauser.getAdminUname());
-                        	String str=UserUtil.getFullName(Auid)+"<br>";
+				crit=new Criteria();
+				crit.add(TurbineUserPeer.USER_ID,Auid);
+				List lst=TurbineUserPeer.doSelect(crit);
+				TurbineUser tup=(TurbineUser)lst.get(0);
+				String eml=tup.getEmail();
+                        	String str=UserUtil.getFullName(Auid)+"............. "+"<A HREF>"+eml+"</A>"+"<br>";
                 		data.getResponse().setHeader("Content-Type","text/html");
                 		ServletOutputStream out=data.getResponse().getOutputStream();
-                		out.println(str);
+                		out.println(str); 
 			}		
 		}//try
 		catch(Exception e)
