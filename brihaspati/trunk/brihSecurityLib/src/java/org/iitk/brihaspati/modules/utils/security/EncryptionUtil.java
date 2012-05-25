@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils.security;
 /*
  * @(#)EncryptionUtil.java
  *
- *  Copyright (c) 2004 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -41,11 +41,14 @@ import java.security.MessageDigest;
 
 /**
  *  @author <a href="mailto:ammu_india@yahoo.com">Amit Joshi</a>
+ *  @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  */
 
 public class EncryptionUtil
 {
-
+	/**
+ 	 * Method to create digest
+ 	 */
 	public static String createDigest(String encryption,String input) throws NoSuchAlgorithmException
 	{
 		MessageDigest md = MessageDigest.getInstance(encryption);
@@ -53,6 +56,9 @@ public class EncryptionUtil
 		return toHexString(digest);
 	}
 
+	/**
+ 	 * Method to generate hexa string 
+ 	 */
 	public static String toHexString(byte[] byteDigest)
 	{
 		String temp="";

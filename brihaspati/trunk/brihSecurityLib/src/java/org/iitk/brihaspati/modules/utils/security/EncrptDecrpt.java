@@ -32,29 +32,20 @@ package org.iitk.brihaspati.modules.utils.security;
  *  
  */
 
-/**
- * This class provide the listing of years
- * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
- */
 
-import java.util.Calendar;
-import java.util.Vector;
-import java.security.Key;
-import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
-
-import java.security.spec.KeySpec;
-import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
+import java.security.spec.KeySpec;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-import java.security.spec.InvalidKeySpecException;
+import org.apache.commons.lang.StringUtils;
 
+/**
+ * This class provide the encription and ecription of String
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
+ */
 public class EncrptDecrpt{
 
 	private static final String UNICODE_FORMAT = "UTF8";
@@ -69,16 +60,20 @@ public class EncrptDecrpt{
 	/**
   	 * Method To Encrypt The String
   	 */
-	public static String encrypt(String unencryptedString) {
+	public static String encrypt(String unencryptedString, String srcid) {
 		String hdir=System.getProperty("user.home");
                 String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
 		//String path=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati3-remote-access.properties");
                 // write code for if path is null then it get from home
+		String line=ReadNWriteInTxt.readLin(path,srcid);
+                myEncryptionKey=StringUtils.substringBetween(line,";",";");
+/*
                 try{
                         myEncryptionKey = RemoteAuthProperties.getValue(path,"security_key");
                 }
                 catch(Exception ex){
                 }
+*/
 		try{
           //      ErrorDumpUtil.ErrorLog("The my cipher key is  "+ myEncryptionKey);
 		myEncryptionScheme = DESEDE_ENCRYPTION_SCHEME;
@@ -114,16 +109,18 @@ public class EncrptDecrpt{
 	/**
   	 * Method To Decrypt An Ecrypted String
   	 */
-	public static String decrypt(String encryptedString) {
+	public static String decrypt(String encryptedString, String srcid) {
 		String hdir=System.getProperty("user.home");
                 String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
 		//String path=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati3-remote-access.properties");
                 // write code for if path is null then it get from home
-                try{
+		String line=ReadNWriteInTxt.readLin(path,srcid);
+                myEncryptionKey=StringUtils.substringBetween(line,";",";");
+               /* try{
                         myEncryptionKey = RemoteAuthProperties.getValue(path,"security_key");
                 }
                 catch(Exception ex){
-                }       
+                }*/       
 		try{
                 myEncryptionScheme = DESEDE_ENCRYPTION_SCHEME;
                 keyAsBytes = myEncryptionKey.getBytes(UNICODE_FORMAT);
@@ -158,6 +155,9 @@ public class EncrptDecrpt{
 		}
 		return stringBuffer.toString();
 	}
+	/**
+ 	 * Method to generate keyed hash
+ 	 */
 	public static String keyedHash(String email, String random, String key) {
                 String hkeyN="email="+email+";random="+random+";secret="+key+";";
                 String hashcode="";

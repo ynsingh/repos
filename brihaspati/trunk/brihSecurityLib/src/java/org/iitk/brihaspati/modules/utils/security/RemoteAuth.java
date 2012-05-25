@@ -32,10 +32,6 @@ package org.iitk.brihaspati.modules.utils.security;
  *  
  */
 
-/**
- * This class provide the listing of years
- * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
- */
 
 import org.apache.commons.lang.StringUtils;
 import java.net.HttpURLConnection;
@@ -43,37 +39,46 @@ import java.net.URL;
 import java.io.*;
 import java.util.List;
 
+/**
+ * This class provide the listing of years
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
+ */
 
 public class RemoteAuth{
 	/**
   	 * Method To Authentication of Remote User
   	 */
-	public static String AuthR(String email,String returl) {
+	public static String AuthR(String email,String returl, String srcid) {
 
 		String randompswd = RandPasswordUtil.randmPass();
 		String hdir=System.getProperty("user.home");
 		String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
 		String skey="";
                 String serverUrl="";
-                try{
+						String kline=ReadNWriteInTxt.readLin(path,srcid);
+                                                skey=StringUtils.substringBetween(kline,";",";");
+                                                serverUrl=StringUtils.substringAfterLast(kline,";");
+		 System.out.println("The value of skey and Server URL is"+skey+" "+serverUrl);
+              /*  try{
                         skey = RemoteAuthProperties.getValue(path,"security_key");
                         serverUrl=RemoteAuthProperties.getValue(path,"server_url");
                 }
                 catch(Exception ex){
                         System.out.println("The problem in getting value from properties file");
-                }
-            //            ErrorDumpUtil.ErrorLog("The value of server url and keys are "+skey+" and  "+serverUrl);
+                }*/
+  //                      ErrorDumpUtil.ErrorLog("The value of server url and keys are "+skey+" and  "+serverUrl);
 
 //		String hkey="email="+email+";random="+randompswd+";secret="+skey+";";
                 String hashcode=EncrptDecrpt.keyedHash(email,randompswd,skey);
-          //              ErrorDumpUtil.ErrorLog("The value of hash code  are "+hashcode);
+ //                       ErrorDumpUtil.ErrorLog("The value of hash code  are "+hashcode);
 		try{
 			URL url = new URL(serverUrl);
                         HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
                         urlConnection.setDoInput(true);
                         urlConnection.setDoOutput(true);
                         urlConnection.setRequestMethod("POST");
-			String params = "email="+email+"&url="+returl+"&rand="+randompswd+"&hash="+hashcode;
+			String params = "email="+email+"&srcid="+srcid+"&url="+returl+"&rand="+randompswd+"&hash="+hashcode;
+				System.out.println("The parameter pass to the connection connection  "+params);
                         urlConnection.connect();
                         OutputStream os = urlConnection.getOutputStream();
                         os.write(params.getBytes("UTF-8"));
@@ -89,14 +94,14 @@ public class RemoteAuth{
                         }
                         rd.close();
                         String reslt=response.toString();
-	//		ErrorDumpUtil.ErrorLog("The value of result  are "+reslt);
+//			ErrorDumpUtil.ErrorLog("The value of result  are "+reslt);
 
 			String clentHash=StringUtils.substringAfter(reslt,"&hash=");
 			System.out.println("The value of result  are 1 "+clentHash+"I am");
 			String encriptData=StringUtils.substringBefore(reslt,"&hash=");
 	//		ErrorDumpUtil.ErrorLog("The value of result  are 2 "+encriptData);
 
-			String enUrl1=EncrptDecrpt.decrypt(encriptData);
+			String enUrl1=EncrptDecrpt.decrypt(encriptData,srcid);
 	//		ErrorDumpUtil.ErrorLog("The value of result  are 3 "+enUrl1);
 			String email1=StringUtils.substringBetween(enUrl1,"email=","&sess=");
                         String randomNo=StringUtils.substringBetween(enUrl1,"&sess=","&url=");
@@ -120,6 +125,7 @@ public class RemoteAuth{
 			}
 		}
                 catch (Exception ex){
+			returl=returl+"?msg="+ex;
                         System.out.println("The problem in httpurl connection  "+ex);
                 }
 	return returl;

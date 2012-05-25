@@ -34,6 +34,7 @@ package org.iitk.brihaspati.modules.utils.security;
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
  *
  */
+
 import java.util.Properties;
 import java.io.InputStream;
 import java.io.FileInputStream;
@@ -41,23 +42,21 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 /**
+ * This class methods set and return the value of properties 
+ * file for configuration parameter.
  *  @author <a href="mailto:chitvesh@yahoo.com">Chitvesh Dutta</a>
  *  @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar singh</a>
- */
-/** 
- * This class methods set and return the value of Admin.properties 
- * file for configuration parameter.
  */
 public class RemoteAuthProperties{
 	/**
 	 * This method returns the value of configuration parameter
-	 * in Admin.Properties file
+	 * in Properties file
 	 * @param path String
-	 * @return retval int
+	 * @param key String
+	 * @return retval String 
 	 * @exception a generic exception
 	 */
 	
-//	public static int getValue(String path,String key) throws Exception{
 	public static String getValue(String path,String key) throws Exception{
 	 	InputStream f = new FileInputStream(path);
  		Properties p = new Properties();
@@ -70,9 +69,10 @@ public class RemoteAuthProperties{
 	
 	/**
 	 * This method sets the value of configuration parameters 
-	 * in Admin.Properties file
+	 * in Properties file
 	 * @param path String
 	 * @param Value String
+	 * @param key String
 	 * @exception a generic exception
 	 */
 

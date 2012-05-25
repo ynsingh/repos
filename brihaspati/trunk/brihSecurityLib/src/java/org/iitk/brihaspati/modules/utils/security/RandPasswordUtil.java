@@ -32,18 +32,18 @@ package org.iitk.brihaspati.modules.utils.security;
  *  
  */
 
-/**
- * @author: <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
- */
 import java.util.Random;
 import java.util.Properties;
 
 /**
  * This is a util class used to getting the random password
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  */
 public class RandPasswordUtil{
 	
-
+	/**
+ 	 * Method to generate eight byte random number
+ 	 */
 	public static String randmPass(){
 		byte[] pass=new byte[8];
 

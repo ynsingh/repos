@@ -32,10 +32,6 @@ package org.iitk.brihaspati.modules.utils.security;
  *  
  */
 
-/**
- * This class provide the facility to read and write the text file in tag value pair
- * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
- */
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FileReader;
@@ -50,6 +46,10 @@ import java.util.Scanner;
 
 import org.apache.commons.lang.StringUtils;
 
+/**
+ * This class provide the facility to read and write the text file in tag value pair
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
+ */
 public class ReadNWriteInTxt{
 
 	/**
@@ -78,40 +78,60 @@ public class ReadNWriteInTxt{
                 }
   	}
 	/**
-  	 * Method To Read File
+  	 * Method To verify entry exist in the File or not
   	 */
-	public static String readF(String fileName,String tagName) {
-		String value=null;
+	public static boolean readF(String fileName,String tagName) {
+		
+		boolean name=false;
+		
+    		try {
+			File fFile = new File(fileName); 
+			BufferedReader br = new BufferedReader(new FileReader(fFile));
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				if (line.trim().startsWith(tagName)) {
+					name=true;
+					break;
+				}
+			}
+			br.close();
+        	}
+                catch (FileNotFoundException ex) {
+                        ex.printStackTrace();
+                }
+                catch (IOException ex) {
+			ex.printStackTrace();
+                }
+	return name;
+        }
+
+	/**
+  	 * Method To return a perticular entry from File
+  	 */
+	public static String readLin(String fileName,String tagName) {
+		
 		String name=null;
 		
     		try {
 			File fFile = new File(fileName); 
-			Scanner scanner = new Scanner(new FileReader(fFile));
-      			//first use a Scanner to get each line
-	            	while ( scanner.hasNextLine() ){
-				//use a second Scanner to parse the content of each line 
-				Scanner scanner1 = new Scanner(scanner.nextLine());
-				scanner1.useDelimiter(";");
-				if ( scanner1.hasNext() ){
-					name = scanner1.next();
-					if(name.equals(tagName)){
-				        	value = scanner1.next();
-						break;
-					}
+			BufferedReader br = new BufferedReader(new FileReader(fFile));
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				if (line.trim().startsWith(tagName)) {
+					name=line;
+					break;
 				}
-				else {
-				        log("Empty or invalid line. Unable to process.");
-				}
-				//no need to call scanner.close(), since the source is a String
-                	}
-		log("Name is : " + name.trim() + ", and Value is : " + value.trim());
-               	scanner.close();
+			}
+			br.close();
+        	}
+                catch (FileNotFoundException ex) {
+                        ex.printStackTrace();
                 }
-		catch(IOException ex){
-			log("The Exception in readF in ReadNWriteInTxt util java"+ex );
+                catch (IOException ex) {
+			ex.printStackTrace();
                 }
-	return value;
-	}
+	return name;
+        }
 	/**
 	 * Method To delete line from a file
 	 **/

@@ -1,9 +1,12 @@
+<!-- ================================================================= -->
+<!--@author Nagendra Kumar Singh mailto:nksngh_p@yahoo.co.in           -->
+<!-- ================================================================= -->
 <project name="BrihSecurityLib" default="main" basedir=".">
 	
   	<property name="lib.dir" value="lib"/>
 	<property name="src.dir" value="src/java"/>
     	<property name="bin.dir" value="bin/classes"/>
-	<property name="jnlp.dir" value="jar"/>
+	<property name="jar.dir" value="jar"/>
 	<property name="doc.dir" location="javadoc" />
 	<property name="temp.dir" location="temp" />
     	<property name="debug" value="on"/>
@@ -12,14 +15,24 @@
     	<property name="component.title" value="BrihSecurityLib"/>
     	<property name="user.name" value="N.K.Singh"/>
     	<property name="component.version" value="20120521"/>
-
     
+  	<path id="classpath">
+	    	<fileset dir="${lib.dir}" >
+      			<include name="**/*.jar"/>
+        	</fileset>
+  	</path>
+	<!-- ================================================================ -->
+	<!-- D E P L O Y M E N T  T A R G E T S                               -->
+	<!-- ================================================================ -->
+
  	<target name="init" depends="clean" description="===> Creates the Directory or package">
     		<property name="bin.dir" value="${targetPackage}"/>
     		<mkdir dir="${bin.dir}"/>
     		<mkdir dir="${lib.dir}"/>
   	</target>
-
+  <!-- =================================================================== -->
+  <!-- C O M P I L E                                                       -->
+  <!-- =================================================================== -->
 	<target name="compile" depends="init" description="**** Compiles the JAVA classes">
     		<mkdir dir="${bin.dir}"/>
     		<javac srcdir="${src.dir}"
@@ -32,15 +45,13 @@
 	</target>
 	
 
-  <path id="classpath">
-	    <fileset dir="${lib.dir}" >
-      		<include name="**/*.jar"/>
-        </fileset>
-  </path>
+  <!-- =================================================================== -->
+  <!-- C R E A T E  J A R  F I L E                                         -->
+  <!-- =================================================================== -->
 	
 	
 	<target name="jar" depends="compile" description="**** Create executable JAR file">
-      		<jar destfile="${jnlp.dir}/BrihRemoteAuth.jar">
+      		<jar destfile="${jar.dir}/BrihRemoteAuth.jar">
       			<fileset dir="${bin.dir}" includes="**/*"/>
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
@@ -48,20 +59,26 @@
     		</jar>
   	</target>
 	
+  <!-- =================================================================== -->
+  <!-- C L E A N                                                           -->
+  <!-- =================================================================== -->
 	<target name="clean" description="clean up">
                 <delete dir="${temp.dir}"/>
-		<delete file="${build.dir}/brihaspatisync.jar"/>
-                <delete dir="${bin.dir}/org/bss"/>
+		<delete file="${jar.dir}/BrihRemoteAuth.jar"/>
+                <delete dir="${bin.dir}/org/iitk"/>
 		<delete dir="${logs.dir}"/>
                 <delete dir="${doc.dir}"/>
-		<delete>
+<!--		<delete>
                         <path>
-                            <fileset dir="${jnlp.dir}" includes="**/*.jar" />
+                            <fileset dir="${jar.dir}" includes="**/*.jar" />
                         </path>
                 </delete>
-
+-->
         </target>
-        
+  <!-- =================================================================== -->
+  <!-- J A V A D O C                                                       -->
+  <!-- =================================================================== -->
+
    	<target name="javadoc" depends="jar" description="Create component Javadoc documentation">
     		<mkdir dir="${doc.dir}"/>
     		<mkdir dir="${doc.dir}/docs"/>
