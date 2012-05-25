@@ -136,17 +136,12 @@ public class ModuleTimeUtil
 		  List v=ModuleTimePeer.doSelect(crit);
 		  /*Get max Logintime of user from list
 			take datefomate from this.*/
-		  for(int p=0;p<v.size();p++) {
-			ModuleTime element=(ModuleTime)v.get(p);
-			Date mlogintime=element.getMloginDatetime();
-			//String mtime=getDateformate(mlogintime);
-			/*if this date is equal to given date
-			  	add this date to vector.*/
-			//if(date.equals(mtime))
-			vec.add(mlogintime);
+		  if(v.size()!=0){
+			  for(int p=0;p<v.size();p++){
+			  	ModuleTime element=(ModuleTime)v.get(p);
+				Date mlogintime=element.getMloginDatetime();
+				vec.add(mlogintime);
 			}
-			/*get maxvalue from vector and 
-				convert in to String.*/
 			Object obm = Collections.max(vec);
                         String mlogintime1=obm.toString();
 			/*take mname from ModuleTime table 
@@ -156,10 +151,7 @@ public class ModuleTimeUtil
 			List v1=ModuleTimePeer.doSelect(crit);
   			ModuleTime element1=(ModuleTime)v1.get(0);
 			mname=element1.getMname();
-			//ParameterParser pp=data.getParameters();
-			//String mname1=pp.getString("mname","");
-			//ErrorDumpUtil.ErrorLog("------------------mname1"+mname1);
-		
+			}
 		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error ModuleTimeUtil in Method  getcMname----"+ex); }
 		 return mname;
 	}
@@ -169,25 +161,43 @@ public class ModuleTimeUtil
 	public static void getModuleCalculation(int uid)
 	{
 		try{
+		   Criteria crit=new Criteria();
 		   /*take max entry_id of user in CourseArea.*/
 		   int eid=CourseTimeUtil.getentryid(uid);
 		   /*get CouseName by this entryid.*/
 		    String courseid=getCourseid(eid);
 		   /*take current date and convert into
 			dateformate.*/
+		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		    Date de=new Date();
-		    String date=getDateformate(de);
+		    String date=sdf.format(de);
+		    //String date=getDateformate(de);
 		    /*get current mname.*/
 		    String mname=getcMname(uid,courseid,date);
-		   /*get current user's max mid.*/
-		    String dateandmid=getDate(uid,courseid,mname);
-		    String [] Stringsplit=dateandmid.split("@");
-		    int mid=Integer.parseInt(Stringsplit[1]);
-		    /*take current user's current logintime 
+		     if(org.apache.commons.lang.StringUtils.isBlank(mname))
+                     {
+		     	 Calendar now = Calendar.getInstance();
+			 now.setTime(sdf.parse(date));
+                         now.add(Calendar.DATE,-1);
+                         String priviousdate = sdf.format(now.getTime());
+			 String mname1=getcMname(uid,courseid,priviousdate);
+                         crit=new Criteria();
+                         crit.add(ModuleTimePeer.USER_ID,uid);
+                         crit.add(ModuleTimePeer.COURSE_ID,courseid);
+                         crit.add(ModuleTimePeer.MNAME,mname1);
+                         crit.add(ModuleTimePeer.MLOGIN_DATETIME,de);
+                         crit.add(ModuleTimePeer.MTIME,"00");
+                         ModuleTimePeer.doInsert(crit);
+		     }else{
+		         /*get current user's max mid.*/
+		    	String dateandmid=getDate(uid,courseid,mname);
+		    	String [] Stringsplit=dateandmid.split("@");
+		    	int mid=Integer.parseInt(Stringsplit[1]);
+		    	/*take current user's current logintime 
 			minus from current datetime.*/
-		    Criteria crit=new Criteria();
-		    crit.add(ModuleTimePeer.MID,mid);
-		    List v=ModuleTimePeer.doSelect(crit);
+		        crit=new Criteria();
+		    	crit.add(ModuleTimePeer.MID,mid);
+		    	List v=ModuleTimePeer.doSelect(crit);
 	            	ModuleTime element=(ModuleTime)v.get(0);
 			Date mlogintime=element.getMloginDatetime();
 			Integer mtime=(element.getMtime());
@@ -200,7 +210,7 @@ public class ModuleTimeUtil
 			crit.add(ModuleTimePeer.MLOGIN_DATETIME,de);
 			crit.add(ModuleTimePeer.MTIME,diff);
 			ModuleTimePeer.doUpdate(crit);
-	
+		}
 		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error ModuleTimeUtil in Method getModuleCalculation----"+ex); }
 		
 	}	

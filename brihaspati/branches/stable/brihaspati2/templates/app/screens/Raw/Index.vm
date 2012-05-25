@@ -156,7 +156,7 @@ function checkOption(field)
 }
 function doLoad()
 {
-setTimeout( "refresh()", 60*1000 );
+setTimeout( "refresh()", 5*60*1000 );
 }
 
 function refresh()
