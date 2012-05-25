@@ -329,6 +329,10 @@ $brih_openId4 <a href="http://openid.net/what/"> $brih_openId5 </a> & <a href="h
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang",$lang)> #if($lang == "hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_admin #if($lang == "hindi") $brih_Of1 #end $brih_reg </a>
 </b></td></tr>
+<tr><td colspan=4>
+<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
+<a href=$link.setPage("ViewInstituteList.vm").addPathInfo("lang","english")><b>$brih_reg2 $RemoteInstitute $brih_list</b></a>
+</td></tr>
 ##Add FAQ link in login page
 <tr><td colspan=4><b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;

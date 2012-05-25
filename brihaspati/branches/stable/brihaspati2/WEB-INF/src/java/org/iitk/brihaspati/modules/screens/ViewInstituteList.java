@@ -78,7 +78,9 @@ public class ViewInstituteList extends VelocityScreen
 			String mode=pp.getString("mode","");
 			context.put("mode",mode);
 			String query=pp.getString("queryList","");
+			context.put("query",query);
 			String valueString = StringUtil.replaceXmlSpecialCharacters(pp.getString("valueString",""));
+			context.put("valueString",valueString);
 			/**
 			  *Call InstAdminDetail to display the Institute list with the Institute Admin
 			  */
@@ -118,40 +120,52 @@ public class ViewInstituteList extends VelocityScreen
                         	crit=new Criteria();
                         	crit.add(InstituteAdminUserPeer.INSTITUTE_ID,iid);
                         	List admindetail=InstituteAdminUserPeer.doSelect(crit);
-                               	InstituteAdminUser instadminuser=(InstituteAdminUser)admindetail.get(0);
-                               	String email=instadminuser.getAdminUname();
-                               	crit=new Criteria();
-                               	crit.add(org.iitk.brihaspati.om.TurbineUserPeer.LOGIN_NAME,email);
-                               	List tulist=org.iitk.brihaspati.om.TurbineUserPeer.doSelect(crit);
-                               	org.iitk.brihaspati.om.TurbineUser udetail=(org.iitk.brihaspati.om.TurbineUser)tulist.get(0);
-                               	String fname=udetail.getFirstName();
-                               	String lname=udetail.getLastName();
-                               	String temail=udetail.getEmail();
-                               	String uname=udetail.getLoginName();
                                	InstituteFileEntry InstfileEntry=new InstituteFileEntry();
-				if(admindetail.size()==1)
-                                {
-                               		InstfileEntry.setID(iid);
-                                	InstfileEntry.setInstituteAddress(Admaddress);
-                                	InstfileEntry.setInstituteName(InstName);
-                                	InstfileEntry.setInstituteCity(Instcity);
-                                	InstfileEntry.setInstituteFName(fname);
-                                	InstfileEntry.setInstituteLName(lname);
-                                	InstfileEntry.setInstituteEmail(temail);
-                                	InstfileEntry.setInstituteUserName(uname);
-                                	instuser.add(InstfileEntry);
-                        	}
-				else
+				if(admindetail.size()!=0)
 				{
-					InstfileEntry.setID(iid);
-                                        InstfileEntry.setInstituteAddress(Admaddress);
-                                        InstfileEntry.setInstituteName(InstName);
-                                        InstfileEntry.setInstituteCity(Instcity);
-                                        InstfileEntry.setInstituteEmail(temail);
-                                        InstfileEntry.setInstituteUserName("checkname");
-                                        instuser.add(InstfileEntry);
-				}
-			}
+                               		InstituteAdminUser instadminuser=(InstituteAdminUser)admindetail.get(0);
+                               		String email=instadminuser.getAdminUname();
+                               		crit=new Criteria();
+                               		crit.add(org.iitk.brihaspati.om.TurbineUserPeer.LOGIN_NAME,email);
+                               		List tulist=org.iitk.brihaspati.om.TurbineUserPeer.doSelect(crit);
+                               		org.iitk.brihaspati.om.TurbineUser udetail=(org.iitk.brihaspati.om.TurbineUser)tulist.get(0);
+                               		String fname=udetail.getFirstName();
+                               		String lname=udetail.getLastName();
+                               		String temail=udetail.getEmail();
+                               		String uname=udetail.getLoginName();
+					if(admindetail.size()==1)
+                                	{
+                               			InstfileEntry.setID(iid);
+                                		InstfileEntry.setInstituteAddress(Admaddress);
+                                		InstfileEntry.setInstituteName(InstName);
+                                		InstfileEntry.setInstituteCity(Instcity);
+                                		InstfileEntry.setInstituteFName(fname);
+                                		InstfileEntry.setInstituteLName(lname);
+                                		InstfileEntry.setInstituteEmail(temail);
+                                		InstfileEntry.setInstituteUserName(uname);
+                                		instuser.add(InstfileEntry);
+                        		}
+					else
+					{
+						InstfileEntry.setID(iid);
+                                        	InstfileEntry.setInstituteAddress(Admaddress);
+                                        	InstfileEntry.setInstituteName(InstName);
+                                        	InstfileEntry.setInstituteCity(Instcity);
+                                        	InstfileEntry.setInstituteEmail(temail);
+                                        	InstfileEntry.setInstituteUserName("checkname");
+                                        	instuser.add(InstfileEntry);
+					}
+				}//if
+				else{
+						InstfileEntry.setID(iid);
+                                                InstfileEntry.setInstituteAddress(Admaddress);
+                                                InstfileEntry.setInstituteName(InstName);
+                                                InstfileEntry.setInstituteCity(Instcity);
+                                        	InstfileEntry.setInstituteUserName("noAdminExist");
+                                        	instuser.add(InstfileEntry);
+
+				}//else
+			}//for
                 }//try
                 catch (Exception e){ErrorDumpUtil.ErrorLog("Error: ViewInstituteList(InstAdminDetail) method" + e);}
                 return instuser;

@@ -19,7 +19,7 @@ $!data.getMessage()
 	$brih_reg2 $RemoteInstitute
 	</font>
 	</td>
-	<td>$brih_total $RemoteInstitute [$institutenum] </td>
+	<td>$brih_total $RemoteInstitute [$institutenum] </td><td><b><font color="red">* </font>indicates institute admin does not exist</b></td>
 </tr>
 </table>
 <form name="frm" method="post" action="$link.setPage("ViewInstituteList.vm")">
@@ -28,14 +28,23 @@ $!data.getMessage()
 	<td><b>$brih_searchBy</b></td>
                 <td align=left>
                         <select name="queryList">
-                                <option value="InstituteId"> $RemoteInstitute  $brih_ID</option>
+				#if($query!="")
+				<option value="$query">$query</option>
                                 <option value="InstituteName"> $RemoteInstitute $brih_name</option>
                                 <option value="InstituteAddress"> $RemoteInstitute  $brih_address</option>
+				#else
+				<option value="InstituteName"> $RemoteInstitute $brih_name</option>
+                                <option value="InstituteAddress"> $RemoteInstitute  $brih_address</option>
+				#end
                         </select>
                 </td>
                 <td align=left><b>$brih_match_str</b></td>
                 <td align=left>
+			#if($valueString=="")
                         <input align=center type="text" name="valueString" value="">
+			#else
+                        <input align=center type="text" name="valueString" value="$valueString">
+			#end
                 </td>
                 <td>
                         <input type="button" name="Search" value="Search" onClick="checkNull(document.frm,this);">
@@ -66,10 +75,15 @@ $!data.getMessage()
 				#end
 			<td>$ent.getInstituteName()</td>
 			<td>$ent.getInstituteAddress() $ent.getInstituteCity()</td>
-			#if($ent.getInstituteUserName()!="checkname")
-			<td>$!ent.getInstituteFName() $!ent.getInstituteLName()</td>
-			#else
-			<td><a href=javascript:popupWin("$link.setPage("call,ViewANameList.vm").addPathInfo("instituteid",$ent.getID())","newWin") style=text-decoration:none>$brih_view $brih_name</a></td>
+			##if($ent.getInstituteUserName()!="checkname")
+			<td>$!ent.getInstituteFName() $!ent.getInstituteLName()
+			##else
+			##end
+			#if($ent.getInstituteUserName()=="checkname")
+			<a href=javascript:popupWin("$link.setPage("call,ViewANameList.vm").addPathInfo("instituteid",$ent.getID())","newWin") style=text-decoration:none>$brih_view $brih_name</a>
+			#end
+			#if($ent.getInstituteUserName()=="noAdminExist")
+			<b><font color="red">*</b></font></td>
 			#end
 			<td><a href=mailto:$!ent.getInstituteEmail() style=text-decoration:none>$!ent.getInstituteEmail()</a></td>
 			</tr>
