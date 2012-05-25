@@ -54,6 +54,7 @@ import org.iitk.brihaspati.modules.utils.UserManagement;
 
 import org.iitk.brihaspati.modules.utils.security.RandPasswordUtil;
 import org.iitk.brihaspati.modules.utils.security.EncrptDecrpt;
+import org.iitk.brihaspati.modules.utils.security.ReadNWriteInTxt;
 import org.iitk.brihaspati.modules.utils.security.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.security.RemoteAuthProperties;
 
@@ -77,19 +78,19 @@ public class remoteAuthRes extends VelocityAction{
 	public void doPerform( RunData data, Context context )
 	{
 		String remoteUrl="";
-//		String rurl="http://172.26.80.108:8080/brihaspati/servlet/brihaspati/template/RemoteLogin.vm/lang/english";
 		String rurl="";
+		String srcid="";
 		String pass=data.getParameters().getString("password");
-		ErrorDumpUtil.ErrorLog("The vale of password is "+pass);
+		//ErrorDumpUtil.ErrorLog("The vale of password is "+pass);
 		String url=data.getParameters().getString("url");
-		ErrorDumpUtil.ErrorLog("The vale of URL is "+url);
+		//ErrorDumpUtil.ErrorLog("The vale of URL is "+url);
 
 		String url1=StringUtils.substringBefore(url,"?");
 		String email1=StringUtils.substringBetween(url,"?","&");
 		email1=StringUtils.substringAfter(email1,"email=");
 		String sess=StringUtils.substringAfter(url,"sess=");
 
-// get the return url from database
+	// get the return url from database
 		Criteria crit=new Criteria();
                 crit.add(RemoteUsersPeer.USERID,email1);
  	        crit.add(RemoteUsersPeer.RANDOMKEY,sess);
@@ -98,11 +99,12 @@ public class remoteAuthRes extends VelocityAction{
                 	v=RemoteUsersPeer.doSelect(crit);
 		}
 		catch(Exception ex){
-                                ErrorDumpUtil.ErrorLog("The error in selecting value in remote auth res action ");
+                                ErrorDumpUtil.ErrorLog("The error in selecting value in remote auth res action "+ex);
                         }
 		for(int i=0;i<v.size();i++){
                         RemoteUsers ur=(RemoteUsers)v.get(i);
         	        rurl=ur.getApplication();
+        	        srcid=ur.getSourceid();
                 }
 
 		String password="";
@@ -117,7 +119,7 @@ public class remoteAuthRes extends VelocityAction{
 				password=EncryptionUtil.createDigest("MD5",pass);
 			}
                 	catch(Exception ex){
-				ErrorDumpUtil.ErrorLog("The error in creating encription in remote auth res action ");
+				ErrorDumpUtil.ErrorLog("The error in creating encription in remote auth res action "+ex);
                 	}
 			boolean exist=UserManagement.checkUserExist(email1);
 			if(exist==false){
@@ -127,7 +129,7 @@ public class remoteAuthRes extends VelocityAction{
 					vec=TurbineUserPeer.doSelect(crit);
 				}
 				catch(Exception ex){
-					ErrorDumpUtil.ErrorLog("The error in getting detail of user in remote auth res action ");
+					ErrorDumpUtil.ErrorLog("The error in getting detail of user in remote auth res action "+ex);
                 		}
 //				ErrorDumpUtil.ErrorLog("I am not going to template1 "+vec.size());
 				if(vec.size() != 0) {
@@ -135,22 +137,19 @@ public class remoteAuthRes extends VelocityAction{
 					String pass1=element.getPasswordValue().toString();
 					if(pass1.equals(password)){
 
-// generate encript string ( email, sess, random no) with shared secret
+				// generate encript string ( email, sess, random no) with shared secret
 						String params = "email="+email1+"&sess="+sess;
-						params=EncrptDecrpt.encrypt(params);
-// generate keyed hash
+						params=EncrptDecrpt.encrypt(params,srcid);
+					// generate keyed hash
 						String randm = RandPasswordUtil.randmPass();
-						String path=data.getServletContext().getRealPath("/WEB-INF/conf/brihaspati3-remote-access.properties");
-						String skey="";
-						try{
-				                        skey = RemoteAuthProperties.getValue(path,"security_key");
-				                }
-				                catch(Exception ex){
-				                        ErrorDumpUtil.ErrorLog("The problem in getting value from properties file");
-        				        }
+						String hdir=System.getProperty("user.home");
+						String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+						String line=ReadNWriteInTxt.readLin(path,srcid);
+				                String skey=StringUtils.substringBetween(line,";",";");
+			        	//      url=StringUtils.substringAfterLast(line,";");
 	
 						String hashcode=EncrptDecrpt.keyedHash(email1,randm,skey);
-// create url for redirect encript string + keyed hash
+					// create url for redirect encript string + keyed hash
 						rurl=rurl+"?encd="+params+"&rand="+randm+"&hash="+hashcode;
 						Criteria crit1=new Criteria();
 		               			crit1.add(RemoteUsersPeer.USERID,email1);
@@ -158,14 +157,14 @@ public class remoteAuthRes extends VelocityAction{
 							RemoteUsersPeer.doDelete(crit1);
 						}
                 				catch(Exception ex){
-							ErrorDumpUtil.ErrorLog("The error in deleting record from remote user in remote auth res action ");
+							ErrorDumpUtil.ErrorLog("The error in deleting record from remote user in remote auth res action "+ex);
                					}
-//ErrorDumpUtil.ErrorLog("The result url  in  remote auth res is  "+rurl);
+				//ErrorDumpUtil.ErrorLog("The result url  in  remote auth res is  "+rurl);
 						try{
 							data.getResponse().sendRedirect(rurl);
 						}
                 				catch(Exception ex){
-							ErrorDumpUtil.ErrorLog("The error in correct redirection in remote auth res action ");
+							ErrorDumpUtil.ErrorLog("The error in correct redirection in remote auth res action "+ex);
                 				}
 					}
 					else{
@@ -175,14 +174,14 @@ public class remoteAuthRes extends VelocityAction{
                                         		RemoteUsersPeer.doDelete(crit2);
                                         	}
                                         	catch(Exception ex){
-							ErrorDumpUtil.ErrorLog("The error in deleting record from remote user in remote auth res action ");
+							ErrorDumpUtil.ErrorLog("The error in deleting record from remote user in remote auth res action "+ex);
                                         	}
 						remoteUrl=rurl+"?msg=Your userid or password is incorrect";
                         			try{
                         				data.getResponse().sendRedirect(remoteUrl);
                         			}
                         			catch (Exception ex){
-							ErrorDumpUtil.ErrorLog("The error in redirection in incorrect userid or password in remote auth res action ");
+							ErrorDumpUtil.ErrorLog("The error in redirection in incorrect userid or password in remote auth res action "+ex);
                         			}
 
 					}//password check
@@ -196,14 +195,14 @@ public class remoteAuthRes extends VelocityAction{
                                         RemoteUsersPeer.doDelete(crit3);
                                 }
                                 catch(Exception ex){
-					ErrorDumpUtil.ErrorLog("The error in deleting record from remote user in remote auth res action ");
+					ErrorDumpUtil.ErrorLog("The error in deleting record from remote user in remote auth res action "+ex);
                                 }
 				remoteUrl=rurl+"?msg=Your userid or password is incorrect";
                                 try{
          	                       data.getResponse().sendRedirect(remoteUrl);
                                 }
                                 catch (Exception ex){
-					ErrorDumpUtil.ErrorLog("The error in redirection in incorrect userid or password in remote auth res action ");
+					ErrorDumpUtil.ErrorLog("The error in redirection in incorrect userid or password in remote auth res action "+ex);
                                 }
 			}
 		}//null pass else close
