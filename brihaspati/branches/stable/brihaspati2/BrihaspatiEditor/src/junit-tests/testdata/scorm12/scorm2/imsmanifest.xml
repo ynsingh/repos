@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<!--This is a Reload version 1.2 Beta SCORM 1.2 Content Package document-->
-<!--Spawned from the Reload Content Package Generator - http://www.reload.ac.uk-->
-<manifest xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2" xmlns:imsmd="http://www.imsglobal.org/xsd/imsmd_rootv1p2p1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2" identifier="MANIFEST-2E85019B-4569-85BD-7B6D-9E9140C32BBF" xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
-  <organizations />
-  <resources />
-</manifest>
-
