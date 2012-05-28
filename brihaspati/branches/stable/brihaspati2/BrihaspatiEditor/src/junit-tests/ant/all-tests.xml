@@ -1,0 +1,34 @@
+<project name="reload-all-junit-tests" default="run" basedir=".">
+
+	<description>
+		Runs all JUnit tests.
+		
+		$Id: all-tests.xml,v 1.1 1998/03/25 23:04:54 ynsingh Exp $
+	</description>
+	
+    <!-- Default/Start Target -->
+    <target name="run">
+        <!-- init -->
+        <ant antfile="globals.xml" target="init"/>
+        
+        <!-- jdom -->
+    	<ant antfile="globals.xml" target="jdom_tests"/>
+        <!-- diva -->
+    	<ant antfile="globals.xml" target="diva_tests"/>
+        <!-- dweezil -->
+    	<ant antfile="globals.xml" target="dweezil_tests"/>
+        <!-- moonunit -->
+    	<ant antfile="globals.xml" target="moonunit_tests"/>
+        <!-- editor -->
+    	<ant antfile="globals.xml" target="editor_tests"/>
+        <!-- scorm-player -->
+    	<ant antfile="globals.xml" target="scormplayer_tests"/>
+        <!-- xindice -->
+    	<!-- ant antfile="globals.xml" target="xindice_tests"/ -->
+        
+        <!-- report -->
+        <ant antfile="globals.xml" target="junit_report"/>
+        <!-- clean -->
+        <ant antfile="globals.xml" target="clean"/>
+    </target>
+</project>

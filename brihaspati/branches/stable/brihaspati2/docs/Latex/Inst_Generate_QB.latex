@@ -1,0 +1,51 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(5409,1602)(676,-1573)
+{\color[rgb]{0,0,0}\thinlines
+\put(3676,-961){\circle{764}}
+}%
+{\color[rgb]{0,0,0}\put(5695,-957){\circle{764}}
+}%
+{\color[rgb]{0,0,0}\put(2588,-623){\circle{238}}
+}%
+{\color[rgb]{0,0,0}\put(3976,-811){\line( 1, 0){1350}}
+}%
+{\color[rgb]{0,0,0}\put(4051,-1111){\line( 1, 0){1200}}
+}%
+{\color[rgb]{0,0,0}\put(3376,-811){\line(-1, 0){675}}
+}%
+{\color[rgb]{0,0,0}\put(3301,-1111){\line(-1, 0){600}}
+}%
+{\color[rgb]{0,0,0}\put(2626,-736){\line( 0,-1){750}}
+}%
+{\color[rgb]{0,0,0}\multiput(2626,-1486)(7.50000,-3.75000){21}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\multiput(2626,-1486)(-6.25000,-6.25000){13}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\multiput(2626,-1261)(6.25000,-6.25000){13}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\multiput(2626,-1261)(-6.25000,-6.25000){13}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+\put(3076,-661){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}}
+\put(3151,-1336){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2}%
+}}}}
+\put(4726,-661){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}}
+\put(4726,-1336){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2}%
+}}}}
+\put(3526,-1036){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}web}%
+}}}}
+\put(3601,-1186){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}IF}%
+}}}}
+\put(5476,-1036){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Q.B}%
+}}}}
+\put(676,-136){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Generate Question Bank}%
+}}}}
+\end{picture}%

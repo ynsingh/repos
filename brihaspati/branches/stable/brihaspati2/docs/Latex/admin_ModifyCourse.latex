@@ -1,0 +1,47 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(5979,2406)(526,-1648)
+{\color[rgb]{0,0,0}\thinlines
+\put(5926,-661){\circle{1142}}
+}%
+{\color[rgb]{0,0,0}\put(2851,-736){\circle{1142}}
+}%
+{\color[rgb]{0,0,0}\put(1313,-248){\circle{318}}
+}%
+{\color[rgb]{0,0,0}\put(3376,-586){\vector( 1, 0){1950}}
+}%
+{\color[rgb]{0,0,0}\put(5401,-886){\vector(-1, 0){2025}}
+}%
+{\color[rgb]{0,0,0}\put(1276,-436){\line( 0,-1){1125}}
+}%
+{\color[rgb]{0,0,0}\multiput(1276,-1561)(7.50000,-3.75000){21}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\multiput(1276,-1561)(-6.25000,-6.25000){13}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\put(1576,-586){\vector( 1, 0){675}}
+}%
+{\color[rgb]{0,0,0}\put(2326,-886){\vector(-1, 0){750}}
+}%
+{\color[rgb]{0,0,0}\multiput(1276,-1111)(6.00000,-6.00000){26}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\multiput(1276,-1111)(-6.00000,-6.00000){26}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+\put(2551,-811){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}web app}%
+}}}}
+\put(5701,-661){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}course}%
+}}}}
+\put(5776,-961){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}mgt   2}%
+}}}}
+\put(3976,-511){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}}
+\put(4051,-1186){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}3}%
+}}}}
+\put(526,614){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Modify Course}%
+}}}}
+\end{picture}%

@@ -1,0 +1,80 @@
+<html>
+<body  bgcolor="#202275" topmargin="0" leftmargin="0">
+<form name="f" method="post" leftmargin="0">
+
+<table align="center">
+	<tr valign="middle" height="35">
+		<td style="font-family:arial; font-weight:bold;">
+		<a href="javascript:open_comment()">
+		<font color="white">My Notes</font>
+		</a>
+		</td>
+	</tr>
+</table>
+
+</form>
+</body>
+<script>
+function test_me() {
+	var API = window.parent.parent.API;
+	var scoid = API.getCurrentScoId();
+	var courseid = parent.courseid;
+}
+
+function getAPI() {
+	return window.parent.parent.API;
+}
+
+function open_comment() {
+	//test whether this is valid SCO
+	var API = window.parent.parent.API;
+	var sco = API.getCurrentScoId();
+	var value = API.LMSGetValue("cmi.comments")	
+	if ( value == 'false' ) {
+		alert('Comments not allowed here!');	
+		return;
+	}
+	
+	var load = window.open('comments.html','','scrollbars=no, menubar=no, height=460,width=600, resizable=yes, toolbar=no,  location=no,	 status=yes'); 
+}
+function displayComments() {
+	var API = window.parent.parent.API;
+	var sco = API.getCurrentScoId();
+
+	var value = API.LMSGetValue("cmi.comments")
+	if ( value  != "" ) {
+    	var console = window.open("Comments","console","width=700,height=300,resizable=yes,scrollbars=yes"); 
+        console.document.close();
+        console.document.writeln(value); 
+        document.f.notes.value = value;
+    }
+    else 
+	{
+    	alert("Currently no user comments are available!");
+    	document.f.notes.value = "";
+   }
+    
+}
+
+function getUserInput() {
+    var userInput= prompt("Please input your comments: ", "");
+    if (userInput != null){
+	    var temp= "" + userInput + "";
+		var API = window.parent.parent.API;
+		var value = API.LMSSetValue("cmi.comments", temp);    
+    }
+}
+
+function saveUserInput() {
+	if ( !window.confirm('Save comments?') ) return;
+    var userInput= document.f.notes.value;
+    if (userInput != null){
+	    var temp= "" + userInput + "";
+		var API = window.parent.parent.API;
+		var value = API.LMSSetValue("cmi.comments", temp);    
+		alert("Your notes was saved");
+    }
+}
+</script>
+</html>
+

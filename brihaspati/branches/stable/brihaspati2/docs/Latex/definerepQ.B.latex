@@ -1,0 +1,63 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(7475,3526)(2450,-4763)
+{\color[rgb]{0,0,0}\thinlines
+\put(9376,-1786){\circle{1082}}
+}%
+{\color[rgb]{0,0,0}\put(7387,-4214){\circle{1082}}
+}%
+{\color[rgb]{0,0,0}\put(4520,-1901){\circle{1082}}
+}%
+{\color[rgb]{0,0,0}\put(2626,-1561){\circle{336}}
+}%
+{\color[rgb]{0,0,0}\put(2776,-1711){\vector( 1, 0){1200}}
+}%
+{\color[rgb]{0,0,0}\put(4051,-2161){\vector(-1, 0){1275}}
+}%
+{\color[rgb]{0,0,0}\put(6955,-4189){\vector(-4, 3){2304}}
+}%
+{\color[rgb]{0,0,0}\put(4951,-2236){\vector( 4,-3){2052}}
+}%
+{\color[rgb]{0,0,0}\put(7911,-3984){\vector( 2, 3){1165.385}}
+}%
+{\color[rgb]{0,0,0}\put(9526,-2311){\vector(-3,-4){1539}}
+}%
+{\color[rgb]{0,0,0}\put(2626,-1711){\line( 0,-1){1050}}
+}%
+{\color[rgb]{0,0,0}\put(2626,-2761){\line( 3,-2){225}}
+}%
+{\color[rgb]{0,0,0}\multiput(2626,-2761)(-6.00000,-6.00000){26}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\put(2626,-2236){\line( 1,-1){225}}
+}%
+{\color[rgb]{0,0,0}\multiput(2626,-2236)(-6.00000,-6.00000){26}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+\put(3451,-1636){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}}
+\put(3526,-2386){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}3}%
+}}}}
+\put(4201,-1861){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Web}%
+}}}}
+\put(4276,-2161){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}app}%
+}}}}
+\put(5851,-2836){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}}
+\put(5476,-3511){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}3}%
+}}}}
+\put(7051,-4186){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}ACL}%
+}}}}
+\put(7126,-4561){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2,3}%
+}}}}
+\put(8326,-3211){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}}
+\put(8776,-3661){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}4}%
+}}}}
+\put(8926,-1936){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}     Q.B.R}%
+}}}}
+\end{picture}%

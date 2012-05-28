@@ -1,0 +1,121 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(6075,9723)(226,-9040)
+{\color[rgb]{0,0,0}\thinlines
+\put(3826,-337){\circle{948}}
+}%
+{\color[rgb]{0,0,0}\put(996,-399){\circle{948}}
+}%
+{\color[rgb]{0,0,0}\put(2928,-8007){\oval(1350,1350)}
+}%
+{\color[rgb]{0,0,0}\put(2701,-2386){\framebox(2025,300){}}
+}%
+{\color[rgb]{0,0,0}\put(2701,-1561){\framebox(2025,300){}}
+}%
+{\color[rgb]{0,0,0}\put(751,-6211){\framebox(3975,750){}}
+}%
+{\color[rgb]{0,0,0}\put(3151,-3286){\line( 0,-1){1125}}
+}%
+{\color[rgb]{0,0,0}\put(3976,-3286){\line( 0,-1){1125}}
+}%
+{\color[rgb]{0,0,0}\put(3976,-4411){\line( 1, 0){300}}
+}%
+{\color[rgb]{0,0,0}\put(3151,-4411){\line( 1, 0){300}}
+}%
+{\color[rgb]{0,0,0}\put(3451,-3286){\line( 0,-1){1125}}
+}%
+{\color[rgb]{0,0,0}\put(4276,-3286){\line( 0,-1){1125}}
+}%
+{\color[rgb]{0,0,0}\put(3151,-3511){\line( 1, 0){300}}
+}%
+{\color[rgb]{0,0,0}\put(3151,-3811){\line( 1, 0){300}}
+}%
+{\color[rgb]{0,0,0}\put(3151,-4111){\line( 1, 0){300}}
+}%
+{\color[rgb]{0,0,0}\put(3976,-3511){\line( 1, 0){300}}
+}%
+{\color[rgb]{0,0,0}\put(3976,-3811){\line( 1, 0){300}}
+}%
+{\color[rgb]{0,0,0}\put(3976,-4111){\line( 1, 0){300}}
+}%
+{\color[rgb]{0,0,0}\put(3301,-2386){\vector( 0,-1){975}}
+}%
+{\color[rgb]{0,0,0}\put(4126,-2386){\vector( 0,-1){975}}
+}%
+{\color[rgb]{0,0,0}\put(826,-1336){\line( 0,-1){1125}}
+}%
+{\color[rgb]{0,0,0}\put(826,-2461){\line( 1, 0){300}}
+}%
+{\color[rgb]{0,0,0}\put(1126,-1336){\line( 0,-1){1125}}
+}%
+{\color[rgb]{0,0,0}\put(826,-1561){\line( 1, 0){300}}
+}%
+{\color[rgb]{0,0,0}\put(826,-1861){\line( 1, 0){300}}
+}%
+{\color[rgb]{0,0,0}\put(826,-2161){\line( 1, 0){300}}
+}%
+{\color[rgb]{0,0,0}\put(976,-886){\vector( 0,-1){375}}
+}%
+{\color[rgb]{0,0,0}\put(976,-2461){\vector( 0,-1){3000}}
+}%
+{\color[rgb]{0,0,0}\put(3301,-4411){\vector( 0,-1){1050}}
+}%
+{\color[rgb]{0,0,0}\put(4126,-4411){\vector( 0,-1){1050}}
+}%
+{\color[rgb]{0,0,0}\put(4351,-1261){\vector( 0, 1){1125}}
+}%
+{\color[rgb]{0,0,0}\put(3301,-1561){\vector( 0,-1){525}}
+}%
+{\color[rgb]{0,0,0}\put(4501,-2386){\line( 0,-1){1125}}
+}%
+{\color[rgb]{0,0,0}\put(2776,-6211){\vector( 0,-1){1125}}
+}%
+{\color[rgb]{0,0,0}\put(3451,-1861){\vector( 1, 0){1050}}
+}%
+{\color[rgb]{0,0,0}\put(4501,-3511){\line( 1, 0){1575}}
+}%
+{\color[rgb]{0,0,0}\put(6076,-3511){\line( 1, 0){150}}
+}%
+{\color[rgb]{0,0,0}\put(6226,-3511){\vector( 0, 1){2100}}
+}%
+\put(226,539){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Query handling process}%
+}}}
+\put(676,-286){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}voice }%
+}}}
+\put(751,-586){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}query}%
+}}}
+\put(3601,-286){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}text}%
+}}}
+\put(3526,-511){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}query}%
+}}}
+\put(3076,-1486){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}FAQ   Selvat  }%
+}}}
+\put(2626,-7561){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}posted}%
+}}}
+\put(2401,-7786){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}in disscussion }%
+}}}
+\put(2326,-8011){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}group of the}%
+}}}
+\put(601,-8986){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}where answer by other student of instructor}%
+}}}
+\put(4501,-136){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Reply to student if avilable in FAQ}%
+}}}
+\put(2851,-2311){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}query    classified}%
+}}}
+\put(826,-5686){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Instructor :responds to query duting }%
+}}}
+\put(4501,-1936){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}If not avilable in FAQ}%
+}}}
+\put(6301,-2011){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}If the query irrelevant}%
+}}}
+\put(6301,-2236){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}msg to Student}%
+}}}
+\put(2551,-8236){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}course}%
+}}}
+\end{picture}

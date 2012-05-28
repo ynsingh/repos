@@ -1,0 +1,174 @@
+<xs:schema targetNamespace="http://www.imsglobal.org/xsd/imsld_v1p0" xmlns="http://www.imsglobal.org/xsd/imsld_v1p0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="IMS LD Level B version 1.0 Final Draft">
+	<xs:annotation>
+		<xs:documentation>This module contains the elements that constitute the expression schema that is used in IMS LD. 
+		The module must be included in level B of the IMS LD specifications.
+		This module can not be used independently, because it makes use of several IMS LD elements and attributes.
+		Changed the namespace.
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- ******************** -->
+	<!-- ** Change History ** -->
+	<!-- ******************** -->
+	<xs:annotation>
+		<xs:documentation>4 November 2002
+		Created module.
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- ***************************** -->
+	<!-- **Re-usable content models ** -->
+	<!-- ***************************** -->
+	<xs:group name="grp.operand">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">This model consists of the operands used in the expression.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element ref="property-ref"/>
+			<xs:element ref="property-value"/>
+			<xs:group ref="grp.expression"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="grp.calculate">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">This model consists of the operands and expressions used in the expression. This model is used in several elements.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="grp.operand" minOccurs="2" maxOccurs="2"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="grp.expression">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">This model consists of operator elements that can be used to build expressions. This model is used in several elements.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element ref="is-member-of-role"/>
+			<xs:element ref="is"/>
+			<xs:element ref="is-not"/>
+			<xs:element ref="and"/>
+			<xs:element ref="or"/>
+			<xs:element ref="sum"/>
+			<xs:element ref="subtract"/>
+			<xs:element ref="multiply"/>
+			<xs:element ref="divide"/>
+			<xs:element ref="greater-than"/>
+			<xs:element ref="less-than"/>
+			<xs:element ref="users-in-role"/>
+			<xs:element ref="no-value"/>
+			<xs:element ref="time-unit-of-learning-started"/>
+			<xs:element ref="datetime-activity-started"/>
+			<xs:element ref="current-datetime"/>
+			<xs:element ref="complete"/>
+			<xs:element ref="not"/>
+		</xs:choice>
+	</xs:group>
+	
+	<!-- ************************** -->
+	<!-- ** Element declarations ** -->
+	<!-- ************************** -->
+	<xs:element name="is" type="calculateType"/>
+	<xs:element name="is-not" type="calculateType"/>
+	<xs:element name="and" type="operatorType"/>
+	<xs:element name="or" type="operatorType"/>
+	<xs:element name="sum" type="sumType"/>
+	<xs:element name="subtract" type="calculateType"/>
+	<xs:element name="multiply" type="calculateType"/>
+	<xs:element name="divide" type="calculateType"/>
+	<xs:element name="greater-than" type="calculateType"/>
+	<xs:element name="less-than" type="calculateType"/>
+	<xs:element name="users-in-role" type="users-in-roleType"/>
+	<xs:element name="no-value" type="no-valueType"/>
+	<xs:element name="complete" type="completeType"/>
+	<xs:element name="not" type="expressionType"/>
+
+	<!-- *********** -->
+	<!-- ** Empty ** -->
+	<!-- *********** -->
+	<xs:element name="current-datetime">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">This refers to a system variable when implementing IMS LD. The system should return a variable of type dateTime, holding the current date and time.</xs:documentation>
+			<xs:appinfo>Return a variable of type dateTime.</xs:appinfo>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+	
+	<!-- *************************** -->
+	<!-- ** Empty with attributes ** -->
+	<!-- *************************** -->
+	<xs:element name="is-member-of-role">
+		<xs:complexType>
+			<xs:attributeGroup ref="attr.ref.req"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="time-unit-of-learning-started">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">This refers to a system variable when implementing IMS LD. The system should return a variable of type dateTime.</xs:documentation>
+			<xs:appinfo>Return a variable of type dateTime</xs:appinfo>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="unit-of-learning-uri" type="xs:anyURI" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="datetime-activity-started">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">This refers to a system variable when implementing IMS LD. The system should return a variable of type dateTime.</xs:documentation>
+			<xs:appinfo>Return a variable of type dateTime</xs:appinfo>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attributeGroup ref="attr.ref.req"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="role-part-ref">
+		<xs:complexType>
+			<xs:attributeGroup ref="attr.ref.req"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="act-ref">
+		<xs:complexType>
+			<xs:attributeGroup ref="attr.ref.req"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<!-- ******************* -->
+	<!-- ** Complex types ** -->
+	<!-- ******************* -->
+	<xs:complexType name="calculateType">
+		<xs:group ref="grp.calculate"/>
+	</xs:complexType>
+	<xs:complexType name="expressionType">
+		<xs:group ref="grp.expression"/>
+	</xs:complexType>
+	<xs:complexType name="operatorType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">This model is used in the elements 'and' and 'or'.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="grp.expression" minOccurs="2" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="sumType">
+		<xs:group ref="grp.calculate" maxOccurs="unbounded"/>
+	</xs:complexType>
+	<xs:complexType name="users-in-roleType">
+		<xs:sequence>
+			<xs:element ref="role-ref"/>
+			<xs:element ref="expression"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="no-valueType">
+		<xs:sequence>
+			<xs:element ref="property-ref"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="completeType">
+		<xs:choice>
+			<xs:element ref="learning-activity-ref"/>
+			<xs:element ref="support-activity-ref"/>
+			<xs:element ref="unit-of-learning-href"/>
+			<xs:element ref="activity-structure-ref"/>
+			<xs:element ref="role-part-ref"/>
+			<xs:element ref="act-ref"/>
+			<xs:element ref="play-ref"/>
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

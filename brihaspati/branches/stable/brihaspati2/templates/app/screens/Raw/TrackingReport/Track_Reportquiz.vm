@@ -1,0 +1,407 @@
+#*
+ * @(#)Track_Reportquiz.vm
+ * Copyright (c) 2009 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
+ *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
+ *
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+$page.setTitle("Tracking Report")
+$page.setBgColor("bgcolor")
+$!data.getMessage()
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+<table bgcolor="$ui.menuColor" width=100%>
+<tr><td><b>
+	<font face="$ui.sansSerifFonts">
+	#if($data.getUser().getUserName() == "admin" || $data.getUser().getTemp("role")=="institute_admin")
+	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
+        #if($type =="System")
+     	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
+        $brih_system #if($lang == "hindi" || $lang == "gujarati") $brih_Of #end $brih_reports
+        #end
+	#else
+	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a> |
+	#if($type =="user")
+      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
+        $brih_usr $brih_reports
+        #end
+        #if($type =="course")
+     	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
+        $brih_course $brih_reports
+        #end
+        #if($type =="quiz")
+      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
+        $brih_quiz $brih_reports
+        #end
+	#end
+	</font>
+</b></td>
+<td align=right>
+        #if($data.getUser().getUserName() == "admin" || $data.getUser().getTemp("role")=="institute_admin")
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Trackadminreport.html","newWin");>$brih_help</a>
+        #else
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/TrackInstreport.html","newWin");>$brih_help</a>
+        #end
+</td>
+<td align=right>
+                #if( $total_size!=0 )
+                        #if( $endIndex < $total_size )
+                                #if( $endIndex < $userConf )
+                                [$k - $total_size] of $total_size
+                                #elseif($k == $j)
+                                [$k - $total_size] of $total_size
+                                #else
+                                [$k - $endIndex] of $total_size
+                                #end
+                        #else
+                        [$k - $total_size] of $total_size
+                        #end
+                #end
+        </td></tr>
+</tr>
+</table>
+##<br>
+<form name="frm" method="post" action=$link.setPage("call,TrackingReport,Track_Reportquiz.vm").setAction("TrackingReport")>
+<table width=100%  bgcolor="$ui.tableColor">
+#set($month=["01","02","03","04","05","06","07","08","09","10","11","12"])
+#set($day=["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"])
+#set($hour=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"])
+#set($second=["00","05","10","15","20","25","30","35","40","45","50","55"])
+#if($mode == "repoinfo")
+#if($type =="quiz")
+<table  bgcolor="$ui.tableColor" width="100%" align="left" cellsapacing="0" cellpadding ="0">
+<tr><td><b><i>$brih_test/$brih_quiz #if($lang == "hindi" || $lang == "gujarati") $brih_Of #end $brih_reports</b></td></tr>
+<tr bgcolor="$ui.menuColor" width="100%">
+        <td width ="100%" colspan="5"><i><b> #if($lang == "hindi" || $lang == "gujarati") 
+							$brih_reports $brih_for $brih_quiz $brih_select 
+						#else 
+							$brih_select $brih_quiz $brih_for $brih_reports 
+						#end </i></b>
+				#if($value=="noempty")
+                                #foreach($Quiz in $Quizid)
+                                <a href=$link.setPage("call,TrackingReport,Track_Reportquiz.vm").addPathInfo("mode","repoinfo").addPathInfo("type",$type).addPathInfo("usrname",$usrname).addPathInfo("mode1","quizinfo").addPathInfo("quizname",$Quiz.getquizid())>$Quiz.getquizid()</a>
+                                #end
+				#else
+					$brih_quiz $brih_trackmsg2	
+                                #end
+         </td>
+</tr>
+#if($mode1 == "quizinfo")
+#if($no=="noexist")
+	<tr>$brih_quiz $brih_trackmsg2</tr>
+#else
+<tr bgclor="$ui.menuColor" width="100%">
+        <td align="left" width="50%">$brih_quiz #if($lang == "hindi") $brih_Of #end $brih_name:</td>
+        <td align="left" width="50%"><b>$quizname</td>
+</tr>
+<tr bgclor="$ui.menuColor" width="100%">
+        <td align="left" width="50%"> #if($lang == "hindi" || $lang == "gujarati")
+						$brih_quiz $brih_for $brih_total $brih_trktime 
+					#else 
+						 $brih_total $brih_trktime $brih_for $brih_quiz 
+					#end :</td>
+        <td align="left" width="50%"><b>$quiztime</td>
+</tr>
+<tr bgclor="$ui.menuColor" width="100%">
+        <td align="left" width="50%">  #if($lang == "hindi" || $lang == "gujarati") 
+						$brih_qus #if ($lang == "hindi") $brih_of2 #end $brih_type 
+					#else 
+						$brih_type $brih_of $brih_qus 
+					#end :</td>
+        <td align="left" width="50%"><b>$Typeofquestion</td>
+</tr>
+<tr bgclor="$ui.menuColor" width="100%">
+        <td align="left" width="50%"> #if($lang == "hindi" || $lang == "gujarati") 
+						$brih_qus #if($lang == "hindi") $brih_of #end $brih_total $brih_nos 
+					#else 
+						$brih_total $brih_nos $brih_qus 
+					#end :</td>
+        <td align="left" width="50%"><b>$totalquestion</td>
+</tr>
+<tr bgclor="$ui.menuColor" width="100%">
+        <td align="left" width="50%">$brih_marks $brih_per $brih_qus:</td>
+        <td align="left" width="50%"><b>$marksperques</td>
+</tr>
+<tr bgclor="$ui.menuColor" width="100%">
+        <td align="left" width="50%"> #if($lang == "hindi" || $lang == "gujarati") 
+						$brih_attempt $brih_qus $brih_of $brih_nos 
+					#else 
+						$brih_nos $brih_qus $brih_attempt 
+					#end :</td>
+	#if($quizmess =="file")
+        <td align="left" width="50%"><b>$quesattempt</td>
+	#end
+	#if($Qmess =="nofile")
+        <td align="left" width="50%"><b>0</td>
+	#end
+</tr>
+<tr bgclor="$ui.menuColor" width="100%">
+        <td align="left" width="50%">$brih_pass $brih_marks:</td>
+        <td align="left" width="50%"><b>$passmarks</td>
+</tr>
+<tr bgclor="$ui.menuColor" width="100%">
+        <td align="left" width="50%">$brih_marks $brih_obtained :</td>
+	#if($quizmess =="file")
+        <td align="left" width="50%"><b>$obtmarks</td>
+	#else
+        <td align="left" width="50%"><b>0</td>
+	#end
+</tr>
+<tr bgclor="$ui.menuColor" width="100%">
+        <td align="left" width="50%">$brih_result:</td>
+	#if($quizmess =="file")
+        <td align="left" width="50%"><b>$pass</td>
+	#end
+	#if($Qmess =="nofile")
+        <td align="left" width="50%"><b>$brih_absent</td>
+	#end
+</tr>
+<tr bgclor="$ui.menuColor" width="100%">
+        <td align="left" width="50%">$brih_status:</td>
+	#if($quizmess =="file")
+        <td align="left" width="50%"><b>$comp</td>
+	#end
+	#if($Qmess =="nofile")
+        <td align="left" width="50%"><b>$brih_not $brih_attempt</td>
+	#end
+</tr>
+#end
+#end
+#end
+</table>
+##------------------------type quiz end
+#if($data.getUser().getUserName() == "admin" || $data.getUser().getTemp("role")=="institute_admin")
+#if($type == "System")
+<table  bgcolor="$ui.tableColor" width="100%" >
+<tr><td  bgcolor="$ui.menuColor"><input type="CHECKBOX" checked="true" name="grouptype" value="showuser" onClick="selecionatudo(true,1)"> 
+#if($lang == "hindi" || $lang == "gujarati") $brih_all $brih_usr $RemoteShow #else $RemoteShow $brih_all $brih_usr #end 
+</td><br></tr>
+<tr><td  bgcolor="$ui.tableColor"><input type="CHECKBOX"  name="grouptype" value="showinstitute" onClick="selecionatudo(true,2)"> 
+#if($lang == "hindi" || $lang == "gujarati")$brih_all $brih_Institute $RemoteShow #else $RemoteShow $brih_all $RemoteInstitute #end <br></td></tr>
+<tr><td  bgcolor="$ui.menuColor"><input type="CHECKBOX"  name="grouptype" value="showcourse" onClick="selecionatudo(true,2)"> 
+	#if($lang == "hindi" || $lang == "gujarati") 
+		$brih_all $brih_courses $RemoteShow 
+	#else 
+		$RemoteShow $brih_all $brih_courses 
+	#end </td></tr>
+</table>
+<table  bgcolor="$ui.tableColor" width="100%" align="left" cellsapacing="0" cellpadding ="0">
+<tr bgcolor="$ui.tableColor" width="100%"><td width="100%" colspan="5"><b>$brih_system #if($lang == "hindi") $brih_Of #end $brih_spec</b></td></tr>
+<tr bgcolor="$ui.menuColor" width="100%">
+	<td align="left" width="30%"><b> $brih_start $brih_time: </b></td>
+        <td align="left" width="70%">
+        	<select name="fStart_year">
+                	<option value="$cyear">$cyear
+                	#foreach($year in $year_list)
+                	#if($cyear != $year)
+                		<option value="$year">$year
+               		#end
+                	#end
+                </select>
+                 &nbsp<b><font size=+1>-</font></b>&nbsp
+                 <select name="fStart_mon">
+                	<option value="$cmonth">$cmonth
+                                #foreach($mon in $month)
+                                        #if($mon != $cmonth)
+                                        <option value="$mon">$mon
+                                        #end
+                                #end
+                </select>
+		 &nbsp;<b><font size=+1>-</font></b>&nbsp;
+                <select name="fStart_day">
+                        <option value="$cdays">$cdays
+                        #foreach($d in $day)
+                                #if($d!=$cdays)
+                                        <option value="$d">$d
+                                #end
+                        #end
+                </select>
+         </td>
+</tr>
+<tr bgcolor="$ui.tableColor" width="100%">
+	<td align="left" width="30%"><b>$brih_end $brih_time: </b></td>
+        <td align="left" width="70%">
+		<select name="tStart_year">
+                        <option value="$cyear">$cyear
+                        #foreach($year in $year_list)
+                        #if($cyear != $year)
+                                <option value="$year">$year
+                        #end
+                        #end
+                </select>
+
+                 &nbsp<b><font size=+1>-</font></b>&nbsp
+                 <select name="tStart_mon">
+                	<option value="$cmonth">$cmonth
+                                #foreach($mon in $month)
+                                        #if($mon != $cmonth)
+                                        <option value="$mon">$mon
+                                        #end
+                                #end
+                </select>
+		 &nbsp;<b><font size=+1>-</font></b>&nbsp;
+                <select name="tStart_day">
+                        <option value="$cdays">$cdays
+                        #foreach($d in $day)
+                                #if($d!=$cdays)
+                                        <option value="$d">$d
+                                #end
+                        #end
+                </select>
+         </td>
+</tr>
+</table>
+<table width="100%" align="left" cellsapacing="0" cellpadding ="0">
+<tr bgcolor="$ui.menuColor" width="100%">
+<td align="left" width="100%">
+	##<input type="button" name="search" value="submit" onClick="checkNull(document.frm,this);">
+	<input type="button" name="eventSubmit_doUserCourseInfo" value="$brih_submit" onClick="disabled="true";">
+	##<input type="button" name="eventSubmit_doUserCourseInfo" value="submit" onClick="checkNull(document.frm,this);">
+        <input type="hidden" name="mode" value="search">
+</td>
+</tr>
+</table>
+#end
+#end
+#end
+#if($data.getUser().getUserName() == "admin" || $data.getUser().getTemp("role")=="institute_admin" && $chktype=="userlog")
+<table width="100%" align="left" cellsapacing="0" cellpadding ="0">
+#if($grouptype == "showuser")
+<tr bgcolor="$ui.tableColor" width="100%"><td width="100%" colspan="5"><b>$brih_most $brih_active $brih_usr</b></td></tr>
+<tr bgcolor="$ui.menuColor">
+        <td align="left" width="40%"><b>$brih_usrName:</td>
+        <td align="left" width="30%"><b>$brih_total brih_nos $brih_access</td>
+        <td align="left" width="30%"><b>$brih_total $brih_access $brih_trktime</td>
+<tr>
+#set($count = 1)
+#foreach($uidname in $entry)
+	#set($count2 = 1)
+#foreach($uidtotal in $usrid3)
+	#set($count3 = 1)
+#foreach($totaltime in $usrid6)
+#if($count == $count2 && $count == $count3)
+#if($velocityCount%2==0)
+<tr bgcolor="$ui.menuColor">
+#else
+<tr bgcolor="$ui.tableColor">
+#end
+        <td align="left" width="30%"><b>$uidname</td>
+        <td align="left" width="30%"><b>$uidtotal</td>
+        <td align="left" width="30%"><b>$totaltime</td>
+        #end
+	#set ( $count3 = $count3+1 )
+        #end
+	#set ( $count2 = $count2+1 )
+        #end
+	#set ( $count = $count+1 )
+#end	
+</tr>
+#end
+#if($grouptype == "showcourse")
+<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_most $brih_active $brih_courses</b></td></tr>
+<tr bgcolor="$ui.tableColor">
+        <td align="left" width="30%"><b>$brih_courseName:</td>
+        <td align="left" width="30%"><b>$brih_total brih_nos $brih_usr $brih_access</td>
+        <td align="left" width="30%"><b>$brih_total $brih_access $brih_trktime</td>
+<tr>
+#set($count = 1)
+#foreach($cname in $cname)
+	#set($count2 = 1)
+#foreach($ttlname in $totalname)
+	#set($count3 = 1)
+#foreach($ctime in $ctime1)
+#if($count == $count2 && $count == $count3)
+#if($velocityCount%2==0)
+<tr bgcolor="$ui.tableColor">
+#else
+<tr bgcolor="$ui.menuColor">
+#end
+        <td align="left" width="30%"><b>$cname</td>
+        <td align="left" width="30%"><b>$ttlname</td>
+        <td align="left" width="30%"><b>$ctime</td>
+        #end
+	#set ( $count3 = $count3+1 )
+	#end
+	#set ( $count2 = $count2+1 )
+        #end
+	#set ( $count = $count+1 )
+#end
+</tr>
+#end
+#if($grouptype == "showuser" || $grouptype == "showcourse")
+<tr bgcolor="$ui.tableColor" width="100%"><td align="left" width="100%" colspan="5">
+        #if($total_size <= $userConf)
+                <u><font color="white">$brih_first</font></u> &nbsp;
+                <u><font color="white">$brih_pre</font></u> &nbsp;
+                <u><font color="white">$brih_nxt</font></u> &nbsp;
+                <u><font color="white">$brih_last</font></u> &nbsp;
+                #elseif($startIndex == $userConf_string)
+                <u><font color="white">$brih_first</font></u> &nbsp;
+                <u><font color="white">$brih_pre</font></u> &nbsp;
+                <a href="$link.setPage("call,TrackingReport,Track_Reportquiz.vm").addPathInfo("startIndex",$startIndex).addPathInfo("chktype","userlog").addPathInfo("type",$type).addPathInfo("mode",$mode).addPathInfo("grouptype",$grouptype).addPathInfo("fStart_year",$fStart_year).addPathInfo("fStart_mon",$fStart_mon).addPathInfo("fStart_day",$fStart_day).addPathInfo("tStart_year",$tStart_year).addPathInfo("tStart_mon",$tStart_mon).addPathInfo("tStart_day",$tStart_day).addPathInfo("actionName",$actionName)">$brih_nxt</a>&nbsp;
+                <a href="$link.setPage("call,TrackingReport,Track_Reportquiz.vm").addPathInfo("startIndex",$check_last).addPathInfo("chktype","userlog").addPathInfo("type",$type).addPathInfo("mode",$mode).addPathInfo("grouptype",$grouptype).addPathInfo("fStart_year",$fStart_year).addPathInfo("fStart_mon",$fStart_mon).addPathInfo("fStart_day",$fStart_day).addPathInfo("tStart_year",$tStart_year).addPathInfo("tStart_mon",$tStart_mon).addPathInfo("tStart_day",$tStart_day).addPathInfo("actionName",$actionName)">$brih_last</a>&nbsp;
+		#elseif($endIndex == $total_size || $endIndex > $total_size)
+                <a href="$link.setPage("call,TrackingReport,Track_Reportquiz.vm").addPathInfo("startIndex",$check_first).addPathInfo("chktype","userlog").addPathInfo("type",$type).addPathInfo("mode",$mode).addPathInfo("grouptype",$grouptype).addPathInfo("fStart_year",$fStart_year).addPathInfo("fStart_mon",$fStart_mon).addPathInfo("fStart_day",$fStart_day).addPathInfo("tStart_year",$tStart_year).addPathInfo("tStart_mon",$tStart_mon).addPathInfo("tStart_day",$tStart_day).addPathInfo("actionName",$actionName)">$brih_first</a>&nbsp;
+                <a href="$link.setPage("call,TrackingReport,Track_Reportquiz.vm").addPathInfo("startIndex",$check_pre).addPathInfo("chktype","userlog").addPathInfo("type",$type).addPathInfo("mode",$mode).addPathInfo("grouptype",$grouptype).addPathInfo("fStart_year",$fStart_year).addPathInfo("fStart_mon",$fStart_mon).addPathInfo("fStart_day",$fStart_day).addPathInfo("tStart_year",$tStart_year).addPathInfo("tStart_mon",$tStart_mon).addPathInfo("tStart_day",$tStart_day).addPathInfo("actionName",$actionName)">$brih_pre</a> &nbsp;
+                <u><font color="white">$brih_nxt</font></u> &nbsp;
+                <u><font color="white">$brih_last</font></u> &nbsp;
+		 #else
+               <a href="$link.setPage("call,TrackingReport,Track_Reportquiz.vm").addPathInfo("startIndex",$check_first).addPathInfo("chktype","userlog").addPathInfo("type",$type).addPathInfo("mode",$mode).addPathInfo("grouptype",$grouptype).addPathInfo("fStart_year",$fStart_year).addPathInfo("fStart_mon",$fStart_mon).addPathInfo("fStart_day",$fStart_day).addPathInfo("tStart_year",$tStart_year).addPathInfo("tStart_mon",$tStart_mon).addPathInfo("tStart_day",$tStart_day).addPathInfo("actionName",$actionName)">$brih_first</a>&nbsp;
+                <a href="$link.setPage("call,TrackingReport,Track_Reportquiz.vm").addPathInfo("startIndex",$check_pre).addPathInfo("chktype","userlog").addPathInfo("type",$type).addPathInfo("mode",$mode).addPathInfo("grouptype",$grouptype).addPathInfo("fStart_year",$fStart_year).addPathInfo("fStart_mon",$fStart_mon).addPathInfo("fStart_day",$fStart_day).addPathInfo("tStart_year",$tStart_year).addPathInfo("tStart_mon",$tStart_mon).addPathInfo("tStart_day",$tStart_day).addPathInfo("actionName",$actionName)">$brih_pre</a> &nbsp;
+               <a href="$link.setPage("call,TrackingReport,Track_Reportquiz.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("chktype","userlog").addPathInfo("type",$type).addPathInfo("mode",$mode).addPathInfo("grouptype",$grouptype).addPathInfo("fStart_year",$fStart_year).addPathInfo("fStart_mon",$fStart_mon).addPathInfo("fStart_day",$fStart_day).addPathInfo("tStart_year",$tStart_year).addPathInfo("tStart_mon",$tStart_mon).addPathInfo("tStart_day",$tStart_day).addPathInfo("actionName",$actionName)">$brih_nxt</a> &nbsp;
+          <a href="$link.setPage("call,TrackingReport,Track_Reportquiz.vm").addPathInfo("startIndex",$check_last).addPathInfo("chktype","userlog").addPathInfo("type",$type).addPathInfo("mode",$mode).addPathInfo("grouptype",$grouptype).addPathInfo("fStart_year",$fStart_year).addPathInfo("fStart_mon",$fStart_mon).addPathInfo("fStart_day",$fStart_day).addPathInfo("tStart_year",$tStart_year).addPathInfo("tStart_mon",$tStart_mon).addPathInfo("tStart_day",$tStart_day).addPathInfo("actionName",$actionName)">$brih_last</a> &nbsp;
+                #end
+</td></tr>
+</table>
+</table>
+#end
+#end
+</table>
+	<input type="hidden" name="actionName" 
+        <input type="hidden" name="type" value="$type">
+        <input type="hidden" name="mode" value="$mode">
+        <input type="hidden" name="status" value="$status">
+        <input type="hidden" name="usrname" value="$usrname">
+        <input type="hidden" name="grouptype" value="$grouptype">
+        <input type="hidden" name="coltype" value="$coltype">
+</form>
+<SCRIPT LANGUAGE="javascript">
+function Changename(frm,field)
+        {
+                frm.valdir.value=document.frm.uname.value;
+
+        }
+function checkNull(frm,field)
+{
+        if(frm.grouptype.value!="")
+        {
+                frm.actionName.value=field.name;
+                frm.submit();
+        }
+        else
+                alert("The 'Match String' text box can not be NULL");
+}
+
+function selecionatudo(check,n) {
+
+for (i=0;i<2;i++) {
+
+if (check) {
+
+document.frm.grouptype[i].checked=false;
+
+}
+
+}
+
+document.frm.grouptype[n-1].checked=true;
+
+}
+function popupWin(url,popupName)
+{
+        Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+}
+</script>

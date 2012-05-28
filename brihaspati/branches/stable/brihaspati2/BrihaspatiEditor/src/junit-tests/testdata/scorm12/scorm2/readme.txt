@@ -1,0 +1,1 @@
+This SCORM Manifest should be empty

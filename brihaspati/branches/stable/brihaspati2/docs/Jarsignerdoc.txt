@@ -1,0 +1,8 @@
+echo Generating the KeyStore in file myKeystore for mySelf
+keytool -genkey -keystore myKeystore -alias myself
+
+echo Generating the Self certificate in file myKeystore for mySelf
+keytool -selfcert -alias myself -keystore myKeystore
+
+echo Sign the jar using myKeystore
+jarsigner -keystore myKeystore XXX.jar myself

@@ -1,0 +1,105 @@
+#*
+ * @(#) AddProgram.vm
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 07-12-2010
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+
+$page.setTitle("AddProgram")
+
+$page.setBgColor($ui.bgcolor)
+<body>
+#set($lang = $data.getUser().getTemp("lang").toString())
+## If some message has been set, that is retrieved and displayed.
+$!data.getMessage()
+## Retreiving the $lang (representing the choosen language for display, which
+## was set in corresponding screen class.
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+##creating link for Admin's home & Program Management
+<table  bgcolor="$ui.tableColor" width=100%>
+        <tr bgcolor="$ui.menuColor">
+                <td>
+                <font face="$ui.sansSerifFonts">
+                <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
+                <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","1") style=text-decoration:none>$brih_program $brih_mgmt</a> | #if($lang == "hindi") $brih_program $brih_add  #else $brih_add $brih_program #end
+                </td>
+        </tr>
+</table> ##table close
+##form created 
+<form name="frm" method="Post" action="$link.setPage("call,Program,ProgramList.vm").setAction("AddProgram")">
+<table  bgcolor="$ui.tableColor" width=100%>
+        <tr>
+	#if($tdcolor != "1")
+		<td>
+	#elseif($tdcolor == "1")
+		<td bgcolor="#AFDCEC">
+	#end
+		<a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none> $brih_map $brih_program </a></td>
+        #if($tdcolor != "2")
+                <td>
+        #elseif($tdcolor == "2")
+                <td bgcolor="#AFDCEC">
+        #end
+                <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_program $brih_add  #else $brih_add $brih_program #end </a></td>
+        #if($tdcolor != "3")
+                <td>
+        #elseif($tdcolor == "3")
+                <td bgcolor="#AFDCEC">
+        #end
+                <a href=$link.setPage("call,Program,ProgramList.vm").addPathInfo("count","3") style=text-decoration:none>$brih_program $brih_list </a></td>
+        </tr>
+</table>
+##Table for Inserting data
+<table  bgcolor="$ui.tableColor" width=100%>
+        <tr bgcolor="$ui.menuColor">
+                <td>$brih_program $brih_code <font color="red">*</td>
+                <td><input type="text" name="pcode" value="$pgcode" #if($status=="update") readonly #end></td>
+	</tr>
+        <tr>
+                <td>$brih_program  #if($lang == "hindi") $brih_Of1 #end $brih_name ($brih_b.$brih_tech, $brih_m.$brih_tech, $brih_b.$brih_sc, $brih_m.$brih_sc $brih_etc)<font color="red">*</td>
+                <td><input type="text" name="pname" value="$pgname" #if($status=="update") readonly #end></td>
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+                <td>$brih_discrp</td>
+                <td><input type="text" name="descp" value="$descrp"></td>
+        </tr>
+        #*<tr>
+                <td> #if($lang == "hindi") $brih_program $brih_code $brih_Of1 $brih_alias #else $brih_alias $brih_program $brih_code #end </td>
+                <td><input type="text" name="alspcode" value="$alspgcode"></td>
+        </tr>*#
+       #* <tr bgcolor="$ui.menuColor">
+                <td> #if($lang == "hindi") $brih_program $brih_Of2 $brih_name $brih_Of1 $brih_alias #else $brih_alias $brih_program $brih_name #end </td>
+                <td><input type="text" name="alspname" value="$alspgname"></td>
+        </tr>*#
+        <tr>
+	#if($status=="update")
+                <td colspan=2><input type="button" name="eventSubmit_doSubmit" value="$brih_update" onClick="checkValue(document.frm,this);"/></td>
+		<input type="hidden" name="status" value="$status">
+	#else
+		<td colspan=2><input type="button" name="eventSubmit_doSubmit" value="$brih_submit" onClick="checkValue(document.frm,this);"/></td>
+	#end	
+        </tr>
+		<input type="hidden" name="actionName">
+</table> ##table close
+</form> ##form close
+<script language="javascript">
+
+	function checkValue(frm,field)
+	{
+		if((frm.pcode.value!="") &&(frm.pname.value!=""))
+                       {
+                               frm.actionName.value=field.name;
+                               frm.submit();
+                       }
+                       else
+                       {
+                               alert("Please Fill All The mandatory (*) Fields");
+                       }
+               }
+</script>
+

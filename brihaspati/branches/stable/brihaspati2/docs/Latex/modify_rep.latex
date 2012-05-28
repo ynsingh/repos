@@ -1,0 +1,85 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(7622,7003)(329,-6383)
+{\color[rgb]{0,0,0}\thinlines
+\put(3451,164){\oval(1950,900)}
+}%
+{\color[rgb]{0,0,0}\put(3524,-1416){\oval(1950,900)}
+}%
+{\color[rgb]{0,0,0}\put(3674,-2916){\oval(1950,900)}
+}%
+{\color[rgb]{0,0,0}\put(1424,-4116){\oval(1950,900)}
+}%
+{\color[rgb]{0,0,0}\put(6457,-2825){\oval(1950,900)}
+}%
+{\color[rgb]{0,0,0}\put(6150,-4189){\oval(2400,900)}
+}%
+{\color[rgb]{0,0,0}\put(1762,-5927){\oval(2850,900)}
+}%
+{\color[rgb]{0,0,0}\put(3601,-1861){\vector( 0,-1){600}}
+}%
+{\color[rgb]{0,0,0}\put(3526,-286){\vector( 0,-1){675}}
+}%
+{\color[rgb]{0,0,0}\put(2701,-2986){\vector(-2,-1){1290}}
+}%
+{\color[rgb]{0,0,0}\put(1276,-4561){\vector( 0,-1){825}}
+}%
+{\color[rgb]{0,0,0}\put(4651,-2836){\vector( 1, 0){825}}
+}%
+{\color[rgb]{0,0,0}\put(2401,-4111){\vector( 1, 0){2625}}
+}%
+{\color[rgb]{0,0,0}\put(6226,-3661){\vector( 0, 1){375}}
+}%
+{\color[rgb]{0,0,0}\put(7426,-2836){\vector( 1, 0){450}}
+}%
+\put(2926, 89){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}     LOGIN}%
+}}}
+\put(3376,-661){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}
+\put(3826,-661){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}(AS A INSTRUCTOR)}%
+}}}
+\put(3001,-1261){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}COURSE}%
+}}}
+\put(2851,-1561){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MANAGEMANT}%
+}}}
+\put(3751,-2236){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2}%
+}}}
+\put(2851,-2911){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}COURSE CONTENT}%
+}}}
+\put(3376,-3286){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}AREA}%
+}}}
+\put(5101,-2761){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}5}%
+}}}
+\put(2026,-3211){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}3}%
+}}}
+\put(5776,-2911){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}VIEW FILE}%
+}}}
+\put(6376,-3586){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}5}%
+}}}
+\put(3451,-4336){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}4}%
+}}}
+\put(3001,-4036){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}PERMITTED FILE}%
+}}}
+\put(5251,-4186){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}PUBLISHED CHECKED}%
+}}}
+\put(5701,-4486){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}FILE}%
+}}}
+\put(7951,-2911){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}(VIEW INSTRUCTOR \& STUDENT BOTH)}%
+}}}
+\put(1426,-5086){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}3}%
+}}}
+\put(601,-4111){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}UNPUBLISHED FOR}%
+}}}
+\put(976,-4411){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}INSTRUCTOR}%
+}}}
+\put(751,-6061){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}(ONLY FOR INSTRUCTOR)}%
+}}}
+\put(1126,-5836){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}VIEW FILE }%
+}}}
+\end{picture}

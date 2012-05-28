@@ -1,0 +1,47 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(6651,1569)(601,-39511)
+{\color[rgb]{0,0,0}\thinlines
+\put(6756,-38850){\circle{976}}
+}%
+{\color[rgb]{0,0,0}\put(2607,-38206){\circle{336}}
+}%
+{\color[rgb]{0,0,0}\put(4647,-38898){\circle{976}}
+}%
+{\color[rgb]{0,0,0}\put(5026,-38686){\vector( 1, 0){1275}}
+}%
+{\color[rgb]{0,0,0}\put(6376,-39061){\vector(-1, 0){1275}}
+}%
+{\color[rgb]{0,0,0}\put(3001,-38686){\vector( 1, 0){1275}}
+}%
+{\color[rgb]{0,0,0}\put(4201,-39136){\vector(-1, 0){1275}}
+}%
+{\color[rgb]{0,0,0}\put(2626,-38386){\line( 0,-1){900}}
+}%
+{\color[rgb]{0,0,0}\multiput(2643,-39223)(-4.68750,-7.03125){33}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\multiput(2643,-39274)(4.68750,-7.03125){33}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\multiput(2609,-38824)(-4.68750,-7.03125){33}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+{\color[rgb]{0,0,0}\multiput(2609,-38773)(4.68750,-7.03125){33}{\makebox(1.6667,11.6667){\SetFigFont{5}{6}{\rmdefault}{\mddefault}{\updefault}.}}
+}%
+\put(4501,-39136){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}I/F}%
+}}}}
+\put(6601,-38911){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}task}%
+}}}}
+\put(3676,-38611){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}}
+\put(5851,-38611){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}}
+\put(601,-38086){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Manage his personal}%
+}}}}
+\put(4501,-38836){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}web}%
+}}}}
+\end{picture}%

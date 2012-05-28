@@ -1,0 +1,267 @@
+#*
+ * @(#) UserMgmt_Instructor.vm
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modify date: 10-12-2011, 07-02-2012
+*#
+
+$page.setTitle("brih_home | $course1 | $brih_ins $brih_mgmt")
+$page.setBgColor("bgcolor")
+$!data.getMessage()
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+#if($institudeName != "ListAll")
+<table bgcolor="$ui.tableColor" width=100%>
+<tr bgcolor="$ui.menuColor"><td colspan=7>
+<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none> $brih_home</a> |
+#if($mode == "instructordelete")
+         <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("count","1") style=text-decoration:none>$course1</a> |  <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> $brih_ins $brih_mgmt</a> | $brih_listOfInstructor 
+#else
+         <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("count","1") style=text-decoration:none>$course1</a> | <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> $brih_ins $brih_mgmt</a> | $brih_addSecInstructor 
+#end
+</td></tr>
+<tr>
+#if(($permission != "0")&&($institudeName != "ListAll"))
+	#if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor == "2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> #if($lang == "hindi") $brih_listOfInstructor #else $brih_listOfInstructor #end </a>
+	</td>
+	#if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+	#if($institudeName != "ListAll")
+	<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","1") style=text-decoration:none> $brih_addSecInstructor</a></td>
+	#end
+	#else
+	#if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor == "2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> #if($lang == "hindi") $brih_listOfInstructor #else $brih_listOfInstructor #end </a>
+	</td
+	#end
+</tr>
+</table>
+#else
+<table bgcolor="$ui.tableColor" width=100%>
+<tr bgcolor="$ui.menuColor"><td colspan=7>
+<a href=$link.setPage("Index.vm") style=text-decoration:none>Admin's Home </a> |
+<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("count","1") style=text-decoration:none> $brih_regMgmt</a> | $brih_listOfInstructor	
+</table>
+#end
+#if(($mode == "instructordelete")||($institudeName == "ListAll"))
+<table width=100%>
+        <tr bgcolor="$ui.tableColor">
+        <td>
+        <b>*<font color="LightGreen">$brih_lightgreencolor </font></b> ->>> $brih_mainInstructor &nbsp;&nbsp;&nbsp;
+        <b>*<font color="Pink">$brih_lightpinkcolor</font></b> ->>> $brih_assignedrole <br>
+        </td>
+## Representation of HELP link
+	<td align=right>
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/UserMgmt_Instructor.html","newWin");>$brih_help</a>
+        </td>
+        </tr>
+</table>
+#end
+<table bgcolor="$ui.tableColor" width=100%>
+#if(($permission=="1") && ($mode == ""))
+<form name=frm method="post" action="$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").setAction("InstructorRegisteration").addPathInfo("cName",$cName)">
+<tr bgcolor="$ui.menuColor">
+	<td><b>$brih_course $brih_ID</b></td>
+	<td><b>$cName</b></td>
+</tr>
+<tr>
+	#formCell("$brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
+</tr>
+<tr bgcolor="$ui.menuColor">
+	#formPasswordCell ("$brih_pwd" "PASSWD" "")
+</tr>
+<tr>
+        #formCell ("$brih_first $brih_name" "FNAME" "")
+</tr>
+<tr bgcolor="$ui.menuColor">
+        #formCell("$brih_last $brih_name" "LNAME" "")
+</tr>
+<tr>
+	<td colspan=5 align="left">
+	<input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkFieldInst(document.frm,this);"/>
+        <input type="hidden" name="actionName">
+        <input type="Reset" name="Reset" Value="$brih_clear"/>
+        <input type="hidden" name="count" Value="$tdcolor"/>
+	<input type="hidden" name="cName" value="$cName">
+	</td>
+</tr>
+</form>
+#end
+</table>
+#if($mode == "instructordelete")
+<table width="100%">
+	#if($permission != "0")	
+	    #set($headings = ["$brih_usrName","$brih_first $brih_name","$brih_last $brih_name","$Repo_Perm"] )
+ 	#else
+	    #set($headings = ["$brih_usrName","$brih_first $brih_name","$brih_last $brih_name"] )
+ 	#end
+<FORM ENCTYPE="multipart/form-data" NAME="frm" METHOD="POST" action="$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").setAction("InstructorList_Action").addPathInfo("institudeName",$institudeName).addPathInfo("cName",$cName).addPathInfo("mode","instructordelete")">
+#if($status=="notempty")
+<tr bgcolor="$ui.menuColor">
+#if($permission != "0")
+<td align="left">
+	<input type="CHECKBOX" name="checkAll" onClick=selectAll(this);>
+        <font face="$ui.sansSerifFonts"><b>
+        #if($lang == "hindi")
+        $brih_all $brih_select</b
+        #else
+        $brih_selAll</b>
+        #end
+        </td>
+#end
+	#foreach ($heading in $headings)
+        #headerCell ($heading)
+        #end
+        </tr>
+           #set($count="")      
+             #set($count1= 0)      
+               #foreach($users in $userdetail)
+		 #set($temp1= 0)
+		   #foreach($us in $usrprms)
+			#if($count1 == $temp1)
+			   #if($us!="1")
+			        #if($us=="2")
+				<tr bgcolor="#F6CECE" width=100%> 
+				#else
+					#if($velocityCount%2==0)
+                                	<tr bgcolor="$ui.menuColor" width=100%>
+                                	#else
+                                	<tr bgcolor="$ui.tableColor" width=100%>
+                                	#end
+				#end
+			   #else
+				<tr bgcolor="#CEF6CE" width=100%>
+			   #end
+			#end
+			#set($temp1 = $temp1 + 1)
+		      #end	
+			#foreach($user in $users)
+			 #if($permission != "0")        		
+                            <td>
+			    #if($count1 != $as)
+				#if($user.UserName != $flag )
+	                    		<INPUT TYPE="CHECKBOX" NAME="$!user.UserName" onClick="addDeleteList(this,document.frm);">
+				#end
+			    #end
+                            </td>
+			  #end
+			    <td>$!user.UserName</td>
+                            <td>$!user.getFirstName()</td>
+                            <td>$!user.getLastName()</td>
+			    <td>
+			    #if($permission=="1")
+	               	    #set($temp= 0)      
+			    #foreach($us in $usrprms)
+				#if($count1 == $temp)
+				    #if($us!="1")	
+				        #if($us=="2")
+						#if($user.UserName != $flag )
+                                          <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("institudeName",$institudeName).addPathInfo("cName",$cName).addPathInfo("username",$user.UserName).addPathInfo("permission","0").addPathInfo("count",$tdcolor).addPathInfo("mode","instructordelete").setAction("InstructorList_Action").addPathInfo("actionName","eventSubmit_doPermissionUser") onclick="javascript:return confirm('$brih_permissionsuccsecondry !!')" style=text-decoration:none> $DisBoard_DBmsg8 $Repo_Perm</a> &nbsp;</td>
+						#set ( $count = "$count$!user.UserName^"  )
+						#end
+					#else 
+							<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("institudeName",$institudeName).addPathInfo("cName",$cName).addPathInfo("username",$user.UserName).addPathInfo("permission","2").addPathInfo("count",$tdcolor).addPathInfo("mode","instructordelete").setAction("InstructorList_Action").addPathInfo("actionName","eventSubmit_doPermissionUser") onclick="javascript:return confirm('$brih_permissionsuccprimary !!')" style=text-decoration:none> $DisBoard_DBmsg7 $Repo_Perm</a> &nbsp; &nbsp;
+						#set ( $count = "$count$!user.UserName^"  )
+                                	#end 
+                                	#end
+                                	#end	
+					#set($temp = $temp + 1)
+				#end	
+				##set($count1 = $count1 + 1)
+				#end
+                	#end
+				#set($count1 = $count1 + 1)
+         	#end
+        </tr>
+	#if($permission=="1")
+        <tr bgcolor="$ui.menuColor"><td colspan=5 >
+	  <input type="button" name="eventSubmit_doRemoveUser" value="$brih_remove" onClick="DeleteField(document.frm,this);">
+          <input type="hidden" name="deleteFileNames" value="">
+ 	  <input type="hidden" name="count" value="$tdcolor">
+          <input type="hidden" name="actionName" value="">
+          </td>
+        </tr>
+	#end
+
+	#if($mode == "instructordelete")
+	<tr><td align=left bgcolor="$ui.tableColor" colspan=6>
+        #if($total_size <= $AdminConf)
+        <font color="white">$brih_first</font> &nbsp;
+        <font color="white">$brih_pre</font> &nbsp;
+        <font color="white">$brih_nxt</font>&nbsp;
+        <font color="white">$brih_last</font> &nbsp;
+        #elseif($startIndex == $AdminConf_str)
+        <font color="white">$brih_first</font> &nbsp;
+        <font color="white">$brih_pre</font> &nbsp;
+        <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("institudeName",$institudeName).addPathInfo("cName",$cName).addPathInfo("count",$tdcolor).addPathInfo("mode","instructordelete").addPathInfo("startIndex",$startIndex) style=text-decoration:none>$brih_nxt</a> &nbsp;
+        <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("institudeName",$institudeName).addPathInfo("cName",$cName).addPathInfo("count",$tdcolor).addPathInfo("mode","instructordelete").addPathInfo("startIndex",$check_last) style=text-decoration:none>$brih_last</a> &nbsp;
+
+        #elseif($endIndex == $total_size || $endIndex > $total_size)
+        <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("institudeName",$institudeName).addPathInfo("cName",$cName).addPathInfo("count",$tdcolor).addPathInfo("mode","instructordelete").addPathInfo("startIndex",$check_first) style=text-decoration:none>$brih_first</a> &nbsp;
+        <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("institudeName",$institudeName).addPathInfo("cName",$cName).addPathInfo("count",$tdcolor).addPathInfo("mode","instructordelete").addPathInfo("startIndex",$check_pre) style=text-decoration:none>$brih_pre</a> &nbsp;
+        <font color="white">$brih_nxt</font> &nbsp;
+        <font color="white">$brih_last</font> &nbsp;
+
+        #else
+        <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("institudeName",$institudeName).addPathInfo("cName",$cName).addPathInfo("count",$tdcolor).addPathInfo("mode","instructordelete").addPathInfo("startIndex",$check_first) style=text-decoration:none>$brih_first</a> &nbsp;
+        <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("institudeName",$institudeName).addPathInfo("cName",$cName).addPathInfo("count",$tdcolor).addPathInfo("mode","instructordelete").addPathInfo("startIndex",$check_pre) style=text-decoration:none>$brih_pre</a> &nbsp;
+        <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("institudeName",$institudeName).addPathInfo("cName",$cName).addPathInfo("count",$tdcolor).addPathInfo("mode","instructordelete").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex) style=text-decoration:none>$brih_nxt</a> &nbsp;
+        <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("institudeName",$institudeName).addPathInfo("cName",$cName).addPathInfo("count",$tdcolor).addPathInfo("mode","instructordelete").addPathInfo("startIndex",$check_last) style=text-decoration:none>$brih_last</a> &nbsp;
+        #end
+        </td>
+        </tr>
+	#end
+##</table>
+ #end
+</form>
+</table>
+ #end
+
+<SCRIPT LANGUAGE="javascript">
+
+        function selectAll(field)
+        {
+                if(field.checked)
+                {
+                        var rmFile,index,actualString,pre=0,next=0;
+                        actualString=document.frm.deleteFileNames.value="$count";
+                        while( ( pre=actualString.indexOf("^",next) ) >=0 )
+                        {
+                                var temp=actualString.substring(next,pre);
+                                next=pre+1;
+                                rmFile=document.frm.elements[temp].checked=true;
+                        }
+                }
+                else
+                {
+                        var rmFile,index,actualString,pre=0,next=0;
+                        actualString=document.frm.deleteFileNames.value="$count";
+                        while( ( pre=actualString.indexOf("^",next) ) >=0 )
+                        {
+                                var temp=actualString.substring(next,pre);
+                                next=pre+1;
+                                rmFile=document.frm.elements[temp].checked=false;
+                        }
+                        document.frm.deleteFileNames.value="";
+                }
+        }
+
+</SCRIPT>
+

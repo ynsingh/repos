@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!-- RELOAD Schema Helper File v1.2 -->
+<schemahelper>
+
+   <!-- Paths take order of precedence. Therefore the ordering of this list is important -->
+   <!-- Paths nearer the start of the list take precedence; start with the longest path and end with the shortest path -->
+   <!-- For example, "source/langstring@xml:lang" will resolve before "langstring@xml:lang" -->
+
+   <!-- Elements -->
+   <element path="dependency" fname="Dependency">
+      <tip><![CDATA[Identifies a resource whose files this resource depends upon.]]>
+      </tip>
+   </element>
+   <element path="file" fname="File">
+      <tip><![CDATA[A listing of files that this resource is dependent on.]]>
+      </tip>
+   </element>
+   <element path="item" fname="Item">
+      <tip><![CDATA[A node that describes the shape of the organization. It can reference a Resource or sub-Manifest.
+         You can do this from the drop-down box.]]>
+      </tip>
+   </element>
+   <element path="manifest" fname="Manifest">
+      <tip><![CDATA[The <b>Manifest</b> node of the Content Package contains all child elements
+         and other sub-Manifests.<p><p>A reusable unit of instruction. Encapsulates meta-data, organizations, and resource references.]]>
+      </tip>
+   </element>
+   <element path="metadata" fname="Metadata">
+      <tip><![CDATA[This element contains context specific meta-data that is used to describe the content of the overall package
+        (Package level meta-data).  If meta-data is provided, the meta-data must be valid IMS Learning Resource Meta-data.
+        <br><br>You can edit the Metadata from the Edit menu or by clicking on the button on the toolbar.]]>
+      </tip>
+   </element>
+   <element path="organization" fname="Organization">
+      <tip><![CDATA[This element describes a particular organization.  Different views or organizational paths through
+        the content can be described using multiple instances of the Organization element.]]>
+      </tip>
+   </element>
+   <element path="organizations" fname="Organizations">
+      <tip><![CDATA[Describes one or more structures or organizations for this package.
+        When defining a SCORM Resource Package, this element is required to be empty.
+        When defining a SCORM Content Aggregation Package, this element is required to contain at least one organization sub-element.]]>
+      </tip>
+   </element>
+   <element path="resource" fname="Resource">
+      <tip><![CDATA[A reference to a resource.]]>
+      </tip>
+   </element>
+   <element path="resources" fname="Resources">
+      <tip><![CDATA[A collection of references to resources. There is no assumption of order or hierarchy.]]>
+      </tip>
+   </element>
+   <element path="schema" fname="Schema">
+      <tip><![CDATA[Describes the schema that defines the meta-data.
+        This element is optional, however if present it must contain the value of “ADL SCORM”.]]>
+      </tip>
+   </element>
+   <element path="schemaversion" fname="Schema Version">
+      <tip><![CDATA[Describes the version of the schema that defines the meta-data.
+        This element is optional, however if present it must contain the value of “1.2”.]]>
+      </tip>
+   </element>
+   <element path="title" fname="Title">
+      <tip><![CDATA[Describes the title of the organization or item.]]></tip>
+   </element>
+   <element path="adlcp:location" fname="Location">
+      <tip><![CDATA[This element describes the location where the meta-data describing the package may be found.
+        This may be a Universal Resource Indicator (URI).<br><br>
+        ADL Note: This is an ADL extension to the IMS Content Packaging Information Model.
+        This element can be used to reference a file that contains the meta-data.
+        Either the meta-data is included in-line within the metadata element,
+        or this element is used to provide the file location.]]>
+      </tip>
+      <widget>filechooser</widget>
+   </element>
+   <element path="adlcp:prerequisites" fname="Prerequisites">
+      <tip><![CDATA[This element defines what other parts of the learning content must have been completed before starting
+         the Block/SCO.  This allows an LMS to compute multiple paths through the learning content.]]>
+      </tip>
+      <widget>textpane</widget>
+   </element>
+   <element path="adlcp:maxtimeallowed" fname="Max time allowed">
+      <tip><![CDATA[This element defines the amount of time a student is allowed to have in the current
+        attempt of the SCO represented by the item.]]>
+      </tip>
+   </element>
+   <element path="adlcp:timelimitaction" fname="Time limit action">
+      <tip><![CDATA[This element defines the action that should be taken when the max time allowed in the current attempt
+       of the SCO represented by the item is exceeded.]]>
+      </tip>
+   </element>
+   <element path="adlcp:datafromlms" fname="Data from LMS">
+      <tip><![CDATA[This element provides a place for initialization data expected by the SCO represented by the item after launch.
+        This data is unconstrained and undefined.  Usage of this element is not yet well defined and should be used with caution.]]>
+      </tip>
+   </element>
+   <element path="adlcp:masteryscore" fname="Mastery score">
+      <tip><![CDATA[This element establishes the passing score for this SCO represented by the item.  Note that what is
+        considered a passing score often depends on the context of a SCO within the learning content.
+        Some learning content may set the mastery score for a SCO higher than in others.
+        <br><br>The mastery score should be a normalized value between 0 and 100.]]>
+      </tip>
+   </element>
+
+   <!-- Attributes -->
+   <element path="@identifier" fname="Identifier">
+      <tip>An identifier that is unique within the Manifest.</tip>
+   </element>
+   <element path="@version" fname="Version">
+      <tip>Identifies the version of this Manifest (e.g., 1.0).</tip>
+   </element>
+   <element path="@default" fname="Default Organization">
+      <tip>Indicates which organization scheme is the default one.</tip>
+   </element>
+   <element path="@structure" fname="Structure">
+      <tip>Has a default value of “hierarchical” for describing the shape of an organization.</tip>
+   </element>
+   <element path="@href" fname="HREF">
+      <tip>A reference to a URL.</tip>
+   </element>
+   <element path="@identifierref" fname="Referenced element">
+      <tip>A reference to a resource in the resources section or a (sub)Manifest.</tip>
+   </element>
+   <element path="@isvisible" fname="Is Visible">
+      <tip>Indicates whether or not this item is displayed when the structure of the Package is displayed or rendered.</tip>
+   </element>
+   <element path="@parameters" fname="Parameters">
+      <tip>Static parameters to be passed to the resource at launch time.</tip>
+   </element>
+   <element path="resource@type" fname="Type">
+      <tip>Indicates the type of resource.</tip>
+   </element>
+   <element path="@xml:base" fname="Base">
+      <tip>Provides the relative path offset for the content file(s).</tip>
+   </element>
+   <element path="@adlcp:scormtype" fname="SCORM Type">
+      <tip>Indicates the type of resource. This can be SCO or asset</tip>
+   </element>
+   <element path="adlcp:prerequisites@type" fname="Type">
+      <tip>Describes the scripting language used to represent the prerequisites.</tip>
+   </element>
+
+</schemahelper>

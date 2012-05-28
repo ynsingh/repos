@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="http://172.28.44.17:8080/brihaspati/BrihaspatiEditor/" href="BrihaspatiEditor.jnlp">
+	<information>
+		<title>Brihaspati2  Reload Editor</title>
+		<vendor>Brihaspti software solutions,Learning Commons</vendor>
+		<homepage href="http://www.brihaspatisolutions.co.in"/>
+		<description>Metadata &amp; Content Package Editor</description>
+		<description kind="tooltip">Metadata &amp; Content Package Editor</description>
+		<offline-allowed/>
+	</information>
+	<security>
+		<all-permissions/>
+	</security>
+	<resources>
+		<j2se version="1.4+"/>
+	        <jar href="brihaspati-editor.jar"/>
+	        <jar href="lib/jdom.jar"/>
+	        <jar href="lib/org.eclipse.emf.common_2.1.0.jar"/>
+	        <jar href="lib/org.eclipse.emf.ecore_2.1.0.jar"/>
+	        <jar href="lib/org.eclipse.xsd_2.1.1.jar"/>
+	        <jar href="lib/reload-diva.jar"/>
+	        <jar href="lib/reload-dweezil.jar"/>
+	        <jar href="lib/reload-jdom.jar"/>
+	        <jar href="lib/reload-moonunit.jar"/>
+	        <jar href="lib/reload-support.jar"/>
+	        <jar href="lib/serializer.jar"/>
+	        <jar href="lib/TableLayout.jar"/>
+	        <jar href="lib/xalan.jar"/>
+	        <jar href="lib/xercesImpl.jar"/>
+	        <jar href="lib/xml-apis.jar"/>
+                </resources>
+        	<application-desc main-class="uk.ac.reload.editor.EditorFrame"/>
+</jnlp>

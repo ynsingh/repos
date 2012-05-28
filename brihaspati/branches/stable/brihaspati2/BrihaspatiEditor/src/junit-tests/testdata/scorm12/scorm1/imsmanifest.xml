@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--This is a Reload version 1.2 Beta SCORM 1.2 Content Package document-->
+<!--Spawned from the Reload Content Package Generator - http://www.reload.ac.uk-->
+<manifest xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2" xmlns:imsmd="http://www.imsglobal.org/xsd/imsmd_rootv1p2p1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2" identifier="MANIFEST-843A646E-E7F9-55FB-5C58-20EAA0D6298B" xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
+  <metadata>
+    <imsmd:lom>
+      <imsmd:general>
+        <imsmd:identifier>ID1</imsmd:identifier>
+        <imsmd:title>
+          <imsmd:langstring xml:lang="en">Test Metadata</imsmd:langstring>
+        </imsmd:title>
+        <imsmd:description>
+          <imsmd:langstring xml:lang="en">Some Test Metadata</imsmd:langstring>
+        </imsmd:description>
+        <imsmd:keyword>
+          <imsmd:langstring xml:lang="en">Test</imsmd:langstring>
+        </imsmd:keyword>
+      </imsmd:general>
+    </imsmd:lom>
+  </metadata>
+  <organizations default="ORG-C6A9447B-2572-C268-5758-E24924528F84">
+    <organization identifier="ORG-C6A9447B-2572-C268-5758-E24924528F84" structure="hierarchical">
+      <title>Organization 1</title>
+      <item identifier="ITEM-7286C72C-0FA2-4588-5276-4D4EA8D40571" isvisible="true" identifierref="RES-3B5213A5-8883-A794-A931-CB75911E21D5">
+        <title>Introduction</title>
+      </item>
+      <item identifier="ITEM-04EA6560-3379-620A-7264-52E19ED72A93" isvisible="true" identifierref="RES-B95E3C99-D53D-B086-15FA-83641CF69E0C">
+        <title>Freak Out</title>
+        <adlcp:prerequisites type="aicc_script">ITEM-7286C72C-0FA2-4588-5276-4D4EA8D40571</adlcp:prerequisites>
+        <adlcp:maxtimeallowed>00:10:00</adlcp:maxtimeallowed>
+        <adlcp:timelimitaction>exit,message</adlcp:timelimitaction>
+      </item>
+    </organization>
+  </organizations>
+  <resources>
+    <resource identifier="RES-3B5213A5-8883-A794-A931-CB75911E21D5" type="webcontent" adlcp:scormtype="asset" href="zappa/0-intro.html">
+      <file href="zappa/0-intro.html" />
+      <file href="zappa/assets/bkgrd.jpg" />
+      <file href="zappa/assets/zappa.jpg" />
+    </resource>
+    <resource identifier="RES-B95E3C99-D53D-B086-15FA-83641CF69E0C" type="webcontent" adlcp:scormtype="asset" href="zappa/1-freak_out.html">
+      <file href="zappa/1-freak_out.html" />
+      <file href="zappa/assets/bkgrd.jpg" />
+      <file href="zappa/assets/001.gif" />
+    </resource>
+  </resources>
+</manifest>
+

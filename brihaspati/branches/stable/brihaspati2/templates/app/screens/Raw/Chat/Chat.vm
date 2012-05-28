@@ -1,0 +1,217 @@
+#*
+ * @(#) Chat.vm
+ * Copyright (c) 2005,2009, 2010, 2011 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @author <a href="mailto:awadhk_t@yahoo.com ">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com ">Shaista Bano</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @modified date: 10-aug-2010 (Shaista), 06-oct-2010, 07-dec-2010, 
+ * @modified date: 15-Feb-2011, 04-April-2011 (Shaista), 26-Aug-2011, 19-10-2011 (Sunil Kr)
+*#
+
+$page.setTitle("Chat")
+$page.setBgColor($ui.bgcolor)
+$!data.getMessage()
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+#if ($lang == "arabic")
+        #set($lang="ar")
+
+#elseif ($lang == "bangla")
+        #set($lang="bn")
+
+#elseif ($lang == "dutch")
+        #set($lang="nl")
+
+#elseif($lang =="english")
+        #set($lang="en")
+
+#elseif($lang =="french")
+        #set($lang="fr")
+
+#elseif ($lang == "german")
+        #set($lang="de")
+
+#elseif ($lang == "greek")
+        #set($lang="gre")
+
+#elseif ($lang == "gujrati")
+        #set($lang="gu")
+
+#elseif ($lang == "gurmukhi")
+        #set($lang="pa")
+
+#elseif ($lang == "hindi")
+        #set($lang="hi")
+
+#elseif ($lang == "japanese")
+        #set($lang="japanese")
+
+#elseif ($lang == "korean")
+        #set($lang="ko")
+
+#elseif ($lang == "marathi")
+        #set($lang="mr")
+
+#elseif ($lang == "nepali")
+        #set($lang="ne")
+
+#elseif ($lang == "persian")
+        #set($lang="pr")
+
+#elseif ($lang == "russian")
+        #set($lang="ru")
+
+#elseif ($lang == "tamil")
+        #set($lang="ta")
+#end
+
+<table bgcolor="$ui.menuColor" width=100%>
+	<tr>
+		<td>
+		<font face="$ui.sansSerifFonts"><b>
+		#if(( $mode == "general") || ($mode == "instituteWise"))
+			<a href=$link.setPage("Index.vm")>$brih_home</a> |
+		#else
+			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+			<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
+		
+			##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a> | $brih_chat
+			<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> |
+		#end  
+		  $brih_chat
+		</font>
+		</td>
+	</tr>
+<td>
+</tr>
+</table>
+<table align=left bgcolor="$ui.tableColor" width=100%>
+<tr>
+#if($data.getUser().getTemp("role") == "guest")
+	#if($tdcolor!="4")
+		<td>
+	#elseif($tdcolor == "4")
+        	<td bgcolor="#AFDCEC">
+	#end
+                <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+#elseif($mode == "instituteWise")
+		#if($tdcolor!="4")
+                        <td width="50%">
+                #elseif($tdcolor == "4")
+                        <td width="50%" bgcolor="#AFDCEC">
+                #end
+			<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","4").addPathInfo("grpName",$grpName) style=text-decoration:none>$RemoteInstitute $brih_wise $DiscussionBoard</a></td>
+		#if($tdcolor!="2")
+                        <td width="50%">
+                #elseif($tdcolor == "2")
+                        <td width="50%" bgcolor="#AFDCEC">
+                #end
+			<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode2","instituteWise").addPathInfo("grpName",$grpName)>$brih_chat</a></td>
+#elseif($mode == "general")
+		#if($tdcolor!="2")
+        	        <td width="50%">
+	        #elseif($tdcolor == "2")
+        	        <td width="50%" bgcolor="#AFDCEC">
+	        #end
+			<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode",$mode)>$brih_chat</a></td>
+#else
+		#if($tdcolor!="1")
+	        	<td>
+	        #elseif($tdcolor == "1")
+        		<td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
+		#if($tdcolor!="2")
+			<td>
+	        #elseif($tdcolor == "2")
+		       	<td bgcolor="#AFDCEC">
+	        #end
+		<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
+		#if($tdcolor!="3")
+	        	<td>
+        	#elseif($tdcolor == "3")
+		        <td bgcolor="#AFDCEC">
+        	#end
+		#if( $data.getUser().getTemp("role") == "student")
+                        <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a></td>
+               #else
+			##<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3")>$Notice_NoticeContent_msg1</td>
+			<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1")>$brih_Notices</td>
+		#end
+		#if($tdcolor!="4")
+		        <td>
+        	#elseif($tdcolor == "4")
+	        	<td bgcolor="#AFDCEC">
+        	#end
+		<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+		#if( $data.getUser().getTemp("role") != "student")
+			#if($tdcolor!="5")
+		        	<td>
+	        	#elseif($tdcolor == "5")
+			        <td bgcolor="#AFDCEC">
+        		#end
+			<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+        	#end
+#end
+</tr>
+</table>
+#if($username=="guest")
+<table align=left width=100%>
+        <tr>
+        <td colspan=2 align="left" bgcolor="$ui.menuColor"><font size=4><b>$brih_chatNotPermission </b></font></td></tr>
+</table>
+#else
+<table align="left" width=100% bgcolor="$ui.menuColor">
+<tr><td>
+        <blink> <img src="$content.getURI("/images/hand.gif")"> </blink>
+                $brih_chatMsg2  <a href="/brihaspati/docs/saveChat.html">$brih_here</a><br>
+</td></tr>
+<tr bgcolor="tableColor"><td>
+	<blink> <img src="$content.getURI("/images/hand.gif")"> </blink>
+		##<a href=http://javashoplm.sun.com/ECom/docs/Welcome.jsp?StoreId=8&PartDetailId=jre-6u5-oth-JPR&SiteId=JSC&TransactionId=noreg> Download Java SE Runtime Environment</a>
+		<a href=http://javashoplm.sun.com/ECom/docs/Welcome.jsp?StoreId=8&PartDetailId=jre-6u5-oth-JPR&SiteId=JSC&TransactionId=noreg>$brih_djre</a>
+</td></tr>
+
+<tr><td>
+	<blink> <img src="$content.getURI("/images/hand.gif")"> </blink>
+	$brih_chatMsg1
+	#if($mode=="general")
+		<a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("mode","general")>$brih_changePassword</a>
+        #elseif($mode=="instituteWise")
+        	<a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("mode2","instituteWise").addPathInfo("grpName",$grpName)>$brih_changePassword</a>
+        #else
+		<a href=$link.setPage("call,UserMgmt_User,changePassword.vm")>$brih_changePassword</a>
+	#end
+</td></tr>
+<tr><td>
+        <blink> <img src="$content.getURI("/images/hand.gif")"> </blink>
+                $brih_chatMsg2  <a href="/brihaspati/docs/ChatDocToSavePlay.html">$brih_here</a><br>
+</td></tr>
+</table>
+<applet archive="babylon.jar" code="babylon.babylonApplet.class" codebase=$codeBase width="0" height="0">
+	#if($mode == "general")
+                <param name="chatroom" value="general">
+        #elseif ($mode2 == "instituteWise")
+                <param name="chatroom" value=$grpName>
+        #elseif ($mode == "grpmgmt")
+                <param name="chatroom" value=$grpName>
+	#else
+                <param name="chatroom" value=$chatRoom>
+        #end
+	<param name="username" value=$username>
+	<param name="password" value=$password>
+	<param name="servername" value=$serverName>
+	<param name="autoconnect" value="yes">
+	<param name="locksettings" value="yes">
+	<param name="embed" value="no">
+	<param name="lang" value=$lang>
+	##<param name="expiryTime" value=$TaskConf>
+	<param name="babylonPath" value=$babylonPath>
+        <param name="fullfile" value=$fullfile>
+	<param name="role" value=$role>
+	<param name="mode" value=$mode>
+</applet>
+#end
+

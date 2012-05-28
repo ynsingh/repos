@@ -1,0 +1,143 @@
+\documentclass{article}
+\usepackage{graphicx}
+\textheight=8.5in
+\textwidth=6.5in
+\oddsidemargin=0.0in
+\topmargin=0.0in
+ 
+ 
+\renewcommand\baselinestretch{1.0}           % single space
+\pagestyle{empty}                            % no headers and page numbers
+\oddsidemargin -10 true pt      % Left margin on odd-numbered pages.
+\evensidemargin 10 true pt      % Left margin on even-numbered pages.
+\marginparwidth 0.75 true in    % Width of marginal notes.
+\oddsidemargin  0 true in       % Note that \oddsidemargin=\evensidemargin
+\evensidemargin 0 true in
+\topmargin -0.75 true in        % Nominal distance from top of page to top of\textheight 9.5 true in
+       % Height of text (including footnotes and figures)
+\textwidth 6.375 true in        % Width of text line.
+\parindent=0pt                  % Do not indent paragraphs
+\parskip=0.15 true in
+\usepackage{color}              % Need the color package
+\usepackage{psfig}
+
+
+\begin{document}
+\begin{center}
+
+\subsection*{\underline{Update Class}}
+
+\end{center}
+
+\begin{enumerate}
+                       \item get the days // after Updation done.\\
+                       \item get Last Update date from Local server.\\
+                       \item get the product Name from Local server.\\
+                       \item get the date (Last update date + days).\\
+                       \item get the Current date.\\
+
+\end{enumerate}                
+                               Compare date and Current date,if Current date is greater than date. \\
+                               Call Connect method to Connect Update Server\\
+                               // Connect (Last Update date,product name)  \\
+                               if(Connect)\\
+                               Print Message "Connect to Brihaspati Update server"\\
+
+                               [Call download backup method  // dwld back()]
+                             Call download update to download files from Update Server.\\
+                               //download Updates();\\
+                               Call Check Size method for checks the Size of download file.\\
+                               // CheckSize ()
+                               call Update Local for Updates the Local server.
+                              \}
+                               // Update Local()\\
+                                  else
+                                  Please veryfy the internet Connection or Update are not available.\\
+                                  end Class\\
+
+                                Public boolan Connect(String Last Update date,String Product name).\\
+                               {
+                                Connect to Update Server.\\
+
+                                if not connect then put in log please verify the internet connection.\\
+                                read Xml file\\
+                                get the Update date from Server Correspond to product.\\
+                                          Compare Last Update Date.\\
+                                          if(LUD $< UDS$)\\
+                                          Put in log Update are available.\\
+                                          return true\\
+                                          else          \\
+                                          Put in log Update are not available.\\
+                                          return false\\
+                                         }
+                                          Public boolean dwld\_back()\\
+                                         {
+                                         Create backup temp dir in Local User home area if not exist.\\
+                                         make a zip of content \\
+                                         tabe a database backup\\
+                                         Put those in temp backup dir.\\
+                                         return true;\\
+                    }
+
+           Public boolan download Update (String Phone,String IP,String Instructor Name,String Author Key).\\
+          {
+          boolan author = author(String Phone,String IP, String Instructor Name, String Author Key).\\
+          if(author)\\
+          {
+                                         download jar and Zip file\\
+                                         put there file in temp directory\\
+       }
+     }
+         Public boolan authenticate(String PName,String IP,String InstructorName,String Author Key).\\
+    {
+                                        Connect to Update Server.\\ 
+                                        read Xml file from Update Server.\\
+                                        Compare there  parameter.\\
+                                        if(ok) \\
+                                        Put in to log are authorized person.\\
+                                        return true;\\
+                                        else\\
+                                        Put in log you are not authorize person.\\
+                                        return false;\\
+                                        }
+                                        Public boolan Check Size()\\
+                                        {
+                                        get the list of file from temp directory where.\\
+                                        download file are stored.\\
+                                        get the size of there downloaded files\\
+                                        get the size of Update Server files\\
+                                        if(size are not equal)\\
+                                       {
+                                       Put in log again try for download.\\
+                                       call download Update method()\\
+                                       call check size();\\    
+                                       }
+                                      }
+                                       Local\_Update()\\
+              {
+                                         Copy jar file to lib\\
+                                         Copy template file in template directory.\\
+                                         Copy config file in config directory(if required).\\
+   
+                                        run script for Local database and ant update.\\
+
+                                        Put the message in log "System was Sucessfully Updated".\\
+
+                                       Call restart script (BrihaspatiStop.sh , BrihaspatiStart.sh.)\\
+                    }
+                                       Method for Xml Read and Write are pending for Update Server.\\
+                                       Method for setting Proxy User and Password are getter from file in.\\ 
+                                       Client side (if system run behind fireball)are pending.\\    
+                                       Class Update\\
+                    {
+                                      int day =30;\\
+                                      String Update date = get date from database.\\
+                                      int Update = Integer parseInt ((ExpiryUtil.getExpired(Last update date ,day)
+                                      replace("\_" , ""));\\
+                                      int current date = Integer parseInt(ExpiryUtil.getCurrentDate());\\
+                                      if(Update> Current date)\\
+                    {
+                                      boolan con = connect (String Last Update date, String product name);\\
+                    }    
+                
+ \end{document}

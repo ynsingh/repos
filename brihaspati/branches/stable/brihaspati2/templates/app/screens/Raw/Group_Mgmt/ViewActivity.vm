@@ -1,0 +1,197 @@
+#*
+ * @(#) ViewActivity.vm
+ *  Copyright (c) 2006-07,2009 ETRG,IIT Kanpur.
+ *  All Rights Reserved.
+ *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
+ *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
+ *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ *  @modified date:jan 17- 2011
+ *  @modified date:Feb 15- 2011
+ *  Contributors: Members of ETRG, I.I.T. Kanpur
+ *#
+
+$page.setTitle("create group")
+$page.setBgColor($ui.bgcolor)
+$!data.getMessage()
+#set($lang=$data.getUser().getTemp("lang").toString())
+<table bgcolor="$ui.menuColor" width=100% > ##table 1 start
+	<tr><td><b>
+	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a>|
+        <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1")>$brih_grp $brih_mgmt</a> |
+	#if($lang=="english")
+	$brih_view $brih_activity</b>
+	#else
+	$brih_activity $brih_Of1 $brih_view</b>
+	#end
+     </td>
+	<td align ="right">
+		<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/joingroupactivity.html","newWin");>$brih_help</a>
+	</td>
+</tr>
+</table> ##table 1 end
+
+<form name="frm" method="post" action=$link.setPage("call,Group_Mgmt,ViewActivity.vm").setAction("Groupmanagement")>
+##<form name="frm">
+#if($Mode == "noempty")
+
+<table width=100% bgcolor="$ui.tableColor"> ##(table 2memlist)
+<tr>
+        <td colspan="5">
+		<b><I>
+		#if($lang=="english")
+                $brih_grp $brih_detail $brih_Of1 <font color=blue>$username</font>
+		#else
+                <font color=blue>$username</font> $brih_Of1 $brih_grp $brih_detail
+		#end
+		<b></I>
+        </td>
+</tr>
+#if($lang=="english")
+#set($headings=["$brih_grp$brih_name","$brih_grp$brih_type","$brih_grp $brih_member","$brih_grp $brih_grpleader"])
+#else
+#set($headings=["$brih_grp $brih_Of1 $brih_name","$brih_grp $brih_Of1 $brih_type","$brih_grp $brih_Of2 $brih_member","$brih_grp $brih_Of1 $brih_grpleader"])
+#end
+<tr bgcolor="$ui.menuColor">
+        #foreach($heading in $headings)
+                <td align="left" bgcolor="$ui.menuColor">
+                <b>$heading</b>
+                </td>
+        #end
+</tr>
+	#set($flag =false)
+	#foreach($list in $mblist)
+		#if($velocityCount % 2 == 0)
+                	<tr bgcolor="$ui.menuColor">
+			#set($boolflag =false)
+		#else
+			<tr bgcolor="$ui.tableColor">
+			#set($boolflag =true)
+		#end
+		<td align="left">
+		      $grpname
+		</td>
+		<td align="left">
+		      $type
+		</td>
+		<td align="left">
+			$mblist
+		</td>
+		<td align="left">
+		#if($flag == false )
+			#set($flag=true)
+			#if($setlead == "nolead")
+				$grpleader
+			#else
+				$brih_grp22
+			#end
+		#end
+		</td>
+	#end
+</tr>
+#if($boolflag)
+	<tr bgcolor="$ui.menuColor" width=100%>
+#else
+	<tr width=100%>
+#end
+        <td>
+        <b> $QuestionBank_available $brih_activity:</b></td>
+        <td align="left" colspan="4">
+	#if($groupdesc!="")
+       	<select name="activity" size="1" />
+	##onChange="Changeactivity(document.frm,this);"/>
+	##<option>- $brih_select - </option>
+	#if($act0=="Discussion Board")
+       	##<option value="call,Dis_Board,DBContent.vm/mode/All/$courseid">
+	<option value="$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All")"> $DiscussionBoard
+       	</option>
+	#end
+	#if($act1=="Notice")
+        ##<option value="call,Notice_User,NoticeContent.vm/flag/FromNotices">$brih_Notices
+	<option value="$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices")"> $brih_Notices
+        </option>
+	#end
+	#if($act2=="Chat")
+       	##<option value="call,Chat,Chat.vm">$brih_chat</a>
+       	<option value="$link.setPage("call,Chat,Chat.vm").addPathInfo("val1",$grpname).addPathInfo("mode1","grpmgmt")">$brih_chat</a>
+        </option>
+	#end
+	#if($act3=="Local Mail")
+       	##<option value="call,Local_Mail,MailContent.vm/mode/All">$brih_localmail</a>
+       	<option value="$link.setPage("call,Local_Mail,MailContent.vm/mode/All")">$brih_localmail</a>
+        </option>
+	#end
+        </select>
+	&nbsp;&nbsp;&nbsp;<input type="button" name="test" value="$brih_go" onClick="go(document.frm,this);"/>
+	#else
+	<b><font size="3"><font color="blue"><left>$brih_activity $brih_available1........</left></font></font></b>
+	#end
+        </td>
+</tr>
+#if($boolflag)
+	<tr>
+#else
+	<tr bgcolor="$ui.menuColor">
+#end	
+<td><b> #if($lang == "hindi") $brih_grp $brih_Of1 $brih_grpleader $brih_select: #else $brih_select $brih_grp $brih_grpleader: #end </b></td>
+<td colspan="4">
+	#if($data.getUser().getUserName() == $name || $curdate == $stuno || $check == "nocheck")
+        <select name="leadername" disabled size="1" onChange="Changeleader(document.frm,this);"/>
+	#else
+        <select name="leadername" size="1" onChange="Changeleader(document.frm,this);"/>
+                <option>  - #if($lang == "hindi") $brih_grpleader $brih_select #else $brih_select $brih_grpleader #end - </option>
+                        #foreach($studentname in $mblist1)
+                        <option value="$studentname">
+			$studentname
+			#end
+                 </option>
+        </select>
+	#end
+     &nbsp;&nbsp;&nbsp;<input type="button" name="eventSubmit_doPolling" value="$brih_grpVote" onClick="checkselect(document.frm,this);"/>
+</td>
+</tr>
+#else
+<b><font size="4"><font color="blue"><left>$brih_grpmsg14</left></font></font></b>
+#end
+	<input type="hidden" name="actionName" >
+        <input type="hidden" name="val2">
+        <input type="hidden" name="grpname" value="$grpname">
+
+</table> ##(table 2memlist )
+</form>
+
+<SCRIPT LANGUAGE="javascript">
+	function Changeactivity(frm,field)
+	{
+		frm.actvy.value=document.frm.activity.value;
+		//window.location=document.frm.activity.value;
+
+	}
+	function go(frm,field)
+	{
+			location=document.frm.activity.value
+			window.location(document.frm.activity.value);
+			//location.options[document.frm.activity.selectedIndex].value
+	}
+	function Changeleader(frm,field)
+        {
+                frm.val2.value=document.frm.leadername.value;
+
+        }
+        function checkselect(frm,field)
+        {
+                items2=frm.val2.value;
+                if((items2.length!=0))
+                {
+                        frm.actionName.value=field.name;
+                        frm.submit();
+                }
+                else
+                        alert("Please select option");
+        }
+	function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+        }
+
+</script>

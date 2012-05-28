@@ -1,0 +1,141 @@
+#*
+ * @(#) InsertEdit_TF.vm
+ * Copyright(c)2005-2006,2009 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:tarankhan1@yahoo.com">Tarannum Khan</a>
+ * @author <a href="mailto:manju_14feb@yahoo.com">Mithelesh Parihar</a>
+ * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 12-04-2010
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+$page.setTitle("Question True False")
+$page.setBgColor($ui.bgcolor)
+#set($lang=$data.getUser().getTemp("lang" ).toString())
+$!data.getMessage()
+
+<table bgcolor="$ui.menuColor" width=100% cellspacing=0>
+<tr>
+        <td colspan=3>
+        <b>
+	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+        ##<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | $brih_qus $brih_mgmt
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+        <a href=$link.setPage("call,Question_Bank,Question_bank.vm").addPathInfo("count","1")>$brih_qus $brih_bank</a> |
+	#if($mode=="Insert")
+	<a href=$link.setPage("call,Question_Bank,Create_Bank_Repository.vm").addPathInfo("count","2")> #if($lang=="hindi")$Repo_Repo1 $brih_Of1 $WikiCreate </a> | $brih_true / $brih_false $brih_qus $brih_insert1 #else $WikiCreate $Repo_Repo1 </a> | $brih_insert $brih_true/ $brih_false $brih_qus #end
+	#else
+	<a href=$link.setPage("call,Question_Bank,RepositoryList.vm").addPathInfo("count","2")>$brih_all $brih_qus $brih_bank</a> |
+	<a href=$link.setPage("call,Question_Bank,Question_List.vm").addPathInfo("modulename","$modulename").addPathInfo("Ques_Type","$Ques_Type").addPathInfo("count","1")>$brih_all $brih_qus1 $modulename </a> | #if($lang=="hindi") $brih_true / $brih_false $brih_qus #if($mode=="View") $brih_view #else $brih_edit #end #else #if($mode=="View") $brih_view #else $brih_edit #end $brih_true / $brih_false $brih_qus #end
+	#end 
+        </td>
+</tr>
+</table>
+<table width=100% bgcolor="$ui.tableColor">
+<tr>
+        #if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor=="1")
+        <td bgcolor="#AFDCEC">
+        #end
+	<a href=$link.setPage("call,Question_Bank,Question_bank.vm").addPathInfo("count","1")> #if($lang!="english") $brih_new $brih_qus $brih_bank $brih_Of1 $WikiCreate #else $WikiCreate $brih_new $brih_qus $brih_bank #end </a>
+	</td>
+        #if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor=="2")
+        <td bgcolor="#AFDCEC">
+        #end
+	<a href=$link.setPage("call,Question_Bank,RepositoryList.vm").addPathInfo("count","2")> #if($lang!="english") $brih_viewAllTopicQuestionBank #else $brih_viewAllTopicQuestionBank #end </a></td>
+        #if($tdcolor != "3")
+        <td>
+        #elseif($tdcolor=="3")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Question_Bank,UploadQuestions.vm").addPathInfo("count","3")></a> #if($lang!="english")$brih_qus $brih_upload#else $brih_upload $brih_qus #end</td>
+</tr>
+</table>
+<form name="frm" method="post" action="$link.setAction("Question_Bank")">
+<table width="100%" bgcolor="$ui.menuColor" cellpadding="2">  
+  <tr>
+   <td width=30% align="centre" >
+     <b><font face="$ui.sansSerifFonts">$brih_qus</font></b>
+   </td>
+   <td	width=70% align="left">
+     <font face="$ui.sansSerifFonts">
+      <textarea name="Question" rows=3 cols=50 #if($mode=="View") readonly #end > $!question </textarea>
+     </td>
+ </tr>
+  <tr bgcolor="$ui.tableColor"> 
+  	<td width=30% align="centre">
+    	<b><font face="$ui.sansSerifFonts"> #if($lang=="hindi") $LocalMail_Reply #else $brih_answer #end</font></b>
+   	</td>
+   	<td width=70% align="left">
+    	<font face="$ui.sansSerifFonts">
+	#set($Ques_Ans=["TRUE","FALSE"])
+      	<select name="Answer" size=1>
+		#if($mode=="Insert")
+			#foreach($quesAns in $Ques_Ans)
+			<option value="$quesAns">$quesAns
+			#end
+		#else
+			<option value=$!ans>$!ans
+			#foreach($quesAns in $Ques_Ans)
+				#if($quesAns != $!ans)
+				<option value="$quesAns">$quesAns
+				#end
+			#end
+		#end
+      	</select> 
+   	</td>
+ </tr> 
+  <tr>
+	<td width=30% align="centre"> 
+     	<b><font face="$ui.sansSerifFonts">$brih_hint</font></b>
+   	</td>
+	<td  width=70% align="left">
+     	<font face="$ui.sansSerifFonts">
+      	<textarea name="hint" rows=3 cols=50 #if($mode=="View") readonly #end > $!hint </textarea>
+     	</td> 
+	##formCell("$brih_hint" "hint" "$!hint")
+ </tr> 
+<tr>
+<td align=center colspan=2 bgcolor="$ui.tableColor">  
+<font face ="$ui.sansserifFonts">
+	#if($mode=="Insert")
+  		<input type="reset" value="$brih_reset"> 
+  		<input type="button" name="eventSubmit_doSaveQuestion" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"> 
+  		<input type="button" name="eventSubmit_doFinishQuestion" value="$WikiSave & $brih_finish" onClick="checkValue(document.frm,this);"> 
+	#elseif($mode=="View")
+	#else
+  		<input type="reset" value="$brih_reset"> 
+		<input type="button" name="eventSubmit_doEditQuestion" value="$brih_edit" onClick="checkValue(document.frm,this);">
+  		<input type="hidden" name="qid" value=$qid>
+	#end
+  <input type="hidden" name="modulename" value=$modulename> 
+  <input type="hidden" name="actionName" value="">
+  <input type="hidden" name="mode" value=$mode>
+  <input type="hidden" name="FromPath" value=$FromPath>
+  <input type="hidden" name="Ques_Type" value="TF">
+  <input type="hidden" name="count" value="$tdcolor">
+</font>
+</td>
+</tr>
+</table>
+</form>
+<script LANGUAGE="JAVASCRIPT">
+        function checkValue(frm,field)
+        {
+                if(frm.Question.value!="")
+                {
+                       	frm.actionName.value=field.name;
+                       	frm.submit();
+                }
+                else
+                {
+                        alert("Please write Question !!");
+                        frm.Question.focus();
+                }
+        }
+</script>

@@ -1,0 +1,47 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(4729,3762)(526,-3154)
+{\color[rgb]{0,0,0}\thinlines
+\put(4576, 14){\circle{1060}}
+}%
+{\color[rgb]{0,0,0}\put(2017,-67){\circle{1060}}
+}%
+{\color[rgb]{0,0,0}\put(1942,-2617){\circle{1060}}
+}%
+{\color[rgb]{0,0,0}\put(4717,-2617){\circle{1060}}
+}%
+{\color[rgb]{0,0,0}\put(2551,164){\vector( 1, 0){1575}}
+}%
+{\color[rgb]{0,0,0}\put(4051,-211){\vector(-1, 0){1500}}
+}%
+{\color[rgb]{0,0,0}\put(1876,-2086){\vector( 0, 1){1500}}
+}%
+{\color[rgb]{0,0,0}\put(2176,-586){\vector( 0,-1){1500}}
+}%
+{\color[rgb]{0,0,0}\put(4501,-511){\vector( 0,-1){1575}}
+}%
+{\color[rgb]{0,0,0}\put(4876,-2086){\vector( 0, 1){1650}}
+}%
+\put(1651,-136){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Client stub}%
+}}}
+\put(3226,314){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}
+\put(4201, 89){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}server}%
+}}}
+\put(4201,-211){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}skeleton}%
+}}}
+\put(1576,-2611){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Client gui}%
+}}}
+\put(4351,-2611){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}logger}%
+}}}
+\put(4501,-2911){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}file}%
+}}}
+\put(526,464){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}get or show list}%
+}}}
+\end{picture}
