@@ -572,6 +572,7 @@
          <column name="USERID" primarykey="true" type="VARCHAR" size="255"/>
          <column name="RANDOMKEY" type="VARCHAR" size="255"/>
          <column name="APPLICATION" type="VARCHAR" size="255"/>
+         <column name="SOURCEID" type="VARCHAR" size="255"/>
 	<unique>
                 <unique-column name="USERID"/>
         </unique>
