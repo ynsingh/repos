@@ -42,6 +42,7 @@ import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.modules.screens.VelocityScreen;
+import org.apache.commons.lang.StringUtils;
 
 import org.iitk.brihaspati.om.RemoteUsersPeer;
 import org.iitk.brihaspati.om.RemoteUsers;
@@ -49,6 +50,7 @@ import org.iitk.brihaspati.om.RemoteUsers;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 import org.iitk.brihaspati.modules.utils.security.EncrptDecrpt;
+import org.iitk.brihaspati.modules.utils.security.ReadNWriteInTxt;
 import org.iitk.brihaspati.modules.utils.security.RemoteAuthProperties;
 
 /**
@@ -69,49 +71,50 @@ public class remPass extends VelocityScreen
 		String lang=data.getParameters().getString("lang","english");
                         context.put("lang",lang);
 		String email=data.getParameters().getString("email");
+		context.put("email",email);
                 String randomNo=data.getParameters().getString("sess") ;
                 String hash=data.getParameters().getString("hash");
 		String retUrl=null;
+		String srcid=null;
 		String remoteUrl=null;
-//get source id
-//		String remoteUrl="http://172.26.80.108:8080/brihaspati/servlet/brihaspati/template/RemoteLogin.vm/lang/english";
+		String hdir=System.getProperty("user.home");
+		String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
 
-		String path=data.getServletContext().getRealPath("/WEB-INF/conf/brihaspati3-remote-access.properties");
+// get url and source id form db
+		Criteria crit=new Criteria();
+		crit.add(RemoteUsersPeer.USERID,email);
+		crit.add(RemoteUsersPeer.RANDOMKEY,randomNo);
+		v=RemoteUsersPeer.doSelect(crit);
+		ErrorDumpUtil.ErrorLog("The size of vector for that user "+v.size() + randomNo +email);
+ 		
+		for(int i=0;i<v.size();i++){
+                	RemoteUsers ur=(RemoteUsers)v.get(i);
+                        retUrl=ur.getApplication();
+                      	srcid=ur.getSourceid();
+               }
+
                 String skey="";
-                try{
-                        skey = RemoteAuthProperties.getValue(path,"security_key");
-                }
-                catch(Exception ex){
-                        ErrorDumpUtil.ErrorLog("The problem in getting value from properties file");
-                }
+		String line=ReadNWriteInTxt.readLin(path,srcid);
+                skey=StringUtils.substringBetween(line,";",";");
+              //  url=StringUtils.substringAfterLast(line,";");
 
 	//	String hkeyR="email="+email+";random="+randomNo+";secret="+skey+";";
                 String hashcodeR=EncrptDecrpt.keyedHash(email,randomNo,skey);
-		
+
 		if (hash.equals(hashcodeR)){
-
-			Criteria crit=new Criteria();
-			crit.add(RemoteUsersPeer.USERID,email);
-			crit.add(RemoteUsersPeer.RANDOMKEY,randomNo);
-			v=RemoteUsersPeer.doSelect(crit);
-			ErrorDumpUtil.ErrorLog("The size of vector for that user "+v.size() + randomNo +email);
-// get url form db
- 		
-			for(int i=0;i<v.size();i++){
-                                RemoteUsers ur=(RemoteUsers)v.get(i);
-                                retUrl=ur.getApplication();
-                        }
-
+			ErrorDumpUtil.ErrorLog("The value of ret url from db in rem pass  "+retUrl);
 			if((v.size()>0) && (v.size()<2)){
 				String url=retUrl+"?email="+email+"&sess="+randomNo;
 				context.put("url",url);	
+			ErrorDumpUtil.ErrorLog("The value of url in rem pass screen "+url);
 			}	
 			else{
 				remoteUrl=retUrl+"?msg=You are not coming from authentic client";
 	                        try{
-        	                data.getResponse().sendRedirect(remoteUrl);
+        	                	data.getResponse().sendRedirect(remoteUrl);
                 	        }
                         	catch (Exception ex){
+					ErrorDumpUtil.ErrorLog("You are not coming from authentic client "+ex)
                         	}
 
 			}
@@ -120,10 +123,10 @@ public class remPass extends VelocityScreen
                         ErrorDumpUtil.ErrorLog("The hash is not matched ");
 			remoteUrl=retUrl+"?msg=You are not coming from authentic client";
                         try{
-                        data.getResponse().sendRedirect(remoteUrl);
+	                        data.getResponse().sendRedirect(remoteUrl);
                         }
                         catch (Exception ex){
-                        ErrorDumpUtil.ErrorLog("The hash is not matched ");
+        	                ErrorDumpUtil.ErrorLog("The hash is not matched "+ex);
                         }
 
 		}

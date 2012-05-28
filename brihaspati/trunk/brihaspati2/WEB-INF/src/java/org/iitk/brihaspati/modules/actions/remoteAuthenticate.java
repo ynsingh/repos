@@ -34,10 +34,11 @@ package org.iitk.brihaspati.modules.actions;
  *  
  */
 
+import java.util.List;
 import javax.servlet.ServletOutputStream;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.StringUtils;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.modules.actions.VelocityAction;
@@ -49,6 +50,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 import org.iitk.brihaspati.modules.utils.security.RandPasswordUtil;
 import org.iitk.brihaspati.modules.utils.security.EncrptDecrpt;
+import org.iitk.brihaspati.modules.utils.security.ReadNWriteInTxt;
 import org.iitk.brihaspati.modules.utils.security.RemoteAuthProperties;
 
 
@@ -77,18 +79,17 @@ public class remoteAuthenticate extends VelocityAction{
 		String randomNo=data.getParameters().getString("rand") ;
 		String hash=data.getParameters().getString("hash");
 		String remoteUrl=data.getParameters().getString("url");
+		String sourceid=data.getParameters().getString("srcid");
+		ErrorDumpUtil.ErrorLog("The getting value from parameter"+remoteUrl +" "+email+" "+sourceid);
+		String hdir=System.getProperty("user.home");
 	// get return url from client	and source id
 		String skey=""; 
-//		String retUrl="";
-			ErrorDumpUtil.ErrorLog("The problem in getting value from properties file");
-		String path=data.getServletContext().getRealPath("/WEB-INF/conf/brihaspati3-remote-access.properties");
-		try{
-        	        skey = RemoteAuthProperties.getValue(path,"security_key");
-        	       // retUrl = AdminProperties.getValue(path,"server_url");
-		}
-		catch(Exception ex){
-			ErrorDumpUtil.ErrorLog("The problem in getting value from properties file");
-		}
+		String url="";
+		
+		String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+		String line=ReadNWriteInTxt.readLin(path,sourceid);
+		skey=StringUtils.substringBetween(line,";",";");
+		url=StringUtils.substringAfterLast(line,";");
 //this get from retrun url
 		
 //		ErrorDumpUtil.ErrorLog("I am here remote email action in action file=="+remoteUrl);
@@ -101,33 +102,53 @@ public class remoteAuthenticate extends VelocityAction{
 			//if(exist==false){
 			//generate random number;
 			String randno=RandPasswordUtil.randmPass();
-			//store in db;
+			//remove the value if previously exist
+			List us=null;
 			Criteria crit=new Criteria();
+			crit.add(RemoteUsersPeer.USERID,email);
+			try{
+                                us=RemoteUsersPeer.doSelect(crit);
+                        }
+                        catch (Exception ex){
+                        ErrorDumpUtil.ErrorLog("The error in select value from db in remote authenticate action "+ex);
+                        }
+			if(us.size()>0){
+				try{
+					RemoteUsersPeer.doDelete(crit);
+				}
+				catch (Exception ex){
+					ErrorDumpUtil.ErrorLog("The error in deleting record from remote user in remote authenticat action "+ex);
+				}
+			}
+//			ErrorDumpUtil.ErrorLog("Here I am before wrting value in db in remote authenticate action ");
+			//store in db;
+			crit=new Criteria();
                         crit.add(RemoteUsersPeer.USERID,email);
                         crit.add(RemoteUsersPeer.RANDOMKEY,randno);
                         crit.add(RemoteUsersPeer.APPLICATION,remoteUrl);//return url comming from web client
+                        crit.add(RemoteUsersPeer.SOURCEID,sourceid);//return url comming from web client
 			try{
                 	        RemoteUsersPeer.doInsert(crit);
 			}
 			catch (Exception ex){
-			ErrorDumpUtil.ErrorLog("The error in insert value ");
+			ErrorDumpUtil.ErrorLog("The error in insert value from db in remote authenticate action ");
 			}
 //this url lift from server conf file
-			String url="http://172.26.82.17:8080/brihaspati/servlet/brihaspati/template/remPass.vm/lang/english";
 			String url1="email="+email+"&sess="+randno+"&url="+url;
+			// ErrorDumpUtil.ErrorLog("Here I am before writing the responce  in remote authenticate in action "+url1);
 			try{
-				url1=EncrptDecrpt.encrypt(url1);
+				url1=EncrptDecrpt.encrypt(url1,sourceid);
 				String genHashN=EncrptDecrpt.keyedHash(email,randno,skey);
 				url1=url1+"&hash="+genHashN;
 				//add keyed hash
-				ErrorDumpUtil.ErrorLog("The error in redirection url  after encription "+url1);
+				ErrorDumpUtil.ErrorLog("The value of responce  in remote authenticate in action "+url1);
 				ServletOutputStream out=data.getResponse().getOutputStream();
 				byte[] buf=url1.getBytes();
                                 out.write(buf);
 				out.close();
 			}
 			catch (Exception ex){
-				ErrorDumpUtil.ErrorLog("The error in redirection url 1 ");
+				ErrorDumpUtil.ErrorLog("The error in redirection url 1 "+ex);
 			}
 		}
 		else{
@@ -136,7 +157,7 @@ public class remoteAuthenticate extends VelocityAction{
 				data.getResponse().sendRedirect(remoteUrl);
 			}
                         catch (Exception ex){
-				ErrorDumpUtil.ErrorLog("The hash is not matched ");
+				ErrorDumpUtil.ErrorLog("The hash is not matched "+ex);
                         }
 			
 		}

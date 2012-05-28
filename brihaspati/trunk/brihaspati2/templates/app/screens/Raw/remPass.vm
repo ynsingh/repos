@@ -18,6 +18,13 @@ $!msg
 </table>
 <form name="frm" method="post" action="$link.setAction("remoteAuthRes")">
 <table align=left bgcolor="$ui.tableColor" width="100%">
+	<tr>
+		<td width="15"><font size=4><b>Email Id</b></font></td>
+                <td width="40">
+				$!email
+                </td>
+
+	</tr>
         <tr>
                 <td width="15"><font size=4><b>Password</b></font></td>
                 <td width="40">
