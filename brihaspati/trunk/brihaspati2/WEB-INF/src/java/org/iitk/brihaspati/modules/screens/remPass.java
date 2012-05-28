@@ -114,7 +114,7 @@ public class remPass extends VelocityScreen
         	                	data.getResponse().sendRedirect(remoteUrl);
                 	        }
                         	catch (Exception ex){
-					ErrorDumpUtil.ErrorLog("You are not coming from authentic client "+ex)
+					ErrorDumpUtil.ErrorLog("You are not coming from authentic client "+ex);
                         	}
 
 			}
