@@ -47,7 +47,6 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
-
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import javax.servlet.ServletRequest;
@@ -507,7 +506,7 @@ public class RegisterMultiUser
 			int InstituteId= InstituteIdUtil.getIst_Id(instName);
 			String instId=Integer.toString(InstituteId);
    			String instPath=(filePath.getParent()+"/inst.txt");	
-			File InstructorFile=new File(TurbineServlet.getRealPath(instPath));
+			File InstructorFile=new File(instPath);
                         boolean exist = InstructorFile.exists();
 			if(!exist){
 				/** 
@@ -526,6 +525,7 @@ public class RegisterMultiUser
    			FileReader fr=new FileReader(InstructorFile);
    			BufferedReader br=new BufferedReader(fr);
    			String s;
+			String TempgroupName="";
    			int linecount=0;
    			String line;
    			String words[]=new String[500];
@@ -547,22 +547,18 @@ public class RegisterMultiUser
                                                         	st.nextToken();
                                                         	String email=st.nextToken().trim();
                                                         	if(!email.equals("")){
-									groupName=courseId+email+"_"+InstituteId;
+									TempgroupName=courseId+email+"_"+InstituteId;
 							   		/** 
 						                	* Getting the group name from the database
                                                                 	* and compare this group name with current group name
                                                                 	*/
-                                                                		gName=CourseUtil.getCourseNameWithGAlias(courseId,instId);
-										for(int t=0;t<gName.size();t++){
-                                        						String GName=gName.get(t).toString();
-                                                                			if(groupName.equalsIgnoreCase(GName)){
-                                                						groupName= GName;
-                                        						}
-                                        						else{
-                                                						groupName="";
-                                        						}
-										
-                                					}					
+										String CourseName=CourseUtil.getCourseName(TempgroupName);
+										if(!CourseName.equals("null")){
+										groupName=TempgroupName;
+										}
+										else{
+										groupName="";
+										}
 								}
 							}
                                                         break;
