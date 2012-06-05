@@ -1,8 +1,10 @@
+<?xml version="1.0"?>
 <!-- ================================================================= -->
-<!--@author Nagendra Kumar Singh mailto:nksngh_p@yahoo.co.in           -->
+<!--@author Nagendra Kumar Singh mailto:nksinghiitk@gmail.com          -->
 <!-- ================================================================= -->
 <project name="BrihSecurityLib" default="main" basedir=".">
 	
+  	<property name="build" value="."/>
   	<property name="lib.dir" value="lib"/>
 	<property name="src.dir" value="src/java"/>
     	<property name="bin.dir" value="bin/classes"/>
@@ -21,6 +23,23 @@
       			<include name="**/*.jar"/>
         	</fileset>
   	</path>
+	<tstamp><format property='build.time' pattern='yyyyMMddHHmm'/></tstamp>
+	<condition property='deployment.server.running' value='true' else='false'> 
+	     <socket port='8080' server='127.0.0.1' />
+	</condition>
+	<echo>
+	    Application: ${component.title} ${component.version}
+	    Build File : ${ant.file} 
+	    Run Date   : ${build.time}
+	    Run by     : ${user.name}
+	    Build Dir  : ${build}
+	    Base Dir   : ${basedir}
+	    Java Home  : ${java.home}
+	    Deployment host running: ${deployment.server.running}
+  	</echo>
+
+
+
 	<!-- ================================================================ -->
 	<!-- D E P L O Y M E N T  T A R G E T S                               -->
 	<!-- ================================================================ -->
@@ -51,7 +70,7 @@
 	
 	
 	<target name="jar" depends="compile" description="**** Create executable JAR file">
-      		<jar destfile="${jar.dir}/BrihRemoteAuth.jar">
+      		<jar destfile="${jar.dir}/BrihRemoteAuth-${build.time}.jar">
       			<fileset dir="${bin.dir}" includes="**/*"/>
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
@@ -68,31 +87,30 @@
                 <delete dir="${bin.dir}/org/iitk"/>
 		<delete dir="${logs.dir}"/>
                 <delete dir="${doc.dir}"/>
-<!--		<delete>
-                        <path>
-                            <fileset dir="${jar.dir}" includes="**/*.jar" />
-                        </path>
-                </delete>
--->
         </target>
   <!-- =================================================================== -->
   <!-- J A V A D O C                                                       -->
   <!-- =================================================================== -->
 
    	<target name="javadoc" depends="jar" description="Create component Javadoc documentation">
-    		<mkdir dir="${doc.dir}"/>
-    		<mkdir dir="${doc.dir}/docs"/>
     		<mkdir dir="${doc.dir}/docs/api"/>
     		<javadoc sourcepath   ="${src.dir}"
              		 destdir      ="${doc.dir}/docs/api"
              		 packagenames ="*"
+			 use          ="true"
              		 author       ="true"
              		 protected    ="true"
              		 version      ="true"
+			 linksource   ="true"
              		 doctitle     ="&lt;h1&gt;${component.title}&lt;/h1&gt;"
              		 windowtitle  ="${component.title} (Version ${component.version})"
              		 bottom       ="Copyright (c) 2012 - ETRG, IITK" 
-    		></javadoc>
+    		>
+			<classpath refid="classpath"/>
+		      	<link href="http://java.sun.com/javase/6/docs/api/"/>      
+	      		<header><![CDATA[<h1>${component.title} ${component.version}</h1>]]></header>
+		</javadoc>
+
   	</target>
 
 </project>
