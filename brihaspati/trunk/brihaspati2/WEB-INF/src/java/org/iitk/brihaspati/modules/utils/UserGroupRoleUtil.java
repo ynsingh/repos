@@ -257,6 +257,45 @@ public class UserGroupRoleUtil{
 		}
 		return roleid;
 	}
+//method for getting roles on the basis of userid
+	public static Vector getRID(int uid)
+        {
+                Vector roleid=new Vector();
+                List v=null;
+                try{
+                        Criteria crit=new Criteria();
+                        crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
+			crit.setDistinct();
+                        v=TurbineUserGroupRolePeer.doSelect(crit);
+                }
+                catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("The error in try1 getRID()- UserGroupRoleUtil !!"+e);
+                }
+		try{
+                        for(int i=0;i<v.size();i++){
+                                TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(i);
+                                int s=element.getRoleId();
+				if(s!=6){
+				/**
+ 				 * To check whether the specified element exists in Java Vector use
+ 				 * boolean contains(Object element) method.
+ 				 * It returns true if the Vector contains the specified objct, false
+ 				 * otherwise.	
+ 				 */
+					boolean blnFound = false; 				
+					blnFound = roleid.contains(s); 				
+					if(!blnFound){
+                                		roleid.add(s);
+					}
+				}
+                        }
+                }
+                catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("The error in try2 getRID()- UserGroupRoleUtil !!"+e);
+		}
+        return roleid;
+	}
+	
     public static String getRoleName(int rid)
     {
 	    if(rid==1)
