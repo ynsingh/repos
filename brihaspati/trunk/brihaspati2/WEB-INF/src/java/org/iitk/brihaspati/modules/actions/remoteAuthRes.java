@@ -35,6 +35,9 @@ package org.iitk.brihaspati.modules.actions;
  */
 
 import java.util.List;
+import java.net.URLEncoder;
+
+import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -149,6 +152,15 @@ public class remoteAuthRes extends VelocityAction{
 			        	//      url=StringUtils.substringAfterLast(line,";");
 	
 						String hashcode=EncrptDecrpt.keyedHash(email1,randm,skey);
+					//encode url parameter					
+						try{
+						params=URLEncoder.encode(params,"UTF-8");
+						randm=URLEncoder.encode(randm,"UTF-8");
+						hashcode=URLEncoder.encode(hashcode,"UTF-8");
+						}
+						catch(java.io.UnsupportedEncodingException ex){
+							ErrorDumpUtil.ErrorLog("The error in encoding support parameter in remote auth res action "+ex);
+						}
 					// create url for redirect encript string + keyed hash
 						rurl=rurl+"?encd="+params+"&rand="+randm+"&hash="+hashcode;
 						Criteria crit1=new Criteria();
