@@ -74,7 +74,18 @@ public class remoteAuthenticate extends VelocityAction{
 	
 	public void doPerform( RunData data, Context context )
 	{
-		
+		String action=data.getParameters().getString("aname","");
+                ErrorDumpUtil.ErrorLog("I am in remote data action and value is "+action);
+		RemoteAccessData RAD=new RemoteAccessData();
+                if(action.equals("getIID")){
+                        RAD.getInstituteId(data,context);}
+                if(action.equals("getRole")){
+                        RAD.getRole(data,context);}
+                if(action.equals("getCrsLst")){
+                        RAD.getCourseList(data,context);}
+                if(action.equals("getUsrEst")){
+                        RAD.checkUsrExist(data,context);}
+		else{	
 		String email=data.getParameters().getString("email");
 		String randomNo=data.getParameters().getString("rand") ;
 		String hash=data.getParameters().getString("hash");
@@ -160,6 +171,7 @@ public class remoteAuthenticate extends VelocityAction{
 				ErrorDumpUtil.ErrorLog("The hash is not matched "+ex);
                         }
 			
+		}
 		}
 	}
 }

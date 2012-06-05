@@ -90,41 +90,38 @@ import org.iitk.brihaspati.modules.utils.XMLWriter_InstituteRegistration;
  *@Code tested by: (Sharad Singh,kishore kumar shukla)
  */
 
-/** 
-*   This class basically used for accepting, adding, deleting and rejecting institute admin only.
+/** class for accepting of a new institute as well institute admin in the brihaspati system
+* adding other institute admin in the institute
+* deleting institute, before deletion take backup of an institute
+* deletng institute as well as institute admin by checking the other role exist
+* in the brihaspati system
+* code for rejection of a institute and update the expiry date of rejection(8 days) 
 */
-
-//public class Institute_RootAdmin extends VelocitySecureAction
 public class Institute_RootAdmin extends SecureAction_Admin
 {
 	private String LangFile=new String();
 
-	/*protected boolean isAuthorized(RunData data) throws Exception
-	{
-		return true;
-	}*/
-
 	/** 
 	*  Method for giving approval to a institute by sysadmin.
 	*/
-
 	public void AcceptInstituteAdmin(RunData data, Context context)
 	{
 		try
 		{
 			Vector institutedetail=new Vector();
 			/** 
-			*  Get parameters passed from templates.
+			* parameter for the Multilanguage.
 			*/
 			ParameterParser pp = data.getParameters();
 			LangFile = (String)data.getUser().getTemp("LangFile");
 			/** 
 			*  Get list of institute to be approved .
 			*/
-
 			String institutelist = data.getParameters().getString("deleteFileNames");
 			UserManagement usermanagement = new UserManagement();
 			String mode = data.getParameters().getString("mode");
+
+			/* getting path of the directory for  the xml file */
 			String filePath=TurbineServlet.getRealPath("/InstituteRegistration");
 			
 			/**
@@ -136,16 +133,27 @@ public class Institute_RootAdmin extends SecureAction_Admin
 				for(int j = 0; st.hasMoreTokens(); j++)
 				{
 					/**
-                                        *  Get details of an institute according to the Domain from 
+                                        *Reading all details of an institute according to the Domain from the xml file(InstituteRegistrationList.xml)
+					*and storing details in vector(institutedetail).
+					*@see XMLWriter_InstituteRegistration (method:ReadInstDomainDeatils) in utils.
                                         */
 					String instdomain= st.nextToken();
                                         if(mode.equals("pendinglist")){
-                                                institutedetail=XMLWriter_InstituteRegistration.ReadInstDomainDeatils(filePath+"/InstituteRegistrationList.xml",instdomain);
-                                                //ErrorDumpUtil.ErrorLog("institutedetail pendinglist mode======"+institutedetail);
+                                           institutedetail=XMLWriter_InstituteRegistration.ReadInstDomainDeatils(filePath+"/InstituteRegistrationList.xml",instdomain);
                                         }
                                         else{
+						/**
+						*Reading all details of rejected institute according to the Domain
+						*from the xml file(InstituteRejectList.xml) for approval
+						*and storing details in vector(institutedetail).
+						*@see XMLWriter_InstituteRegistration (method:ReadInstDomainDeatils) in utils. 
+						*/
                                                 institutedetail=XMLWriter_InstituteRegistration.ReadInstDomainDeatils(filePath+"/InstituteRejectList.xml",instdomain);
                                         }
+					/**
+					* getting all institute details from the vector(institutedetail)
+					* for insert these value in database.
+					*/
                                         for(int k=0;k<institutedetail.size();k++)
                                         {
                                                 InstituteFileEntry ifdetail=(InstituteFileEntry) institutedetail.elementAt(k);
@@ -169,7 +177,8 @@ public class Institute_RootAdmin extends SecureAction_Admin
                                                 String i_admindesignation =ifdetail.getInstituteDesignation();
                                                 String i_adminuname =ifdetail.getInstituteUserName();
                                                 String i_adminpassword=ifdetail.getInstitutePassword();
-						//Insert these values in InstituteAdminRegistration .
+						
+						/**Insert these values in 'InstituteAdminRegistration' table .*/
                                                 Criteria criteria = new Criteria();
                                                 criteria.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,i_name);
                                                 criteria.add(InstituteAdminRegistrationPeer.INSTIUTE_ADDRESS,i_address);
@@ -186,23 +195,28 @@ public class Institute_RootAdmin extends SecureAction_Admin
                                                 criteria.add(InstituteAdminRegistrationPeer.EXPIRY_DATE,exdate);
                                                 InstituteAdminRegistrationPeer.doInsert(criteria);
 
-                                                // getting instituteId from InstituteAdminRegistration table according to Domain
+                                                /** get instituteId from 'InstituteAdminRegistration' table according to Domain
+						* use the instituteId for insert the details of institute admin
+						* in 'InstituteAdminUser' table.
+						*/
                                                 criteria = new Criteria();
                                                 criteria.add(InstituteAdminRegistrationPeer.INSTITUTE_DOMAIN,instdomain);
                                                 List getinstitutedetail = InstituteAdminRegistrationPeer.doSelect(criteria);
                                                 int instid = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getInstituteId();
-                                                //Insert these values in InstituteAdminUser
+							
+                                                /**Insert details of institute admin in InstituteAdminUser table
+						* with ADMIN_PERMISSION_STATUS 1.
+						* insert ADMIN_PERMISSION_STATUS 1 because institute admin registered with institute registration.
+						* otherewise ADMIN_PERMISSION_STATUS 0,2.
+						*/
                                                 criteria=new Criteria();
                                                 criteria.add(InstituteAdminUserPeer.INSTITUTE_ID,instid);
                                                 criteria.add(InstituteAdminUserPeer.ADMIN_UNAME,i_adminemail);
                                                 criteria.add(InstituteAdminUserPeer.ADMIN_DESIGNATION,i_admindesignation);
                                                 criteria.add(InstituteAdminUserPeer.ADMIN_PERMISSION_STATUS,1);
                                                 InstituteAdminUserPeer.doInsert(criteria);
-						/**
-						*   Get ServerName and ServerPort for sending mail.Call usermanagement 
-						*   util method to create user profile and update Insitute status (1)for 
-						*   approved in Institute Admin Registration table.  
-						*/
+
+						/**Get ServerName and ServerPort for sending mail.*/
 						String serverName=data.getServerName();
 	                                	int srvrPort=data.getServerPort();
 						String serverPort=Integer.toString(srvrPort);
@@ -216,19 +230,29 @@ public class Institute_RootAdmin extends SecureAction_Admin
                 		               		return;
 		                        	}
 						String program = data.getParameters().getString("prg","");
+						/** create user profile
+						* insert the institute admin details in database. 
+						*@see usermanagement in utils
+                                                */
+
 						String usermgmt = usermanagement.CreateUserProfile(i_adminuname,i_adminpassword,i_adminfname,i_adminlname,i_name,i_adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno,program);
 						data.setMessage(usermgmt);
-						/**
-					 	*Set Quota in 'INSTITUTE_QUOTA' table
-					 	*/
+						
+						/**Read Quota value from the property file (Admin.properties).
+						 *@see AdminProperties in utils.
+						 */
 						String path= "";
                                         	path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                                         	String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
                                         	String instquota =AdminProperties.getValue(path,"brihaspati.user.iquota.value");
+
+						/**Set institute quota in 'INSTITUTE_QUOTA' table*/
+
                                         	criteria = new Criteria();
                                         	criteria.add(InstituteQuotaPeer.INSTITUTE_ID,instid);
                                         	criteria.add(InstituteQuotaPeer.INSTITUTE_AQUOTA,instquota);
                                         	InstituteQuotaPeer.doInsert(criteria);
+
 					 	/**
                                          	* Creating default Institute Admin Profile while accepting Institute admin
                                          	* The values are set as a default value because at initial stage no institute profile exist.
@@ -242,6 +266,12 @@ public class Institute_RootAdmin extends SecureAction_Admin
                                         	AdminProperties.setValue(path,"100","brihaspati.user.quota.value");
                                         	AdminProperties.setValue(path,"45","brihaspati.admin.FaqExpiry");
                                         	AdminProperties.setValue(path,"365","brihaspati.user.expdays.value");
+						
+						/** Removing the institute details from the xml file
+						* if from pending list (InstituteRegistrationList.xml)
+						* else rejection list (InstituteRejectList.xml)
+						* After accepting the institute. 
+						*/
 						String remfrom="";
                                         	if(mode.equals("pendinglist"))
                                         		remfrom=XMLWriter_InstituteRegistration.RemoveElement(filePath+"/InstituteRegistrationList.xml",instdomain);
@@ -262,15 +292,23 @@ public class Institute_RootAdmin extends SecureAction_Admin
         */
         public void RejectInstituteAdmin(RunData data, Context context)
         {
-               /** 
-               *  Get parameters passed from templates.
-               */
+                /** get expirydate for updating the expiry date of institute in the xml file
+		 *@see ExpiryUtil in utils
+		 */
 		String curdate=ExpiryUtil.getCurrentDate("-");
 		String expdate=ExpiryUtil.getExpired(curdate,8);
 		ParameterParser pp = data.getParameters();
+		/**get language parameter for message*/
+
 		LangFile = (String)data.getUser().getTemp("LangFile");
+
+		/** get the institutelist from the template*/
+
                 String institutelist = data.getParameters().getString("deleteFileNames");
 		String mode=(data.getParameters()).getString("mode","");
+
+		/** getting path of the institute directory for  the xml file */
+
 		String filePath=TurbineServlet.getRealPath("/InstituteRegistration");
 		try{
                         /**
@@ -281,6 +319,13 @@ public class Institute_RootAdmin extends SecureAction_Admin
                                 StringTokenizer st = new StringTokenizer(institutelist,"^");
                                 for(int j = 0; st.hasMoreTokens(); j++)
                                 {
+					/** get the path of both xml file(InstituteRegistrationList.xml,InstituteRejectList.xml)
+					 * if reject any institute then move
+					 * the institute details from InstituteRegistrationList.xml to InstituteRejectList.xml
+					 * @see XMLWriter_InstituteRegistration (mthod:MoveElement)in utils
+					 * and also update the expiry date in InstituteRejectList.xml file
+					 * @see XMLWriter_InstituteRegistration (mthod:UpdateRejectxml)in utils	
+					 */
                                         String instdomain = st.nextToken();
 					String filePathsrc=filePath+("/InstituteRegistrationList.xml");
                                         String filepathdest=filePath+("/InstituteRejectList.xml");
@@ -310,9 +355,11 @@ public class Institute_RootAdmin extends SecureAction_Admin
 			String mail_msg="";
                         LangFile = (String)data.getUser().getTemp("LangFile");
 			MultilingualUtil mu = new MultilingualUtil();
-			/**
-			*   Get parameter passed from templates.
-			*/
+
+			/** Get parameter passed from templates.
+			 * these parameters required to add the institute admin
+			 */
+
 			String adminfname = pp.getString("IADMINFNAME");
 			String adminlname = pp.getString("IADMINLNAME");
 			String admindesig = pp.getString("IADMINDESIGNATION");
@@ -344,9 +391,7 @@ public class Institute_RootAdmin extends SecureAction_Admin
 			Criteria crit = new Criteria();
 			try{	
 				
-				/**
-				*   Check for user to already exist in same institute as an admin.
-				*/
+				/** Check for user to already exist in same institute as an admin.*/
 		
 				crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instituteid);
 				crit.add(InstituteAdminUserPeer.ADMIN_UNAME,adminemail);
@@ -359,6 +404,10 @@ public class Institute_RootAdmin extends SecureAction_Admin
 					*/
 					if(str.checkString(adminusername)==-1 && str.checkString(adminfname)==-1 && str.checkString(adminlname)==-1)
                                 	{
+						/** select the InstituteStatus from the InstituteAdminRegistration table
+						 * if InstituteStatus 1 that means we can add institute admin in that institute 
+						 */
+					
 						crit=new Criteria();
 						crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteid);
 						List instdetail = InstituteAdminRegistrationPeer.doSelect(crit);
@@ -369,17 +418,24 @@ public class Institute_RootAdmin extends SecureAction_Admin
 						*/
 						if(inststat == 1)
 						{
+							/** insert the details of secondary institute admin
+							 * with ADMIN_PERMISSION_STATUS 0 in the table InstituteAdminUser 
+							 */
 							crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instituteid);
 							crit.add(InstituteAdminUserPeer.ADMIN_DESIGNATION,admindesig);
 							crit.add(InstituteAdminUserPeer.ADMIN_UNAME,adminemail);
 							crit.add(InstituteAdminUserPeer.ADMIN_PERMISSION_STATUS,0);
 							InstituteAdminUserPeer.doInsert(crit);
+							
+							/**Get ServerName and ServerPort for sending mail.*/  
 							String serverName=data.getServerName();
 	                        	                int srvrPort=data.getServerPort();
         	                        	        String serverPort=Integer.toString(srvrPort);
-							/**
-							*   Create User Profile to call UserManagement util Method							  *   CreateUserProfile. 
-							*/
+		
+							/** Create User Profile
+							 * insert the institute admin details in database. 
+                                                         * @see usermanagement in utils
+                                                         */
 							UserManagement usermanagement = new UserManagement();
 							usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,instName,adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno,program);
 							data.setMessage(usermgmt +" "+ mail_msg);
@@ -393,7 +449,7 @@ public class Institute_RootAdmin extends SecureAction_Admin
 				else
 				{
 					data.setMessage(mu.ConvertedString("brih_user", LangFile) +" "+mu.ConvertedString("Wikiaction6", LangFile) +" "+mu.ConvertedString("brih_asAn", LangFile)+" "+mu.ConvertedString("brih_institute", LangFile)+" "+mu.ConvertedString("brih_admin", LangFile));
-					//"User is already exist as an Institute Admin ");
+					//"User is already exist as an Institute Admin "
 				}
 				context.put("mode","viewadmin");
 			}
@@ -408,19 +464,22 @@ public class Institute_RootAdmin extends SecureAction_Admin
 	{
                 ParameterParser pp = data.getParameters();
                 LangFile = (String)data.getUser().getTemp("LangFile");
-                /**
-                * Get username and instituteid passed by templates to delete a institute admin 
-                */
+
+                /**Get username and instituteid from the templates to delete a institute admin*/
                 String username = pp.getString("username","");
                 String instituteid = pp.getString("Institute_Id");
                 context.put("Institute_Id",instituteid);
+		
+		/** get mode for set the template to same form*/
                 String mode = pp.getString("mode");
                 context.put("mode",mode);
+		
+		/** get the property file(brihaspati.properties) for the message*/
                 String file=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+
                 /** Delete InstituteAdmin from the selected institute
-                *By calling method DeleteInstAdmin
-                *@see DeleteInstituteUtil in Utils
-                */
+                 *@see DeleteInstituteUtil (method: DeleteInstAdmin) in Utils 
+                 */
                 String DelInstAdmin=DeleteInstituteUtil.DeleteInstAdmin(username,instituteid,LangFile,file);
                 data.setMessage(DelInstAdmin);
 	}
@@ -429,9 +488,8 @@ public class Institute_RootAdmin extends SecureAction_Admin
 	*/
 	public void doUpdateDetail(RunData data, Context context) throws Exception
 	{
-		/**
-		* Get the value of Institute,Institute admin for update to corresponding table
-		*/
+		/** Get the value of Institute,Institute admin for update to corresponding table*/
+
 		String LangFile=data.getUser().getTemp("LangFile").toString();
 		ParameterParser pp = data.getParameters();
 		String instadname=pp.getString("iadname");
@@ -459,11 +517,16 @@ public class Institute_RootAdmin extends SecureAction_Admin
                 String instid=pp.getString("Institute_Id");
                 context.put("Institute_Id",instid);
 
-		/**
-		* Update the field in 'INSTITUTE_ADMIN_REGISTRATION' table
-		*/	
+	
 		Criteria crit=new Criteria();
+		
+		/**check status for the institute updation
+		 * update the detail of institute
+		 */	
 		if(status.equals("instituteedit")){
+
+			/** Update the field in 'INSTITUTE_ADMIN_REGISTRATION' table*/
+
 			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instid);	
 			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,instname);	
 			crit.add(InstituteAdminRegistrationPeer.INSTIUTE_ADDRESS,instadd);	
@@ -475,19 +538,24 @@ public class Institute_RootAdmin extends SecureAction_Admin
 			crit.add(InstituteAdminRegistrationPeer.TYPE_OF_INSTITUTION,insttype);	
 			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_WEBSITE,instwebsite);	
 			InstituteAdminRegistrationPeer.doUpdate(crit);
+			
+			/** set the template for the same form*/
 			data.setScreenTemplate("call,Root_Admin,InstituteList.vm");
 		}
-		/**
-		* Update the field in 'INSTITUTE_ADMIN_USER' table
-		*/	
+
+		/**check status for the institute admin updation
+                 * update the detail of institute admin
+                 */     
+	
 		if(status.equals("instadminedit")){
+			
+			/** Update the field in 'INSTITUTE_ADMIN_USER' table*/	
 			crit=new Criteria();
 			crit.add(InstituteAdminUserPeer.ID,id);
 			crit.add(InstituteAdminUserPeer.ADMIN_DESIGNATION,admindesignation);
 			InstituteAdminUserPeer.doUpdate(crit);
-			/**
-			* Update the field in 'TURBINE_USER' table
-			*/
+
+			/** Update the field in 'TURBINE_USER' table*/
 			crit=new Criteria();
 			crit.add(TurbineUserPeer.USER_ID,uid);	
 			crit.add(TurbineUserPeer.FIRST_NAME,adminfname);	
@@ -499,29 +567,40 @@ public class Institute_RootAdmin extends SecureAction_Admin
 		String msg=MultilingualUtil.ConvertedString("instAreg_msg4",LangFile);
 		data.setMessage(msg);
 	}
+	
+	/**This method called when Sysadmin delete the Institute*/
+
 	public void doDeleteInstitute(RunData data, Context context) throws Exception{
                 try{
                         LangFile=data.getUser().getTemp("LangFile").toString();
+			
+			/**Get mode and instituteid from the templates to delete a institute */
                         String instid=data.getParameters().getString("instituteid");
 			String mode=data.getParameters().getString("mode");
                 	context.put("mode",mode);
 
-                        /** Institute backup. 
-                        *By calling method InstituteBackup.
-                        *@see DeleteInstituteUtil in Utils
-                        */
+                        /** Take Institute backup before deleting the institute. 
+                         *@see DeleteInstituteUtil(method: InstituteBackup) in Utils
+                         */
                         String backup=DeleteInstituteUtil.InstituteBackup(instid,LangFile);
+
+			/** get the property file(brihaspati.properties) for the message*/
                         String file=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+
+			/** get the Groupname of the Institute admin
+			 *@see GroupUtil(method: getGroupName) in Utils
+			 * by passing the GroupId 3
+			 */
                         String gname=GroupUtil.getGroupName(3);
-                        /** DeleteCourse. 
-                        *By calling method DeleteCourse.
-                        *@see DeleteInstituteUtil in Utils
-                        */
+			
+                        /** DeleteCourse of the deleted institute. 
+                         *@see DeleteInstituteUtil (method:DeleteCourse) in Utils
+                         */
                         String delcourse=DeleteInstituteUtil.DeleteCourse(instid,LangFile,file);
-                        /** Delete Institute. 
-                        *By calling method DeleteInstitute.
-                        *@see DeleteInstituteUtil in Utils
-                        */
+		
+                        /** finally Delete Institute. 
+                         *@see DeleteInstituteUtil (method:DeleteInstitute)in Utils
+                         */
                         String delinst=DeleteInstituteUtil.DeleteInstitute(instid,LangFile,file,gname);
 			data.setMessage(MultilingualUtil.ConvertedString("brih_Institue",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeendelete",LangFile));
                 }//try

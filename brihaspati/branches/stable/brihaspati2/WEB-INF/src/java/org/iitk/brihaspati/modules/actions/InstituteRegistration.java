@@ -66,11 +66,20 @@ import org.iitk.brihaspati.modules.utils.XMLWriter_InstituteRegistration;
  * @author: <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>
  * @modified date: 22-11-2010
  */
-
+/**
+* class for registration of a new institute as well institute admin information
+* in the brihaspati system
+* new institute will be registered by checking domain name of institute in the 
+* system, if domain name exist in the system registration unsuccessfull else 
+* registration process successfull in the system and email will go to system admin 
+* for approval or rejection.
+*/
 
 public class InstituteRegistration extends VelocitySecureAction
 {
 	private String institutename = "", instituteaddress = "", institutecity = "" ,institutepincode = "", institutestate = "", institutelandline = "", institutedomain = "", institutetype = "", instituteaffiliation = "", institutewebsite = "", instituteadminfname = "", instituteadminlname = "", instituteadminemail = "", instituteadmindesignation = "", instituteadminusername = "", instituteadminpassword = "", instituteregisterdate = "" ;
+
+	/** boolean return true because anybody can make request for registration*/
 
 	protected boolean isAuthorized( RunData rundata ) throws Exception
         {
@@ -89,6 +98,10 @@ public class InstituteRegistration extends VelocitySecureAction
                 }
         }
 
+	/**method for registeration of a new Institute as well as institute admin.
+	 *@param rundata (RunData)	   		
+	 *@param context (Context)	   		
+	 */
 	
 	public void InstituteRegister(RunData rundata, Context context) 
 	{
@@ -99,16 +112,24 @@ public class InstituteRegistration extends VelocitySecureAction
 			String lang="";
 			StringUtil str=new StringUtil();
 			Properties pr = new Properties();
+
+			/**get all the values of form filled by user
+			 *for registration of a new institute in the system.	
+			 */
 			ParameterParser parameterparser = rundata.getParameters();
 			institutename = parameterparser.getString("INAME");
 			instituteaddress = parameterparser.getString("IADDRESS");
 			institutecity = parameterparser.getString("ICITY");
+			//pincode must be 6 digit
 			institutepincode = parameterparser.getString("IPINCODE");
 		
 			institutestate = parameterparser.getString("ISTATE");
 			String ccode = parameterparser.getString("ccode");
 			String rcode = parameterparser.getString("rcode");
 			String phnum = parameterparser.getString("phnumber");
+
+			/**check for Indian institute */
+
 			if(ccode.equals("91")) 
 			institutelandline=rcode+phnum;
 			else
@@ -126,11 +147,13 @@ public class InstituteRegistration extends VelocitySecureAction
 			String instpassword = parameterparser.getString("IADMINPASSWORD");
 	                lang=parameterparser.getString("lang","english");
 	                String Lang=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
+
 			/** getting current date using ExpiryUtil
-                        * @see ExpiryUtil in Utils
-                        */
+                         * @see ExpiryUtil in Utils
+                         */
                         String curdate=ExpiryUtil.getCurrentDate("-");
-                        /* getting path for creating InstituteRegistration directory*/
+
+                        /** getting path for creating InstituteRegistration directory*/
 
                         String filepath=TurbineServlet.getRealPath("/InstituteRegistration");
                         File f=new File(filepath);
@@ -141,14 +164,17 @@ public class InstituteRegistration extends VelocitySecureAction
 			{
 				filepath=filepath+"/InstituteRegistrationList.xml";
                                 /** check for existence of Institute
-                                * @see XMLWriter_InstituteRegistration (method-DomainExist)in Utils
-                                */
+                                 * @see XMLWriter_InstituteRegistration (method-DomainExist)in Utils
+                                 */
                                 boolean flag=XMLWriter_InstituteRegistration.DomainExist(filepath,institutedomain);
                                 //ErrorDumpUtil.ErrorLog("flag====InstituteRegistrationaction="+flag+"\nfilepath====="+filepath+"\ninstitutedomain==="+institutedomain);
+				/**if institute is new write the information in xml file for approval or rejection.*/
                                 if(flag==false)
                                 {
                                         String writeinxml=XMLWriter_InstituteRegistration.InstituteRegistrationListXml(filepath,institutename,instituteaddress,institutecity,institutepincode,institutestate,institutelandline,institutedomain,institutetype,instituteaffiliation,institutewebsite,curdate,"2020-12-01",instituteadminfname,instituteadminlname,instituteadminemail,instituteadmindesignation,adminusername,instpassword);
-                                        //Get EMAIL of Sysadmin for sending email on registration of an institute.
+                                        /**Get email of Sysadmin for sending email
+					 *regarding to the registration of a new Institute.
+					 */
                                         String server_name=TurbineServlet.getServerName();
                                         String srvrPort=TurbineServlet.getServerPort();
                                         String subject="";
@@ -156,7 +182,6 @@ public class InstituteRegistration extends VelocitySecureAction
                                         criteria.add(TurbineUserPeer.USER_ID,1);
                                         List adminemail=TurbineUserPeer.doSelect(criteria);
                                         String EMAIL=((TurbineUser)adminemail.get(0)).getEmail();
-                                        //Mail sending to the Sysadmin
                                         String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                                         pr=MailNotification.uploadingPropertiesFile(fileName);
                                         if(srvrPort.equals("8080"))
@@ -164,10 +189,10 @@ public class InstituteRegistration extends VelocitySecureAction
                                         else
                                                 subject="newInstituteRegisterhttps";
                                         String subj = MailNotification.subjectFormate(subject, "", pr);
-
+					
                                         String messageFormate = MailNotification.getMessage(subject,institutename, "", "", "", server_name, srvrPort, pr);
                                         messageFormate=MailNotification.getMessage_new(messageFormate, "" ,"" ,institutename,instituteadminemail);
-
+					// call method for sending mail
                                         String Mail_msg=MailNotification.sendMail(messageFormate, EMAIL, subj, "", Lang);
 
                                         rundata.setMessage(mu.ConvertedString("brih_Institue", Lang)+" "+mu.ConvertedString("brih_registration", Lang)+" "+mu.ConvertedString("brih_successful", Lang)+" "+mu.ConvertedString("brih_waitForApprove", Lang));
