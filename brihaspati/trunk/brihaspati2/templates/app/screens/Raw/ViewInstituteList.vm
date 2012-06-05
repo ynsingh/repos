@@ -19,7 +19,8 @@ $!data.getMessage()
 	$brih_reg2 $RemoteInstitute
 	</font>
 	</td>
-	<td>$brih_total $RemoteInstitute [$institutenum] </td><td><b><font color="red">* </font>indicates institute admin does not exist</b></td>
+	<td>$brih_total $RemoteInstitute [$institutenum] </td><td><b><font color="red">* </font>$brih_adnotexist</b></td>
+	<td><b>$brih_admin $brih_email:$!adminemail</b></td>
 </tr>
 </table>
 <form name="frm" method="post" action="$link.setPage("ViewInstituteList.vm")">

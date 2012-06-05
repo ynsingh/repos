@@ -52,23 +52,57 @@ import org.iitk.brihaspati.modules.utils.InstituteFileEntry;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 
 /**
- * This class file Create the Xml file and read the details of the file. 
  * @author <a href="jaivirpal@gmail.com">Jaivir Singh</a>
  * @author <a href="palseema30@gmail.com">Manorama Pal</a>
  */
 
+/**class for hadling all the stuff of institute registration in xml file	
+ * class file Create the Xml file and read the details of the file. 
+ */
 public class XMLWriter_InstituteRegistration {
 	private Document doc1 = null;
+
+	/**method for define the structure of xml file
+	 *@param filePath (String)
+	 *@param name (String)
+	 *@param address (String)
+	 *@param city (String)
+	 *@param pincode (String)
+	 *@param state (String)
+	 *@param landlineno (String)
+	 *@param domain (String)
+	 *@param type (String)
+	 *@param affiliation (String)
+	 *@param website (String)
+	 *@param regDate (String)
+	 *@param expDate (String)
+	 *@param fname (String)
+	 *@param lname (String)
+	 *@param designation (String)
+	 *@param username (String)
+	 *@param  password (String)
+	 *return String
+	 */
 	public static String  InstituteRegistrationListXml(String filePath,String name,String address,String city,String pincode,String state,String landlineno,String domain,String type,String affiliation,String website,String regDate,String expDate,String fname,String lname,String email,String designation,String username,String password ){
 		String message="UnSuccessfull";
                 try{
+			//Create instance of DocumentBuilderFactory
 	               	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			//Get the DocumentBuilder	
         	        DocumentBuilder builder = factory.newDocumentBuilder();
+			//Create blank DOM Document
                 	Document doc = builder.parse(getFile(filePath));
-
+			
+			//creating tag or field for institute information
+			// root element
                       	Element root = doc.getDocumentElement();
+			//create the root element
                         Element institute = doc.createElement("Institute");
-
+			
+			/**create child element
+			 *and The text node is the content of that node
+			 *Add a text node to the element	
+			 */
        	                Element instname = doc.createElement("Name");
                	        Text nameText = doc.createTextNode(name);
                        	instname.appendChild(nameText);
@@ -140,7 +174,7 @@ public class XMLWriter_InstituteRegistration {
 			Element instpassword = doc.createElement("Password");
                         Text passwordText = doc.createTextNode(password);
                         instpassword.appendChild(passwordText);
-
+			//inserting values in the tag or field.
        	                institute.appendChild(instname); 
        	                institute.appendChild(instaddress); 
        	                institute.appendChild(instcity); 
@@ -159,56 +193,82 @@ public class XMLWriter_InstituteRegistration {
        	                institute.appendChild(instdesignation); 
        	                institute.appendChild(instusername); 
        	                institute.appendChild(instpassword); 
+			//add in the root element
                	        root.appendChild(institute);
+			
                 	message=saveXML(doc,filePath);
                 }catch(Exception ex){
                         System.out.println("Error on creating xml file : "+ex.getMessage());
                 } 
 		return message;
         }
-	
+	/**
+	 *This method uses Xerces specific classes
+	 *prints the XML document to file.
+	 *@param doc (Document)
+	 *@param filePath (String)
+	 *return String
+         */ 
 	private static  String saveXML(Document doc,String filePath) {
                 try{
-
+			//print
                         OutputFormat format = new OutputFormat(doc);
                         format.setIndenting(true);
+			//to generate a file output use fileoutputstream
                         XMLSerializer output = new XMLSerializer(new FileOutputStream(filePath), format);
                         output.serialize(doc);
                         return "Successfull";
                 }catch(Exception e){System.out.println(e.getMessage());}
                 return "UnSuccessfull";
         }
-	
+	/**method for creating blank xml file
+	 *with root element
+	 *@param filePath (String)
+	 */
 	private static File getFile(String filePath) {
                 File file=new File(filePath);
                 if(!file.exists()){
                         try {
+				//Create instance of DocumentBuilderFactor
                                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				//Get the DocumentBuilder
                                 DocumentBuilder builder = factory.newDocumentBuilder();
+				//Create blank DOM Document
                                 Document doc = builder.newDocument();
+				//create the root element	
                                 Element rootEle = doc.createElement("InstituteRegistrationList");
+				//all it to the xml tre
                                 doc.appendChild(rootEle);
                                 saveXML(doc,filePath);
                         }catch (Exception ex) { System.out.println("Error in ex "+ex.getMessage()); }
                 } return file;
         }
+	/**method to check domain name existence
+	*@param filePath (String)
+	*@param Domain (String)
+	*return boolean
+	*/
 	public static boolean DomainExist(String filePath,String Domain ){
                 boolean DomainExist=false;
                 Element element=null;
                 Node node=null;
                 try{
                         NodeList list = getNodeList(filePath);
+			//check if file has entry
                         if(list!=null){
                                 for( int i=0; i<list.getLength(); i++ ){
                                         node = list.item(i );
                                         if( node.getNodeType() == node.ELEMENT_NODE ){
                                                 element = ( Element )node;
+						//get domain name from the file 
                                                 String domainvalue=getTagValue("Domain",element);
+						//check domain 
                                                 if(domainvalue.equals(Domain))
                                                         DomainExist=true;
                                         }
                                 }
                         }
+			//check domain name in table also
 			Criteria criteria = new Criteria();
                         criteria.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_DOMAIN);
                         List institutedetail = InstituteAdminRegistrationPeer.doSelect(criteria);
@@ -216,8 +276,8 @@ public class XMLWriter_InstituteRegistration {
                         	for(int k=0;k<institutedetail.size();k++){
                                 	InstituteAdminRegistration instituteregister=(InstituteAdminRegistration)(institutedetail.get(k));
                                 	String domainname=instituteregister.getInstituteDomain().toString();
-                               		// check institute with domain name exist
-                               		if(domainname.equals(Domain))
+                               		// check domain name 
+                               		if(domainname.equals(Domain))	
 					DomainExist=true;
                                 }
                         }
@@ -226,6 +286,10 @@ public class XMLWriter_InstituteRegistration {
                 }
                 return DomainExist;
         }
+	/**method for Create blank DOM Document
+	 *@param filepath (String)
+	 *return document
+	 */	
 	private static Document getCreateDocument(String filePath ){
                 Document doc=null;
                 try{
@@ -238,6 +302,10 @@ public class XMLWriter_InstituteRegistration {
                 }
                 return doc;
         }
+	/** method for get all  elements with the name "Institute"
+	 *@param filepath (String)
+	 *return NodeList
+	 */
 	private static NodeList getNodeList(String filePath ){
                 NodeList list=null;
                 try{
@@ -249,26 +317,45 @@ public class XMLWriter_InstituteRegistration {
                 }
                 return list;
         }
+	/** method for get node value by passing element(tag)
+	 *@param tag (String)
+	 *@param element (Element)
+	 *return String
+	 */
 	private static String getTagValue(String tag, Element element) {
                 NodeList nodes = element.getElementsByTagName(tag).item(0).getChildNodes();
                 Node node = (Node) nodes.item(0);
                 return node.getNodeValue().trim();
         }
+
+	/**method for reading details of a institute from xml file
+	 *@param filePath (String)
+	 *return Vector
+	 */
 	public static Vector ReadInstituteDeatils(String filePath) {
                 Vector v=new Vector();
                 Element eElement=null;
                 try {
                         File f=new File(filePath);
                         if(f.exists()) {
+				//Create instance of DocumentBuilderFactory
 				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				//Get the DocumentBuilder
                                 DocumentBuilder builder = factory.newDocumentBuilder();
+				//Create blank DOM Document
                                 Document doc = builder.parse(getFile(filePath));
+				//Normalize All of the Text in a Document
                                 doc.getDocumentElement().normalize();
+				// Find all elements with the name "Institute"
                                 NodeList nodeList = doc.getElementsByTagName("Institute");
                                 for( int i=0; i<nodeList.getLength(); i++ ) {
                                         Node nNode = nodeList.item(i);
                                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                                                eElement = (Element) nNode;
+						/** get the node value by passing element
+						 *set the value in InstituteFileEntry object
+						 *@see InstituteFileEntry in utils
+						 */
                                                 InstituteFileEntry InstfileEntry=new InstituteFileEntry();
                                                 String name=getTagValue("Name",eElement);
                                                 String addr=getTagValue("Address",eElement);
@@ -306,6 +393,7 @@ public class XMLWriter_InstituteRegistration {
                                                 InstfileEntry.setInstituteDesignation(degs);
                                                 InstfileEntry.setInstituteUserName(Uname);
                                                 InstfileEntry.setInstitutePassword(passwd);
+						/*store all values in the vector*/
                                                 v.add(InstfileEntry);
                                         }
                                 }
@@ -314,17 +402,31 @@ public class XMLWriter_InstituteRegistration {
                 catch(Exception e){ErrorDumpUtil.ErrorLog("Error in util XMLWriter_InstituteRegistration method name:(ReadInstDomainDeatils)"+e);}
                 return v;
         }
+	/**Method for read all values of Institute and Institute Admin based on InstituteDomain
+	 *@param filePath (String)
+	 *@param instdomain (String)
+         *return Vector
+         */
 	public static Vector ReadInstDomainDeatils(String filePath,String instdomain) {
                 Vector v=new Vector();
                 Element eElement=null;
                 try {
                         File f=new File(filePath);
                         if(f.exists()) {
+				/**Find all elements with the name "Institute"
+				*@see getNodeList method
+				*/
 				NodeList nodeList = getNodeList(filePath);
                                 for( int i=0; i<nodeList.getLength(); i++ ) {
                                         Node nNode = nodeList.item(i);
                                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                                                eElement = (Element) nNode;
+						/** get domain value by passing Domain tag
+						 *if value match with domain
+						 * then get all tag values and set in InstituteFileEntry object
+						 **@see InstituteFileEntry in utils
+						 * store the values in vector
+						 */
                                                 String domain=getTagValue("Domain",eElement);
 						if(instdomain.equals(domain))
 						{
@@ -374,21 +476,34 @@ public class XMLWriter_InstituteRegistration {
                 return v;
 	}
 
-	//Delete Institute from Xml
-
+	/**Method for Delete Institute from Xml
+	 *@param filePath (String)
+	 *@param domain (String)
+	 *return string 
+	 */
 	public static String RemoveElement(String filePath,String domain)
         {
                 String message="UnSuccessfull";
                 Element element=null;
                 Node node=null;
                 try{
+			/**Create blank DOM Document
+			 *@see getCreateDocument
+			 */
                         Document doc =getCreateDocument(filePath);
+
+			/**Find all elements with the name "Institute"*/
+
                         NodeList list = doc.getElementsByTagName("Institute");
                         if(list!=null){
                                 for( int i=0; i<list.getLength(); i++ ){
                                         node = list.item(i );
                                         if( node.getNodeType() == node.ELEMENT_NODE ){
                                                 element = ( Element )node;
+						/**get tag value by passing tag(domain)
+						 *@see getTagValue method
+						 *if match domain then delete the entry from xml file
+						 */
                                                 String value =getTagValue("Domain",element);
                                                 if(value.equals(domain)){
                                                         doc.getDocumentElement().removeChild(element);
@@ -401,6 +516,13 @@ public class XMLWriter_InstituteRegistration {
                 catch(Exception e){ErrorDumpUtil.ErrorLog("Error in util XMLWriter_InstituteRegistration method name:(RemoveElement)"+e);}
                 return message;
         }
+
+	/**Method for move element from one xml file to another xml file
+	 *@param filePathsrc (String)
+	 *@param domain (String)
+	 *@param filepathdest (String)
+	 *return String
+	 */	
 	public static String MoveElement(String filePathsrc,String domain,String filepathdest)
         {
                 String message="Unsuccessfull";
@@ -408,16 +530,27 @@ public class XMLWriter_InstituteRegistration {
                 Node node=null;
                 String id="";
                 try{
+			/**Create blank DOM Document
+                         *@see getCreateDocument
+                         */
                         Document doc =getCreateDocument(filePathsrc);
                         Document docdest =getCreateDocument(filepathdest);
+			/**Find all elements with the name "Institute"*/
                         NodeList list = doc.getElementsByTagName("Institute");
                         if(list!=null){
                                 for( int i=0; i<list.getLength(); i++ ){
                                         node = list.item(i );
                                         if( node.getNodeType() == node.ELEMENT_NODE ){
                                                 element = ( Element )node;
+
+						/**get tag value by passing tag(domain)
+                                                 *@see getTagValue method
+                                                 */
                                                 String value=getTagValue("Domain",element);
                                                 if(value.equals(domain)){
+						/**if match domain then delete the entry from  source xml file
+						 *add in destination xml file
+						 */	
                                                         doc.getDocumentElement().removeChild(element);
                                                                 saveXML(doc,filePathsrc);
                                                         Node dup = docdest.importNode(element, true);
@@ -432,20 +565,36 @@ public class XMLWriter_InstituteRegistration {
                 catch(Exception e){ErrorDumpUtil.ErrorLog("Error in util XMLWriter_InstituteRegistration method name:(MoveElement)"+e);}
                 return message;
         }
+	/**method for update the xml file
+	 *@param filePath (String)
+	 *@param domain (String)
+	 *@param expdate (String)
+	 */
 	 public static void UpdateRejectxml(String filePath,String domain,String expdate) {
 		Node node=null;
 		Element element=null;
                 try {
+			/**Create blank DOM Document
+                         *@see getCreateDocument
+                         */
 			Document doc =getCreateDocument(filePath);
+
+			/**Find all elements with the name "Institute"*/
                         NodeList list = doc.getElementsByTagName("Institute");
                         if(list!=null){
                                 for( int i=0; i<list.getLength(); i++ ){
                                         node = list.item(i );
                                         if( node.getNodeType() == node.ELEMENT_NODE ){
                                                 element = ( Element )node;
+						/**get tag value by passing tag(domain)
+                                                 *@see getTagValue method
+                                                 */
                                                 String value=getTagValue("Domain",element);
 						if(value.equals(domain))
                                                 {
+							/**Find element with the name "ExpDate"
+							 * set node value (update xml)
+							 */
                                                         NodeList exptag = doc.getElementsByTagName("ExpDate");
                                                         Node node1 = exptag.item(i);
                                                         node1.getFirstChild().setNodeValue(expdate);
@@ -458,18 +607,32 @@ public class XMLWriter_InstituteRegistration {
 		}//try
 		catch(Exception e){ErrorDumpUtil.ErrorLog("Error in util XMLWriter_InstituteRegistration method name:(UpdateRejectxml)"+e);}
 	}//method
+
+	/**method for Remove element from xml file
+         *@param filePath (String)
+         *@param domain (String)
+         *@param expdate (String)
+         */
 	public static void RemoveElementRejectxml(String filePath,String expdate)
         {
                 Element element=null;
                 Node node=null;
                 try{
+			/**Create blank DOM Document
+                         *@see getCreateDocument
+                         */
                         Document doc =getCreateDocument(filePath);
+			/**Find all elements with the name "Institute"*/
                         NodeList list = doc.getElementsByTagName("Institute");
                         if(list!=null){
                                 for( int i=0; i<list.getLength(); i++ ){
                                         node = list.item(i );
                                         if( node.getNodeType() == node.ELEMENT_NODE ){
                                                 element = ( Element )node;
+						 /**get tag value by passing tag(ExpDate)
+                                                   *@see getTagValue method
+						   *if match ExpDate then delete the entry from xml file
+                                                   */
                                                 String value =getTagValue("ExpDate",element);
                                                 if(value.equals(expdate)){
                                                         doc.getDocumentElement().removeChild(element);

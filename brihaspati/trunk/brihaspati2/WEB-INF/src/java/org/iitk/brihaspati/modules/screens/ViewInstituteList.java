@@ -88,6 +88,8 @@ public class ViewInstituteList extends VelocityScreen
 			//for page listing
 			String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                         String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
+                        String adminemail =AdminProperties.getValue(path,"brihaspati.mail.email");
+			context.put("adminemail",adminemail);
                         int list_conf=Integer.parseInt(conf);
                         context.put("userConf",new Integer(list_conf));
                         context.put("userConf_string",conf);

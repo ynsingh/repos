@@ -99,6 +99,7 @@ public class InstituteIdUtil
                                 if(by.equals("InstituteAddress")){
                                         crit.add("INSTITUTE_ADMIN_REGISTRATION","INSTIUTE_ADDRESS",(Object)("%"+vale+"%"),crit.LIKE);
                                 }
+                                crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
                         }
 			else if(vale.equals("")){
 			//}
