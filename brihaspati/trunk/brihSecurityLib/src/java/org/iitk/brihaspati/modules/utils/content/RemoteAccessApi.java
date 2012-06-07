@@ -51,7 +51,7 @@ import org.iitk.brihaspati.modules.utils.security.ReadNWriteInTxt;
 import org.iitk.brihaspati.modules.utils.security.RandPasswordUtil;
 
 /**
- * This class provide the listing of years
+ * This class provide the API for accessing remote data
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  */
 
@@ -202,7 +202,7 @@ public class RemoteAccessApi{
  	 * @param  srcid this is application resource institute identification code
  	 * @return      String list 
  	 */
-/*	public static String getInstituteList(String email, String srcid){
+	public static String getInstituteList(String email, String srcid){
 		String vale="false";
 		try{
                         String randompswd = RandPasswordUtil.randmPass();
@@ -217,14 +217,14 @@ public class RemoteAccessApi{
                         System.out.println("The problem in httpurl connection RemoteAccessApi util (getInstituteList) "+ex);
                 }
 	return vale;
-	}	*/
+	}	
 	/**
  	 * Method to be used for gettting personal information before use this method pls call userexist() method
  	 * @param  email  this is user email/ login name
  	 * @param  srcid this is application resource institute identification code
  	 * @return      String 
  	 */
-/*	public static String getPersonalInfo(String email, String srcid){
+	public static String getPersonalInfo(String email, String srcid){
 		String vale="false";
 		try{
                         String randompswd = RandPasswordUtil.randmPass();
@@ -239,14 +239,14 @@ public class RemoteAccessApi{
                         System.out.println("The problem in httpurl connection RemoteAccessApi util (getPersonalInfo) "+ex);
                 }
 	return vale;
-	}	*/
+	}	
 	/**
  	 * Method to be used for getting registration information before use this method pls call userexist() method
  	 * @param  email  this is user email/ login name
  	 * @param  srcid this is application resource institute identification code
  	 * @return      String 
  	 */
-/*	public static String getRegistartionInfo(String email, String srcid){
+	public static String getRegistartionInfo(String email, String srcid){
 		String vale="false";
 		try{
                         String randompswd = RandPasswordUtil.randmPass();
@@ -261,5 +261,27 @@ public class RemoteAccessApi{
                         System.out.println("The problem in httpurl connection RemoteAccessApi util (getRegistartionInfo) "+ex);
                 }
 	return vale;
-	}	*/
+	}	
+	/**
+ 	 * Method to be used for getting registration information before use this method pls call userexist() method
+ 	 * @param  email  this is user email/ login name
+ 	 * @param  srcid this is application resource institute identification code
+ 	 * @return      String 
+ 	 */
+	public static String getInternalMarks(String email, String InstituteId, String ProgramId, String srcid){
+		String vale="false";
+		try{
+                        String randompswd = RandPasswordUtil.randmPass();
+                        String kline=ReadNWriteInTxt.readLin(path,srcid);
+                        String skey=StringUtils.substringBetween(kline,";",";");
+                        String serverUrl=StringUtils.substringAfterLast(kline,";");
+                        String hashcode=EncrptDecrpt.keyedHash(srcid,randompswd,skey);
+                        String params="email="+email+"&iid="+InstituteId+"&prgid="+ProgramId+"&srcid="+srcid+"&rand="+randompswd+"&hash="+hashcode+"&aname=getIntMark";
+                        vale=connectAndGetData(serverUrl,params);
+                }
+                catch(Exception ex){
+                        System.out.println("The problem in httpurl connection RemoteAccessApi util (getRegistartionInfo) "+ex);
+                }
+	return vale;
+	}	
 }
