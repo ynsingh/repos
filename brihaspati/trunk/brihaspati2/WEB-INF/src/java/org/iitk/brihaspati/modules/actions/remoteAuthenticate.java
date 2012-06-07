@@ -85,6 +85,14 @@ public class remoteAuthenticate extends VelocityAction{
                         RAD.getCourseList(data,context);}
                 if(action.equals("getUsrEst")){
                         RAD.checkUsrExist(data,context);}
+                if(action.equals("getILst")){
+                        RAD.getInstituteList(data,context);}
+                if(action.equals("getPerInfo")){
+                        RAD.getPersonalInfo(data,context);}
+                if(action.equals("getRegInfo")){
+                        RAD.getRegistrationInfo(data,context);}
+                if(action.equals("getIntMark")){
+                        RAD.getInternalMarks(data,context);}
 		else{	
 		String email=data.getParameters().getString("email");
 		String randomNo=data.getParameters().getString("rand") ;
