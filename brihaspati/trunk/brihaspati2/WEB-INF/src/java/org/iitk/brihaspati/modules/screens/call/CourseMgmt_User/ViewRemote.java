@@ -84,8 +84,13 @@ public class ViewRemote extends SecureScreen_Instructor
 
 			if(entry.size()!=0)
 		        {
-				String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
-                        	String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
+				/** get instituteId from temp for the configuration parameter
+                                 *and get configuration value from institute admin property file
+                         	 *@see AdminProperties in utils         
+                         	 */
+                        	String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+                        	String Confpath=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
+                        	String conf =AdminProperties.getValue(Confpath,"brihaspati.admin.listconfiguration.value");
                         	int list_conf=Integer.parseInt(conf);
                         	context.put("userConf",new Integer(list_conf));
                         	context.put("userConf_string",conf);

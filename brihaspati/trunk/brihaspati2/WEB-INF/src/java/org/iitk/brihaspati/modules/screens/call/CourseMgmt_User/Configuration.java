@@ -38,29 +38,30 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
 
 import java.util.List;
 import org.apache.torque.util.Criteria;
-import  org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.parser.ParameterParser;  
-import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.security.TurbineSecurity;
-import java.util.List;
-import org.apache.velocity.context.Context;
-import org.iitk.brihaspati.modules.utils.RemoteCourseUtilClient;
-import org.apache.xmlrpc.XmlRpc;
-import org.iitk.brihaspati.modules.screens.call.News.News_Add;
 import org.apache.torque.util.Criteria;
+
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.util.parser.ParameterParser;  
+import org.apache.turbine.util.security.AccessControlList;
+import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.xmlrpc.XmlRpc;
+import org.apache.velocity.context.Context;
+
+import org.iitk.brihaspati.om.Courses;
+import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.RemoteCourses; 
 import org.iitk.brihaspati.om.RemoteCoursesPeer;
-import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-import org.apache.turbine.util.security.AccessControlList;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.om.CoursesPeer;
-import org.iitk.brihaspati.om.Courses;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.RemoteCourseUtilClient;
+import org.iitk.brihaspati.modules.screens.call.News.News_Add;
+import  org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
 
 /**
  *
@@ -92,10 +93,14 @@ public class Configuration extends SecureScreen_Instructor
 				MailNotificationThread.getController().CourseTimeSystem(uid);	
                          }
 
-			/**
-			* Put the list start index in context
-			*/
-			String conf=(String)user.getTemp("confParam","10");
+			/** get instituteId from temp for the configuration parameter
+                         *and get configuration value from institute admin property file
+                         *@see AdminProperties in utils         
+                         */
+                        String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+                        String Confpath=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
+                        String conf =AdminProperties.getValue(Confpath,"brihaspati.admin.listconfiguration.value");
+			//String conf=(String)user.getTemp("confParam","10");
                         int list_conf=Integer.parseInt(conf);
 
 			//online registration configuration by sharad 01-01-2010
@@ -105,7 +110,6 @@ public class Configuration extends SecureScreen_Instructor
                 	List onlineconf = CoursesPeer.doSelect(crit);
 			int online_conf=((Courses)onlineconf.get(0)).getOnlineconf();
 			context.put("online_conf",online_conf);
-			ErrorDumpUtil.ErrorLog("onlineconf in screen=====>"+online_conf);
 
 			//code end
                         int startIndex=pp.getInt("updatestartIndex",0);

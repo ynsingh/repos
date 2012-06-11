@@ -21,7 +21,7 @@ package org.iitk.brihaspati.modules.utils;
  *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  *  DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
- *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
+ "*  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
  *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
  *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
  *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
@@ -155,7 +155,7 @@ public class RemoteCourseUtilClient
             {
                         Vector params = new Vector();
                 try
-                {        
+                {     
                         params.add(keyinfo);
 			params.add(clientmd5key);
 			params.add(clientURL);
@@ -326,8 +326,7 @@ public class RemoteCourseUtilClient
                        params.add(sourceFileName);
                        params.add(destinationLocationProperty);
                        params.add(destinationFileName);
-                       String response = (String) TurbineXmlRpc.executeRpc(
-                       new URL(serverURL), "remote1.get", params);
+                       String response = (String) TurbineXmlRpc.executeRpc(new URL(serverURL), "remote1.get", params);
 		       params= null;
 		       
  			/**
@@ -394,8 +393,7 @@ public class RemoteCourseUtilClient
                 {
                         String serverURL =  "http://" + TurbineServlet.getServerName() + ":12345/" ;
                         Vector params = new Vector();
-                        String response = (String) TurbineXmlRpc.executeRpc(new URL(serverURL)
-			, "remote1.ActivateLocalXmlRpcPort", params);
+                       	String response = (String) TurbineXmlRpc.executeRpc(new URL(serverURL),"remote1.ActivateLocalXmlRpcPort", params);
                         return  response;
                 }
                 catch (Exception e)
@@ -423,10 +421,11 @@ public class RemoteCourseUtilClient
                         java.net.URLConnection con = url.openConnection();
                         java.io.InputStream fin = con.getInputStream();
                         int nread = 0;
-                        byte buffer[]=new byte[1000];
+                        byte buffer[]=new byte[10000];
                         while((nread=fin.read(buffer))!=-1 )
                         {
-                                filecontents = filecontents+new String(buffer,0,nread);
+				String str=new String(buffer,0,nread);
+                                filecontents = Integer.toString(nread);
                         }
 			fin.close();
 			fin=null;
@@ -450,16 +449,14 @@ public class RemoteCourseUtilClient
           */
            public static int checkRegisteration( String serverURL, Vector params)
             {
-                int response = -1;
+               int response = -1;
               try
                 {
-                        response = (Integer) TurbineXmlRpc.executeRpc(new URL(serverURL)
-                        , "remote1.checkRegisteration", params);
+                        response = (Integer) TurbineXmlRpc.executeRpc(new URL(serverURL),"remote1.checkRegisteration", params);
                 }
                 catch (Exception e)
                 {
                         log.error("[RemoteCourseUtilClient][checkRegisteration]Error is:", e);
-
                 }
 		return response;
 
@@ -476,8 +473,7 @@ public class RemoteCourseUtilClient
                 String response = "ERRORC";
               try
                 {
-                        response = (String) TurbineXmlRpc.executeRpc(new URL(serverURL)
-                        , "remote1.getRemoteFileList", params);
+                        response = (String) TurbineXmlRpc.executeRpc(new URL(serverURL),"remote1.getRemoteFileList", params);
                 }
                 catch (Exception e)
                 {
@@ -512,7 +508,6 @@ public class RemoteCourseUtilClient
 			/**
 			* Current date object
 			*/
-
  	      		Date currentdateobj =  new Date();
 
 			/**

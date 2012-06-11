@@ -54,8 +54,10 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.RemoteCourseUtilClient;
+import org.iitk.brihaspati.modules.utils.RemoteCourseUtilServer;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
 
 /**
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
@@ -74,7 +76,6 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 	*/
   	public void doGet(RunData data,Context context)
         {
-	
 		/**
 		* We initially check if we have got all multilingual messages or not (that are used in this method)
 		* this is done to avoid discomfort later
@@ -111,7 +112,14 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 			String myCourse = (String)data.getUser().getTemp("course_id");
 
 			int startIndex=pp.getInt("updatestartIndex",0);
-			String conf=(String)user.getTemp("confParam","10");
+			/** get instituteId from temp for the configuration parameter
+			 *and get configuration value from institute admin property file
+			 *@see AdminProperties in utils 	
+			 */
+			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+			String Confpath=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
+                        String conf =AdminProperties.getValue(Confpath,"brihaspati.admin.listconfiguration.value");
+			//String conf=(String)user.getTemp("confParam","10");
                         int list_conf=Integer.parseInt(conf);
 
 
@@ -146,7 +154,6 @@ public class RemoteCoursesAction extends SecureAction_Instructor
                         String sec_key=pp.getString("sec_key","");
 
                         String status=pp.getString("order");
-			
 
                         if(status.equals("Sell"))
 			{
@@ -231,7 +238,6 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 			params.add(new Integer(status1));
 			params.add(sec_key);
 			int expirytime = RemoteCourseUtilClient.checkRegisteration(serverURL,params);
-
 			/**
 			* Check if expiry time is less than 3
 			* means registration failed else successfull  at 3
@@ -307,7 +313,6 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 	*/
 	public void doInsert(RunData data,Context context)
 	{
-
 		String file, news_msg2 ,u_msg3,RemoteAction_msg7,RemoteAction_msg9 ,news_Checkmsg1,news_Checkmsg2,news_Checkmsg3 ,RemoteAction_msg10,RemoteAction_msg11,RemoteAction_msg12,db_msg4;
                 file = news_msg2 =  u_msg3 = RemoteAction_msg7 = RemoteAction_msg9 = news_Checkmsg1 = news_Checkmsg1 = news_Checkmsg2 = news_Checkmsg3 = RemoteAction_msg10 = RemoteAction_msg11= RemoteAction_msg12= db_msg4=null;
                 try{
@@ -337,13 +342,13 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 
 			String username=user.getName();
 	// comment lower 7 lines because here we use login name which is unique
-	                String firstname=user.getFirstName();
+	                /*String firstname=user.getFirstName();
         	        String lastname=user.getLastName();
 			String name = null;
 			if((firstname==null)|(lastname==null))
                         name = username;
                         else
-                        name = firstname + lastname ;
+                        name = firstname + lastname ;*/
 
 
                         String cId=(String)user.getTemp("course_id");
@@ -398,13 +403,15 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 				courselist = null;
 
 				status1=1;
-				course_s = name;
+				//course_s = name;
+				course_s = username;
 				course_p = RIName;
 			}
 			else if(status.equals("Purchase")) 
 			{
 				status1=0;
-				course_p = name;		
+				//course_p = name;		
+				course_p = username;		
 				course_s = RIName;		
 			}
 
@@ -527,7 +534,6 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 						crit.add(RemoteCoursesPeer.COURSE_PURCHASER,course_p);
 						crit.add(RemoteCoursesPeer.INSTITUTE_NAME,inst_name);
                 		                List l =  RemoteCoursesPeer.doSelect(crit);
-
 						/**
                                                 * If List is empty means case is insert not update
                                                 */
@@ -545,10 +551,10 @@ public class RemoteCoursesAction extends SecureAction_Instructor
                                                                 crit.add(RemoteCoursesPeer.SECRET_KEY,EncryptionUtil.createDigest("MD5",sec_key));
                                                         }
                                                 }
-                                                else
-                                                {
-                                                        crit.add(RemoteCoursesPeer.SECRET_KEY,sec_key);
-                                                }
+                                               	else
+                                               	{
+                                                       	crit.add(RemoteCoursesPeer.SECRET_KEY,sec_key);
+                                               	}
 						crit.add(RemoteCoursesPeer.EXPIRY_DATE,Expiry_date);
 			        		RemoteCoursesPeer.doUpdate(crit);
 						/**
@@ -612,7 +618,6 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 	public static void innerxml(String fullpath ,String subtopic,String fName,boolean fromGetAction) 
 	{//start method
 		try{//(1)
-			
 			/**
 			* fromGetAction indicates  if request is from action 
 			* or from local cache ViewFileContent.java
@@ -851,7 +856,14 @@ public class RemoteCoursesAction extends SecureAction_Instructor
                         User user=data.getUser();
 			ParameterParser pp=data.getParameters();
 			String myCourse = (String)data.getUser().getTemp("course_id");
-			String conf=(String)user.getTemp("confParam","10");
+			/** get instituteId from temp for the configuration parameter
+                         *and get configuration value from institute admin property file
+                         *@see AdminProperties in utils         
+                         */
+                        String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+                        String Confpath=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
+                        String conf =AdminProperties.getValue(Confpath,"brihaspati.admin.listconfiguration.value");
+			//String conf=(String)user.getTemp("confParam","10");
                         int list_conf=Integer.parseInt(conf);
 
                         int startIndex=pp.getInt("updatestartIndex",0);
@@ -862,7 +874,6 @@ public class RemoteCoursesAction extends SecureAction_Instructor
                         pp.add("status",status);
                         Criteria crit=new Criteria();
  			String mid_delete = pp.getString("deleteFileNames","");
-
 			/**
 			 * Code to get message from DB_subject
 			 */
@@ -940,7 +951,14 @@ public class RemoteCoursesAction extends SecureAction_Instructor
                         User user=data.getUser();
 			ParameterParser pp=data.getParameters();
 			String myCourse = (String)data.getUser().getTemp("course_id");
-			String conf=(String)user.getTemp("confParam","10");
+			/** get instituteId from temp for the configuration parameter
+                         *and get configuration value from institute admin property file
+                         *@see AdminProperties in utils         
+                         */
+                        String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+                        String Confpath=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
+                        String conf =AdminProperties.getValue(Confpath,"brihaspati.admin.listconfiguration.value");
+			//String conf=(String)user.getTemp("confParam","10");
                         int list_conf=Integer.parseInt(conf);
 
                         int startIndex=pp.getInt("updatestartIndex",0);
@@ -969,26 +987,25 @@ public class RemoteCoursesAction extends SecureAction_Instructor
                         String inst_name=pp.getString("inm","");
                         String sec_key=pp.getString("sec_key","");
                         String status=pp.getString("order");
+                        String expd=pp.getString("expD");
 			String username=user.getName();
 		//comment lower 7 lines this is not required because we use login name
-	                String firstname=user.getFirstName();
-        	        String lastname=user.getLastName();
-			String name = null;
-			if((firstname==null)||(lastname==null))
-                        name = username;
-                        else
-                        name = firstname + lastname ;
 			if(status.equals("Sell"))
 			{
 				status1=1;
-				course_s = name;
+				//course_s = name;
+				course_s = username;
 			}
 			else if(status.equals("Purchase")) 
 			{
 				status1=0;
-				course_p = name;		
+				//course_p = name;		
+				course_p = username;		
 			}
                         pp.add("status",status1);
+
+			//addby seema
+			context.put("status",status1);
 			/**
                         * Check if Remote Turbine is Stop
                         */
@@ -1067,8 +1084,7 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 	* @param checkRegisterparams Vector
  	* @return String
 	*/
-
-        public String  getRemoteFileList(String url,String myCourse ,String cId ,Vector checkRegisterparams )
+        public String  getRemoteFileList(String url,String myCourse,String cId,Vector checkRegisterparams )
         {
 		try{
 			/**
@@ -1076,6 +1092,7 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 			*/
 			String serverURL =  "http://" + url + ":12345/" ;
 			String gotlist = RemoteCourseUtilClient.getRemoteFileList(serverURL,checkRegisterparams);
+
 			if(gotlist.equals("ERRORS") || gotlist.equals("ERRORC"))
 			{
                                 return gotlist;
@@ -1243,13 +1260,9 @@ public class RemoteCoursesAction extends SecureAction_Instructor
                         doGet(data,context);
                 else
                 {
-
                         String str=m_u.ConvertedString("c_msg",LangFile);
                         data.setMessage(str);
                 }
         }
 	
    }//class
-
-
-			
