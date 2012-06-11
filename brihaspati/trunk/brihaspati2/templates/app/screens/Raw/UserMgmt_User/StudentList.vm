@@ -8,6 +8,7 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>
  * @modified date: 07-04-2010
  * @modified date: 20-10-2010,3-11-2010
  * @modified date: 22-11-2010 (Shaista), 30-05-2011,20-05-2012
@@ -188,7 +189,14 @@ $!data.getMessage()
 				<td></td>
 			#end
 			        	<td>
+
+ 				 ## if user is only student then enable change password link else disable link
+				
+					#if($urecord.getStudsrid()==1)
 					<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor).addPathInfo("mode", "All").setAction("UserAction_Instructor").addPathInfo("actionName","eventSubmit_doUpdatePass") style=text-decoration:none>$brih_changePassword</a> &nbsp;
+					#else
+						<font color="white">$brih_changePassword</font>&nbsp;&nbsp;
+					#end
 ##			                <a href=$link.setPage("call,UserMgmt_User,UpdatePass_Ins.vm").addPathInfo("status","update").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_changePassword</a> &nbsp;
 			                <a href=$link.setPage("call,UserMgmt_User,UserForm_Instructor.vm").addPathInfo("status","update").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_update</a> &nbsp;
 		        	        <a href=$link.setPage("call,UserMgmt_User,UserForm_Instructor.vm").addPathInfo("status","remove").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_remove</a> &nbsp;
