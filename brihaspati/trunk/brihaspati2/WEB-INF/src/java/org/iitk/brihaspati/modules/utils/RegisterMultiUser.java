@@ -249,10 +249,10 @@ public class RegisterMultiUser
                                                                 str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,instName,email,groupName,Role,serverName,serverPort,Langfile,rollno,program); //modified by Shikha Shukla
 							error=3;
 								if(Role.equals("student")){
-								errMsg="Student - "+str;
+								errMsg=MultilingualUtil.ConvertedString("varStudent",Langfile)+" - "+str;
 								}
 								else{
-                                                                errMsg="instructor - "+str;
+                                                                errMsg=MultilingualUtil.ConvertedString("instructor",Langfile)+" - "+str;
                                                                 }
 
 							}
