@@ -77,7 +77,7 @@ public class RemoteAuth{
                         urlConnection.setDoInput(true);
                         urlConnection.setDoOutput(true);
                         urlConnection.setRequestMethod("POST");
-			String params = "email="+email+"&srcid="+srcid+"&url="+returl+"&rand="+randompswd+"&hash="+hashcode;
+			String params = "email="+email+"&srcid="+srcid+"&url="+returl+"&rand="+randompswd+"&hash="+hashcode+"&aname=remAuth";
 				System.out.println("The parameter pass to the connection connection  "+params);
                         urlConnection.connect();
                         OutputStream os = urlConnection.getOutputStream();
