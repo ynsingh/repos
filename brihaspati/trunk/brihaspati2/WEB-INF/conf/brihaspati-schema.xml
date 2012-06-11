@@ -21,6 +21,7 @@
     <column name="URL" size="255" type="VARCHAR"/>
     <column name="AUTHOR" size="255" type="VARCHAR"/>
     <column name="DEPT" size="255" type="VARCHAR"/>
+    <column name="ADDRESS" size="255" type="VARCHAR"/>
 </table>
 
 <table name="INSTRUCTOR_PERMISSIONS">
@@ -141,16 +142,19 @@
 </table>
 <table name="TASK" idMethod="idbroker">
 	<column name="TASK_ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
-	<column name="USER_ID" type="INTEGER" required="true"/>
-	<column name="TITLE" type="VARCHAR" size="100"/>
-	<column name="STATUS" type="INTEGER" size="1"/>
-	<column name="START_DATE" required="true" type="DATE" primaryKey="true"/>
-	<column name="END_DATE" required="true" type="DATE"/>
-	<column name="EXPIRY" required="true" type="INTEGER"/>
-	<column name="EXPIRY_DATE" required="true" type="DATE"/>
-	<column name="DUE_DAYS" required="true" type="INTEGER" default="1"/>
+        <column name="PARENT_TASK_ID" required="true" type="INTEGER"/>
+	<column name="PSEQ_NO" required="true" type="INTEGER"/>
+        <column name="USER_ID" type="INTEGER" required="true"/>
+        <column name="TITLE" type="VARCHAR" size="100"/>
+        <column name="STATUS" type="INTEGER" size="1"/>
+        <column name="START_DATE" required="true" type="DATE" primaryKey="true"/>
+        <column name="END_DATE" required="true" type="DATE"/>
+        <column name="EXPIRY" required="true" type="INTEGER"/>
+        <column name="EXPIRY_DATE" required="true" type="DATE"/>
+        <column name="DUE_DAYS" required="true" type="INTEGER" default="1"/>
         <column name="DUE_DATE" required="true" type="DATE"/>
-	<column name="SEQ_NO" required="true" type="INTEGER"/>
+        <column name="SEQ_NO" required="true" type="INTEGER"/>
+        <column name="DEPTH" required="true" type="INTEGER"/>
 </table>
 <table name="USAGE_DETAILS" idMethod="idbroker">
 	<column name="ENTRY_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>

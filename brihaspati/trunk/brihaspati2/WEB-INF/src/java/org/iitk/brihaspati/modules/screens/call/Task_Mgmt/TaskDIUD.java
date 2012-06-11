@@ -39,6 +39,7 @@ package org.iitk.brihaspati.modules.screens.call.Task_Mgmt;
 import java.util.List;
 import java.util.Vector;
 import java.util.Calendar;
+import java.util.Collections;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
@@ -51,7 +52,9 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.TaskDetail;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.YearListUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
+import java.util.LinkedList;
 
 /**
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
@@ -70,48 +73,197 @@ public class TaskDIUD extends SecureScreen
                 context.put("ylist",YearListUtil.getYearList());
                 Criteria crit = new Criteria();
                 String mode=data.getParameters().getString("mode","");
+                String all=data.getParameters().getString("all","");
                 context.put("mode",mode);
-        try
-        {
-               /**
-                * Getting the current date
-                */
+        	try
+        	{
+               		/**
+                	 * Getting the current date
+                	 */
+	                String cdate=ExpiryUtil.getCurrentDate("");
+        	        int currdate=Integer.parseInt(cdate);
+               		// Integer cdate=new Integer(cdate1);
+                	context.put("cdate",Integer.valueOf(cdate));
 
-                String cdate=ExpiryUtil.getCurrentDate("");
-                int currdate=Integer.parseInt(cdate);
-               // Integer cdate=new Integer(cdate1);
-                context.put("cdate",Integer.valueOf(cdate));
-
-               /**
-                * retrive the task from database and display on the screen.
-                */
+			LinkedList li1=new LinkedList(); //save ms_id
+                        LinkedList Reli2=new LinkedList(); //save Re_id
+                        LinkedList temp=new LinkedList();
+                        LinkedList li=new LinkedList();
+                        LinkedList li3=new LinkedList(); //rearenge ms_id
+                        Vector spacevector=new Vector();
+			{
+				crit.add(TaskPeer.USER_ID,uid);
+	                        crit.addAscendingOrderByColumn(TaskPeer.SEQ_NO);
+        	                List v1 = TaskPeer.doSelect(crit);
+				for(int i=0;i<v1.size();i++) {
+                                	li1.add(((Task)v1.get(i)).getTaskId());
+                                	Reli2.add(((Task)v1.get(i)).getParentTaskId());
+				}
+				int space=0;
+                        	Object tem=new Object();
+                        	int id=0;	
+				while(Reli2.size()!=0) {
+                                	int i=0;
+                                	tem=li1.get(i);
+                                	li.add(tem);
+                               		temp.add(tem);
+                                	Reli2.remove(i);
+                                	li1.remove(i);
+                                	spacevector.add(space);
+                                	while(temp.size()!=0) {
+						if(Reli2.contains(tem)) {
+							id=Reli2.indexOf(tem);
+							tem=li1.get(id);
+							li.add(tem);
+							temp.add(tem);
+                                                	Reli2.remove(id);
+                                                	li1.remove(id);
+                                                	space=space+1;
+                                                	spacevector.add(space);
+                                        	} else {
+                                                	if(space!=0)
+                                                		space=space-1;
+                                                	id=temp.indexOf(tem);
+                                                	temp.remove(id);
+                                                	if(temp.size()!=0) {	
+								id=id-1;
+								tem=temp.get(id);
+                                                	}
+                                        	}
+                                	}  
+                        	}
+			}
+		/*	try{
+			Vector v2=new Vector();
+			crit=new Criteria();
+			crit.add(TaskPeer.PARENT_TASK_ID,0);
+			List v1=TaskPeer.doSelect(crit);
+			for(int x=0;x<=v1.size();x++){
+			
+			v2.add(tid);
+			Object obm = Collections.max(v2);
+							context.put("maxtid",obm);
+			ErrorDumpUtil.ErrorLog("v2----------------->>"+v2+"object----------------------"+obm);
+			}}
+			catch(Exception e) {data.setMessage("The error in select taskasdkjaskdjasljdaskdaskjda====== "+e);}*/
+			
+               		/**
+                	 * retrive the task from database and display on the screen.
+                	 */
+			Vector index=new Vector();
+			Vector plist=new Vector();
                         Vector tlist=new Vector();
-                        crit.add(TaskPeer.USER_ID,uid);
-                        crit.addAscendingOrderByColumn(TaskPeer.SEQ_NO);
-                         List v = TaskPeer.doSelect(crit);
                         int duedate=0;
                         Vector vct=new Vector();
-                        for(int i=0;i<v.size();i++)
-                        {
-                                String Title=((Task)v.get(i)).getTitle();
-                                Integer sdate=Integer.valueOf(ExpiryUtil.getDate((((Task)v.get(i)).getStartDate()).toString()));
-                                Integer edate=Integer.valueOf(ExpiryUtil.getDate((((Task)v.get(i)).getEndDate()).toString()));
-                                duedate=Integer.valueOf(ExpiryUtil.getDate((((Task)v.get(i)).getDueDate()).toString()));
-                                int status=((Task)v.get(i)).getStatus();
-                                int tid=((Task)v.get(i)).getTaskId();
-                                TaskDetail tDetail=new TaskDetail();
-                                tDetail.setUser_Id(uid);
-                                tDetail.setTask_Id(tid);
-                                tDetail.setTitle(Title);
-                                tDetail.setStartDate(sdate);
-                                tDetail.setEndDate(edate);
-                                tDetail.setStatus(status);
-                                tDetail.setSeqNumber(((Task)v.get(i)).getSeqNo());
+			Vector v2=new Vector();
+                        crit.add(TaskPeer.USER_ID,uid);
+			if(!all.equals("")) {
+				context.put("spacevector",spacevector);
+				for(int kk=0;kk<li.size();kk++)	{
+					if(!all.equals("")) {
+                        			crit.add(TaskPeer.TASK_ID,li.get(kk));
+						List v = TaskPeer.doSelect(crit);
+                                        	for(int i=0;i<v.size();i++)
+                                        	{
+                                        		String Title=((Task)v.get(i)).getTitle();
+	                                	        Integer sdate=Integer.valueOf(ExpiryUtil.getDate((((Task)v.get(i)).getStartDate()).toString()));
+        	                	                Integer edate=Integer.valueOf(ExpiryUtil.getDate((((Task)v.get(i)).getEndDate()).toString()));
+                	                        	duedate=Integer.valueOf(ExpiryUtil.getDate((((Task)v.get(i)).getDueDate()).toString()));
+	                        	                int status=((Task)v.get(i)).getStatus();
+	        	                                int tid=((Task)v.get(i)).getTaskId();
+							int pid=((Task)v.get(i)).getParentTaskId();
+							int pseq=((Task)v.get(i)).getPseqNo();
+							int depth=((Task)v.get(i)).getDepth();
 
-                                tlist.add(tDetail);
-                                String str=Integer.toString(duedate);
-                                vct.add(str);
-                        }
+				ErrorDumpUtil.ErrorLog("depth in screens..111........."+depth);
+
+
+						/*		if(pid == 0)
+								 {
+       		
+								plist.add(pid);
+															
+								}
+									
+									if(pid == 0)
+									{
+										int sum = 1;
+										for (int j = 0;j<plist.size(); j++) 
+										{ 
+    										sum += j;
+										
+										}
+									index.add(sum);
+									ErrorDumpUtil.ErrorLog("sum...................<<<<<<<<<<<<<<<<<<<<<<<<<------"+sum);
+									context.put("vlist",sum);
+											
+									}
+					ErrorDumpUtil.ErrorLog("index...................<<<<<<<<<<<<<<<<<<<<<<<<<------"+index);
+					ErrorDumpUtil.ErrorLog("plist ...... in screen file-<<<<<<<<<<------"+plist);
+
+					*/
+							v2.add(tid);
+					ErrorDumpUtil.ErrorLog("tid 1 in screen file-------"+v2);
+        	        	                        TaskDetail tDetail=new TaskDetail();
+                	        	                tDetail.setUser_Id(uid);
+                        	        	        tDetail.setTask_Id(tid);
+							tDetail.setParentTask_Id(pid);
+                                	        	tDetail.setTitle(Title);
+	                                	        tDetail.setStartDate(sdate);
+        	                                	tDetail.setEndDate(edate);
+	                	                        tDetail.setStatus(status);
+        	                	                tDetail.setSeqNumber(((Task)v.get(i)).getSeqNo());
+        	                	                tDetail.setPSeq_No(pseq);
+        	                	                tDetail.setDepth(depth);
+		
+        		                                tlist.add(tDetail);
+                		                        String str=Integer.toString(duedate);
+                        		                vct.add(str);
+							Object obm = Collections.max(v2);
+					//		ErrorDumpUtil.ErrorLog("======v22222222222------------->>"+v2);
+					//		ErrorDumpUtil.ErrorLog("======max value------------->>"+obm);
+							context.put("maxtid",obm);
+							context.put("vindex",index);	
+							context.put("splist",plist);
+														
+                                        	}
+					}
+				}		
+			}else {
+				crit.addAscendingOrderByColumn(TaskPeer.SEQ_NO);
+                        	List v = TaskPeer.doSelect(crit);
+                        	for(int i=0;i<v.size();i++)
+                        	{
+        	        		String Title=((Task)v.get(i)).getTitle();
+	                                Integer sdate=Integer.valueOf(ExpiryUtil.getDate((((Task)v.get(i)).getStartDate()).toString()));
+                                	Integer edate=Integer.valueOf(ExpiryUtil.getDate((((Task)v.get(i)).getEndDate()).toString()));
+                        	        duedate=Integer.valueOf(ExpiryUtil.getDate((((Task)v.get(i)).getDueDate()).toString()));
+                	                int status=((Task)v.get(i)).getStatus();
+        	                        int tid=((Task)v.get(i)).getTaskId();
+        	                        int pid=((Task)v.get(i)).getParentTaskId();
+					int pseq=((Task)v.get(i)).getPseqNo();
+					int depth=((Task)v.get(i)).getDepth();
+					ErrorDumpUtil.ErrorLog("pid in screen file-------"+pid);
+					ErrorDumpUtil.ErrorLog("tid in scren file-------"+tid);
+					ErrorDumpUtil.ErrorLog("depth in screens..111....2222....."+depth);
+
+	                                TaskDetail tDetail=new TaskDetail();
+                                	tDetail.setUser_Id(uid);
+                        	        tDetail.setTask_Id(tid);
+                        	        tDetail.setParentTask_Id(pid);
+                	                tDetail.setTitle(Title);
+        	                        tDetail.setStartDate(sdate);
+	                                tDetail.setEndDate(edate);
+                                	tDetail.setStatus(status);
+                        	        tDetail.setSeqNumber(((Task)v.get(i)).getSeqNo());
+        	                	tDetail.setPSeq_No(pseq);
+        	                	tDetail.setDepth(depth);
+
+                	                tlist.add(tDetail);
+        	                        String str=Integer.toString(duedate);
+	                                vct.add(str);
+                        	}
+			}	
                         for(int n=0;n<vct.size();n++)
                         {
                                 String dd=vct.get(n).toString();
@@ -128,69 +280,82 @@ public class TaskDIUD extends SecureScreen
                                 context.put("tlist",tlist);
                                 context.put("tlistsize",tlist.size()-1);
                         }
+        	} catch(Exception e) {data.setMessage("The error in select task "+e);}
+		
+		if((mode.equals("insert"))||(mode.equals("subtask"))){
+			/**
+                 	 *Getting the current and  next day, month, year
+                 	 */
+				
+			String tid=data.getParameters().getString("id");
+			context.put("id",tid);
+			String idname=data.getParameters().getString("idname");
+			context.put("idname",idname);
 
-        }
-        catch(Exception e)
-        {data.setMessage("The error in select task "+e);}
-        if(mode.equals("insert")){
 
-                /**
-                 *Getting the current and  next day, month, year
-                 */
+			String id=data.getParameters().getString("id");
+		        context.put("id",id);
 
-                Calendar calendar=Calendar.getInstance();
-                int cyear=calendar.get(Calendar.YEAR);
-                String year=Integer.toString(cyear);
-                context.put("cyear",year);
-                int cmonth=calendar.get(Calendar.MONTH);
-                cmonth=cmonth + 1;
-                String month= Integer.toString(cmonth);
-                if(cmonth<10)
-                        month=0 + month;
-                int cday=calendar.get(Calendar.DATE);
-           //   String nday=Integer.toString(cday + 1);
-                String day= Integer.toString(cday);
-                if(cday<10)
-                        day=0+day;
-                int nyear,nmonth,nday;
-                      if (cmonth==12 && cday==31)
-                      {
-                                nyear=cyear +1;
-                              nmonth= 1;
-                              nday= 1;
-                      }
-                      else
-                      {
-                              nyear=cyear;
-                              if(((cmonth==1|| cmonth==3|| cmonth==5||cmonth==7||cmonth==8||cmonth==10||cmonth==12) && (cday==31)) ||((cmonth==4||cmonth==6||cmonth==9||cmonth==11) && (cday==30))||((cmonth==2)&&(cday==28||cday==29)))
-                              {
-                                          nmonth=cmonth + 1;
-                                          nday= 1;
-                              }
-                              else
-                              {
-                                      nyear=cyear;
-                                      nmonth=cmonth;
-                                      nday=cday + 1;
-                              }
-                      }
-                String nday1=Integer.toString(nday);
-                if(nday<10)
-                        nday1=0+nday1;
-                String nmonth1=Integer.toString(nmonth);
-                if(nmonth<10)
-                        nmonth1=0+nmonth1;
-                String nyear1=Integer.toString(nyear );
-                context.put("cmonth",month);
-                context.put("cday",day);
-                context.put("nday",nday1);
-                context.put("nyear",nyear1);
-                context.put("nmonth",nmonth1);
-                context.put("mode","insert");
 
-        }
-        if(mode.equals("update") ||(mode.equals("move"))){
-                try {
+			String seqno=data.getParameters().getString("seqno"); //////////////////
+                        context.put("seqno",seqno); ////////////////////////
+			//String idname=data.getParameters().getString("idname"); //////////////////
+                        //context.put("idname",idname); ////////////////////////
+			
+
+			Calendar calendar=Calendar.getInstance();
+
+			int cyear=calendar.get(Calendar.YEAR);
+			String year=Integer.toString(cyear);	
+			context.put("cyear",year);
+			int cmonth=calendar.get(Calendar.MONTH);
+			cmonth=cmonth + 1;
+                	String month= Integer.toString(cmonth);
+                	if(cmonth<10)
+                        	month=0 + month;
+                		int cday=calendar.get(Calendar.DATE);
+           			//   String nday=Integer.toString(cday + 1);
+                		String day= Integer.toString(cday);
+                		if(cday<10)
+                        		day=0+day;
+                			int nyear,nmonth,nday;
+                      			if (cmonth==12 && cday==31)
+                      			{
+                                		nyear=cyear +1;
+                              			nmonth= 1;
+                              			nday= 1;
+                      			}
+                      			else
+                      			{	
+                              			nyear=cyear;
+			                        if(((cmonth==1|| cmonth==3|| cmonth==5||cmonth==7||cmonth==8||cmonth==10||cmonth==12) && (cday==31)) ||((cmonth==4||cmonth==6||cmonth==9||cmonth==11) && (cday==30))||((cmonth==2)&&(cday==28||cday==29))) {
+							nmonth=cmonth + 1;
+						        nday= 1;
+						}
+                              			else
+                              			{
+                                      			nyear=cyear;
+                                      			nmonth=cmonth;
+                                      			nday=cday + 1;
+                              			}
+                      			}
+                				String nday1=Integer.toString(nday);
+                				if(nday<10)
+	                       				nday1=0+nday1;
+               					String nmonth1=Integer.toString(nmonth);
+				                if(nmonth<10)
+        				                nmonth1=0+nmonth1;
+				                String nyear1=Integer.toString(nyear );
+				                context.put("cmonth",month);
+				                context.put("cday",day);
+			                context.put("nday",nday1);
+		                context.put("nyear",nyear1);
+		                context.put("nmonth",nmonth1);
+                			//context.put("mode","insert");
+		} //if((mode.equals("insert"))||(mode.equals("subtask")))
+		
+        	if(mode.equals("update") ||(mode.equals("move"))){
+                	try {
                         String tid=data.getParameters().getString("id");
                         context.put("id",tid);
                         crit = new Criteria();
@@ -203,10 +368,8 @@ public class TaskDIUD extends SecureScreen
                         context.put("usdate",sdate);
                         context.put("uedate",edate);
                         context.put("ulist",w);
-                }
-                catch(Exception e){data.setMessage("The error in update"+e); }
-
-        }
-    }
+                	} catch(Exception e){data.setMessage("The error in update"+e); }
+		}
+    	} //method
 }
 
