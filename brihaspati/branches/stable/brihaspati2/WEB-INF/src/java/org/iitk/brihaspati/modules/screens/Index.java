@@ -69,7 +69,7 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
  * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @ mdified date 05-05-2010,13-07-2010,5-10-2010(Smita),23-12-2010
- * @ mdified date 04-04-2011 (Shaista)
+ * @ mdified date 04-04-2011 (Shaista),25-07-2011(Tej)
  */
 
 public class Index extends SecureScreen{
@@ -85,6 +85,7 @@ public class Index extends SecureScreen{
 			User user=data.getUser();
                         String username=user.getName();
                         int uid=UserUtil.getUID(username);
+
 			Vector cId=new Vector();
 			if(uid==1){
                                 cId.add("mainA");

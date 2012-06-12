@@ -72,7 +72,8 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a> 
- * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>  
  * @modified date:02-07-2011
  */
 
@@ -254,6 +255,16 @@ public class ListManagement
 					cuDetail.setLoginName(loginName);
 					cuDetail.setUserName(userName);
 					cuDetail.setEmail(email);
+					 /* Get all role id of userid */
+
+					Vector v_new=UserGroupRoleUtil.getRoleAllID(element.getUserId());
+                                        int k=0;
+                                        try {
+                                                if((!v_new.contains(2)) && (!v_new.contains(4)) && (!v_new.contains(6)) && (!v_new.contains(7)) ){
+                                                        k=1;
+                                                }
+                                        }catch(Exception e){}
+                                        cuDetail.setStudsrid(k);
 					Details.add(cuDetail);
 				}
 			}
@@ -273,6 +284,17 @@ public class ListManagement
 	                                        cuDetail.setRollNo(rollno);
 	                                        cuDetail.setLoginName(loginname);
 	                                        cuDetail.setUserName(fullname);
+						 /* Get all role id of userid */
+
+						Vector v_new=UserGroupRoleUtil.getRoleAllID(uid);
+                                        	int k=0;
+                                        	try {
+                                                	if((!v_new.contains(2)) && (!v_new.contains(4)) && (!v_new.contains(6)) && (!v_new.contains(7)) ){
+                                                        	k=1;
+                                                	}
+                                       		}catch(Exception e){}
+                                        	cuDetail.setStudsrid(k);						
+
 	                                        Details.add(cuDetail);
         	                        }
                 	                 lnamelist.add(loginname);
@@ -280,27 +302,27 @@ public class ListManagement
                         }
 			else
 			{
-			for(int i=0;i<list.size();i++)
-			{
-				Courses element=(Courses)(list.get(i));
-				String GName=(element.getGroupName()).toString();
-				String courseName=(element.getCname()).toString();
-				String gAlias=(element.getGroupAlias()).toString();
-				String dept=(element.getDept()).toString();
-				String description=(element.getDescription()).toString();
-				byte active=element.getActive();
-				String act=Byte.toString(active);
-				String crDate=(element.getCreationdate()).toString();
-				CourseUserDetail cuDetail=new CourseUserDetail();
-				cuDetail.setGroupName(GName);
-                                cuDetail.setCourseName(courseName);
-                                cuDetail.setCAlias(gAlias);
-                                cuDetail.setDept(dept);
-                                cuDetail.setActive(act);
-                                cuDetail.setDescription(description);
-                                cuDetail.setCreateDate(crDate);
-				Details.add(cuDetail);
-			}
+				for(int i=0;i<list.size();i++)
+				{
+					Courses element=(Courses)(list.get(i));
+					String GName=(element.getGroupName()).toString();
+					String courseName=(element.getCname()).toString();
+					String gAlias=(element.getGroupAlias()).toString();
+					String dept=(element.getDept()).toString();
+					String description=(element.getDescription()).toString();
+					byte active=element.getActive();
+					String act=Byte.toString(active);
+					String crDate=(element.getCreationdate()).toString();
+					CourseUserDetail cuDetail=new CourseUserDetail();
+					cuDetail.setGroupName(GName);
+	                                cuDetail.setCourseName(courseName);
+        	                        cuDetail.setCAlias(gAlias);
+                	                cuDetail.setDept(dept);
+                        	        cuDetail.setActive(act);
+                                	cuDetail.setDescription(description);
+	                                cuDetail.setCreateDate(crDate);
+					Details.add(cuDetail);
+				}
 			}
 		}
 		catch(Exception ex)

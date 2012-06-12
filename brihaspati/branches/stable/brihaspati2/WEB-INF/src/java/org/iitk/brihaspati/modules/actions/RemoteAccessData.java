@@ -64,7 +64,7 @@ import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
 
 /**
- * Action class for authenticating a apllication form authentic server 
+ * Action class for getting and sending data back to the client 
  * and send the data to that application also maintain a log
  *
  *  @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
@@ -168,6 +168,11 @@ public class RemoteAccessData extends VelocityAction{
 			writeRespose(datas,data);
 		}
 	}
+	/**
+	 * This method is invoked When application want to access the roles of thst user
+	 * @param data RunData instance
+	 * @param context Context instance
+	 */
 	public void getRole(RunData data, Context context)
 	{
 		String res=null;
@@ -197,13 +202,18 @@ public class RemoteAccessData extends VelocityAction{
 				
 	    			{
 					int name = Integer.parseInt((rid.elementAt( i )).toString());
-					String rnm=UserGroupRoleUtil.getRoleName(name); 
+					if(name!=6){
+						String rnm=UserGroupRoleUtil.getRoleName(name); 
+						boolean flage=v.contains(rnm);
+						if(!flage){
 	//		ErrorDumpUtil.ErrorLog("The value of vector size of role name  are in get role method"+rnm);
-					if(i==0){
-						v=rnm;
-					}
-					else{
-						v=v+";"+rnm;
+							if(i==0){
+								v=rnm;
+							}
+							else{
+								v=v+";"+rnm;
+							}
+						}
 					}
 				}
 				//generate random number
@@ -244,6 +254,11 @@ public class RemoteAccessData extends VelocityAction{
 		}
 		
 	}
+	/**
+	 * This method is invoked When user want to access the course list of specific user
+	 * @param data RunData instance
+	 * @param context Context instance
+	 */
 	public void getCourseList(RunData data, Context context)
         {
 		String res=null;
@@ -294,6 +309,11 @@ public class RemoteAccessData extends VelocityAction{
                 }
 
 	}
+	/**
+	 * This method is invoked When application to know user exist or not
+	 * @param data RunData instance
+	 * @param context Context instance
+	 */
 	public void checkUsrExist(RunData data, Context context)
 	{
 		String res=null;
@@ -344,7 +364,12 @@ public class RemoteAccessData extends VelocityAction{
                 }
 	}
 	
-/*	
+	/**
+	 * This method is invoked When user want to access institute  list where user is registered
+	 * @param data RunData instance
+	 * @param context Context instance
+	 */
+	
 	public void getInstituteList(RunData data, Context context)
 	{
 		String res=null;
@@ -363,29 +388,39 @@ public class RemoteAccessData extends VelocityAction{
                 if (hash.equals(genHash)){
                         //call usermanagement api
                         boolean flg=UserManagement.checkUserExist(email);
-			String btos=new Boolean(flg).toString();
-                        //generate random number
-                        String randno=RandPasswordUtil.randmPass();
-                        //generate new keyed hash
-                        String genHashN=EncrptDecrpt.keyedHash(sourceid,randno,skey);
-                       	//genertare and write responce
-                       	datas=btos+"&random="+randno+"&hash="+genHashN;
-			try{
-				// encript responce and encodeurl before writting
-				datas=URLEncoder.encode((EncrptDecrpt.encrypt(datas,sourceid)),"UTF-8");
+			if(!flg){
+				//call the method from remote data classs in util get the list of institute id- name - role
+				Vector ucdata=RemoteData.getUserInsList(email);
+        	                //generate random number
+                	        String randno=RandPasswordUtil.randmPass();
+                        	//generate new keyed hash
+	                        String genHashN=EncrptDecrpt.keyedHash(sourceid,randno,skey);
+        	               	//genertare and write responce
+                	       	datas=(ucdata.toString())+"&random="+randno+"&hash="+genHashN;
+				try{
+					// encript responce and encodeurl before writting
+					datas=URLEncoder.encode((EncrptDecrpt.encrypt(datas,sourceid)),"UTF-8");
+				}
+				catch(java.io.UnsupportedEncodingException ex){
+					ErrorDumpUtil.ErrorLog("The error in encoding responce in remote access data action (getInstituteList) "+ex);
+				}
+				catch(Exception ex){
+                	                ErrorDumpUtil.ErrorLog("The error in sending responce in remote access data action (getInstituteList)  "+ex);
+                        	}
+	                        try{
+        	                        writeRespose(datas, data);
+                	        }
+                        	catch(Exception ex){
+                               		ErrorDumpUtil.ErrorLog("The error in sending responce in remote access data action (getInstituteList)  "+ex);
+                         	}
 			}
-			catch(java.io.UnsupportedEncodingException ex){
-				ErrorDumpUtil.ErrorLog("The error in encoding responce in remote access data action (getInstituteList) "+ex);
+			else{
+				datas=null;
+				res="User does not exist and data is null";
+        	                ErrorDumpUtil.ErrorLog("remote access data action (getInstituteList)"+res);
+	                        writeRespose(datas,data);
+
 			}
-			catch(Exception ex){
-                                ErrorDumpUtil.ErrorLog("The error in sending responce in remote access data action (getInstituteList)  "+ex);
-                        }
-                        try{
-                                writeRespose(datas, data);
-                        }
-                        catch(Exception ex){
-                               ErrorDumpUtil.ErrorLog("The error in sending responce in remote access data action (getInstituteList)  "+ex);
-                         }
                 }
                 else{
                         res="Hash is not matched, so that we will not send the data";
@@ -394,6 +429,11 @@ public class RemoteAccessData extends VelocityAction{
                 }
 	}
 	
+	/**
+	 * This method is invoked When user want to access personal information
+	 * @param data RunData instance
+	 * @param context Context instance
+	 */
 	public void getPersonalInfo(RunData data, Context context)
 	{
 		String res=null;
@@ -412,29 +452,39 @@ public class RemoteAccessData extends VelocityAction{
                 if (hash.equals(genHash)){
                         //call usermanagement api
                         boolean flg=UserManagement.checkUserExist(email);
-			String btos=new Boolean(flg).toString();
-                        //generate random number
-                        String randno=RandPasswordUtil.randmPass();
-                        //generate new keyed hash
-                        String genHashN=EncrptDecrpt.keyedHash(sourceid,randno,skey);
-                       	//genertare and write responce
-                       	datas=btos+"&random="+randno+"&hash="+genHashN;
-			try{
-				// encript responce and encodeurl before writting
-				datas=URLEncoder.encode((EncrptDecrpt.encrypt(datas,sourceid)),"UTF-8");
+			if(!flg){
+				int uid=UserUtil.getUID(email);
+				String pinfo=UserUtil.getFullName(uid); 
+                	        //generate random number
+                        	String randno=RandPasswordUtil.randmPass();
+	                        //generate new keyed hash
+        	                String genHashN=EncrptDecrpt.keyedHash(sourceid,randno,skey);
+                	       	//genertare and write responce
+                       		datas=pinfo+"&random="+randno+"&hash="+genHashN;
+				try{
+					// encript responce and encodeurl before writting
+					datas=URLEncoder.encode((EncrptDecrpt.encrypt(datas,sourceid)),"UTF-8");
+				}
+				catch(java.io.UnsupportedEncodingException ex){
+					ErrorDumpUtil.ErrorLog("The error in encoding responce in remote access data action (getPersonalInfo) "+ex);
+				}
+				catch(Exception ex){
+        	                        ErrorDumpUtil.ErrorLog("The error in sending responce in remote access data action (getPersonalInfo)  "+ex);
+                	        }
+                        	try{
+                                	writeRespose(datas, data);
+                        	}
+	                        catch(Exception ex){
+        		                ErrorDumpUtil.ErrorLog("The error in sending responce in remote access data action (getPersonalInfo)  "+ex);
+                         	}
 			}
-			catch(java.io.UnsupportedEncodingException ex){
-				ErrorDumpUtil.ErrorLog("The error in encoding responce in remote access data action (getPersonalInfo) "+ex);
-			}
-			catch(Exception ex){
-                                ErrorDumpUtil.ErrorLog("The error in sending responce in remote access data action (getPersonalInfo)  "+ex);
+                        else{
+                                datas=null;
+                                res="User does not exist and data is null";
+                                ErrorDumpUtil.ErrorLog("remote access data action (getPersonalInfo)"+res);
+                                writeRespose(datas,data);
+
                         }
-                        try{
-                                writeRespose(datas, data);
-                        }
-                        catch(Exception ex){
-                               ErrorDumpUtil.ErrorLog("The error in sending responce in remote access data action (getPersonalInfo)  "+ex);
-                         }
                 }
                 else{
                         res="Hash is not matched, so that we will not send the data";
@@ -442,6 +492,11 @@ public class RemoteAccessData extends VelocityAction{
                         writeRespose(datas,data);
                 }
 	}
+	/**
+	 * This method is invoked When user want to access registration info
+	 * @param data RunData instance
+	 * @param context Context instance
+	 */
 	public void getRegistrationInfo(RunData data, Context context)
 	{
 		String res=null;
@@ -460,29 +515,37 @@ public class RemoteAccessData extends VelocityAction{
                 if (hash.equals(genHash)){
                         //call usermanagement api
                         boolean flg=UserManagement.checkUserExist(email);
-			String btos=new Boolean(flg).toString();
-                        //generate random number
-                        String randno=RandPasswordUtil.randmPass();
-                        //generate new keyed hash
-                        String genHashN=EncrptDecrpt.keyedHash(sourceid,randno,skey);
-                       	//genertare and write responce
-                       	datas=btos+"&random="+randno+"&hash="+genHashN;
-			try{
-				// encript responce and encodeurl before writting
-				datas=URLEncoder.encode((EncrptDecrpt.encrypt(datas,sourceid)),"UTF-8");
+			if(!flg){
+				Vector rData=RemoteData.getUsrRegInfo(email);
+        	                //generate random number
+                	        String randno=RandPasswordUtil.randmPass();
+                        	//generate new keyed hash
+	                        String genHashN=EncrptDecrpt.keyedHash(sourceid,randno,skey);
+        	               	//genertare and write responce
+                	       	datas=(rData.toString())+"&random="+randno+"&hash="+genHashN;
+				try{
+					// encript responce and encodeurl before writting
+					datas=URLEncoder.encode((EncrptDecrpt.encrypt(datas,sourceid)),"UTF-8");
+				}
+				catch(java.io.UnsupportedEncodingException ex){
+					ErrorDumpUtil.ErrorLog("The error in encoding responce in remote access data action (getRegistrationInfo) "+ex);
+				}
+				catch(Exception ex){
+                	                ErrorDumpUtil.ErrorLog("The error in sending responce in remote access data action (getRegistrationInfo)  "+ex);
+                        	}
+	                        try{
+        	                        writeRespose(datas, data);
+                	        }
+                        	catch(Exception ex){
+                               		ErrorDumpUtil.ErrorLog("The error in sending responce in remote access data action (getRegistrationInfo)  "+ex);
+                         	}
 			}
-			catch(java.io.UnsupportedEncodingException ex){
-				ErrorDumpUtil.ErrorLog("The error in encoding responce in remote access data action (getRegistrationInfo) "+ex);
-			}
-			catch(Exception ex){
-                                ErrorDumpUtil.ErrorLog("The error in sending responce in remote access data action (getRegistrationInfo)  "+ex);
+                        else{
+                                datas=null;
+                                res="User does not exist and data is null";
+                                ErrorDumpUtil.ErrorLog("remote access data action (getRegistrationInfo)"+res);
+                                writeRespose(datas,data);
                         }
-                        try{
-                                writeRespose(datas, data);
-                        }
-                        catch(Exception ex){
-                               ErrorDumpUtil.ErrorLog("The error in sending responce in remote access data action (getRegistrationInfo)  "+ex);
-                         }
                 }
                 else{
                         res="Hash is not matched, so that we will not send the data";
@@ -490,7 +553,70 @@ public class RemoteAccessData extends VelocityAction{
                         writeRespose(datas,data);
                 }
 	}
-*/
+	/**
+	 * This method is invoked When user want to access marks 
+	 * @param data RunData instance
+	 * @param context Context instance
+	 */
+	public void getInternalMarks(RunData data, Context context)
+	{
+		String res=null;
+                String datas=null;
+                //Getting value
+                String email=data.getParameters().getString("email");
+                String insid=data.getParameters().getString("iid");
+                String progid=data.getParameters().getString("prgid");
+                String randomNo=data.getParameters().getString("rand") ;
+                String hash=data.getParameters().getString("hash");
+                String sourceid=data.getParameters().getString("srcid");
+                //Getting the key from properties file
+                String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+                String line=ReadNWriteInTxt.readLin(path,sourceid);
+                String skey=StringUtils.substringBetween(line,";",";");
+                //generate keyed hash
+                String genHash=EncrptDecrpt.keyedHash(sourceid,randomNo,skey);
+                if (hash.equals(genHash)){
+                        //call usermanagement api
+                        boolean flg=UserManagement.checkUserExist(email);
+			if(!flg){
+				Vector rData=RemoteData.getStuMark(email,insid,progid);
+        	                //generate random number
+                	        String randno=RandPasswordUtil.randmPass();
+                        	//generate new keyed hash
+	                        String genHashN=EncrptDecrpt.keyedHash(sourceid,randno,skey);
+        	               	//genertare and write responce
+                	       	datas=(rData.toString())+"&random="+randno+"&hash="+genHashN;
+				try{
+					// encript responce and encodeurl before writting
+					datas=URLEncoder.encode((EncrptDecrpt.encrypt(datas,sourceid)),"UTF-8");
+				}
+				catch(java.io.UnsupportedEncodingException ex){
+					ErrorDumpUtil.ErrorLog("The error in encoding responce in remote access data action (getInternalMarks) "+ex);
+				}
+				catch(Exception ex){
+                	                ErrorDumpUtil.ErrorLog("The error in sending responce in remote access data action (getInternalMarks)  "+ex);
+                        	}
+	                        try{
+        	                        writeRespose(datas, data);
+                	        }
+                        	catch(Exception ex){
+                               		ErrorDumpUtil.ErrorLog("The error in sending responce in remote access data action (getInternalMarks)  "+ex);
+                         	}
+			}
+                        else{
+                                datas=null;
+                                res="User does not exist and data is null";
+                                ErrorDumpUtil.ErrorLog("remote access data action (getInternalMarks)"+res);
+                                writeRespose(datas,data);
+                        }
+                }
+                else{
+                        res="Hash is not matched, so that we will not send the data";
+                        ErrorDumpUtil.ErrorLog("remote access data action (getInternalMarks)"+res);
+                        writeRespose(datas,data);
+                }
+	}
+
 /*
         private String api_current_version(){
 	}
@@ -503,32 +629,6 @@ public class RemoteAccessData extends VelocityAction{
 
 	private String api_conf_latest_version(){
         }
-
-	Vector get_institute_list(emailId){
-	}
-
-	private String get_institute_name(instituteId){
-	}
-
-	Vector get_marks_records(emailId, instituteId, courseId){
-		Date dateofexam;
-		String grade;
-		String mm;
-		String mobtan;
-		redirectpage=;
-		urlString="" ;
-		URL url = new URL(urlString); 
-
-		//Get an input stream for reading 
-		InputStream in = url.openStream(); 
-		urlConnection = (HttpURLConnection)url.openConnection(); 
-		if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) { 
-			BufferedReader in = new BufferedReader (new InputStreamReader(urlConnection.getInputStream())); 
-			response.sendRedirect(response.encodeRedirectURL( redirectpage + "?emailId=" + email));
-
-		} 
-
-	}
 
 */
 	

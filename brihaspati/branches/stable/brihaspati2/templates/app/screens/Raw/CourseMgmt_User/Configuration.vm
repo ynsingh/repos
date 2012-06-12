@@ -320,13 +320,12 @@ $page.setBgColor($ui.bgcolor)
 				return false;
 			 }		 
 		
-			 if(isString(frm.riname.value))
+			 /*if(isString(frm.riname.value))
 			 {
 			 	alert("Not a Correct Instructor Name");
 				frm.riname.focus();
 				return false;
-			 }
-			 
+			 }*/
 			 if(!checkIp(frm.iip.value))
 			{
                                 frm.iip.focus();
@@ -503,7 +502,6 @@ $page.setBgColor($ui.bgcolor)
 	function checkSpecialCharacter(strString)
 	{
 		var iChars = "!@#%^&*()+=-[]\\\';,/{}|\":<>?";
-
  	 	for (var i = 0; i < strString.length; i++) 
 		{
   			if (iChars.indexOf(strString.charAt(i)) != -1) 

@@ -98,7 +98,6 @@ $page.setTitle("Home | $course | Course Management | Remote Course |Remote Cours
 			#else
 		<tr bgcolor="$ui.buttonBoxColor">
         		#end
-
  	       		<td align="Center">
 
 				<INPUT TYPE="CHECKBOX" NAME="$e.getSrNo()" VALUE ="$e.getSrNo()"  onClick="addDeleteList(this,document.frm);">
@@ -216,7 +215,6 @@ function checkValue(frm,field)
 {
 	if(frm.deleteFileNames.value!="")
 		{
-			
 			frm.actionName.value=field.name;
 				frm.submit();
 		 }
@@ -230,7 +228,6 @@ function addDeleteList(field,frm)
 	{
         	if(field.checked)
 		{
-			
 	        	frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";
 	        	frm.DB_subject.value=frm.DB_subject.value+field.value+"@@@@";
 	         }
@@ -247,4 +244,4 @@ function addDeleteList(field,frm)
 	}
 
 	
-/SCRIPT>																				    
+</SCRIPT>																				    

@@ -84,8 +84,8 @@ $page.setBgColor("$ui.bgcolor")
                 					#if($data.getUser().getUserName() != "guest") ##if(10)
                    						#if($data.getUser().getUserName() != "admin") ##if(11)
                    						<td> ##7#h td
-                      						<a href=$link.setPage("call,Task_Mgmt,TaskDIUD.vm") style=text-decoration:none>
-		      						<img src=$content.getURI("/images/TaskManager.JPG") style=border:0px solid;><font size=2>$brih_task $brih_mng</font></a>
+                      						<a href=$link.setPage("call,Task_Mgmt,TaskDIUD.vm").addPathInfo("all","aa") style=text-decoration:none>
+		      						<img src=$content.getURI("/images/TaskManager.JPG") style=border:0px solid;><font size=2>$brih_task</font></a>
                    						</td> ##7#h td closed
                    						#end ##end(11)
                    						<td> ##8#h td

@@ -37,19 +37,23 @@ package org.iitk.brihaspati.modules.utils;
  */
 /**
  * In this class,set or get details of news 
- *  @author <a href="nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
- *  @author <a href="kalpanagtm@gmail.com">Kalpana Gautam</a>
+ * @author <a href="nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author <a href="gaurav.soni992@gmail.com">Gaurav Verma</a>
  */
 
 public class TaskDetail 
 {
 	private int User_Id;
 	private int Task_Id;
+	private int ParentTask_Id;
 	private String Title;
 	private int StartDate;
 	private int EndDate;
 	private int Status;
 	private int seqno;
+	private int PSeq_No;
+	private int Depth;
+	
 	
 	public void setUser_Id(int uid)
 	{
@@ -108,5 +112,30 @@ public class TaskDetail
         {
                 return seqno;
         }
+	//Parent task id-----------------//
+	public void setParentTask_Id(int pid)
+        {
+                this.ParentTask_Id=pid;
+        }
+        public int getParentTask_Id()
+        {
+                return ParentTask_Id;
+        }
+	public void setPSeq_No(int psno)
+        {
+                this.PSeq_No=psno;
+        }
+        public int getPSeq_No()
+        {
+                return PSeq_No;
+        }
+	public void setDepth(int depth)
+	{
+		this.Depth=depth;
+	}
+	public int getDepth()
+	{
+		return Depth;
+	}
 
 }

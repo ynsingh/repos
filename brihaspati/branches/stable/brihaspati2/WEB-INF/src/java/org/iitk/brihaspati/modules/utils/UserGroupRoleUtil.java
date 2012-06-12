@@ -51,6 +51,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
 /**
   * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a> 
   * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+  * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>
   */
  
 public class UserGroupRoleUtil{
@@ -185,6 +186,15 @@ public class UserGroupRoleUtil{
 				cDetails.setLoginName(uName);
 				cDetails.setUserName(userName);
 				cDetails.setEmail(eMail);
+				 /* Get all role id of userid */
+                                 	Vector v_new=getRoleAllID(element.getUserId());
+                                        int k=0;
+                                        try {
+                                                if((!v_new.contains(2)) && (!v_new.contains(4)) && (!v_new.contains(6)) && (!v_new.contains(7)) ){
+                                                        k=1;
+                                                }
+                                        }catch(Exception e){}
+                                        cDetails.setStudsrid(k);
 				uid.add(cDetails);
 				}
                 	}
@@ -295,6 +305,33 @@ public class UserGroupRoleUtil{
 		}
         return roleid;
 	}
+
+        /* method for getting all role id of userid */
+
+        public static Vector getRoleAllID(int uid)
+        {
+                Vector<Integer> roleid= new Vector<Integer>();
+                int uId[]={1,0};
+                List v=null;
+                try{
+                        Criteria crit=new Criteria();
+                        crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
+                        crit.andNotIn(TurbineUserGroupRolePeer.GROUP_ID,uId);
+                        v=TurbineUserGroupRolePeer.doSelect(crit);
+                        for(int i=0;i<v.size();i++){
+                                TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(i);
+                                roleid.add(element.getRoleId());
+                        }
+
+
+                }
+                catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("The error in try1 getUID() with one parameter- UserGroupRoleUtil !!"+e);
+                        //Log some thing
+                }
+                return roleid;
+        }
+
 	
     public static String getRoleName(int rid)
     {
