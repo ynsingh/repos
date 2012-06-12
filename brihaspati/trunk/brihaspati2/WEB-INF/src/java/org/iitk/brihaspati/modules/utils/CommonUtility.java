@@ -843,46 +843,6 @@ public static void grpLeader()
 		}
 		return msg;
 	}
-	/**
- 	* This method is used for Insert in expiry table
- 	* with status and expiry date when 
- 	* Record when Already exist 
- 	*/
-	public static void InsertStuExpRecord()
-        {
-                 try{
-                        String c_date=ExpiryUtil.getCurrentDate("-");
-                        String E_date=ExpiryUtil.getExpired(c_date,120);
-                        Date expdate=java.sql.Date.valueOf(E_date);
-
-			Criteria crit=new Criteria();
-			crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
-			List stud_list=TurbineUserGroupRolePeer.doSelect(crit);
-			for(int i=0;i<stud_list.size();i++){
-                                TurbineUserGroupRole element=(TurbineUserGroupRole)stud_list.get(i);
-				int gid=element.getGroupId();
-				int uid=element.getUserId();
-				String groupName=GroupUtil.getGroupName(gid);
-                                String uname=UserUtil.getLoginName(uid);
-				crit = new Criteria();
-				crit.add(StudentExpiryPeer.UID,uname);
-				crit.add(StudentExpiryPeer.CID,groupName);
-				List lst2 = StudentExpiryPeer.doSelect(crit);
-				
-				if(lst2.size()==0){
-					crit=new Criteria();
-                        	        crit.add(StudentExpiryPeer.UID,uname);
-                	                crit.add(StudentExpiryPeer.CID,groupName);
-        	                        crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
-	                                crit.add(StudentExpiryPeer.STATUS,"ENABLE");
-                                	StudentExpiryPeer.doInsert(crit);
-				}
-			}
-		}
-                catch(Exception e){
-                ErrorDumpUtil.ErrorLog("Exception in InsertStuExpRecord method in Common utility class! "+e);
-                }
-        }
 	
 	/** 
   	 * This method perform the search process and return the result

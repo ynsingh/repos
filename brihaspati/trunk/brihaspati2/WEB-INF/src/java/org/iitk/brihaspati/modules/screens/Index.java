@@ -85,12 +85,7 @@ public class Index extends SecureScreen{
 			User user=data.getUser();
                         String username=user.getName();
                         int uid=UserUtil.getUID(username);
-			/**
- 			 * This method is called for insert record of existing users
-			 * With Expiry date
-			 * @see CommonUtility util
- 			 */
-			CommonUtility.InsertStuExpRecord();
+
 			Vector cId=new Vector();
 			if(uid==1){
                                 cId.add("mainA");
