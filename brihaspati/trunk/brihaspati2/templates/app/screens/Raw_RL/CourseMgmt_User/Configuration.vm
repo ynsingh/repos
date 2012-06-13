@@ -1,12 +1,13 @@
 #*
  * @(#) Configuration.vm
- * Copyright (c) 2005-2006, 2009 ETRG,IIT Kanpur.
+ * Copyright (c) 2005-2006, 2009, 2012 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date 27-04-2009
+ * @modified date 13-06-2012
 *#
 
 $page.setTitle("Home | $course | Course Management |  Course Configuration for Guest")
@@ -259,14 +260,14 @@ $page.setBgColor($ui.bgcolor)
 				frm.cid.focus();
 				return false;
 			 }		 
-		
+/*
 			 if(isString(frm.riname.value))
 			 {
 			 	alert("Not a Correct Instructor Name");
 				frm.riname.focus();
 				return false;
 			 }
-			 
+*/	 
 			 if(!checkIp(frm.iip.value))
 			{
                                 frm.iip.focus();

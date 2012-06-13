@@ -480,7 +480,7 @@ public class TopicMetaDataXmlReader
                 if(file!=null)
                 {
                         Attributes ats;
-                        String uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program;
+                        String uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program, instAdminName;
                         for(int j=0;j<file.length;j++)
                         {
 
@@ -498,6 +498,7 @@ public class TopicMetaDataXmlReader
                                 registerationDate =ats.getValue("registerationDate");
                                 rollno =ats.getValue("rollno");
 				program = ats.getValue("program");
+				instAdminName = ats.getValue("instAdminName");
 
                                 fileEntry.setLoginName(uname);
                                 fileEntry.setActive(passwd);
@@ -510,6 +511,7 @@ public class TopicMetaDataXmlReader
 				fileEntry.setCreateDate(registerationDate);
 				fileEntry.setRollNo(rollno);
 				fileEntry.setPrgCode(program);
+				fileEntry.setInstAdminName(instAdminName);
                                 v.addElement(fileEntry);
                         }
                         return v;
