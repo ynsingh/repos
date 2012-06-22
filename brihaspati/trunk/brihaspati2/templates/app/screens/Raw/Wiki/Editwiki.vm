@@ -80,7 +80,7 @@ $!data.getMessage()
 				#if($filename == "")
 					<td align="left" colspan="2"> $WikiCreatetxt2 <INPUT type="text" name="createname" size="25">  </td>
 				#else
-					<td> <h3>    Page Name => $filename </h3>   </td>
+					<td> <h3>$WikiCreatetxt2 => $filename </h3>   </td>
 				#end
 			</tr>
 			<tr>
