@@ -56,7 +56,7 @@ $!data.getMessage()
 #else
 <table bgcolor="$ui.tableColor" width=100%>
 <tr bgcolor="$ui.menuColor"><td colspan=7>
-<a href=$link.setPage("Index.vm") style=text-decoration:none>Admin's Home </a> |
+<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home </a> |
 <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("count","1") style=text-decoration:none> $brih_regMgmt</a> | $brih_listOfInstructor	
 </table>
 #end

@@ -37,6 +37,7 @@ package org.iitk.brihaspati.modules.screens.call.Admin_Mgmt;
 import java.io.File;
 import java.util.List;
 import java.util.Vector;
+import java.util.Collections;
 import org.apache.turbine.util.RunData;
 import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
@@ -78,32 +79,36 @@ public class UserMgmt_Admin extends SecureScreen_Institute_Admin{
                  * getting the values of configuration parameter.
                  */
 		 User user = data.getUser();
+		 String loginname=user.getName();
 		 String LangFile=(String)user.getTemp("LangFile");
 		 String mode=data.getParameters().getString("mode","");
-		 String counter=data.getParameters().getString("count"," ");
-		 String loginname=user.getName();
-                 context.put("tdcolor",counter);
                  context.put("mode",mode);
+		 String counter=data.getParameters().getString("count"," ");
+                 context.put("tdcolor",counter);
                  String institute_id=user.getTemp("Institute_id").toString();
-		 context.put("institute_id",institute_id);
+		 context.put("Institute_Id",institute_id);
 		 int inst_ID = Integer.parseInt(institute_id);
 		 String iname = InstituteIdUtil.getIstName(inst_ID);
-		 context.put("iname", iname);
+		 context.put("Institute_Name", iname);
 		 Vector permission_status=new Vector();
-		 int primary_uid=-1;
-		 Vector UID=UserGroupRoleUtil.getUID(3,7);
-		 Vector all_uid = new Vector();
 		 Vector userList=new Vector();
-		 List admindetail=null;
 		 List detail=null;
 		 int perms = -1;
+		 Vector vect=new Vector();
+		 List List_Id=null;
+
                                 
 		try {
-                           
-			Criteria crit3 = new Criteria();
-			crit3.add(InstituteAdminUserPeer.INSTITUTE_ID,institute_id);
-			crit3.add(InstituteAdminUserPeer.ADMIN_UNAME,loginname);
-			detail=InstituteAdminUserPeer.doSelect(crit3);
+			/*
+			 * Code for Setting User Permission. 
+			 * Primary Admin User value is set 1.
+			 * Secondary Admin User value 0.
+                         */	
+			
+			Criteria crit = new Criteria();
+			crit.add(InstituteAdminUserPeer.INSTITUTE_ID,institute_id);
+			crit.add(InstituteAdminUserPeer.ADMIN_UNAME,loginname);
+			detail=InstituteAdminUserPeer.doSelect(crit);
 			for(int p=0;p<detail.size();p++)
 			{
 				InstituteAdminUser adminuser=(InstituteAdminUser)detail.get((p));
@@ -111,7 +116,6 @@ public class UserMgmt_Admin extends SecureScreen_Institute_Admin{
 				perms=adminuser.getAdminPermissionStatus();
                                         
 				if(perms != 0){
-				//context.put("permission","3");
 				context.put("permission","1");
 				context.put("flag",loginname);
 				}else{
@@ -125,50 +129,91 @@ public class UserMgmt_Admin extends SecureScreen_Institute_Admin{
 				
 		   
 		try{
-			 /**
-                         * This code for getting User Name of Primary Admin.
-                         * Using UserUtil get the userid of Primary Admin.
-                         */
-	
-			Criteria crit = new Criteria();
-			crit.add(InstituteAdminUserPeer.INSTITUTE_ID,institute_id);
-			crit.add(InstituteAdminUserPeer.ADMIN_PERMISSION_STATUS,1);
-			admindetail=InstituteAdminUserPeer.doSelect(crit);
-			for(int k=0;k<admindetail.size();k++)
-			{
-				InstituteAdminUser instadminuser=(InstituteAdminUser)admindetail.get((k));
-				String uname=instadminuser.getAdminUname();
-				primary_uid=UserUtil.getUID(uname);
-			}
+			/*
+			 * Select All Id of an Institute.  
+			 */
+				//Institutewise Select All Id of an Institute. Id's are Stored in a Vector and Find Minimum Id of an Institute. minimum Id user is Primary Admin of an Institute. Set ADMIN_PERMISSION_STATUS for Primary Admin is 1. and Other user is Set 0. 	
+
+                        Criteria crit = new Criteria();
+                        crit.add(InstituteAdminUserPeer.INSTITUTE_ID,institute_id);
+                        List idlist=InstituteAdminUserPeer.doSelect(crit);
+                        for(int i=0;i<idlist.size();i++)
+                        {
+                                InstituteAdminUser idlistobj = (InstituteAdminUser)(idlist.get(i));
+                                int id = idlistobj.getId();
+                                String min_Id = Integer.toString(id);
+                                vect.add(min_Id);
+                        }
 			
-			/**
-                         * Using UserGroupRoleUtil get all userid.
-                         */
-	
-				for(int i=0;i<UID.size();i++) {
-                                        int uid=Integer.parseInt(UID.elementAt(i).toString());
+			/*
+			 * Get Minimum Id from Vector vect.
+			 */
+		
+                        Object obj = Collections.min(vect);
+                        String I_D = obj.toString();
+                        int minid = Integer.parseInt(I_D);
 
-					/**
-                         		 * Using This Condition we find the userid of Primary Admin.
-                         		 * The userid of Primary admin is added to the Vector at index Position 0.
-                         		 */
+                        crit = new Criteria();
+                        crit.add(InstituteAdminUserPeer.INSTITUTE_ID,institute_id);
+                        crit.add(InstituteAdminUserPeer.ADMIN_PERMISSION_STATUS,1);
+                        List pstatus1 = InstituteAdminUserPeer.doSelect(crit);
 
-                                        if(primary_uid == uid){
-                                                all_uid.add(0,UID.elementAt(i).toString());
-                                        }else{
-                                                all_uid.add(UID.elementAt(i).toString());
+			if(pstatus1.size()==1) {
+				crit = new Criteria();
+        	                crit.add(InstituteAdminUserPeer.ID,minid);
+	                        crit.add(InstituteAdminUserPeer.INSTITUTE_ID,institute_id);	
+                	        crit.add(InstituteAdminUserPeer.ADMIN_PERMISSION_STATUS,1);
+                        	InstituteAdminUserPeer.doUpdate(crit);
+			  } 
+			    else {
+				 	for(int p=0;p<vect.size();p++) {
+					int admin_Id = Integer.parseInt(vect.elementAt(p).toString());
+					if(minid != admin_Id) {
+						crit = new Criteria();
+		                                crit.add(InstituteAdminUserPeer.ID,admin_Id);
+		                                crit.add(InstituteAdminUserPeer.INSTITUTE_ID,institute_id);
+                	        	        crit.add(InstituteAdminUserPeer.ADMIN_PERMISSION_STATUS,0);
+                        	        	InstituteAdminUserPeer.doUpdate(crit);
+						}
 					}
+				}
 			
+                        /*
+                         * Get All Id of Institute Admin.
+                         */
+			String uname = "";
+                        Vector vect_allid = new Vector();
+                        crit = new Criteria();
+                        crit.addAscendingOrderByColumn(InstituteAdminUserPeer.ID);
+                        crit.add(InstituteAdminUserPeer.INSTITUTE_ID,institute_id);
+                        List_Id=InstituteAdminUserPeer.doSelect(crit);
+                        for(int i=0;i<List_Id.size();i++) {
+                                InstituteAdminUser instadminusers=(InstituteAdminUser)(List_Id.get(i));
+                                int adm_id = instadminusers.getId();
+                                String adm_Id = Integer.toString(adm_id);
+				uname = instadminusers.getAdminUname();
+                                if(minid == adm_id) {
+                                        vect_allid.add(0,adm_Id);
+                                        } else{
+                                        vect_allid.add(adm_Id);
+                                        }
+
                                 }
-				for(int i=0;i<all_uid.size();i++) {
-				int uid=Integer.parseInt(all_uid.elementAt(i).toString());
-				String uname=UserUtil.getLoginName(uid);
-				/*Criteria crit1=new Criteria();
-                                crit1.add(InstituteAdminUserPeer.ADMIN_UNAME,uname);
+
+				for(int i=0;i<vect_allid.size();i++) {
+				int id_u = Integer.parseInt(vect_allid.elementAt(i).toString());
+				Criteria crit1=new Criteria();
+                                crit1.add(InstituteAdminUserPeer.ID,id_u);
                                 crit1.add(InstituteAdminUserPeer.INSTITUTE_ID,institute_id);
-                                List l=InstituteAdminUserPeer.doSelect(crit1);*/
+                                List lst1=InstituteAdminUserPeer.doSelect(crit1);	
+				for(int k=0;k<lst1.size();k++) {
+				InstituteAdminUser instadminusers1=(InstituteAdminUser)(lst1.get(k));
+				String uname1 = instadminusers1.getAdminUname();
+				//}
+
+		
 				org.iitk.brihaspati.modules.screens.call.Root_Admin.UpdateInstituteAdmin UInstAdm=new org.iitk.brihaspati.modules.screens.call.Root_Admin.UpdateInstituteAdmin();
-				Vector l=UInstAdm.getInstAdmUserDetail(institute_id,uname);
+				Vector l=UInstAdm.getInstAdmUserDetail(institute_id,uname1);
 				if(l.size()>0) {
                                         for(int j=0;j<l.size();j++) {
                                                 //InstituteAdminUser element=(InstituteAdminUser)(l.get(j));
@@ -183,7 +228,8 @@ public class UserMgmt_Admin extends SecureScreen_Institute_Admin{
                                                         userList.add(1,l);
                                                 }
                                         }
-                                } 
+                                }
+			   } 
 			}
 			 String status=new String();
                         if(userList.isEmpty()){
