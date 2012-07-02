@@ -57,7 +57,7 @@
                     </s:select>
 
                     <s:textfield required="true" requiredposition="left" maxLength="50" size="50" title = "Enter Supplier's/Company's Name"
-                                 label="Supplier Name" name="erpmsm.smName" title="Supplier Name" cssClass="queryInput">
+                                 label="Supplier Name" name="erpmsm.smName" cssClass="queryInput">
                         <s:param name="labelcolspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{2}" />
                     </s:textfield >

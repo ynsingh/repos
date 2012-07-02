@@ -107,7 +107,7 @@
                     <s:submit theme="simple" cssClass="savebutton"  name="btnSubmit" value="Clear" action="ClearPOMaster"/>
                 </td>
                 <td>
-                    <s:submit theme="simple" name="bthReset"  name="btnSubmit" value="Save and Add Po Details" />
+                    <s:submit theme="simple" name="btnSubmit" value="Save and Add Po Details" />
                     <s:submit theme="simple" name="bthReset" value="Browse POMaster" action="BrowseMaster"  />
                     <s:submit theme="simple" name="bthPrintPO" value="Print PO" action="PrintPO"  />
 
