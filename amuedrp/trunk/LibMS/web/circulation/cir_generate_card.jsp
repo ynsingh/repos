@@ -1,161 +1,104 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*,java.io.*,java.sql.*,org.apache.struts.upload.FormFile,com.myapp.struts.hbm.*"%>
- <jsp:include page="/admin/header.jsp"/>
+<%@ page import="java.util.*"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-
-
-<%
-String library_id=(String)session.getAttribute("library_id");
-// message from circulationmemberaction
-String msg1=(String)request.getAttribute("msg1");
-String msg=(String)request.getAttribute("msg");
-// message from circulationnewmemberregaction
-String msg2=(String)request.getAttribute("msg2");
-%>
-
-<%!
-    Locale locale=null;
-    String locale1="en";
-    String rtl="ltr";
-    String align="left";
-%>
-<%
-try{
-locale1=(String)session.getAttribute("locale");
-    if(session.getAttribute("locale")!=null)
-    {
-        locale1 = (String)session.getAttribute("locale");
-        System.out.println("locale="+locale1);
-    }
-    else locale1="en";
-}catch(Exception e){locale1="en";}
-     locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
-    else{ rtl="RTL";align="right";}
-    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
-
-    %>
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:include page="/admin/header.jsp" flush="true" />
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Member Registration Page</title>
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+<script language="javascript">
+function fun()
+{
 
-</head>
-<body>
+    document.getElementById("form1").action ="<%=request.getContextPath()%>/membercard.do"
+    document.getElementById("form1").method="post";
+    document.getElementById("form1").submit();
+}
 
-    <html:form method="post" action="/membercard">
+</script>
 
-<div
-   style="  top:200px;
+
+<link rel="stylesheet" href="<%=request.getContextPath()%>/cupertino/jquery.ui.all.css" type="text/css"/>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.widget.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.datepicker.min.js"></script>
+
+<link href="common" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/css/newformat.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/css/page.css" rel="stylesheet" type="text/css" />
+
+
+<style type="text/css">
+.ui-datepicker
+{
+   font-family: Arial;
+   font-size: 13px;
+}
+</style>
+
+<style type="text/css">
+.ui-datepicker
+{
+   font-family: Arial;
+   font-size: 13px;
+}
+</style>
+
+
+
+
+ <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+ <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
+  </head>
+     <body>
+
+      <div
+   style="  top:120px;
    left:5px;
    right:5px;
       position: absolute;
 
       visibility: show;">
-    <table dir="<%=rtl%>" width="400px" height="200px"  valign="top" align="center" class="table">
 
-        <tr><td dir="<%=rtl%>"  class="headerStyle" align="center">
-
-
-
-          <b>Card Management</b>
+          <html:form  method="post" action="/membercard" onsubmit="fun();"  styleId="form1">
+              <table width="50%"  align="center" class="table" border="1px">
 
 
+                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Member List</td></tr>
+                <tr><td  valign="top" align="center">
+                        <table>
+                 <tr>
+                     <td align="" >Member ID</td><td><html:text property="memid" styleId="memid"  value=""  onchange="fun()" /> </td>
+        </tr>
 
-
-
-        </td></tr>
-   <tr><td></td></tr>
-
-        <tr><td dir="<%=rtl%>"  width="400px" height="200px" valign="top" style="" align="center">
-                <br><br>
-                <table cellspacing="10px">
-
-                    <tr><td dir="<%=rtl%>" rowspan="5" class="txt2"><%=resource.getString("circulation.cir_member_reg.entermemid")%><br><br>
-                            <html:text property="TXTMEMID" value="" /><br/>
-                         
-
-                        </td><td dir="<%=rtl%>" width="150px" align="center"> <input type="submit" class="btn2width"   id="button1"  value="Generate Card" onclick="return Register('Generate Card');" /></td></tr>
-                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="button2" class="btn2width"  value="Lost Card" onclick="return Register('Lost Card');"  /></td></tr>
-                    <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="submit" id="button3" class="btn2width"  value="Duplicate Card" onclick="return Register('Duplicate Card');"  /></td></tr>
-
- 
- <tr><td dir="<%=rtl%>" width="150px" align="center"><input type="button" id="button5"  value="<%=resource.getString("circulation.cir_member_reg.back")%>" class="btn2width" onclick="return quit()"/></td></tr>
-
-
-
+        <tr>
+         <td align="">Registration Date</td>
+         <td><html:text property="reg_date" styleId="reg_date"  value=""  onchange="fun()"/></td>
+         <td>Expiry date</td>
+         <td width="50%">
+             <html:text property="expiry_date" styleId="expiry_date"  value=""  onchange="fun()"/>
+             
+             
+         </td>
+       </tr>
+       <tr><td colspan="4" align="center"><input type="submit" value="Find & Generate Card"  onclick="fun()"/>
+             <input type="reset" value="Clear"  onclick="clear()"/></td></tr>
+                        </table>
+      </tr>
+      
                 </table>
 
+      </html:form>
 
 
-    <input type="hidden" name="library_id" value="<%=library_id%>">
-   <input type="hidden" id="button" name="button" value=""/>
-
-
-
-
-
-
-
-
-</td></tr>
-
-        <tr><td class="mess">
-
-    <%     if (msg1!=null){
- %>
-
-<p class="err"><%=msg1%></p>
-
- <%
-}
-
-%>
-
- <%     if (msg!=null){
- %>
- <p class="mess"> <%=msg%></p>
-
- <%
-}
-
-%>
-
-            </td></tr>
-
-    </table>
         </div>
+    </body>
 
-</html:form>
-
-</body>
-<script language="javascript" type="text/javascript">
-
-
- function Register(x)
-{
-    var buttonvalue=x;
-    document.getElementById("button").setAttribute("value", buttonvalue);
-    return true;
-}
-
-
-
-
-
-  function quit()
-  {
-
-      window.location="<%=request.getContextPath()%>/admin/main.jsp";
-      return false;
-  }
-
-
-
-    </script>
 
 </html>

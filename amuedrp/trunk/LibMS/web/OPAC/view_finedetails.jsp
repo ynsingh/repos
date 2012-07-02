@@ -1,10 +1,3 @@
-<%--
-    Document   : Simple.jsp
-    Created on : Jun 18, 2010, 7:46:24 AM
-    Author     : Mayank Saxena
-
---%>
- 
     <%@page import="com.myapp.struts.opac.FineDoc,com.myapp.struts.hbm.*,com.myapp.struts.opac.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*,com.myapp.struts.opacDAO.*"%>
@@ -32,24 +25,14 @@ f.submit();
 }
 
 </script>
- <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold }
-
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
 </head>
-
+<jsp:include page="opacheader.jsp"></jsp:include>
 <body>
   <%!
     Locale locale=null;
     String locale1="en";
     String rtl="ltr";
+    String align="left";
     boolean page=true;
 %>
 <%
@@ -63,8 +46,8 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;}
-    else{ rtl="RTL";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
@@ -118,10 +101,6 @@ tcount++;
    //System.out.println("tcount="+tcount);
 		     }
 
-System.out.println("tcount="+tcount);
-
-
-
 %>
 
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
@@ -133,42 +112,37 @@ System.out.println("tcount="+tcount);
    pageContext.setAttribute("tCount", tcount);
 %>
 <br>
- <%--<%if(page.equals(true))
-    {
 
-%>--%>
-
-<table  align="left" width="800px"  style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
+<table  align="center" dir="<%=rtl%>" width="80%" class="datagrid" style="border: dashed 1px cyan;">
 
 
 
 
-  <tr><td  width="800px"  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="right">
-          <table>
-              <tr><td  width="800px"  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="left">
-          <table>
-              <tr><td width="640px" style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="left"><b>
+   <tr><td   dir="<%=rtl%>" style="font-family:Tahoma;font-size:12px" height="28px" align="<%=align%>">
+          <table width="100%">
+              <tr><td   dir="<%=rtl%>" colspan="2" style="font-family:Arial;font-size:12px;border-bottom: dashed 1px cyan" height="28px" align="center" ><b>Circulation Member : My Account Section OPAC</b></td></tr>
+              <tr><td  dir="<%=rtl%>" style="font-family:Tahoma;font-size:12px;border-bottom: dashed 1px cyan" height="28px" align="<%=align%>"><b>
 
 
 	&nbsp;&nbsp;
-                <a href="<%=request.getContextPath()%>/OPAC/accountdetails.jsp"  style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.home")%></a>&nbsp;|&nbsp;
-            <a href="<%=request.getContextPath()%>/OPAC/newdemand2.jsp"  style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
-   <%-- |&nbsp;<a href="reservationrequest1.jsp" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>--%>
+                <a href="<%=request.getContextPath()%>/OPAC/accountdetails.jsp"  style="text-decoration: none;"><%=resource.getString("opac.accountdetails.home")%></a>&nbsp;|&nbsp;
+            <a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=newdemand"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
+    |&nbsp;<a href="#"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>
 
 
 
 
           </b>
-                  </td><td align="right" style="color:white;font-family:Tahoma;font-size:12px"><%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%>&nbsp;<b>|</b>&nbsp;<a href="home.do"  style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a></td></tr></table>
+                  </td><td align="right" dir="<%=rtl%>" style="font-family:Tahoma;font-size:12px;border-bottom: dashed 1px cyan;"><%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%>&nbsp;<b>|</b>&nbsp;<a href="home.do"  style="text-decoration: none;"><%=resource.getString("opac.accountdetails.logout")%></a></td></tr>
+          </table>
         </td></tr>
-  </table>
-        </td></tr>
-  
 
 
-  <tr><td height="300px" valign="top" class="btn1">
 
-          <br><br>
+
+  <tr><td  valign="top" >
+
+          
 <%if(tcount==0)
 {%>
 <p class="err" style="font-size:12px">No Record Found</p>
@@ -256,128 +230,8 @@ else
 <%}%>
 
 </td></tr></table>
-<%--<%}
-   else
-   {%>
-   <table  align="left" width="800px"  style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
-
-
-
-  <tr><td  width="800px"  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="right">
-          <table>
-              <tr>
-                  <td width="520px" align="left" style="color:white;font-family:Tahoma;font-size:12px"><a href="home.do"  style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a>&nbsp;|&nbsp;<%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%></td>
-
-                  <td  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="right"><b>
-
-
-	<%--&nbsp;&nbsp;<a href="reservationrequest1.jsp"  style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.reservationrequest")%>
-        &nbsp;|&nbsp;    <a href="newdemand2.jsp"  style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
-        &nbsp;|&nbsp;    <a href="accountdetails.jsp" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.home")%></a>
-
-   
-
-
-
-
-          </b>
-                  </td></tr></table>
-        </td></tr>
-
-
-  <tr><td height="300px" valign="top" class="btn1">
-
-          <br><br>
-<%if(tcount==0)
-{%>
-<p class="err" style="font-size:12px">No Record Found</p>
-<%}
-else
-{%>
-<ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="2" cellSpacing="0" styleClass="datagrid">
-
-  <columns>
-
-    <column width="10">
-      <header value="" hAlign="left" styleClass="header"/>
-    </column>
-
-    <column width="100">
-      <header value="Title" hAlign="left" styleClass="header"/>
-      <item   value="${doc.title}"  hAlign="left"    styleClass="item"/>
-    </column>
-
-    <column width="200">
-      <header value="Author" hAlign="left" styleClass="header"/>
-      <item   value="${doc.author}" hAlign="left"   styleClass="item"/>
-    </column>
-
-    <column width="200">
-      <header value="CallNo" hAlign="left" styleClass="header"/>
-      <item   value="${doc.callno}"   hAlign="left" styleClass="item"/>
-    </column>
-
-    <column width="100">
-      <header value="Publisher" hAlign="left" styleClass="header"/>
-      <item   value="${doc.publ}" hAlign="left" styleClass="item"/>
-    </column>
-       <column width="100">
-      <header value="Date" hAlign="left" styleClass="header"/>
-      <item   value="${doc.date}"   hAlign="left" styleClass="item"/>
-    </column>
-        <column width="100">
-      <header value="Fine" hAlign="left" styleClass="header"/>
-      <item   value="${doc.fine}"   hAlign="left" styleClass="item"/>
-    </column>
- </columns>
-
-<rows styleClass="rows" hiliteStyleClass="hiliterows"/>
-  <alternateRows styleClass="alternaterows"/>
-
-  <paging size="4" count="${tCount}" custom="true" nextUrlVar="next"
-       previousUrlVar="previous" pagesVar="pages"/>
-  <order imgAsc="up.gif" imgDesc="down.gif"/>
-</ui:dataGrid>
-<table width="600px" style="font-family: arial; font-size: 10pt" border=0>
-<tr>
-<td align="left" width="150px">
-     <a href="accountdetails.jsp" > <%=resource.getString("opac.accountdetails.back")%></a>&nbsp;&nbsp;
-<c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>"><%=resource.getString("opac.accountdetails.previous")%></a>
-</c:if>&nbsp;
-<c:if test="${next != null}">
-<a href="<c:out value="${next}"/>"><%=resource.getString("opac.accountdetails.next")%></a>
-</c:if>
-</td><td align="center" >
-
-
-<c:forEach items="${pages}" var="page">
-<c:choose>
-  <c:when test="${page.current}">
-    <b><a href="<c:out value="${page.url}"/>"><c:out value="${page.index}"/></a></b>
-  </c:when>
-  <c:otherwise>
-    <a href="<c:out value="${page.url}"/>"><c:out value="${page.index}"/></a>
-  </c:otherwise>
-</c:choose>
-</c:forEach>
-</td>
-
-</tr>
-</table>
-
-
-
-
-
-
-
-<%}%>
-
-</td></tr></table>
-
-   <%}%>--%>
     </body>
+    <jsp:include page="opacfooter.jsp"></jsp:include>
 
 </html>
 

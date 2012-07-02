@@ -128,41 +128,43 @@ System.out.println(year+"-"+month+"-"+day);
 
 
 </head><body>
- 
+    <jsp:include page="opacheader.jsp"></jsp:include>
 
 <form name="Form1" method="post" id="Form1">
 
-    <table  align="<%=align%>" dir="<%=rtl%>" width="800px" class="datagrid" style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
+    <table  align="center" dir="<%=rtl%>" width="80%" class="datagrid" style="border: dashed 1px cyan;">
 
       
 
-  <tr><td  width="800px" dir="<%=rtl%>" style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="<%=align%>">
-          <table>
-              <tr><td width="640px" dir="<%=rtl%>" style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="<%=align%>"><b>
+  <tr><td   dir="<%=rtl%>" style="font-family:Tahoma;font-size:12px" height="28px" align="<%=align%>">
+          <table width="100%">
+              <tr><td   dir="<%=rtl%>" colspan="2" style="font-family:Arial;font-size:12px;border-bottom: dashed 1px cyan" height="28px" align="center" ><b>Circulation Member : My Account Section OPAC</b></td></tr>
+              <tr><td  dir="<%=rtl%>" style="font-family:Tahoma;font-size:12px;border-bottom: dashed 1px cyan" height="28px" align="<%=align%>"><b>
                
 		     
 	&nbsp;&nbsp;
-                <a href="accountdetails.jsp"  style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.home")%></a>&nbsp;|&nbsp;
-            <a href="./OpacLib.do?name=newdemand"  style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
-    <%--|&nbsp;<a href="./OpacLib.do?name=reservationrequest"  style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>--%>
+                <a href="<%=request.getContextPath()%>/OPAC/accountdetails.jsp"  style="text-decoration: none;"><%=resource.getString("opac.accountdetails.home")%></a>&nbsp;|&nbsp;
+            <a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=newdemand"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
+    |&nbsp;<a href="#"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>
 
             
 
 
           </b>
-                  </td><td align="<%=align%>" dir="<%=rtl%>" style="color:white;font-family:Tahoma;font-size:12px"><%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%>&nbsp;<b>|</b>&nbsp;<a href="home.do"  style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a></td></tr></table>
+                  </td><td align="right" dir="<%=rtl%>" style="font-family:Tahoma;font-size:12px;border-bottom: dashed 1px cyan;"><%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%>&nbsp;<b>|</b>&nbsp;<a href="home.do"  style="text-decoration: none;"><%=resource.getString("opac.accountdetails.logout")%></a></td></tr>
+          </table>
         </td></tr>
   
     
 
-    <tr><td height="300px" valign="top" dir="<%=rtl%>" class="btn1" align="<%=align%>" colspan="2"><br><br>
-            <table width="500px" class="btn1">
-                <tr><td align="center" dir="<%=rtl%>" colspan="2" class="btn1" >
-                        <b>  <%=resource.getString("opac.accountdetails.accountdetails")%></b><br><br>
+    <tr><td  valign="top" dir="<%=rtl%>"  align="<%=align%>" colspan="2">
+            <table class="datagrid">
+                <tr><td align="center" dir="<%=rtl%>" colspan="2"  >
+                        <b>  Circulation Member <%=resource.getString("opac.accountdetails.accountdetails")%></b><br><br>
         </td></tr>
                 <tr><td dir="<%=rtl%>" align="<%=align%>"><b><%=resource.getString("opac.accountdetails.finedue")%></b></td><td dir="<%=rtl%>" align="<%=align%>"><input type="text" id="TXTFINE" name="TXTFINE" value="<%=fine%>" disabled="disabled"><a href="<%=request.getContextPath()%>/opac/cir_memfine_details.do" style="text-decoration: none;color:blue"><b>&nbsp;<%=resource.getString("opac.accountdetails.details")%></b></a></td></tr>
                 <tr><td dir="<%=rtl%>" align="<%=align%>"><b><%=resource.getString("opac.accountdetails.checkouts")%></b></td><td dir="<%=rtl%>" align="<%=align%>"><input type="text" id="TXTCHECKOUT"  name="TXTCHECKOUT" value="<%=no_of_chkout%>" disabled="disabled"><a href="<%=request.getContextPath()%>/opac/cir_memcheckout_details.do" style="text-decoration: none;color:blue"><b>&nbsp;<%=resource.getString("opac.accountdetails.details")%></b></a></td></tr>
-               <%-- <tr><td dir="<%=rtl%>" align="<%=align%>"><b><%=resource.getString("opac.accountdetails.reservation")%></b></td><td dir="<%=rtl%>" align="<%=align%>"><input type="text" id="TXTRESERVATION" name="TXTRESERVATION" value="<%=reservation_made%>" disabled="disabled"><a href="view_reservation.jsp" style="text-decoration: none;color:blue"><b>&nbsp;<%=resource.getString("opac.accountdetails.details")%></b></a></td></tr>--%>
+                <tr><td dir="<%=rtl%>" align="<%=align%>"><b><%=resource.getString("opac.accountdetails.reservation")%></b></td><td dir="<%=rtl%>" align="<%=align%>"><input type="text" id="TXTRESERVATION" name="TXTRESERVATION" value="<%=reservation_made%>" disabled="disabled"><a href="view_reservation.jsp" style="text-decoration: none;color:blue"><b>&nbsp;<%=resource.getString("opac.accountdetails.details")%></b></a></td></tr>
                 <tr><td dir="<%=rtl%>" align="<%=align%>"><b><%=resource.getString("opac.accountdetails.lastcheckoutdate")%></b></td><td dir="<%=rtl%>" align="<%=align%>"><input type="text" id="TXTCHKDATE" name="TXTCHKDATE" value="<%=lastchkoutdate%>" disabled="disabled"></td></tr>
                 <tr><td dir="<%=rtl%>" align="<%=align%>"><b>Probable <%=resource.getString("opac.accountdetails.finedue")%></b></td><td dir="<%=rtl%>" align="<%=align%>"><input type="text" id="TXTProbFine" name="TXTPROBFINE" value="<%=fine1%>" disabled="disabled"><a href="view_checkoutfinedetails.jsp" style="text-decoration: none;color:blue"><b>&nbsp;<%=resource.getString("opac.accountdetails.details")%></b></a></td></tr>
                 <tr><td dir="<%=rtl%>" colspan="2" align="<%=align%>"><br><br><br>
@@ -213,4 +215,5 @@ session.removeAttribute("type");
 
 
 </body>
+<jsp:include page="opacfooter.jsp"></jsp:include>
 </html>

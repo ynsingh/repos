@@ -2,6 +2,12 @@
 
     <head>
         <title>LibMS:User Manual Help</title>
+        <script type="text/javascript">
+            function back(){
+                window.history.go(-1);
+
+            }
+            </script>
     </head>
     <link rel="stylesheet" href="/LibMS/css/page.css"/>
     <body class="homepage" style="margin: 0px 0px 0px 0px">
@@ -89,6 +95,7 @@
     
         If email doesn't reach you in 2-3 days,or for any query feel free to contact us at <b><u>amuedrp@gmail.com</u></b>
                 </p>
+                <p class="btn3">&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="back()"><u><b>Back</b></u></a>
       
     </body>
 </html>

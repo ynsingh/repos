@@ -187,6 +187,7 @@ newOpt.text = ndValue1;
 }
 </script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+<jsp:include page="opacheader.jsp"></jsp:include>
 <body onload="return search();">
 <%
 String card_id,mem_id;
@@ -211,38 +212,43 @@ String sublibrary_id=(String)session.getAttribute("sublibrary_id");
 
  
 <html:form method="post" action="/OPAC/NewDemand">
- <table  align="<%=align%>" width="700px"  style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
+   <table  align="center" dir="<%=rtl%>" width="80%" class="datagrid" style="border: dashed 1px cyan;">
+
 
      <input type="hidden" value="<%=mem_id%>" id="memId"/>
 
-  <tr><td  width="700px" dir="<%=rtl%>" style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="<%=align%>">
-          <table>
-              <tr><td width="550px" dir="<%=rtl%>" style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="<%=align%>"><b>
+   <tr><td   dir="<%=rtl%>" style="font-family:Tahoma;font-size:12px" height="28px" align="<%=align%>">
+          <table width="100%">
+              <tr><td   dir="<%=rtl%>" colspan="2" style="font-family:Arial;font-size:12px;border-bottom: dashed 1px cyan" height="28px" align="center" ><b>Circulation Member : My Account Section OPAC</b></td></tr>
+              <tr><td  dir="<%=rtl%>" style="font-family:Tahoma;font-size:12px;border-bottom: dashed 1px cyan" height="28px" align="<%=align%>"><b>
 
 
 	&nbsp;&nbsp;
-                <a href="accountdetails.jsp"  style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.home")%></a>&nbsp;|&nbsp;            <a href="newdemand2.jsp"  style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
-   <%-- |&nbsp;<a href="reservationrequest1.jsp"  style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>--%>
+                <a href="<%=request.getContextPath()%>/OPAC/accountdetails.jsp"  style="text-decoration: none;"><%=resource.getString("opac.accountdetails.home")%></a>&nbsp;|&nbsp;
+            <a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=newdemand"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
+    |&nbsp;<a href="#"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>
 
 
 
 
           </b>
-                  </td><td align="<%=align%>" dir="<%=rtl%>" style="color:white;font-family:Tahoma;font-size:12px"><%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%>&nbsp;<b>|</b>&nbsp;<a href="/member.jsp" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a></td></tr></table>
+                  </td><td align="right" dir="<%=rtl%>" style="font-family:Tahoma;font-size:12px;border-bottom: dashed 1px cyan;"><%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%>&nbsp;<b>|</b>&nbsp;<a href="home.do"  style="text-decoration: none;"><%=resource.getString("opac.accountdetails.logout")%></a></td></tr>
+          </table>
         </td></tr>
+ 
 
     
-     <tr><td colspan="3"  dir="<%=rtl%>" valign="top" class="btn1" align="center">
-             <table align="center" width="700px">
- <tr><td dir="<%=rtl%>" align="center" style="color:Brown" colspan="3">
-         <table align="center" width="700px">
-             <tr><td dir="<%=rtl%>" width="350px" align="center">
-       <b><%=resource.getString("opac.myaccount.newdemand.newdemandtext")%></b></td><td dir="<%=rtl%>"><font color="blue" align="<%=align%>"> <b><%=resource.getString("opac.myaccount.newdemand.note")%></b><br><br></font>
+     <tr><td colspan="3" width="100%"  dir="<%=rtl%>" valign="top"  align="center">
+             <table align="center" style="border:dashed 1px cyan;" >
+ <tr><td dir="<%=rtl%>" align="center" width="100%" colspan="3" >
+         <table align="center" style="border:dashed 1px cyan;" width="100%" >
+             <tr><td dir="<%=rtl%>"  align="left">
+       <b><%=resource.getString("opac.myaccount.newdemand.newdemandtext")%></b></td><td dir="<%=rtl%>" align="right"><font color="blue" align="<%=align%>"> <b><%=resource.getString("opac.myaccount.newdemand.note")%></b></font>
                  </td></table>
          </td></tr>
      
-<tr><td dir="<%=rtl%>" align="<%=align%>" width="150px"><%=resource.getString("opac.myaccount.newdemand.category")%>*</td><td align="<%=align%>" dir="<%=rtl%>" width="200px">
-        <html:select property="CMBCAT" size="1" >
+<tr><td  dir="<%=rtl%>" align="<%=align%>" width="150px"><%=resource.getString("opac.myaccount.newdemand.category")%>*</td><td align="<%=align%>" dir="<%=rtl%>" width="200px">
+        <html:select property="CMBCAT" size="1" styleClass="btnapp" >
             <html:option value="">Select Any</html:option>
             <html:option value="books">Books</html:option>
 
@@ -258,13 +264,13 @@ String sublibrary_id=(String)session.getAttribute("sublibrary_id");
 </tr>
 <tr><td  dir="<%=rtl%>" align="<%=align%>">Library Name</td><td width="200px" align="<%=align%>" dir="<%=rtl%>">
         <html:hidden property="CMBLib" value="<%=lib_id%>"/>
-        <html:select property="CMBLib" disabled="true" tabindex="3"  styleId="CMBLib" value="<%=lib_id%>"  onchange="return search();" >
+        <html:select styleClass="btnapp" property="CMBLib" disabled="true" tabindex="3"  styleId="CMBLib" value="<%=lib_id%>"  onchange="return search();" >
      <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
  </html:select></td>
 
 </tr>
 <tr><td  dir="<%=rtl%>" align="<%=align%>">SubLibrary Name*</td><td width="200px"  align="<%=align%>" dir="<%=rtl%>">
-                <html:select property="cmdSubLibary"  styleId="SubLibrary" >
+                <html:select property="cmdSubLibary" styleClass="btnapp"  styleId="SubLibrary" >
                   
                            <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
                        </html:select>
@@ -333,11 +339,12 @@ String sublibrary_id=(String)session.getAttribute("sublibrary_id");
          </td>
 </tr>
 
-<tr><td dir="<%=rtl%>" ></td><td dir="<%=rtl%>" align="<%=align%>"><html:submit styleClass="btn"><%=resource.getString("opac.myaccount.newdemand.send")%></html:submit>&nbsp;&nbsp;<input type="button"   name="cancel" value="<%=resource.getString("opac.myaccount.newdemand.cancel")%>" class="txt2" onclick="quit()"><br></td></tr>
+<tr><td dir="<%=rtl%>" ></td><td dir="<%=rtl%>" align="<%=align%>"><html:submit styleClass="btnapp"><%=resource.getString("opac.myaccount.newdemand.send")%></html:submit>&nbsp;&nbsp;<input type="button" class="btnapp"  name="cancel" value="<%=resource.getString("opac.myaccount.newdemand.cancel")%>" class="txt2" onclick="quit()"><br></td></tr>
  </table>
 
 
          </td></tr></table>
 </html:form>
 </body>
+<jsp:include page="opacfooter.jsp"></jsp:include>
 </html>

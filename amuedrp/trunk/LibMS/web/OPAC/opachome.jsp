@@ -47,6 +47,18 @@ locale1=(String)session.getAttribute("locale");
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
+
+
+    <%!
+    static Integer count=0;
+  
+%>
+<%
+    String library_id = (String)session.getAttribute("library_id");
+    String sublibrary_id = (String)session.getAttribute("memsublib");
+     if(sublibrary_id==null)sublibrary_id=   (String)session.getAttribute("sublibrary_id");
+if(sublibrary_id==null)sublibrary_id="all";
+%>
     <script language="javascript">
         function fun()
         {

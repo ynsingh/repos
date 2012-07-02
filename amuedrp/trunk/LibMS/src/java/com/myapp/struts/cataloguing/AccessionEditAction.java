@@ -13,6 +13,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
 import com.myapp.struts.systemsetupDAO.DocumentCategoryDAO;
+import com.myapp.struts.systemsetupDAO.LocationDAO;
 import java.util.List;
 
 /**
@@ -49,6 +50,7 @@ public class AccessionEditAction extends org.apache.struts.action.Action {
 
         if(buttonhand.equals("New Item"))
         {
+          
         int ii=bibform.getBiblio_id();
         BibliographicDetails bib = dao.getBiblio(bibform.getLibrary_id(),bibform.getSublibrary_id(), ii);
         bibform.setType_of_disc(bib.getTypeOfDisc());
@@ -66,13 +68,17 @@ public class AccessionEditAction extends org.apache.struts.action.Action {
         bibform.setSub_library_id(bib.getId().getSublibraryId());
         bibform.setPublication_place(bib.getPublicationPlace());
         bibform.setPublisher_name(bib.getPublisherName());
-        bibform.setPublishing_year(bib.getPublishingYear());
+        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
         bibform.setSubtitle(bib.getSubtitle());
         bibform.setTitle(bib.getTitle());
         bibform.setCall_no(bib.getCallNo());
         bibform.setAccession_type(bib.getAccessionType());
         bibform.setBook_type(bib.getBookType());
+        bibform.setNotes(bib.getNotes());
         bibform.setSer_note(bib.getSeries());
+        
+        bibform.setSubject(bib.getSubject());
+        bibform.setThesis_abstract(bib.getAbstract_());
         bibform.setStatement_responsibility(bib.getStatementResponsibility());
         bibform.setAlt_title(bib.getAltTitle());     
         bibform.setType_of_disc(bib.getTypeOfDisc());
@@ -89,6 +95,13 @@ public class AccessionEditAction extends org.apache.struts.action.Action {
         bibform.setNo_of_copies(i);
         String msg3 = "";
         request.setAttribute("msg1", msg3);
+
+        //get Location from Current seminar Library
+        List<Location> loc=(List<Location>)LocationDAO.getLocation(library_id, sub_library_id);
+        session.setAttribute("location", loc);
+
+
+       
                 if(bib.getDocumentType().equals("Book")){
         return mapping.findForward("add");
         }
@@ -116,12 +129,14 @@ public class AccessionEditAction extends org.apache.struts.action.Action {
         bibform.setSub_library_id(bib.getId().getSublibraryId());
         bibform.setPublication_place(bib.getPublicationPlace());
         bibform.setPublisher_name(bib.getPublisherName());
-        bibform.setPublishing_year(bib.getPublishingYear());
+        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
         bibform.setSubtitle(bib.getSubtitle());
         bibform.setTitle(bib.getTitle());
         bibform.setCall_no(bib.getCallNo());
         bibform.setAccession_type(bib.getAccessionType());
         bibform.setBook_type(bib.getBookType());
+            bibform.setSubject(bib.getSubject());
+        bibform.setThesis_abstract(bib.getAbstract_());
         bibform.setSer_note(bib.getSeries());
         bibform.setStatement_responsibility(bib.getStatementResponsibility());
         bibform.setAlt_title(bib.getAltTitle());
@@ -142,6 +157,8 @@ public class AccessionEditAction extends org.apache.struts.action.Action {
         session.setAttribute("opacList", a);
         String msg3 = "";
         request.setAttribute("msg1", msg3);
+
+
                 if(bib.getDocumentType().equals("Book")){
         return mapping.findForward("show");
         }

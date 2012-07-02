@@ -424,7 +424,31 @@ AdminRegistration obj=null;
         return obj;
 
 }
+public static  AdminRegistration searchInstitute(String library_id)
+{
+        Session session = HibernateUtil.getSessionFactory().openSession();
+AdminRegistration obj=null;
+        try
+        {
+            session.beginTransaction();
+            query = session.createQuery("FROM  AdminRegistration  WHERE  libraryId=:library_id");
 
+            query.setString("library_id", library_id);
+        obj=(AdminRegistration) query.uniqueResult();
+        session.getTransaction().commit();
+
+        }
+        catch(Exception e)
+        {
+        System.out.println(e.toString());
+        }
+        finally
+        {
+            session.close();
+        }
+        return obj;
+
+}
 public static  AdminRegistration searchInstituteAdmin(String staff_id,String library_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();

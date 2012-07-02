@@ -39,7 +39,7 @@
             <column name="domain" length="20" />
         </property>
         <property name="loginId" type="string">
-            <column name="login_id" length="20" />
+            <column name="login_id" length="300" />
         </property>
         <property name="typeOfInstitute" type="string">
             <column name="type_of_institute" length="20" />
@@ -57,7 +57,7 @@
             <column name="admin_designation" length="50" />
         </property>
         <property name="adminEmail" type="string">
-            <column name="admin_email" length="100" />
+            <column name="admin_email" length="300" />
         </property>
         <property name="adminPassword" type="string">
             <column name="admin_password" length="200" />

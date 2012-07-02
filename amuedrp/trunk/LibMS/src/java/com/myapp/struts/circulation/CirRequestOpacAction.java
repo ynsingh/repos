@@ -76,7 +76,7 @@ public class CirRequestOpacAction extends org.apache.struts.action.Action {
 
         
         
-        Session hsession=HibernateUtil.getSessionFactory().getCurrentSession();
+        Session hsession=HibernateUtil.getSessionFactory().openSession();
           Transaction tx=null;
 
           try{

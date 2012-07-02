@@ -72,6 +72,7 @@ System.out.println(user+"....................");
                  document.getElementById('password1').focus();
                 return false;
             }
+           
      if(document.getElementById('password2').value=="")
     {
         alert("Enter New password...");
@@ -80,28 +81,21 @@ System.out.println(user+"....................");
 
         return false;
     }
-     if(document.getElementById('password3').value=="")
-    {
-        alert("Enter Re-enter password...");
-
-        document.getElementById('password3').focus();
-
-        return false;
-    }
-      var x1=document.getElementById('password2');
-        var x2=document.getElementById('password3');
+    
+      var x1=document.getElementById('password1');
+        var x2=document.getElementById('password2');
         if(x1.value!=x2.value)
             {
+                document.getElementById('password1').value="";
                 document.getElementById('password2').value="";
-                document.getElementById('password3').value="";
-                availableSelectList3= document.getElementById("searchResult3");
+                availableSelectList3= document.getElementById("searchResult2");
                 availableSelectList3.innerHTML="Password Mismatch";
-                document.getElementById('password3').focus();
+                document.getElementById('password1').focus();
                 return false;
             }
              else{
 
-             availableSelectList3 = document.getElementById("searchResult3");
+             availableSelectList3 = document.getElementById("searchResult2");
                 availableSelectList3.innerHTML="";
 
          }
@@ -124,7 +118,7 @@ System.out.println(user+"....................");
         var x=document.getElementById('password1');
         if(x.value=="")
             {
-                alert("Existing Password should not be blank");
+                alert("Password should not be blank");
                  document.getElementById('password1').focus();
                 return false;
             }
@@ -143,7 +137,7 @@ System.out.println(user+"....................");
             {
                 document.getElementById('password2').focus();
                 availableSelectList1 = document.getElementById("searchResult2");
-                availableSelectList1.innerHTML="old and new password cannot be same";
+                availableSelectList1.innerHTML="Password Mismatch";
                
                 document.getElementById('password2').value="";
                 
@@ -171,7 +165,7 @@ function clearme()
    
     document.getElementById("password1").value = "";
     document.getElementById("password2").value = "";
-    document.getElementById("password3").value = "";
+   
     
     return true;
 }
@@ -291,10 +285,10 @@ function loadHelp()
                     <html:hidden styleId="user_id1" property="user_id1" value="<%=user%>"/>
                     </td></tr>
            
-                <tr><td class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.oldpassword")%></td><td><html:password styleId="password1" onblur="return search1()" property="password1"/><div align="left" id="searchResult1" class="err" style="border:#000000; "></div>
-                <tr><td class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.newpassword")%></td><td><html:password styleId="password2" property="password2" onblur="checkPass()"/><div align="left" id="searchResult2" class="err" style="border:#000000; "></div>
+                <tr><td class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.newpassword")%></td><td><html:password styleId="password1"  property="password1"/><div align="left" id="searchResult1" class="err" style="border:#000000; "></div>
+                <tr><td class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.repassword")%></td><td><html:password styleId="password2" property="password2" /><div align="left" id="searchResult2" class="err" style="border:#000000; "></div>
                           </td></tr>
-           <tr><td class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.repassword")%></td><td><input type="password" id="password3" onblur="return check();"/><div align="left" id="searchResult3" class="err" style="border:#000000; "></div>
+                <tr><td class="btn3" dir="<%=rtl%>" align="<%=align%>" colspan="2">
                 <br>
    <%
    String   message="";

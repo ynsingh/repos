@@ -4,11 +4,7 @@
  */
 package com.myapp.struts.cataloguing;
 
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
 import org.apache.struts.upload.FormFile;
 
 /**
@@ -29,6 +25,15 @@ public class StrutsUploadForm extends org.apache.struts.action.ActionForm {
     private String cell100, cell91, cell92, cell93, cell94, cell95, cell96, cell97, cell98, cell99;
     private String cell110, cell101, cell102, cell103, cell104, cell105, cell106, cell107, cell108, cell109;
 private String delimiter;
+private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public String getDelimiter() {
         return delimiter;

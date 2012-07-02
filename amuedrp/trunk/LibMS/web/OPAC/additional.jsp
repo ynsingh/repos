@@ -64,17 +64,7 @@ catch(Exception e)
     var availableSelectList;
         function search()
         {
-               var x=document.getElementById('TXTAUTHOR').value;
-             var y=document.getElementById('TXTTITLE').value;
-              var z=document.getElementById('TXTSUBJECT').value;
-               var a=document.getElementById('TXTOTHER').value;
-
-        if(x=='' && y=='' && z=='' && a=='')
-            {
-                alert("Please Enter KeyWord No to Search Title");
-                return false;
-
-            }
+             
 
             var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
             if(keyValue=="all")
@@ -102,6 +92,7 @@ catch(Exception e)
         }
         function update(cartXML)
         {
+            
             var depts = cartXML.getElementsByTagName("sublibrary_ids")[0];
             var em = depts.getElementsByTagName("sublibrary_id");
             var em1 = depts.getElementsByTagName("sublibrary_name");
@@ -118,6 +109,17 @@ catch(Exception e)
                 newOpt.value = ndValue;
                 newOpt.text = ndValue1;
             }
+            <%--  var x=document.getElementById('TXTAUTHOR').value;
+             var y=document.getElementById('TXTTITLE').value;
+              var z=document.getElementById('TXTSUBJECT').value;
+               var a=document.getElementById('TXTOTHER').value;
+
+        if(x=='' && y=='' && z=='' && a=='')
+            {
+                alert("Please Enter KeyWord No to Search Title");
+                return false;
+
+            }--%>
       }
       function f()
       {
@@ -153,9 +155,9 @@ catch(Exception e)
            var x=document.getElementById('TXTAUTHOR').value;
              var y=document.getElementById('TXTTITLE').value;
               var z=document.getElementById('TXTSUBJECT').value;
-               var a=document.getElementById('TXTOTHER').value;
+//               var a=document.getElementById('TXTOTHER').value;
 
-        if(x=='' && y=='' && z=='' && a=='')
+        if(x=='' && y=='' && z=='' )
             {
                 alert("Please Enter KeyWord No to Search Title");
                 return false;
@@ -183,10 +185,13 @@ catch(Exception e)
     {
         if(document.getElementById('checkboxId2').checked)
         {
-            document.getElementById("checkbox").value="Checked";
+            
+           document.getElementById("checkbox").value="Checked";
+           
         }
         else
         {
+           // window.location.reload();
             document.getElementById("checkbox").value="Unchecked";
         }
     }
@@ -199,6 +204,9 @@ catch(Exception e)
 
       var transliterationControl;
       function onLoad() {
+          
+          
+           
         var options = {
             sourceLanguage: 'en',
             destinationLanguage: ['ar','hi','kn','ml','ta','te'],
@@ -211,7 +219,10 @@ catch(Exception e)
           new google.elements.transliteration.TransliterationControl(options);
 
         // Enable transliteration in the textfields with the given ids.
-        var ids = [ "TXTAUTHOR","TXTTITLE","TXTSUBJECT","TXTOTHER","TXTYR1","TXTYR2"];
+      
+        var ids = [ "TXTAUTHOR","TXTTITLE","TXTSUBJECT","TXTYR1","TXTYR2"];
+      
+             
         transliterationControl.makeTransliteratable(ids);
 
         // Add the STATE_CHANGED event handler to correcly maintain the state
@@ -253,6 +264,9 @@ catch(Exception e)
             languageSelect.add(opt);
           }
         }
+        
+          
+            
       }
 
       // Handler for dropdown option change event.  Calls setLanguagePair to
@@ -311,18 +325,20 @@ catch(Exception e)
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
 </head>
-<body onload="checkboxClickHandler();"  style="margin:0px 0px 0px 0px 0px;background-color:#e0e8f5;">
-    
+<jsp:include page="opacheader.jsp"/>
+<body onload="search();checkboxClickHandler();"  style="margin:0px 0px 0px 0px 0px;">
+
+
     <html:form styleId="F1" method="post" action="/OPAC/additional" onsubmit="return validate();" acceptCharset="utf-8">
-        <table   align="center" dir="<%=rtl%>" width="50%" class="datagrid" style="border:solid 1px black">
-  <tr class="header"><td  width="100%"align="center" dir="<%=rtl%>"  height="28px" align="center" colspan="3">
-	   <%=resource.getString("opac.additional.additionalsearchtext")%>
+        <table   align="center" dir="<%=rtl%>" width="50%" class="datagrid" style="border:dashed 1px cyan">
+  <tr class="header1"><td style="border-bottom: dashed 1px cyan;"  width="100%"align="center" dir="<%=rtl%>"  height="28px" align="center" colspan="3">
+          <font color="red"><%=resource.getString("opac.additional.additionalsearchtext")%></font>
         </td></tr>
   
            <html:hidden property="checkbox" styleId="checkbox" name="AdditionalSearchActionForm"/>
            <html:hidden property="language" styleId="language" name="AdditionalSearchActionForm"/>
       <% if(net.equalsIgnoreCase("true")){%>
-        <tr dir="<%=rtl%>"><td >  
+        <tr dir="<%=rtl%>"><td >
         <table><tr><td>
       <%=resource.getString("cataloguing.catbiblioentry.selectlang1")%> </td><td> <div id='translControl'>
 
@@ -347,7 +363,7 @@ catch(Exception e)
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.author")%></td><td><input type="text" dir="<%=rtl%>" id="TXTAUTHOR"  name="TXTAUTHOR" class="keyboardInput" onfocus="statwords('Enter Author Name Keyword')" onblur="loadHelp()" ></td></tr>
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.title")%></td><td><input dir="<%=rtl%>" type="text" id="TXTTITLE" name="TXTTITLE" class="keyboardInput" onfocus="statwords('Enter Title  Keyword')" onblur="loadHelp()" ></td></tr>
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.subject")%></td><td><input type="text" dir="<%=rtl%>" id="TXTSUBJECT"  name="TXTSUBJECT" class="keyboardInput"  onfocus="statwords('Enter Subject Keyword')" onblur="loadHelp()" ></td></tr>
-              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.otherfield")%></td><td><input dir="<%=rtl%>" type="text" id="TXTOTHER"  name="TXTOTHER" class="keyboardInput" onfocus="statwords('Enter Other Keyword')" onblur="loadHelp()" ></td></tr>
+              <%--<tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.otherfield")%></td><td><input dir="<%=rtl%>" type="text" id="TXTOTHER"  name="TXTOTHER" class="keyboardInput" onfocus="statwords('Enter Other Keyword')" onblur="loadHelp()" ></td></tr>--%>
           </table>
       </td>
       <td  dir="<%=rtl%>"  align="<%=align%>" valign="top" >
@@ -357,7 +373,7 @@ catch(Exception e)
          <select name="CMBCONN1" class="selecthome" size="1" dir="<%=rtl%>" id="CMBCONN1" >
         <option selected value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
         <option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
-        <option value="phrase" dir="<%=rtl%>"><%=resource.getString("opac.additional.phrase")%></option>
+        <%--<option value="phrase" dir="<%=rtl%>"><%=resource.getString("opac.additional.phrase")%></option>--%>
         </select>
      </td>
               </tr>
@@ -365,7 +381,7 @@ catch(Exception e)
          <select name="CMBCONN2" class="selecthome" size="1" id="CMBCONN2" dir="<%=rtl%>" >
         <option selected value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
         <option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
-        <option value="phrase" dir="<%=rtl%>"><%=resource.getString("opac.additional.phrase")%></option>
+        <%--<option value="phrase" dir="<%=rtl%>"><%=resource.getString("opac.additional.phrase")%></option>--%>
         </select>
      </td>
               </tr>
@@ -373,21 +389,21 @@ catch(Exception e)
           <select name="CMBCONN3" class="selecthome" size="1" id="CMBCONN3" dir="<%=rtl%>">
             <option selected value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
             <option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
-            <option value="phrase" dir="<%=rtl%>"><%=resource.getString("opac.additional.phrase")%></option>
+            <%--<option value="phrase" dir="<%=rtl%>"><%=resource.getString("opac.additional.phrase")%></option>--%>
             </select>
      </td>
               </tr>
-           <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.connectas4")%> </td><td  valign="top">
+           <%--<tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.connectas4")%> </td><td  valign="top">
         <select name="CMBCONN4" class="selecthome" dir="<%=rtl%>" size="1" id="CMBCONN4">
             <option selected value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
             <option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
             <option value="phrase" dir="<%=rtl%>"><%=resource.getString("opac.additional.phrase")%></option>
         </select>
      </td>
-              </tr>
+              </tr>--%>
           </table></td></tr>
-        <tr class="header" dir="<%=rtl%>"><td colspan="2" align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.restrictedby")%></td><td align="<%=align%>"  dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
-        <tr style="background-color:#e0e8f5;">
+        <tr dir="<%=rtl%>"><td colspan="2" align="<%=align%>" dir="<%=rtl%>" style="color:red;font-weight: bold;"><%=resource.getString("opac.simplesearch.restrictedby")%></td><td align="<%=align%>"  dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
+        <tr style="">
         <td   colspan="2" align="<%=align%>" dir="<%=rtl%>">
            <table   align="<%=align%>" dir="<%=rtl%>">
                <tr>
@@ -408,7 +424,12 @@ catch(Exception e)
                                 <select name="CMBDB" class="selecthome" dir="<%=rtl%>" size="1" id="CMBDB">
                                      <option selected value="combined" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.combnd")%></option>
                                      <option value="book" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.books")%></option>
-                                     <option value="cd" dir="<%=rtl%>">CDs</option>
+                                  <option value="cd" dir="<%=rtl%>">CD/DVD ROM</option>
+     <option value="vd" dir="<%=rtl%>">Electronic Document(Video/Motion Pictures)</option>
+     <option value="ppt" dir="<%=rtl%>">Electronic Document(Presenatation)</option>
+     <option value="au" dir="<%=rtl%>">Electronic Document(Sound Recording)</option>
+     <option value="th" dir="<%=rtl%>">Thesis</option>
+     <option value="ds" dir="<%=rtl%>">Dissertations</option>
                                 </select>
                             </td>
                         </tr>
@@ -467,5 +488,7 @@ catch(Exception e)
    </tr>
        </table>
 </html:form>
+    <jsp:include page="opacfooter.jsp"/>
+ 
 </body>
 </html>

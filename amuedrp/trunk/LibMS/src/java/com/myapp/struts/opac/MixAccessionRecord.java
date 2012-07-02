@@ -7,19 +7,10 @@ package com.myapp.struts.opac;
 
 import com.myapp.struts.hbm.AccessionRegister;
 import com.myapp.struts.hbm.BibliographicDetailsLang;
-import com.myapp.struts.hbm.DocumentDetails;
-import java.io.UnsupportedEncodingException;
-import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-
-/**
- *
- * @author Faraz
- */
-public class MixAccessionRecord  {
+public class MixAccessionRecord  implements Serializable
+{
     
   BibliographicDetailsLang bibliographicDetailsLang;
   AccessionRegister accessionRegister;

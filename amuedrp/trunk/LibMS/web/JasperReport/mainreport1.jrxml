@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="mainreport1" language="groovy" pageWidth="595" pageHeight="850" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<import value="net.sf.Jasperreports.engine.*"/>
+	<parameter name="bb" class="java.util.List"/>
+	<parameter name="subreport111.jasper" class="java.lang.String"/>
+	<parameter name="subreport211.jasper" class="java.lang.String"/>
+	<parameter name="subreport41.jasper" class="java.lang.String"/>
+	<parameter name="subreport51.jasper" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="2" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="1" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="800" splitType="Stretch">
+			<subreport>
+				<reportElement x="20" y="0" width="90" height="15"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(((Collection)$P{bb}))]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["subreport111.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="19" y="300" width="90" height="15"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(((Collection)$P{bb}))]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["subreport211.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="19" y="450" width="90" height="15"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(((Collection)$P{bb}))]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["subreport41.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="19" y="780" width="90" height="12"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(((Collection)$P{bb}))]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["subreport51.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

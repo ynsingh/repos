@@ -8,9 +8,17 @@
     <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <script language="javaScript" src="fulldetail.js"></script>
+<script>
+    function getprint()
+{
+
+
+window.print();
+}
+    </script>
 </head>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
-<body> 
+<body onload="parent.setIframeHeight();">
 <%! String title,author,doctype,publ_pl,pub_name,pub_yr,pages,index,callno,phy_width,loc,pubyr,copy,vol,ed,publ,place,isbn,accno,subtitle,subject,id,lib_id,status,location,booktype,lccno;
 int no_of_copy=0;
 List<BibliographicDetails> dd=new ArrayList<BibliographicDetails>();
@@ -54,7 +62,7 @@ dd = (List<BibliographicDetails>)session.getAttribute("documentDetail1");
             author=dd.get(0).getMainEntry();
             publ_pl=dd.get(0).getPublicationPlace();
             pub_name=dd.get(0).getPublisherName();
-            pub_yr=dd.get(0).getPublishingYear();
+            pub_yr=String.valueOf(dd.get(0).getPublishingYear());
             lccno=dd.get(0).getLccNo();
 
             callno=dd.get(0).getCallNo();
@@ -88,12 +96,12 @@ dd = (List<BibliographicDetails>)session.getAttribute("documentDetail1");
              {   issuetype=docc.getIssueCheck();
                 
 }
-System.out.println(issuetype+"  "+booktype+docc+lib_id+sublib_id);
+
  %>
 
 <%!
     Locale locale;
-    String locale1="en";
+    String locale1="en",head;
     String rtl="ltr";
     String align="left";
 %>
@@ -114,70 +122,98 @@ locale1=(String)session.getAttribute("locale");
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
+   <%
+head=(String)   session.getAttribute("head");
+if(head!=null){
+%>
+<jsp:include page="opacheader.jsp"/>
+<%}%>
+    <TABLE align="center" dir="<%=rtl%>"  style="text-align: justify;border-top: dashed 1px cyan;"  border='0' class="datagrid" cellspacing='0' cellpadding='0' valign="top" width="100%">
+        <tr dir="<%=rtl%>"><td valign="top" align="center"  height="200px" width="200px">
+                <br><br>Book Cover Image<br><img src="<%=request.getContextPath()%>/images/no-image.jpg" style="border: dashed 1px cyan;margin-left: 20px;" height="180px" width="180px" style="margin:5px 5px 5px 5px;" ><br><br><u>View Book Index Content</u><br>
+                
+            </td>
+            <td valign="top" style="margin-left: 10px; font-family: arial; font-size: 13pt;
+	    font-weight: bold;color: red;height:20px;font-style: italic;border: dashed 1px cyan;">
+                <table width="100%">
+                    <tr><td>&nbsp;&nbsp;<%=title%></td><td align="right"><a  href="#"><font color="blue">Book Rating</font></a>&nbsp;|&nbsp;<a  href="#"><font color="blue">Reader Critics</font></a>&nbsp;|&nbsp;<a  href="<%= request.getContextPath()%>/OPAC/allitems.jsp"><font color="blue">View Detail</font></a>
+        <button class="buttonhome"  onmousedown="fontResize('-5')">Font Size -&nbsp;-</button><button  class="buttonhome" onmousedown="fontResize('+5')">Font Size ++</button></td>
+                </table>
 
-
-    <TABLE align="center" dir="<%=rtl%>"  style="text-align: justify;"  border='0' class="datagrid" cellspacing='0' cellpadding='0' valign="top" width="60%">
-   <TR dir="<%=rtl%>">
-       <td colspan="3" align="center" style="margin:0px 0px 0px 0px" class="header">
-           <%--<a href="" style="border: none;text-decoration: none;" onclick="document.getElementById('s1').src='<%=request.getContextPath()%>/images/sub.gif'">  <img id="s1" src="<%=request.getContextPath()%>/images/sub1.gif"/></a>
-           <img id="b1" src="<%=request.getContextPath()%>/images/brief1.gif"/>
-       <img id="m1" src="<%=request.getContextPath()%>/images/marc1.gif"/>
-       <img id="f1" src="<%=request.getContextPath()%>/images/full1.gif"/>--%>
-      <a href="../OPAC/newjsp.jsp" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
-      <b >Brief Details</b></a>&nbsp;|&nbsp;
-       <a href="../OPAC/subject.jsp" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
-      <b > Subject Details</b></a>&nbsp;|&nbsp;
-      <a href="../OPAC/fulldetails.jsp"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
-      <b> Full Details</b></a>&nbsp;|&nbsp;
-     <a href="<%=request.getContextPath()%>/OPAC/marc_details.jsp"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
-      <b> MARC Details</b></a>
-
-       </td>
+                
+    
+         
+         <TABLE align="center" dir="<%=rtl%>"  style="text-align: justify;margin-left: 10px;line-height: 20px"  border='0' class="datagrid" cellspacing='0' cellpadding='0' valign="top" width="99%">
+        <TR dir="<%=rtl%>">
+            <td colspan="3" style=" color: blue;font-weight: bold;font-size: 12px;text-align:left;height:20px;
+ border-top:dashed 1px cyan;border-bottom: dashed 1px cyan;"><table width="100%">
+                    <tr><td><font color="blue">Full Description</font></td><td align="right"><img src="<%=request.getContextPath()%>/images/print.jpeg" onclick="getprint();" height="20px" width="25px"/>&nbsp;|&nbsp;Export to <select class="btnapp"><option>XML</option></select>
+        </td>
+                </table></td>
+         
     </TR>
-<TR dir="<%=rtl%>">
-        <td   valign='top' dir="<%=rtl%>"   ><b>LC Code:</b></td>
-
-        <td>:</td><td><%=lccno!=null?lccno:"" %></td>
-    </TR>
-    <TR dir="<%=rtl%>">
-        <td   valign='top' dir="<%=rtl%>"   ><b>Type of material:</b></td>
+    <TR dir="<%=rtl%>" >
+        <td   valign='top'  dir="<%=rtl%>"   ><b>Type of material:</b></td>
 
         <td>:</td><td><%=doctype!=null?doctype:"" %></td>
     </TR>
-   
     <TR dir="<%=rtl%>">
         <TD   valign='top' dir="<%=rtl%>"   ><b>Main <%=resource.getString("opac.newjsp.title")%></b></TD>
         <td>:</td>
-      
+
         <td> <%=title%></td>
     </TR>
 
     <TR dir="<%=rtl%>">
-        <TD NOWRAP valign='top' dir="<%=rtl%>"  ><b>Personal name//Main Entry/<%=resource.getString("opac.newjsp.mainauthor")%></b></TD>
+        <TD NOWRAP valign='top' dir="<%=rtl%>"  ><b>Personal name/Main Entry/<%=resource.getString("opac.newjsp.mainauthor")%></b></TD>
         <td>:</td>
-      
+
        <TD><%=author%></TD>
     </TR>
-      
-  
+    <TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>"  ><b>Joint Author</b></TD>
+        <td>:</td>
+
+       <TD></TD>
+    </TR>
+    <TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>"  ><b>Statement Responsibility</b></TD>
+        <td>:</td>
+
+       <TD></TD>
+    </TR>
+    <TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>"  ><b>Editied By</b></TD>
+        <td>:</td>
+
+       <TD></TD>
+    </TR>
+    <TR dir="<%=rtl%>">
+        <TD NOWRAP valign='top' dir="<%=rtl%>"  ><b>Translated by</b></TD>
+        <td>:</td>
+
+       <TD></TD>
+    </TR>
+
+
     <TR dir="<%=rtl%>">
         <TD NOWRAP valign='top' dir="<%=rtl%>"><b>Published/Created : </b></TD>
         <td>:</td><TD>
         <%=pub_name%>, <%=publ_pl%>,<%=pub_yr%></TD>
     </TR>
-    
+
     <TR dir="<%=rtl%>">
         <TD NOWRAP valign='top' dir="<%=rtl%>"><b>Physical Description : </b></TD>
         <td>:</td>
 
         <TD><%=index %>, <%=pages%>,<%=phy_width %></TD>
     </TR>
-   
-    
+
+
     <TR dir="<%=rtl%>">
         <TD NOWRAP valign='top' dir="<%=rtl%>" ><b><%=resource.getString("opac.newjsp.isbn")%></b></TD>
         <td>:</td>
-    
+
         <TD><%=isbn%></TD>
     </TR>
  <TR dir="<%=rtl%>">
@@ -207,13 +243,33 @@ locale1=(String)session.getAttribute("locale");
         <TD><%=loc %></TD>
     </TR>
 
-<tr><td colspan="3"><a href="<%= request.getContextPath()%>/OPAC/record.jsp" ><br/>View Detail</a><br/><br/>
-        <%--<button class="buttonhome"  onmousedown="fontResize('-5')">Font Size -&nbsp;-</button><button  class="buttonhome" onmousedown="fontResize('+5')">Font Size ++</button>--%>
-    </td></tr>
-</TABLE><br><br>
-<%       }
-%>
 
+</TABLE>
+         <TABLE align="center" dir="<%=rtl%>"  style="text-align: justify;margin-left: 10px;line-height: 20px;"  border='0' class="datagrid" cellspacing='0' cellpadding='0' valign="top" width="99%">
+        <TR dir="<%=rtl%>">
+            <td colspan="3" style=" color: blue;font-weight: bold;font-size: 13px;text-align:left;height:20px;
+ border-top:dashed 1px cyan;border-bottom: dashed 1px cyan;border-right: dashed 1px cyan;"><table width="100%">
+                    <tr><td><font color="blue">Marc Details</font></td><td align="right"><img src="<%=request.getContextPath()%>/images/print.jpeg" height="20px" width="25px"/>&nbsp;|&nbsp;Export to <select class="btnapp"><option>XML</option></select>
+        </td>
+                </table></td>
+         
+    </TR>
+<TR dir="<%=rtl%>">
+    <td colspan="2" width="100%">
+        <jsp:include page="marc_details.jsp"></jsp:include>
+    </td>
+</TR>
+
+</TABLE>
+            </td></tr>
+    </TABLE>
+    <br><br>
+<%       }
+
+if(head!=null){
+%>
+<jsp:include page="opacfooter.jsp"/>
+<%}%>
 
 </body>
 </html>

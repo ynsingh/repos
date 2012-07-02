@@ -4,9 +4,11 @@
  */
 package com.myapp.struts.cataloguingDAO;
 
+import com.myapp.struts.cataloguing.Export;
 import com.myapp.struts.cataloguing.StrutsUploadForm;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.hbm.HibernateUtil;
+import java.util.ArrayList;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
 import org.hibernate.Query;
@@ -27,6 +29,33 @@ import org.hibernate.criterion.Restrictions;
 public class DAO {
 
     static Query query;
+  public static boolean update(BibliographicDetails obj) throws Exception {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        System.out.println("isert is called :::::::::::::::: " + obj);
+
+        try {
+            tx = (Transaction) session.beginTransaction();
+
+            session.update(obj);
+
+            tx.commit();
+
+
+
+        } catch (Exception ex) {
+
+tx.rollback();
+
+            ex.printStackTrace();
+          return false;
+
+        } finally {
+            session.close();
+        }
+        return true;
+
+    }
 
     public static boolean insert(BibliographicDetails obj) throws Exception {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -55,6 +84,35 @@ tx.rollback();
         return true;
 
     }
+    public static boolean insertImport(BibliographicDetails obj,AccessionRegister acc,DocumentDetails doc) throws Exception {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+System.out.println("I a");
+        try {
+            tx = (Transaction) session.beginTransaction();
+
+            session.save(obj);
+            session.save(acc);
+            session.save(doc);
+
+            tx.commit();
+
+
+
+        } catch (Exception ex)
+        {
+                tx.rollback();
+                System.out.println(ex+"error........................");
+                return false;
+
+        } finally {
+            session.close();
+        }
+        return true;
+
+    }
+
 
     public static List columnname(String table_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -86,7 +144,7 @@ List obj=null;
             session.beginTransaction();
 
 
-            SQLQuery query = session.createSQLQuery("(select COLUMN_NAME  from information_schema.columns where table_name ='"+table_name+"' TABLE_SCHEMA='libms' order by ordinal_position)");
+            SQLQuery query = session.createSQLQuery("(select COLUMN_NAME  from information_schema.columns where table_name ='"+table_name+"' and TABLE_SCHEMA='libms' order by ordinal_position)");
 
            obj=  query.list();
            session.getTransaction().commit();
@@ -155,6 +213,84 @@ List obj=null;
         }
 return obj;
     }
+  public static BibliographicDetails DuplicateTitleCallno(String library_id,String sublibrary_id,String callno,String title,String isbn10,String mainentry) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+BibliographicDetails obj=null;
+        try {
+            session.beginTransaction();
+            Query query =null;
+            if(isbn10==null)
+            query= session.createQuery("From BibliographicDetails where id.libraryId=:library and id.sublibraryId=:sublibrary and callNo=:callno and title=:title and  mainEntry=:mainentry");
+            else
+            query = session.createQuery("From BibliographicDetails where id.libraryId=:library and id.sublibraryId=:sublibrary and callNo=:callno and title=:title and isbn10=:isbn10 and mainEntry=:mainentry");
+            query.setString("library", library_id);
+            query.setString("sublibrary", sublibrary_id);
+            query.setString("callno", callno);
+            query.setString("title", title);
+            query.setString("mainentry", mainentry);
+            if(isbn10!=null)
+            query.setString("isbn10", isbn10);
+
+
+            obj= (BibliographicDetails) query.list();
+            session.getTransaction().commit();
+
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+return obj;
+    }
+  public static BibliographicDetails DuplicateTitleCallno(String library_id,String sublibrary_id,String callno,String title,String mainentry) {
+       Session session = HibernateUtil.getSessionFactory().openSession();
+BibliographicDetails obj=null;
+        try {
+            session.beginTransaction();
+            Query query =null;
+
+            query= session.createQuery("From BibliographicDetails where id.libraryId=:library and id.sublibraryId=:sublibrary and callNo=:callno and title=:title and  mainEntry=:mainentry");
+            query.setString("library", library_id);
+            query.setString("sublibrary", sublibrary_id);
+            query.setString("callno", callno);
+            query.setString("title", title);
+            query.setString("mainentry", mainentry);
+           
+
+            obj= (BibliographicDetails) query.uniqueResult();
+            session.getTransaction().commit();
+
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+return obj;
+    }
+   public static List DuplicateISBNTitle(String library_id,String sublibrary_id,String isbn,String title) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+List obj=null;
+        try {
+            session.beginTransaction();
+            SQLQuery query = session.createSQLQuery("select * from temp_excell_import where library_id=:library and sublibrary_id=:sublibrary and isbn10=:isbn and title=:title");
+             query.setString("library", library_id);
+            query.setString("sublibrary", sublibrary_id);
+            query.setString("isbn", isbn);
+            query.setString("title", title);
+
+            obj= (List) query.list();
+            session.getTransaction().commit();
+
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+return obj;
+    }
  public static List distintTitleAccessionno(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List obj=null;
@@ -173,6 +309,40 @@ List obj=null;
         }
 return obj;
     }
+ public static List getTotalNumberDocument(String library_id,String sublibrary_id,String call_no,String title) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+List obj=null;
+        try {
+            session.beginTransaction();
+            SQLQuery query = session.createSQLQuery("SELECT *  FROM document_details  where  library_id='"+library_id+"' and sublibrary_id='"+sublibrary_id+"'  and call_no='"+call_no+"' and title='"+title+"'");
+            obj= (List) query.list();
+           session.getTransaction().commit();
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+return obj;
+    }
+
+ public static List duplicateAccessionno(String library_id,String sublibrary_id,String accno) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+List obj=null;
+        try {
+            session.beginTransaction();
+            SQLQuery query = session.createSQLQuery("SELECT *  FROM accession_register  where  library_id='"+library_id+"' and sublibrary_id='"+sublibrary_id+"'  and accession_no='"+accno+"'");
+            obj= (List) query.list();
+           session.getTransaction().commit();
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+return obj;
+    }
+
 
     public static boolean  TruncateTempTable(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -286,16 +456,33 @@ List obj=null;
 return obj;
     }
 
-    public static List ViewAllTable(String tablename,String library_id) {
+    public static List ViewAllTable(String tablename,String library_id,String sublibrary) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List obj=null;
         try {
             session.beginTransaction();
-            query = session.createSQLQuery("select * from " + tablename+" where library_id='"+library_id+"'");
+            if(tablename.equalsIgnoreCase("bibliographic_details"))
+            {        query = session.createSQLQuery("select * from "+ tablename+" where library_id='"+library_id+"' and sublibrary_id='"+sublibrary+"'")
+                        .addEntity(BibliographicDetails.class)
+                        .setResultTransformer(Transformers.aliasToBean(Export.class));
+                    obj=query.list();
+                      
+            }
+            else if(tablename.equalsIgnoreCase("accession_register"))
+            {        query = session.createSQLQuery("select * from "+ tablename+" where library_id='"+library_id+"' and sublibrary_id='"+sublibrary+"'")
+                        .addEntity(AccessionRegister.class)
+                        .setResultTransformer(Transformers.aliasToBean(Export.class));
+                    obj=query.list();
 
+            }
+            else if(tablename.equalsIgnoreCase("document_details"))
+            {        query = session.createSQLQuery("select * from "+ tablename+" where library_id='"+library_id+"' and sublibrary_id='"+sublibrary+"'")
+                        .addEntity(DocumentDetails.class)
+                        .setResultTransformer(Transformers.aliasToBean(Export.class));
+                    obj=query.list();
 
-           obj=(List) query.list();
-session.getTransaction().commit();
+            }
+            session.getTransaction().commit();
         } catch(Exception e){
         e.printStackTrace();
         }
@@ -397,19 +584,42 @@ session.getTransaction().commit();
         }
 return maxbiblio;
     }
+public static boolean insertTemp(TempExcellImport obj) throws Exception {
 
-    public static boolean insertgeneric(TempExcellImport obj) throws Exception {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
-       
+Transaction tx = session.beginTransaction();
+        try
+        {
+        session.save(obj);
+        tx.commit();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            tx.rollback();
+return false;
 
-        try {
-            tx = (Transaction) session.beginTransaction();
 
-            session.save(obj);
-            
-            tx.commit();
+        } finally {
+            session.close();
+        }
+        return true;
+    }
+    public static boolean insertgeneric(List<TempExcellImport> obj) throws Exception {
 
+        Session session = HibernateUtil.getSessionFactory().openSession();
+Transaction tx = session.beginTransaction();
+try{
+    System.out.println(obj.size());
+for ( int i=0; i<obj.size(); i++ ) {
+    TempExcellImport customer = obj.get(i);
+    session.save(customer);
+//    if ( i % 20 == 0 ) { //20, same as the JDBC batch size
+//        //flush a batch of inserts and release memory:
+//        session.flush();
+//        session.clear();
+//    }
+}
+
+tx.commit();
 
 
         } catch (Exception ex) {
@@ -422,7 +632,6 @@ return false;
             session.close();
         }
         return true;
-
     }
 
     public static boolean insertBibligraphicDetails(BibliographicDetails obj) throws Exception {
@@ -711,7 +920,7 @@ return false;
 
             }
             if (map_table[column_index].equals("publishing_year")) {
-                pojo_object.setPublishingYear(cellvalue);
+                pojo_object.setPublishingYear(Integer.parseInt(cellvalue));
 
             }
             if (map_table[column_index].equals("call_no")) {

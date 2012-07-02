@@ -156,6 +156,7 @@ document.write('</div></span>');
 <li><a href="<%=contextPath%>/admin/block_admin.jsp"  target="f3"><%=resource.getString("login.delinquentinstitutelist")%></a></li>
 <li><a href="<%=contextPath%>/admin/view_blocked_institute.jsp"  target="f3"><%=resource.getString("login.changeworkingstatus")%></a></li>
 <li><a href="<%=contextPath%>/admin/mailsetting.jsp"  target="f3">Mail Setting</a></li>
+<li><a href="<%=contextPath%>/admin/change_pass.jsp"  target="f3">Change Login Password</a></li>
 </ul>
 </div>
 

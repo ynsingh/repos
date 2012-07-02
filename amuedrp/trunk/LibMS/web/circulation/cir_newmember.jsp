@@ -53,6 +53,8 @@ String reg_date=(String)request.getAttribute("reg_date");
 String sem=(String)request.getAttribute("sem");
 String mem_id=(String)request.getAttribute("mem_id");
 String file=(String) request.getAttribute("filename");
+String uni=(String)request.getAttribute("uni1");
+String unicoll=(String)request.getAttribute("uniadd1");
 %>
 
 <%!
@@ -588,6 +590,12 @@ function copy(){
    var mem_id1=document.getElementById("mem_id1");
    var mem_id2=document.getElementById("mem_id2");
    mem_id1.value=mem_id2.value;
+   var coll1=document.getElementById("uni1");
+   var coll2=document.getElementById("uni2");
+   coll1.value=coll2.value;
+   var unicoll1=document.getElementById("uniadd1");
+   var unicoll2=document.getElementById("uniadd2");
+   unicoll1.value=unicoll2.value;
       
 }
 </script>
@@ -668,7 +676,8 @@ a:active
           <html:hidden property="TXTREG_DATE" name="CirculationMemberActionForm" styleId="TXTREG_DATE1"/>
           <html:hidden property="TXTEXP_DATE" name="CirculationMemberActionForm" styleId="TXTEXP_DATE1"/>
           <html:hidden property="TXTMEMID" name="CirculationMemberActionForm" styleId="mem_id1"/>
-         
+         <html:hidden property="college" name="CirculationMemberActionForm" styleId="uni2"/>
+         <html:hidden property="colladd" name="CirculationMemberActionForm" styleId="uniadd2"/>
 
     </html:form>
    
@@ -704,10 +713,10 @@ a:active
 
 
       <%if(session.getAttribute("image")!=null){%>
-                         <html:img src="./circulation/upload.jsp"  alt="no Image Selected" width="100" height="100"/>
+      <html:img src="/LibMS/circulation/upload.jsp" border="1px" alt="no Image Selected" width="100" height="100"/>
                         <%}else{%>
 
-                        <html:img src="./images/no-image.jpg"  alt="no Image Selected" width="100" height="100"/>
+                        <html:img src="./images/no-image.jpg" border="1px"  alt="no Image Selected" width="100" height="100"/>
                            <%}%>
                            <a href="#" onclick="javascript:showdiv();"><%=resource.getString("circulation.cir_newmember.imageupload")%></a>
 
@@ -908,7 +917,7 @@ a:active
                   </td></tr>
              <tr>
                  <td dir="<%=rtl%>" class="txtStyle">University/College</td>
-                 <td dir="<%=rtl%>" class="table_textbox"><html:text tabindex="15"  property="college" styleId="uni1"  value="" style="width:160px" onfocus="statwords('Enter University/College Name');" onblur="loadHelp()"/></td>
+                 <td dir="<%=rtl%>" class="table_textbox"><html:text tabindex="15"  property="college" styleId="uni1"  value="<%=uni%>" style="width:160px" onfocus="statwords('Enter University/College Name');" onblur="loadHelp()"/></td>
                  <td dir="<%=rtl%>" valign="top"><%=resource.getString("circulation.cir_newmember.exp")%>*<br>(YYYY-MM-DD)
                   </td>
                   <td dir="<%=rtl%>" class="table_textbox" valign="top"><html:text  property="TXTEXP_DATE" value="<%=exp_date%>" tabindex="27" styleId="TXTEXP_DATE" style="width:160px" onfocus="statwords('Enter Date');" onblur="loadHelp()"/>
@@ -921,7 +930,7 @@ a:active
                        </td></tr>
             <tr>
                  <td dir="<%=rtl%>" class="txtStyle">University/College Address</td>
-                 <td dir="<%=rtl%>" class="table_textbox"><html:text tabindex="15"  property="colladd" styleId="uniadd1"   value="" style="width:160px" onfocus="statwords('Enter University/College Name');" onblur="loadHelp()"/></td>
+                 <td dir="<%=rtl%>" class="table_textbox"><html:text tabindex="15"  property="colladd" styleId="uniadd1"   value="<%=unicoll%>" style="width:160px" onfocus="statwords('Enter University/College Name');" onblur="loadHelp()"/></td>
                  </tr>
              <tr>
                  <td></td>

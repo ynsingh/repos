@@ -1,9 +1,4 @@
-<%-- 
-    Document   : ExportDatabaseToExcell
-    Created on : Apr 11, 2011, 5:42:02 PM
-    Author     : khushnood
---%>
-<%@page contentType="text/html"%>
+<%@page contentType="text/html" import="com.myapp.struts.utility.*"%>
 <%@page pageEncoding="UTF-8"%>
 <jsp:include page="/admin/header.jsp" flush="true" />
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -26,22 +21,14 @@
             }
 
                </script>
-   <script language="javascript">
-function fun()
-{
-document.Form1.action="<%= request.getContextPath() %>/catExport.do";
-document.Form1.method="post";
-document.Form1.target="f1";
-document.Form1.submit();
-}
-</script>
     </head>
-    <body onload="fun()">
+    <body>
         <div style="top:100px; left:20%; position: absolute; visibility: show;">
             <html:form action="/export" method="post"  onsubmit="return export_excel();">
                <table border="1" align="center" class="table" width="500px" height="100px">
                 
-                <tr><td class="headerStyle" colspan="2" height="25px" align="center">Export Table to Excel Sheet</tr>
+                <tr><td class="headerStyle" colspan="2" height="25px" align="center">Export Table to Excel Sheet</td></tr>
+                <%--tr><td class="headerStyle" height="25px" align="center">Location Where to save file</td><td><html:text property="location"></html:text>(Ex: d:\ for windows or /home/username/Desktop/ for linux)</td></tr>--%>
                 <tr>
                     <td align="center" width="200px" height="25px">
                         Select Table Name
@@ -59,8 +46,8 @@ document.Form1.submit();
                     </td>
                 </tr>
                 <tr>
-                    <td align="center" colspan="2" height="25px">  <input align="center" name="button"  type="submit" value="Export Data"  />
-                 <input align="center" name="button" type="submit"  value="Back" /><br/>
+                    <td align="center" colspan="2" height="25px">  <input align="center" name="button"  type="submit" value="Export in XLS"  /> <input align="center" name="button"  type="submit" value="Export in Flat"  />
+                 <br/>
                    <p class="mess">
                         <%if (request.getAttribute("msg") != null) {
                                 out.println(request.getAttribute("msg"));
@@ -71,14 +58,52 @@ document.Form1.submit();
                                 out.println(request.getAttribute("msg1"));
                             }
                 %></p>
-                </td>
+                    <% String file=(String)session.getAttribute("filename");
+                    System.out.println(file);
+                    if(file!=null){%>
+                    <script>
+                        alert("<%=request.getAttribute("msg")%>");
+                          testwindow = window.open("<%=request.getContextPath()%>/cataloguing/excel.jsp", "mywindow", "location=1,status=1,scrollbars=1,width=1000,height=1000");
+                          testwindow.moveTo(0, 0);
+                        
+                        
+                        
+                    
+                        </script>
+
+                     <%
+                    }
+
+%>
+                     <%  file=(String)session.getAttribute("file");
+                    System.out.println(file);
+                    if(file!=null){%>
+                    <script>
+                        alert("<%=request.getAttribute("msg")%>");
+                          testwindow = window.open("<%=request.getContextPath()%>/cataloguing/notepad.jsp", "mywindow", "location=1,status=1,scrollbars=1,width=1000,height=1000");
+                          testwindow.moveTo(0, 0);
+
+
+
+
+                        </script>
+
+                     <%
+                    }
+
+%>
+
+                    </td>
             </tr>
            
             
         </table>                
             </html:form>
         </div>
-         <div style="top:200px; left:20%; position: absolute; visibility: show;">
+
+       
+
+      <%--   <div style="top:200px; left:20%; position: absolute; visibility: show;">
      <html:form action="/ExportDatabaseToTextAction" method="post"  >
         
        <table border="1" align="center" class="table" width="500px" height="100px">
@@ -153,7 +178,7 @@ document.Form1.submit();
         </div>
  <div style="top:350px; left:20%; position: absolute; visibility: show; width: 60%">
      <form action="<%= request.getContextPath() %>/catExport.do" name="Form1" method="post"  >
-<%--            <table class="table" align="center" width="350px" height="150px">
+            <table class="table" align="center" width="350px" height="150px">
                 <tr><td class="headerStyle" colspan="2" height="25px" align="center">Create .mrc file</tr>
                 <tr>
                 <td align="center" colspan="2">
@@ -176,7 +201,7 @@ document.Form1.submit();
                 %>
                     </p>
                 </td></tr>
-        </table> --%>
+        </table> 
 <table width="100%">
     <tr><td align="center" class="headerStyle">Export MARC data</td></tr>
     <tr>
@@ -184,6 +209,6 @@ document.Form1.submit();
     </tr>
 </table>
             </form>
-        </div>
+        </div>--%>
     </body>
 </html>

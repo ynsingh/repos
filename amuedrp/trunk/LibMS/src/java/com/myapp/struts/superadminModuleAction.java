@@ -65,26 +65,6 @@ public class superadminModuleAction extends org.apache.struts.action.Action {
 
 
                     //java mailing code to send it on Admin registration page
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
         return mapping.findForward(SUCCESS);
     }
 }

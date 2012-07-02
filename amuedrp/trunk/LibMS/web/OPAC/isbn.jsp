@@ -58,6 +58,18 @@ catch(Exception e)
         </script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/ajax.js"></script>
 <script language="javascript" type="text/javascript">
+    //   reSize Iframe when ever child  calls  it
+   function setIframeHeight() {
+       iframe=document.getElementById('f1');
+
+    if (iframe) {
+
+        var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+        if (iframeWin.document.body) {
+            iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+        }
+    }
+};
 var availableSelectList;
 function search() {
  
@@ -119,7 +131,7 @@ newOpt.text = ndValue1;
 
 
 }
-funcSearch();
+
 }
 
 function funcSearch()
@@ -167,8 +179,8 @@ else{
           new google.elements.transliteration.TransliterationControl(options);
 
         // Enable transliteration in the textfields with the given ids.
-        var ids = ["TXTKEY"];
-        transliterationControl.makeTransliteratable(ids);
+     //   var ids = ["TXTKEY"];
+      //  transliterationControl.makeTransliteratable(ids);
 
         // Add the STATE_CHANGED event handler to correcly maintain the state
         // of the checkbox.
@@ -270,14 +282,15 @@ else{
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
     </head>
-<body onload="checkboxClickHandler();" style="background-color:#e0e8f5;margin: 0px 0px 0px 0px;">
+    <jsp:include page="opacheader.jsp"></jsp:include>
+<body onload="search();checkboxClickHandler();setIframeHeight();" style="margin: 0px 0px 0px 0px;">
 
     <html:form  method="post" action="/OPAC/SearchByIsbn" target="f1" styleId="Form1" onsubmit="return search();" acceptCharset="utf-8">
        
-        <table align="center" dir="<%=rtl%>" width="100%" class="datagrid" height="400px"  style="border:solid 1px black;" >
+        <table align="center" dir="<%=rtl%>" width="90%" class="datagrid" height="400px"  style="border:dashed 1px cyan;" >
 
 
-  <tr class="header"><td  width="1000%" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
+  <tr class="header1"><td  width="100%" dir="<%=rtl%>"   align="center" colspan="2">
 
 
 		<%=resource.getString("opac.isbn.isbnsearch")%>
@@ -286,32 +299,11 @@ else{
 
 
         </td></tr>
-   <tr style="background-color:#e0e8f5;"><td width="800px" rowspan="2" dir="<%=rtl%>">
+  <tr ><td  rowspan="2" valign="top" dir="<%=rtl%>">
           <table>
               
                <html:hidden property="checkbox" styleId="checkbox" name="SearchByIsbnActionForm"/>
               <html:hidden property="language" styleId="language" name="SearchByIsbnActionForm"/>
-<%--              <% if(net.equalsIgnoreCase("true")){%>
-        <tr dir="<%=rtl%>"><td >
-        <table><tr><td>
-      <%=resource.getString("cataloguing.catbiblioentry.selectlang1")%> </td><td> <div id='translControl'>
-
-         <input type="checkbox" id="checkboxId4"  onclick="javascript:DisBox();javascript:checkboxClickHandler();javascript:languageChangeHandler()">
-        </div></td><td>
-        <div id="MLI" style="visibility: block;" >
-          <select id="languageDropDown" class="selecthome" onchange="javascript:languageChangeHandler()">
-
-          </select>
-        </div>
-        </td></tr></table>
-
-        </td></tr>
-        <%}else{%>
-         <tr><td  dir="<%=rtl%>" colspan="3">
-                 Sorry Cannot Support MLI Entry because of unavaliblibility of Net
-         </td>
-        </tr>
-        <%}%>--%>
               <tr><td dir="<%=rtl%>" valign="top"> <%=resource.getString("opac.isbn.isbnsearch")%><br/>
                 </td><td valign="top">
                      <input id="TXTKEY" name="TXTKEY" dir="<%=rtl%>" type="text" onfocus="statwords('Enter ISBN Number of the Book/Document')" onblur="loadHelp()">
@@ -333,14 +325,14 @@ else{
 
 
           </table>
-       </td><td class="header" dir="<%=rtl%>">
+      </td><td class="header1" dir="<%=rtl%>" valign="top">
            <%=resource.getString("opac.simplesearch.restrictedby")%>
 
        </td>
 
     </tr>
-    <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
-          <td    align="<%=align%>" dir="<%=rtl%>" style="border: solid 1px black;">
+    <tr  dir="<%=rtl%>">
+          <td    align="<%=align%>" dir="<%=rtl%>" style="border: dashed 1px cyan;">
               <table >
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.accessionno.library")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -357,9 +349,9 @@ else{
 
               </tr></table></td>
 
-    <tr ><td dir="<%=rtl%>" height="500px"   valign="top" colspan="2" >
-<hr/>
-          <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="100%" width="100%" scrolling="yes"  id="f1"></IFRAME>
+    <tr ><td dir="<%=rtl%>"   valign="top" colspan="2" >
+
+          <IFRAME  name="f1"  src="#" frameborder=0 height="0px" width="100%" scrolling="no"  id="f1"></IFRAME>
 
 
       </td></tr>
@@ -369,4 +361,6 @@ else{
     </html:form>
 
 
-    </body></html>
+    </body>
+<jsp:include page="opacfooter.jsp"></jsp:include>
+</html>

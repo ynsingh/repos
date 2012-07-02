@@ -40,10 +40,10 @@ locale1=(String)session.getAttribute("locale");
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
     </head>
-    <body>
+    <body onload="parent.setIframeHeight();">
         <table class="datagrid" width="100%" style="border: solid 1px black;">
 
-            <tr><td  align="<%=align%>" dir="<%=rtl%>" ><p align="justify"><b>Notice Details</b> <br/><hr/><%=notice.getDetail() %></p></td></tr>
+            <tr><td  align="<%=align%>" dir="<%=rtl%>" ><b>Notice Details</b> <br/><hr/><%=notice.getDetail() %></td></tr>
          </table>
     </body>
 </html>

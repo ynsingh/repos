@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
 
 /**
  *
@@ -23,60 +24,127 @@ public class CirCardProcessActionForm extends org.apache.struts.action.ActionFor
     private String id;
     private String clas;
     private String session;
-    private String checkbox1;
-    private String checkbox2;
-    private String checkbox3;
-    private String checkbox4;
-    private String checkbox5;
-    private String checkbox6;
-    private String checkbox7;
-    private String checkbox8;
-    private String checkbox9;
-    private String checkbox10;
-    private String checkbox11;
-    private String checkbox12;
+    private String libname;
+    private String libaddress;
+    private String cardtype;
+    private String cardgroup;
+    private String labname;
+    private String labid;
+    private String labclass;
+    private String labsession;
+    private String labaddress;
+    private String holdersign;
+    private String dob;
+    private String authoritysign;
     private String address2;
     private String memid;
 
-    public String getCheckbox10() {
-        return checkbox10;
+    public String getLibname() {
+        return libname;
     }
 
-    public void setCheckbox10(String checkbox10) {
-        this.checkbox10 = checkbox10;
+    public void setLibname(String libname) {
+        this.libname = libname;
     }
 
-    public String getCheckbox11() {
-        return checkbox11;
+    public String getLibaddress() {
+        return libaddress;
     }
 
-    public void setCheckbox11(String checkbox11) {
-        this.checkbox11 = checkbox11;
+    public void setLibaddress(String libaddress) {
+        this.libaddress = libaddress;
     }
 
-    public String getCheckbox12() {
-        return checkbox12;
+    public String getCardtype() {
+        return cardtype;
     }
 
-    public void setCheckbox12(String checkbox12) {
-        this.checkbox12 = checkbox12;
+    public void setCardtype(String cardtype) {
+        this.cardtype = cardtype;
     }
 
-    public String getCheckbox8() {
-        return checkbox8;
+    public String getCardgroup() {
+        return cardgroup;
     }
 
-    public void setCheckbox8(String checkbox8) {
-        this.checkbox8 = checkbox8;
+    public void setCardgroup(String cardgroup) {
+        this.cardgroup = cardgroup;
     }
 
-    public String getCheckbox9() {
-        return checkbox9;
+    public String getLabname() {
+        return labname;
     }
 
-    public void setCheckbox9(String checkbox9) {
-        this.checkbox9 = checkbox9;
+    public void setLabname(String labname) {
+        this.labname = labname;
     }
+
+    public String getLabid() {
+        return labid;
+    }
+
+    public void setLabid(String labid) {
+        this.labid = labid;
+    }
+
+    public String getLabclass() {
+        return labclass;
+    }
+
+    public void setLabclass(String labclass) {
+        this.labclass = labclass;
+    }
+
+    public String getLabsession() {
+        return labsession;
+    }
+
+    public void setLabsession(String labsession) {
+        this.labsession = labsession;
+    }
+
+    public String getLabaddress() {
+        return labaddress;
+    }
+
+    public void setLabaddress(String labaddress) {
+        this.labaddress = labaddress;
+    }
+
+    public String getHoldersign() {
+        return holdersign;
+    }
+
+    public void setHoldersign(String holdersign) {
+        this.holdersign = holdersign;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public String getAuthoritysign() {
+        return authoritysign;
+    }
+
+    public void setAuthoritysign(String authoritysign) {
+        this.authoritysign = authoritysign;
+    }
+
+
+
+    
+    
+   
+
+
+
+   
+
 
     public String getAddress2() {
         return address2;
@@ -86,13 +154,7 @@ public class CirCardProcessActionForm extends org.apache.struts.action.ActionFor
         this.address2 = address2;
     }
 
-    public String getCheckbox7() {
-        return checkbox7;
-    }
-
-    public void setCheckbox7(String checkbox7) {
-        this.checkbox7 = checkbox7;
-    }
+   
 
     public String getSession() {
         return session;
@@ -109,55 +171,10 @@ public class CirCardProcessActionForm extends org.apache.struts.action.ActionFor
     public void setMemid(String memid) {
         this.memid = memid;
     }
-    
 
-    public String getCheckbox1() {
-        return checkbox1;
-    }
+   
 
-    public void setCheckbox1(String checkbox1) {
-        this.checkbox1 = checkbox1;
-    }
-
-    public String getCheckbox2() {
-        return checkbox2;
-    }
-
-    public void setCheckbox2(String checkbox2) {
-        this.checkbox2 = checkbox2;
-    }
-
-    public String getCheckbox3() {
-        return checkbox3;
-    }
-
-    public void setCheckbox3(String checkbox3) {
-        this.checkbox3 = checkbox3;
-    }
-
-    public String getCheckbox4() {
-        return checkbox4;
-    }
-
-    public void setCheckbox4(String checkbox4) {
-        this.checkbox4 = checkbox4;
-    }
-
-    public String getCheckbox5() {
-        return checkbox5;
-    }
-
-    public void setCheckbox5(String checkbox5) {
-        this.checkbox5 = checkbox5;
-    }
-
-    public String getCheckbox6() {
-        return checkbox6;
-    }
-
-    public void setCheckbox6(String checkbox6) {
-        this.checkbox6 = checkbox6;
-    }
+   
 
     
 

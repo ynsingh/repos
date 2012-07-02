@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 11, 2011 5:57:04 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.BibliographicDetails" table="bibliographic_details" catalog="libms">
+    <class name="com.myapp.struts.hbm.BibliographicDetails" table="bibliographic_details" catalog="libms" lazy="false">
  
 
         <composite-id name="id" class="com.myapp.struts.hbm.BibliographicDetailsId">
@@ -66,8 +66,8 @@
         <property name="publicationPlace" type="string">
             <column name="publication_place" length="200" />
         </property>
-        <property name="publishingYear" type="string">
-            <column name="publishing_year" length="20" />
+        <property name="publishingYear" type="int">
+            <column name="publishing_year" />
         </property>
         <property name="callNo" type="string">
             <column name="call_no" length="30" />

@@ -60,8 +60,29 @@ catch(Exception e)
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/ajax.js"></script>
 <script language="javascript" type="text/javascript">
 var availableSelectList;
+
+ //   reSize Iframe when ever child  calls  it
+   function setIframeHeight() {
+       iframe=document.getElementById('f1');
+
+    if (iframe) {
+
+        var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+        if (iframeWin.document.body) {
+            iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+        }
+    }
+};
+   function setIframeHeight2(x) {
+       iframe=document.getElementById('f1');
+       iframe.height=x;
+
+
+};
+
 function funcSearch()
 {
+    
     document.getElementById("Form1").action="advance_search.do";
     document.getElementById("Form1").method="post";
     document.getElementById("Form1").target="f1";
@@ -69,19 +90,7 @@ function funcSearch()
 }
 function search() {
 
-      var x=document.getElementById('TXTPHRASE1').value;
-             var y=document.getElementById('TXTPHRASE2').value;
-              var z=document.getElementById('TXTPHRASE3').value;
-
-
-        if(x=='' && y=='' && z=='' )
-            {
-                alert("Please Enter KeyWord No to Search Title");
-                return false;
-
-            }
-
-
+      
     var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
 if(keyValue=="all"){
            document.getElementById('CMBLib').focus();
@@ -127,6 +136,19 @@ newOpt.text = ndValue1;
 }
      function f()
     {
+        var x=document.getElementById('TXTPHRASE1').value;
+             var y=document.getElementById('TXTPHRASE2').value;
+              var z=document.getElementById('TXTPHRASE3').value;
+
+
+        if(x=='' && y=='' && z=='' )
+            {
+                alert("Please Enter KeyWord No to Search Title");
+                return false;
+
+            }
+
+
         search();
         if(document.getElementById('CMBYR').value=="upto" || document.getElementById('CMBYR').value=="after")
          {
@@ -312,11 +334,12 @@ else{
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
     </head>
-<body onload="checkboxClickHandler();" style="background-color:#e0e8f5;margin: 0px 0px 0px 0px " >
+    <jsp:include page="opacheader.jsp"></jsp:include>
+<body onload="search();checkboxClickHandler();setIframeHeight();" style="margin: 0px 0px 0px 0px " >
     <html:form  method="post" action="/OPAC/advance_search" target="f1" onsubmit="return validate();" styleId="Form1"  acceptCharset="utf-8">
-     <table  align="center" dir="<%=rtl%>" width="80%" class="datagrid"  style="border:solid 1px black;">
-  <tr class="header" dir="<%=rtl%>"><td  width="100%" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
-		  <%=resource.getString("opac.advance.advancesearchtext")%>
+     <table  align="center" dir="<%=rtl%>" width="80%" class="datagrid"  style="border:dashed 1px cyan;">
+  <tr class="header1" dir="<%=rtl%>"><td  width="100%" dir="<%=rtl%>" style="border-bottom: dashed 1px cyan " height="28px" align="center" colspan="2">
+          <font color="red">  <%=resource.getString("opac.advance.advancesearchtext")%></font>
         </td></tr>
   
    <html:hidden property="language" styleId="language" name="AdvanceSearchActionForm"/>
@@ -422,7 +445,7 @@ else{
         </select>
      </td>
               </tr></table></td></tr>
-  <tr class="header" dir="<%=rtl%>"><td  dir="<%=rtl%>"  align="<%=align%>" ><%=resource.getString("opac.simplesearch.restrictedby")%></td><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
+   <tr class="header" dir="<%=rtl%>"><td  dir="<%=rtl%>"  align="<%=align%>" style="border-bottom: dashed 1px cyan " ><font color="red"> <%=resource.getString("opac.simplesearch.restrictedby")%></font></td><td align="<%=align%>"  style="border-bottom: dashed 1px cyan;color:red; " dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
    <tr dir="<%=rtl%>"><td  width="80%" dir="<%=rtl%>"  align="<%=align%>">
            <table width="100%"  dir="<%=rtl%>"><tr><td align="<%=align%>" dir="<%=rtl%>">
                        <table width="100%">
@@ -430,7 +453,12 @@ else{
                       <select name="CMBDB" size="1" class="selecthome" id="CMBDB" dir="<%=rtl%>">
         <option value="combined" selected dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.combnd")%></option>
         <option value="book" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.books")%></option>
-        <option value="cd" dir="<%=rtl%>">CDs</option>
+        <option value="cd" dir="<%=rtl%>">CD/DVD ROM</option>
+     <option value="vd" dir="<%=rtl%>">Electronic Document(Video/Motion Pictures)</option>
+     <option value="ppt" dir="<%=rtl%>">Electronic Document(Presenatation)</option>
+     <option value="au" dir="<%=rtl%>">Electronic Document(Sound Recording)</option>
+     <option value="th" dir="<%=rtl%>">Thesis</option>
+     <option value="ds" dir="<%=rtl%>">Dissertations</option>
         </select>
                   </td></tr>
               <tr>   <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%></td><td>
@@ -476,9 +504,9 @@ else{
 <input id="Button2" class="buttonhome" name="" dir="<%=rtl%>" value="<%=resource.getString("opac.simplesearch.find")%>"  type="submit">
 <input id="Button1" name="" class="buttonhome" dir="<%=rtl%>" value="<%=resource.getString("opac.browse.clear")%>" type="reset">
       </td></tr>
-  <tr ><td dir="<%=rtl%>" height="500px"   valign="top" colspan="2" >
-<hr/>
-          <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="100%" width="100%" scrolling="yes"  id="f1"></IFRAME>
+  <tr ><td dir="<%=rtl%>"    valign="top" colspan="2" >
+
+          <IFRAME  name="f1" height="0px" src="#" frameborder=0  width="100%" scrolling="no"  id="f1"></IFRAME>
 
 
       </td></tr>
@@ -488,4 +516,5 @@ else{
    </html:form>
 
 </body>
+<jsp:include page="opacfooter.jsp"></jsp:include>
 </html>

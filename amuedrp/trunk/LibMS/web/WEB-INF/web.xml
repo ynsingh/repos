@@ -22,6 +22,15 @@
      </listener-class>
 
      </listener>
+ <servlet>
+    <servlet-name>hello</servlet-name>
+    <servlet-class>com.myapp.struts.cataloguing.TextUploadAction1</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+   <servlet-name>hello</servlet-name>
+    <url-pattern>/cataloguing/UploadServlet</url-pattern>
+  </servlet-mapping>
 
     <servlet>
         <servlet-name>action</servlet-name>

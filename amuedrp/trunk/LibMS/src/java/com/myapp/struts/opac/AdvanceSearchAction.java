@@ -1,3 +1,6 @@
+
+
+
 /*
  * ADVANCED SEARCH OPAC
  */
@@ -5,7 +8,6 @@
 package com.myapp.struts.opac;
 import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
 import com.myapp.struts.hbm.BibliographicDetails;
-import com.myapp.struts.hbm.BibliographicDetailsLang;
 import  com.myapp.struts.opacDAO.OpacSearchDAO;
 import com.myapp.struts.utility.LoggerUtils;
 import javax.servlet.http.HttpServletRequest;
@@ -211,17 +213,27 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action
 
                 session.setAttribute("advcheckbox",myForm.getCheckbox() );
                 advance_search_list=opac.advanceLangSearch(lib_id, sub_lib, searchtext1, c1, searchtext2, c2,searchtext3,c3,cnf1,cnf2,cnf3,cf1,cf2,cf3,db,sort,yr1,yr2,myForm.getLanguage().toUpperCase(),pageno,cmbyr);
-                int size=opac.getSize();
+                  int size=opac.getSize();
                 session.setAttribute("simple_search_nor",size);
-                session.setAttribute("ResultSet1", advance_search_list);
+                    request.setAttribute("from", pageno*100);
+                if(advance_search_list1.size()<100)
+                    request.setAttribute("to", (pageno*100)+advance_search_list.size());
+                else
+                    request.setAttribute("to", (pageno*100)+100);
+                 session.setAttribute("ResultSet1", advance_search_list);
             }
             else
             {
                  session.setAttribute("advcheckbox",myForm.getCheckbox());
                  System.out.println(yr1+yr2+"abc"+cmbyr);
                  advance_search_list1=opac.advanceSearch(lib_id, sub_lib, searchtext1, c1, searchtext2, c2,searchtext3,c3,cnf1,cnf2,cnf3,cf1,cf2,cf3,db,sort,yr1,yr2,pageno,cmbyr);
-                 int size=opac.getSize();
-                 session.setAttribute("simple_search_nor",size);
+                  int size=opac.getSize();
+                session.setAttribute("simple_search_nor",size);
+                    request.setAttribute("from", pageno*100);
+                if(advance_search_list1.size()<100)
+                    request.setAttribute("to", (pageno*100)+advance_search_list1.size());
+                else
+                    request.setAttribute("to", (pageno*100)+100);
                  session.setAttribute("ResultSet", advance_search_list1);
             }
         }

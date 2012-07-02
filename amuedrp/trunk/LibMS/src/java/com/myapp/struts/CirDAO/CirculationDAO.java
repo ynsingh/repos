@@ -34,7 +34,126 @@ public class CirculationDAO
 {
    static  Integer maxNewRegId;
    static Query query;
- public static  Courses LoadCourseName(String library_id,String course_id,String dept_id,String faculty_id)
+   public List ReminderList(String library_id,String sublibrary_id,String date)
+    {
+    Session session =null;
+    List tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            String sql="";
+
+            sql = "select c.memid,c.due_date,cm.fname , cm.lname,cm.email,dd.main_entry,dd.title,dd.accession_no from cir_checkout c,cir_member_detail cm,document_details dd where c.library_id=dd.library_id and c.library_id=cm.library_id and dd.library_id=cm.library_id and c.memid=cm.memId and c.document_id=dd.document_id and c.sublibrary_id=dd.sublibrary_id and c.due_date<'"+date+"' and c.status='issued' and c.library_id='"+library_id+"' and c.sublibrary_id='"+sublibrary_id+"'";
+
+
+            System.out.println(sql);
+
+          Query query =  session.createSQLQuery(sql)
+               .setResultTransformer(Transformers.aliasToBean(CirculationList.class));
+
+
+
+
+
+
+            tx=  query.list();
+            System.out.println(tx);
+            session.getTransaction().commit();
+        }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
+    finally {
+            session.close();
+        }
+    return tx;
+}
+
+
+public static List<MemberList>  Memberlist(String library_id,String memid,String reg_date,String expiry_date) throws Exception
+ {   int j=0,k=0;
+     boolean flag=false;
+    Session session =null;
+    Transaction tx = null;
+    List<MemberList> myList = new ArrayList<MemberList>();
+
+    try {
+
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            String sql="";
+            sql = "Select distinct a.fname as fname,a.mname as mname,a.lname as lname,a.address1 as address1,a.image as image,b.facultyId as facultyId,b.deptId as deptId,b.courseId as courseId From CirMemberDetail a ,CirMemberAccount b where a.id.libraryId=b.id.libraryId  and a.id.memId=b.id.memid and a.id.libraryId='"+library_id+"'";
+            if(memid!=null)
+               if(!memid.equals(""))
+               {
+
+                   sql+=" and b.id.memid='"+memid+"'";
+               }
+
+            if(reg_date!=null){
+              if(!reg_date.equals(""))
+                   sql+=" and regDate>='"+reg_date+"'";
+             }
+
+            if(expiry_date!=null){
+             if(!expiry_date.equals(""))
+                   sql+=" and expiryDate<='"+expiry_date+"'";
+             }
+
+            Query query =  session.createQuery(sql);
+            List list=query.list();
+            System.out.println("aqeeeeeeeeeellllllljjjj"+list.size());
+            Object[] row=null,row1=null;
+            for(int i=0; i<list.size(); i=i+2)
+            {
+              k=i+1;
+              row=(Object[])list.get(i);
+              if(k+1==list.size()&&list.size()%2==0){row1=(Object[])list.get(k); flag=true;}
+
+              if(k+1<list.size())
+              { row1=(Object[])list.get(k); flag=true;}
+              try
+              { if(flag){
+                byte[] data = (byte[])row[4];
+                byte[] data1 = (byte[])row1[4];
+                MemberList dto = new MemberList(row[0].toString(),row[1].toString(),row[2].toString(),row[3].toString(),data,row[5].toString(),row[6].toString(),row[7].toString(),row1[0].toString(),row1[1].toString(),row1[2].toString(),row1[3].toString(),data1,row1[5].toString(),row1[6].toString(),row1[7].toString());
+                myList.add(dto);
+                flag=false;}
+                else
+                {
+                 byte[] data = (byte[])row[4];
+                 MemberList dto = new MemberList(row[0].toString(),row[1].toString(),row[2].toString(),row[3].toString(),data,row[5].toString(),row[6].toString(),row[7].toString());
+                 myList.add(dto);
+                }
+              }
+              catch(Exception e)
+              {
+                System.out.println(e);
+              }
+
+
+            }
+
+
+            return(myList);
+          }
+          catch(Exception e)
+          {
+            System.out.println(e);
+            throw e;
+          }
+         finally
+         {
+            myList=null;
+         }
+
+ }
+
+
+
+   public static  Courses LoadCourseName(String library_id,String course_id,String dept_id,String faculty_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 Courses course=null;

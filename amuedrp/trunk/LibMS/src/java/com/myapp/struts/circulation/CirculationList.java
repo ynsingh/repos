@@ -21,6 +21,16 @@ import javax.imageio.ImageIO;
  */
 public class CirculationList implements Serializable{
     private String memid;
+    private String accession_no;
+
+    public String getAccession_no() {
+        return accession_no;
+    }
+
+    public void setAccession_no(String accession_no) {
+        this.accession_no = accession_no;
+    }
+
      private String fname;
     private String mname;
      private String lname;
@@ -31,7 +41,15 @@ public class CirculationList implements Serializable{
     private String faculty_name;
     private String dept_name;
     private String course_name;
-    private String req_date,user_name,library_name,expiry_date;
+    private String req_date,user_name,library_name,expiry_date,email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
    private java.awt.image.BufferedImage image1;
     private byte[] image;
     private CirCheckout cirCheckout;

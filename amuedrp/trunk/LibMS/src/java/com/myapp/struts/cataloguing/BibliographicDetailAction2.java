@@ -56,10 +56,11 @@ public class BibliographicDetailAction2 extends org.apache.struts.action.Action 
         bibform.setSub_library_id(bib.getId().getSublibraryId());
         bibform.setPublication_place(bib.getPublicationPlace());
         bibform.setPublisher_name(bib.getPublisherName());
-        bibform.setPublishing_year(bib.getPublishingYear());
+        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
         bibform.setSubtitle(bib.getSubtitle());
         bibform.setTitle(bib.getTitle());
         bibform.setCall_no(bib.getCallNo());
+        System.out.println(bib.getSeries()+"....................");
         bibform.setSer_note(bib.getSeries());
         bibform.setAccession_type(bib.getAccessionType());
         bibform.setLanguage(bib.getEntryLanguage());

@@ -11,6 +11,17 @@ import org.apache.struts.action.ActionMapping;
  */
 public class BibliographicDetailEntryActionForm1 extends org.apache.struts.action.ActionForm {
 
+    private String acc_no1;
+
+    public String getAcc_no1() {
+        return acc_no1;
+    }
+
+    public void setAcc_no1(String acc_no1) {
+        this.acc_no1 = acc_no1;
+    }
+
+
     private int biblio_id;
     private String library_id;
     private String sublibrary_id;

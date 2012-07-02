@@ -44,15 +44,15 @@
         <property name="noOfPages" type="string">
             <column name="no_of_pages" length="20" />
         </property>
-        <property name="physicalWidth" type="string">
+       <!-- <property name="physicalWidth" type="string">
             <column name="physical_width" length="20" />
-        </property>
-        <property name="bindType" type="string">
+        </property>-->
+        <!--<property name="bindType" type="string">
             <column name="bind_type" length="20" />
-        </property>
-        <property name="physicalForm" type="string">
+        </property>-->
+       <!-- <property name="physicalForm" type="string">
             <column name="physical_form" length="200" />
-        </property>
+        </property>-->
         <property name="physicalDescription" type="string">
             <column name="physical_description" length="200" />
         </property>

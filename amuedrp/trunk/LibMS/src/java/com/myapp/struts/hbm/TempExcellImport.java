@@ -1,5 +1,5 @@
 package com.myapp.struts.hbm;
-// Generated Jul 8, 2011 1:24:55 PM by Hibernate Tools 3.2.1.GA
+// Generated Apr 24, 2012 4:16:11 PM by Hibernate Tools 3.2.1.GA
 
 
 
@@ -12,9 +12,8 @@ public class TempExcellImport  implements java.io.Serializable {
      private Integer sno;
      private String libraryId;
      private String sublibraryId;
-     private String documentType;
+     private String documentCategory;
      private String bookType;
-     private String accessionType;
      private String dateAcquired;
      private String title;
      private String subtitle;
@@ -29,85 +28,27 @@ public class TempExcellImport  implements java.io.Serializable {
      private String publicationPlace;
      private String publishingYear;
      private String callNo;
-     private String partsNo;
      private String subject;
+     private String subject1;
+     private String subject2;
      private String entryLanguage;
      private String isbn10;
      private String isbn13;
      private String lccNo;
      private String edition;
      private String noOfCopies;
-     private String authorName;
-     private String guideName;
-     private String universityFaculty;
-     private String degree;
-     private String submittedOn;
-     private String acceptanceYear;
      private String collation1;
      private String notes;
      private String abstract_;
-     private String address;
-     private String state1;
-     private String country;
-     private String email;
-     private String frmrFrq;
-     private String frqDate;
-     private String issn;
-     private String volumeLocation;
-     private String productionYear;
-     private String source1;
-     private String duration;
      private String series;
-     private String typeOfDisc;
-     private String fileType;
      private String accessionNo;
-     private String recordNo;
      private String volumeNo;
      private String location;
      private String shelvingLocation;
      private String indexNo;
      private String noOfPages;
-     private String physicalWidth;
-     private String physicalForm;
-     private String physicalDescription;
-     private String colour;
      private String bindType;
-     private String bookLanguage;
      private String refNo;
-
-    public String getBookLanguage() {
-        return bookLanguage;
-    }
-
-    public void setBookLanguage(String bookLanguage) {
-        this.bookLanguage = bookLanguage;
-    }
-
-    public String getRefNo() {
-        return refNo;
-    }
-
-    public void setRefNo(String refNo) {
-        this.refNo = refNo;
-    }
-     
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-     private String status;
-
-    public String getBindType() {
-        return bindType;
-    }
-
-    public void setBindType(String bindType) {
-        this.bindType = bindType;
-    }
 
     public TempExcellImport() {
     }
@@ -117,12 +58,11 @@ public class TempExcellImport  implements java.io.Serializable {
         this.libraryId = libraryId;
         this.sublibraryId = sublibraryId;
     }
-    public TempExcellImport(String libraryId, String sublibraryId, String documentType, String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, String publishingYear, String callNo, String partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, String noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, String productionYear, String source1, String duration, String series, String typeOfDisc, String fileType, String accessionNo, String recordNo, String volumeNo, String location, String shelvingLocation, String indexNo, String noOfPages, String physicalWidth, String physicalForm, String physicalDescription, String colour,String bindType,String status) {
+    public TempExcellImport(String libraryId, String sublibraryId, String documentCategory, String bookType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, String publishingYear, String callNo, String subject, String subject1, String subject2, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, String noOfCopies, String collation1, String notes, String abstract_, String series, String accessionNo, String volumeNo, String location, String shelvingLocation, String indexNo, String noOfPages, String bindType, String refNo) {
        this.libraryId = libraryId;
        this.sublibraryId = sublibraryId;
-       this.documentType = documentType;
+       this.documentCategory = documentCategory;
        this.bookType = bookType;
-       this.accessionType = accessionType;
        this.dateAcquired = dateAcquired;
        this.title = title;
        this.subtitle = subtitle;
@@ -137,50 +77,27 @@ public class TempExcellImport  implements java.io.Serializable {
        this.publicationPlace = publicationPlace;
        this.publishingYear = publishingYear;
        this.callNo = callNo;
-       this.partsNo = partsNo;
        this.subject = subject;
+       this.subject1 = subject1;
+       this.subject2 = subject2;
        this.entryLanguage = entryLanguage;
-       this.status=status;
        this.isbn10 = isbn10;
        this.isbn13 = isbn13;
        this.lccNo = lccNo;
        this.edition = edition;
        this.noOfCopies = noOfCopies;
-       this.authorName = authorName;
-       this.guideName = guideName;
-       this.universityFaculty = universityFaculty;
-       this.degree = degree;
-       this.submittedOn = submittedOn;
-       this.acceptanceYear = acceptanceYear;
        this.collation1 = collation1;
        this.notes = notes;
        this.abstract_ = abstract_;
-       this.address = address;
-       this.state1 = state1;
-       this.country = country;
-       this.email = email;
-       this.frmrFrq = frmrFrq;
-       this.frqDate = frqDate;
-       this.issn = issn;
-       this.volumeLocation = volumeLocation;
-       this.productionYear = productionYear;
-       this.source1 = source1;
-       this.duration = duration;
        this.series = series;
-       this.typeOfDisc = typeOfDisc;
-       this.fileType = fileType;
        this.accessionNo = accessionNo;
-       this.recordNo = recordNo;
        this.volumeNo = volumeNo;
        this.location = location;
        this.shelvingLocation = shelvingLocation;
        this.indexNo = indexNo;
        this.noOfPages = noOfPages;
-       this.physicalWidth = physicalWidth;
-       this.physicalForm = physicalForm;
-       this.physicalDescription = physicalDescription;
-       this.colour = colour;
-       this.bindType=bindType;
+       this.bindType = bindType;
+       this.refNo = refNo;
     }
    
     public Integer getSno() {
@@ -204,12 +121,12 @@ public class TempExcellImport  implements java.io.Serializable {
     public void setSublibraryId(String sublibraryId) {
         this.sublibraryId = sublibraryId;
     }
-    public String getDocumentType() {
-        return this.documentType;
+    public String getdocumentCategory() {
+        return this.documentCategory;
     }
     
-    public void setDocumentType(String documentType) {
-        this.documentType = documentType;
+    public void setdocumentCategory(String documentCategory) {
+        this.documentCategory = documentCategory;
     }
     public String getBookType() {
         return this.bookType;
@@ -217,13 +134,6 @@ public class TempExcellImport  implements java.io.Serializable {
     
     public void setBookType(String bookType) {
         this.bookType = bookType;
-    }
-    public String getAccessionType() {
-        return this.accessionType;
-    }
-    
-    public void setAccessionType(String accessionType) {
-        this.accessionType = accessionType;
     }
     public String getDateAcquired() {
         return this.dateAcquired;
@@ -323,19 +233,26 @@ public class TempExcellImport  implements java.io.Serializable {
     public void setCallNo(String callNo) {
         this.callNo = callNo;
     }
-    public String getPartsNo() {
-        return this.partsNo;
-    }
-    
-    public void setPartsNo(String partsNo) {
-        this.partsNo = partsNo;
-    }
     public String getSubject() {
         return this.subject;
     }
     
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+    public String getSubject1() {
+        return this.subject1;
+    }
+    
+    public void setSubject1(String subject1) {
+        this.subject1 = subject1;
+    }
+    public String getSubject2() {
+        return this.subject2;
+    }
+    
+    public void setSubject2(String subject2) {
+        this.subject2 = subject2;
     }
     public String getEntryLanguage() {
         return this.entryLanguage;
@@ -379,48 +296,6 @@ public class TempExcellImport  implements java.io.Serializable {
     public void setNoOfCopies(String noOfCopies) {
         this.noOfCopies = noOfCopies;
     }
-    public String getAuthorName() {
-        return this.authorName;
-    }
-    
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
-    }
-    public String getGuideName() {
-        return this.guideName;
-    }
-    
-    public void setGuideName(String guideName) {
-        this.guideName = guideName;
-    }
-    public String getUniversityFaculty() {
-        return this.universityFaculty;
-    }
-    
-    public void setUniversityFaculty(String universityFaculty) {
-        this.universityFaculty = universityFaculty;
-    }
-    public String getDegree() {
-        return this.degree;
-    }
-    
-    public void setDegree(String degree) {
-        this.degree = degree;
-    }
-    public String getSubmittedOn() {
-        return this.submittedOn;
-    }
-    
-    public void setSubmittedOn(String submittedOn) {
-        this.submittedOn = submittedOn;
-    }
-    public String getAcceptanceYear() {
-        return this.acceptanceYear;
-    }
-    
-    public void setAcceptanceYear(String acceptanceYear) {
-        this.acceptanceYear = acceptanceYear;
-    }
     public String getCollation1() {
         return this.collation1;
     }
@@ -442,83 +317,6 @@ public class TempExcellImport  implements java.io.Serializable {
     public void setAbstract_(String abstract_) {
         this.abstract_ = abstract_;
     }
-    public String getAddress() {
-        return this.address;
-    }
-    
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    public String getState1() {
-        return this.state1;
-    }
-    
-    public void setState1(String state1) {
-        this.state1 = state1;
-    }
-    public String getCountry() {
-        return this.country;
-    }
-    
-    public void setCountry(String country) {
-        this.country = country;
-    }
-    public String getEmail() {
-        return this.email;
-    }
-    
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public String getFrmrFrq() {
-        return this.frmrFrq;
-    }
-    
-    public void setFrmrFrq(String frmrFrq) {
-        this.frmrFrq = frmrFrq;
-    }
-    public String getFrqDate() {
-        return this.frqDate;
-    }
-    
-    public void setFrqDate(String frqDate) {
-        this.frqDate = frqDate;
-    }
-    public String getIssn() {
-        return this.issn;
-    }
-    
-    public void setIssn(String issn) {
-        this.issn = issn;
-    }
-    public String getVolumeLocation() {
-        return this.volumeLocation;
-    }
-    
-    public void setVolumeLocation(String volumeLocation) {
-        this.volumeLocation = volumeLocation;
-    }
-    public String getProductionYear() {
-        return this.productionYear;
-    }
-    
-    public void setProductionYear(String productionYear) {
-        this.productionYear = productionYear;
-    }
-    public String getSource1() {
-        return this.source1;
-    }
-    
-    public void setSource1(String source1) {
-        this.source1 = source1;
-    }
-    public String getDuration() {
-        return this.duration;
-    }
-    
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
     public String getSeries() {
         return this.series;
     }
@@ -526,33 +324,12 @@ public class TempExcellImport  implements java.io.Serializable {
     public void setSeries(String series) {
         this.series = series;
     }
-    public String getTypeOfDisc() {
-        return this.typeOfDisc;
-    }
-    
-    public void setTypeOfDisc(String typeOfDisc) {
-        this.typeOfDisc = typeOfDisc;
-    }
-    public String getFileType() {
-        return this.fileType;
-    }
-    
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
-    }
     public String getAccessionNo() {
         return this.accessionNo;
     }
     
     public void setAccessionNo(String accessionNo) {
         this.accessionNo = accessionNo;
-    }
-    public String getRecordNo() {
-        return this.recordNo;
-    }
-    
-    public void setRecordNo(String recordNo) {
-        this.recordNo = recordNo;
     }
     public String getVolumeNo() {
         return this.volumeNo;
@@ -589,33 +366,19 @@ public class TempExcellImport  implements java.io.Serializable {
     public void setNoOfPages(String noOfPages) {
         this.noOfPages = noOfPages;
     }
-    public String getPhysicalWidth() {
-        return this.physicalWidth;
+    public String getBindType() {
+        return this.bindType;
     }
     
-    public void setPhysicalWidth(String physicalWidth) {
-        this.physicalWidth = physicalWidth;
+    public void setBindType(String bindType) {
+        this.bindType = bindType;
     }
-    public String getPhysicalForm() {
-        return this.physicalForm;
-    }
-    
-    public void setPhysicalForm(String physicalForm) {
-        this.physicalForm = physicalForm;
-    }
-    public String getPhysicalDescription() {
-        return this.physicalDescription;
+    public String getRefNo() {
+        return this.refNo;
     }
     
-    public void setPhysicalDescription(String physicalDescription) {
-        this.physicalDescription = physicalDescription;
-    }
-    public String getColour() {
-        return this.colour;
-    }
-    
-    public void setColour(String colour) {
-        this.colour = colour;
+    public void setRefNo(String refNo) {
+        this.refNo = refNo;
     }
 
 

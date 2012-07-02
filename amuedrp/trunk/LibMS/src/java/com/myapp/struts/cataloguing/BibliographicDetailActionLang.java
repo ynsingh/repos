@@ -55,7 +55,7 @@ public class BibliographicDetailActionLang extends org.apache.struts.action.Acti
         bibform.setSub_library_id(bib.getId().getSublibraryId());
         bibform.setPublication_place(bib.getPublicationPlace());
         bibform.setPublisher_name(bib.getPublisherName());
-        bibform.setPublishing_year(bib.getPublishingYear());
+        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
         bibform.setSubtitle(bib.getSubtitle());
         bibform.setTitle(bib.getTitle());
         bibform.setCall_no(bib.getCallNo());
@@ -99,7 +99,7 @@ public class BibliographicDetailActionLang extends org.apache.struts.action.Acti
         bibform.setSub_library_id(bib.getId().getSublibraryId());
         bibform.setPublication_place(bib.getPublicationPlace());
         bibform.setPublisher_name(bib.getPublisherName());
-        bibform.setPublishing_year(bib.getPublishingYear());
+        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
         bibform.setSubtitle(bib.getSubtitle());
         bibform.setTitle(bib.getTitle());
         bibform.setCall_no(bib.getCallNo());

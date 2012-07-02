@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.List,com.myapp.struts.utility.*"%>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 <html>
     <head>
@@ -13,94 +14,51 @@
                 <tr><td colspan="3" align="center" class="headerStyle">Upload Excel File</td></tr>
             <tr>
                <td align="left" style="padding:10px">
-                   <p class="mess"><b>Note</b>:You Need to Import Retrospective Document before any Bibliographic Detail Entry in Library. </p><br/>   Select Microsoft Excel File : <br><html:file  property="excelFile" name="StrutsUploadForm"/>
+                   <p class="mess"><b>Note</b>:You Need to Import Retrospective Document before any Bibliographic Detail Entry in Library. </p><br/>   Select Microsoft Excel File : <br>
+                   <html:file  property="excelFile" name="StrutsUploadForm"/>
                     <br> <html:submit>Upload File</html:submit><br>
                     <div style="visibility: hidden">
                           <html:select   style="color:blue;text-align: center;font: bold;text-transform: uppercase"   property="combo_table_name" name="StrutsUploadForm" >
                       <html:option value="bibliographic_details">bibliographic_details</html:option>
                     </html:select>
                     </div>
-                    <br><a href="<%=request.getContextPath()%>/cataloguing/Import.pdf">Help of Excel File</a>
-                    <a href="<%=request.getContextPath()%>/cataloguing/CatalogImport.xls">Excel File</a>
+                    <br><a target="_blank" href="<%=request.getContextPath()%>/cataloguing/help.html">Help of Excel File</a>
+                    
                 </td>            
             </tr>
             </html:form>
+               <%--<tr><td colspan="3" align="center" class="headerStyle">Upload TXT File</td></tr>
+            <tr><td>
+           <h3>File Upload:</h3>
+Select a file to upload: <br />
+<form action="UploadServlet" method="post"
+                        enctype="multipart/form-data">
+<input type="file" name="file" size="50" />
+<br />
+<input type="submit" value="Upload File" />
+</form>
+                </td></tr>--%>
+            <tr><td>
 
 
-    <!--<html:form action="/uploadtxt" method="post"  enctype="multipart/form-data">
-          <tr><td colspan="3" align="center" class="headerStyle">Upload Txt/Flat File</td></tr>
-         
-            <tr>
-                <td colspan="3">Select  Text File :
-               
-               
-                 <html:text  name="StrutsUploadForm" property="delimiter"/>
- <input  name="button"  type="submit" value="Brows file" />
-
-                </td>
-
-                
-            </tr>
-
-           <tr>
-                <td align="left">Delimiter used (eg ",|,)etc) :  </td>
-                
-                <td colspan="2">
-                   
-                </td>
-
-               
-            </tr>
-
-       
-       
-           
-        <tr><td colspan="3">
+    
                 <font color="red">
                     <html:errors /></font>
-                <font size="2" color="red">
-                    <h3 style="text-align: center; ">
                         <%if (request.getAttribute("msg1") != null) {
                                         out.println(request.getAttribute("msg1"));
                                     }
-                        %></h3>   </font>
-
-                <font size="2" color="green">
-                    <h3 style="text-align: center; ">
-                        <%if (request.getAttribute("msg2") != null) {
-                                        out.println(request.getAttribute("msg2"));
-                                    }
-                        %></h3>   </font>
-           
-                <font size="2" color="red">
-                    <h3 style="text-align: center; ">
-                        <%if (request.getAttribute("error") != null) {
-                                        out.println(request.getAttribute("error"));
-                                    }
-                        %></h3>   </font>
-            
-                <font size="2" color="red">
-                    <h3 style="text-align: center; ">
+                        %>
                         <%if (request.getAttribute("msg") != null) {
                                         out.println(request.getAttribute("error"));
                                     }
-                        %></h3>   </font>
-            
-
-
-                        <%
-
-                        if (request.getAttribute("testfileread") != null) {%>
-                        <p class="mess"><%=request.getAttribute("testfileread")%></p>
-                                    <%}
                         %>
-
+                    
             </td>
         </tr>
    
 
 
-
+<%--
 </html:form>
    
 
@@ -110,15 +68,15 @@
                <td align="left" style="padding:10px ">
                    Select MARC File : <br><html:file  property="excelFile" name="StrutsUploadForm"/><a href="<%= request.getContextPath() %>/viewMarcRepos.do">View Repository Record</a>
                     <br> <html:submit>Upload File</html:submit><br>
-                    <%--<input type="checkbox"> Check if you want to overwrite previous same record.--%>
+                    <input type="checkbox"> Check if you want to overwrite previous same record.
                 </td>            
             </tr>
            </html:form>-->
             <tr><td colspan="3">
                   <p class="err">
                     <html:errors />
-
-                    <h3 style="text-align: center; ">
+--%>
+                    <%--<h3 style="text-align: center; ">
                         <%if (request.getAttribute("msg1") != null) {
                                         out.println(request.getAttribute("msg1"));
                                     }
@@ -145,7 +103,32 @@
                         <%if (request.getAttribute("msg") != null) {
                                         out.println(request.getAttribute("error"));
                                     }
-                        %></p>
+                        %></p>--%>
+                    <tr><td>
+                         
+                       
+                        <%
+                        List obj=(List)session.getAttribute("importlog");
+                        if(obj!=null)
+                        {
+                        for(int i=0;i<obj.size();i++)
+                        {
+                          %><%=obj.get(i)%><br>
+                       <%}}
+                        %>
+
+                        <%
+                        //remove session after import
+                        session.removeAttribute("table");
+                        session.removeAttribute("importlog");
+                        session.removeAttribute("table_datatype");
+                        session.removeAttribute("table_name");
+                        session.removeAttribute("no_columns");
+                        session.removeAttribute("myFile");
+                        System.gc();
+                            %>
+
+               
             </td>
         </tr>
 

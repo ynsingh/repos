@@ -20,7 +20,7 @@
             <column name="sublibrary_id" length="20" />
         </property>
         <property name="loginId" type="string">
-            <column name="login_id" length="100" not-null="true" />
+            <column name="login_id" length="300" not-null="true" />
         </property>
         <property name="userName" type="string">
             <column name="user_name" length="50" />

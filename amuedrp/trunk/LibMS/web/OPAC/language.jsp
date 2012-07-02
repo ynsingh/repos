@@ -10,13 +10,13 @@
 
 <%
 String button = (String)request.getParameter("button");
-System.out.println("button="+button);
+System.out.println("button11="+button);
 if (button!=null){
 if(button.equals("English")) session.setAttribute("locale", "en");
 else if(button.equals("Hindi")) session.setAttribute("locale", "hi");
 else if(button.equals("Urdu")) session.setAttribute("locale", "ur");
 else if(button.equals("Arabic")) session.setAttribute("locale", "ar");
-response.sendRedirect("OPACmain.jsp");
+response.sendRedirect("browse.jsp");
 }
 
 %>

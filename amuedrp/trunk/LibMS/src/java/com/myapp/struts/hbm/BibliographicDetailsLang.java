@@ -63,15 +63,6 @@ public class BibliographicDetailsLang  implements java.io.Serializable {
      private String series;
      private String typeOfDisc;
      private String fileType;
-//     private Set documentDetailses1 = new HashSet(0);
-//
-//    public Set getDocumentDetailses1() {
-//        return documentDetailses1;
-//    }
-//
-//    public void setDocumentDetailses1(Set documentDetailses1) {
-//        this.documentDetailses1 = documentDetailses1;
-//    }
 
     public BibliographicDetailsLang() {
     }
@@ -132,7 +123,6 @@ public class BibliographicDetailsLang  implements java.io.Serializable {
        this.series = series;
        this.typeOfDisc = typeOfDisc;
        this.fileType = fileType;
-    //Set documentDetailses1,   this.documentDetailses1=documentDetailses1;
     }
    
     public BibliographicDetailsLangId getId() {

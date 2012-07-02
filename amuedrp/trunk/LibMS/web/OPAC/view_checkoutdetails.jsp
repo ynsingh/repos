@@ -1,5 +1,3 @@
-
- 
     <%@page import="com.myapp.struts.opac.ReservationDoc,com.myapp.struts.hbm.*,com.myapp.struts.opacDAO.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
@@ -16,38 +14,14 @@
 <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
     <title>View Reservation Detail</title>
 
-<script language="javascript" >
-function b1click()
-{
-location.href="<%=request.getContextPath()%>/OPAC/accountdetails.jsp";
-}
-function b2click()
-{
-f.action="login.jsp";
-f.method="post";
-f.target="_self";
-f.submit();
-}
-
-</script>
- <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold }
-
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
 </head>
-
+<jsp:include page="opacheader.jsp"></jsp:include>
 <body>
      <%!
     Locale locale=null;
     String locale1="en";
     String rtl="ltr";
+    String align="true";
     boolean page=true;
 %>
 <%
@@ -61,39 +35,21 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;}
-    else{ rtl="RTL";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-
-
-
-
-
 <%!
-   
-   
    ReservationDoc Ob;
    ArrayList requestList;
    int fromIndex=0, toIndex;
 %>
  <%
-
-
  List<CheckoutDeocumentDetails> requestList = (List<CheckoutDeocumentDetails>)session.getAttribute("membercheckoutDetail1");
-System.out.println("size="+requestList.size());
  String name=(String)session.getAttribute("mem_name");
-       
-String requestpath = request.getContextPath()+"/OPAC";
-   //requestList = new ArrayList ();
+ String requestpath = request.getContextPath()+"/OPAC";
    int tcount =requestList.size();
-   int perpage=4;
-   int tpage=0;
- 
-
-
-
 %>
        
 <%
@@ -110,33 +66,34 @@ String requestpath = request.getContextPath()+"/OPAC";
 %>
 
 
-<table  align="left" width="800px"  style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
+<table  align="center" dir="<%=rtl%>" width="80%" class="datagrid" style="border: dashed 1px cyan;">
 
 
 
-  <tr><td  width="800px"  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="left">
-          <table>
-              <tr><td  width="800px"  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="left">
-          <table>
-              <tr><td width="640px" style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="left"><b>
+
+   <tr><td   dir="<%=rtl%>" style="font-family:Tahoma;font-size:12px" height="28px" align="<%=align%>">
+          <table width="100%">
+              <tr><td   dir="<%=rtl%>" colspan="2" style="font-family:Arial;font-size:12px;border-bottom: dashed 1px cyan" height="28px" align="center" ><b>Circulation Member : My Account Section OPAC</b></td></tr>
+              <tr><td  dir="<%=rtl%>" style="font-family:Tahoma;font-size:12px;border-bottom: dashed 1px cyan" height="28px" align="<%=align%>"><b>
 
 
 	&nbsp;&nbsp;
-                <a href="<%=requestpath%>/accountdetails.jsp"  style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.home")%></a>&nbsp;|&nbsp;
-            <a href="<%=requestpath%>/newdemand2.jsp" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
-   <%-- |&nbsp;<a href="reservationrequest1.jsp"  style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>--%>
+                <a href="<%=request.getContextPath()%>/OPAC/accountdetails.jsp"  style="text-decoration: none;"><%=resource.getString("opac.accountdetails.home")%></a>&nbsp;|&nbsp;
+            <a href="<%=request.getContextPath()%>/OpacLib.do?name=newdemand"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
+    |&nbsp;<a href="#"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>
 
 
 
 
           </b>
-                  </td><td align="right" style="color:white;font-family:Tahoma;font-size:12px"><%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%>&nbsp;<b>|</b>&nbsp;<a href="home.do" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a></td></tr></table>
+                  </td><td align="right" dir="<%=rtl%>" style="font-family:Tahoma;font-size:12px;border-bottom: dashed 1px cyan;"><%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%>&nbsp;<b>|</b>&nbsp;<a href="home.do"  style="text-decoration: none;"><%=resource.getString("opac.accountdetails.logout")%></a></td></tr>
+          </table>
         </td></tr>
-  </table>
-      </td></tr>
 
 
-  <tr><td height="300px" valign="top" class="btn1">
+
+
+  <tr><td  valign="top" class="btn1">
 
           <br><br>
 <%if(tcount==0)
@@ -234,34 +191,37 @@ else
 <% }else
     {%>
 
-      <table  align="left" width="800px"  style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
+
+
+<table  align="center" dir="<%=rtl%>" width="80%" class="datagrid" style="border: dashed 1px cyan;">
 
 
 
-  <tr><td  width="800px"  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="right">
-          <table>
-              <tr>
-                  <td width="520px" align="left" style="color:white;font-family:Tahoma;font-size:12px"><a href="home.do"  style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a>&nbsp;|&nbsp;<%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%></td>
 
-                  <td  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="right"><b>
+   <tr><td   dir="<%=rtl%>" style="font-family:Tahoma;font-size:12px" height="28px" align="<%=align%>">
+          <table width="100%">
+              <tr><td   dir="<%=rtl%>" colspan="2" style="font-family:Arial;font-size:12px;border-bottom: dashed 1px cyan" height="28px" align="center" ><b>Circulation Member : My Account Section OPAC</b></td></tr>
+              <tr><td  dir="<%=rtl%>" style="font-family:Tahoma;font-size:12px;border-bottom: dashed 1px cyan" height="28px" align="<%=align%>"><b>
 
 
-<%--	&nbsp;&nbsp;<a href="reservationrequest1.jsp"  style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.reservationrequest")%>--%>
-        &nbsp;|&nbsp;    <a href="newdemand2.jsp"  style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
-        &nbsp;|&nbsp;    <a href="accountdetails.jsp"  style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.home")%></a>
-
-   
+	&nbsp;&nbsp;
+                <a href="<%=request.getContextPath()%>/OPAC/accountdetails.jsp"  style="text-decoration: none;"><%=resource.getString("opac.accountdetails.home")%></a>&nbsp;|&nbsp;
+            <a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=newdemand"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
+    |&nbsp;<a href="#"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>
 
 
 
 
           </b>
-                  </td></tr></table>
+                  </td><td align="right" dir="<%=rtl%>" style="font-family:Tahoma;font-size:12px;border-bottom: dashed 1px cyan;"><%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%>&nbsp;<b>|</b>&nbsp;<a href="home.do"  style="text-decoration: none;"><%=resource.getString("opac.accountdetails.logout")%></a></td></tr>
+          </table>
         </td></tr>
 
-     <tr><td height="300px" valign="top" class="btn1">
 
-          <br><br>
+
+     <tr><td  valign="top" >
+
+          
 <%if(tcount==0)
 {%>
 <p class="err" style="font-size:12px">No Record Found</p>
@@ -354,7 +314,7 @@ else
     <%}%>
 
     </body>
-
+    <jsp:include page="opacfooter.jsp"></jsp:include>
 </html>
 
 

@@ -118,6 +118,14 @@ function NewTitle()
     document.getElementById("button1").setAttribute("value", buttonvalue);
     return true;
 }
+function senddata()
+{
+  //parent.location.href = 'page2.html';
+  document.getElementById("f1").action="<%=request.getContextPath()%>/cataloguing/accessionedit.do";
+  document.getElementById("f1").method="post";
+  //document.getElementById("f1").target=top.frames['listdiv'];
+  document.getElementById("f1").submit();
+}
              </script>
 
     <%!
@@ -165,7 +173,7 @@ if(toIndex>size)toIndex=size;
             <tr bgcolor="#E0E888"><td colspan="8" align="center"><b><%= resource.getString("cataloguing.cataccessionentry.accessionheader")%></b></td></tr>
             <tr bgcolor="#E0E8F5"><td width="100"><%= resource.getString("cataloguing.catsingleviewgrid.recordno")%></td><td width="200"><%= resource.getString("cataloguing.cataccessionentry.accessionno")%></td><td width="100"><%= resource.getString("cataloguing.cataccessionentry.location")%></td><td width="100"><%= resource.getString("cataloguing.catviewownbibliogrid.action")%></td></tr>
         <logic:iterate id="AccessionRegister" name="opacList" offset="<%=String.valueOf(fromIndex)%>" length="<%= String.valueOf(pagesize) %>">
-          <html:form action="/cataloguing/accessionedit">
+            <html:form action="/cataloguing/accessionedit" styleId="f1" onsubmit="senddata();">
                 <html:hidden property="main_entry" name="BibliographicDetailEntryActionForm" value="Old"/>
                 <html:hidden property="statement_responsibility" name="BibliographicDetailEntryActionForm" value="Old"/>
                 <html:hidden property="call_no" name="BibliographicDetailEntryActionForm" value="Old"/>
@@ -182,7 +190,7 @@ if(toIndex>size)toIndex=size;
         <td><bean:write name="AccessionRegister" property="id.recordNo"/></td>
             <td><bean:write name="AccessionRegister" property="accessionNo"/></td>
             <td><bean:write name="AccessionRegister" property="location"/></td>
-            <td><a><input type="submit" name="button1" value="<%=newbutton%>"  onclick="return submitNew()" style="border: hidden; cursor: pointer;"/></a></td>
+            <td><a href="#" onclick="submitNew();senddata()">Edit</a><input type="submit" name="button1" value="<%=newbutton%>"  onclick="return submitNew()" style="border: hidden; cursor: pointer;"/></a></td>
         </tr>
          <input type="hidden" id="button1" name="button"/>
         </html:form>

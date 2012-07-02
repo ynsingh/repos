@@ -302,7 +302,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
                         bibform.setSub_library_id(bib.getId().getSublibraryId());
                         bibform.setPublication_place(bib.getPublicationPlace());
                         bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(bib.getPublishingYear());
+                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
                         bibform.setSubtitle(bib.getSubtitle());
                         bibform.setTitle(bib.getTitle());
                         bibform.setCall_no(bib.getCallNo());
@@ -360,7 +360,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
                         bibform.setSub_library_id(bib.getId().getSublibraryId());
                         bibform.setPublication_place(bib.getPublicationPlace());
                         bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(bib.getPublishingYear());
+                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
                         bibform.setSubtitle(bib.getSubtitle());
                         bibform.setTitle(bib.getTitle());
                         bibform.setCall_no(bib.getCallNo());
@@ -419,7 +419,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
                         bibform.setSub_library_id(bib.getId().getSublibraryId());
                         bibform.setPublication_place(bib.getPublicationPlace());
                         bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(bib.getPublishingYear());
+                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
                         bibform.setSubtitle(bib.getSubtitle());
                         bibform.setTitle(bib.getTitle());
                         bibform.setCall_no(bib.getCallNo());
@@ -603,7 +603,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
                         bibform.setSub_library_id(bib.getId().getSublibraryId());
                         bibform.setPublication_place(bib.getPublicationPlace());
                         bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(bib.getPublishingYear());
+                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
                         bibform.setSubtitle(bib.getSubtitle());
                         bibform.setAdded_entry(bib.getAddedEntry());
                         bibform.setAdded_entry0(bib.getAddedEntry1());
@@ -669,7 +669,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
                         bibform.setSub_library_id(bib.getId().getSublibraryId());
                         bibform.setPublication_place(bib.getPublicationPlace());
                         bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(bib.getPublishingYear());
+                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
                         bibform.setSubtitle(bib.getSubtitle());
                         bibform.setTitle(bib.getTitle());
                         bibform.setCall_no(bib.getCallNo());
@@ -735,7 +735,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
                         bibform.setSub_library_id(bib.getId().getSublibraryId());
                         bibform.setPublication_place(bib.getPublicationPlace());
                         bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(bib.getPublishingYear());
+                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
                         bibform.setSubtitle(bib.getSubtitle());
                         bibform.setTitle(bib.getTitle());
                         bibform.setCall_no(bib.getCallNo());

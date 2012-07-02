@@ -12,28 +12,13 @@
 <%
 byte[] image = (byte[])session.getAttribute("image");
 session.removeAttribute("image");
+System.out.println("Image Length=");
 response.reset();
 response.setContentType("image/jpeg");
 if (image!=null){
-response.getOutputStream().write(image);
+ServletOutputStream servletOutputStream = response.getOutputStream();
+servletOutputStream.write(image);
+servletOutputStream.flush();
 
-System.out.println("Image Length="+image.length);
 }
-/*else{
-    File file = new File(application.getRealPath("images")+"/no-image.jpg");
-
-      if(!file.exists()){
-
-      }
-    try{
-         FileInputStream fis = new FileInputStream(file);
-         BufferedInputStream bis = new BufferedInputStream(fis);
-         byte[] bytes = new byte[bis.available()];
-         response.setContentType("image/jpeg");
-          bis.read(bytes);
-    response.getOutputStream().write(bytes);
-    }catch(IOException e){
-
-      }
-    }*/
 %>

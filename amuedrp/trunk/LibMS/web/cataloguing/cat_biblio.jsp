@@ -76,7 +76,7 @@ function submitDelete()
             }
  </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+       
              <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
          <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
          <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.autocomplete.css" />

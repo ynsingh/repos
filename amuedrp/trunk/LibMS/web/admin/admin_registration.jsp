@@ -1,15 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <!--
-Devleoped By : Kedar Kumar
-Modified On  : 17-Feb 2011
 This Page is to accept Institute Request and Send to SuperAdmin
 -->
-
-
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@page contentType="text/html" import="java.util.*,org.apache.struts.upload.FormFile"%>
-<jsp:include page="/header.jsp"/>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -83,19 +78,8 @@ else{
         window.location="<%=request.getContextPath()%>/login.jsp";
     }
 
-
-
-
-
     function check()
     {
-
-       
-
-
-
-
-      
       var x1=document.getElementById('password1');
         var x2=document.getElementById('password2');
         if(x1.value!=x2.value)
@@ -106,24 +90,16 @@ else{
             }
             else
                 return true;
-
-
-
-
                 return true;
-
-
     }
-
-
             </script>
 
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
 </head>
-<body>
+<body style="margin: 0px 0px 0px 0px"  background="<%=request.getContextPath()%>/images/spaces_background-2560x1600.png">
    <html:form  method="post" action="/registration">
-          <table  style="background-color: #BFDBFF;  background-image: url('<%=request.getContextPath()%>/images/body-bg.png'); border:  solid 1px black;margin: 0px 0px 0px 0px" height="100px" width="100%">
+        <%--  <table  style="background-color: #BFDBFF;  background-image: url('<%=request.getContextPath()%>/images/body-bg.png'); border:  solid 1px black;margin: 0px 0px 0px 0px" height="100px" width="100%">
                         <tr class="search"><td class="homepage"  valign="middle" align="left">&nbsp;&nbsp;<span style="color:white;font-size: 30px;font-family: arial;font-weight: bold">Lib</span><span style="color:pink;font-size: 30px;font-family: arial;font-weight: bold">MS</span>
 
                                 <br>( A Complete Online Library Membership just 2 Steps Ahead )
@@ -132,11 +108,14 @@ else{
                 </td>    </tr>
 
 
-                    </table>
+                    </table>--%>
 
- <table class="table" width="50%" align="center">
-
-                <tr><td align="center" class="header" height="25px;"><span class="homepage"><%=resource.getString("admin.admin_registration.heading")%></span></td></tr>
+ <table align="center" height="100%" style="width: 60%;background-color: white;border: solid #ECF1EF 0px;" dir="<%=rtl%>" >
+     <tr><td align="right"><img src="<%=request.getContextPath()%>/images/bp.PNG" alt="banner space"  border="0"  dir="<%=rtl%>" id="Image1" style="height:40px;width:150px;"></td></tr>
+     <tr><td style="height: 60px;" class="admintxtStyle" valign="bottom"><img src="<%=request.getContextPath()%>/images/help.jpeg" height="60px" width="100px">
+             Hello, my name is Mr. Guide and I am your online assistant on LibMS. Kindly fill the form below with all accurate information about your institution and then click the Register button below.
+         </td>           </tr>
+     <tr><td align="center" class="header" height="25px;"><span class="homepage"><%=resource.getString("admin.admin_registration.heading")%></span></td></tr>
                 <tr><td align="right" class="err">
                                         <%
                                         String msg=(String)request.getAttribute("msg");
@@ -146,74 +125,69 @@ else{
                                         %><%=msg%><%}%>
 
                     </td></tr>
-                <tr><td valign="top" align="center" width="800px" >
+                <tr><td valign="top" align="center" width="80%" >
                        
 
-                        <table width="100%" >
+                        <table   width="80%" align="center" >
                     
                          
                    
                 
-                            <tr><td align="left" width="25%" class="txtStyle"><%=resource.getString("login.ems.institutename")%>*</td>
-         <td width="25%"><html:text property="institute_name" name="AdminRegistrationActionForm" styleClass="txtTextBox"/>
-
-         </td>
-         <td  class="err" >
-             <html:messages id="err_name"  property="institute_name">
+                            <tr ><td align="left" width="40%"   class="admintxtStyle"><%=resource.getString("login.ems.institutename")%>*</td>
+                                <td ><html:text property="institute_name" name="AdminRegistrationActionForm" styleClass="txtTextBox"/>
+             <span class="err"><html:messages id="err_name"  property="institute_name">
            <%-- <bean:write name="err_name" />--%>
            <%=resource.getString("admin.admin_registration.err1")%>
-             </html:messages>
-         </td></tr>
-         <tr><td class="txtStyle"><%=resource.getString("login.viewpending.instituteabbrevation")%></td><td><html:text property="abbreviated_name" name="AdminRegistrationActionForm" styleClass="txtTextBox" />  </td><td  class="err">
-
-         </td></tr>
-             <tr><td class="txtStyle"><%=resource.getString("instituteAddress")%>*</td><td><html:text    property="institute_address" name="AdminRegistrationActionForm" styleClass="txtTextBox"/></td><td  class="err">   <html:messages id="err_name" property="institute_address">
+                 </html:messages></span>
+         </td>
+         </tr>
+         <tr><td class="admintxtStyle"><%=resource.getString("login.viewpending.instituteabbrevation")%></td><td><html:text property="abbreviated_name" name="AdminRegistrationActionForm" styleClass="txtTextBox" />  </td>     </tr>
+             <tr><td class="admintxtStyle"><%=resource.getString("instituteAddress")%>*</td><td><html:text    property="institute_address" name="AdminRegistrationActionForm" styleClass="txtTextBox"/><span class="err">   <html:messages id="err_name" property="institute_address">
 				 <%-- <bean:write name="err_name" />--%>
            <%=resource.getString("admin.admin_registration.err2")%>
 
 			</html:messages>
-         </td></tr>
-             <tr><td class="txtStyle"><%=resource.getString("city")%>*</td><td><html:text  property="city" styleClass="txtTextBox"/></td><td  class="err">   <html:messages id="err_name" property="city">
+                     </span>    </td></tr>
+             <tr><td class="admintxtStyle"><%=resource.getString("city")%>*</td><td><html:text  property="city" styleClass="txtTextBox"/><span  class="err">   <html:messages id="err_name" property="city">
 				 <%-- <bean:write name="err_name" />--%>
            <%=resource.getString("admin.admin_registration.err3")%>
 
 			</html:messages>
-         </td></tr>
-             <tr><td class="txtStyle"><%=resource.getString("state")%>*</td><td><html:text  property="state" styleClass="txtTextBox"/></td><td  class="err">   <html:messages id="err_name" property="state">
+                     </span></td></tr>
+             <tr><td class="admintxtStyle"><%=resource.getString("state")%>*</td><td><html:text  property="state" styleClass="txtTextBox"/><span  class="err">    <html:messages id="err_name" property="state">
 				 <%-- <bean:write name="err_name" />--%>
            <%=resource.getString("admin.admin_registration.err4")%>
 
 			</html:messages>
-         </td></tr>
-             <tr><td class="txtStyle"><%=resource.getString("country")%>*</td><td><html:text  property="country" styleClass="txtTextBox"/></td><td  class="err">   <html:messages id="err_name" property="country">
+                                 </span>  </td></tr>
+             <tr><td class="admintxtStyle"><%=resource.getString("country")%>*</td><td><html:text  property="country" styleClass="txtTextBox"/><span  class="err">   <html:messages id="err_name" property="country">
 				 <%-- <bean:write name="err_name" />--%>
            <%=resource.getString("admin.admin_registration.err5")%>
 
 			</html:messages>
-         </td></tr>
-             <tr><td class="txtStyle"><%=resource.getString("pin")%></td><td><html:text  property="pin" styleClass="txtTextBox"/></td><td  class="err">
+                     </span>   </td></tr>
+             <tr><td class="admintxtStyle"><%=resource.getString("pin")%></td><td><html:text  property="pin" styleClass="txtTextBox"/></td>
 
          </td></tr>
-              <tr><td class="txtStyle"><%=resource.getString("courtesy")%></td><td>
+              <tr><td class="admintxtStyle"><%=resource.getString("courtesy")%></td><td>
                       <html:text property="courtesy" styleClass="txtTextBox"/>
  
 
-                 </td><td  class="err">  
-         </td></tr>
-             <tr><td class="txtStyle"><%=resource.getString("circulation.cir_newmember.fname")%>*</td><td><html:text  property="admin_fname" styleClass="txtTextBox"/></td><td  class="err">
-                     <html:messages id="err_name" property="admin_fname">
+                 </td></tr>
+             <tr><td class="admintxtStyle"><%=resource.getString("circulation.cir_newmember.fname")%>*</td><td><html:text  property="admin_fname" styleClass="txtTextBox"/>
+                     <span class="err">        <html:messages id="err_name" property="admin_fname">
 				 <%-- <bean:write name="err_name" />--%>
            <%=resource.getString("admin.admin_registration.err6")%>
 
 			</html:messages>
-         </td></tr>
-             <tr><td class="txtStyle"><%=resource.getString("circulation.cir_newmember.lname")%>*</td><td><html:text  property="admin_lname" styleClass="txtTextBox"/></td><td  class="err">   <html:messages id="err_name" property="admin_lname">
+                     </span></td></tr>
+             <tr><td class="admintxtStyle"><%=resource.getString("circulation.cir_newmember.lname")%>*</td><td><html:text  property="admin_lname" styleClass="txtTextBox"/><span  class="err">   <html:messages id="err_name" property="admin_lname">
 				 <%-- <bean:write name="err_name" />--%>
            <%=resource.getString("admin.admin_registration.err7")%>
 
 			</html:messages>
-         </td></tr>
-              <tr><td class="txtStyle"><%=resource.getString("gender")%>*</td><td>
+                     </span></td></tr>
+              <tr><td class="admintxtStyle"><%=resource.getString("gender")%>*</td><td>
  <html:select property="gender"  styleClass="txtTextBox">
 
 
@@ -233,38 +207,38 @@ else{
 
 
 
-                 </td><td  class="err">   <html:messages id="err_name" property="gender">
+                 <span  class="err">    <html:messages id="err_name" property="gender">
 				 <%-- <bean:write name="err_name" />--%>
            <%=resource.getString("admin.admin_registration.err8")%>
 
 			</html:messages>
-         </td></tr>
-             <tr><td class="txtStyle"><%=resource.getString("designation")%></td><td><html:text  property="admin_designation" styleClass="txtTextBox"/></td><td  class="err">
+                 </span></td></tr>
+             <tr><td class="admintxtStyle"><%=resource.getString("designation")%></td><td><html:text  property="admin_designation" styleClass="txtTextBox"/></td>
 
-         </td></tr>
-             <tr><td class="txtStyle"><%=resource.getString("landlineno")%><br>(<%=resource.getString("admin.acq_registerstaff.contactformat")%>)</td><td><html:text  property="land_line_no" styleClass="txtTextBox"/></td><td  class="err">
+         </tr>
+             <tr><td class="admintxtStyle"><%=resource.getString("landlineno")%><br>(<%=resource.getString("admin.acq_registerstaff.contactformat")%>)</td><td><html:text  property="land_line_no" styleClass="txtTextBox"/></td>
 
-         </td></tr>
-             <tr><td class="txtStyle"><%=resource.getString("admin.acq_registerstaff.mobile_no")%>*</td><td><html:text  property="mobile_no" styleClass="txtTextBox" /></td><td  class="err">   <html:messages id="err_name" property="mobile_no">
+         </tr>
+             <tr><td class="admintxtStyle"><%=resource.getString("admin.acq_registerstaff.mobile_no")%>*</td><td><html:text  property="mobile_no" styleClass="txtTextBox" /><span  class="err">    <html:messages id="err_name" property="mobile_no">
 				 <%-- <bean:write name="err_name" />--%>
            <%=resource.getString("admin.admin_registration.err9")%>
 
 			</html:messages>
-         </td></tr>
-             <tr><td class="txtStyle"><%=resource.getString("admin.createaccount1.loginid")%>*</td><td><html:text  property="login_id" styleId="login_id" styleClass="txtTextBox"/></td><td  class="err">   <html:messages id="err_name" property="login_id">
-				 <%-- <bean:write name="err_name" />--%>
+                                 </span> </td></tr>
+            <%-- <tr><td class="admintxtStyle"><%=resource.getString("admin.createaccount1.loginid")%>*</td><td><html:text  property="login_id" styleId="login_id" styleClass="txtTextBox"/></td><td  class="err">   <html:messages id="err_name" property="login_id">
+				  <bean:write name="err_name" />
            <%=resource.getString("admin.admin_registration.err10")%>
 
 			</html:messages>
-         </td></tr>
-                <tr><td class="txtStyle"><%=resource.getString("opac.newmemberentry.libraryname")%>*</td><td><html:text  property="library_name" styleClass="txtTextBox"/></td><td  class="err">   <html:messages id="err_name" property="library_name">
+         </td></tr>--%>
+                <tr><td class="admintxtStyle"><%=resource.getString("opac.newmemberentry.libraryname")%>*</td><td><html:text  property="library_name" styleClass="txtTextBox"/><span  class="err">   <html:messages id="err_name" property="library_name">
 				 <%-- <bean:write name="err_name" />--%>
            <%=resource.getString("admin.admin_registration.err11")%>
 
 			</html:messages>
-         </td></tr>
+                        </span></td></tr>
 
-             <tr><td class="txtStyle"><%=resource.getString("login.viewpending.typeofinstitute")%></td><td>
+             <tr><td class="admintxtStyle"><%=resource.getString("login.viewpending.typeofinstitute")%></td><td>
                      <html:select property="type_of_institute"  styleClass="txtTextBox">
 
 
@@ -280,34 +254,35 @@ else{
                     </html:select>
 
 
-                 </td><td  class="err">   
-         </td></tr>
+                 </td></tr>
             
             
-             <tr><td class="txtStyle"><%=resource.getString("websitename")%><br>
-                  (http://www.xyz.com)</td><td><html:text  property="institute_website" styleClass="txtTextBox"/></td><td  class="err">
+             <tr><td class="admintxtStyle"><%=resource.getString("websitename")%><br>
+                  (http://www.xyz.com)</td><td><html:text  property="institute_website" styleClass="txtTextBox"/></td>
 
-         </td></tr>
-             <tr><td class="txtStyle"><%=resource.getString("emailid")%>*</td><td>
+         </tr>
+             <tr><td class="admintxtStyle"><%=resource.getString("emailid")%>*</td><td>
                     <html:text  property="admin_email" styleClass="txtTextBox"/>
                    
                  
-                 </td><td  class="err">   <html:messages id="err_name" property="admin_email">
+                 <span  class="err"> <html:messages id="err_name" property="admin_email">
 				 <%-- <bean:write name="err_name" />--%>
            <%=resource.getString("admin.admin_registration.err12")%>
 
 			</html:messages>
-         </td></tr>
-             <tr><td></td><td align="left" colspan="2" ><br/>&nbsp;&nbsp;<input type="submit"  id="submit" name="submit" value="<%=resource.getString("register")%>" onclick="return check();" Class="buttonhome">&nbsp;<input type="button"   name="cancel" value="<%=resource.getString("cancel")%>" Class="buttonhome" onclick="quit()">
+                 </span></td></tr>
+             <tr><td align="center" colspan="3" ><br/>&nbsp;&nbsp;<input type="submit"  id="submit" name="submit" value="<%=resource.getString("register")%>" onclick="return check();" Class="buttonhome">&nbsp;<input type="button"   name="cancel" value="<%=resource.getString("cancel")%>" Class="buttonhome" onclick="quit()">
             <br/><br/>
 
          </td></tr>
               
 
-              
+                        </table>
+                    </td></tr>
+            
         </table>
-          </td></tr>
-     </table>
+           
+          
  </html:form>
 
 

@@ -2,8 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.myapp.struts.opac;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -13,17 +13,12 @@ import org.apache.struts.action.ActionMapping;
 import java.util.List;
 import com.myapp.struts.opacDAO.OpacSearchDAO;
 import com.myapp.struts.systemsetupDAO.*;
-import java.sql.Connection;
 
-/**
- *
- * @author Faraz
- */
-public class OpacLibResultSetAction extends org.apache.struts.action.Action {
+public class OpacLibResultSetAction extends org.apache.struts.action.Action
+{
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    Connection con1;
     
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -36,7 +31,9 @@ public class OpacLibResultSetAction extends org.apache.struts.action.Action {
         List rs = null;
         String formname="";
         String lib_id = (String)session.getAttribute("library_id");
-try{
+
+
+        try{
 
 
 
@@ -48,6 +45,11 @@ try{
         session.setAttribute("libRs", rs);
        List rs1 = (List)opacDao.subLibrarySearch(lib_id);
         session.setAttribute("sublib", rs1);
+        session.removeAttribute("p");
+        String head=(String)request.getParameter("p");
+        if(head!=null)
+            session.setAttribute("p", "p");
+
 
 
 

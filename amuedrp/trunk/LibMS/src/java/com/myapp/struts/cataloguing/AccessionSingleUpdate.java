@@ -163,7 +163,7 @@ public class AccessionSingleUpdate extends org.apache.struts.action.Action {
                     bib.setAddedEntry3(bform.getAdded_entry2());
                     bib.setPublisherName(bform.getPublisher_name());
                     bib.setPublicationPlace(bform.getPublication_place());
-                    bib.setPublishingYear(bform.getPublishing_year());
+                    bib.setPublishingYear(Integer.parseInt(bform.getPublishing_year()));
                     bib.setLccNo(bform.getLCC_no());
                     bib.setIsbn13(bform.getIsbn13());
                     bib.setIsbn10(bform.getIsbn10());

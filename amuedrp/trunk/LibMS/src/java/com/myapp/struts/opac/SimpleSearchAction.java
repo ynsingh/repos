@@ -1,10 +1,11 @@
+
+
 /*
  * SIMPLE SEARCH OPAC SECTION
  */
 
 package com.myapp.struts.opac;
 import com.myapp.struts.hbm.BibliographicDetails;
-import com.myapp.struts.hbm.BibliographicDetailsLang;
 import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
 import java.util.ArrayList;
 import com.myapp.struts.opacDAO.OpacSearchDAO;
@@ -94,6 +95,7 @@ public class SimpleSearchAction extends org.apache.struts.action.Action {
                 sort=(String)session.getAttribute("simpsort");
             if(cmbyr==null || cmbyr.isEmpty())
                 cmbyr=(String)session.getAttribute("simpcmbyr");
+            System.out.println("I am here"+lib_id+sub_lib+phrase+cnf+db+sort+cf+yr1+yr2+p);
             log4j.error("I am here"+lib_id+sub_lib+phrase+cnf+db+sort+cf+yr1+yr2+p);
             log4j.error("I am here After "+lib_id+sub_lib+phrase+cnf+db+sort+cf+yr1+yr2+p);
             session.getAttribute("documentDetail1");
@@ -123,8 +125,14 @@ public class SimpleSearchAction extends org.apache.struts.action.Action {
              session.setAttribute("simpcheckbox", simpleform.getCheckbox());
              simple_search_list=simpleSearchDAO.simpleLangSearch(lib_id,sub_lib,phrase,cnf,db,sort,cf,yr1,yr2,simpleform.getLanguage().toUpperCase(),pageno,cmbyr);
              int size=simpleSearchDAO.getSize();
+                     request.setAttribute("from", pageno*100);
+                if(simple_search_list1.size()<100)
+                    request.setAttribute("to", (pageno*100)+simple_search_list1.size());
+                else
+                    request.setAttribute("to", (pageno*100)+100);
+
              session.setAttribute("simple_search_nor",size);
-               System.out.println(simple_search_list.size());
+            
              session.setAttribute("simple_search_list1", simple_search_list);
           
 
@@ -134,8 +142,17 @@ public class SimpleSearchAction extends org.apache.struts.action.Action {
         {
             session.setAttribute("simpcheckbox", simpleform.getCheckbox());
             simple_search_list1=simpleSearchDAO.simpleSearch(lib_id,sub_lib,phrase,cnf,db,sort,cf,yr1,yr2,pageno,cmbyr);
-            int size=simpleSearchDAO.getSize();
-            session.setAttribute("simple_search_nor",size);
+              int size=simpleSearchDAO.getSize();
+              
+                session.setAttribute("simple_search_nor",size);
+                session.setAttribute("simple_search_list", simple_search_list1);
+
+                    request.setAttribute("from", pageno*100);
+                if(simple_search_list1.size()<100)
+                    request.setAttribute("to", (pageno*100)+simple_search_list1.size());
+                else
+                    request.setAttribute("to", (pageno*100)+100);
+            
             session.setAttribute("simple_search_list", simple_search_list1);
         }
        }

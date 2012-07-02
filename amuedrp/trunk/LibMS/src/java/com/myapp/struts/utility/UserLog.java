@@ -9,6 +9,7 @@ package com.myapp.struts.utility;
 
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.util.Date;
 import java.lang.Long;
 import java.io.File;
@@ -20,12 +21,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
 
 public class UserLog {
@@ -33,6 +37,70 @@ public class UserLog {
     private static Logger log4j=LoggerUtils.getLogger();
  
     static String path=AppPath.getPropertiesFilePath();
+    public static String[] SeparateFileRow(final String  row)
+    {
+        String[] data=new String[row.length()];
+        StringTokenizer st =  new StringTokenizer(row,"|");
+        int i=0;
+        while (st.hasMoreElements())
+        {
+            data[i++]=new String(st.nextToken());
+            System.out.println(data[i-1]);
+          
+        }
+        return data;
+
+    }
+
+    public static boolean isValidDate(String date)
+	{
+	    // set date format, this can be changed to whatever format
+	    // you want, MM-dd-yyyy, MM.dd.yyyy, dd.MM.yyyy etc.
+	    // you can read more about it here:
+	    // http://java.sun.com/j2se/1.4.2/docs/api/index.html
+
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+	    // declare and initialize testDate variable, this is what will hold
+	    // our converted string
+
+	    Date testDate = null;
+
+	    // we will now try to parse the string into date form
+            try
+	    {
+	      testDate = sdf.parse(date);
+	    }
+
+	    // if the format of the string provided doesn't match the format we
+	    // declared in SimpleDateFormat() we will get an exception
+
+	    catch (ParseException e)
+	    {
+	     // errorMessage = "the date you provided is in an invalid date" +
+	        System.out.println(e.getMessage())  ;                //    " format.";
+	      return false;
+	    }
+
+	    // dateformat.parse will accept any date as long as it's in the format
+	    // you defined, it simply rolls dates over, for example, december 32
+            // becomes jan 1 and december 0 becomes november 30
+	    // This statement will make sure that once the string
+	    // has been checked for proper formatting that the date is still the
+	    // date that was entered, if it's not, we assume that the date is invalid
+
+	    if (!sdf.format(testDate).equals(date))
+	    {
+	    //  errorMessage = "The date that you provided is invalid.";
+	      return false;
+	    }
+
+	    // if we make it to here without getting an error it is assumed that
+	    // the date was a valid one and that it's in the proper format
+
+	    return true;
+
+	} // end isValidDate
 
 public static void HibernateErrorLog(String msg,String filename)
 	{
@@ -95,6 +163,25 @@ public static String HibernatePrintErrorLog(String filename)
     System.out.println(lastLine);
                  return lastLine;
     	}
+        public static boolean WriteTextFile(String msg,String filename)
+	{
+            
+            
+		try
+		{
+
+			FileOutputStream log=new FileOutputStream(filename);
+			log.write((msg).getBytes());
+                       	log.close();
+			log4j.error("Write:"+filename);
+			return true;
+		}//try
+		catch(Exception e)
+		{
+                    log4j.error("File Write Error"+e.toString());
+			return false;
+		}
+    	}
 	public static void ErrorLog(String msg,String filename)
 	{
             path=AppPath.getPropertiesFilePath();
@@ -111,15 +198,30 @@ public static String HibernatePrintErrorLog(String filename)
                     log4j.error(e.toString());
 		}
     	}
-          public static void ErrorListLog(List log,String path)
+          public static void ErrorListLog(List log,String filename)
 	{
 		try
 		{
+                    path=AppPath.getPropertiesFilePath();
+                  
 			Date Errordate=new Date();
 			StringBuffer str = new StringBuffer();
+                        boolean success=false;
 
-                            PrintWriter pw = new PrintWriter(new FileOutputStream(path,true));
+                        PrintWriter pw=null;
+                        File file=new File(path);
 
+                        boolean exists = file.exists();
+            if (!exists) {
+               success = (new File(path)).mkdir();
+                if(success==true){
+                      pw = new PrintWriter(new FileOutputStream(path,true));
+                }
+
+            }
+            else{
+                     pw = new PrintWriter(new FileOutputStream(path,true));
+                }
 			        for(int ii=0;ii<log.size();ii++)
 		                str.append(Errordate+">>"+log.get(ii)+"\n");
       			        pw.println(str+"\n");
@@ -130,6 +232,7 @@ public static String HibernatePrintErrorLog(String filename)
                  log4j.error(e.toString());
 		}
     	}
+            
           public static String readProperty(String profile,String searchkey) throws GlobalException
           {
                                 String mailbody="";

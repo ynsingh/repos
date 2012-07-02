@@ -74,7 +74,7 @@ function submitDelete()
             }
  </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+       
              <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
          <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
     </head>
@@ -113,10 +113,10 @@ function submitDelete()
                             <div class="mandatory">   <a class="star">*</a><%=resource.getString("cataloguing.catoldtitle.mandatory")%></div>
                         </td></tr>
                    <tr><td width="40"></td><td><input type="Submit" name="button1" dir="<%=rtl%>" value="<%=resource.getString("cataloguing.catoldtitle.new")%>" Class="btn" onclick="return submitNew();"/></td></tr>
-                    <tr><td width="40"></td><td><input type="Submit" name="button1" dir="<%=rtl%>" value="<%=resource.getString("cataloguing.catoldtitle.update")%>" Class="btn"  onclick="return submitUpdate();"/></td></tr>
+                  <%--  <tr><td width="40"></td><td><input type="Submit" name="button1" dir="<%=rtl%>" value="<%=resource.getString("cataloguing.catoldtitle.update")%>" Class="btn"  onclick="return submitUpdate();"/></td></tr>
                     <tr><td width="40"></td><td><input type="Submit" name="button1" dir="<%=rtl%>" value="<%=resource.getString("cataloguing.catoldtitle.view")%>" Class="btn"  onclick="return submitView();"/></td></tr>
                     <tr><td width="40"></td><td><input type="Submit" name="button1" dir="<%=rtl%>" value="<%=resource.getString("cataloguing.catoldtitle.delete")%>" Class="btn"  onclick="return submitDelete();"/></td></tr>
-                    <tr><td width="40"></td><td><input type="button" name="button" dir="<%=rtl%>" value="<%=resource.getString("cataloguing.catoldtitle.back")%>" Class="btn"  onclick="back();"/></td></tr>
+                  --%>  <tr><td width="40"></td><td><input type="button" name="button" dir="<%=rtl%>" value="<%=resource.getString("cataloguing.catoldtitle.back")%>" Class="btn"  onclick="back();"/></td></tr>
                     <input type="hidden" id="button1" name="button"/>
                     <tr><td height="20px;"></td></tr>
                     <tr><td colspan="2" align="center"><br><br></td></tr>

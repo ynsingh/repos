@@ -60,17 +60,22 @@ catch(Exception e)
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/ajax.js"></script>
 <script language="javascript" type="text/javascript">
 var availableSelectList;
+ //   reSize Iframe when ever child  calls  it
+   function setIframeHeight() {
+       iframe=document.getElementById('f1');
+
+    if (iframe) {
+
+        var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+        if (iframeWin.document.body) {
+            iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+        }
+    }
+};
+
 function search() {
 
-     var acc=document.getElementById('TXTKEY').value;
-        if(acc=="")
-            {
-                alert("Please Enter CALL No to Search Title");
-                return false;
-
-            }
-
-
+     
     var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
 
 if (keyValue=="all")
@@ -129,7 +134,7 @@ newOpt.text = ndValue1;
 
 
 }
-fun();
+
 }
 function fun()
 {
@@ -177,8 +182,8 @@ else{
           new google.elements.transliteration.TransliterationControl(options);
 
         // Enable transliteration in the textfields with the given ids.
-        var ids = ["TXTKEY"];
-        transliterationControl.makeTransliteratable(ids);
+      //  var ids = ["TXTKEY"];
+      //  transliterationControl.makeTransliteratable(ids);
 
         // Add the STATE_CHANGED event handler to correcly maintain the state
         // of the checkbox.
@@ -278,14 +283,15 @@ else{
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
 </head>
-<body onload="checkboxClickHandler();" style="background-color:#e0e8f5;margin: 0px 0px 0px 0px">
-    <html:form  method="post" action="/OPAC/SearchByCallNo" onsubmit="return search();" target="f1" styleId="Form1">
+<jsp:include page="opacheader.jsp"></jsp:include>
+<body onload="search();checkboxClickHandler();setIframeHeight();" style="margin: 0px 0px 0px 0px">
+    <html:form  method="post" action="/OPAC/SearchByCallNo" onsubmit="return fun();" target="f1" styleId="Form1">
     </head><body >
   
-            <table align="center" dir="<%=rtl%>" width="100%" class="datagrid" height="400px"  style="border:solid 1px black;">
+            <table align="center" dir="<%=rtl%>" width="100%" class="datagrid" height="400px"  style="border:dashed 1px cyan;">
 
 
-  <tr class="header" dir="<%=rtl%>"><td   dir="<%=rtl%>"  height="28px" align="center" colspan="3">
+  <tr class="header1" dir="<%=rtl%>"><td   dir="<%=rtl%>"  height="28px" align="center" colspan="3">
 
 
           <b dir="<%=rtl%>"><%=resource.getString("opac.callno.callno")%></b>
@@ -341,9 +347,9 @@ else{
                       </table>
              </td></tr>
         <tr>
-            <td  dir="<%=rtl%>" height="700px" valign="top"  style="border:Solid 1px black;" colspan="3" >
+            <td  dir="<%=rtl%>"  valign="top"   colspan="3" >
 
-             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="100%" width="100%" scrolling="yes"  id="f1"></IFRAME>
+             <IFRAME  name="f1"  src="#"  frameborder=0 height="0px" width="100%" scrolling="no"  id="f1"></IFRAME>
 
 
       </td>
@@ -355,6 +361,8 @@ else{
 
 
 
-    </body></html>
+    </body>
+<jsp:include page="opacfooter.jsp"></jsp:include>
+</html>
 
 

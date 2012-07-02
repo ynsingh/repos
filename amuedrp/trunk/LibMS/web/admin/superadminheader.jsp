@@ -56,23 +56,23 @@ String user=(String)session.getAttribute("username");
 
     <tr dir="<%=rtl%>">
 
-        <td valign="bottom" align="left" width="20%">
+        <td valign="bottom" align="left" width="10%">
 
           
-           <img src="<%=request.getContextPath()%>/images/bp.PNG" alt="" height="65px" width="160px" border="0" align="top" id="Image1" style="">
+           <img src="<%=request.getContextPath()%>/images/bp.PNG" alt="" height="50px" width="130px" border="0" align="top" id="Image1" style="">
          
 
         </td>
                    
 
-                    <td align="center" width="80%" valign="bottom" dir="<%=rtl%>">
+                    <td align="center" width="*" valign="bottom" dir="<%=rtl%>">
           <span style="color:Black;font-size: 20px;font-family: arial;font-weight: bold"> SuperAdmin Module</span>
                      </td>
 
-                     <td valign="bottom"  dir="<%=rtl%>" align="right" width="30%">
+                     <td valign="bottom"  dir="<%=rtl%>" align="right" width="15%">
                          <span  dir="<%=rtl%>" style="font:8pt Verdana;"><%=resource.getString("login.hello")%> [<%=user%>]&nbsp;|<a href="<%=request.getContextPath()%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></span>
                          <br/>
-                         <img src="<%=request.getContextPath()%>/images/logo.png" alt="" height="65px" width="160px" border="0" align="top" id="Image1" style=""></td>
+                         <img src="<%=request.getContextPath()%>/images/logo.png" alt="" height="50px" width="130px" border="0" align="top" id="Image1" style=""></td>
                 </tr>
 
 

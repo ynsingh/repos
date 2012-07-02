@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subreport111" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="isbn10" class="java.lang.String"/>
+	<field name="call_no" class="java.lang.String"/>
+	<field name="accession_no" class="java.lang.String"/>
+	<field name="location" class="java.lang.String"/>
+	<field name="shelving_location" class="java.lang.String"/>
+	<field name="location_name" class="java.lang.String"/>
+	<field name="index_no" class="java.lang.String"/>
+	<field name="main_entry" class="java.lang.String"/>
+	<field name="subject" class="java.lang.String"/>
+	<field name="no_of_pages" class="java.lang.String"/>
+	<field name="statement_responsibility" class="java.lang.String"/>
+	<field name="title" class="java.lang.String"/>
+	<field name="subtitle" class="java.lang.String"/>
+	<field name="publisher_name" class="java.lang.String"/>
+	<field name="publication_place" class="java.lang.String"/>
+	<field name="publishing_year" class="java.lang.String"/>
+	<field name="added_entry" class="java.lang.String"/>
+	<field name="added_entry1" class="java.lang.String"/>
+	<field name="added_entry2" class="java.lang.String"/>
+	<field name="main_entry1" class="java.lang.String"/>
+	<field name="main_entry2" class="java.lang.String"/>
+	<field name="added_entry11" class="java.lang.String"/>
+	<field name="added_entry22" class="java.lang.String"/>
+	<field name="pub_name_year" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="2" splitType="Stretch"/>
+	</title>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="380" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="92" y="10" width="35" height="43"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{call_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="152" y="7" width="182" height="12"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{location}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="165" y="30" width="223" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{statement_responsibility}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="167" y="84" width="204" height="12"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_of_pages}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="177" y="96" width="195" height="12"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{isbn10}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="151" y="84" width="12" height="12"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{index_no}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="151" y="96" width="30" height="12"/>
+				<textElement/>
+				<text><![CDATA[ISBN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="163" y="83" width="2" height="12"/>
+				<textElement/>
+				<text><![CDATA[,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="282" y="149" width="134" height="20"/>
+				<textElement/>
+				<text><![CDATA[(Contd.  on next card)]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="96" y="242" width="39" height="47"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{call_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="173" y="283" width="94" height="12"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{location_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="158" y="107" width="221" height="21"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{subject}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="198" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[(Card  2)  ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="246" y="283" width="114" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{shelving_location}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="161" y="67" width="46" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{publication_place}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="151" y="67" width="17" height="17"/>
+				<textElement/>
+				<text><![CDATA[--[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="209" y="67" width="4" height="17"/>
+				<textElement/>
+				<text><![CDATA[]]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="213" y="65" width="1" height="16"/>
+				<textElement/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="153" y="44" width="116" height="20"/>
+				<textElement/>
+				<text><![CDATA[translated from the ,]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="243" y="44" width="148" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{added_entry}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="153" y="57" width="101" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{added_entry1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="257" y="56" width="100" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{added_entry2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="149" y="107" width="14" height="20"/>
+				<textElement/>
+				<text><![CDATA[1.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="174" y="244" width="20" height="12"/>
+				<textElement/>
+				<text><![CDATA[I.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="174" y="255" width="20" height="12"/>
+				<textElement/>
+				<text><![CDATA[II.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="174" y="266" width="20" height="12"/>
+				<textElement/>
+				<text><![CDATA[III.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="185" y="244" width="203" height="12"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{added_entry11}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="185" y="266" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Title]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="90" y="73" width="70" height="36"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{accession_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="185" y="255" width="206" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{added_entry22}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="152" y="19" width="64" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{main_entry2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="188" y="19" width="17" height="13"/>
+				<textElement/>
+				<text><![CDATA[,]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="191" y="18" width="64" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{main_entry1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="216" y="66" width="236" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{pub_name_year}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="151" y="224" width="57" height="16"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{main_entry2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="183" y="225" width="18" height="13"/>
+				<textElement/>
+				<text><![CDATA[,]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="186" y="224" width="64" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{main_entry1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="40" splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

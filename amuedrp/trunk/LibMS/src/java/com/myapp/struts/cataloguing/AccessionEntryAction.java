@@ -18,10 +18,6 @@ import org.apache.commons.lang.StringUtils;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import com.myapp.struts.utility.DateCalculation;
-/**
- *
- * @author <a href="mailto:asif633@gmail.com">Asif Iqubal</a>
- */
 public class AccessionEntryAction extends org.apache.struts.action.Action {
 
     private static final String SUCCESS = "success";
@@ -115,11 +111,12 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                     doc.setShelvingLocation(bform.getShelving_location());
                     doc.setIndexNo(bform.getIndex_no());
                     doc.setNoOfPages(bform.getNo_of_pages());
-                    doc.setPhysicalWidth(bform.getPhysical_width());
-                    doc.setBindType(bform.getBind_type());
-                    doc.setNotes(bform.getSer_note());
-                    doc.setBiblioId(bform.getBiblio_id());
                     doc.setSeries(bform.getSer_note());
+                    doc.setAbstract_(bform.getThesis_abstract());
+                    doc.setCollation1(bform.getPhysical_width());
+                    doc.setBindType(bform.getBind_type());
+                    doc.setNotes(bform.getNotes());
+                    doc.setBiblioId(bform.getBiblio_id());
                     doc.setPhysicalForm(bform.getPhysical_form());
                     doc.setTypeOfDisc(bform.getType_of_disc());
                     doc.setColour(bform.getColour());
@@ -165,7 +162,7 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                     bib.setAddedEntry3(bform.getAdded_entry2());
                     bib.setPublisherName(bform.getPublisher_name());
                     bib.setPublicationPlace(bform.getPublication_place());
-                    bib.setPublishingYear(bform.getPublishing_year());
+                    bib.setPublishingYear(Integer.parseInt(bform.getPublishing_year()));
                     bib.setLccNo(bform.getLCC_no());
                     bib.setIsbn10(bform.getIsbn10());
                     bib.setIsbn13(bform.getIsbn13());

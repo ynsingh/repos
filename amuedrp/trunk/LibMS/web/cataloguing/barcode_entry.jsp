@@ -68,8 +68,8 @@ function fun()
                   <tr>  <td>  <%--<td> <input type="submit" id="Button1" name="" value="View" >
                        <input type="reset" id="Button2" name="submit" value="Update" ></td>
                       <td> <input type="button" id="Button3" name="" value="Delete">--%>
-                       <input type="submit" id="Button3" name="" value="Submit">
-                       <input type="button" id="Button3" name="" value="Back"></td>
+                       <input type="submit" id="Button1" name="" value="Submit">
+                       <input type="button" id="Button2" name="" value="Back"></td>
                   </tr>
                   <tr><td class="mess" colspan="3">
 
@@ -97,7 +97,7 @@ function fun()
 
                     </td></tr>
                   <tr><td align="justify" colspan="2"><font color="blue" size="-1"><b>Note1:</b> Enter list of accession no. seperated by commas for which barcodes to be generated</font></td></tr>
-                  
+                  <tr><td align="justify" colspan="2"><font color="blue" size="-1"><b>Note2:</b> Enter list no. corresponding to list of accesion no.</font></td></tr>
               </table>
           </td></tr>
 

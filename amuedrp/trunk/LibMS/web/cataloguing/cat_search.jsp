@@ -80,6 +80,7 @@ document.Form1.submit();
                 <td align="<%=align%>" colspan="2">
                 <table>
                            <tr><td>&nbsp;&nbsp;<%= resource.getString("cataloguing.catsearch.field")%></td><td>&nbsp;&nbsp;<select name="sort_by" id="sort_by" size="1" onChange="fun()" id="">
+                                       <option selected value="id.biblioId">BiblioId</option>
                             <option value="title"><%= resource.getString("cataloguing.catoldtitleentry1.title")%></option>
                             <option value="mainEntry"><%= resource.getString("cataloguing.catoldtitleentry1.mainentry")%></option>
                             <option value="callNo">Call No</option>

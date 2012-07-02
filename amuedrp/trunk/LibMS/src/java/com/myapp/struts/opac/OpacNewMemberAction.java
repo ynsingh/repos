@@ -175,14 +175,20 @@ public class OpacNewMemberAction extends org.apache.struts.action.Action {
             cro.setRequestdate(date);
             cro.setSublibraryId(cmdf.getCmdSubLibrary());
 
-            System.out.println(cmdf.getImg()+v.getFileName());
-            if(v.getFileName()!=null)
-            {
-                iii=v.getFileData();
-                String ext=v.getFileName().substring(v.getFileName().indexOf(".")+1,v.getFileName().length());
-                UserLog.writeImage(cmdf.getTXTMEMID()+"."+ext, iii);
-                cro.setImage(cmdf.getTXTMEMID()+"."+ext);
-            }
+          //  System.out.println(cmdf.getImg()+v.getFileName());
+//            if(v.getFileName()!=null)
+//            {
+//                iii=v.getFileData();
+//                String ext=v.getFileName().substring(v.getFileName().indexOf(".")+1,v.getFileName().length());
+//                UserLog.writeImage(cmdf.getTXTMEMID()+"."+ext, iii);
+//                cro.setImage(cmdf.getTXTMEMID()+"."+ext);
+//            }
+ // if (cmdf.getImg()!=null)
+   //         cro.setImage(cmdf.getImg().getFileData());
+     //    else
+      //         if(iii!=null){cro.setImage(iii);}
+       //        else{cro.setImage(null);}
+
 
 
           boolean result= CirRequestfromOpacDAO.insert(cro);

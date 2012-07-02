@@ -45,6 +45,7 @@ public class AccessionDeleteAction extends org.apache.struts.action.Action {
         HttpSession session = request.getSession();
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
+        System.out.println("I am here");
                       try{
         locale1=(String)session.getAttribute("locale");
     if(session.getAttribute("locale")!=null)
@@ -153,7 +154,7 @@ public class AccessionDeleteAction extends org.apache.struts.action.Action {
                 bib.setAddedEntry3(bform.getAdded_entry2());
                 bib.setPublisherName(bform.getPublisher_name());
                 bib.setPublicationPlace(bform.getPublication_place());
-                bib.setPublishingYear(bform.getPublishing_year());
+                bib.setPublishingYear(Integer.parseInt(bform.getPublishing_year()));
                 bib.setLccNo(bform.getLCC_no());
                 bib.setIsbn10(bform.getIsbn10());
                 bib.setIsbn13(bform.getIsbn13());
@@ -179,6 +180,7 @@ public class AccessionDeleteAction extends org.apache.struts.action.Action {
             }
         }
          if (button.equals("Update")) {
+             System.out.println("I am here");
             if (StringUtils.isEmpty(acc_no)) {
              String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblank");//Accession no field can not be left blank
                 request.setAttribute("msg2", msg1);
@@ -277,7 +279,7 @@ public class AccessionDeleteAction extends org.apache.struts.action.Action {
                     bib.setAddedEntry3(bform.getAdded_entry2());
                     bib.setPublisherName(bform.getPublisher_name());
                     bib.setPublicationPlace(bform.getPublication_place());
-                    bib.setPublishingYear(bform.getPublishing_year());
+                    bib.setPublishingYear(Integer.parseInt(bform.getPublishing_year()));
                     bib.setLccNo(bform.getLCC_no());
                     bib.setIsbn13(bform.getIsbn13());
                     bib.setIsbn10(bform.getIsbn10());

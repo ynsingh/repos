@@ -7,9 +7,6 @@ package com.myapp.struts;
 import com.myapp.struts.hbm.*;
 import java.util.List;
 import org.hibernate.*;
-import java.sql.*;
-import org.hibernate.transform.ResultTransformer;
-import org.hibernate.transform.Transformers;
 
 
 

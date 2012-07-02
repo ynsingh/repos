@@ -54,6 +54,12 @@ public class NewEntryBiblioAction extends org.apache.struts.action.Action {
         String library_id = (String) session.getAttribute("library_id");
         String isbn10 = (String) bibform.getIsbn10();
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
+
+        String pub=String.valueOf(bibform.getPublishing_year());
+        if(pub.isEmpty())
+            bibform.setPublishing_year("0");
+
+
           request.setCharacterEncoding("UTF-8");
         try{
         locale1=(String)session.getAttribute("locale");
@@ -102,7 +108,7 @@ public class NewEntryBiblioAction extends org.apache.struts.action.Action {
                 bib.setAddedEntry3(bibform.getAdded_entry2());
                 bib.setPublisherName(bibform.getPublisher_name());
                 bib.setPublicationPlace(bibform.getPublication_place());
-                bib.setPublishingYear(bibform.getPublishing_year());
+                bib.setPublishingYear(Integer.parseInt(bibform.getPublishing_year()));
                 bib.setLccNo(bibform.getLCC_no());
                 bib.setIsbn13(bibform.getIsbn13());
                 bib.setEdition(bibform.getEdition());
@@ -153,7 +159,7 @@ public class NewEntryBiblioAction extends org.apache.struts.action.Action {
                 bib.setAddedEntry3(bibform.getAdded_entry2());
                 bib.setPublisherName(bibform.getPublisher_name());
                 bib.setPublicationPlace(bibform.getPublication_place());
-                bib.setPublishingYear(bibform.getPublishing_year());
+                bib.setPublishingYear(Integer.parseInt(bibform.getPublishing_year()));
                 bib.setLccNo(bibform.getLCC_no());
                 bib.setIsbn13(bibform.getIsbn13());
                 bib.setIsbn10(isbn10);
@@ -201,7 +207,7 @@ public class NewEntryBiblioAction extends org.apache.struts.action.Action {
         bib.setAddedEntry3(bibform.getAdded_entry2());
         bib.setPublisherName(bibform.getPublisher_name());
         bib.setPublicationPlace(bibform.getPublication_place());
-        bib.setPublishingYear(bibform.getPublishing_year());
+        bib.setPublishingYear(Integer.parseInt(bibform.getPublishing_year()));
         bib.setLccNo(bibform.getLCC_no());
         bib.setIsbn13(bibform.getIsbn13());
         bib.setEdition(bibform.getEdition());

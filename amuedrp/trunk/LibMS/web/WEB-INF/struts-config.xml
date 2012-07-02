@@ -9,6 +9,9 @@
     <form-beans>
         <!-- BAR CODE SCANNER ACTIVITY-->
         <form-bean name="BarBookInformationActionForm" type="com.myapp.struts.cataloguing.BarBookInformationActionForm"/>
+        <form-bean name="BarcodeEntryActionForm" type="com.myapp.struts.cataloguing.BarcodeEntryActionForm"/>
+
+
 
 
         <!-- Serial Form Naming-->
@@ -88,6 +91,7 @@
         <form-bean name="GenerateCardActionForm" type="com.myapp.struts.circulation.GenerateCardActionForm"/>
         <form-bean name="CardInformationActionForm" type="com.myapp.struts.circulation.CardInformationActionForm"/>
         <form-bean name="CirCardProcessActionForm" type="com.myapp.struts.circulation.CirCardProcessActionForm"/>
+       <form-bean name="CirMembercardManageActionForm" type="com.myapp.struts.circulation.CirMembercardManageActionForm"/>
         <form-bean name="CirDelinquentMemberActionForm" type="com.myapp.struts.circulation.CirDelinquentMemberActionForm"/>
         <form-bean name="CirCheckinActionForm" type="com.myapp.struts.circulation.CirCheckinActionForm"/>
         <form-bean name="CirculationMemberActionForm" type="com.myapp.struts.circulation.CirculationMemberActionForm"/>
@@ -163,10 +167,23 @@
     </form-beans>
     <action-mappings>
 
+        <!--GENERATE BARCODE OF BOOK-->
+        <action  path="/cataloguing/barcodeentry" scope="request" name="BarcodeEntryActionForm"   input="/barcode_entry.jsp" type="com.myapp.struts.cataloguing.BarcodeEntryAction">
+           <forward name="success" path="/cataloguing/barcode_entry.jsp" />
+     </action>
+
          <!--Mail Setting IN SUPERADMIN INTERFACE-->
         <action input="/admin/mailsetting.jsp" name="MailSettingActionForm" path="/mailsetting" type="com.myapp.struts.admin.MailSettingAction">
                     <forward name="success" path="/admin/mailsetting.jsp"/>
         </action>
+
+        <!--PRINT CATALOG CARD-->
+        <action  path="/cataloguing/cataloguecardentry" scope="request" name="BarcodeEntryActionForm"   input="/listcataloguecard.jsp" type="com.myapp.struts.cataloguing.CatalogueCardEntryAction">
+           <forward name="success" path="/cataloguing/listcataloguecard.jsp" />
+         </action>
+
+
+
 
         <!-- BAR CODE SCANNER DATA RECEIVE-->
         <action  path="/cataloguing/bar_book_info" scope="request" name="BarBookInformationActionForm"   input="/cataloguing/barcode_book_information.jsp" type="com.myapp.struts.cataloguing.BarBookInformationAction">
@@ -422,6 +439,16 @@
             <action  path="/cataloguing/viewAllBiblio" scope="request" name="BibliographicDetailEntryActionForm1"  type="com.myapp.struts.cataloguing.ViewAllBiblioAction">
                       <forward name="all" path="/cataloguing/cat_viewAll_biblio.jsp" />
             </action>
+            <!-- VIEW ALL ACCESSION_RECORD ACCESSION MANAGEMENT-->
+            <action  path="/cataloguing/viewAllRecord" scope="request" name="BibliographicDetailEntryActionForm1"  type="com.myapp.struts.cataloguing.ViewAllBiblioAction1">
+                      <forward name="all" path="/cataloguing/cat_viewAll_acc.jsp" />
+            </action>
+            <!-- View Single Accession Record for update-->
+            <action  path="/cataloguing/updateacc" scope="request" name="BibliographicDetailEntryActionForm1" input="/cataloguing/cat_viewAll_acc.jsp" type="com.myapp.struts.cataloguing.SearchByAccessionAction">
+                      <forward name="view" path="/cataloguing/cat_accession_view_out.jsp" />
+            </action>
+
+
             <!-- VIEW ALL TITLE OLD TITLE-> VIEW ALL ACTIVITY-VIEW EACH RECORD FROM GRID-->
             <action  path="/cataloguing/titleShow" scope="request" name="BibliographicDetailEntryActionForm1" input="/cataloguing/cat_viewAll_biblio.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction2">
                       <forward name="view" path="/cataloguing/cat_title_view_out.jsp" />
@@ -502,6 +529,12 @@
                       <forward name="show" path="/cataloguing/cat_single_delete.jsp"/>
                       <forward name="showcd" path="/cataloguing/cat_single_cd_update.jsp"/>
             </action>
+            <!--Delete/Update AccessionNo-->
+            <action attribute="BibliographicDetailEntryActionForm1" path="/updateaccno" input="/cataloguing/cat_accession_view_out.jsp" name="BibliographicDetailEntryActionForm1"   scope="request" type="com.myapp.struts.cataloguing.AccessionDeleteAction1">
+                      <forward name="success" path="/cataloguing/cat_viewAll_acc.jsp"/>
+                                
+            </action>
+
             <action attribute="BibliographicDetailEntryActionForm" path="/deleteAccess" input="/cataloguing/cat_single_delete.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionDeleteAction">
                       <forward name="success" path="/cataloguing/cat_single_update_grid.jsp"/>
             </action>
@@ -532,6 +565,9 @@
          <forward name="success" path="/cataloguing/cat_data_import_read.jsp"/>
      </action>
      <action   path="/uploadtxt" input="/cataloguing/cat_data_import_read.jsp" scope="request" name="StrutsUploadForm" type="com.myapp.struts.cataloguing.TextUploadAction">
+         <forward name="success" path="/cataloguing/cat_data_import_read.jsp"/>
+     </action>
+     <action   path="/uploadtext" input="/cataloguing/cat_data_import_read.jsp" scope="request" name="StrutsUploadForm" type="com.myapp.struts.cataloguing.TextUploadAction1">
          <forward name="success" path="/cataloguing/cat_data_import_read.jsp"/>
      </action>
      <action   path="/viewMarcRepos" name="StrutsUploadForm" scope="request" type="com.myapp.struts.cataloguing.ViewMarcReposAction">
@@ -1084,19 +1120,14 @@
             </action>
 
 
-
-
-<action  path="/membercard" input="/circulation/cir_generate_card.jsp" name="GenerateCardActionForm"   scope="request" type="com.myapp.struts.circulation.GenerateCardAction">
-                      <forward name="success" path="/circulation/cir_view_carddetails.jsp"/>
-                      <forward name="fail" path="/circulation/cir_generate_card.jsp"/>
- </action>
- <action  path="/card_inf" input="/circulation/cir_view_carddetails.jsp" name="GenerateCardActionForm"    scope="request" type="com.myapp.struts.circulation.CardInformationAction">
-                      <forward name="success" path="/circulation/cir_member_card.jsp"/>
-                       <forward name="success1" path="/circulation/cir_generate_card.jsp"/>
- </action>
-  <action  path="/card_process" input="/circulation/cir_member_card.jsp" name="CirCardProcessActionForm"   scope="request" type="com.myapp.struts.circulation.CirCardProcessAction">
+<action  path="/membercard" input="/circulation/cir_generate_card.jsp" name="CirMembercardManageActionForm"   scope="request" type="com.myapp.struts.circulation.CirMembercardManageAction">
                       <forward name="success" path="/circulation/cir_member_card.jsp"/>
  </action>
+
+ <action  path="/card_process" input="/circulation/cir_member_card.jsp" name="CirCardProcessActionForm"   scope="request" type="com.myapp.struts.circulation.CirCardProcessAction">
+                      <forward name="success" path="/circulation/cir_member_card.jsp"/>
+ </action>
+
 
  
  <action path="/circulation/cir_viewallload"      scope="request" type="com.myapp.struts.circulation.CirViewAllLoadAction">
@@ -1400,7 +1431,12 @@
                         <forward name="fail" path="/manage_superadmin.jsp"/>
 
            </action>
+<action  input="/admin/change_pass.jsp" name="SuperAdminActionForm" path="/manage" scope="request" type="com.myapp.struts.SuperAdminAction" validate="true">
+                        <forward name="success" path="/admin/change_pass.jsp"/>
 
+                        <forward name="fail" path="/admin/change_pass.jsp"/>
+
+           </action>
 
 
 <action path="/convert" scope="request" type="com.myapp.struts.admin.XMLConvertAction"/>
@@ -1804,7 +1840,7 @@
                      </action>
 
                         <action   path="/OPAC/home" scope="request" type="com.myapp.struts.opac.LogoutAction">
-                        <forward name="success"  path="/OPAC/member.jsp"/>
+                        <forward name="success"  path="/OPAC/OPACmain1.jsp"/>
                         </action>
 
                   
@@ -1861,7 +1897,16 @@
                         <forward name="demandlist"  path="/OPAC/newdemand2.jsp"/>
                         <forward name="failure"  path="/OPAC/opachome.jsp"/>
                      </action>
-    
+    <!--MAIL REMINDER FOR CIRCULATION DIVISION-->
+                <action path="/circulation/reminder_member"  scope="request"  type="com.myapp.struts.circulation.ReminderListAction">
+                       <forward name="success" path="/circulation/reminder_member.jsp"/>
+              </action>
+              <action path="/circulation/remindermail"  scope="request"  type="com.myapp.struts.circulation.ReminderMailAction">
+                       <forward name="success" path="/circulation/reminder_member.jsp"/>
+              </action>
+               <action path="/circulation/remindall"  scope="request"  type="com.myapp.struts.circulation.RemindAllAction">
+                       <forward name="success" path="/circulation/reminder_member.jsp"/>
+              </action>
               
 <!--SystemSetup Action Setting-->
 

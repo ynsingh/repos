@@ -41,12 +41,12 @@ locale1=(String)session.getAttribute("locale");
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
     </head>
-    <body>
+    <body onload="parent.setIframeHeight();">
    
-        <table dir="<%=rtl%>" align="<%=align%>" class="datagrid" width="50%" style="border: solid 1px black;">
+        <table dir="<%=rtl%>" align="<%=align%>" class="datagrid" width="50%" >
         <%if(loc.size()==0){%> <%=resource.getString("global.norecordfound")%><%}else{%>
 
-        <tr  dir="<%=rtl%>" class="header"><td  width="20%" align="center" dir="<%=rtl%>"><b><%=resource.getString("opac.locationview.locid")%></b></td><td><%=resource.getString("opac.locationview.locname")%></td></tr>
+        <tr  dir="<%=rtl%>" class="header1"><td  width="20%" align="center" dir="<%=rtl%>"><b><%=resource.getString("opac.locationview.locid")%></b></td><td><%=resource.getString("opac.locationview.locname")%></td></tr>
 
          <% for(int i=0;i<loc.size();i++ ){%>
         

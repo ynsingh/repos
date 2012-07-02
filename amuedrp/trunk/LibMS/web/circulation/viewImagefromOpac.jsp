@@ -8,36 +8,13 @@ CirRequestfromOpac opaclist = (CirRequestfromOpac)session.getAttribute("opacimag
 
 
 
-
-byte[] bytes=null;
-
-//Read Image from Images Folder
-
-if(opaclist.getImage()!=null){
-bytes = UserLog.getBytesFromFile(AppPath.getProjectImagePath()+opaclist.getImage());
-}
-if(bytes==null)
-{
-
-    File file = new File(application.getRealPath("images")+"/no-image.jpg");
-
-
-    try{
-         FileInputStream fis = new FileInputStream(file);
-         BufferedInputStream bis = new BufferedInputStream(fis);
-         bytes = new byte[bis.available()];
-         bis.read(bytes);
-
-
-    }catch(IOException e){
-            System.out.println("image view Error:"+e);
-      }
-}
+byte[] image = (byte[])opaclist.getImage();
+System.out.println("Image Length=1111111111");
+response.reset();
 response.setContentType("image/jpeg");
-System.out.println("bytes11="+bytes.length);
+if (image!=null){
 ServletOutputStream servletOutputStream = response.getOutputStream();
-servletOutputStream.write(bytes);
+servletOutputStream.write(image);
 servletOutputStream.flush();
-
 
 %>

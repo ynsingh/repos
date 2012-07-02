@@ -55,7 +55,7 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         bibform.setSub_library_id(bib.getId().getSublibraryId());
         bibform.setPublication_place(bib.getPublicationPlace());
         bibform.setPublisher_name(bib.getPublisherName());
-        bibform.setPublishing_year(bib.getPublishingYear());
+        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
         bibform.setSubtitle(bib.getSubtitle());
         bibform.setTitle(bib.getTitle());
         bibform.setCall_no(bib.getCallNo());
@@ -125,9 +125,10 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         bibform.setSub_library_id(bib.getId().getSublibraryId());
         bibform.setPublication_place(bib.getPublicationPlace());
         bibform.setPublisher_name(bib.getPublisherName());
-        bibform.setPublishing_year(bib.getPublishingYear());
+        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
         bibform.setThesis_abstract(bib.getAbstract_());
         bibform.setSubject(bib.getSubject());
+        System.out.println(bib.getAbstract_()+"  "+bib.getNotes());
         bibform.setNotes(bib.getNotes());
         bibform.setSubtitle(bib.getSubtitle());
         bibform.setTitle(bib.getTitle());

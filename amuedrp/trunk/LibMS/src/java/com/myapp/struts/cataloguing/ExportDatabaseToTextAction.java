@@ -45,7 +45,7 @@ public class ExportDatabaseToTextAction extends org.apache.struts.action.Action 
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        StrutsUploadForm uploadForm = (StrutsUploadForm) form;
+      /*  StrutsUploadForm uploadForm = (StrutsUploadForm) form;
 
 
      
@@ -110,7 +110,8 @@ public class ExportDatabaseToTextAction extends org.apache.struts.action.Action 
 
                         }
 
-                        List lst = DAO.ViewAllTable(table_name, library_id);
+                      List lst ;
+//= DAO.ViewAllTable(table_name, library_id);
                         List rowdata = null;
                         out.newLine();
                         /// fstream = new FileWriter(TextFileName,true);
@@ -165,7 +166,7 @@ public class ExportDatabaseToTextAction extends org.apache.struts.action.Action 
                 System.err.println("Error: " + e.getMessage());
             }
             //return mapping.findForward(SUCCESS);
-        }
+        }*/
          return mapping.findForward(SUCCESS);
     }
 }

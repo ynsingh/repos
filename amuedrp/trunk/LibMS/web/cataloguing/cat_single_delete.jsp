@@ -18,7 +18,26 @@
 {
     window.location="<%=request.getContextPath()%>/cataloguing/cat_single_update_grid.jsp";
     return false;
-}</script>
+}
+ function senddata()
+{
+    parent.location.href="<%=request.getContextPath()%>/deleteAccess.do";
+        //document.getElementById("f1").action="<%=request.getContextPath()%>/deleteAccess.do";
+    //document.getElementById("f1").method="post";
+    //document.getElementById("f1").submit();
+   
+}
+function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
+
+
+</script>
 <%!
     Locale locale=null;
     String locale1="en";
@@ -97,7 +116,7 @@ if(button.equals("Delete"))
     </head>
     <body>
         <% if(doc_type.equals("Book")){%>
-        <html:form action="/deleteAccess" method="post">
+        <html:form action="/deleteAccess" onsubmit="senddata();" styleId="f1" method="post">
             <html:hidden property="library_id" name="BibliographicDetailEntryActionForm" value="<%=library_id%>"/>
             <html:hidden property="sublibrary_id" name="BibliographicDetailEntryActionForm" value="<%=sub_library_id%>" />
             <html:hidden property="record_no" name="BibliographicDetailEntryActionForm"/>
@@ -138,11 +157,11 @@ if(button.equals("Delete"))
                 <td align="<%=align %>"><%=resource.getString("cataloguing.cataccessionentry.shelflocation")%>:</td><td><html:text property="shelving_location" name="BibliographicDetailEntryActionForm" readonly="<%=read%>"/></td></tr>
             <tr><td align="<%=align %>"><%=resource.getString("cataloguing.cataccessionentry.index")%>:</td><td><html:text property="index_no" name="BibliographicDetailEntryActionForm" readonly="<%=read%>"/></td><td align="<%=align %>"><%=resource.getString("cataloguing.cataccessionentry.noofpage")%>:</td><td><html:text property="no_of_pages" name="BibliographicDetailEntryActionForm" readonly="<%=read%>"/></td><td align="<%=align %>"><%=resource.getString("cataloguing.cataccessionentry.physicalwidth")%>:</td><td><html:text property="physical_width" name="BibliographicDetailEntryActionForm" readonly="<%=read%>"/></td><td align="<%=align %>"><%=resource.getString("cataloguing.cataccessionentry.bindtype")%>:</td><td><html:text property="bind_type" name="BibliographicDetailEntryActionForm" readonly="<%=read%>"/></td></tr>
            <tr><td height="20px;" colspan="8"></td></tr>
-            <tr><td></td><td></td><td colspan="2" align="center">
+            <tr><td></td><td></td><td colspan="2" align="center">Here
                     <%if(button.equals("Update")||button.equals("Delete")){%>
-                    <input name="button1" type="submit" value="<%= newbutton%>" onclick="return submitNew()"/>
+                    <input name="button1" type="button" value="<%= newbutton%>" onclick="senddata();"/>
                     <%}%>
-                </td><td align="<%= align %>"><input name="button1" type="submit" onclick="return send()" value="<%=resource.getString("cataloguing.catoldtitle.back")%>"/>
+                </td><td align="<%= align %>"><input name="button1" type="button" onclick="return send()" value="<%=resource.getString("cataloguing.catoldtitle.back")%>"/>
                 </td><td></td><td></td><td></td></tr>
             <input type="hidden" id="button1" name="button"/>
             <tr><td colspan="8" height="30px;"></td></tr>

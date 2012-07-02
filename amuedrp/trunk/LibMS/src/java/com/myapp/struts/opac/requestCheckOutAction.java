@@ -19,15 +19,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
-/**
- *
- * @author faraz
- */
 public class requestCheckOutAction extends org.apache.struts.action.Action {
     
-    /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
     
   
     @Override

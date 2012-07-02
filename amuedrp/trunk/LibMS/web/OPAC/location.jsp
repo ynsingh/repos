@@ -142,7 +142,18 @@ function fun()
     document.getElementById("form1").target="f4";
     document.getElementById("form1").submit();
 }
+     //   reSize Iframe when ever child  calls  it
+   function setIframeHeight() {
+       iframe=document.getElementById('f4');
 
+    if (iframe) {
+
+        var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+        if (iframeWin.document.body) {
+            iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+        }
+    }
+};
 </script>
 <%!
     Locale locale=null;
@@ -169,9 +180,10 @@ locale1=(String)session.getAttribute("locale");
     %>
 
     </head>
-    <body onload="fun()" style="background-color:#e0e8f5;" >
+    <jsp:include page="opacheader.jsp"></jsp:include>
+    <body onload="search();fun()">
        <html:form method="post" action="/Locationview" target="f4" styleId="form1">
-           <table dir="<%=rtl%>" align="center" width="80%" class="datagrid" style="border: solid 1px black">
+           <table dir="<%=rtl%>" align="center" width="80%" class="datagrid" style="border: dashed 1px cyan">
                <tr><td class="header" align="center">Location</td></tr>
                <tr><td>
                        <table>
@@ -187,18 +199,18 @@ locale1=(String)session.getAttribute("locale");
              <td  dir="<%=rtl%>">
                  <html:select property="CMBSUBLib" styleClass="selecthome" dir="<%=rtl%>" value="<%=sublib_id%>"  styleId="SubLibary" onchange="fun()">
                <html:option value="sel">Select</html:option>
-                     <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName"  />
+               
             </html:select>
 
              </td>
         </tr>
                        </table></td></tr>
         <tr><td></td></tr>
-        <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
+        <tr  dir="<%=rtl%>">
 
 
-            <td  height="300px" valign="top" dir="<%=rtl%>">
-             <IFRAME  src="<%=request.getContextPath()%>/OPAC/location_view.jsp" style="background-color:#e0e8f5;"  frameborder=0 height="300px" width="100%" scrolling="no" name="f4" id="f4"></IFRAME>
+            <td   valign="top" dir="<%=rtl%>">
+             <IFRAME  src="<%=request.getContextPath()%>/OPAC/location_view.jsp" frameborder=0 width="100%" scrolling="no" name="f4" id="f4"></IFRAME>
             
 
       </td>
@@ -211,4 +223,5 @@ locale1=(String)session.getAttribute("locale");
 
 
     </body>
+    <jsp:include page="opacfooter.jsp"></jsp:include>
 </html>

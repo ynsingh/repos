@@ -56,16 +56,24 @@ catch(Exception e)
 }
 
 %>
+<%
+    String library_id = (String)session.getAttribute("library_id");
+    String sublibrary_id = (String)session.getAttribute("memsublib");
+     if(sublibrary_id==null)sublibrary_id=   (String)session.getAttribute("sublibrary_id");
+if(sublibrary_id==null)sublibrary_id="all";
+%>
+
 <link rel="stylesheet" href="/LibMS/css/page.css"/>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAApEiKekYWqFpDa_PStAFTMBRxcC-Fn9tK14QS9YKtPPoXy5_dfhQr8n6mPjQbdLIjMkUpUDQ7khVrfQ">
 </script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/ajax.js"></script>
 <script language="javascript" type="text/javascript">
-var availableSelectList;
+
 
 function search()
 {
+    
     var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
      if(keyValue=="all")
      {
@@ -93,6 +101,7 @@ function search()
 
 function update(cartXML)
 {
+    
     var depts = cartXML.getElementsByTagName("sublibrary_ids")[0];
     var em = depts.getElementsByTagName("sublibrary_id");
     var em1 = depts.getElementsByTagName("sublibrary_name");
@@ -102,6 +111,7 @@ function update(cartXML)
     newOpt = document.getElementById('SubLibary').appendChild(document.createElement('option'));
     newOpt.value = "all";
     newOpt.text = "All";
+    
     for (var i = 0; i < em.length ; i++)
     {
         var ndValue = em[i].firstChild.nodeValue;
@@ -163,6 +173,9 @@ function update(cartXML)
                   alert("Please specify year");
                   return false;}
           }
+
+   
+
 
           
                return true;
@@ -298,22 +311,75 @@ function update(cartXML)
       }
       google.setOnLoadCallback(onLoad);
       //****************************************END OF GOOGLE API JS CODE******************************************
+        //   reSize Iframe when ever child  calls  it
+   function setIframeHeight() {
+       iframe=document.getElementById('f1');
+
+    if (iframe) {
+
+        var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+        if (iframeWin.document.body) {
+            iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+        }
+    }
+};
 </script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard.js" charset="UTF-8"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
 </head>
-<body onload="javascript:checkboxClickHandler();search();" style="margin:0px 0px 0px 0px 0px;background-color:#e0e8f5;">
+<body onload="javascript:checkboxClickHandler();search();setIframeHeight();" style="margin:0px 0px 0px 0px 0px;">
 
-    <html:form  method="post" action="/simple_search"  onsubmit="return validate();" acceptCharset="utf-8">
-       <table  align="center" dir="<%=rtl%>" width="60%" class="datagrid"  style="border: 1px solid black">
-        <tr ><td  class="header"  dir="<%=rtl%>"  align="center" colspan="3">
+    <html:form  method="post" styleId="Form1" target="f1" action="/simple_search"  onsubmit="return validate();" acceptCharset="utf-8">
+       <table align="center" class="datagrid" dir="<%=rtl%>" width="100%" bgcolor="white" height="100%">
+        <tr  ><td   valign="bottom" height="10%"   >
+
+
+
+
+
+                                <img src="<%=request.getContextPath()%>/images/bp.PNG" alt="banner space"  border="0" align="<%=align%>" dir="<%=rtl%>" id="Image1" style="height:40px;width:150px;">
+                                <br>
+
+
+                            </td>
+                            <td align="right" colspan="2" >
+                                <img src="<%=request.getContextPath()%>/images/logo.png" alt=""  border="0" align="top" id="Image1" style="height:70px;width:160px;">
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="3">
+
+
+
+       <a href="OpacLib.do?name=simple" dir="<%=rtl%>"   style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.simple")%></a>&nbsp;|&nbsp;<a href="OpacLib.do?name=browse"  dir="<%=rtl%>"  style="font-weight: bold;text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.browse")%></a>&nbsp;|&nbsp;<a href="OpacLib.do?name=additional" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.additional")%></a>&nbsp;|&nbsp;<a href="OpacLib.do?name=advance" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.advance")%></a>&nbsp;|&nbsp;<a href="OpacLib.do?name=isbn" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.isbn")%></a>&nbsp;|&nbsp;<a href="OpacLib.do?name=callno" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.callno")%></a>&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=accno" dir="<%=rtl%>"  style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.accessionno")%></a>&nbsp;|&nbsp;<a  href="./OpacLib.do?name=newarrival" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px"><%=resource.getString("opacmainframe.mframe.newarrivals")%></a>&nbsp;|&nbsp;<a  href="../OPAC/Notice.do" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" dir="<%=rtl%>"><%=resource.getString("opacmainframe.mframe.notices")%></a>&nbsp;|&nbsp;<a  href="../OPAC/Locations.do" style="text-decoration:none;font-family: Arial;font-size: 11px;color:blue" dir="<%=rtl%>"  ><%=resource.getString("opacmainframe.mframe.location")%></a>&nbsp;|&nbsp;<a  href="../OPAC/OpacLib.do?name=feedback" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.mframe.feedback")%></a>&nbsp;|&nbsp;
+        <b style="color:blue;letter-spacing: 1px;text-decoration:none;font-family: Arial;font-size: 11px">
+                  <a href="../OPAC/OpacLib.do?name=newmember" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px"   dir="<%=rtl%>"  ><%=resource.getString("opacmainframe.mframe.memberregistration")%></a>&nbsp;|&nbsp;<a  href="../OPAC/OpacLib.do?name=myaccount&amp;p=t" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px"   dir="<%=rtl%>"  >My Account</a>&nbsp;|&nbsp;<a href="../OPAC/OPACmain1.jsp" target="_top" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><b style="color:blue" dir="<%=rtl%>" > <%=resource.getString("opacmainframe.header.home")%></b></a>&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/help.jsp"  dir="<%=rtl%>"  style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><b><%=resource.getString("opacmainframe.header.help")%></b></a>&nbsp;|&nbsp;
+                    <%if(library_id==null){%>
+      <a href="<%=request.getContextPath()%>/login.jsp" onclick=""  style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("opacmainframe.header.exit")%></a>
+ <%}else{%><a href="<%=request.getContextPath()%>/admin/main.jsp" onclick=""  style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.exit")%></a><%}%>
+
+                    </b>
+
+
+
+      </td>
+            </tr>
+
+            <tr   style="background-color: #BFDBFF;height: 50px;  background-image: url('<%=request.getContextPath()%>/images/banner_bg.jpg'); border:  solid 1px black;margin: 0px 0px 0px 0px"><td colspan="3" style="font-style: italic;font-size: 20px;color:white;" valign="middle" align="center">
+           "Online Public Access Catalogue"</td>
+
+
+            </tr>
+
+           <tr ><td  style="color:red;border-bottom:  dotted 1px cyan;font-weight: bold;margin: 0px 0px 0px 0px" height="15px"  dir="<%=rtl%>"  align="center" colspan="3">
           <b color="white">	<%=resource.getString("opac.simplesearch.smpsearch")%></b>
         </td></tr>
            <html:hidden property="checkbox" styleId="checkbox" name="SimpleSearchActionForm"/>
           <html:hidden property="language" styleId="language" name="SimpleSearchActionForm"/>
         <% if(net.equalsIgnoreCase("true")){%>
-        <tr dir="<%=rtl%>"><td >  <%=resource.getString("cataloguing.catbiblioentry.selectlang1")%></td><td>
+        <tr dir="<%=rtl%>"><td width="12%">  <%=resource.getString("cataloguing.catbiblioentry.selectlang1")%></td><td width="25%">
         <table><tr><td>
         <div id='translControl'>
         
@@ -350,7 +416,7 @@ function update(cartXML)
             </select></td>
         <td><i> Please Select Desired Connector to Connect Other Criteria with your Search Keywords</i></td>
         </tr>
-        <tr ><td class="header" dir="<%=rtl%>"  align="<%=align%>" colspan="3" >&nbsp;<%=resource.getString("opac.simplesearch.restrictedby")%></td></tr>
+        <tr ><td style="border-bottom: dashed 1px cyan;color:red;font-weight: bold" dir="<%=rtl%>"  align="<%=align%>" colspan="3" >&nbsp;<%=resource.getString("opac.simplesearch.restrictedby")%></td></tr>
          <tr>   <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%></td><td>
                       <html:select property="CMBLib" dir="<%=rtl%>"  styleClass="selecthome"  value="<%=lib_id%>"   styleId="CMBLib" onchange="search()">
                           <html:option value="all">All</html:option>
@@ -366,7 +432,12 @@ function update(cartXML)
              <select name="CMBDB" class="selecthome" dir="<%=rtl%>" size="1" id="CMBDB">
             <option value="combined" dir="<%=rtl%>" selected><%=resource.getString("opac.simplesearch.combnd")%></option>
             <option value="book" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.books")%></option>
-            <option value="cd" dir="<%=rtl%>">CDs</option>
+            <option value="cd" dir="<%=rtl%>">CD/DVD ROM</option>
+     <option value="vd" dir="<%=rtl%>">Electronic Document(Video/Motion Pictures)</option>
+     <option value="ppt" dir="<%=rtl%>">Electronic Document(Presenatation)</option>
+     <option value="au" dir="<%=rtl%>">Electronic Document(Sound Recording)</option>
+     <option value="th" dir="<%=rtl%>">Thesis</option>
+     <option value="ds" dir="<%=rtl%>">Dissertations</option>
             </select>
          </td><td><i> Please Select Desired Type of Documents for Which You Want to Search Records</i></td></tr>
          <tr><td><%=resource.getString("opac.simplesearch.pubyear")%></td><td>
@@ -397,6 +468,18 @@ function update(cartXML)
                 <input type="submit" dir="<%=rtl%>" id="Button1" class="buttonhome" name="" value="<%=resource.getString("opac.simplesearch.find")%>" >
                 <input type="reset" dir="<%=rtl%>" id="Button2" class="buttonhome" name="" value="<%=resource.getString("opac.browse.clear")%>">
         </td></tr>
+        <tr><td    valign="top"   dir="<%=rtl%>" colspan="3">
+                <IFRAME    name="f1" height="0px"  src="#" frameborder=0 style="margin: 0px 0px 0px 0px;"  scrolling="no" width="100%" id="f1"></IFRAME>
+
+
+               </td></tr>
+        <tr><td align="left" class="datagrid" valign="top" colspan="3">
+                          <%=resource.getString("developedby")%>  &copy; <%=resource.getString("login.message.footer")%>
+         &nbsp; follow us : <img src="<%=request.getContextPath()%>/images/blog.jpeg" height="16px" width="20px"/>
+     <img src="<%=request.getContextPath()%>/images/facebook.jpeg" height="16px" width="20px"/>
+     <img src="<%=request.getContextPath()%>/images/twitter.jpeg" height="16px" width="20px"/>
+      <a href="http://www.youtube.com/user/DrAasimZafar?blend=15&ob=5#p/u/0/COwssqRU9Ao"><img src="<%=request.getContextPath()%>/images/youtube.jpeg" height="16px" width="40px"/></a>
+            </td></tr>
         </table>
         
     </html:form>

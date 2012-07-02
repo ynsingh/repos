@@ -5,9 +5,9 @@
     <body  >
 
 <jsp:include page="header.jsp" flush="true" />
-<div
+<!--<div
    style="
-      top: 14%;
+      top: 16%;
    left:5px;
    right:5px;
       position: absolute;
@@ -48,7 +48,7 @@ if (msg!=null)
                 </table>
 
 
-                </div>
+                </div>-->
 
 
       </body>

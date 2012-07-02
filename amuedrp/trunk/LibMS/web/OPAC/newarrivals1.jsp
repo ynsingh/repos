@@ -64,6 +64,18 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 }
 }
+ //   reSize Iframe when ever child  calls  it
+   function setIframeHeight() {
+       iframe=document.getElementById('f1');
+
+    if (iframe) {
+
+        var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+        if (iframeWin.document.body) {
+            iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+        }
+    }
+};
 function search() {
 
     var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
@@ -130,7 +142,7 @@ fun();
     <script language="javascript">
 function fun()
 {
-//search();
+
     document.getElementById("form1").action = "<%=request.getContextPath()%>/NewArrival.do"
     document.getElementById("form1").method="post";
     document.getElementById("form1").target="f1";
@@ -166,17 +178,17 @@ locale1=(String)session.getAttribute("locale");
 
 
 </head>
-
-<body style="background-color:  #e0e8f5;" onload="fun();">
+<jsp:include page="opacheader.jsp"></jsp:include>
+<body  onload="search();fun();">
  
 
 
     <html:form  method="post" action="/NewArrival" target="f1" styleId="form1">
-        <table  align="center" dir="<%=rtl%>" width="70%" class="datagrid"  style="border:solid 1px black;" class="txt">
+        <table  align="center" dir="<%=rtl%>" width="100%" class="datagrid"  style="border:dashed 1px cyan;" class="txt">
 
 
 
-  <tr class="header"><td  width="100%" height="25px" dir="<%=rtl%>"  align="center">
+  <tr class="header1"><td  width="100%" height="25px" dir="<%=rtl%>"  align="center">
 
 
 		<%=resource.getString("opac.newarrivals.viewnewarrival")%>
@@ -223,10 +235,10 @@ locale1=(String)session.getAttribute("locale");
 
       </td></tr>
 
-<tr style="background-color:#e0e8f5;"><td   valign="top"  dir="<%=rtl%>">
-        <hr/>
+<tr ><td   valign="top"  dir="<%=rtl%>">
+    
        
-             <IFRAME  style="margin:0px 0px 0px 0px" src="#" style="background-color:#e0e8f5;"  frameborder=0 height="370px" width="100%" scrolling="no" name="f1" id="f1"></IFRAME>
+             <IFRAME  style="margin:0px 0px 0px 0px" src="#"   frameborder=0  width="100%"  name="f1" id="f1"></IFRAME>
   
 
       </td>
@@ -259,4 +271,5 @@ locale1=(String)session.getAttribute("locale");
 
 
 </body>
+<jsp:include page="opacfooter.jsp"></jsp:include>
 </html>

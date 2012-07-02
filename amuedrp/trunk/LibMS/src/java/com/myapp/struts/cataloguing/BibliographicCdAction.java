@@ -143,7 +143,7 @@ public class BibliographicCdAction extends org.apache.struts.action.Action {
                 bib.setSubtitle(bibform.getSubtitle());
                 bib.setMainEntry(bibform.getMain_entry());
                 bib.setPublisherName(bibform.getPublisher_name());
-                bib.setPublishingYear(bibform.getPublishing_year());
+                bib.setPublishingYear(Integer.parseInt(bibform.getPublishing_year()));
                 bib.setIsbn10(isbn10);
                 bib.setIsbn13(bibform.getIsbn13());
                 bib.setEdition(bibform.getEdition());
@@ -200,7 +200,7 @@ public class BibliographicCdAction extends org.apache.struts.action.Action {
                 bib.setSubtitle(bibform.getSubtitle());
                 bib.setMainEntry(bibform.getMain_entry());
                 bib.setPublisherName(bibform.getPublisher_name());
-                bib.setPublishingYear(bibform.getPublishing_year());
+                bib.setPublishingYear(Integer.parseInt(bibform.getPublishing_year()));
                 bib.setIsbn10(isbn10);
                 bib.setIsbn13(bibform.getIsbn13());
                 bib.setEdition(bibform.getEdition());
@@ -249,7 +249,7 @@ public class BibliographicCdAction extends org.apache.struts.action.Action {
                 bib.setSubtitle(bibform.getSubtitle());
                 bib.setMainEntry(bibform.getMain_entry());
                 bib.setPublisherName(bibform.getPublisher_name());
-                bib.setPublishingYear(bibform.getPublishing_year());
+                bib.setPublishingYear(Integer.parseInt(bibform.getPublishing_year()));
                 bib.setIsbn10(isbn10);
                 bib.setIsbn13(bibform.getIsbn13());
                 bib.setEdition(bibform.getEdition());

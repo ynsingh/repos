@@ -66,6 +66,12 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
         String isbn10 = (String) bibform.getIsbn10();
         String isbn101=(String)bibform.getIsbn101();
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
+
+        String pub=String.valueOf(bibform.getPublishing_year());
+        if(pub.isEmpty())
+            bibform.setPublishing_year("0");
+
+
           request.setCharacterEncoding("UTF-8");
         try{
         locale1=(String)session.getAttribute("locale");
@@ -130,7 +136,7 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 bib.setAddedEntry3(bibform.getAdded_entry2());
                 bib.setPublisherName(bibform.getPublisher_name());
                 bib.setPublicationPlace(bibform.getPublication_place());
-                bib.setPublishingYear(bibform.getPublishing_year());
+                bib.setPublishingYear(Integer.parseInt(bibform.getPublishing_year()));
                 bib.setLccNo(bibform.getLCC_no());
                 bib.setIsbn13(bibform.getIsbn13());
                 bib.setEdition(bibform.getEdition());
@@ -141,10 +147,54 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 bib.setAbstract_(bibform.getThesis_abstract());
                 bib.setNoOfCopies(bibform.getNo_of_copies());
                 bib.setNotes(bibform.getNotes());
-                bib.setEntryLanguage(bibform.getLanguage().toUpperCase());
+                System.out.println(bibform.getCheckbox()+"   "+bibform.getLanguage()+bibform.getNotes());
+               
+                if(bibform.getCheckbox().equals("Checked") || bibform.getCheckbox().equals("on") )
+                {
+                    bib.setEntryLanguage(bibform.getLanguage().toUpperCase());
+                }
+                else
+                {
+                    bib.setEntryLanguage(null);
+                }
+               // bib.setEntryLanguage(bibform.getLanguage().toUpperCase());
                 bib.setDateAcquired(DateCalculation.now());
                 dao.insert(bib);
                 if(bibform.getCheckbox().equals("Checked"))
+                {
+                biblangid.setBiblioId(biblio_id);
+                biblangid.setLibraryId(library_id);
+                biblangid.setSublibraryId(sub_library_id);
+                biblang.setId(biblangid);
+                biblang.setIsbn10(isbn10);
+                biblang.setBookType(bibform.getBook_type());
+                biblang.setDocumentType(bibform.getDocument_type());
+                biblang.setTitle(bibform.getTitle1());
+                biblang.setSubtitle(bibform.getSubtitle1());
+                biblang.setStatementResponsibility(bibform.getStatement_responsibility1());
+                biblang.setMainEntry(bibform.getMain_entry1());
+                biblang.setAddedEntry(bibform.getAdded_entryl());
+                biblang.setAddedEntry1(bibform.getAdded_entry01());
+                biblang.setAddedEntry2(bibform.getAdded_entry11());
+                biblang.setAddedEntry3(bibform.getAdded_entry21());
+                biblang.setPublisherName(bibform.getPublisher_name1());
+                biblang.setPublicationPlace(bibform.getPublication_place1());
+                biblang.setPublishingYear(bibform.getPublishing_year1());
+                biblang.setLccNo(bibform.getLCC_no());
+                biblang.setIsbn13(bibform.getIsbn13());
+                biblang.setEdition(bibform.getEdition1());
+                biblang.setCallNo(bibform.getCall_no());
+                biblang.setAltTitle(bibform.getAlt_title1());
+                biblang.setSubject(bibform.getSubject1());
+                biblang.setSeries(bibform.getSer_note1());
+                biblang.setAbstract_(bibform.getThesis_abstract1());
+                biblang.setNoOfCopies(bibform.getNo_of_copies());
+                biblang.setNotes(bibform.getNotes());
+                biblang.setEntryLanguage(bibform.getLanguage().toUpperCase());
+                biblang.setDateAcquired(DateCalculation.now());
+                dao.insertBiblang(biblang);
+                }
+                  if(bibform.getCheckbox().equalsIgnoreCase("on"))
                 {
                 biblangid.setBiblioId(biblio_id);
                 biblangid.setLibraryId(library_id);
@@ -187,6 +237,7 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
             }
         }
         if (button.equals("Save and go for accessioning")) {
+            session.setAttribute("back", "bib");
   bib3 = dao.search1Isbn10(isbn10, library_id, sub_library_id);
             if (bib3 != null) {
                 String msg3 = resource.getString("cataloguing.catoldtitleentry1.duplicateisbn");//You are trying to enter duplicate isbn enter different
@@ -229,7 +280,7 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 bib.setAddedEntry3(bibform.getAdded_entry2());
                 bib.setPublisherName(bibform.getPublisher_name());
                 bib.setPublicationPlace(bibform.getPublication_place());
-                bib.setPublishingYear(bibform.getPublishing_year());
+                bib.setPublishingYear(Integer.parseInt(bibform.getPublishing_year()));
                 bib.setLccNo(bibform.getLCC_no());
                 bib.setIsbn13(bibform.getIsbn13());
                 bib.setIsbn10(isbn10);
@@ -242,7 +293,8 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 bib.setNotes(bibform.getNotes());
                 bib.setNoOfCopies(bibform.getNo_of_copies());
                 bib.setDateAcquired(DateCalculation.now());
-                if(bibform.getCheckbox().equals("Checked"))
+                System.out.println(bibform.getCheckbox()+"   "+bibform.getLanguage()+bibform.getNotes());
+                if(bibform.getCheckbox().equals("Checked") || bibform.getCheckbox().equals("on") )
                 {
                     bib.setEntryLanguage(bibform.getLanguage().toUpperCase());
                 }
@@ -280,7 +332,44 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 biblang.setEntryLanguage(bibform.getLanguage().toUpperCase());
                 biblang.setDateAcquired(DateCalculation.now());
                 dao.insertBiblang(biblang);
+                
                 }
+                if(bibform.getCheckbox().equals("on"))
+                {
+                biblangid.setBiblioId(biblio_id);
+                biblangid.setLibraryId(library_id);
+                biblangid.setSublibraryId(sub_library_id);
+                biblang.setId(biblangid);
+                biblang.setIsbn10(isbn10);
+                biblang.setBookType(bibform.getBook_type());
+                biblang.setDocumentType(bibform.getDocument_type());
+                biblang.setTitle(bibform.getTitle2());
+                biblang.setSubtitle(bibform.getSubtitle1());
+                biblang.setStatementResponsibility(bibform.getStatement_responsibility1());
+                biblang.setMainEntry(bibform.getMain_entry1());
+                biblang.setAddedEntry(bibform.getAdded_entryl());
+                biblang.setAddedEntry1(bibform.getAdded_entry01());
+                biblang.setAddedEntry2(bibform.getAdded_entry11());
+                biblang.setAddedEntry3(bibform.getAdded_entry21());
+                biblang.setPublisherName(bibform.getPublisher_name2());
+                biblang.setPublicationPlace(bibform.getPublication_place2());
+                biblang.setPublishingYear(bibform.getPublishing_year2());
+                biblang.setLccNo(bibform.getLCC_no());
+                biblang.setIsbn13(bibform.getIsbn13());
+                biblang.setEdition(bibform.getEdition2());
+                biblang.setCallNo(bibform.getCall_no());
+                biblang.setAltTitle(bibform.getAlt_title1());
+                biblang.setSubject(bibform.getSubject1());
+                biblang.setSeries(bibform.getSer_note1());
+                biblang.setAbstract_(bibform.getThesis_abstract1());
+                biblang.setNoOfCopies(bibform.getNo_of_copies());
+                biblang.setNotes(bibform.getNotes());
+                biblang.setEntryLanguage(bibform.getLanguage().toUpperCase());
+                biblang.setDateAcquired(DateCalculation.now());
+                dao.insertBiblang(biblang);
+                
+                }
+
                 bibform.setBiblio_id(biblio_id);
                 session.setAttribute("biblio_id", biblio_id);
                 String msg2 = resource.getString("cataloguing.catoldtitleentry1.savemsg")+biblio_id;//Data is saved successfully with biblio Id
@@ -290,7 +379,14 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
                 DocumentCategory doc=(DocumentCategory)DocumentCategoryDAO.searchDocumentCategory(library_id, sub_library_id, bib.getBookType());
                         if(doc!=null)
                             bibform.setBook_type(doc.getDocumentCategoryName());
+                if(bibform.getCheckbox().equalsIgnoreCase("on") || bibform.getCheckbox().equalsIgnoreCase("Checked"))
+                {
                 bibform.setLanguage(bibform.getLanguage().toUpperCase());
+                }
+                else
+                {
+                bibform.setLanguage("");
+                }
                 bibform.setDate_acquired1(DateCalculation.now());
                 return mapping.findForward("accession");
            }
@@ -318,7 +414,7 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
         bib.setAddedEntry3(bibform.getAdded_entry2());
         bib.setPublisherName(bibform.getPublisher_name());
         bib.setPublicationPlace(bibform.getPublication_place());
-        bib.setPublishingYear(bibform.getPublishing_year());
+        bib.setPublishingYear(Integer.parseInt(bibform.getPublishing_year()));
         bib.setLccNo(bibform.getLCC_no());
         bib.setIsbn13(bibform.getIsbn13());
         bib.setEdition(bibform.getEdition());
@@ -410,12 +506,18 @@ public class NewEntryBiblioAction1 extends org.apache.struts.action.Action {
         dd.setAddedEntry1(bibform.getAdded_entry0());
         dd.setAddedEntry2(bibform.getAdded_entry1());
         dd.setAddedEntry3(bibform.getAdded_entry2());
+        dd.setStatementResponsibility(bibform.getStatement_responsibility());
         dd.setDocumentType(bibform.getDocument_type());
         dd.setEdition(bibform.getEdition());
         dd.setIndexNo(bibform.getIndex_no());
         dd.setNoOfCopies(bibform.getNo_of_copies());
         dd.setNoOfPages(bibform.getNo_of_pages());
-        dd.setPhysicalWidth(bibform.getPhysical_width());
+        dd.setLccNo(bibform.getLCC_no());
+        dd.setAltTitle(bibform.getAlt_title());
+        dd.setSubject(bibform.getSubject());
+        dd.setAbstract_(bibform.getThesis_abstract());
+        dd.setNotes(bibform.getNotes());
+        dd.setCollation1(bibform.getPhysical_width());
         dd.setPublicationPlace(bibform.getPublication_place());
         dd.setPublisherName(bibform.getPublisher_name());
         dd.setPublishingYear(bibform.getPublishing_year());

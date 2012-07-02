@@ -5,9 +5,16 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*,java.io.*,java.net.*,com.myapp.struts.hbm.DocumentDetails"%>
 
-<html><head>
+<html style="height: 100%"><head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<style>
+body
+{
+   overflow: hidden;
+   height: 100%;
+}
 
+        </style>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <%!
@@ -21,7 +28,7 @@ int pagesize=10,size;
 int pageIndex;
 int noofpages;
 int modvalue;
-String index;
+String index,head;
 List obj1;
 
 %>
@@ -78,17 +85,38 @@ if(toIndex>size)toIndex=size;
 
 System.out.println(size+"   "+pageIndex+" "+noofpages);
   %>
+  <script>
+        //   reSize Iframe when ever child  calls  it
+   function setIframeHeight1() {
+       iframe=document.getElementById('f2');
+    if (iframe) {
+
+        var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+        if (iframeWin.document.body) {
+            iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+        }
+    }
+};
+   
+
+      </script>
 
 
-
-    </head><body style="margin:0px 0px 0px 0px;background-color:#e0e8f5;font: arial;font-size: 11px;text-align: center">
+    </head>
+    <%
+head=(String)   session.getAttribute("head");
+if(head!=null){
+%>
+<jsp:include page="opacheader.jsp"/>
+<%}%>
+    <body onload="parent.setIframeHeight2(document.getElementById('f2').height);" style="margin:0px 0px 0px 0px;font: arial;font-size: 11px;text-align: center;height:100%">
         
 
 
 
    
-             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="<%=request.getContextPath()%>/OPAC/allitems.jsp" frameborder=0 height="260px" width="80%" scrolling="no"  id="f1"></IFRAME>
-<br/>Pages&nbsp;&nbsp;
+             <IFRAME  name="f2"   src="<%=request.getContextPath()%>/OPAC/allitems.jsp" frameborder=0  width="100%" scrolling="no"  id="f2"></IFRAME>
+             <br/>Pages&nbsp;&nbsp;
         <%for(int ii=1;ii<=noofpages;ii++){%>
         <a dir="" target="f1" href="<%=request.getContextPath()%>/OPAC/allitems.jsp?pageIndex=<%=ii%>"><%=ii%></a>&nbsp;&nbsp;
 
@@ -96,6 +124,11 @@ System.out.println(size+"   "+pageIndex+" "+noofpages);
           
   
 
-
+ <%
+head=(String)   session.getAttribute("head");
+if(head!=null){
+%>
+<jsp:include page="opacfooter.jsp"/>
+<%}%>
 
     </body></html>

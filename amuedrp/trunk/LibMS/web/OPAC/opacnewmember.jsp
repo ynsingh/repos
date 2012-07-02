@@ -827,16 +827,6 @@ function loadHelp()
 </script>
 
 </head>
-
-
-
-
-<style type="text/css">
-body
-{
-
-}
-</style>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <style type="text/css">
 a:active
@@ -844,16 +834,16 @@ a:active
    color: #0000FF;
 }
 </style>
-
-
 </head>
-<body  onload="search_sub();search_faculty();search1();search();loadHelp();"style="margin: 0px 0px 0px 0px;background-color:#e0e8f5;">
+<jsp:include page="opacheader.jsp"></jsp:include>
+<body  onload="search_sub();search_faculty();search1();search();loadHelp();"style="margin: 0px 0px 0px 0px;">
 
      <div id="image1"
-   style="  top:100px;background: cyan;
-   left:30%;
+   style="  top:50%;background: cyan;
+   left:40%;
    overflow: hidden;
       position: absolute;
+      border: double 1px black;
       display: none;"
 
       >
@@ -863,13 +853,13 @@ a:active
     <%}%>
 
 
-     <%--<div style="position: absolute; top: 42%; left: 38%">--%>
+
     <html:form action="/imageupload1" method="post" styleId="form1" enctype="multipart/form-data">
-        <table class="table" style="border:5px solid blue;" align="center" height="200px" width="400px">
+        <table class="datagrid"  style="border:dashed 1px cyan;" align="center" height="50%" width="30%">
             <tr><td>
-        <%=resource.getString("opac.simplesearch.imageupload")%> <html:file  property="img" name="OpacNewMemberActionForm" styleId="img" onchange="submit()"  onclick="copy()" />
+        <%=resource.getString("opac.simplesearch.imageupload")%> <html:file  property="img" name="OpacNewMemberActionForm" styleClass="btnapp" styleId="img" onchange="submit()"  onclick="copy()" />
           <input type="hidden" name="filename" id="filename" />
-          <input type="button" onclick="showdiv();" value="Cancel" />
+          <input type="button" onclick="showdiv();" class="btnapp" value="Cancel" />
 </td></tr></table>
           
            <html:hidden property="TXTLNAME" name="OpacNewMemberActionForm" styleId="lname1"/>
@@ -905,11 +895,11 @@ a:active
 
     <html:form action="/OpacNewMember" method="post" onsubmit="return check1();">
 
-        <table dir="<%=rtl%>" align="center" class="datagrid" width="50%" height="100%" style="border: solid 1px black;" >
+        <table dir="<%=rtl%>" align="center" class="datagrid" width="60%" height="100%" style="border: dashed 1px cyan;" >
 
 
 
-            <tr><td  width="100%"   class="header"  align="center">
+            <tr><td  width="100%" style="border-bottom: dashed 1px cyan;"  class="header1"  align="center">
 
 <%=resource.getString("opac.newmemberentry.text")%>
 		
@@ -926,7 +916,7 @@ a:active
                   <td  align="<%=align%>"  width="25%" >
            
                       <% if(lib_id!=null){%>
-                      <html:select property="CMBLib" disabled="true" styleClass="selecthome"  tabindex="3"  styleId="CMBLib" onchange="search_sub()" value="<%=lib_id%>">
+                      <html:select property="CMBLib" disabled="true" styleClass="btnapp"  tabindex="3"  styleId="CMBLib" onchange="search_sub()" value="<%=lib_id%>">
                <html:option value="Select">Select</html:option>
                <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
  </html:select>
@@ -935,29 +925,29 @@ a:active
 
                <%}else{
 %>
-                    <html:select property="CMBLib"  tabindex="3" styleClass="selecthome"  styleId="CMBLib" onchange="search_sub()" value="<%=lib_id%>">
+                    <html:select property="CMBLib"  tabindex="3" styleClass="btnapp"  styleId="CMBLib" onchange="search_sub()" value="<%=lib_id%>">
                <html:option value="Select">Select</html:option>
                <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
                   </html:select>
 
 
 <%}%>
-                  </td><td rowspan="3" align="center" colspan="2" class="table_textbox" valign="bottom">
+                  </td><td rowspan="3" align="right" colspan="2" class="table_textbox" valign="bottom">
 
-                       <%if(session.getAttribute("image")!=null){%>
+                       <%--<%if(session.getAttribute("image")!=null){%>
                        <html:img src="<%=path%>"   alt="" width="100" height="100"/>
                         <%}else{%>
 
                         <html:img src="<%=image_path%>"  alt="" width="100" height="100"/>
                            <%}%>
 
-                           <br/> <a href="#" onclick="javascript:showdiv();"><%=resource.getString("circulation.cir_newmember.imageupload")%></a></td>
+                           <br/> <a href="#" onclick="javascript:showdiv();"><%=resource.getString("circulation.cir_newmember.imageupload")%></a>--%></td>
  
 </tr>
 <tr><td dir="<%=rtl%>" align="right"><%=resource.getString("opac.simplesearch.sublibrary")%>*</td><td  align="<%=align%>">
 
            <% if(sublib_id!=null){%>
-           <html:select property="cmdSubLibrary" disabled="true" styleClass="selecthome" styleId="SubLibrary" value="<%=sublib_id%>" >
+           <html:select property="cmdSubLibrary" disabled="true" styleClass="btnapp" styleId="SubLibrary" value="<%=sublib_id%>" >
              <html:option value="Select">Select</html:option>
 
              <%--<%!--<html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />--%>--%>
@@ -968,7 +958,7 @@ a:active
 
                <%}else{%>
 
-                <html:select property="cmdSubLibrary"  styleId="SubLibrary" styleClass="selecthome" value="<%=sublib_id%>" >
+                <html:select property="cmdSubLibrary"  styleId="SubLibrary" styleClass="btnapp" value="<%=sublib_id%>" >
              <html:option value="Select">Select</html:option>
 
              <%--<%!--<html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />--%>--%>
@@ -1049,7 +1039,7 @@ a:active
 			</html:messages>
                 </td>
                  <td><%=resource.getString("opac.newmemberentry.typemem")%> *</td><td class="table_textbox">
-                 <html:select  property="MEMCAT" styleClass="selecthome" style="width:160px"  styleId="emptype_id" tabindex="3" value="Select" onchange="return search();">
+                 <html:select  property="MEMCAT" styleClass="btnapp" style="width:160px"  styleId="emptype_id" tabindex="3" value="Select" onchange="return search();">
                  
                  
                          <html:option value="Select" >Select</html:option>
@@ -1072,7 +1062,7 @@ a:active
                  </td>
               <td><%=resource.getString("opac.newmemberentry.memsubcat")%>*
                   </td><td class="table_textbox">
-                     <html:select  property="MEMSUBCAT" styleClass="selecthome" styleId="subemptype_id" value="<%=submemcat%>">
+                     <html:select  property="MEMSUBCAT" styleClass="btnapp" styleId="subemptype_id" value="<%=submemcat%>">
                        <%--  <html:options  collection="list2" labelProperty="subEmptypeFullName" property="id.subEmptypeId"></html:options>--%>
                      </html:select>
                         
@@ -1105,7 +1095,7 @@ a:active
 
                  </td><td> <%=resource.getString("opac.newmemberentry.facultyof")%>
                  </td><td class="table_textbox">
-                      <html:select  property="TXTFACULTY" styleClass="selecthome" styleId="TXTFACULTY" style="width:160px" value="Select" onchange="return search1()" tabindex="3">
+                      <html:select  property="TXTFACULTY" styleClass="btnapp" styleId="TXTFACULTY" style="width:160px" value="Select" onchange="return search1()" tabindex="3">
                          
                            <%--<html:options  collection="list3"  labelProperty="facultyName" property="id.facultyId"></html:options>--%>
                             
@@ -1120,7 +1110,7 @@ a:active
 			</html:messages>
 
                  </td> <td><%=resource.getString("opac.newmemberentry.dept")%> </td><td class="table_textbox">
-                     <html:select  property="TXTDEPT" styleClass="selecthome" styleId="TXTDEPT" style="width:160px" value="<%=dept%>" onchange="return search_dept();" tabindex="3">
+                     <html:select  property="TXTDEPT" styleClass="btnapp" styleId="TXTDEPT" style="width:160px" value="<%=dept%>" onchange="return search_dept();" tabindex="3">
                         <%-- <html:options  collection="list4" property="id.deptId" labelProperty="deptName"></html:options>--%>
                      </html:select>
 
@@ -1128,7 +1118,7 @@ a:active
              <tr><td><%=resource.getString("opac.newmemberentry.landlineno")%>.</td><td class="table_textbox"><html:text  property="TXTPH2" styleId="ph22" value="<%=ph2%>" style="width:160px"onfocus="statwords('Enter Land Line Number like 0571 207124')" onblur="loadHelp()" /></td>
                  <td><%=resource.getString("opac.newmemberentry.course")%></td><td class="table_textbox">
 
-                    <html:select  property="TXTCOURSE" styleId="TXTCOURSE" styleClass="selecthome" style="width:160px" value="<%=course%>"  tabindex="3">
+                    <html:select  property="TXTCOURSE" styleId="TXTCOURSE" styleClass="btnapp" style="width:160px" value="<%=course%>"  tabindex="3">
                       <%--  <html:options  collection="list5" property="id.courseId"  labelProperty="courseName"></html:options>--%>
                      </html:select>
 
@@ -1156,6 +1146,6 @@ a:active
 </body>
 
 
-
+<jsp:include page="opacfooter.jsp"></jsp:include>
    
 </html>

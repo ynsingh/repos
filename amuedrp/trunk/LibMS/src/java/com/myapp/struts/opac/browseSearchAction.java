@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import com.myapp.struts.hbm.BibliographicDetails;
-import com.myapp.struts.hbm.BibliographicDetailsLang;
 import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
 import java.util.ArrayList;
 import org.apache.struts.action.ActionForward;
@@ -84,20 +83,39 @@ public class browseSearchAction extends org.apache.struts.action.Action {
                 sort="main_entry";
             if(sort.equalsIgnoreCase("publisherName"))
                 sort="publisher_name";
+                  if(sort.equalsIgnoreCase("CallNo"))
+                sort="call_no";
+
 
 
                 session.setAttribute("brocheckbox", myform.getCheckbox());
                 browse_search_list=opacSearchDAO.browseLangSearch(lib_id, sublib_id,phrase, doc_type, sort, field,myform.getLanguage().toUpperCase(),pageno);
-                int size=opacSearchDAO.getSize();
-                session.setAttribute("simple_search_nor",size);
+                 int size=opacSearchDAO.getSize();
+                session.setAttribute("browse_search_nor",size);
                 session.setAttribute("browse_search_list1", browse_search_list);
+               
+                    request.setAttribute("from", pageno*100);
+                if(browse_search_list.size()<100)
+                    request.setAttribute("to", (pageno*100)+browse_search_list.size());
+                else
+                    request.setAttribute("to", (pageno*100)+100);
             }
             else
             {
+                System.out.println("ok");
                 session.setAttribute("brocheckbox", myform.getCheckbox());
+                log4j.error(lib_id+sublib_id+phrase+doc_type+sort+field);
                 browse_search_list1=opacSearchDAO.browseSearch(lib_id, sublib_id,phrase, doc_type, sort, field,pageno);
+                 
+                request.setAttribute("from", pageno*100);
+                if(browse_search_list1.size()<100)
+                    request.setAttribute("to", (pageno*100)+browse_search_list1.size());
+                else
+                    request.setAttribute("to", (pageno*100)+100);
+
+                log4j.error(browse_search_list1.size());
                 int size=opacSearchDAO.getSize();
-                session.setAttribute("simple_search_nor",size);
+                session.setAttribute("browse_search_nor",size);
                 session.setAttribute("browse_search_list", browse_search_list1);
             }
        }

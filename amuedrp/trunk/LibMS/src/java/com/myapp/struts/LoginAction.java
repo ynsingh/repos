@@ -8,11 +8,14 @@ import com.myapp.struts.hbm.AcqPrivilege;
 import com.myapp.struts.hbm.AdminRegistration;
 import com.myapp.struts.hbm.CatPrivilege;
 import com.myapp.struts.hbm.CirPrivilege;
+import com.myapp.struts.hbm.Department;
 import com.myapp.struts.hbm.Library;
 import com.myapp.struts.hbm.Login;
 import com.myapp.struts.hbm.Privilege;
 import com.myapp.struts.hbm.SerPrivilege;
+import com.myapp.struts.hbm.StaffDetail;
 import com.myapp.struts.hbm.SubLibrary;
+import com.myapp.struts.systemsetupDAO.DeptDAO;
 import com.myapp.struts.systemsetupDAO.FacultyDAO;
 import com.myapp.struts.systemsetupDAO.MemberCategoryDAO;
 import org.apache.struts.action.ActionForm;
@@ -118,15 +121,6 @@ time=String.valueOf(System.currentTimeMillis());
 
 try{
 
-//     con= MyConnection.getMyConnection();
-//
-//            if(con==null)
-//             {
-//                request.setAttribute("msg1","Database Connectivity is Closed");
-//                return mapping.findForward("failure");
-//             }
-//
-
 
 
             if(button.equals("Log In"))
@@ -143,6 +137,7 @@ try{
               /*  If the Entered User and Password in Valid */
               if(tempobj!=null)
               {
+
                 list=(List)SubLibraryDAO.getAllSubLibrary( tempobj.getId().getLibraryId());
                    list1=(List)MemberCategoryDAO.searchEmpType( tempobj.getId().getLibraryId());
          
@@ -152,9 +147,10 @@ try{
                
             session.setAttribute("list1",list1);
             session.setAttribute("list2",list2);
+            StaffDetail staff=StaffDetailDAO.searchStaffId(tempobj.getId().getStaffId(),  tempobj.getId().getLibraryId());
                
                           session.setAttribute("library_id", tempobj.getId().getLibraryId());
-                          session.setAttribute("username", tempobj.getUserName());
+                          session.setAttribute("username",staff.getTitle()+" "+ tempobj.getUserName());
                           session.setAttribute("staff_id",tempobj.getId().getStaffId());
                           session.setAttribute("login_role",tempobj.getRole());
                         session.setAttribute("login_id",tempobj.getLoginId());
@@ -182,8 +178,14 @@ session.setAttribute("AdminDetail",admin);
                           session.setAttribute("staff_id",staff_id);
 
 
+                          Department dept=DeptDAO.getDeptName(library_id, sublibrary_id);
+                          if(dept!=null)
+                          {
                         
-                          session.setAttribute("sublibrary_name",sub1.getSublibName());
+                          session.setAttribute("sublibrary_name",dept.getDeptName());
+                          }
+                          else
+                              session.setAttribute("sublibrary_name",sub1.getSublibName());
                         
 
 
@@ -229,6 +231,7 @@ session.setAttribute("AdminDetail",admin);
 
                         sublibrary_id=tempobj.getSublibraryId();
                  Library  libobj1=(Library)LibraryDAO.getLibraryName(library_id);
+                 AdminRegistration admin1=AdminRegistrationDAO.searchInstitute(library_id);
 
      /* Check Whether Its First Time Login of the User
       *
@@ -243,6 +246,7 @@ session.setAttribute("AdminDetail",admin);
                                  session.setAttribute("staff_id",logobj.getId().getStaffId());
 
                             session.setAttribute("library_name", libobj1.getLibraryName());
+                             session.setAttribute("library_add",admin1.getInstituteAddress() );
 
                             Privilege priv=PrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("privilege_resultset", priv);
@@ -272,6 +276,7 @@ session.setAttribute("AdminDetail",admin);
       *
       */
                             session.setAttribute("library_name", libobj1.getLibraryName());
+                            session.setAttribute("library_add",admin1.getInstituteAddress() );
 
                             Privilege priv=PrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("privilege_resultset", priv);

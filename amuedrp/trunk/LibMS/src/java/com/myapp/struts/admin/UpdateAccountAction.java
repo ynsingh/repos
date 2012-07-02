@@ -1,11 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
+//Update Account Details
 package com.myapp.struts.admin;
-//import  com.myapp.struts.hbm.*;
-
 import  com.myapp.struts.hbm.Privilege;
 import  com.myapp.struts.hbm.SerPrivilege;
 import  com.myapp.struts.hbm.CirPrivilege;
@@ -16,6 +10,10 @@ import  com.myapp.struts.hbm.Login;
 import  com.myapp.struts.hbm.StaffDetail;
 import  com.myapp.struts.hbm.SerPrivilegeId;
 import  com.myapp.struts.AdminDAO.*;
+import com.myapp.struts.hbm.AdminRegistration;
+import com.myapp.struts.hbm.Department;
+import com.myapp.struts.hbm.SubLibrary;
+import com.myapp.struts.systemsetupDAO.DeptDAO;
 import com.myapp.struts.utility.AppPath;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -30,10 +28,6 @@ import com.myapp.struts.utility.PasswordEncruptionUtility;
 import com.myapp.struts.utility.RandomPassword;
 import java.util.Locale;
 import java.util.ResourceBundle;
-/**
- *
- * @author Dushyant
- */
 public class UpdateAccountAction extends org.apache.struts.action.Action {
     
    /* forward name="success" path="" */
@@ -50,66 +44,79 @@ public class UpdateAccountAction extends org.apache.struts.action.Action {
     private String question;
     private String ans;
     private boolean result;
-     private String login_role;
+    private String login_role;
     int i;
     LoginDAO logindao;
     private String password1;
     Locale locale=null;
-   String locale1="en";
-   String rtl="ltr";
-   String align="left";
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
          HttpSession session=request.getSession();
-       try{
 
-        locale1=(String)session.getAttribute("locale");
-    if(session.getAttribute("locale")!=null)
-    {
-        locale1 = (String)session.getAttribute("locale");
-        System.out.println("locale="+locale1);
-    }
-    else locale1="en";
-}catch(Exception e){locale1="en";}
-     locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
-    else{ rtl="RTL";align="right";}
-    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
-      CreateAccountActionForm caaction=(CreateAccountActionForm)form;
-      login_id=caaction.getLogin_id();
-      user_name=caaction.getUser_name();
-      /*Password Generate and Reset It*/
-                 password= RandomPassword.getRandomString(10);
-                 System.out.println(password+"Button"+caaction.getButton());
+         try
+         {
+                locale1=(String)session.getAttribute("locale");
+                if(session.getAttribute("locale")!=null)
+                {
+                    locale1 = (String)session.getAttribute("locale");
+                }
+                else locale1="en";
+         }
+         catch(Exception e)
+         {
+             locale1="en";
+         }
+        locale = new Locale(locale1);
+        if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+        else{ rtl="RTL";align="right";}
+        ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
-
-      password1=PasswordEncruptionUtility.password_encrupt(password);
-
-      staff_id=caaction.getStaff_id();
-      button=caaction.getButton();
-      role=caaction.getRole();
-      question=caaction.getQuestion();
-      ans=caaction.getAns();
-     logindao=new LoginDAO();
-      library_id=(String)session.getAttribute("library_id");
-      request.setAttribute("btn",button);
-     System.out.println(question+".......");
-       Login logobj=logindao.searchRole(staff_id, library_id);
-
+        CreateAccountActionForm caaction=(CreateAccountActionForm)form;
+        login_id=caaction.getLogin_id();
+        user_name=caaction.getUser_name();
+        /*Password Generate and Reset It*/
+        password= RandomPassword.getRandomString(10);
+        password1=PasswordEncruptionUtility.password_encrupt(password);
+        staff_id=caaction.getStaff_id();
+        button=caaction.getButton();
+        role=caaction.getRole();
+        question=caaction.getQuestion();
+        ans=caaction.getAns();
+        logindao=new LoginDAO();
+        library_id=(String)session.getAttribute("library_id");
+        request.setAttribute("btn",button);
+        Login logobj=logindao.searchRole(staff_id, library_id);
 
       
-    sublibrary_id=caaction.getSublibrary_id();
-    
-    
+        sublibrary_id=caaction.getSublibrary_id();
+        Department dept=DeptDAO.getDeptName(library_id, sublibrary_id);
+        String sublibname=null;
+        SubLibrary sublib=null;
+        if(dept==null)
+        {
+                sublib=SubLibraryDAO.getLibName(library_id, sublibrary_id);
+                sublibname=sublib.getSublibName();
+                if(sublibname.equalsIgnoreCase("Main Library"))
+                {
+                AdminRegistration admin=AdminRegistrationDAO.searchInstitute(library_id);
+                sublibname=admin.getLibraryName();
+                }
+
+        }
+        else
+           sublibname=dept.getDeptName();
+
     if(button.equals("Update Account"))
     {
 
         //Cannot Update Institute Admin
-
          String id="admin."+library_id;   
-
          if(staff_id.equals(id))
          {
                 request.setAttribute("user_id", login_id);
@@ -121,11 +128,8 @@ public class UpdateAccountAction extends org.apache.struts.action.Action {
                  request.setAttribute("msg1",resource.getString("admin.UpdateStaffAction.error1"));
                 return mapping.findForward("success");
          }
-
-
-
          //Cannot delete Your Own account
-        id=(String)session.getAttribute("staff_id");  
+            id=(String)session.getAttribute("staff_id");
             if(staff_id.equalsIgnoreCase(id) )
             {
 
@@ -140,13 +144,8 @@ public class UpdateAccountAction extends org.apache.struts.action.Action {
                 return mapping.findForward("success");
 
             }
-
         //Cannot Create Same Level Account
-
          login_role=(String)session.getAttribute("login_role");
-
-        
-         
             if(logobj!=null)
             {
                 if(logobj.getRole().equalsIgnoreCase(login_role))
@@ -163,106 +162,62 @@ public class UpdateAccountAction extends org.apache.struts.action.Action {
             }
 
 
-                
-
-              
-
-
-   //if existing role is updated with same one of any user like staff role updated  with staff... and
- //sublibrary is also same then
-//in this case no privilege are to be reassigned  can be modified.
-//normally it can be user by mistake case..................
-
-
-String user_role="";
-logobj=logindao.searchRole(staff_id, library_id);
-
-
-user_role=logobj.getRole();
-
-if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrary_id))
-{
-    logobj=logindao.searchStaffId(staff_id, library_id);
-    logobj.setPassword(password1);
-    logobj.setSublibraryId(sublibrary_id);
+    //CASE 1:
+    //if existing role is updated with same one of any user like staff role updated  with staff... and
+    //sublibrary is also same then
+    //in this case no privilege are to be reassigned  only password reset.
     
- 
-   
-    result=logindao.update1(logobj);
 
-             
+    String user_role="";
+    logobj=logindao.searchRole(staff_id, library_id);
+    user_role=logobj.getRole();
+    if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrary_id))
+    {
+        logobj=logindao.searchStaffId(staff_id, library_id);
+        logobj.setPassword(password1);
+        logobj.setSublibraryId(sublibrary_id);
+        result=logindao.update1(logobj);
                 if(result==true)
-
                 {
-
-                 request.setAttribute("user_id", login_id);
-                request.setAttribute("user_name", user_name);
-                request.setAttribute("library_id", library_id);
-                request.setAttribute("staff_id", staff_id);
-                 request.setAttribute("role", role);
-
-                /*mail to user for updatation*/
-                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
-                 
-            mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",\nYour Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
-
-               System.out.println("Mailing");
-            executor.submit(new Runnable() {
-
-                public void run() {
-
-                    obj.send();
-                }
-            });
-                // request.setAttribute("msg", "Record Updated Successfully");
-             request.setAttribute("msg", resource.getString("admin.UpdateAccountAction.error3"));
-                return mapping.findForward("success");
+                    request.setAttribute("user_id", login_id);
+                    request.setAttribute("user_name", user_name);
+                    request.setAttribute("library_id", library_id);
+                    request.setAttribute("staff_id", staff_id);
+                    request.setAttribute("role", role);
+                    /*mail to user for updatation*/
+                    StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                    mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
+                    // request.setAttribute("msg", "Record Updated Successfully");
+                   request.setAttribute("msg", resource.getString("admin.UpdateAccountAction.error3"));
+                   return mapping.findForward("success");
 
                 }
-                else{
-
-                 //request.setAttribute("msg", "Record Cannot Updated");
-                    request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
-                 return mapping.findForward("error");
-
-
-
+                else
+                {
+                         //request.setAttribute("msg", "Record Cannot Updated");
+                         request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
+                         return mapping.findForward("error");
                 }
-
-
 }
 
-  //if existing role is updated with same one of any user like staff role updated  with staff... but
- //sublibrary is changed  then
-//in this case no privilege are to be reassigned  can be modified.
-//normally it can be user by mistake case..................
+  //CASE 2.if existing role is updated with same one of any user like staff role updated  with staff... but
+  //sublibrary is changed  then
+  //in this case no privilege are to be reassigned  can be modified but sublibrary changed.
 
-
-
-logobj=logindao.searchRole(staff_id, library_id);
-
-
-user_role=logobj.getRole();
-if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrary_id)==false)
-{
-
-    
-    logobj=logindao.searchStaffLogin(staff_id, library_id);
-    logobj.setPassword(password1);
-    logobj.setSublibraryId(sublibrary_id);
-
-
-    result=logindao.update1(logobj);
-
-
+    logobj=logindao.searchRole(staff_id, library_id);
+    user_role=logobj.getRole();
+    if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrary_id)==false)
+    {
+        logobj=logindao.searchStaffLogin(staff_id, library_id);
+        logobj.setPassword(password1);
+        logobj.setSublibraryId(sublibrary_id);
+        result=logindao.update1(logobj);
                 if(result==true)
-
                 {
-                  //update the sublibrary is all places
-                StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
-                temp.setSublibraryId(sublibrary_id);
-                result=StaffDetailDAO.update1(temp);
-
+                      //update the sublibrary is all places
+                    StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                    temp.setSublibraryId(sublibrary_id);
+                    result=StaffDetailDAO.update1(temp);
                      if(result==true)
                     {
                     result=CreatePrivilege.updateSublibraryId(staff_id,library_id,sublibrary_id);
@@ -272,21 +227,11 @@ if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrar
                     request.setAttribute("staff_id", staff_id);
                     request.setAttribute("role", role);
 
-                /*mail to user for updatation*/
-                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
-                 String path = servlet.getServletContext().getRealPath("/");
-            mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",\nYour Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
-
-               System.out.println("Mailing");
-            executor.submit(new Runnable() {
-
-                public void run() {
-
-                    obj.send();
-                }
-            });
+                    /*mail to user for updatation*/
+                    StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                    mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
                    // request.setAttribute("msg", "Record Updated Successfully");
-              request.setAttribute("msg", resource.getString("admin.UpdateAccountAction.error3"));
+                    request.setAttribute("msg", resource.getString("admin.UpdateAccountAction.error3"));
                     return mapping.findForward("success");
                     }
                      else
@@ -294,43 +239,30 @@ if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrar
                     // request.setAttribute("msg", "Record Cannot Updated");
                        request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                      return mapping.findForward("error");
-
                      }
                 }
                 else
                 {
-
-             
-
-                // request.setAttribute("msg", "Record Cannot Updated");
-           request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
-                 return mapping.findForward("error");
-
-
-
+                   // request.setAttribute("msg", "Record Cannot Updated");
+                   request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
+                   return mapping.findForward("error");
                 }
-
-
 }
 
-//if admin role decrease to staff then previous privilege will have to restored and only admin/systemsetup and utitlty should
+//CASE 3: if admin role decrease to staff then previous privilege will have to restored and only admin/systemsetup and utitlty should
 //be removed
 
 
-System.out.println("user_role="+user_role+ "  role="+role);
+
 if(user_role.equals("admin") && role.equals("staff"))
 {
-
-  logobj=logindao.searchStaffLogin(staff_id, library_id);
-    logobj.setRole(role);
-    logobj.setPassword(password1);
-      logobj.setSublibraryId(sublibrary_id);
-      logobj.setQuestion(question);
-      logobj.setAns(ans);
-    result=logindao.update1(logobj);
-
-
-
+        logobj=logindao.searchStaffLogin(staff_id, library_id);
+        logobj.setRole(role);
+        logobj.setPassword(password1);
+        logobj.setSublibraryId(sublibrary_id);
+        logobj.setQuestion(question);
+        logobj.setAns(ans);
+        result=logindao.update1(logobj);
                 if(result==true)
 
                 {
@@ -338,7 +270,6 @@ if(user_role.equals("admin") && role.equals("staff"))
                 StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
                 temp.setSublibraryId(sublibrary_id);
                 result=StaffDetailDAO.update1(temp);
-
                 if(result==true)
                 {
                  
@@ -347,8 +278,6 @@ if(user_role.equals("admin") && role.equals("staff"))
                     priv.setAdministrator("true");
                     priv.setSystemSetup("true");
                     priv.setUtilities("true");
-
-
                     AcqPrivilege acqpriv=AcqPrivilegeDAO.searchStaffLogin(staff_id, library_id);
                     acqpriv.setSublibraryId(sublibrary_id);
                     CatPrivilege catpriv=CatPrivilegeDAO.searchStaffLogin(staff_id, library_id);
@@ -357,7 +286,6 @@ if(user_role.equals("admin") && role.equals("staff"))
                     serpriv.setSublibraryId(sublibrary_id);
                     CirPrivilege cirpriv=CirPrivilegeDAO.searchStaffLogin(staff_id, library_id);
                     cirpriv.setSublibraryId(sublibrary_id);
-
                     result=PrivilegeDAO.update(priv);
                     result=AcqPrivilegeDAO.update(acqpriv);
                     result=CirPrivilegeDAO.update(cirpriv);
@@ -379,19 +307,10 @@ if(user_role.equals("admin") && role.equals("staff"))
 
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
-                 String path = servlet.getServletContext().getRealPath("/");
-           mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",\nYour Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
-
-               System.out.println("Mailing");
-            executor.submit(new Runnable() {
-
-                public void run() {
-
-                    obj.send();
-                }
-            });
+           
+           mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
                     //request.setAttribute("msg", "Record Updated Successfully");
- request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
+             request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
 
 
 
@@ -414,9 +333,6 @@ if(user_role.equals("admin") && role.equals("staff"))
 
 //if admin role decrease to dept-staff then previous privilege will have to restored and only admin/systemsetup and utitlty should
 //be removed and sublibrary is also updated
-
-
-System.out.println("user_role="+user_role+ "  role="+role);
 if(user_role.equals("admin") && role.equals("dept-staff"))
 {
    
@@ -692,17 +608,7 @@ if(user_role.equals("admin") && role.equals("dept-staff"))
 
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
-                 String path = servlet.getServletContext().getRealPath("/");
-mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",\nYour Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
-
-               System.out.println("Mailing");
-            executor.submit(new Runnable() {
-
-                public void run() {
-
-                    obj.send();
-                }
-            });
+           mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
                     request.setAttribute("role", role);
                    // request.setAttribute("msg", "Record Updated Successfully");
                      request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
@@ -999,17 +905,7 @@ if(user_role.equals("admin") && role.equals("dept-admin"))
 
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
-                 String path = servlet.getServletContext().getRealPath("/");
-mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",\nYour Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
-
-               System.out.println("Mailing");
-            executor.submit(new Runnable() {
-
-                public void run() {
-
-                    obj.send();
-                }
-            });
+           mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
                     //request.setAttribute("msg", "Record Updated Successfully");
              request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
                     return mapping.findForward("success");
@@ -1073,17 +969,7 @@ if(user_role.equals("dept-admin") && role.equals("admin"))
 
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
-                 String path = servlet.getServletContext().getRealPath("/");
-mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",\nYour Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
-
-               System.out.println("Mailing");
-            executor.submit(new Runnable() {
-
-                public void run() {
-
-                    obj.send();
-                }
-            });
+           mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
                     //request.setAttribute("msg", "Record Updated Successfully");
              request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
                     return mapping.findForward("success");
@@ -1377,17 +1263,8 @@ if(user_role.equals("dept-admin") && role.equals("staff"))
 
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
-                 String path = servlet.getServletContext().getRealPath("/");
-mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",\nYour Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+           mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
 
-               System.out.println("Mailing");
-            executor.submit(new Runnable() {
-
-                public void run() {
-
-                    obj.send();
-                }
-            });
                    // request.setAttribute("msg", "Record Updated Successfully");
              request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
                     return mapping.findForward("success");
@@ -1686,17 +1563,7 @@ if(user_role.equals("dept-admin") && role.equals("dept-staff"))
 
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
-                 String path = servlet.getServletContext().getRealPath("/");
-mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",\nYour Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
-
-               System.out.println("Mailing");
-            executor.submit(new Runnable() {
-
-                public void run() {
-
-                    obj.send();
-                }
-            });
+           mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
 //                    request.setAttribute("msg", "Record Updated Successfully");
              request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
                     return mapping.findForward("success");
@@ -1759,7 +1626,8 @@ if(user_role.equals("staff") && role.equals("admin"))
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",\nYour Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+                                            mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
+
 
                System.out.println("Mailing");
             executor.submit(new Runnable() {
@@ -2064,8 +1932,9 @@ if(user_role.equals("staff") && role.equals("dept-admin"))
 
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
-                 String path = servlet.getServletContext().getRealPath("/");
-mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",\nYour Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+
+            mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
+
 
                System.out.println("Mailing");
             executor.submit(new Runnable() {
@@ -2371,7 +2240,8 @@ if(user_role.equals("staff") && role.equals("dept-staff"))
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
-mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",\nYour Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+            mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
+
 
                System.out.println("Mailing");
             executor.submit(new Runnable() {
@@ -2442,8 +2312,9 @@ if(user_role.equals("dept-staff") && role.equals("admin"))
 
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
-                 String path = servlet.getServletContext().getRealPath("/");
-mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",\nYour Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+            
+            mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
+
 
                System.out.println("Mailing");
             executor.submit(new Runnable() {
@@ -2763,8 +2634,9 @@ logobj=logindao.searchStaffLogin(staff_id, library_id);
 
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
-                 String path = servlet.getServletContext().getRealPath("/");
-mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",\nYour Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+            
+            mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
+
 
                System.out.println("Mailing");
             executor.submit(new Runnable() {
@@ -3067,8 +2939,9 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
 
                 /*mail to user for updatation*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
-                 String path = servlet.getServletContext().getRealPath("/");
-mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",\nYour Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+            
+            mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
+
 
                System.out.println("Mailing");
             executor.submit(new Runnable() {
@@ -3182,8 +3055,8 @@ mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","De
             /*code for Java Mailing*/
             /*mail to user for deletion of account message*/
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
-                 String path = servlet.getServletContext().getRealPath("/");
-mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",\nYour Role has been Changed Successfully with Following Deatils\nUser Id:"+login_id+"\nNew Password:"+password+"\nUser Role:"+role+".\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
+        mailSend(staffobj.getEmailId(),password,"Your Account on LibMS Account Updated","Dear "+user_name+",\nYour LibMS Account Role is removed <br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
+
 
                  
             executor.submit(new Runnable() {

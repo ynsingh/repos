@@ -259,15 +259,16 @@ locale1=(String)session.getAttribute("locale");
 
 
 </head>
+<jsp:include page="opacheader.jsp"></jsp:include>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
 <body  leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="search();" style="background-color:#e0e8f5;" >
    
 
     <html:form  action="/Feedback" method="post" onsubmit="return validateAll()">
-        <table  align="center" dir="<%=rtl%>" width="50%" class="datagrid" style="border:solid 1px black;">
+        <table  align="center" dir="<%=rtl%>" width="50%" class="datagrid" style="border:dashed 1px cyan;">
 
-            <tr dir="<%=rtl%>"><td  dir="<%=rtl%>"  class="header" align="center">
+            <tr dir="<%=rtl%>"><td  dir="<%=rtl%>"  class="header1" align="center">
 
 		    <%=resource.getString("opac.feedback.yourfeedback")%>
 
@@ -321,68 +322,7 @@ locale1=(String)session.getAttribute("locale");
         
 
 </html:form>
-         <%--   <%}else{%>
-            
-
-<FORM  name="form1"action="Feedback.do" method="post" onsubmit="return validateAll();">
-<table  align="left" width="600px"  style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
-
-
-
-  <tr><td  width="600px"  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="left">
-          <table>
-              <tr><td width="600px" style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="center"><b>
-
-		    <%=resource.getString("opac.feedback.yourfeedback")%>
-
-
-
-          </b>
-                  </td></tr>
-              </table>
-        </td></tr>
-
-  <tr><td class="btn1" width="600px" >
-          <br>
-
-          <table align="center" width="600px" >
-              <tr><td  align="left" colspan="2" class="mess" width="600px" >  <font color="blue">  <b><%=resource.getString("opac.feedback.note")%></b><br><br></font> </td></tr>
-
-              <tr><td style="width:130px" align="right">
-              <input type="text" name="date1"  font="Arial" color="BLACK" disabled="disabled"  value=<%=date%>>
-             </td><td ><%=resource.getString("opac.feedback.date")%>:</td></tr>
-
-              <tr><td style="width:130px" align="right">
-                <input type="text" name="cardno">
-             </td><td style="width:130px" align="left">:*<%=resource.getString("opac.feedback.cardno")%></td></tr>
-              <tr><td style="width:130px" align="right">
-                 <input type="text" name="name">
-             </td><td style="width:130px" align="left">:*<%=resource.getString("opac.feedback.name")%></td></tr>
-               <tr><td style="width:130px" align="right">
-                 <input type="text" name="email">
-             </td><td style="width:130px" align="left">:*<%=resource.getString("opac.feedback.email")%></td></tr>
-               <tr><td style="width:130px" align="right">
-                 <input type="text" name="comments" />
-             </td><td style="width:130px" align="left">:*<%=resource.getString("opac.feedback.comments")%></td></tr>
-               <tr><td style="width:130px" align="right">
-              <input class=btn type="button" name="Cancel" value="<%=resource.getString("opac.feedback.cancel")%>" align="left" onclick="quit();">
-                       <input class=btn type="reset" value="<%=resource.getString("opac.feedback.clear")%>" align="left">
-               <input class="btn" type="submit" name="Submit" value="<%=resource.getString("opac.feedback.submit")%>" align="right">
-              
-                   </td><td></td></tr>
-
-            </table>
-          <br>
-      </td></tr></table>
-
-
-
-
-
-
-</FORM>
-            
-            <%}%>--%>
-
+         
 </body>
+<jsp:include page="opacfooter.jsp"></jsp:include>
 </html>

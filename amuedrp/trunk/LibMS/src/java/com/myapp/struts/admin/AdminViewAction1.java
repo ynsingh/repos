@@ -1,8 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
+//Use for Accepting Approval of Institute Request.
 package com.myapp.struts.admin;
 
 import  com.myapp.struts.hbm.Privilege;
@@ -38,8 +34,6 @@ import com.myapp.struts.utility.*;
 import com.myapp.struts.utility.Email;
 
 /**
- * Developed By : Kedar Kumar
- * Modified By  : 19-Feb-2011
  * Use to Approved the Institute Request from SuperAdmin
  */
 public class AdminViewAction1 extends org.apache.struts.action.Action {
@@ -118,7 +112,6 @@ logindao=new LoginDAO();
         
         user_name =admin.getAdmin_fname()+" "+admin.getAdmin_lname();
         
-        System.out.println(admin_password);
         
 
         sublibrary_id=library_id;
@@ -144,7 +137,7 @@ logindao=new LoginDAO();
 /* Use to Insert New Libray Entry in Library Table */
             Library libobj=new Library();
             libobj.setLibraryId(library_id);
-            libobj.setLibraryName(library_name);
+            libobj.setLibraryName(institute_name);
             libobj.setWorkingStatus("OK");
             libobj.setStaffId(staff_id);
             libobj.setRegistrationId(registration_request_id);
@@ -218,7 +211,6 @@ logindao=new LoginDAO();
 
               /*Password Generate and Reset It*/
                  password= RandomPassword.getRandomString(10);
-                 System.out.println(password);
         String password1 = PasswordEncruptionUtility.password_encrupt(password);
 
 
@@ -233,7 +225,7 @@ logindao=new LoginDAO();
                 logobj.setUserName(user_name);
                 logobj.setQuestion("@");
                 
-                System.out.println(staff_id+library_id+admin_password+sublibrary_id+user_name+login_id);
+//                System.out.println(staff_id+library_id+admin_password+sublibrary_id+user_name+login_id);
                 
 
                  result=logindao.insert1(logobj);
@@ -758,8 +750,8 @@ logindao=new LoginDAO();
                         
 
                         
-                  String path = servlet.getServletContext().getRealPath("/");
-              obj=new Email(staffobj.getEmailId(),password,"Approval of request for library Registration","\n\nDear "+logobj.getUserName()+",\nYour request for Library registration has been Successfully Approved .\n User ID :"+login_id+"\n Password :"+password+"\nWith Regards\nWebAdmin\nLibMS");
+                  
+              obj=new Email(staffobj.getEmailId(),password,"Approval of request for library Registration","\n\nDear "+logobj.getUserName()+",<br>    We thank you for your registration at LibMS Library Management System. Your request for Library registration has been Successfully Approved . <hr color='blue'> Your Account Information<br> <b>  user_name </b> "+login_id+"<br><b> password </b>  "+password+" <hr color='blue'><br>With Regards<br>WebAdmin<br>LibMS");
  
             executor.submit(new Runnable() {
 
@@ -811,7 +803,7 @@ logindao=new LoginDAO();
 
 
    String     path = servlet.getServletContext().getRealPath("/");
-      obj=new Email(adminobj.getAdminEmail(),"","Approval of request for library Registration","\n\nDear "+adminobj.getAdminFname()+" "+adminobj.getAdminLname()+",\nSorry, Your request for Library registration had not been Approved .\nWith Regards\nWebAdmin\nLibMS");
+      obj=new Email(adminobj.getAdminEmail(),"","Rejection of request for library Registration","\n\nDear "+adminobj.getAdminFname()+" "+adminobj.getAdminLname()+",\nSorry, Your request for Library registration had not been Approved .\nWith Regards\nWebAdmin\nLibMS");
 
  
             executor.submit(new Runnable() {

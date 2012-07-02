@@ -66,17 +66,6 @@ alert("HTTP error "+req.status+": "+req.statusText);
 window.status="Press F1 for Help";
 function search() {
    
-
-
-        var acc=document.getElementById('TXTKEY').value;
-        if(acc=="")
-            {
-                alert("Please Enter Accession No to Search Title");
-                return false;
-
-            }
-    
-    
     var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
 
 
@@ -136,11 +125,23 @@ newOpt.text = ndValue1;
 
 
 }
-funcSearch();
+
 }
 
 </script>
 <script language="javascript">
+ //   reSize Iframe when ever child  calls  it
+   function setIframeHeight() {
+       iframe=document.getElementById('f1');
+
+    if (iframe) {
+
+        var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+        if (iframeWin.document.body) {
+            iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+        }
+    }
+};
 
 function funcSearch()
 {
@@ -190,15 +191,17 @@ session.setAttribute("page_name", "accessionno");
 
 
 
-    </head><body style="background-color:#e0e8f5;margin: 0px 0px 0px 0px" >
+    </head>
+    <jsp:include page="opacheader.jsp"></jsp:include>
+    <body style="margin: 0px 0px 0px 0px" onload="search();setIframeHeight();" >
   
 
 
     <html:form  method="post" action="/OPAC/accession" target="f1" onsubmit="return funcSearch();" styleId="Form1" >
-        <table align="center" dir="<%=rtl%>" width="100%" class="datagrid" height="400px"  style="border:solid 1px black;" >
+        <table align="center" dir="<%=rtl%>" width="100%" class="datagrid" style="border:dashed 1px cyan;" >
 
 
-  <tr class="header"><td  width="80%" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
+  <tr class="header1"><td  width="80%" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
 
 
 		<%=resource.getString("opac.accessionno.accessionno")%>
@@ -207,7 +210,7 @@ session.setAttribute("page_name", "accessionno");
 
 
         </td></tr>
-   <tr style="background-color:#e0e8f5;"><td width="800px" rowspan="2" dir="<%=rtl%>">
+   <tr style=""><td  rowspan="2" dir="<%=rtl%>">
           <table>
               <tr><td dir="<%=rtl%>" valign="top"><%=resource.getString("opac.accessionno.enteraccessionno")%><br/>
                 </td><td valign="top">
@@ -231,14 +234,14 @@ session.setAttribute("page_name", "accessionno");
 
 
           </table>
-       </td><td class="header" dir="<%=rtl%>">
+       </td><td class="header1" dir="<%=rtl%>">
            <%=resource.getString("opac.simplesearch.restrictedby")%>
 
        </td>
 
     </tr>
-    <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
-          <td    align="<%=align%>" dir="<%=rtl%>" style="border: solid 1px black;">
+    <tr  dir="<%=rtl%>">
+          <td    align="<%=align%>" dir="<%=rtl%>" style="border: dashed 1px cyan;">
               <table >
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.accessionno.library")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -255,9 +258,9 @@ session.setAttribute("page_name", "accessionno");
 
               </tr></table></td>
 
-    <tr ><td dir="<%=rtl%>"  height="500px" valign="top" colspan="2" >
-<hr/>
-             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="100%" width="100%" scrolling="no"  id="f1"></IFRAME>
+    <tr ><td dir="<%=rtl%>"   valign="top" colspan="2" >
+
+             <IFRAME  name="f1"  src="#" frameborder=0 height="0px" width="100%" scrolling="no"  id="f1"></IFRAME>
 
 
       </td></tr>
@@ -267,4 +270,6 @@ session.setAttribute("page_name", "accessionno");
     </html:form>
 
 
-    </body></html>
+    </body>
+<jsp:include page="opacfooter.jsp"></jsp:include>
+</html>

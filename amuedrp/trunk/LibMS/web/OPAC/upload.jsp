@@ -11,22 +11,12 @@
 
 <%
 byte[] image = (byte[])session.getAttribute("image");
-if(image==null)
-     {
-    FormFile filename = (FormFile)session.getAttribute("filename");
-    if (filename!=null)
-        {
-           image = (byte[])filename.getFileData();
-           //session.removeAttribute("filename");
-         }
-    
-     }
+System.out.println("Image Length=");
 response.reset();
 response.setContentType("image/jpeg");
-if (image!=null)
-    response.getOutputStream().write(image);
-
-System.out.println("Image write karna hai yaha pay upload.jspHai");
-System.out.println("Image Length="+image.length);
-session.removeAttribute("image");
+if (image!=null){
+ServletOutputStream servletOutputStream = response.getOutputStream();
+servletOutputStream.write(image);
+servletOutputStream.flush();
+}
 %>

@@ -80,12 +80,14 @@ public  void send()
 	message.setRecipient(RecipientType.TO, toAddress);
 	message.setSubject(subject);
 	message.setText(text);
+        message.setHeader("Content-Type", "text/html");
+
 
         String pass=buffer.toString();
 	Transport transport = session.getTransport("smtp");
        	transport.connect(host, userid, pass);
 	transport.sendMessage(message, message.getAllRecipients());
-	transport.close();
+        transport.close();
     } catch (Exception e) {
 	e.printStackTrace();
     }
@@ -107,6 +109,7 @@ public void sendAlternatemail()
         message.setRecipients(Message.RecipientType.TO, toAddress);
         message.setSubject(subject);
         message.setText(text);
+        message.setHeader("Content-Type", "text/html");
         //SMTPSSLTransport transport =(SMTPSSLTransport)session.getTransport("smtp");
         String pass=buffer.toString();
         Transport transport = session.getTransport("smtp");

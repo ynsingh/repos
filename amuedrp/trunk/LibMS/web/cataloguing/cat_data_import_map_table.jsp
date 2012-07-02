@@ -13,11 +13,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title></title>
         <html:base/>
-        <script>
-        
-            function showdata1(){}
-
-            </script>
+       
     </head>
     <body>
 
@@ -64,8 +60,11 @@
                                 String[] table_1 = (String[])session.getAttribute("table_datatype");
 
                                 countindex = 0;
+                                System.out.println(table_1.length);
                             while(countindex<table_1.length)
+                                {System.out.println(table_1[countindex]);
                               column_datatype[countindex] = table_1[countindex++];
+                              }
                             }
 
 
@@ -74,7 +73,7 @@
                             String combo = "combo";
                             //int s=size.intValue();
                             int row = 0;
-                         //   out.println("this is the table column size:::::: " + size);
+                            out.println("this is the table column size:::::: " + size);
                 %>
                 <tr>
                     <td style="padding:5px 5px 5px 5px;">

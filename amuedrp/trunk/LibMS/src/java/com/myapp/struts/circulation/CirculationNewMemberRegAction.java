@@ -134,15 +134,20 @@ public class CirculationNewMemberRegAction extends org.apache.struts.action.Acti
             cmd.setTempStatus("Y");
             }
 
-         System.out.println(cmdf.getImg()+v.getFileName());
-            if(v.getFileName()!=null)
-            {
-                iii=v.getFileData();
-                String ext=v.getFileName().substring(v.getFileName().indexOf(".")+1,v.getFileName().length());
-                UserLog.writeImage(member_id+"."+ext, iii);
-                cmd.setImage(member_id+"."+ext);
-            }
-           
+         
+//            if(v.getFileName()!=null)
+//            {
+//                iii=v.getFileData();
+//                String ext=v.getFileName().substring(v.getFileName().indexOf(".")+1,v.getFileName().length());
+//                UserLog.writeImage(member_id+"."+ext, iii);
+//                cmd.setImage(member_id+"."+ext);
+//            }
+//           
+  if (cmdf.getImg()!=null)
+            cmd.setImage(cmdf.getImg().getFileData());
+         else
+               if(iii!=null){cmd.setImage(iii);}
+               else{cmd.setImage(null);}
 
             
 
@@ -269,14 +274,14 @@ public class CirculationNewMemberRegAction extends org.apache.struts.action.Acti
 
 
          
-            if(cmdf.getImg()!=null)
-            {
-                iii=cmdf.getImg().getFileData();
-                String ext=v.getFileName().substring(v.getFileName().indexOf(".")+1,v.getFileName().length());
-                UserLog.writeImage(member_id+"."+ext, iii);
-                cmd.setImage(member_id+"."+ext);
-            }
-           
+//            if(cmdf.getImg()!=null)
+//            {
+//                iii=cmdf.getImg().getFileData();
+//                String ext=v.getFileName().substring(v.getFileName().indexOf(".")+1,v.getFileName().length());
+//                UserLog.writeImage(member_id+"."+ext, iii);
+//                cmd.setImage(member_id+"."+ext);
+//            }
+//          
             
             result=CirculationDAO.update(cmd1);
 

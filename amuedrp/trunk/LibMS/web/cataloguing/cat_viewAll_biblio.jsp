@@ -1,6 +1,6 @@
 <!-- VIEW ALL CATALOG OLD TITLE ENTRY RECORD GRID-->
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-    <%@ page import="java.util.*"%>
+    <%@ page import="java.util.*,com.myapp.struts.opac.*,com.myapp.struts.hbm.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
     <%@ page import="java.sql.*"%>
     <%@ page import="java.io.*"%>
@@ -18,9 +18,49 @@
         String locale1="en";
         String rtl="ltr";
         String align="left";
-        List opacList;
+        OpacDoc opacDoc;
+        List opacList,result;
         int fromIndex, toIndex;
+        int from,i=0;
 %>
+<script type="text/javascript">
+function next(){
+         <%
+     int pageNumber=0;
+     if(request.getParameter("page") != null) {
+       session.setAttribute("page", request.getParameter("page"));
+       pageNumber = Integer.parseInt(request.getParameter("page"));
+     } else {
+       session.setAttribute("page", "1");
+     }
+     String nextPage = (pageNumber +1) + "";%>
+     var loc="<%=request.getContextPath()%>/cataloguing/viewAllBiblio.do?page="+<%=nextPage%>;
+     location.href= loc;
+}
+  <%
+    //CHECK IF CLICK ON PREVIOUS BUTTON
+    if(request.getParameter("flag")!=null)
+    {
+     i=i-200;
+     }
+     //CHECK IF CLICK ON RESTART SEARCH
+     if(pageNumber==0)
+         i=0;
+    %>
+function previous()
+{
+     <%
+     String previousPage ="";
+     if(pageNumber>=1)
+        previousPage = (pageNumber -1) + "";
+    else
+        previousPage = 0 + "";
+    %>
+    var loc="<%=request.getContextPath()%>/cataloguing/viewAllBiblio.do?page="+<%=previousPage%>+"&flag=true";;
+    location.href= loc;
+}
+</script>
+
 <%
     String lib_id = (String)session.getAttribute("library_id");
     String sublib_id = (String)session.getAttribute("memsublib");
@@ -53,48 +93,45 @@
     pageContext.setAttribute("view",view);
     String path= request.getContextPath();
     pageContext.setAttribute("path", path);
-
+int pagesize=100;
   
     int tcount =0;
-    opacList=(List)session.getAttribute("opacList");
+  
+
+     opacList = new ArrayList ();
+        result = new ArrayList ();
+        result = (ArrayList)session.getAttribute("opacList");
+        from=i;
+        int j=0;
+        while(j<result.size())
+        {
+            BibliographicDetails obj=(BibliographicDetails)result.get(j);
+            OpacDoc obj1=new OpacDoc();
+            obj1.setBiblioid(obj.getId().getBiblioId());
+            obj1.setTitle(obj.getTitle());
+            obj1.setCallno(obj.getCallNo());
+            obj1.setRowno(i+1);
+            obj1.setLibrary_id(obj.getId().getLibraryId().toUpperCase());
+            obj1.setSublibrary_id(obj.getId().getSublibraryId().toUpperCase());
+            obj1.setMain_entry(obj.getMainEntry());
+            obj1.setPublisher(obj.getPublisherName());
+            obj1.setPubplace(obj.getPublicationPlace());
+            j++;
+            i++;
+        opacList.add(obj1);
+        }
     tcount = opacList.size();
-    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-    if ((toIndex = fromIndex+100) >= opacList.size())
-    toIndex = opacList.size();
-    request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
+     if ((toIndex = fromIndex+100) >= opacList.size())
+        toIndex = opacList.size();
+        request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
+        pageContext.setAttribute("tCount", tcount);
+        pageContext.setAttribute("pagesize", pagesize);
+        pageContext.setAttribute("project",request.getContextPath());
     pageContext.setAttribute("tCount", tcount);
 %>
 
 <html>
  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<script type="text/javascript">
-function next(){
-         <%
-     int pageNumber=0;
-     if(request.getParameter("page") != null) {
-       session.setAttribute("page", request.getParameter("page"));
-       pageNumber = Integer.parseInt(request.getParameter("page"));
-     } else {
-       session.setAttribute("page", "1");
-     }
-     String nextPage = (pageNumber +1) + "";%>
-     var loc="<%=request.getContextPath()%>/cataloguing/viewAllBiblio.do?page="+<%=nextPage%>;
-     location.href= loc;
-}
-
-function previous()
-{
-     <%
-     String previousPage ="";
-     if(pageNumber>=1)
-        previousPage = (pageNumber -1) + "";
-    else
-        previousPage = 0 + "";
-    %>
-    var loc="<%=request.getContextPath()%>/cataloguing/viewAllBiblio.do?page="+<%=previousPage%>;
-    location.href= loc;
-}
-</script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 </head>
 <body>
@@ -108,79 +145,68 @@ if(tcount==0)
 else
 {%>
 <tr><td colspan="2" align="center">
-<ui:dataGrid items="${opacList}" var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid" >
-
+        <ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
   <columns>
-         <column width="5%">
-      <header value="${biblio_id}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.id.biblioId}"  hAlign="left"
-	      styleClass="item"/>
-       </column>
-       
-       <column width="15%">
-      <header value="Call No" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.callNo}"  hAlign="left"
-	      styleClass="item"/>
-       </column>
-    <column width="10%">
-      <header value="${document_type}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.documentType}"  hAlign="left"
-	      styleClass="item"/>
-    </column>
-      <column width="25%">
-      <header value="${title1}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.title}"  hAlign="left"
-	      styleClass="item"/>
+
+<column width="5px">
+      <header value="Sno" hAlign="left" styleClass="admingridheader"/>
+      <item  styleClass="item"  value="${doc.rowno}"   hAlign="left"/>
+
     </column>
     <column width="20%">
-      <header value="${main_entry}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.mainEntry}"  hAlign="left"
-	      styleClass="item"/>
+      <header value="Title" hAlign="left" styleClass="admingridheader"/>
+      <item  styleClass="item"  value="${doc.title}"   hAlign="left"/>
+
     </column>
-    <column width="10%">
+      <column width="20%">
+      <header value="MainEntry" hAlign="left" styleClass="admingridheader"/>
+      <item  styleClass="item"  value="${doc.main_entry}"   hAlign="left"/>
+
+    </column>
+      <column width="20%">
+      <header value="CallNo" hAlign="left" styleClass="admingridheader"/>
+      <item  styleClass="item"  value="${doc.callno}"   hAlign="left"/>
+
+    </column>
+ <column width="20%">
+      <header value="Publisher Name" hAlign="left" styleClass="admingridheader"/>
+      <item  styleClass="item"  value="${doc.publisher}"   hAlign="left"/>
+
+    </column>
+       <column width="20%">
+      <header value="Publishing Place" hAlign="left" styleClass="admingridheader"/>
+      <item  styleClass="item"  value="${doc.pubplace}"   hAlign="left"/>
+
+    </column>
+          <column width="10%">
       <header value="${action}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${view}"  hAlign="left" hyperLink="${path}/cataloguing/titleShow.do?id=${doc.id.biblioId}"
+      <item   value="${view}"  hAlign="left" hyperLink="${path}/cataloguing/titleShow.do?id=${doc.biblioid}"
 	      styleClass="item"/>
     </column>
+      
+
+
   </columns>
+ <footer        styleClass="footer" show="true"/>
+
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
-<alternateRows styleClass="alternaterows"/>
-<paging size="100" count="${tCount}" custom="true" nextUrlVar="next"
+  <alternateRows styleClass="alternaterows" />
+
+  <paging size="${pagesize}" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
-  <order imgAsc="up.gif" imgDesc="down.gif"/>
+
 </ui:dataGrid>
 </td></tr>
 <tr><td>
-        <input type="button" onclick="next()" value="next" class="datagrid"/>
+          <% if(pageNumber>0){
+           %>
   <input type="button" onclick="previous()" value="previous" class="datagrid"/>
-<%--
-  <table width="750" style="font-family: arial; font-size: 10pt" border=0>
-<tr>
-<td align="left" width="33%">
-<c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>"><%=resource.getString("global.previous")%></a>
-</c:if>&nbsp;
-</td>
-<td align="center" width="33%">
-<c:forEach items="${pages}" var="page">
-<c:choose>
-  <c:when test="${page.current}">
-    <b><a href="<c:out value="${page.url}"/>"><c:out value="${page.index}"/></a></b>
-  </c:when>
-  <c:otherwise>
-    <a href="<c:out value="${page.url}"/>"><c:out value="${page.index}"/></a>
-  </c:otherwise>
-</c:choose>
-</c:forEach>
-</td>
-<td align="right" width="33%">&nbsp;
-<c:if test="${next != null}">
-<a href="<c:out value="${next}"/>"><%=resource.getString("global.next")%></a>
-</c:if>
+  <%}%>
+           <% if(opacList.size()<pagesize){
 
-</td>
-</tr>
-</table>--%>
+    }else{%>
+    <input type="button" onclick="next()" value="next" class="datagrid"/>
+    <%}%>
 <%}%>
 
 </table>

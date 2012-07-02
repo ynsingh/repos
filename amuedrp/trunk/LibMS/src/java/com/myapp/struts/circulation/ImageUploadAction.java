@@ -108,8 +108,9 @@ public class ImageUploadAction extends org.apache.struts.action.Action {
         request.setAttribute("state2", state2);
         request.setAttribute("pin1", pin1);
         request.setAttribute("pin2",pin2);
-        request.setAttribute("uni", uni);
-        request.setAttribute("uniadd", uniadd);
+        request.setAttribute("uni1", uni);
+        request.setAttribute("uniadd1", uniadd);
+        System.out.println(page+uni+uniadd);
         if (page==null){
         return mapping.findForward(SUCCESS);
         }else{

@@ -1,8 +1,8 @@
+
+
 // ADDITIONAL SEARCH ACTION
 package com.myapp.struts.opac;
 import com.myapp.struts.hbm.BibliographicDetails;
-import com.myapp.struts.hbm.BibliographicDetailsLang;
-import com.myapp.struts.hbm.DocumentDetails;
 import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
 import com.myapp.struts.opacDAO.OpacSearchDAO;
 import com.myapp.struts.utility.LoggerUtils;
@@ -177,7 +177,7 @@ public class AdditionalSearchAction extends org.apache.struts.action.Action {
            }
          }
 
-        /* conditions for other field  */
+        /* conditions for other field  
          if(other.equals(""))
          {
          other_fields=null;
@@ -188,11 +188,13 @@ public class AdditionalSearchAction extends org.apache.struts.action.Action {
            {
               other_fields=other.split(" ");
            }
-           else         /*for Phrase*/
+           else         
            {
            other_fields[0]=other;
            }
          }
+         * 
+         */
             if(myForm.getCheckbox()==null)
                 myForm.setCheckbox((String)session.getAttribute("addcheckbox"));
 
@@ -214,17 +216,28 @@ public class AdditionalSearchAction extends org.apache.struts.action.Action {
               session.setAttribute("addcheckbox", myForm.getCheckbox());
               additional_search_list=opacSearchDAO.additionalSearchLang(lib_id, sub_lib, authors, cnf1, titles, cnf2,
               subjects,cnf3,other_fields,cnf4,doc_type,sort,yr1,yr2,myForm.getLanguage().toUpperCase(),pageno,cmbyr);
-              int size=opacSearchDAO.getSize();
-              session.setAttribute("simple_search_nor",size);
-              session.setAttribute("additional_search_list1", additional_search_list);
+                 int size=opacSearchDAO.getSize();
+                session.setAttribute("simple_search_nor",size);
+                    request.setAttribute("from", pageno*100);
+                if(additional_search_list1.size()<100)
+                    request.setAttribute("to", (pageno*100)+additional_search_list1.size());
+                else
+                    request.setAttribute("to", (pageno*100)+100);
+                session.setAttribute("additional_search_list1", additional_search_list);
         }
         else
         {
                 session.setAttribute("addcheckbox", myForm.getCheckbox());
                 additional_search_list1=opacSearchDAO.additionalSearch(lib_id, sub_lib, authors, cnf1, titles, cnf2,
                 subjects,cnf3,other_fields,cnf4,doc_type,sort,yr1,yr2,pageno,cmbyr);
-                int size=opacSearchDAO.getSize();
+
+                 int size=opacSearchDAO.getSize();
                 session.setAttribute("simple_search_nor",size);
+                    request.setAttribute("from", pageno*100);
+                if(additional_search_list1.size()<100)
+                    request.setAttribute("to", (pageno*100)+additional_search_list1.size());
+                else
+                    request.setAttribute("to", (pageno*100)+100);
                 session.setAttribute("additional_search_list", additional_search_list1);
         }
       }

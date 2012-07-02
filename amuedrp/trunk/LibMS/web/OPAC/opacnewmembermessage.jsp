@@ -24,17 +24,18 @@ String msg=(String)request.getAttribute("msg");
         <link rel="stylesheet" href="/LibMS/css/page.css"/>
         <title>LibMS</title>
     </head>
+    
     <body>
 
                
-                    <p  class="mess">
+                    <p  class="mess"><script>
                           <% if(msg!=null)
                     {
-                          %><%=msg%>
+                          %>alert("<%=msg%>");location.href="<%=request.getContextPath()%>/OPAC/OPACmain1.jsp";
                        
 <%
                                          }%>
-
+</script>
 
 </p>
    

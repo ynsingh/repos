@@ -52,14 +52,14 @@ locale1=(String)session.getAttribute("locale");
 <table dir="<%=rtl%>" align="center">
     <tr>
 
-      <td dir="<%=rtl%>"  align="<%=align%>"><p class="txt2"><%=resource.getString("circulation.showcirreqopac.callno")%><a class="star"></a> :</p></td>
-    <td dir="<%=rtl%>"><html:text property="call_no" styleId="call_no"  value="" styleClass="textBoxWidth"/>
+      <%--<td dir="<%=rtl%>"  align="<%=align%>"><p class="txt2"><%=resource.getString("circulation.showcirreqopac.callno")%><a class="star"></a> :</p></td>--%>
+      <%--<td dir="<%=rtl%>">--%><html:hidden property="call_no" styleId="call_no"  value="" styleClass="textBoxWidth"/>
 
-    </td>
+<%--    </td>--%>
   </tr>
   <tr>
 
-      <td dir="<%=rtl%>"  align="<%=align%>"><p class="txt2">or Accession No<a class="star"></a> :</p></td>
+      <td dir="<%=rtl%>"  align="<%=align%>"><p class="txt2"> Accession No<a class="star"></a> :</p></td>
     <td dir="<%=rtl%>"><html:text property="accessionno" styleId="accessionno"  value="" styleClass="textBoxWidth"/>
 
     </td>

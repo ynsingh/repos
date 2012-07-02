@@ -95,7 +95,7 @@ public class BiblioDetailsActionLang extends org.apache.struts.action.Action {
         bib.setAddedEntry3(bibform.getAdded_entry2());
         bib.setPublisherName(bibform.getPublisher_name());
         bib.setPublicationPlace(bibform.getPublication_place());
-        bib.setPublishingYear(bibform.getPublishing_year());
+        bib.setPublishingYear(Integer.parseInt(bibform.getPublishing_year()));
         bib.setLccNo(bibform.getLCC_no());
         bib.setIsbn13(bibform.getIsbn13());
         bib.setEdition(bibform.getEdition());

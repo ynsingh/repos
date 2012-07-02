@@ -121,7 +121,7 @@ public class MarcCommitAction extends org.apache.struts.action.Action {
                 if(bib.getId().getMarctag().equals("260")){
                 bibd.setPublicationPlace(bib.get$a());
                 bibd.setPublisherName(bib.get$b());
-                bibd.setPublishingYear(bib.get$c());
+                bibd.setPublishingYear(Integer.parseInt(bib.get$c()));
                 }
                 if(bib.getId().getMarctag().equals("490")){
                 bibd.setSeries(bib.get$a());

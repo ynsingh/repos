@@ -21,6 +21,18 @@ List noticelibray_id=(List)session.getAttribute("noticelibray_id");
         
 
      <script language="javascript" type="text/javascript">
+         //   reSize Iframe when ever child  calls  it
+   function setIframeHeight() {
+       iframe=document.getElementById('f5');
+
+    if (iframe) {
+
+        var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+        if (iframeWin.document.body) {
+            iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+        }
+    }
+};
 /*
 * Returns an new XMLHttpRequest object, or false if the browser
 * doesn't support it
@@ -172,10 +184,11 @@ locale1=(String)session.getAttribute("locale");
     %>
 
     </head>
-    <body onload="fun()" style="background-color:#e0e8f5;margin: 0px 0px 0px 0px">
+    <jsp:include page="opacheader.jsp"></jsp:include>
+    <body onload="search();fun()" style="margin: 0px 0px 0px 0px;">
        <html:form method="post" action="/noticeaction1" target="f4" styleId="form1">
-           <table dir="<%=rtl%>" align="center" class="datagrid" width="80%" style="border: solid 1px black;">
-               <TR><TD class="header" colspan="2" align="center">Notices</TD></TR>
+           <table dir="<%=rtl%>" align="center" class="datagrid" width="80%" style="border: dashed 1px cyan;">
+               <TR><TD class="header1" colspan="2" align="center">Notices</TD></TR>
         <tr>
             <td colspan="2">
                 <table>
@@ -194,7 +207,7 @@ locale1=(String)session.getAttribute("locale");
              <td  dir="<%=rtl%>">
                  <html:select property="CMBSUBLib" dir="<%=rtl%>" styleClass="selecthome" styleId="SubLibary" value="<%=sublib_id%>" onchange="fun()">
                      <html:option value="sel">Select</html:option>
-                     <html:options collection="noticesublib" property="id.sublibraryId" labelProperty="sublibName"  />
+                  
             </html:select>
              </td></tr></table>
             </td>
@@ -205,10 +218,10 @@ locale1=(String)session.getAttribute("locale");
             
             <td   dir="<%=rtl%>" valign="top" width="40%">
                
-             <IFRAME  src="<%=request.getContextPath()%>/OPAC/notices2.jsp"   frameborder="0" height="400px" width="100%" scrolling="no" name="f4" id="f4"></IFRAME>
+             <IFRAME  src="<%=request.getContextPath()%>/OPAC/notices2.jsp"   frameborder="0" height="0px" width="100%" scrolling="no" name="f4" id="f4"></IFRAME>
             
       </td>
-      <td dir="<%=rtl%>" ><IFRAME  src="<%=request.getContextPath()%>/OPAC/notices_view.jsp" width="100%"  frameborder="0" height="400px"   scrolling="no" name="f5" id="f5"></IFRAME>
+      <td dir="<%=rtl%>" ><IFRAME  src="<%=request.getContextPath()%>/OPAC/notices_view.jsp" width="100%"  frameborder="0"   scrolling="no" name="f5" id="f5"></IFRAME>
       </td>
 
 </tr>
@@ -218,4 +231,5 @@ locale1=(String)session.getAttribute("locale");
  
 
     </body>
+    <jsp:include page="opacfooter.jsp"></jsp:include>
 </html>

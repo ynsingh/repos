@@ -16,6 +16,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.LogicalExpression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 /**
@@ -122,7 +123,7 @@ List<Integer> obj=null;
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.bibId", bib_id))
-                    .add(Restrictions.eq("sublibraryId", sub_library_id)));
+                    .add(Restrictions.eq("sublibraryId", sub_library_id))).addOrder(Order.asc("id.marctag"));
             obj= (List<Biblio>)criteria.list();
             session.getTransaction().commit();
         } catch (RuntimeException e) {

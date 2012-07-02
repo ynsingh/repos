@@ -128,16 +128,12 @@ function quit()
 {
     location.href="<%=request.getContextPath()%>/OPAC/OPACmain.jsp";
 }
-
 function loadHelp()
 {
     window.status="Press F1 for Help";
 }
 
 </script>
-<style type="text/css">
-
-</style>
 <%!
     Locale locale=null;
     String locale1="en";
@@ -171,34 +167,41 @@ locale1=(String)session.getAttribute("locale");
        // System.out.println(lib_id);
         
 %>
+<style>
+    #verticaltext{position:relative;
+top:25px;
+left:25px;
+width:.1em;
+height:450px;
+font-weight:bold;
+font-size:.5em;
+color:black;}
 
-    </head><body onload="loadHelp()" style="background-color:#e0e8f5;margin: 0px 0px 0px 0px" >
+</style>
+    </head>
+    <%
+String head=(String)session.getAttribute("p");
+if(head!=null){
+%>
+<jsp:include page="opacheader.jsp"></jsp:include>
+<%}%>
+    <body onload="loadHelp();search();" style="border-top:dashed 1px cyan;margin: 0px 0px 0px 0px" >
     <%! String message;%>
     
    
-
-    <%--<script language="javascript" type="text/javascript">
-        if(top.location != this.location)
-            top.location = this.location;
-    </script>--%>
 <html:form method="post" action="/OPAC/MemberDetails">
 
  
 
-   <table align="center" dir="<%=rtl%>" width="40%" class="datagrid" height="400px"  style="border:solid 1px black;" >
+   <table align="center" id="t" dir="<%=rtl%>" width="40%" class="datagrid"  style="border:dashed 1px cyan;" >
+       <tr><td style="background-color:blue;color:white;" width="10%" align="center">
+               <span style=" font-size: 9px;font-weight: bold;font-style: italic ">M<br>E<br>M<br>B<br>E<br>R<br> L<br>O<br>G<br>I<br>N</span>
 
+           </td><td>
 
-  <tr class="header"><td  width="40%" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
+               <table>
 
-
-		<%=resource.getString("opac.myaccount.memberlogin")%>
-
-
-
-
-        </td></tr>
-           
-            <tr><td dir="<%=rtl%>" width="100px"  align="<%=align%>"><%=resource.getString("opac.myaccount.memberid")%></td><td dir="<%=rtl%>"><input id="TXTMEMID"  name="TXTMEMID" type="text" onfocus="statwords('Enter Your User Name which you have recieved through email')" onblur="loadHelp()" ></td></tr>
+        <tr><td dir="<%=rtl%>" width="40%"  align="<%=align%>"><%=resource.getString("opac.myaccount.memberid")%></td><td dir="<%=rtl%>"><input id="TXTMEMID"  name="TXTMEMID" type="text" onfocus="statwords('Enter Your User Name which you have recieved through email')" onblur="loadHelp()" ></td></tr>
         <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("opac.myaccount.password")%></td><td dir="<%=rtl%>"><input id="TXTPASS" name="TXTPASS" type="password" onfocus="statwords('Enter Password which you have recieved through email')" onblur="loadHelp()" >
                
 
@@ -211,7 +214,20 @@ locale1=(String)session.getAttribute("locale");
     <html:options name="Library" collection="libRs" property="libraryId" labelProperty="libraryName"/>
  </html:select>
   
- <br>
+ 
+            </td></tr>
+        <tr><td  dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("opac.myaccount.deptname")%></td><td dir="<%=rtl%>" width="200px">
+                <html:select property="cmdSubLibary" styleClass="selecthome"  styleId="SubLibary" value="<%=sublib_id%>">
+                            <html:option value="select">Select</html:option>
+                       
+                       </html:select>
+
+</tr>
+<tr><td dir="<%=rtl%>"></td></tr>
+
+
+        <tr><td dir="<%=rtl%>"></td><td width="200px" dir="<%=rtl%>"><input id="Button1" class="buttonhome" value="<%=resource.getString("opac.myaccount.submit")%>"  type="submit">
+           
                  <%
      message=request.getParameter("msg");
      if (message==null) message =(String) request.getAttribute("msg");
@@ -222,28 +238,20 @@ locale1=(String)session.getAttribute("locale");
     %>
 
 
-
-            </td></tr>
-        <tr><td  dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("opac.myaccount.deptname")%></td><td dir="<%=rtl%>" width="200px">
-                <html:select property="cmdSubLibary" styleClass="selecthome"  styleId="SubLibary" value="<%=sublib_id%>">
-                            <html:option value="select">Select</html:option>
-                           <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
-                       </html:select>
-
-</tr>
-<tr><td dir="<%=rtl%>"></td></tr>
-
-
-        <tr><td dir="<%=rtl%>"></td><td width="200px" dir="<%=rtl%>"><input id="Button1" class="buttonhome" value="<%=resource.getString("opac.myaccount.submit")%>"  type="submit">
-           <%-- <input type="button" class="buttonhome" value="<%=resource.getString("opac.myaccount.back")%>" onclick="quit();">--%>
-
-            </td></tr>
+ </td></tr>
        
     </table>
+           </td></tr>
+   </table>
 </html:form>
 
    
     
 
 
-</body></html>
+</body>
+<%if(head!=null){
+%>
+<jsp:include page="opacfooter.jsp"></jsp:include>
+<%}%>
+</html>

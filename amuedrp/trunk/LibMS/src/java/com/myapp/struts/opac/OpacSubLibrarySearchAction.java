@@ -1,38 +1,24 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.myapp.struts.opac;
-
+import com.myapp.struts.AdminDAO.AdminRegistrationDAO;
+import com.myapp.struts.AdminDAO.LibraryDAO;
+import com.myapp.struts.hbm.AdminRegistration;
+import com.myapp.struts.hbm.Department;
+import com.myapp.struts.hbm.Library;
 import com.myapp.struts.hbm.SubLibrary;
 import com.myapp.struts.opacDAO.OpacSearchDAO;
+import com.myapp.struts.systemsetupDAO.DeptDAO;
 import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
-/**
- *
- * @author faraz
- */
 public class OpacSubLibrarySearchAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -51,10 +37,23 @@ public class OpacSubLibrarySearchAction extends org.apache.struts.action.Action 
 
 //construct the xml string.
             SubLibrary sublibpojo = (SubLibrary)sublibrary.get(tcount);
+            Department deptdao=(Department)DeptDAO.getDeptName(searchText,sublibpojo.getSublibName());
+            emp_ids.append("<sublibrary_id>"+sublibpojo.getId().getSublibraryId()+"</sublibrary_id>");
+            if(deptdao!=null)
+            {
+            emp_ids.append("<sublibrary_name>"+deptdao.getDeptName()+"</sublibrary_name>");
+            }else{
+                if(sublibpojo.getId().getSublibraryId().equalsIgnoreCase(searchText))
+                {
+                      AdminRegistration admin=AdminRegistrationDAO.searchInstitute(searchText);
 
-
-                emp_ids.append("<sublibrary_id>"+sublibpojo.getId().getSublibraryId()+"</sublibrary_id>");
-                emp_ids.append("<sublibrary_name>"+sublibpojo.getSublibName()+"</sublibrary_name>");
+                    emp_ids.append("<sublibrary_name>"+admin.getLibraryName()+"/Central Library"+"</sublibrary_name>");
+                }
+                else
+                    emp_ids.append("<sublibrary_name>"+sublibpojo.getSublibName()+"</sublibrary_name>");
+            }
+                
+                
                 tcount++;
                 it.next();
         }

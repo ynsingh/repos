@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Jun 13, 2011 5:00:08 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class catalog="libms" name="com.myapp.struts.hbm.BibliographicDetailsLang" table="bibliographic_details_lang">
+  <class catalog="libms" name="com.myapp.struts.hbm.BibliographicDetailsLang" table="bibliographic_details_lang" lazy="false">
     <composite-id class="com.myapp.struts.hbm.BibliographicDetailsLangId" name="id">
       <key-property name="biblioId" type="int">
         <column name="biblio_id"/>
@@ -161,13 +161,6 @@
     <property name="fileType" type="string">
       <column length="20" name="file_type"/>
     </property>
-    <!-- <set name="documentDetailses1" inverse="true">
-            <key>
-                <column name="biblio_id" />
-                <column name="library_id" length="20" not-null="true" />
-                <column name="sublibrary_id" length="20" not-null="true" />
-            </key>
-            <one-to-many class="com.myapp.struts.hbm.DocumentDetails" />
-        </set>-->
+    
   </class>
 </hibernate-mapping>

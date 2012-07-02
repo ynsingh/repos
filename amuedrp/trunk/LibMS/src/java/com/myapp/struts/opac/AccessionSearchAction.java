@@ -95,6 +95,7 @@ public class AccessionSearchAction extends org.apache.struts.action.Action {
                         //check for Inner Join Between BibliograhicLang and document detail
                         List<MixAccessionRecord> documentdetail1  =(List<MixAccessionRecord>)osdao.accessionNoLangSearch(accessionno, lib_id, sublib);
                         session.setAttribute("documentDetail2", documentdetail1);
+                        System.out.println("MLI"+documentdetail1.size());
                         return mapping.findForward(SUCCESS);
                 }
                 else

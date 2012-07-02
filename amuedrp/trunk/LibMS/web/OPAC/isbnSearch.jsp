@@ -63,14 +63,15 @@
     </script>
 
 </head>
-<body style="background-color:#e0e8f5;margin: 0px 0px 0px 0px">
+<body style="margin: 0px 0px 0px 0px" onload="parent.setIframeHeight();">
 
 
 <%!
    ResultSet rs=null;
    OpacDoc Ob;
-   int i=0;
-   ArrayList opacList,result;
+   int i=0,from=0;
+   ArrayList<OpacDoc>  opacList;
+   ArrayList result;
    int fromIndex, toIndex;
    static Integer count=0;
    Locale locale=null;
@@ -112,6 +113,7 @@ if(session.getAttribute("documentdetail")!=null){
         opacList = new ArrayList ();
         result = new ArrayList ();
         result = (ArrayList)session.getAttribute("documentdetail");
+        from=i;
         int j=0;
         while(j<result.size())
         {
@@ -126,7 +128,7 @@ if(session.getAttribute("documentdetail")!=null){
             obj1.setMain_entry(obj.getMainEntry());
             obj1.setPublisher(obj.getPublisherName());
             obj1.setPubplace(obj.getPublicationPlace());
-            obj1.setPub_yr(obj.getPublishingYear());
+            obj1.setPub_yr(String.valueOf(obj.getPublishingYear()));
             obj1.setIsbn(obj.getIsbn10());
             j++;
             i++;
@@ -152,68 +154,120 @@ if(tcount==0)
 <%}
 else
 {%>
-<table height="300px" width="100%" dir="<%=rtl%>"><tr><td valign="top" dir="<%=rtl%>">
-             <i>    ISBN Search Results>> <%=tcount%> Record Found&nbsp;&nbsp;&nbsp;  Records In Current Page >><%=opacList.size()%> &nbsp;&nbsp;&nbsp;Current Page Size >> 100</i>
-          <% if(pageNumber>0){
+<table width="100%" dir="<%=rtl%>"><tr><td valign="top" align="left" >
+            <table class="txt2" width="100%">
+                <tr><td><i>  ISBN Search Results>> <%=tcount%> Record Found&nbsp;&nbsp;&nbsp;  No of Records per page >> 100 &nbsp;&nbsp;&nbsp;Record No : <%=from+1%> to <%=i%></i></td>
+              <td align="right">      <% if(pageNumber>0){
            %>
-  <input type="button" onclick="previous()" value="previous" class="datagrid"/>
+  <input type="button" onclick="previous()" value="previous" class="btnapp"/>
   <%}%>
            <% if(opacList.size()<pagesize){
 
     }else{%>
-    <input type="button" onclick="next()" value="next" class="datagrid"/>
+    <input type="button" onclick="next()" value="next" class="btnapp"/>
     <%}%>
 
-<ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
+                    </td></tr>
+            </table>
+    <table class="datagrid" width="100%" style="border:dashed 1px cyan;">
+            <tr class="opacgrid"><td width="5px"  >
+                         <i>Sno</i></td>
+                     <td width="10%">
+                         <i>Book Cover Page</i></td>
+                     <td width="10%" >
+                         <i>Title</i></td>
+              <td   >
+                  <i>Main Entry</i></td>
+              <td   >
+                         <i>Call No</i></td>
+              <td   >
+                         <i>Publisher Name</i></td>
+              <td   >
+                         <i>ISBN</i></td>
+              <td   >
+                         <i>Library</i></td>
+              <td   >
+                         <i>SubLibrary</i></td>
+
+
+                 </tr>
+        <% for(int i=0;i<opacList.size();i++){
+   if((i%2)==0){
+    %>
+
+        <tr>
+            <%}else{%>
+        <tr class="alternaterows">
+            <%}%>
+            <td width="5px"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getRowno() %></a></td>
+            <td width="10%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><img src="<%=request.getContextPath()%>/images/no-image.jpg" height="80px" width="80px"></a></td>
+            <td align="left" width="10%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getTitle() %></a>
+            </td>
+            <td width="20%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getMain_entry() %></a>
+            </td>
+            <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getCallno() %></a>
+            </td>
+            <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getPublisher() %></a>
+            </td>
+            <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getIsbn() %></a>
+            </td>
+            <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getLibrary_id() %></a>
+            </td>
+            <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getSublibrary_id() %></a>
+            </td>
+        </tr>
+        <%}%>
+    </table>
+<%--<ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
   <columns>
 
 <column width="5px">
-      <header value="Sno" hAlign="left" styleClass="header"/>
+      <header value="Sno" hAlign="left" styleClass="header1"/>
       <item  styleClass="item"  value="${doc.rowno}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
 
     </column>
     <column width="20%">
-      <header value="${Title}" hAlign="left" styleClass="header"/>
+      <header value="${Title}" hAlign="left" styleClass="header1"/>
       <item  styleClass="item"  value="${doc.title}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
 
     </column>
       <column width="20%">
-      <header value="MainEntry" hAlign="left" styleClass="header"/>
+      <header value="MainEntry" hAlign="left" styleClass="header1"/>
       <item  styleClass="item"  value="${doc.main_entry}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
 
     </column>
       <column width="20%">
-      <header value="CallNo" hAlign="left" styleClass="header"/>
+      <header value="CallNo" hAlign="left" styleClass="header1"/>
       <item  styleClass="item"  value="${doc.callno}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
 
     </column>
  <column width="20%">
-      <header value="Publisher Name" hAlign="left" styleClass="header"/>
+      <header value="Publisher Name" hAlign="left" styleClass="header1"/>
       <item  styleClass="item"  value="${doc.publisher}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
 
     </column>
        <column width="20%">
-      <header value="Publishing Place" hAlign="left" styleClass="header"/>
+      <header value="Publishing Place" hAlign="left" styleClass="header1"/>
       <item  styleClass="item"  value="${doc.pubplace}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
 
     </column>
 <column width="10%">
-      <header value="Publishing Year" hAlign="left" styleClass="header"/>
+      <header value="Publishing Year" hAlign="left" styleClass="header1"/>
       <item  styleClass="item"  value="${doc.pub_yr}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
 
     </column>
       <column width="10%">
-      <header value="ISBN" hAlign="left" styleClass="header"/>
+      <header value="ISBN" hAlign="left" styleClass="header1"/>
       <item  styleClass="item"  value="${doc.isbn}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
 
     </column>
       <column width="20%">
-      <header value="library_id" hAlign="left" styleClass="header"/>
+      <header value="library_id" hAlign="left" styleClass="header1"/>
       <item  styleClass="item"  value="${doc.library_id}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
 
     </column>
        <column width="20%">
-      <header value="sublibrary_id" hAlign="left" styleClass="header"/>
+      <header value="sublibrary_id" hAlign="left" styleClass="header1"/>
       <item  styleClass="item"  value="${doc.sublibrary_id}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
 
     </column>
@@ -227,16 +281,16 @@ else
   <paging size="${pagesize}" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
 
-</ui:dataGrid>
+</ui:dataGrid>--%>
 </td></tr>
-    <tr><td> <% if(pageNumber>0){
+    <tr><td class="header" align="right"> <% if(pageNumber>0){
            %>
-  <input type="button" onclick="previous()" value="previous" class="datagrid"/>
+  <input type="button" onclick="previous()" value="previous" class="btnapp"/>
   <%}%>
            <% if(opacList.size()<pagesize){
 
     }else{%>
-    <input type="button" onclick="next()" value="next" class="datagrid"/>
+    <input type="button" onclick="next()" value="next" class="btnapp"/>
     <%}%></td></tr>
 </table>
   <%}%>
@@ -246,7 +300,7 @@ else
         opacList = new ArrayList ();
         result = new ArrayList ();
         result = (ArrayList<SearchPOJO>)session.getAttribute("documentdetail1");
-        int j=0;
+        int j=0;from=i;
         while(j<result.size())
         {
             SearchPOJO obj=(SearchPOJO)result.get(j);
@@ -286,16 +340,147 @@ if(tcount==0)
 <%}
 else
 {%>
-<table height="300px" width="100%" dir="<%=rtl%>"><tr><td valign="top" dir="<%=rtl%>">
-            <i>ISBN Search Result>> <%=tcount%> Record Found</i> <% if(pageNumber>0){%>
+
+    <table width="100%" dir="<%=rtl%>"><tr><td valign="top" align="left" >
+            <table class="txt2" width="100%">
+                <tr><td><i>  ISBN Search Results>> <%=tcount%> Record Found&nbsp;&nbsp;&nbsp;  No of Records per page >> 100 &nbsp;&nbsp;&nbsp;Record No : <%=from+1%> to <%=i%></i></td>
+              <td align="right">      <% if(pageNumber>0){
+           %>
+  <input type="button" onclick="previous()" value="previous" class="btnapp"/>
+  <%}%>
+           <% if(opacList.size()<pagesize){
+
+    }else{%>
+    <input type="button" onclick="next()" value="next" class="btnapp"/>
+    <%}%>
+
+                    </td></tr>
+            </table>
+    <table class="datagrid" width="100%" style="border:dashed 1px cyan;">
+            <tr class="opacgrid"><td width="5px"  >
+                         <i>Sno</i></td>
+                     <td width="10%">
+                         <i>Book Cover Page</i></td>
+                     <td width="10%" >
+                         <i>Title</i></td>
+              <td   >
+                  <i>Main Entry</i></td>
+              <td   >
+                         <i>Call No</i></td>
+              <td   >
+                         <i>Publisher Name</i></td>
+              <td   >
+                         <i>ISBN</i></td>
+              <td   >
+                         <i>Library</i></td>
+              <td   >
+                         <i>SubLibrary</i></td>
+
+
+                 </tr>
+        <% for(int i=0;i<opacList.size();i++){
+   if((i%2)==0){
+    %>
+
+        <tr>
+            <%}else{%>
+        <tr class="alternaterows">
+            <%}%>
+            <td width="5px"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getRowno() %></a></td>
+            <td width="10%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><img src="<%=request.getContextPath()%>/images/no-image.jpg" height="80px" width="80px"></a></td>
+            <td align="left" width="10%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getTitle() %></a>
+            </td>
+            <td width="20%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getMain_entry() %></a>
+            </td>
+            <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getCallno() %></a>
+            </td>
+            <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getPublisher() %></a>
+            </td>
+            <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getIsbn() %></a>
+            </td>
+            <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getLibrary_id() %></a>
+            </td>
+            <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getSublibrary_id() %></a>
+            </td>
+        </tr>
+        <%}%>
+    </table>
+<%--<ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
+  <columns>
+
+<column width="5px">
+      <header value="Sno" hAlign="left" styleClass="header1"/>
+      <item  styleClass="item"  value="${doc.rowno}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
+
+    </column>
+    <column width="20%">
+      <header value="${Title}" hAlign="left" styleClass="header1"/>
+      <item  styleClass="item"  value="${doc.title}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
+
+    </column>
+      <column width="20%">
+      <header value="MainEntry" hAlign="left" styleClass="header1"/>
+      <item  styleClass="item"  value="${doc.main_entry}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
+
+    </column>
+      <column width="20%">
+      <header value="CallNo" hAlign="left" styleClass="header1"/>
+      <item  styleClass="item"  value="${doc.callno}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
+
+    </column>
+ <column width="20%">
+      <header value="Publisher Name" hAlign="left" styleClass="header1"/>
+      <item  styleClass="item"  value="${doc.publisher}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
+
+    </column>
+       <column width="20%">
+      <header value="Publishing Place" hAlign="left" styleClass="header1"/>
+      <item  styleClass="item"  value="${doc.pubplace}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
+
+    </column>
+<column width="10%">
+      <header value="Publishing Year" hAlign="left" styleClass="header1"/>
+      <item  styleClass="item"  value="${doc.pub_yr}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
+
+    </column>
+      <column width="10%">
+      <header value="ISBN" hAlign="left" styleClass="header1"/>
+      <item  styleClass="item"  value="${doc.isbn}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
+
+    </column>
+      <column width="20%">
+      <header value="library_id" hAlign="left" styleClass="header1"/>
+      <item  styleClass="item"  value="${doc.library_id}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
+
+    </column>
+       <column width="20%">
+      <header value="sublibrary_id" hAlign="left" styleClass="header1"/>
+      <item  styleClass="item"  value="${doc.sublibrary_id}" hyperLink="${project}/OPAC/viewDetails.do?doc_id=${doc.biblioid}&amp;library_id=${doc.library_id}&amp;sublibrary_id=${doc.sublibrary_id}"  hAlign="left"/>
+
+    </column>
+
+  </columns>
+ <footer        styleClass="footer" show="true"/>
+
+<rows styleClass="rows" hiliteStyleClass="hiliterows"/>
+  <alternateRows styleClass="alternaterows" />
+
+  <paging size="${pagesize}" count="${tCount}" custom="true" nextUrlVar="next"
+       previousUrlVar="previous" pagesVar="pages"/>
+
+</ui:dataGrid>--%>
+</td></tr>
+    <tr><td class="header" align="right"> <% if(pageNumber>0){
+           %>
   <input type="button" onclick="previous()" value="previous" class="datagrid"/>
   <%}%>
            <% if(opacList.size()<pagesize){
 
     }else{%>
     <input type="button" onclick="next()" value="next" class="datagrid"/>
-    <%}%>
-<ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
+    <%}%></td></tr>
+</table>
+<%--<ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
   <columns>
 <column width="5px">
       <header value="Sno" hAlign="left" styleClass="header"/>
@@ -354,10 +539,10 @@ else
   <paging size="${pagesize}" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
 
-</ui:dataGrid>
+</ui:dataGrid>--%>
 </td></tr>
 
-<tr>
+<%--<tr>
 <td align="right" width="10%" class="header">&nbsp
 
 
@@ -374,7 +559,7 @@ else
 
 </td>
 </tr>
-</table>
+--%></table>
   <%}%>
   </td>
   </tr></table>

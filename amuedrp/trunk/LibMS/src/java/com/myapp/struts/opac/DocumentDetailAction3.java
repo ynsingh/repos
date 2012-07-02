@@ -31,7 +31,7 @@ HttpSession session = request.getSession();
         OpacSearchDAO opacDao = new OpacSearchDAO();
         List<DocumentDetails> doc = (List<DocumentDetails>)opacDao.DocumentSearchByDocId(document_id, library_id, sublibrary_id);
 
- List<BibliographicDetailsLang> doc1 = (List<BibliographicDetailsLang>)opacDao.DocumentSearch(doc.get(0).getId().getDocumentId(), library_id, sublibrary_id);
+ List<BibliographicDetailsLang> doc1 = (List<BibliographicDetailsLang>)opacDao.accessionNoBibLangSearch(doc.get(0).getId().getDocumentId(), library_id, sublibrary_id);
         System.out.println(doc.size());
        session.setAttribute("documentDetail", doc);
        session.setAttribute("documentDetail1", doc1);

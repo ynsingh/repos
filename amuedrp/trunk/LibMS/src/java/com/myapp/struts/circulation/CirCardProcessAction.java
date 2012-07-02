@@ -5,18 +5,16 @@
 
 package com.myapp.struts.circulation;
 
-import com.myapp.struts.CirDAO.CirculationDAO;
-import com.myapp.struts.hbm.*;
 import java.awt.Color;
 import java.io.*;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import net.sf.jasperreports.components.barcode4j.Code39Component;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -29,14 +27,12 @@ import net.sf.jasperreports.engine.design.JRDesignComponentElement;
 import net.sf.jasperreports.engine.design.JRDesignExpression;
 import net.sf.jasperreports.engine.design.JRDesignField;
 import net.sf.jasperreports.engine.design.JRDesignImage;
-import net.sf.jasperreports.engine.design.JRDesignParameter;
 import net.sf.jasperreports.engine.design.JRDesignRectangle;
 import net.sf.jasperreports.engine.design.JRDesignSection;
 import net.sf.jasperreports.engine.design.JRDesignStaticText;
 import net.sf.jasperreports.engine.design.JRDesignStyle;
 import net.sf.jasperreports.engine.design.JRDesignTextField;
 import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.type.EvaluationTimeEnum;
 import net.sf.jasperreports.engine.type.HorizontalAlignEnum;
@@ -48,7 +44,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.HumanReadablePlacement;
-import com.myapp.struts.utility.DateCalculation;
 
 /**
  *
@@ -66,40 +61,23 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         CirCardProcessActionForm myform=(CirCardProcessActionForm)form;
-        checkbox1=myform.getCheckbox1();
-        checkbox2=myform.getCheckbox2();
-        checkbox3=myform.getCheckbox3();
-        checkbox4=myform.getCheckbox4();
-        checkbox5=myform.getCheckbox5();
-        checkbox6=myform.getCheckbox6();
-        checkbox7=myform.getCheckbox7();
-        checkbox8=myform.getCheckbox8();
-        checkbox9=myform.getCheckbox9();
-        checkbox10=myform.getCheckbox10();
-        checkbox11=myform.getCheckbox11();
-        checkbox12=myform.getCheckbox12();
+        checkbox1=myform.getLibname();
+        checkbox2=myform.getLibaddress();
+        checkbox3=myform.getCardtype();
+        checkbox4=myform.getCardgroup();
+        checkbox5=myform.getLabname();
+        checkbox6=myform.getLabid();
+        checkbox7=myform.getLabclass();
+        checkbox8=myform.getLabsession();
+        checkbox9=myform.getLabaddress();
+        checkbox10=myform.getHoldersign();
+        checkbox11=myform.getDob();
+        checkbox12=myform.getAuthoritysign();
         memid=myform.getMemid();
         HttpSession session=request.getSession();
-        library_id=(String)session.getAttribute("library_id");
-        sublibrary_id=(String)session.getAttribute("sublibrary_id");
-        System.out.println("Course........................"+memid);
-        CirMemberAccount cirmemobj=CirculationDAO.getAccountDate(library_id, sublibrary_id, memid);
-        if(cirmemobj!=null){
-        
-        course_id=cirmemobj.getCourseId();
-        dept_id=cirmemobj.getDeptId();
-        faculty_id=cirmemobj.getFacultyId();
-    //    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+course_id);
-        CirMemberDetail memobj=CirculationDAO.searchCirMemDetails(library_id, memid);
-        Courses course=null;
-        if(faculty_id!=null && dept_id!=null & course_id!=null)
-        { course=CirculationDAO.LoadCourseName(library_id, course_id, dept_id, faculty_id);
-
-        course_name=course.getCourseName();
-        }
+        List<MemberList> memberlist=(List<MemberList>) session.getAttribute("memberlist");
+        System.out.println("aqaqaqaqaqaqaqaqq ="+memberlist.size());
         String path = servlet.getServletContext().getRealPath("/");
-
-
         //Report Page Setting
         JasperDesign jasperDesign = new JasperDesign();
         jasperDesign.setName("membercard2");
@@ -114,47 +92,47 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
 
 
         //Fonts
-        JRDesignStyle normalStyle = new JRDesignStyle();
-        normalStyle.setName("Sans_Normal");
+       JRDesignStyle normalStyle = new JRDesignStyle();
+        normalStyle.setName("Garuda1");
         normalStyle.setDefault(true);
-        normalStyle.setFontName("DejaVu Sans");
+//        normalStyle.setFontName("Garuda");
         normalStyle.setFontSize(12);
-        normalStyle.setPdfFontName("Helvetica");
+  //      normalStyle.setPdfFontName("Garuda");
         normalStyle.setPdfEncoding("Cp1252");
         normalStyle.setPdfEmbedded(false);
         jasperDesign.addStyle(normalStyle);
 
         JRDesignStyle boldStyle = new JRDesignStyle();
-        boldStyle.setName("Sans_Bold");
-        boldStyle.setFontName("DejaVu Sans");
+        boldStyle.setName("Garuda");
+    //    boldStyle.setFontName("Garuda");
         boldStyle.setFontSize(12);
         boldStyle.setBold(true);
-        boldStyle.setPdfFontName("Helvetica-Bold");
+      //  boldStyle.setPdfFontName("Garuda");
         boldStyle.setPdfEncoding("Cp1252");
         boldStyle.setPdfEmbedded(false);
         jasperDesign.addStyle(boldStyle);
 
-        JRDesignStyle italicStyle = new JRDesignStyle();
-        italicStyle.setName("Sans_Italic");
-        italicStyle.setFontName("DejaVu Sans");
+  /*      JRDesignStyle italicStyle = new JRDesignStyle();
+        italicStyle.setName("Garuda");
+        italicStyle.setFontName("Garuda");
         italicStyle.setFontSize(12);
         italicStyle.setItalic(true);
-        italicStyle.setPdfFontName("Helvetica-Oblique");
+        italicStyle.setPdfFontName("Garuda");
         italicStyle.setPdfEncoding("Cp1252");
         italicStyle.setPdfEmbedded(false);
         jasperDesign.addStyle(italicStyle);
 
-
+*/
         //Parameters
-        JRDesignParameter parameter = new JRDesignParameter();
-        parameter.setName("course_name");
-        parameter.setValueClass(java.lang.String.class);
-        jasperDesign.addParameter(parameter);
+        JRDesignField field = new JRDesignField();
+        field.setName("courseId");
+        field.setValueClass(java.lang.String.class);
+        jasperDesign.addField(field);
 
 
 
         //Fields
-        JRDesignField field = new JRDesignField();
+        field = new JRDesignField();
         field.setName("address1");
         field.setValueClass(java.lang.String.class);
         jasperDesign.addField(field);
@@ -168,20 +146,31 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         field.setName("mname");
         field.setValueClass(java.lang.String.class);
         jasperDesign.addField(field);
-
-        field = new JRDesignField();
-        field.setName("country1");
-        field.setValueClass(java.lang.String.class);
-        jasperDesign.addField(field);
-
-        field = new JRDesignField();
-        field.setName("id.memId");
-        field.setValueClass(java.lang.String.class);
-        jasperDesign.addField(field);
-
         field = new JRDesignField();
         field.setName("image1");
         field.setValueClass(java.awt.Image.class);
+        jasperDesign.addField(field);
+
+
+         field = new JRDesignField();
+        field.setName("address11");
+        field.setValueClass(java.lang.String.class);
+        jasperDesign.addField(field);
+
+        
+        field = new JRDesignField();
+        field.setName("mname11");
+        field.setValueClass(java.lang.String.class);
+        jasperDesign.addField(field);
+
+        field = new JRDesignField();
+        field.setName("image2");
+        field.setValueClass(java.awt.Image.class);
+        jasperDesign.addField(field);
+
+        field = new JRDesignField();
+        field.setName("fname11");
+        field.setValueClass(java.lang.String.class);
         jasperDesign.addField(field);
 
 
@@ -197,6 +186,14 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         rect.setPositionType(PositionTypeEnum.FLOAT);
         band.addElement(rect);
 
+        JRDesignRectangle rect1=new JRDesignRectangle();
+        rect1.setX(270);
+        rect1.setY(0);
+        rect1.setWidth(190);
+        rect1.setHeight(110);
+        rect1.setPositionType(PositionTypeEnum.FLOAT);
+        band.addElement(rect1);
+
         JRDesignStaticText staticText = new JRDesignStaticText();
         staticText.setX(18);
         staticText.setY(3);
@@ -211,6 +208,21 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         staticText.setText(checkbox1);
         band.addElement(staticText);
 
+        
+        staticText = new JRDesignStaticText();
+        staticText.setX(288);
+        staticText.setY(3);
+        staticText.setWidth(140);
+        staticText.setHeight(18);
+        staticText.setFontSize(9);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.CENTER);
+        staticText.setStyle(boldStyle);
+        staticText.setText(checkbox1);
+        band.addElement(staticText);
+        
         staticText = new JRDesignStaticText();
         staticText.setX(30);
         staticText.setY(13);
@@ -226,7 +238,35 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         band.addElement(staticText);
 
         staticText = new JRDesignStaticText();
+        staticText.setX(300);
+        staticText.setY(13);
+        staticText.setWidth(115);
+        staticText.setHeight(15);
+        staticText.setFontSize(6);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.CENTER);
+        staticText.setStyle(boldStyle);
+        staticText.setText(checkbox2);
+        band.addElement(staticText);
+
+        staticText = new JRDesignStaticText();
         staticText.setX(35);
+        staticText.setY(21);
+        staticText.setWidth(100);
+        staticText.setHeight(15);
+        staticText.setFontSize(6);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.CENTER);
+        staticText.setStyle(boldStyle);
+        staticText.setText(checkbox3);
+        band.addElement(staticText);
+
+        staticText = new JRDesignStaticText();
+        staticText.setX(305);
         staticText.setY(21);
         staticText.setWidth(100);
         staticText.setHeight(15);
@@ -254,9 +294,38 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         staticText.setText(checkbox8);
         band.addElement(staticText);
 
+        staticText = new JRDesignStaticText();
+        staticText.setX(306);
+        staticText.setY(29);
+        staticText.setWidth(100);
+        staticText.setHeight(15);
+        staticText.setFontSize(6);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.CENTER);
+        staticText.setStyle(boldStyle);
+        staticText.setText(checkbox8);
+        band.addElement(staticText);
+
 
         staticText = new JRDesignStaticText();
         staticText.setX(18);
+        staticText.setY(38);
+        staticText.setWidth(100);
+        staticText.setHeight(20);
+        staticText.setFontSize(6);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.LEFT);
+        staticText.setStyle(boldStyle);
+        staticText.setText(checkbox5);
+        
+        band.addElement(staticText);
+
+        staticText = new JRDesignStaticText();
+        staticText.setX(288);
         staticText.setY(38);
         staticText.setWidth(100);
         staticText.setHeight(20);
@@ -283,6 +352,20 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         staticText.setText(":");
         band.addElement(staticText);
 
+        staticText = new JRDesignStaticText();
+        staticText.setX(311);
+        staticText.setY(38);
+        staticText.setWidth(5);
+        staticText.setHeight(10);
+        staticText.setFontSize(6);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.CENTER);
+        staticText.setStyle(boldStyle);
+        staticText.setText(":");
+        band.addElement(staticText);
+
         JRDesignTextField textField = new JRDesignTextField();
         textField.setX(46);
         textField.setY(38);
@@ -292,14 +375,47 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         textField.setForecolor(new Color(20,141,54));
         textField.setHorizontalAlignment(HorizontalAlignEnum.LEFT);
         textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
         JRDesignExpression expression = new JRDesignExpression();
         expression.setValueClass(java.lang.String.class);
         expression.setText("$F{fname}");
         textField.setExpression(expression);
         band.addElement(textField);
 
+        textField = new JRDesignTextField();
+        textField.setX(316);
+        textField.setY(38);
+        textField.setWidth(100);
+        textField.setHeight(18);
+        textField.setFontSize(6);
+        textField.setForecolor(new Color(20,141,54));
+        textField.setHorizontalAlignment(HorizontalAlignEnum.LEFT);
+        textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
+        expression = new JRDesignExpression();
+        expression.setValueClass(java.lang.String.class);
+        expression.setText("$F{fname11}");
+        textField.setExpression(expression);
+        band.addElement(textField);
+
+       
+       
         staticText = new JRDesignStaticText();
         staticText.setX(18);
+        staticText.setY(47);
+        staticText.setWidth(70);
+        staticText.setHeight(20);
+        staticText.setFontSize(6);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.LEFT);
+        staticText.setStyle(boldStyle);
+        staticText.setText(checkbox7);
+        band.addElement(staticText);
+
+        staticText = new JRDesignStaticText();
+        staticText.setX(288);
         staticText.setY(47);
         staticText.setWidth(70);
         staticText.setHeight(20);
@@ -326,6 +442,20 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         staticText.setText(":");
         band.addElement(staticText);
 
+        staticText = new JRDesignStaticText();
+        staticText.setX(311);
+        staticText.setY(47);
+        staticText.setWidth(5);
+        staticText.setHeight(10);
+        staticText.setFontSize(6);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.CENTER);
+        staticText.setStyle(boldStyle);
+        staticText.setText(":");
+        band.addElement(staticText);
+
         textField = new JRDesignTextField();
         textField.setStretchWithOverflow(true);
         textField.setX(46);
@@ -336,15 +466,48 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         textField.setForecolor(new Color(20,141,54));
         textField.setPositionType(PositionTypeEnum.FLOAT);
         textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
         expression = new JRDesignExpression();
         expression.setValueClass(java.lang.String.class);
-        expression.setText("$P{course_name}");
+        expression.setText("$F{courseId}");
+        textField.setExpression(expression);
+        band.addElement(textField);
+
+        textField = new JRDesignTextField();
+        textField.setStretchWithOverflow(true);
+        textField.setX(316);
+        textField.setY(47);
+        textField.setWidth(132);
+        textField.setHeight(30);
+        textField.setFontSize(6);
+        textField.setForecolor(new Color(20,141,54));
+        textField.setPositionType(PositionTypeEnum.FLOAT);
+        textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
+        expression = new JRDesignExpression();
+        expression.setValueClass(java.lang.String.class);
+        expression.setText("$F{courseId}");
         textField.setExpression(expression);
         band.addElement(textField);
 
 
         staticText = new JRDesignStaticText();
         staticText.setX(18);
+        staticText.setY(56);
+        staticText.setWidth(100);
+        staticText.setHeight(30);
+        staticText.setFontSize(6);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.LEFT);
+        staticText.setStyle(boldStyle);
+        staticText.setText(checkbox9);
+        
+        band.addElement(staticText);
+
+        staticText = new JRDesignStaticText();
+        staticText.setX(288);
         staticText.setY(56);
         staticText.setWidth(100);
         staticText.setHeight(30);
@@ -372,6 +535,20 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         staticText.setText(":");
         band.addElement(staticText);
 
+        staticText = new JRDesignStaticText();
+        staticText.setX(311);
+        staticText.setY(56);
+        staticText.setWidth(5);
+        staticText.setHeight(10);
+        staticText.setFontSize(7);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.CENTER);
+        staticText.setStyle(boldStyle);
+        staticText.setText(":");
+        band.addElement(staticText);
+
 
         textField = new JRDesignTextField();
         textField.setStretchWithOverflow(true);
@@ -383,9 +560,27 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         textField.setForecolor(new Color(20,141,54));
         textField.setPositionType(PositionTypeEnum.FLOAT);
         textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
         expression = new JRDesignExpression();
         expression.setValueClass(java.lang.String.class);
         expression.setText("$F{address1}");
+        textField.setExpression(expression);
+        band.addElement(textField);
+
+        textField = new JRDesignTextField();
+        textField.setStretchWithOverflow(true);
+        textField.setX(316);
+        textField.setY(56);
+        textField.setWidth(132);
+        textField.setHeight(30);
+        textField.setFontSize(6);
+        textField.setForecolor(new Color(20,141,54));
+        textField.setPositionType(PositionTypeEnum.FLOAT);
+        textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
+        expression = new JRDesignExpression();
+        expression.setValueClass(java.lang.String.class);
+        expression.setText("$F{address11}");
         textField.setExpression(expression);
         band.addElement(textField);
 
@@ -393,6 +588,21 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         {
         staticText = new JRDesignStaticText();
         staticText.setX(18);
+        staticText.setY(70);
+        staticText.setWidth(100);
+        staticText.setHeight(12);
+        staticText.setFontSize(6);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.LEFT);
+        staticText.setStyle(boldStyle);
+        staticText.setText(checkbox6);
+        //staticText.setText("aqeel");
+        band.addElement(staticText);
+
+        staticText = new JRDesignStaticText();
+        staticText.setX(288);
         staticText.setY(70);
         staticText.setWidth(100);
         staticText.setHeight(12);
@@ -420,6 +630,20 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         staticText.setText(":");
         band.addElement(staticText);
 
+        staticText = new JRDesignStaticText();
+        staticText.setX(311);
+        staticText.setY(70);
+        staticText.setWidth(5);
+        staticText.setHeight(10);
+        staticText.setFontSize(7);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.CENTER);
+        staticText.setStyle(boldStyle);
+        staticText.setText(":");
+        band.addElement(staticText);
+
 
         textField = new JRDesignTextField();
         textField.setStretchWithOverflow(true);
@@ -431,9 +655,27 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         textField.setForecolor(new Color(20,141,54));
         textField.setPositionType(PositionTypeEnum.FLOAT);
         textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
         expression = new JRDesignExpression();
         expression.setValueClass(java.lang.String.class);
-        expression.setText("$F{id.memId}");
+        expression.setText("$F{fname}");
+        textField.setExpression(expression);
+        band.addElement(textField);
+
+        textField = new JRDesignTextField();
+        textField.setStretchWithOverflow(true);
+        textField.setX(316);
+        textField.setY(70);
+        textField.setWidth(100);
+        textField.setHeight(30);
+        textField.setFontSize(6);
+        textField.setForecolor(new Color(20,141,54));
+        textField.setPositionType(PositionTypeEnum.FLOAT);
+        textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
+        expression = new JRDesignExpression();
+        expression.setValueClass(java.lang.String.class);
+        expression.setText("$F{fname11}");
         textField.setExpression(expression);
         band.addElement(textField);
 
@@ -443,6 +685,20 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         {
           staticText = new JRDesignStaticText();
         staticText.setX(18);
+        staticText.setY(70);
+        staticText.setWidth(100);
+        staticText.setHeight(12);
+        staticText.setFontSize(6);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.LEFT);
+        staticText.setStyle(boldStyle);
+        staticText.setText(checkbox4);
+        band.addElement(staticText);
+
+        staticText = new JRDesignStaticText();
+        staticText.setX(288);
         staticText.setY(70);
         staticText.setWidth(100);
         staticText.setHeight(12);
@@ -470,6 +726,20 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         staticText.setText(":");
         band.addElement(staticText);
 
+        staticText = new JRDesignStaticText();
+        staticText.setX(311);
+        staticText.setY(70);
+        staticText.setWidth(5);
+        staticText.setHeight(10);
+        staticText.setFontSize(7);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.CENTER);
+        staticText.setStyle(boldStyle);
+        staticText.setText(":");
+        band.addElement(staticText);
+
 
         textField = new JRDesignTextField();
         textField.setStretchWithOverflow(true);
@@ -481,9 +751,27 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         textField.setForecolor(new Color(20,141,54));
         textField.setPositionType(PositionTypeEnum.FLOAT);
         textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
         expression = new JRDesignExpression();
         expression.setValueClass(java.lang.String.class);
-        expression.setText("$F{country1}");
+        expression.setText("$F{fname}");
+        textField.setExpression(expression);
+        band.addElement(textField);
+
+        textField = new JRDesignTextField();
+        textField.setStretchWithOverflow(true);
+        textField.setX(316);
+        textField.setY(70);
+        textField.setWidth(100);
+        textField.setHeight(30);
+        textField.setFontSize(6);
+        textField.setForecolor(new Color(20,141,54));
+        textField.setPositionType(PositionTypeEnum.FLOAT);
+        textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
+        expression = new JRDesignExpression();
+        expression.setValueClass(java.lang.String.class);
+        expression.setText("$F{fname11}");
         textField.setExpression(expression);
         band.addElement(textField);
 
@@ -506,6 +794,20 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         staticText.setText(checkbox4);
         band.addElement(staticText);
 
+        staticText = new JRDesignStaticText();
+        staticText.setX(288);
+        staticText.setY(78);
+        staticText.setWidth(100);
+        staticText.setHeight(12);
+        staticText.setFontSize(6);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.LEFT);
+        staticText.setStyle(boldStyle);
+        staticText.setText(checkbox4);
+        band.addElement(staticText);
+
 
         staticText = new JRDesignStaticText();
         staticText.setX(41);
@@ -521,6 +823,19 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         staticText.setText(":");
         band.addElement(staticText);
 
+        staticText = new JRDesignStaticText();
+        staticText.setX(311);
+        staticText.setY(78);
+        staticText.setWidth(5);
+        staticText.setHeight(10);
+        staticText.setFontSize(7);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.CENTER);
+        staticText.setStyle(boldStyle);
+        staticText.setText(":");
+        band.addElement(staticText);
 
         textField = new JRDesignTextField();
         textField.setStretchWithOverflow(true);
@@ -532,9 +847,27 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         textField.setForecolor(new Color(20,141,54));
         textField.setPositionType(PositionTypeEnum.FLOAT);
         textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
         expression = new JRDesignExpression();
         expression.setValueClass(java.lang.String.class);
-        expression.setText("$F{country1}");
+        expression.setText("$F{fname}");
+        textField.setExpression(expression);
+        band.addElement(textField);
+
+        textField = new JRDesignTextField();
+        textField.setStretchWithOverflow(true);
+        textField.setX(316);
+        textField.setY(78);
+        textField.setWidth(100);
+        textField.setHeight(30);
+        textField.setFontSize(6);
+        textField.setForecolor(new Color(20,141,54));
+        textField.setPositionType(PositionTypeEnum.FLOAT);
+        textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
+        expression = new JRDesignExpression();
+        expression.setValueClass(java.lang.String.class);
+        expression.setText("$F{fname11}");
         textField.setExpression(expression);
         band.addElement(textField);
         }
@@ -544,6 +877,20 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         {
           staticText = new JRDesignStaticText();
         staticText.setX(18);
+        staticText.setY(78);
+        staticText.setWidth(100);
+        staticText.setHeight(12);
+        staticText.setFontSize(6);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.LEFT);
+        staticText.setStyle(boldStyle);
+        staticText.setText(checkbox11);
+        band.addElement(staticText);
+
+        staticText = new JRDesignStaticText();
+        staticText.setX(288);
         staticText.setY(78);
         staticText.setWidth(100);
         staticText.setHeight(12);
@@ -571,6 +918,20 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         staticText.setText(":");
         band.addElement(staticText);
 
+        staticText = new JRDesignStaticText();
+        staticText.setX(311);
+        staticText.setY(78);
+        staticText.setWidth(5);
+        staticText.setHeight(10);
+        staticText.setFontSize(7);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.CENTER);
+        staticText.setStyle(boldStyle);
+        staticText.setText(":");
+        band.addElement(staticText);
+
 
         textField = new JRDesignTextField();
         textField.setStretchWithOverflow(true);
@@ -582,9 +943,27 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         textField.setForecolor(new Color(20,141,54));
         textField.setPositionType(PositionTypeEnum.FLOAT);
         textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
         expression = new JRDesignExpression();
         expression.setValueClass(java.lang.String.class);
-        expression.setText("$F{country1}");
+        expression.setText("$F{fname}");
+        textField.setExpression(expression);
+        band.addElement(textField);
+
+        textField = new JRDesignTextField();
+        textField.setStretchWithOverflow(true);
+        textField.setX(316);
+        textField.setY(78);
+        textField.setWidth(100);
+        textField.setHeight(30);
+        textField.setFontSize(6);
+        textField.setForecolor(new Color(20,141,54));
+        textField.setPositionType(PositionTypeEnum.FLOAT);
+        textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
+        expression = new JRDesignExpression();
+        expression.setValueClass(java.lang.String.class);
+        expression.setText("$F{fname11}");
         textField.setExpression(expression);
         band.addElement(textField);
 
@@ -607,6 +986,20 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         staticText.setText(checkbox11);
         band.addElement(staticText);
 
+        staticText = new JRDesignStaticText();
+        staticText.setX(288);
+        staticText.setY(70);
+        staticText.setWidth(100);
+        staticText.setHeight(12);
+        staticText.setFontSize(6);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.LEFT);
+        staticText.setStyle(boldStyle);
+        staticText.setText(checkbox11);
+        band.addElement(staticText);
+
 
         staticText = new JRDesignStaticText();
         staticText.setX(41);
@@ -622,23 +1015,21 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         staticText.setText(":");
         band.addElement(staticText);
 
+        staticText = new JRDesignStaticText();
+        staticText.setX(311);
+        staticText.setY(70);
+        staticText.setWidth(5);
+        staticText.setHeight(10);
+        staticText.setFontSize(7);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.CENTER);
+        staticText.setStyle(boldStyle);
+        staticText.setText(":");
+        band.addElement(staticText);
 
-//        textField = new JRDesignTextField();
-//        textField.setStretchWithOverflow(true);
-//        textField.setX(46);
-//        textField.setY(70);
-//        textField.setWidth(100);
-//        textField.setHeight(30);
-//        textField.setFontSize(6);
-//        textField.setForecolor(new Color(20,141,54));
-//        textField.setPositionType(PositionTypeEnum.FLOAT);
-//        textField.setStyle(boldStyle);
-//        expression = new JRDesignExpression();
-//        expression.setValueClass(java.lang.String.class);
-//        expression.setText("$F{id.memId}");
-//        textField.setExpression(expression);
-//        band.addElement(textField);
-          
+
         }
 
 
@@ -647,6 +1038,20 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
 
             staticText = new JRDesignStaticText();
         staticText.setX(18);
+        staticText.setY(78);
+        staticText.setWidth(100);
+        staticText.setHeight(12);
+        staticText.setFontSize(6);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.LEFT);
+        staticText.setStyle(boldStyle);
+        staticText.setText(checkbox11);
+        band.addElement(staticText);
+
+        staticText = new JRDesignStaticText();
+        staticText.setX(288);
         staticText.setY(78);
         staticText.setWidth(100);
         staticText.setHeight(12);
@@ -674,6 +1079,20 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         staticText.setText(":");
         band.addElement(staticText);
 
+        staticText = new JRDesignStaticText();
+        staticText.setX(311);
+        staticText.setY(78);
+        staticText.setWidth(5);
+        staticText.setHeight(10);
+        staticText.setFontSize(7);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.CENTER);
+        staticText.setStyle(boldStyle);
+        staticText.setText(":");
+        band.addElement(staticText);
+
 
         textField = new JRDesignTextField();
         textField.setStretchWithOverflow(true);
@@ -685,9 +1104,27 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         textField.setForecolor(new Color(20,141,54));
         textField.setPositionType(PositionTypeEnum.FLOAT);
         textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
         expression = new JRDesignExpression();
         expression.setValueClass(java.lang.String.class);
-        expression.setText("$F{country1}");
+        expression.setText("$F{fname}");
+        textField.setExpression(expression);
+        band.addElement(textField);
+
+        textField = new JRDesignTextField();
+        textField.setStretchWithOverflow(true);
+        textField.setX(316);
+        textField.setY(78);
+        textField.setWidth(100);
+        textField.setHeight(30);
+        textField.setFontSize(6);
+        textField.setForecolor(new Color(20,141,54));
+        textField.setPositionType(PositionTypeEnum.FLOAT);
+        textField.setStyle(boldStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
+        expression = new JRDesignExpression();
+        expression.setValueClass(java.lang.String.class);
+        expression.setText("$F{fname11}");
         textField.setExpression(expression);
         band.addElement(textField);
 
@@ -706,19 +1143,17 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         image.setExpression(expression);
         band.addElement(image);
 
-//        staticText = new JRDesignStaticText();
-//        staticText.setX(82);
-//        staticText.setY(90);
-//        staticText.setWidth(55);
-//        staticText.setHeight(15);
-//        staticText.setFontSize(6);
-//        staticText.setForecolor(new Color(20,141,54));
-//        staticText.setBackcolor(Color.WHITE);
-//        staticText.setMode(ModeEnum.OPAQUE);
-//        staticText.setHorizontalAlignment(HorizontalAlignEnum.CENTER);
-//        staticText.setStyle(boldStyle);
-//        staticText.setText(checkbox10);
-//        band.addElement(staticText);
+        expression=new JRDesignExpression();
+        expression.setText("$F{image2}");
+        expression.setValueClass(java.awt.Image.class);
+        JRDesignImage image111=new JRDesignImage(null);
+        image111.setX(405);
+        image111.setY(35);
+        image111.setWidth(48);
+        image111.setHeight(50);
+        image111.setExpression(expression);
+        band.addElement(image111);
+
 
         staticText = new JRDesignStaticText();
         staticText.setX(132);
@@ -734,6 +1169,21 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         staticText.setText(checkbox12);
         band.addElement(staticText);
 
+        //if(memberlist.get(memberlist.size()-1).getFname11()!=null){
+        staticText = new JRDesignStaticText();
+        staticText.setX(402);
+        staticText.setY(95);
+        staticText.setWidth(52);
+        staticText.setHeight(14);
+        staticText.setFontSize(6);
+        staticText.setForecolor(new Color(20,141,54));
+        staticText.setBackcolor(Color.WHITE);
+        staticText.setMode(ModeEnum.OPAQUE);
+        staticText.setHorizontalAlignment(HorizontalAlignEnum.CENTER);
+        staticText.setStyle(boldStyle);
+        staticText.setText(checkbox12);
+        band.addElement(staticText);
+      //  }
 
         textField = new JRDesignTextField();
         textField.setX(25);
@@ -744,9 +1194,26 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         textField.setForecolor(new Color(0, 0, 0));
         textField.setHorizontalAlignment(HorizontalAlignEnum.LEFT);
         textField.setStyle(normalStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
         expression = new JRDesignExpression();
         expression.setValueClass(java.lang.String.class);
-        expression.setText("$F{id.memId}");
+        expression.setText("$F{fname}");
+        textField.setExpression(expression);
+        band.addElement(textField);
+
+        textField = new JRDesignTextField();
+        textField.setX(295);
+        textField.setY(85);
+        textField.setWidth(100);
+        textField.setHeight(10);
+        textField.setFontSize(5);
+        textField.setForecolor(new Color(0, 0, 0));
+        textField.setHorizontalAlignment(HorizontalAlignEnum.LEFT);
+        textField.setStyle(normalStyle);
+        textField.setBlankWhenNull(Boolean.TRUE);
+        expression = new JRDesignExpression();
+        expression.setValueClass(java.lang.String.class);
+        expression.setText("$F{fname11}");
         textField.setExpression(expression);
         band.addElement(textField);
 
@@ -761,7 +1228,7 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         barcode39.setExtendedCharSetEnabled(Boolean.TRUE);
 
         expression=new JRDesignExpression();
-        expression.setText("$F{id.memId}");
+        expression.setText("$F{fname}");
         expression.setValueClass(java.lang.String.class);
         barcode39.setCodeExpression(expression);
         cdesign.setComponent(barcode39);
@@ -774,6 +1241,30 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         cdesign.setHeight(31);
         band.addElement(cdesign);
 
+        JRDesignComponentElement cdesign1=new JRDesignComponentElement();
+        Code39Component barcode391=new Code39Component();
+        barcode391.setExtendedCharSetEnabled(Boolean.TRUE);
+        barcode391.setDisplayChecksum(Boolean.FALSE);
+        barcode391.setDisplayStartStop(Boolean.TRUE);
+        barcode391.setChecksumMode(ChecksumMode.CP_AUTO);
+        barcode391.setTextPosition(HumanReadablePlacement.HRP_BOTTOM);
+        barcode391.setEvaluationTimeValue(EvaluationTimeEnum.NOW);
+        barcode391.setExtendedCharSetEnabled(Boolean.TRUE);
+
+        JRDesignExpression expression1=new JRDesignExpression();
+        expression1.setText("$F{fname11}");
+        expression1.setValueClass(java.lang.String.class);
+        barcode391.setCodeExpression(expression1);
+        cdesign1.setComponent(barcode391);
+        cdesign1.setComponentKey(new ComponentKey(
+                                        "http://jasperreports.sourceforge.net/jasperreports/components",
+                                        "jr", "Code39"));
+        cdesign1.setX(278);
+        cdesign1.setY(90);
+        cdesign1.setWidth(90);
+        cdesign1.setHeight(31);
+        band.addElement(cdesign1);
+
         ((JRDesignSection)jasperDesign.getDetailSection()).addBand(band);
 
 
@@ -782,14 +1273,7 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
         try
         {
           System.out.println("Compiling report...");
-           String os=(String)System.getProperty("os.name");
-   System.out.println("OS----------->"+os);
-   if(os.startsWith("Linux"))
-   {
           JasperCompileManager.compileReportToFile(jasperDesign,path + "/membercard2.jasper");
-   }else{
-          JasperCompileManager.compileReportToFile(jasperDesign,path + "\\membercard2.jasper");
-   }
           System.out.println("Done!");
 
 
@@ -797,55 +1281,24 @@ public class CirCardProcessAction extends org.apache.struts.action.Action {
 
           OutputStream ouputStream = response.getOutputStream();
           response.setContentType("application/pdf");
-          list.add(memobj);
+         // list.add(memobj);
           JRBeanCollectionDataSource dataSource;
-          dataSource = new JRBeanCollectionDataSource(list);
+          dataSource = new JRBeanCollectionDataSource(memberlist);
 
           HashMap map = new HashMap();
-          map.put("course_name", course_name);
-//          map.put("add",checkbox2);
-//          map.put("name",checkbox3);
-//          map.put("clas",checkbox5);
-//          map.put("session",checkbox6);
-//          map.put("add2",checkbox7);
-
-          System.out.println("Filling report...");
-           if(os.startsWith("Linux"))
-   {
           JasperFillManager.fillReportToFile(path+"/membercard2.jasper",map, dataSource);
-           }else{
-            JasperFillManager.fillReportToFile(path+"\\membercard2.jasper",map, dataSource);
-           }
-          System.out.println("Done!");
-File file;
-           if(os.startsWith("Linux"))
-   {
-          file = new File(path + "/" +"/membercard2.jrprint");
-           }else{
-          file = new File(path + "\\" +"\\membercard2.jrprint");
-           }
+          File file = new File(path + "/" +"/membercard2.jrprint");
           JasperPrint jasperPrint = (JasperPrint)JRLoader.loadObject(file);
           JRPdfExporter pdfExporter = new JRPdfExporter();
           pdfExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-     if(os.startsWith("Linux"))
-   {
 	  pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,path + "/" + "membercard2.pdf");
-     }else{
-       pdfExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,path + "\\" + "membercard2.pdf");
-     }
 	  System.out.println("Exporting report...");
           pdfExporter.exportReport();
           System.out.println("Done!");
-           JRExporter exporter = null;
-           exporter = new JRHtmlExporter();
-           JasperExportManager.exportReportToPdfStream(jasperPrint, ouputStream);
 
+            response.setContentType("application/pdf");
+            JasperExportManager.exportReportToPdfStream(jasperPrint, ouputStream);
 
-
-
-           cirmemobj.setCardStatus("Issued");
-           cirmemobj.setCardIssueDate(DateCalculation.now());
-           CirculationDAO.update2(cirmemobj);
 
 
 
@@ -856,7 +1309,7 @@ File file;
           e.printStackTrace();
         }
 
-        }
+
         
         return null;
     }

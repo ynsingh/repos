@@ -11,11 +11,10 @@
 
 package com.myapp.struts.cataloguing;
 
-import com.sun.org.apache.bcel.internal.generic.Select;
-import java.security.spec.ECField;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -78,23 +77,19 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jFileChooser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser1ActionPerformed
         
-            // TODO add your handling code here:
+        // TODO add your handling code here:
         button = evt.getActionCommand().toString();
+        FileFilter filter = new FileNameExtensionFilter("text files", "txt");
+        jFileChooser1.addChoosableFileFilter(filter);
         filename = jFileChooser1.getCurrentDirectory().toString().concat("/");
         fileabsolutepath=jFileChooser1.getSelectedFile().getAbsolutePath();
-
-           System.out.println("Action command="+ button +"&&&&&&&&&&&&&&&&&&&&&&& this is the path of the :" + jFileChooser1.getCurrentDirectory().getAbsoluteFile().getPath().toString().concat("/"));
-        //System.out.println("&&&&&&&&&&&&&&&&&&&&&&& this is the path of the :" + evt.toString());
-
-
+        jFileChooser1.setFileSelectionMode( JFileChooser.FILES_AND_DIRECTORIES );
+        System.out.println("Action command="+ button +"&&&&&&&&&&&&&&&&&&&&&&& this is the path of the :" + jFileChooser1.getCurrentDirectory().getAbsoluteFile().getPath().toString().concat("/"));
     }//GEN-LAST:event_jFileChooser1ActionPerformed
  public String jFileChooser1ActionPerformed1(NewJFrame obj) {
 
             // TODO add your handling code here:
-            
-       // System.out.println("&&&&&&&&&&&&&&&&&&&&&&& this is the path of the :" + evt.toString());
             String path="";
-           
             path=filename;
             System.out.println("&&&&&&&&&&&&&&&&&&&&&&& this is the path of the user defined :" + filename);
             obj.setVisible(false);

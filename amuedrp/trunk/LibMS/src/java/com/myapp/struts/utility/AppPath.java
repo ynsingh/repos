@@ -54,12 +54,12 @@ String projectPath =getEnvPath();
 
     if(os.equalsIgnoreCase("linux"))
     {
-        projectPath=projectPath+"/reports/";
+        projectPath=projectPath+"/JasperReport/";
     return projectPath;
     }
     else
     {
-    projectPath=projectPath+"\\reports\\";
+    projectPath=projectPath+"\\JasperReport\\";
     return projectPath;
     }
 
@@ -198,5 +198,18 @@ public static byte[] getImage(FormFile image) throws GlobalException
 
     }
     return img;
+}
+public static boolean IsNumber(String string)
+{
+ char[] c = string.toCharArray();
+      for(int i=0; i < string.length(); i++)
+      {
+          if ( !Character.isDigit(c[i]))
+          {
+             return false;
+          }
+     }
+     return true;
+
 }
 }

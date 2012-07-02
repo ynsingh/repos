@@ -138,13 +138,10 @@ public List getLoginDetails(String user_id,String password){
              query = session.createQuery("FROM Login where loginId = :userId and password=:password");
              query.setString("userId",user_id );
              query.setString("password",password);
-             System.out.println("user_id="+user_id+ "  Passwoord="+password);
-            obj=query.list();
+             obj=query.list();
             session.getTransaction().commit();
         }
      catch (HibernateException e) {
-          
-
             System.out.println(e);
         }
         finally {

@@ -15,10 +15,6 @@ import com.myapp.struts.opacDAO.*;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author faraz
- */
 public class DocumentDetailAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
@@ -29,13 +25,21 @@ public class DocumentDetailAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-HttpSession session = request.getSession();
- session.removeAttribute("documentDetail");
-       session.removeAttribute("documentDetail1");
-session.removeAttribute("MLIdocumentDetail");
+            HttpSession session = request.getSession();
+            session.removeAttribute("documentDetail");
+           session.removeAttribute("documentDetail1");
+           session.removeAttribute("MLIdocumentDetail");
+           session.removeAttribute("head");
+
         int document_id = Integer.parseInt(request.getParameter("doc_id"));
         String library_id = (String)request.getParameter("library_id");
         String sublibrary_id = (String)request.getParameter("sublibrary_id");
+        String h=(String)request.getParameter("h");
+        if(h!=null)
+        {
+            session.setAttribute("head", "yes");
+            System.out.println("I am here.................");
+        }
         OpacSearchDAO opacDao = new OpacSearchDAO();
         List<DocumentDetails> doc = (List<DocumentDetails>)opacDao.DocumentSearchById(document_id, library_id, sublibrary_id);
         List<BibliographicDetails> doc1 = (List<BibliographicDetails>)opacDao.DocumentSearch1(document_id, library_id, sublibrary_id);

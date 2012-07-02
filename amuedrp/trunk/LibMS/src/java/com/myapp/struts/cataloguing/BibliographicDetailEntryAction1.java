@@ -43,15 +43,6 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
         String align="left";
         int bb_id;
         int i;
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -110,71 +101,71 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
                         return mapping.findForward("fail");
         }
         List<MixLocationSublibrary> lmls=new ArrayList<MixLocationSublibrary>();
-        if(library_id.equals(sub_library_id))
-       {
-           List<SubLibrary> sub1=DeptDAO.listsub1(library_id);
-                                      if(sub1.isEmpty()){
-                        String msg1 = resource.getString("cataloguing.catoldtitle.setsublibrary");//You need to set sublibrary
-                        request.setAttribute("msg1", msg1);
-                        return mapping.findForward("fail");
-        }
-           if(loc.size()>1)
-           {
-            for (int j = 0; j < loc.size(); j++)
-            {
-            MixLocationSublibrary mls=new MixLocationSublibrary();
-            mls.setLocationId(loc.get(j).getId().getLocationId());
-            mls.setLocationName(loc.get(j).getLocationName());
-            lmls.add(mls);
-            }
-              List<SubLibrary> sub=DeptDAO.listsub(library_id,sub_library_id);
-                        if(sub.isEmpty()){
-                        String msg1 = resource.getString("cataloguing.catoldtitle.setsublibrary");//You need to set sublibrary
-                        request.setAttribute("msg1", msg1);
-                        return mapping.findForward("fail");
-        }
-              for (int k = 0; k < sub.size(); k++)
-            {
-             MixLocationSublibrary mls=new MixLocationSublibrary();
-            mls.setLocationName(sub.get(k).getSublibName());
-            mls.setLocationId(sub.get(k).getId().getSublibraryId());
-            lmls.add(mls);
-            }
-           }
-          else{
-           if(sub1.size()==1){
-           MixLocationSublibrary mls=new MixLocationSublibrary();
-           mls.setLocationName(sub1.get(0).getSublibName());
-           mls.setLocationId(sub1.get(0).getId().getSublibraryId());
-           lmls.add(mls);
-           }
-           else{
-               List<SubLibrary> sub=DeptDAO.listsub(library_id,sub_library_id);
-           for (int j = 0; j < loc.size(); j++)
-            {
-            MixLocationSublibrary mls=new MixLocationSublibrary();
-            mls.setLocationId(loc.get(j).getId().getLocationId());
-            mls.setLocationName(loc.get(j).getLocationName());
-            lmls.add(mls);
-            }
-           for (int k = 0; k < sub.size(); k++)
-            {
-             MixLocationSublibrary mls=new MixLocationSublibrary();
-            mls.setLocationName(sub.get(k).getSublibName());
-            mls.setLocationId(sub.get(k).getId().getSublibraryId());
-            lmls.add(mls);
-            }
-       }
-       }
-       }
-      else{
+//        if(library_id.equals(sub_library_id))
+//       {
+//           List<SubLibrary> sub1=DeptDAO.listsub1(library_id);
+//                                      if(sub1.isEmpty()){
+//                        String msg1 = resource.getString("cataloguing.catoldtitle.setsublibrary");//You need to set sublibrary
+//                        request.setAttribute("msg1", msg1);
+//                        return mapping.findForward("fail");
+//        }
+//           if(loc.size()>1)
+//           {
+//            for (int j = 0; j < loc.size(); j++)
+//            {
+//            MixLocationSublibrary mls=new MixLocationSublibrary();
+//            mls.setLocationId(loc.get(j).getId().getLocationId());
+//            mls.setLocationName(loc.get(j).getLocationName());
+//            lmls.add(mls);
+//            }
+//              List<SubLibrary> sub=DeptDAO.listsub(library_id,sub_library_id);
+//                        if(sub.isEmpty()){
+//                        String msg1 = resource.getString("cataloguing.catoldtitle.setsublibrary");//You need to set sublibrary
+//                        request.setAttribute("msg1", msg1);
+//                        return mapping.findForward("fail");
+//        }
+//              for (int k = 0; k < sub.size(); k++)
+//            {
+//             MixLocationSublibrary mls=new MixLocationSublibrary();
+//            mls.setLocationName(sub.get(k).getSublibName());
+//            mls.setLocationId(sub.get(k).getId().getSublibraryId());
+//            lmls.add(mls);
+//            }
+//           }
+//          else{
+//           if(sub1.size()==1){
+//           MixLocationSublibrary mls=new MixLocationSublibrary();
+//           mls.setLocationName(sub1.get(0).getSublibName());
+//           mls.setLocationId(sub1.get(0).getId().getSublibraryId());
+//           lmls.add(mls);
+//           }
+//           else{
+//               List<SubLibrary> sub=DeptDAO.listsub(library_id,sub_library_id);
+//           for (int j = 0; j < loc.size(); j++)
+//            {
+//            MixLocationSublibrary mls=new MixLocationSublibrary();
+//            mls.setLocationId(loc.get(j).getId().getLocationId());
+//            mls.setLocationName(loc.get(j).getLocationName());
+//            lmls.add(mls);
+//            }
+//           for (int k = 0; k < sub.size(); k++)
+//            {
+//             MixLocationSublibrary mls=new MixLocationSublibrary();
+//            mls.setLocationName(sub.get(k).getSublibName());
+//            mls.setLocationId(sub.get(k).getId().getSublibraryId());
+//            lmls.add(mls);
+//            }
+//       }
+//       }
+//       }
+//      else{
             for (int j = 0; j < loc.size(); j++) {
             MixLocationSublibrary mls=new MixLocationSublibrary();
             mls.setLocationId(loc.get(j).getId().getLocationId());
             mls.setLocationName(loc.get(j).getLocationName());
             lmls.add(mls);
         }
- }
+// }
         session.setAttribute("mixlist", lmls);
         if (doc_type.equals("Book")) {
             isbn10 = StringUtils.trim(isbn10);
@@ -298,6 +289,7 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
                     bibform.setBook_type("");
                     bibform.setNo_of_copies(0);
                     session.setAttribute("button", button);
+                    
                     return mapping.findForward("new");
                 }
              } else if (button.equals("Update")) {
@@ -322,7 +314,7 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
                         bibform.setSub_library_id(bib.getId().getSublibraryId());
                         bibform.setPublication_place(bib.getPublicationPlace());
                         bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(bib.getPublishingYear());
+                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
                         bibform.setSubtitle(bib.getSubtitle());
                         bibform.setTitle(bib.getTitle());
                         bibform.setCall_no(bib.getCallNo());
@@ -395,7 +387,7 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
                         bibform.setSub_library_id(bib.getId().getSublibraryId());
                         bibform.setPublication_place(bib.getPublicationPlace());
                         bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(bib.getPublishingYear());
+                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
                         bibform.setSubtitle(bib.getSubtitle());
                         bibform.setTitle(bib.getTitle());
                         bibform.setCall_no(bib.getCallNo());
@@ -462,7 +454,7 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
                         bibform.setSub_library_id(bib.getId().getSublibraryId());
                         bibform.setPublication_place(bib.getPublicationPlace());
                         bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(bib.getPublishingYear());
+                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
                         bibform.setSubtitle(bib.getSubtitle());
                         bibform.setTitle(bib.getTitle());
                         bibform.setCall_no(bib.getCallNo());
@@ -523,7 +515,7 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
                         bibform.setSub_library_id(bib.getId().getSublibraryId());
                         bibform.setPublication_place(bib.getPublicationPlace());
                         bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(bib.getPublishingYear());
+                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
                         bibform.setSubtitle(bib.getSubtitle());
                         bibform.setTitle(bib.getTitle());
                         bibform.setCall_no(bib.getCallNo());
@@ -588,7 +580,7 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
                         bibform.setSub_library_id(bib.getId().getSublibraryId());
                         bibform.setPublication_place(bib.getPublicationPlace());
                         bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(bib.getPublishingYear());
+                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
                         bibform.setSubtitle(bib.getSubtitle());
                         bibform.setTitle(bib.getTitle());
                         bibform.setCall_no(bib.getCallNo());

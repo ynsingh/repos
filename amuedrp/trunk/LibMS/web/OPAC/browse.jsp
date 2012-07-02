@@ -51,6 +51,7 @@ try
 catch(Exception e)
 {
     net="false";
+    System.out.println("No WOrking");
 }
 
 %>
@@ -107,17 +108,19 @@ function update(cartXML)
     newOpt.value = ndValue;
     newOpt.text = ndValue1;
     }
-    fun();
+    
 }
 
 function fun()
 {
+   
     document.getElementById("Form1").action="browse_search.do";
     document.getElementById("Form1").method="post";
     document.getElementById("Form1").target="f1";
     document.getElementById("Form1").submit();
+   
 }
-
+<% if(net.equalsIgnoreCase("false")==false){%>
       //********************************* Load the Google Transliterate API************************************
 
       google.load("elements", "1", {
@@ -241,26 +244,88 @@ function fun()
       }
       google.setOnLoadCallback(onLoad);
       //****************************************END OF GOOGLE API JS CODE******************************************
+      //<%}%>
+      //   reSize Iframe when ever child  calls  it
+   function setIframeHeight() {
+       iframe=document.getElementById('f1');
+       
+    if (iframe) {
 
+        var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+        if (iframeWin.document.body) {
+            iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+        }
+    }
+};
+   function setIframeHeight2(x) {
+       iframe=document.getElementById('f1');
+       iframe.height=x;
+    
 
+};
 
 </script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard.js" charset="UTF-8"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
     </head>
-<body onload="checkboxClickHandler();search();fun();" style="margin:0px 0px 0px 0px 0px;background-color:#e0e8f5;">
-    <html:form action="/OPAC/browse_search"  styleId="Form1" target="f1" acceptCharset="utf-8">
-        <table align="<%=align%>" dir="<%=rtl%>" width="100%" class="datagrid" >
-            <tr><td width="20%" valign="top">
-        <table  align="<%=align%>" dir="<%=rtl%>" width="100%" class="datagrid"  style="border: 1px solid black"  >
-      <tr class="header"><td  dir="<%=rtl%>" width="20%" height="28px" align="center" colspan="2">
-	<%=resource.getString("opac.browse.browsesearch")%>
-      </td></tr>
-      <html:hidden property="checkbox" styleId="checkbox" name="browseSearchActionForm"/>
+    
+    <body onload="checkboxClickHandler();search();fun(); setIframeHeight();" bgcolor="cyan" style="margin:0px 0px 0px 0px;">
+        <html:form action="/OPAC/browse_search"  styleId="Form1" target="f1" acceptCharset="utf-8">
+        <html:hidden property="checkbox" styleId="checkbox" name="browseSearchActionForm"/>
         <html:hidden property="language" styleId="language" name="browseSearchActionForm"/>
+        <table align="center" class="datagrid" dir="<%=rtl%>" width="100%" bgcolor="white" height="100%">
+           <tr  ><td   valign="bottom" height="10%"   >
+
+
+
+
+
+
+
+
+                                <img src="<%=request.getContextPath()%>/images/bp.PNG" alt="banner space"  border="0" align="<%=align%>" dir="<%=rtl%>" id="Image1" style="height:40px;width:150px;">
+                                <br>
+                            
+
+                            </td>
+                            <td align="right" >
+                                <img src="<%=request.getContextPath()%>/images/logo.png" alt=""  border="0" align="top" id="Image1" style="height:70px;width:160px;">
+                </td>
+            
+            </tr>
+            <tr>
+                <td colspan="2">
+
+
+      
+       <a href="OpacLib.do?name=simple" dir="<%=rtl%>"   style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.simple")%></a>&nbsp;|&nbsp;<a href="OpacLib.do?name=browse"  dir="<%=rtl%>"  style="font-weight: bold;text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.browse")%></a>&nbsp;|&nbsp;<a href="OpacLib.do?name=additional" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.additional")%></a>&nbsp;|&nbsp;<a href="OpacLib.do?name=advance" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.advance")%></a>&nbsp;|&nbsp;<a href="OpacLib.do?name=isbn" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.isbn")%></a>&nbsp;|&nbsp;<a href="OpacLib.do?name=callno" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.callno")%></a>&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=accno" dir="<%=rtl%>"  style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.accessionno")%></a>&nbsp;|&nbsp;<a  href="./OpacLib.do?name=newarrival" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px"><%=resource.getString("opacmainframe.mframe.newarrivals")%></a>&nbsp;|&nbsp;<a  href="../OPAC/Notice.do" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" dir="<%=rtl%>"><%=resource.getString("opacmainframe.mframe.notices")%></a>&nbsp;|&nbsp;<a  href="../OPAC/Locations.do" style="text-decoration:none;font-family: Arial;font-size: 11px;color:blue" dir="<%=rtl%>"  ><%=resource.getString("opacmainframe.mframe.location")%></a>&nbsp;|&nbsp;<a  href="../OPAC/OpacLib.do?name=feedback" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.mframe.feedback")%></a>&nbsp;|&nbsp;
+        <b style="color:blue;letter-spacing: 1px;text-decoration:none;font-family: Arial;font-size: 11px">
+                  <a href="../OPAC/OpacLib.do?name=newmember" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px"   dir="<%=rtl%>"  ><%=resource.getString("opacmainframe.mframe.memberregistration")%></a>&nbsp;|&nbsp;<a  href="../OPAC/OpacLib.do?name=myaccount&amp;p=t" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px"   dir="<%=rtl%>"  >My Account</a>&nbsp;|&nbsp;<a href="../OPAC/OPACmain1.jsp"  style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><b style="color:blue" dir="<%=rtl%>" > <%=resource.getString("opacmainframe.header.home")%></b></a>&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/help.jsp" dir="<%=rtl%>"  style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><b><%=resource.getString("opacmainframe.header.help")%></b></a>&nbsp;|&nbsp;
+                    <%if(library_id==null){%>
+      <a href="<%=request.getContextPath()%>/login.jsp" onclick=""  style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("opacmainframe.header.exit")%></a>
+ <%}else{%><a href="<%=request.getContextPath()%>/admin/main.jsp" onclick=""  style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.exit")%></a><%}%>
+
+                    </b>
+      
+
+
+      </td>
+            </tr>
+            
+            <tr   style="background-color: #BFDBFF;height: 50px;  background-image: url('<%=request.getContextPath()%>/images/banner_bg.jpg'); border:  solid 1px black;margin: 0px 0px 0px 0px"><td colspan="2" style="font-style: italic;font-size: 20px;color:white;" valign="middle" align="center">
+           "Online Public Access Catalogue"</td>
+
+             
+            </tr>
+
+            <tr><td style="color:red;border-bottom:  dotted 1px cyan;font-weight: bold;margin: 0px 0px 0px 0px" height="15px" colspan="2" align="center"><p><font color="red" size="3px"><b><%=resource.getString("opac.browse.browsesearch")%></b></font></p></td></tr>
+            <tr><td valign="top">
+        <table  align="<%=align%>" dir="<%=rtl%>" width="100%">
+     
+      
    <% if(net.equalsIgnoreCase("true")){%>
-        <tr dir="<%=rtl%>"><td >  <%=resource.getString("cataloguing.catbiblioentry.selectlang1")%></td><td>
+        <tr dir="<%=rtl%>"><td width="100%"> <%=resource.getString("cataloguing.catbiblioentry.selectlang1")%></td><td>
         <table><tr><td>
         <div id='translControl'>
 
@@ -279,7 +344,7 @@ function fun()
         </tr>
         <%}%>
   <tr ><td  dir="<%=rtl%>" >
-         <%=resource.getString("opac.browse.enterstartingkeyword")%></td><td><input  name="TXTTITLE" id="TXTTITLE" class="keyboardInput" type="text" dir="<%=rtl%>"  onfocus="statwords('Enter Search Keyword')"></td></tr>
+         <%=resource.getString("opac.browse.enterstartingkeyword")%></td><td><input  name="TXTTITLE" id="TXTTITLE" class="keyboardInput" type="text" dir="<%=rtl%>"  onfocus="statwords('Enter Search Keyword')"></td> </tr>
   <tr>
       <td dir="<%=rtl%>"   align="<%=align%>" valign="top">
 
@@ -293,13 +358,18 @@ function fun()
 </select>
      </td>
               </tr>
-              <tr class="header"><td colspan="2" dir="<%=rtl%>"  align="<%=align%>" ><%=resource.getString("opac.simplesearch.restrictedby")%></td></tr>
+              <tr ><td style="color:red;border-bottom:  dashed 1px cyan;font-weight: bold;" colspan="2" dir="<%=rtl%>"  align="<%=align%>" ><%=resource.getString("opac.simplesearch.restrictedby")%></td></tr>
 
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.database")%></td><td>
                     <select name="CMBDB" class="selecthome" dir="<%=rtl%>"  size="1">
 <option selected value="combined" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.combnd")%></option>
     <option value="book" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.books")%></option>
-     <option value="cd" dir="<%=rtl%>">CDs</option>
+     <option value="cd" dir="<%=rtl%>">CD/DVD ROM</option>
+     <option value="vd" dir="<%=rtl%>">Electronic Document(Video/Motion Pictures)</option>
+     <option value="ppt" dir="<%=rtl%>">Electronic Document(Presenatation)</option>
+     <option value="au" dir="<%=rtl%>">Electronic Document(Sound Recording)</option>
+     <option value="th" dir="<%=rtl%>">Thesis</option>
+     <option value="ds" dir="<%=rtl%>">Dissertations</option>
 </select>
                   </td></tr>
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%></td>
@@ -316,6 +386,7 @@ function fun()
                       </html:select>
 </tr>
 <tr><td dir="<%=rtl%>">Sort</td><td dir="<%=rtl%>"> <select class="selecthome" name="CMBSORT" dir="<%=rtl%>" size="1"  id="CMBSORT">
+<option  value="callNo" dir="<%=rtl%>">Call No</option>
 <option value="title" dir="<%=rtl%>">Title</option>
 <option  value="mainEntry" dir="<%=rtl%>">Main Author</option>
 <option value="isbn10" dir="<%=rtl%>">ISBN</option>
@@ -328,11 +399,31 @@ function fun()
                                     <input type="reset" id="Button2" class="buttonhome" name="" dir="<%=rtl%>"  value="<%=resource.getString("opac.browse.clear")%>">
       </td></tr>
        </table>
-                </td>
-            <td   style="background-color:#e0e8f5;" valign="top"   dir="<%=rtl%>" colspan="2">
-          <IFRAME  style="background-color:#e0e8f5;" name="f1"  src="#" frameborder=0 height="460px" width="100%" scrolling="yes"  id="f1"></IFRAME>
-      </td>  </tr>
+                </td><td valign="top"  style="text-align: justify;border-left: dashed 1px cyan;" width="60%">
+                    
+                    <b style="margin-left: 10px;"> Search Tips</b><br>
+
+                    <b style="margin-left: 10px;">How can I get fewer results?</b>
+<p style="margin-left: 10px;margin-right: 10px;text-align:justify;">If you use more than one keyword, our search engine will restrict the results to  match all the keywords you enter.</p>
+<b style="margin-left: 10px;">How do I sort my results?</b>
+<p style="margin-left: 10px;margin-right: 10px;text-align:justify;">Select Specific Field on which you want to sort the result from given combo box.</p>
+
+           </tr>
+           <tr><td    valign="top"   dir="<%=rtl%>" colspan="2">
+                   <IFRAME    name="f1"  src="#" frameborder=0 style="margin: 0px 0px 0px 0px;"  scrolling="no" width="100%" id="f1"></IFRAME>
+                   
+
+               </td></tr>
+           <tr><td align="left" class="datagrid" valign="top" colspan="2">
+                          <%=resource.getString("developedby")%>  &copy; <%=resource.getString("login.message.footer")%>
+         &nbsp; follow us : <img src="<%=request.getContextPath()%>/images/blog.jpeg" height="16px" width="20px"/>
+     <img src="<%=request.getContextPath()%>/images/facebook.jpeg" height="16px" width="20px"/>
+     <img src="<%=request.getContextPath()%>/images/twitter.jpeg" height="16px" width="20px"/>
+      <a href="http://www.youtube.com/user/DrAasimZafar?blend=15&ob=5#p/u/0/COwssqRU9Ao"><img src="<%=request.getContextPath()%>/images/youtube.jpeg" height="16px" width="40px"/></a>
+            </td></tr>
+
         </table>
  </html:form>
 </body>
+
 </html>

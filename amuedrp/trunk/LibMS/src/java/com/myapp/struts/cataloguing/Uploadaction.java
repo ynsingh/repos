@@ -41,19 +41,8 @@ public class Uploadaction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
         StrutsUploadForm uploadForm = (StrutsUploadForm) form;
-       
-        DAO dataaccess = new DAO();
         HttpSession session = request.getSession();
-        String library_id,sublibrary_id;
-
-        library_id=(String)session.getAttribute("library_id");
-        sublibrary_id=(String)session.getAttribute("sublibrary_id");
-
-
-
-
             try
             {
 
@@ -81,11 +70,13 @@ public class Uploadaction extends org.apache.struts.action.Action {
                    
                     List<String> obj=new ArrayList<String>();
                     int l=0;
-                  //  System.out.println(DAO.columnname(table_name).size()+".................");
                     for (int k = 0; k < DAO.columnname(table_name).size(); k++) {
                         if( k==0)
                             continue;
-                      //  System.out.println(DAO.columnname(table_name).get(k).toString()+".................");
+                         if( k==1)
+                            continue;
+                         if( k==2)
+                            continue;
                          obj.add(DAO.columnname(table_name).get(k).toString());
                     }
                   
@@ -93,16 +84,13 @@ public class Uploadaction extends org.apache.struts.action.Action {
                     for(int j=0;j<obj.size();j++)
                     map_table[j]=obj.get(j);
 
-
-
-                    System.out.println("maptable:::::::::::::::::::::::::"+map_table.length);
                     session.setAttribute("table", map_table);
                  
                     //get Data type of fields
                        List<String> obj1=new ArrayList<String>();
                   l=0;
                     for (int k = 0; k < DAO.datatype(table_name).size(); k++) {
-                        if(k==51 || k==52|| k==53 || k==0)
+                        if(k==1 || k==2 || k==0)
                             continue;
                          obj1.add(DAO.datatype(table_name).get(k).toString());
                     }
@@ -110,45 +98,21 @@ public class Uploadaction extends org.apache.struts.action.Action {
                     String map_column[] = new String[obj1.size()];
                     for(int j=0;j<obj1.size();j++)
                     map_column[j]=obj1.get(j);
-
-
-
-                    System.out.println("mapcolumn:::::::::::::::::::::::::"+map_column.length);
                     session.setAttribute("table_datatype", map_column);
-                 
-
-                    
                     request.setAttribute("table_size", obj.size());
-                 
-                 
-                    System.out.println("table size from upload action:::::::::::::::: " +DAO.columnname(table_name).size());
                     session.setAttribute("table_name", table_name);
-
-
-                //   rows.next(); rows.next();
                         while (rows.hasNext())
                         {
-
                             row = rows.next();
-
-                        
                             Iterator<Cell> cells = row.cellIterator();
-
-                            
-
-
                             while (cells.hasNext())
                             {
                                 Cell cell = cells.next();
                                 cell.setCellType(Cell.CELL_TYPE_STRING);
-                              
                                 if ((cell.getRowIndex() == 0))
                                 {
-
-                                 
                                         if (i == 0) {
                                             uploadForm.setCell0(cell.getRichStringCellValue().getString());
-
                                         }
                                         if (i == 1) {
                                             uploadForm.setCell1(cell.getRichStringCellValue().getString());

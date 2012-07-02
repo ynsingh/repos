@@ -19,13 +19,7 @@ public class BibliographicDetailEntryActionForm extends org.apache.struts.valida
     private String date_acquired;
     private String date_acquired1;
 
-    public String getDate_acquired1() {
-        return date_acquired1;
-    }
-
-    public void setDate_acquired1(String date_acquired1) {
-        this.date_acquired1 = date_acquired1;
-    }
+  
     private int record_no;
     private String button;
     private String search_keyword;
@@ -118,7 +112,203 @@ public class BibliographicDetailEntryActionForm extends org.apache.struts.valida
     private String edition1;
    private String ser_note1;
    private String notes1;
+
+    public String getAdded_entry02() {
+        return added_entry02;
+    }
+
+    public void setAdded_entry02(String added_entry02) {
+        this.added_entry02 = added_entry02;
+    }
+
+    public String getAdded_entry12() {
+        return added_entry12;
+    }
+
+    public void setAdded_entry12(String added_entry12) {
+        this.added_entry12 = added_entry12;
+    }
+
+    public String getAdded_entry22() {
+        return added_entry22;
+    }
+
+    public void setAdded_entry22(String added_entry22) {
+        this.added_entry22 = added_entry22;
+    }
+
+    public String getAlt_title2() {
+        return alt_title2;
+    }
+
+    public void setAlt_title2(String alt_title2) {
+        this.alt_title2 = alt_title2;
+    }
+
+    public String getMain_entry2() {
+        return main_entry2;
+    }
+
+    public void setMain_entry2(String main_entry2) {
+        this.main_entry2 = main_entry2;
+    }
+
+    public String getPublication_place2() {
+        return publication_place2;
+    }
+
+    public void setPublication_place2(String publication_place2) {
+        this.publication_place2 = publication_place2;
+    }
+
+    public String getPublisher_name2() {
+        return publisher_name2;
+    }
+
+    public void setPublisher_name2(String publisher_name2) {
+        this.publisher_name2 = publisher_name2;
+    }
+
+    public String getPublishing_year2() {
+        return publishing_year2;
+    }
+
+    public void setPublishing_year2(String publishing_year2) {
+        this.publishing_year2 = publishing_year2;
+    }
+
+    public String getStatement_responsibility2() {
+        return statement_responsibility2;
+    }
+
+    public void setStatement_responsibility2(String statement_responsibility2) {
+        this.statement_responsibility2 = statement_responsibility2;
+    }
+
+    public String getSubject2() {
+        return subject2;
+    }
+
+    public void setSubject2(String subject2) {
+        this.subject2 = subject2;
+    }
+
+    public String getSubtitle2() {
+        return subtitle2;
+    }
+
+    public void setSubtitle2(String subtitle2) {
+        this.subtitle2 = subtitle2;
+    }
+
+    public String getTitle2() {
+        return title2;
+    }
+
+    public void setTitle2(String title2) {
+        this.title2 = title2;
+    }
+   //common Entry from System Keyboard
+   //  Common Entry
+    private String title2;
+    private String subtitle2;
+    private String alt_title2;
+    private String statement_responsibility2;
+    private String main_entry2;
+
+
+    private String added_entry3;
+    private String added_entry02;
+    private String added_entry12;
+    private String added_entry22;
+    private String publisher_name2;
+    private String publication_place2;
+    private String publishing_year2;
+    private String subject2;
+    private String thesis_abstract2;
+
+    public String getThesis_abstract2() {
+        return thesis_abstract2;
+    }
+
+    public void setThesis_abstract2(String thesis_abstract2) {
+        this.thesis_abstract2 = thesis_abstract2;
+    }
+
+    public String getLCC_no2() {
+        return LCC_no2;
+    }
+
+    public void setLCC_no2(String LCC_no2) {
+        this.LCC_no2 = LCC_no2;
+    }
+
+    public String getEdition2() {
+        return edition2;
+    }
+
+    public void setEdition2(String edition2) {
+        this.edition2 = edition2;
+    }
+
+    public String getIsbn102() {
+        return isbn102;
+    }
+
+    public void setIsbn102(String isbn102) {
+        this.isbn102 = isbn102;
+    }
+
+    public String getIsbn132() {
+        return isbn132;
+    }
+
+    public void setIsbn132(String isbn132) {
+        this.isbn132 = isbn132;
+    }
+
+    public String getNotes2() {
+        return notes2;
+    }
+
+    public void setNotes2(String notes2) {
+        this.notes2 = notes2;
+    }
+
+    public String getSer_note2() {
+        return ser_note2;
+    }
+
+    public void setSer_note2(String ser_note2) {
+        this.ser_note2 = ser_note2;
+    }
+//  Book
+    private String isbn102;
+    private String isbn132;
+    private String LCC_no2;
+    private String edition2;
+   private String ser_note2;
+   private String notes2;
+
+
+
    private String checkbox;
+
+   public String getAdded_entry3() {
+        return added_entry3;
+    }
+
+    public void setAdded_entry3(String added_entry3) {
+        this.added_entry3 = added_entry3;
+    }
+
+   public String getDate_acquired1() {
+        return date_acquired1;
+    }
+
+    public void setDate_acquired1(String date_acquired1) {
+        this.date_acquired1 = date_acquired1;
+    }
 
     public String getCheckbox() {
         return checkbox;

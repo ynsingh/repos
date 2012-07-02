@@ -40,7 +40,7 @@ public class BibliographicDetails  implements java.io.Serializable {
      private String addedEntry3;
      private String publisherName;
      private String publicationPlace;
-     private String publishingYear;
+     private int publishingYear;
      private String callNo;
      private Integer partsNo;
      private String subject;
@@ -84,7 +84,7 @@ public class BibliographicDetails  implements java.io.Serializable {
         this.id = id;
         this.library = library;
     }
-    public BibliographicDetails(BibliographicDetailsId id, Library library, String documentType, String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, String publishingYear, String callNo, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String typeOfDisc, String fileType, Set accessionRegisters, Set documentDetailses) {
+    public BibliographicDetails(BibliographicDetailsId id, Library library, String documentType, String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, int publishingYear, String callNo, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String typeOfDisc, String fileType, Set accessionRegisters, Set documentDetailses) {
        this.id = id;
        this.library = library;
        this.documentType = documentType;
@@ -258,11 +258,11 @@ public class BibliographicDetails  implements java.io.Serializable {
     public void setPublicationPlace(String publicationPlace) {
         this.publicationPlace = publicationPlace;
     }
-    public String getPublishingYear() {
+    public int getPublishingYear() {
         return this.publishingYear;
     }
     
-    public void setPublishingYear(String publishingYear) {
+    public void setPublishingYear(int publishingYear) {
         this.publishingYear = publishingYear;
     }
     public String getCallNo() {
