@@ -39,6 +39,10 @@
 				<li><a href="${createLink(action:'list',controller:'person')}" class="useradd"><g:message code="default.menuopt4.label"/></a></li>
 				</g:if>
 				
+				<g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_ADMIN' || session.ROLE == 'ROLE_INSTITUTE'}"  >
+				<li><a class="datacapture"  href="${createLink(action:'mainMenu',controller:'institutionDetails')}"><g:message code="default.menuopt9.label"/></a></li>
+				</g:if>
+				
 				<li><a href="../helpdoc/divehelp.html" class="help" target="_blank"><g:message code="default.menuopt8.label"/></a></li>
 				
 				<li><a href="${resource(dir:'/logout')}" class="logout"><g:message code="default.menuopt6.label"/></a></li>

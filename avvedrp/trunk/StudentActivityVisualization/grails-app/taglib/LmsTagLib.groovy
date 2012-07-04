@@ -16,5 +16,10 @@ class LmsTagLib {
     def Footer = {attrs ->
 		  out << g.render(template: '/footer')
          }    
+   
+    def SideMenu = {attrs ->
+                  out << g.render(template: '/sideMenu')   
+         }
+         
 }
 

@@ -270,7 +270,7 @@ p {
 
 #sec_menu  ul {
 	margin: 0;
-	padding: 0 0 0 23px;
+	padding: 0 0 0 15px;
 	float: left;
 }
 
@@ -333,9 +333,11 @@ p {
 	white-space: nowrap;
 	line-height: 41px;
 	color: #fff;
-	padding: 0 0 0 19px;
+	padding: 0 0 0 7px;
 	background-position: 0 12px;
 	background-repeat: no-repeat;
+	font-size: 11px;
+	text-transform: uppercase;
 }
 
 .sm1 {
@@ -1666,6 +1668,9 @@ span.approve span span {
 	line-height: 24px;
 }
 
+h1, h4 {
+	color: #6b98a8;
+}
 h3 {
 	font-size: 18px;
 	font-weight: bold;
@@ -2261,5 +2266,31 @@ th.desc a {
     padding-left: 28px;
 }
 
+select{
+	width: 200px;
+	background-color: white;
+	
+}
+
+.pushbutton{
+	background-color: #dff0f8;
+	color: #6B98A8;
+	font-weight: bold;
+}
+
+td.name {
+	word-spacing:5px;
+    font-weight:bold;
+    color: #6B98A8;
+}
+
+td.value{
+	 color: #6B98A8;
+}
+th.sortable {
+	word-spacing:5px;
+    font-weight:bold;
+    color: #6B98A8;
+}
 
 

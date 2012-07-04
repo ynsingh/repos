@@ -9,7 +9,7 @@
 		<div align="center">
 
 
-             	<div align="center"><h3>Course : ${sel_course}</h3></div>
+             	<div align="center"><h3>Course Name : ${sel_course}</h3></div>
                                         <br />   <br />
 				<table width="723" border="0" align="center" cellpadding="0" cellspacing="0">
 				<tr>

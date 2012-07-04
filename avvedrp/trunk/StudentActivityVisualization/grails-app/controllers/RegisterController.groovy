@@ -479,7 +479,7 @@ class RegisterController {
 								for (lmsval in lms_array){                                  
 								sql.execute("insert into lms (inst_id, lms_name) values (${institute.id},'"+lmsval+"')")                                   }
 								}
-                                Authority.findByAuthority('ROLE_USER').addToPeople(person)
+                                Authority.findByAuthority('ROLE_INSTITUTE').addToPeople(person)
 									   
  //Sending Mail starts here
     def univ = sql.firstRow("select univ_email as email,univ_name as university from university where id='"+params.inst_univ_id+"'")

@@ -1,0 +1,7 @@
+1. For Dive installation please refer StudentActivityVisualization_Readme.doc
+
+2. please copy the .swf files form charts folder to StudentActivityVisualization/webapp/charts folder.
+
+3. For deploying webservice please follow Dive-Webservices-guidelines.pdf
+
+4. excecute diveupdate.sql

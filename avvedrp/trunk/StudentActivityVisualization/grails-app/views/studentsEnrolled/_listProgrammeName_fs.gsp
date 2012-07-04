@@ -1,0 +1,1 @@
+<g:select from= "${programmeDetailsInstanceList}" id="programmeDetails" optionKey="id" name="programmeDetails" onchange="${remoteFunction(controller:'studentsEnrolled',action:'foriegnStudentsDetails',update:'foriegnStudentsDetails',params:'\'foriegnStudentsDetails=\'+this.value')};" noSelection="['null':'-Select-']" value="${programmeDetailsInstance?.id}"></g:select>

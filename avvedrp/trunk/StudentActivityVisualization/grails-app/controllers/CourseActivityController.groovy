@@ -123,39 +123,17 @@ class CourseActivityController {
 
 
 
-    def  summaryStackChartGrid={
-        GrailsHttpSession gh=getSession()
-        def sel_inst=gh.getValue("sel_institute");
-        def sel_year=gh.getValue("sel_year");
-        def sql=new Sql(dataSource);
-        def query="SELECT coursename AS COURSE,module AS MODULE,count(action) AS USAGE_COUNT FROM master where inst_id ='"+sel_inst+"' and  DATE_FORMAT(date, '%Y')='"+sel_year+"' GROUP BY coursename,module"
-        def list=sql.rows(query)
-        render(contentType:"text/xml")
-              {
-                 components
-                   {
-                      for(a in list)
-                      {
-                        component()
-                        {
-                          course(a.COURSE)
-                          module(a.MODULE)
-                          count(a.USAGE_COUNT)
-                       }
-                     }
-                   }
-              }
-    }
 	
     def showSummary={
         GrailsHttpSession gh=getSession()
+	    def curr_locale=gh.getValue("currLocale");       
         def sel_inst=gh.getValue("sel_institute");
         def sel_year=gh.getValue("sel_year");
         def lms_used=gh.getValue("lms_used");
 		def sql=new Sql(dataSource);
 	    def insval = sql.firstRow("select inst_name as INSTITUTE from institute where id='"+sel_inst+"'");
 		def insname=insval.INSTITUTE;  
-        return [institute:insname,year:sel_year,lms_used:lms_used]
+        return [institute:insname,year:sel_year,lms_used:lms_used,curr_locale:curr_locale]
     }
 
 
@@ -187,13 +165,14 @@ class CourseActivityController {
     }
    def showVisitDetails={
         GrailsHttpSession gh=getSession()
+		def curr_locale=gh.getValue("currLocale");      
         def sel_inst=gh.getValue("sel_institute");
         def sel_year=gh.getValue("sel_year");
         def lms_used=gh.getValue("lms_used");
 		def sql=new Sql(dataSource);
 	    def insval = sql.firstRow("select inst_name as INSTITUTE from institute where id='"+sel_inst+"'");
 		def insname=insval.INSTITUTE;  
-        return [institute:insname,year:sel_year,lms_used:lms_used]
+        return [institute:insname,year:sel_year,lms_used:lms_used,curr_locale:curr_locale]
    }
 
 
@@ -201,6 +180,7 @@ class CourseActivityController {
       def showVisualDetails={
           def sel_course=params.hidCourse1;
           GrailsHttpSession gh=getSession();
+		  def curr_locale=gh.getValue("currLocale");      
           gh.putValue("sel_course", sel_course);
           def sel_inst=gh.getValue("sel_institute");
           def sel_year=gh.getValue("sel_year");
@@ -208,7 +188,7 @@ class CourseActivityController {
 		  def sql=new Sql(dataSource);
 		  def insval = sql.firstRow("select inst_name as INSTITUTE from institute where id='"+sel_inst+"'");
 		  def insname=insval.INSTITUTE;  
-          return [institute:insname,year:sel_year,lms_used:lms_used]
+          return [institute:insname,year:sel_year,lms_used:lms_used,curr_locale:curr_locale]
       }
       
 	  
@@ -270,6 +250,7 @@ class CourseActivityController {
           def sel_course=params.hidCourse2;
 		 // println(sel_course);
           GrailsHttpSession gh=getSession();
+		  def curr_locale=gh.getValue("currLocale");      
           gh.putValue("sel_course", sel_course);
           def sel_inst=gh.getValue("sel_institute");
           def sel_year=gh.getValue("sel_year");
@@ -279,7 +260,7 @@ class CourseActivityController {
 		  def insname=insval.INSTITUTE;  
 		  def crsval = sql.firstRow("select course_name as COURSE from course_master where id='"+sel_course+"'");
 		  def crsname=crsval.COURSE;  		  
-          return [institute:insname,year:sel_year,lms_used:lms_used,sel_course:crsname]
+          return [institute:insname,year:sel_year,lms_used:lms_used,sel_course:crsname,curr_locale:curr_locale]
       }
 
       def dateList={
@@ -341,6 +322,7 @@ class CourseActivityController {
      def showStudSummary={
           def sel_course=params.hidCourse3;
           GrailsHttpSession gh=getSession();
+		  def curr_locale=gh.getValue("currLocale");       
           gh.putValue("sel_course", sel_course);
           def sel_inst=gh.getValue("sel_institute");
           def sel_year=gh.getValue("sel_year");
@@ -350,7 +332,7 @@ class CourseActivityController {
 		  def insname=insval.INSTITUTE;  
 		  def crsval = sql.firstRow("select course_name as COURSE from course_master where id='"+sel_course+"'");
 		  def crsname=crsval.COURSE;  		  
-          return [institute:insname,year:sel_year,lms_used:lms_used,sel_course:crsname]
+          return [institute:insname,year:sel_year,lms_used:lms_used,sel_course:crsname,curr_locale:curr_locale]
       }
 
 
@@ -468,11 +450,12 @@ class CourseActivityController {
 //For Visual Details
       def showStaffVisualDetails={
            GrailsHttpSession gh=getSession()
-           def sel_course=gh.getValue("sel_course");
+		    def curr_locale=gh.getValue("currLocale");   
+            def sel_course=gh.getValue("sel_course");
 		    def sql=new Sql(dataSource);
 			def crsval = sql.firstRow("select course_name as COURSE from course_master where id='"+sel_course+"'");
 			def crsname=crsval.COURSE;  
-           return [sel_course:crsname]
+           return [sel_course:crsname,curr_locale:curr_locale]
       }
 
     def staffModuleList={
@@ -524,12 +507,13 @@ class CourseActivityController {
     }
 
       def showStaffTimeUtilization={
-            GrailsHttpSession gh=getSession()
+           GrailsHttpSession gh=getSession()
+		   def curr_locale=gh.getValue("currLocale");       
            def sel_course=gh.getValue("sel_course");
 		   def sql=new Sql(dataSource);
 	       def crsval = sql.firstRow("select course_name as COURSE from course_master where id='"+sel_course+"'");
            def crsname=crsval.COURSE;  
-           return [sel_course:crsname]
+           return [sel_course:crsname,curr_locale:curr_locale]
       }
 
       def staffDateList={
@@ -582,22 +566,24 @@ class CourseActivityController {
 
 
       def showStaffSummary={
-            GrailsHttpSession gh=getSession()
+           GrailsHttpSession gh=getSession()
+		   def curr_locale=gh.getValue("currLocale");  
            def sel_course=gh.getValue("sel_course");
 		   def sql=new Sql(dataSource);
 	       def crsval = sql.firstRow("select course_name as COURSE from course_master where id='"+sel_course+"'");
            def crsname=crsval.COURSE;  
-           return [sel_course:crsname]
+           return [sel_course:crsname,curr_locale:curr_locale]
       }
 	  
 	  
 	  def staffCourseSummary={
            GrailsHttpSession gh=getSession()
+		   def curr_locale=gh.getValue("currLocale");  
            def sel_course=gh.getValue("sel_course");
 		   def sql=new Sql(dataSource);
 	       def crsval = sql.firstRow("select course_name as COURSE from course_master where id='"+sel_course+"'");
            def crsname=crsval.COURSE;  
-           return [sel_course:crsname]
+           return [sel_course:crsname,curr_locale:curr_locale]
       }
 	  
 	  //currently editing
