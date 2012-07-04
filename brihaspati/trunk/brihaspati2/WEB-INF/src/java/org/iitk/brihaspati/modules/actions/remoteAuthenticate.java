@@ -140,7 +140,7 @@ public class remoteAuthenticate extends VelocityAction{
 				out.close();
 			}
 			catch (Exception ex){
-				ErrorDumpUtil.ErrorLog("The error in redirection url 1 "+ex);
+				ErrorDumpUtil.ErrorLog("The error in redirection url 1 in remote authenticate in action Remoteauth method "+ex);
 			}
 		}
 		else{
@@ -193,7 +193,7 @@ public class remoteAuthenticate extends VelocityAction{
                                 out.close();
 			}
 			catch (Exception ex){
-				ErrorDumpUtil.ErrorLog("The error in redirection url 1 "+ex);
+				ErrorDumpUtil.ErrorLog("The error in redirection url 1  in remote authenticate in action  dot equal null value  "+ex);
 			}
 		}
 		else{
@@ -272,7 +272,7 @@ public class remoteAuthenticate extends VelocityAction{
 				out.close();
 			}
 			catch (Exception ex){
-				ErrorDumpUtil.ErrorLog("The error in redirection url 1 "+ex);
+				ErrorDumpUtil.ErrorLog("The error in redirection url 1 in remote authenticate in action "+ex);
 			}
 		}
 		else{
