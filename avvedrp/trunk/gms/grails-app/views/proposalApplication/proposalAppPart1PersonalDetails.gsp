@@ -61,8 +61,13 @@
                                 	<label for="name" class="mandatory"> * </label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
-                                    <input type="text" size="45" id="FirstName" name="FirstName_1" />
+                                    <input type="text" size="45" id="FirstName" name="FirstName_1" onBlur="validateFormOnTabOut(this.id)" />
                                 </td>
+                                
+                                <td >
+									<div  id="FirstNamevalue" class="validationmsg">The value is required.</div>
+									<div id="FirstNameformat" class="validationmsg">Invalid format.</div>
+								</td>
                             </tr> 
                         
                             <tr class="prop">
@@ -71,8 +76,13 @@
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <input type="text" size="45" id="LastName" name="LastName_2" />
+                                    <input type="text" size="45" id="LastName" name="LastName_2" onBlur="validateFormOnTabOut(this.id)"/>
                                 </td>
+                                
+                                <td >
+									<div  id="LastNamevalue" class="validationmsg">The value is required.</div>
+									<div id="LastNameformat" class="validationmsg">Invalid format.</div>
+								</td>
                             </tr> 
                         	
                         	<tr class="prop">
@@ -81,8 +91,13 @@
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <input type="text" size="45" id="Designation" name="Designation_3" />
+                                    <input type="text" size="45" id="Designation" name="Designation_3" onBlur="validateFormOnTabOut(this.id)"/>
                                 </td>
+                                
+                                <td >
+									<div  id="Designationvalue" class="validationmsg">The value is required.</div>
+									<div id="Designationformat" class="validationmsg">Invalid format.</div>
+								</td>
                             </tr> 
                            <tr class="prop">
                                 <td valign="top" class="prname">
@@ -90,8 +105,13 @@
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <input type="text" size="45" id="Organisation" name="Organisation_4" />
+                                    <input type="text" size="45" id="Organisation" name="Organisation_4" onBlur="validateFormOnTabOut(this.id)"/>
                                 </td>
+                                
+                                <td >
+									<div  id="Organisationvalue" class="validationmsg">The value is required.</div>
+									<div id="Organisationformat" class="validationmsg">Invalid format.</div>
+								</td>
                             </tr>
                                                
                          <tr class="prop">
@@ -100,8 +120,13 @@
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <g:textArea rows="2" cols="20" size="45" id="PostalAddress" name="PostalAddress_5" />
+                                    <g:textArea rows="2" cols="20" size="45" id="PostalAddress" name="PostalAddress_5" onBlur="validateFormOnTabOut(this.id)"/>
                                 </td>
+                                
+                                <td >
+									<div  id="PostalAddressvalue" class="validationmsg">The value is required.</div>
+									<div id="PostalAddressformat" class="validationmsg">Invalid format.</div>
+								</td>
                             </tr>
                                                  
                              <tr class="prop">
@@ -110,8 +135,13 @@
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <input type="text" size="45" id="City" name="City_6" />
+                                    <input type="text" size="45" id="City" name="City_6" onBlur="validateFormOnTabOut(this.id)"/>
                                 </td>
+                                
+                                <td >
+									<div  id="Cityvalue" class="validationmsg">The value is required.</div>
+									<div id="Cityformat" class="validationmsg">Invalid format.</div>
+								</td>
                             </tr>
                             
                             <tr class="prop">
@@ -123,8 +153,13 @@
                                     <g:select from= "${['Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chattisgarh','Goa','Gujarat','Haryana','Himachal Pradesh','Jammu & Kashmir',
                                     'Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Orissa','Punjab','Rajasthan','Sikkim','Tamil Nadu',
                                     'Tripura','Uttarakhand','Uttar Pradesh','West Bengal','','-UNION  TERRITORIES-','','Andaman & Nicobar','Chandigarh','Dadra and Nagar Haveli',
-                                    'Daman & Diu','Delhi','Lakshadweep','Puducherry']}" id="State" name="State_7" noSelection="['null':'-Select-']" />
+                                    'Daman & Diu','Delhi','Lakshadweep','Puducherry']}" id="State" name="State_7" noSelection="['null':'-Select-']" onBlur="validateFormOnTabOut(this.id)"/>
                                 </td>
+                                
+                                <td >
+									<div  id="Statevalue" class="validationmsg">The value is required.</div>
+									<div id="Stateformat" class="validationmsg">Invalid format.</div>
+								</td>
                             </tr>
                             
                            <tr class="prop">
@@ -133,8 +168,13 @@
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'zipCode','errors')}">
-                                    <input type="text" size="35" id="ZipCode" name="ZipCode_15" />
+                                    <input type="text" size="35" id="ZipCode" name="ZipCode_15" onBlur="validateFormOnTabOut(this.id)"/>
                                 </td>
+                                
+                                <td >
+									<div  id="ZipCodevalue" class="validationmsg">The value is required.</div>
+									<div id="ZipCodeformat" class="validationmsg">Invalid format/Digits needed is 6.</div>
+								</td>
                             </tr>
                             
                             <tr class="prop">
@@ -143,8 +183,15 @@
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <input type="text"  id="STD" name="STD_8" size="5" />--<input type="text"  id="Phone" name="Phone_9" />
+                                    <input type="text"  id="STD" name="STD_8" size="5" onBlur="validateFormOnTabOut(this.id)"/>--<input type="text"  id="Phone" name="Phone_9" onBlur="validateFormOnTabOut(this.id)"/>
                                 </td>
+                                
+                                <td >
+									<div  id="STDvalue" class="validationmsg">The value is required.</div>
+									<div id="STDformat" class="validationmsg">Invalid format/Digits needed is 4.</div>
+									<div  id="Phonevalue" class="validationmsg">The value is required.</div>
+									<div id="Phoneformat" class="validationmsg">Invalid format/Digits needed is 7.</div>
+								</td>
                             </tr>
                             <tr class="prop">
                                 <td valign="top" class="prname">
@@ -152,8 +199,15 @@
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <input type="text"  id="FaxSTD" name="FaxSTD_10" size="5" />--<input type="text"  id="FaxPhone" name="FaxPhone_11" />
+                                    <input type="text"  id="FaxSTD" name="FaxSTD_10" size="5" onBlur="validateFormOnTabOut(this.id)"/>--<input type="text"  id="FaxPhone" name="FaxPhone_11" onBlur="validateFormOnTabOut(this.id)"/>
                                 </td>
+                                
+                                <td >
+									<div  id="FaxSTDvalue" class="validationmsg">The value is required.</div>
+									<div id="FaxSTDformat" class="validationmsg">Invalid format/Digits needed is 4.</div>
+									<div  id="FaxPhonevalue" class="validationmsg">The value is required.</div>
+									<div id="FaxPhoneformat" class="validationmsg">Invalid format/Digits needed is 7.</div>
+								</td>
                             </tr>
                             <tr class="prop">
                                 <td valign="top" class="prname">
@@ -161,8 +215,13 @@
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <input type="text" size="35" id="Email" name="Email_12" />
+                                    <input type="text" size="35" id="Email" name="Email_12" onBlur="validateFormOnTabOut(this.id)"/>
                                 </td>
+                                
+                                <td >
+									<div  id="Emailvalue" class="validationmsg">The value is required.</div>
+									<div id="Emailformat" class="validationmsg">Invalid format.</div>
+								</td>
                             </tr>
                             <tr class="prop">
                                 <td valign="top" class="prname">
@@ -170,8 +229,13 @@
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <input type="text" size="35" id="Mobile" name="Mobile_13" />
+                                    <input type="text" size="35" id="Mobile" name="Mobile_13" onBlur="validateFormOnTabOut(this.id)"/>
                                 </td>
+                                
+                                <td >
+									<div  id="Mobilevalue" class="validationmsg">The value is required.</div>
+									<div id="Mobileformat" class="validationmsg">Invalid format/Digits needed is 12.</div>
+								</td>
                             </tr>
                             <tr class="prop">
                                 <td valign="top" class="prname">
@@ -179,8 +243,13 @@
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                     <g:select  optionKey="name" optionValue="name" id="ProjectCategory" from="${proposalCategoryList}"  name="ProjectCategory_14" noSelection="['null':'-Select-']" ></g:select>
+                                     <g:select  optionKey="name" optionValue="name" id="ProjectCategory" from="${proposalCategoryList}"  name="ProjectCategory_14" noSelection="['null':'-Select-']" onBlur="validateFormOnTabOut(this.id)"></g:select>
                                 </td>
+                                
+                                <td >
+									<div  id="ProjectCategoryvalue" class="validationmsg">The value is required.</div>
+									<div id="ProjectCategoryformat" class="validationmsg">Invalid format.</div>
+								</td>
                             </tr>
                          
                         </tbody>
@@ -190,12 +259,12 @@
                     <span class="button">
                     <g:if test="${params.status=='update'}">
                     <input type="hidden" name="status" value="update">
-                    <input class="inputbutton" type="submit" value="${message(code: 'default.Update.button')}" onClick="return validateApplicationForm();"/>
+                    <input class="inputbutton" type="submit" value="${message(code: 'default.Update.button')}" onClick="return validateForm(this.form);"/>
                     <g:actionSubmit class="inputbutton" action="proposalAppPreview" value="${message(code: 'default.Cancel.button')}" />
                     </g:if>
                     <g:else>
                     <input type="hidden" name="status" value="save">
-                    <input class="inputbutton" type="submit" value="${message(code: 'default.Create.button')}" onClick="return validateApplicationForm();"/>
+                    <input class="inputbutton" type="submit" value="${message(code: 'default.Create.button')}" onClick="return validateForm(this.form);"/>
                     <input type="button" class="inputbutton" onClick="Redirect()"  value="${message(code: 'default.Cancel.button')}"/>
                     </g:else>
                     </span>

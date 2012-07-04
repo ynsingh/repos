@@ -11,6 +11,7 @@ class BudgetModuleMapController {
     }
     def projectsService
     def grantAllocationService 
+    def userService
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [budgetModuleMapInstanceList: BudgetModuleMap.list(params), budgetModuleMapInstanceTotal: BudgetModuleMap.count()]
@@ -18,25 +19,65 @@ class BudgetModuleMapController {
 
     def create = {
     	GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","AssignBudgetto_module.htm")//putting help pages in session
     	def budgetModMapInstance
     	def budgetModuleMapInstanceList=[]
+    	def projectsList=[]
+    	def grantAllocationWithprojectsInstanceList = grantAllocationService.getGrantAllocationGroupByProjects(gh.getValue("Party"))//get the grant allocation of projects have access permission for login PI
+    	for(int i=0;i<grantAllocationWithprojectsInstanceList.size();i++)
+        {
+			def projectsInstance = projectsService
+							.getActiveProjectById(grantAllocationWithprojectsInstanceList[i].projects.id)
+			projectsList.add(projectsInstance)
+        }
+    	def userInstance = userService.getUserById(new Integer(gh.getValue("UserId").intValue()))
+    	def userRoleInstance  = userService.getUserRoleByUserId(userInstance.id)	
+    	def authorityPersonInstance = Authority.find("from Authority AA where AA.id ="+userRoleInstance[0].id)
     	def partyInstance = Party.get(gh.getValue("Party"))
     	def budgetModuleMapInstance = new BudgetModuleMap()
     	def budgetMasterService = new BudgetMasterService()
     	budgetModuleMapInstance.properties = params
     	def budgetModInstance
     	def budgetMasterInstanceList = budgetMasterService.getpartyId(partyInstance.id)
-    	for(int i=0;i<budgetMasterInstanceList.size();i++ )
- 	    {
- 		   /* method to check All active budget Module Map*/
-    	        budgetModMapInstance = budgetMasterService.getbudgetModMapInstance(budgetMasterInstanceList[i].id)
+    	if(authorityPersonInstance.authority == 'ROLE_SITEADMIN')
+    	{
+	    	for(int i=0;i<budgetMasterInstanceList.size();i++ )
+	 	    {
+	    		
+				budgetModMapInstance = budgetMasterService.getbudgetModInstance(budgetMasterInstanceList[i].id)
+				for(int j=0;j<budgetModMapInstance.size();j++ )
+				  {
+	    				budgetModInstance = budgetModMapInstance[j]
+	    				if(budgetModInstance.moduleType == 'Projects')
+	    				{
+	    					def prjList =[]
+	    		    		prjList=Projects.get(budgetModInstance.moduleTypeId)
+	    		    		if(projectsList.contains(prjList)){
+	    		    			budgetModuleMapInstanceList.add(budgetModInstance)	
+	    		    		}
+	    				}
+	    				else
+	    				{
+	    					budgetModuleMapInstanceList.add(budgetModInstance)
+	    				}
+				 }
+	    		}
+    	}
+		else
+		{
+			for(int i=0;i<budgetMasterInstanceList.size();i++ )
+	 	    {
+    	     /* method to check All active budget Module Map*/
+    	        budgetModMapInstance = budgetMasterService.getbudgetModMapInstance(budgetMasterInstanceList[i].id,userInstance.email)
     	        for(int j=0;j<budgetModMapInstance.size();j++ )
     	 	    {
     	        	budgetModInstance = budgetModMapInstance[j]
                     budgetModuleMapInstanceList.add(budgetModInstance)
     	 	    }
-   	 }
-       return [budgetModuleMapInstance: budgetModuleMapInstance,budgetModuleMapInstanceList:budgetModuleMapInstanceList,budgetMasterInstanceList:budgetMasterInstanceList]
+	 	    }
+		}
+       return [budgetModuleMapInstance: budgetModuleMapInstance,budgetModuleMapInstanceList:budgetModuleMapInstanceList,budgetMasterInstanceList:budgetMasterInstanceList,authorityPersonInstance:authorityPersonInstance]
     }
 
     def save = 
@@ -45,6 +86,9 @@ class BudgetModuleMapController {
     	def moduleTypeList
     	def fullProposalList=[]
     	def fullProposalInstance 
+    	def userInstance = userService.getUserById(new Integer(gh.getValue("UserId").intValue()))
+    	def userRoleInstance  = userService.getUserRoleByUserId(userInstance.id)	
+    	def authorityPersonInstance = Authority.find("from Authority AA where AA.id ="+userRoleInstance[0].id)
     	def budgetMasterService = new BudgetMasterService()
     	def partyInstance = Party.get(gh.getValue("Party"))
         def budgetModuleMapInstance = new BudgetModuleMap(params)
@@ -95,14 +139,16 @@ class BudgetModuleMapController {
 	    	}
 	    	else
 	    	{
-	    		
-    	budgetModuleMapInstance.activeYesNo="Y" 
-    	if(budgetModuleMapInstance.save())
-        {
-            flash.message = "${message(code: 'default.Budgetmodulemapcreated.message', args: [message(code: 'budgetModuleMap.label', default: 'BudgetModuleMap'), budgetModuleMapInstance.id])}"
-            redirect(action: "create",id: budgetModuleMapInstance.id)
-        }
-    	}
+			    budgetModuleMapInstance.createdBy = userInstance.username
+				budgetModuleMapInstance.createdDate = new Date()
+				budgetModuleMapInstance.modifiedDate = new Date()
+		    	budgetModuleMapInstance.activeYesNo="Y" 
+		    	if(budgetModuleMapInstance.save())
+		        {
+		            flash.message = "${message(code: 'default.Budgetmodulemapcreated.message', args: [message(code: 'budgetModuleMap.label', default: 'BudgetModuleMap'), budgetModuleMapInstance.id])}"
+		            redirect(action: "create",id: budgetModuleMapInstance.id)
+		        }
+		    	}
     	}
     }
 
@@ -197,7 +243,8 @@ class BudgetModuleMapController {
     def update = {
     	 GrailsHttpSession gh=getSession()
     	 def fullProposalInstance
-    	 def budgetModuleMapInstance = BudgetModuleMap.get(params.id)
+    	 def userInstance = userService.getUserById(new Integer(gh.getValue("UserId").intValue()))
+     	 def budgetModuleMapInstance = BudgetModuleMap.get(params.id)
     	 def budgetMasterService = new BudgetMasterService()
     	 def partyInstance = Party.get(gh.getValue("Party"))
          if (budgetModuleMapInstance) {
@@ -231,7 +278,7 @@ class BudgetModuleMapController {
 	                budgetModuleMapInstance.budgetMaster = budgetMasterInstance
 	                budgetModuleMapInstance.moduleType = params.moduleType
 	                budgetModuleMapInstance.moduleTypeId = notificationInstance.id
-	         	   if (budgetModuleMapInstance.save()) {
+	             	 if (budgetModuleMapInstance.save()) {
 	                    flash.message = "${message(code: 'default.BudgetModuleMapupdated.message', args: [message(code: 'budgetModuleMap.label', default: 'BudgetModuleMap'), budgetModuleMapInstance.id])}"
 	                    redirect(action: "create", id: budgetModuleMapInstance.id)
 	                }
@@ -288,7 +335,7 @@ class BudgetModuleMapController {
 	                    budgetModuleMapInstance.budgetMaster = budgetMasterInstance
 	                    budgetModuleMapInstance.moduleType = params.moduleType
 	                    budgetModuleMapInstance.moduleTypeId = fullProposalInstance[0]
-	                    if (budgetModuleMapInstance.save()) {
+	                	if (budgetModuleMapInstance.save()) {
 	                        flash.message = "${message(code: 'default.BudgetModuleMapupdated.message', args: [message(code: 'budgetModuleMap.label', default: 'BudgetModuleMap'), budgetModuleMapInstance.id])}"
 	                        redirect(action: "create", id: budgetModuleMapInstance.id)
 	                    }

@@ -64,7 +64,7 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 			</band>
 		</background>
 		<title>
-			<band height="195"  isSplitAllowed="true" >
+			<band height="167"  isSplitAllowed="true" >
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
@@ -90,7 +90,7 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="188"
-						y="135"
+						y="118"
 						width="384"
 						height="27"
 						forecolor="#000000"
@@ -163,7 +163,7 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="152"
+						x="124"
 						y="0"
 						width="45"
 						height="28"
@@ -207,7 +207,7 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="198"
+						x="178"
 						y="0"
 						width="53"
 						height="26"
@@ -229,7 +229,7 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="256"
+						x="241"
 						y="0"
 						width="49"
 						height="21"
@@ -251,10 +251,10 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="314"
+						x="301"
 						y="0"
-						width="86"
-						height="18"
+						width="69"
+						height="26"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-8"
@@ -273,10 +273,10 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="402"
+						x="377"
 						y="0"
-						width="79"
-						height="21"
+						width="66"
+						height="26"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-9"
@@ -290,7 +290,7 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 					<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[ Received Amt]]></text>
+				<text><![CDATA[Received Amt]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -317,7 +317,7 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="569"
+						x="524"
 						y="0"
 						width="55"
 						height="23"
@@ -339,9 +339,9 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="710"
+						x="737"
 						y="1"
-						width="70"
+						width="43"
 						height="26"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -361,7 +361,7 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="627"
+						x="659"
 						y="2"
 						width="78"
 						height="27"
@@ -402,9 +402,9 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="31"
+						x="37"
 						y="0"
-						width="91"
+						width="77"
 						height="21"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -424,9 +424,9 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="485"
+						x="449"
 						y="0"
-						width="81"
+						width="68"
 						height="30"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -441,16 +441,38 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[ Transferred Amt]]></text>
+				<text><![CDATA[Transferred Amt]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="585"
+						y="2"
+						width="69"
+						height="24"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-18"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[% Of Received]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="47"  isSplitAllowed="true" >
+			<band height="42"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="152"
+						x="129"
 						y="0"
 						width="43"
 						height="29"
@@ -494,10 +516,10 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="26"
+						x="32"
 						y="1"
-						width="126"
-						height="35"
+						width="96"
+						height="31"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField-6"
@@ -516,8 +538,8 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="197"
-						y="0"
+						x="177"
+						y="3"
 						width="62"
 						height="21"
 						forecolor="#000000"
@@ -538,8 +560,8 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="261"
-						y="0"
+						x="240"
+						y="3"
 						width="62"
 						height="23"
 						forecolor="#000000"
@@ -560,9 +582,9 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00 " isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="327"
+						x="305"
 						y="3"
-						width="85"
+						width="66"
 						height="21"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -582,9 +604,9 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00 " isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="418"
-						y="4"
-						width="71"
+						x="377"
+						y="3"
+						width="64"
 						height="21"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -604,7 +626,7 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00 " isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="500"
+						x="450"
 						y="3"
 						width="67"
 						height="23"
@@ -626,7 +648,7 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00 " isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="570"
+						x="525"
 						y="3"
 						width="57"
 						height="23"
@@ -648,9 +670,9 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00 " isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="707"
+						x="736"
 						y="1"
-						width="73"
+						width="46"
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -670,10 +692,10 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="###0.00 " isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="627"
-						y="0"
-						width="61"
-						height="42"
+						x="662"
+						y="2"
+						width="62"
+						height="34"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField-14"
@@ -693,7 +715,7 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="2"
-						y="44"
+						y="39"
 						width="778"
 						height="0"
 						forecolor="#000000"
@@ -711,13 +733,57 @@ AND pa.id = $P{PartyID} GROUP BY pr.id ORDER BY pr.name]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="689"
-						y="0"
+						x="725"
+						y="2"
 						width="11"
 						height="14"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-17"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[%]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="583"
+						y="3"
+						width="68"
+						height="34"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-17"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{AmtAllocated}.doubleValue()!=0.0?( $F{AmtAllocated}.doubleValue()!=0.0? new Double(($F{FundRcvd}.doubleValue()/$F{AmtAllocated}.doubleValue())*new Integer(100).intValue()):new Double(100)) : new Double(0)]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="652"
+						y="4"
+						width="10"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-19"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"

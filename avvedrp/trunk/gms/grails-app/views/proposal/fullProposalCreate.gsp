@@ -7,9 +7,13 @@
 <body>
    <div class="body">
      <div class ="wrapper">
+      <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
        	<h1><g:message code="default.FullProposal.label" /><h1>
             <g:if test="${flash.message}">
             	<div class="message">${flash.message}</div>
+            </g:if>
+            <g:if test="${flash.error}">
+            	<div class="errors">${flash.error}</div>
             </g:if>
       		<g:hiddenField name="fullProposalStatus" value="fullProposalStatus" />
             <g:if test="${fullProposalStatus == null}">

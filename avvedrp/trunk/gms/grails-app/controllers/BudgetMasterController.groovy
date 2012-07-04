@@ -17,6 +17,8 @@ class BudgetMasterController {
 
     def create = {
     	GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","Budget_Master.htm")//putting help pages in session
         def budgetMasterInstance = new BudgetMaster()
     	def budgetMasterService = new BudgetMasterService()
     	budgetMasterInstance.properties = params

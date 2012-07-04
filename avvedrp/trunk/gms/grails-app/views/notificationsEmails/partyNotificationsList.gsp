@@ -11,6 +11,7 @@
     	<div id="paginate">
     	<div class="wrapper"> 
           <div class="body">
+      	<img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">  
             <h1><g:message code="default.Proposal.ProposalList.head"/></h1>
             <g:if test="${flash.message}">
               <div class="message">${flash.message}</div>
@@ -26,7 +27,7 @@
                             <g:sortableColumn property="notificationDate" title="${message(code: 'default.NotificationDate.label')}" />
                             <g:sortableColumn property="proposalSubmissionLastDate" title="${message(code: 'default.LastProposalSubmissionDate.label')}" />
                    	        <th><g:message code="default.Grantor.label"/></th>
-                   	        <th><g:message code="default.NotificationDetails.label"/></th>
+                   	       <!-- <th><g:message code="default.NotificationDetails.label"/></th>-->
                    	        <th align="center"><img src="/gms/images/attach1.png"/></th>
                    	        <th><g:message code="default.Status.label"/></th>
                    	        <th><g:message code="default.Apply.label"/></th>
@@ -38,12 +39,17 @@
                         <% j++ %>
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                             <td>${j}</td>
-                            <td>${fieldValue(bean:partyNotificationsInstance, field:'notificationTitle')}</td>
+                            
+                            <td><g:link action="showPartyNotifications" controller="notificationsEmails" id="${partyNotificationsInstance.id}">${fieldValue(bean:partyNotificationsInstance, field:'notificationTitle')}</g:link>
+                            </td>
+                            
                             <td><g:formatDate format="dd-MM-yyyy" date="${partyNotificationsInstance.notificationDate}"/></td>
                            	<td><g:formatDate format="dd-MM-yyyy" date="${partyNotificationsInstance.proposalSubmissionLastDate}"/></td>
                            	<g:hiddenField name="proposalSubmissionLastDate${i}" value="${partyNotificationsInstance.proposalSubmissionLastDate}" />
                            	<td>${fieldValue(bean:partyNotificationsInstance, field:'party.nameOfTheInstitution')}</td>
-                           	<td><g:link action="showPartyNotifications" controller="notificationsEmails" id="${partyNotificationsInstance.id}"><g:message code="${message(code: 'default.View.label')}"/></g:link></td>
+                           	
+                           <!--	<td><g:link action="showPartyNotifications" controller="notificationsEmails" id="${partyNotificationsInstance.id}"><g:message code="${message(code: 'default.View.label')}"/></g:link></td>-->
+                           	
                            	<td><%def proposalStatus = Proposal.find("from Proposal where party.id="+session.Party+" and notification.id="+partyNotificationsInstance.id)%>
                            	    <g:if test="${proposalStatus}">
                            	      <g:link action="create" controller='notificationsAttachments' id="${fieldValue(bean:proposalStatus, field:'id')}" params="[documentType:'Proposal']"><img src="/gms/images/attach1.png"/></g:link>

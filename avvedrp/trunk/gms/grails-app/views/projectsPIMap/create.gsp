@@ -10,6 +10,7 @@
     <g:subMenuList/>
     <div class="wrapper">
           <div class="body">
+	      <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
             <h1><g:message code="default.projectsPIMap.AddProjectsToPI.head"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
@@ -48,7 +49,7 @@
                                     <label for="role"><g:message code="default.Role.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'role','errors')}">
-                                    <g:select id="role" name="role"  from="${['CO-PI','PI']}" value="${projectsPIMapInstance?.role}" noSelection="['null':'-Select-']" ></g:select>
+                                    <g:select id="role" name="role"  from="${['CO-PI']}" value="${projectsPIMapInstance?.role}" noSelection="['null':'-Select-']" ></g:select>
                                 </td>
                             </tr> 
                            

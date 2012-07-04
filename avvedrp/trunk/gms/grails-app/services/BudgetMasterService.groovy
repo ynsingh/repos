@@ -29,7 +29,7 @@ class BudgetMasterService
      */
     public checkDuplicateBudgetMaster(def params)
 	{
-    	 def chkbudgetMasterInstanceList= BudgetMaster.find("from BudgetMaster BM where BM.activeYesNo='Y' and BM.title='"+params.title+"'")
+    	 def chkbudgetMasterInstanceList= BudgetMaster.find("from BudgetMaster BM where BM.activeYesNo='Y' and BM.financialYear='"+params.financialYear.id+"' and BM.title='"+params.title+"'")
 		 return chkbudgetMasterInstanceList
 	}
     

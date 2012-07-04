@@ -8,6 +8,7 @@
     	<g:subMenuList/>
         <div class="wrapper">
           <div class="body">
+		<img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
             <h1><g:message code="default.FundAllocation.CreateFundAllocation.head"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
@@ -32,7 +33,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'projects','errors')}">
                                    <strong> ${projectsInstance.code} </strong>
-                                   <input type="hidden" name="id" value="${projectsInstance.id}">
+                                   <!-- <input type="hidden" name="id" value="${projectsInstance.id}"> -->
                                 </td>
                                 
                                 
@@ -84,6 +85,9 @@
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'remarks','errors')}">
                                       <g:textArea name="remarks" value="${fieldValue(bean:grantAllocationInstance,field:'remarks')}" rows="1" cols="30"/>
                                 </td>
+                                <td valign="top" class="name">
+                                    <g:link  controller='budgetDetails' action="assignedBudget" params="[moduleType:'Projects']" id="${session.ProjectID}"><g:message code="default.BudgetDetails.label"/></g:link>
+                            	</td>
                             </tr> 
                         
                         </tbody>

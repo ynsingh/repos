@@ -13,7 +13,7 @@ class ProposalApprovalController {
 
     def list = {
     	GrailsHttpSession gh=getSession()
-    	
+		
     	def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByReviewer(gh.getValue("UserId"),'PreProposal')
     	//def proposalApprovalInstanceNewList = proposalApprovalService.getProposalApprovalList(proposalApprovalAuthorityMapInstance)
     	def preProposalApprovalInstanceList=[]
@@ -63,7 +63,8 @@ class ProposalApprovalController {
   def fullProposalList = 
     {
     	GrailsHttpSession gh=getSession()
-    	
+		gh.removeValue("Help")
+		gh.putValue("Help","FullProposalList_Approval.htm")//putting help pages in session
     	def proposalApplicationInstance 
     	def proposalApplicationInstanceList = []
     	def proposalApplicationList=[]
@@ -208,6 +209,8 @@ class ProposalApprovalController {
     {     
     	def proposalApprovalInstance = ProposalApproval.get(params.id)
     	GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","Reviwer_Status.htm")//putting help pages in session
     	def proposalApplicationInstanceList=[]
     	def proposalApplicationInstance
     	def proposalInstanceList=[]
@@ -232,6 +235,8 @@ class ProposalApprovalController {
     def fullProposalReview = {
     	def proposalApprovalInstance = ProposalApproval.get(params.id)
     	GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","FullProposal_Review.htm")//putting help pages in session
     	def proposalApplicationInstanceList=[]
     	def proposalApplicationInstance
     	def proposalInstanceList=[]

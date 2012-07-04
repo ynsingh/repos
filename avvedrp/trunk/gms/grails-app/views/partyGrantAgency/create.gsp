@@ -4,12 +4,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title><g:message code="default.GrantAgency.CreateGrantAgency.head"/></title>         
-    </head>  
+        <title><g:message code="default.GrantAgency.CreateGrantAgency.head"/></title>
+        </head>  
     <body>
       <div class="wrapper">
         <div class="body">
-            <h1><g:message code="default.GrantAgency.CreateGrantAgency.head"/></h1>
+            <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">         
+       	    <h1><g:message code="default.GrantAgency.CreateGrantAgency.head"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>

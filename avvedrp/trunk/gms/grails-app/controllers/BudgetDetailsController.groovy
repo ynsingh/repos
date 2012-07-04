@@ -1,3 +1,4 @@
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 import java.text.*;
 import java.util.*;
 import grails.converters.*;
@@ -427,6 +428,9 @@ class BudgetDetailsController {
     
     def assignedBudget=
     {
+	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","Assigned_Budget.htm")//putting help pages in session
     	def budgetMasterService = new BudgetMasterService()
     	def budgetId = params.id
     	def budgetMasterInstance

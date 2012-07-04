@@ -1,3 +1,4 @@
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class EmployeeDesignationController 
 {
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -10,6 +11,9 @@ class EmployeeDesignationController
 	 */
 	def create = 
 	{
+		GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","Employee_Designation.htm")//putting help pages in session
         def employeeDesignationInstance = new EmployeeDesignation()        
         def employeeDesignationService = new EmployeeDesignationService()  
         

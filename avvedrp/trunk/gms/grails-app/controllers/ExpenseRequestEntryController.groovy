@@ -1,7 +1,15 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 import java.text.*;
+import org.apache.commons.validator.EmailValidator
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 class ExpenseRequestEntryController {
+
+	def notificationsEmailsService
+	def gmsSettingsService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
     
@@ -32,6 +40,8 @@ class ExpenseRequestEntryController {
 	    	def dataSecurityService = new DataSecurityService()
 	    	def grantExpenseService = new GrantExpenseService()
 	    	GrailsHttpSession gh=getSession()
+			gh.removeValue("Help")
+			gh.putValue("Help","Create_ExpenseRequest.htm")//putting help pages in session
 	    	def projectsList = []
 	    	def userInstance = userService.getUserById(new Integer(gh.getValue("UserId").intValue()))
 	    	def investigatorInstance = investigatorService.getInvestigatorByemail(userInstance.email)
@@ -89,7 +99,6 @@ class ExpenseRequestEntryController {
  * Function to save Expense Request.
  */
     def save = {
-    	println"params----------"+params
     	GrailsHttpSession gh=getSession()
     	def dataSecurityService = new DataSecurityService()
     	def projectsList = dataSecurityService.getProjectsForLoginUser(gh.getValue("PartyID"))
@@ -231,6 +240,8 @@ class ExpenseRequestEntryController {
  */    
     def financeLogin = {
     	GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","ExpenseRequest_List.htm")//putting help pages in session
     	def grantAllocationInstanceList = grantAllocationService
     			.getGrantAllocationByPartyIdGroupByProjects(gh.getValue("PartyID"))//get the grant allocation of projects have access permission for login finance person
     	def expenseRequestEntryInstanceList = []
@@ -262,9 +273,12 @@ class ExpenseRequestEntryController {
     def expenseRequestDetails = {
     	GrailsHttpSession gh=getSession()
     	def attachmentsService = new AttachmentsService()
-    	
+    	def grantReceiptService = new GrantReceiptService()
+		def grantExpenseService = new GrantExpenseService()
+		def fundTransferService = new FundTransferService()
+		
     	def expenseRequestEntryInstance = expenseRequestService.getExpenseRequestEntryById(params.id)
-    	def userMapList = userService.getAllUsersByPartyID(gh.getValue("PartyID"))
+		def userMapList = userService.getAllUsersByPartyID(gh.getValue("PartyID"))
     	def userList = []
     	for(int i=0;i<userMapList.size();i++)
 		{
@@ -272,14 +286,23 @@ class ExpenseRequestEntryController {
     		userList.add(userInstance)
 		}
     	def approvalAuthorityInstance = approvalAuthorityService.getApprovalAuthorityByParty(gh.getValue("Party"))
-    	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS()
+		
+		expenseRequestEntryInstance.projects.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(expenseRequestEntryInstance.projects.id,gh.getValue("PartyID"))
+    	double receivedAmount = grantReceiptService.getSumOfAmountReceivedForProject(expenseRequestEntryInstance.projects.id)		
+		def totExpense = grantExpenseService.getTotalExpenseByProject(expenseRequestEntryInstance.projects.id)
+		def sumTransferInstance = fundTransferService.sumTransferInstanceByProject(expenseRequestEntryInstance.projects.id)
+		def sumSubGrantAllot = grantAllocationService.getTotalSubdrantAllot(expenseRequestEntryInstance.projects.id)
+		
+	  	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS()
     	NumberFormat formatter = new DecimalFormat("#0.00")
     	[expenseRequestEntryInstance:expenseRequestEntryInstance,
     	 userList:userList,approvalAuthorityInstance:approvalAuthorityInstance,
-    	 'currencyFormat':currencyFormatter,
+    	 'currencyFormat':currencyFormatter,'sumTransferInstance':sumTransferInstance,
     	 'expenseAmount':formatter.format(expenseRequestEntryInstance.expenseAmount),
-         'invoiceAmount':formatter.format(expenseRequestEntryInstance.invoiceAmount)]
-    	
+         'invoiceAmount':formatter.format(expenseRequestEntryInstance.invoiceAmount),
+		 'totAllAmount':expenseRequestEntryInstance.projects.totAllAmount,
+		 'receivedAmount':receivedAmount,'totExpense':totExpense,'sumSubGrantAllot':sumSubGrantAllot]
+		  	
     	
     }
     
@@ -293,6 +316,7 @@ class ExpenseRequestEntryController {
     	{
     		params.invoiceAmount = 0
     	}
+    	def approvalAuthorityDetailsInstanceList = []
     	def expenseRequestEntryInstance = expenseRequestService
     			.getExpenseRequestEntryById(params.expenseRequestEntry)
     	expenseRequestEntryInstance.invoiceNo = params.invoiceNo
@@ -305,8 +329,15 @@ class ExpenseRequestEntryController {
     	
     	def approvalAuthorityInstance =ApprovalAuthority.get(new Integer(params.approvalAuthority.id).intValue())
     	def userInstance = Person.get(gh.getValue("UserId"))
+    	def userMapInstance = UserMap.get(userInstance.id)
     	def proposalApprovalAuthorityMapInstance
     	def approveOrder = 0
+    	
+    	DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	    def expenseDate = dateFormat.format(expenseRequestEntryInstance.dateOfExpense)
+	    Date date = new Date();
+	    def requestDate = dateFormat.format(date) 
+	    
     	if(expenseRequestEntryInstance.status == 'Pending')
     	{
 	    	if(proposalApprovalAuthorityMapInstanceList)
@@ -369,6 +400,46 @@ class ExpenseRequestEntryController {
 		        	{
 		    		proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
 		    			.saveProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList,approvalAuthorityInstance,userInstance,expenseRequestEntryInstance) //create new approval authority map by selected approval authority.
+	    			
+	    			
+	    			     if (proposalApprovalAuthorityMapInstance) 
+					    	{
+								approvalAuthorityDetailsInstanceList = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AAD where AAD.approvalAuthority.id="+approvalAuthorityInstance.id+" and AAD.activeYesNo='Y'")
+									if(approvalAuthorityDetailsInstanceList)
+										{
+													
+											for(int k=0;k<approvalAuthorityDetailsInstanceList.size();k++)
+											    {
+													
+													EmailValidator emailValidator = EmailValidator.getInstance()
+													  if (emailValidator.isValid(approvalAuthorityDetailsInstanceList[k].person.email))
+													  {
+														  def mailSubject="GMS Expense request Information Against a Project ";
+														  def mailFooter=gmsSettingsService.getGmsSettingsValue("MailFooter")
+														  String mailMessage="";
+														  mailMessage="Dear "+approvalAuthorityDetailsInstanceList[k].person.userRealName+" "+approvalAuthorityDetailsInstanceList[k].person.userSurName+", \n";
+														  mailMessage+=" An expense request has been sent to you on GMS by "+userInstance.userRealName+" "+userInstance.userSurName+" for the project "+expenseRequestEntryInstance.projects.code+" and is pending your approval. ";
+														  mailMessage+=" \n\nDetails are as given below:";
+														  
+													       mailMessage+=" \n\nDate of Request:"+requestDate;
+													       mailMessage+=" \nExpense Description:"+expenseRequestEntryInstance.expenseDescription;
+													       mailMessage+=" \nExpense Amount:"+expenseRequestEntryInstance.expenseAmount;
+													       mailMessage+=" \nDate of Expense:"+expenseDate;
+													     
+													      mailMessage=mailMessage+" \n" 
+													      mailMessage+=" \nRegards," 
+													      mailMessage+=" \nGrant Management System (GMS) at "+userMapInstance.party.code;
+													      mailMessage+=" \n[This is an auto-generated e-mail. Please do not reply] ";
+													      notificationsEmailsService.sendConfirmation(approvalAuthorityDetailsInstanceList[k].person.email,mailSubject,mailMessage,"text/plain")
+											   
+											         }
+											    
+											    }
+									  }			
+				           }  	    			
+	    			
+	    			
+	    			
 	    			flash.message = "${message(code: 'default.SendSuccessfully.message')}"
 	    			redirect(action: "financeLogin")
 		        	}
@@ -381,16 +452,52 @@ class ExpenseRequestEntryController {
 		    		
 		    	}
 		 	}
+	    	
 	    	else{
 	    		
-	    		proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
+				  proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
 	    			.saveProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList,approvalAuthorityInstance,userInstance,expenseRequestEntryInstance)
-		    	if (proposalApprovalAuthorityMapInstance) 
-		    	{
-					flash.message = "${message(code: 'default.submittedsuccessfully.message')}"
-					redirect(action: "financeLogin")
-		    	}
-	    	}
+					    	
+					    	if (proposalApprovalAuthorityMapInstance) 
+					    	{
+								approvalAuthorityDetailsInstanceList = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AAD where AAD.approvalAuthority.id="+approvalAuthorityInstance.id+" and AAD.activeYesNo='Y'")
+									if(approvalAuthorityDetailsInstanceList)
+										{
+													
+											for(int k=0;k<approvalAuthorityDetailsInstanceList.size();k++)
+											    {
+													
+													EmailValidator emailValidator = EmailValidator.getInstance()
+													  if (emailValidator.isValid(approvalAuthorityDetailsInstanceList[k].person.email))
+													  {
+														  def mailSubject="GMS Expense request Information Against a Project ";
+														  def mailFooter=gmsSettingsService.getGmsSettingsValue("MailFooter")
+														  String mailMessage="";
+														  mailMessage="Dear "+approvalAuthorityDetailsInstanceList[k].person.userRealName+" "+approvalAuthorityDetailsInstanceList[k].person.userSurName+", \n";
+														  mailMessage+=" An expense request has been sent to you on GMS by "+userInstance.userRealName+" "+userInstance.userSurName+" for the project "+expenseRequestEntryInstance.projects.code+" and is pending your approval. ";
+														  mailMessage+=" \n\nDetails are as given below:";
+														  
+													       mailMessage+=" \n\nDate of Request:"+requestDate;
+													       mailMessage+=" \nExpense Description:"+expenseRequestEntryInstance.expenseDescription;
+													       mailMessage+=" \nExpense Amount:"+expenseRequestEntryInstance.expenseAmount;
+													       mailMessage+=" \nDate of Expense:"+expenseDate;
+													     
+													      mailMessage=mailMessage+" \n" 
+													      mailMessage+=" \nRegards," 
+													      mailMessage+=" \nGrant Management System (GMS) at "+userMapInstance.party.code;
+													      mailMessage+=" \n[This is an auto-generated e-mail. Please do not reply] ";
+													      notificationsEmailsService.sendConfirmation(approvalAuthorityDetailsInstanceList[k].person.email,mailSubject,mailMessage,"text/plain")
+											   
+											         }
+											    
+											    }
+									  }			
+				           }  	
+					    	
+						flash.message = "${message(code: 'default.submittedsuccessfully.message')}"
+						redirect(action: "financeLogin")
+	    	   }
+    	   
     	}
     	else
     	{
@@ -403,6 +510,10 @@ class ExpenseRequestEntryController {
  * Function to list the status details of each member in Approval authority.
  */     
  def approvalStatus = {
+
+ 	if(params.financeSide == 'financeSide')   
+	    
+	    {
 	    	def approvalAuthorityInstanceList = []
 	    	def proposalApprovalInstanceList = []
 	    	int s=0
@@ -506,7 +617,120 @@ class ExpenseRequestEntryController {
 	    	 expenseRequestEntryInstance:expenseRequestEntryInstance,sizeList:sizeList,
 	    	 proposalApprovalDetailInstanceList:proposalApprovalDetailInstanceList,
 	    	 approvalAuthorityDetailList:approvalAuthorityDetailList]
-	    }
+    
+ }
+
+ else
+  {
+ 	    	def approvalAuthorityInstanceList = []
+	    	def proposalApprovalInstanceList = []
+	    	int s=0
+	    	def sizeList = []
+	    	def approvalAuthorityDetailList = []
+	    	def proposalApprovalDetailInstanceList = []
+	    	def proposalApprovalAuthorityMapInstanceList = []
+	    	def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.find("from ProposalApprovalAuthorityMap PPM where PPM.id="+params.id)
+	    	def expenseRequestEntryInstance = expenseRequestService.getExpenseRequestEntryById(proposalApprovalAuthorityMapInstance.proposalId)
+	    	proposalApprovalAuthorityMapInstanceList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PPM where PPM.proposalId="+proposalApprovalAuthorityMapInstance?.proposalId+" and  PPM.id != "+proposalApprovalAuthorityMapInstance.id+" and PPM.proposalType = 'ExpenseRequest'")
+	    	
+	    	for(int i=0;i<proposalApprovalAuthorityMapInstanceList.size();i++)
+			{
+	    		def approvalAuthorityInstance = ApprovalAuthority
+	    			.get( proposalApprovalAuthorityMapInstanceList[i].approvalAuthority.id) 
+	    		approvalAuthorityInstanceList.add(approvalAuthorityInstance)// get all approval authority to which request had send.
+			}
+	    		
+	    		
+	    	if(expenseRequestEntryInstance.status == 'Pending')
+	    	{
+	    		def expenseRequestMaxOrder = proposalApprovalAuthorityMapService
+	    			.getPreProposalApprovalMaxOrder('ExpenseRequest',expenseRequestEntryInstance.id) // get the heighest approve order of an expense request.
+		    	def newProposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
+		    		.getProposalApprovalAuthorityMapByApproveOrder(expenseRequestEntryInstance,expenseRequestMaxOrder[0]) // get the proposalApprovalAuthorityMapInstance have heighest approve order.
+		    	for(int j=0;j<proposalApprovalAuthorityMapInstanceList.size();j++)
+		    	{
+		    		if(proposalApprovalAuthorityMapInstanceList[j].approveOrder == newProposalApprovalAuthorityMapInstance.approveOrder)
+			    	{
+			    		
+		    			def approvalAuthorityDetailInstanceList = approvalAuthorityDetailService
+		    				.getApprovalAuthorityDetailByApprovalAuthority(proposalApprovalAuthorityMapInstanceList[j].approvalAuthority.id)//get members in each authority.
+			        	sizeList[s] = approvalAuthorityDetailInstanceList.size()
+			        	s++
+			        	for(int k=0;k<approvalAuthorityDetailInstanceList.size();k++)
+			        	{
+			        		def proposalApprovalInstance = proposalApprovalService
+			        			.getProposalApprovalByProposalApprovalAuthorityMapAndUser(proposalApprovalAuthorityMapInstanceList[j].id,approvalAuthorityDetailInstanceList[k].id) //get the list of persons reviewed in current authority level.
+			        		approvalAuthorityDetailList.add(approvalAuthorityDetailInstanceList[k])
+			        		if(proposalApprovalInstance)
+			        		{
+			        			def proposalApprovalDetailInstance = proposalApprovalDetailService
+			        				.proposalApprovalDetailByProposalApproval(proposalApprovalInstance.id)
+			            		proposalApprovalDetailInstanceList.add(proposalApprovalDetailInstance) // get the status of each reviewed member in the authority.
+			            		proposalApprovalInstanceList.add(proposalApprovalInstance)
+			            		
+			        		}
+			        		else
+			        		{
+			        			proposalApprovalInstanceList.add(null)
+			        			
+			        		}
+			        		
+			        	}
+		    		
+					}
+			    	else
+			    	{
+			    		def approvalAuthorityDetailInstanceList = approvalAuthorityDetailService
+	    				.getApprovalAuthorityDetailByApprovalAuthority(proposalApprovalAuthorityMapInstanceList[j].approvalAuthority.id)//get members in each authority.
+			    		
+		    			proposalApprovalInstanceList = proposalApprovalService
+		    				.getProposalApprovalByProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList[j].id) 
+		    			sizeList[s] = proposalApprovalInstanceList.size()
+			        	s++
+			        	for(int l=0;l<proposalApprovalInstanceList.size();l++)
+			        	{
+			        		def proposalApprovalDetailInstance = proposalApprovalDetailService
+			        			.proposalApprovalDetailByProposalApproval(proposalApprovalInstanceList[l].id)
+		            		proposalApprovalDetailInstanceList.add(proposalApprovalDetailInstance) // get the status of each reviewed member in the authority.
+			        	
+		            		approvalAuthorityDetailList.add(approvalAuthorityDetailInstanceList[l])
+			        	}
+					}
+		    	}
+	    	}
+	    	else
+	    	{
+	    		for(int i=0;i<proposalApprovalAuthorityMapInstanceList.size();i++)
+				{
+	    			def approvalAuthorityDetailInstanceList = approvalAuthorityDetailService
+					.getApprovalAuthorityDetailByApprovalAuthority(proposalApprovalAuthorityMapInstanceList[i].approvalAuthority.id)//get members in each authority.
+	    			
+	    			proposalApprovalInstanceList = proposalApprovalService
+	    				.getProposalApprovalByProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList[i].id) // get reviewed list of each authority.
+	    			sizeList[s] = proposalApprovalInstanceList.size()
+		        	s++
+		        	for(int j=0;j<proposalApprovalInstanceList.size();j++)
+		        	{
+		        		def proposalApprovalDetailInstance = proposalApprovalDetailService
+		        			.proposalApprovalDetailByProposalApproval(proposalApprovalInstanceList[j].id)
+	            		proposalApprovalDetailInstanceList.add(proposalApprovalDetailInstance) // get the status of each reviewed member in the authority.
+	            		approvalAuthorityDetailList.add(approvalAuthorityDetailInstanceList[j])
+		        	}
+				}
+	    		
+	    	}
+	    	[proposalApprovalAuthorityMapInstanceList:proposalApprovalAuthorityMapInstanceList,
+	    	 approvalAuthorityInstanceList:approvalAuthorityInstanceList,
+	    	 expenseRequestEntryInstance:expenseRequestEntryInstance,sizeList:sizeList,
+	    	 proposalApprovalDetailInstanceList:proposalApprovalDetailInstanceList,
+	    	 approvalAuthorityDetailList:approvalAuthorityDetailList]
+  
+  
+  
+  }
+
+
+}
 	    
     
 /*
@@ -514,6 +738,8 @@ class ExpenseRequestEntryController {
  */     
     def expenseApprovalRequest = {
     	GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","Evaluate_Expense_Request.htm")//putting help pages in session
     	def approvalAuthorityDetailInstanceList = approvalAuthorityDetailService
     			.getApprovalAuthorityDetailInstanceListByPerson(gh.getValue("UserId")) // get the authority list where login user assigned as a member.
     	def expenseRequestEntryInstanceList = []
@@ -530,8 +756,10 @@ class ExpenseRequestEntryController {
 	    			
 	    			def expenseRequestEntryInstance = expenseRequestService
 	    				.getExpenseRequestEntryById(proposalApprovalAuthorityMapInstance[j].proposalId) // get all expense request of the proposal.
-	    			if(expenseRequestEntryInstance.status == 'Pending')
-	    			{
+	    			if(expenseRequestEntryInstance!=null)
+					{
+						if(expenseRequestEntryInstance.status == 'Pending')
+	    			    {
 	    				def expenseRequestMaxOrder = proposalApprovalAuthorityMapService
 	    					.getPreProposalApprovalMaxOrder('ExpenseRequest',expenseRequestEntryInstance.id) // get the heighest approve order of an expense request.
 	        	    	def newProposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
@@ -549,12 +777,14 @@ class ExpenseRequestEntryController {
 				    			proposalApprovalDetailInstanceList.add(proposalApprovalDetailInstance) //get the review status of request by the login user.
 				    		}
 	        	    	}
-	    			}
+	    			    
+					}
 				}
     		}
-    		
 		}
-    	[approvalAuthorityDetailInstanceList:approvalAuthorityDetailInstanceList,expenseRequestEntryInstanceList:expenseRequestEntryInstanceList,
+	}	
+		
+		[approvalAuthorityDetailInstanceList:approvalAuthorityDetailInstanceList,expenseRequestEntryInstanceList:expenseRequestEntryInstanceList,
     	 proposalApprovalAuthorityMapInstanceList:proposalApprovalAuthorityMapInstanceList,proposalApprovalDetailInstanceList:proposalApprovalDetailInstanceList]
     }
 /*
@@ -562,6 +792,10 @@ class ExpenseRequestEntryController {
  */     
     def approveReject = {
     	GrailsHttpSession gh=getSession()
+		def grantExpenseService = new GrantExpenseService()
+		def fundTransferService = new FundTransferService()
+		def grantReceiptService = new GrantReceiptService()
+		
     	def proposalApprovalDetailInstance = new ProposalApprovalDetail()
     	def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalAuthorityMapById(params.id)
     	def expenseRequestEntryInstance = expenseRequestService.getExpenseRequestEntryById(proposalApprovalAuthorityMapInstance.proposalId)
@@ -575,25 +809,48 @@ class ExpenseRequestEntryController {
 			proposalApprovalDetailInstance = proposalApprovalDetailService
 			.proposalApprovalDetailByProposalApproval(proposalApprovalInstance.id)
 		}
-    	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+		
+		expenseRequestEntryInstance.projects.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(expenseRequestEntryInstance.projects.id,gh.getValue("PartyID")) //For
+		double receivedAmount = grantReceiptService.getSumOfAmountReceivedForProject(expenseRequestEntryInstance.projects.id) //getting Account
+		def totExpense = grantExpenseService.getTotalExpenseByProject(expenseRequestEntryInstance.projects.id)                //details of a project
+		def sumTransferInstance = fundTransferService.sumTransferInstanceByProject(expenseRequestEntryInstance.projects.id)   
+		def sumSubGrantAllot = grantAllocationService.getTotalSubdrantAllot(expenseRequestEntryInstance.projects.id)           
+		
+    	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS()
 		[expenseRequestEntryInstance:expenseRequestEntryInstance,'currencyFormat':currencyFormatter,approvalAuthorityInstance:approvalAuthorityInstance,
-    	 proposalApprovalAuthorityMapInstance:proposalApprovalAuthorityMapInstance,proposalApprovalDetailInstance:proposalApprovalDetailInstance]
+    	 proposalApprovalAuthorityMapInstance:proposalApprovalAuthorityMapInstance,proposalApprovalDetailInstance:proposalApprovalDetailInstance,
+		 'receivedAmount':receivedAmount,'totExpense':totExpense,'sumTransferInstance':sumTransferInstance,'sumSubGrantAllot':sumSubGrantAllot,
+		 'totAllAmount':expenseRequestEntryInstance.projects.totAllAmount]
     }
 /*
  * Function to enter the Expense after approval.
  */     
     def expenseEntry = {
+	GrailsHttpSession gh=getSession()
     	def grantAllocationSplitService=new GrantAllocationSplitService()
     	def grantExpenseService = new GrantExpenseService()
     	def grantExpenseInstance = new GrantExpense()
+		def grantReceiptService = new GrantReceiptService()
+		def fundTransferService = new FundTransferService()
+	
     	def expenseRequestEntryInstance = expenseRequestService.getExpenseRequestEntryById(new Integer(params.id))
     	def accountHeadList=grantAllocationSplitService.getAccountHeadByProject(expenseRequestEntryInstance.projects.id)
     	def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(expenseRequestEntryInstance.projects.id)
     	def grantExpenseInstanceList = grantExpenseService.getGrantExpenseByRequestCode(expenseRequestEntryInstance.expenseRequestCode)// get expense request based on request code.
+
+		expenseRequestEntryInstance.projects.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(expenseRequestEntryInstance.projects.id,gh.getValue("PartyID"))
+    	double receivedAmount = grantReceiptService.getSumOfAmountReceivedForProject(expenseRequestEntryInstance.projects.id)		
+		def totExpense = grantExpenseService.getTotalExpenseByProject(expenseRequestEntryInstance.projects.id)
+		def sumTransferInstance = fundTransferService.sumTransferInstanceByProject(expenseRequestEntryInstance.projects.id)
+		def sumSubGrantAllot = grantAllocationService.getTotalSubdrantAllot(expenseRequestEntryInstance.projects.id)
+		
+	    ConvertToIndainRS currencyFormatter=new ConvertToIndainRS()
     	NumberFormat formatter = new DecimalFormat("#0.00")
     	[expenseRequestEntryInstance:expenseRequestEntryInstance,accountHeadList:accountHeadList,
     	 grantAllocationInstanceList:grantAllocationInstanceList,grantExpenseInstanceList:grantExpenseInstanceList,
-    	 'amount':formatter.format(grantExpenseInstance.expenseAmount),grantExpenseInstance:grantExpenseInstance]
+    	 'amount':formatter.format(grantExpenseInstance.expenseAmount),grantExpenseInstance:grantExpenseInstance,'currencyFormat':currencyFormatter,
+         'sumTransferInstance':sumTransferInstance,'totAllAmount':expenseRequestEntryInstance.projects.totAllAmount,
+		 'receivedAmount':receivedAmount,'totExpense':totExpense,'sumSubGrantAllot':sumSubGrantAllot]
     }
 /*
  * Function to save evaluation result of Expense Request.
@@ -641,6 +898,15 @@ class ExpenseRequestEntryController {
     	def proposalApprovalAuthorityMapInstanceList = proposalApprovalAuthorityMapService
 		.getProposalApprovalAuthorityMapInstanceListByProposalId(expenseRequestEntryInstance.id)
     	def order = proposalApprovalAuthorityMapService.checkApproveOrder(proposalApprovalAuthorityMapInstance,proposalApprovalAuthorityMapInstanceList)
+    
+       
+    	DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	    def expenseDate = dateFormat.format(expenseRequestEntryInstance.dateOfExpense)
+	    Date date = new Date();
+	    def requestDate = dateFormat.format(date)
+    
+    	def userMapInstance = UserMap.get(userInstance.id)
+     
     	if(order > (proposalApprovalAuthorityMapInstance.approveOrder))
     	{
     		flash.error = "${message(code: 'default.requestalreadysend.message')}"
@@ -666,6 +932,47 @@ class ExpenseRequestEntryController {
 		        	{
 	    			proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
 	    				.saveProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList,approvalAuthorityInstance,userInstance,expenseRequestEntryInstance)
+	    			
+	    			
+	    			 if(proposalApprovalAuthorityMapInstance)
+    			   {
+    			   
+    			      def approvalAuthorityDetailsInstanceList = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AAD where AAD.approvalAuthority.id="+approvalAuthorityInstance.id+" and AAD.activeYesNo='Y'")
+						if(approvalAuthorityDetailsInstanceList)
+							{
+										
+								for(int k=0;k<approvalAuthorityDetailsInstanceList.size();k++)
+								    {
+										
+										EmailValidator emailValidator = EmailValidator.getInstance()
+										  if (emailValidator.isValid(approvalAuthorityDetailsInstanceList[k].person.email))
+										  {
+											  def mailSubject="GMS Expense request Information Against a Project ";
+											  def mailFooter=gmsSettingsService.getGmsSettingsValue("MailFooter")
+											  String mailMessage="";
+											  mailMessage="Dear "+approvalAuthorityDetailsInstanceList[k].person.userRealName+" "+approvalAuthorityDetailsInstanceList[k].person.userSurName+", \n";
+											  mailMessage+=" An expense request has been sent to you on GMS by "+userInstance.userRealName+" "+userInstance.userSurName+" for the project "+expenseRequestEntryInstance.projects.code+" and is pending at your approval. ";
+											  mailMessage+=" \n\nDetails are as given below:";
+											  
+										       mailMessage+=" \n\nDate of Request:"+requestDate;
+										       mailMessage+=" \nExpense Description:"+expenseRequestEntryInstance.expenseDescription;
+										       mailMessage+=" \nExpense Amount:"+expenseRequestEntryInstance.expenseAmount;
+										       mailMessage+=" \nDate of Expense:"+expenseDate;
+										     
+										      mailMessage=mailMessage+" \n" 
+										      mailMessage+=" \nRegards," 
+										      mailMessage+=" \nGrant Management System (GMS) at "+userMapInstance.party.code;
+										      mailMessage+=" \n[This is an auto-generated e-mail. Please do not reply] ";
+										      notificationsEmailsService.sendConfirmation(approvalAuthorityDetailsInstanceList[k].person.email,mailSubject,mailMessage,"text/plain")
+								   
+								         }
+								    
+								    }			
+					          }
+    			   
+    			   }   			
+	    			
+	    			
 	    			flash.message = "${message(code: 'default.SendSuccessfully.message')}"
 	    			redirect(action: "expenseApprovalRequest")
 	    		}
@@ -691,21 +998,63 @@ class ExpenseRequestEntryController {
 	        		flash.error = "${message(code: 'default.CannotSend.message')}"
 	        		redirect(action: "expenseApprovalRequest")
 			  	}
+	        	
 	        	else
 	        	{
 	    		proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
 	    			.saveProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList,approvalAuthorityInstance,userInstance,expenseRequestEntryInstance) //create new approval authority map by selected approval authority.
-    			flash.message = "${message(code: 'default.SendSuccessfully.message')}"
-    			redirect(action: "expenseApprovalRequest")
+    			
+    			  if(proposalApprovalAuthorityMapInstance)
+    			   {
+    			   
+    			      def approvalAuthorityDetailsInstanceList = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AAD where AAD.approvalAuthority.id="+approvalAuthorityInstance.id+" and AAD.activeYesNo='Y'")
+						if(approvalAuthorityDetailsInstanceList)
+							{
+										
+								for(int k=0;k<approvalAuthorityDetailsInstanceList.size();k++)
+								    {
+										
+										EmailValidator emailValidator = EmailValidator.getInstance()
+										  if (emailValidator.isValid(approvalAuthorityDetailsInstanceList[k].person.email))
+										  {
+											  def mailSubject="GMS Expense request Information Against a Project ";
+											  def mailFooter=gmsSettingsService.getGmsSettingsValue("MailFooter")
+											  String mailMessage="";
+											  mailMessage="Dear "+approvalAuthorityDetailsInstanceList[k].person.userRealName+" "+approvalAuthorityDetailsInstanceList[k].person.userSurName+", \n";
+											  mailMessage+=" An expense request has been sent to you on GMS by "+userInstance.userRealName+" "+userInstance.userSurName+" for the project "+expenseRequestEntryInstance.projects.code+" and is pending at your approval. ";
+											  mailMessage+=" \n\nDetails are as given below:";
+											  
+										       mailMessage+=" \n\nDate of Request:"+requestDate;
+										       mailMessage+=" \nExpense Description:"+expenseRequestEntryInstance.expenseDescription;
+										       mailMessage+=" \nExpense Amount:"+expenseRequestEntryInstance.expenseAmount;
+										       mailMessage+=" \nDate of Expense:"+expenseDate;
+										     
+										      mailMessage=mailMessage+" \n" 
+										      mailMessage+=" \nRegards," 
+										      mailMessage+=" \nGrant Management System (GMS) at "+userMapInstance.party.code;
+										      mailMessage+=" \n[This is an auto-generated e-mail. Please do not reply] ";
+										      notificationsEmailsService.sendConfirmation(approvalAuthorityDetailsInstanceList[k].person.email,mailSubject,mailMessage,"text/plain")
+								   
+								         }
+								    
+								    }			
+					          }
+    			   
+    			   }
+    			
+    	   			
+	    			flash.message = "${message(code: 'default.SendSuccessfully.message')}"
+	    			redirect(action: "expenseApprovalRequest")
 	        	}
-	    	    }
-	    	    else
-	    	    {
-	    	    	flash.error = "${message(code: 'default.RequestPending.message')}"
-		    		redirect(action: "expenseApprovalRequest")
-	    	    }
+	    	   
+    	    }
+    	    else
+    	    {
+    	    	flash.error = "${message(code: 'default.RequestPending.message')}"
+	    		redirect(action: "expenseApprovalRequest")
+    	    }
 	    		
-	    	}
+	    }
 	}
     }
 /*
@@ -1052,6 +1401,8 @@ class ExpenseRequestEntryController {
     def revieweStatus = 
     {
     	GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","Expense_Request_Reviewer_Status_List.htm")//putting help pages in session
     	def proposalApprovalAuthorityMapInstance
     	def expenseRequestEntryList=[]
     	 def expenseRequestEntryInstance
@@ -1088,5 +1439,28 @@ class ExpenseRequestEntryController {
     	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
 	 [expenseRequestEntryList:expenseRequestEntryList,'currencyFormat':currencyFormatter,proposalStatusList:proposalStatusList]
        
+    }
+	
+	def invoiceAttachList = {
+		def attachmentsService = new AttachmentsService()
+		def attachmentsInstance = new Attachments()
+		
+		def attachmentsInstanceList = []
+		def attachmentTypeList = []
+		
+		attachmentTypeList = attachmentsService.getattachmentTypesByDocType('Invoice')
+		attachmentsInstanceList =attachmentsService.getAttachmentListbyDomainIdAndDomain(params.id,'expenseRequestEntry')
+	[attachmentTypeList:attachmentTypeList,attachmentsInstanceList:attachmentsInstanceList,
+		attachmentsInstance:attachmentsInstance]
+	}
+	
+	
+	 def approvalAuthoritySelect=
+    {
+    		if(params.approvalAuthority.id)
+    		{
+    			render (template:"apprvlAuthrtySelt")
+    		}
+    		
     }
 }

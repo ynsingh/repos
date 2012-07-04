@@ -1,3 +1,4 @@
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class ProjectEmployeeExperienceController 
 {
  def projectEmployeeExperienceService
@@ -17,6 +18,9 @@ class ProjectEmployeeExperienceController
 
     def create = 
     {
+	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","ProjectEMployee_Experience.htm")//putting help pages in session
 	 	def projectEmployeeExperienceInstance = new ProjectEmployeeExperience()
         // projectEmployeeExperienceInstance.properties = params
         def projectEmployeeInstance = ProjectEmployee.get(params.id)

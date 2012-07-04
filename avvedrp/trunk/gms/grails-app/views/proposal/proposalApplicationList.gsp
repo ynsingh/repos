@@ -8,6 +8,7 @@
     <body>
         <div class="wrapper">
         <div class="body">
+        <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
             <h1><g:message code="default.Proposal.ProposalList.head"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
@@ -38,23 +39,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <g:each in="${proposalInstanceList}" status="i" var="proposalApplicationInstance">
+                    <%int j=0 %>
+                   <g:each in="${proposalInstanceList}" status="i" var="proposalApplicationInstance">
+                          
                            <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                        
-                            <td>${i+1}</td>
+                           <td>${i+1}</td>
                             <td>${proposalApplicationInstance?.proposal?.notification?.notificationTitle}</td>
                             <% def proposalApplicationExtProjectInstance = ProposalApplicationExt.find("from ProposalApplicationExt PE where PE.field='TitleOfTheResearchProject_2' and PE.proposalApplication.id="+proposalApplicationInstance?.id)%>
                              <td>${proposalApplicationExtProjectInstance?.value}</td>
-                             
                              <td>
                              <g:link action="downloadAttachments" controller="attachments" id="${attachmentsInstanceCVList[i]?.id}"><label for="name">${proposalApplicationInstance?.name}</label></g:link></td>
                         	 <td>${proposalApplicationInstance?.organisation}</td>
                              
                             <td>V${proposalApplicationInstance?.proposal?.proposalVersion}</td>
-                        	 <td>
-	                        	<g:link action="evalForm" controller='evalAnswer' id="${fieldValue(bean:proposalApplicationInstance, field:'id')}"><g:message code="default.proposalReview.label"/></g:link>
-                            </td>
-                            <td>
+                             <g:if test="${flagList[j] == 1}"> 
+	                        	 <td>
+		                        	<g:link action="evalForm" controller='evalAnswer' id="${fieldValue(bean:proposalApplicationInstance, field:'id')}"><g:message code="default.proposalReview.label"/></g:link>
+	                             </td>
+	                        </g:if>
+	                        <g:else>
+	                              <td>  
+	                                 	<g:link action="evalForm" controller='evalAnswer' id="${fieldValue(bean:proposalApplicationInstance, field:'id')}" params="[Review: 'NotApplicable']"><g:message code="default.View.label"/></g:link>
+	            	              </td>
+	                        </g:else>
+                              <%j++%>
+                             <td>
                             	<richui:rating dynamic="false" units="${maxScaleList[i]}" rating="${evalScoreInstanceList[i]?.totalScore}" showCurrent="false"/>
                            		<g:message code="default.AvgRating.label"/>:
                            		<g:if test="${evalScoreInstanceList[i]?.totalScore}">${evalScoreInstanceList[i]?.totalScore}</g:if>

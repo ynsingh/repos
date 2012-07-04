@@ -38,72 +38,91 @@
             </div>
             </g:hasErrors>
             <g:form name="evalForm" method="post" >
-               	<g:hiddenField name="proposalId" value="${proposalId}" />	 
-            	<g:hiddenField name="notificationId" value="${notificationId}" />	
-            	<input type="hidden" id="personStatus" name="personStatus" value="${personStatus}"/>
-            	<input type="hidden" id="reviewalStatus" name="reviewalStatus" value="${reviewalStatus}"/>
-            	 <div id="proposalDiv" class="contentDiv">
-                <g:render template="proposalApplicationData" model="['proposalApplicationExtInstance':proposalApplicationExtInstance,'proposalApplicationInstance':proposalApplicationInstance,'attachmentsInstanceGetCV':attachmentsInstanceGetCV,'attachmentsInstanceGetDPR':attachmentsInstanceGetDPR]" />
-                </div>
-                <div style="text-align:right">
-                <input type="button" id="prmaxmin" onClick="changeCssClass('proposalDiv','prmaxmin')"  value="${message(code: 'default.Maximize.button')}"/>
-                </div>
-                </div>
-                <g:if test="${evalItemInstanceList}">
-                <div class="body">
-                <h1><g:message code="default.proposalReview.label"/></h1>
-                <div id="reviewDiv" class="contentDiv">
-                <div class="dialog">
-                    <table>
-                            <g:each in="${evalItemInstanceList}" status="i" var="evalItemInstance">
-		                      <g:hiddenField name="id${i}" value="${evalAnswerInstanceList[i]?.id}" />
-		                        <tr>
-		                        	<td>${i+1}. ${evalItemInstance?.item}</td>
-		                        	<g:hiddenField name="evalItemId${i}" value="${evalItemInstance?.id}" />	
-		                        </tr>
-		                        <tr>
-			                        <td>
-		                           		<g:radioGroup id="scaleOptions${i}" name="scaleOptions${i}" labels="${evalScaleOptionsList[i].scaleOption}" values="${evalScaleOptionsList[i].id}" value="${evalAnswerInstanceList[i]?.evalScaleOptions?.id}">
-										 ${it.radio} ${it.label}</g:radioGroup>
-									</td>
-								</tr>
-								<tr>
-									<td><label for="remarks${i}"><g:message code="default.ReviewRemarks.label"/></td></label>
-								</tr>
-								<tr>
-	                                <td valign="top" class="value ${hasErrors(bean: evalAnswerInstanceList[i], field: 'remarks', 'errors')}">
-	                                    <g:textArea name="remarks${i}" value="${evalAnswerInstanceList[i]?.remarks}"  style='width: 500px; height: 75px;' />
-	                                </td>
-                               </tr>
-	                    	</g:each>      
-                    </table>
-                </div>
-                </div>
-                
-                <div style="text-align:right">
-                <input type="button" id="remaxmin" onClick="changeCssClass('reviewDiv','remaxmin')"  value="${message(code: 'default.Maximize.button')}"/>
-                </div>
-               
-             
-                <div align="left">
-                
-                    <g:if test="${evalAnswerInstanceList}">
-                    	<span class="button"><g:actionSubmit class="inputbutton" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" onClick="return validateEvalForm(${evalItemInstanceList.size()});" /></span>
-                    </g:if> 
-                    <g:else>
-                    	<span class="button"><g:actionSubmit class="inputbutton" action="save" value="${message(code: 'default.Save.button')}" onClick="return validateEvalForm(${evalItemInstanceList.size()});"/></span>
-                    </g:else>
-                    <span class="button"><g:actionSubmit class="inputbutton" action="submitResult" value="${message(code: 'default.Submit.button')}" onClick="return validateEvalForm(${evalItemInstanceList.size()});"/></span>
-				</div>
-            	
-            	
-              </g:if> 
-                <g:else>
-               <div class="body">
-               <div class="errors">
-                <g:message code="default.NoEvalItemForNotification.label"/>
-                </div></div>
-                </g:else>
+	               	
+	            <g:if test="${params.Review == 'NotApplicable'}">   	
+	               	 <div id="proposalDiv" class="contentDiv">
+	                <g:render template="proposalApplicationData" model="['proposalApplicationExtInstance':proposalApplicationExtInstance,'proposalApplicationInstance':proposalApplicationInstance,'attachmentsInstanceGetCV':attachmentsInstanceGetCV,'attachmentsInstanceGetDPR':attachmentsInstanceGetDPR]" />
+	                </div>
+	                <div style="text-align:right">
+	                <input type="button" id="prmaxmin" onClick="changeCssClass('proposalDiv','prmaxmin')"  value="${message(code: 'default.Maximize.button')}"/>
+	                </div>
+	                 <div class="errors">
+			                <g:message code="default.ProposalReviewAfterProposalSubmission.label"/>
+			         </div>
+	                
+	                 </div>
+	               	
+	            </g:if>
+	            <g:else>  	
+	               	<g:hiddenField name="proposalId" value="${proposalId}" />	 
+	            	<g:hiddenField name="notificationId" value="${notificationId}" />	
+	            	<input type="hidden" id="personStatus" name="personStatus" value="${personStatus}"/>
+	            	<input type="hidden" id="reviewalStatus" name="reviewalStatus" value="${reviewalStatus}"/>
+	            	 <div id="proposalDiv" class="contentDiv">
+	                <g:render template="proposalApplicationData" model="['proposalApplicationExtInstance':proposalApplicationExtInstance,'proposalApplicationInstance':proposalApplicationInstance,'attachmentsInstanceGetCV':attachmentsInstanceGetCV,'attachmentsInstanceGetDPR':attachmentsInstanceGetDPR]" />
+	                </div>
+	                <div style="text-align:right">
+	                <input type="button" id="prmaxmin" onClick="changeCssClass('proposalDiv','prmaxmin')"  value="${message(code: 'default.Maximize.button')}"/>
+	                </div>
+	                </div>
+	                
+	                <g:if test="${evalItemInstanceList}">
+			                <div class="body">
+			                <h1><g:message code="default.proposalReview.label"/></h1>
+			                <div id="reviewDiv" class="contentDiv">
+			                <div class="dialog">
+			                    <table>
+			                            <g:each in="${evalItemInstanceList}" status="i" var="evalItemInstance">
+					                      <g:hiddenField name="id${i}" value="${evalAnswerInstanceList[i]?.id}" />
+					                        <tr>
+					                        	<td>${i+1}. ${evalItemInstance?.item}</td>
+					                        	<g:hiddenField name="evalItemId${i}" value="${evalItemInstance?.id}" />	
+					                        </tr>
+					                        <tr>
+						                        <td>
+					                           		<g:radioGroup id="scaleOptions${i}" name="scaleOptions${i}" labels="${evalScaleOptionsList[i].scaleOption}" values="${evalScaleOptionsList[i].id}" value="${evalAnswerInstanceList[i]?.evalScaleOptions?.id}">
+													 ${it.radio} ${it.label}</g:radioGroup>
+												</td>
+											</tr>
+											<tr>
+												<td><label for="remarks${i}"><g:message code="default.ReviewRemarks.label"/></td></label>
+											</tr>
+											<tr>
+				                                <td valign="top" class="value ${hasErrors(bean: evalAnswerInstanceList[i], field: 'remarks', 'errors')}">
+				                                    <g:textArea name="remarks${i}" value="${evalAnswerInstanceList[i]?.remarks}"  style='width: 500px; height: 75px;' />
+				                                </td>
+			                               </tr>
+				                    	</g:each>      
+			                    </table>
+			                </div>
+			                </div>
+			                
+			                <div style="text-align:right">
+			                <input type="button" id="remaxmin" onClick="changeCssClass('reviewDiv','remaxmin')"  value="${message(code: 'default.Maximize.button')}"/>
+			                </div>
+			             
+			                <div align="left">
+			                
+			                    <g:if test="${evalAnswerInstanceList}">
+			                    	<span class="button"><g:actionSubmit class="inputbutton" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" onClick="return validateEvalForm(${evalItemInstanceList.size()});" /></span>
+			                    </g:if> 
+			                    <g:else>
+			                    	<span class="button"><g:actionSubmit class="inputbutton" action="save" value="${message(code: 'default.Save.button')}" onClick="return validateEvalForm(${evalItemInstanceList.size()});"/></span>
+			                    </g:else>
+			                    <span class="button"><g:actionSubmit class="inputbutton" action="submitResult" value="${message(code: 'default.Submit.button')}" onClick="return validateEvalForm(${evalItemInstanceList.size()});"/></span>
+							</div>
+			            	
+			            	
+			       </g:if> 
+			                <g:else>
+			               <div class="body">
+			               <div class="errors">
+			                <g:message code="default.NoEvalItemForNotification.label"/>
+			                </div></div>
+			                </g:else>
+			                
+			  
+              </g:else>
             </g:form>
         </div>
         </div>

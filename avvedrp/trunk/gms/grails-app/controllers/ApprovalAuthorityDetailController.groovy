@@ -20,29 +20,22 @@ class ApprovalAuthorityDetailController {
 
     def create = {
     	GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","Add_Members.htm")//putting help pages in session
     	def userService = new UserService()
         def approvalAuthorityDetailInstance = new ApprovalAuthorityDetail()
         approvalAuthorityDetailInstance.properties = params
-
-        def approvalAuthorityList = ApprovalAuthority.findAll("from ApprovalAuthority A where A.activeYesNo = 'Y' and A.party="+gh.getValue("Party"))
+		def approvalAuthorityList = ApprovalAuthority.findAll("from ApprovalAuthority A where A.activeYesNo = 'Y' and A.party="+gh.getValue("Party"))
         def approvalAuthorityInstance =ApprovalAuthority.get(params.id)
         approvalAuthorityDetailInstance = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AA where AA.activeYesNo='Y' and AA.approvalAuthority="+params.id)
-        
-        println"approvalAuthorityDetailInstance++++"+approvalAuthorityDetailInstance
         //def userList = UserRole.findAll("from UserRole UR  where UR.role = "+(Authority.find("from Authority A where A.authority = 'ROLE_REVIEWER'"))?.id)
         def userList = userService.getAllUsersByPartyID(gh.getValue("PartyID"))
-        
-        
-        println"userList"+userList
-        
-    	 
+         
         println".........."+(Authority.find("from Authority A where A.authority = 'ROLE_REVIEWER'"))?.id
-        println"userList"+userList
         def userInstanceList =[]
     	for(int i=0;i<userList.size();i++)
     	{
     		def userInstance = Person.get(userList[i].user.id)
-    		println"userInstance**********8"+userInstance
     		userInstanceList.add(userInstance)
     	}
     	def approvalAuthorityDetailPersonList = []
@@ -62,12 +55,7 @@ class ApprovalAuthorityDetailController {
         
     	}
         
-    	println"approvalAuthorityDetailInstance++++"+approvalAuthorityDetailInstance
-        return [approvalAuthorityInstance: approvalAuthorityInstance,approvalAuthorityDetailInstance: approvalAuthorityDetailInstance,'userInstanceList':userInstanceList]
-       
-    
-    
-
+    	return [approvalAuthorityInstance: approvalAuthorityInstance,approvalAuthorityDetailInstance: approvalAuthorityDetailInstance,'userInstanceList':userInstanceList]
         def approvalAuthorityDetailInstanceList = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AD where AD.activeYesNo = 'Y'")
         return [approvalAuthorityDetailInstance: approvalAuthorityDetailInstance,'userInstanceList':userInstanceList,'approvalAuthorityList':approvalAuthorityList,'approvalAuthorityDetailInstanceList':approvalAuthorityDetailInstanceList]
 

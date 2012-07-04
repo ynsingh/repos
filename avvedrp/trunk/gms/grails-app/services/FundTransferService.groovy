@@ -23,4 +23,22 @@ class FundTransferService
 	def fundTransferAmnt = FundTransfer.executeQuery("select sum(FT.amount) from FundTransfer FT where FT.grantAllocation.projects.parent="+grantExpenseInstance.projects.id)
     return fundTransferAmnt
 	}
+	
+	public sumTransferInstanceByProject(def projectId)
+	{
+		
+		double totalTransferAmt = 0.0
+		def sumTransferAmt = FundTransfer.executeQuery("select sum(FU.amount) as SumAmt from FundTransfer FU where FU.grantAllocation.projects.parent.id ="+projectId)
+		if(sumTransferAmt[0]!=null)
+			totalTransferAmt = new Double(sumTransferAmt[0]).doubleValue()
+			
+		return totalTransferAmt
+		
+	}
+	
+	 public getFundTransferByGrantAllotId(def grantAllotId)
+	  {
+	  		def fundTransferInstance=FundTransfer.findAll("from FundTransfer FT where FT.grantAllocation.id = "+grantAllotId)
+	  		return fundTransferInstance
+	  }
 }

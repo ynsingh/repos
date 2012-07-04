@@ -8,6 +8,7 @@
     <body>
     	<div class="wrapper">
 	        <div class="body">
+       			 <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help"> 
 	            <h1><g:message code="default.addMenu.label"/></h1>
 	            <g:if test="${flash.message}">
 	            	<div class="message">${flash.message}</div>
@@ -25,7 +26,7 @@
 	                            <tr class="prop">
 	                                
 	                                <td valign="top" class="name">
-	                                    <label for="role"><g:message code="menuRoleMap.role.label" default="Role"/></label>
+	                                    <label for="role"><g:message code="default.Role.label" default="Role"/></label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: menuRoleMapInstance, field: 'role', 'errors')}">
 	                                    <g:select name="role.id" from="${authorityList}" optionKey="id" optionValue="authority" value="${menuRoleMapInstance?.role?.id}" 
@@ -53,7 +54,9 @@
 														<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 															<g:if test="${menuInstance.parentId == -1}">
 																<td width="7%">
-																	
+																	<g:if test="${menuInstance.menuPath!=null}">
+																		<g:checkBox name="menuSel" value="${menuInstance.id}" checked="false"/>
+																	</g:if>
 																</td>
 																<td width="50%">
 																<strong>

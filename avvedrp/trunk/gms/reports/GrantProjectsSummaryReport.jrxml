@@ -188,7 +188,7 @@ ORDER BY pa.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="127"
+						x="125"
 						y="0"
 						width="77"
 						height="19"
@@ -232,8 +232,8 @@ ORDER BY pa.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="216"
-						y="0"
+						x="215"
+						y="2"
 						width="74"
 						height="20"
 						forecolor="#000000"
@@ -255,7 +255,7 @@ ORDER BY pa.id]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="311"
-						y="0"
+						y="2"
 						width="82"
 						height="17"
 						forecolor="#000000"

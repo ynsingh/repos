@@ -15,6 +15,9 @@ class AuthorityController {
     }
     def userService = new UserService()
     def create = {
+	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","Create_Authority.htm")//putting help pages in session
         def authorityInstance = new Authority()
         authorityInstance.properties = params
         def authorityInstanceList = userService.getAllRolls()

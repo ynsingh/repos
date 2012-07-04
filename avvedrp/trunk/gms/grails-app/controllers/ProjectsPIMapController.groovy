@@ -12,7 +12,6 @@ class ProjectsPIMapController {
 
 	/* =========================== 18-11-2010==========================*/
    def delete = {
-			println"params----"+params
 			def projectsPIMapInstance = investigatorService.getProjectsPIMapById(params.id)
 			println"projectsPIMapInstance"+projectsPIMapInstance
 	        if(projectsPIMapInstance) 
@@ -119,9 +118,135 @@ class ProjectsPIMapController {
                 'projectsPIMapInstanceList': projectsPIMapInstanceList,
                 'projectsInstance':projectsInstance,'investigatorList':investigatorList]
     }
+    
+    def addCoPi = 
+    {
+        def investigatormap
+    	def copimap
+    	def investigatormapList=[]
+    	def investigatorList=[]
+    	def copiList =[]
+		def projectsPIMapInstance = new ProjectsPIMap()
+        projectsPIMapInstance.properties = params
+        println"params.id"+params
+        GrailsHttpSession gh=getSession()
+        /*Removing the old help session and putting the current session help file*/
+        gh.removeValue("Help")
+        gh.putValue("Help","Assign_Projects_to_PI.htm")
+        def dataSecurityService = new DataSecurityService()
+		def projectsService = new ProjectsService()
+		def projectsInstance = projectsService.getProjectById(new Integer(params.id))
+		def investigatorService = new InvestigatorService()
+        investigatorList=investigatorService.getInvestigatorsWithPartyAndPIMap(gh.getValue("PartyID"),params)
+        for(int i=0;i<investigatorList.size();i++)
+    	{
+    	 	investigatormap = Investigator.findAll("from Investigator I where I.id='"+investigatorList[i].id+"' and   I.id NOT IN (SELECT PM.investigator.id from ProjectsPIMap PM where PM.projects="+params.id+" and PM.role = 'CO-PI' and PM.activeYesNo='Y')")
+    	 	if(investigatormap)
+    	 	{
+	    	 	for(int j=0;j<investigatormap.size();j++)
+				{
+		    		copimap = investigatormap[j]
+		    		investigatormapList.add(copimap)
+				}
+    	 	}
+    	}
+    	copiList = ProjectsPIMap.findAll("from ProjectsPIMap PM where PM.projects="+params.id+" and PM.role = 'CO-PI' and PM.activeYesNo='Y'")
+    	def projectsPIMapInstanceList=dataSecurityService.getProjectsPIMapForLoginUser(projectsInstance.id);
+		return ['projectsPIMapInstance':projectsPIMapInstance,
+                'projectsPIMapInstanceList': projectsPIMapInstanceList,
+                'projectsInstance':projectsInstance,'investigatorList':investigatorList,'copiList':copiList,'investigatormapList':investigatormapList]
+    }
+    def listCoPi =   
+    {
+    	def investigatormap
+    	def copimap
+    	def investigatormapList=[]
+    	def investigatorList=[]
+        def copiList =[]
+    	GrailsHttpSession gh=getSession()
+    	def investigatorService = new InvestigatorService()
+        investigatorList=investigatorService.getInvestigatorsWithPartyAndPIMap(gh.getValue("PartyID"),params)
+        for(int i=0;i<investigatorList.size();i++)
+    	{
+    	 	investigatormap = Investigator.findAll("from Investigator I where I.id='"+investigatorList[i].id+"' and   I.id NOT IN (SELECT PM.investigator.id from ProjectsPIMap PM where PM.projects="+params.id+" and PM.role = 'CO-PI' and PM.activeYesNo='Y')")
+    	 	if(investigatormap)
+    	 	{
+	    	 	for(int j=0;j<investigatormap.size();j++)
+				{
+		    		copimap = investigatormap[j]
+		    		investigatormapList.add(copimap)
+				}
+    	 	}
+    	}
+    	copiList = ProjectsPIMap.findAll("from ProjectsPIMap PM where PM.projects="+params.id+" and PM.role = 'CO-PI' and PM.activeYesNo='Y'")
+    	render (template:"listCoPi" , model: ['investigatorList':investigatorList,'copiList':copiList,'investigatormapList':investigatormapList])
+		
+    }
+    
+     def add =
+    {
+    	def piProjectsInstance = projectsService.getProjectById(params.id.toInteger())
+  		//def PIprojectsInstance = projectsService.getProjectById(params.id)
+		def copiList = params.copiselt.toString()
+    	def copiRoleList = []
+    	def copiMapList=copiList.split(',')
+    	if (copiMapList.length ==1) 
+    	{
+    		copiRoleList.add(params.copiselt.toString())
+			params.copiselt =  copiRoleList
+		}
+		for(int i=0;i<params.copiselt.size();i++){
+			def investigatorInstance = investigatorService.getInvestigatorById(params.copiselt[i])
+		    def projectsPIMapInstance = new ProjectsPIMap()
+	        projectsPIMapInstance.investigator = investigatorInstance
+        	projectsPIMapInstance.projects = piProjectsInstance
+       	 	projectsPIMapInstance.role = "CO-PI"
+       	 	projectsPIMapInstance.activeYesNo = "Y" 
+       	 	def projectPIMapSaveInstance = investigatorService.saveCOPIMap(projectsPIMapInstance)
+            if(projectPIMapSaveInstance) 
+            {
+             	projectsService.saveProjectAccessPermissionForPiMap(piProjectsInstance.id,projectsPIMapInstance.investigator.id)
+	        }
+	        else
+	        {
+	            render(view:'create',model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:piProjectsInstance],params:[id:PIprojectsInstance.id])
+	        } 
+	        
+        }
+       redirect(action: "listCoPi",params:[id:params.id])
+    }
+    
+    def remove =
+    {
+     	def copiList = params.copidisselt.toString()
+    	def copiRoleList = []
+    	def copiMapList=copiList.split(',')
+    	if (copiMapList.length ==1) 
+    	{
+    		copiRoleList.add(params.copidisselt.toString())
+			params.copidisselt =  copiRoleList
+		}
+		for(int i=0;i<params.copidisselt.size();i++)
+		{
+			def projectsPIMapInstance = ProjectsPIMap.get(params.copidisselt[i])
+		    if(projectsPIMapInstance)
+		    {
+		    projectsPIMapInstance = investigatorService.deletePIMap(projectsPIMapInstance)
+		   	projectsService.checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapInstance?.projects?.id,projectsPIMapInstance?.investigator?.id)
+	        }
+	        else 
+	        {
+	            flash.message = "${message(code: 'default.notfond.label')}"
+	            redirect(action:create,params:[id:params.id])
+	        }
+	        
+        }
+       redirect(action: "listCoPi",params:[id:params.id])
+    }
+    
 
     def save = {
-		def projectsPIMapInstance = new ProjectsPIMap()
+    	def projectsPIMapInstance = new ProjectsPIMap()
         GrailsHttpSession gh=getSession() 
         def investigatorInstance = investigatorService.getInvestigatorById(params.investigator.id)
         //def investigatorInstance = Investigator.get(new Integer(params.investigator.id))
@@ -136,7 +261,7 @@ class ProjectsPIMapController {
         
         if(params.role == 'PI')
         {
-	        if(!pIMapInstance)
+            if(!pIMapInstance)
 	        {
 	        	def projectPIMapSaveInstance = investigatorService.savePIMap(projectsPIMapInstance)
 	            if(projectPIMapSaveInstance) 
@@ -160,7 +285,7 @@ class ProjectsPIMapController {
         {
         	if(!pIMapDuplicateInstance)
             {
-        	def projectPIMapSaveInstance = investigatorService.savePIMap(projectsPIMapInstance)
+            def projectPIMapSaveInstance = investigatorService.savePIMap(projectsPIMapInstance)
             if(projectPIMapSaveInstance) 
             {
             	projectsService.saveProjectAccessPermissionForPiMap(PIprojectsInstance.id,projectsPIMapInstance.investigator.id)

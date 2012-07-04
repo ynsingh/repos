@@ -47,11 +47,7 @@
 				</g:each>
 				<div><a class="menuitem" href="${createLinkTo(dir:'user/changePassword')}" target="right"><g:message code="default.ChangePassword.label"/></a></div>	
 				<div><a class="menuitem" href="${createLinkTo(dir:'logout')}" target="_parent"><g:message code="default.Logout.label"/></a></div>
-				<div><a class="menuitem" href="javascript: void(0)" 
-   				onclick="window.open('../SakshatAmritaMGMS/MGMSDoc-Home.html', 
-  				'windowname1', 
-  				'width=800, height=500,left=0,top=100,screenX=0,screenY=100,scrollbars = 1'); 
-   				return false;"><g:message code="default.Documentation.menu.label" /></a></div>
+				<div><a class="menuitem" href="../SakshatAmritaMGMS/MGMSDoc-Home.html" target=”_blank”><g:message code="default.Documentation.menu.label" /></a></div>
 			</div>
 		</body>
 </html>

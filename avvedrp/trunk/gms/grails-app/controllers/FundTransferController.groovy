@@ -21,7 +21,9 @@ class FundTransferController {
     }
 
     def create = {
-    	
+	GrailsHttpSession gh=getSession()
+    	gh.removeValue("Help")
+	gh.putValue("Help","Fund_Transfer.htm")//putting help pages in session
     	def grantAllocationInstance = GrantAllocation.get(params.id)
         def fundTransferInstance = new FundTransfer()
         def fundTransferService=new FundTransferService();

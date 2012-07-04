@@ -7,6 +7,7 @@
     <body>
     	<div class="wrapper"> 
 	    	<div class="body">
+	    	 <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
 	    		<h1><g:message code="default.ExpenseApprovalRequestList.label"/></h1>
      			<g:if test="${flash.message}">
             		<div class="message">${flash.message}</div>
@@ -23,6 +24,7 @@
 			                   	        <th><g:message code="default.Project.label"/></th>
 			                   	        <th><g:message code="default.ApprovalAuthority.label"/></th>
 			                   	        <th><g:message code="default.ExpenseDescription.label"/></th>
+			                   	        <th><g:message code="Review Details"/></th>
 			                   	        <th><g:message code="default.Approve/Reject.label"/></th>
 			                   	        
 			                        </tr>
@@ -36,6 +38,12 @@
 				                        		<td>${proposalApprovalAuthorityMapInstance.approvalAuthority.name}</td>
 					                        	
 					                        	<td>${expenseRequestEntryInstanceList[i].expenseDescription}</td>
+					                        	<td>
+					                        	<g:link params="[reviewerSide:'reviewerSide']" action="approvalStatus" id="${proposalApprovalAuthorityMapInstance.id}">
+					                     			<g:message code="Review Details"/> 
+					                     		</g:link>
+					                        	</td>
+					                        	
 					                    		<td> 
 					                        	<g:link action="approveReject" id="${proposalApprovalAuthorityMapInstance.id}">
 					                     			<g:message code="default.Approve/Reject.label"/> 

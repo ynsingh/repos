@@ -21,6 +21,7 @@
 </div>
 	<div class="body">
 	  <div class="wrapper">
+	<img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/create_newUser.htm','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')"  title="Help" alt="Help" >
 		<h1><g:message code="default.CreateSiteAdmin.head"/></h1>
 		<g:if test="${flash.message}">
 		<div class="message">${flash.message}</div>
@@ -30,7 +31,7 @@
 			<g:renderErrors bean="${person}" as="list" />
 		</div>
 		</g:hasErrors>
-		<g:form action="saveNewUser">
+		<g:form  id="signupForm" method="get" action="saveNewUser">
 		
 			<div class="dialog">
 			<table><tr><td></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -54,7 +55,7 @@
 						<label for="passwd" style="color:red;font-weight:bold"> * </label>
 						</td>
 						<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
-							<input type="password" id="password" name="password" value="${person?.user?.passwd?.encodeAsHTML()}"/>
+							<input type="password" id="password" name="password" onchange="validatePasswordRule()"/>
 						</td>
 					</tr>
 					
@@ -64,7 +65,7 @@
 						<label for="confirmPasswd" style="color:red;font-weight:bold"> * </label>
 						</td>
 						<td valign="top" class="value">
-							<input type="password" id="confirmPasswd" name="confirmPasswd" value=""/>
+							<input type="password" id="confirmPasswd" name="confirmPasswd" value="" onchange="validateConfirmPasswordRule()" />
 						</td>
 					</tr>
 					<tr class="prop">
@@ -110,7 +111,18 @@
 						<td valign="top" class="value ${hasErrors(bean:person,field:'phNumber','errors')}">
 							<input type="text" id="phNumber" name="phNumber" value="${person?.user?.phNumber?.encodeAsHTML()}"/>
 						</td>
-					</tr>    
+					</tr>  
+					
+					<tr class="prop">
+	                        <td valign="top" class="name">
+	                            <label for="party"><g:message code="default.InstitutionName.label"/>:</label>
+	                            <label for="party" style="color:red;font-weight:bold"> * </label>
+	                        </td>
+	                        <td valign="top" class="value ${hasErrors(bean:person,field:'party','errors')}">
+	                            <input type="text" id="nameOfTheInstitution" name="party.nameOfTheInstitution" value="${person?.party?.nameOfTheInstitution}" >
+	                        </td>
+	                 </tr> 
+					  
 					  
 	                <tr class="prop">
 	                        <td valign="top" class="name">

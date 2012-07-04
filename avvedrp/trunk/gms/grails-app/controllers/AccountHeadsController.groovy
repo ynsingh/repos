@@ -7,6 +7,8 @@ class AccountHeadsController
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
+    def accountHeadsService
+    def userService
     /**
 	 * Method to Perform the create action
 	 */
@@ -81,6 +83,8 @@ class AccountHeadsController
     				}
         		}
         	}
+        	
+  
     
     /**
 	 * Method for performing the edit action
@@ -88,10 +92,18 @@ class AccountHeadsController
  
     def edit = 
     {
+		GrailsHttpSession gh=getSession()
+		def flag = 0
 		def accountHeadsService = new AccountHeadsService()
         def accountHeadsInstance
-        
-        /*Get Account Head details based on id*/
+        def userID = gh.getValue("UserId")
+        def userRoleInstance = userService.getUserRoleByUserId(userID)
+           if(userRoleInstance[0].authority == 'ROLE_SUPERADMIN')
+              flag++
+           else
+              flag = 0
+
+       /*Get Account Head details based on id*/
         if(params.id)
         {
         	accountHeadsInstance = accountHeadsService.getAccountHeadsById(new Integer( params.id ))
@@ -104,7 +116,7 @@ class AccountHeadsController
         }
         else 
         {
-            return [ accountHeadsInstance : accountHeadsInstance ]
+            return [ accountHeadsInstance : accountHeadsInstance , flag:flag ]
         }
     }
     
@@ -228,5 +240,28 @@ class AccountHeadsController
         return ['accountHeadsInstance':accountHeadsInstance,'accountHeadsInstanceList':accountHeadsInstanceList]
     
     }
+ 
+  /**
+	 * Method to perform the subaccount creation by site admins
+	 */ 
+  
+   def subAccountHeadsCreate =
+   {
+    
+       String subQuery ="";
+        if(params.sort != null && !params.sort.equals(""))
+        	subQuery=" order by AH."+params.sort
+        if(params.order != null && !params.order.equals(""))
+        	subQuery =subQuery+" "+params.order
+        	
+        // Getting all Active Account Heads
+       	def accountHeadsInstanceList = accountHeadsService.getActiveAccountHeads(subQuery)
+    
+      
+      return ['accountHeadsInstanceList':accountHeadsInstanceList]
    
+   }
+   
+  
+    
 }

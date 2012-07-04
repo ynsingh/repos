@@ -40,7 +40,11 @@
                              	${currencyFormat.ConvertToIndainRS(grantAllocationInstance.balanceAmount)}
                              </strong>
                         </td>
-                     </tr> 
+                  
+<td>
+		<img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
+</td>
+    </tr>
                 </table>
             </div>
             <div class="body"> 
@@ -124,7 +128,7 @@
 				                            	<td valign="top" 
 					                            	class="value ${hasErrors(bean:projectInstance,field:'projectStartDate','errors')}">
 					                            	<calendar:datePicker name="projectStartDate" 
-					                            		value="${projectInstance?.projectStartDate}" defaultValue="${new Date()}" 
+					                            		value="${projectInstance?.projectStartDate}" defaultValue="${projectInstance?.parent?.projectStartDate}" 
 					                            		dateFormat= "%d/%m/%Y"/>
 					                            </td>
 	                            
@@ -137,7 +141,7 @@
 					                            <td colspan="3"  valign="top" 
 					                            	class="value ${hasErrors(bean:projectInstance,field:'projectEndDate','errors')}">
 					                            	<calendar:datePicker name="projectEndDate" value="${projectInstance?.projectEndDate}" 
-					                            		defaultValue="${new Date()}" dateFormat= "%d/%m/%Y"/>
+					                            		defaultValue="${projectInstance?.parent?.projectEndDate}" dateFormat= "%d/%m/%Y"/>
 					                            </td>
 			                             	</tr> 
 		                             		<tr>
@@ -178,20 +182,22 @@
 				                                    <g:select id="recipient" optionKey="id" optionValue="code" 
 					                                    from="${Party.findAll('from Party P where P.activeYesNo=\'Y\' and P.partyType is null ')}"  
 					                                    name="party.id" value="${grantAllocationInstance?.party?.id}" 
-					                                    onchange="${remoteFunction(controller:'grantAllocation',action:'updatePi',update:'listPi',  params:'\'recipient=\' + this.value' )}"
+					                                    onchange="${remoteFunction(controller:'grantAllocation',action:'updatePi',update:'listPi',  params:'\'recipient=\' + this.value' )};${remoteFunction(controller:'grantAllocation',action:'updatePi',update:'listcopi',  params:'\'recipient=\' + this.value' )}"
 					                                    noSelection="['null':'-Select-']">
 				                                    </g:select>
 				                                </td>
-					                             
+					                           
 					                            <td valign="top" class="name">
 					                                <label for="investigator"><g:message code="default.Investigator.label"/>:</label>
 					                                <label for="investigator" style="color:red;font-weight:bold"> * </label>
 					                            </td>
-					                            <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'investigator','errors')}">
+					                            <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'investigator','errors')}">
 					                            	<div id="listPi">
-					                                	<g:select name="investigator.id" value="" disabled="true"noSelection="['null':'-Select-']"></g:select>
-					                                </div>
+					                            		<g:select name="investigator.id" value="" disabled="true"  noSelection="['null':'-Select-']"></g:select>
+					                                 </div>
 					                            </td>
+					                            
+					                            
 				                     		</tr>  
 								                             
 		                        			<tr >
@@ -211,6 +217,17 @@
 				                                	<input type="hidden" id="amount" name="amount" 
 				                                		value="${grantAllocationInstance.totAllAmount}"/>
 				                                </td>
+				                                
+				                                <td valign="top" class="name">
+					                                <label for="investigators"><g:message code="default.COPI.label"/>:</label>
+					                                <label for="investigators" style="color:red;font-weight:bold"> * </label>
+					                            </td>
+					                            <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'copi','errors')}">
+					                            	<div id="listcopi">
+					                                	<g:select name="copi.id" value="" disabled="true"  noSelection="['null':'-Select-']"></g:select>
+					                                 </div>
+					                            </td>
+				                                
                         					</tr> 
 				                            <tr>
 				                            	<td valign="top" class="name">
@@ -281,7 +298,7 @@
                         <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectStartDate}"/></td>
                         <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectEndDate}"/></td>
                         
-                        <td>${fieldValue(bean:grantAllocationInstance, field:'party.code')}</td>
+                        <td><p title="Name of the Institution - ${grantAllocationInstance.party.nameOfTheInstitution}">${fieldValue(bean:grantAllocationInstance, field:'party.code')}</td>
                                               
                         <td>${currencyFormat.ConvertToIndainRS(grantAllocationInstance.amountAllocated)}</td>
                         

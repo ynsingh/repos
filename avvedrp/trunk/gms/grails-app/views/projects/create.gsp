@@ -4,12 +4,13 @@
         <meta name="layout" content="main" />
         
         <title><g:message code="default.projects.create.head"/></title>   
-        <script src="${createLinkTo(dir:'js',file:'vk_popup.js?vk_layout=AM Armenian Eastern')}"> </script>           
+        <script src="${createLinkTo(dir:'js',file:'vk_popup.js?vk_layout=AM Armenian Eastern')}"> </script>  
+        
     </head>
     <body>
     	<div class="wrapper">   
         <div class="body">
-        
+        <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help"> 
             <h1><g:message code="default.projects.create.head"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
@@ -54,6 +55,18 @@
                                     <g:select optionKey="id" optionValue="type" id="projectType" from="${ProjectType.findAll('from ProjectType P where P.activeYesNo=\'Y\' ')}"  name="projectType.id" value="${projectsInstance?.projectType?.id}" noSelection="['null':'-Select-']" ></g:select>
                                 </td>
                             </tr> 
+                          <tr class="prop">   
+	                            <td valign="top" class="name">
+	                                <label for="amountAllocated">
+	                                	<g:message code="default.AmountAllocated(Rs).label"/>:
+	                            	</label>
+	                            	<label for="amountAllocated" style="color:red;font-weight:bold"> * </label>
+	                            </td>
+	                            <td valign="top" 
+	                            	class="value ${hasErrors(bean:grantAllocationInstance,field:'amountAllocated','errors')}">
+	                                <input type="text" id="amountAllocated" name="amountAllocated" value="${amount}" style="text-align: right"/>
+	                            </td>
+                           </tr>   
                            <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="investigator"><g:message code="default.Investigator.label"/>:</label>

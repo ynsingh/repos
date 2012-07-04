@@ -8,6 +8,8 @@
    <g:subMenuList/>
    <div class="wrapper"> 
     	<div class="body">
+	      <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
+
             <h1><g:message code="default.projects.projectDetails.head"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
@@ -151,6 +153,12 @@
 				     					<calendar:datePicker name="projectEndDate" value="${projectsInstance?.projectEndDate}" defaultValue="${new Date()}" dateFormat= "%d/%m/%Y"/>
 				     				</g:else>
                                 </td>
+                            </tr>
+                            <tr class="prop"><td>&nbsp;</td>
+                            <td valign="top" class="name">
+                                    <g:if test="${projectsInstance.parent}">
+                            			<g:link  controller='budgetDetails' action="assignedBudget" params="[moduleType:'Projects']" id="${session.ProjectID}"><g:message code="default.BudgetDetails.label"/></g:link>
+                            		</g:if>
                             </tr>
                             
                             

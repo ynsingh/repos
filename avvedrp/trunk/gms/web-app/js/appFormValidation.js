@@ -694,6 +694,285 @@ if((parent.right.frames['editframe'].document.forms[0].scstobc.value =="sc") ||
 		    }
   return true;
   }
+
+
+
+/*----Form Validation in one stretch-----*/
+
+
+function validateForm(frm)
+{ 
+var ok=1;
+var formatok=1;
+for(var j=0;j<frm.length;j++){ 
+	
+	 var idname=frm.elements[j].id+"value";
+  if(frm.elements[j].value==""  || frm.elements[j].value=="null" ){                           
+         frm.elements[j].style.backgroundColor = "#fca9ae";
+         if(document.getElementById(idname)!=null)
+       	  {document.getElementById(idname).style.display="block"; ok=0;}
+                   
+        }else{
+       	 frm.elements[j].style.backgroundColor = "#fff";
+       	 if(document.getElementById(idname)!=null)
+       		 {
+       		 
+       		 document.getElementById(idname).style.display="none"; 
+       		 }
+        }
+}
+if(ok)
+		{		
+				
+				if(isformatok(frm))
+					return true;
+				else
+					return false;
+		}
+else {
+		
+		return false;
+	}
+}
+
+
+//to check format of the  form contents 
+function  isformatok(frm){ 
+	
+	var submitready=1;
+	var formatokk=1;
+	
+	for(var j=0;j<frm.length;j++){ 
+			
+			var idname=frm.elements[j].id+"format";
+		     var contenttocheckformat=frm.elements[j].value;
+		     switch(idname)
+		     {
+			     case  "FirstNameformat":case"LastNameformat" :
+			     	{
+			    	 formatokk=isAlphanumeric(contenttocheckformat);
+			     	break;
+			     	}
+			     case 'Emailformat' :
+			    	 {formatokk=isEmail(contenttocheckformat);	  	 
+			    	 break;}
+			    	 
+			  	 case 'ZipCodeformat':
+			    	 { 
+			    	 formatokk=isNumber(contenttocheckformat,6);
+			    	 break;
+			    	 }
+			    	 
+			        case 'STDformat':
+				    	 { 
+				    	 formatokk=isNumber(contenttocheckformat,4);
+				    	 break;
+				    	 }
+			    	 
+			    	case 'Phoneformat':
+				    	 { 
+				    	 formatokk=isNumber(contenttocheckformat,7);
+				    	 break;
+				    	 }
+			    	 
+			    	 case 'FaxSTDformat':
+				    	 { 
+				    	 formatokk=isNumber(contenttocheckformat,4);
+				    	 break;
+				    	 }
+				    	 
+			    	 case 'FaxPhoneformat':
+				    	 { 
+				    	 formatokk=isNumber(contenttocheckformat,7);
+				    	 break;
+				    	 }
+			    	 
+			    	 case 'Mobileformat':
+				    	 { 
+				    	 formatokk=isNumber(contenttocheckformat,12);
+				    	 break;
+				    	 }
+			    	 
+  
+		     } 
+		     if(!formatokk){                     
+	         		
+	         		if(document.getElementById(idname)!=null)
+	         			{
+	         			frm.elements[j].style.backgroundColor = "#fca9ae";
+	         			document.getElementById(idname).style.display="block";submitready=0;}
+	                   
+	        	}else{
+	        			
+	        				if(document.getElementById(idname)!=null)
+	        					{
+	        						frm.elements[j].style.backgroundColor = "#fff";
+	        						document.getElementById(idname).style.display="none"; 
+	        					}
+	        		}
+	}	  
+	if(submitready){  return 1;}
+	else  {return 0;}
+	
+	
+}
+
+
+function validateFormOnTabOut(frmelementid)
+{ 
+var ok=1;
+var formatok=1;
+var idname=frmelementid+"value";
+
+  if(document.getElementById(frmelementid).value=="" || document.getElementById(frmelementid).value=="null"){  
+ 	  document.getElementById(frmelementid).style.backgroundColor = "#fca9ae";
+         if(document.getElementById(idname)!=null)
+       	  {document.getElementById(idname).style.display="block"; ok=0;}
+                   
+        }else{
+        	//function to check format
+        	  if(isFormatOkTabOut(frmelementid))
+        	{
+        		  document.getElementById(frmelementid).style.backgroundColor = "#fff";
+        		  if(document.getElementById(idname)!=null)
+        		  	{    		 
+        			  	document.getElementById(idname).style.display="none"; 
+        		  	}
+        	}
+        }
+ 
+
+
+}
+
+
+function isAlphanumeric(content){
+	var myRegxp =/^[-\sa-zA-Z0-9]+$/;
+		/*/^([a-zA-Z0-9_-\\s]+)$/; alert(myRegxp);*/
+	if(myRegxp.test(content)==false)
+	{
+	
+	return 0;
+	}
+	else{
+		
+		return 1;
+	}	
+
+}
+
+function isEmail(content)
+{
+	var myRegxp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+	if(myRegxp.test(content)==false)
+	{
+	
+	return 0;
+	}
+	else{
+		
+		return 1;
+	}	
+	
+}
+
+
+function isNumber(content,digits)
+{ 
+	var temp='^[0-9]{'+digits+'}$'; 
+	var myRegxp =new RegExp(temp);         
+	if(myRegxp.test(content)==false)
+	{
+	
+	return 0;
+	}
+	else{
+		
+		return 1;
+	}	
+	
+}
+
+function isFormatOkTabOut(frmelementid)
+{
+	var submitready=1;
+	var formatokk=1;
+	
+	var idname=frmelementid+"format";
+    var contenttocheckformat=document.getElementById(frmelementid).value;
+    switch(idname)
+    {
+    case  "FirstNameformat":case"LastNameformat" :
+			     	{
+			    	 formatokk=isAlphanumeric(contenttocheckformat);
+			     	break;
+			     	}
+			     case 'Emailformat' :
+			    	 {formatokk=isEmail(contenttocheckformat);	  	 
+			    	 break;}
+			    	 
+			  	 case 'ZipCodeformat':
+			    	 {
+			    	 formatokk=isNumber(contenttocheckformat,6);
+			    	 break;
+			    	 }
+			    	 
+			        case 'STDformat':
+				    	 { 
+				    	 formatokk=isNumber(contenttocheckformat,4);
+				    	 break;
+				    	 }
+			    	 
+			    	case 'Phoneformat':
+				    	 { 
+				    	 formatokk=isNumber(contenttocheckformat,7);
+				    	 break;
+				    	 }
+			    	 
+			    	 case 'FaxSTDformat':
+				    	 { 
+				    	 formatokk=isNumber(contenttocheckformat,4);
+				    	 break;
+				    	 }
+				    	 
+			    	 case 'FaxPhoneformat':
+				    	 { 
+				    	 formatokk=isNumber(contenttocheckformat,7);
+				    	 break;
+				    	 }
+			    	 
+			    	 case 'Mobileformat':
+				    	 { 
+				    	 formatokk=isNumber(contenttocheckformat,12);
+				    	 break;
+				    	 }
+			    	  
+
+    } 
+    if(!formatokk){                     
+    		
+    					if(document.getElementById(idname)!=null)
+    						{
+    							document.getElementById(frmelementid).style.backgroundColor = "#fca9ae";
+    							document.getElementById(idname).style.display="block";submitready=0;
+    						}
+    						
+    						
+              
+   	}else{
+   				if(document.getElementById(idname)!=null)
+   					{
+   						document.getElementById(frmelementid).style.backgroundColor = "#fff";
+   						document.getElementById(idname).style.display="none"; 
+   					}
+   		}
+if(submitready){ 
+	return 1;}else {
+	return 0;}
+}
+
+
+
 	
 	
 

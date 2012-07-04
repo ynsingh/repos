@@ -1,0 +1,27 @@
+1. Copy gms.diff file from Patch folder to gms folder.
+
+2. Then execute the script.sql from the Patch folder.
+
+3. Then apply the patch file(gms.diff).
+
+4. After applying the patch copy the contents from Patch/jar-files folder to gms/lib folder ,then remove these jars 
+
+   org.springframework.security.core-3.0.2.RELEASE.jar,org.springframework.security.web-3.0.2.RELEASE.jar from gms/lib folder
+
+5. Copy rainbow.gif from Patch/images to gms/web-app/images.
+
+6. Copy contxthelp.gif from Patch/images to  gms/web-app/images/themesky.
+
+7. Copy the contents from Patch/jasper-files to gms/web-app/reports.
+
+8. Copy the zip file, grails-spring-security-core-1.2.7.2.zip from Patch folder to  gms/plugins. Then run the below command for 
+   
+   the spring-security-core plugin 
+
+    ([..gms]$ grails install-plugin plugins/grails-spring-security-core-1.2.7.2.zip ) during installation process it will ask to upgrade 
+
+   the existing core plugin, press 'y' to upgrade the plugin.
+
+10. Then execute grails clean
+
+11. Finally execute grails war

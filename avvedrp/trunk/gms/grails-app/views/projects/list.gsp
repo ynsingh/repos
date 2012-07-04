@@ -1,19 +1,27 @@
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta name="layout" content="main" />
-        <title><g:message code="default.projects.list.head"/></title>
-		<g:javascript library="jquery"/>
-		
+	   	<title><g:message code="default.projects.list.head"/></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	    <meta name="layout" content="main" />
+	    <g:javascript library="jquery"/>
+	  	<g:javascript library="prototype" />
+	    <g:javascript library="applicationValidation" />
+	    <script src="${createLinkTo(dir:'images',file:'jquery-1.3.2.js')}"></script>
+	    <script src="${createLinkTo(dir:'images',file:'jquery.colorbox.js')}"></script>
+	   	<script type="text/javascript">
+			  $.noConflict();
+			  jQuery(document).ready(function($){${remoteFunction(action:'getalert', controller:'projects',onSuccess:'returnResult(e)')};});
+	    </script>
+	    <link rel="stylesheet" href="${createLinkTo(dir:'css',file:'main.css')}" />
     </head>
     <body>
+   	
     <div id="paginate">
     <div class="wrapper"> 
        
         <div class="body">
-        
-            
-            <h1><g:message code="default.projects.list.head"/></h1>        
+        <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
+           <h1><g:message code="default.projects.list.head"/></h1>        
             <g:if test="${flash.error}">
             <div class="errors">${flash.error}</div>
             </g:if>
@@ -52,9 +60,28 @@
 	                       
 	                        
 	                           <td>${j}</td>
-	                                
+	                            
 	                                 <%-- <td>${fieldValue(bean:grantAllocationInstance, field:'projects.parent.code')}</td>--%>
-	                        <td><g:if test="${fieldValue(bean:grantAllocationInstance, field:'projects.activeYesNo') == 'Y'}">
+	                      <%def projectTrackingInstanceCheck=Projects.findAll("from Projects P where P.parent.id= '"+grantAllocationInstance.projects.id+"'")%>
+	             		<g:if test="${projectTrackingInstanceCheck}">
+	             	      <td>
+	                        <g:if test="${fieldValue(bean:grantAllocationInstance, field:'projects.activeYesNo') == 'Y'}">
+	                         		<g:if test="${(grantAllocationInstance.projects.status == 'Closed')}">   
+	                       				<g:link action="projectDash" controller='grantAllocation' id="${grantAllocationInstance.projects.id}" params="[projectStatus:'Closed']">
+		                         			<p title="Having Sub-Projects with names${projectTrackingInstanceCheck.name}">${grantAllocationInstance.projects.name} - ${fieldValue(bean:grantAllocationInstance, field:'projects.code')}</p>
+		                         		</g:link>
+		                       		</g:if>
+		                       		<g:else>
+		                         		<g:link action="projectDash" controller='grantAllocation' id="${grantAllocationInstance.projects.id}">
+		                         			<p title="Having Sub-Projects with names${projectTrackingInstanceCheck.name}">${grantAllocationInstance.projects.name} - ${fieldValue(bean:grantAllocationInstance, field:'projects.code')}</pr>
+		                         		</g:link>
+		                         	</g:else>	
+	                         	 </g:if>
+	                        </td>
+	                 	 </g:if>
+	                   <g:else>
+	                  		<td>
+	                        <g:if test="${fieldValue(bean:grantAllocationInstance, field:'projects.activeYesNo') == 'Y'}">
 	                         		<g:if test="${(grantAllocationInstance.projects.status == 'Closed')}">   
 	                       				<g:link action="projectDash" controller='grantAllocation' id="${grantAllocationInstance.projects.id}" params="[projectStatus:'Closed']">
 		                         			${grantAllocationInstance.projects.name} - ${fieldValue(bean:grantAllocationInstance, field:'projects.code')}
@@ -66,13 +93,16 @@
 		                         		</g:link>
 		                         	</g:else>	
 	                         	 </g:if>
-	                        </td>
-	                           
+	                        </td>         	
+	                           	
+	                  </g:else>         	
+	                           	
+	                           	
 	                           	<g:if test="${grantAllocationInstance.granter}">
-	                           		<td>${fieldValue(bean:grantAllocationInstance, field:'granter.code')}</td>
+	                           		<td><p title="Name of the Institution - ${grantAllocationInstance.granter.nameOfTheInstitution}">${fieldValue(bean:grantAllocationInstance, field:'granter.code')}</td>
 	                           	</g:if>
 	                           	<g:else>
-	                          		<td>${fieldValue(bean:grantAllocationInstance, field:'party.code')}</td>
+	                          		<td><p title="Name of the Institution - ${grantAllocationInstance.party.nameOfTheInstitution}">${fieldValue(bean:grantAllocationInstance, field:'party.code')}</td>
 	                           </g:else>
 	                           <td><g:if test="${pIMapList[i]!=null}">
 	                         
@@ -106,11 +136,10 @@
             </div>
             </g:if>
             <g:else>
-            <br><g:message code="default.NoRecordsAvailable.label"/></br>
+            <br><g:message code="default.NoRecordsAvailable.label"/>
             </g:else>
           </div>  
         </div>
         
     </body>
 </html>
-

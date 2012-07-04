@@ -9,6 +9,7 @@
     <body>
      <div class="wrapper">
         <div class="body">
+        <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
            <h1><g:message code="default.PreProposalReviewerStatusList.label"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
@@ -28,14 +29,13 @@
                      <tbody>
   	                      <% int j=0 %>
   	                      <% int k=0 %>
-  	                      <% int l=0 %>
-	                   <g:each in="${ProposalApprovalValueInstance}" status="i" var="proposalApprovalInstance">
+  	                     <g:each in="${ProposalApprovalValueInstance}" status="i" var="proposalApprovalInstance">
 	                      <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 	                      <td>${i+1}</td>
 	                      <td>${proposalApplicationInstanceList[j]?.projectTitle}</td>
 	                      <%  j++ %>
-	                      <td>${proposalInstanceList[l].person.username}</td>
-	                      <%  l++ %>
+	                      <% def proposalInstance = Proposal.find("from Proposal P where P.id="+ProposalApprovalValueInstance[i].proposalApproval.proposalApprovalAuthorityMap.proposalId) %>
+	                      <td>${proposalInstance?.person.username}</td>
 	                      <td>${proposalApplicationInstanceList[k]?.proposalCategory.name}</td>
 	                      <%  k++ %>
 	                      <td>${fieldValue(bean: proposalApprovalInstance, field: "proposalStatus")}</td>

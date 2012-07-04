@@ -19,6 +19,9 @@
 		            		${currencyFormat.ConvertToIndainRS(projectInstance?.totAllAmount)}
 	            		</strong>
 	        		</td>
+			    <td>
+			     <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help"> 
+			    </td>
 		          </tr> 
 	          </table> 
       	 	</div> 

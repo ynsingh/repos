@@ -720,7 +720,7 @@ GROUP BY fa.fund_advance_code ORDER BY fa.id;]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="43"  isSplitAllowed="true" >
+			<band height="37"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"

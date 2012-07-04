@@ -29,6 +29,76 @@
 	</div> 
 	<g:subMenuLogin/>
           <div class="body">
+<img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/uploadProposal.htm','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100')"  >
+          <h1><g:message code="default.GrantOpportunitiesSearch.label"/></h1>
+
+            <g:if test="${flash.message}">
+              <div class="message">${flash.message}</div>
+            </g:if>
+            <g:if test="${flash.error}">
+	        	<div class="errors">${flash.error}</div>
+            </g:if>
+          <g:form action="searchNotification" method="post" >
+                <fieldset>
+                
+                <p>&nbsp;</p>
+                    <table border=0 style="padding-left: 150px;">
+                        <tbody>
+                        
+                        <tr class="prop">
+                        	<td valign="top">
+                                   &nbsp;
+                                </td>
+                                <td valign="top" class="name">
+                                    <label for="name"><g:message code="default.NotificationTitle.label"/>:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'name','errors')}">
+                                    <input type="text" size="45" id="title" name="title" value="${fieldValue(bean:notificationQuery,field:'title')}"/>
+                                </td>
+                                </tr>
+                       <tr class="prop"> 
+                       <td valign="top">
+                                   &nbsp;
+                                </td>
+                                <td valign="top" class="name">
+		                        <label for="projectStartDate"><g:message code="default.NotificationDate.label"/> <g:message code="default.from.label"/>:</label>
+		                    </td>
+		                    <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectStartDate','errors')}">
+		                    	 <calendar:datePicker id="minDate1" name="minDate1"  value="${notificationQuery?.minDate1}" dateFormat= "%d/%m/%Y"/>
+		                    	<label for="projectStartDate"><g:message code="default.to.label"/>:</label>
+		                    	 <calendar:datePicker id="maxDate1" name="maxDate1" value="${notificationQuery?.maxDate1}" dateFormat= "%d/%m/%Y"/>
+		                    </td> 
+                        </tr>
+                       <tr class="prop">    
+		             <td valign="top">
+		                       &nbsp;
+		                    </td>
+		             		<td valign="top" class="name">
+		                        <label for="projectStartDate"><g:message code="default.LastProposalSubmissionDate.label"/> <g:message code="default.from.label"/>:</label>
+		                    </td>
+		                    <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectStartDate','errors')}">
+		                    	 <calendar:datePicker id="minDate" name="minDate" value="${notificationQuery?.minDate}" dateFormat= "%d/%m/%Y"/>
+		                    	<label for="projectStartDate"><g:message code="default.to.label"/>:</label>
+		                    	 <calendar:datePicker id="maxDate" name="maxDate" value="${notificationQuery?.maxDate}" dateFormat= "%d/%m/%Y"/>
+		                    </td> 
+		                   <td valign="top">
+		                       &nbsp;
+		                    </td>
+		             		
+		    
+		                    
+		                </tr>
+                        	
+                        	                                                        
+                        </tbody>
+                    </table>
+                    		
+                    		<p>&nbsp;</p>
+			      			<p ALIGN=CENTER>&nbsp;<input class="inputbutton" type="submit" value="${message(code: 'default.Search.button')}" />&nbsp;&nbsp;<g:actionSubmit class="inputbutton" value="${message(code: 'default.button.Clear.label', default: 'Clear')}" action="notificationList" /></span>
+			      			<p ALIGN=RIGHT>&nbsp;&nbsp;</p>
+               
+                </fieldset>
+                </g:form>
             <h1><g:message code="default.ProposalsAreInvited.head"/></h1>
             <g:if test="${flash.message}">
               <div class="message">${flash.message}</div>
@@ -47,24 +117,33 @@
                             <g:sortableColumn property="notificationDate" title="${message(code: 'default.NotificationDate.label')}" />
                             <g:sortableColumn property="proposalSubmissionLastDate" title="${message(code: 'default.LastProposalSubmissionDate.label')}" />
                    	        <th><g:message code="default.Grantor.label"/></th>
-                   	        <th><g:message code="default.NotificationDetails.label"/></th>
+                   	        <!--<th><g:message code="default.NotificationDetails.label"/></th>-->
                    	        <th><g:message code="default.Apply.label"/></th>
                    	    </tr>
                     </thead>
                     <tbody>
-                    
+                   
+                     
                       <g:each in="${notificationInstanceList}" status="i" var="notificationInstanceList">
                         
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                             <td>${i+1}</td>
-                            <td>${fieldValue(bean:notificationInstanceList, field:'notificationTitle')}</td>
+                            
+                            <td width="40%">
+                            <modalbox:createLink controller="proposal" action="notificationDetails" id="${notificationInstanceList.id}" title="" width="900">${fieldValue(bean:notificationInstanceList, field:'notificationTitle')}</modalbox:createLink>
+             				<g:if test="${newcheck[i] == 1}">
+                            	<img  align="bottom" src="${createLinkTo(dir:'images/rainbow.gif')}" />
+                            </g:if>	
+                          
+                            
+                            </td>
                             <td><g:formatDate format="dd-MM-yyyy" date="${notificationInstanceList.notificationDate}"/></td>
                            	<td><g:formatDate format="dd-MM-yyyy" date="${notificationInstanceList.proposalSubmissionLastDate}"/></td>
                            	<g:hiddenField name="proposalSubmissionLastDate${i}" value="${notificationInstanceList.proposalSubmissionLastDate}" />
                            	<td>${fieldValue(bean:notificationInstanceList, field:'party.nameOfTheInstitution')}</td>
-                           	<td>
+                           	<!--<td>
                            	<modalbox:createLink controller="proposal" action="notificationDetails" id="${notificationInstanceList.id}" title="${message(code: 'default.NotificationDetails.label')}" width="900"><g:message code="${message(code: 'default.View.label')}"/></modalbox:createLink>
-                           	</td>
+                           	</td>-->
                            	<td>
 							    <g:form controller="proposal" action="save" id="${notificationInstanceList.id}">
 							    <g:link action="uploadProposalApplication" controller="proposal" id="${notificationInstanceList.id}" onClick="return validateProposalsubmit('${notificationInstanceList.proposalSubmissionLastDate}')"><g:message code="${message(code: 'default.Apply.label')}"/></g:link>  

@@ -9,6 +9,9 @@ class FundAdvanceController extends GmsController {
     def grantAllocationSplitService 
     
     def create = {
+    	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","FundAdvance.htm")//putting help pages in session
     	def grantAllocationService = new GrantAllocationService()
         def fundAdvanceInstance = new FundAdvance()
     	def grantExpenseService = new GrantExpenseService()
@@ -213,7 +216,11 @@ class FundAdvanceController extends GmsController {
 	        }
 	    }
     }
+
     def expenseDetails = {
+    	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","Grant_Expense.htm")//putting help pages in session
     	def fundAdvanceInstance = FundAdvance.get(params.id)
     	def grantAllocationSplitService=new GrantAllocationSplitService()
     	def grantExpenseInstance = new GrantExpense()

@@ -92,6 +92,9 @@ class RolePrivilegesController {
     }
 
     def create = {
+	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","Create_Access_Permission.htm")//putting help pages in session
         def rolePrivilegesInstance = new RolePrivileges()
         rolePrivilegesInstance.properties = params
         List filename = new ArrayList() 
@@ -213,6 +216,9 @@ class RolePrivilegesController {
     }
     def newRolePrivileges = 
     {
+		GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","Create_Role_Privileges.htm")//putting help pages in session
     		def authorityInstanceList = userService.getAllRolls()
     		def institutionList = partyService.getAllActiveParties()
     		def personRoleInstance = userService.getUserRoleByUserId(session.UserId)

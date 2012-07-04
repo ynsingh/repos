@@ -12,6 +12,7 @@ class Menu {
 	Date createdDate;
 	String modifiedBy;
 	Date modifiedDate;
+	String menuAlignment;
 
     static constraints = {
     menuPath(nullable:true)

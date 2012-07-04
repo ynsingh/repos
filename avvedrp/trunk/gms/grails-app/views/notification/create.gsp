@@ -10,6 +10,7 @@
      <g:subMenuNotification/>
      <div class="wrapper">
        <div class="body">
+       <img onclick="window.open('../images/help/Create_Notification.htm','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" allign="right" src="/gms/images/themesky/contxthelp.gif" style="float:right">
          <h1><g:message code="default.Notification.CreateNotification.head"/></h1>
          <g:if test="${flash.message}">
            <div class="message">${flash.message}</div>

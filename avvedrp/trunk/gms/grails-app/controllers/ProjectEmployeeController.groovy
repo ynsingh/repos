@@ -18,6 +18,9 @@ class ProjectEmployeeController
     
 	def create = 
     {
+	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","Create_ProjectEmployee.htm")//putting help pages in session
 		def projectEmployeeInstance = new ProjectEmployee()
 	    def projectsService = new ProjectsService()
         projectEmployeeInstance.properties = params

@@ -211,6 +211,9 @@ class ProposalController {
     }
     def proposalList =
     {
+			GrailsHttpSession gh=getSession()
+			gh.removeValue("Help")
+			gh.putValue("Help","Proposal_List.htm")//putting help pages in session
     		def notificationInstance
     		def proposalInstanceList
         	
@@ -536,7 +539,9 @@ class ProposalController {
      */
     def proposalApplicationList = 
     {
-    		GrailsHttpSession gh=getSession()  		
+    		GrailsHttpSession gh=getSession() 
+			gh.removeValue("Help")
+			gh.putValue("Help","ProposalApplication_List.htm")//putting help pages in session
     		/*method to get proposal application of each reviewer using user id and party id*/
     		def proposalInstanceList = proposalService.getProposalApplicationListForReviewer(gh.getValue("UserId"),gh.getValue("Party"))
     		/*Geting attachment type of cv*/
@@ -545,8 +550,20 @@ class ProposalController {
     		def evalItemService = new EvalItemService()  	   	
     		def evalScoreInstanceList = []
     		def maxScaleList = []
+    		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    		def flagList = []
+    		
     		for(int i=0;i<proposalInstanceList.size();i++)
     		{
+    	    	String proposalSubmissionLastDate = formatter.format(proposalInstanceList[i].proposal.notification.proposalSubmissionLastDate);
+    			String todayDate = formatter.format(new Date())
+    			
+    			if(todayDate > proposalSubmissionLastDate)
+    			   flagList[i] = 1;
+    			else
+    			   flagList[i] = 0;
+    			
+     			
     			/*method to get attachment cv of each proposal*/
     			def attachmentsInstanceGetCV=attachmentsService.getAttachmentsByDomainAndType("Proposal",attachmentsTypeInstanceCV?.type,proposalInstanceList[i]?.proposal?.id)
     			/*adding each attachments to list*/
@@ -594,7 +611,7 @@ class ProposalController {
     			maxScaleList.add(avgScore.toString())
     		}
     		[proposalInstanceList:proposalInstanceList,evalScoreInstanceList:evalScoreInstanceList,
-    		 maxScaleList:maxScaleList,attachmentsInstanceCVList:attachmentsInstanceCVList]
+    		 maxScaleList:maxScaleList,attachmentsInstanceCVList:attachmentsInstanceCVList, flagList:flagList]
     }
     def updateProposal = 
     {
@@ -603,14 +620,15 @@ class ProposalController {
     }
     def notificationList = 
     {
-            SimpleDateFormat sdfDestination = new SimpleDateFormat("yyyy-MM-dd")
-	        Date date = new Date()
+    		
+	        def notificationInstanceList//=notificationService.getAllPublicAndPublishedNotification(currentDate)
+
 	        
-            String currentDate = sdfDestination.format(date)
-            
-		
-	        def notificationInstanceList=notificationService.getAllPublicAndPublishedNotification(currentDate)	
-			[notificationInstanceList:notificationInstanceList]
+	        def newcheck 
+	        
+    		
+	        	
+			[notificationInstanceList:notificationInstanceList,newcheck:newcheck]
     }
     def notificationDetails = 
     {
@@ -719,6 +737,9 @@ class ProposalController {
      */
     def award=
     {
+			GrailsHttpSession gh=getSession()
+			gh.removeValue("Help")
+			gh.putValue("Help","Award.htm")//putting help pages in session
     		def projectsInstance
     		def grantAllocationInstance
     		def subProjectGrantAllocationInstance
@@ -1157,6 +1178,9 @@ class ProposalController {
      */
     def preProposalCreate = 
            {
+			GrailsHttpSession gh=getSession()
+			gh.removeValue("Help")
+			gh.putValue("Help","Add_New_Proposal.htm")//putting help pages in session
         	def proposalInstance = new Proposal()
     		def proposalApplicationInstance = new ProposalApplication()
     		def proposalApplicationForm = gmsSettingsService.getGmsSettingsValue("ProposalForm")
@@ -1275,6 +1299,8 @@ class ProposalController {
     	def proposalInstance = Proposal.get(params.id)
 	    def proposalApplicationInstanceList = []
     	GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","PreProposal_List.htm")//putting help pages in session
     	def proposalInstanceList = proposalService.getUserInstance(gh.getValue("UserId"))
     	 for(int i=0;i<proposalInstanceList.size();i++)
     	 {
@@ -1434,6 +1460,8 @@ class ProposalController {
         def fullProposalCreate =
          {
          	 GrailsHttpSession gh=getSession()
+			 gh.removeValue("Help")
+			 gh.putValue("Help","FullProposal_Create.htm")//putting help pages in session
      		 def fullProposalSavedList = []
      		 def chkFullProposalInstance
      		 def proposalInstance = proposalService.getProposalById(params.id)
@@ -1460,6 +1488,8 @@ class ProposalController {
          {
          	
          	GrailsHttpSession gh=getSession()
+			gh.removeValue("Help")
+			gh.putValue("Help","FullProposal_List.htm")//putting help pages in session
          	def fullProposalProjectTitleInstanceList=[]
          	def submittedFullProposalInstanceList = []
           	def preProposalList =[]
@@ -1548,7 +1578,7 @@ class ProposalController {
 		}
 		else
  		{
- 			flash.message = "${message(code: 'default.SelectFile.label')}"
+ 			flash.error = "${message(code: 'default.SelectFile.label')}"
  			redirect(action:fullProposalCreate , params:['id':params.id])
   		}
 		
@@ -1719,7 +1749,9 @@ class ProposalController {
 }
 def uploadProposalForm =
 {
-	
+	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","upload_Proposal_Form.htm")//putting help pages in session
 }
 def saveUploadedProposalForm =
 {
@@ -1775,6 +1807,30 @@ def saveUploadedProposalForm =
       }
      redirect(action: "uploadProposalForm")
 }
+def searchNotification = {
+	NotificationQuery notificationQuery = new NotificationQuery()
+	
+	bindData(notificationQuery, params)
+	//to search notification
+	def notificationInstanceList=notificationService.serachNotificationList(notificationQuery, params)
+	def newcheck = []
+	SimpleDateFormat sdfDestination = new SimpleDateFormat("yyyy-MM-dd")
+	Date date = new Date()
+	String currentDate = sdfDestination.format(date)
+	if(notificationInstanceList.size()>0){
+	for(int i=0;i<notificationInstanceList.size();i++)
+	{
+		String rfmnotificationDate = sdfDestination.format(notificationInstanceList[i].notificationDate)
+		if(notificationService.isnew(rfmnotificationDate,currentDate)==1)
+		newcheck[i]=1;
+		else
+		newcheck[i]=0;
+		
+	}
+	}
+	render(view:'notificationList', model:[ notificationInstanceList: notificationInstanceList,notificationQuery:notificationQuery,newcheck:newcheck ])
+	
+	}
 
     
 }

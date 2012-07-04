@@ -9,10 +9,14 @@
      <g:if test="${flash.message}">
 		<div class="message">${flash.message}</div>
 	 </g:if>
+	 <g:if test="${flash.error}">
+		<div class="errors">${flash.error}</div>
+	 </g:if>
 <div class="dialog">
 <table>
   <tbody>
-   <h1>Site Admin Login Details</h1>
+		<img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
+   <h1><label for="SiteAdminLoginDetails"><g:message code="default.SiteAdminLoginDetails.label"/>:</label></h1>
     <tr class="prop">
        <td>
 		<g:hasErrors bean="${person}">

@@ -12,6 +12,8 @@ class MenuRoleMapController {
     	def userService = new UserService()
     	def menuRoleMapInstance = new MenuRoleMap()
     	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","Add_Menu.htm")//putting help pages in session
         menuRoleMapInstance.properties = params
         def parentList = partyService.getAllParentMenu()
         def menuInstanceList = []
@@ -35,6 +37,7 @@ class MenuRoleMapController {
     	def allChildList = []
     	def sizeList =[]
     	int s=0;
+		def menuLinkLt = [] as Set
     	if(params.roleId!=null)
     	{
     	def prtList = partyService.getAllParentMenu()
@@ -56,40 +59,50 @@ class MenuRoleMapController {
     			if (childList){
     				def mainList = [] as Set
     				sizeList[s]=childList.size()
-    				def menuChildList=partyService.getAllSubMenu(PL.menu.id) //Get All submenu from menu list according to parent id.
+    				def menuChildList=partyService.getAllSubMenu(PL.menu.id) //Get All sub menu from menu list according to parent id.
     				if(childList.size() == menuChildList.size()){  //Check all submenu's are assigned for the role for the main  menu.
     					mainList=Menu.get(PL.menu.id)
-    					menuInstanceList.remove(mainList)  //If all submenu's are assigned remove the mainmenu from unassigned menu list.
+    					menuInstanceList.remove(mainList)  //If all submenu's are assigned remove the main menu from unassigned menu list.
     				}
     				s++
     				for(int k=0;k<childList.size();k++){
     					allChildList.add(childList[k])
     				}
     			}else{
+					if(!PL.menu.menuPath)
+					{
     				def parntList = MenuRoleMap.get(PL.id)
-    				prntList.add(parntList) //Get main menu list having no Submenu/s
+					prntList.add(parntList) //Get main menu list having no Sub menu/s
+					}
+					else{
+						menuLinkLt = partyService.getMenuFromMap(PL.menu.id)
+						sizeList[s]=0
+						s++
+						menuInstanceList.removeAll(menuLinkLt) //Remove the mapped Main Menu having link.
+						
+					}
+					
     			}
+				
     		}
-    		parentList.removeAll(prntList) //Remove the main menus having no submenus from the parent list.
-    		for(ML in menuRoleMapInstanceList)
+			parentList.removeAll(prntList) //Remove the main menus having no sub menus from the parent list.
+			for(ML in menuRoleMapInstanceList)
 			{
-    			newMenuList = partyService.getMenuFromMap(ML.menu.id)
+				newMenuList = partyService.getMenuFromMap(ML.menu.id)
     			if(newMenuList[0].parentId != -1){
-    				menuInstanceList.removeAll(newMenuList) //Remove the mapped submenus from the MenuInstanceList.
+					menuInstanceList.removeAll(newMenuList) //Remove the mapped sub menus from the MenuInstanceList.
     			}
-    			
-    			
     		} 
-    		render (template:"listMenu", model : ['menuInstanceList' : menuInstanceList,parentList:parentList,sizeList:sizeList,
+			render (template:"listMenu", model : ['menuInstanceList' : menuInstanceList,parentList:parentList,sizeList:sizeList,
     		                                      allChildList:allChildList,'menuRoleMapInstanceList':menuRoleMapInstanceList])
     	}
     }
     def save = {
-    	def partyService = new PartyService()
+		def partyService = new PartyService()
     	def childMapList = []
     	def menuList = params.menuSel.toString()
     	def menuMapList=menuList.split(',')
-    	if (menuMapList.length ==1) 
+		if (menuMapList.length ==1) 
     	{
 			def menuRoleList = []
 			menuRoleList.add(params.menuSel.toString())
@@ -107,7 +120,7 @@ class MenuRoleMapController {
         	menuRoleMapInstance.save() // Save the selected menus to map.
         }
     	def menuRoleMapParentList = partyService.getParentListByMenuOrder(params.role.id) //Get the mapped main menu list.
-    	def childList = partyService.getChildList(params.role.id) //Get all submenu list.
+    	def childList = partyService.getChildList(params.role.id) //Get all sub menu list.
     	def parentList = []
     	for(int k=0;k<menuRoleMapParentList.size();k++){
 			def menuRoleMapChildInstance = partyService.getChildListByMenuOrder(params.role.id,menuRoleMapParentList[k].menu.id) //Get all mapped submenu for each main menu and role.
@@ -137,7 +150,7 @@ class MenuRoleMapController {
     }
 
     def delete = {
-    	def partyService = new PartyService()
+		def partyService = new PartyService()
     	def menuList = params.menuSelt.toString()
     	def menuMapList=menuList.split(',')
     	def parentList = []
@@ -151,11 +164,17 @@ class MenuRoleMapController {
 		}
     	
     	for(int i=0;i<params.menuSelt.size();i++){
-    		def menuRoleMapInstance = MenuRoleMap.get(params.menuSelt[i])
+			def menuRoleMapInstance = MenuRoleMap.get(params.menuSelt[i])
     		selectMenuList.add(menuRoleMapInstance)
     		if (menuRoleMapInstance) {
-	        	if(menuRoleMapInstance.menu.parentId == -1){
-	        		parentList.add(menuRoleMapInstance)
+				if(menuRoleMapInstance.menu.parentId == -1){
+					if(menuRoleMapInstance.menu.menuPath != null){
+					parentList.add(menuRoleMapInstance)
+					}
+					else{
+						menuRoleMapInstance.activeYesNo='N'
+						menuRoleMapInstance.save() //Save Main menu having link as active 'NO' for delete.
+					}
 	        	}
         		menuRoleMapInstance.activeYesNo='N'
                 menuRoleMapInstance.save() //Save file as active 'NO' for delete.
@@ -167,11 +186,13 @@ class MenuRoleMapController {
 			def commons = childLst.intersect(selectMenuList)
 			if(commons){
 				childLst.removeAll(commons)
+				
 			}
 			if(childLst){
 				menuRoleMapInstance.activeYesNo='Y' 
 	            menuRoleMapInstance.save()
 	            c++
+				
 			}
 		}
 		if(c>0){

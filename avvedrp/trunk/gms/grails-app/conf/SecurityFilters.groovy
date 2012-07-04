@@ -18,7 +18,7 @@ class SecurityFilters
     			      
     				   if(!session.Party)
     				   {
-    					   if(!"login".equals(controllerName)&& !"newUserCreate".equals(actionName)&& !"user".equals(controllerName)&& !"saveNewUser".equals(actionName)&& !"proposal".equals(controllerName)&& !"proposalApplication".equals(controllerName)&& !"attachments".equals(controllerName)&& !"notificationsAttachments".equals(controllerName)&& !"download".equals(actionName))
+    					   if(!"login".equals(controllerName)&& !"newUserCreate".equals(actionName)&& !"user".equals(controllerName)&& !"saveNewUser".equals(actionName)&& !"proposal".equals(controllerName)&& !"proposalApplication".equals(controllerName)&& !"attachments".equals(controllerName)&& !"notificationsAttachments".equals(controllerName)&& !"download".equals(actionName) && !"budgetDetails".equals(controllerName)&& !"auth".equals(actionName) && !"createAccount".equals(actionName) && !"openId".equals(controllerName))
     					   {
     						   redirect uri:'/login'
     						   return false;

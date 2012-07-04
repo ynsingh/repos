@@ -1,3 +1,4 @@
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class FinancialYearController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -12,6 +13,9 @@ class FinancialYearController {
     }
 
     def create = {
+		GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","Financial_Year.htm")//putting help pages in session
         def financialYearInstance = new FinancialYear()
         def budgetMasterService = new BudgetMasterService()  
         financialYearInstance.properties = params

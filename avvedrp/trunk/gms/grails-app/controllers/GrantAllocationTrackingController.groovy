@@ -68,19 +68,20 @@ class GrantAllocationTrackingController {
     }
 
     def create = {
-		def grantAllocationService = new GrantAllocationService()
-    		
+    	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","GrantWithdrawl_Closure.htm")//putting help pages in session
+	def grantAllocationService = new GrantAllocationService()
+	
 		/* Get grant allocation details. */
     	def grantAllocationInstance = grantAllocationService.getGrantAllocationById(new Integer(params.id)) 
-    	println "**************createtracktype "+params.trackType
-    	
     	/* Get grant allocation tracking details if any for the grant allocation */
     	def grantAllocationTrackingInstance = grantAllocationService.getGrantAllocationTrackingByGrantAllocation(grantAllocationInstance)
     	
     	if(!grantAllocationTrackingInstance){
     		grantAllocationTrackingInstance = new GrantAllocationTracking()
         	grantAllocationTrackingInstance.grantAllocation = grantAllocationInstance
-            grantAllocationTrackingInstance.properties = params
+            	grantAllocationTrackingInstance.properties = params
     	}
     	grantAllocationTrackingInstance.trackType = params.trackType
     	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();

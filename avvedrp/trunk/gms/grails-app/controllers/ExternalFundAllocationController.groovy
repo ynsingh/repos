@@ -27,6 +27,8 @@ class ExternalFundAllocationController {
     def create = 
     {
     	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","External_Fund.htm")//putting help pages in session
     	def granterInstance = Party.get(gh.getValue("Party"))
     	def grantAllocationList
     	def allocationInstanceList=[]
@@ -226,6 +228,9 @@ class ExternalFundAllocationController {
     
     def tranferFund = 
     {
+    	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","Fund_Transfer.htm")//putting help pages in session
     	NumberFormat formatter = new DecimalFormat("#0.00");
     	def grantAllocationInstance = GrantAllocation.get(params.id)
     	def fundTransferInstance = new FundTransfer()
@@ -680,6 +685,8 @@ class ExternalFundAllocationController {
     def agencyCreate = 
     {
     	GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","ExternalFund_Agency.htm")//putting help pages in session
     	def granterInstance =  Party.get(gh.getValue("Party"))
     	def agentInstance = Party.get(params.agentInstance)
     	def projectInstance= Projects.get(params.id)

@@ -1,6 +1,6 @@
 import java.text.*;
 import java.util.*;
-
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class ProjectEmployeeSalaryDetailsController 
 {
 	def projectEmployeeSalaryDetailsService
@@ -20,6 +20,9 @@ class ProjectEmployeeSalaryDetailsController
 
     def create = 
     {
+	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","ProjectEmployee_Salary.htm")//putting help pages in session
         def projectEmployeeSalaryDetailsInstance = new ProjectEmployeeSalaryDetails(params) 
         	projectEmployeeSalaryDetailsInstance.properties = params
         def projectEmployeeInstance = ProjectEmployee.get(params.id)

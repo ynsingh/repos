@@ -176,7 +176,7 @@ class GrantExpenseService {
 	public List getGrantExpenseTotalForAProject(projectInstance){
     	/* Get all heads allocated to grant */
     	
-    	def grantExpenseInstance = null
+		def grantExpenseInstance = null
     	def grantExpenseSummaryList = new ArrayList()
     	def expenseAmount = 0.0
     	def allocatedAmount = 0.0
@@ -468,6 +468,18 @@ class GrantExpenseService {
 	 		def grantReceiptSumAmountInstance = GrantReceipt.executeQuery("select SUM(GR.amount)as total from GrantReceipt GR where GR.grantAllocation="+grantAllocationInstanceInExternalFundList+" group by GR.grantAllocation")
 		 	return grantReceiptSumAmountInstance
 	 	}
+		
+		 /**
+		 * Get sum of Expense for a project
+		 */
+		 public double getTotalExpenseByProject(def projectId){
+			 double totalExpense = 0.0
+			 def totExpense = GrantExpense.executeQuery("select sum(GE.expenseAmount) as SumAmt from GrantExpense GE where GE.projects.id ="+projectId)
+			 if(totExpense[0]!=null)
+				 totalExpense = new Double(totExpense[0]).doubleValue()
+			 return totalExpense
+		}
+		 
 }
 
 

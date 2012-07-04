@@ -839,7 +839,7 @@ class ProposalService {
        		 
        	 }
        	 /*
-       	  * method to get max id of a proposal applicatiion
+       	  * method to get max id of a proposal application
        	  */
        	 def getMaxProposalApplicationId(def proposalType)
        	 {

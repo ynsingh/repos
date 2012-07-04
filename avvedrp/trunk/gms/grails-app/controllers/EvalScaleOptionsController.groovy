@@ -13,6 +13,8 @@ class EvalScaleOptionsController {
     }
    def create = {
     	GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","EvaluationScale_Options.htm")//putting help pages in session
         def evalScaleOptionsInstance = new EvalScaleOptions()
         evalScaleOptionsInstance.properties = params
         def evalScaleInstanceList= evalScaleService.listEvalscale(gh.getValue("Party"))

@@ -10,6 +10,8 @@
     <g:subMenuList/>
     <div class="wrapper">
         <div class="body">
+	      <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
+
             <h1><g:message code="default.projectsDepartmentMap.AddProjectsToDepartment.head"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
@@ -45,6 +47,15 @@
                                 <td></td>
                                 <td></td>
                             </tr> 
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="address"><g:message code="default.Comments.label"/>:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:projectDepartmentMapInstance,field:'comments','errors')}">
+                                   <g:textArea name="comments" value="${fieldValue(bean:projectDepartmentMapInstance,field:'comments')}" rows="3" cols="30"/>
+                                </td>
+                            </tr> 
                         </tbody>
                     </table>
                 </div>
@@ -68,6 +79,7 @@
                             <th><g:message code="default.Projects.label"/></th>
                    	    	<th><g:message code="default.Department.label"/></th>
                    	    	<th><g:message code="default.Institution.label"/></th>
+                   	    	<th><g:message code="default.Comments.label"/></th>
                    	    	<th><g:message code="default.Edit.label"/></th>
                         </tr>
                     </thead>
@@ -80,7 +92,9 @@
                             <td>${fieldValue(bean:projectDepartmentMapInstance, field:'projects.code')}</td>
                                                     	<td>${fieldValue(bean:projectDepartmentMapInstance, field:'partyDepartment.departmentCode')}</td>
                         	<td>${fieldValue(bean:projectDepartmentMapInstance, field:'partyDepartment.party.code')}</td>
-
+                             
+                            <td>${fieldValue(bean:projectDepartmentMapInstance, field:'comments')}</td>
+                            
                             <td><g:link action="edit" id="${fieldValue(bean:projectDepartmentMapInstance, field:'id')}"><g:message code="default.Edit.label"/></g:link></td>
                         </tr>
                     </g:each>

@@ -733,6 +733,45 @@ CREATE TABLE `expense_request_entry` (
   CONSTRAINT `FKBDFD171BB8D959F3` FOREIGN KEY (`grant_allocation_id`) REFERENCES `grant_allocation` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+/*Table structure for table `external_fund_allocation` */
+
+DROP TABLE IF EXISTS `external_fund_allocation`;
+
+CREATE TABLE `external_fund_allocation` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `version` bigint(20) NOT NULL,
+  `created_by` varchar(255) DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `grant_allocation_id` bigint(20) NOT NULL,
+  `modified_by` varchar(255) DEFAULT NULL,
+  `modified_date` datetime DEFAULT NULL,
+  `refundable` char(1) NOT NULL,
+  `remarks` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK32834A26B8D959F3` (`grant_allocation_id`),
+  CONSTRAINT `FK32834A26B8D959F3` FOREIGN KEY (`grant_allocation_id`) REFERENCES `grant_allocation` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
+
+/*Table structure for table `external_fund_refund` */
+
+DROP TABLE IF EXISTS `external_fund_refund`;
+
+CREATE TABLE `external_fund_refund` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `version` bigint(20) NOT NULL,
+  `created_by` varchar(255) DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `date_of_refund` datetime NOT NULL,
+  `external_fund_allocation_id` bigint(20) NOT NULL,
+  `modified_by` varchar(255) DEFAULT NULL,
+  `modified_date` datetime DEFAULT NULL,
+  `refund_amount` double NOT NULL,
+  `remarks` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK7A146BBE536F6824` (`external_fund_allocation_id`),
+  CONSTRAINT `FK7A146BBE536F6824` FOREIGN KEY (`external_fund_allocation_id`) REFERENCES `external_fund_allocation` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 
 /*Table structure for table `financial_year` */
@@ -835,6 +874,32 @@ CREATE TABLE `full_proposal_grant` (
   CONSTRAINT `FKAFAB0D3FA3573299` FOREIGN KEY (`full_proposal_id`) REFERENCES `full_proposal` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+/*Table structure for table `fund_advance` */
+
+DROP TABLE IF EXISTS `fund_advance`;
+
+CREATE TABLE `fund_advance` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `version` bigint(20) NOT NULL,
+  `advance_amount` double NOT NULL,
+  `advance_description` varchar(255) NOT NULL,
+  `bank_name` varchar(255) DEFAULT NULL,
+  `created_by` varchar(255) NOT NULL,
+  `created_date` datetime NOT NULL,
+  `date_of_advance` datetime NOT NULL,
+  `dd_branch` varchar(255) DEFAULT NULL,
+  `dd_date` datetime DEFAULT NULL,
+  `dd_no` varchar(255) DEFAULT NULL,
+  `fund_advance_code` varchar(255) NOT NULL,
+  `grant_allocation_id` bigint(20) NOT NULL,
+  `mode_of_payment` varchar(255) NOT NULL,
+  `modified_by` varchar(255) DEFAULT NULL,
+  `modified_date` datetime DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK48B4DD08B8D959F3` (`grant_allocation_id`),
+  CONSTRAINT `FK48B4DD08B8D959F3` FOREIGN KEY (`grant_allocation_id`) REFERENCES `grant_allocation` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 
 /*Table structure for table `fund_transfer` */
@@ -1295,7 +1360,20 @@ CREATE TABLE `notifications_emails` (
   CONSTRAINT `FK7D62BB8E4B78CFDA` FOREIGN KEY (`party_id`) REFERENCES `party` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+/*Table structure for table `openid` */
 
+DROP TABLE IF EXISTS `openid`;
+
+CREATE TABLE `openid` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `version` bigint(20) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `url` (`url`),
+  KEY `FKC3C3C8E585837584` (`user_id`),
+  CONSTRAINT `FKC3C3C8E585837584` FOREIGN KEY (`user_id`) REFERENCES `person` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Table structure for table `party` */
 
@@ -1996,6 +2074,46 @@ CREATE TABLE `salary_component` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+/*Table structure for table `university_institution_map` */
+
+DROP TABLE IF EXISTS `university_institution_map`;
+
+CREATE TABLE `university_institution_map` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `version` bigint(20) NOT NULL,
+  `active_yes_no` char(1) NOT NULL,
+  `created_by` varchar(255) default NULL,
+  `created_date` datetime default NULL,
+  `modified_by` varchar(255) default NULL,
+  `modified_date` datetime default NULL,
+  `party_id` bigint(20) NOT NULL,
+  `university_master_id` bigint(20) NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `FKCBAC42A47D3DC257` (`university_master_id`),
+  KEY `FKCBAC42A44B78CFDA` (`party_id`),
+  CONSTRAINT `FKCBAC42A44B78CFDA` FOREIGN KEY (`party_id`) REFERENCES `party` (`id`),
+  CONSTRAINT `FKCBAC42A47D3DC257` FOREIGN KEY (`university_master_id`) REFERENCES `university_master` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Table structure for table `university_master` */
+
+DROP TABLE IF EXISTS `university_master`;
+
+CREATE TABLE `university_master` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `version` bigint(20) NOT NULL,
+  `active_yes_no` char(1) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `created_by` varchar(255) default NULL,
+  `created_date` datetime default NULL,
+  `email` varchar(255) NOT NULL,
+  `modified_by` varchar(255) default NULL,
+  `modified_date` datetime default NULL,
+  `name_of_university` varchar(255) NOT NULL,
+  `phone_no` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 /*Table structure for table `user_map` */
@@ -2099,6 +2217,33 @@ CREATE TABLE `utilization` (
   CONSTRAINT `FKE9082E22378B5C44` FOREIGN KEY (`grantee_id`) REFERENCES `party` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+DROP TABLE IF EXISTS `project_details_view`;
+
+/*!50001 DROP VIEW IF EXISTS `project_details_view` */;
+/*!50001 DROP TABLE IF EXISTS `project_details_view` */;
+
+/*!50001 CREATE TABLE  `project_details_view`(
+ `ProjectName` varchar(255) ,
+ `Party` bigint(20) ,
+ `Granter` varchar(255) ,
+ `AmountAllocated` double ,
+ `ExpenseAmt` double ,
+ `RecievedAmount` double ,
+ `FundTransferAmount` double 
+)*/;
+
+/*View structure for view project_details_view */
+
+/*!50001 DROP TABLE IF EXISTS `project_details_view` */;
+/*!50001 DROP VIEW IF EXISTS `project_details_view` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `project_details_view` AS select `p`.`name` AS `ProjectName`,`pa`.`id` AS `Party`,(select `pr`.`name_of_the_institution` AS `name_of_the_institution` from `party` `pr` where (`pr`.`id` = `ga`.`granter_id`)) AS `Granter`,sum(`ga`.`amount_allocated`) AS `AmountAllocated`,(select sum(`ge`.`expense_amount`) AS `ExpenseAmount` from `grant_expense` `ge` where ((`ge`.`grant_allocation_id` = `ga`.`id`) and (`ge`.`projects_id` = `ga`.`projects_id`)) group by `ga`.`id`) AS `ExpenseAmt`,(select sum(`gr`.`amount`) AS `RecievedAmount` from `grant_receipt` `gr` where ((`gr`.`grant_allocation_id` = `ga`.`id`) and (`gr`.`projects_id` = `ga`.`projects_id`)) group by `ga`.`id`) AS `RecievedAmount`,(select sum(`ft`.`amount`) AS `FundTransfer` from ((`fund_transfer` `ft` join `grant_allocation` `g`) join `projects` `pr`) where ((`ft`.`grant_allocation_id` = `g`.`id`) and (`g`.`projects_id` = `pr`.`id`) and (`pr`.`parent_id` = `p`.`id`)) group by `ga`.`id`) AS `FundTransferAmount` from ((`party` `pa` join `projects` `p`) left join `grant_allocation` `ga` on((`ga`.`projects_id` = `p`.`id`))) where (`ga`.`party_id` = `pa`.`id`) group by `p`.`id` order by `p`.`name` */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -2695,4 +2840,14 @@ ALTER TABLE person DROP KEY `username`;
 ALTER TABLE person ADD COLUMN `user_designation` VARCHAR(255) NULL AFTER `active_yes_no`;    
 ALTER TABLE person ADD COLUMN `ph_number` VARCHAR(255) NULL AFTER `user_designation`;
 
+
+
+/*Script for GMS release 3.0 - added on 23rd June 2012 */
+
+
+UPDATE gms_settings SET value='Thank you for registering with the Grant Management System (GMS).\r\n GMS an open source, enterprise wide grants management system developed under the ERP project of NMEICT.\r\nGMS helps manage complete grant life cycle from call for proposal to award to closure including monitoring of project to ensure compliance with funding agency regulations and automatic generation of compliance reports.\n\nA GMS user account has been created with following details.' WHERE name='MailContent';
+
+UPDATE gms_settings SET value ='Please visit http://sakshat.amrita.ac.in/erp/gms where you will more\r\ninformation about GMS including documentation. If you have any questions you\r\nmay write to us at amritaerp@gmail.com\n\nWelcome to the ERP Project!\n\nRegards,\r\nYour ERP Team at Amrita' WHERE name='MailFooter';
+
+ALTER TABLE project_department_map  ADD COLUMN `comments` VARCHAR(255) NULL AFTER `active_yes_no`;
 

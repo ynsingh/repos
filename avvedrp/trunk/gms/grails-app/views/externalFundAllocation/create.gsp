@@ -11,6 +11,7 @@
 <body>
   <div class ="wrapper">
 <div class="body">
+<img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
 <h1><g:message code="default.GrantFund.label" args="[entityName]" /></h1>
 <g:if test="${flash.message}">
 <div class="message">${flash.message}</div>
@@ -40,7 +41,7 @@
 	          onchange="${remoteFunction(controller:'externalFundAllocation',action:'getRecipientProjects',update:'projectSelect',params:'\'party=\'+this.value')};" noSelection="['null':'-Select-']" />
 	        </td>
             <td valign="top" class="name">
-                <label for="projects"><g:message code="externalFundAllocation.Projects.label" default="Projects" /></label>
+                <label for="projects"><g:message code="default.Projects.label" /></label>
                 <label for="projects" style="color:red;font-weight:bold"> * </label>
             </td>
           <td id="projectSelect" valign="top" class="value ${hasErrors(bean: externalFundAllocationInstance?.grantAllocation?.projects, field: 'projects', 'errors')}">
@@ -86,7 +87,7 @@
 	  
         <tr class="prop">
             <td valign="top" class="name">
-                <label for="remarks"><g:message code="externalFundAllocation.remarks.label" default="Remarks" /></label>
+                <label for="remarks"><g:message code="default.Remarks.label" /></label>
             </td>
             <td valign="top" class="value ${hasErrors(bean: externalFundAllocationInstance, field: 'remarks', 'errors')}">
                 <g:textArea name="remarks" value="${externalFundAllocationInstance?.remarks}" />

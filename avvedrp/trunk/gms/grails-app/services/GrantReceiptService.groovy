@@ -203,4 +203,10 @@ class GrantReceiptService{
 			 
 		 return totalAmt
 	}
+	
+	public getGrantReceiptByFundTransfrId(def FundTransfrId)
+	{
+		def receivedInstance = GrantReceipt.find("from GrantReceipt GR where GR.fundTransfer.id="+FundTransfrId)
+		return receivedInstance
+	}
 }

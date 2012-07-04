@@ -40,7 +40,16 @@
                                 <td valign="top" class="value ${hasErrors(bean:projectDepartmentMapInstance,field:'partyDepartment','errors')}">
                                     <g:select optionKey="id" optionValue="departmentCode" from="${partyDepartmentList}" name="partyDepartment.id" value="${projectDepartmentMapInstance?.partyDepartment?.id}" ></g:select>
                                 </td>
-                            </tr> 
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="address"><g:message code="default.Comments.label"/>:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:projectDepartmentMapInstance,field:'comments','errors')}">
+                                   <g:textArea name="comments" value="${projectDepartmentMapInstance.comments}" rows="3" cols="30"/>
+                                </td>
+                            </tr>
 
                         </tbody>
                     </table>

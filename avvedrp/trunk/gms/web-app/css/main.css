@@ -623,6 +623,15 @@ background: #fae7cf;
     
 }
 
+.prop .validationmsg
+	{
+		
+	    color: red;
+	    display:none;
+		
+	}
+
+
 /* ACTION BUTTONS */
 
 .buttons {
@@ -760,6 +769,21 @@ background-color: #FFFFFF
 	text-align: center;
 	}
 <!-- Main Container End -->
+
+
+/*Style for form validation*/
+
+
+
+#FirstNamevalue,#FirstNameformat,#LastNamevalue,#LastNameformat,#Designationvalue,#Designationformat,#Organisationvalue,
+#Organisationformat,#PostalAddressvalue,#PostalAddressformat,#Cityvalue,#Cityformat,
+#Statevalue,#Stateformat,#ZipCodevalue,#ZipCodeformat,#STDvalue,
+#STDformat,#Phonevalue,#Phoneformat,#FaxSTDvalue,#FaxSTDformat,#FaxPhonevalue,#FaxPhoneformat,#Emailvalue,
+#Emailformat,#Mobilevalue,#Mobileformat,#ProjectCategoryvalue,#ProjectCategoryformat,
+{
+	display:none;
+}
+
 
 
 

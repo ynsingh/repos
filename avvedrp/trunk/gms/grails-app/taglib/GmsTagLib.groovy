@@ -1,29 +1,45 @@
-
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class GmsTagLib {
 
 	
   def grantAllocationService
   def proposalService
   
-
- 
-         def menuList = {attrs ->
+  def menuList = {attrs ->
              out << g.render(template: '/menuList', model:
-       [grantAllocation:  grantAllocationService.getAll()])
-         }
+				 [grantAllocation:  grantAllocationService.getAll()])
+  }
   
   def subMenuList = {attrs ->
-		  out << g.render(template: '/subMenuList',model:
-		       [projectsInstance:  Projects.get(session.ProjectID)])
-         }
+	  
+	  def userService = new UserService()
+	  GrailsHttpSession gh=getSession()
+	  def menuRoleMapParentList = [] as Set
+	  def userRoleList = userService.getUserRoleByUserId(gh.getValue("UserId"))
+	  String roleIds=userService.getAllRolesAsString(userRoleList)
+	  menuRoleMapParentList = userService.getAllParentListMappedToRolesForHMenu(roleIds)
+	  
+	  out << g.render(template: '/subMenuList',model:
+		       [projectsInstance:  Projects.get(session.ProjectID),menuRoleMapParentList:menuRoleMapParentList,roleIds:roleIds])
+  }
          
-         def subMenuProjects = {attrs ->
-		  out << g.render(template: '/subMenuProjects')
-         }
+ def subMenuProjects = {attrs ->
+  out << g.render(template: '/subMenuProjects')
+ }
   			
-		 def subMenuNotification = {attrs ->
-		  out << g.render(template: '/subMenuNotification')
-		 }
+ def subMenuNotification = {attrs ->
+	 
+	 def userService = new UserService()
+	 GrailsHttpSession gh=getSession()
+	 def menuRoleMapParentList = [] as Set
+	 def userRoleList = userService.getUserRoleByUserId(gh.getValue("UserId"))
+	 String roleIds=userService.getAllRolesAsString(userRoleList)
+	 menuRoleMapParentList = userService.getAllParentListMappedToRoles(roleIds)
+	 
+  out << g.render(template: '/subMenuNotification',model:
+		       [menuRoleMapParentList:menuRoleMapParentList,roleIds:roleIds])
+ }
+ 
   def subMenuLogin = {attrs ->
   	out << g.render(template: '/subMenuLogin')
   }
@@ -33,5 +49,4 @@ class GmsTagLib {
   out << g.render(template: '/pageNavigation',model:['page':new Integer(attrs.page),'proposalApplicationInstance':proposalApplicationInstance,'lastPage':proposalApplicationExtInstance[0],'status':attrs.status])
  }
   
-  
-    }
+}

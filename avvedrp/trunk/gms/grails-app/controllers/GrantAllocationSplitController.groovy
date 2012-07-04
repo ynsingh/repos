@@ -40,6 +40,8 @@ class GrantAllocationSplitController extends GmsController  {
 	                 projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
 	    		
 	            def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.id)
+	            def grantAllocationInstanceListSize
+	            def flag 
 	            for(int i=0;i<grantAllocationInstanceList.size();i++)
 	            {
 	            	grantAllocationSplitDetailsList.add(grantAllocationSplitService.getGrantAllocationSplitDetailsByGrantAllocation(grantAllocationInstanceList[i].id))
@@ -56,7 +58,8 @@ class GrantAllocationSplitController extends GmsController  {
 	                        'grantAllocationInstanceList':grantAllocationInstanceList,
 	                        'grantAllocationSplitDetailsList':grantAllocationSplitDetailsList,
 	                        'currencyFormat':currencyFormatter,'subAllocatedAmount':subAllocatedAmount[0],
-	                        'projectsInstance':projectsInstance,'grantorInstance':grantorInstance,'partyInstance':partyInstance]
+	                        'projectsInstance':projectsInstance,'grantorInstance':grantorInstance,'partyInstance':partyInstance,
+	                        'grantAllocationInstanceListSize':grantAllocationInstanceList.size(),'flag':0]
 	    		}
 	    		else
 	    		{
@@ -65,7 +68,8 @@ class GrantAllocationSplitController extends GmsController  {
 	                    'grantAllocationInstanceList':grantAllocationInstanceList,
 	                    'grantAllocationSplitDetailsList':grantAllocationSplitDetailsList,
 	                    'currencyFormat':currencyFormatter,'projectsInstance':projectsInstance,
-	                    'grantorInstance':grantorInstance,'partyInstance':partyInstance]
+	                    'grantorInstance':grantorInstance,'partyInstance':partyInstance,
+	                    'grantAllocationInstanceListSize':grantAllocationInstanceList.size(),'flag':0]
 	    		}
        //}
     }
@@ -259,6 +263,10 @@ class GrantAllocationSplitController extends GmsController  {
     }
 
     def create = {
+	GrailsHttpSession gh=getSession()
+    		gh.removeValue("Help")
+			//putting help pages in session
+			gh.putValue("Help","Disburse_Fund.htm")
 		def grantAllocationSplitService = new GrantAllocationSplitService()
 		def grantAllocationService = new GrantAllocationService()
         def grantAllocationSplitInstance = new GrantAllocationSplit()

@@ -8,6 +8,7 @@
     <body>
       <div class="wrapper">
         <div class="body">
+        <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
             <h1><g:message code="default.FullProposalList.label" /></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
@@ -17,8 +18,6 @@
                     <thead>
                         <tr>
                             <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
-                            <th><g:message code="default.Institution.label" /></th>
-                            <th><g:message code="default.Users.label" /></th>  
                             <th><g:message code="default.ProposalTitle.label" /></th>   
                             <th><g:message code="default.FullProposalStatus.label"/></th>             
                             <th><g:message code="default.SubmitFullProposal.label" /></th>
@@ -28,9 +27,7 @@
                      <g:each in="${preProposalList}" status="i" var="proposalInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                              <td>${i+1}</td>
-                             <td>${fieldValue(bean: proposalInstance, field: "party.code")}</td> 
-                             <td>${fieldValue(bean: proposalInstance, field: "person.username")}</td> 
-                             <td>${fullProposalProjectTitleInstanceList[i].projectTitle}</td> 
+                              <td>${fullProposalProjectTitleInstanceList[i].projectTitle}</td> 
                              
 	                             <%def chkFullProposalInstance=Proposal.find("from Proposal P where P.parent.id = "+proposalInstance.id)%>
 	                                 <g:if test="${chkFullProposalInstance}">

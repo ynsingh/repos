@@ -1,6 +1,4 @@
-
-
-<html>
+<html>${session.Role}
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
@@ -66,10 +64,13 @@
                 <div class="buttons">
                     <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Update.button')}" onClick="return validateAccountHead()" /></span>
 					<span class="button">
+				<g:if test="${flag == 0}"></g:if>	
+				<g:else>
 					<g:actionSubmit class="delete"  action="delete" 
 					value="${message(code: 'default.Delete.button')}" 
 					onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
 					</span>
+				</g:else>
                 </div>
             </g:form>
         </div>

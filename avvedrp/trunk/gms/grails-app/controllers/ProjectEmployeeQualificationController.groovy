@@ -1,3 +1,4 @@
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class ProjectEmployeeQualificationController 
 {
 	def projectEmployeeQualificationService
@@ -17,18 +18,17 @@ class ProjectEmployeeQualificationController
 
     def create = 
     {
-		println "____________create"
+	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","ProjectEmployee_Qualiification.htm")//putting help pages in session
         def projectEmployeeQualificationInstance = new ProjectEmployeeQualification()
 		//projectEmployeeQualificationInstance.properties = params
         def projectEmployeeInstance = ProjectEmployee.get(params.id)
-    	println"--------------employeeid"+projectEmployeeInstance.id
-        def employeeDesignationInstance = EmployeeDesignation.list()
+    	def employeeDesignationInstance = EmployeeDesignation.list()
     	// def projectEmployeeQualificationService = new ProjectEmployeeQualificationService()
         def projectEmployeeQualificationInstanceList =projectEmployeeQualificationService.getQualificationList(params.id)
 		//def projectEmployeeInstance = ProjectEmployee.list()
-		println "emp id"+params.id
-    	println "desig id"+employeeDesignationInstance.id
-        return [projectEmployeeQualificationInstance: projectEmployeeQualificationInstance,
+	return [projectEmployeeQualificationInstance: projectEmployeeQualificationInstance,
                 projectEmployeeInstance:projectEmployeeInstance,
                 projectEmployeeQualificationInstanceList:projectEmployeeQualificationInstanceList]
     }

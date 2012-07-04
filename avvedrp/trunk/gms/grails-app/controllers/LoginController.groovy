@@ -31,21 +31,19 @@ class LoginController {
 	 */
 	def index = {
 			 
-		println "index"
 		if (springSecurityService.isLoggedIn()) 
 		{
 			 Integer user=SCH.context.authentication.principal.id
 			 def role= SCH.context.authentication.principal.authorities.iterator().next()
 			 GrailsHttpSession gh=getSession()
-			 println "role_______+-="+SCH.context.authentication.principal.authorities
 			 def userMap=UserMap.find("from UserMap UM where UM.user.id="+user);
-			 println "role_______+-="+role
-	         gh.putValue("UserId", userMap.user.id);
+			 gh.putValue("UserId", userMap.user.id);
 			 def PartyID=userMap.party.id
-		     gh.putValue("Party", PartyID);
-	         gh.putValue("Help","Project_List.htm")
+			 gh.putValue("Party", PartyID);
+		     gh.putValue("Help","Project_List.htm")
 	         gh.putValue("PartyID","('"+ PartyID.toString()+"')");
 	         redirect uri:'/grantAllocation/gmsFrame'
+	         gh.putValue("LoggedIn",params.controller)
 	        // gh.putValue("Role", role);
 	        //redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
 		}
@@ -58,14 +56,11 @@ class LoginController {
 	 * Show the login page.
 	 */
 	def auth = {
-		println  "auth"
 		GrailsHttpSession gh=getSession()
 		def config = SpringSecurityUtils.securityConfig
-		 println  "params:"+params
 		 println  "gh.getValue(ang):"+gh.getValue("lang")
 		 if(params.lang!=null)
 		 {
-			 println  "params:"+params.lang
 			 gh.putValue("lang",params.lang) 
 		 }
 		 else
@@ -76,8 +71,6 @@ class LoginController {
 			 }
 		}
 		if (springSecurityService.isLoggedIn()) {
-			println  "indexisLoggedIn"+SCH.context.authentication.principal.username
-			println  "authisLoggedIn"
 			redirect uri:'/grantAllocation/gmsFrame'
 			return
 		}

@@ -240,7 +240,7 @@ class GrantAllocationService {
 		def grantAllocation=getGrantAllocationsByProject(projectId)
 		
 		 def grantAllocationInstanceList = []
-		 grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation  GA where  GA.granter= "+grantorID+" and GA.projects.parent="+projectId+""+subQuery);
+		 grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation  GA where  GA.granter= "+grantorID+" and GA.projects.parent="+projectId+""+subQuery+" ORDER BY GA.projects.createdDate DESC");
 		 
 		 return grantAllocationInstanceList
 	}
@@ -261,12 +261,8 @@ class GrantAllocationService {
 		 */
 		 public GrantAllocation[] getGrantAllocationsByProject(def projectId){
 			 def subQry = "";
-			
 			 def grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation  GA where  GA.projects = "+projectId);
-			 
-			     def  formatter = new SimpleDateFormat("dd/MM/yy");
-			   
-
+			 def  formatter = new SimpleDateFormat("dd/MM/yy");
 			 for(int i=0;i<grantAllocationInstanceList.size();i++)
 			 {
 				 String s = formatter.format(grantAllocationInstanceList[i].DateOfAllocation);
@@ -274,8 +270,14 @@ class GrantAllocationService {
 				 
 				  def numformatter = new DecimalFormat("#0.00");
 				  println numformatter.format(grantAllocationInstanceList[i].amountAllocated)
-    
-				 grantAllocationInstanceList[i].grantCode=s+"-"+numformatter.format(grantAllocationInstanceList[i].amountAllocated)
+				    if(grantAllocationInstanceList[i].granter!=null)
+				    {
+				   		grantAllocationInstanceList[i].grantCode=  grantAllocationInstanceList[i].granter.code +"-"+ s +"-"+numformatter.format(grantAllocationInstanceList[i].amountAllocated) 
+				    }
+				    else
+				    {
+					 	grantAllocationInstanceList[i].grantCode= s +"-"+numformatter.format(grantAllocationInstanceList[i].amountAllocated)
+					} 
 			 }
 			 return grantAllocationInstanceList
 		}
@@ -283,8 +285,6 @@ class GrantAllocationService {
 	 public GrantAllocation[] getGrantAllocationsByProjectCode(def projectId)
 	 {
 		 def subQry = "";
-		 
-			
 		 def grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation  GA where  GA.projects = "+projectId);
 		 for(int i=0;i<grantAllocationInstanceList.size();i++)
 		 {
@@ -770,4 +770,23 @@ class GrantAllocationService {
      	return projectsInstance
  	}
  	
+	 
+	 /*
+	 * method to get total sub-grant Allot for a project
+	 */
+	 public getTotalSubdrantAllot(def projectId)
+	 {
+		 double sumSubGrantAllot = 0.0
+		 def sumSubGrant = GrantAllocation.executeQuery("select sum(GA.amountAllocated) as total from GrantAllocation GA where GA.projects IN (select P.id from Projects P where P.parent="+projectId+")")
+		 if(sumSubGrant[0]!=null)
+			 sumSubGrantAllot = new Double(sumSubGrant[0]).doubleValue()
+			
+		 return sumSubGrantAllot
+	 }
+	 
+	  public getGrantAllocationByPartyId(def partyInstance)
+	  {
+	  	def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id="+partyInstance.id)
+	  	return grantAllocationInstanceList 
+	  }
 }

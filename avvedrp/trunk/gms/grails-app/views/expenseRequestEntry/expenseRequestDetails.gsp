@@ -8,6 +8,7 @@
     	<div class="wrapper"> 
 	    	 <div class="body">
 	            <div class="dialog">
+<img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
 	            	<h1><g:message code="default.ExpenseRequestDetails.label"/></h1> 
 	                    <table>
 	                        <tbody>
@@ -56,6 +57,28 @@
 	                                    <label for="remarks"><g:message code="default.Remarks.label" /></label>
 	                                </td>
 	                                <td>${expenseRequestEntryInstance.remarks}</td>
+	                            </tr>
+                        	</tbody>
+	                    </table>
+	                </div>
+	                <div class="dialog">
+	            	<h1><g:message code="default.accountDetails.label"/></h1> 
+	                    <table>
+	                        <tbody>
+	                        	
+	                            <tr class="prop">
+	                               <td width="150px">
+	                               <label for="currentBalance"><g:message code="default.CurrentBalance.label"/>:</label>
+	                               </td>
+	                                <td>${currencyFormat.ConvertToIndainRS(totAllAmount-totExpense-sumSubGrantAllot)}
+	                                (<g:message code="default.againstFundAllocation.label"/>)
+	                                </td>
+	                            </tr>
+	                            <tr class="prop">
+	                            <td width="150"></td>
+	                            <td>${currencyFormat.ConvertToIndainRS(receivedAmount-totExpense-sumTransferInstance)}
+	                                (<g:message code="default.againstFundReceived.label"/>)
+	                                </td>
 	                            </tr>
                         	</tbody>
 	                    </table>

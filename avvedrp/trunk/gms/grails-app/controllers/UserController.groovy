@@ -188,7 +188,8 @@ class UserController extends GmsController {
 			//def oldPassword = person.password
 			person.properties = params
 			if(params.Passwd)
-				person.password = springSecurityService.encodePassword(params.Passwd)
+				person.password = params.Passwd
+				//person.password = springSecurityService.encodePassword(params.Passwd)
 			//if (!params.password.equals(oldPassword)) {
 			//	person.password = springSecurityService.encodePassword(params.password)
 			//}
@@ -281,7 +282,8 @@ class UserController extends GmsController {
 			person.userSurName=params.userSurName
 			person.email=params.email
 			person.password=params.password
-			person.password = springSecurityService.encodePassword(params.password)
+			//person.password = springSecurityService.encodePassword(params.password)
+			person.password = params.password
 			person.enabled=false
 			person.activeYesNo='Y'
 			person.userDesignation = params.userDesignation
@@ -290,7 +292,7 @@ class UserController extends GmsController {
 			params.put("party.id",getUserPartyID())
 		    Integer personId = userService.saveUser(person,params)
 		    if(personId != null){
-		    	def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
+		        def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
 		    	String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
 		    	//mail content
 		    	String mailMessage="";
@@ -341,7 +343,8 @@ class UserController extends GmsController {
 		}
 		
 		/* Check whether entered old password is correct or not. */
-		def oldPasswd = springSecurityService.encodePassword(params.oldPasswd)
+		//def oldPasswd = springSecurityService.encodePassword(params.oldPasswd)
+		def oldPasswd = params.oldPasswd
 		def oldPassword = person.password
 		if(!oldPasswd.equals(oldPassword)){
 			flash.message ="${message(code: 'default.Oldpasswordnotcorrect.label')}"
@@ -350,8 +353,8 @@ class UserController extends GmsController {
 		else{
 			person.properties = params
 			if (!params.newPasswd.equals(oldPassword)) {
-				person.password = springSecurityService.encodePassword(params.newPasswd)
-				
+				//person.password = springSecurityService.encodePassword(params.newPasswd)
+				person.password = params.newPasswd
 				Integer personId = userService.updatePassword(person)
 				if(personId != null){
 					flash.message = "${message(code: 'default.Passwordchanged.label')}"
@@ -372,6 +375,8 @@ class UserController extends GmsController {
 	 */
 	def changePassword = {
 		GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","Change_Password.htm")//putting help pages in session
 		def userId = gh.getValue("UserId")
 		
 		def dataSecurityService = new DataSecurityService()
@@ -431,7 +436,7 @@ class UserController extends GmsController {
 			user.userSurName = params.userSurName
 			user.password = params.password
 			user.email = params.email
-			user.password = springSecurityService.encodePassword(params.password)
+		//	user.password = springSecurityService.encodePassword(params.password)
 			user.enabled=false
 			user.activeYesNo='Y'
 			user.userDesignation = params.userDesignation
@@ -440,8 +445,11 @@ class UserController extends GmsController {
 			
 			if(userId)
 			{
+			
+				person.user = user
 				flash.message = "${message(code: 'default.UserNamealreadyexists.label')}"
-				redirect uri: '/user/newUserCreate.gsp'
+				render(view: 'newUserCreate', model: [person:person,user:user,partyInstance:partyInstance])
+				 
 			}
 			else
 			{
@@ -450,7 +458,7 @@ class UserController extends GmsController {
 		        partyInstance.createdDate = new Date();
 		        partyInstance.modifiedBy="admin"
 		        partyInstance.modifiedDate = new Date();
-		        partyInstance.nameOfTheInstitution = params.get("party.code")
+		        partyInstance.nameOfTheInstitution = params.get("party.nameOfTheInstitution")
 		        partyInstance.code = params.get("party.code")
 		        partyInstance.address = ""
 		        partyInstance.activeYesNo = 'Y'
@@ -462,8 +470,9 @@ class UserController extends GmsController {
 			 
 			if((partyInstance.saveMode != null) && (partyInstance.saveMode.equals("Duplicate")))
 	       		 {
+	       		 person.user = user
 	       			flash.message = "${message(code: 'default.InstitutionAlreadyExists.label')}"
-	               redirect uri: '/user/newUserCreate.gsp'
+	                render(view: 'newUserCreate', model: [person:person,user:user,partyInstance:partyInstance])
 	       		}
 			else
 			{
@@ -621,7 +630,8 @@ class UserController extends GmsController {
 					{
 						if (emailValidator.isValid(userInstance.email))
 						{
-							userInstance.password=springSecurityService.encodePassword(newPassword)
+							// userInstance.password=springSecurityService.encodePassword(newPassword)
+							userInstance.password=newPassword
 							userInstance.enabled=false
 							userInstance.save()
 							String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
@@ -672,6 +682,8 @@ class UserController extends GmsController {
 	    	}
 	    	//def projectInstance = dataSecurityService.getAccessPermissionProjects()
 			GrailsHttpSession gh=getSession()
+			gh.removeValue("Help")
+			gh.putValue("Help","Create_Project_Permission.htm")//putting help pages in session
 			def userMapInstance = UserMap.findAll("from UserMap UM where UM.party.id="+gh.getValue("PartyID")+" and UM.user.id != "+gh.UserId+" and UM.user.id in(select PR.id from Person PR where PR.activeYesNo='Y')")
 			[grantAllocationInstance:grantAllocationInstance,userMapInstance:userMapInstance]
 	}
@@ -830,7 +842,12 @@ class UserController extends GmsController {
 			
 		}
 	
-	def newUserBySuperAdmin = {}
+	def newUserBySuperAdmin = 
+	{
+		GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","InstitutionBySuperAdmin.htm")//putting help pages in session
+	}
 	def saveNewUserBySuperAdmin =
 	{
 				def ctx = AH.application.mainContext
@@ -849,7 +866,8 @@ class UserController extends GmsController {
 				user.userSurName = params.userSurName
 				user.password = params.password
 				user.email = params.email
-				user.password = springSecurityService.encodePassword(params.password)
+				//user.password = springSecurityService.encodePassword(params.password)
+				user.password = params.password
 				user.enabled=false
 				user.userDesignation = params.userDesignation
 				user.phNumber = params.phNumber
@@ -857,7 +875,7 @@ class UserController extends GmsController {
 				
 				if(userId)
 				{
-					flash.message = "${message(code: 'default.UserNameOfSiteadminalreadyexists.label')}"
+					flash.error = "${message(code: 'default.UserNameOfSiteadminalreadyexists.label')}"
 					redirect uri: '/user/newUserBySuperAdmin.gsp'
 				}
 				else
@@ -879,7 +897,7 @@ class UserController extends GmsController {
 					if((partyInstance.saveMode != null) && (partyInstance.saveMode.equals("Duplicate")))
 			       	{
 						
-		       			flash.message = "${message(code: 'default.InstitutionAlreadyExists.label')}"
+		       			flash.error = "${message(code: 'default.InstitutionAlreadyExists.label')}"
 		                redirect uri: '/user/newUserBySuperAdmin.gsp'
 			       	}
 					else	

@@ -9,6 +9,7 @@
 	    	
 			
             <div class="body">
+            <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
 	     		<h1><g:message code="default.ExpenseRequestList.label"/></h1>
 	     		<g:if test="${flash.message}">
 	            <div class="message">${flash.message}</div>
@@ -48,7 +49,7 @@
 					                 		</td>
 					                 		
 					                 		<td>
-					                        	<g:link action="approvalStatus" id="${expenseRequestInstance.id}">
+					                        	<g:link params="[financeSide:'financeSide']" action="approvalStatus" id="${expenseRequestInstance.id}">
 					                     			<g:if test="${expenseRequestInstance.status != 'Pending'}">
 					                     				${expenseRequestInstance.status}
 				                     				</g:if>

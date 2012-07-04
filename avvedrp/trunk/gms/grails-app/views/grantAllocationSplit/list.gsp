@@ -41,6 +41,7 @@
     <body>
     	<div class="wrapper"> 
   			<g:subMenuList/>
+
 	    	<div class="proptable"> 
 				<table border="0" cellspacing="0" cellpadding="0" width="70%" align="left">
              		<tr>
@@ -65,6 +66,7 @@
                         	</strong>
                     	</td>
                     </tr> 
+	      <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
                 </table>
              </div>
             <div class="body">
@@ -106,14 +108,42 @@
 		                        if(totalGrantAlloctedAmt[0]==null)
 		                        {
 		                        	if(subAllocatedAmount)
-		                              unallocateAmt=grantAllocationInstanceList.amountAllocated-subAllocatedAmount
+		                        	  {
+			                        	  	if(grantAllocationInstanceListSize>0)
+			                        	  	{
+			                        	  		if(flag>0)
+					                        	  		unallocateAmt=grantAllocationInstanceList.amountAllocated
+			                                    else
+				                                     {
+				                        	  		    unallocateAmt=grantAllocationInstanceList.amountAllocated-subAllocatedAmount
+				                           	  		    flag++
+				                           	  		 }
+			                        	  	}
+			                        	  	else
+			                        	  	{
+			                        	  	   unallocateAmt=grantAllocationInstanceList.amountAllocated-subAllocatedAmount
+			                        	  	}
+			                         }
+		                              
 		                            else
 		                        	  unallocateAmt=grantAllocationInstanceList.amountAllocated
 		                        }
 		                        else
 		                        {
 		                           if(subAllocatedAmount)
-		                        	unallocateAmt=grantAllocationInstanceList.amountAllocated-(totalGrantAlloctedAmt[0]+subAllocatedAmount)
+		                           {
+		                                if(grantAllocationInstanceListSize>0)
+			                        	  	{
+			                        	  		
+			                        	  		if(flag>0)
+					                        	  		unallocateAmt=grantAllocationInstanceList.amountAllocated-totalGrantAlloctedAmt[0]
+			                                    else
+				                                     {
+				                        	  		    unallocateAmt=grantAllocationInstanceList.amountAllocated-(totalGrantAlloctedAmt[0]+subAllocatedAmount)
+				                           	  		    flag++
+				                           	  		 }
+			                        	  	}
+		                           }
 		                           else
 		                        	unallocateAmt=grantAllocationInstanceList.amountAllocated-totalGrantAlloctedAmt[0]
 		                        }
@@ -223,7 +253,6 @@
 									</g:if>
 							    </g:else>
 							</g:else>
-		                  
 						</td>
     					<td align="left"> </td>
     					<td>&nbsp;</td>

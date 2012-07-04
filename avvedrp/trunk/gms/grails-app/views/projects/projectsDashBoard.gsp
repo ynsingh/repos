@@ -8,6 +8,7 @@
     </head>
     <body>
     	<div class="wrapper">   
+		<img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
        <h1><g:message code="default.ProjectsDashBoard.label"/></h1>
          
                     <div id="content">

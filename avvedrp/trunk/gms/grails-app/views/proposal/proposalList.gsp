@@ -9,9 +9,11 @@
     </head>
     <body>
       <div class="wrapper">
+      
         <div class="tablewrapper">
           <div class="body">
-		  	<h1><g:message code="default.Proposal.ProposalList.head"/></h1>
+          <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
+          		  	<h1><g:message code="default.Proposal.ProposalList.head"/></h1>
             <table width="100%">
      				<tr>
                     	
@@ -47,7 +49,7 @@
 		               	        <th><g:message code="default.SubmittedBy.label"/></th>
 		                    	<th><g:message code="default.Organisation.label"/></th>
 		                    	
-		               	        <th><g:message code="default.View.label"/></th>
+		               	       <!-- <th><g:message code="default.View.label"/></th>-->
 		               	        <th><g:message code="default.ProposalVersion.label"/></th>
 		               	        <th>Proposal Review</th>
 		               	        <th><g:message code="default.Award.label"/></th>
@@ -60,11 +62,14 @@
 			                    
 			                        <td>${i+1}</td>
 			                        <% def proposalApplicationExtProjectInstance = ProposalApplicationExt.find("from ProposalApplicationExt PE where PE.field='TitleOfTheResearchProject_2' and PE.proposalApplication.id="+proposalApplicationInstance?.id)%>
-			                         <td>${proposalApplicationExtProjectInstance?.value}</td>
+			                         
+			                         
+			                         <td><g:link action="proposalApplicationReview" controller='proposalApplication' id="${proposalApplicationInstance.id}">${proposalApplicationExtProjectInstance?.value}</g:link>
+			                         </td>
 			                         <td>${proposalApplicationInstance?.name}</td>
 			                         <td>${proposalApplicationInstance?.organisation}</td>
 			                         
-			                        <td><g:link action="proposalApplicationReview" controller='proposalApplication' id="${proposalApplicationInstance.id}"><g:message code="default.View.label"/></g:link></td>
+			                        <!--<td><g:link action="proposalApplicationReview" controller='proposalApplication' id="${proposalApplicationInstance.id}"><g:message code="default.View.label"/></g:link></td>-->
 			                    	  <td>V${proposalApplicationInstance?.proposal?.proposalVersion}</td>
 			                    	  <td><g:link action="proposalReviewDetails" controller='proposal' id="${proposalApplicationInstance.proposal.id}">Proposal Review</g:link></td>
 			                    	  <td>

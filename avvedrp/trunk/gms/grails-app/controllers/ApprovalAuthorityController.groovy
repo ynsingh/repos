@@ -27,6 +27,8 @@ class ApprovalAuthorityController {
        // approvalAuthorityInstance.properties = params
         
         GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","Create_approval_Authority.htm")//putting help pages in session
     	def partyInstance = Party.get(gh.getValue("Party"))
     	println"partyInstance"+partyInstance
     	 def approvalAuthorityList = approvalAuthorityService.getActiveApprovalAuthority(gh.getValue("PartyID"))
@@ -52,7 +54,7 @@ class ApprovalAuthorityController {
     	println"chkDefaultApprovalAuthority"+chkDefaultApprovalAuthority
     	if(chkDefaultApprovalAuthority && params.defaultYesNo == 'Y')
     	{
-    		flash.message ="${message(code: 'default.defaultApprovalAuthority.label')}"
+    		flash.error ="${message(code: 'default.defaultApprovalAuthority.label')}"
 	    		redirect(action: "create", id: approvalAuthorityInstance.id)
     	}
     	else
@@ -60,7 +62,7 @@ class ApprovalAuthorityController {
     	def chkApprovalAuthorityInstance = approvalAuthorityService.checkDuplicateApprovalAuthority(params)
 		if(chkApprovalAuthorityInstance)
 	    {
-	    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+	    	flash.error ="${message(code: 'default.AlreadyExists.label')}"
 	    		redirect(action: "create", id: approvalAuthorityInstance.id)
 	    }
 		else
@@ -94,7 +96,7 @@ class ApprovalAuthorityController {
         	println"chkDefaultApprovalAuthority"+chkDefaultApprovalAuthority
         	if(chkDefaultApprovalAuthority && params.defaultYesNo == 'Y')
         	{
-        		flash.message ="${message(code: 'default.defaultApprovalAuthority.label')}"
+        		flash.error ="${message(code: 'default.defaultApprovalAuthority.label')}"
     	    		redirect(action: "create", id: approvalAuthorityInstance.id)
         	}
         	else
@@ -102,7 +104,7 @@ class ApprovalAuthorityController {
         	def chkApprovalAuthorityInstance = approvalAuthorityService.checkDuplicateApprovalAuthority(params)
     		if(chkApprovalAuthorityInstance)
     	    {
-    	    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+    	    	flash.error ="${message(code: 'default.AlreadyExists.label')}"
     	    		redirect(action: "create", id: approvalAuthorityInstance.id)
     	    }
     		else
@@ -180,7 +182,7 @@ class ApprovalAuthorityController {
         	if(chkDefaultApprovalAuthority && chkDefaultApprovalAuthority[0].id != Long.parseLong(params.id) 
         			&& params.defaultYesNo == 'Y')
         	{
-        		flash.message ="${message(code: 'default.defaultApprovalAuthority.label')}"
+        		flash.error ="${message(code: 'default.defaultApprovalAuthority.label')}"
     	    		redirect(action: "edit", id: approvalAuthorityInstance.id)
         	}
         	else
@@ -191,7 +193,7 @@ class ApprovalAuthorityController {
     		if(chkApprovalAuthorityInstance && (chkApprovalAuthorityInstance[0].id!= Long.parseLong(params.id)))
     	    {
     	    println"sucess"
-    	    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+    	    	flash.error ="${message(code: 'default.AlreadyExists.label')}"
     	    		redirect(action: "edit", id: approvalAuthorityInstance.id)
     	    }
     	    else
@@ -231,7 +233,7 @@ class ApprovalAuthorityController {
         	if(chkDefaultApprovalAuthority && chkDefaultApprovalAuthority[0].id != Long.parseLong(params.id)
         			&& params.defaultYesNo == 'Y'  )
         	{
-        		flash.message ="${message(code: 'default.defaultApprovalAuthority.label')}"
+        		flash.error ="${message(code: 'default.defaultApprovalAuthority.label')}"
     	    		redirect(action: "edit", id: approvalAuthorityInstance.id)
         	}
         	else
@@ -242,7 +244,7 @@ class ApprovalAuthorityController {
     		if(chkApprovalAuthorityInstance && (chkApprovalAuthorityInstance[0].id!= Long.parseLong(params.id)))
     	    {
     	    println"sucess"
-    	    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+    	    	flash.error ="${message(code: 'default.AlreadyExists.label')}"
     	    		redirect(action: "edit", id: approvalAuthorityInstance.id)
     	    }
     	    else

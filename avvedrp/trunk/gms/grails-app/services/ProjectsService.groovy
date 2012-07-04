@@ -30,7 +30,7 @@ class ProjectsService{
 	private objectIdentityRetrievalStrategy
 	private sessionFactory
 	private springSecurityService
-	
+	def investigatorService
 	def dataSource 
 	
 	/**
@@ -49,7 +49,7 @@ class ProjectsService{
 	 */
      @PreAuthorize("hasPermission(#id, 'Projects', read) or hasPermission(#id, 'Projects', admin)")
 	  Projects getProjectById(def id){
-		Projects.get id 
+	  	Projects.get id 
 		
 	}
 	
@@ -162,7 +162,7 @@ class ProjectsService{
              if(projectId.intValue() == 0 || projectId.intValue() == projectsInstance.id.intValue()){
         	    projectsInstance.properties = projectParams 
         	       
-        	    	if(!projectsInstance.hasErrors() && projectsInstance.save() && checkPIForUpdateProject(projectParams)) {
+        	    	if(!projectsInstance.hasErrors() && projectsInstance.save() && checkPIsForUpdateProject(projectParams) && checkCOPIsForUpdateProject(projectParams)) {
             	    	
             	    	
         	    		projectsInstance.saveMode = "Updated"
@@ -180,6 +180,67 @@ class ProjectsService{
 	 * Function to save project
 	 */
 	public Projects saveProjects(def projectsInstance,def useriD){
+		def userInstanse = Person.get(useriD)
+		/* Check whether Projects with same name already exists.*/
+		if(checkDuplicateProject(projectsInstance) == 0){
+			projectsInstance.activeYesNo = "Y" //=============11-11-2010
+			if(!projectsInstance.hasErrors() && projectsInstance.save()) {
+				projectsInstance.saveMode = "Saved"
+				def projectsPIMapInstance = new ProjectsPIMap();
+		    	projectsPIMapInstance.projects = projectsInstance
+				projectsPIMapInstance.investigator = projectsInstance.investigator
+				projectsPIMapInstance.role = "PI"
+				projectsPIMapInstance.activeYesNo="Y"
+				projectsPIMapInstance.save()
+				if(projectsInstance.copi)
+					{
+						def projectsCOPIMapInstance = new ProjectsPIMap();
+				    	projectsCOPIMapInstance.projects = projectsInstance
+						projectsCOPIMapInstance.investigator = projectsInstance.copi
+						projectsCOPIMapInstance.role = "CO-PI"
+						projectsCOPIMapInstance.activeYesNo="Y"
+						projectsCOPIMapInstance.save()
+					}
+				def grantAllocationInstance = new GrantAllocation();
+		    	grantAllocationInstance.projects=projectsInstance;
+		    	
+
+		    	//if the project is root, creating a default grant allocation for  the root project
+		    	if(projectsInstance.parent==null)
+		    	{
+		    	def userMap=UserMap.find("from UserMap UM where UM.user.id="+useriD);
+		    	
+		    	grantAllocationInstance.party=userMap.party
+		    	grantAllocationInstance.amountAllocated=0;
+		    	grantAllocationInstance.granter=null
+		    	grantAllocationInstance.code = "default";
+		    	grantAllocationInstance.DateOfAllocation= new Date();
+		    	grantAllocationInstance.allocationType="";
+		    	grantAllocationInstance.remarks="";
+		    	grantAllocationInstance.createdBy=userMap.user.username;
+		    	grantAllocationInstance.modifiedBy="";
+		    	grantAllocationInstance.sanctionOrderNo="";
+				grantAllocationInstance.save();	 
+		    	/*save grant Allocation to acl*/
+		    	saveGrantAllocationToAcl(grantAllocationInstance,projectsInstance,userInstanse)
+		    	/*calling a method for save project access permission for pi*/
+		    	saveAccessPermissionForprojects(grantAllocationInstance,projectsInstance,projectsPIMapInstance.investigator.email)
+			    }
+		    	
+			}
+		}
+		else
+			projectsInstance.saveMode = "Duplicate"
+				
+	    	
+	    	
+		return projectsInstance
+	}
+	
+	/**
+	 * Function to save project with amount allocated
+	 */
+	public Projects saveProjectsWithAmountAllocated(def projectsInstance,def useriD,params){
 		def userInstanse = Person.get(useriD)
 		/* Check whether Projects with same name already exists.*/
 		if(checkDuplicateProject(projectsInstance) == 0){
@@ -204,7 +265,7 @@ class ProjectsService{
 		    	def userMap=UserMap.find("from UserMap UM where UM.user.id="+useriD);
 		    	
 		    	grantAllocationInstance.party=userMap.party
-		    	grantAllocationInstance.amountAllocated=0;
+		    	grantAllocationInstance.amountAllocated=new Integer(params.amountAllocated);
 		    	grantAllocationInstance.granter=null
 		    	grantAllocationInstance.code = "default";
 		    	grantAllocationInstance.DateOfAllocation= new Date();
@@ -228,6 +289,7 @@ class ProjectsService{
 	    	
 		return projectsInstance
 	}
+	
 	/*
 	 * save grant Allocation to acl
 	 * */
@@ -279,12 +341,9 @@ class ProjectsService{
 		def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.projects.id="+projectsId)
 		def investigatorInstance=Investigator.get(investigatorId)
 		def grant = getGrantAllocationFromAcl(grantAllocationInstanceList)
-		
 		def projectsInstance = Projects.get(projectsId)
 		def grantAllocationInstance=GrantAllocation.get(grant)
-		
 		def userName = investigatorInstance.email
-		println "grant "+grant
 		if(grantAllocationInstance)
 		{
 			saveAccessPermissionForprojects(grantAllocationInstance,projectsInstance,investigatorInstance.email)
@@ -321,7 +380,6 @@ class ProjectsService{
 	 */
 	public def checkFordeleteProjectAccessPermissionOfPiMap(def projectsId,def investigatorId)
 	{
-		
 		def checkFordelete
 		def projectInstance = Projects.get(projectsId)
 		def grantAllocationInstance = GrantAllocation.findAll("from GrantAllocation GA where GA.projects.id="+projectsId)
@@ -331,8 +389,6 @@ class ProjectsService{
 		if(grantAllocationId)
 		{
 		def grantallocationInstanceValue=GrantAllocation.get(grantAllocationId)
-		
-		
 		deleteProjectAccessPermissionForAll(grantallocationInstanceValue,projectInstance,investigatorInstance.email)
 		checkFordelete = true
 		}
@@ -356,7 +412,6 @@ class ProjectsService{
 			def value
 			
 			def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.projects.id="+projectsId)
-			
 			def aclDomain = org.codehaus.groovy.grails.plugins.springsecurity.acl.AclEntry
 			for(grantAllocationInstanceId in grantAllocationInstanceList)
 			{
@@ -747,6 +802,15 @@ class ProjectsService{
 	}
 	
 	/**
+	* Function to check whether the Co-PI is added for a project.
+	*/
+	public ProjectsPIMap checkCOPIofProject(def projectId)
+	{
+		def projectsCOPIMapInstance=ProjectsPIMap.find("from ProjectsPIMap PM where PM.projects="+projectId+" and PM.role = 'CO-PI' and PM.activeYesNo='Y'")
+		return projectsCOPIMapInstance
+	}
+	
+	/**
 	* Function to check duplicate entry in projectPiMap.
 	*/
 	public ProjectsPIMap checkDuplicatePIofProject(def projectsId,def investigatorId)
@@ -759,7 +823,7 @@ class ProjectsService{
 	* Function to check whether the PI is updated for a project.
 	*/
 	public def checkPIForUpdateProject(def project)
-	{		
+	{	
 		def checkPiInstance
 		def projectsPIMapInstance=ProjectsPIMap.find("from ProjectsPIMap PM where PM.projects.id="+project.id+" and PM.investigator.id="+project.investigator.id+" and PM.activeYesNo='Y' and PM.role = 'PI'")
 		def projectInstance = Projects.get(project.id)
@@ -783,7 +847,7 @@ class ProjectsService{
 				{
 					projectsPIMapCoPIInstancedelete.activeYesNo="N"
 						if(checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapCoPIInstancedelete.projects.id,projectsPIMapCoPIInstancedelete.investigator.id))
-						{		
+						{	
 							projectsPIMapCoPIInstancedelete.save()
 							//Assign to project to PI and giving project access permission
 							savePIMapInstance(project,projectInstance)
@@ -801,7 +865,7 @@ class ProjectsService{
 				{
 					projectsPIMapInstancedelete.activeYesNo="N"
 						if(checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapInstancedelete.projects.id,projectsPIMapInstancedelete.investigator.id))
-						{		
+						{	
 							projectsPIMapInstancedelete.save()
 							//Assign to project to PI and giving project access permission
 							savePIMapInstance(project,projectInstance)
@@ -816,12 +880,12 @@ class ProjectsService{
 				{
 					projectsPIMapCoPIInstancedelete.activeYesNo="N"
 					if(checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapCoPIInstancedelete.projects.id,projectsPIMapCoPIInstancedelete.investigator.id))
-					{		
+					{	
 						projectsPIMapCoPIInstancedelete.save()
 						
 						projectsPIMapInstancedelete.activeYesNo="N"
 							if(checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapInstancedelete.projects.id,projectsPIMapInstancedelete.investigator.id))
-							{		
+							{	
 								projectsPIMapInstancedelete.save()
 								//Assign to project to PI and giving project access permission
 								savePIMapInstance(project,projectInstance)
@@ -842,6 +906,61 @@ class ProjectsService{
 		}
 		return checkPiInstance
 	}
+	
+	public def checkPIsForUpdateProject(def project)
+	{
+		def checkPiInstance
+		def projectsPIMapInstance=ProjectsPIMap.find("from ProjectsPIMap PM where PM.projects.id="+project.id+" and PM.investigator.id="+project.investigator.id+" and PM.activeYesNo='Y' and PM.role = 'PI'")
+		def projectInstance = Projects.get(project.id)
+		def projectsPIMapInstancedelete=ProjectsPIMap.find("from ProjectsPIMap PM where PM.projects="+project.id+" and PM.role = 'PI' and PM.activeYesNo='Y'")
+		if(projectsPIMapInstance)
+		{
+			checkPiInstance=true
+		}
+		else
+		{
+			projectsPIMapInstancedelete.activeYesNo="N"
+			if(checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapInstancedelete.projects.id,projectsPIMapInstancedelete.investigator.id))
+			{	
+				projectsPIMapInstancedelete.save()
+				//Assign to project to PI and giving project access permission
+				savePIMapInstance(project,projectInstance)
+				checkPiInstance=true
+			}
+			else
+			{
+				checkPiInstance=false
+			}
+		}
+	}
+	
+	public def checkCOPIsForUpdateProject(def project)
+	{
+	
+		def checkPiInstance
+		def projectsCOPIMapInstance=ProjectsPIMap.find("from ProjectsPIMap PM where PM.projects.id="+project.id+" and PM.investigator.id="+project.copi.id+" and PM.activeYesNo='Y' and PM.role = 'CO-PI'")
+		def projectInstance = Projects.get(project.id)
+		def projectsCOPIMapInstancedelete=ProjectsPIMap.find("from ProjectsPIMap PM where PM.projects="+project.id+" and PM.role = 'CO-PI' and PM.activeYesNo='Y'")
+		if(projectsCOPIMapInstance)
+		{
+			checkPiInstance=true
+		}
+		else
+		{
+			projectsCOPIMapInstancedelete.activeYesNo="N"
+			if(checkFordeleteProjectAccessPermissionOfPiMap(projectsCOPIMapInstancedelete.projects.id,projectsCOPIMapInstancedelete.investigator.id))
+			{	
+				projectsCOPIMapInstancedelete.save()
+				//Assign to project to PI and giving project access permission
+				saveCoPIMapInstance(project,projectInstance)
+				checkPiInstance=true
+			}
+			else
+			{
+				checkPiInstance=false
+			}
+		}
+	}
 	/**
 	 * Assign to project to PI and giving project access permission
 	 */
@@ -855,6 +974,22 @@ class ProjectsService{
 		projectsPIMapInstance.save()
 		saveProjectAccessPermissionForPiMap(projectInstance.id,projectsPIMapInstance.investigator.id)
 	}
+	
+	/**
+	 * Assign to project to PI and giving project access permission
+	 */
+	public def saveCoPIMapInstance(def project,def projectInstance)
+	{
+		def projectsCOPIMapInstance = new ProjectsPIMap();
+		projectsCOPIMapInstance.projects = Projects.get(project.id)
+		projectsCOPIMapInstance.investigator = Investigator.get(project.copi.id)
+		projectsCOPIMapInstance.role = "CO-PI"
+		projectsCOPIMapInstance.activeYesNo="Y"
+		projectsCOPIMapInstance.save()
+		saveProjectAccessPermissionForPiMap(projectInstance.id,projectsCOPIMapInstance.investigator.id)
+	}
+	
+	
 	public def formatDate(def dateValue)
 	{
 		println "dateValue "+dateValue

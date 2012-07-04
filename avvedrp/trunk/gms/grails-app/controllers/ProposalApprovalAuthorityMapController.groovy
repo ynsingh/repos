@@ -14,6 +14,8 @@ class ProposalApprovalAuthorityMapController {
 
     def create = {
 		GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","Assignproposalto_ApprovalAuthority.htm")//putting help pages in session
         def proposalApprovalAuthorityMapInstance = new ProposalApprovalAuthorityMap()
         def proposalService = new ProposalService()
 		def proposalApplicationList = []

@@ -10,7 +10,7 @@
       <div class="wrapper"> 
       <g:subMenuList/>       
         <div class="body">
-          <table>
+          <table width="100%" align="left">
           
             <tr>
 	           <td valign="top" ><g:message code="default.ProjectCode.label"/>:</td>
@@ -21,6 +21,9 @@
                			${currencyFormat.ConvertToIndainRS(projectsInstance.totAllAmount)}
            			</strong>
        			</td>
+<td>
+      	<img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">   
+</td>
             </tr>
               
       	  </table>   

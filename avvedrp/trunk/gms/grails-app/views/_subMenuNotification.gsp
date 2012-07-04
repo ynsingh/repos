@@ -8,8 +8,13 @@
  	<body>
 		<div class="hrmenu-container" >	
 			<ul id="topnav"> 
-				<li><g:link controller="notification" action="list"><g:message code="default.NotificationList.label"/></g:link></li> 
-		        <li><g:link controller="notification" action="create"><g:message code="default.NewNotification.label"/></g:link></li> 
+			
+				<g:each in="${menuRoleMapParentList}" var="menuRoleMapParentInstance">
+				<%def childList=MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+" and MRM.menu.parentId="+menuRoleMapParentInstance.menu.id+" and MRM.activeYesNo='Y'group by MRM.menu.id order by MRM.menu.menuOrder asc")%>
+					<g:each in="${childList}" var="menuRoleMapChildInstance">
+						<li><a href="${createLinkTo(dir:menuRoleMapChildInstance.menu.menuPath)}"><g:message code="${menuRoleMapChildInstance.menu.menuName}"/></a></li>
+					</g:each>
+				</g:each>
 			</ul> 
 		</div> 
 	</body>	

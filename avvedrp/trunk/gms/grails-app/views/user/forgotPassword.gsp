@@ -25,6 +25,7 @@
 		</div>
 	<div class="body">
 		<div style="background-color:#386890;width:100%;height: 5%"> </div>
+	<img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/forget_Password.htm','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes'')" title="Help" alt="Help" >
 		<h1></h1>
 		<g:if test="${flash.message}">
 		<div class="message">${flash.message}</div>

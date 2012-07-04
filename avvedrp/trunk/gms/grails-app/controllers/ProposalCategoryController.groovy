@@ -1,3 +1,4 @@
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class ProposalCategoryController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -12,6 +13,9 @@ class ProposalCategoryController {
     }
 
     def create = {
+		GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","proposal_Category.htm")//putting help pages in session
         def proposalCategoryInstance = new ProposalCategory()
         def proposalCategoryService = new ProposalCategoryService()
         proposalCategoryInstance.properties = params

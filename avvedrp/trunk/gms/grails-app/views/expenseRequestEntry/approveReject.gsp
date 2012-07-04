@@ -80,9 +80,8 @@
 		                                <label for="view"><g:message code="default.Invoice.label" /></label>
 		                            </td>
 		                            <td>
-			                            <g:link action="create"  controller='attachments' 
-				                            id="${expenseRequestEntryInstance.id}" params="[trackType:'expenseRequestEntry']">
-				                            <g:message code="default.View/Upload.label"/>
+			                            <g:link action="invoiceAttachList" id="${expenseRequestEntryInstance.id}">
+				                            <g:message code="default.View.label"/>
 			                            </g:link>
 				                        
 		                            </td>
@@ -96,6 +95,28 @@
 	                                <td>${expenseRequestEntryInstance.remarks}</td>
 	                            </tr>
 	                            
+                        	</tbody>
+	                    </table>
+	                </div>
+	                <div class="dialog">
+	            	<h1><g:message code="default.accountDetails.label"/></h1> 
+	                    <table>
+	                        <tbody>
+	                        	
+	                            <tr class="prop">
+	                               <td width="150px">
+	                               <label for="currentBalance"><g:message code="default.CurrentBalance.label"/>:</label>
+	                               </td>
+	                                <td>${currencyFormat.ConvertToIndainRS(totAllAmount-totExpense-sumSubGrantAllot)}
+	                                (<g:message code="default.againstFundAllocation.label"/>)
+	                                </td>
+	                            </tr>
+	                            <tr class="prop">
+	                            <td width="150"></td>
+	                            <td>${currencyFormat.ConvertToIndainRS(receivedAmount-totExpense-sumTransferInstance)}
+	                                (<g:message code="default.againstFundReceived.label"/>)
+	                                </td>
+	                            </tr>
                         	</tbody>
 	                    </table>
 	                </div>
@@ -143,7 +164,8 @@
 						                       		</td>
 				                                	
 			                                	<td>
-			                                		<g:select name="approvalAuthority.id" from="${approvalAuthorityInstance}" optionKey="id" optionValue = "name" value="${proposalApprovalAuthorityMapInstanceList?.approvalAuthority?.id}" noSelection="['null':'-Select-']"/>
+			                                		<g:select name="approvalAuthority.id" from="${approvalAuthorityInstance}" optionKey="id" optionValue = "name" onchange="${remoteFunction(controller:'expenseRequestEntry',action:'approvalAuthoritySelect',update:'apprvlAuthrtySelt',  params:'\'approvalAuthority.id=\' + this.value' )}"
+			                                		value="${proposalApprovalAuthorityMapInstanceList?.approvalAuthority?.id}" noSelection="['null':'-Select-']"/>
 			                                	</td>
 									         </tr>
 		                       	 	  		 <tr class="prop">
@@ -156,16 +178,14 @@
 			                        		</tr>
 			                        	</table>
 			                       
-		                	   			<div class="buttons">
-		                					<span class="button"><g:actionSubmit value="${message(code: 'default.Send.button')}" onClick="return validateApprovalAuthorityApproveReject()" action="sendRequest" /> 
-			                   				<span class="button"><g:actionSubmit value="${message(code: 'default.EvaluationCompleted.button')}" onClick="" action="processComplete" /> 
-			                   			</div>
-		                   			 </g:else>
-	                   			</div>
-                	  		</g:form>
-	                
-                 
-     			</div>
+		                	   				<div id="apprvlAuthrtySelt"> 
+					                			<span class="button"><g:actionSubmit value="${message(code: 'default.Send.button')}"  disabled="false"  onClick="return validateApprovalAuthorityApproveReject()" action="sendRequest" />
+					                		</div>
+					                			<span class="button" style="margin-left:100px;margin-top:-24px; position:absolute;"><input type="submit" onclick="" value="Evaluation Completed " name="_action_processComplete">
+						           </g:else>
+	                   		</div>
+                	  </g:form>
+	   			</div>
  			</div>
 		</body>
 </html>

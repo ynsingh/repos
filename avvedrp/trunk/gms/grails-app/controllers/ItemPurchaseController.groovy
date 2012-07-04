@@ -19,14 +19,13 @@ class ItemPurchaseController
     
 	def create = 
     {
-        println "params"+params
-		def itemPurchaseInstance = new ItemPurchase()
+	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","ItemPurchase.htm")//putting help pages in session
+        def itemPurchaseInstance = new ItemPurchase()
         itemPurchaseInstance.properties = params
-        println "-----------"+params.id
         def projectInstance = Projects.get(params.id)
-        println "projectInstance="+projectInstance
         def itemList=ItemPurchase.list(params)
-        println "itmlis="+itemList.Status
         def itemPurchaseInstanceList=itemPurchaseService.getItemPurchaseList(projectInstance)
         return [itemPurchaseInstance: itemPurchaseInstance,
                 itemPurchaseInstanceList:itemPurchaseInstanceList,

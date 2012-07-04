@@ -16,6 +16,7 @@ class NotificationController {
 
   
     def list = {
+    println "---------------chk--------------"
 			params.max = Math.min(params.max ? params.int('max') : 10, 100)
             if(!params.max) params.max = 10
             String subQuery ="";
@@ -374,7 +375,28 @@ class NotificationController {
     			redirect(controller:"notification",action:"list")
     		}
     }
-	def notificationAuthorityMap = {	
+	
+		def proposalFilter = {
+			def gmsSettingsService = new GmsSettingsService()
+			def days = gmsSettingsService.getGmsSettingsValue("limit_days")
+			println "days"+days
+			return [ days : days]
+		}
+
+		def proposalFilterSave = {
+			def gmsSettingsInstance = GmsSettings.find( "from GmsSettings GS where 	GS.name='limit_days'");
+			gmsSettingsInstance.value=params.proposalFilter
+			if(gmsSettingsInstance.save()){
+				 flash.message="${message(code: 'default.Modified.label')}"
+				 
+			}
+			else{
+				flash.message="${message(code: 'Failed!')}"
+			}
+			redirect(controller:"notification",action:"proposalFilter")
+		}
+
+		def notificationAuthorityMap = {	
 			def proposalApprovalAuthorityMapService = new ProposalApprovalAuthorityMapService()
 			def approvalAuthorityService = new ApprovalAuthorityService()
 			GrailsHttpSession gh=getSession()

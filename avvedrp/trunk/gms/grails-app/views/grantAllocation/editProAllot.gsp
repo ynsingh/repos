@@ -119,7 +119,6 @@
                             	<strong>${grantAllocationInstance?.party?.code}</strong>
 	                        </td>
                     	</tr> 
-                            
                         <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="investigator"><g:message code="default.Investigator.label"/>:</label>
@@ -128,7 +127,15 @@
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'investigator','errors')}">
                                  <g:select id="investigator.id" optionKey="id" optionValue="fullName" from="${investigatorInstanceList}" name="investigator.id" value="${projectsInstance?.investigator?.id}"></g:select>
 	                            </td>
-                         	</tr>    
+                         	</tr>   
+                         <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="investigator"><g:message code="default.COPI.label"/>:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'copi','errors')}">
+                                 <g:select id="copi.id" optionKey="id" optionValue="fullName" from="${investigatorInstanceList}" name="copi.id" value="${projectsInstance?.copi?.id}"></g:select>
+	                            </td>
+                         </tr>   
                             
                         <tr class="prop">
                             <td valign="top" class="name">

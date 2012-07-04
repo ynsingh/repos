@@ -1,4 +1,4 @@
-<html>
+<html dir="${session.orientation}">
        <head>
 
         <title><g:layoutTitle default="Grails" /></title>
@@ -10,14 +10,15 @@
           <g:javascript library="appFormValidation" />
            <ckeditor:resources />
           <script src="${createLinkTo(dir:'images',file:'jquery-1.3.2.js')}"></script>
+          <script src="${createLinkTo(dir:'images',file:'jquery.tools.min.js')}"></script> 
             <script src="${createLinkTo(dir:'images',file:'jquery.colorbox.js')}"></script>
     		<link rel='stylesheet' href='/gms/plugins/modalbox-0.4/css/modalbox.css' />
          <link rel="stylesheet"  href="${createLinkTo(dir:'images',file:'colorbox.css')}" type="text/css" media="screen" /> 
                    
            <script  src="${createLinkTo(dir:'images',file:'jquery.event.hover.js')}" type="text/javascript" > 
         </script> 
-           
-        
+           	
+    <script type="text/javascript" src="${createLinkTo(dir:'images',file:'jquery.pngFix.pack.js')}"></script>      
         <script type="text/javascript"> 
             $(document).ready(function(){
                      
@@ -135,6 +136,7 @@ else if(eval('typeof(document.frmreport)') != 'undefined')
       document.FundAdvance.projectID.value=document.frmreport.projects.value;
       document.FundAdvanceExpenseDetails.projectID.value=document.frmreport.projects.value;
       
+      document.FundFromExternalAgency.projectID.value=document.frmreport.projects.value;
          
       var day;
 	  var month;

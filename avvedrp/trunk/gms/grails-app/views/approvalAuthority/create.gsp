@@ -13,10 +13,14 @@
     
         <div class ="wrapper">
         <div class="body">
+        <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">
             <h1><g:message code="default.CreateApprovalAuthority.label" args="[entityName]" /></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
+            <g:if test="${flash.error}">
+		    <div class="errors">${flash.error}</div>
+	        </g:if>
             <g:hasErrors bean="${approvalAuthorityInstance}">
             </g:hasErrors>
             <g:form action="save" method="post" >

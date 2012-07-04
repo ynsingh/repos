@@ -70,6 +70,7 @@ class UserRoleController {
 	    			  userRoleInstance.save()
 	    		  }
     	}
+    	flash.message = "${message(code:'default.roleAssigned.label')}"
      	redirect(action: "getUserRole", id: userRoleInstance.user.id)
 	}
     def removeRolesFromUser =
@@ -97,7 +98,7 @@ class UserRoleController {
     	def userRoleInstanceList = userService.getUserRoleByUserId(params.personMapInstance.user.id)
     	if(userRoleInstanceList.size()== userRoleRemoveInstanceList.size() )
     	 {
-     		flash.message = "${message(code:'default.cantdeleteallroles.label')}"	
+     		flash.error = "${message(code:'default.cantdeleteallroles.label')}"	
     	    redirect(action: "getUserRole", id: params.personMapInstance.user.id)
     	 }
     	else
@@ -116,11 +117,12 @@ class UserRoleController {
 		    	}
 			    	if(flag>0)
 			    	{
-				    	flash.message = "${message(code:'default.cantdeletepi.label')}"	
+				    	flash.error = "${message(code:'default.cantdeletepi.label')}"	
 				     	redirect(action: "getUserRole", id: params.personMapInstance.user.id)
 			    	}
 			    	else
 			    	{
+			    		flash.message = "${message(code:'default.roleRemoved.label')}"
 			    		redirect(action: "getUserRole", id: params.personMapInstance.user.id)
 			    	}
     	}

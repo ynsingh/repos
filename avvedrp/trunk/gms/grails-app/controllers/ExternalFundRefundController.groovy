@@ -16,6 +16,9 @@ class ExternalFundRefundController {
     }
 
     def create = {
+    	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","Refund_Amount.htm")//putting help pages in session
     	def grantAllocationService = new GrantAllocationService()
     	def grantReceiptService = new GrantReceiptService()
     	def grantExpenseService = new GrantExpenseService()
@@ -215,6 +218,9 @@ class ExternalFundRefundController {
     }
     
     def refundList = {
+    	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","Refund_List.htm")//putting help pages in session
     	def grantAllocationService = new GrantAllocationService()
     	def grantAllocationInstance = GrantAllocation.get(params.id)
     	def RefundList = []

@@ -31,7 +31,7 @@
 	<g:subMenuLogin/>
 		    <div class="body">
         
-        
+        <img src="${createLinkTo(dir:'images/themesky',file:'help.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/uploadProposal_details.htm','mywindow','width=800,height=500,left=0,top=100,screenX=0,screenY=100')"  >
             <h1><g:message code="default.UploadProposal.head"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
@@ -100,8 +100,8 @@
             			<tr>
             			
             				<td colspan="2">
-            				<div id="grantorList"><b><label><g:message code="default.ClickHereStart.label"/></label><g:link action="proposalApplicationPartyList" controller='proposalApplication' id="" ><g:message code="default.NewForm.label"/></g:link>
-            				</b>
+            				<div id="grantorList"><g:link action="proposalApplicationPartyList" controller='proposalApplication' id="" style="color:red;"> <label><g:message code="default.ClickHereStart.label"/></label><g:message code="default.NewForm.label"/></g:link>
+            				
             				</div></td>
             				
             			</tr>

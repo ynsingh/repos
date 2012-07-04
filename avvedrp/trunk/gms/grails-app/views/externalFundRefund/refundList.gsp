@@ -18,7 +18,10 @@
 		            
 	             	<td ><g:message code="default.RefundingStatus.label"/>:</td>
 		            <td><strong>${externalFundAllocationInstance.status}</strong></td>
-		             <input type=hidden name="fund"  value="${params.fund}">    
+		             <input type=hidden name="fund"  value="${params.fund}">   
+			<td>
+			     <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help"> 
+			</td> 
         		</tr> 
         		 
 	          </table> 

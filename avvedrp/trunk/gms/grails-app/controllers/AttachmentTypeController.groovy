@@ -1,3 +1,4 @@
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class AttachmentTypeController {
     
     def index = { redirect(action:list,params:params) }
@@ -106,6 +107,9 @@ class AttachmentTypeController {
          }
     }
     def create = {
+	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","Create_AttachmentType.htm")//putting help pages in session
     	def attachmentsService = new AttachmentsService()	
         def attachmentTypeInstance = new AttachmentType()
         attachmentTypeInstance.properties = params

@@ -118,10 +118,12 @@ class PartyDepartmentController {
          }
     }
 
-    def create = {
+    def create = { 
         def partyDepartmentInstance = new PartyDepartment()
         partyDepartmentInstance.properties = params
         GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","Create_Depatment.htm")//putting help pages in session
         def dataSecurityService = new DataSecurityService()
         def partyInstance = Party.get(gh.getValue("Party"));
         //getting Department List

@@ -1,3 +1,4 @@
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class ProjectTrackingController {
     
     def index = { redirect(action:list,params:params) }
@@ -161,6 +162,9 @@ class ProjectTrackingController {
 }
 
     def create = {
+		GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","Project_Tracking.htm")//putting help pages in session
     		def projectsService = new ProjectsService()
     		/* Get project details */
     		def projectsInstance = projectsService.getProjectById(new Integer(params.id))

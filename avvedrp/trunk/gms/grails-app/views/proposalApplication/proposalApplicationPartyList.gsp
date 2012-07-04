@@ -21,6 +21,7 @@
 	<g:subMenuLogin/>
 	<div class="wrapper">
 	<div class="body">
+        <img src="${createLinkTo(dir:'images/themesky',file:'help.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/proposalApplication_PartyList.htm','mywindow','width=800,height=500,left=0,top=100,screenX=0,screenY=100')"  >
 		<h1><g:message code="default.SelectParty.message"/></h1>
 		<g:if test="${flash.message}">
 		<div class="message">${flash.message}</div>

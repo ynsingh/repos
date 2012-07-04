@@ -14,17 +14,22 @@
     		<g:subMenuList/>
     	</g:else>
           <div class="body">
-            <table>
+             <table width="100%" align="left">
                    <tr>
 	                <td valign="top" ><g:message code="default.ProjectCode.label"/>:</td>
 	                <td valign="top" ><strong>${fieldValue(bean:projectsInstance, field:'code')}</strong></td>
                     <td valign="top" ><g:message code="default.ProjectName.label"/>:</td>
                     <td valign="top" ><strong>${fieldValue(bean:projectsInstance, field:'name')}</strong></td>
-                 	<td colspan="3"><div align="left">
-			        <label for="dateRangeFrom"><g:message code="default.projects.ProjectStartDate.label"/>: </label>
-			        <strong><g:formatDate date="${projectsInstance?.projectStartDate}" format="dd/MM/yyyy"/> </strong>
-			        <label for="dateRangeTo"><g:message code="default.EndDate.label"/>: </label>              
-			        <strong><g:formatDate date="${projectsInstance?.projectEndDate}" format="dd/MM/yyyy"/></strong></td>
+                 	<td>
+			       <td> <label for="dateRangeFrom"><g:message code="default.projects.ProjectStartDate.label"/>: </label></td>
+			        <td><strong><g:formatDate date="${projectsInstance?.projectStartDate}" format="dd/MM/yyyy"/> </strong>
+			</td>
+			<td>
+			        <td><label for="dateRangeTo"><g:message code="default.EndDate.label"/>: </label>      </td>        
+			       <td> <strong><g:formatDate date="${projectsInstance?.projectEndDate}" format="dd/MM/yyyy"/></strong></td>
+<td>
+      	<img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help">   
+</td>
                  </tr>
       	    </table> 
             <table class="tablewrapper" cellspacing="0" cellpadding="0">

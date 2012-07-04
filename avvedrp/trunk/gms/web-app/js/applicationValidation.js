@@ -258,6 +258,29 @@ function validateProject(){
 	    document.getElementById("projectType").focus();
 	    return false;
     }
+	
+	if(isNaN(document.getElementById("amountAllocated").value))
+    {
+	    alert("Invalid Amount  ");
+	    document.getElementById("amountAllocated").focus();
+	    return false;
+    }
+    if((document.getElementById("amountAllocated").value)==0)
+    {
+	    alert("Please enter the Amount Allocated  ");
+	    document.getElementById("amountAllocated").focus();
+	    return false;
+    }
+    
+    if(eval(document.getElementById("amountAllocated").value)<=0)
+    {
+	    alert("Please enter the Amount Allocated   ");
+	    document.getElementById("amountAllocated").focus();
+	    return false;
+    } 
+    
+	
+	
     if( ( (document.getElementById("investigator.id").value) == 'null') || ( (document.getElementById("investigator.id").value) == '') )
     {
 	    alert("Please enter the Investigator");
@@ -1922,6 +1945,83 @@ function validateDepartment()
 	return true;
 
 }
+
+function validatePasswordRule()
+{
+	
+	if(document.getElementById("password").value == ""){
+		alert("Please enter Password");
+	    document.getElementById("password").focus();
+	    return false;
+	}
+  
+	var re = /^(?=.{6,12}$)(?=.*[A-Za-z])(?=.*[0-9])(?!.*[^A-Za-z0-9])(?!.*\s).*/;
+       if ( !re.test(document.getElementById("password").value) )
+          {
+             document.getElementById("password").focus();
+             alert('Your password must satisfy the following. \n\n* Password should be 6 to 12 character long. \n* Password should have at least one alphabet. \n* Password should have at least one numeric value. \n* Password should not have special characters.');
+             document.getElementById("password").focus();
+             return false;
+          }
+}
+
+function validateConfirmPasswordRule()
+{
+	if(document.getElementById("confirmPasswd").value == "")
+	{
+		alert("Please enter confirm Password");
+	    document.getElementById("confirmPasswd").focus();
+	    return false;
+	}
+	if(document.getElementById("confirmPasswd").value != document.getElementById("password").value)
+	{
+		document.getElementById("password").focus();
+		alert("Please enter same password as above");
+		  document.getElementById("confirmPasswd").focus();
+		return false;
+	}	
+
+}
+
+function validateChangePasswordRule()
+{
+	
+	if(document.getElementById("newPasswd").value == ""){
+		alert("Please enter Password");
+	    document.getElementById("newPasswd").focus();
+	    return false;
+	}
+  
+	var re = /^(?=.{6,12}$)(?=.*[A-Za-z])(?=.*[0-9])(?!.*[^A-Za-z0-9])(?!.*\s).*/;
+       if ( !re.test(document.getElementById("newPasswd").value) )
+          {
+             document.getElementById("newPasswd").focus();
+             alert('Your password must satisfy the following. \n\n* Password should be 6 to 12 character long. \n* Password should have at least one alphabet. \n* Password should have at least one numeric value. \n* Password should not have special characters.');
+             document.getElementById("newPasswd").focus();
+             return false;
+          }
+}
+
+function validateChangeConfirmPasswordRule()
+{
+	if(document.getElementById("confirmNewPasswd").value == "")
+	{
+		alert("Please enter confirm Password");
+	    document.getElementById("confirmNewPasswd").focus();
+	    return false;
+	}
+	if(document.getElementById("confirmNewPasswd").value != document.getElementById("newPasswd").value)
+	{
+		document.getElementById("confirmNewPasswd").focus();
+		alert("Please enter same password as above");
+		  document.getElementById("confirmNewPasswd").focus();
+		return false;
+	}	
+
+}
+
+
+
 function validateRegisterUser()
 {
    var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
@@ -2479,6 +2579,37 @@ function validateEmployeeDesignation()
 	
 	return true;
 }
+
+
+function validateProposalfilter()
+{
+
+
+  if(isNaN(document.getElementById("proposalFilter").value))
+    {
+	    alert("Invalid Number  ");
+	    document.getElementById("proposalFilter").focus();
+	    return false;
+    }
+    
+	if(LTrim(document.getElementById("proposalFilter").value) == 'null' || document.getElementById("proposalFilter").value == '' )
+	{
+		alert("Please Enter No.Of Days ");
+	    document.getElementById("proposalFilter").focus();
+	    return false;
+	}
+	
+	
+	return true;
+}
+
+
+
+
+
+
+
+
 
   function Redirect()
         {
@@ -3649,9 +3780,10 @@ function validateEvalItemNotificationMap(firstInstance,ms,instance,msg)
   {
 	  var result = eval("("+e.responseText+")"); 
 	  if(result)
-		  {
-		  alert('Fund Tranfereed is seen in this Institution');
-		  }
+	  {  
+		  alert ("Fund has been transferred to your project(s)."+result+".Please check.");
+         
+  	  }
   }
   function validateConfirm(budgetId)
   {
@@ -4661,6 +4793,7 @@ function validateUniversityMaster()
 		alert("Please enter the Code ");
 		document.getElementById("code").focus();
 		return false;
+
 	}
 	
 	if( ( (LTrim(document.getElementById("email").value)) == 'null') || ( (document.getElementById("email").value) == '') )
@@ -4909,6 +5042,23 @@ var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
 	return true;
  
 }
+function validateCoPi(instance,msg)
+{ 
+	
+	if(!validateCheckBox(instance,msg))
+	{
+		return false;
+	}
+	docclick++;
+		if(docclick>1)
+		{
+			return false;
+		}
+			setTimeout('docclick=0', 2000);
+	
+   return true;
+}
+
 
 function validateMenuRoleMap(role,instance,msg)
 { 
@@ -4939,4 +5089,10 @@ function combineAlertAndValidateAuthority()
 	if(retvalue == true) {
 	return displayAlertMessage("Please wait..."); }
 	return retvalue
+}
+
+function msgForreviewer()
+{
+	alert("Review can be started only after proposal submission last date.");
+	return false;
 }

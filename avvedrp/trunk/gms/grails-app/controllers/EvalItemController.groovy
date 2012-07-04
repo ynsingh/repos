@@ -13,6 +13,8 @@ class EvalItemController {
     }
     def create = {
     	GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","Evaluation_Question.htm")//putting help pages in session
         def evalItemInstance = new EvalItem()
         evalItemInstance.properties = params
         def evalScaleInstanceList = evalScaleService.listEvalscale(gh.getValue("Party"))

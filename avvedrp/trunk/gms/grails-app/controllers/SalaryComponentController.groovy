@@ -1,3 +1,4 @@
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class SalaryComponentController 
 {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -9,6 +10,9 @@ class SalaryComponentController
      */
     def create = 
     {
+		 GrailsHttpSession gh=getSession()
+		 gh.removeValue("Help")
+		 gh.putValue("Help","Salary_Component.htm")//putting help pages in session
     	 def salaryComponentInstance = new SalaryComponent()
          def salaryComponentService = new SalaryComponentService()
     	 salaryComponentInstance.properties = params

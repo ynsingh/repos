@@ -123,10 +123,13 @@ ckeditor {
 
 
 
-//log4j.logger.org.springframework.security='off,stdout'
+
 
 //log4j.logger.org.springframework.security='off,stdout'
 
 //log4j.logger.org.springframework.security='off,stdout'
 
 //log4j.logger.org.springframework.security='off,stdout'
+
+//log4j.logger.org.springframework.security='off,stdout'
+grails.plugins.springsecurity.openid.domainClass = 'OpenID'

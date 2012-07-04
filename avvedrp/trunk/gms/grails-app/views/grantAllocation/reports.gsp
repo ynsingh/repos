@@ -521,6 +521,19 @@
 				  	         			</g:jasperReport>
 					           		</td>
 					            </tr>
+					            <tr>
+						           <td valign="top" class="name">
+	                                   <g:jasperReport jasper="FundFromExternalAgency" format="XLS,PDF,CSV,HTML" 
+	                                   	name=" ${message(code: 'default.ExternalFund.label')}">
+	                                   		<input type="hidden" name="id" value="${session.AppFormID}" />
+								            <input type="hidden" name="projectID" value="${session.ProjectID}" />
+								            <input type="hidden" name="partyID" value=value="${session.Party}" />
+								            <input type="hidden" name="reportDate" value="" />
+							                <input type="hidden" name="reportDateTo" value="" />
+								            <input type="hidden" name="Path" value="${application.getRealPath("reports")}" />
+				  	         			</g:jasperReport>
+					           		</td>
+					            </tr>
 				           </table>  
                   	 </div>   
               	</div> 

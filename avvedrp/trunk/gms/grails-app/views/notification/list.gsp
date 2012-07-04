@@ -6,20 +6,22 @@
         <meta name="layout" content="main" />
         <title><g:message code="default.Notification.NotificationList.head"/></title>
  		<g:javascript library="jquery"/>   
+ 		
     </head>
     <body>
-    <div id="paginate">
-      <g:subMenuNotification/>
-        <div class="wrapper">
-          <div class="body">
-            <h1><g:message code="default.Notification.NotificationList.head"/></h1>
-            <g:if test="${flash.message}">
+     <div id="paginate">
+       <g:subMenuNotification/>
+       <div class="wrapper">
+        <div class="body">
+        <img src="${createLinkTo(dir:'images/themesky',file:'contxthelp.gif')}" align="right" onClick="window.open('${application.contextPath}/images/help/${session.Help}','mywindow','width=500,height=250,left=0,top=100,screenX=0,screenY=100,scrollbars=yes')" title="Help" alt="Help"> 
+         <h1><g:message code="default.Notification.NotificationList.head"/></h1>
+           <g:if test="${flash.message}">
               <div class="message">${flash.message}</div>
             </g:if>
+            
             <g:if test="${notificationInstanceList}">
               <div class="list">
               <div class="paginateButtons" style="border: 0px;height:14px;text-align:right" ><util:remotePaginate controller="notification" action="list" total="${notificationInstanceListTotal}" update="paginate"  prev="Prev" pageSizes="[5,10,20,40,50]"/><font style="font:8pt verdana;font-weight:bold;color:black">Total:${notificationInstanceListTotal}</font></div>
-              
                 <table cellpadding="0" cellspacing="0">
                     <thead>
                         <tr>

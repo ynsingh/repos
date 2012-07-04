@@ -291,8 +291,8 @@
     {
     		GrailsHttpSession gh=getSession()
     		def grantAllocationInstance = new GrantAllocation(params)
-    		//def projectsInstance = projectsService.getProjectById(new Integer(params.id))	
-    		def projectsInstance = Projects.get(params.id)
+    		def projectsInstance = projectsService.getProjectById(new Integer(params.id))	
+    		//def projectsInstance = Projects.get(params.id)
     		grantAllocationInstance.projects = projectsInstance
     		grantAllocationInstance.createdBy="admin"
     		grantAllocationInstance.modifiedBy="admin"
@@ -339,7 +339,6 @@
     	gh.removeValue("Help")
 	    //putting help pages in session
 	    gh.putValue("Help","SubProject_Allocation.htm")
-    	gh.putValue("fromUrL", "subGrantAllot");
     	gh.putValue("fromID", params.id);
     	String subQuery="";
         if(params.sort != null && !params.sort.equals(""))
@@ -416,6 +415,8 @@
                 'partyInstance':partyInstance,'grantAllocation':grantAllocation ]
 		
     }
+
+
 	
 	def updatePi = {
 		def investigatorService=new InvestigatorService()
@@ -497,8 +498,8 @@
     	double newAmount = ((params.amount).toDouble()).doubleValue() // Total amount used for sub allocation
     	double balanceAmount= ((params.balance).toDouble()).doubleValue()// totAllAmount - newAmount
     	sumAmount = amountAllocated + newAmount
-      	
-    	def granterInstance
+      	def investigatorList = params.investigator.id
+		def granterInstance
     	def grantAllocationInstance
     	def projectsInstance = new Projects(params)
 		projectsInstance.code=params.code
@@ -510,8 +511,10 @@
 		def parentProjectsInstance = projectsService.getProjectById(new Long( params.parent.id ))
     	projectsInstance.parent=parentProjectsInstance
     	projectsInstance.projectType=parentProjectsInstance.projectType
-    	def investigatorInstance = investigatorService.getInvestigatorById(new Integer(params.investigator.id)) 
-    	projectsInstance.investigator = investigatorInstance
+    	def investigatorInstance = investigatorService.getInvestigatorById(new Integer(investigatorList[0])) 
+		projectsInstance.investigator = investigatorInstance
+		def investigatorcoPiInstance = investigatorService.getInvestigatorById(new Integer(investigatorList[1]))
+		projectsInstance.copi = investigatorcoPiInstance
     	GrailsHttpSession gh=getSession()
     	granterInstance=Party.get(new Integer(params.grantor))
 		grantAllocationInstance = new GrantAllocation(params)
@@ -542,7 +545,7 @@
 						GrantAllocation = grantAllocationService.checkGrantAllocationSplitByProjectId(grantAllocationInstance)
 						if(GrantAllocation == null)
 						{
-							projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
+						projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
 							if(projectsInstance.saveMode != null)
 							{
 								if(projectsInstance.saveMode.equals("Saved"))
@@ -616,31 +619,40 @@
 				GrantAllocation = grantAllocationService.checkGrantAllocationSplitByProjectId(grantAllocationInstance)
 					if(GrantAllocation == null)
 						{
-						projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
-						if(projectsInstance.saveMode != null)
+						if(investigatorInstance == investigatorcoPiInstance)
 						{
-							if(projectsInstance.saveMode.equals("Saved"))
-				    		{
-								GrantAllocationSave = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
-								if(!grantAllocationInstanceCheck)
-								{
-									grantAllocationInstanceForAccess = GrantAllocationSave
-									accessInstance = projectsService.saveProjectAccessPermission(grantAllocationInstanceForAccess)
-									def userInstanse = Person.get(gh.getValue("UserId"))
-									/*calling a method for save project access permission for pi*/
-							    	projectsService.saveAccessPermissionForprojects(grantAllocationInstance,projectsInstance,investigatorInstance.email)
-						    	
-								}
-								flash.message = "${message(code: 'default.Newallocationcreated.label')}"
-			    			}
-			    			else if(projectsInstance.saveMode.equals("Duplicate"))
-			    			{
-			    				flash.message = "${message(code: 'default.AlreadyExists.label')}"
-			    			
-			    			}
-			    		}
+							flash.message = "${message(code: 'default.alreadyAssignedPI.label')}"
+						}
 						else
-			    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
+						{
+							projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
+							if(projectsInstance.saveMode != null)
+							{
+								if(projectsInstance.saveMode.equals("Saved"))
+					    		{
+									GrantAllocationSave = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
+									if(!grantAllocationInstanceCheck)
+									{
+										grantAllocationInstanceForAccess = GrantAllocationSave
+										accessInstance = projectsService.saveProjectAccessPermission(grantAllocationInstanceForAccess)
+										def userInstanse = Person.get(gh.getValue("UserId"))
+										/*calling a method for save project access permission for pi*/
+								    	projectsService.saveAccessPermissionForprojects(grantAllocationInstance,projectsInstance,investigatorInstance.email)
+								    	/*calling a method for save project access permission for co-pi*/
+								    	projectsService.saveAccessPermissionForprojects(grantAllocationInstance,projectsInstance,investigatorcoPiInstance.email)
+							    	
+									}
+							 	flash.message = "${message(code: 'default.Newallocationcreated.label')}"
+				    			}
+				    			else if(projectsInstance.saveMode.equals("Duplicate"))
+				    			{
+				    				flash.message = "${message(code: 'default.AlreadyExists.label')}"
+				    			
+				    			}
+				    		}
+							else
+				    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
+						    }
 					    }
 					else
 						{
@@ -665,6 +677,8 @@
 												def userInstanse = Person.get(gh.getValue("UserId"))
 												/*calling a method for save project access permission for pi*/
 										    	projectsService.saveAccessPermissionForprojects(grantAllocationInstance,projectsInstance,investigatorInstance.email)
+										    	/*calling a method for save project access permission for co-pi*/
+										    	projectsService.saveAccessPermissionForprojects(grantAllocationInstance,projectsInstance,investigatorcoPiInstance.email)
 									    	
 											}
 											flash.message = "${message(code: 'default.Newallocationcreated.label')}"
@@ -777,8 +791,11 @@
         if(projectsInstance)
 		{
 			def projectsPIMapInstance = projectsService.checkPIofProject(projectsInstance.id)
+			def projectsCOPIMapInstance = projectsService.checkCOPIofProject(projectsInstance.id)
 			if(projectsPIMapInstance)
-				projectsInstance.investigator = projectsPIMapInstance.investigator
+			projectsInstance.investigator = projectsPIMapInstance.investigator
+			if(projectsCOPIMapInstance)
+			projectsInstance.copi = projectsCOPIMapInstance.investigator
 		}
 		def partyInstance=partyService.getPartyById(gh.getValue("Party"))
 		  def projectInstance 
@@ -842,7 +859,7 @@
     }
     def updateProAllot = 
     {
-		 double sumAmount = 0.0
+    	 double sumAmount = 0.0
     	 double projectAmount = 0.0
     	 double amountToBeUpdated = 0.0
     	 double amountAllocated= ((params.amountAllocated).toDouble()).doubleValue()
@@ -922,36 +939,47 @@
 			 projectsInstance.properties=params
 			 projectsInstance.id=new Long(params.projects.id)
 			def investigatorInstance=investigatorService.getInvestigatorById(params.investigator.id)
+			def copiInstance=investigatorService.getInvestigatorById(params.copi.id)
 			projectsInstance.investigator = investigatorInstance
-			def projectsInstanceSave = projectsService.updateSubProject(projectsInstance)
-			 if(projectsInstanceSave)
-			 {
-				 if(projectsInstanceSave.saveMode != null)
-				{
-					if(projectsInstanceSave.saveMode.equals("Updated"))
-					{
-						grantAllocationInstance = grantAllocationService.updateGrantAllocation(params)
-						flash.message = "${message(code: 'default.updated.label')}"
-												
-					}
-					else if(projectsInstanceSave.saveMode.equals("Duplicate"))
-					{
-						flash.message = "${message(code: 'default.AlreadyExists.label')}"
-						redirect(action:'editProAllot',id:pastGrantAllocation.id)
-					}
-				}
-				else 
-				{
-					redirect(action:'editProAllot',id:pastGrantAllocation.id)
-		    	}
-			}
-			 else 
+			projectsInstance.copi = copiInstance
+			if(investigatorInstance == copiInstance)
 			{
-				 flash.message = "${message(code: 'default.notfond.label')}"
+				flash.message = "${message(code: 'default.alreadyAssignedPI.label')}"
 				redirect(action:'editProAllot',id:pastGrantAllocation.id)
 			}
+			else
+			{
+				def projectsInstanceSave = projectsService.updateSubProject(projectsInstance)
+				 
+				 if(projectsInstanceSave)
+				 {
+					 if(projectsInstanceSave.saveMode != null)
+					{
+						if(projectsInstanceSave.saveMode.equals("Updated"))
+						{
+							grantAllocationInstance = grantAllocationService.updateGrantAllocation(params)
+							flash.message = "${message(code: 'default.updated.label')}"
+													
+						}
+						else if(projectsInstanceSave.saveMode.equals("Duplicate"))
+						{
+							flash.message = "${message(code: 'default.AlreadyExists.label')}"
+							redirect(action:'editProAllot',id:pastGrantAllocation.id)
+						}
+					}
+					else 
+					{
+						redirect(action:'editProAllot',id:pastGrantAllocation.id)
+			    	}
+				}
+				 else 
+				{
+					 flash.message = "${message(code: 'default.notfond.label')}"
+					redirect(action:'editProAllot',id:pastGrantAllocation.id)
+				}
+				}
+			
 			/* project save end */
-			 
 		 }
 		 else
 		 {
@@ -1096,8 +1124,7 @@
     
 def projectDash = 
 {
-    		
-    		def totmonths=new HashSet()
+			def totmonths=new HashSet()
     		def expense=[]
     		def recive=[]
     		def months=[]
@@ -1170,6 +1197,8 @@ def projectDash =
 							 
 							 
 							 GrailsHttpSession gh=getSession()
+							gh.removeValue("Help")
+							gh.putValue("Help","Project_Dash.htm")//putting help pages in session
 						        gh.putValue("ProjectID",projectInstance.id.toString());	
     		  					
 							 def totalExpense=0;
@@ -1215,7 +1244,7 @@ def projectDash =
 										 size(w:250, h:180)  
 										 title(color:'808080', size:13)
 										 {
-										  row('Fund Utilization') 
+										  row('Fund Balance') 
 										 } 
 										 data(encoding:'extended')
 										 { 
@@ -1279,7 +1308,7 @@ def projectDash =
 				      size(w:250, h:95)
 				      title(color:'808080', size:13)
 				      {
-				         row('Fund Allocation') 
+				         row('Head Wise Allocation') 
 				      } 
 				      data(encoding:'text')
 				      {
@@ -1323,7 +1352,17 @@ def projectDash =
           
             else 
             {
-            	projectInstance.status = params.projectStatus             	  	
+				if(params.projectStatus!='Closed')
+				{
+				projectInstance.status = "Active"
+				println"8888888"
+				
+				}
+				else
+				{
+            	projectInstance.status = params.projectStatus  
+				println"999999"
+				}           	  	
             	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
             	return [ projectInstance : projectInstance,sumAmount:sumAmount,
             	         grantAllocationSplit:grantAllocationSplit,
@@ -1549,9 +1588,9 @@ def menu = {
 				roleIds=roleIds+roleLst[i].id+","
 			}
 			roleIds=roleIds.substring(0,roleIds.length()-1)+")"
-			menuRoleMapParentList = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+ "and MRM.menu.parentId=-1 and MRM.activeYesNo='Y' group by MRM.menu.id order by MRM.menu.menuOrder asc")
+			menuRoleMapParentList = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+ "and MRM.menu.parentId=-1 and MRM.activeYesNo='Y' and MRM.menu.menuAlignment='V' group by MRM.menu.id order by MRM.menu.menuOrder asc")
 			for(int k=0;k<menuRoleMapParentList.size();k++){
-				def childList=MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+" and MRM.menu.parentId="+menuRoleMapParentList[k].menu.id+" and MRM.activeYesNo='Y'group by MRM.menu.id order by MRM.menu.menuOrder asc")
+				def childList=MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+" and MRM.menu.parentId="+menuRoleMapParentList[k].menu.id+" and MRM.activeYesNo='Y' and MRM.menu.menuAlignment='V' group by MRM.menu.id order by MRM.menu.menuOrder asc")
 				if (!childList){
 					parentList.add(menuRoleMapParentList[k])
     			}
@@ -1581,10 +1620,10 @@ def gmsFrame = {
 				roleIds=roleIds+roleLst[i].id+","
 			}
 			roleIds=roleIds.substring(0,roleIds.length()-1)+")"
-			menuRoleMapParentList = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+ "and MRM.menu.parentId=-1 and MRM.activeYesNo='Y' group by MRM.menu.id order by MRM.menu.menuOrder asc")
+			menuRoleMapParentList = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+ "and MRM.menu.parentId=-1 and MRM.activeYesNo='Y' and MRM.menu.menuAlignment='V' group by MRM.menu.id order by MRM.menu.menuOrder asc")
 			for(int j=0;j<menuRoleMapParentList.size();j++)
 			{
-				menuRoleMapChildInstance = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+" and MRM.menu.parentId="+menuRoleMapParentList[j].menu.id+" and MRM.activeYesNo='Y'group by MRM.menu.id order by MRM.menu.menuOrder asc")
+				menuRoleMapChildInstance = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+" and MRM.menu.parentId="+menuRoleMapParentList[j].menu.id+" and MRM.activeYesNo='Y' and MRM.menu.menuAlignment='V' group by MRM.menu.id order by MRM.menu.menuOrder asc")
 				if(menuRoleMapChildInstance){
 					break;
 				}

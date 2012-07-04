@@ -671,4 +671,58 @@ class UserService{
     	 def userMapInstance = UserMap.executeQuery("select UM.party.id from UserMap UM where party.id='"+partyId+"'AND UM.user.id IN(select UR.user.id from UserRole UR where UR.role.id IN(select A.id from Authority A where A.authority='ROLE_SUPERADMIN'))")
     	 return userMapInstance
       }
+	  
+	  /*
+	  * Function to get All roles as string
+	  */
+	  public getAllRolesAsString(def userRoleList)
+	  {
+		  
+		 def roleLst= new ArrayList()
+		 for(int i=0;i<userRoleList.size();i++)
+		 {
+			 roleLst << userRoleList[i]
+		 }
+		 String roleIds="(";
+		 for(int i=0;i<roleLst.size();i++)
+		 {
+			 roleIds=roleIds+roleLst[i].id+","
+		 }
+		 roleIds=roleIds.substring(0,roleIds.length()-1)+")"
+		 return roleIds
+	}
+	  
+	  public getAllParentListMappedToRoles(String roleIds)
+	  {
+		  def menuRoleMapParentList = [] as Set
+		  def parentList = []
+		  menuRoleMapParentList = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+ "and MRM.menu.parentId=-1 and MRM.activeYesNo='Y' and MRM.menu.menuAlignment='VH' group by MRM.menu.id order by MRM.menu.menuOrder asc")
+		  for(int k=0;k<menuRoleMapParentList.size();k++){
+			  def childList=MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+" and MRM.menu.parentId="+menuRoleMapParentList[k].menu.id+" and MRM.activeYesNo='Y'and MRM.menu.menuAlignment='VH'group by MRM.menu.id order by MRM.menu.menuOrder asc")
+			  if (!childList){
+				  if(!menuRoleMapParentList[k].menu.menuPath){
+					  parentList.add(menuRoleMapParentList[k])
+				  }
+			  }
+		  }
+		  menuRoleMapParentList.removeAll(parentList)
+		  return menuRoleMapParentList
+	  }
+	  
+	  public getAllParentListMappedToRolesForHMenu(String roleIds)
+	  {
+		  def menuRoleMapParentList = [] as Set
+		  def parentList = []
+		  menuRoleMapParentList = MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+ "and MRM.menu.parentId=-1 and MRM.activeYesNo='Y' and MRM.menu.menuAlignment='H' group by MRM.menu.id order by MRM.menu.menuOrder asc")
+		  for(int k=0;k<menuRoleMapParentList.size();k++){
+			  def childList=MenuRoleMap.findAll("from MenuRoleMap MRM where MRM.role.id in "+roleIds+" and MRM.menu.parentId="+menuRoleMapParentList[k].menu.id+" and MRM.activeYesNo='Y'and MRM.menu.menuAlignment='H'group by MRM.menu.id order by MRM.menu.menuOrder asc")
+			  if (!childList){
+				  if(!menuRoleMapParentList[k].menu.menuPath){
+					  parentList.add(menuRoleMapParentList[k])
+				  }
+			  }
+		  }
+		  menuRoleMapParentList.removeAll(parentList)
+		  return menuRoleMapParentList
+	  }
 }

@@ -33,6 +33,7 @@
 		                        	<tr>
 			                        	<th><g:message code="default.SINo.label"/></th>
 			                   	        <th><g:message code="default.ApprovalAuthority.label"/></th>
+			                   	        <th><g:message code="default.dateOfApproval.label"/></th>
 		                   	        </tr>
 		                    	</thead>
 		                    	<tbody>
@@ -42,16 +43,19 @@
 				                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 				                        	<td>${i+1}</td>
 			                    			<td><b>${approvalAuthorityInstanceList[i].name}</b></td>
+			                    			<td></td>
 			                    		</tr>
 		                         		<g:each var="j" in="${ (0..<sizeList[i]) }">
 			                         		<tr>
 			                         			<td></td>
 		                         				<g:if test="${proposalApprovalDetailInstanceList[k] == null}">
 		                         					<td>&nbsp;&nbsp;&nbsp;&nbsp;${approvalAuthorityDetailList[l].person.userRealName}&nbsp;-&nbsp;<g:message code="default.Pending.label"/></td>
+		                         					<td>&nbsp;&nbsp;&nbsp;&nbsp;---</td>
 		                         					<%  l++ %>
 		                         				</g:if>	
 		                         				<g:else>
 		                         					<td>&nbsp;&nbsp;&nbsp;&nbsp;${proposalApprovalDetailInstanceList[k].proposalApproval.approvalAuthorityDetail.person.userRealName}&nbsp;-&nbsp;${proposalApprovalDetailInstanceList[k].proposalStatus}</td>
+		                         					<td><g:formatDate format="dd - MM - yyyy" date="${proposalApprovalDetailInstanceList[k].approvalDate}"/></td>
 		                         					<%  l++ %>
 				                    			</g:else>
 	                         				</tr>

@@ -18,6 +18,9 @@
 							<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 								<g:if test="${menuInstance.parentId == -1}">
 									<td width="7%">
+										<g:if test="${menuInstance.menuPath!=null}">
+											<g:checkBox name="menuSel" value="${menuInstance.id}" checked="false"/>
+										</g:if>
 									</td>
 									<td width="50%">
 									<strong><g:message code="${menuInstance.menuName}"/> (<g:message code="default.mainMenu.label"/>)</strong>
@@ -56,22 +59,27 @@
 						    <g:each in="${parentList}" status="i" var="menuRoleMapInstance">
 								<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 									<td width="7%">
+										<g:if test="${menuRoleMapInstance.menu.menuPath!=null}">
+											<g:checkBox name="menuSelt" value="${menuRoleMapInstance.id}" checked="false"/>
+										</g:if>
 									</td>
 									<td width="50%">
 										<strong><g:message code="${menuRoleMapInstance.menu.menuName}"/> (<g:message code="default.mainMenu.label"/>) </strong>
 									</td>
 									</tr>
 									<g:each var="j" in="${ (0..<sizeList[i]) }">
-									<tr class="${(j % 2) == 0 ? 'odd' : 'even'}">
-										<td width="7%">
-										<g:checkBox name="menuSelt" value="${allChildList[k].id}" checked="false"/></td>
-									<td width="50%">
-										<g:message code="${allChildList[k].menu.menuName}"/>
-									</td>
-									<%  k++ %>
-									</g:each>
-								</tr>
-							</g:each>
+										<g:if test="${sizeList[i]!=0}">
+											<tr class="${(j % 2) == 0 ? 'odd' : 'even'}">
+												<td width="7%">
+												<g:checkBox name="menuSelt" value="${allChildList[k].id}" checked="false"/></td>
+												<td width="50%">
+													<g:message code="${allChildList[k].menu.menuName}"/>
+												</td>
+												<%  k++ %>
+											</tr>
+										 </g:if>
+									 </g:each>
+							  </g:each>
 						</table>
 					</div>
 				</div>	

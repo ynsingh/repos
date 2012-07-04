@@ -19,6 +19,8 @@ class ProjectsController extends GmsController
 	def partyService
     def grantAllocationService
     def projectsService
+    def fundTransferService
+    def grantReceiptService
     def investigatorService 
     def list = 
     {
@@ -28,7 +30,7 @@ class ProjectsController extends GmsController
 		def grandAllocationList
 		
 		gh.removeValue("Help")
-		gh.putValue("Help","_List.htm")//putting help pages in session
+		gh.putValue("Help","Project_List.htm")//putting help pages in session
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		if(!params.max) params.max = 10
 			String subQuery="";
@@ -157,7 +159,7 @@ class ProjectsController extends GmsController
 		def dataSecurityService = new DataSecurityService()
 		
 		GrailsHttpSession gh=getSession()
-		gh.putValue("Help","New_Projects.htm")//putting help pages in session
+		gh.putValue("Help","Edit_Projects.htm")//putting help pages in session
 					
 		def projectsInstance = projectsService.getProjectById(new Integer( params.id ))
 		if(projectsInstance)
@@ -383,17 +385,16 @@ class ProjectsController extends GmsController
     	
     	GrailsHttpSession gh=getSession()
     	   	
-    	projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
+    	projectsInstance = projectsService.saveProjectsWithAmountAllocated(projectsInstance,gh.getValue("UserId"),params)
 
-    	
     	if(projectsInstance.saveMode != null)
     	{
     		if(projectsInstance.saveMode.equals("Saved"))
     		{
     			flash.message = "${message(code: 'default.createdProject.message')}"
     			gh.putValue("ProjectId",projectsInstance.id)
-    			redirect(action:list )
-    		}
+			redirect(action:'projectDash',controller:'grantAllocation',id:projectsInstance.id)
+			}
     		else if(projectsInstance.saveMode.equals("Duplicate"))
     		{
     			def investigatorList=investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"))
@@ -413,7 +414,7 @@ class ProjectsController extends GmsController
     }
     def saveSub = 
     {
-			println "save sub "+params.parent.id
+	    println "save sub "+params.parent.id
 		params.createdBy = "user";
 		params.createdDate = new Date();
 		params.modifiedBy = "user";
@@ -522,6 +523,9 @@ class ProjectsController extends GmsController
     }
     def search = 
     {
+	GrailsHttpSession gh=getSession()
+	gh.removeValue("Help")
+	gh.putValue("Help","Search_Projects.htm")//putting help pages in session
         def projectsInstance = new Projects()
         //projectsInstance.properties = params
         return ['projectsInstance':projectsInstance]        	       	
@@ -588,44 +592,50 @@ class ProjectsController extends GmsController
 	}
 	def projectsDashBoard =
 	{
-			
+		GrailsHttpSession gh = getSession()	
+		gh.removeValue("Help")
+		gh.putValue("Help","Project_DashBoard.htm")//putting help pages in session
 	}
-	 def getalert= 
-	 {
-	 	  	GrailsHttpSession gh = getSession()
-			def fundTransferInstanceList=[]
-			def receivedInstanceList=[]
-			def fundTransferInstance
-			def receivedInstance
-			def fundTansInstance
-			def partyInstance = Party.get(gh.getValue("Party")) 
-			def loginInstance =gh.getValue("LoggedIn")
-			def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id="+partyInstance.id)
-	    	for(int i=0;i<grantAllocationInstanceList.size();i++)
+
+ 	def getalert=
+    {
+        GrailsHttpSession gh = getSession()
+        def fundTransferInstanceList=[]
+        def receivedInstanceList=[]
+        def fundTransferInstance
+        def receivedInstance
+        def fundTansInstance
+        def transferInstance
+        def partyInstance = Party.get(gh.getValue("Party"))
+        def loginInstance =gh.getValue("LoggedIn")
+        def grantAllocationInstanceList = grantAllocationService.getGrantAllocationByPartyId(partyInstance)
+        for(int i=0;i<grantAllocationInstanceList.size();i++)
+        {
+            fundTransferInstance=fundTransferService.getFundTransferByGrantAllotId(grantAllocationInstanceList[i].id)
+            for(int j=0;j<fundTransferInstance.size();j++)
+            {
+                transferInstance = fundTransferInstance[j]
+                fundTransferInstanceList.add(transferInstance)
+            }
+        }
+        if(fundTransferInstanceList)
+        {
+            for(int k=0;k<fundTransferInstanceList.size();k++)
+            {
+                receivedInstance = grantReceiptService.getGrantReceiptByFundTransfrId(fundTransferInstanceList[k].id)
+                if(!receivedInstance)
+                 {
+                    receivedInstanceList.add(fundTransferInstanceList[k].grantAllocation.projects.name)
+                 }
+            }
+        }
+       if(receivedInstanceList)
+       {
+            if(loginInstance=='login')
 			{
-				fundTransferInstance=FundTransfer.findAll("from FundTransfer FT where FT.grantAllocation.id = "+grantAllocationInstanceList[i].id)
-				if(fundTransferInstance)
-				{
-					for(int j=0;j<fundTransferInstance.size();j++)
-					{
-						fundTansInstance = fundTransferInstance[j]
-						fundTransferInstanceList.add(fundTansInstance)
-					}
-				}
-			}
-			for(int j=0;j<fundTransferInstanceList.size();j++)
-			{
-				receivedInstance = GrantReceipt.find("from GrantReceipt GR where GR.fundTransfer.id="+fundTransferInstanceList[j].id)
-				if(!receivedInstance)
-					receivedInstanceList.add(fundTransferInstanceList[j])
-			}
-			if(fundTransferInstanceList)
-			{
-				if(loginInstance=='login')
-				{
-					 gh.putValue("LoggedIn",params.controller)
-					 render receivedInstanceList as JSON
-				}
-			}
-   }
+	             gh.putValue("LoggedIn",params.controller)
+	             render receivedInstanceList as JSON
+	        }
+       }
+   	}   
 }
