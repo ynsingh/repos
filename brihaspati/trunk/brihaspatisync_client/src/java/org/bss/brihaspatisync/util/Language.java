@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.util;
  * @(#)Language.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2010 ETRG, IIT Kanpur.
+ * Copyright (c) 2012 ETRG, IIT Kanpur.
  */
 
 import java.util.Properties;
@@ -91,6 +91,41 @@ public class Language {
                 }else if(str.equals("Russian")) {
                         try{
                                 InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/russian.properties");
+                                prop.load(new InputStreamReader(inputStream,"UTF8"));
+                        }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
+                }else if(str.equals("Bangala")) {
+                        try{
+                                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/bangala.properties");
+                                prop.load(new InputStreamReader(inputStream,"UTF8"));
+                        }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
+                }else if(str.equals("French")) {
+                        try{
+                                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/french.properties");
+                                prop.load(new InputStreamReader(inputStream,"UTF8"));
+                        }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
+                }else if(str.equals("Spanish")) {
+                        try{
+                                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/spanish.properties");
+                                prop.load(new InputStreamReader(inputStream,"UTF8"));
+                        }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
+                }else if(str.equals("Dutch")) {
+                        try{
+                                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/dutch.properties");
+                                prop.load(new InputStreamReader(inputStream,"UTF8"));
+                        }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
+                }else if(str.equals("Nepali")) {
+                        try{
+                                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/nepali.properties");
+                                prop.load(new InputStreamReader(inputStream,"UTF8"));
+                        }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
+                }else if(str.equals("German")) {
+                        try{
+                                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/german.properties");
+                                prop.load(new InputStreamReader(inputStream,"UTF8"));
+                        }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
+                }else if(str.equals("Italian")) {
+                        try{
+                                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/italian.properties");
                                 prop.load(new InputStreamReader(inputStream,"UTF8"));
                         }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
                 }
