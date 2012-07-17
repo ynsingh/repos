@@ -343,8 +343,8 @@ class UserController extends GmsController {
 		}
 		
 		/* Check whether entered old password is correct or not. */
-		//def oldPasswd = springSecurityService.encodePassword(params.oldPasswd)
-		def oldPasswd = params.oldPasswd
+		def oldPasswd = springSecurityService.encodePassword(params.oldPasswd)
+		//def oldPasswd = params.oldPasswd
 		def oldPassword = person.password
 		if(!oldPasswd.equals(oldPassword)){
 			flash.message ="${message(code: 'default.Oldpasswordnotcorrect.label')}"
